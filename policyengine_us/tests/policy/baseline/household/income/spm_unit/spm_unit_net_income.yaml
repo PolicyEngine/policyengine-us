@@ -52,3 +52,25 @@
     spm_unit_spm_expenses: 0
   output:
     spm_unit_net_income: 1 + 2 + 3 + 4 + 5 + 6
+
+- name: Partnership income below the standard deduction is all SPM net income (#9919).
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        partnership_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        takes_up_snap_if_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: TN
+  output:
+    spm_unit_market_income: 10_000
+    spm_unit_benefits: 0
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+    spm_unit_net_income: 10_000

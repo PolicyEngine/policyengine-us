@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
+from policyengine_us.variables.gov.states.ca.tax.income.exemptions.ca_exemptions import (
+    ca_personal_aged_blind_exemption_count,
+)
 
 
 def create_repeal_state_dependent_exemptions() -> Reform:
@@ -256,17 +259,18 @@ def create_repeal_state_dependent_exemptions() -> Reform:
                 over_agi_threshold / p.phase_out.increment[filing_status]
             )
             exemption_reduction = increments * p.phase_out.amount
-            # Personal Exemptions
-            personal_exemption_count = p.personal_scale[filing_status]
-            personal_aged_blind_exemption_count = personal_exemption_count + tax_unit(
-                "aged_blind_count", period
+            # Personal, blind and senior exemptions, as in the baseline
+            # (none for a filer who can be claimed elsewhere)
+            personal_aged_blind_exemption_count = (
+                ca_personal_aged_blind_exemption_count(
+                    tax_unit, period, p, filing_status
+                )
             )
             personal_aged_blind_exemption = max_(
                 0,
                 personal_aged_blind_exemption_count * (p.amount - exemption_reduction),
             )
-            # Dependent exemptions
-            # total exemptions
+            # Dependent exemptions repealed
             return personal_aged_blind_exemption
 
     class ga_exemptions(Variable):
@@ -363,11 +367,9 @@ def create_repeal_state_dependent_exemptions() -> Reform:
                     head_of_household * p.by_filing_status.hoh_additional_amount
                 )
                 return base_amount + veterans_exemption_amount + hoh_additional
-            filing_status = tax_unit("filing_status", period)
-            statuses = filing_status.possible_values
-            joint = filing_status == statuses.JOINT
-            hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD
-            adults = where(joint | hoh, 2, 1)
+            # K.S.A. 79-32,121(a) with IRC 151(d)(2): each filer whom no one
+            # else may claim keeps an exemption, as in ks_count_exemptions.
+            adults = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
             return adults * p.consolidated.amount + veterans_exemption_amount
 
     class ma_income_tax_exemption_threshold(Variable):

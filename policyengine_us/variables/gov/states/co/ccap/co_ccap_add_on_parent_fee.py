@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.co.ccap.co_ccap_parameter_instant import (
-    co_ccap_parameter_instant,
+from policyengine_us.variables.gov.states.co.ccap.co_ccap_parent_fee_arithmetic import (
+    income_and_guideline_in_cents,
 )
 
 
@@ -8,24 +8,21 @@ class co_ccap_add_on_parent_fee(Variable):
     value_type = float
     entity = SPMUnit
     label = "Colorado Child Care Assistance Program add on parent fee"
+    documentation = (
+        "The fee for each child in care after the first, charged when gross "
+        "countable income exceeds the federal poverty guideline."
+    )
     reference = (
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=41",
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=62",
+        # PDF pages 83-84
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=83",
     )
     unit = USD
     definition_period = MONTH
+    defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        instant_str = co_ccap_parameter_instant(period)
-        p = parameters(instant_str).gov.states.co.ccap
-        # Calculate base parent fee and add on parent fee.
-        gross_income = spm_unit("co_ccap_countable_income", period)
-        fpg = spm_unit("spm_unit_fpg", period)
-        eligible_children = spm_unit("co_ccap_eligible_children", period)
-        # Calculate add-on parent fee based on the number of eligible
-        # children in a household and income:
-        # When income <= fpg: 0
-        # When income > fpg: 15 for each additional child
-        add_on_parent_fee_amount = (eligible_children - 1) * p.parent_fee.add_on
-        add_on_parent_fee_applies = gross_income > fpg
-        return add_on_parent_fee_amount * add_on_parent_fee_applies
+        p = parameters(period).gov.states.co.ccap.parent_fee
+        income, fpg = income_and_guideline_in_cents(spm_unit, period)
+        children_in_care = spm_unit("co_ccap_children_in_care", period)
+        additional_children = max_(children_in_care - 1, 0)
+        return additional_children * p.add_on * (income > fpg)

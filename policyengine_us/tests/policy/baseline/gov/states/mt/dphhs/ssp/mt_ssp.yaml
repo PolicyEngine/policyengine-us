@@ -189,3 +189,41 @@
     # Montana schedule has been verified.
     ssi: 1_029
     mt_ssp: 94
+
+# POMS SI 01415.058 H.2.b: certified assisted/group/community care pays
+# $193 per eligible couple and $94 per individual; $193 / 2 = $96.50.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#h2b
+# No marital units: only the head and spouse form the eligible couple.
+- name: MT couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: MT
+  output:
+    mt_ssp: [96.5, 96.5, 94]

@@ -40,6 +40,47 @@
         is_disabled: true
         meets_ssi_disability_criteria: true
         immigration_status: UNDOCUMENTED
+    # Each person is single and files alone. Without units, the model would
+    # make person0 and person1 the head and spouse of one tax unit, and so a
+    # married couple.
+    tax_units:
+      unit0:
+        members: [person0]
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+      unit3:
+        members: [person3]
+      unit4:
+        members: [person4]
+      unit5:
+        members: [person5]
+      unit6:
+        members: [person6]
+      unit7:
+        members: [person7]
+      unit8:
+        members: [person8]
+    marital_units:
+      unit0:
+        members: [person0]
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+      unit3:
+        members: [person3]
+      unit4:
+        members: [person4]
+      unit5:
+        members: [person5]
+      unit6:
+        members: [person6]
+      unit7:
+        members: [person7]
+      unit8:
+        members: [person8]
   output:
     is_ssi_qualified_noncitizen: [false, true, true, true, true, true, true, true, false]
     is_ssi_eligible_individual: [false, true, true, true, true, true, true, true, false]

@@ -10,6 +10,33 @@ aggregates count actual `housing_assistance`; only SPM resources count
 `spm_unit_capped_housing_subsidy`. The cap uses the canonical housing amount before
 the final model storage conversion.
 
+## Cash income in resources
+
+SPM resources add person `market_income` and `spm_unit_benefits`, and
+`spm_unit_taxes` subtracts the tax on every source of federal gross income. Each
+source in `gov.irs.gross_income.sources` therefore needs a place in resources:
+without one, the SPM takes a family's tax on the income and never counts the
+income. `test_household_spm_resource_parity.py` maps each source to the variable
+that counts its cash, and it fails when a new source has none. Market income
+keeps a source's losses where the source has them, such as partnership, farm
+rental and Form 4797 losses.
+
+Three sources stay out of resources on purpose:
+
+- `debt_relief`: discharged debt brings the family no cash.
+- `taxable_roth_conversions`: a conversion moves savings from one retirement
+  account to another.
+- `salt_refund_income`: the refund returns state or local tax from an earlier
+  year, and the SPM subtracts each year's tax as the family owes it.
+
+Census money income leaves out capital gains
+([CPS subject definitions](https://www.census.gov/programs-surveys/cps/technical-documentation/subject-definitions.html#incomemeasurement)).
+PolicyEngine's market income counts realized capital gains, and it counts
+capital gain distributions and Form 4797 gains alongside them, so resources hold
+every gain whose tax the SPM subtracts. Disability benefits from an employer plan
+count in full, the part federal tax exempts included, since Census lists
+disability benefits among the sources of money income.
+
 ## Housing allocation and its assumptions
 
 The country sums modeled `housing_assistance` within each household, then
@@ -124,6 +151,7 @@ delete or silently recalculate over supplied derived inputs.
 
 `Microsimulation()` defaults to the immutable dataset URI
 `hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-spm-20260909`.
+`populace-*` ids name Microcosm releases.
 This dataset supplies observed county inputs and source-backed independence roles.
 The canonical country release must wait until that exact tag and its certified
 bytes exist and pass independent readback. The unpublished candidate embeds the

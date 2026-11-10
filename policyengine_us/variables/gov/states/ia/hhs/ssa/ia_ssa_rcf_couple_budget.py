@@ -1,4 +1,11 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states._spouses import (
+    state_couple_total,
+    state_is_married,
+)
+from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_spouses import (
+    ia_ssa_spouse_value,
+)
 
 
 class ia_ssa_rcf_couple_budget(Variable):
@@ -23,8 +30,7 @@ class ia_ssa_rcf_couple_budget(Variable):
         # spouses separately beginning in the month of entry." 441 IAC 51.4(3)
         # makes "Partners in a marriage who both enter the same room of the
         # residential care facility in the same month" a couple for "the
-        # initial month"; spouses who both enter in the same month are taken
-        # to share a room (ia_ssa.yaml Cases 57, 59 and 60). A resident with an
+        # initial month"; sharing a room is an explicit input. A resident with an
         # ineligible spouse is budgeted alone (ia_ssa.yaml Case 73); SSI's
         # first-month deemed income from that spouse (6-B p.60) is not modeled.
         # NOTE: A spouse who enters after the other spouse's month of entry
@@ -36,10 +42,38 @@ class ia_ssa_rcf_couple_budget(Variable):
         category = person("ia_ssa_category", period)
         rcf = category == category.possible_values.RESIDENTIAL_CARE
         entering = rcf & person("ia_ssa_care_initial_partial_month", period)
-        couple = person("ssi_couple_computation_applies", period) & person(
-            "ia_ssa_has_spouse", period
+        year = period.this_year
+        # The prior-SSI entry-month rule retains the declared marriage even
+        # when the spouses have moved to separate facilities. Ordinary Iowa
+        # spouse pooling still requires co-residence (ia_ssa_has_spouse).
+        couple = state_is_married(person, year) & (
+            state_couple_total(
+                person, year, person("is_ssi_aged_blind_disabled", year).astype(int)
+            )
+            == 2
         )
+        # Keep the existing SSI computation guard for spouses still living
+        # together. The state entry exception supplies only the spouse link
+        # federal SSI drops when the spouses occupy separate households. A
+        # rejected co-resident pair (such as a parent and adult child in the
+        # default marital unit) does not establish that the people live apart.
+        household = person.household.reference_entity.members_entity_id
+        apart = state_couple_total(person, year, household) != 2 * household
+        couple = couple & (apart | person("ssi_couple_computation_applies", period))
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
-        couple_received_ssi = person.marital_unit.any(receives_ssi)
-        both_enter = person.marital_unit.sum(entering) == 2
-        return entering & couple & (couple_received_ssi | both_enter)
+        # Separated spouses need an explicit pre-entry receipt fact. For
+        # co-resident legacy situations, current receipt still approximates
+        # pre-entry receipt; a newly awarded current-month payment cannot
+        # establish prior receipt for spouses now in separate households.
+        receives_ssi = person("ia_ssa_rcf_received_ssi_before_entry", period) | (
+            person("ia_ssa_has_spouse", period) & receives_ssi
+        )
+        couple_received_ssi = (
+            state_couple_total(person, year, receives_ssi.astype(int)) > 0
+        )
+        both_enter = state_couple_total(person, year, entering.astype(int)) == 2
+        room = person("ia_ssa_rcf_shares_room_with_spouse", period)
+        same_room = person("ia_ssa_has_spouse", period) & (
+            room | ia_ssa_spouse_value(person, period, room)
+        )
+        return entering & couple & (couple_received_ssi | (both_enter & same_room))
