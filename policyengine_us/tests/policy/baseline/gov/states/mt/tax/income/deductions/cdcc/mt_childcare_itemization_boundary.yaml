@@ -4,10 +4,11 @@
 # Worksheet lines 1-6 (PDF p. 7):
 # https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
 # Instructions for Form 2 line 15 require both spouses to use the same method
-# (PDF p. 16); the model retains the standard deduction when totals tie:
+# (PDF p. 16). The couple takes the method with the lower combined tax; the
+# summed deductions decide only when the taxes tie:
 # https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=16
 
-- name: Combined-AGI care deduction leaves standard deductions at the itemization boundary
+- name: Combined-AGI care deduction at the summed-deduction boundary; itemizing lowers the tax
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -40,14 +41,19 @@
     # Care = min(3_000, 2_400) - 0.5 * (20_000 + 0 - 18_000)
     # = 1_400; each spouse gets 700. Itemized total = 4_860 + 700 + 700
     # = 6_260. Standard = max(20% * 20_000, 2_260) + 2_260 = 6_260.
-    # The unchanged tie rule selects standard deductions. Phasing out on
-    # each spouse's own AGI would incorrectly give 700 + 1_200 care and
-    # itemized total 6_760, crossing the choice boundary.
+    # Phasing out on each spouse's own AGI would incorrectly give 700 +
+    # 1_200 care and itemized total 6_760.
     mt_child_dependent_care_expense_deduction: [700, 700, 0]
     mt_itemized_deductions_indiv: [5_560, 700, 0]
     mt_standard_deduction_indiv: [4_000, 2_260, 0]
-    mt_tax_unit_itemizes: false
-    mt_deductions_indiv: [4_000, 2_260, 0]
+    # The totals tie, but the election goes by tax. The spouse's column has
+    # no income, so only the head's deduction matters (2,710 exemption, and
+    # the child's 2,710 in the head's column): itemizing, 20_000 - 2_710 -
+    # 5_560 - 2_710 = 9_020 gives 176 + 120 x 4% = 180.80; standard,
+    # 20_000 - 2_710 - 4_000 - 2_710 = 10_580 gives 176 + 1_680 x 4% =
+    # 243.20. So the couple itemizes.
+    mt_tax_unit_itemizes: true
+    mt_deductions_indiv: [5_560, 700, 0]
 
 - name: One more dollar of mortgage interest crosses the derived childcare itemization boundary
   period: 2022
