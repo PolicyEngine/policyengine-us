@@ -363,10 +363,10 @@
     ssi_resources_deemed_from_ineligible_spouse: [0, 0, 0]
     meets_ssi_resource_test: [true, false, false]
 
-# Explicit marital units stand whatever tax roles the model infers: with
-# roles omitted the model may treat one spouse as the mother's tax spouse and
-# the other as her dependent, but the couple is still a joint claim and
-# 416.1205(b) combines their resources: 0 + 3,001 > 3,000.
+# Explicit marital units stand whatever tax roles the model infers. With roles
+# omitted, the couple heads the mother's tax unit, and their claim is joint:
+# 416.1205(b) combines their resources against the couple limit
+# (0 + 3,001 > 3,000), so nothing is deemed from an ineligible spouse.
 - name: Married adults in a parent's tax unit with roles omitted count each other's resources
   period: 2026-01
   input:
