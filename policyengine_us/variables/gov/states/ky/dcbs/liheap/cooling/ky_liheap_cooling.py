@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 from policyengine_us.variables.gov.states.ky.dcbs.liheap.ky_liheap import (
     ky_liheap_points_amount,
 )
@@ -28,25 +27,16 @@ class ky_liheap_cooling(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ky.dcbs.liheap
-        size = spm_unit("spm_unit_size", period)
-        state_group = spm_unit.household("state_group_str", period)
-        # The income bands use the cooling guideline year, like the income
-        # limit, so the top band ends at the limit.
-        guideline = fpg(
-            max_(size, 1),
-            state_group,
-            period,
-            parameters,
-            year_lag=p.cooling.fpg_year_lag,
-        )
         # Cooling assistance provides electric benefits only (plan Section
         # 3.4). The FY2026 workbook's cooling column equals its electricity
         # heating column in every row, so the electric fuel points apply
-        # whatever fuel heats the home.
+        # whatever fuel heats the home. The workbook prints the same income
+        # ranges for both columns, on the guideline year heating uses; the
+        # cooling income limit alone uses the summer fact sheet's guideline.
         return ky_liheap_points_amount(
             spm_unit,
             period,
             parameters,
             p.payment.fuel_points.ELECTRICITY,
-            guideline,
+            spm_unit("ky_liheap_fpg", period),
         )

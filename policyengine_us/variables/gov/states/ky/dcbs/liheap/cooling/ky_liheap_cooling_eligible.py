@@ -26,12 +26,17 @@ class ky_liheap_cooling_eligible(Variable):
         income_eligible = ky_liheap_meets_income_limit(
             spm_unit, period, parameters, p.fpg_year_lag
         )
-        # The household must be responsible for its home electric costs; the
-        # subsidy is paid to its electric vendor. Electricity included in
-        # rent has no input.
-        responsible = spm_unit("has_cooling_expense", period) & (
+        # The household must be responsible for its home electric costs, with
+        # the subsidy paid to its electric vendor, or pay them as an
+        # undesignated portion of the rent, with the subsidy paid to the
+        # landlord (Section 4(3)(a)).
+        pays_electric_bill = spm_unit("has_cooling_expense", period) & (
             spm_unit("pre_subsidy_electricity_expense", period) > 0
         )
+        utilities_in_rent = ~spm_unit.household("tenant_pays_utilities", period) & (
+            add(spm_unit, period, ["rent"]) > 0
+        )
+        responsible = pays_electric_bill | utilities_in_rent
         # heating_type is a required input; an unspecified fuel pays nothing.
         # Homes without heating (NONE) and every known fuel can qualify.
         fuel = spm_unit("heating_type", period)

@@ -1,8 +1,10 @@
 # Sources: Kentucky FY2026 state plan Sections 3.1-3.6, the FY2026 heat-cool
 # benefit workbook (cooling column equals the electricity heating column), and
 # the FFY 2026 Summer Cooling Subsidy fact sheet (150% of the 2026 guidelines).
-# Cooling uses the 2026 guidelines for both the limit and the income bands:
-# one person 15,960 a year (1,330 a month), each added person 5,680.
+# The cooling limit uses the 2026 guidelines: one person 15,960 a year, each added
+# person 5,680. The income bands use the 2025 guidelines, as heating and the
+# workbook's income ranges do: one person 15,650 a year (1,304.17 a month), each
+# added person 5,500.
 # Points: size (capped at 5) + income points + 6 electric points; amount =
 # ceil(points * 16.66); subsidized housing = ceil(amount * 0.3).
 # Wages are hourly pay times hours; the 7.25 rate is the federal minimum wage
@@ -10,6 +12,7 @@
 
 - name: Case 1, a gas-heated home receives the electric cooling amount.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -32,16 +35,20 @@
   output:
     # 7_540 / 12 = 628.33 a month.
     ky_liheap_cooling_eligible: true
-    # Cooling: 628.33 <= ceil(1_330 * 0.75 = 997.5) = 998, the 0-75% band
-    # (4 points). 1 + 4 + 6 = 11 points; ceil(11 * 16.66 = 183.26) = 184.
+    # Both seasons: 628.33 <= ceil(15_650 / 12 * 0.75 = 978.13) = 979, the
+    # 0-75% band (4 points).
+    # Cooling uses the electric points: 1 + 4 + 6 = 11 points;
+    # ceil(11 * 16.66 = 183.26) = 184.
     ky_liheap_cooling: 184
-    # Heating keeps the natural gas points and the 2025 guidelines:
-    # 628.33 <= ceil(15_650 / 12 * 0.75 = 978.13) = 979, so 0-75%.
-    # 1 + 4 + 3 = 8 points; ceil(8 * 16.66 = 133.28) = 134.
+    # Heating keeps the natural gas points: 1 + 4 + 3 = 8 points;
+    # ceil(8 * 16.66 = 133.28) = 134.
     ky_liheap: 134
+    # The national LIHEAP total adds both: 134 + 184.
+    liheap: 318
 
 - name: Case 2, a public housing tenant receives the subsidized electric amount.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -67,6 +74,7 @@
 
 - name: Case 3, a family of five in the lowest band receives the 250 maximum.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -96,26 +104,28 @@
         state_code: KY
         is_in_public_housing: false
   output:
-    # Guideline for five: 15_960 + 4 * 5_680 = 38_680, or 3_223.33 a month.
+    # 2026 guideline for five: 15_960 + 4 * 5_680 = 38_680.
     # Limit: 38_680 * 1.5 / 12 = 4_835, the fact sheet's amount for five.
     ky_liheap_cooling_eligible: true
-    # 22_880 / 12 = 1_906.67 <= ceil(3_223.33 * 0.75 = 2_417.5) = 2_418, so
+    # 2025 guideline for five: 15_650 + 4 * 5_500 = 37_650, or 3_137.50 a month.
+    # 22_880 / 12 = 1_906.67 <= ceil(3_137.50 * 0.75 = 2_353.13) = 2_354, so
     # 0-75%. 5 + 4 + 6 = 15 points; ceil(15 * 16.66 = 249.9) = 250, the plan's
     # $250 maximum.
     ky_liheap_cooling: 250
 
-- name: Case 4, the lowest band ends at 75 percent of the 2026 guideline.
+- name: Case 4, the lowest band ends at 75 percent of the 2025 guideline.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 40
-        # 998.00 a month.
-        employment_income_before_lsr: 11_976
+        # 979.00 a month.
+        employment_income_before_lsr: 11_748
       person2:
         age: 40
-        # 998.01 a month.
-        employment_income_before_lsr: 11_976.12
+        # 979.01 a month.
+        employment_income_before_lsr: 11_748.12
     spm_units:
       spm_unit1:
         members: [person1]
@@ -139,15 +149,16 @@
         state_code: KY
         is_in_public_housing: false
   output:
-    # The 0-75% band ends at ceil(1_330 * 0.75 = 997.5) = 998.
-    # Household 1: 998.00 is in it: 1 + 4 + 6 = 11 points = 184.
-    # Household 2: 998.01 is in 75.01-100% (3 points): 1 + 3 + 6 = 10 points;
+    # The 0-75% band ends at ceil(15_650 / 12 * 0.75 = 978.13) = 979, the
+    # workbook's printed range end for one person.
+    # Household 1: 979.00 is in it: 1 + 4 + 6 = 11 points = 184.
+    # Household 2: 979.01 is in 75.01-100% (3 points): 1 + 3 + 6 = 10 points;
     # ceil(10 * 16.66 = 166.6) = 167.
-    # With the 2025 guideline (band end 979) both households would get 167.
     ky_liheap_cooling: [184, 167]
 
 - name: Case 5, income above the 2025 heating limit but within the 2026 cooling limit.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -173,12 +184,13 @@
     ky_liheap: 0
     # Cooling limit: 15_960 * 1.5 / 12 = 1_995, so 1_976 qualifies.
     ky_liheap_cooling_eligible: true
-    # 1_976 > ceil(1_330 * 1.25 = 1_662.5) = 1_663, the 125.01-150% band
+    # 1_976 > ceil(1_304.17 * 1.25 = 1_630.21) = 1_631, the top band
     # (1 point). 1 + 1 + 6 = 8 points; ceil(8 * 16.66 = 133.28) = 134.
     ky_liheap_cooling: 134
 
 - name: Case 6, a home without heating receives cooling and an unspecified fuel receives nothing.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:

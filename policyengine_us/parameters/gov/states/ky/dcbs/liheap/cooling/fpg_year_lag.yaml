@@ -1,8 +1,9 @@
-description: Kentucky uses the federal poverty guidelines from this many years before the federal fiscal year's ending year for the cooling subsidy under the Low Income Home Energy Assistance Program.
+description: Kentucky uses the federal poverty guidelines from this many years before the federal fiscal year's ending year for the cooling subsidy income limit under the Low Income Home Energy Assistance Program.
 # The summer fact sheet's limits are 150% of the 2026 guidelines:
 # 15,960 * 1.5 / 12 = 1,995 for one person, and 5,680 * 1.5 / 12 = 710 for
 # each additional member. Heating in the same federal fiscal year uses the
-# 2025 guidelines (fpg_year_lag).
+# 2025 guidelines (fpg_year_lag), and so do the cooling income bands, whose
+# FY2026 workbook ranges match the heating ranges.
 values:
   2025-10-01: 0
 metadata:
