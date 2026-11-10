@@ -62,6 +62,19 @@ INGRESS_OUTCOMES = (
 )
 AMOUNTS = ((12_000, 0, 1_800, 600), (0, 6_000, 1_200, 300))
 REVIEWED_MAIN_SHA = "8986e05cab65d56435a23df1910e2d35f2c5f5bf"
+# Rev. Proc. 2026-35 replaced the 2027 federal forecasts that the reviewed
+# main used (brackets, standard deduction and other indexed amounts). On these
+# routes 2027 income tax falls by exactly these amounts and household net
+# income rises by the same amounts; every other route and output must still
+# equal main.
+INCOME_TAX_CHANGE_2027 = {
+    "same_period_override_simulation": -7.0,
+    "same_period_override_microsimulation": -7.0,
+    "extraction_future_reload_simulation": -7.0,
+    "extraction_future_reload_microsimulation": -7.0,
+    "extraction_rewrite_simulation": -24.5,
+    "extraction_rewrite_microsimulation": -24.5,
+}
 # Hand-computed per-person growth from calibration.gov.cbo.social_security
 # divided by calibration.gov.census.populations.total in each year. The IRS
 # SOI series follows this CBO growth; Core multiplies float32 benefit arrays.
@@ -1094,6 +1107,22 @@ def test_legacy_public_ingress_matches_unmodified_main(differential, route):
             )
     assert current[route].keys() == main[route].keys()
     for request in main[route]:
+        if route in INCOME_TAX_CHANGE_2027 and request in (
+            "income_tax@2027",
+            "household_net_income@2027",
+        ):
+            change = INCOME_TAX_CHANGE_2027[route]
+            if request == "household_net_income@2027":
+                change = -change
+            np.testing.assert_allclose(
+                np.asarray(current[route][request]) - np.asarray(main[route][request]),
+                [change],
+                rtol=0,
+                atol=0.01,
+                err_msg=f"Legacy public ingress differs on {route}: {request} "
+                "beyond the Rev. Proc. 2026-35 income tax change",
+            )
+            continue
         np.testing.assert_array_equal(
             current[route][request],
             main[route][request],
