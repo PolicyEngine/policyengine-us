@@ -2,7 +2,7 @@
   period: 2026
   absolute_error_margin: 0.01
   input:
-    assigned_aca_ptc: 1_000
+    used_aca_ptc: 1_000
     income_tax_refundable_credits_in_force: 0
     household_refundable_state_tax_credits: 0
     household_refundable_local_tax_credits: 0
@@ -14,7 +14,7 @@
   absolute_error_margin: 0.01
   input:
     gov.simulation.include_health_benefits_in_net_income: true
-    assigned_aca_ptc: 1_000
+    used_aca_ptc: 1_000
     medicaid_cost: 500
     snap: 0
     income_tax_refundable_credits_in_force: 0
@@ -25,7 +25,22 @@
     # The health benefits are Medicaid alone.
     household_health_benefits: 500
 
-- name: Case 3, a marketplace enrollee's credit reaches the household's refundable credits.
+- name: Case 3, the credit counted is limited to the premium of the plan the household enrolls in.
+  # 26 U.S.C. 36B(b)(2): a $1,000 credit against an $800 plan counts $800.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    aca_ptc: 1_000
+    selected_marketplace_plan_premium_proxy: 800
+    income_tax_refundable_credits_in_force: 0
+    household_refundable_state_tax_credits: 0
+    household_refundable_local_tax_credits: 0
+  output:
+    used_aca_ptc: 800
+    premium_tax_credit_in_force: 800
+    household_refundable_tax_credits: 800
+
+- name: Case 4, a marketplace enrollee's credit reaches the household's refundable credits.
   # A single 45-year-old in Lebanon County, PA, earning $40,000 (256% of the
   # 2025 poverty guideline, which 2026 credits use). The credit is the
   # benchmark premium minus the required contribution; at this income there

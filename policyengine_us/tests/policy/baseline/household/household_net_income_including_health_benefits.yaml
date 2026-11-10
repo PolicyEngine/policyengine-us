@@ -27,6 +27,6 @@
   input:
     household_net_income: 3_000
     healthcare_benefit_value: 1_500
-    assigned_aca_ptc: 1_000
+    premium_tax_credit_in_force: 1_000
   output:
     household_net_income_including_health_benefits: 3_000 + 1_500 - 1_000
