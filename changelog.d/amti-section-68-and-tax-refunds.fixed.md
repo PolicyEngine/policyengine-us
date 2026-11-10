@@ -1,1 +1,0 @@
-Leave state and local tax refunds and the section 68 itemized deduction reduction out of federal alternative minimum taxable income, including the married filing separately increase, and in Colorado alternative minimum taxable income leave out the state income tax addback and the refund subtraction and let a federal exemption larger than AMTI enter line 1 as a negative amount.
