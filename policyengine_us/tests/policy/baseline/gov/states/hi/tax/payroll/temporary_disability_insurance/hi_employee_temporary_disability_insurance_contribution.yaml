@@ -396,14 +396,18 @@
     # 0.5% * (70,000 - 60,000) = 50.
     hi_employee_temporary_disability_insurance_contribution: 50
 
+# The cases below enter the previous year's pay as employment_income_before_lsr,
+# which the previous-year route reads. Simulation moves employment_income inputs
+# there, but the YAML runner builds its simulation without that move.
 - name: Hawaii counts a short final year when the previous year passes.
   period: 2026
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        employment_income:
+        employment_income_before_lsr:
           2025: 52_000
+        employment_income:
           2026: 1_000
         weeks_worked:
           2025: 52
@@ -426,8 +430,9 @@
   input:
     people:
       person1:
-        employment_income:
+        employment_income_before_lsr:
           2025: 52_000
+        employment_income:
           2026: 300
         weeks_worked:
           2025: 52
@@ -450,8 +455,9 @@
   input:
     people:
       person1:
-        employment_income:
+        employment_income_before_lsr:
           2025: 10_000
+        employment_income:
           2026: 1_000
         weeks_worked:
           2025: 14
@@ -473,8 +479,9 @@
   input:
     people:
       person1:
-        employment_income:
+        employment_income_before_lsr:
           2025: 10_000
+        employment_income:
           2026: 1_000
         weeks_worked:
           2025: 13
@@ -496,8 +503,9 @@
   input:
     people:
       person1:
-        employment_income:
+        employment_income_before_lsr:
           2025: 10_000
+        employment_income:
           2026: 1_000
         weeks_worked:
           2025: 52
@@ -519,8 +527,9 @@
   input:
     people:
       person1:
-        employment_income:
+        employment_income_before_lsr:
           2025: 52_000
+        employment_income:
           2026: 1_000
         weeks_worked:
           2025: 52
@@ -541,8 +550,9 @@
   input:
     people:
       person1:
-        employment_income:
+        employment_income_before_lsr:
           2025: 1_000
+        employment_income:
           2026: 20_000
         weeks_worked:
           2025: 2
@@ -558,6 +568,186 @@
     hi_temporary_disability_insurance_qualified: true
     # 0.5% * 20,000 = 100.
     hi_employee_temporary_disability_insurance_contribution: 100
+
+- name: Hawaii does not pass a previous year with wages under 400.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr:
+          2025: 399
+        employment_income:
+          2026: 1_000
+        weeks_worked:
+          2025: 52
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 40
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii passes a previous year at exactly 400 of wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr:
+          2025: 400
+        employment_income:
+          2026: 1_000
+        weeks_worked:
+          2025: 14
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 20
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: true
+    # 0.5% * 1,000 = 5.
+    hi_employee_temporary_disability_insurance_contribution: 5
+
+- name: Hawaii does not pass a previous year of active-duty pay.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr:
+          2025: 60_000
+        employment_income:
+          2026: 1_000
+        military_basic_pay:
+          2025: 60_000
+          2026: 0
+        weeks_worked:
+          2025: 52
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 40
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 2025's 52 weeks were federal service, so 2025 holds no Hawaii wages.
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii does not pass a previous year of self-employment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        self_employment_income:
+          2025: 50_000
+          2026: 0
+        employment_income_before_lsr:
+          2025: 0
+        employment_income:
+          2026: 10_000
+        weeks_worked:
+          2025: 52
+          2026: 10
+        weekly_hours_worked_before_lsr:
+          2025: 40
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii leaves a previous-year deferral out of the previous year's wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2025: 40
+          2026: 41
+        employment_income_before_lsr:
+          2025: 10_000
+        employment_income:
+          2026: 1_000
+        traditional_401k_contributions_desired:
+          2025: 9_700
+          2026: 0
+        weeks_worked:
+          2025: 52
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 40
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 10,000 - 9,700 = 300 of 2025 wages, under the 400 minimum.
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii carries earlier-year hours into a simulation year that enters none.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income:
+          2026: 10_000
+        weekly_hours_worked_before_lsr:
+          2025: 19
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # The 2025 hours carry into 2026, where 19 hours fail the 20-hour minimum,
+    # and 2025 holds no wages to pass on.
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii counts provided 2014 history for a short 2015.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr:
+          2014: 52_000
+        employment_income:
+          2015: 900
+        weeks_worked:
+          2014: 52
+          2015: 1
+        weekly_hours_worked_before_lsr:
+          2014: 40
+          2015: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_temporary_disability_insurance_qualified: true
+    # 900 falls under the 951.23 cap for one week: 0.5% * 900 = 4.50.
+    hi_employee_temporary_disability_insurance_contribution: 4.50
 
 - name: Hawaii scales the contribution by the employer's deduction share.
   period: 2026

@@ -170,3 +170,24 @@
     age: 50
   output:
     k401_catch_up_limit: 6_000
+
+- name: Case 24, age 50 in 2005 receives the 2005 standard limit.
+  period: 2005
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 4_000
+
+- name: Case 25, age 50 in 2006 receives the 2006 standard limit.
+  period: 2006
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 5_000
+
+- name: Case 26, age 50 in 2015 receives the 2015 standard limit.
+  period: 2015
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 6_000

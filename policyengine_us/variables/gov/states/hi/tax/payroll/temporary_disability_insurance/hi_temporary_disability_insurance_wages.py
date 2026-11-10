@@ -17,9 +17,16 @@ class hi_temporary_disability_insurance_wages(Variable):
         "elective deferrals, cafeteria plans and dependent care that Hawaii did "
         "not enact. HRS 392-5(6) leaves service for the United States "
         "government out of employment, so military basic pay comes out too. "
-        "The model's convention puts basic pay inside employment income, and "
-        "a service member's civilian wages stay in. The model identifies no "
-        "other federal employees, so their pay stays in."
+        "This variable reads military_basic_pay as the part of "
+        "employment_income that is basic pay, as federal income tax does, "
+        "since it taxes basic pay only through employment_income, and as the "
+        "Virginia and Indiana subtractions do. Hawaii LIHEAP instead reads "
+        "basic pay as an input apart from employment_income, so a household "
+        "that enters it that way has it subtracted from civilian wages here. "
+        "A dataset that leaves military_basic_pay empty charges active-duty "
+        "pay recorded as wages. Other military pay, such as special pays, "
+        "stays in. The model identifies no other federal employees, so their "
+        "pay stays in."
     )
     definition_period = YEAR
     unit = USD

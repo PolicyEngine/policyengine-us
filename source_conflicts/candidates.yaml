@@ -3209,15 +3209,19 @@ candidates:
   - kind: guidance
     citation: Hawaii DLIR Unemployment Insurance Division, Handbook for Employers, on the wages that chapter 383 reaches
     url: https://labor.hawaii.gov/ui/test-handbook-for-employers/
+  - kind: statute
+    citation: IRC 3306(b)(5)(D), (b)(5)(G), (b)(13) and (r)(1), the federal comparison
+    url: https://www.law.cornell.edu/uscode/text/26/3306
   readings:
     statute: A salary-reduction amount the employer pays under a medical or retirement plan, or to a section 401(a) trust,
       is a listed payment, so it falls outside wages. HRS 383-11(5) limits one paragraph to payments without a deduction
       from pay, and paragraphs (1) and (4) carry no such limit. The list names no dependent care payment, so those benefits
       stay in wages.
-    other: The federal payroll wage base keeps elective deferrals in and takes cafeteria-plan amounts and dependent care
-      out, through IRC 3306(r)(1)(A), (b)(5)(G) and (b)(13), which Hawaii did not enact. A second alternative treats every
-      salary reduction as the employee's own remuneration, so all of it stays in wages. The rules address pay in kind but
-      name no plan contribution or salary reduction, and the handbook addresses neither alternative.
+    other: The federal payroll wage base keeps 401(k) deferrals in through IRC 3306(r)(1)(A) and 403(b) salary reductions
+      in through 3306(b)(5)(D), and takes cafeteria-plan amounts and dependent care out through 3306(b)(5)(G) and (b)(13).
+      Hawaii enacted none of these. A second alternative treats every salary reduction as the employee's own remuneration,
+      so all of it stays in wages. The rules address pay in kind but name no plan contribution or salary reduction. The
+      handbook lists payments to welfare plans among its exclusions but doesn't address salary reductions.
   example: In 2026, $60,000 of salary with a $4,000 traditional 401(k) deferral gives a $280 contribution under the statute,
     versus $300 on the federal base. $60,000 with $5,000 of dependent care benefits gives $300, versus $275 on the federal
     base.
