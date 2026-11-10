@@ -163,6 +163,112 @@
   output:
     hi_act_115_rebate: 0
 
+# Act 115 refunds went only to filers of a 2021 Form N-11 (DOTAX
+# Announcement 2022-03, p.2).
+- name: No refund for 2017
+  period: 2017
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+- name: No refund for 2020
+  period: 2020
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+# The amount schedules persist after 2021 for standalone calculations, but
+# the 2022 refundable credit list leaves the refund out. With the other
+# refundable credits set to zero: 0 + 0 + 0 = 0.
+- name: No refund in 2022 refundable credits
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    state_code: HI
+    hi_food_excise_credit: 0
+    hi_cdcc: 0
+    hi_tax_credit_for_low_income_household_renters: 0
+  output:
+    hi_refundable_credits: 0
+
+- name: No refund for joint filers for 2020
+  period: 2020
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 60_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+# A single filer, age 30, with $8,000 of wages in the refund's year and the
+# year after. The Hawaii food/excise credit is $100 for federal AGI of $5,000
+# to $10,000 (Form N-311, 2017-2022).
+- name: Single filer with $8,000 of wages gets the Act 115 refund for 2021
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 15.3% * 8,000 under the 2021 phase-in.
+    eitc: 1_224
+    # 20% * 1,224
+    hi_eitc_potential: 244.8
+    # One exemption * $300 for federal AGI under $100,000.
+    hi_act_115_rebate: 300
+    # 100 food/excise + 300 Act 115
+    hi_refundable_credits: 400
+  absolute_error_margin: 0.01
+
+- name: Single filer with $8,000 of wages gets no Act 115 refund for 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    eitc: 560
+    # 20% * 560
+    hi_eitc_potential: 112
+    # The 2022 refundable list leaves the Act 115 refund out: 100 food/excise.
+    hi_refundable_credits: 100
+  absolute_error_margin: 0.01
+
 - name: Joint return with a child where only one spouse can be claimed (the claimable spouse is the head)
   period: 2021
   input:

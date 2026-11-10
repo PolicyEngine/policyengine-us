@@ -1,3 +1,77 @@
+## [2.116.10] - 2026-11-10
+
+### Fixed
+
+- North Carolina Work First applies its $3,000 resource limit (10A NCAC 71W .0407).
+
+
+## [2.116.9] - 2026-11-10
+
+### Fixed
+
+- Exclude dependent children's earned income from South Carolina TANF, and deduct child support a benefit group member pays outside the home from that member's own income after the earned income disregards. Round the need standard and payment down to whole dollars (S.C. Code Regs. 114-1140(A)(4), (L) and (N)(1); TANF Policy Manual 7.5, 8.11, 8.15, 8.16).
+
+
+## [2.116.8] - 2026-11-10
+
+### Fixed
+
+- Count dependents' other medical expenses in Montana's 2021-2023 separate-filing medical deduction, allocating them between spouses filing separately on the same form to minimize the couple's tax; an unmarried filer's column holds all of them. The separate path now chooses between itemizing and the standard deduction by the couple's tax rather than by summed deductions.
+
+
+## [2.116.7] - 2026-11-10
+
+### Fixed
+
+- Follow the statute for four credits and deductions: the NYC school tax credit rate reduction amount uses the fixed $37, $25 and $21 second-band bases (Tax Law § 606(ggg)(4-b)), replacing the `gov.local.ny.nyc.tax.income.credits.school.rate_reduction.amount.{single,joint,separate,head_of_household,surviving_spouse}` scales with `threshold`, `base`, `first_band_rate` and `excess_rate`; the Indiana supplemental homestead credit requires homestead standard deduction qualification and uses the homestead's liability after the earlier credits and net of referendum taxes (IC 6-1.1-20.6-7.7), with qualification and liability defaulting to real-estate-tax proxies; the Virginia Commonwealth Savers deduction caps each account separately and carries forward undeducted contributions (Va. Code § 58.1-322.03(7)); and the Washington senior and disabled persons property tax exemption requires retirement by reason of disability or the VA-rated veteran pathway instead of generic disability (RCW 84.36.381(3)(a)), with Social Security disability benefits and a fully disabled service-connected veteran status as the defaults.
+
+
+## [2.116.6] - 2026-11-10
+
+### Fixed
+
+- Keep itemized sales taxes, including a sales-tax election shown by a supplied sales-or-income amount, in Utah's taxpayer credit base; Utah Code 59-10-1018 removes only state and local income taxes.
+
+
+## [2.116.5] - 2026-11-10
+
+### Fixed
+
+- Subtract only the Vermont student loan interest not already deducted federally, from 2022 and within the income limits, which give a surviving spouse none; pay Utah's at-home parent credit once per qualifying child per return; and test the Wisconsin homestead credit's age, earned income, disability and dependency conditions on the claimant.
+
+
+## [2.116.4] - 2026-11-10
+
+### Fixed
+
+- Stop paying the Hawaii earned income tax credit before 2018, list only the credits a 2015-2020 Form N-11 carried, and use each year's Hawaii military reserve pay exclusion cap for 2015-2025.
+
+
+## [2.116.3] - 2026-11-10
+
+### Fixed
+
+- Leave state and local tax refunds and the section 68 itemized deduction reduction out of federal alternative minimum taxable income, including the married filing separately increase, and in Colorado alternative minimum taxable income leave out the state income tax addback and the refund subtraction and let a federal exemption larger than AMTI enter line 1 as a negative amount.
+
+
+## [2.116.2] - 2026-11-10
+
+### Fixed
+
+- Limit the self-employed SEP, SIMPLE and qualified plan deduction to the Pub. 560 maximum for a SEP or a qualified defined contribution plan, based on Schedule C net profit less its share of the deductible part of self-employment tax, so the deduction can no longer exceed that earned income. Catch-up contributions now count on top of the section 415(c) dollar limit, which raises the limit for people 50 and older with high profit. A SIMPLE IRA can allow slightly more than this limit in a narrow band, which the model doesn't yet capture.
+
+
+## [2.116.1] - 2026-11-10
+
+### Changed
+
+- Update federal tax parameters to the IRS's 2027 inflation-adjusted amounts in Rev. Proc. 2026-35: income tax brackets, capital gains thresholds, standard deductions, the EITC, the child tax credit's refundable amount, the AMT, the QBI deduction, and other indexed amounts, plus Arizona's standard deduction, which follows the federal amounts. Maine's aged or blind addition gets the 2027 federal amounts too, though they apply only to a reform that stops Maine's standard deduction from following the federal one.
+
+### Fixed
+
+- Limit Kansas itemized deductions to charitable contributions, medical care, qualified residence interest and property taxes at the K.S.A. 79-32,120(a) shares for each year, and require federal itemizing before 2021.
+
+
 ## [2.116.0] - 2026-11-09
 
 ### Added

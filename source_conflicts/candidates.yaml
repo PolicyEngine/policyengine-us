@@ -7807,6 +7807,32 @@ candidates:
   state: ruled
   note: Both credits halve exactly, as the statute says; the tables round for the form. Section 606 authorizes
     nearest-dollar tables only for the real property tax credit.
+- id: us-ny:nyc-school-tax-credit-fixed-amount-rounding
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Is the NYC school tax credit fixed amount for unmarried, head of household and separate filers the
+    statutory $62.50 or the $63 that the IT-201 instructions print?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(ggg)(4-a)(B)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: 2025 Instructions for Form IT-201, line 69
+    url: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
+  readings:
+    statute: The statute sets the fixed amount for these filers at $62.50.
+    other: The instructions' table prints $63 and says the statutory amounts have been rounded.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/local/ny/nyc/tax/income/credits/school/fixed/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10330
+  state: unreviewed
+  note: 'Found in review of the rate reduction amount, where the model now follows the statute over the
+    instructions; the fixed amount still follows the instructions'' rounding. The difference is $0.50 per return.'
 - id: us-ny:itemized-deduction-adjustment-college-tuition-base
   program: income-tax
   years:
@@ -9857,6 +9883,102 @@ candidates:
   state: ruled
   note: 'Ruled 2026-11-02: income other than minors'' income follows the plan.'
 
+- id: us-sc:tanf-child-support-deduction-payer
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does child support that a South Carolina TANF benefit group member pays to dependents outside the group
+    come off only that member's own income, or off the group's income as a whole?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(L)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=212
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 sections 8.11 and 8.16 D and F
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=131
+  readings:
+    statute: No statute is supplied; 114-1140(L) says support "made by a budget group member" to legal dependents outside
+      the group "may be deducted from the income of the payor".
+    other: Section 8.16 D says to subtract support "from the remaining earned income of any adult", and 8.16 F takes
+      support "paid by any adult" from the unearned income; section 8.11 deducts it "as income to the BG".
+  example: In May 2026 adult A pays $2,400 a year and has no income, and adult B earns $600 a month, with one child.
+    From the payer's income the deduction is $0, countable income $500 and the payment floor(610 x 0.4046) = $246.
+    Pooled, the deduction is $200, countable income $300 and the payment $327.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_child_support_deduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
+    section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
+    member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-gross-income-limit-cents
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Is South Carolina's TANF gross income limit 185 percent of the need standard with its cents, or that amount
+    with the cents dropped?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(A)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1150(A) says gross income "must not exceed 185 percent of the need standard by
+      family size", and 114-1140(A)(4) rounds down only "the standard of need or the payment amount".
+    other: The section 8.15 note says "To determine the Gross Income Limit, multiply the Need Standard by 1.85 and drop
+      the cents."
+  example: For two persons in 2026 the need standard is $881. Gross income of $1,629.50 a month passes the limit of
+    881 x 1.85 = $1,629.85 and fails the manual's $1,629.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/eligibility/sc_tanf_gross_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs. Section 8.1 also says "Do not round at any step of the TANF calculation." The model
+    keeps rounding the need standard and the payment down to whole dollars under 114-1140(A)(4).
+- id: us-sc:tanf-need-standard-above-eight
+  program: tanf
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: For a benefit group of more than eight, is South Carolina's TANF need standard fifty percent of the poverty
+    guideline rounded down to a whole dollar, or the Policy Manual's eight-person amount plus $229 for each added person?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(2) and (A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1140(A)(2) sets the need standard "at fifty percent of the current year's" poverty
+      guidelines, and (A)(4) rounds it "down to the next lower whole dollar".
+    other: The section 8.15 table stops at eight persons, and its note says "For family sizes over 8, $229 is added to the
+      need standard for each additional person."
+  example: Under the 2025 guidelines a group of 13 has a need standard of floor($81,650 / 12 x 0.5) = $3,402 under
+    114-1140(A)(2) and (A)(4), and $2,256 + 5 x $229 = $3,401 under the manual note. The two agree through 12 persons.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_need_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs, and the manual's $229 restates the 2025 added-person guideline ($5,500 / 12 x 0.5 =
+    $229.17) without its cents. The regulation gives $1 more for 13 to 18 persons and $2 more for 19 to 24.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
@@ -11429,6 +11551,44 @@ candidates:
   state: unreviewed
   note: PE-US follows Vermont's deduction; evidence concerns federal fiscal 2016-2017 and 2024 only, with intervening
     years unasserted.
+- id: us-vt:student-loan-interest-surviving-spouse-limit
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Does a qualifying surviving spouse get Vermont's student loan interest subtraction, when 32 V.S.A. §
+    5811(29)(B) sets an income limit only for single, head of household, married filing separately and joint filers?
+  sources:
+  - kind: statute
+    citation: 32 V.S.A. § 5811(21)(B)(vi), (29)(B)
+    url: https://legislature.vermont.gov/statutes/section/32/151/05811
+  - kind: form
+    citation: 2025 Vermont Schedule IN-112, line 16c
+    url: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2025.pdf#page=23
+  - kind: statute
+    citation: 32 V.S.A. § 5822(a)
+    url: https://legislature.vermont.gov/statutes/section/32/151/05822
+  - kind: statute
+    citation: 2021, No. 138 (Adj. Sess.), §§ 5, 7 (32 V.S.A. §§ 5811(29), 5830e(a)(1))
+    url: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=5
+  readings:
+    statute: (29)(B) defines a qualified resident taxpayer by a $120,000 limit for single, head of household and
+      married filing separately filers and a $200,000 limit for joint filers. It names no amount for a qualifying
+      surviving spouse, so a surviving spouse doesn't meet the definition and gets no subtraction.
+    other: Line 16c applies $120,000 to "All other filers", a qualifying surviving spouse included.
+  example: A 2025 surviving spouse with $110,000 of federal AGI and $3,000 of student loan interest, none deducted
+    federally, subtracts $3,000 under line 16c and nothing under § 5811(29)(B).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/vt/tax/income/agi/student_loan_interest/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10104
+  state: ruled
+  note: PolicyEngine follows the statute. The chapter names surviving spouses where it includes them (§ 5811(21)(C)(i)
+    and (ii), § 5822(a)(1) and (3)), and (29)(B) does not. The act that added (29)(B) did the same two sections later,
+    when its § 7 renamed the qualifying widow or widower status "surviving spouse" in § 5830e(a)(1)'s list of
+    filing statuses. The Department's form gives them the $120,000 limit. Code not yet on main.
 - id: us-wa:liheap-minimum-benefit-cost-cap
   program: liheap
   years:
@@ -11540,6 +11700,46 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the rounded standards as a disputable gap-fill; verify statutory rounding requirements and
     applicability of the undated precedent. Code not yet on main: medicaid_ltss_mmmna.'
+- id: us-wa:pte-veteran-pathway-pre-2016
+  program: property-tax-exemption
+  years:
+    from: 2008
+    to: 2015
+    type: program
+    note: property tax collection year (taxes levied for collection in that year)
+  question: Before collection year 2016, does RCW 84.36.381(3)(b)'s "one hundred percent service-connected disability
+    as provided in 42 U.S.C. Sec. 423(d)(1)(A)" mean a disability wholly connected to service under Social Security's
+    definition, or a 100% VA rating?
+  sources:
+  - kind: statute
+    citation: RCW 84.36.381(3)(b), as amended by 2008 c 6 s 706
+    url: https://lawfilesext.leg.wa.gov/biennium/2007-08/Pdf/Bills/Session%20Laws/House/3104-S2.SL.pdf#page=85
+  - kind: statute
+    citation: RCW 84.36.381(3)(a)(ii), as amended by 2015 3rd sp.s. c 30 s 2, for collection in 2016 and after
+    url: https://lawfilestestext.leg.wa.gov/LawTest/RCW%20Supplement/RCW%20%2084%20%20TITLE/RCW%20%2084%20.%2036%20%20CHAPTER/RCW%20%2084%20.%2036%20.381.htm
+  - kind: statute
+    citation: 42 U.S.C. 423(d)(1)(A) (Social Security Act 223(d)(1)(A))
+    url: https://www.ssa.gov/OP_Home/ssact/title02/0223.htm
+  readings:
+    statute: A disability that meets Social Security's definition in 42 U.S.C. 423(d)(1)(A) and is wholly connected
+      to service; the cross-reference names that definition, and the 2016 amendment's move to VA-rating language marks
+      the older text as something other than a rating.
+    other: A 100% VA service-connected disability rating.
+  example: In collection year 2015 a 45-year-old veteran with a disability meeting the Social Security definition,
+    wholly service-connected but with no VA rating, qualifies under the Social Security reading and not under the
+    VA-rating reading.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_wholly_service_connected_disability.py
+    - policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_categorical_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10330
+  state: ruled
+  note: PolicyEngine ruled on 2026-10-21 for the Social Security reading. The model has no service-connection input,
+    so wa_pte_wholly_service_connected_disability defaults to is_disabled (or is_fully_disabled_service_connected_veteran)
+    as an overridable proxy, read together with is_veteran in wa_pte_categorical_eligible; it over-includes a veteran
+    whose disability is not service-connected.
 - id: us-wi:claim-of-right-itemized-deduction-credit
   program: income-tax
   years:
@@ -11569,6 +11769,38 @@ candidates:
   note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code includes the
     federal claim of right deduction in the credit base with the Schedule 1 components. The separate Wisconsin
     repayment credit that would trigger the 71.07(5)(a)6 exclusion is not modeled.
+- id: us-wi:homestead-age-disability-earned-income-routes
+  program: homestead-credit
+  years:
+    from: 2021
+    type: tax
+  question: Does a Wisconsin homestead claimant with no earned income qualify by age 62 or by disability alone, when
+    Wis. Stat. 71.54(1)(gm) read by itself denies such a claimant who is not disabled or is under 62?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 71.54(1)(dm), (em), (gm)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54
+  - kind: instructions
+    citation: 2025 Schedule H instructions, Step 1a (PDF p. 4)
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=4
+  readings:
+    statute: Read together, (dm), (em) and (gm) are alternatives, since (dm) makes (em) and (gm) exceptions to its age
+      bar. A claimant qualifies by being 62 or older, by being disabled or by having earned income.
+    other: (gm) read by itself denies a claimant with no earned income unless the claimant is both disabled and 62 or
+      older.
+  example: A 2021 claimant aged 62 who is not disabled and has no earned income qualifies under the whole-text reading
+    and Step 1a, and does not under (gm) read by itself.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/credits/homestead/wi_homestead_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10104
+  state: open
+  note: PE-US follows the whole-text reading, which Schedule H Step 1a shares by listing age 62 or older, disability
+    and earned income as alternative qualifications. wi_homestead_eligible.yaml unit tests 4 (aged 62, no earnings)
+    and 6 (disabled spouse aged 60, no earnings) expect eligibility and would fail under (gm) read by itself. The
+    model's homestead parameters start in 2021.
 - id: us-wi:liheap-categorical-benefit-income
   program: liheap
   years:
@@ -12385,6 +12617,50 @@ candidates:
     Credit Limit Worksheet B (ctc_credit_limit_worksheet_b_applies.py). The legacy aggregates still count as an exclusion.
     The EITC keeps the broader section 32(c)(1)(C) test in elects_section_911_exclusion. Register the entry and add
     the marker once #10297 is on main.
+- id: us:catch-up-deferrals-after-402g1c-repeal
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Are pre-tax catch-up contributions above the section 402(g)(1)(B) amount excluded from gross income, and
+    deductible in a self-employed plan, now that SECURE 2.0 section 603(b)(1) has struck section 402(g)(1)(C)?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 402(g)(1) as amended by Pub. L. 117-328 section 603(b)(1) and (c); 414(v)(3)(A)(i)
+    url: https://www.law.cornell.edu/uscode/text/26/402#g_1
+  - kind: regulation
+    citation: 26 CFR 1.402(g)-2(a)
+    url: https://www.law.cornell.edu/cfr/text/26/1.402(g)-2
+  - kind: guidance
+    citation: Notice 2023-62, section III.A, PDF pages 4-5
+    url: https://www.irs.gov/pub/irs-drop/n-23-62.pdf#page=4
+  - kind: worksheet
+    citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, steps 16-18
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
+  readings:
+    statute: For taxable years beginning after 2023, section 402(g)(1)(A) includes elective deferrals above the
+      applicable dollar amount in gross income, except designated Roth contributions; the catch-up exclusion in former
+      subparagraph (C) is struck, and section 414(v)(3)(A)(i) does not list section 402(g).
+    other: Notice 2023-62 says non-Roth catch-up contributions are not includible under section 402(g)(1)(A), reading
+      section 414(v)(3)(A)(i); section 1.402(g)-2(a) still raises the 402(g)(1)(B) limit by the catch-up amount; and
+      Pub. 560 adds catch-up contributions to the self-employed maximum deductible contribution.
+  example: In 2025 a 55-year-old with $200,000 of Schedule C profit and $100,000 of desired contributions gets a
+    $68,280.73 plan limit, including the $7,500 catch-up. Including that $7,500 in gross income under the amended
+    section 402(g)(1)(A) would leave a net deduction of $60,780.73.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/household/expense/retirement/elective_deferral_limit.py
+    - policyengine_us/variables/household/expense/retirement/self_employed_pension_contribution_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10121
+  state: unreviewed
+  note: elective_deferral_limit adds k401_catch_up_limit to the section 402(g)(1)(B) amount in every year, and the
+    self-employed plan limit adds the same catch-up room to its maximum. The regulation binds unless it flatly
+    contradicts the amended statute, and the notice reads section 414(v)(3)(A)(i) to keep catch-ups excludable, so
+    the project lead should rule before any model change. Its texts for the register are captured in
+    source_conflicts/sources/us/notice-2023-62-p4-5.txt (section III.A), treas-reg-1-402g-2-2025-p1.txt and
+    p560-2025-p39.txt (steps 16 to 18).
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
@@ -12959,6 +13235,43 @@ candidates:
   state: ruled
   note: Ruled October 2026; verify the worksheet version and whether claiming the rebate defeats the refund-only
     joint-return exception.
+- id: us:se-plan-step-2-multiple-businesses
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: When a self-employed person has more than one business, does Pub. 560's step 2 subtract all of Schedule 1
+    line 15 from the plan business's net profit, or only the part attributable to that business?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 401(c)(2)(A)(vi); 404(a)(8)(C)
+    url: https://www.law.cornell.edu/uscode/text/26/401#c_2_A
+  - kind: worksheet
+    citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, step 2
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
+  - kind: form
+    citation: Form 7206 (2023), lines 5-8
+    url: https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1
+  readings:
+    statute: Earned income is figured with regard to the section 164(f) deduction and only from the business that
+      has the plan; the statute does not say how to split the deduction among businesses.
+    other: Pub. 560's step 2 enters the deduction from Schedule 1 line 15; Form 7206 lines 5 to 8 split line 15 by
+      each business's share of the profitable businesses' net profits for the same section 401(c) earned income.
+  example: In 2025, Schedule C profit of $60,000 and farm profit of $40,000 give a Schedule 1 line 15 of $7,064.78.
+    Splitting it gives step 3 of $55,761.14 and a $34,652.23 limit; subtracting all of it gives $52,935.23 and
+    $34,087.05.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/household/expense/retirement/self_employed_pension_earned_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10121
+  state: unreviewed
+  note: 'The code follows Form 7206: the Schedule C business takes Schedule 1 line 15 in proportion to its share of
+    the positive net profits of Schedule C, Schedule F and K-1 box 14 code A, through form_7206_line_7, the helper the
+    self-employed health insurance limit uses for the same earned income. Code not yet on main:
+    self_employed_pension_earned_income. Its texts for the register are captured in
+    source_conflicts/sources/us/p560-2025-p39.txt (step 2) and f7206-2023-p1.txt (lines 5 to 8).'
 - id: us:separate-filer-zero-income-threshold
   program: income-tax
   years:
