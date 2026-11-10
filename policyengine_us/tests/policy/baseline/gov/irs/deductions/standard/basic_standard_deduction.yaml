@@ -33,12 +33,13 @@
   output:
     basic_standard_deduction: 12_400
 
-- name: 2027 single filer standard deduction uprates from observed chained CPI through June 2026
+- name: 2027 single filer standard deduction is $16,600
+  # Rev. Proc. 2026-35 sec. 3.15(1).
   period: 2027
   input:
     filing_status: SINGLE
   output:
-    basic_standard_deduction: 16_550
+    basic_standard_deduction: 16_600
 
 - name: 2023 dependent filer with $3,000 of wages gets $400 plus earned income
   # Rev. Proc. 2022-38 sec. 3.15(2): greater of $1,250 or $400 plus earned
@@ -105,18 +106,9 @@
     basic_standard_deduction: 3_450
 
 - name: 2027 dependent filer with $3,000 of wages gets $500 plus earned income
-  # 26 U.S.C. 63(c)(4)(B)(ii) increases the 63(c)(5)(B) $250 by the 1(f)(3)
-  # cost-of-living adjustment with calendar year 1997 as the base year, and
-  # 1(f)(7)(A) rounds the increase down to the next lowest multiple of $50.
-  # C-CPI-U for the 12 months ending August 2026 (c_cpi_u.yaml; unpublished
-  # October 2025 carries September's 180.196, and July-August 2026 carry
-  # June's 184.992): 2,189.091 / 12 = 182.424.
-  # 1(f)(3)(A)(ii) and (B): CPI-U Sep 1996-Aug 1997 average 159.492 x
-  # C-CPI-U Sep 2015-Aug 2016 average 135.993 / CPI-U Sep 2015-Aug 2016
-  # average 238.649 = 90.886.
-  # Increase = $250 x (182.424 / 90.886 - 1) = $251.80, rounded down to
-  # $250, so $500. Floor: CBO's $1,400.
-  # max($1,400, $500 + $3,000) = $3,500, below the $16,550 cap.
+  # Rev. Proc. 2026-35 sec. 3.15(2): greater of $1,400 or $500 plus earned
+  # income; max($1,400, $500 + $3,000) = $3,500, below the $16,600 basic
+  # standard deduction in sec. 3.15(1).
   period: 2027
   input:
     people:
@@ -644,3 +636,19 @@
     filing_status: JOINT
   output:
     basic_standard_deduction: 12_600
+
+- name: 2027 head of household standard deduction is $24,925
+  # Rev. Proc. 2026-35 sec. 3.15(1).
+  period: 2027
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    basic_standard_deduction: 24_925
+
+- name: 2027 joint standard deduction is $33,200
+  # Rev. Proc. 2026-35 sec. 3.15(1).
+  period: 2027
+  input:
+    filing_status: JOINT
+  output:
+    basic_standard_deduction: 33_200

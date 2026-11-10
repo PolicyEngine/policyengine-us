@@ -1,0 +1,217 @@
+# S.C. Code Regs. 114-1140(N)(1) (PDF page 213) and SC DSS TANF Policy
+# Manual (Volume 67), Section 7.5 (PDF page 105): a dependent child's earned
+# income is excluded; a minor parent's earned income counts "if the minor
+# parent is the head-of-household". 114-1130(E) (PDF page 204) sets the age
+# test, which reuses the federal TANF minor-child limits: under 18, or under
+# 19 in secondary school.
+
+- name: Case 1, children on both sides of the age and school boundaries.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+      seventeen:
+        age: 17
+        is_tax_unit_dependent: true
+      eighteen_in_school:
+        age: 18
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+      eighteen_out_of_school:
+        age: 18
+        is_tax_unit_dependent: true
+      nineteen_in_school:
+        age: 19
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members:
+          [parent, seventeen, eighteen_in_school, eighteen_out_of_school, nineteen_in_school]
+        state_code: SC
+  output:
+    sc_tanf_dependent_child: [false, true, true, false, false]
+
+- name: Case 2, a minor parent who heads the tax unit counts as a parent.
+  period: 2026-01
+  input:
+    people:
+      minor_parent:
+        age: 17
+        is_tax_unit_head: true
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [minor_parent, baby]
+        state_code: SC
+  output:
+    sc_tanf_dependent_child: [false, true]
+    # The minor parent's 6,000 / 12 = 500 a month counts.
+    sc_tanf_gross_earned_income: [500, 0]
+
+- name: Case 3, a pregnant adult is not a dependent child.
+  period: 2026-01
+  input:
+    age: 25
+    is_pregnant: true
+    state_code: SC
+  output:
+    sc_tanf_dependent_child: false
+
+- name: Case 4, a minor parent who is a dependent in the group is a dependent child.
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 45
+        is_tax_unit_head: true
+      minor_parent:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [grandparent, minor_parent, baby]
+        state_code: SC
+  output:
+    # Section 7.5 excludes a minor parent's earnings "if the minor parent is
+    # included as a dependent in the TANF BG"; Section 8.16 B likewise.
+    sc_tanf_dependent_child: [false, true, true]
+    sc_tanf_gross_earned_income: [0, 0, 0]
+
+- name: Case 5, a minor parent who lives with no adult heads the household.
+  period: 2026-01
+  input:
+    people:
+      minor_parent:
+        age: 17
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+    households:
+      household:
+        members: [minor_parent, baby]
+        state_code: SC
+  output:
+    # No tax-unit role is input, and roles are inferred only for adults, so
+    # neither member heads the tax unit. In a group with no adult the oldest
+    # member heads the household, so Section 7.5 counts her earnings.
+    sc_tanf_dependent_child: [false, true]
+    # 6,000 / 12 = 500 a month.
+    sc_tanf_gross_earned_income: [500, 0]
+
+- name: Case 6, members who tie for oldest in a group with no adult all head it.
+  period: 2026-01
+  input:
+    people:
+      sibling:
+        age: 17
+      minor_parent:
+        age: 17
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+    households:
+      household:
+        members: [sibling, minor_parent, baby]
+        state_code: SC
+  output:
+    # No tax-unit role is input. The two 17-year-olds tie for oldest in a
+    # group with no adult, so both head the household and neither is a
+    # dependent child, whatever order they're listed in.
+    sc_tanf_dependent_child: [false, false, true]
+    # 6,000 / 12 = 500 a month.
+    sc_tanf_gross_earned_income: [0, 500, 0]
+
+- name: Case 7, Case 6 with the earner listed first gives the same result.
+  period: 2026-01
+  input:
+    people:
+      minor_parent:
+        age: 17
+        employment_income_before_lsr: 6_000
+      sibling:
+        age: 17
+      baby:
+        age: 0
+    households:
+      household:
+        members: [minor_parent, sibling, baby]
+        state_code: SC
+  output:
+    sc_tanf_dependent_child: [false, false, true]
+    sc_tanf_gross_earned_income: [500, 0, 0]
+
+- name: Case 8, a younger minor in a group with no adult counts as a dependent child.
+  period: 2026-01
+  input:
+    people:
+      older_minor:
+        age: 17
+      younger_minor:
+        age: 16
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+    households:
+      household:
+        members: [older_minor, younger_minor, baby]
+        state_code: SC
+  output:
+    # No tax-unit role is input, so no input says which minor is the baby's
+    # parent. The case pins PolicyEngine's inference rule: with no adult and
+    # no head or spouse role in the group, the 17-year-old, its oldest
+    # member, alone heads it. The 16-year-old is a dependent child, and the
+    # 16-year-old's earnings drop out. If the 16-year-old is the minor
+    # parent, DSS counts those earnings (glossary, page 328; Section 7.5);
+    # inputting is_tax_unit_head for the 16-year-old gives that result.
+    sc_tanf_dependent_child: [false, true, true]
+    sc_tanf_gross_earned_income: [0, 0, 0]
+    sc_tanf_countable_income: 0
+    # floor(1,110 x 0.4046 = 449.11) = 449.
+    sc_tanf: 449
+
+- name: Case 9, in a group with no adult a member input as the tax unit head heads it in place of the oldest member.
+  period: 2026-01
+  input:
+    people:
+      minor_parent:
+        age: 16
+        is_tax_unit_head: true
+      sibling:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      baby:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [minor_parent, sibling, baby]
+    spm_units:
+      spm_unit:
+        members: [minor_parent, sibling, baby]
+    households:
+      household:
+        members: [minor_parent, sibling, baby]
+        state_code: SC
+  output:
+    # The 16-year-old is input as the tax unit head, so the oldest-member
+    # rule doesn't apply. The 17-year-old, input as a tax dependent, is a
+    # dependent child, and 114-1140(N)(1) excludes the 17-year-old's
+    # earnings.
+    sc_tanf_dependent_child: [false, true, true]
+    sc_tanf_gross_earned_income: [0, 0, 0]
+    sc_tanf_countable_income: 0
+    # floor(1,110 x 0.4046 = 449.11) = 449. If the oldest member headed the
+    # group too, 500 less the 50% January disregard, 250, would count, and
+    # floor((1,110 - 250) x 0.4046 = 347.96) = 347.
+    sc_tanf: 449

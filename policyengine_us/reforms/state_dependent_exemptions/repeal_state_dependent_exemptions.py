@@ -367,11 +367,9 @@ def create_repeal_state_dependent_exemptions() -> Reform:
                     head_of_household * p.by_filing_status.hoh_additional_amount
                 )
                 return base_amount + veterans_exemption_amount + hoh_additional
-            filing_status = tax_unit("filing_status", period)
-            statuses = filing_status.possible_values
-            joint = filing_status == statuses.JOINT
-            hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD
-            adults = where(joint | hoh, 2, 1)
+            # K.S.A. 79-32,121(a) with IRC 151(d)(2): each filer whom no one
+            # else may claim keeps an exemption, as in ks_count_exemptions.
+            adults = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
             return adults * p.consolidated.amount + veterans_exemption_amount
 
     class ma_income_tax_exemption_threshold(Variable):
