@@ -1,0 +1,193 @@
+# ACA minimum premium reform: the premium tax credit cannot cover the last
+# gov.contrib.aca.minimum_premium.amount per month of a tax unit's enrolled
+# premiums. As in the January 2026 CARE Act draft (section 5(a)(1)), the
+# minimum applies once per tax unit and only on the enrolled-premium side of
+# 26 U.S.C. 36B(b)(2).
+
+- name: Minimum premium caps a credit that would cover the whole premium
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    is_aca_ptc_eligible: true
+    slcsp: 6_000
+    selected_marketplace_plan_premium_proxy: 6_000
+    aca_magi: 20_000
+    aca_required_contribution_percentage: 0
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 60  # $5 * 12, once for the tax unit
+    aca_ptc: 5_940  # min(6,000 - 0, 6,000 - 60)
+
+- name: Minimum premium does not bind when the required contribution is larger
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    is_aca_ptc_eligible: true
+    slcsp: 6_000
+    selected_marketplace_plan_premium_proxy: 6_000
+    aca_magi: 30_000
+    aca_required_contribution_percentage: 0.04
+    tax_unit_is_filer: true
+  output:
+    aca_ptc: 4_800  # min(6,000 - 0.04 * 30,000, 6,000 - 60)
+
+- name: A family's eligible members share one minimum premium
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    people:
+      parent1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      parent2:
+        age: 38
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      child:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: JOINT
+        slcsp: 12_000
+        selected_marketplace_plan_premium_proxy: 12_000
+        aca_magi: 50_000
+        aca_required_contribution_percentage: 0
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [true, true, true]
+    aca_ptc_minimum_premium: 60  # once for the tax unit, not per member
+    aca_ptc: 11_940  # 12,000 - 60
+
+- name: No minimum premium when no member is eligible for the credit
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: true
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        aca_magi_fraction: 1.2
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [false]
+    aca_ptc_minimum_premium: 0
+
+- name: The credit stops at zero when the benchmark premium is below the minimum
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    is_aca_ptc_eligible: true
+    slcsp: 40
+    selected_marketplace_plan_premium_proxy: 40
+    aca_magi: 20_000
+    aca_required_contribution_percentage: 0
+    tax_unit_is_filer: true
+  output:
+    aca_ptc: 0  # min(40 - 0, max(0, 40 - 60))
+
+- name: The minimum does not bind for a plan costing more than the benchmark
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    is_aca_ptc_eligible: true
+    slcsp: 6_000
+    selected_marketplace_plan_premium_proxy: 7_200
+    aca_magi: 20_000
+    aca_required_contribution_percentage: 0
+    tax_unit_is_filer: true
+  output:
+    aca_ptc: 6_000  # min(6,000 - 0, 7,200 - 60)
+
+- name: The amount can be changed
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    gov.contrib.aca.minimum_premium.amount: 25
+    is_aca_ptc_eligible: true
+    slcsp: 6_000
+    selected_marketplace_plan_premium_proxy: 6_000
+    aca_magi: 20_000
+    aca_required_contribution_percentage: 0
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 300  # $25 * 12
+    aca_ptc: 5_700  # 6,000 - 300
+
+- name: No minimum premium when the reform is not in effect
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: false
+    is_aca_ptc_eligible: true
+    slcsp: 6_000
+    selected_marketplace_plan_premium_proxy: 6_000
+    aca_magi: 20_000
+    aca_required_contribution_percentage: 0
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 6_000
+
+- name: An enrollee in a cheaper plan still pays the minimum on that plan
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    is_aca_ptc_eligible: true
+    slcsp: 6_000
+    aca_magi: 20_000
+    aca_required_contribution_percentage: 0
+    tax_unit_is_filer: true
+    selected_marketplace_plan_premium_proxy: 3_000
+  output:
+    aca_ptc: 5_940  # min(6,000, max(6,000, 3,000) - 60)
+    used_aca_ptc: 2_940  # min(5,940, 3,000 - 60)
+    marketplace_net_premium: 60  # 3,000 - 2,940
