@@ -760,6 +760,7 @@
       spm_unit:
         members: [person1]
         heating_type: NONE
+        has_cooling_expense: false
         pre_subsidy_electricity_expense: 0
     households:
       household:

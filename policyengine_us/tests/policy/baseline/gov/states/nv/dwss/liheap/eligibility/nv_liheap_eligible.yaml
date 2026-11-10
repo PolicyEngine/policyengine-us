@@ -287,3 +287,39 @@
     # 24,960 > 23,475
     nv_liheap_eligible: false
     nv_liheap: 0
+
+- name: Case 13, a home with no heating and all utilities in the rent is ineligible only in subsidized housing.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+      person2:
+        age: 40
+        employment_income: 18_720
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NONE
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: NV
+        tenant_pays_utilities: false
+      household2:
+        members: [person2]
+        state_code: NV
+        tenant_pays_utilities: false
+  output:
+    # The tenant pays no utilities and has no energy burden. With rental
+    # assistance the household is ineligible (501 I); without it the credit
+    # pays the minimum (803 V.3).
+    nv_liheap_eligible: [false, true]
