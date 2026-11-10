@@ -1,3 +1,10 @@
+## [2.116.10] - 2026-11-10
+
+### Fixed
+
+- North Carolina Work First applies its $3,000 resource limit (10A NCAC 71W .0407).
+
+
 ## [2.116.9] - 2026-11-10
 
 ### Fixed
