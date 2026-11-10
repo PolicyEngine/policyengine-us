@@ -1,3 +1,14 @@
+## [2.116.1] - 2026-11-10
+
+### Changed
+
+- Update federal tax parameters to the IRS's 2027 inflation-adjusted amounts in Rev. Proc. 2026-35: income tax brackets, capital gains thresholds, standard deductions, the EITC, the child tax credit's refundable amount, the AMT, the QBI deduction, and other indexed amounts, plus Arizona's standard deduction, which follows the federal amounts. Maine's aged or blind addition gets the 2027 federal amounts too, though they apply only to a reform that stops Maine's standard deduction from following the federal one.
+
+### Fixed
+
+- Limit Kansas itemized deductions to charitable contributions, medical care, qualified residence interest and property taxes at the K.S.A. 79-32,120(a) shares for each year, and require federal itemizing before 2021.
+
+
 ## [2.116.0] - 2026-11-09
 
 ### Added

@@ -1,1 +1,0 @@
-Limit Kansas itemized deductions to charitable contributions, medical care, qualified residence interest and property taxes at the K.S.A. 79-32,120(a) shares for each year, and require federal itemizing before 2021.
