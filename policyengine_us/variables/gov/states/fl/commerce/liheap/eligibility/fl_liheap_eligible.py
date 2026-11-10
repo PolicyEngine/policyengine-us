@@ -76,11 +76,14 @@ class fl_liheap_eligible(Variable):
         )
         # The one non-crisis benefit per 12 months (R. 73C-26.022(2)(a)) is a
         # Home Energy benefit for heating or cooling (manual 200 P and Q, page
-        # 8), and electricity is a home energy type (R. 73C-26.022(6)). A home
-        # without heating qualifies when it pays its own electricity bill for
-        # cooling.
+        # 8), and electricity is a home energy type (R. 73C-26.022(6)). An
+        # applicant responsible for all or part of its home heating and cooling
+        # costs is eligible (700.01 E, page 23; 1100.08 A, page 43). So a
+        # household with any reported heating type, including a home without
+        # heating or one with heat in subsidized rent, qualifies when it pays
+        # its own electricity bill for cooling. UNSPECIFIED does not.
         cooling_only = (
-            (heating_type == types.NONE)
+            (heating_type != types.UNSPECIFIED)
             & spm_unit("has_cooling_expense", period)
             & (spm_unit("pre_subsidy_electricity_expense", period) > 0)
         )
