@@ -1,12 +1,14 @@
-description: The Colorado Child Care Assistance Program uses this discount rate based on the value of the maximum child care facility rating for an SPM unit compared to the outlined thresholds.
+description: Colorado multiplies the parent fee by this factor, by the highest quality rating among the household's child care providers, under the Child Care Assistance Program.
 metadata:
   type: single_amount
   threshold_unit: Child care facility quality rating
   amount_unit: /1
-  label: Colorado Child Care Assistance Program offers discount to quality rating child care facilities
+  label: Colorado Child Care Assistance Program parent fee factor by provider quality rating
   reference:
-    - title: Colorado Child Care Assistance Program Rules and Regulations - 3.111(H)
-      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=41
+    - title: 8 CCR 1403-1 Section 3.124(H), Parent fees (effective 2026-08-14)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=81
+# Levels 3 to 5 are the top three levels of Colorado Shines, the Department's
+# quality rating system, and cut the fee by 20%.
 brackets:
   - threshold:
       2022-10-01: 0
