@@ -358,8 +358,8 @@
   # one-person limit of 41_941 and the three-person limit of 67_751. The electric
   # bill is 2_016 (168 x 12, Case 5 of hi_liheap_eligible). A voucher holder pays
   # 375 for size one and a public-housing family of three pays 425. A private
-  # dwelling is eligible, but this output reads zero for it. Without a cooling
-  # cost the electric bill does not qualify.
+  # dwelling is eligible, but this output reads zero for it. Hawaii asks no
+  # cooling cost, so the electric bill qualifies without one.
   input:
     people:
       person1:
@@ -432,5 +432,5 @@
         is_in_public_housing: true
   output:
     hi_liheap_countable_income: [33_280, 33_280, 33_280, 33_280]
-    hi_liheap_eligible: [true, true, false, true]
-    hi_liheap_subsidized_amount: [375, 0, 0, 425]
+    hi_liheap_eligible: [true, true, true, true]
+    hi_liheap_subsidized_amount: [375, 0, 375, 425]
