@@ -1,3 +1,10 @@
+## [2.116.2] - 2026-11-10
+
+### Fixed
+
+- Limit the self-employed SEP, SIMPLE and qualified plan deduction to the Pub. 560 maximum for a SEP or a qualified defined contribution plan, based on Schedule C net profit less its share of the deductible part of self-employment tax, so the deduction can no longer exceed that earned income. Catch-up contributions now count on top of the section 415(c) dollar limit, which raises the limit for people 50 and older with high profit. A SIMPLE IRA can allow slightly more than this limit in a narrow band, which the model doesn't yet capture.
+
+
 ## [2.116.1] - 2026-11-10
 
 ### Changed
