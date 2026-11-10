@@ -36,6 +36,7 @@ AGGREGATE_LISTS = [
     "gov/states/household/state_eitcs.yaml",
     "gov/states/household/state_cdccs.yaml",
     "gov/hhs/ccdf/child_care_subsidy_programs.yaml",
+    "gov/hhs/liheap/regular_payments.yaml",
     "gov/household/household_state_benefits.yaml",
 ]
 
