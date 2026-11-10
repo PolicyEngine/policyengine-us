@@ -2712,6 +2712,43 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10562
   state: ruled
   note: The model has no Railway Labor Act status for this test, so the exclusion applies to every employee.
+- id: us-ga:liheap-cooling-benefit-amounts
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Does Georgia LIHEAP pay the FY2026 matrix cooling amounts ($500 at Level I, $400 at Level II, with no senior
+    maximum), although the PAMMS LIHEAP chapter sets benefits of $350 to $400 and gives seniors 60 and older the $400
+    maximum?
+  sources:
+  - kind: plan
+    citation: FY2026 Georgia LIHEAP State Plan section 3.6 and item 16.1
+    url: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=11
+  - kind: guidance
+    citation: FY2026 Georgia LIHEAP benefit matrix, step 2 (cooling benefit)
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/GA_BenefitMatrix_Heat-Cool_2026.pdf
+  - kind: manual
+    citation: Georgia PAMMS LIHEAP chapter 100, page 5
+    url: https://pamms.dhs.ga.gov/dfcs/_exports/liheap.pdf#page=5
+  readings:
+    statute: No statute is supplied. The FY2026 matrix pays $500 at Level I and $400 at Level II for every main
+      heating fuel, and plan item 16.1 (page 30) says the matrix was updated to remove the rule that households with a
+      member aged 60 or older receive the highest benefit regardless of income.
+    other: PAMMS page 5 offers benefits "at a minimum of $350 and maximum of $400", and households with seniors 60 and
+      older "will receive the maximum benefit amount of $400".
+  example: A one-person Level I household with a member aged 70 receives $500 of cooling under the FY2026 matrix and
+    $400 under PAMMS page 5.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ga/dfcs/liheap/cooling/amount.yaml
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/cooling/ga_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10746
+  state: ruled
+  note: The user ruled on 2026-11-08 that the FY2026 matrix and plan item 16.1 control over the PAMMS chapter and the
+    2020 and 2022 manuals. FY2027 has no posted matrix, so the FY2026 amounts carry forward.
 - id: us-ga:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
