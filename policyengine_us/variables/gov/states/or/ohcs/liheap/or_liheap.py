@@ -23,9 +23,10 @@ class or_liheap(Variable):
         "building heating fuel; a fuel without a matrix column pays zero as a coverage "
         "gap, not a denial. Discretionary bulk-fuel minimum-delivery payments and local "
         "supplements are unsupported because the necessary award information is "
-        "absent. A home without heating that pays for electric cooling is paid from "
-        "the COOLING column, which equals the Electricity column in every row of the "
-        "PY2025 to PY2027 matrices. Crisis and equipment assistance are excluded."
+        "absent. A household with no heating cost that qualifies on electric cooling "
+        "is paid from the COOLING column, which equals the Electricity column in "
+        "every row of the PY2025 to PY2027 matrices. Crisis and equipment assistance "
+        "are excluded."
     )
 
     def formula(spm_unit, period, parameters):
@@ -36,9 +37,13 @@ class or_liheap(Variable):
         band = max_(spm_unit("or_liheap_income_band", period), 1)
         fuel = spm_unit("heating_type", period)
         types = fuel.possible_values
-        # An eligible home without heating pays for electric cooling, and the
-        # COOLING column equals the Electricity column.
-        cooling_only = (fuel == types.NONE) & spm_unit("has_cooling_expense", period)
+        # An eligible household with neither a heating cost nor heat in the rent
+        # qualified on electric cooling (or_liheap_eligible), and the COOLING
+        # column equals the Electricity column.
+        cooling_only = ~(
+            spm_unit("has_heating_expense", period)
+            | spm_unit("heat_expense_included_in_rent", period)
+        )
         # Kerosene is billed as heating oil and a grid-tied solar home pays an
         # electricity bill, the same pairing heating_expense uses.
         amount = select(
