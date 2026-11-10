@@ -11,7 +11,9 @@ class dc_liheap_payment(Variable):
     reference = (
         "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf",
         "https://doee.dc.gov/liheap",
+        "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DC%20DOEE%20-%20FY26%20LIHEAP%20Benefit%20Matrix.docx",
         "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/LIHEAP%20FAQ_1_0.pdf#page=1",
+        # PDF pages 4, 11
         "https://liheapch.acf.gov/docs/2026/state-plans/DC_Plan_2026.pdf#page=4",
     )
 

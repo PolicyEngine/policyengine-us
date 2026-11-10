@@ -344,8 +344,10 @@
 # own electricity bill for cooling takes the Electric row, capped at that bill.
 # Income levels use 5_000 steps (level 2 up to 10_000, level 3 up to 15_000).
 # Wages are at the DC minimum wage of 17.95 an hour from July 1, 2025:
-# 15 hours a week is 15 x 52 x 17.95 = 14_001 and 10 hours is 9_334; full time
-# at 40.00 an hour is 83_200. Electricity of 1_200 is 100 a month.
+# 15 hours a week is 15 x 52 x 17.95 = 14_001 and 5 hours is 4_667; full time
+# at 40.00 an hour is 83_200. Electricity of 1_358.76 a year is EIA's 2024 DC
+# average residential bill of 113.23 a month (Table 5A,
+# https://www.eia.gov/electricity/sales_revenue_price/pdf/table_5A.pdf).
 - name: Cooling only, a home without heating takes the electricity row.
   period: 2026
   absolute_error_margin: 0.01
@@ -359,7 +361,7 @@
         members: [person1]
         heating_type: NONE
         has_cooling_expense: true
-        pre_subsidy_electricity_expense: 1_200
+        pre_subsidy_electricity_expense: 1_358.76
         dc_liheap_housing_type: SINGLE_FAMILY
     households:
       household:
@@ -369,7 +371,7 @@
     dc_liheap_heating_type: ELECTRICITY
     # 10_000 < 14_001 <= 15_000
     dc_liheap_income_level: 3
-    # SF, level 3, one person: Electric 440; min(440, 1_200) = 440
+    # SF, level 3, one person: Electric 440; min(440, 1_358.76) = 440
     dc_liheap_payment: 440
 
 - name: Cooling only, the electricity bill caps the electricity row.
@@ -379,7 +381,7 @@
     people:
       person1:
         age: 40
-        employment_income: 9_334
+        employment_income: 4_667
       person2:
         age: 38
     spm_units:
@@ -387,18 +389,17 @@
         members: [person1, person2]
         heating_type: NONE
         has_cooling_expense: true
-        # 80 a month.
-        pre_subsidy_electricity_expense: 960
+        pre_subsidy_electricity_expense: 1_358.76
         dc_liheap_housing_type: SINGLE_FAMILY
     households:
       household:
         members: [person1, person2]
         state_code: DC
   output:
-    # 5_000 < 9_334 <= 10_000
-    dc_liheap_income_level: 2
-    # SF, level 2, two people: Electric 1_106; min(1_106, 960) = 960
-    dc_liheap_payment: 960
+    # 4_667 <= 5_000
+    dc_liheap_income_level: 1
+    # SF, level 1, two people: Electric 1_481; min(1_481, 1_358.76) = 1_358.76
+    dc_liheap_payment: 1_358.76
 
 - name: No heating and no cooling costs pays nothing despite an electricity bill.
   period: 2026
@@ -413,7 +414,7 @@
         members: [person1]
         heating_type: NONE
         has_cooling_expense: false
-        pre_subsidy_electricity_expense: 1_200
+        pre_subsidy_electricity_expense: 1_358.76
         dc_liheap_housing_type: SINGLE_FAMILY
     households:
       household:
@@ -436,7 +437,7 @@
         members: [person1]
         heating_type: NONE
         has_cooling_expense: true
-        pre_subsidy_electricity_expense: 1_200
+        pre_subsidy_electricity_expense: 1_358.76
         dc_liheap_housing_type: SINGLE_FAMILY
     households:
       household:
@@ -446,3 +447,32 @@
     # 83_200 exceeds 60% of the one-person state median income
     dc_liheap_eligible: false
     dc_liheap_payment: 0
+
+# The cooling route keys on the canonical NONE type only. An unspecified fuel
+# keeps the legacy adapter even with a cooling cost: the person-level heating
+# total of 300 (as in the legacy precedence case above) caps the Electric row,
+# not the electricity bill.
+- name: Cooling cost with an unspecified fuel keeps the legacy adapter.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_001
+        heating_expense_person: 300
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_358.76
+        dc_liheap_housing_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_liheap_heating_type: ELECTRICITY
+    # SF, level 3, one person: Electric 440; legacy expense 300; min(440, 300) = 300
+    dc_liheap_payment: 300
