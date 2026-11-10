@@ -1,3 +1,10 @@
+## [2.116.17] - 2026-11-10
+
+### Fixed
+
+- Project Medicare Part A, B and D premiums, the Part A deductible, and the Part B and D income-related adjustment amounts and thresholds past CMS's last announced year, using the 2026 Medicare Trustees Report and the statutory inflation adjustment, instead of holding them at their 2026 values.
+
+
 ## [2.116.16] - 2026-11-10
 
 ### Fixed
