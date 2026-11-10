@@ -1,1 +1,0 @@
-Subtract only the Vermont student loan interest not already deducted federally, from 2022 and within the income limits, which give a surviving spouse none; pay Utah's at-home parent credit once per qualifying child per return; and test the Wisconsin homestead credit's age, earned income, disability and dependency conditions on the claimant.
