@@ -13,6 +13,7 @@
 
 - name: Case 1, the cooling base pays no fuel supplement, including for homes without heating.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -51,6 +52,7 @@
 
 - name: Case 2, each FY2026 cooling supplement applies alone.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -147,6 +149,7 @@
 
 - name: Case 3, all FY2026 cooling supplements reach the 775 cooling maximum.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -177,9 +180,12 @@
     # Heating adds the 75 natural gas supplement: 775 + 75 = 850, the heating
     # maximum.
     sc_liheap: 850
+    # The national LIHEAP total adds both awards: 850 + 775.
+    liheap: 1_625
 
 - name: Case 4, each FY2027 cooling supplement applies alone.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -269,6 +275,7 @@
 
 - name: Case 5, all FY2027 cooling supplements reach the 850 cooling maximum.
   period: 2027
+  absolute_error_margin: 0.01
   input:
     people:
       person1:

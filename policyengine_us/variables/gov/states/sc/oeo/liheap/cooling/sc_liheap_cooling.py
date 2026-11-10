@@ -28,6 +28,12 @@ class sc_liheap_cooling(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.oeo.liheap.cooling
+        # Section 1.1 of the FY2026 plan provides an additional non-emergency
+        # benefit in the heating or cooling season if funding allows. The
+        # FY2027 plan allows one service per calendar year, and more only
+        # "should funding allow". The cooling award is paid whether or not the
+        # household also receives the heating award; the service limits are
+        # not modeled.
         # The cooling season pays the base and household supplements, with no
         # fuel supplement, up to the cooling maximum.
         return sc_liheap_award(spm_unit, period, parameters, p.amounts, 0)

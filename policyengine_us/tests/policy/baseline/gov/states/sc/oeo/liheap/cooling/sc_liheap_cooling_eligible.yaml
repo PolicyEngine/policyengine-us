@@ -8,6 +8,7 @@
 
 - name: Case 1, no cooling costs, an unspecified heating fuel with heat in rent or income over the limit pays no cooling award.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
