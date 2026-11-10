@@ -547,12 +547,13 @@ candidates:
     $2,470 standard deduction, so the repayment gives no benefit.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/claim_of_right/ar_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10203
-  state: unreviewed
-  note: 'The itemizer restriction is a legally unverified form inference; establish whether it is DFA''s intended
-    gap-fill. Code not yet on main: ar_claim_of_right_deduction.py.'
+  state: ruled
+  note: Ruled in October 2026 as an itemized deduction inside the 2% floor of section 26-51-437(b). Whether DFA intends
+    that placement remains unverified.
 - id: us-ar:claim-of-right-small-repayment-remedy
   program: income-tax
   years:
@@ -575,12 +576,13 @@ candidates:
     other: DFA2 describes amending the earlier return; DFA1 describes a deduction in the repayment year.
   pe_us:
     follows: not-modelled
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/claim_of_right/ar_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10203
   state: ruled
-  note: 'The October 2026 ruling leaves small repayments unmodelled; verify whether the fiscal notes establish a
-    post-2013 remedy. Code not yet on main: ar_claim_of_right_deduction.py.'
+  note: The October 2026 ruling leaves small repayments unmodelled; verify whether the fiscal notes establish a post-2013
+    remedy.
 - id: us-ar:gambling-loss-deduction-before-2015
   program: income-tax
   years:
@@ -1622,6 +1624,48 @@ candidates:
   note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
     $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
     side. Verify the per-recipient calculation and document the inconsistent 2026 summary tables.'
+- id: us-co:ccap-parent-fee-income-share
+  program: child-care-assistance
+  years:
+    from: 2021
+    to: 2028
+    type: calendar
+  question: Above the poverty guideline, does Colorado's parent fee start from 1% of the household's income, as 8
+    CCR 1403-1 section 3.124(P)(2) says, or from 1% of the guideline, as one of CDEC's parent fee tools computes?
+  sources:
+  - kind: regulation
+    citation: 8 CCR 1403-1 section 3.124(P)(1) and (2) (ruleVersionId 12658)
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=83
+  - kind: calculator
+    citation: CDEC Above 100% FPG Parent Fee Tool (English), Parent Fee Tool sheet, cell I9
+    url: https://drive.google.com/file/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/view
+  - kind: calculator
+    citation: CDEC At 100% FPG Parent Fee Tool (English), Parent Fee Tool sheet, cell I9
+    url: https://drive.google.com/file/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/view
+  readings:
+    statute: Section 3.124(P)(2) charges a household above the guideline "one percent (1%) of their income plus a
+      marginal rate increase of fourteen percent (14%)" on each dollar above the guideline. CDEC's Above 100% FPG
+      tool computes (E4*0.01+((E4-I8)*0.14))/12, 1% of annual income E4 plus 14% above the guideline I8.
+    other: CDEC's At 100% FPG tool computes (I8*0.01+((E4-I8)*0.14))/12 above the guideline, 1% of the guideline
+      rather than of income. CDEC tells households above the guideline to use
+      the other tool, so this branch serves no one the tool is for. PE-US used the same formula before PR 10721.
+  example: A family of three with $40,000 a year and two children in full-time care in January 2026, under the
+    $26,650 guideline in section 3.111(H)(2), pays (0.01 x $40,000 + 0.14 x $13,350) / 12 + $15 = $204.08, or $204,
+    under section 3.124(P)(2). The At 100% FPG tool's formula gives (0.01 x $26,650 + 0.14 x $13,350) / 12 + $15 =
+    $192.96, or $192.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/co/ccap/co_ccap_base_parent_fee.py
+    - policyengine_us/parameters/gov/states/co/ccap/parent_fee/income_rate.yaml
+    - policyengine_us/parameters/gov/states/co/ccap/parent_fee/marginal_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10721
+  state: ruled
+  note: PE-US follows section 3.124(P)(2) as written, 1% of all gross countable income plus 14% of income above the
+    guideline (income_rate.yaml, marginal_rate.yaml, co_ccap_base_parent_fee.py). The rule and CDEC's tool for
+    households above the guideline agree; only the At 100% FPG tool's branch for incomes above the guideline differs,
+    by 1% of the income above the guideline. Ask CDEC which formula counties apply.
 - id: us-co:claim-of-right-subtraction-practice
   program: income-tax
   years:
@@ -2869,13 +2913,13 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/hi/tax/income/additions/additions.yaml
+    - policyengine_us/variables/gov/states/hi/tax/income/claim_of_right/hi_claim_of_right_deduction.py
     - policyengine_us/variables/gov/states/hi/tax/income/hi_additions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10200
   state: ruled
-  note: 'Ruled in October 2026 under the statute-first rule; N-364 first exists for 2025, so earlier claiming procedures
-    need separate verification. Code not yet on main: gov/states/hi/tax/income/claim_of_right/hi_claim_of_right.yaml,
-    hi_claim_of_right_deduction.'
+  note: Ruled in October 2026 under the statute-first rule; N-364 first exists for 2025, so earlier claiming procedures
+    need separate verification.
 - id: us-hi:joint-return-claimable-spouse-exemption
   program: income-tax
   years:
@@ -3795,22 +3839,22 @@ candidates:
     citation: 2018-2025 IT-40 instructions, code 630; 2025 Example 1 footnote
     url: https://forms.in.gov/Download.aspx?id=16915#page=23
   readings:
-    statute: The cross-reference can require an allowable federal deduction, excluding small nonbusiness repayments
-      disallowed federally from 2018.
-    other: Allow any repayment amount independently of the federal method, limited to previously taxed income and
-      adjusted for lost unemployment deductions.
+    statute: The paragraph subtracts an amount as described in section 1341(a)(2), to the extent previously included in
+      adjusted gross income, so a repayment qualifies whether or not federal law allows its deduction.
+    other: Read through IC 6-3-1-11(b), the reference could import federal allowability, excluding small nonbusiness
+      repayments disallowed federally from 2018. The IT-40 general rule asks for federal eligibility, but its 2025
+      Example 1 footnote allows a repayment the federal return cannot deduct.
   example: The 2025 instructions deduct $345 less $15 of lost unemployment deduction, giving $330; a $3,400 credit-method
     repayment gives a $3,400 state deduction.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/in/tax/income/deductions/deductions.yaml
-    - policyengine_us/variables/gov/states/in/tax/income/deductions/in_other_subtractions.py
+    - policyengine_us/variables/gov/states/in/tax/income/deductions/claim_of_right/in_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
-  state: unreviewed
-  note: 'The statute-first rule requires changing the instructions-based scope if the federal-eligibility reading
-    is verified; the 2026 statutory text remains unverified. Code not yet on main: gov/states/in/tax/income/deductions/in_claim_of_right_deduction.yaml.'
+  state: ruled
+  note: Ruled in November 2026 as built, in line with the Massachusetts ruling on a similar reference.
 - id: us-in:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -4469,19 +4513,20 @@ candidates:
       2026)
     url: https://web.archive.org/web/20260211211815/https://www.mass.gov/info-details/differences-between-ma-and-federal-tax-law-for-personal-income
   readings:
-    statute: The cross-reference can require an allowable federal deduction, excluding small repayments disallowed
-      federally from 2018.
-    other: Allow any amount previously included in Massachusetts taxable income unless otherwise deductible, independently
-      of the federal method.
+    statute: The paragraph stands alone. Any amount previously included in Massachusetts taxable income counts unless
+      otherwise deductible, independently of the federal method.
+    other: DOR guidance agrees. A contrary reading would import federal allowability through the section 1341(a)(2)
+      cross-reference, excluding small repayments disallowed federally from 2018.
   example: With $60,000 wages and a $2,000 repayment, Massachusetts tax falls from $2,680 to $2,580.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ma/tax/income/deductions/claim_of_right/ma_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
-  state: unreviewed
-  note: 'The statute-first rule requires changing the guidance-based scope if the cross-reference imports federal
-    deduction eligibility; verify that interpretation first. Code not yet on main: gov/states/ma/tax/income/deductions/ma_claim_of_right_deduction.yaml.'
+  state: ruled
+  note: Ruled in October 2026 as built. The paragraph states its own limits, while paragraph (13) expressly imports
+    federal conditions.
 - id: us-ma:connectorcare-income-bands-2026
   program: connectorcare
   years:
@@ -4555,26 +4600,36 @@ candidates:
   sources:
   - kind: statute
     citation: Acts 2026 c. 101 §45
-    url: null
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter101
   - kind: statute
     citation: Acts 2026 c. 101 §43(a)
-    url: null
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter101
   - kind: agency-practice
     citation: DFML contribution rates page (updated 2026-10-01)
-    url: null
+    url: https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
+  - kind: guidance
+    citation: Department of Revenue working draft TIR on the fiscal 2026 mid-year supplemental appropriation bill,
+      section VI (2026-06-23)
+    url: https://www.mass.gov/technical-information-release/working-draft-tir-tax-provisions-in-the-fiscal-year-2026-final-mid-year-supplemental-appropriation-bill
   readings:
-    statute: Applying §45 literally swaps caps in 2026, producing a 0.772% employee maximum.
-    other: Section 43(a) and DFML apply the swap in 2027, preserving the 0.46% employee and 0.42% employer shares.
+    statute: Applying §45 literally swaps caps in 2026, producing a 0.772% employee maximum. The Department of
+      Revenue's working draft applies the new caps from 2026.
+    other: DFML applies the swap in 2027 and section 43(a) directs guidance for calendar year 2027, preserving the
+      0.46% employee and 0.42% employer shares.
   example: At $100,000 of 2026 wages, literal §45 gives a $772 employee contribution versus $460.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/family_employee_share.yaml
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/medical_employee_share.yaml
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/family_rate.yaml
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/medical_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10285
   state: open
-  note: 'A rule-required model change depends on resolving the two statutes; the open PR follows the 2027 reading,
-    while main has no cap swap. Code not yet on main: policyengine_us/variables/.../employee_state_payroll_tax,
-    ma_employee_paid_leave_contribution (YAML).'
+  note: The code follows DFML's January 1, 2027 date for the cap and rate swap and keeps 2026 on the old split, as
+    main does. Whether §45's 2026 date governs stays open. At $100,000 of 2026 wages the code gives a $460
+    employee contribution; applying the swap in 2026 under §45 would give $772.
 - id: us-ma:snap-child-support-exclusion
   program: snap
   years:
@@ -5502,6 +5557,78 @@ candidates:
   note: Ruled 2026-11-02 for the statute. Subd. 2 sends the person to subd. 3(b) with no arrangement test, and the
     manual's single-person lists do give the upgrade on arrangement B. mn_msa_payment_category reads the federal
     arrangement only for the facility test.
+- id: us-mn:paid-leave-small-employer-average-wage
+  program: paid-family-medical-leave
+  years:
+    from: 2026
+    type: calendar
+  question: Does Minnesota compare its Paid Leave small employer wage limit with an employer's highest quarterly
+    covered wages divided by its highest quarterly count of wage records, or with that quotient divided by four again?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 268B.14, subds. 5a(a)(2) and 5c(a)
+    url: https://www.revisor.mn.gov/statutes/cite/268B.14
+  - kind: guidance
+    citation: DEED, Paid Leave small employer premium rate designation (2026 premiums)
+    url: https://mn.gov/deed/assets/paid-leave-small-employer-premium-rate-designation-acc_tcm1045-716947.pdf
+  - kind: agency-practice
+    citation: Unemployment Insurance Minnesota, small employer premium rate page
+    url: https://mn.gov/uimn/employers/paid-leave/small-employer-premiums.jsp
+  readings:
+    statute: Under subd. 5c(a), an employer's average wage equals its highest quarterly covered wages divided by its
+      highest quarterly count of wage records. Subd. 5a(a)(2) sets the limit at 150 percent of the state's average
+      wage, and an average equal to that limit qualifies. In its designation notice, DEED computes the average the
+      same way and excludes only averages above $27,745.88 a quarter for 2026.
+    other: On its small employer page, Unemployment Insurance Minnesota (UIMN) calls that quotient an average annual
+      wage and divides it by four to get an average quarterly wage. UIMN states the test as less than 150 percent of
+      the statewide average, but in its last step it excludes only an average that exceeds the limit.
+  example: For 2026, an employer with 10 employees and $400,000 of covered wages in its highest-paid quarter averages
+    $40,000 under subd. 5c(a) and pays the full 0.88%. Under UIMN's steps, it would average $10,000, within the
+    $27,745.88 limit, and pay 0.66%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/payroll/paid_leave/mn_paid_leave_small_employer.py
+    - policyengine_us/variables/gov/states/mn/tax/payroll/paid_leave/mn_paid_leave_employer_average_quarterly_wage.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10294
+  state: ruled
+  note: Ruled 2026-11-09 for the statute, which DEED follows in its notice. Users enter the subd. 5c(a) quotient with
+    no further division by four, and an average equal to the limit qualifies. On $100,000 of 2026 wages, an employer
+    that deducts the most it may from wages pays $440 of an $880 premium, against $220 of $660 under UIMN's steps.
+- id: us-mn:paid-leave-small-employer-wage-limit-cents
+  program: paid-family-medical-leave
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Does a 2026 average quarterly wage of $27,745.88 meet Minnesota's Paid Leave small employer wage test,
+    when 150 percent of DEED's $73,989 statewide average annual wage comes to $27,745.875 a quarter and DEED states
+    $27,745.88?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 268B.14, subd. 5a(a)(2)
+    url: https://www.revisor.mn.gov/statutes/cite/268B.14
+  - kind: guidance
+    citation: DEED, Paid Leave small employer premium rate designation (2026 premiums)
+    url: https://mn.gov/deed/assets/paid-leave-small-employer-premium-rate-designation-acc_tcm1045-716947.pdf
+  readings:
+    statute: Subd. 5a(a)(2) sets the limit at 150 percent of the state's average wage and admits an average equal to
+      it, but doesn't say how to state the limit per quarter or round it. A quarter of 150 percent of $73,989 comes to
+      $27,745.875, and an average of $27,745.88 exceeds it.
+    other: DEED states the limit to the cent, $27,745.88, and excludes only averages above it, so an average of
+      $27,745.88 qualifies.
+  example: An employer with 10 employees and $277,458.80 of covered wages in its highest-paid quarter averages
+    $27,745.88. Against DEED's figure it pays 0.66%; against $27,745.875 it would pay 0.88%.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/payroll/paid_leave/mn_paid_leave_small_employer.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10294
+  state: ruled
+  note: Ruled 2026-11-09 for DEED's figure, since the statute leaves the quarterly limit's rounding open. The model
+    rounds the limit half up to the cent, which reproduces $27,745.88, so an input of $27,745.88 meets it.
 - id: us-mn:small-claim-of-right-repayment-deduction
   program: income-tax
   years:
@@ -6131,40 +6258,6 @@ candidates:
     non-loss adjustments, and adds back only the business and capital losses (mt_elderly_homeowner_or_renter_credit_gross_household_income.py,
     elderly_homeowner_or_renter/gross_income_sources.yaml). Identify the omitted adjustments and verify applicability
     in both years.'
-- id: us-mt:elderly-credit-refundable-credit-timing
-  program: elderly-homeowner-renter-credit
-  years:
-    from: 2021
-    to: 2023
-    type: tax
-  question: Do refundable credits enter elderly-credit income when received under the regulation or as reported
-    on the current return under the schedule?
-  sources:
-  - kind: regulation
-    citation: ARM 42.4.301(2)(b)-(c)
-    url: null
-  - kind: form
-    citation: 2021-2023 Elderly Homeowner/Renter Credit Schedule
-    url: https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=10
-  readings:
-    statute: The cited regulation counts refundable credits actually received; no statute is supplied.
-    other: The schedule directs use of amounts reported on the current Form 2.
-  pe_us:
-    follows: unknown
-    code:
-    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
-    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_received.py
-    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
-    - policyengine_us/variables/gov/states/mt/tax/income/tax_calculation/mt_refundable_credits_before_renter_credit.py
-    - policyengine_us/parameters/gov/states/mt/tax/income/credits/refundable.yaml
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9915
-  state: unreviewed
-  note: PE-US uses the current return's federal and other Montana refundable credits (the Montana EITC from 2019)
-    as a proxy for credits received, while the elderly credit itself enters as an input for the amount received
-    during the year (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py, mt_refundable_credits_before_renter_credit.py,
-    credits/refundable.yaml, mt_elderly_homeowner_or_renter_credit_received.py, elderly_homeowner_or_renter/gross_income_sources.yaml).
-    Resolve the regulation/form timing difference, noting that the 2024 caption uses received amounts.
 - id: us-mt:elderly-credit-rent-free-occupants
   program: income-tax
   years:
@@ -6175,30 +6268,78 @@ candidates:
   sources:
   - kind: statute
     citation: MCA 15-30-2338(1)(c)
-    url: null
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0380/0150-0300-0230-0380.html
   - kind: regulation
-    citation: ARM 42.4.302(2)(b)
-    url: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.4.302
+    citation: ARM 42.4.302(2)(b), expression effective 9/7/2024
+    url: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/5eedb34b-939b-4c09-ad35-59502b699bf6/document/e7a48415-15da-4847-8132-2b196c217e14
   - kind: instructions
     citation: 2025 Form 2 instructions, Schedule 2EC line 23, PDF page 47
     url: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
   readings:
-    statute: The owner, renter or lessee condition potentially excludes a rent-free occupant.
+    statute: The owner, renter or lessee condition excludes a rent-free occupant who holds none of those statuses.
     other: Another person's property tax bill qualifies as the claimant's rent.
   example: An 80-year-old parent with a $14,000 pension living rent-free in a child's home with $4,000 property
-    tax receives a 2024 credit of $341 versus $0 before.
+    tax and no lessee status receives a 2024 credit of $0 under the statute, against $341 under the other reading.
+    Recorded as a lessee, the parent receives $341.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_eligible.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_gross_rent.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_property_tax_billed.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9945
+    - https://github.com/PolicyEngine/policyengine-us/pull/10331
+  state: ruled
+  note: 'PE-US follows the statute from #10331: a head or spouse must have occupied a Montana dwelling as an owner,
+    renter or lessee for 6 months (mt_elderly_homeowner_or_renter_credit_eligible.py). Rent paid or property tax
+    billed to the tax unit shows that status (mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months.py);
+    a rent-free lessee is recorded through mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months.py.
+    The household''s bill still counts as rent for an eligible claimant whose tax unit is billed nothing, which
+    ARM 42.4.302(2)(b) allows "an eligible claimant" (mt_elderly_homeowner_or_renter_credit_gross_rent.py), so
+    the regulation is read as measuring rent, not as conferring eligibility. ARM 42.4.302 and the 2025 instructions
+    page are captured under source_conflicts/sources/us-mt/; MCA 15-30-2338 is in the Axiom corpus. Move to the
+    register after #10331 merges.'
+- id: us-mt:elderly-credit-federal-refundable-credits-before-2017
+  program: elderly-homeowner-renter-credit
+  years:
+    from: 2009
+    to: 2016
+    type: tax
+  question: Before ARM 42.4.301(2)(b) was amended on November 10, 2017, did gross household income count federal
+    refundable credits received, as nontaxable income under the statute, or only federal refunds that recovered
+    a prior-year Montana tax benefit, under the regulation and the form?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2337(9)(a) (2009)
+    url: https://archive.legmt.gov/bills/2009/mca/15/30/15-30-2337.htm
+  - kind: regulation
+    citation: ARM 42.4.301(2)(b) as in effect 8/20/2004 to 11/9/2017
+    url: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/788508cc-8418-41c8-926d-3dfb11af3fd6
+  - kind: form
+    citation: 2016 Montana Form 2EC Gross Household Income Worksheet, PDF pages 74-75
+    url: https://taxsim.nber.org/historical_state_tax_forms/MT/2016/Form_2_booklet_2016.pdf#page=74
+  readings:
+    statute: A refundable credit received is nontaxable income under (9)(a), so it counts from 2009.
+    other: A refundable credit paid in excess of tax is a federal refund, which the pre-2017 regulation counts only
+      to the extent it recovered a prior-year Montana tax benefit, and the 2016 worksheet lists only federal income
+      tax refunds taxable in Montana; so it does not count before 2017.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10331
   state: open
-  note: 'PE-US follows the regulation and instructions: when no one in the claimant''s tax unit is billed property
-    tax, the household''s property tax counts as rent, taking the larger of that and rent paid, so a rent-free occupant
-    can qualify (mt_elderly_homeowner_or_renter_credit_gross_rent.py). The source-choice question remains open;
-    the statute-first rule requires a model change if the regulation expands rather than interprets statutory eligibility.'
+  note: PE-US follows the regulation and the form before 2017. The federal refundable credits received
+    (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py) enter the source list only from 2017
+    (elderly_homeowner_or_renter/gross_income_sources.yaml). Whether the pre-2017 regulation narrows the statute's
+    "all nontaxable income", and how far a Montana rule binds against its statute, is open for the project lead.
+    The 2009 statute, the three ARM 42.4.301 expressions in force from 8/20/2004 to 11/9/2017 (whose (2) text is
+    the same) and the 2016 booklet pages are captured under source_conflicts/sources/us-mt/.
 - id: us-mt:liheap-business-equity-limit
   program: liheap
   years:
@@ -6965,13 +7106,14 @@ candidates:
     guidance.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_offset.py
+    - policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_repayment_category.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10198
-  state: unreviewed
-  note: 'Retain as a disputable gap-fill; verify whether repayments are statutory losses and separate this issue
-    from unsupported spouse attribution. Code not yet on main: policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_repayment_category.py,
-    gov/states/nj/tax/income/adjusted_gross_income/nj_claim_of_right_offset.yaml, nj_claim_of_right_offset, nj_claim_of_right_repayment_category.'
+  state: ruled
+  note: Ruled in November 2026 as a gap-fill under TAM 2011-7. Whether repayments count as statutory losses remains
+    unverified, and the sources leave spouse attribution open.
 - id: us-nj:eitc-married-separate-filer
   program: income-tax
   years:
@@ -11612,13 +11754,12 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/parameters/gov/states/wv/tax/income/subtractions/subtractions.yaml
+    - policyengine_us/variables/gov/states/wv/tax/income/subtractions/claim_of_right/wv_claim_of_right_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
-  state: unreviewed
-  note: 'Retain as a disputable gap-fill; identify statutory authority, resolve the study''s citation, and verify
-    threshold and federal-method conditions by year. Code not yet on main: gov/states/wv/tax/income/subtractions/wv_claim_of_right_subtraction.yaml,
-    policyengine_us/variables/gov/states/wv/tax/income/subtractions/wv_subtractions.py, wv_claim_of_right_subtraction,
-    gov.states.wv.tax.income.subtractions.claim_of_right.threshold.'
+  state: ruled
+  note: Ruled in November 2026 as a gap-fill, because the statute does not address repayments and the instructions
+    provide the modification. Statutory authority remains unidentified, and the study's citation remains unresolved.
 - id: us-wv:liheap-income-limit-above-federal-ceiling
   program: liheap
   years:
