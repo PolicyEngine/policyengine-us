@@ -16,10 +16,10 @@
   output:
     ks_disabled_veteran_exemptions_eligible_person: false
   
-- name: Case 3, the filer is a disabled, but not veteran, no exemption.  
+- name: Case 3, a veteran unable to work without a 100% VA rating gets no exemption.
   period: 2023
   input:
-    is_permanently_and_totally_disabled: false
+    is_permanently_and_totally_disabled: true
     is_veteran: true
     state_code: KS
   output:
@@ -28,8 +28,8 @@
 - name: Case 4, in 2022, the filer is a disabled veteran. 
   period: 2022
   input:
-    is_permanently_and_totally_disabled: true
-    is_veteran: true
+    is_fully_disabled_service_connected_veteran: true
+    is_permanently_disabled_veteran: true
     state_code: KS
   output:
     ks_disabled_veteran_exemptions_eligible_person: false

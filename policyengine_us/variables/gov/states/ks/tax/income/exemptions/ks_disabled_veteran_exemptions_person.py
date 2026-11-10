@@ -5,7 +5,6 @@ class ks_disabled_veteran_exemptions_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Eligible person for the Kansas disabled veteran exemption"
-    unit = USD
     definition_period = YEAR
     reference = (
         "https://law.justia.com/codes/kansas/chapter-79/article-32/section-79-32-121/",
@@ -21,7 +20,8 @@ class ks_disabled_veteran_exemptions_eligible_person(Variable):
         # disability is permanent and was sustained through military action
         # or accident or resulted from disease contracted while in such
         # active service". The VA flags already imply veteran status. The
-        # honorable-discharge condition has no input.
+        # model has no discharge input, so a flagged veteran is assumed to
+        # have been honorably discharged.
         paid_at_100_percent = person(
             "is_fully_disabled_service_connected_veteran", period
         )
