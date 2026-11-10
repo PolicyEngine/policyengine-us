@@ -8,32 +8,28 @@ class nyc_school_tax_credit_rate_reduction_amount(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "nyc_school_tax_credit_rate_reduction_amount_eligible"
+    reference = (
+        # NY Tax Law § 606(ggg)(4-b)
+        "https://www.nysenate.gov/legislation/laws/TAX/606",
+        # L.2017, ch. 59, Part C, § 2 (tables, PDF pages 8-9) and § 7
+        # (applies to tax years beginning on and after January 1, 2017,
+        # PDF page 14)
+        "https://legislation.nysenate.gov/pdf/bills/2017/S2009C#page=8",
+        "https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=21",
+    )
 
     def formula(tax_unit, period, parameters):
-        # First get their NYC taxable income.
-        nyc_taxable_income = tax_unit("nyc_taxable_income", period)
-
-        # Then get their filing status.
+        p = parameters(
+            period
+        ).gov.local.ny.nyc.tax.income.credits.school.rate_reduction.amount
         filing_status = tax_unit("filing_status", period)
-
-        # Then get the School Tax Credit rate reduction amount part of the parameter tree.
-        p = parameters(period).gov.local.ny.nyc.tax.income.credits.school.rate_reduction
-
-        # Calculate amount if eligible, which varies only with filing status.
-        filing_statuses = filing_status.possible_values
-        return select(
-            [
-                filing_status == filing_statuses.SINGLE,
-                filing_status == filing_statuses.JOINT,
-                filing_status == filing_statuses.SEPARATE,
-                filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.SURVIVING_SPOUSE,
-            ],
-            [
-                p.amount.single.calc(nyc_taxable_income),
-                p.amount.joint.calc(nyc_taxable_income),
-                p.amount.separate.calc(nyc_taxable_income),
-                p.amount.head_of_household.calc(nyc_taxable_income),
-                p.amount.surviving_spouse.calc(nyc_taxable_income),
-            ],
+        taxable_income = max_(tax_unit("nyc_taxable_income", period), 0)
+        threshold = p.threshold[filing_status]
+        # § 606(ggg)(4-b)(A)-(C): city taxable income not over the threshold
+        # gets the first band rate; above it, the amount is a fixed base for
+        # the filing status plus the excess rate on income over the threshold.
+        first_band = p.first_band_rate * taxable_income
+        above_threshold = p.base[filing_status] + p.excess_rate * (
+            taxable_income - threshold
         )
+        return where(taxable_income > threshold, above_threshold, first_band)
