@@ -179,6 +179,7 @@
   # Worksheet line 1 note: "You must reduce the amount you enter on this line
   # by your federal self-employed health insurance deduction".
   period: 2025
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -194,7 +195,8 @@
         members: [person1]
         state_code: OH
   output:
-    # min(3,000 of earnings, 5,000 of premiums).
-    self_employed_health_insurance_ald: 3_000
-    # 5,000 - 3,000.
-    oh_uninsured_unreimbursed_medical_care_expenses: 2_000
+    # Form 7206 line 14: min(5,000 of premiums, 3,000 of earnings less the
+    # 211.94325 deductible part of self-employment tax).
+    self_employed_health_insurance_ald: 2_788.05675
+    # 5,000 - 2,788.05675.
+    oh_uninsured_unreimbursed_medical_care_expenses: 2_211.94325

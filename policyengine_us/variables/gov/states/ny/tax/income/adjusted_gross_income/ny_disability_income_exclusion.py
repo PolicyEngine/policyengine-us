@@ -40,7 +40,7 @@ class ny_disability_income_exclusion(Variable):
         # Lines 1-10: each person's pay at most $100 a week, reduced dollar
         # for dollar by federal AGI above $15,000.
         excludable = tax_unit.sum(min_(disability_pay, p.cap))
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
         exclusion = max_(0, excludable - max_(0, agi - p.reduction_threshold))
         # Line 11: spouses share it in proportion to their disability pay.
         total_pay = tax_unit.sum(disability_pay)

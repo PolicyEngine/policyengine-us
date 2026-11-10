@@ -1,3 +1,4 @@
+from .congress.s770 import create_s770_section_8_reform
 from .congress.delauro import create_american_family_act_with_baby_bonus_reform
 from .states.al.hb527 import create_al_hb527_overtime_deduction_reform
 from .dc_kccatc import create_dc_kccatc_reform
@@ -11,9 +12,8 @@ from .congress.romney.family_security_act import (
 from .cbo.payroll import (
     create_increase_taxable_earnings_for_social_security_reform,
 )
+from .ssa.owners_draw import create_owners_draw_reform
 from .congress.wyden_smith import create_ctc_expansion_reform
-from .federal import create_abolish_federal_income_tax_reform
-from .federal import create_abolish_payroll_tax_reform
 from .biden.budget_2025 import (
     create_medicare_and_investment_tax_increase_reform,
 )
@@ -153,6 +153,9 @@ from .states.ok.dependent_exemption.ok_dependent_exemption_reform import (
 from .states.vt.dependent_exemption.vt_dependent_exemption_reform import (
     create_vt_dependent_exemption_reform_fn,
 )
+from .states.vt.fair_share.vt_fair_share_reform import (
+    create_vt_fair_share_reform,
+)
 from .states.mi.dependent_exemption.mi_dependent_exemption_reform import (
     create_mi_dependent_exemption_reform_fn,
 )
@@ -250,6 +253,7 @@ from .aca import (
     create_aca_ptc_additional_bracket_reform,
     create_aca_ptc_simplified_bracket_reform,
     create_aca_ptc_700_fpl_cliff_reform,
+    create_aca_ptc_minimum_premium_reform,
 )
 from .cdcc import (
     create_cdcc_single_parent_work_requirement_reform,
@@ -367,6 +371,7 @@ import warnings
 
 
 def create_structural_reforms_from_parameters(parameters, period):
+    owners_draw = create_owners_draw_reform(parameters, period)
     afa_reform = create_american_family_act_with_baby_bonus_reform(parameters, period)
     winship_reform = create_eitc_winship_reform(parameters, period)
     dc_kccatc_reform = create_dc_kccatc_reform(parameters, period)
@@ -384,10 +389,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ctc_expansion = create_ctc_expansion_reform(parameters, period)
 
-    abolish_federal_income_tax = create_abolish_federal_income_tax_reform(
-        parameters, period
-    )
-    abolish_payroll_tax = create_abolish_payroll_tax_reform(parameters, period)
     capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
         parameters, period
     )
@@ -507,6 +508,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ri_exemption = create_ri_exemption_reform_fn(parameters, period)
     ok_dependent_exemption = create_ok_dependent_exemption_reform_fn(parameters, period)
     vt_dependent_exemption = create_vt_dependent_exemption_reform_fn(parameters, period)
+    vt_fair_share = create_vt_fair_share_reform(parameters, period)
     in_dependent_exemption = create_in_dependent_exemption_reform_fn(parameters, period)
     mi_dependent_exemption = create_mi_dependent_exemption_reform_fn(parameters, period)
     ne_dependent_exemption = create_ne_dependent_exemption_reform_fn(parameters, period)
@@ -548,6 +550,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     aca_ptc_700_fpl_cliff = create_aca_ptc_700_fpl_cliff_reform(parameters, period)
+    aca_ptc_minimum_premium = create_aca_ptc_minimum_premium_reform(parameters, period)
     cdcc_single_parent_work_requirement = (
         create_cdcc_single_parent_work_requirement_reform(parameters, period)
     )
@@ -601,7 +604,11 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
 
+    s770_section_8 = create_s770_section_8_reform(parameters, period)
+
     reforms = [
+        owners_draw,
+        s770_section_8,
         afa_reform,
         winship_reform,
         dc_kccatc_reform,
@@ -609,8 +616,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         remove_head_of_household,
         increase_taxable_earnings_for_social_security_reform,
         ctc_expansion,
-        abolish_federal_income_tax,
-        abolish_payroll_tax,
         medicare_and_investment_tax_increase,
         capital_gains_tax_increase,
         halve_joint_eitc_phase_out_rate,
@@ -670,6 +675,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ri_exemption,
         ok_dependent_exemption,
         vt_dependent_exemption,
+        vt_fair_share,
         in_dependent_exemption,
         mi_dependent_exemption,
         ne_dependent_exemption,
@@ -703,6 +709,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         aca_ptc_additional_bracket,
         aca_ptc_simplified_bracket,
         aca_ptc_700_fpl_cliff,
+        aca_ptc_minimum_premium,
         cdcc_single_parent_work_requirement,
         streamlined_eitc,
         ctc_linear_phase_out,
