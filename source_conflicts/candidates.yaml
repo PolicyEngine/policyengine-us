@@ -9840,6 +9840,102 @@ candidates:
   state: ruled
   note: 'Ruled 2026-11-02: income other than minors'' income follows the plan.'
 
+- id: us-sc:tanf-child-support-deduction-payer
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does child support that a South Carolina TANF benefit group member pays to dependents outside the group
+    come off only that member's own income, or off the group's income as a whole?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(L)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=212
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 sections 8.11 and 8.16 D and F
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=131
+  readings:
+    statute: No statute is supplied; 114-1140(L) says support "made by a budget group member" to legal dependents outside
+      the group "may be deducted from the income of the payor".
+    other: Section 8.16 D says to subtract support "from the remaining earned income of any adult", and 8.16 F takes
+      support "paid by any adult" from the unearned income; section 8.11 deducts it "as income to the BG".
+  example: In May 2026 adult A pays $2,400 a year and has no income, and adult B earns $600 a month, with one child.
+    From the payer's income the deduction is $0, countable income $500 and the payment floor(610 x 0.4046) = $246.
+    Pooled, the deduction is $200, countable income $300 and the payment $327.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_child_support_deduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
+    section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
+    member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-gross-income-limit-cents
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Is South Carolina's TANF gross income limit 185 percent of the need standard with its cents, or that amount
+    with the cents dropped?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(A)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1150(A) says gross income "must not exceed 185 percent of the need standard by
+      family size", and 114-1140(A)(4) rounds down only "the standard of need or the payment amount".
+    other: The section 8.15 note says "To determine the Gross Income Limit, multiply the Need Standard by 1.85 and drop
+      the cents."
+  example: For two persons in 2026 the need standard is $881. Gross income of $1,629.50 a month passes the limit of
+    881 x 1.85 = $1,629.85 and fails the manual's $1,629.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/eligibility/sc_tanf_gross_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs. Section 8.1 also says "Do not round at any step of the TANF calculation." The model
+    keeps rounding the need standard and the payment down to whole dollars under 114-1140(A)(4).
+- id: us-sc:tanf-need-standard-above-eight
+  program: tanf
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: For a benefit group of more than eight, is South Carolina's TANF need standard fifty percent of the poverty
+    guideline rounded down to a whole dollar, or the Policy Manual's eight-person amount plus $229 for each added person?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(2) and (A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1140(A)(2) sets the need standard "at fifty percent of the current year's" poverty
+      guidelines, and (A)(4) rounds it "down to the next lower whole dollar".
+    other: The section 8.15 table stops at eight persons, and its note says "For family sizes over 8, $229 is added to the
+      need standard for each additional person."
+  example: Under the 2025 guidelines a group of 13 has a need standard of floor($81,650 / 12 x 0.5) = $3,402 under
+    114-1140(A)(2) and (A)(4), and $2,256 + 5 x $229 = $3,401 under the manual note. The two agree through 12 persons.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_need_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs, and the manual's $229 restates the 2025 added-person guideline ($5,500 / 12 x 0.5 =
+    $229.17) without its cents. The regulation gives $1 more for 13 to 18 persons and $2 more for 19 to 24.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
