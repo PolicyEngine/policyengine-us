@@ -21,22 +21,17 @@ class ca_liheap_utility_eligible(Variable):
         utility_heat = np.isin(
             heating_type.decode_to_str(), p.eligibility.utility_heating_fuels
         )
-        known_fuel = (heating_type != types.NONE) & (heating_type != types.UNSPECIFIED)
+        # heating_type is a required input; UNSPECIFIED does not qualify.
+        heating_type_reported = heating_type != types.UNSPECIFIED
         utility_bills = add(
             spm_unit, period, ["pre_subsidy_electricity_expense", "gas_expense"]
         )
-        # The applicant names the utility account that takes the benefit, so a
-        # home heated with another fuel qualifies on a gas or electric bill.
-        # HEAP payments on electric bills count as cooling, so a home without
-        # heating qualifies on its electric bill when it pays for cooling.
-        cooling_only = (
-            (heating_type == types.NONE)
-            & spm_unit("has_cooling_expense", period)
-            & (spm_unit("pre_subsidy_electricity_expense", period) > 0)
-        )
-        utility_account = (
-            utility_heat | (known_fuel & (utility_bills > 0)) | cooling_only
-        )
+        # The household must be responsible for energy costs (guide 1.1 and
+        # 1.6), and the applicant names the utility account that takes the
+        # benefit. So a home heated with another fuel, or without heating,
+        # qualifies on a gas or electric bill. HEAP payments on electric bills
+        # from July 1 to October 31 are reported as cooling.
+        utility_account = utility_heat | (heating_type_reported & (utility_bills > 0))
         # A household receives one HEAP or WPO payment per program year.
         other_component = (
             add(
