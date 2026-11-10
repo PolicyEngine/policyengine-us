@@ -1,0 +1,1 @@
+Glide the Medicare Part B premium and Medicare spending per enrollee upraters from their last projected growth rates to the 2026 Medicare Trustees' long-range growth in Part B and total Medicare spending per enrollee, instead of compounding the last projected rate to 2100.
