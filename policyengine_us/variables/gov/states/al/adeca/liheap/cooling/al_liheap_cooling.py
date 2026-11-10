@@ -17,9 +17,10 @@ class al_liheap_cooling(Variable):
     unit = USD
     label = "Alabama LIHEAP regular cooling assistance"
     documentation = (
-        "Verified for FY2026 (the May-September 2026 cooling season). Earlier "
-        "years use model parameter backfilling and are unverified historical "
-        "estimates. Later years carry the FY2026 chart amounts forward."
+        "Verified for FY2025 and FY2026 (the May-September 2025 and 2026 "
+        "cooling seasons). Earlier years use model parameter backfilling and "
+        "are unverified historical estimates. Later years carry the FY2026 "
+        "chart amounts forward."
     )
     defined_for = "al_liheap_cooling_eligible"
     reference = (
@@ -27,7 +28,15 @@ class al_liheap_cooling(Variable):
         "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=9",
         # PDF pages 12-13
         "https://liheapch.acf.gov/docs/2026/state-plans/AL_Plan_2026.pdf#page=12",
+        # PDF pages 4, 12-13: the FY2025 cooling season, IIJA supplement and
+        # $320 to $520 range.
+        "https://liheapch.acf.gov/docs/2025/state-plans/AL_Plan_2025.pdf#page=4",
+        # The chart effective February 17, 2025, on the 2025 guidelines.
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/AL_BenefitMatrix_Cooling_2026.pdf",
+        # The chart effective May 15, 2026, attached to the draft FY2027 plan.
         "https://adeca.alabama.gov/wp-content/uploads/FY27-LIHEAP-State-Plan.pdf#page=53",
+        # Section 3.5: the 2026 guideline limit and band arithmetic.
+        "https://liheapch.acf.gov/docs/2027/state-plans/AL_Plan_2027.pdf#page=12",
     )
 
     def formula(spm_unit, period, parameters):

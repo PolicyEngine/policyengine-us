@@ -7,7 +7,8 @@
 # Electric column: size 1 $440 / $410 / $320; size 4 and up $470 / $440 / $350.
 
 # Part-time minimum wage: 20 hours x $7.25 x 52 weeks = $7,540 a year, $628.33 a month,
-# band 1. Cooling: Electric $440 + $100 = $540. The gas heating column would pay $480.
+# band 1. Cooling: Electric $440 + $100 = $540. The gas heating column pays $480, and
+# heating adds its own $100 supplement: $580. The national LIHEAP total is $580 + $540.
 - name: Case 1, a gas-heated worker receives the Electric column cooling payment.
   period: 2026
   absolute_error_margin: 0.01
@@ -22,6 +23,8 @@
   output:
     al_liheap_base_payment: 480
     al_liheap_cooling: 540
+    al_liheap: 580
+    liheap: 1_120
 
 # Retiree with $1,100 a month of Social Security ($13,200 a year), band 2 ($666 to $1,331).
 # SSI is zero: $1,100 - $20 = $1,080 exceeds the $994 federal benefit rate.
@@ -188,3 +191,23 @@
   output:
     al_liheap_cooling_eligible: false
     al_liheap_cooling: 0
+
+# FY2025 plan: cooling runs May 1 to September 30, 2025, pays $320 to $520, and adds the
+# $100 IIJA supplement. The chart effective February 17, 2025 uses the 2025 guidelines:
+# size 1 limit 15,650 x 1.5 / 12 = 1,956.25, printed $1,956 ($23,472 a year), band 2
+# $653 to $1,305, with the same Electric column. Case 2's retiree, $1,100 a month, is in
+# band 2 (SSI is zero: $1,100 - $20 = $1,080 exceeds the $967 federal benefit rate).
+# Cooling: $440 - $30 = $410 + $100 = $510.
+- name: Case 11, the summer 2025 payment uses the February 17, 2025 chart.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 70
+    social_security_retirement: 13_200
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_cooling_income_limit: 23_472
+    al_liheap_cooling: 510

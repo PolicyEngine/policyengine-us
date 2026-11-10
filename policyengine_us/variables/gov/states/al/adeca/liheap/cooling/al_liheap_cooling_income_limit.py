@@ -12,7 +12,11 @@ class al_liheap_cooling_income_limit(Variable):
     label = "Alabama LIHEAP regular cooling annualized income limit"
     defined_for = StateCode.AL
     reference = (
+        # The chart effective May 15, 2026, attached to the draft FY2027 plan.
         "https://adeca.alabama.gov/wp-content/uploads/FY27-LIHEAP-State-Plan.pdf#page=53",
+        # Section 3.5: $15,960 x 1.5 = $23,940 a year, $1,995 a month for one
+        # person, on the 2026 guidelines.
+        "https://liheapch.acf.gov/docs/2027/state-plans/AL_Plan_2027.pdf#page=12",
         # PDF pages 11-12
         "https://liheapch.acf.gov/docs/2026/state-plans/AL_Plan_2026.pdf#page=11",
     )
