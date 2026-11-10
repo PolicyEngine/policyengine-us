@@ -13,7 +13,7 @@ class de_liheap_cooling_eligible(Variable):
         # PDF pages 11-12
         "https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=11",
         "https://dhss.delaware.gov/dss/division-of-social-services/utility-assistance/",
-        # Historical manual sections 303.1-303.2 and 416.
+        # Historical manual sections 303.1-303.2 and 415.
         # PDF pages 21-22, 32
         "https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=21",
     )
@@ -22,7 +22,7 @@ class de_liheap_cooling_eligible(Variable):
         p = parameters(period).gov.states.de.dhss.liheap.cooling
         # Plan 3.5: the benefit "is distributed only to the LIHEAP eligible
         # households"; DHSS: "Eligibility requires prior application for
-        # LIHEAP during the program year". Manual 416 requires responsibility
+        # LIHEAP during the program year". Manual 415 requires responsibility
         # for a heating bill, which de_liheap_eligible checks.
         liheap_eligible = spm_unit("de_liheap_eligible", period)
         # heating_type is a required input: an unspecified type is
@@ -40,13 +40,11 @@ class de_liheap_cooling_eligible(Variable):
             | person("is_disabled", period)
         )
         has_vulnerable_member = spm_unit.any(vulnerable)
-        # Manual 303.1: the benefit is "paid to their electric company".
+        # A cooling payment requires a cooling cost paid apart from rent.
         has_cooling_expense = spm_unit("has_cooling_expense", period)
-        has_electric_bill = spm_unit("pre_subsidy_electricity_expense", period) > 0
         return (
             liheap_eligible
             & heating_type_reported
             & has_vulnerable_member
             & has_cooling_expense
-            & has_electric_bill
         )
