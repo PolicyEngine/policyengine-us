@@ -24,18 +24,19 @@
 - name: Case 2, a subsidized household is eligible only when its bill exceeds the utility allowance.
   period: 2026
   input:
-    state_code: [LA, LA]
-    age: [40, 40]
-    employment_income_before_lsr: [15_080, 15_080]
-    receives_housing_assistance: [true, true]
-    heating_type: [ELECTRICITY, ELECTRICITY]
-    pre_subsidy_electricity_expense: [1_740, 1_500]
-    # Section 8 utility allowances of 100 and 150 a month.
-    hud_utility_allowance: [1_200, 1_800]
-    has_cooling_expense: [true, true]
+    state_code: [LA, LA, LA]
+    age: [40, 40, 40]
+    employment_income_before_lsr: [15_080, 15_080, 15_080]
+    receives_housing_assistance: [true, true, true]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_740, 1_500, 1_740]
+    # Section 8 utility allowances of 100, 150 and 145 a month.
+    hud_utility_allowance: [1_200, 1_800, 1_740]
+    has_cooling_expense: [true, true, true]
   output:
-    # Energy cost 1,740 - 1,200 = 540 and 1,500 - 1,800 = -300.
-    la_liheap_cooling_eligible: [true, false]
+    # Energy cost 1,740 - 1,200 = 540, 1,500 - 1,800 = -300 and 1,740 - 1,740 = 0;
+    # an allowance equal to the bill leaves no energy burden.
+    la_liheap_cooling_eligible: [true, false, false]
 
 - name: Case 3, a household of only undocumented members is ineligible.
   period: 2026
@@ -50,3 +51,26 @@
   output:
     # No counted member, so household size is 0.
     la_liheap_cooling_eligible: [false]
+
+- name: Case 4, a renter with energy costs included in the rent is cooling eligible unless subsidized.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [LA, LA]
+    age: [40, 40]
+    employment_income_before_lsr: [15_080, 15_080]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [false, false]
+    pre_subsidy_electricity_expense: [0, 0]
+    # Both pay the FY2026 HUD Fair Market Rent for a one-bedroom unit in East Baton
+    # Rouge Parish, 1,064 a month (x12 = 12,768), which includes utilities.
+    tenant_pays_utilities: [false, false]
+    rent: [12_768, 12_768]
+    receives_housing_assistance: [false, true]
+  output:
+    # Section 3.6 E.1 counts energy costs included in the rent. With no separate
+    # bill the energy cost is 0, so the subsidized renter has no energy burden
+    # (Section 4.1 C.1), and the unsubsidized renter's burden 0 / 15,080 falls in
+    # the 9.9% and less band, 200 for size 1.
+    la_liheap_cooling_eligible: [true, false]
+    la_liheap_cooling: [200, 0]

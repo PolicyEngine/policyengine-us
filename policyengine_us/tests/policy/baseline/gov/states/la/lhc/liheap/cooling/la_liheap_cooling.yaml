@@ -63,6 +63,8 @@
     # priority group.
     la_liheap: 400
     la_liheap_cooling: 400
+    # The national LIHEAP total adds both seasons: 400 + 400.
+    liheap: 800
 
 - name: Case 3, zero countable income with a young child receives the 800 maximum.
   period: 2026

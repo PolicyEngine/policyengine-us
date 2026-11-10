@@ -17,9 +17,12 @@ class la_liheap_cooling_eligible(Variable):
     def formula(spm_unit, period, parameters):
         size = spm_unit("la_liheap_household_size", period)
         income_eligible = spm_unit("la_liheap_income_eligible", period)
-        # Vulnerability: responsibility for a cooling bill. has_cooling_expense
-        # excludes cooling included in the rent.
-        responsible = spm_unit("has_cooling_expense", period)
+        # Vulnerability: responsibility for a cooling bill, or energy costs
+        # included in the rent (Section 3.6 E.1; plan section 3.3).
+        utilities_in_rent = ~spm_unit.household("tenant_pays_utilities", period) & (
+            add(spm_unit, period, ["rent"]) > 0
+        )
+        responsible = spm_unit("has_cooling_expense", period) | utilities_in_rent
         # A home with no heating or any known heating fuel qualifies; an
         # unspecified fuel is paid $0, as in every LIHEAP program (#9754).
         heating_type = spm_unit("heating_type", period)
