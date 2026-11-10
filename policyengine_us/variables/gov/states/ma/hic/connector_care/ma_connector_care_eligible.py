@@ -16,8 +16,10 @@ class ma_connector_care_eligible(Variable):
     documentation = (
         "A tax unit is eligible for ConnectorCare when the program is in "
         "effect, household income (ACA MAGI per 26 U.S.C. 36B(d)(2)) as a "
-        "share of the federal poverty line is at or above the 100% FPL floor "
-        "and at or below the 400% FPL limit (the operational 2026 band), and "
+        "share of the prior-year federal poverty guideline, measured as the "
+        "exact ratio rather than the truncated aca_magi_fraction, is at or "
+        "above the 100% FPL floor and at or below the 400% FPL limit (the "
+        "operational 2026 band), and "
         "at least one member is eligible for the federal ACA premium tax "
         "credit. Massachusetts residency is enforced by defined_for. The "
         "amended 956 CMR still defines a sub-100% Plan Type 1 and a 400.1-500% "
@@ -29,9 +31,14 @@ class ma_connector_care_eligible(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ma.hic.connector_care
         in_effect = p.in_effect
-        magi_fraction = tax_unit("aca_magi_fraction", period)
-        income_eligible = (magi_fraction >= p.fpl_floor) & (
-            magi_fraction <= p.fpl_limit
+        # 956 CMR 12.04(3)(b) bounds Plan Type 3C by income "not over 400% of
+        # the FPL". Test the exact ratio, not the truncated aca_magi_fraction:
+        # truncation maps 400.00%-400.99% to 4.00, which would admit incomes
+        # above 400%. The floor ("at least 100%") is unaffected by truncation.
+        magi = max_(tax_unit("aca_magi", period), 0)
+        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
+        income_eligible = (exact_magi_frac >= p.fpl_floor) & (
+            exact_magi_frac <= p.fpl_limit
         )
         has_eligible_member = (
             add(tax_unit, period, ["ma_connector_care_member_eligible"]) > 0

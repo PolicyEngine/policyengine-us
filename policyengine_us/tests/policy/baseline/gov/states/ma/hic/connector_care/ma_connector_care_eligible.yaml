@@ -2,18 +2,23 @@
 #
 # ma_connector_care_eligible (TaxUnit, YEAR, bool, defined_for StateCode.MA) is:
 #   in_effect
-#   & (aca_magi_fraction >= fpl_floor)      # fpl_floor = 1.0 for PY2026
-#   & (aca_magi_fraction <= fpl_limit)      # fpl_limit = 4.0 for PY2026
+#   & (ratio >= fpl_floor)      # fpl_floor = 1.0 for PY2026
+#   & (ratio <= fpl_limit)      # fpl_limit = 4.0 for PY2026 (956 CMR 12.04(3)(b):
+#                               # Plan Type 3C is "not over 400% of the FPL")
+# where ratio = max(aca_magi, 0) / tax_unit_fpg(prior year), the exact ratio, not
+# the truncated aca_magi_fraction.
 #   & (count of ma_connector_care_member_eligible members > 0)
 #
 # ma_connector_care_member_eligible = is_aca_ptc_eligible (Person, YEAR).
 # in_effect is false before 2026-01-01, true from 2026-01-01 open-ended.
-# aca_magi_fraction is supplied directly so the income band is exact.
+# Supplied-income cases pin the prior-year guideline to $10,000 and set aca_magi
+# to the target ratio; income-derived cases use the 2025 one-person guideline,
+# $15,650.
 
 # --- Income-band boundaries at the 100% FPL floor (>= comparison) ---
 
 - name: Case 1, one APTC-eligible member just below the 100% FPL floor is ineligible.
-  # aca_magi_fraction 0.99 < fpl_floor 1.0 -> income_eligible false.
+  # ratio 0.99 < fpl_floor 1.0 -> income_eligible false.
   period: 2026
   input:
     people:
@@ -23,7 +28,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 0.99
+        aca_magi: 9_900
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -32,7 +39,7 @@
     ma_connector_care_eligible: false
 
 - name: Case 2, one APTC-eligible member exactly at the 100% FPL floor is eligible.
-  # aca_magi_fraction 1.0 >= fpl_floor 1.0 (inclusive) and <= 4.0 -> eligible.
+  # ratio 1.0 >= fpl_floor 1.0 (inclusive) and <= 4.0 -> eligible.
   period: 2026
   input:
     people:
@@ -42,7 +49,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.0
+        aca_magi: 10_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -53,7 +62,7 @@
 # --- Income-band boundaries at the 400% FPL limit (<= comparison) ---
 
 - name: Case 3, one APTC-eligible member exactly at the 400% FPL limit is eligible.
-  # aca_magi_fraction 4.0 <= fpl_limit 4.0 (inclusive) -> eligible.
+  # ratio 4.0 <= fpl_limit 4.0 (inclusive) -> eligible.
   period: 2026
   input:
     people:
@@ -63,7 +72,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.0
+        aca_magi: 40_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -72,7 +83,7 @@
     ma_connector_care_eligible: true
 
 - name: Case 4, one APTC-eligible member just above the 400% FPL limit is ineligible.
-  # aca_magi_fraction 4.01 > fpl_limit 4.0 -> income_eligible false.
+  # ratio 4.01 > fpl_limit 4.0 -> income_eligible false.
   period: 2026
   input:
     people:
@@ -82,7 +93,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 4.01
+        aca_magi: 40_100
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -93,7 +106,7 @@
 # --- Member and residency gates ---
 
 - name: Case 5, in-band household with no APTC-eligible member is ineligible.
-  # aca_magi_fraction 2.0 is in band but has_eligible_member is false.
+  # ratio 2.0 is in band but has_eligible_member is false.
   period: 2026
   input:
     people:
@@ -103,7 +116,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -122,7 +137,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
     households:
       household:
         members: [person1]
@@ -143,7 +160,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2024: 10_000
     households:
       household:
         members: [person1]
@@ -162,10 +181,96 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2026: 10_000
     households:
       household:
         members: [person1]
         state_code: MA
   output:
     ma_connector_care_eligible: true
+
+- name: Case 9, $62,600 (exactly 400% of the 2025 guideline) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 4.00
+    ma_connector_care_eligible: true
+
+- name: Case 10, $62,600.47 (400.003%) is ineligible though truncated to 4.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600.47
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 4.00
+    ma_connector_care_eligible: false
+
+- name: Case 11, $62,755.56 (400.994%) is ineligible though truncated to 4.00.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_755.56
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 4.00
+    ma_connector_care_eligible: false
+
+- name: Case 12, with the federal credit extended above 400%, 400.003% is still ineligible.
+  # A reform that keeps the premium tax credit above 400% FPL makes the member
+  # APTC-eligible at $62,600.47, so the ConnectorCare ceiling alone decides.
+  period: 2026
+  input:
+    gov.aca.ptc_income_eligibility[2].amount: true
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_600.47
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    is_aca_ptc_eligible: [true]
+    ma_connector_care_eligible: false
