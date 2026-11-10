@@ -1,3 +1,42 @@
+## [2.116.14] - 2026-11-10
+
+### Fixed
+
+- Apply Iowa, Kansas, Louisiana and Maryland rules for a filer who can be claimed as a dependent: no dependent exemptions or credits on a return with a claimable filer outside the claimant filing exception (Iowa dependent credit, Kansas dependent exemption and food sales tax credit child, Louisiana dependent exemption, Maryland dependent and aged-dependent exemptions and child tax credit). Iowa withholds the low-income exemption, the single-filer tax reduction and the alternate tax from a claimed dependent only when the claiming person's net income exceeds the Iowa Code 422.5 limit, using new claimant income and filing status inputs. Kansas counts each filer whom no one else may claim, plus allowable dependents, for its 2021-2023 exemptions, and each such filer plus dependent children under 18 for its food sales tax credit. Kansas also gives a 2021-2023 head of household one filer exemption rather than two, since K.S.A. 79-32,121 limited the extra allowance to tax year 1998. Maryland keeps every filer's own exemption under Tax-General 10-211(a)(1), including a filer who can be claimed. Its poverty line credit excludes only a filer actually claimed as an exemption on another Maryland return, through a new input that defaults to the federal claim, and keeps ordinary earned income; a Maryland filer who can be claimed gets no childless EITC. Also limit Maryland's aged dependent exemption by federal AGI under Tax-General 10-211(c), as for the personal exemption.
+
+
+## [2.116.13] - 2026-11-10
+
+### Fixed
+
+- Apply the New York itemized deduction adjustment (Tax Law 615(f), IT-196 line 46) to the deduction after the line 40 limitation, including the college tuition itemized deduction.
+
+
+## [2.116.12] - 2026-11-10
+
+### Fixed
+
+- We prevent floating-point residuals from creating CAPI income eligibility when a couple's income and SSI/SSP exhaust their payment standard.
+- SSI under spousal income deeming is now the lesser of the couple computation and the individual Federal benefit rate less the person's own countable income (20 CFR 416.1163(e)(2)), not the couple computation capped at the individual rate; uncapped_ssi applies the same rule, so state supplements that read it see the federal shortfall. SSI couples are now identified by the co-resident spouse test that resource deeming uses rather than by tax-unit head and spouse roles, for joint claims, combined couple income and resources, and income deeming from an ineligible spouse (416.1801(c), 416.1806, 416.1160(d)). State supplement couple rates, income, resources, care categories and spouse allowances now use only the actual spouses when a situation omits marital units and includes a third adult. Colorado OAP and AND-CS retain declared spouses living apart; Missouri retains their combined resources for medical separation, Virginia and South Dakota retain joint care-entry budgets, and Oregon retains the community-care spouse payment across facilities. Iowa pools only the identified spouses across its state supplement paths, retains its prior-SSI residential-care entry budget across facilities, and requires an explicit shared-room input for the same-month entry rule without prior SSI.
+  Retained state spouse budgets now reject explicit parent links and tax-dependent pairs across households. Missouri's non-MAGI Medicaid spouse deeming, California's non-MAGI premium deduction, the medically needy and Section 209(b) spend-down budgets, California CAPI and the California state supplement, Montana LIHEAP's SSI categorical coverage and SSI standards, California's Working Disabled Program income test, the Healthier Mississippi Waiver income test and Minnesota Supplemental Aid's couple income, resource and living-alone tests use only the identified spouses when marital units are omitted. Regressions pin claimant-wage deeming continuity and the 2026 wage/self-employment cases.
+
+  We value in-kind support at the individual presumed maximum value when computing the no-deeming comparison, and retain the claimant's income exclusions.
+
+
+## [2.116.11] - 2026-11-10
+
+### Fixed
+
+- Apply New York's pre-TCJA mortgage debt limits ($1,000,000 acquisition and $100,000 home equity debt) to its itemized interest deduction from 2018. The main home's value comes from primary_residence_value, and new inputs give the second home's value and each home's non-acquisition debt.
+
+
+## [2.116.10] - 2026-11-10
+
+### Fixed
+
+- North Carolina Work First applies its $3,000 resource limit (10A NCAC 71W .0407).
+
+
 ## [2.116.9] - 2026-11-10
 
 ### Fixed

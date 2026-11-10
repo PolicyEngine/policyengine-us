@@ -33,3 +33,45 @@
     ms_hmw_other_coverage_ineligible: true
   output:
     ms_hmw_eligible: false
+
+# Two blind spouses aged 50, one with a $30,000 pension, share a home with an
+# unrelated adult aged 70 on a $100,000 pension; marital units are omitted.
+# SSI's couple computation gives each spouse (30,000 - 240) / 2 = 14,880
+# countable income. Together, 29,760 exceeds 135% of the two-person guideline
+# ($29,214), so neither spouse qualifies, as with explicit marital units.
+- name: Case 4, a blind couple living with an unrelated adult is tested as a couple.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_blind: true
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        is_blind: true
+        is_tax_unit_spouse: true
+        pension_income: 30_000
+      outsider:
+        age: 70
+        is_tax_unit_head: true
+        pension_income: 100_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+      outsider:
+        members: [outsider]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, outsider]
+    families:
+      family:
+        members: [head, spouse, outsider]
+    households:
+      household:
+        members: [head, spouse, outsider]
+        state_code: MS
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [14_880, 14_880, 99_760]
+    ms_hmw_income_eligible: [false, false, false]
+    ms_hmw_eligible: [false, false, false]

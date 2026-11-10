@@ -3192,8 +3192,7 @@ candidates:
 - id: us-ia:alternate-tax-claimed-spouse
   program: income-tax
   years:
-    from: 2024
-    to: 2024
+    from: 2021
     type: tax
   question: Does the statutory dependent exclusion bar alternate tax on a joint return with a claimed spouse, or
     does the worksheet's omission permit it?
@@ -3210,13 +3209,16 @@ candidates:
   example: A joint return with one claimed spouse, modified income $20,000 and ordinary tax $500 pays $500 versus
     min($500, ($20,000 − $13,500) × 5.7%) = $370.50.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_alternate_tax_eligible.py
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_claimed_filer_income_disqualified.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: Ruled statute-first in October 2026; the rule requires a model change after confirming that the exclusion
-    reaches alternate tax.
+  note: Ruled statute-first in October 2026. The bar sits in 422.5(3) and (3B) for 2021-2022 and in 422.5(2) and
+    (3) from 2023; ia_alternate_tax_eligible applies it in every year through ia_claimed_filer_income_disqualified,
+    which reads an actual claim and the claiming person's net income. The worksheet was read for 2024 only.
 - id: us-ia:itemized-limitation-2018-federal-suspension
   program: income-tax
   years:
@@ -3321,13 +3323,18 @@ candidates:
   example: In 2022, a claimed single filer with $6,000 net income and a claimant with $8,000 income is exempt, with
     tax $0, versus not exempt.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_is_tax_exempt.py
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_reduced_tax.py
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_claimed_filer_income_disqualified.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; the rule requires replacing the approximation using claimant inputs,
-    with annual verification because the supplied statutory URL is for 2026. Code not yet on main: ia_is_tax_exempt.'
+  note: Ruled statute-first in October 2026; verify each year's text, because the supplied statutory URL is for
+    2026. ia_is_tax_exempt, and ia_reduced_tax for the single-filer tax reduction, apply the subsection's test
+    through ia_claimed_filer_income_disqualified, which reads an actual claim and the claiming person's net income
+    and filing status (inputs that default to no disqualification), with no Iowa-return restriction.
 - id: us-ia:rcf-maximum-per-diem-rate
   program: ssi-state-supplement
   years:
@@ -3941,15 +3948,59 @@ candidates:
   example: A 2023 joint return with one claimed spouse receives $2,250 versus $0; a claimable but unclaimed single
     filer receives $0 versus $2,250.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/ks/tax/income/exemptions/ks_count_exemptions.py
+    - policyengine_us/reforms/state_dependent_exemptions/repeal_state_dependent_exemptions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Current behaviour unresolved: at this head ks_count_exemptions returns adults plus dependents and ks_exemptions
-    adds no dependency gate, so a joint return with one claimed spouse keeps two exemptions; check against the statute
-    and the K-40 rule before classifying.'
+  note: Ruled statute-first in October 2026. ks_count_exemptions counts each filer whom no other taxpayer may claim
+    (IRC 151(d)(2)), plus dependents only outside a claimable filer (IRC 152(b)(1), with the claimant filing
+    exception); the state dependent exemption repeal counts the same filers. The head-of-household count is a
+    separate item, us-ks:2021-2023-head-of-household-exemption.
+- id: us-ks:2021-2023-head-of-household-exemption
+  program: income-tax
+  years:
+    from: 2021
+    to: 2023
+    type: tax
+  question: From 2021 to 2023, does a Kansas head of household get an extra $2,250 exemption, as the K-40
+    instructions say, although K.S.A. 79-32,121 gave that allowance only for tax year 1998 and 2022 law removed
+    it?
+  sources:
+  - kind: statute
+    citation: K.S.A. 79-32,121 (2021 edition)
+    url: https://kslegislature.gov/li_2022/b2021_22/statute/079_000_0000_chapter/079_032_0000_article/079_032_0121_section/079_032_0121_k/
+  - kind: statute
+    citation: 2022 HB 2239 § 40 (L. 2022, ch. 63, § 40); K.S.A. 79-32,121 (2023 edition)
+    url: https://www.kslegislature.gov/li_2022/b2021_22/measures/documents/hb2239_enrolled.pdf#page=38
+  - kind: instructions
+    citation: K-40 instructions 2021-2023, p.6
+    url: https://www.ksrevenue.gov/pdf/ip22.pdf#page=6
+  - kind: form
+    citation: 2022 Form K-40, Exemptions and Dependents, instructions booklet p.17
+    url: https://www.ksrevenue.gov/pdf/ip22.pdf#page=17
+  readings:
+    statute: A head of household has one exemption for each federal exemption only; the extra $2,250 applied to
+      tax year 1998 alone, and the 2022 amendment deleted the sentence.
+    other: '"If your filing status is Head of Household, you are allowed an additional Kansas exemption; enter a
+      "1" in the box provided."'
+  example: A 2022 head of household with one child has 2 exemptions, $4,500, under the statute versus 3, $6,750,
+    under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ks/tax/income/exemptions/ks_count_exemptions.py
+    - policyengine_us/reforms/state_dependent_exemptions/repeal_state_dependent_exemptions.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10045
+  state: ruled
+  note: Ruled statute-first in November 2026.
+    The 2021 edition allows the head-of-household exemption "for tax year 1998"; the 2023 edition has no such
+    sentence and cites L. 2022, ch. 63, § 40. The 2021, 2022 and 2023 instructions repeat the p.6 text, and the Form
+    K-40 in each booklet adds one exemption for a head of household (2021 p.17, 2023 p.19). The 2026-10-19 rule
+    follows the statute; main gave a head of household two filer exemptions.
 - id: us-ks:dependent-exemption-of-a-claimed-filer
   program: income-tax
   years:
@@ -4001,13 +4052,16 @@ candidates:
   example: Before the liability cap, a 2024 joint return with one claimable spouse and no dependents receives $125
     versus $250; a claimable single filer receives $0 versus $125.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ks/tax/income/credits/ks_fstc.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; the rule requires replacing the Line E count with the statutory federal
-    count, subject to annual-source verification. Code not yet on main: ks_fstc.'
+  note: Ruled statute-first in October 2026; verify each year's instructions. ks_fstc gives $125 for each filer whom
+    no other taxpayer may claim (IRC 151(d)(2)) and each dependent child under 18, counting children only outside
+    a claimable filer (IRC 152(b)(1), with the claimant filing exception); the same child count opens the child
+    route.
 - id: us-ks:medicaid-parent-dependent-child-age
   program: medicaid
   years:
@@ -4438,12 +4492,18 @@ candidates:
   example: The 2023 case gives $175 × 200% = $350 under the statute and $0 under the instructions.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/la/tax/income/credits/school_readiness/la_school_readiness_tax_credit.py
+    - policyengine_us/variables/gov/states/la/tax/income/credits/school_readiness/la_school_readiness_credit_eligible_child.py
+    - policyengine_us/variables/gov/states/la/tax/income/credits/cdcc/la_refundable_cdcc.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; verify annual instructions because the supplied opposing instruction
-    is from 2023. Code not yet on main: la_refundable_cdcc.'
+  note: Ruled statute-first in October 2026; verify annual instructions because the supplied opposing instruction
+    is from 2023. The code on main already follows the statute. la_school_readiness_tax_credit multiplies
+    Louisiana's care credits, and la_refundable_cdcc matches the federal cdcc_potential, whose IRC 21(b)(1)(B)
+    route keeps an incapable child; the eligible-child test adds no qualified-dependent gate. No YAML case yet
+    pins the school readiness amount for this case.
 - id: us-la:snap-child-support-exclusion
   program: snap
   years:
@@ -4733,8 +4793,7 @@ candidates:
 - id: us-md:dependent-exemption-chart-10a
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does a claimable filer retain an eligible dependent's exemption under the claimant filing exception,
     or does Chart 10A deny every exemption?
@@ -4746,18 +4805,60 @@ candidates:
     citation: 2025 Maryland resident booklet, Chart 10A, p.12
     url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=12
   readings:
-    statute: An actual IRC 152 dependent retains an exemption under the filing exception although the filer's own
-      exemption is denied.
+    statute: An actual IRC 152 dependent retains an exemption under the filing exception.
     other: The dependent-taxpayer Each Exemption column makes all exemptions $0.
-  example: The 2025 case with one eligible child gives 1 × $3,200 = $3,200 versus $0.
+  example: A 2025 single filer who can be claimed, whose claimant meets the filing exception, with one eligible
+    child has $3,200 for the child under the statute versus $0 under the chart.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/md/tax/income/exemptions/md_personal_exemptions_count.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; verify whether the chart''s zero column applies to dependent exemptions
-    or only the filer''s own exemption. Code not yet on main: md_personal_exemptions_count.'
+  note: Ruled statute-first in October 2026. The filer's own exemption is a separate item,
+    us-md:dependent-taxpayer-own-exemption; with it the example return has 2 × $3,200 = $6,400. The code applies
+    the statute in every year; the booklet was read for 2025 only.
+- id: us-md:dependent-taxpayer-own-exemption
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does a filer who can be claimed as a dependent on another return (filing status 6) get a Maryland
+    exemption for themself under Tax-General 10-211(a)(1), or none, as the resident booklet says?
+  sources:
+  - kind: statute
+    citation: Md. Code, Tax-General 10-211(a)(1), (b)(1)
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-211&enactments=false
+  - kind: statute
+    citation: 2018 Md. Laws ch. 575 (SB 184), § 1, PDF pp.1-2
+    url: https://mgaleg.maryland.gov/2018RS/chapters_noln/Ch_575_sb0184E.pdf#page=1
+  - kind: instructions
+    citation: 2025 Maryland resident booklet, filing status 6 and Chart 10A, p.12
+    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=12
+  readings:
+    statute: Each filer has an exemption for "the taxpayer" under (a)(1), which has no dependency condition; (b)(1)
+      allows $3,200 "for each exemption that the individual may deduct under subsection (a)".
+    other: '"You do not get an exemption for yourself. Put a zero in Exemption Box A."'
+  example: A 2025 single filer who can be claimed but is not claimed on a Maryland return, with $10,000 of earned
+    income, $600 of State tax and no EITC, has one exemption ($3,200) and the one-person poverty level of $15,650,
+    so a $500 poverty line credit, versus no exemption and no credit. A joint return with one claimable spouse has
+    2 × $3,200 = $6,400 versus $3,200.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/md/tax/income/exemptions/md_personal_exemptions_count.py
+    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_income_level.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10045
+  state: ruled
+  note: Ruled statute-first in November 2026.
+    Before 2018, (b)(1) allowed $3,200 "for each exemption that the individual may deduct in the taxable year to
+    determine federal taxable income under § 151", which brought in IRC 151(d)(2)'s denial for a dependent. Ch.
+    575 struck that text, added the (a)(1)-(3) list and applies to tax years after December 31, 2017. The only
+    dependency condition in the section is (a)(2)(ii)'s, for a spouse on a separate return. COMAR 03.04.02.02B
+    assigns the dependent taxpayer filing status and says nothing about the exemption. Main counted the filer, as
+    the statute does. The booklet was read for 2025 only.
 - id: us-md:meap-garrett-oil-level-four
   program: liheap
   years:
@@ -5013,8 +5114,7 @@ candidates:
 - id: us-md:poverty-credit-claimed-vs-claimable
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does the poverty line credit exclude only actually claimed dependents, or all claimable filers through
     the booklet's filing-status-6 rule?
@@ -5028,21 +5128,24 @@ candidates:
   readings:
     statute: A claimable but unclaimed filer passes the exclusion.
     other: Filing status 6 excludes a claimable filer without an actual claim.
-  example: With $10,000 earned income, a claimable but unclaimed filer passes the statutory exclusion for an uncapped
-    $500 versus $0 under the instructions.
+  example: A 2025 claimable single filer whom no one claims on a Maryland return, with $10,000 of earned income,
+    $600 of State tax and no EITC, has the one-person $15,650 level and a $500 credit under the statute versus $0
+    under the instructions.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/is_eligible_md_poverty_line_credit.py
+    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_claimed_as_exemption_on_another_return.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; the rule requires replacing claimability with the statutory actual-claim
-    exclusion. Code not yet on main: is_eligible_md_poverty_line_credit.'
+  note: Ruled statute-first in October 2026. The code applies the statute in every year. The claim on another
+    Maryland return is an input that defaults to the federal claim (claimed_as_dependent_on_another_return); set
+    it to false when the claimant files no Maryland return. The booklet was read for 2025 only.
 - id: us-md:poverty-threshold-exemption-count
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does the poverty line credit threshold use allowed-and-claimed exemptions or the worksheet's federal-return
     person count?
@@ -5056,16 +5159,21 @@ candidates:
   readings:
     statute: Use the exemptions the filer is allowed and claims.
     other: Use the number of persons on the federal return.
-  example: The 2025 case uses one exemption and $15,650 under the statute versus two persons and $21,150 under the
-    worksheet.
+  example: A married filer who can be claimed and files a separate Maryland return, as filing status 6 requires,
+    has one exemption and a $15,650 level under the statute versus two persons on the joint federal return and
+    $21,150 under the worksheet.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_income_level.py
+    - policyengine_us/variables/gov/states/md/tax/income/exemptions/md_personal_exemptions_count.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; verify the worksheet''s person count against allowed-and-claimed exemptions.
-    Code not yet on main: md_poverty_line_credit_income_level.'
+  note: Ruled statute-first in October 2026. Since every filer keeps an exemption
+    (us-md:dependent-taxpayer-own-exemption), the statutory count equals the federal return's person count for every
+    unit the model builds; a joint return with one claimable spouse gets two and $21,150 either way. The readings
+    part only on separate Maryland returns, which the model does not compute. The booklet was read for 2025 only.
 - id: us-md:premium-assistance-200-fpl-endpoint
   program: premium-assistance
   years:
@@ -7833,6 +7941,86 @@ candidates:
   state: unreviewed
   note: 'Found in review of the rate reduction amount, where the model now follows the statute over the
     instructions; the fixed amount still follows the instructions'' rounding. The difference is $0.50 per return.'
+- id: us-ny:pre-tcja-home-equity-room-per-residence
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Under the pre-TCJA mortgage limits that New York keeps, does each home's value less its acquisition debt
+    cap the home equity debt on that home, or does the total of both homes' rooms cap the total home equity debt?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 163(h)(3)(C)(i) (2016 edition), which N.Y. Tax Law 615(a) keeps for New York from 2018
+    url: https://www.govinfo.gov/content/pkg/USCODE-2016-title26/html/USCODE-2016-title26-subtitleA-chap1-subchapB-partVI-sec163.htm
+  - kind: guidance
+    citation: 2017 Pub. 936, Home equity debt limit (p. 10) and the Table 1 line 7 instructions (p. 13)
+    url: https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=10
+  - kind: instructions
+    citation: 2025 Form IT-196 instructions, Limit on home mortgage interest, which point filers to the 2017 Pub. 936
+    url: https://www.tax.ny.gov/pdf/2025/inc/it196i_2025.pdf#page=2
+  readings:
+    statute: Home equity indebtedness is debt secured by a qualified residence "to the extent the aggregate amount of
+      such indebtedness does not exceed" that residence's fair market value less its acquisition indebtedness.
+    other: Pub. 936 caps "the total home equity debt on your main home and second home" at the smaller of $100,000
+      and the total of each home's value reduced (not below zero) by its acquisition and grandfathered debt.
+  example: 'A 2025 joint return has $30,000 of interest, a $400,000 loan from 2015 on a $2,000,000 main home, and $200,000
+    of non-acquisition debt on a $50,000 second home. Home by home, line 7 is $50,000 and $22,500 is deductible; with
+    the total room of $1,650,000, line 7 is $100,000 and $25,000 is deductible.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/ny_mortgage_interest_deduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10596
+  state: ruled
+  note: 'PE-US applies the room home by home in _ny_qualified_loan_limit and _ny_home_equity_debt. Two cases in
+    ny_mortgage_interest_deduction.yaml pin it: "The second home''s value limits its own non-acquisition debt" and "The
+    main home''s value limits its own non-acquisition debt" give $22,500 home by home and $25,000 with Pub. 936''s total.
+    The readings differ only when one home''s home equity debt exceeds its own room while the other home has room to
+    spare. Ruled in November 2026 to follow the statute.'
+- id: us-ny:itemized-deduction-adjustment-college-tuition-base
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Does the Tax Law 615(f) itemized deduction adjustment (IT-196 line 46) apply to a base that includes the
+    615(d)(4) college tuition itemized deduction, as 615(a) defines the deduction, or to a base without it, as Form
+    IT-196 lays out lines 45 and 48 for Form IT-201 filers?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 615(a), (d)(4), (f)(1)-(2) and (g)
+    url: https://www.nysenate.gov/legislation/laws/TAX/615
+  - kind: form
+    citation: Form IT-196 (2021), lines 40-49
+    url: https://www.tax.ny.gov/pdf/2021/inc/it196_2021.pdf#page=3
+  - kind: instructions
+    citation: Form IT-196-I (2021), lines 43, 46 and 48 and Worksheets 3 and 4
+    url: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=20
+  readings:
+    statute: 615(f) takes its percentage of "the New York itemized deduction otherwise allowable under subsection (a)",
+      and 615(a) defines that deduction "with the modifications specified in this section", which include the
+      615(d)(4) college tuition deduction. The base includes tuition, as IT-196 line 45 does for Form IT-203 filers
+      (line 43).
+    other: For Form IT-201 filers, IT-196 adds the college tuition deduction on line 48, after the line 46
+      adjustment, so the line 45 base leaves it out.
+  example: A 2021 joint return with NY AGI $360,200, $50,000 of mortgage interest, a $640.50 line 40 limitation and a
+    $10,000 college tuition deduction has a line 46 adjustment of 0.25 x 59,359.50 = 14,839.875 and a New York itemized
+    deduction of 44,519.625 under the statute, against 12,339.875 and 47,019.625 under the IT-201 form layout.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/reduction/based_on_charitable_deduction/incremental/ny_itemized_deductions_lower_incremental_reduction.py
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/reduction/based_on_charitable_deduction/incremental/ny_itemized_deductions_higher_incremental_reduction.py
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/ny_itemized_deductions.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10658
+  state: unreviewed
+  note: The 615(f) base is ny_itemized_deductions_max (which includes ny_college_tuition_deduction) minus the line 40
+    limitation, for every filer. Above NY AGI $1,000,000, ny_itemized_deductions returns only the 615(g) share of the
+    charitable deduction, so the college tuition deduction is not added back, which also follows the statute ("Notwithstanding
+    subsection (a)") over the IT-201 line 48 addition. The model has no IT-201/IT-203 split for this rule. The IT-196
+    line 40-49 layout and the Worksheets 3 and 4 "25% (.25) of line 45" wording are the same on the 2018-2025 forms
+    and instructions checked (forms 2018-2021 and 2025; instructions 2018-2022, 2024 and 2025).
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
@@ -13298,15 +13486,18 @@ candidates:
     - policyengine_us/variables/gov/states/al/tax/income/deductions/itemized/al_investment_interest.py
     - policyengine_us/variables/gov/states/nc/tax/income/deductions/nc_mortgage_and_property_tax_before_limitation.py
     - policyengine_us/variables/gov/states/hi/tax/income/deductions/itemized/hi_mortgage_interest_deduction.py
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/ny_mortgage_interest_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10274
+    - https://github.com/PolicyEngine/policyengine-us/pull/10596
   state: unreviewed
-  note: 'PE-US follows two conventions, so follows stays unknown until one is picked. The federal deduction
+  note: 'PE-US follows three conventions, so follows stays unknown until one is picked. The federal deduction
     (deductible_mortgage_interest_tax_unit) uses the exact ratio, and Alabama and North Carolina read that federal
     amount. Hawaii (hi_mortgage_interest_deduction) follows the 2017 worksheet as a gap-fill, rounding line 11 to
     three places, and floors the result at the federal deduction, a PE safeguard that binds only when the rounded
     share falls below the exact federal share. Settling the federal reading (rulespec-us#1413) and using it for
-    both would make that floor unnecessary.'
+    Hawaii too would make that floor unnecessary. New York (ny_mortgage_interest_deduction) allows the larger of
+    the three-place share and the exact ratio.'
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:
