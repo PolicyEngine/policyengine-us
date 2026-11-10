@@ -22,17 +22,25 @@ class ar_liheap_cooling_eligible(Variable):
         income = spm_unit("ar_liheap_countable_income", period)
         income_limit = spm_unit("ar_liheap_income_limit", period)
         # The summer benefit pays the electric bill, so the energy burden is a
-        # cooling cost on the household's own electric account. No input
-        # identifies electricity included in rent, so those households are not
-        # paid.
-        electric_bill = spm_unit("pre_subsidy_electricity_expense", period)
+        # cooling cost on an electric bill the household pays itself.
+        pays_electric_bill = spm_unit("has_cooling_expense", period) & (
+            spm_unit("pre_subsidy_electricity_expense", period) > 0
+        )
+        # Plan item 3.3 also makes unsubsidized renters with utilities included
+        # in the rent eligible.
+        subsidized = spm_unit.household("is_in_public_housing", period) | spm_unit(
+            "receives_housing_assistance", period
+        )
+        utilities_in_rent = ~spm_unit.household("tenant_pays_utilities", period) & (
+            add(spm_unit, period, ["rent"]) > 0
+        )
+        responsible = pays_electric_bill | (utilities_in_rent & ~subsidized)
         # No heat and every known fuel can be paid. An unspecified heating fuel
         # pays $0, as in every state LIHEAP program (issue 9754).
         fuel = spm_unit("heating_type", period)
         return (
             (size > 0)
             & (income <= income_limit)
-            & spm_unit("has_cooling_expense", period)
-            & (electric_bill > 0)
+            & responsible
             & (fuel != fuel.possible_values.UNSPECIFIED)
         )

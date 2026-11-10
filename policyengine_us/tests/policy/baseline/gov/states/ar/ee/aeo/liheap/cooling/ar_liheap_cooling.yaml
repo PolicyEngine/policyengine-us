@@ -2,8 +2,8 @@
 # Electricity matrix "for both Winter and Summer Regular Assistance". Wages are full time
 # at the $11.00 Arkansas minimum wage: 11 x 40 x 52 = 22_880. The 20% earned disregard
 # gives 22_880 x 0.8 = 18_304; MCI 1_525.33 rounds to 1_525 (x12 = 18_300). The $1,800
-# electric bill only shows an electric account; it does not change the grant. TEA is
-# pinned to 0, as in the heating tests.
+# electric bill shows that the household pays its own electric bill, which the summer grant
+# pays; the bill does not change the grant. TEA is pinned to 0, as in the heating tests.
 
 # FY2026: size three uses the 3&4 column; the size-three limit is 3_792 x 12 = 45_504.
 # Electric row 1510-1569 pays 114 for 3&4.
@@ -106,7 +106,8 @@
 
 # FY2025: MCI 1_525 is within the 2_251 size-one limit (x12 = 27_012). The FFY 2025
 # electric row 1,510-1,569 pays 84 for 1&2 (the FY2026 row pays 77). With electric heat
-# the winter grant reads the same cell, so the household receives 84 in each season.
+# the winter grant reads the same cell, so the household receives 84 in each season, and
+# the national LIHEAP total is 84 + 84 = 168.
 - name: Case 4, FY2025 summer grant for a one person household with electric heat.
   period: 2025
   absolute_error_margin: 0.01
@@ -134,6 +135,7 @@
     ar_liheap_cooling_eligible: true
     ar_liheap_cooling: 84
     ar_liheap: 84
+    liheap: 168
 
 # The summer program pays electric benefits only (manual section 2.1, p29), so the heating
 # fuel does not matter: gas heat and no heat both receive the FY2026 1&2 cell for MCI

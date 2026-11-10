@@ -22,7 +22,7 @@
     ar_liheap_cooling_eligible: [true, false]
     ar_liheap_cooling: [60, 0]
 
-# The energy burden is a cooling cost on the household's own electric account. Full-time
+# The energy burden is a cooling cost on an electric bill the household pays itself. Full-time
 # Arkansas minimum wage (11 x 40 x 52 = 22_880; x 0.8 = 18_304; MCI 1_525) puts each
 # household in the FY2026 1510-1569 row, 77 for 1&2. No cooling cost, or no electric bill,
 # gives no summer grant.
@@ -87,3 +87,28 @@
     ar_liheap_countable_income: 18_300
     ar_liheap_cooling_eligible: false
     ar_liheap_cooling: 0
+
+# Plan item 3.3 makes unsubsidized renters with utilities included in the rent eligible.
+# Both renters pay the FY2026 HUD Fair Market Rent for a one-bedroom unit in Pulaski
+# County, $989 a month (x12 = 11_868), which includes utilities, and report no separate
+# cooling cost or electric bill. Case 2's worker (MCI 1_525) gets 77 when unsubsidized;
+# the rent route covers only unsubsidized households, so the subsidized renter gets 0.
+- name: Case 5, an unsubsidized renter with utilities in the rent receives the summer grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR]
+    age: [45, 45]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    ar_tea: [0, 0]
+    employment_income_before_lsr: [22_880, 22_880]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    has_cooling_expense: [false, false]
+    pre_subsidy_electricity_expense: [0, 0]
+    tenant_pays_utilities: [false, false]
+    rent: [11_868, 11_868]
+    receives_housing_assistance: [false, true]
+  output:
+    ar_liheap_cooling_eligible: [true, false]
+    ar_liheap_cooling: [77, 0]
