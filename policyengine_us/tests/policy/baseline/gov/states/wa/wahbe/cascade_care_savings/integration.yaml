@@ -1,11 +1,13 @@
 # Integration tests for Washington Cascade Care Savings (CCS).
 #
-# These exercise the full chain: aca_magi_fraction (income gate) ->
+# These exercise the full chain: ACA MAGI over the prior-year guideline (income
+# gate, on the exact ratio) ->
 # wa_cascade_care_savings_eligible (Group 1 / Group 3 membership) ->
 # wa_cascade_care_savings (per-member build-up, capped by SLCSP - APTC).
 #
-# slcsp, aca_ptc, and aca_magi_fraction are supplied directly (SLCSP as an annual
-# value) so the arithmetic is fully hand-verifiable. slcsp is a MONTH variable;
+# slcsp and aca_ptc are supplied directly (SLCSP as an annual value), and income
+# is aca_magi against a prior-year tax_unit_fpg pinned to $10,000, so the
+# arithmetic is fully hand-verifiable. slcsp is a MONTH variable;
 # at the YEAR test period its output is the annual sum (= the value supplied).
 # Each scenario documents the per-member build-up and the cap.
 #
@@ -31,7 +33,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -59,7 +63,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.8
+        aca_magi: 18_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -91,7 +97,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 2.2
+        aca_magi: 22_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
         assigned_aca_ptc: 7_000
@@ -122,7 +130,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.0
+        aca_magi: 20_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
         assigned_aca_ptc: 0
@@ -154,7 +164,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 1.6
+        aca_magi: 16_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 10_000
         aca_ptc: 4_000
         assigned_aca_ptc: 4_000
@@ -184,7 +196,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.0
+        aca_magi: 10_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 6_000
         aca_ptc: 0
         assigned_aca_ptc: 0
@@ -211,7 +225,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.6
+        aca_magi: 26_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 6_000
         aca_ptc: 3_000
         assigned_aca_ptc: 3_000
@@ -254,7 +270,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        aca_magi_fraction: 1.6
+        aca_magi: 16_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 15_000
         aca_ptc: 6_000
         assigned_aca_ptc: 6_000
@@ -283,7 +301,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2026: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -322,7 +342,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -362,7 +384,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 1.4
+        aca_magi: 14_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
         assigned_aca_ptc: 5_000
@@ -394,7 +418,9 @@
     tax_units:
       tax_unit:
         members: [person1]
-        aca_magi_fraction: 2.6
+        aca_magi: 26_000
+        tax_unit_fpg:
+          2025: 10_000
         slcsp: 12_000
         aca_ptc: 0
         assigned_aca_ptc: 0
