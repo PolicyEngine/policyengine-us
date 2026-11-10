@@ -39,7 +39,7 @@
 
 # A 72-year-old in a house with $1,200 a month of Social Security ($14,400 a year) and a
 # $900 gas heating bill. 14,400 / 15,650 = 0.920, tier 2: cooling $595 (single-family) and,
-# separately, heating $550 (natural gas column).
+# separately, heating $550 (natural gas column). The national LIHEAP total is $550 + $595.
 - name: Case 3, a retiree receives both the heating and the cooling payment.
   period: 2026
   absolute_error_margin: 0.01
@@ -58,6 +58,7 @@
     ne_liheap_cooling_eligible: true
     ne_liheap: 550
     ne_liheap_cooling: 595
+    liheap: 1_145
 
 # A mother receiving ADC of about $5,920 a year with her 3-year-old in an apartment.
 # 5,920 / 21,150 = 0.280, tier 1: multi-family $385.

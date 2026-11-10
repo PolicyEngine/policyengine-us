@@ -19,6 +19,7 @@ class ne_liheap_cooling(Variable):
         # 476 NAC 3-001 and 3-003.01, PDF pages 1-2
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%203%20(12-26-2020).pdf/1748#page=1",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%201%20(12-26-2020).pdf/1746#page=1",
+        "https://dhhs.ne.gov/Pages/Energy-Assistance.aspx",
     )
 
     def formula(spm_unit, period, parameters):
@@ -26,8 +27,9 @@ class ne_liheap_cooling(Variable):
         income_ratio = spm_unit("ne_liheap_payment_fpg_ratio", period)
         dwelling = spm_unit("ne_liheap_dwelling_type", period)
         multifamily = dwelling == dwelling.possible_values.MULTI_FAMILY
-        # One payment per June-August cooling season (476 NAC 1-004.04). The
-        # FY2026 table has no fuel column. No FY2026 cooling supplement has
+        # The cooling season runs June 1 through August 31 (476 NAC 1-004.04),
+        # and DHHS pays "one time per cooling season" (Energy Assistance page).
+        # The FY2026 table has no fuel column. No FY2026 cooling supplement has
         # been verified.
         return where(
             multifamily,

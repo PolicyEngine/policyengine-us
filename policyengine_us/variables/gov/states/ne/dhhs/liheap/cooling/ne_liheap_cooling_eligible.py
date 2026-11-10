@@ -8,7 +8,8 @@ class ne_liheap_cooling_eligible(Variable):
     label = "Nebraska LIHEAP regular cooling assistance eligibility"
     defined_for = StateCode.NE
     reference = (
-        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%202%20(06-26-2022).pdf/1747#page=2",
+        # PDF pages 1-3
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%202%20(06-26-2022).pdf/1747#page=1",
         # PDF pages 11-12
         "https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=11",
         "https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=4",
@@ -21,6 +22,9 @@ class ne_liheap_cooling_eligible(Variable):
         # 476 NAC 2-002.02 excludes members who fail the citizenship and
         # residency rules, so they cannot be the qualifying member.
         included = person("is_snap_immigration_status_eligible", period.first_month)
+        # 2-003(A) requires a child under 6 who receives ADC. ADC receipt is
+        # known only for the whole unit, so a child under 6 in a unit that
+        # receives ADC qualifies even if that child is outside the grant.
         receives_adc = spm_unit("tanf", period) > 0
         # 476 NAC 2-003(A) and (B). Routes (C), a severe illness aggravated by
         # extreme heat verified on form IM-55, and (D), an air conditioner from
