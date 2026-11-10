@@ -5,10 +5,8 @@
 # reform's filing-status income limit even when federal AGI is over it.
 # TY2025 rates (IT-201-I 2025, line 69 and 69a): fixed amount $63 single, $125
 # joint; rate reduction 0.171% of city taxable income up to $12,000 (single) or
-# $21,600 (joint), then 0.228% above it. Above the first band the form prints
-# rounded base amounts ($21 single, $37 joint) while the model carries in the
-# first band at the marginal rate (12,000 x 0.171% = $20.52; 21,600 x 0.171% =
-# $36.936), and the expected values below follow the model; that gap is #8947.
+# $21,600 (joint), and above it $21 (single) or $37 (joint) plus 0.228% of the
+# excess (Tax Law § 606(ggg)(4-b)(A), (C)).
 
 - name: Case 1, single retiree whose IRA distribution puts AGI over the limit but school credit income under it.
   period: 2025
@@ -37,9 +35,9 @@
     # 300,000 - 20,000 pension and annuity exclusion - 8,000 standard deduction.
     nyc_taxable_income: 272_000
     nyc_school_tax_credit_fixed_amount: 63
-    # 12,000 x 0.171% + (272,000 - 12,000) x 0.228% = 20.52 + 592.80.
-    nyc_school_tax_credit_rate_reduction_amount: 613.32
-    nyc_school_tax_credit: 676.32
+    # $21 + (272,000 - 12,000) x 0.228% = 21 + 592.80.
+    nyc_school_tax_credit_rate_reduction_amount: 613.80
+    nyc_school_tax_credit: 676.80
 
 - name: Case 2, IRA distribution of a filer under 59 1/2 brings school credit income under the limit.
   period: 2025
@@ -67,9 +65,9 @@
     # No pension and annuity exclusion under age 59 1/2: 250,001 - 8,000.
     nyc_taxable_income: 242_001
     nyc_school_tax_credit_fixed_amount: 63
-    # 20.52 + (242,001 - 12,000) x 0.228% = 20.52 + 524.40.
-    nyc_school_tax_credit_rate_reduction_amount: 544.92
-    nyc_school_tax_credit: 607.92
+    # $21 + (242,001 - 12,000) x 0.228% = 21 + 524.40228.
+    nyc_school_tax_credit_rate_reduction_amount: 545.40
+    nyc_school_tax_credit: 608.40
 
 - name: Case 3, wages one dollar over the limit with no IRA distribution.
   period: 2025
@@ -151,9 +149,9 @@
     # 300,000 - 20,000 pension and annuity exclusion - 16,050 standard deduction.
     nyc_taxable_income: 263_950
     nyc_school_tax_credit_fixed_amount: 125
-    # 21,600 x 0.171% + (263,950 - 21,600) x 0.228% = 36.936 + 552.558.
-    nyc_school_tax_credit_rate_reduction_amount: 589.49
-    nyc_school_tax_credit: 714.49
+    # $37 + (263,950 - 21,600) x 0.228% = 37 + 552.558.
+    nyc_school_tax_credit_rate_reduction_amount: 589.558
+    nyc_school_tax_credit: 714.558
 
 - name: Case 6, the same joint retirees fail a one-child minimum.
   period: 2025
@@ -217,9 +215,9 @@
     nyc_school_tax_credit_eligible: true
     # 263,950 - 1,000 New York dependent exemption.
     nyc_taxable_income: 262_950
-    # 36.936 + (262,950 - 21,600) x 0.228% = 36.936 + 550.278.
-    nyc_school_tax_credit_rate_reduction_amount: 587.21
-    nyc_school_tax_credit: 712.21
+    # $37 + (262,950 - 21,600) x 0.228% = 37 + 550.278.
+    nyc_school_tax_credit_rate_reduction_amount: 587.278
+    nyc_school_tax_credit: 712.278
 
 - name: Case 8, a filing-status limit equal to school credit income, not AGI, is met.
   period: 2025
@@ -244,7 +242,7 @@
   output:
     nyc_school_credit_income: 100_000
     nyc_school_tax_credit_eligible: true
-    nyc_school_tax_credit: 676.32
+    nyc_school_tax_credit: 676.80
 
 - name: Case 9, a filing-status limit one dollar under school credit income is not met.
   period: 2025

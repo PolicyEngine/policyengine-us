@@ -5557,6 +5557,78 @@ candidates:
   note: Ruled 2026-11-02 for the statute. Subd. 2 sends the person to subd. 3(b) with no arrangement test, and the
     manual's single-person lists do give the upgrade on arrangement B. mn_msa_payment_category reads the federal
     arrangement only for the facility test.
+- id: us-mn:paid-leave-small-employer-average-wage
+  program: paid-family-medical-leave
+  years:
+    from: 2026
+    type: calendar
+  question: Does Minnesota compare its Paid Leave small employer wage limit with an employer's highest quarterly
+    covered wages divided by its highest quarterly count of wage records, or with that quotient divided by four again?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 268B.14, subds. 5a(a)(2) and 5c(a)
+    url: https://www.revisor.mn.gov/statutes/cite/268B.14
+  - kind: guidance
+    citation: DEED, Paid Leave small employer premium rate designation (2026 premiums)
+    url: https://mn.gov/deed/assets/paid-leave-small-employer-premium-rate-designation-acc_tcm1045-716947.pdf
+  - kind: agency-practice
+    citation: Unemployment Insurance Minnesota, small employer premium rate page
+    url: https://mn.gov/uimn/employers/paid-leave/small-employer-premiums.jsp
+  readings:
+    statute: Under subd. 5c(a), an employer's average wage equals its highest quarterly covered wages divided by its
+      highest quarterly count of wage records. Subd. 5a(a)(2) sets the limit at 150 percent of the state's average
+      wage, and an average equal to that limit qualifies. In its designation notice, DEED computes the average the
+      same way and excludes only averages above $27,745.88 a quarter for 2026.
+    other: On its small employer page, Unemployment Insurance Minnesota (UIMN) calls that quotient an average annual
+      wage and divides it by four to get an average quarterly wage. UIMN states the test as less than 150 percent of
+      the statewide average, but in its last step it excludes only an average that exceeds the limit.
+  example: For 2026, an employer with 10 employees and $400,000 of covered wages in its highest-paid quarter averages
+    $40,000 under subd. 5c(a) and pays the full 0.88%. Under UIMN's steps, it would average $10,000, within the
+    $27,745.88 limit, and pay 0.66%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/payroll/paid_leave/mn_paid_leave_small_employer.py
+    - policyengine_us/variables/gov/states/mn/tax/payroll/paid_leave/mn_paid_leave_employer_average_quarterly_wage.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10294
+  state: ruled
+  note: Ruled 2026-11-09 for the statute, which DEED follows in its notice. Users enter the subd. 5c(a) quotient with
+    no further division by four, and an average equal to the limit qualifies. On $100,000 of 2026 wages, an employer
+    that deducts the most it may from wages pays $440 of an $880 premium, against $220 of $660 under UIMN's steps.
+- id: us-mn:paid-leave-small-employer-wage-limit-cents
+  program: paid-family-medical-leave
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Does a 2026 average quarterly wage of $27,745.88 meet Minnesota's Paid Leave small employer wage test,
+    when 150 percent of DEED's $73,989 statewide average annual wage comes to $27,745.875 a quarter and DEED states
+    $27,745.88?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 268B.14, subd. 5a(a)(2)
+    url: https://www.revisor.mn.gov/statutes/cite/268B.14
+  - kind: guidance
+    citation: DEED, Paid Leave small employer premium rate designation (2026 premiums)
+    url: https://mn.gov/deed/assets/paid-leave-small-employer-premium-rate-designation-acc_tcm1045-716947.pdf
+  readings:
+    statute: Subd. 5a(a)(2) sets the limit at 150 percent of the state's average wage and admits an average equal to
+      it, but doesn't say how to state the limit per quarter or round it. A quarter of 150 percent of $73,989 comes to
+      $27,745.875, and an average of $27,745.88 exceeds it.
+    other: DEED states the limit to the cent, $27,745.88, and excludes only averages above it, so an average of
+      $27,745.88 qualifies.
+  example: An employer with 10 employees and $277,458.80 of covered wages in its highest-paid quarter averages
+    $27,745.88. Against DEED's figure it pays 0.66%; against $27,745.875 it would pay 0.88%.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/payroll/paid_leave/mn_paid_leave_small_employer.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10294
+  state: ruled
+  note: Ruled 2026-11-09 for DEED's figure, since the statute leaves the quarterly limit's rounding open. The model
+    rounds the limit half up to the cent, which reproduces $27,745.88, so an input of $27,745.88 meets it.
 - id: us-mn:small-claim-of-right-repayment-deduction
   program: income-tax
   years:
@@ -6186,40 +6258,6 @@ candidates:
     non-loss adjustments, and adds back only the business and capital losses (mt_elderly_homeowner_or_renter_credit_gross_household_income.py,
     elderly_homeowner_or_renter/gross_income_sources.yaml). Identify the omitted adjustments and verify applicability
     in both years.'
-- id: us-mt:elderly-credit-refundable-credit-timing
-  program: elderly-homeowner-renter-credit
-  years:
-    from: 2021
-    to: 2023
-    type: tax
-  question: Do refundable credits enter elderly-credit income when received under the regulation or as reported
-    on the current return under the schedule?
-  sources:
-  - kind: regulation
-    citation: ARM 42.4.301(2)(b)-(c)
-    url: null
-  - kind: form
-    citation: 2021-2023 Elderly Homeowner/Renter Credit Schedule
-    url: https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=10
-  readings:
-    statute: The cited regulation counts refundable credits actually received; no statute is supplied.
-    other: The schedule directs use of amounts reported on the current Form 2.
-  pe_us:
-    follows: unknown
-    code:
-    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
-    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_received.py
-    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
-    - policyengine_us/variables/gov/states/mt/tax/income/tax_calculation/mt_refundable_credits_before_renter_credit.py
-    - policyengine_us/parameters/gov/states/mt/tax/income/credits/refundable.yaml
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9915
-  state: unreviewed
-  note: PE-US uses the current return's federal and other Montana refundable credits (the Montana EITC from 2019)
-    as a proxy for credits received, while the elderly credit itself enters as an input for the amount received
-    during the year (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py, mt_refundable_credits_before_renter_credit.py,
-    credits/refundable.yaml, mt_elderly_homeowner_or_renter_credit_received.py, elderly_homeowner_or_renter/gross_income_sources.yaml).
-    Resolve the regulation/form timing difference, noting that the 2024 caption uses received amounts.
 - id: us-mt:elderly-credit-rent-free-occupants
   program: income-tax
   years:
@@ -6230,30 +6268,78 @@ candidates:
   sources:
   - kind: statute
     citation: MCA 15-30-2338(1)(c)
-    url: null
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0380/0150-0300-0230-0380.html
   - kind: regulation
-    citation: ARM 42.4.302(2)(b)
-    url: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.4.302
+    citation: ARM 42.4.302(2)(b), expression effective 9/7/2024
+    url: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/5eedb34b-939b-4c09-ad35-59502b699bf6/document/e7a48415-15da-4847-8132-2b196c217e14
   - kind: instructions
     citation: 2025 Form 2 instructions, Schedule 2EC line 23, PDF page 47
     url: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
   readings:
-    statute: The owner, renter or lessee condition potentially excludes a rent-free occupant.
+    statute: The owner, renter or lessee condition excludes a rent-free occupant who holds none of those statuses.
     other: Another person's property tax bill qualifies as the claimant's rent.
   example: An 80-year-old parent with a $14,000 pension living rent-free in a child's home with $4,000 property
-    tax receives a 2024 credit of $341 versus $0 before.
+    tax and no lessee status receives a 2024 credit of $0 under the statute, against $341 under the other reading.
+    Recorded as a lessee, the parent receives $341.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_eligible.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_gross_rent.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_property_tax_billed.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9945
+    - https://github.com/PolicyEngine/policyengine-us/pull/10331
+  state: ruled
+  note: 'PE-US follows the statute from #10331: a head or spouse must have occupied a Montana dwelling as an owner,
+    renter or lessee for 6 months (mt_elderly_homeowner_or_renter_credit_eligible.py). Rent paid or property tax
+    billed to the tax unit shows that status (mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months.py);
+    a rent-free lessee is recorded through mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months.py.
+    The household''s bill still counts as rent for an eligible claimant whose tax unit is billed nothing, which
+    ARM 42.4.302(2)(b) allows "an eligible claimant" (mt_elderly_homeowner_or_renter_credit_gross_rent.py), so
+    the regulation is read as measuring rent, not as conferring eligibility. ARM 42.4.302 and the 2025 instructions
+    page are captured under source_conflicts/sources/us-mt/; MCA 15-30-2338 is in the Axiom corpus. Move to the
+    register after #10331 merges.'
+- id: us-mt:elderly-credit-federal-refundable-credits-before-2017
+  program: elderly-homeowner-renter-credit
+  years:
+    from: 2009
+    to: 2016
+    type: tax
+  question: Before ARM 42.4.301(2)(b) was amended on November 10, 2017, did gross household income count federal
+    refundable credits received, as nontaxable income under the statute, or only federal refunds that recovered
+    a prior-year Montana tax benefit, under the regulation and the form?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2337(9)(a) (2009)
+    url: https://archive.legmt.gov/bills/2009/mca/15/30/15-30-2337.htm
+  - kind: regulation
+    citation: ARM 42.4.301(2)(b) as in effect 8/20/2004 to 11/9/2017
+    url: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/788508cc-8418-41c8-926d-3dfb11af3fd6
+  - kind: form
+    citation: 2016 Montana Form 2EC Gross Household Income Worksheet, PDF pages 74-75
+    url: https://taxsim.nber.org/historical_state_tax_forms/MT/2016/Form_2_booklet_2016.pdf#page=74
+  readings:
+    statute: A refundable credit received is nontaxable income under (9)(a), so it counts from 2009.
+    other: A refundable credit paid in excess of tax is a federal refund, which the pre-2017 regulation counts only
+      to the extent it recovered a prior-year Montana tax benefit, and the 2016 worksheet lists only federal income
+      tax refunds taxable in Montana; so it does not count before 2017.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10331
   state: open
-  note: 'PE-US follows the regulation and instructions: when no one in the claimant''s tax unit is billed property
-    tax, the household''s property tax counts as rent, taking the larger of that and rent paid, so a rent-free occupant
-    can qualify (mt_elderly_homeowner_or_renter_credit_gross_rent.py). The source-choice question remains open;
-    the statute-first rule requires a model change if the regulation expands rather than interprets statutory eligibility.'
+  note: PE-US follows the regulation and the form before 2017. The federal refundable credits received
+    (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py) enter the source list only from 2017
+    (elderly_homeowner_or_renter/gross_income_sources.yaml). Whether the pre-2017 regulation narrows the statute's
+    "all nontaxable income", and how far a Montana rule binds against its statute, is open for the project lead.
+    The 2009 statute, the three ARM 42.4.301 expressions in force from 8/20/2004 to 11/9/2017 (whose (2) text is
+    the same) and the 2016 booklet pages are captured under source_conflicts/sources/us-mt/.
 - id: us-mt:liheap-business-equity-limit
   program: liheap
   years:
@@ -7721,6 +7807,32 @@ candidates:
   state: ruled
   note: Both credits halve exactly, as the statute says; the tables round for the form. Section 606 authorizes
     nearest-dollar tables only for the real property tax credit.
+- id: us-ny:nyc-school-tax-credit-fixed-amount-rounding
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Is the NYC school tax credit fixed amount for unmarried, head of household and separate filers the
+    statutory $62.50 or the $63 that the IT-201 instructions print?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(ggg)(4-a)(B)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: 2025 Instructions for Form IT-201, line 69
+    url: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
+  readings:
+    statute: The statute sets the fixed amount for these filers at $62.50.
+    other: The instructions' table prints $63 and says the statutory amounts have been rounded.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/local/ny/nyc/tax/income/credits/school/fixed/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10330
+  state: unreviewed
+  note: 'Found in review of the rate reduction amount, where the model now follows the statute over the
+    instructions; the fixed amount still follows the instructions'' rounding. The difference is $0.50 per return.'
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
@@ -9728,6 +9840,102 @@ candidates:
   state: ruled
   note: 'Ruled 2026-11-02: income other than minors'' income follows the plan.'
 
+- id: us-sc:tanf-child-support-deduction-payer
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does child support that a South Carolina TANF benefit group member pays to dependents outside the group
+    come off only that member's own income, or off the group's income as a whole?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(L)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=212
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 sections 8.11 and 8.16 D and F
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=131
+  readings:
+    statute: No statute is supplied; 114-1140(L) says support "made by a budget group member" to legal dependents outside
+      the group "may be deducted from the income of the payor".
+    other: Section 8.16 D says to subtract support "from the remaining earned income of any adult", and 8.16 F takes
+      support "paid by any adult" from the unearned income; section 8.11 deducts it "as income to the BG".
+  example: In May 2026 adult A pays $2,400 a year and has no income, and adult B earns $600 a month, with one child.
+    From the payer's income the deduction is $0, countable income $500 and the payment floor(610 x 0.4046) = $246.
+    Pooled, the deduction is $200, countable income $300 and the payment $327.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_child_support_deduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
+    section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
+    member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-gross-income-limit-cents
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Is South Carolina's TANF gross income limit 185 percent of the need standard with its cents, or that amount
+    with the cents dropped?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(A)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1150(A) says gross income "must not exceed 185 percent of the need standard by
+      family size", and 114-1140(A)(4) rounds down only "the standard of need or the payment amount".
+    other: The section 8.15 note says "To determine the Gross Income Limit, multiply the Need Standard by 1.85 and drop
+      the cents."
+  example: For two persons in 2026 the need standard is $881. Gross income of $1,629.50 a month passes the limit of
+    881 x 1.85 = $1,629.85 and fails the manual's $1,629.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/eligibility/sc_tanf_gross_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs. Section 8.1 also says "Do not round at any step of the TANF calculation." The model
+    keeps rounding the need standard and the payment down to whole dollars under 114-1140(A)(4).
+- id: us-sc:tanf-need-standard-above-eight
+  program: tanf
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: For a benefit group of more than eight, is South Carolina's TANF need standard fifty percent of the poverty
+    guideline rounded down to a whole dollar, or the Policy Manual's eight-person amount plus $229 for each added person?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(2) and (A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1140(A)(2) sets the need standard "at fifty percent of the current year's" poverty
+      guidelines, and (A)(4) rounds it "down to the next lower whole dollar".
+    other: The section 8.15 table stops at eight persons, and its note says "For family sizes over 8, $229 is added to the
+      need standard for each additional person."
+  example: Under the 2025 guidelines a group of 13 has a need standard of floor($81,650 / 12 x 0.5) = $3,402 under
+    114-1140(A)(2) and (A)(4), and $2,256 + 5 x $229 = $3,401 under the manual note. The two agree through 12 persons.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_need_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs, and the manual's $229 restates the 2025 added-person guideline ($5,500 / 12 x 0.5 =
+    $229.17) without its cents. The regulation gives $1 more for 13 to 18 persons and $2 more for 19 to 24.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
@@ -11300,6 +11508,44 @@ candidates:
   state: unreviewed
   note: PE-US follows Vermont's deduction; evidence concerns federal fiscal 2016-2017 and 2024 only, with intervening
     years unasserted.
+- id: us-vt:student-loan-interest-surviving-spouse-limit
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Does a qualifying surviving spouse get Vermont's student loan interest subtraction, when 32 V.S.A. §
+    5811(29)(B) sets an income limit only for single, head of household, married filing separately and joint filers?
+  sources:
+  - kind: statute
+    citation: 32 V.S.A. § 5811(21)(B)(vi), (29)(B)
+    url: https://legislature.vermont.gov/statutes/section/32/151/05811
+  - kind: form
+    citation: 2025 Vermont Schedule IN-112, line 16c
+    url: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2025.pdf#page=23
+  - kind: statute
+    citation: 32 V.S.A. § 5822(a)
+    url: https://legislature.vermont.gov/statutes/section/32/151/05822
+  - kind: statute
+    citation: 2021, No. 138 (Adj. Sess.), §§ 5, 7 (32 V.S.A. §§ 5811(29), 5830e(a)(1))
+    url: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=5
+  readings:
+    statute: (29)(B) defines a qualified resident taxpayer by a $120,000 limit for single, head of household and
+      married filing separately filers and a $200,000 limit for joint filers. It names no amount for a qualifying
+      surviving spouse, so a surviving spouse doesn't meet the definition and gets no subtraction.
+    other: Line 16c applies $120,000 to "All other filers", a qualifying surviving spouse included.
+  example: A 2025 surviving spouse with $110,000 of federal AGI and $3,000 of student loan interest, none deducted
+    federally, subtracts $3,000 under line 16c and nothing under § 5811(29)(B).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/vt/tax/income/agi/student_loan_interest/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10104
+  state: ruled
+  note: PolicyEngine follows the statute. The chapter names surviving spouses where it includes them (§ 5811(21)(C)(i)
+    and (ii), § 5822(a)(1) and (3)), and (29)(B) does not. The act that added (29)(B) did the same two sections later,
+    when its § 7 renamed the qualifying widow or widower status "surviving spouse" in § 5830e(a)(1)'s list of
+    filing statuses. The Department's form gives them the $120,000 limit. Code not yet on main.
 - id: us-wa:liheap-minimum-benefit-cost-cap
   program: liheap
   years:
@@ -11411,6 +11657,46 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the rounded standards as a disputable gap-fill; verify statutory rounding requirements and
     applicability of the undated precedent. Code not yet on main: medicaid_ltss_mmmna.'
+- id: us-wa:pte-veteran-pathway-pre-2016
+  program: property-tax-exemption
+  years:
+    from: 2008
+    to: 2015
+    type: program
+    note: property tax collection year (taxes levied for collection in that year)
+  question: Before collection year 2016, does RCW 84.36.381(3)(b)'s "one hundred percent service-connected disability
+    as provided in 42 U.S.C. Sec. 423(d)(1)(A)" mean a disability wholly connected to service under Social Security's
+    definition, or a 100% VA rating?
+  sources:
+  - kind: statute
+    citation: RCW 84.36.381(3)(b), as amended by 2008 c 6 s 706
+    url: https://lawfilesext.leg.wa.gov/biennium/2007-08/Pdf/Bills/Session%20Laws/House/3104-S2.SL.pdf#page=85
+  - kind: statute
+    citation: RCW 84.36.381(3)(a)(ii), as amended by 2015 3rd sp.s. c 30 s 2, for collection in 2016 and after
+    url: https://lawfilestestext.leg.wa.gov/LawTest/RCW%20Supplement/RCW%20%2084%20%20TITLE/RCW%20%2084%20.%2036%20%20CHAPTER/RCW%20%2084%20.%2036%20.381.htm
+  - kind: statute
+    citation: 42 U.S.C. 423(d)(1)(A) (Social Security Act 223(d)(1)(A))
+    url: https://www.ssa.gov/OP_Home/ssact/title02/0223.htm
+  readings:
+    statute: A disability that meets Social Security's definition in 42 U.S.C. 423(d)(1)(A) and is wholly connected
+      to service; the cross-reference names that definition, and the 2016 amendment's move to VA-rating language marks
+      the older text as something other than a rating.
+    other: A 100% VA service-connected disability rating.
+  example: In collection year 2015 a 45-year-old veteran with a disability meeting the Social Security definition,
+    wholly service-connected but with no VA rating, qualifies under the Social Security reading and not under the
+    VA-rating reading.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_wholly_service_connected_disability.py
+    - policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_categorical_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10330
+  state: ruled
+  note: PolicyEngine ruled on 2026-10-21 for the Social Security reading. The model has no service-connection input,
+    so wa_pte_wholly_service_connected_disability defaults to is_disabled (or is_fully_disabled_service_connected_veteran)
+    as an overridable proxy, read together with is_veteran in wa_pte_categorical_eligible; it over-includes a veteran
+    whose disability is not service-connected.
 - id: us-wi:claim-of-right-itemized-deduction-credit
   program: income-tax
   years:
@@ -11440,6 +11726,38 @@ candidates:
   note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code includes the
     federal claim of right deduction in the credit base with the Schedule 1 components. The separate Wisconsin
     repayment credit that would trigger the 71.07(5)(a)6 exclusion is not modeled.
+- id: us-wi:homestead-age-disability-earned-income-routes
+  program: homestead-credit
+  years:
+    from: 2021
+    type: tax
+  question: Does a Wisconsin homestead claimant with no earned income qualify by age 62 or by disability alone, when
+    Wis. Stat. 71.54(1)(gm) read by itself denies such a claimant who is not disabled or is under 62?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 71.54(1)(dm), (em), (gm)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54
+  - kind: instructions
+    citation: 2025 Schedule H instructions, Step 1a (PDF p. 4)
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=4
+  readings:
+    statute: Read together, (dm), (em) and (gm) are alternatives, since (dm) makes (em) and (gm) exceptions to its age
+      bar. A claimant qualifies by being 62 or older, by being disabled or by having earned income.
+    other: (gm) read by itself denies a claimant with no earned income unless the claimant is both disabled and 62 or
+      older.
+  example: A 2021 claimant aged 62 who is not disabled and has no earned income qualifies under the whole-text reading
+    and Step 1a, and does not under (gm) read by itself.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/credits/homestead/wi_homestead_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10104
+  state: open
+  note: PE-US follows the whole-text reading, which Schedule H Step 1a shares by listing age 62 or older, disability
+    and earned income as alternative qualifications. wi_homestead_eligible.yaml unit tests 4 (aged 62, no earnings)
+    and 6 (disabled spouse aged 60, no earnings) expect eligibility and would fail under (gm) read by itself. The
+    model's homestead parameters start in 2021.
 - id: us-wi:liheap-categorical-benefit-income
   program: liheap
   years:
@@ -12256,6 +12574,50 @@ candidates:
     Credit Limit Worksheet B (ctc_credit_limit_worksheet_b_applies.py). The legacy aggregates still count as an exclusion.
     The EITC keeps the broader section 32(c)(1)(C) test in elects_section_911_exclusion. Register the entry and add
     the marker once #10297 is on main.
+- id: us:catch-up-deferrals-after-402g1c-repeal
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Are pre-tax catch-up contributions above the section 402(g)(1)(B) amount excluded from gross income, and
+    deductible in a self-employed plan, now that SECURE 2.0 section 603(b)(1) has struck section 402(g)(1)(C)?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 402(g)(1) as amended by Pub. L. 117-328 section 603(b)(1) and (c); 414(v)(3)(A)(i)
+    url: https://www.law.cornell.edu/uscode/text/26/402#g_1
+  - kind: regulation
+    citation: 26 CFR 1.402(g)-2(a)
+    url: https://www.law.cornell.edu/cfr/text/26/1.402(g)-2
+  - kind: guidance
+    citation: Notice 2023-62, section III.A, PDF pages 4-5
+    url: https://www.irs.gov/pub/irs-drop/n-23-62.pdf#page=4
+  - kind: worksheet
+    citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, steps 16-18
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
+  readings:
+    statute: For taxable years beginning after 2023, section 402(g)(1)(A) includes elective deferrals above the
+      applicable dollar amount in gross income, except designated Roth contributions; the catch-up exclusion in former
+      subparagraph (C) is struck, and section 414(v)(3)(A)(i) does not list section 402(g).
+    other: Notice 2023-62 says non-Roth catch-up contributions are not includible under section 402(g)(1)(A), reading
+      section 414(v)(3)(A)(i); section 1.402(g)-2(a) still raises the 402(g)(1)(B) limit by the catch-up amount; and
+      Pub. 560 adds catch-up contributions to the self-employed maximum deductible contribution.
+  example: In 2025 a 55-year-old with $200,000 of Schedule C profit and $100,000 of desired contributions gets a
+    $68,280.73 plan limit, including the $7,500 catch-up. Including that $7,500 in gross income under the amended
+    section 402(g)(1)(A) would leave a net deduction of $60,780.73.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/household/expense/retirement/elective_deferral_limit.py
+    - policyengine_us/variables/household/expense/retirement/self_employed_pension_contribution_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10121
+  state: unreviewed
+  note: elective_deferral_limit adds k401_catch_up_limit to the section 402(g)(1)(B) amount in every year, and the
+    self-employed plan limit adds the same catch-up room to its maximum. The regulation binds unless it flatly
+    contradicts the amended statute, and the notice reads section 414(v)(3)(A)(i) to keep catch-ups excludable, so
+    the project lead should rule before any model change. Its texts for the register are captured in
+    source_conflicts/sources/us/notice-2023-62-p4-5.txt (section III.A), treas-reg-1-402g-2-2025-p1.txt and
+    p560-2025-p39.txt (steps 16 to 18).
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
@@ -12830,6 +13192,43 @@ candidates:
   state: ruled
   note: Ruled October 2026; verify the worksheet version and whether claiming the rebate defeats the refund-only
     joint-return exception.
+- id: us:se-plan-step-2-multiple-businesses
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: When a self-employed person has more than one business, does Pub. 560's step 2 subtract all of Schedule 1
+    line 15 from the plan business's net profit, or only the part attributable to that business?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 401(c)(2)(A)(vi); 404(a)(8)(C)
+    url: https://www.law.cornell.edu/uscode/text/26/401#c_2_A
+  - kind: worksheet
+    citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, step 2
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
+  - kind: form
+    citation: Form 7206 (2023), lines 5-8
+    url: https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1
+  readings:
+    statute: Earned income is figured with regard to the section 164(f) deduction and only from the business that
+      has the plan; the statute does not say how to split the deduction among businesses.
+    other: Pub. 560's step 2 enters the deduction from Schedule 1 line 15; Form 7206 lines 5 to 8 split line 15 by
+      each business's share of the profitable businesses' net profits for the same section 401(c) earned income.
+  example: In 2025, Schedule C profit of $60,000 and farm profit of $40,000 give a Schedule 1 line 15 of $7,064.78.
+    Splitting it gives step 3 of $55,761.14 and a $34,652.23 limit; subtracting all of it gives $52,935.23 and
+    $34,087.05.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/household/expense/retirement/self_employed_pension_earned_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10121
+  state: unreviewed
+  note: 'The code follows Form 7206: the Schedule C business takes Schedule 1 line 15 in proportion to its share of
+    the positive net profits of Schedule C, Schedule F and K-1 box 14 code A, through form_7206_line_7, the helper the
+    self-employed health insurance limit uses for the same earned income. Code not yet on main:
+    self_employed_pension_earned_income. Its texts for the register are captured in
+    source_conflicts/sources/us/p560-2025-p39.txt (step 2) and f7206-2023-p1.txt (lines 5 to 8).'
 - id: us:separate-filer-zero-income-threshold
   program: income-tax
   years:
