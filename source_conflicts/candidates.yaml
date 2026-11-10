@@ -7870,6 +7870,49 @@ candidates:
     main home''s value limits its own non-acquisition debt" give $22,500 home by home and $25,000 with Pub. 936''s total.
     The readings differ only when one home''s home equity debt exceeds its own room while the other home has room to
     spare. Ruled in November 2026 to follow the statute.'
+- id: us-ny:itemized-deduction-adjustment-college-tuition-base
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Does the Tax Law 615(f) itemized deduction adjustment (IT-196 line 46) apply to a base that includes the
+    615(d)(4) college tuition itemized deduction, as 615(a) defines the deduction, or to a base without it, as Form
+    IT-196 lays out lines 45 and 48 for Form IT-201 filers?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 615(a), (d)(4), (f)(1)-(2) and (g)
+    url: https://www.nysenate.gov/legislation/laws/TAX/615
+  - kind: form
+    citation: Form IT-196 (2021), lines 40-49
+    url: https://www.tax.ny.gov/pdf/2021/inc/it196_2021.pdf#page=3
+  - kind: instructions
+    citation: Form IT-196-I (2021), lines 43, 46 and 48 and Worksheets 3 and 4
+    url: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=20
+  readings:
+    statute: 615(f) takes its percentage of "the New York itemized deduction otherwise allowable under subsection (a)",
+      and 615(a) defines that deduction "with the modifications specified in this section", which include the
+      615(d)(4) college tuition deduction. The base includes tuition, as IT-196 line 45 does for Form IT-203 filers
+      (line 43).
+    other: For Form IT-201 filers, IT-196 adds the college tuition deduction on line 48, after the line 46
+      adjustment, so the line 45 base leaves it out.
+  example: A 2021 joint return with NY AGI $360,200, $50,000 of mortgage interest, a $640.50 line 40 limitation and a
+    $10,000 college tuition deduction has a line 46 adjustment of 0.25 x 59,359.50 = 14,839.875 and a New York itemized
+    deduction of 44,519.625 under the statute, against 12,339.875 and 47,019.625 under the IT-201 form layout.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/reduction/based_on_charitable_deduction/incremental/ny_itemized_deductions_lower_incremental_reduction.py
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/reduction/based_on_charitable_deduction/incremental/ny_itemized_deductions_higher_incremental_reduction.py
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/ny_itemized_deductions.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10658
+  state: unreviewed
+  note: The 615(f) base is ny_itemized_deductions_max (which includes ny_college_tuition_deduction) minus the line 40
+    limitation, for every filer. Above NY AGI $1,000,000, ny_itemized_deductions returns only the 615(g) share of the
+    charitable deduction, so the college tuition deduction is not added back, which also follows the statute ("Notwithstanding
+    subsection (a)") over the IT-201 line 48 addition. The model has no IT-201/IT-203 split for this rule. The IT-196
+    line 40-49 layout and the Worksheets 3 and 4 "25% (.25) of line 45" wording are the same on the 2018-2025 forms
+    and instructions checked (forms 2018-2021 and 2025; instructions 2018-2022, 2024 and 2025).
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
