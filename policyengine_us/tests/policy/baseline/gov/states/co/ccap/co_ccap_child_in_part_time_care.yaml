@@ -1,0 +1,150 @@
+# 8 CCR 1403-1 3.124(U) and (W), PDF page 85 of ruleVersionId 12658. Care is
+# part time when it averages fewer than 13 full-time equivalent units a month,
+# and a child in grades 1 to 12 with part-time days (up to 5 hours, 3.130(C))
+# has part-time care. The model takes a child in school aged 6 or older to be
+# in grade 1 or above, and reads such a child whose only reported care is an
+# after-school expense as in part-time care.
+- name: Case 1, part-time care by units and by school grade.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        is_in_k12_school: false
+      short_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 4
+      many_short_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+      grade_school:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+      kindergarten:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+      few_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_attending_days_per_month: 10
+      full_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 8
+      twelve_full_days:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 12
+      out_of_school:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 24
+      weekly_twenty:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_week: 20
+      weekly_forty:
+        age: 3
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_week: 40
+      grade_school_weekly:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 20
+        childcare_attending_days_per_month: 24
+      after_school_only:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        after_school_expenses: 3_000
+      preschool_after_school:
+        age: 4
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        after_school_expenses: 3_000
+      after_school_and_other_care:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        after_school_expenses: 3_000
+        pre_subsidy_childcare_expenses: 3_000
+      after_school_long_days:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        after_school_expenses: 3_000
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, short_days, many_short_days, grade_school, kindergarten, few_days, full_days, twelve_full_days, out_of_school, weekly_twenty, weekly_forty, grade_school_weekly, after_school_only, preschool_after_school, after_school_and_other_care, after_school_long_days]
+    households:
+      household:
+        members: [parent, short_days, many_short_days, grade_school, kindergarten, few_days, full_days, twelve_full_days, out_of_school, weekly_twenty, weekly_forty, grade_school_weekly, after_school_only, preschool_after_school, after_school_and_other_care, after_school_long_days]
+        state_code: CO
+  output:
+    # short_days: 0.55 * 21.67 = 11.92 units, under 13.
+    # many_short_days: 0.55 * 24 = 13.2 units.
+    # grade_school: 13.2 units, but section 3.124(W) covers an 8-year-old in school.
+    # kindergarten: 13.2 units, and kindergarten precedes grade 1.
+    # few_days: 10 days of unknown length, 10 units.
+    # full_days: 21.67 units.
+    # twelve_full_days: 12 units.
+    # out_of_school: 13.2 units, and the child attends no school.
+    # weekly_twenty: 20 / 5 = 4 hours a day, 11.92 units.
+    # weekly_forty: 8 hours a day, 21.67 units.
+    # grade_school_weekly: 24 * 12 / 52 = 5.54 days a week, 3.61 hours a day,
+    # 13.2 units, but section 3.124(W) covers an 8-year-old in school.
+    # after_school_only: section 3.124(W), with after-school care alone.
+    # preschool_after_school: not in school, so 21.67 units.
+    # after_school_and_other_care: other care leaves the schedule unknown.
+    # after_school_long_days: 8 hours a day, 21.67 units.
+    co_ccap_child_in_part_time_care: [false, true, false, true, false, true, false, true, false, true, false, true, true, false, false, false]
+
+- name: Case 2, an after-school expense with reported days of care.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+      five_days_a_week:
+        age: 8
+        is_tax_unit_dependent: true
+        after_school_expenses: 3_000
+        childcare_days_per_week: 5
+      twenty_attending_days:
+        age: 8
+        is_tax_unit_dependent: true
+        after_school_expenses: 3_000
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [parent, five_days_a_week, twenty_attending_days]
+    households:
+      household:
+        members: [parent, five_days_a_week, twenty_attending_days]
+        state_code: CO
+  output:
+    # five_days_a_week: reported days, so not after-school care alone, and one
+    # full-time unit a day gives 21.67 units.
+    # twenty_attending_days: reported days too, 20 units.
+    co_ccap_child_in_part_time_care: [false, false, false]
