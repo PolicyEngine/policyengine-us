@@ -1,3 +1,33 @@
+# 26-51-447 leaves dependent undefined. DFA's definition, 26 CAR 100-143(f),
+# doesn't ask whether another taxpayer can claim the filer, so the filer's
+# dependent student counts: 50% x $1,000 = $500, below the two-year cap.
+# Importing IRC 152(b)(1) would give $0.
+- name: 2025 claimable filer retains tuition for a supported dependent student
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      student:
+        age: 18
+        is_tax_unit_dependent: true
+        qualified_tuition_expenses: 1_000
+        technical_institution_student: false
+        four_year_college_student: false
+    tax_units:
+      unit:
+        members: [filer, student]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, student]
+        state_code: AR
+  output:
+    ar_post_secondary_education_tuition_deduction_person: [0, 500]
+    ar_post_secondary_education_tuition_deduction: 500
+
 - name: Post-secondary education tuition deduction for two-year college institutes (2022)
   period: 2022
   input:

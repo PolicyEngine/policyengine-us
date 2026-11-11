@@ -1,0 +1,125 @@
+# A blind and disabled worker aged 35 earns $60,000; the spouse aged 40 has a
+# $6,000 pension and is not aged, blind or disabled, so SSI deems the spouse's
+# income and the FPL unit has two people. The worker's countable income is
+# (60,000 - 240 - 780) / 2 = 29,490 and the spouse's 6,000 - 240 = 5,760, so
+# 35,250 is below 250% of the 2026 two-person guideline:
+# 2.5 x (15,960 + 5,680) = 54,100.
+
+- name: Case 1, an unrelated adult in a default marital unit does not enter the worker's budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      worker:
+        age: 35
+        employment_income: 60_000
+        ssi_countable_resources: 3_500
+        is_blind: true
+        is_disabled: true
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        pension_income: 6_000
+        is_tax_unit_spouse: true
+      outsider:
+        age: 70
+        pension_income: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      couple:
+        members: [worker, spouse]
+      other:
+        members: [outsider]
+    spm_units:
+      spm_unit:
+        members: [worker, spouse, outsider]
+    families:
+      family:
+        members: [worker, spouse, outsider]
+    households:
+      household:
+        members: [worker, spouse, outsider]
+        state_code: CA
+  output:
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ca_wdp_countable_income: [29_490, 5_760, 99_760]
+    # Adding the unrelated adult's 99,760 would give 135,010, above 54,100.
+    ca_wdp_income_eligible: [true, true, false]
+    ca_wdp_eligible: [true, false, false]
+    medicaid_category: [WORKING_DISABLED_BUY_IN, NONE, NONE]
+
+- name: Case 2, the same household with explicit marital units gives the same result.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      worker:
+        age: 35
+        employment_income: 60_000
+        ssi_countable_resources: 3_500
+        is_blind: true
+        is_disabled: true
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        pension_income: 6_000
+        is_tax_unit_spouse: true
+      outsider:
+        age: 70
+        pension_income: 100_000
+        is_tax_unit_head: true
+    marital_units:
+      couple:
+        members: [worker, spouse]
+      other:
+        members: [outsider]
+    tax_units:
+      couple:
+        members: [worker, spouse]
+      other:
+        members: [outsider]
+    spm_units:
+      spm_unit:
+        members: [worker, spouse, outsider]
+    families:
+      family:
+        members: [worker, spouse, outsider]
+    households:
+      household:
+        members: [worker, spouse, outsider]
+        state_code: CA
+  output:
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ca_wdp_income_eligible: [true, true, false]
+    ca_wdp_eligible: [true, false, false]
+
+# Without the unrelated adult, the deemed spouse's income still counts: a
+# $25,000 pension gives 25,000 - 240 = 24,760, and 29,490 + 24,760 = 54,250
+# is above 54,100, although the worker's own 29,490 is below it.
+- name: Case 3, a couple alone counts the deemed spouse's income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      worker:
+        age: 35
+        employment_income: 60_000
+        ssi_countable_resources: 3_500
+        is_blind: true
+        is_disabled: true
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        pension_income: 25_000
+        is_tax_unit_spouse: true
+    tax_units:
+      couple:
+        members: [worker, spouse]
+    households:
+      household:
+        members: [worker, spouse]
+        state_code: CA
+  output:
+    is_ssi_spousal_deeming_applies: [true, false]
+    ca_wdp_countable_income: [29_490, 24_760]
+    ca_wdp_income_eligible: [false, true]

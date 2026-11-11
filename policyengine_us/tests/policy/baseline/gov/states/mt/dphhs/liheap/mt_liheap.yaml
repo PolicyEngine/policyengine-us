@@ -531,3 +531,52 @@
   output:
     mt_liheap_eligible: [true, true]
     mt_liheap: [0, 0]
+
+# An aged married couple with no income shares a heating household with an
+# unrelated adult on a $60,000 pension; marital units are omitted. SSI pays
+# only the spouses, and the unrelated adult's income was not considered for
+# their SSI, so the household is not SSI categorical (ARM 37.70.401(23),
+# manual section 3.11). Its countable income, which includes the couple's
+# SSI and the pension, exceeds the $54,470 limit, so it receives nothing.
+- name: Case 16, an unrelated adult in a default marital unit does not share an SSI couple's categorical eligibility.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+      spouse:
+        age: 70
+        is_tax_unit_spouse: true
+      outsider:
+        age: 70
+        is_tax_unit_head: true
+        pension_income: 60_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+      outsider:
+        members: [outsider]
+    families:
+      couple:
+        members: [head, spouse]
+      outsider:
+        members: [outsider]
+    spm_units:
+      heating_unit:
+        members: [head, spouse, outsider]
+        snap: 0
+        tanf: 0
+        heating_type: NATURAL_GAS
+        heating_expense: 1_800
+    households:
+      home:
+        members: [head, spouse, outsider]
+        state_code: MT
+        county: YELLOWSTONE_COUNTY_MT
+        bedrooms: 2
+  output:
+    mt_liheap_receives_ssi: [true, true, false]
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_eligible: false
+    mt_liheap: 0
