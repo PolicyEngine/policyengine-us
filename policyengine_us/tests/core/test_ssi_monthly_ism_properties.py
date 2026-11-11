@@ -461,27 +461,30 @@ def test_pmv_reads_income_month_food_and_payment_month_shelter(
 
     food_parameter = system.parameters.gov.ssa.ssi.income.ism.food_counts
 
-    def parameters(period):
-        parameter_reads.append(str(period))
-        instant = getattr(period, "start", period)
-        return SimpleNamespace(
-            gov=SimpleNamespace(
-                ssa=SimpleNamespace(
-                    ssi=SimpleNamespace(
-                        income=SimpleNamespace(
-                            ism=SimpleNamespace(food_counts=food_parameter(instant))
-                        )
+    def read_food_counts(instant):
+        parameter_reads.append(str(instant))
+        return food_parameter(instant)
+
+    # The formula reads food_counts as one parameter at each date, so the
+    # fake tree is not callable: a parameters(date) call would fail here.
+    parameters = SimpleNamespace(
+        gov=SimpleNamespace(
+            ssa=SimpleNamespace(
+                ssi=SimpleNamespace(
+                    income=SimpleNamespace(
+                        ism=SimpleNamespace(food_counts=read_food_counts)
                     )
                 )
             )
         )
+    )
 
     actual = ssi_pmv_applies.formula(person, payment, parameters)
     counts_food = (year, month) < (2024, 12) and not (
         (year, month) == (2024, 11) and late_food
     )
     np.testing.assert_array_equal(actual, [shelter or (food and counts_food)])
-    assert parameter_reads == [str(income), str(income.stop)]
+    assert parameter_reads == [str(income.start), str(income.stop)]
     flag_month = person_reads.pop(
         "ssi_food_from_others_only_on_or_after_food_exclusion", None
     )
@@ -526,6 +529,9 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
                 ssa=SimpleNamespace(ssi=system.parameters.gov.ssa.ssi(instant))
             )
         )
+
+    # ssi_pmv_applies reads food_counts as one parameter at each date.
+    parameters.gov = system.parameters.gov
 
     formulas = (
         ("ssi_pmv_applies", ssi_pmv_applies),

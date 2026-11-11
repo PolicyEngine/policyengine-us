@@ -27,10 +27,12 @@ class ssi_pmv_applies(Variable):
         # Food received only on or after September 30, 2024 is excluded;
         # otherwise SSA applies the monthly PMV without daily proration.
         income_period = period.offset(-2, "month")
-        food_counts = bool(parameters(income_period).gov.ssa.ssi.income.ism.food_counts)
-        food_counts_at_month_end = bool(
-            parameters(income_period.stop).gov.ssa.ssi.income.ism.food_counts
-        )
+        # Read this one parameter at each date. parameters(date) builds the
+        # whole parameter tree for a date no other formula has asked for,
+        # and the income month's last day is such a date every month.
+        p_food_counts = parameters.gov.ssa.ssi.income.ism.food_counts
+        food_counts = bool(p_food_counts(income_period.start))
+        food_counts_at_month_end = bool(p_food_counts(income_period.stop))
         exclusion_starts_this_month = food_counts and not food_counts_at_month_end
         # Use the income month's food receipt when that month falls in
         # the payment year. One-year households lack prior-year inputs.
