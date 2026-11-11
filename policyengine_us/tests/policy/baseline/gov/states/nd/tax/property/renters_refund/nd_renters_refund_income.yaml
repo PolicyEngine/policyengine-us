@@ -515,8 +515,9 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        # The rental loss would qualify the family for TANF; this case leaves
-        # it out to test the loss alone.
+        # Once renter's refund income counts TANF (#10724), the rental loss
+        # would qualify the family for it; this case sets TANF to zero to test
+        # the loss alone.
         tanf: 0
     households:
       household:

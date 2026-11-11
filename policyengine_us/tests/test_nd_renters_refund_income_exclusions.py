@@ -28,8 +28,8 @@ Four invariants hold for every input.
    Dakota counts, adoption assistance out of wages after payroll deductions,
    and income from Puerto Rico and American Samoa out of market income before
    losses, less the other exclusions. None comes out of social security, so
-   with no loss in income, renter's refund income never falls below social
-   security, and a dollar of social security raises income by a dollar unless
+   with no loss in income and no medical costs, renter's refund income never
+   falls below social security, and a dollar of social security raises income by a dollar unless
    income stays at zero.
 3. Differential: for a filer whose income comes only from sources that
    market_income and federal gross income share, renter's refund income equals
@@ -41,8 +41,10 @@ Four invariants hold for every input.
    cases and invariant 4 test those against the law.
 4. Moving a dollar from the taxable form of a source to its excluded form
    lowers renter's refund income by that dollar, beside a loss elsewhere in
-   income, as long as income stays above zero. A dollar of social security
-   raises it by a dollar, however much of the benefit federal law taxes.
+   income, as long as income stays above zero. So does marking a dollar of
+   income as one of the exclusions the model deducts above the line. A dollar
+   of social security raises it by a dollar, however much of the benefit
+   federal law taxes.
 
 YAML pins one household per case. These need random amounts over many
 households at once, and lists read from market_income's source file and the
@@ -554,10 +556,17 @@ def test_a_dollar_moved_to_its_excluded_form_leaves_income(
             **base,
             "social_security_retirement": social_security + moved,
         }
-        # A dollar of taxable interest that IRC 135 excludes leaves too, though
-        # the federal model deducts it above the line.
+        # The exclusions the federal model deducts above the line leave the
+        # same way: a dollar of taxable interest that IRC 135 excludes, a
+        # dollar of wages that IRC 137 excludes as employer adoption
+        # assistance, and a dollar of income from Puerto Rico (IRC 933) or
+        # American Samoa (IRC 931), which the base's wages and taxable income
+        # hold before the loss.
         interest = {**base, "taxable_interest_income": taxable}
         bonds = {**interest, "us_bonds_for_higher_ed": moved}
+        adoption = {**base, "qualified_adoption_assistance_expense": min(moved, wages)}
+        puerto_rico = {**base, "puerto_rico_income": moved}
+        american_samoa = {**base, "specified_possession_income": moved}
         households += [
             base,
             shifted,
@@ -567,8 +576,12 @@ def test_a_dollar_moved_to_its_excluded_form_leaves_income(
             more_social_security,
             interest,
             bonds,
+            adoption,
+            puerto_rico,
+            american_samoa,
         ]
     (income,) = calculate(households, "nd_renters_refund_income")
+    size = len(households) // len(SHIFTS)
     for group in range(len(SHIFTS)):
         (
             base,
@@ -579,12 +592,18 @@ def test_a_dollar_moved_to_its_excluded_form_leaves_income(
             more_social_security,
             interest,
             bonds,
-        ) = income[8 * group : 8 * group + 8]
+            adoption,
+            puerto_rico,
+            american_samoa,
+        ) = income[size * group : size * group + size]
         assert base - shifted == pytest.approx(moved, abs=TOLERANCE)
         assert base - deferred == pytest.approx(deferral, abs=TOLERANCE)
         assert disability - paid_for == pytest.approx(moved, abs=TOLERANCE)
         assert more_social_security - base == pytest.approx(moved, abs=TOLERANCE)
         assert interest - bonds == pytest.approx(moved, abs=TOLERANCE)
+        assert base - adoption == pytest.approx(min(moved, wages), abs=TOLERANCE)
+        assert base - puerto_rico == pytest.approx(moved, abs=TOLERANCE)
+        assert base - american_samoa == pytest.approx(moved, abs=TOLERANCE)
 
 
 def test_alimony_leaves_income_only_under_a_post_2018_instrument():
