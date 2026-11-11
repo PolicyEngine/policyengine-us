@@ -149,8 +149,9 @@ ABOVE_THE_LINE_DEDUCTIONS = {
 ABOVE_THE_LINE_EXCLUSIONS = {
     "us_bonds_for_higher_ed": "IRC 135(a)",
     "qualified_adoption_assistance_expense": "IRC 137(a)",
-    # Only American Samoa has the implementing agreement IRC 931 requires
-    # (26 CFR 1.931-1(c)).
+    # IRC 931 reaches only a possession with an implementing agreement in
+    # effect (26 CFR 1.931-1(c)(1)); IRS Publication 570 applies it only to
+    # American Samoa.
     "specified_possession_income": "IRC 931(a), for American Samoa",
     "puerto_rico_income": "IRC 933",
 }
