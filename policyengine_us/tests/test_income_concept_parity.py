@@ -19,18 +19,22 @@ dollar of wages can change a benefit.
    household market income already holds, and neither concept counts a variable
    beside another that reaches it through `adds` or through a formula that
    FORMULA_SUMS or FORMULA_PARTS follows. Every other formula inside a listed
-   source that calls add, aggr or .sum, reads by name a variable another
-   listed source reaches, or reads a variable whose name it holds in a
-   variable, as a loop over a parameter list does, has a ruling in
-   FORMULA_READS. The check reads the text of each formula and of the helper
-   functions it calls by name, counts a call to a helper in
-   CROSS_PERSON_HELPERS as a sum, and pins in RULED_READS the variables each
-   ruled formula reads that another source reaches, so a new read fails
-   until someone reads the formula again. It cannot see how a ruled formula
-   uses what it reads: an edit that turns a subtraction of SSI into an
-   addition passes. A formula that reaches another source through an
-   intermediate variable escapes it too, as does a new helper that combines
-   values across people by indexing.
+   source that sums variables (add under any of its names, aggr, .sum or a
+   CROSS_PERSON_HELPERS helper), reads by name a variable another listed
+   source reaches, or reads a variable by a name it computes, as a loop over
+   a parameter list does, has a ruling in FORMULA_READS. The check reads the
+   source of each formula and of every function under policyengine_us it
+   calls, by name, as a module attribute or through an import in its own
+   body, and takes a variable name from a quoted string or from a constant
+   the function refers to. RULED_READS pins the variables each ruled formula
+   reads that another source reaches, and READS_BY_COMPUTED_NAME the ruled
+   formulas that read by a computed name, so a new read fails until someone
+   reads the formula again. The check cannot see how a ruled formula uses
+   what it reads (an edit that turns a subtraction of SSI into an addition
+   passes), which variables a computed name reaches, a formula that reaches
+   another source through an intermediate variable, a function called any
+   other way (passed as a value, or through an object other than a module),
+   or a new helper that combines values across people by indexing.
 3. A dollar of a listed source adds a dollar to its concept. A person's Census
    money income gains the dollar, or an equal share of a dollar paid to a
    group, and the family and household totals gain the dollar. The CBO
@@ -49,6 +53,7 @@ source at once, with Hypothesis over amounts and household sizes.
 
 import ast
 import functools
+import importlib
 import inspect
 import itertools
 import re
@@ -61,12 +66,13 @@ import pytest
 import yaml
 from hypothesis import example, given, settings
 from hypothesis import strategies as st
+from policyengine_core.commons import formulas as core_formulas
 
 from policyengine_us import Simulation
 
 PACKAGE = Path(__file__).parent.parent
 HOUSEHOLD_LISTS = PACKAGE / "parameters/gov/household"
-VARIABLES = (PACKAGE / "variables").resolve()
+SOURCE_ROOT = PACKAGE.resolve()
 CENSUS_LISTS = HOUSEHOLD_LISTS / "census_money_income_sources"
 MARKET_INCOME_SOURCES = HOUSEHOLD_LISTS / "market_income_sources.yaml"
 # household_benefits begins in 2022.
@@ -294,11 +300,10 @@ FORMULA_PARTS = {
     "other_net_gain_person": ("other_net_gain",),
 }
 
-# The other formulas inside a listed source that call add, aggr, .sum or a
-# CROSS_PERSON_HELPERS helper, read by name a variable another listed source
-# reaches, or read a variable by a name held in a variable, in their own text
-# or a helper's. Each was read in full with its helpers, and none adds what it
-# sums or reads to its own value.
+# The other formulas inside a listed source that sum variables, read by name a
+# variable another listed source reaches, or read a variable by a name they
+# compute, in their own source or a function they call. Each was read in full
+# with those functions, and none adds what it sums or reads to its own value.
 COUNTS = "counts people, such as eligible members or children"
 SPLITS = "splits a couple's payment between the two"
 INCOME_TEST = "sums income or resources for an income or resource test"
@@ -308,7 +313,8 @@ REMAINDER = "takes the labor supply response the employment part leaves"
 SHARE = "takes the labor supply response in proportion to employment income"
 CAPITAL_GAINS = (
     "scales capital gains before the response by the change in their tax rate, "
-    "measured on branches that copy the pre-response inputs"
+    "measured on branches that copy the pre-response inputs, zero the "
+    "behavioral responses and keep the Social Security inputs"
 )
 FORMULA_READS = {
     "ak_ssp": SPLITS,
@@ -365,6 +371,21 @@ FORMULA_READS = {
 RULED_READS = {
     "ca_capi_person": {"ca_state_supplement_person", "ssi"},
     "ca_state_supplement_person": {"ssi"},
+    # The measurement branches copy the pre-response inputs, neutralize the
+    # behavioral responses and keep the Social Security inputs when they drop
+    # inherited values (behavioral_response_measurements.py, period_branch.py).
+    "capital_gains_behavioral_response": {
+        "employment_income_before_lsr",
+        "employment_income_behavioral_response",
+        "self_employment_income_before_lsr",
+        "self_employment_income_behavioral_response",
+        "social_security_dependents",
+        "social_security_disability",
+        "social_security_retirement",
+        "social_security_survivors",
+        "sstb_self_employment_income_before_lsr",
+        "sstb_self_employment_income_behavioral_response",
+    },
     "co_oap": {"ssi"},
     "co_state_supplement": {"ssi"},
     "employment_income_behavioral_response": {
@@ -395,6 +416,17 @@ RULED_READS = {
         "self_employment_income_before_lsr",
     },
     "wi_cts": {"ssi"},
+}
+# Ruled formulas that read a variable by a name they compute, in their own text
+# or a helper's: capital_gains_behavioral_response copies and neutralizes
+# variables named in constant lists, and ia_ssa and sd_ssp_independent loop
+# over SSI's earned and unearned income sources to test for other income. The
+# scan cannot see which variables these reads reach, so a formula that starts
+# to read by a computed name needs a reading first.
+READS_BY_COMPUTED_NAME = {
+    "capital_gains_behavioral_response",
+    "ia_ssa",
+    "sd_ssp_independent",
 }
 # Helpers that combine a value across people without add, aggr or .sum: a
 # couple's total, a spouse's value or a filing unit's total. The scan counts a
@@ -546,69 +578,160 @@ def entity_of(name):
     return system.variables[name].entity.key
 
 
-def helpers_called(function):
-    """The functions defined under policyengine_us/variables that a function
-    calls by name. The source path decides, not the module name: the model
-    loads each variable file under a module name of its own, so a helper
-    defined beside a formula has no policyengine_us module name."""
-    tree = ast.parse(textwrap.dedent(inspect.getsource(function)))
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
-            helper = function.__globals__.get(node.func.id)
-            if inspect.isfunction(helper) and Path(
-                helper.__code__.co_filename
-            ).resolve().is_relative_to(VARIABLES):
-                yield helper
-
-
-def source_with_helpers(function, seen):
-    """A function's source and its helpers' sources, each helper once."""
-    if function in seen:
-        return []
-    seen.add(function)
-    sources = [inspect.getsource(function)]
-    for helper in helpers_called(function):
-        sources += source_with_helpers(helper, seen)
-    return sources
+# Functions from policyengine-core that sum the variables they are given,
+# under any name a formula calls them by: core's any_ and or_ are add.
+SUMMING_FUNCTIONS = (core_formulas.add, core_formulas.for_each_variable)
+# Besides an entity, the calls that read a variable named in their first
+# argument or `variable_name`: a group's members, or the simulation.
+VARIABLE_READERS = {
+    "calculate",
+    "calculate_add",
+    "calculate_divide",
+    "entity",
+    "members",
+    "population",
+}
+IDENTIFIER = re.compile(r"[a-z][a-z0-9_]*")
 
 
 @functools.cache
-def formula_sources(name):
-    """The source of a variable's formulas and of every helper function they
-    call, directly or through another helper; none for an input."""
+def entity_keys():
+    from policyengine_us.system import system
+
+    return frozenset(entity.key for entity in system.entities)
+
+
+def names_in_scope(function, tree):
+    """What a function's names refer to: its module's globals, its closure and
+    the names its own body imports."""
+    names = dict(function.__globals__)
+    names.update(inspect.getclosurevars(function).nonlocals)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module and not node.level:
+            module = importlib.import_module(node.module)
+            for alias in node.names:
+                names[alias.asname or alias.name] = getattr(module, alias.name, None)
+        elif isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.asname:
+                    names[alias.asname] = importlib.import_module(alias.name)
+                else:
+                    top = alias.name.split(".")[0]
+                    names[top] = importlib.import_module(top)
+    return names
+
+
+def resolve(node, names):
+    """The object a name, or an attribute of a module, refers to; None for
+    anything else, such as a local variable."""
+    if isinstance(node, ast.Name):
+        return names.get(node.id)
+    if isinstance(node, ast.Attribute):
+        owner = resolve(node.value, names)
+        if inspect.ismodule(owner):
+            return getattr(owner, node.attr, None)
+    return None
+
+
+def variable_names_in(value):
+    """The names a constant holds: a string, or the strings in a list, tuple,
+    set or dict."""
+    if isinstance(value, str):
+        items = [value]
+    elif isinstance(value, (list, tuple, set, frozenset)):
+        items = list(value)
+    elif isinstance(value, dict):
+        items = [*value, *value.values()]
+    else:
+        return set()
+    return {
+        item for item in items if isinstance(item, str) and IDENTIFIER.fullmatch(item)
+    }
+
+
+@functools.cache
+def scan_function(function):
+    """What one function's source shows: the functions under policyengine_us
+    it calls, whether it sums variables, the variable names it holds (quoted,
+    or in a constant it refers to), and whether it reads a variable by a name
+    it computes, as a loop over a parameter list does."""
+    source = textwrap.dedent(inspect.getsource(function))
+    tree = ast.parse(source)
+    names = names_in_scope(function, tree)
+    readers = entity_keys() | VARIABLE_READERS
+    readers |= set(list(inspect.signature(function).parameters)[:1])
+    helpers = []
+    sums = bool(SUMS.search(source))
+    reads = set(NAMED_READS.findall(source))
+    computed = False
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Name, ast.Attribute)) and isinstance(
+            node.ctx, ast.Load
+        ):
+            reads |= variable_names_in(resolve(node, names))
+        if not isinstance(node, ast.Call):
+            continue
+        target = resolve(node.func, names)
+        if any(target is summing for summing in SUMMING_FUNCTIONS):
+            sums = True
+        if inspect.isfunction(target) and Path(
+            target.__code__.co_filename
+        ).resolve().is_relative_to(SOURCE_ROOT):
+            helpers.append(target)
+        callee = getattr(node.func, "id", None) or getattr(node.func, "attr", None)
+        if callee in readers:
+            arguments = node.args[:1] + [
+                keyword.value
+                for keyword in node.keywords
+                if keyword.arg == "variable_name"
+            ]
+            for argument in arguments:
+                if not isinstance(argument, ast.Constant) and not variable_names_in(
+                    resolve(argument, names)
+                ):
+                    computed = True
+    return tuple(helpers), sums, frozenset(reads), computed
+
+
+@functools.cache
+def formula_functions(name):
+    """A variable's formulas and every function under policyengine_us they
+    call, directly or through another; none for an input. The source path
+    decides, not the module name: the model loads each variable file under a
+    module name of its own."""
     from policyengine_us.system import system
 
     if name not in system.variables:
         return ()
-    formulas = system.variables[name].formulas or {}
-    seen = set()
-    return tuple(
-        source
-        for formula in formulas.values()
-        for source in source_with_helpers(formula, seen)
-    )
+    found = []
+
+    def visit(function):
+        if function not in found:
+            found.append(function)
+            for helper in scan_function(function)[0]:
+                visit(helper)
+
+    for formula in (system.variables[name].formulas or {}).values():
+        visit(formula)
+    return tuple(found)
 
 
 def formula_text(name):
-    return "\n".join(formula_sources(name))
+    return "\n".join(inspect.getsource(f) for f in formula_functions(name))
 
 
-@functools.cache
+def sums_variables(name):
+    return any(scan_function(f)[1] for f in formula_functions(name))
+
+
+def named_reads(name):
+    return set().union(*(scan_function(f)[2] for f in formula_functions(name)))
+
+
 def reads_by_variable(name):
-    """Whether a formula or its helpers read a variable whose name they hold
-    in a variable, as `person(source, period)` in a loop over a parameter list
-    does. The scan cannot see which variables such a read reaches."""
-    from policyengine_us.system import system
-
-    entities = {entity.key for entity in system.entities} | {"entity"}
-    for source in formula_sources(name):
-        for node in ast.walk(ast.parse(textwrap.dedent(source))):
-            if not isinstance(node, ast.Call) or not node.args:
-                continue
-            callee = getattr(node.func, "id", None) or getattr(node.func, "attr", None)
-            if callee in entities and not isinstance(node.args[0], ast.Constant):
-                return True
-    return False
+    """Whether a formula or a function it calls reads a variable whose name it
+    computes. The scan cannot see which variables such a read reaches."""
+    return any(scan_function(f)[3] for f in formula_functions(name))
 
 
 @functools.cache
@@ -664,19 +787,17 @@ def assert_none_sums_another(names, year):
 
 
 def summing_formulas(sources, year):
-    """Formulas inside the sources that call add, aggr, .sum or a
-    CROSS_PERSON_HELPERS helper, read a variable by a name held in a variable,
-    or read by name a variable another of the sources reaches, with those
-    variables."""
+    """Formulas inside the sources that sum variables, read a variable by a
+    name they compute, or read by name a variable another of the sources
+    reaches, with those variables."""
     closures = {source: reachable(source, year) for source in sources}
     found = {}
     for source, closure in closures.items():
         others = set().union(*(c for s, c in closures.items() if s != source))
         others -= closure
         for name in closure:
-            text = formula_text(name)
-            shared = set(NAMED_READS.findall(text)) & others
-            if SUMS.search(text) or shared or reads_by_variable(name):
+            shared = named_reads(name) & others
+            if sums_variables(name) or shared or reads_by_variable(name):
                 found.setdefault(name, set()).update(shared)
     return found
 
@@ -779,9 +900,9 @@ def test_formulas_inside_listed_sources_have_a_ruling(year):
         found = summing_formulas(sources, year)
         unreviewed = {name: sorted(found[name]) for name in set(found) - reviewed}
         assert unreviewed == {}, (
-            f"{year}: these formulas inside {concept} sources, or helpers they "
-            "call, call add, aggr, .sum or a CROSS_PERSON_HELPERS helper, or "
-            f"read a variable another source counts: {unreviewed}. If "
+            f"{year}: these formulas inside {concept} sources, or functions "
+            "they call, sum variables, read a variable another source counts, "
+            f"or read a variable by a name they compute: {unreviewed}. If "
             "one returns a sum or share of other variables, add it to "
             "FORMULA_SUMS or FORMULA_PARTS, so the check for double counting "
             "follows it. Otherwise add it to FORMULA_READS with what it uses "
@@ -817,6 +938,13 @@ def test_formula_rulings_are_current():
         "RULED_READS."
     )
     assert set(RULED_READS) - found == set(), "stale RULED_READS entries"
+    computed = {name for name in found if reads_by_variable(name)}
+    assert computed == READS_BY_COMPUTED_NAME, (
+        "formulas that read a variable by a name they compute: "
+        f"{sorted(computed - READS_BY_COMPUTED_NAME)} new, "
+        f"{sorted(READS_BY_COMPUTED_NAME - computed)} stale. Read each new one "
+        "and the variables its names can reach, then update READS_BY_COMPUTED_NAME."
+    )
     # Each helper the scan counts as a sum is still defined in, and still
     # called by, a formula inside a listed source.
     defined = "\n".join(formula_text(name) for name in found)
