@@ -6,8 +6,12 @@ metadata:
   period: year
   label: Montana old age subtraction amount
   reference:
-    - title: Montana Code Annotated, TITLE 15. TAXATION, CHAPTER 30. INDIVIDUAL INCOME TAX, Part 21, 15-30-2120(3)(g) and (7)(b)
+    - title: Montana Code Annotated, TITLE 15. TAXATION, CHAPTER 30. INDIVIDUAL INCOME TAX, Part 21, 15-30-2120(3)(g) and (7)
       href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+    - title: Montana Code Annotated 15-30-2101(1) and (12), consumer price index and inflation factor
+      href: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0010/0150-0300-0210-0010.html
+    - title: BLS CPI-U, U.S. city average, all items, not seasonally adjusted (CUUR0000SA0)
+      href: https://data.bls.gov/timeseries/CUUR0000SA0
     - title: 2025 Montana Tax Tables and Deductions
       href: https://revenue.mt.gov/taxes/tax-tables-and-deductions/2025
 brackets:
@@ -18,5 +22,11 @@ brackets:
   - threshold:
       2024-01-01: 65
     amount:
+      # MCA 15-30-2120(7) multiplies $5,500 by the 15-30-2101(12) inflation
+      # factor (CPI-U for June of the prior year / CPI-U for June 2023, 305.109)
+      # and rounds to the nearest $10.
       2024-01-01: 5_500
+      # 5,500 x 314.175 / 305.109 = 5,663.43
       2025-01-01: 5_660
+      # 5,500 x 322.561 / 305.109 = 5,814.60
+      2026-01-01: 5_810

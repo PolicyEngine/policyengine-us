@@ -6268,6 +6268,45 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual from October 1, 2025; verify the checklist's meaning and the manual's administrative-code
     status.
+- id: us-mt:age-65-subtraction-2026-indexed-amount
+  program: income-tax
+  years:
+    from: 2026
+    to: 2026
+    type: tax
+  question: Is Montana's 2026 age-65 subtraction the $5,810 that MCA 15-30-2120(7) and 15-30-2101(12) give from June
+    2025 CPI-U, or the $5,660 that the Department's 2026 Publication 1 prints?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2120(3)(g) and (7)
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+  - kind: statute
+    citation: MCA 15-30-2101(1) and (12)
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0010/0150-0300-0210-0010.html
+  - kind: guidance
+    citation: 2026 Montana Publication 1, estimated tax subtractions list, printed page 9
+    url: https://revenuefiles.mt.gov/files/Forms/Publication-1/Publication-1-2026.pdf#page=11
+  readings:
+    statute: (3)(g) allows "an additional subtraction of $5,500" for each taxpayer aged 65 or older; (7) has the
+      Department multiply it "by the inflation factor for that tax year" and round to the nearest $10, and "The
+      resulting amounts are effective for that tax year". The (12) factor is CPI-U for June of the previous tax year
+      over CPI-U for June 2023, so 5,500 x 322.561 / 305.109 = 5,814.60, or $5,810. The same formula gives the
+      Department's $5,660 for 2025 (5,500 x 314.175 / 305.109 = 5,663.43).
+    other: Publication 1 for 2026, created November 20, 2025, lists "A subtraction of $5,660 for taxpayers 65 and
+      older", the 2025 amount. The same list prints the 529 cap at $4,500, which 15-30-2120(11) indexes for each tax
+      year after 2025 ($4,600 for 2026).
+  example: A 2026 joint return with federal taxable income of $17,100 and both spouses 65 or older has Montana taxable
+    income of $5,480 and tax of $257.56 under the statute, against $5,780 and $271.66 at $5,660 each.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/subtractions/old_age/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10805
+  state: ruled
+  note: The statute sets the amount by formula and leaves the Department no discretion beyond rounding, so the statute-first rule applies.
+    The Department had published no 2026 tax tables page or 2026 Form 2 instructions by November 11, 2026. If its
+    2026 Form 2 prints a different figure, recheck the CPI values and the rounding before changing the parameter.
 - id: us-mt:elderly-credit-homestead-costs
   program: income-tax
   years:
