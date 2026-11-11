@@ -6,11 +6,11 @@ def previous_year_wages(person, period, parameters):
     """Hawaii TDI wages in the year before ``period``.
 
     These follow hi_temporary_disability_insurance_wages without its state
-    test, since a household's state is often entered for the simulation year
-    alone. Pay comes from employment_income_before_lsr, where situations and
-    datasets store employment income, so the earlier year calculates no labor
-    supply response. Before the first modeled year, only values provided for
-    that year count, so nothing is calculated or cached for an unmodeled year.
+    test, since households often enter a state for the simulation year alone.
+    Pay comes from employment_income_before_lsr, where situations and datasets
+    store employment income, so the earlier year calculates no labor supply
+    response. Before the first modeled year, only values provided for that year
+    count, so nothing is calculated or cached for an unmodeled year.
     """
     last_year = period.last_year
     excluded = parameters(
@@ -50,10 +50,15 @@ class hi_temporary_disability_insurance_qualified(Variable):
         "does not pass. The previous year's wages leave out what the wage "
         "definition leaves out, such as military basic pay, but skip its "
         "state test, so a worker new to Hawaii can pass on wages earned "
-        "elsewhere. They come from employment_income_before_lsr, and before "
-        "2015, the first year the model covers, only values provided for that "
-        "year count. Weeks and hours count all work, self-employment "
-        "included. Usual weekly hours stand in for each week's hours, so a "
+        "elsewhere. They come from employment_income_before_lsr. Simulation "
+        "moves situation inputs of employment_income there, but pay set on "
+        "employment_income with set_input after the simulation is built stays "
+        "out of the previous year's wages, so enter it on "
+        "employment_income_before_lsr. Before 2015, the first year the model "
+        "covers, only values provided for that year count, so a deferral "
+        "counts only when entered as the contribution itself, such as "
+        "traditional_401k_contributions, not as the desired amount. Weeks and "
+        "hours count all work, self-employment included. Usual weekly hours stand in for each week's hours, so a "
         "worker whose usual hours fall under the minimum does not pass even "
         "with enough qualifying weeks."
     )

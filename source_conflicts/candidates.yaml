@@ -3211,14 +3211,15 @@ candidates:
     url: https://labor.hawaii.gov/dcd/files/2025/12/2026-Maximum-Weekly-Wage-Base.pdf
   - kind: agency-practice
     citation: Hawaii DLIR Unemployment Insurance Division, taxable wage bases for 2003 to 2026 (this page from 2020, the
-      December 2019 trust fund evaluation before), each the same average rounded to the nearest hundred dollars, or 90%
-      of it in 2010 and 2011, except the fixed $13,000 of 2008 and 2009
+      December 2019 trust fund evaluation before), each the same average rounded to the nearest hundred dollars, except
+      2010 and 2011, at 90% of the average rounded again to $100, which fits either reading, and the fixed $13,000 of 2008
+      and 2009
     url: https://labor.hawaii.gov/ui/tax-rate-schedule-and-weekly-benefit-amount/
   readings:
-    statute: HRS 383-61(b) says how the average annual wage is computed, and the computation ends by rounding to the
-      nearest hundred dollars. HRS 392-43(b)(2) takes the average as determined under that subsection, so the base is
-      the rounded average times 1.21 / 52. DLIR's own determination under 383-61(b), the unemployment insurance wage
-      base, is the rounded figure.
+    statute: HRS 383-61(b) sets out how to compute the average annual wage, and the computation ends by rounding to the
+      nearest hundred dollars. HRS 392-43(b)(2) takes the average as that subsection determines it, so the base is the
+      rounded average times 1.21 / 52. DLIR's own determination under 383-61(b), the unemployment insurance wage base,
+      is the rounded figure.
     other: DLIR's temporary disability insurance notices divide the average before rounding by 52 and multiply by 1.21,
       so each published base runs from 1.15 below to 0.84 above the statutory one.
   example: For 2026, the notice's average of $64,471.82 gives a published base of $1,500.21; rounded to $64,500 it gives
@@ -3232,7 +3233,8 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10677
   state: ruled
   note: Definitions control, and the text settles the reading, so the agency-breaks-ties principle doesn't reach it. The
-    same reading of HRS 383-61(b) decides us-hi:ui-taxable-wage-base-2010-rounding. Within the formula the parameter
+    same reading of HRS 383-61(b) decides us-hi:ui-taxable-wage-base-2010-rounding (PolicyEngine/policyengine-us#10770).
+    Within the formula the parameter
     rounds once to the cent, because HRS 392-43(b)(2) sets no intermediate rounding. Short excerpts are in
     source_conflicts/sources/us-hi/.
 - id: us-hi:tdi-wages-salary-reductions
