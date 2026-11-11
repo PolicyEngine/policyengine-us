@@ -1,4 +1,4 @@
-# 8 CCR 1403-1 section 3.111(B)(1), (D), (E) and (G); 3.116(A); 3.119(D); 3.121(B)(3).
+# 8 CCR 1403-1 section 3.111(B)(1), (D), (E) and (G); 3.115(C); 3.116(A); 3.119(D); 3.121(B)(3).
 # Federal minimum wage $7.25: 40 hours for 52 weeks is 2,080 hours, so the floor is $15,080.
 - name: Case 1, single parent with wages and no recorded hours meets the requirement.
   period: 2026-01
@@ -210,7 +210,7 @@
   output:
     co_ccap_activity_eligible: true
 
-- name: Case 10, a full-time college student meets 3.111(G)(4).
+- name: Case 10, a full-time college student meets 3.111(G)(4)(a)(1), which the model takes to be a first bachelor's degree or less.
   period: 2026-01
   input:
     people:
@@ -452,7 +452,7 @@
   output:
     co_ccap_activity_eligible: true
 
-- name: Case 20, Colorado Works enrollment meets 3.116(A).
+- name: Case 20, TANF receipt alone does not meet the requirement, since 3.115(C) holds caretakers of children on basic cash assistance to the low-income test.
   period: 2026-01
   input:
     people:
@@ -472,7 +472,7 @@
         members: [parent, child]
         state_code: CO
   output:
-    co_ccap_activity_eligible: true
+    co_ccap_activity_eligible: false
 
 - name: Case 21, an eligible child under protective services exempts the household under 3.119(D).
   period: 2026-01
@@ -595,3 +595,165 @@
     co_ccap_activity_eligible: false
     co_ccap_eligible: false
     co_ccap_subsidy: 0
+
+- name: Case 26, a graduate student is not in a first bachelor's degree program, so the student fails 3.111(G)(4)(a)(1).
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_full_time_college_student: true
+        co_ccap_in_eligible_education: false
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 27, a part-time college student meets 3.111(G)(4)(a)(1), which sets no full-time requirement.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_part_time_college_student: true
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 28, a Colorado Works participant in allowable work activities meets 3.116(A) through the activity input.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+        meets_ccdf_activity_test: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 29, a father whom the child's parent ids name counts as a caretaker under 3.111(D)(2) though he files separately, so his lack of activity blocks the working mother.
+  period: 2026-01
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 30
+        employment_income: 30_000
+      father:
+        person_id: 2
+        age: 30
+      child:
+        person_id: 3
+        age: 3
+        parent_1_id: 1
+        parent_2_id: 2
+    spm_units:
+      spm_unit:
+        members: [mother, father, child]
+    tax_units:
+      mother_tax_unit:
+        members: [mother, child]
+      father_tax_unit:
+        members: [father]
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false
+
+- name: Case 30, the same father working supplies the activity beside an incapacitated mother under 3.111(D)(1)(c)(3).
+  period: 2026-01
+  input:
+    people:
+      mother:
+        person_id: 1
+        age: 30
+        is_disabled: true
+      father:
+        person_id: 2
+        age: 30
+        employment_income: 30_000
+      child:
+        person_id: 3
+        age: 3
+        parent_1_id: 1
+        parent_2_id: 2
+    spm_units:
+      spm_unit:
+        members: [mother, father, child]
+    tax_units:
+      mother_tax_unit:
+        members: [mother, child]
+      father_tax_unit:
+        members: [father]
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: true
+
+- name: Case 31, a working grandparent whom the mother's parent ids name is still not the child's caretaker, so the inactive mother fails.
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        person_id: 1
+        age: 60
+        employment_income: 50_000
+      mother:
+        person_id: 2
+        age: 30
+        parent_1_id: 1
+      child:
+        person_id: 3
+        age: 3
+        parent_1_id: 2
+    spm_units:
+      spm_unit:
+        members: [grandparent, mother, child]
+    tax_units:
+      grandparent_tax_unit:
+        members: [grandparent]
+      mother_tax_unit:
+        members: [mother, child]
+    households:
+      household:
+        members: [grandparent, mother, child]
+        state_code: CO
+  output:
+    co_ccap_activity_eligible: false

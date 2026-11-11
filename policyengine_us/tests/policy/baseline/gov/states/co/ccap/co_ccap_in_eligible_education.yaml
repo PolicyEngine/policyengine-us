@@ -1,0 +1,44 @@
+# 8 CCR 1403-1 section 3.111(G)(4): training, post-secondary education for a first
+# bachelor's degree or less, and basic education.
+- name: Case 1, a full-time college student counts.
+  period: 2026
+  input:
+    is_full_time_college_student: true
+    age: 30
+    state_code: CO
+  output:
+    co_ccap_in_eligible_education: true
+
+- name: Case 2, a part-time college student counts, since 3.111(G)(4)(a)(1) sets no full-time requirement.
+  period: 2026
+  input:
+    is_part_time_college_student: true
+    age: 30
+    state_code: CO
+  output:
+    co_ccap_in_eligible_education: true
+
+- name: Case 3, a teen parent in high school counts as in basic education under 3.111(G)(4)(b).
+  period: 2026
+  input:
+    age: 17
+    state_code: CO
+  output:
+    co_ccap_in_eligible_education: true
+
+- name: Case 4, an adult who is not enrolled does not count.
+  period: 2026
+  input:
+    age: 30
+    state_code: CO
+  output:
+    co_ccap_in_eligible_education: false
+
+- name: Case 5, the variable applies only in Colorado.
+  period: 2026
+  input:
+    is_full_time_college_student: true
+    age: 30
+    state_code: NM
+  output:
+    co_ccap_in_eligible_education: false

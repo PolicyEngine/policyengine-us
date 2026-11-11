@@ -4,17 +4,21 @@
 activity, and (D) and (E) say which households qualify.
 
 1. A caretaker works when earnings are positive and at least the federal minimum
-   wage for the hours worked (3.111(G)(1)(b) and (G)(2)(d)). Without the exempt
-   paths, a household qualifies when a caretaker is in an activity and every other
+   wage for the hours worked (3.111(G)(1)(b) and (G)(2)(d)), and studies when
+   enrolled in college full or part time (3.111(G)(4)). Without the exempt paths,
+   a household qualifies when a caretaker is in an activity and every other
    caretaker is in an activity or incapacitated (3.111(D)(1)(c), 3.111(E)).
 2. No family without the requirement receives a subsidy: co_ccap_eligible implies
    co_ccap_activity_eligible, and co_ccap_subsidy is zero without it.
 3. Raising a caretaker's earnings never removes eligibility while hours stay the
    same.
-4. An adult who files separately and claims no eligible child doesn't change the
-   answer, whatever that adult earns.
-5. The exempt paths each qualify a family with no activity (3.116(A), 3.119(D),
-   3.121(B)(3)(a), and the activity input).
+4. An adult who files separately, claims no eligible child and isn't named by the
+   child's parent ids doesn't change the answer, whatever that adult earns.
+5. When the child's parent ids name both parents, tax filing doesn't change the
+   answer (3.111(D)(2)).
+6. The exempt paths each qualify a family with no activity (3.119(D),
+   3.121(B)(3)(a), and the activity input), and TANF receipt alone doesn't
+   (3.111(D)(6), 3.115(C)).
 
 The YAML cases pin single families. These generate earnings, hours, weeks and
 family makeups, which YAML can't express.
@@ -38,6 +42,7 @@ caretakers = st.fixed_dictionaries(
         "hours": st.integers(min_value=0, max_value=70),
         "weeks": st.integers(min_value=0, max_value=52),
         "student": st.booleans(),
+        "part_time": st.booleans(),
         "disabled": st.booleans(),
     }
 )
@@ -51,16 +56,37 @@ def person_input(caretaker):
         "weekly_hours_worked_before_lsr": {YEAR: caretaker["hours"]},
         "weeks_worked": {YEAR: caretaker["weeks"]},
         "is_full_time_college_student": {YEAR: caretaker["student"]},
+        "is_part_time_college_student": {YEAR: caretaker.get("part_time", False)},
         "is_disabled": {YEAR: caretaker["disabled"]},
     }
 
 
-def simulate(caretakers, spm_unit=None, household=None, other_adult=None, child=None):
+def simulate(
+    caretakers,
+    spm_unit=None,
+    household=None,
+    other_adult=None,
+    child=None,
+    link_parents=False,
+    second_files_apart=False,
+):
     names = [f"caretaker{index}" for index in range(len(caretakers))]
     people = {name: person_input(item) for name, item in zip(names, caretakers)}
     people["child"] = {"age": {YEAR: 3}, **(child or {})}
     family = names + ["child"]
-    tax_units = {"claiming": {"members": family}}
+    if link_parents:
+        # Ids start at 1, since 0 means an unknown parent.
+        for index, name in enumerate(family):
+            people[name]["person_id"] = {YEAR: index + 1}
+        for slot, index in zip(("parent_1_id", "parent_2_id"), range(len(names))):
+            people["child"][slot] = {YEAR: index + 1}
+    if second_files_apart and len(names) > 1:
+        tax_units = {
+            "claiming": {"members": [names[0], "child"]},
+            "apart": {"members": names[1:]},
+        }
+    else:
+        tax_units = {"claiming": {"members": family}}
     members = list(family)
     if other_adult is not None:
         people["other_adult"] = {"age": {YEAR: 60}, **other_adult}
@@ -94,10 +120,13 @@ def activity_eligible(simulation):
 
 
 def in_activity(caretaker):
+    # Like the model, this divides all earnings by all hours: the inputs hold one
+    # figure for weekly hours, so a job and a business can't be timed apart.
     earnings = max(caretaker["wages"], 0) + max(caretaker["business"], 0)
     weeks = caretaker["weeks"] or WEEKS_IN_YEAR
     floor = MINIMUM_WAGE * caretaker["hours"] * weeks
-    return caretaker["student"] or (earnings > 0 and earnings >= floor)
+    studies = caretaker["student"] or caretaker.get("part_time", False)
+    return studies or (earnings > 0 and earnings >= floor)
 
 
 def rule_says_eligible(caretakers):
@@ -204,7 +233,7 @@ def test_more_earnings_never_remove_the_activity(family, raise_by):
     family=st.lists(caretakers, min_size=1, max_size=2),
     other_earnings=st.integers(min_value=0, max_value=60_000),
 )
-def test_a_separate_filer_does_not_change_the_answer(family, other_earnings):
+def test_an_unnamed_separate_filer_does_not_change_the_answer(family, other_earnings):
     alone = activity_eligible(simulate(family))
     beside = simulate(family, other_adult={"employment_income": {YEAR: other_earnings}})
     assert activity_eligible(beside) == alone
@@ -216,8 +245,24 @@ NO_ACTIVITY = {
     "hours": 0,
     "weeks": 0,
     "student": False,
+    "part_time": False,
     "disabled": False,
 }
+WORKING = {**NO_ACTIVITY, "wages": 30_000, "hours": 40, "weeks": 52}
+
+
+@settings(max_examples=15, deadline=None)
+@given(family=st.lists(caretakers, min_size=2, max_size=2))
+# A working mother and a father at home who files separately.
+@example(family=[WORKING, NO_ACTIVITY])
+# An incapacitated mother and a working father who files separately.
+@example(family=[{**NO_ACTIVITY, "disabled": True}, WORKING])
+def test_parent_ids_make_tax_filing_irrelevant(family):
+    together = activity_eligible(simulate(family, link_parents=True))
+    apart = activity_eligible(
+        simulate(family, link_parents=True, second_files_apart=True)
+    )
+    assert together == apart == rule_says_eligible(family)
 
 
 def test_a_family_with_no_activity_fails_without_an_exempt_path():
@@ -227,7 +272,6 @@ def test_a_family_with_no_activity_fails_without_an_exempt_path():
 @pytest.mark.parametrize(
     "path",
     [
-        {"spm_unit": {"is_tanf_enrolled": {MONTH: True}}},
         {"spm_unit": {"meets_ccdf_activity_test": {YEAR: True}}},
         {"household": {"is_homeless": {YEAR: True}}},
         {"child": {"receives_or_needs_protective_services": {YEAR: True}}},
@@ -236,3 +280,10 @@ def test_a_family_with_no_activity_fails_without_an_exempt_path():
 )
 def test_each_exempt_path_qualifies_a_family_with_no_activity(path):
     assert activity_eligible(simulate([NO_ACTIVITY], **path))
+
+
+def test_tanf_receipt_alone_is_not_an_exempt_path():
+    # Under 3.111(D)(6) and 3.115(C), caretakers of children who receive basic
+    # cash assistance must meet the low-income activity test.
+    tanf = {"spm_unit": {"is_tanf_enrolled": {MONTH: True}}}
+    assert not activity_eligible(simulate([NO_ACTIVITY], **tanf))
