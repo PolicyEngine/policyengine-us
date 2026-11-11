@@ -49,10 +49,6 @@ values:
     # AGI already includes taxable pension income; only the tax-exempt
     # portion is added back here per § 15-30-2337(9)(a)(i).
     - tax_exempt_pension_income
-    # § 15-30-2337(9)(a)(i) – Railroad Retirement Act benefits; the part of
-    # the annuity outside federal AGI. The formula adds the untaxed social
-    # security equivalent benefit.
-    - tax_exempt_railroad_pension_benefits
     - veterans_benefits # § 15-30-2337(9)(a)(i) – veterans' disability benefits
     - child_support_received # § 15-30-2337(9)(a)(iv) – support money
     - strike_benefits # § 15-30-2337(9)(a)(v) – nontaxable strike benefits
@@ -99,7 +95,6 @@ values:
     - tax_exempt_interest_income
     - tax_exempt_ira_distributions
     - tax_exempt_pension_income
-    - tax_exempt_railroad_pension_benefits
     - veterans_benefits
     - child_support_received
     - strike_benefits
@@ -123,7 +118,6 @@ values:
     - tax_exempt_interest_income
     - tax_exempt_ira_distributions
     - tax_exempt_pension_income
-    - tax_exempt_railroad_pension_benefits
     - veterans_benefits
     - child_support_received
     - strike_benefits

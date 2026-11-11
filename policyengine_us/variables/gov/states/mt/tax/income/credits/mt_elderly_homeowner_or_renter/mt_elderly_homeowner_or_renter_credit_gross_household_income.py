@@ -23,6 +23,9 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # The statutory federal-AGI definition remains after the 2024 form
         # began displaying separate income categories: HB191 § 1(9), p.2.
         "https://archive.legmt.gov/bills/2021/HB0199/HB0191_X.pdf#page=2",
+        # 2025 Schedule 2EC, line 5: pensions and annuities without "your
+        # cost or net investment"
+        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45",
     )
 
     def formula(person, period, parameters):
@@ -69,8 +72,11 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         untaxed_social_security = max_(social_security - counted_social_security, 0)
         # § 15-30-2337(9)(a)(i) counts "Railroad Retirement Act benefits", so
         # the tier 1 social security equivalent benefit counts in full in the
-        # same way. The rest of the annuity outside federal AGI is in the
-        # sources (tax_exempt_railroad_pension_benefits).
+        # same way. The tax-free rest of the annuity stays out: it recovers
+        # the employee's tier 2 taxes, which IRC 72(r)(2) treats as employee
+        # contributions, and § 15-30-2337(9)(b) reduces income "by the
+        # taxpayer's basis" (2025 Schedule 2EC line 5: "do not include ...
+        # your cost or net investment").
         railroad_benefits = person(
             "railroad_social_security_equivalent_benefits", period
         )
