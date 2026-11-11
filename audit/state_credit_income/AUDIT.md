@@ -4,12 +4,12 @@ Audited against PolicyEngine-US main at `06c0dcbc54` on 2026-11-11. This audit c
 
 ## Verdict
 
-**178 confirmed gaps** in 35 of the 39 state and local credits audited in full, each a credit whose law defines its own income: 146 leave income out, 27 count too much, and 5 use the wrong year. Another 56 differences turn on a law with two readings, 40 are already fixed by open PRs, and 50 can't be expressed with today's inputs. 347 of the 676 rows match the law.
+**175 confirmed gaps** in 35 of the 39 state and local credits audited in full, each a credit whose law defines its own income: 146 leave income out, 27 count too much, and 2 use the wrong year. Another 56 differences turn on a law with two readings, 40 are already fixed by open PRs, 50 can't be expressed with today's inputs, and 3 are by design under PolicyEngine's year-of-eligibility convention. 347 of the 676 rows match the law.
 
 The gaps aren't random. Ten patterns explain most of them (see [Patterns](#patterns)), and the two that started this audit recur:
 
 - **The #10769 pattern (a pension list without military retired pay or retirement account distributions)** recurs in Michigan, Missouri, Oklahoma, Denver, and in the tax-exempt form in Arizona, Montana, Massachusetts, Rhode Island and Wisconsin.
-- **The #10331 pattern (wrong year)** recurs in Oklahoma (earned income credit "received"), New Jersey's Stay NJ (income two tax years before payment), Tennessee and D.C. (prior-year income), and Ohio (prior-year income that reads as zero when only one year is supplied).
+- **The #10331 pattern (wrong year)** recurs in Oklahoma, whose forms count the earned income credit "received" during the year. The other year differences found are covered by a PolicyEngine convention (see [Year of eligibility](#year-of-eligibility)).
 
 Most gaps understate income, so the model pays credits that are too large or pays households the law excludes. The overcounts matter too: four definitions count pre-2019 alimony twice.
 
@@ -25,6 +25,7 @@ Most gaps understate income, so the model pays credits that are too large or pay
   - *Covered:* an open PR fixes it.
   - *Not modelable:* no input can represent the category.
   - *Unverified:* the source could not be opened.
+  - *By design:* the model differs from the law's text because of a recorded PolicyEngine convention.
 - **Files:**
   - [`audit.csv`](audit.csv): 676 rows, one per state, credit and income category, with the quoted passage, page, citation and source URL.
   - [`details/`](details/): the full write-up for each batch (what the model does, what the law says, differences, PRs checked, what could not be verified).
@@ -38,7 +39,7 @@ No gap has been measured. This order is a judgment from two things read in the l
 
 | # | State | Credit | Gap | Direction |
 |---|---|---|---|---|
-| 1 | TN | Elderly property tax relief | Income is federal AGI. The rule counts all Social Security, SSI, veterans' benefits, workers' compensation, tax-exempt interest and nontaxable pensions. It also uses prior-year income. | Relief granted to households over the limit |
+| 1 | TN | Elderly property tax relief | Income is federal AGI. The rule counts all Social Security, SSI, veterans' benefits, workers' compensation, tax-exempt interest and nontaxable pensions. | Relief granted to households over the limit |
 | 2 | MN | Homestead credit refund | Income is AGI plus nontaxable Social Security and retirement contributions. Minn. Stat. 290A.03 subd. 3 also adds SSI, cash assistance, workers' compensation, tax-exempt interest, nontaxable pensions and retirement distributions, and more (15 rows). | Refund too high |
 | 3 | MI | Homestead property tax credit; home heating credit | Total household resources omit IRA and 401(k) distributions, military retired pay, Roth conversions and forgiven debt. Premiums are under-subtracted. | Credits too high (premiums: too low) |
 | 4 | OK | Sales tax relief; property tax credit | Sums one tax unit where 68 O.S. 5012 counts "all persons occupying the same household". Omits retirement account distributions, veterans' benefits, disability benefits and TANF. Counts this year's EITC, not the credit received. | Credits too high |
@@ -54,12 +55,12 @@ No gap has been measured. This order is a judgment from two things read in the l
 | # | State | Credit | Gap | Direction |
 |---|---|---|---|---|
 | 11 | NJ | ANCHOR | Sums `nj_gross_income`, not NJ-1040 line 29: Treasury interest, 401(k) deferrals and dependents' income count. | Benefit too low or lost |
-| 12 | NJ | Stay NJ | The benefit paid in a year is set by income two tax years earlier; the model uses same-year income. Dependents' income is counted. | Either way |
+| 12 | NJ | Stay NJ | Dependents' income is summed with the claimant's, and a disability pension entered as wages counts twice. | Benefit too low or lost |
 | 13 | PA | Property tax/rent rebate | Pre-2019 alimony counts twice. Wages enter net of 401(k) deferrals. Cash assistance and cash gifts are missing. | Both ways |
 | 14 | VT | Renter credit | 32 V.S.A. 6061(18) adds back losses and the listed above-the-line deductions; the model starts from AGI. It counts 75% of a dependent's Social Security. | Both ways |
 | 15 | UT | Circuit breaker | Alimony counts twice. An adult dependent's income counts as zero. SSI and capital loss carryovers are missing. | Both ways |
 | 16 | MA | Senior circuit breaker | Starts from gross income, not AGI. Omits Roth distributions, workers' compensation and state cash aid to the elderly. Long- and short-term capital results net. | Both ways |
-| 17 | OH | Homestead exemption | The formula reads last year's income, as the law says. With one year of inputs that read returns zero, so the income limit never binds. Read from code, not run; may not apply in microsimulation. | Exemption granted to everyone aged or disabled |
+| 17 | OH | Homestead exemption | The formula reads last year's income. Under the year-of-eligibility convention it should read the same year's. With one year of inputs the prior-year read also returns zero, so the income limit never binds. Read from code, not run; may not apply in microsimulation. | Exemption granted to everyone aged or disabled |
 | 18 | CO (Denver) | Property tax relief | `pension_income` without military retired pay; no retirement account distributions, Old Age Pension or Aid to the Needy Disabled. Rests on the city's guidelines; the ordinance could not be opened. | Rebate too high |
 | 19 | MN | Renter's credit | Sums the AGI of every non-dependent adult in the household; the statute counts the renter and spouse. | Credit too low for renters living with other adults |
 | 20 | PA | Tax forgiveness | Treasury interest is never added back though 72 P.S. 7301(o.2) names it. Alimony counts twice. Employee retirement contributions are missing. | Both ways |
@@ -78,7 +79,7 @@ No gap has been measured. This order is a judgment from two things read in the l
 - **UT child tax credit:** phases out on taxable income, not AGI plus additions.
 - **OR Kids Credit:** losses above $20,000 not added back.
 - **MN marriage credit:** lesser earner's retirement distributions missing (credit too low).
-- **DC Schedule H and senior relief:** separate-return spouse; all residents; prior-year income.
+- **DC Schedule H and senior relief:** separate-return spouse; all residents.
 - **MN K-12 credit:** 2021-2022 only.
 
 ## Patterns
@@ -89,7 +90,7 @@ Fixing by pattern is cheaper than fixing state by state, and each pattern is a c
 2. **Alimony counted twice.** Rhode Island, Utah and both Pennsylvania definitions add `alimony_income` to a base that already holds taxable alimony, and `divorce_year` defaults to 2010.
 3. **Whose income.** The law counts the household but the model sums one tax unit in Oklahoma, New York, Rhode Island, D.C.'s senior relief and Minnesota's homestead refund. The model counts too many people in Minnesota's renter's credit and both New Jersey programs (dependents), and a dependent's Social Security in Vermont.
 4. **Losses.** Statutes bar, cap or add back losses that the model lets through AGI: Rhode Island, Vermont, Oregon, Missouri, Utah. Lists that floor after summing let one person's loss offset another's income: New Mexico, Oklahoma. Maine and Massachusetts go the other way.
-5. **Timing.** Oklahoma (credit received), New Jersey Stay NJ (two years earlier), Tennessee and D.C. (prior year), Ohio (prior year reads zero). Montana is right after #10331, but its receipts are inputs that default to zero.
+5. **Timing.** Oklahoma counts the credit received, not the credit earned. Montana is right after #10331, but its receipts are inputs that default to zero. Ohio, Utah and Indiana read prior-year income against the year-of-eligibility convention (see [Year of eligibility](#year-of-eligibility)).
 6. **"AGI plus add-backs" definitions stop short.** Public assistance, SSI, workers' compensation and veterans' benefits are missing from Minnesota, Oregon, New York, Rhode Island, Wisconsin, Massachusetts, Tennessee, and SSI alone from Maine and Utah.
 7. **The wrong starting line.** Wisconsin (federal, not state, AGI), Massachusetts (gross income, not AGI), New Jersey ANCHOR (gross income, not line 29), Utah child tax credit (taxable income), Nebraska (AGI, not modified AGI), Iowa (double add-back).
 8. **Gambling winnings** are outside federal gross income on main. #10070 fixes definitions that read AGI; the lists in North Dakota, New Mexico and Oklahoma stay wrong after it merges.
@@ -110,6 +111,28 @@ Fixing by pattern is cheaper than fixing state by state, and each pattern is a c
 - **New Jersey Stay NJ, wages.** W-2 box 16 (agency) or gross of 401(k) deferrals.
 
 The rest are in `audit.csv` with `status = two-readings`.
+
+## Year of eligibility
+
+PolicyEngine assigns a rebate, and property tax relief, to the year of eligibility: the year whose income earns it, not the year it is paid or applied (David Trimmer, 2026-11-11). So a law that sets this year's relief by an earlier year's income is modeled by testing the same year's income. Three findings the batch write-ups call timing gaps are therefore by design, and `audit.csv` marks them `by-design`:
+
+- **New Jersey Stay NJ:** 2025 income sets the benefit paid in 2027.
+- **Tennessee elderly property tax relief:** the prior calendar year's income.
+- **D.C. senior and disabled property tax relief:** the federal tax year ending before the property tax year.
+
+The write-ups in `details/` predate this ruling and still describe them as gaps.
+
+Three formulas on main go the other way and read an earlier year's income. Under the convention each should read the same year's:
+
+| State | Credit | Reads | File |
+|---|---|---|---|
+| OH | Homestead exemption | `oh_modified_agi` at `period.last_year` | `oh_homestead_exemption_total_income.py` |
+| UT | Homeowner's credit and its eligibility | household income at `period.last_year` | `ut_homeowners_credit.py`, `ut_homeowner_renter_relief_pre_one_claimant_eligible.py` |
+| IN | Over-65 property tax credit | AGI and filing status two years back | `in_over_65_property_tax_credit_eligible.py` |
+
+Only Ohio was audited for this; the Utah and Indiana reads were found by a search for prior-period reads and are not rows in `audit.csv`. Each would also return zero income when a household supplies one year of inputs, as described for Ohio; that is read from code, not run. Existing tests pin the prior-year reads (Ohio's "current-year Ohio modified adjusted gross income is ignored" case), so changing them is a decision, not a cleanup.
+
+This convention does not cover laws that count a credit as income when it is received (Montana's elderly credit, Oklahoma's forms). Those are rules about what income includes.
 
 ## Covered by open PRs
 
@@ -132,7 +155,7 @@ Run these on Modal, not locally; a full Populace microsimulation needs about 32 
 2. **Missing income among current recipients.** For each credit, among records that receive it on main: the weighted sum of each omitted (or double-counted) variable, by state. A gap with no income mass can wait.
 3. **Cost and recipients after the fix.** For the top gaps from step 2, a reform that swaps in the corrected income: change in the credit's cost, in recipients, and in households that cross the limit. Compute `household_net_income` first (#9740).
 4. **Against administrative totals.** Where the state publishes claims and dollars (Michigan homestead credit, Minnesota property tax refund, Wisconsin homestead credit, Pennsylvania rebate, New Jersey ANCHOR), compare before and after.
-5. **Ohio first, because it is a yes/no.** One household with $99,000 of prior-year Ohio modified AGI and only current-year inputs: does `oh_homestead_exemption_eligible` return true? Then the same question in a microsimulation.
+5. **Ohio first, because it is a yes/no.** One household with $99,000 of Ohio modified AGI and only current-year inputs: does `oh_homestead_exemption_eligible` return true? Then the same question in a microsimulation, and the same check for Utah's homeowner's credit and Indiana's over-65 credit.
 
 ## Tests
 
@@ -146,69 +169,69 @@ To run one file:
 policyengine-core test audit/state_credit_income/tests/<file>.yaml -c policyengine_us
 ```
 
-No test was written where the fix needs a design choice first: Stay NJ's two-year lag, Tennessee's and D.C.'s prior-year income, whole-household income in New York and D.C., and Oklahoma's Oklahoma-credit receipt.
+No test was written where the fix needs a design choice first: whole-household income in New York and D.C., and Oklahoma's Oklahoma-credit receipt. The Ohio case asserts that the same year's income binds, which is the year-of-eligibility convention.
 
 ## Counts by definition
 
-| State | Credit | Confirmed (under / over / timing) | Two readings | Covered by open PR | Not modelable | Unverified | Match |
-|---|---|---|---|---|---|---|---|
-| AZ | Dependent tax credit (az_dependent_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| AZ | Increased excise tax credit (az_increased_excise_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| AZ | Property tax credit (Form 140PTC) | 1 (1 / 0 / 0) | 4 | 1 | 2 | 0 | 22 |
-| CA | Nonrefundable renter's credit (ca_renter_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| CO | TABOR state sales tax refund (DR 0104 line 38) | 0 (0 / 0 / 0) | 0 | 3 | 1 | 0 | 4 |
-| CO (Denver) | Denver Property Tax Relief Program (homeowner and renter rebates) | 4 (4 / 0 / 0) | 1 | 0 | 0 | 1 | 10 |
-| CT | Property tax credit (ct_property_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| DC | Schedule H homeowner and renter property tax credit (dc_ptc) | 1 (1 / 0 / 0) | 2 | 0 | 0 | 0 | 2 |
-| DC | Senior citizen or disabled property owner tax relief (dc_senior_disabled_property_tax_relief) | 2 (1 / 0 / 1) | 0 | 0 | 0 | 0 | 1 |
-| GA | Low-income credit (ga_low_income_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 1 | 0 |
-| HI | Refundable food/excise tax credit (hi_food_excise_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| HI | Tax credit for low-income household renters (hi_low_income_household_renters_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| IA | Low-income exemption, single-filer tax reduction and alternate tax (IA 1040 Step 5; worksheets 41-145 and 41-146) | 3 (0 / 3 / 0) | 0 | 1 | 1 | 1 | 8 |
-| IL | Property tax credit (il_property_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| IL | Senior Citizens Real Estate Tax Deferral (il_scretd; a deferral, outside states/*/tax, checked briefly) | 6 (5 / 1 / 0) | 0 | 0 | 1 | 1 | 0 |
-| IN | Over 65 property tax credit (in_over_65_property_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| IN | Unified tax credit for the elderly (in_unified_elderly_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| KS | Food sales tax credit (ks_fstc) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| KY | Family size tax credit (ky_family_size_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 1 | 0 | 3 |
-| MA | Senior circuit breaker credit (Schedule CB) | 6 (5 / 1 / 0) | 3 | 2 | 3 | 0 | 20 |
-| MD | Poverty level credit (md_poverty_line_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| ME | Property tax fairness credit and sales tax fairness credit (Schedule PTFC/STFC) | 2 (1 / 1 / 0) | 1 | 3 | 0 | 0 | 12 |
-| MI | Homestead property tax credit; home heating credit | 10 (8 / 2 / 0) | 4 | 0 | 5 | 0 | 25 |
-| MN | Homestead credit refund (Form M1PR) | 16 (15 / 1 / 0) | 1 | 2 | 3 | 0 | 10 |
-| MN | K-12 education credit (mn_k12_education_credit) | 1 (1 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| MN | Marriage credit (mn_marriage_credit) | 1 (1 / 0 / 0) | 2 | 0 | 0 | 0 | 3 |
-| MN | Renter's credit (Schedule M1RENT) | 1 (0 / 1 / 0) | 0 | 1 | 2 | 0 | 6 |
-| MO | Property tax credit (RSMo 135.010-135.030; Forms MO-PTS and MO-PTC) | 6 (5 / 1 / 0) | 3 | 1 | 0 | 0 | 14 |
-| MT | Elderly homeowner/renter credit (MCA 15-30-2337 to 2341) | 4 (4 / 0 / 0) | 4 | 2 | 5 | 0 | 21 |
-| ND | Marriage penalty credit (nd_mpc) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| ND | Renter's refund (N.D.C.C. 57-02-08.1(2)); same income definition as the homestead credit | 2 (2 / 0 / 0) | 4 | 6 | 0 | 0 | 19 |
-| NE | Child and dependent care credit (ne_cdcc_refundable) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| NE | Child care refundable tax credit (Child Care Tax Credit Act; ne_refundable_ctc) | 2 (2 / 0 / 0) | 1 | 1 | 0 | 0 | 2 |
-| NJ | ANCHOR (nj_anchor, nj_anchor_eligible) | 5 (0 / 5 / 0) | 0 | 0 | 0 | 0 | 2 |
-| NJ | Stay NJ property tax credit (nj_staynj, nj_staynj_eligible); Senior Freeze income test (not modelled: nj_senior_freeze is an input) | 3 (0 / 2 / 1) | 4 | 0 | 1 | 0 | 6 |
-| NM | Low income comprehensive tax rebate; property tax rebate (65+); child day care credit | 14 (14 / 0 / 0) | 1 | 2 | 3 | 0 | 17 |
-| NY | Household credit (ny_household_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| NY | Real property tax credit (IT-214), tax years from 2025 | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| NY | Real property tax credit (IT-214), tax years through 2024 | 10 (10 / 0 / 0) | 2 | 2 | 3 | 0 | 7 |
-| OH | Homestead exemption for senior citizens, disabled persons and surviving spouses (DTE 105A) | 1 (0 / 0 / 1) | 0 | 0 | 1 | 0 | 7 |
-| OK | Sales tax relief credit (68 O.S. 5011-5013, Form 538-S); property tax credit (68 O.S. 2904-2911, Form 538-H) | 10 (9 / 0 / 1) | 3 | 2 | 0 | 0 | 11 |
-| OR | Oregon Kids Credit (or_ctc) | 1 (1 / 0 / 0) | 2 | 0 | 0 | 0 | 2 |
-| OR | Retirement income credit (ORS 316.157) | 11 (10 / 1 / 0) | 2 | 1 | 4 | 0 | 5 |
-| OR | Working family household and dependent care credit (ORS 315.264) | 0 (0 / 0 / 0) | 1 | 0 | 0 | 0 | 2 |
-| PA | Property Tax/Rent Rebate (pa_property_tax_or_rent_rebate, pa_property_tax_or_rent_rebate_eligible) | 6 (4 / 2 / 0) | 3 | 0 | 1 | 1 | 14 |
-| PA | Tax forgiveness / special tax provisions for poverty (pa_tax_forgiveness_rate, pa_tax_forgiveness_amount; Schedule SP) | 6 (5 / 1 / 0) | 2 | 1 | 2 | 0 | 7 |
-| RI | Child tax credit, tax years 2027 on (ri_ctc) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| RI | Property tax relief credit (RI-1040H; ri_property_tax_credit, ri_property_tax_credit_eligible) | 9 (8 / 1 / 0) | 1 | 2 | 1 | 0 | 7 |
-| TN | Property tax relief for elderly low-income homeowners | 9 (8 / 0 / 1) | 0 | 0 | 1 | 0 | 7 |
-| UT | Homeowner's / renter's (circuit breaker) relief: ut_renters_credit, ut_homeowners_credit | 5 (4 / 1 / 0) | 2 | 1 | 3 | 0 | 16 |
-| UT | Nonrefundable child tax credit (ut_ctc) | 1 (1 / 0 / 0) | 0 | 0 | 0 | 0 | 4 |
-| VA | Credit for low-income individuals (va_low_income_tax_credit) | 2 (2 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| VT | Renter credit (RCC-146; vt_renter_credit) | 3 (2 / 1 / 0) | 1 | 2 | 0 | 0 | 6 |
-| WI | Homestead credit (Schedule H / H-EZ) | 13 (11 / 2 / 0) | 0 | 2 | 6 | 0 | 16 |
-| WV | Homestead excess property tax credit (Schedule HEPTC-1) | 1 (1 / 0 / 0) | 2 | 2 | 0 | 0 | 8 |
-| WV | Low-income family tax credit (wv_low_income_family_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 1 |
-| WV | Senior citizens tax credit (Form SCTC-A) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 2 |
+| State | Credit | Confirmed (under / over / timing) | Two readings | Covered by open PR | Not modelable | Unverified | By design | Match |
+|---|---|---|---|---|---|---|---|---|
+| AZ | Dependent tax credit (az_dependent_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| AZ | Increased excise tax credit (az_increased_excise_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| AZ | Property tax credit (Form 140PTC) | 1 (1 / 0 / 0) | 4 | 1 | 2 | 0 | 0 | 22 |
+| CA | Nonrefundable renter's credit (ca_renter_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| CO | TABOR state sales tax refund (DR 0104 line 38) | 0 (0 / 0 / 0) | 0 | 3 | 1 | 0 | 0 | 4 |
+| CO (Denver) | Denver Property Tax Relief Program (homeowner and renter rebates) | 4 (4 / 0 / 0) | 1 | 0 | 0 | 1 | 0 | 10 |
+| CT | Property tax credit (ct_property_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| DC | Schedule H homeowner and renter property tax credit (dc_ptc) | 1 (1 / 0 / 0) | 2 | 0 | 0 | 0 | 0 | 2 |
+| DC | Senior citizen or disabled property owner tax relief (dc_senior_disabled_property_tax_relief) | 1 (1 / 0 / 0) | 0 | 0 | 0 | 0 | 1 | 1 |
+| GA | Low-income credit (ga_low_income_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 1 | 0 | 0 |
+| HI | Refundable food/excise tax credit (hi_food_excise_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| HI | Tax credit for low-income household renters (hi_low_income_household_renters_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| IA | Low-income exemption, single-filer tax reduction and alternate tax (IA 1040 Step 5; worksheets 41-145 and 41-146) | 3 (0 / 3 / 0) | 0 | 1 | 1 | 1 | 0 | 8 |
+| IL | Property tax credit (il_property_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| IL | Senior Citizens Real Estate Tax Deferral (il_scretd; a deferral, outside states/*/tax, checked briefly) | 6 (5 / 1 / 0) | 0 | 0 | 1 | 1 | 0 | 0 |
+| IN | Over 65 property tax credit (in_over_65_property_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| IN | Unified tax credit for the elderly (in_unified_elderly_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| KS | Food sales tax credit (ks_fstc) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| KY | Family size tax credit (ky_family_size_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 1 | 0 | 0 | 3 |
+| MA | Senior circuit breaker credit (Schedule CB) | 6 (5 / 1 / 0) | 3 | 2 | 3 | 0 | 0 | 20 |
+| MD | Poverty level credit (md_poverty_line_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| ME | Property tax fairness credit and sales tax fairness credit (Schedule PTFC/STFC) | 2 (1 / 1 / 0) | 1 | 3 | 0 | 0 | 0 | 12 |
+| MI | Homestead property tax credit; home heating credit | 10 (8 / 2 / 0) | 4 | 0 | 5 | 0 | 0 | 25 |
+| MN | Homestead credit refund (Form M1PR) | 16 (15 / 1 / 0) | 1 | 2 | 3 | 0 | 0 | 10 |
+| MN | K-12 education credit (mn_k12_education_credit) | 1 (1 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| MN | Marriage credit (mn_marriage_credit) | 1 (1 / 0 / 0) | 2 | 0 | 0 | 0 | 0 | 3 |
+| MN | Renter's credit (Schedule M1RENT) | 1 (0 / 1 / 0) | 0 | 1 | 2 | 0 | 0 | 6 |
+| MO | Property tax credit (RSMo 135.010-135.030; Forms MO-PTS and MO-PTC) | 6 (5 / 1 / 0) | 3 | 1 | 0 | 0 | 0 | 14 |
+| MT | Elderly homeowner/renter credit (MCA 15-30-2337 to 2341) | 4 (4 / 0 / 0) | 4 | 2 | 5 | 0 | 0 | 21 |
+| ND | Marriage penalty credit (nd_mpc) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| ND | Renter's refund (N.D.C.C. 57-02-08.1(2)); same income definition as the homestead credit | 2 (2 / 0 / 0) | 4 | 6 | 0 | 0 | 0 | 19 |
+| NE | Child and dependent care credit (ne_cdcc_refundable) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| NE | Child care refundable tax credit (Child Care Tax Credit Act; ne_refundable_ctc) | 2 (2 / 0 / 0) | 1 | 1 | 0 | 0 | 0 | 2 |
+| NJ | ANCHOR (nj_anchor, nj_anchor_eligible) | 5 (0 / 5 / 0) | 0 | 0 | 0 | 0 | 0 | 2 |
+| NJ | Stay NJ property tax credit (nj_staynj, nj_staynj_eligible); Senior Freeze income test (not modelled: nj_senior_freeze is an input) | 2 (0 / 2 / 0) | 4 | 0 | 1 | 0 | 1 | 6 |
+| NM | Low income comprehensive tax rebate; property tax rebate (65+); child day care credit | 14 (14 / 0 / 0) | 1 | 2 | 3 | 0 | 0 | 17 |
+| NY | Household credit (ny_household_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| NY | Real property tax credit (IT-214), tax years from 2025 | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| NY | Real property tax credit (IT-214), tax years through 2024 | 10 (10 / 0 / 0) | 2 | 2 | 3 | 0 | 0 | 7 |
+| OH | Homestead exemption for senior citizens, disabled persons and surviving spouses (DTE 105A) | 1 (0 / 0 / 1) | 0 | 0 | 1 | 0 | 0 | 7 |
+| OK | Sales tax relief credit (68 O.S. 5011-5013, Form 538-S); property tax credit (68 O.S. 2904-2911, Form 538-H) | 10 (9 / 0 / 1) | 3 | 2 | 0 | 0 | 0 | 11 |
+| OR | Oregon Kids Credit (or_ctc) | 1 (1 / 0 / 0) | 2 | 0 | 0 | 0 | 0 | 2 |
+| OR | Retirement income credit (ORS 316.157) | 11 (10 / 1 / 0) | 2 | 1 | 4 | 0 | 0 | 5 |
+| OR | Working family household and dependent care credit (ORS 315.264) | 0 (0 / 0 / 0) | 1 | 0 | 0 | 0 | 0 | 2 |
+| PA | Property Tax/Rent Rebate (pa_property_tax_or_rent_rebate, pa_property_tax_or_rent_rebate_eligible) | 6 (4 / 2 / 0) | 3 | 0 | 1 | 1 | 0 | 14 |
+| PA | Tax forgiveness / special tax provisions for poverty (pa_tax_forgiveness_rate, pa_tax_forgiveness_amount; Schedule SP) | 6 (5 / 1 / 0) | 2 | 1 | 2 | 0 | 0 | 7 |
+| RI | Child tax credit, tax years 2027 on (ri_ctc) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| RI | Property tax relief credit (RI-1040H; ri_property_tax_credit, ri_property_tax_credit_eligible) | 9 (8 / 1 / 0) | 1 | 2 | 1 | 0 | 0 | 7 |
+| TN | Property tax relief for elderly low-income homeowners | 8 (8 / 0 / 0) | 0 | 0 | 1 | 0 | 1 | 7 |
+| UT | Homeowner's / renter's (circuit breaker) relief: ut_renters_credit, ut_homeowners_credit | 5 (4 / 1 / 0) | 2 | 1 | 3 | 0 | 0 | 16 |
+| UT | Nonrefundable child tax credit (ut_ctc) | 1 (1 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 4 |
+| VA | Credit for low-income individuals (va_low_income_tax_credit) | 2 (2 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| VT | Renter credit (RCC-146; vt_renter_credit) | 3 (2 / 1 / 0) | 1 | 2 | 0 | 0 | 0 | 6 |
+| WI | Homestead credit (Schedule H / H-EZ) | 13 (11 / 2 / 0) | 0 | 2 | 6 | 0 | 0 | 16 |
+| WV | Homestead excess property tax credit (Schedule HEPTC-1) | 1 (1 / 0 / 0) | 2 | 2 | 0 | 0 | 0 | 8 |
+| WV | Low-income family tax credit (wv_low_income_family_tax_credit) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 1 |
+| WV | Senior citizens tax credit (Form SCTC-A) | 0 (0 / 0 / 0) | 0 | 0 | 0 | 0 | 0 | 2 |
 
 ## What could not be verified
 

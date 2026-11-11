@@ -5,8 +5,8 @@
 # reduction in taxes is made". On main the formula reads oh_modified_agi at
 # period.last_year, which is 0 when the inputs cover only one year (the prior
 # year has no income and no Ohio state_code), so the income limit never binds.
-# ASSUMPTION: the fix uses the current year's modified AGI when no prior-year
-# amount is supplied (the convention of or_tax_before_credits_in_prior_year).
+# PolicyEngine assigns property tax relief to the year of eligibility (David
+# Trimmer, 2026-11-11), so the fix reads the same year's modified AGI.
 # The two existing cases in the target file give oh_modified_agi for both
 # years and must keep passing or be restated for the new input.
 # Not run (the audit was read-only).
