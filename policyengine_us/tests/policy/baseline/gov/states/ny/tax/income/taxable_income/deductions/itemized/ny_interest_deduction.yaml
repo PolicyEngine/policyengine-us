@@ -1,0 +1,78 @@
+# ny_interest_deduction = the federal interest_deduction - the federal
+# mortgage interest (deductible_mortgage_interest) + New York's mortgage
+# interest (ny_mortgage_interest_deduction). Investment interest and mortgage
+# insurance premiums pass through unchanged; ny_itemized_deductions_max
+# removes the premiums New York disallows.
+
+- name: Investment interest stays when New York replaces the mortgage interest
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+    investment_interest_expense: 5_000
+  output:
+    # Federal: $40,000 x $750,000 / $1,500,000 = $20,000 of mortgage
+    # interest, plus $5,000 of investment interest.
+    deductible_mortgage_interest_tax_unit: 20_000
+    interest_deduction: 25_000
+    # New York: ($1,000,000 + $100,000) / $1,500,000 = .7333;
+    # $40,000 x 11/15 = $29,333.33 replaces the $20,000.
+    ny_mortgage_interest_deduction: 29_333.33
+    ny_interest_deduction: 34_333.33
+
+- name: Mortgage insurance premiums stay in the interest total
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    adjusted_gross_income: 80_000
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+    investment_interest_expense: 5_000
+    mortgage_insurance_premiums: 1_000
+  output:
+    # Federal: $20,000 of mortgage interest, $5,000 of investment interest
+    # and $1,000 of premiums (AGI is below the $100,000 phase-out start).
+    deductible_mortgage_insurance_premiums: 1_000
+    deductible_mortgage_interest_tax_unit: 20_000
+    interest_deduction: 26_000
+    # $26,000 - $20,000 + $29,333.33.
+    ny_mortgage_interest_deduction: 29_333.33
+    ny_interest_deduction: 35_333.33
+    # ny_itemized_deductions_max then removes the $1,000 of premiums.
+    ny_itemized_deductions_max: 34_333.33
+
+- name: Before 2018 the federal interest deduction passes through
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2010
+    investment_interest_expense: 5_000
+  output:
+    # Federal: $40,000 x $1,000,000 / $1,500,000 = $26,666.67, plus $5,000.
+    # New York uses the federal mortgage amount before 2018, so nothing
+    # changes.
+    interest_deduction: 31_666.67
+    ny_mortgage_interest_deduction: 26_666.67
+    ny_interest_deduction: 31_666.67
+
+- name: Interest outside New York is zero
+  period: 2025
+  input:
+    state_code: NJ
+    home_mortgage_interest: 36_000
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_origination_year: 2020
+    investment_interest_expense: 5_000
+  output:
+    ny_interest_deduction: 0

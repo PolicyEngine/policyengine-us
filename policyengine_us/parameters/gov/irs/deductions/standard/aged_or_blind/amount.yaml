@@ -11,6 +11,7 @@ SINGLE:
   2024-01-01: 1_950
   2025-01-01: 2_000
   2026-01-01: 2_050
+  2027-01-01: 2_100
 JOINT:
   2015-01-01: 1_250
   2016-01-01: 1_250
@@ -23,6 +24,7 @@ JOINT:
   2024-01-01: 1_550
   2025-01-01: 1_600
   2026-01-01: 1_650
+  2027-01-01: 1_700
 SEPARATE:
   2015-01-01: 1_250
   2016-01-01: 1_250
@@ -35,6 +37,7 @@ SEPARATE:
   2024-01-01: 1_550
   2025-01-01: 1_600
   2026-01-01: 1_650
+  2027-01-01: 1_700
 HEAD_OF_HOUSEHOLD:
   2015-01-01: 1_550
   2016-01-01: 1_550
@@ -47,6 +50,7 @@ HEAD_OF_HOUSEHOLD:
   2024-01-01: 1_950
   2025-01-01: 2_000
   2026-01-01: 2_050
+  2027-01-01: 2_100
 SURVIVING_SPOUSE:
   2015-01-01: 1_250
   2016-01-01: 1_250
@@ -59,6 +63,7 @@ SURVIVING_SPOUSE:
   2024-01-01: 1_550
   2025-01-01: 1_600
   2026-01-01: 1_650
+  2027-01-01: 1_700
 metadata:
   unit: currency-USD
   breakdown:
@@ -73,6 +78,8 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-15-53.pdf#page=14
     - title: 2015 IRS data release (Rev. Proc. 2014-61)
       href: https://www.irs.gov/pub/irs-drop/rp-14-61.pdf#page=13
+    - title: 2027 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=13
     - title: 2026 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
     - title: 2025 IRS data release
