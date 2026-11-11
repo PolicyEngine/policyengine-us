@@ -9,8 +9,10 @@ def previous_year_wages(person, period, parameters):
     test, since households often enter a state for the simulation year alone.
     Pay comes from employment_income_before_lsr, where situations and datasets
     store employment income, so the earlier year calculates no labor supply
-    response. Before the first modeled year, only values provided for that year
-    count, so nothing is calculated or cached for an unmodeled year.
+    response. Before the first modeled year, only inputs for that year count:
+    nothing is calculated or cached for an unmodeled year, and a value the
+    simulation calculated for it earlier stays out, so the order of
+    calculation doesn't change the answer.
     """
     last_year = period.last_year
     excluded = parameters(
@@ -23,10 +25,10 @@ def previous_year_wages(person, period, parameters):
         simulation = person.simulation
 
         def provided(variable):
-            value = simulation.get_holder(variable).get_array(
-                last_year, simulation.branch_name
-            )
-            return person.empty_array() if value is None else value
+            holder = simulation.get_holder(variable)
+            if last_year not in holder.get_input_periods(simulation.branch_name):
+                return person.empty_array()
+            return holder.get_array(last_year, simulation.branch_name)
 
         pay = provided("employment_income_before_lsr")
         excluded_pay = sum(provided(variable) for variable in excluded)
@@ -55,8 +57,8 @@ class hi_temporary_disability_insurance_qualified(Variable):
         "employment_income with set_input after the simulation is built stays "
         "out of the previous year's wages, so enter it on "
         "employment_income_before_lsr. Before 2015, the first year the model "
-        "covers, only values provided for that year count, so a deferral "
-        "counts only when entered as the contribution itself, such as "
+        "covers, only inputs for that year count, so a deferral counts only "
+        "when entered as the contribution itself, such as "
         "traditional_401k_contributions, not as the desired amount. Weeks and "
         "hours count all work, self-employment included. Usual weekly hours "
         "stand in for each week's hours, so a worker whose usual hours fall "

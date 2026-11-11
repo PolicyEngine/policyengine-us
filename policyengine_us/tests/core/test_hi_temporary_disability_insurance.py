@@ -15,7 +15,9 @@ state:
    state masking, and aggregation to the tax unit.
 4. Qualification. Previous-year history can only add workers, and exactly the
    workers whose history clears the wages, weeks and hours minimums, when the
-   simulation year's weeks and hours are on file.
+   simulation year's pay, excluded payments, weeks and hours are on file.
+   Before the first modeled year the history comes from inputs alone,
+   whatever the simulation calculated first.
 5. Net income. Removing the contribution raises household net income by exactly
    the contribution.
 
@@ -327,6 +329,42 @@ def test_history_before_the_first_modeled_year_is_read_not_calculated():
         "weeks_worked",
         "weekly_hours_worked_before_lsr",
     }
+
+
+def test_history_before_the_first_modeled_year_ignores_calculated_values():
+    # Before 2015 the previous year counts inputs only. Calculating the 2014
+    # 401(k) contribution from a desired deferral first must not let that
+    # deferral reach the 2015 test: 10,000 of 2014 pay passes in either order.
+    year = FIRST_MODELED_YEAR
+    previous = str(year - 1)
+    worker = {
+        "wages": 900,
+        "weeks": 1,
+        "hours": 40,
+        "previous_wages": 10_000,
+        "previous_weeks": 52,
+        "previous_hours": 40,
+        "state": "HI",
+    }
+    results = []
+    for calculate_deferral_first in (False, True):
+        sim = simulate(year, [worker])
+        sim.set_input(
+            "traditional_401k_contributions_desired", previous, np.array([9_700.0])
+        )
+        if calculate_deferral_first:
+            deferral = sim.calculate("traditional_401k_contributions", previous)
+            assert deferral.tolist() == pytest.approx([9_700])
+        results.append(
+            (
+                sim.calculate(QUALIFIED, str(year)).tolist(),
+                sim.calculate(CONTRIBUTION, str(year)).tolist(),
+            )
+        )
+    # 900 falls under the 951.71 cap for one week: 0.5% * 900 = 4.50.
+    for qualified, contribution in results:
+        assert qualified == [True]
+        assert contribution == pytest.approx([4.50], abs=TOLERANCE)
 
 
 # At least 14 weeks of at least 30 dollars clears the $400 and 14-week test.

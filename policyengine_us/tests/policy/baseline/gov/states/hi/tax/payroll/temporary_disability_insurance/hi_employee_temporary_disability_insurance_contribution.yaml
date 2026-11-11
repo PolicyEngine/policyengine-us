@@ -722,7 +722,7 @@
     hi_temporary_disability_insurance_qualified: false
     hi_employee_temporary_disability_insurance_contribution: 0
 
-- name: Hawaii does not read previous-year pay entered only as employment_income.
+- name: Hawaii's previous-year route leaves out pay entered only as employment_income.
   period: 2026
   absolute_error_margin: 0.01
   input:
