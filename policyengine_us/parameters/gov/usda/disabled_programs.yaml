@@ -11,10 +11,12 @@ values:
     - social_security_disability
     # Clause (6) of the definition covers "a veteran with a service-connected
     # or non-service-connected disability rated by the Veteran's
-    # Administration (VA) as total or paid as total". The first flag covers a
-    # service-connected rating, temporary or permanent; the second covers a
+    # Administration (VA) as total or paid as total".
+    # is_fully_disabled_service_connected_veteran covers a service-connected
+    # rating, temporary or permanent; is_permanently_disabled_veteran covers a
     # permanent and total rating, which a non-service-connected (pension)
-    # rating requires.
+    # rating requires. Clause (7), a veteran in need of regular aid and
+    # attendance or permanently housebound, has no input.
     - is_fully_disabled_service_connected_veteran
     - is_permanently_disabled_veteran
     - is_surviving_spouse_of_disabled_veteran
