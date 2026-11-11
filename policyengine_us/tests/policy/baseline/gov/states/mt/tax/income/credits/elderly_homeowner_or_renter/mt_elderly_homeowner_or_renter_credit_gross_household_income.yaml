@@ -813,7 +813,7 @@
     # not the inconsistent 20_000 net: 30_000.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
 
-- name: Railroad Retirement Act benefits count in full in gross household income
+- name: Railroad Retirement Act benefits count in gross household income, less the employee's basis
   period: 2025
   input:
     people:
@@ -839,7 +839,7 @@
     # § 15-30-2337(9)(a)(i) counts "Railroad Retirement Act benefits" and
     # (viii) all Social Security payments: AGI 6,000 + 10,000 of title II +
     # 10,000 of tier 1 social security equivalent benefits. The 1,000 of the
-    # annuity outside AGI recovers the employee's tier 2 taxes, the
+    # annuity outside AGI returns the employee's own contributions, the
     # taxpayer's basis, which (9)(b) takes out of income.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 26_000
 

@@ -105,12 +105,11 @@ TIER_2 = "taxable_railroad_pension_benefits"
 TAX_FREE = "tax_exempt_railroad_pension_benefits"
 PARAMETERS = system.parameters(f"{YEAR}-01-01")
 
-# The Idaho skip in S2 ends once the SNAP income list counts railroad benefits,
-# as the total or as all three parts.
+# The Idaho skip in S2 ends once the SNAP income list counts tier 1 benefits,
+# alone or in the railroad_benefits total. The swap gives both households the
+# same rest of the annuity, so only tier 1 separates them.
 SNAP_UNEARNED = set(PARAMETERS.gov.usda.snap.income.sources.unearned)
-SNAP_COUNTS_RAILROAD = (
-    "railroad_benefits" in SNAP_UNEARNED or {TIER_1, TIER_2, TAX_FREE} <= SNAP_UNEARNED
-)
+SNAP_COUNTS_RAILROAD = bool({TIER_1, "railroad_benefits"} & SNAP_UNEARNED)
 
 MN_RATES = PARAMETERS.gov.states.mn.tax.income.rates
 MN_TOP_RATE = max(

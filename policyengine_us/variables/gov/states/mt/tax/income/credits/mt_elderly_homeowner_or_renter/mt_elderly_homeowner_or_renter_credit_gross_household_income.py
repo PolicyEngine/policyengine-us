@@ -72,9 +72,9 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         untaxed_social_security = max_(social_security - counted_social_security, 0)
         # § 15-30-2337(9)(a)(i) counts "Railroad Retirement Act benefits", so
         # the tier 1 social security equivalent benefit counts in full in the
-        # same way. The tax-free rest of the annuity stays out: it recovers
-        # the employee's tier 2 taxes, which IRC 72(r)(2) treats as employee
-        # contributions, and § 15-30-2337(9)(b) reduces income "by the
+        # same way. The tax-free rest of the annuity stays out: it returns
+        # the employee's own contributions, which under IRC 72(r)(2) include
+        # tier 2 taxes, and § 15-30-2337(9)(b) reduces income "by the
         # taxpayer's basis" (2025 Schedule 2EC line 5: "do not include ...
         # your cost or net investment").
         railroad_benefits = person(
