@@ -11,12 +11,16 @@ level. These tests check, on the shipped parameter tree:
 
 (a) the invariants of every base-mode parameter in every projected year
     through 2100: a whole number of rounding steps above the base, never
-    below the base, and never falling while its index rises;
+    below the base, and never falling while its index rises, from the last
+    stated value on;
 (b) each projection against the formula recomputed here from the index;
-(c) 26 U.S.C. 63(c)(2): the joint and surviving spouse standard deductions
+(c) each parameter's uprating metadata against a table read from the
+    statute, and each projection against that table's constants, so a
+    wrong base, base period or rounding rule in the metadata fails;
+(d) 26 U.S.C. 63(c)(2): the joint and surviving spouse standard deductions
     equal twice the single amount, and the separate amount the single
     amount, in every year;
-(d) a back-test of the amounts the IRS printed against each statute's
+(e) a back-test of the amounts the IRS printed against each statute's
     formula on the model's price series, with each departure pinned.
 
 The tests for each program's own index (test_uprating_extensions.py,
@@ -27,6 +31,9 @@ hand-coded extensions used.
 """
 
 import math
+from dataclasses import dataclass
+from fractions import Fraction
+from typing import Optional
 
 import pytest
 from policyengine_core.parameters import Parameter
@@ -136,7 +143,10 @@ def test_projections_keep_the_base_mode_invariants(parameter):
     index, period, base, rounding, floor = _spec(parameter)
     years = list(_projected_years(parameter))
     assert years, parameter.name
-    previous_value = previous_index = None
+    # Start from the last stated year, so the step from the last IRS or CBO
+    # value to the first projected value is checked too.
+    last_stated = f"{_last_stated_year(parameter)}-01-01"
+    previous_value, previous_index = parameter(last_stated), index(last_stated)
     for year in years:
         value = parameter(f"{year}-01-01")
         if rounding is not None:
@@ -161,10 +171,276 @@ def test_projections_match_the_formula_from_the_index(parameter):
         assert parameter(f"{year}-01-01") == pytest.approx(expected, rel=1e-12), year
 
 
+# (c) The statute, read independently of the metadata. Each row gives the
+# index, the base amount, the base period in the index's own periods, whether
+# the statute floors the adjustment at zero ("the percentage (if any) by
+# which"), and how it rounds the increase. Each index holds at period Y the
+# price level of calendar year Y - 1 (for the medical care index, August of
+# Y - 1; for Oregon's, period 2023 holds the second quarter of 2022), so a
+# statute's base year B is period B + 1.
+
+
+@dataclass(frozen=True)
+class Statute:
+    citation: str
+    index: str
+    # None: the base is the parameter's own value at the base period.
+    base: Optional[float]
+    period: int
+    floor: bool
+    # "downwards", "upwards" or "nearest"; None for no rounding.
+    rounding: Optional[str]
+    interval: Optional[int]
+
+
+IRS_UPRATING = "gov.irs.uprating"
+IRS_C_CPI_U = "gov.irs.indexing.c_cpi_u"
+# 1(f)(3)(A): "the percentage (if any) by which" the C-CPI-U exceeds its
+# base-year level, so every 1(f)(3) amount floors the adjustment.
+SD_SINGLE = Statute(
+    # 63(c)(7)(A)(ii) puts $15,750 in 63(c)(2)(C); (7)(B)(ii) indexes it with
+    # 2024 as the base year, increases rounded to the next lowest $50.
+    "26 U.S.C. 63(c)(7)(A)(ii), (B)(ii)",
+    IRS_UPRATING,
+    15_750,
+    2025,
+    True,
+    "downwards",
+    50,
+)
+LTC_INDEX = "gov.irs.indexing.medical_care_c_cpi_u"
+LTC_CITATION = "26 U.S.C. 213(d)(10)(A), (B)"
+NYC_INDEX = f"{NYC_THRESHOLDS}.cpi"
+OR_INDEX = "gov.states.or.tax.income.credits.ctc.cpi"
+STATUTE = {
+    "gov.irs.deductions.standard.amount.SINGLE": SD_SINGLE,
+    # 63(c)(2)(C), "any other case", covers separate returns too.
+    "gov.irs.deductions.standard.amount.SEPARATE": SD_SINGLE,
+    "gov.irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD": Statute(
+        "26 U.S.C. 63(c)(7)(A)(i), (B)(ii)",
+        IRS_UPRATING,
+        23_625,
+        2025,
+        True,
+        "downwards",
+        50,
+    ),
+    # 24(h)(2) $2,200; 24(i)(2) base year 2024; 24(i)(3) next lowest $100.
+    "gov.irs.credits.ctc.amount.base[0].amount": Statute(
+        "26 U.S.C. 24(h)(2), (i)(2)-(3)",
+        IRS_UPRATING,
+        2_200,
+        2025,
+        True,
+        "downwards",
+        100,
+    ),
+    # 24(h)(5)(A) $1,400; 24(i)(1) base year 2017; 24(i)(3) next lowest $100.
+    "gov.irs.credits.ctc.refundable.individual_max": Statute(
+        "26 U.S.C. 24(h)(5)(A), (i)(1), (i)(3)",
+        IRS_UPRATING,
+        1_400,
+        2018,
+        True,
+        "downwards",
+        100,
+    ),
+    # 213(d)(10)(A)'s 1997 amounts; (B)(ii) compares August of the preceding
+    # year with August 1996, "the percentage (if any)"; (B)(i) rounds each
+    # increase to the nearest $10.
+    **{
+        "gov.irs.deductions.itemized.medical.long_term_care_premium_limit"
+        f"[{bracket}].amount": Statute(
+            LTC_CITATION, LTC_INDEX, base, 1997, True, "nearest", 10
+        )
+        for bracket, base in enumerate((200, 375, 750, 2_000, 2_500))
+    },
+    # 63(c)(5)(A) $500 and (B) $250; 63(c)(4)(B)(i) base year 1987 and
+    # (ii) 1997; 63(c)(4) rounds increases to the next lowest $50.
+    "gov.irs.deductions.standard.dependent.amount": Statute(
+        "26 U.S.C. 63(c)(4)(B)(i), (c)(5)(A)",
+        IRS_C_CPI_U,
+        500,
+        1988,
+        True,
+        "downwards",
+        50,
+    ),
+    "gov.irs.deductions.standard.dependent.additional_earned_income": Statute(
+        "26 U.S.C. 63(c)(4)(B)(ii), (c)(5)(B)",
+        IRS_C_CPI_U,
+        250,
+        1998,
+        True,
+        "downwards",
+        50,
+    ),
+    # 62(a)(2)(D) $250; 62(d)(3) base year 2014, nearest $50.
+    "gov.irs.ald.educator_expense.cap": Statute(
+        "26 U.S.C. 62(a)(2)(D), (d)(3)",
+        IRS_C_CPI_U,
+        250,
+        2015,
+        True,
+        "nearest",
+        50,
+    ),
+    # 223(b)(2) $2,250 and $4,500; 223(g)(1) base year 1997 on 12 months
+    # ending March 31; 223(g)(2) nearest $50.
+    "gov.irs.gross_income.health_savings_account_contributions.limit.self_only": (
+        Statute(
+            "26 U.S.C. 223(b)(2)(A), (g)",
+            "gov.irs.indexing.hsa_c_cpi_u",
+            2_250,
+            1998,
+            True,
+            "nearest",
+            50,
+        )
+    ),
+    "gov.irs.gross_income.health_savings_account_contributions.limit.family": (
+        Statute(
+            "26 U.S.C. 223(b)(2)(B), (g)",
+            "gov.irs.indexing.hsa_c_cpi_u",
+            4_500,
+            1998,
+            True,
+            "nearest",
+            50,
+        )
+    ),
+    # ORS 315.273(3)(a) $1,000 and $25,000; (5)(b) "the percentage (if any)"
+    # over the second quarter of 2022; (5)(d) next lower multiple of $50.
+    "gov.states.or.tax.income.credits.ctc.amount": Statute(
+        "ORS 315.273(3)(a), (5)", OR_INDEX, 1_000, 2023, True, "downwards", 50
+    ),
+    "gov.states.or.tax.income.credits.ctc.reduction.start": Statute(
+        "ORS 315.273(3)(a), (5)", OR_INDEX, 25_000, 2023, True, "downwards", 50
+    ),
+}
+# NY Tax Law 1310(h)(1)(B)(iii): each 2025 amount times one plus the
+# percentage by which the CPI for the preceding year exceeds the 2024 CPI; no
+# rounding. A CPI below its 2024 level exceeds it by no percentage, hence the
+# floor. The 2025 amounts are the base.
+NYC_STATUTE = Statute(
+    "NY Tax Law 1310(h)(1)(B)(iii)", NYC_INDEX, None, 2025, True, None, None
+)
+# The joint and surviving spouse amounts are 200% of the 63(c)(2)(C) amount
+# (63(c)(2)(A)), so they follow SINGLE; rounding to $100 only clears float
+# error, since twice a multiple of $50 is a multiple of $100.
+SD_FOLLOWER_UPRATING = {
+    "parameter": "gov.irs.deductions.standard.amount.SINGLE",
+    "rounding": {"type": "nearest", "interval": 100},
+}
+
+
+def _statute(name):
+    if name.startswith(NYC_THRESHOLDS):
+        return NYC_STATUTE
+    return STATUTE[name]
+
+
+def _metadata_spec(statute):
+    """The uprating metadata block the statute implies."""
+    base = {"period": statute.period}
+    if statute.base is not None:
+        base["value"] = statute.base
+    if statute.floor:
+        base["floor"] = True
+    spec = {"parameter": statute.index, "base": base}
+    if statute.rounding is not None:
+        spec["rounding"] = {"type": statute.rounding, "interval": statute.interval}
+    return spec
+
+
+def test_the_statute_table_covers_every_base_mode_parameter():
+    nyc = [name for name in BASE_MODE_IDS if name.startswith(NYC_THRESHOLDS)]
+    assert set(BASE_MODE_IDS) == set(STATUTE) | set(nyc)
+
+
+@pytest.mark.parametrize("parameter", BASE_MODE_PARAMETERS, ids=BASE_MODE_IDS)
+def test_uprating_metadata_matches_the_statute(parameter):
+    assert parameter.metadata["uprating"] == _metadata_spec(_statute(parameter.name))
+
+
+@pytest.mark.parametrize("status", ["JOINT", "SURVIVING_SPOUSE"])
+def test_joint_and_surviving_spouse_follow_the_single_amount(status):
+    assert getattr(SD, status).metadata["uprating"] == SD_FOLLOWER_UPRATING
+
+
+def _exact(value):
+    return Fraction(repr(value))
+
+
+# An increase within this many intervals of a whole multiple, or of a half
+# for nearest, may land on either side of it: float error in the index ratio,
+# not the statute. Both outcomes pass there, so no expected value depends on
+# how an engine snaps or breaks a tie.
+SNAP = Fraction(1, 10**9)
+
+
+def _statutory_values(statute, base, year):
+    """Every value the statute's formula allows for ``year``, exactly.
+
+    Base plus the increase, rounded by the statute's rule: downwards to the
+    interval below, upwards to the one above, nearest half up. Two values
+    come back only where the increase lands within ``SNAP`` of a whole step
+    but not on it, which an engine may snap onto as float error or not, or
+    within ``SNAP`` of a half step, which an engine may break either way.
+    """
+    index = get_parameter(PARAMETERS, statute.index)
+    ratio = _exact(index(f"{year}-01-01")) / _exact(index(f"{statute.period}-01-01"))
+    if statute.floor:
+        ratio = max(ratio, Fraction(1))
+    increase = _exact(base) * (ratio - 1)
+    if statute.rounding is None:
+        return [float(_exact(base) + increase)]
+    interval = _exact(statute.interval)
+    exact_steps = increase / interval
+    readings = [exact_steps]
+    whole = Fraction(round(exact_steps))
+    if exact_steps != whole and abs(exact_steps - whole) <= SNAP:
+        readings.append(whole)
+    candidates = set()
+    for steps in readings:
+        if statute.rounding == "downwards":
+            candidates.add(math.floor(steps))
+        elif statute.rounding == "upwards":
+            candidates.add(math.ceil(steps))
+        else:
+            assert statute.rounding == "nearest", statute
+            half = steps - math.floor(steps) - Fraction(1, 2)
+            if abs(half) <= SNAP:
+                candidates.update({math.floor(steps), math.floor(steps) + 1})
+            else:
+                candidates.add(math.floor(steps + Fraction(1, 2)))
+    return sorted(float(_exact(base) + step * interval) for step in candidates)
+
+
+@pytest.mark.parametrize("parameter", BASE_MODE_PARAMETERS, ids=BASE_MODE_IDS)
+def test_projections_follow_the_statute_table(parameter):
+    """Every projected year from 2028 to 2100 against the table's constants
+    and the index the table names. Stated IRS and CBO values come first:
+    the CTC's run to 2035, the refundable maximum's to 2034."""
+    statute = _statute(parameter.name)
+    base = statute.base
+    if base is None:
+        base = parameter(f"{statute.period}-01-01")
+    first = max(2028, _last_stated_year(parameter) + 1)
+    for year in range(first, LAST_YEAR + 1):
+        value = parameter(f"{year}-01-01")
+        expected = _statutory_values(statute, base, year)
+        if statute.rounding is None:
+            assert value == pytest.approx(expected[0], rel=1e-12), year
+        else:
+            assert value in expected, (year, value, expected)
+
+
 def test_joint_standard_deduction_is_twice_the_single_amount_in_every_year():
-    """63(c)(2)(A): 200% of the (C) amount; (C): half of (A) for separate
-    returns; (B) and (C) index only the head of household and single
-    amounts, 63(c)(7)(B)(ii)."""
+    """63(c)(2)(A): the joint and surviving spouse amount is 200% of the (C)
+    amount; (C), "any other case", covers single and separate filers alike,
+    so SEPARATE equals SINGLE. 63(c)(7)(B)(ii) indexes only the (B) and (C)
+    amounts, for head of household and single filers."""
     # 2015 is the first year amount.yaml states.
     for year in range(2015, LAST_YEAR + 1):
         period = f"{year}-01-01"
@@ -208,6 +484,15 @@ def test_back_test_skips_only_the_unobserved_windows():
 
 
 def _statutory_cola(year, base_year):
+    """The 1(f)(3) adjustment for ``year`` as TCJA wrote it: the C-CPI-U
+    over the base year's CPI-U times the 1(f)(3)(B) ratio.
+
+    For tax years before 2018 the IRS divided the CPI-U by the CPI-U. The
+    earned income addition and educator cap back-tests reach back to 2013
+    and 2016, and recomputing those years with the CPI-U numerator gives the
+    same rounded amounts ($350; $250), so the chained formula stands in for
+    the older one there.
+    """
     if base_year <= 2016:
         return get_irs_cola(PARAMETERS, year, base_year)
     numerator = get_average_for_12_months_ending_august(CHAINED, year - 1)
@@ -351,6 +636,23 @@ def test_printed_amounts_against_the_statutory_formula(
         if printed != pytest.approx(formula, abs=1e-6):
             found[year] = (printed, formula)
     assert found == departures
+
+
+def test_earned_income_addition_before_tcja_follows_the_cpi_u():
+    """63(c)(5)(B)'s $250 under 63(c)(4)(B)(ii), before TCJA: 1(f)(3) then
+    divided the CPI-U for the preceding calendar year by the CPI-U for 1997,
+    each averaged over the 12 months ending August 31 (1(f)(4)). The amounts
+    the IRS printed from 1998 ($250, $300 from 2006, $350 from 2013) match
+    $250 plus that increase rounded down to $50 in every year, and agree
+    with ``base.value`` at the 1998 base period."""
+    addition = PARAMETERS.gov.irs.deductions.standard.dependent.additional_earned_income
+    cpi_u = PARAMETERS.gov.bls.cpi.cpi_u
+    base = get_average_for_12_months_ending_august(cpi_u, 1997)
+    for year in range(1998, 2018):
+        numerator = get_average_for_12_months_ending_august(cpi_u, year - 1)
+        cola = max(numerator / base - 1, 0)
+        assert addition(f"{year}-01-01") == 250 + _down(250 * cola, 50), year
+    assert addition("1997-01-01") is None
 
 
 # 213(d)(10)(B): the medical care index, with the components' August 2016
