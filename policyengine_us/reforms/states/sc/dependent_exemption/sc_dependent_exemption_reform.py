@@ -21,7 +21,11 @@ def create_sc_dependent_exemption() -> Reform:
                 period
             ).gov.states.sc.tax.income.deductions.dependent_exemption.amount
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # Apply the dependent taxpayer test before either age path,
+            # preserving the claimant filing exception (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             # Age gate: when in effect, only dependents under the chosen age
             # are re-priced to the reform amount; older dependents keep the
             # baseline exemption. Otherwise every dependent is re-priced,

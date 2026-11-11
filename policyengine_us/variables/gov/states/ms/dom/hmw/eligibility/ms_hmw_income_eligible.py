@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 
 
 class ms_hmw_income_eligible(Variable):
@@ -17,9 +21,11 @@ class ms_hmw_income_eligible(Variable):
         personal_income = person(
             "medicaid_optional_senior_or_disabled_countable_income", period
         )
-        marital_unit = person.marital_unit
-        couple = marital_unit.nb_persons() == 2
-        income = where(couple, marital_unit.sum(personal_income), personal_income)
+        # Pool only the identified co-resident spouse's income, so a couple
+        # left in a default marital unit with an unrelated adult is still
+        # tested as a couple, and the unrelated adult's income stays out.
+        couple = _ssi_spouse_index(person, period) >= 0
+        income = _ssi_couple_total(person, period, personal_income)
         state_group = person.household("state_group_str", period)
         fpg = parameters(period).gov.hhs.fpg
         unit_fpg = fpg.first_person[state_group] + (

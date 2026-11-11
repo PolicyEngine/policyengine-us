@@ -639,7 +639,153 @@
     ca_state_supplement: 488.44
     ca_capi_person: [0, 0]
 
-- name: Case 17, 2027 aged individual keeps the state share when the federal benefit rate rises.
+- name: Case 17, 2025 aged couple sharing an SPM unit with an unrelated CAPI-eligible adult, marital units omitted, keeps the couple computation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+        pension_income: 6_000 # 500 a month
+      person3:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+        pension_income: 6_000 # 500 a month
+    tax_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # Omitting marital_units puts all three people in one default marital
+    # unit. person3 is CAPI-eligible but is not a spouse of either citizen,
+    # so the couple is not a mixed couple and keeps SSI's couple computation.
+    ca_capi_eligible_person: [false, false, true]
+    # (500 + 500 - 20) / 2 = 490 a month each; person3 has 500 - 20 = 480.
+    ssi_countable_income: [5_880, 5_880, 5_760]
+    ssi: [2_820, 2_820, 0] # (1,450 / 2 - 490) * 12
+    # Each spouse takes half the couple share, (2,315.57 - 1,450) / 2 =
+    # 432.785, with no income above the federal amount; SSA rounds it up to
+    # 432.79 a month, as with explicit marital units. Marital-unit sums read
+    # person3 as a CAPI-eligible spouse of both citizens and added person3's
+    # 480 to the couple total.
+    ca_state_supplement: 10_386.96 # 2 * 432.79 * 12
+
+- name: Case 18, 2025 mixed couple sharing a default marital unit with an unrelated citizen, marital units omitted, counts only the couple's income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 6_000 # 500 a month
+      person3:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        pension_income: 12_000 # 1,000 a month
+    tax_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # The couple's countable total excludes person3's income, so person1 gets
+    # Case 11's mixed-couple supplement: 620.81 a month. person3 alone gets
+    # 355.81 a month. Summing the whole default marital unit would add
+    # person3's 980 to the couple total: max(480, 1,960 - 979.76) = 980.24,
+    # leaving 120.57 a month for the couple.
+    ca_state_supplement: [7_449.72, 4_269.72]
+
+- name: Case 19, 2025 mixed couple with explicit marital units in which a third adult claims the spouse as a tax dependent, the supplement follows the marriage.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 68
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 6_000 # 500 a month
+      person3:
+        age: 40
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    tax_units:
+      citizen:
+        members: [person1]
+      third:
+        members: [person3, person2]
+    marital_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # The marriage, not the tax roles, sets Case 11's values. person1's SSI
+    # is 1,450 / 2 - 490 = 235 a month.
+    ssi: [2_820, 0, 0] # 235 * 12
+    # The supplement counts the citizen's own 500 - 20 = 480:
+    # 1,335.81 - 235 - 480 = 620.81 a month.
+    ca_state_supplement: [7_449.72, 0] # 620.81 * 12
+    # person2's CAPI is 479.76 a month, as with ordinary tax roles.
+    ca_capi: [5_757.12, 0] # 479.76 * 12
+
+- name: Case 20, 2027 aged individual keeps the state share when the federal benefit rate rises.
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -661,7 +807,7 @@
     # CDSS projects the 239.94 share for January 2027 (2026 May Revision, page 27).
     ca_state_supplement: 2_879.28 # 239.94 * 12
 
-- name: Case 18, 2026 mixed couple's supplement rounds up to the next cent like other federal payments.
+- name: Case 21, 2026 mixed couple's supplement rounds up to the next cent like other federal payments.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
