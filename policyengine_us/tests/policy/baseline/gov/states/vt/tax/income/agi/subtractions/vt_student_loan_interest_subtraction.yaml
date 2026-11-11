@@ -1,0 +1,386 @@
+- name: 2025 interest fully deducted federally leaves no Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 24
+        employment_income: 10_000
+        student_loan_interest: 1_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+  output:
+    # Schedule IN-112 line 16: $1,000 paid (16a) - $1,000 deducted federally
+    # (16b) = $0 (16c). Federal AGI is already $9,000; subtracting the raw
+    # interest again would deduct it twice.
+    student_loan_interest_ald: 1_000
+    vt_student_loan_interest_subtraction: 0
+    vt_agi: 9_000
+
+- name: 2025 interest above the $2,500 federal cap leaves the excess for the Vermont subtraction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 50_000
+        student_loan_interest: 4_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+  output:
+    # IN-112 line 16c: $4,000 - $2,500 = $1,500. Federal AGI is
+    # $50,000 - $2,500 = $47,500, so Vermont AGI is $47,500 - $1,500 = $46,000.
+    student_loan_interest_ald: 2_500
+    vt_student_loan_interest_subtraction: 1_500
+    vt_subtractions: 1_500
+    vt_agi: 46_000
+
+- name: 2025 single filer with adjusted gross income above $120,000 gets no Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 125_000
+        student_loan_interest: 3_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+  output:
+    # 32 V.S.A. 5811(29)(B)(i): AGI at most $120,000 unless married filing
+    # jointly. The federal deduction phased out at $100,000 of MAGI.
+    student_loan_interest_ald: 0
+    vt_student_loan_interest_subtraction: 0
+
+- name: 2025 joint return under $200,000 subtracts the interest left after the federal phase-out
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 195_000
+        student_loan_interest: 3_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VT
+  output:
+    # Federal: $2,500 x (1 - ($195,000 - $170,000) / $30,000) = $416.67.
+    # AGI $194,583 is within the $200,000 joint limit: $3,000 - $416.67.
+    student_loan_interest_ald: [416.6667, 0]
+    vt_student_loan_interest_subtraction: 2_583.3333
+
+- name: 2025 joint return over $200,000 gets no Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 205_000
+        student_loan_interest: 3_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VT
+  output:
+    # 5811(29)(B)(ii): AGI at most $200,000 if married filing jointly.
+    student_loan_interest_ald: [0, 0]
+    vt_student_loan_interest_subtraction: 0
+
+- name: 2021 Vermont has no student loan interest subtraction
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 24
+        employment_income: 10_000
+        student_loan_interest: 1_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+  output:
+    # 2021, No. 138 (Adj. Sess.) added 5811(21)(B)(vi) from 2022; the 2021 Schedule IN-112
+    # has no such line.
+    student_loan_interest_ald: 1_000
+    vt_student_loan_interest_subtraction: 0
+    vt_subtractions: 0
+    vt_agi: 9_000
+
+- name: 2021 interest above the federal cap is still not subtracted in Vermont
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 50_000
+        student_loan_interest: 4_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+  output:
+    # The § 5811 history note dates the subtraction to January 1, 2022 (2021,
+    # No. 138 (Adj. Sess.), §§ 5, 6), so
+    # the $1,500 the federal cap leaves is not subtracted for 2021.
+    student_loan_interest_ald: 2_500
+    vt_student_loan_interest_subtraction: 0
+    vt_subtractions: 0
+
+- name: 2025 single filer at exactly $120,000 of adjusted gross income keeps the Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 120_000
+        student_loan_interest: 3_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+  output:
+    # 32 V.S.A. 5811(29)(B)(i): AGI "equal to or less than" $120,000. The
+    # federal deduction is fully phased out above $100,000 of MAGI, so 16a $3,000
+    # - 16b $0 = $3,000.
+    adjusted_gross_income: 120_000
+    student_loan_interest_ald: 0
+    vt_student_loan_interest_subtraction: 3_000
+
+- name: 2022 joint return at exactly $200,000 of adjusted gross income keeps the Vermont student loan interest subtraction
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 200_000
+        student_loan_interest: 3_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VT
+  output:
+    # 5811(29)(B)(ii): AGI "equal to or less than" $200,000 if married filing
+    # jointly. The 2022 federal deduction ends at $175,000 of joint MAGI.
+    adjusted_gross_income: 200_000
+    student_loan_interest_ald: [0, 0]
+    vt_student_loan_interest_subtraction: 3_000
+
+- name: 2025 surviving spouse with $110,000 of wages gets no Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 110_000
+        student_loan_interest: 3_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # Federal: 2025 MAGI $110,000 is past the non-joint phase-out ($85,000 to
+    # $100,000), so the deduction is $0 and AGI is $110,000.
+    # Vermont: 5811(29)(B) sets limits for single, head of household, married
+    # filing separately and joint filers only, so a surviving spouse is not a
+    # qualified resident taxpayer: $0. (IN-112 line 16c would give $3,000 - $0
+    # = $3,000.)
+    adjusted_gross_income: 110_000
+    student_loan_interest_ald: [0, 0]
+    vt_student_loan_interest_subtraction: 0
+
+- name: 2025 surviving spouse with $50,000 of wages gets no Vermont subtraction for interest above the federal cap
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        student_loan_interest: 4_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # Federal: min($4,000, $2,500 cap) = $2,500, MAGI $50,000 is below the
+    # $85,000 phase-out start, so AGI is $50,000 - $2,500 = $47,500.
+    # Vermont: 5811(29)(B) names no limit for a surviving spouse, so $0.
+    # (IN-112 line 16c would give $4,000 - $2,500 = $1,500.)
+    adjusted_gross_income: 47_500
+    student_loan_interest_ald: [2_500, 0]
+    vt_student_loan_interest_subtraction: 0
+
+- name: 2025 interest paid by a dependent is not part of the filer's Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 60_000
+      student:
+        age: 22
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        student_loan_interest: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, student]
+    households:
+      household:
+        members: [head, student]
+        state_code: VT
+  output:
+    # 5811(21)(B)(vi): interest "paid by a qualified resident taxpayer"; the
+    # dependent is not the taxpayer on this return.
+    student_loan_interest_ald: [0, 0]
+    vt_student_loan_interest_subtraction: 0
+
+- name: 2025 head of household with $120,000 of adjusted gross income, the limit, keeps the Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 120_000
+        student_loan_interest: 3_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # 5811(29)(B)(i): $120,000 if head of household. The federal deduction
+    # phases out fully above $100,000 of MAGI, so 16a $3,000 - 16b $0 =
+    # $3,000.
+    adjusted_gross_income: 120_000
+    student_loan_interest_ald: [0, 0]
+    vt_student_loan_interest_subtraction: 3_000
+
+- name: 2025 head of household above $120,000 of adjusted gross income gets no Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 125_000
+        student_loan_interest: 3_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # 5811(29)(B)(i): $125,000 exceeds the $120,000 head of household limit.
+    vt_student_loan_interest_subtraction: 0
+
+- name: 2025 married filing separately filer with $120,000 of adjusted gross income, the limit, keeps the Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 120_000
+        student_loan_interest: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # 5811(29)(B)(i): $120,000 if married filing separately. Married filing
+    # separately filers can't take the federal deduction, so 16a $3,000 -
+    # 16b $0 = $3,000.
+    adjusted_gross_income: 120_000
+    student_loan_interest_ald: 0
+    vt_student_loan_interest_subtraction: 3_000
+
+- name: 2025 married filing separately filer above $120,000 of adjusted gross income gets no Vermont student loan interest subtraction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 125_000
+        student_loan_interest: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # 5811(29)(B)(i): $125,000 is above the $120,000 married filing
+    # separately limit, so 16c is $0.
+    adjusted_gross_income: 125_000
+    student_loan_interest_ald: 0
+    vt_student_loan_interest_subtraction: 0

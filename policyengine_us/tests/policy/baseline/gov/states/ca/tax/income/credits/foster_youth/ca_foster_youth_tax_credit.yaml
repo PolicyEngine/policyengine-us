@@ -1,0 +1,149 @@
+# The foster youth tax credit requires CalEITC eligibility (RTC 17052.2;
+# FTB 3514 instructions), so a childless filer who can be claimed as a
+# dependent, or a joint return on which either spouse can be, gets none.
+# $1,189 per former foster youth aged 18-25 in 2025; earnings are below the
+# phase-out start.
+
+- name: 2025 single filer who can be claimed as a dependent gets no foster youth credit without a qualifying child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        employment_income: 1_000
+        was_in_foster_care: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_foster_youth_tax_credit: 0
+
+- name: 2025 single filer who cannot be claimed gets the foster youth credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        employment_income: 1_000
+        was_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_foster_youth_tax_credit: 1_189
+
+- name: 2025 joint return with one claimable spouse gets no foster youth credit without a qualifying child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        was_in_foster_care: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 500
+        was_in_foster_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_foster_youth_tax_credit: 0
+
+- name: 2025 joint return with one claimable spouse gets no foster youth credit without a qualifying child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        employment_income: 500
+        was_in_foster_care: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 500
+        was_in_foster_care: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: CA
+  output:
+    ca_foster_youth_tax_credit: 0
+
+- name: 2025 joint return with both spouses claimable gets no foster youth credit without a qualifying child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        was_in_foster_care: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 20
+        employment_income: 500
+        was_in_foster_care: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_foster_youth_tax_credit: 0
+
+- name: 2025 joint return with neither spouse claimable gets the foster youth credit for both spouses
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        was_in_foster_care: true
+      person_b:
+        age: 20
+        employment_income: 500
+        was_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # 2 x $1,189.
+    ca_foster_youth_tax_credit: 2_378

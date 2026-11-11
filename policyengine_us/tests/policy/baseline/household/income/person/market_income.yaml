@@ -29,3 +29,86 @@
     ak_permanent_fund_dividend: 1_000
     market_income: 1_000
     household_market_income: 1_000
+
+- name: Partnership and S corporation income is market income, with its sign.
+  period: 2026
+  input:
+    partnership_income: 50_000
+    s_corp_income: -20_000
+  output:
+    partnership_s_corp_income: 30_000
+    market_income: 30_000
+
+- name: Farm rental income is market income, with its sign.
+  period: 2026
+  input:
+    employment_income: 30_000
+    farm_rent_income: -4_000
+  output:
+    market_income: 26_000
+
+- name: Capital gain distributions reported without Schedule D are market income.
+  period: 2026
+  input:
+    non_sch_d_capital_gains: 1_200
+  output:
+    market_income: 1_200
+
+- name: Employer disability benefits are market income, taxable or not.
+  period: 2026
+  input:
+    disability_benefits: 12_000
+    tax_exempt_disability_benefits: 5_000
+  output:
+    taxable_disability_benefits: 7_000
+    market_income: 12_000
+
+- name: A Form 4797 loss is split between the head and spouse, and not the dependent.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+      spouse:
+        age: 48
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        other_net_gain: -6_000
+  output:
+    other_net_gain_person: [-3_000, -3_000, 0]
+    other_net_gain_gross_income: [0, 0, 0]
+    market_income: [-3_000, -3_000, 0]
+
+- name: A Form 4797 gain is split between the head and spouse, and both parts are gross income.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+      spouse:
+        age: 48
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        other_net_gain: 10_000
+  output:
+    other_net_gain_person: [5_000, 5_000]
+    other_net_gain_gross_income: [5_000, 5_000]
+    market_income: [5_000, 5_000]
+
+- name: A single filer's Form 4797 gain is all theirs.
+  period: 2026
+  input:
+    other_net_gain: 7_500
+  output:
+    other_net_gain_person: 7_500
+    other_net_gain_gross_income: 7_500
+    market_income: 7_500

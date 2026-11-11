@@ -86,3 +86,97 @@
         members: [person2]
   output:
     ms_hmw_income_eligible: [true, true]
+
+# Marital units omitted: the couple and an unrelated adult share one default
+# marital unit. The tax roles identify the spouses, so the couple is still
+# tested together against 135% of the two-person guideline ($29,214), and the
+# unrelated adult's income stays out. 14,880 x 2 = 29,760 > 29,214, although
+# each spouse's 14,880 alone would pass the one-person $21,546 limit.
+- name: Case 6, a couple in a default marital unit with an unrelated adult is tested as a couple.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+      spouse:
+        age: 50
+        is_tax_unit_spouse: true
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+      outsider:
+        age: 70
+        is_tax_unit_head: true
+        medicaid_optional_senior_or_disabled_countable_income: 0
+    tax_units:
+      couple:
+        members: [head, spouse]
+      outsider:
+        members: [outsider]
+    households:
+      household:
+        members: [head, spouse, outsider]
+        state_code: MS
+  output:
+    ms_hmw_income_eligible: [false, false, true]
+
+# Same default group: 14,000 x 2 = 28,000 <= 29,214 passes, and the unrelated
+# adult's 99,760 is neither pooled with the couple nor offset by theirs.
+- name: Case 7, an unrelated adult's income does not enter a couple's budget in a default marital unit.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        medicaid_optional_senior_or_disabled_countable_income: 14_000
+      spouse:
+        age: 50
+        is_tax_unit_spouse: true
+        medicaid_optional_senior_or_disabled_countable_income: 14_000
+      outsider:
+        age: 70
+        is_tax_unit_head: true
+        medicaid_optional_senior_or_disabled_countable_income: 99_760
+    tax_units:
+      couple:
+        members: [head, spouse]
+      outsider:
+        members: [outsider]
+    households:
+      household:
+        members: [head, spouse, outsider]
+        state_code: MS
+  output:
+    ms_hmw_income_eligible: [true, true, false]
+
+# Same default group: the unrelated adult has no identified spouse, so their
+# own 24,760 is tested against the one-person $21,546 limit and fails, not
+# against the two-person $29,214 limit, which it would pass.
+- name: Case 8, an unrelated adult in a default marital unit gets the one-person limit.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        medicaid_optional_senior_or_disabled_countable_income: 14_000
+      spouse:
+        age: 50
+        is_tax_unit_spouse: true
+        medicaid_optional_senior_or_disabled_countable_income: 14_000
+      outsider:
+        age: 70
+        is_tax_unit_head: true
+        medicaid_optional_senior_or_disabled_countable_income: 24_760
+    tax_units:
+      couple:
+        members: [head, spouse]
+      outsider:
+        members: [outsider]
+    households:
+      household:
+        members: [head, spouse, outsider]
+        state_code: MS
+  output:
+    ms_hmw_income_eligible: [true, true, false]

@@ -32,6 +32,11 @@ class nd_renters_refund_income(Variable):
         # These premiums are disjoint from itemized_medical_expenses,
         # whose medical definition follows state income tax law.
         excluded_premiums = add(tax_unit, period, ["pre_tax_health_insurance_premiums"])
+        # market_income counts disability benefits in full, and federal law
+        # excludes the part from a plan the recipient paid for (IRC 104(a)(3)).
+        excluded_disability_benefits = add(
+            tax_unit, period, ["disability_benefits"]
+        ) - add(tax_unit, period, ["taxable_disability_benefits"])
         # Restore premiums excluded from the federal subtotal (computed, or
         # supplied with a caller's subtotal).
         medical_expenses = add(
@@ -45,6 +50,7 @@ class nd_renters_refund_income(Variable):
         return max_(
             add(tax_unit, period, p.income_sources)
             - excluded_premiums
+            - excluded_disability_benefits
             - medical_expenses,
             0,
         )

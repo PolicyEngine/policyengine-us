@@ -51,7 +51,8 @@ class tax_unit_itemizes(Variable):
             # qualified business income deduction, which depends on the
             # itemization choice, so they come from the branch that itemizes
             # (the one that also gives tax_liability_if_itemizing).
-            # Calculated before branching, so the branch inherits it.
+            # Calculated before branching, so the branch inherits it when no
+            # one repays claim of right income above $3,000.
             tax_unit("total_itemized_taxable_income_deductions", period)
             itemized_deductions = get_itemization_branch(
                 tax_unit, period, itemizes=True
