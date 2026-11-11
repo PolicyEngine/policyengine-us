@@ -193,7 +193,7 @@
         # these, since the model's split of the couple's SSI and income is
         # being reworked separately.
         ssi: 994
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
         ca_state_supplement_person: 239.94
       person2:
         age: 68
@@ -205,7 +205,7 @@
         # her own income, as it does the citizen's values, to isolate the
         # CAPI mixed-couple formula.
         pension_income: 5_040
-        ssi_countable_income: 4_800
+        ssi_countable_income: {2026: 4_800}
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -368,13 +368,13 @@
         # supplement 239.94.
         pension_income: 5_040
         ssi: 594
-        ssi_countable_income: 4_800
+        ssi_countable_income: {2026: 4_800}
         ca_state_supplement_person: 239.94
       person2:
         age: 68
         immigration_status: LEGAL_PERMANENT_RESIDENT
         ssi_qualifying_quarters_earnings: 39
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -775,19 +775,19 @@
         is_tax_unit_head: true
         ssi: 994
         ca_state_supplement_eligible_person: true
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
       spouse:
         age: 68
         is_tax_unit_spouse: true
         immigration_status: LEGAL_PERMANENT_RESIDENT
         ssi_qualifying_quarters_earnings: 39
         pension_income: 5_040
-        ssi_countable_income: 4_800
+        ssi_countable_income: {2026: 4_800}
         ca_capi_payment_standard: 2_098.83
       third:
         age: 70
         ssi: 500
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
         ca_state_supplement_eligible_person: false
     tax_units:
       couple:
@@ -818,19 +818,19 @@
         is_tax_unit_head: true
         ssi: 994
         ca_state_supplement_eligible_person: true
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
       spouse:
         age: 68
         is_tax_unit_spouse: true
         immigration_status: LEGAL_PERMANENT_RESIDENT
         ssi_qualifying_quarters_earnings: 39
         pension_income: 5_040
-        ssi_countable_income: 4_800
+        ssi_countable_income: {2026: 4_800}
         ca_capi_payment_standard: 2_098.83
       third:
         age: 70
         ssi: 0
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
         ca_state_supplement_eligible_person: true
     tax_units:
       couple:
@@ -862,19 +862,19 @@
         is_tax_unit_head: true
         ssi: 994
         ca_state_supplement_eligible_person: true
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
       spouse:
         age: 68
         is_tax_unit_spouse: true
         immigration_status: LEGAL_PERMANENT_RESIDENT
         ssi_qualifying_quarters_earnings: 39
         pension_income: 5_040
-        ssi_countable_income: 4_800
+        ssi_countable_income: {2026: 4_800}
         ca_capi_payment_standard: 2_098.83
       third:
         age: 70
         ssi: 0
-        ssi_countable_income: 6_000
+        ssi_countable_income: {2026: 6_000}
         ca_state_supplement_eligible_person: false
     tax_units:
       couple:
