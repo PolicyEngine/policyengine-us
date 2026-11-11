@@ -90,7 +90,7 @@
       claimant:
         age: 70
         ssi_receives_outside_shelter_support: true
-        ssi_shelter_support_value: 300 * 12
+        ssi_shelter_support_value: 300
       spouse:
         age: 60
         employment_income: 500 * 12
@@ -116,7 +116,7 @@
         age: 70
         ssi_receives_outside_shelter_support: true
         employment_income: 200 * 12
-        ssi_shelter_support_value: 10 * 12
+        ssi_shelter_support_value: 10
       spouse:
         age: 60
         employment_income: 500 * 12
@@ -132,3 +132,179 @@
         state_code: FL
   output:
     uncapped_ssi_without_spousal_deeming: [931.5, 0]
+
+# 2024 Federal benefit rates: $943 individual, $1,415 couple; the deeming
+# threshold is their difference, $472. The spouse in each case below earns
+# $500 a month, so deeming applies, and the model deems
+# ($500 - $20 - $65) / 2 = $207.50.
+# Under 20 CFR 416.420(a) a payment counts food from its second prior income
+# month, and food stops counting on September 30, 2024 (89 FR 21199).
+# SI 01320.400 C.2 computes the individual amount from that budget month, so
+# the limit follows each month's PMV status.
+# Individual PMV: $943 / 3 + $20 = $334.33; less the $20 general exclusion,
+# $314.33 counts, which leaves $943 - $314.33 = $628.67.
+# The model's deeming computation counts the deemed PMV, $1,415 / 6 + $10 =
+# $245.83, less $20, plus $207.50: $1,415 - $433.33 = $981.67, so the lesser
+# is the individual limit.
+# Core stores a plain yearly input in a month case for the year that starts
+# that month, so we key age, earnings and state to 2024 in the month cases.
+
+- name: Under deeming, the November 2024 payment counts September food at the individual PMV.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+      spouse:
+        age:
+          2024: 60
+        employment_income:
+          2024: 6_000
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code:
+          2024: FL
+  output:
+    # November pays on September income, when food still counts.
+    ssi_pmv_applies: [true, false]
+    uncapped_ssi_without_spousal_deeming: [628.67, 0]
+    ssi: [628.67, 0]
+
+- name: Under deeming, December 2024 is the first payment with no food ISM.
+  period: 2024-12
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+      spouse:
+        age:
+          2024: 60
+        employment_income:
+          2024: 6_000
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code:
+          2024: FL
+  output:
+    # December pays on October income, which excludes food, so the claimant
+    # has no countable income: $943 - $0 = $943. The deeming computation
+    # leaves $1,415 - $207.50 = $1,207.50.
+    ssi_pmv_applies: [false, false]
+    uncapped_ssi_without_spousal_deeming: [943, 0]
+    ssi: [943, 0]
+
+- name: Under deeming, food received only from September 30, 2024 leaves the November payment without ISM.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+        ssi_food_from_others_only_on_or_after_food_exclusion:
+          2024-09: true
+      spouse:
+        age:
+          2024: 60
+        employment_income:
+          2024: 6_000
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code:
+          2024: FL
+  output:
+    # All September food came on or after the exclusion date: $943 - $0.
+    ssi_pmv_applies: [false, false]
+    uncapped_ssi_without_spousal_deeming: [943, 0]
+    ssi: [943, 0]
+
+- name: Under deeming, a year of food-only support applies the individual PMV through November 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        ssi_receives_food_from_others:
+          2024: true
+      spouse:
+        age: 60
+        employment_income: 500 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # January through November count food: 11 x ($943 - $943 / 3) =
+    # $6,915.33. December counts none: $943. Total $7,858.33.
+    uncapped_ssi_without_spousal_deeming: [7_858.33, 0]
+    ssi: [7_858.33, 0]
+
+- name: Under deeming, shelter support that starts in July 2024 adds no ISM to the March payment.
+  period: 2024-03
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age:
+          2024: 70
+        ssi_receives_outside_shelter_support:
+          2024-07: true
+      spouse:
+        age:
+          2024: 60
+        employment_income:
+          2024: 6_000
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code:
+          2024: FL
+  output:
+    # March has no ISM, so the claimant has no countable income: $943.
+    ssi_pmv_applies: [false, false]
+    uncapped_ssi_without_spousal_deeming: [943, 0]
+    ssi: [943, 0]

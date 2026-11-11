@@ -1,3 +1,48 @@
+## [2.117.1] - 2026-11-11
+
+### Fixed
+
+- Count military retired pay and survivor annuities in New Mexico's modified gross income and Oklahoma's credit gross income.
+
+
+## [2.117.0] - 2026-11-11
+
+### Added
+
+- Limit the Alaska Permanent Fund Dividend and energy relief to the immigration statuses in AS 43.23.005(a)(5), and add a default-true take-up input for residents Alaska does not pay.
+
+
+## [2.116.21] - 2026-11-11
+
+### Fixed
+
+- Use Missouri's printed TANF maximum grants, remove the unused maximum-benefit percentage parameter, and round deficits to four decimal places before flooring payments to whole dollars. Use contiguous-state SNAP income standards for Guam and the Virgin Islands. Count Hawaii TANF in child care income from August 2017, covering every modeled month. Date SSI food support and its exclusion by the second prior income month, with current-month support for January and February to retain one-year input coverage. Calculate SSI ISM and countable income monthly, and divide parental resources using monthly income eligibility. The monthly input contract also applies to ssi_shelter_support_value and ssi_pmv_amount; year-keyed amounts split across months.
+
+
+## [2.116.20] - 2026-11-11
+
+### Fixed
+
+- Apply the Rhode Island, South Carolina, Utah, Vermont, West Virginia and Wisconsin rules for a filer who can be claimed as a dependent. On such a return, apply them to dependent exemptions, deductions and child credits, to the Wisconsin dependent standard deduction and to the West Virginia exemptions. Apply the Rhode Island and Vermont claimant tests for property tax relief and the renter credit, and Wisconsin's limits on care expenses.
+
+  Count each claimable filer's West Virginia 11-21-16(d) exemption in the low-income family tax credit's family size, and let a return with no other exemption claim the credit.
+
+  Count as Utah qualifying dependents only those for whom the federal child tax credit or credit for other dependents is allowed, in the exemption, the birth-year dependent and the contributed reform.
+
+  Preserve claimable-filer counts and the dependent-claimant filing exception in the contributed Rhode Island, South Carolina, Utah, Vermont and West Virginia exemption reforms. Preserve the Rhode Island and Wisconsin filer counts under the state dependent exemption repeal. For West Virginia returns on which no dependent adds an exemption, preserve the statutory $500 allowance per claimable filer in the baseline and contributed reform. Apply it to every claimable filer under the repeal override. Keep the existing count when dependents add exemptions, pending a ruling.
+
+  Measure Wisconsin dependent standard deduction earnings on both tax paths with the federal worksheet's earned income: wages after pretax payroll deductions, taxable disability wages, and business and farm income, less the self-employment tax deduction.
+
+  Use HUD zero-bedroom rents for zero-exemption Vermont renters in every stored fair market rent year (2021–2025).
+
+
+## [2.116.19] - 2026-11-11
+
+### Fixed
+
+- Uprate Philadelphia wage tax taxable wages by IRS employment income per capita, the series wages follow, instead of the default CBO adjusted gross income per capita, so taxable wages keep pace with wages in later years.
+
+
 ## [2.116.18] - 2026-11-11
 
 ### Changed
