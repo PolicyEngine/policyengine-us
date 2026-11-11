@@ -39,14 +39,24 @@ class ss_retirement_age_adjustment_factor(Variable):
         early_factor = max_(0, 1 - total_reduction)
 
         # Delayed retirement credit (when months_from_fra > 0)
-        years_delayed = months_from_fra / MONTHS_IN_YEAR
         is_delayed = months_from_fra > 0
-
-        # Cap at maximum delayed years
-        years_delayed = min_(years_delayed, p.max_delayed_years)
 
         # Get birth year for credit rate lookup
         birth_year = period.start.year - age
+
+        # Credits accrue only for months before the maximum age (70), except
+        # that months before 1984 ran to age 72 (42 USC 402(w)(2)(A),
+        # Pub. L. 98-21 sec. 114(c)(2)). A person's ceiling therefore runs
+        # to the later of age 70 and the start of 1984, capped at age 72.
+        delayed = p.delayed_retirement
+        months_at_cutoff = (delayed.max_age_cutoff_year - birth_year) * MONTHS_IN_YEAR
+        max_months = min_(
+            max_(months_at_cutoff, delayed.max_age * MONTHS_IN_YEAR),
+            delayed.max_age_before_1984 * MONTHS_IN_YEAR,
+        )
+        years_delayed = (
+            max_(min_(claiming_age_months, max_months) - fra_months, 0) / MONTHS_IN_YEAR
+        )
 
         # Credit rate by birth year from scale parameter
         credit_rate = p.delayed_retirement.credit_rates.calc(birth_year)

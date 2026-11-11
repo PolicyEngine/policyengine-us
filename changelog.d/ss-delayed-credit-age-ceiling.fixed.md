@@ -1,0 +1,1 @@
+Bound Social Security delayed retirement credits by age 70 (age 72 for increment months before 1984) instead of 4 years past full retirement age, so births before 1943 get their full credit and births from 1955 stop accruing at 70.
