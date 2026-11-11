@@ -83,6 +83,9 @@ def test_base_mode_covers_the_statutory_amounts():
         "gov.irs.gross_income.health_savings_account_contributions.limit.family",
         "gov.states.or.tax.income.credits.ctc.amount",
         "gov.states.or.tax.income.credits.ctc.reduction.start",
+        "gov.states.az.tax.income.deductions.standard.amount.SINGLE",
+        "gov.states.az.tax.income.deductions.standard.amount.SEPARATE",
+        "gov.states.az.tax.income.deductions.standard.amount.HEAD_OF_HOUSEHOLD",
         *(
             "gov.irs.deductions.itemized.medical.long_term_care_premium_limit"
             f"[{bracket}].amount"
@@ -212,6 +215,7 @@ LTC_INDEX = "gov.irs.indexing.medical_care_c_cpi_u"
 LTC_CITATION = "26 U.S.C. 213(d)(10)(A), (B)"
 NYC_INDEX = f"{NYC_THRESHOLDS}.cpi"
 OR_INDEX = "gov.states.or.tax.income.credits.ctc.cpi"
+AZ_SD = "gov.states.az.tax.income.deductions.standard.amount"
 STATUTE = {
     "gov.irs.deductions.standard.amount.SINGLE": SD_SINGLE,
     # 63(c)(2)(C), "any other case", covers separate returns too.
@@ -225,6 +229,25 @@ STATUTE = {
         "downwards",
         50,
     ),
+    # A.R.S. 43-1041(A) sets Arizona's amounts to the federal 2025 ones, and
+    # 43-1041(H) indexes them "in the same manner in which the federal basic
+    # standard deduction is adjusted for inflation pursuant to section 63".
+    **{
+        f"{AZ_SD}.{status}": Statute(
+            "A.R.S. 43-1041(A), (H)",
+            IRS_UPRATING,
+            base,
+            2025,
+            True,
+            "downwards",
+            50,
+        )
+        for status, base in [
+            ("SINGLE", 15_750),
+            ("SEPARATE", 15_750),
+            ("HEAD_OF_HOUSEHOLD", 23_625),
+        ]
+    },
     # 24(h)(2) $2,200; 24(i)(2) base year 2024; 24(i)(3) next lowest $100.
     "gov.irs.credits.ctc.amount.base[0].amount": Statute(
         "26 U.S.C. 24(h)(2), (i)(2)-(3)",
