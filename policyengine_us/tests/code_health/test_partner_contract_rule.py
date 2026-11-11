@@ -33,7 +33,7 @@ def _headings(text):
     """Anchors of the Markdown headings, skipping `#` lines in code blocks."""
     headings, fenced = set(), False
     for line in text.splitlines():
-        if line.startswith("```"):
+        if line.startswith(("```", "~~~")):
             fenced = not fenced
         elif not fenced and re.match(r"#{1,6} ", line):
             headings.add(_slug(line.lstrip("#")))
@@ -66,7 +66,9 @@ def test_notice_workflow_watches_the_partner_folder():
     steps = workflow["jobs"]["notify-slack"]["steps"]
     scripts = "\n".join(step.get("run", "") for step in steps)
     # The step that lists the PR's partner files filters on the same folder.
-    assert re.search(rf"grep [^\n|]*\^{re.escape(PARTNERS)}/", scripts)
+    # Only a plain or extended grep keeps the matching files: -v would drop
+    # them and -c would count them, and either would silence the notice.
+    assert re.search(rf"grep (?:-E )?'\^{re.escape(PARTNERS)}/'", scripts)
     assert any(
         "SLACK_PARTNER_WEBHOOK_URL" in str(step.get("env", {})) for step in steps
     )
