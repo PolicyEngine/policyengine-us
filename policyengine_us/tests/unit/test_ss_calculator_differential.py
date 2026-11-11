@@ -1,7 +1,7 @@
 """The optional calculator leaves the existing model disconnected and unchanged.
 
 The reference removes calculator-only variables and parameter namespaces. Shared
-benefit-lever parameters and statutory COLA history remain available to the
+reported-benefit inputs, PIA parameters and COLA history remain available to the
 reported-benefit formulas. It detects an accidental calculator dependency even
 when a new variable's default value happens to be neutral. This is portable in
 source distributions and CI;
@@ -23,14 +23,27 @@ from policyengine_us.tools.general import earliest_input_year
 
 
 CALCULATOR_PREFIXES = ("ss_calculator_", "ss_calculated_")
+# population.py reads the birth date for reported retirement benefits;
+# population_survivor.py reads the recipient's survivor basis under S.770.
+REFERENCE_CALCULATOR_INPUTS = frozenset(
+    (
+        "ss_calculator_birth_date",
+        "ss_calculator_worker_birth_year",
+        "ss_calculator_death_year",
+        "ss_calculator_authoritative_year",
+        "ss_calculator_prior_disability_eligibility",
+        "ss_calculator_same_year_death_before_62",
+        "ss_calculator_worker_birth_date",
+        "ss_calculator_death_date",
+        "ss_calculator_basis_provenance",
+        "ss_calculator_ordinary_non_windex",
+        "ss_calculator_year_only_not_january_1",
+    )
+)
+# Keep shared PIA switches, historical bend points, December 1999 COLA
+# parameters, benefit levers and statutory COLA history: the reported-benefit
+# formula code reads them without selecting the household calculator.
 NEW_PARAMETER_NODES = (
-    # Keep gov.contrib.ssa.pia and gov.contrib.congress.s770.section_2:
-    # reported-benefit PIA ratios read these shared formula switches even
-    # without the household calculator. Calculator-only variables are still
-    # removed above, so neutral formula dependencies on them remain detectable.
-    # Benefit levers and statutory COLA history also remain in the reference.
-    "gov.ssa.social_security.pia.bend_points",
-    "gov.ssa.social_security.cola",
     # Read only by the calculator's history route (history_parameters_at
     # through donut.py and mini_pia.py).
     "gov.contrib.ssa.history",
@@ -150,6 +163,7 @@ class WithoutHouseholdCalculator(Reform):
             name: variable
             for name, variable in self.variables.items()
             if not name.startswith(CALCULATOR_PREFIXES)
+            or name in REFERENCE_CALCULATOR_INPUTS
         }
         for path in NEW_PARAMETER_NODES:
             parent = self.parameters
@@ -324,12 +338,19 @@ def _cached_reference_values(simulation):
     ]
 
 
-def _reference_simulation(situation):
+def _reference_simulation(situation, reform=None):
     """Let the US wrapper clone once and Core remove the feature once."""
+
+    class ReferenceUnderReform(Reform):
+        def apply(self):
+            if reform is not None:
+                reform.apply(self)
+            WithoutHouseholdCalculator.apply(self)
+
     return Simulation(
         situation=deepcopy(situation),
         tax_benefit_system=Simulation.default_tax_benefit_system_instance,
-        reform=WithoutHouseholdCalculator,
+        reform=ReferenceUnderReform,
     )
 
 
@@ -354,10 +375,11 @@ def test_calculator_off_matches_model_without_feature(situation):
         person["ss_calculator_supplied_pia"] = 4_321.0
     actual = Simulation(situation=off_inputs)
 
-    assert not any(
-        name.startswith(CALCULATOR_PREFIXES)
+    assert {
+        name
         for name in reference.tax_benefit_system.variables
-    )
+        if name.startswith(CALCULATOR_PREFIXES)
+    } == REFERENCE_CALCULATOR_INPUTS
     for name in LEGACY_SSA_OUTPUTS + DOWNSTREAM_OUTPUTS:
         expected = reference.calculate(name, YEAR)
         np.testing.assert_array_equal(
@@ -377,6 +399,183 @@ def test_calculator_off_matches_model_without_feature(situation):
         "ss_calculated_survivors",
     ):
         np.testing.assert_array_equal(actual.calculate(name, YEAR), 0)
+
+
+REPORTED_SSA_OUTPUTS = tuple(
+    f"{component}_{suffix}"
+    for component in LEGACY_SSA_OUTPUTS[:4]
+    for suffix in (
+        "pia_ratio_factor",
+        "inferred_aime",
+        "inferred_aime_lower_bound",
+        "inferred_aime_upper_bound",
+    )
+)
+
+
+def _pia_reform():
+    return Reform.from_dict(
+        {
+            "gov.contrib.ssa.pia.in_effect": {YEAR: True},
+            "gov.contrib.ssa.pia.factors.first": {YEAR: 0.95},
+            "gov.contrib.ssa.pia.bend_point_multipliers.first": {YEAR: 1.15},
+        },
+        country_id="us",
+    )
+
+
+def _reported_situation(people):
+    situation = {"people": people}
+    for entity in ("tax_units", "spm_units", "families", "marital_units", "households"):
+        situation[entity] = {name: {"members": [name]} for name in people}
+    for unit in situation["tax_units"].values():
+        unit["tax_unit_itemizes"] = {YEAR: False}
+    for household in situation["households"].values():
+        household["state_code"] = {YEAR: "NY"}
+    return situation
+
+
+def _reported_retirement_and_disability():
+    return _reported_situation(
+        {
+            "retiree": {
+                "age": {YEAR: 62},
+                "ss_calculator_birth_date": {"eternity": "1964-01-02"},
+                "social_security_retirement_claim_age_months": {YEAR: 744},
+                "social_security_retirement_reported": {YEAR: 18_117.12},
+                "taxable_interest_income": {YEAR: 30_000},
+            },
+            "disabled": {
+                "age": {YEAR: 45},
+                "social_security_disability_entitlement_year": {YEAR: YEAR},
+                "social_security_disability_reported": {YEAR: 25_881.60},
+            },
+        }
+    )
+
+
+def _assert_reported_matches_reference(situation, reform):
+    reference = _reference_simulation(situation, reform)
+    off_inputs = deepcopy(situation)
+    for person in off_inputs["people"].values():
+        person["ss_calculator_source"] = "off"
+        person["ss_calculator_supplied_aime"] = 12_345
+        person["ss_calculator_supplied_pia"] = 4_321.0
+    actual = Simulation(situation=off_inputs, reform=reform)
+    for name in LEGACY_SSA_OUTPUTS + REPORTED_SSA_OUTPUTS + DOWNSTREAM_OUTPUTS:
+        np.testing.assert_array_equal(
+            actual.calculate(name, YEAR), reference.calculate(name, YEAR), err_msg=name
+        )
+    for name, period, expected in _cached_reference_values(reference):
+        np.testing.assert_array_equal(
+            actual.calculate(name, period), expected, err_msg=f"{name} at {period}"
+        )
+    return actual, reference
+
+
+@pytest.mark.parametrize("reformed", (False, True), ids=("current-law", "pia-reform"))
+def test_reported_benefits_match_reference_under_pia_reform(reformed):
+    actual, _ = _assert_reported_matches_reference(
+        _reported_retirement_and_disability(), _pia_reform() if reformed else None
+    )
+    # 25,881.60 / 12 = 18,117.12 / (12 * .7) = 2,156.80 monthly PIA.
+    # (.9 * 1,286) + .32 * (AIME - 1,286) = 2,156.80 gives AIME 4,409.125.
+    # The next PIA dime gives the upper AIME bound 4,409.4375.
+    # Reform: .95 * 1,478.9 + .32 * (4,409.125 - 1,478.9) = 2,342.627.
+    # Dime-floor PIA 2,342.6 pays 28,111.20 annually, or 19,677.84 at .7.
+    for component, index in (("retirement", 0), ("disability", 1)):
+        prefix = f"social_security_{component}"
+        assert actual.calculate(f"{prefix}_inferred_aime_lower_bound", YEAR)[
+            index
+        ] == pytest.approx(4_409.125)
+        assert actual.calculate(f"{prefix}_inferred_aime_upper_bound", YEAR)[
+            index
+        ] == pytest.approx(4_409.4375)
+        assert actual.calculate(f"{prefix}_pia_ratio_factor", YEAR)[
+            index
+        ] == pytest.approx(2_342.6 / 2_156.8 if reformed else 1)
+    np.testing.assert_allclose(
+        actual.calculate("social_security_retirement", YEAR),
+        [19_677.84 if reformed else 18_117.12, 0],
+        rtol=0,
+        atol=0.01,
+    )
+    np.testing.assert_allclose(
+        actual.calculate("social_security_disability", YEAR),
+        [0, 28_111.20 if reformed else 25_881.60],
+        rtol=0,
+        atol=0.01,
+    )
+
+
+def _reported_survivor():
+    basis = {
+        "worker_birth_year": 1963,
+        "death_year": 2025,
+        "authoritative_year": 2025,
+        "prior_disability_eligibility": 0,
+        "same_year_death_before_62": 1,
+        "worker_birth_date": "1963-10-02",
+        "death_date": "2025-04-15",
+        "basis_provenance": "Supplied ordinary worker computation basis",
+        "ordinary_non_windex": True,
+        "year_only_not_january_1": True,
+    }
+    return _reported_situation(
+        {
+            "survivor": {
+                "age": {YEAR: 67},
+                "social_security_survivors_reported": {YEAR: 23_130},
+                "social_security_survivors_worker_id": {YEAR: "worker"},
+                "social_security_survivors_worker_benefit_ratio": {YEAR: 0.75},
+                "social_security_survivors_worker_ratio_identified": {YEAR: True},
+                "taxable_interest_income": {YEAR: 210_000},
+                **{
+                    f"ss_calculator_{name}": {"eternity": value}
+                    for name, value in basis.items()
+                },
+            },
+            "worker": {
+                "age": {YEAR: 63},
+                "social_security_worker_computation_year": {YEAR: 2025},
+            },
+        }
+    )
+
+
+@pytest.mark.parametrize("increase_bend", (False, True))
+def test_reported_survivor_basis_matches_reference_under_s770(increase_bend):
+    reform = Reform.from_dict(
+        {
+            "gov.contrib.congress.s770.section_2.in_effect": {YEAR: True},
+            "gov.contrib.congress.s770.section_2.recompute_pre2026_death_before_eligibility": {
+                YEAR: increase_bend
+            },
+        },
+        country_id="us",
+    )
+    actual, reference = _assert_reported_matches_reference(_reported_survivor(), reform)
+    np.testing.assert_array_equal(
+        actual.calculate("social_security_survivors_pia_ratio_unmodeled", YEAR),
+        [False, False],
+    )
+    factor = actual.calculate("social_security_survivors_pia_ratio_factor", YEAR)
+    # 23,130 / (12 * .75 * 1.028) = 2,500 monthly PIA for the 2025 cohort.
+    # 1,226 + (2,500 - .9 * 1,226) / .32 = 5,590.375 inferred AIME.
+    # Without the bend increase, .95 * 1,226 + .32 * 4,364.375 = 2,561.3.
+    # With it, .95 * 1,446.68 + .32 * 4,143.695 = 2,700.3284 -> 2,700.3.
+    reform_pia = 2_700.3 if increase_bend else 2_561.3
+    assert factor[0] == pytest.approx(reform_pia / 2_500)
+    assert factor[1] == 1
+    assert actual.calculate("social_security_survivors_inferred_aime", YEAR)[
+        0
+    ] == pytest.approx(5_590.375)
+    assert actual.calculate("social_security_survivors", YEAR)[0] == pytest.approx(
+        23_130 * reform_pia / 2_500, abs=0.01
+    )
+    # The reference retains all ten supplied survivor inputs.
+    cached = {name for name, _, _ in _cached_reference_values(reference)}
+    assert REFERENCE_CALCULATOR_INPUTS - {"ss_calculator_birth_date"} <= cached
 
 
 @pytest.mark.parametrize("amount", [0, 18_000])
