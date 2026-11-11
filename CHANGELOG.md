@@ -1,3 +1,10 @@
+## [2.117.0] - 2026-11-11
+
+### Added
+
+- Limit the Alaska Permanent Fund Dividend and energy relief to the immigration statuses in AS 43.23.005(a)(5), and add a default-true take-up input for residents Alaska does not pay.
+
+
 ## [2.116.21] - 2026-11-11
 
 ### Fixed
