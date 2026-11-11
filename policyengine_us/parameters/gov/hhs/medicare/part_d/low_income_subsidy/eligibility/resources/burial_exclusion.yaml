@@ -1,0 +1,18 @@
+description: Medicare excludes this amount per person, for the applicant and a spouse living with them, from countable resources as funds expected to be used for burial under the Part D low-income subsidy.
+values:
+  2006-01-01: 1_500
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicare Part D low-income subsidy burial funds exclusion
+  reference:
+    # SSA applies the exclusion unless the applicant says none of the
+    # resources will go to funeral or burial expenses, without asking for the
+    # funds' value or designation (POMS HI 03030.020 and HI 03030.025).
+    - title: 20 CFR § 418.3425(j) - Burial funds resource exclusion
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3425#p-418.3425(j)
+    - title: SSA POMS HI 03030.020 - Resource Exclusions
+      href: https://secure.ssa.gov/poms.nsf/lnx/0603030020
+    - title: SSA POMS HI 03030.025 - Resource Limits for Subsidy Eligibility
+      href: https://secure.ssa.gov/poms.nsf/lnx/0603030025

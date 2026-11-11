@@ -1,0 +1,68 @@
+description: The Medicare Trustees report and project these Part D low-income subsidy payments per low-income subsidy enrollee.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicare Part D low-income subsidy per recipient
+  # From 2036, each value is the 2035 value times the growth in Medicare
+  # spending per enrollee, as for the per-enrollee series beside it.
+  uprating: calibration.gov.hhs.medicare.per_capita_cost
+  reference:
+  # Table IV.B9, "Low-income subsidy", "Subsidy amount": incurred payments
+  # per low-income subsidy enrollee, beside the subsidy's enrollment (in
+  # millions). Enrollment times the amount gives Table IV.B10's "Low-income
+  # subsidy" payments, e.g. 14.4 million x $1,254 = $18.1 billion in 2026.
+  # 2016 to 2035 come from the 2026 report (file page 158); 2015, which that
+  # table no longer shows, from the 2025 report (file page 158); 2013 and
+  # 2014 from the 2023 report (file page 158), the newest that shows both,
+  # as for the per-enrollee series beside this one. The 2026 report moves
+  # 2021 to 2023 by $1 to $2 from the 2025 report, and 2024 by $15 ($2,848
+  # in the 2025 report, $2,833 in the 2026 report). 2026 Medicare Trustees
+  # Report, transmitted 2026-06-09, retrieved 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8; 2025
+  # report sha256
+  # 1b3de7a4faeee5ad42059e10740603182b716a5fa7b53b30d360b45b9e474d95; 2023
+  # report retrieved 2026-11-07, sha256
+  # 89daaf2909ae18648783f652c05114d007c5f902cc5fa5fad0f76d43f6ccfa67.
+  # The average includes enrollees in institutions, whom CBO removes along
+  # with their benefits (Habib 2018, file page 52). CBO's adjusted 2015
+  # totals, $22.6 billion for 10.7 million recipients (file page 51), give
+  # $2,112 per recipient, the same as this table's 2015 average; for 2016
+  # CBO's $26.5 billion (from its own baseline) for 11.1 million gives
+  # $2,387 against $2,126 here.
+  - title: "2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Tables IV.B9 and IV.B10 #page 119,158-159"
+    href: https://www.cms.gov/oact/tr/2026#page=119
+  - title: 2025 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B9
+    href: https://www.cms.gov/oact/tr/2025#page=158
+  - title: 2023 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B9
+    href: https://www.cms.gov/oact/tr/2023#page=158
+  - title: "Habib, How CBO Adjusts for Survey Underreporting of Transfer Income in Its Distributional Analyses, CBO Working Paper 2018-07, Appendix C #page 51-52"
+    href: https://www.cbo.gov/system/files/2018-07/54234-workingpaper.pdf#page=51
+values:
+  # Historical.
+  2013-01-01: 2_023
+  2014-01-01: 2_052
+  2015-01-01: 2_112
+  2016-01-01: 2_126
+  2017-01-01: 2_156
+  2018-01-01: 2_204
+  2019-01-01: 2_273
+  2020-01-01: 2_507
+  2021-01-01: 2_646
+  2022-01-01: 2_873
+  2023-01-01: 3_092
+  2024-01-01: 2_833
+  # 2025 is the first year of the full Inflation Reduction Act benefit
+  # redesign (2026 report, file page 119). The average falls from $2,833 in
+  # 2024 to $1,226 in 2025; the report gives no cause.
+  2025-01-01: 1_226
+  # Trustees' intermediate estimates.
+  2026-01-01: 1_254
+  2027-01-01: 1_384
+  2028-01-01: 1_459
+  2029-01-01: 1_579
+  2030-01-01: 1_833
+  2031-01-01: 1_922
+  2032-01-01: 1_956
+  2033-01-01: 1_982
+  2034-01-01: 2_014
+  2035-01-01: 2_076

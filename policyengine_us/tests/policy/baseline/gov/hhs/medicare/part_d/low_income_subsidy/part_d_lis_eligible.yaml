@@ -1,0 +1,82 @@
+# Eligible: a Medicare enrollee in the 50 states or DC who is deemed eligible
+# or meets both the income and resource tests (42 U.S.C. 1395w-114(a)(3)).
+
+- name: Meets the income and resource tests.
+  period: 2026
+  input:
+    people:
+      person:
+        medicare_enrolled: true
+        part_d_lis_deemed_eligible: false
+        part_d_lis_income_eligible: true
+        part_d_lis_resource_eligible: true
+  output:
+    part_d_lis_eligible: true
+
+- name: Income eligible but resources over the limit.
+  period: 2026
+  input:
+    people:
+      person:
+        medicare_enrolled: true
+        part_d_lis_deemed_eligible: false
+        part_d_lis_income_eligible: true
+        part_d_lis_resource_eligible: false
+  output:
+    part_d_lis_eligible: false
+
+- name: Deemed eligible with income and resources over the limits.
+  period: 2026
+  input:
+    people:
+      person:
+        medicare_enrolled: true
+        part_d_lis_deemed_eligible: true
+        part_d_lis_income_eligible: false
+        part_d_lis_resource_eligible: false
+  output:
+    part_d_lis_eligible: true
+
+- name: Not enrolled in Medicare.
+  period: 2026
+  input:
+    people:
+      person:
+        medicare_enrolled: false
+        part_d_lis_deemed_eligible: true
+        part_d_lis_income_eligible: true
+        part_d_lis_resource_eligible: true
+  output:
+    part_d_lis_eligible: false
+
+- name: Puerto Rico residents are not eligible.
+  period: 2026
+  input:
+    people:
+      person:
+        medicare_enrolled: true
+        part_d_lis_deemed_eligible: true
+        part_d_lis_income_eligible: true
+        part_d_lis_resource_eligible: true
+    households:
+      household:
+        members: [person]
+        state_code: PR
+  output:
+    part_d_lis_eligible: false
+
+- name: District of Columbia residents are eligible.
+  period: 2026
+  input:
+    people:
+      person:
+        medicare_enrolled: true
+        part_d_lis_deemed_eligible: false
+        part_d_lis_income_eligible: true
+        part_d_lis_resource_eligible: true
+    households:
+      household:
+        members: [person]
+        state_code: DC
+  output:
+    part_d_lis_eligible: true

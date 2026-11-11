@@ -38,6 +38,30 @@
     household_health_benefits: 4_234.8
     household_benefits: 4_234.8
 
+- name: Case 3b, flag on includes the Part D low-income subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    medicaid_cost: 0
+    msp_cost: 2_434.8
+    part_d_lis: 1_254
+    snap: 0
+  output:
+    household_health_benefits: 3_688.8
+    household_benefits: 3_688.8
+
+- name: Case 3c, flag off leaves the Part D low-income subsidy out of benefits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: false
+    part_d_lis: 1_254
+    snap: 0
+  output:
+    household_health_benefits: 0
+    household_benefits: 0
+
 - name: Case 4, legacy wrappers do not double count canonical health values.
   period: 2026
   absolute_error_margin: 0.01
