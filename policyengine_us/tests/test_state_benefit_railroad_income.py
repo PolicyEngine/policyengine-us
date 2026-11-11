@@ -1,9 +1,10 @@
 """State and county benefit programs count Railroad Retirement Act benefits as income.
 
-Each row names an income list or variable, the rule that reaches railroad
-retirement benefits, and the variable that reads the list. A rule reaches the
-benefits by naming them, by counting pensions, annuities or retirement
-benefits, or by counting all income it doesn't exclude.
+Each row names an income list or variable, the rule that covers railroad
+retirement benefits, and the variable that reads the list. A rule covers the
+benefits by naming railroad retirement, by listing pensions, annuities,
+retirement benefits or federal benefits as income, or by defining income as
+everything outside its exclusions.
 
 Invariants:
 
@@ -11,9 +12,8 @@ Invariants:
   raise the program's income by the amount received, at the variable's period.
   Where the income total also counts cash aid that the same benefit reduces, the
   test holds that aid at zero, so the row isolates the income list from the aid's
-  own income test. R1 shows that the list entry reaches the program's income.
-  Whether a rule reaches railroad benefits is a matter of the rule's text, which
-  each row cites.
+  own income test. R1 shows that the list entry reaches the program's income,
+  and each row cites the rule whose text covers railroad benefits.
 - R2: the same dollars count the same whether a person receives them as railroad
   benefits or as a pension, for programs whose lists count pensions.
 - R3 scans every state and county list outside the tax code, and the top level
@@ -28,14 +28,15 @@ Invariants:
   holds a railroad amount with a part of it.
 - R5: a state or county program that reads a federal total, list or test takes
   its sources. R5 finds each federal list that holds Social Security without
-  railroad benefits, each federal variable that adds such a list or reads it in a
-  formula, and each federal variable built on those through up to two more
-  formulas that name no railroad amount. Two steps reach the MAGI amounts and
-  poverty ratios that state code reads; a third reaches eligibility tests and
-  benefit amounts, such as is_snap_eligible and aca_ptc. State or county code
-  that reads one of these must appear in FEDERAL_GAPS, and an entry ends when its
-  source counts railroad benefits or no state or county code reads it. A new
-  reader of a source already in FEDERAL_GAPS passes.
+  railroad benefits and each federal variable that adds such a list or reads it
+  in a formula. It then follows those variables through up to two more formulas
+  that name no railroad amount. Two steps reach the MAGI amounts and poverty
+  ratios that state code reads; a third would reach eligibility tests and
+  benefit amounts, such as is_snap_eligible and aca_ptc, so R5 stops at two.
+  Each source that state or county code reads must appear in FEDERAL_GAPS, and
+  the test fails on an entry once its source counts railroad benefits or no
+  state or county code reads it. A new reader of a source already in
+  FEDERAL_GAPS passes.
 """
 
 import ast
@@ -498,26 +499,27 @@ def test_no_list_holds_railroad_benefits_twice():
 # railroad benefits out, so the programs that read it leave them out too,
 # although their rules count them.
 FEDERAL_GAPS = {
-    # PolicyEngine/policyengine-us#10551 tracks the TANF, SNAP and school meals
-    # lists. SNAP counts "Annuities; pensions; retirement, veteran's, or
-    # disability benefits" (7 CFR 273.9(b)(2)(ii)), and Michigan's BEM 503, for
-    # one state's TANF, counts the "gross benefit amount" the Railroad
-    # Retirement Board pays.
+    # Issue PolicyEngine/policyengine-us#10551 covers the TANF, SNAP and school
+    # meals lists. Under 7 CFR 273.9(b)(2)(ii), state SNAP agencies count
+    # "Annuities; pensions; retirement, veteran's, or disability benefits".
+    # Under BEM 503, Michigan's MDHHS counts for FIP, its TANF program, the
+    # "gross benefit amount" that the Railroad Retirement Board pays.
     "tanf_gross_unearned_income": "TANF baseline list: 64 TANF variables in 37 states",
     "gov.usda.snap.income.sources.unearned": "SNAP unearned list: Nebraska LIHEAP",
     "school_meal_fpg_ratio": "School meals list: Texas CSFP, California CVRP",
-    # IRC 36B(d)(2)(B)(iii) adds the untaxed share of "social security benefits
-    # (as defined in section 86(d))", which takes in tier 1. On main, neither
-    # adjusted_gross_income nor the MAGI additions list counts railroad benefits.
-    # PolicyEngine/policyengine-us#10696 puts the taxable amounts in AGI and
-    # adds the tax-free tier 1 amount to the additions list.
+    # Under IRC 36B(d)(2)(B)(iii), taxpayers add to AGI the untaxed share of
+    # "social security benefits (as defined in section 86(d))", tier 1 included.
+    # On main, neither adjusted_gross_income nor the MAGI additions list counts
+    # railroad benefits. PolicyEngine/policyengine-us#10696 adds the taxable
+    # amounts to AGI and the tax-free tier 1 amount to the additions list.
     "medicaid_magi": "MAGI: Colorado CHP+, Healthy Michigan, Montana HELP",
     "tax_unit_medicaid_income_level": "MAGI ratio: 17 CHIP premiums, IN HIP, MI, MT",
     "medicaid_income_level": "MAGI ratio: AR, CO, IL, MS, OR and WA programs",
     "aca_magi": "ACA MAGI: CA, MD, NM and VT premium help",
     "aca_magi_fraction": "ACA MAGI ratio: premium help in nine states",
-    # 7 U.S.C. 2012(j)(7) counts a railroad disability annuitant as disabled, and
-    # railroad_benefits doesn't separate disability annuities from the others.
+    # Under 7 U.S.C. 2012(j)(7), SNAP agencies treat a railroad disability
+    # annuitant as disabled, and railroad_benefits doesn't separate disability
+    # annuities from the others.
     "is_usda_disabled": "SNAP disability test: NC, NV, NY and OK energy aid",
 }
 # Formulas R5 follows past a federal list or the variable that adds it.
