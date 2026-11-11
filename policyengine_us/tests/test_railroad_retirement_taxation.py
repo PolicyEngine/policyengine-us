@@ -36,6 +36,10 @@ I5. Totals: when railroad_benefits itself is left unset, it is the sum of
     1 amount that their own tier 1 benefits make up; and
     taxable_railroad_benefits is what the head's and spouse's federal AGI
     includes from the Act, and zero for dependents.
+I6. Taxpayer Relief Act section 1303, "Income" (2): each dollar of railroad
+    benefits a filer or spouse receives, split among the three parts in any
+    way or entered as a total, raises Pennsylvania Property Tax/Rent Rebate
+    income by 50 cents, whatever share of it federal AGI holds.
 D1. Differential: section 86 runs once on the head and spouse's return and
     once on a dependent's own return. For the same income and benefits the
     two give the same taxable amount.
@@ -153,7 +157,7 @@ wages = st.integers(min_value=0, max_value=150_000)
 shares = st.integers(min_value=0, max_value=100).map(lambda x: x / 100)
 
 
-@settings(max_examples=25, deadline=None)
+@settings(max_examples=25, deadline=None, derandomize=True)
 @given(
     wages=wages,
     head_benefits=amounts,
@@ -224,7 +228,7 @@ def test_i1_tier_1_benefits_are_taxed_as_title_ii_benefits(
     )
 
 
-@settings(max_examples=25, deadline=None)
+@settings(max_examples=25, deadline=None, derandomize=True)
 @given(
     wages=wages,
     pension=st.integers(min_value=0, max_value=80_000),
@@ -253,7 +257,7 @@ def test_i2_the_rest_of_the_annuity_is_taxed_as_a_pension(
         assert abs(private - railroad) < tol, (variable, private, railroad)
 
 
-@settings(max_examples=6, deadline=None)
+@settings(max_examples=6, deadline=None, derandomize=True)
 @given(
     tier_1=st.integers(min_value=0, max_value=60_000),
     tier_2=st.integers(min_value=1, max_value=300_000),
@@ -297,7 +301,7 @@ def test_i3_no_state_taxes_railroad_benefits(
         assert abs(withholding[i]) < CENT, (state, withholding[i])
 
 
-@settings(max_examples=6, deadline=None)
+@settings(max_examples=6, deadline=None, derandomize=True)
 @given(
     wages=st.integers(min_value=0, max_value=120_000),
     tier_1=st.integers(min_value=0, max_value=30_000),
@@ -334,7 +338,7 @@ def test_i4_railroad_benefits_leave_state_bases_unchanged(wages, tier_1, tier_2,
             assert abs(before - after) < tol, (state, before, after)
 
 
-@settings(max_examples=25, deadline=None)
+@settings(max_examples=25, deadline=None, derandomize=True)
 @given(
     tier_1=st.lists(amounts, min_size=3, max_size=3),
     tier_2=st.lists(amounts, min_size=3, max_size=3),
@@ -393,7 +397,61 @@ def test_i5_railroad_totals_add_up(tier_1, tier_2, tax_free, title_ii, earnings)
     )
 
 
-@settings(max_examples=25, deadline=None)
+@settings(max_examples=10, deadline=None, derandomize=True)
+@given(
+    tier_1=amounts,
+    tier_2=amounts,
+    tax_free=st.integers(min_value=0, max_value=5_000),
+    title_ii=amounts,
+    earnings=wages,
+    joint=st.booleans(),
+)
+# YAML Cases 3a and 3b of pa_property_tax_or_rent_rebate_income.
+@example(
+    tier_1=10_000, tier_2=10_000, tax_free=2_000, title_ii=0, earnings=0, joint=False
+)
+@example(tier_1=20_000, tier_2=30_000, tax_free=0, title_ii=0, earnings=0, joint=False)
+def test_i6_pennsylvania_rebate_income_counts_half_of_railroad_benefits(
+    tier_1, tier_2, tax_free, title_ii, earnings, joint
+):
+    total = tier_1 + tier_2 + tax_free
+    # SSI and the state supplement would fall as railroad benefits rise, and
+    # the rebate half-counts them too, so both stay at zero.
+    head = {"age": 67, "employment_income": earnings, "ssi": 0, "pa_ssp": 0}
+    spouse = {"role": "spouse", "age": 67, "ssi": 0, "pa_ssp": 0}
+    if joint:
+        spouse["social_security_retirement"] = title_ii
+    else:
+        head["social_security_retirement"] = title_ii
+
+    def household(railroad):
+        return ("PA", [head | railroad] + ([spouse] if joint else []))
+
+    def added_income(railroad):
+        # A variable that any person enters becomes an input for every person,
+        # with 0 for the rest, so a household that enters the three tiers and
+        # one that enters the total cannot share a simulation. Each runs beside
+        # a household without railroad benefits.
+        simulation = Simulation(
+            situation=situation([household({}), household(railroad)])
+        )
+        income = calc(simulation, "pa_property_tax_or_rent_rebate_income")
+        return income[1] - income[0]
+
+    tiers = added_income(
+        {
+            "railroad_social_security_equivalent_benefits": tier_1,
+            "taxable_railroad_pension_benefits": tier_2,
+            "tax_exempt_railroad_pension_benefits": tax_free,
+        }
+    )
+    entered_total = added_income({"railroad_benefits": total})
+    tol = tolerance(earnings + title_ii + total)
+    assert abs(tiers - total / 2) < tol, tiers
+    assert abs(entered_total - total / 2) < tol, entered_total
+
+
+@settings(max_examples=25, deadline=None, derandomize=True)
 @given(wages=wages, title_ii=amounts, tier_1=amounts)
 def test_d1_dependent_and_filer_section_86_agree(wages, title_ii, tier_1):
     income = {
@@ -422,11 +480,13 @@ def test_d1_dependent_and_filer_section_86_agree(wages, title_ii, tier_1):
     )
 
 
-@pytest.mark.parametrize("amount", [-5_000, float("nan")])
-def test_negative_or_missing_tier_1_benefits_raise(amount):
+@pytest.mark.parametrize("amount", [-5_000, float("inf")])
+def test_negative_or_infinite_tier_1_benefits_raise(amount):
     """Box 5 of Form RRB-1099 can be negative when repayments exceed the
     year's benefits. The model doesn't net such amounts as IRS Publication 915
-    does, so it rejects them, as it rejects negative title II benefits."""
+    does, so it rejects them, as it rejects negative title II benefits. It
+    also rejects an infinite amount. policyengine-core refuses a NaN input
+    before any formula runs, so that case needs no test here."""
     simulation = Simulation(
         situation=situation(
             [

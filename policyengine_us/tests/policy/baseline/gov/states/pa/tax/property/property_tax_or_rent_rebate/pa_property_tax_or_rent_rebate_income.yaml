@@ -36,7 +36,26 @@
   output:
     pa_property_tax_or_rent_rebate_income: 20_000
 
-- name: Case 3, SSI and railroad tier 1 benefits are half-counted.
+- name: Case 3, SSI and railroad benefits are half-counted.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        ssi: 2_000
+        pa_ssp: 0
+        railroad_benefits: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_income: 6_000
+
+- name: Case 3, entered as the tier 1 part, gives the same income.
   period: 2025
   input:
     people:
@@ -53,9 +72,13 @@
         members: [person1]
         state_code: PA
   output:
+    # Combined income = 10,000 / 2 = 5,000, below the 25,000 base amount, so
+    # federal AGI holds none of the tier 1 benefits (IRC 86). Section 1303,
+    # "Income" (2), and the SSI rule: half of 2,000 + 10,000 = 6,000.
+    adjusted_gross_income: 0
     pa_property_tax_or_rent_rebate_income: 6_000
 
-- name: Case 3a, railroad tier 2 benefits count in full and once.
+- name: Case 3a, half of all railroad benefits count, tier 2 included, and once.
   period: 2025
   input:
     people:
@@ -75,12 +98,13 @@
     # Combined income = 10,000 + 10,000 / 2 = 15,000, below the 25,000 base
     # amount, so none of the tier 1 benefits is taxable (IRC 86) and federal
     # AGI is the 10,000 taxable part of tier 2 (IRC 72(r)).
-    # PA-1000 line 5: half of tier 1 = 5,000.
-    # Line 6: gross tier 2 = 10,000 + 2,000 = 12,000.
+    # Taxpayer Relief Act section 1303, "Income" (2): 50% of railroad
+    # retirement benefits. The 10,000 in federal AGI comes out, and half of
+    # 10,000 + 10,000 + 2,000 goes in: 10,000 - 10,000 + 11,000 = 11,000.
     adjusted_gross_income: 10_000
-    pa_property_tax_or_rent_rebate_income: 17_000
+    pa_property_tax_or_rent_rebate_income: 11_000
 
-- name: Case 3b, taxable railroad tier 1 benefits give way to half of the total.
+- name: Case 3b, taxable railroad benefits in federal AGI give way to half of the total.
   period: 2025
   input:
     people:
@@ -99,10 +123,10 @@
     # Combined income = 30,000 + 20,000 / 2 = 40,000. IRC 86(a)(2): the lesser
     # of 85% x 20,000 = 17,000 and 85% x (40,000 - 34,000) + 4,500 = 9,600,
     # so 9,600 of tier 1 is taxable and federal AGI is 39,600.
-    # PA-1000: 39,600 - 9,600 + 20,000 / 2 (line 5) = 40,000, which is line 5
-    # (10,000) plus line 6 (30,000).
+    # Section 1303, "Income" (2): all 39,600 in federal AGI comes out, and half
+    # of 20,000 + 30,000 goes in: 39,600 - 39,600 + 25,000 = 25,000.
     adjusted_gross_income: 39_600
-    pa_property_tax_or_rent_rebate_income: 40_000
+    pa_property_tax_or_rent_rebate_income: 25_000
 
 - name: Case 4, tax-exempt interest and retirement income are included.
   period: 2025

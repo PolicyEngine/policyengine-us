@@ -22,7 +22,7 @@ class tob_revenue_medicare_hi(Variable):
         "section 86(d)(1) meaning, so section 121(e)(1)(B) also credits HI "
         "with the 1993 amendments' increase on the social security "
         "equivalent part of tier 1 railroad retirement benefits. The "
-        "counterfactuals remove only title II benefits' taxable share "
+        "counterfactuals change only title II benefits' taxable share "
         "(tax_unit_taxable_social_security), so this variable leaves that "
         "railroad amount out."
     )
