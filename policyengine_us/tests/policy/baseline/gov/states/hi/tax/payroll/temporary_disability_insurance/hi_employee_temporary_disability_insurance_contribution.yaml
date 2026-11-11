@@ -150,6 +150,20 @@
     # 0.5% * 20,000 = 100.00.
     hi_employee_temporary_disability_insurance_contribution: 100.00
 
+- name: Hawaii counts no more than 52 weeks toward the annual cap.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 100_000
+    weeks_worked: 53
+    weekly_hours_worked_before_lsr: 40
+    state_code: HI
+  output:
+    # 53 weeks count as 52: 52 * 1,375.21 = 71,510.92.
+    hi_temporary_disability_insurance_taxable_wages: 71_510.92
+    # 0.5% * 71,510.92 = 357.55.
+    hi_employee_temporary_disability_insurance_contribution: 357.55
+
 - name: Hawaii counts wages at exactly 14 weeks and 20 hours.
   period: 2024
   absolute_error_margin: 0.01
@@ -708,6 +722,33 @@
     hi_temporary_disability_insurance_qualified: false
     hi_employee_temporary_disability_insurance_contribution: 0
 
+- name: Hawaii does not read previous-year pay entered only as employment_income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income:
+          2025: 52_000
+          2026: 1_000
+        weeks_worked:
+          2025: 52
+          2026: 1
+        weekly_hours_worked_before_lsr:
+          2025: 40
+          2026: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # The previous year's wages come from employment_income_before_lsr. This
+    # test runner, like set_input after a simulation is built, keeps the 2025
+    # input on employment_income, so 2025 holds no wages to pass on, and
+    # 2026's 1 week fails the 14-week minimum.
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
 - name: Hawaii carries earlier-year hours into a simulation year that enters none.
   period: 2026
   absolute_error_margin: 0.01
@@ -752,6 +793,35 @@
     hi_temporary_disability_insurance_qualified: true
     # 900 falls under the 951.71 cap for one week: 0.5% * 900 = 4.50.
     hi_employee_temporary_disability_insurance_contribution: 4.50
+
+- name: Hawaii leaves provided 2014 military basic pay out of a short 2015's history.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr:
+          2014: 10_000
+        military_basic_pay:
+          2014: 9_700
+          2015: 0
+        employment_income:
+          2015: 900
+        weeks_worked:
+          2014: 52
+          2015: 1
+        weekly_hours_worked_before_lsr:
+          2014: 40
+          2015: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 10,000 - 9,700 = 300 of 2014 wages, under the 400 minimum, and 2015's
+    # 1 week fails the 14-week minimum.
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
 
 - name: Hawaii scales the contribution by the employer's deduction share.
   period: 2026

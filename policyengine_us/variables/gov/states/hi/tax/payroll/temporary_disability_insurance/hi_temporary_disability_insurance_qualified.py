@@ -58,9 +58,9 @@ class hi_temporary_disability_insurance_qualified(Variable):
         "covers, only values provided for that year count, so a deferral "
         "counts only when entered as the contribution itself, such as "
         "traditional_401k_contributions, not as the desired amount. Weeks and "
-        "hours count all work, self-employment included. Usual weekly hours stand in for each week's hours, so a "
-        "worker whose usual hours fall under the minimum does not pass even "
-        "with enough qualifying weeks."
+        "hours count all work, self-employment included. Usual weekly hours "
+        "stand in for each week's hours, so a worker whose usual hours fall "
+        "under the minimum does not pass even with enough qualifying weeks."
     )
     definition_period = YEAR
     defined_for = StateCode.HI

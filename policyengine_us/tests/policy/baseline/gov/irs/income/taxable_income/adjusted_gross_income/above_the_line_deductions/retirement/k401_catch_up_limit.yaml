@@ -191,3 +191,73 @@
     age: 50
   output:
     k401_catch_up_limit: 6_000
+
+- name: Case 27, age 60 in 2004 receives the 2004 standard limit.
+  period: 2004
+  input:
+    age: 60
+  output:
+    k401_catch_up_limit: 3_000
+
+- name: Case 28, age 60 in 2005 receives the 2005 standard limit.
+  period: 2005
+  input:
+    age: 60
+  output:
+    k401_catch_up_limit: 4_000
+
+- name: Case 29, age 60 in 2006 receives the 2006 standard limit.
+  period: 2006
+  input:
+    age: 60
+  output:
+    k401_catch_up_limit: 5_000
+
+- name: Case 30, age 60 in 2009 receives the 2009 standard limit.
+  period: 2009
+  input:
+    age: 60
+  output:
+    k401_catch_up_limit: 5_500
+
+- name: Case 31, age 60 in 2015 receives the 2015 standard limit.
+  period: 2015
+  input:
+    age: 60
+  output:
+    k401_catch_up_limit: 6_000
+
+- name: Case 32, age 64 in 2004 receives the 2004 standard limit.
+  period: 2004
+  input:
+    age: 64
+  output:
+    k401_catch_up_limit: 3_000
+
+- name: Case 33, age 64 in 2005 receives the 2005 standard limit.
+  period: 2005
+  input:
+    age: 64
+  output:
+    k401_catch_up_limit: 4_000
+
+- name: Case 34, age 64 in 2006 receives the 2006 standard limit.
+  period: 2006
+  input:
+    age: 64
+  output:
+    k401_catch_up_limit: 5_000
+
+- name: Case 35, age 64 in 2009 receives the 2009 standard limit.
+  period: 2009
+  input:
+    age: 64
+  output:
+    k401_catch_up_limit: 5_500
+
+- name: Case 36, age 64 in 2015 receives the 2015 standard limit.
+  period: 2015
+  input:
+    age: 64
+  output:
+    k401_catch_up_limit: 6_000
