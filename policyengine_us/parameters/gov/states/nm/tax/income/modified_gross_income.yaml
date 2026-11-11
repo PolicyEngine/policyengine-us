@@ -11,6 +11,9 @@ values:
     - child_support_received
     - rental_income
     - pension_income
+    # NMSA 1978 § 7-2-2(L)(9), (11): annuities and pensions, including military
+    # retired pay and survivor annuities, which pension_income leaves out.
+    - military_retirement_income
     - retirement_distributions
     - total_unemployment_compensation
     - irs_employment_income
@@ -27,5 +30,5 @@ metadata:
   reference:
     - title: New Mexico Income Tax Act, Chapter 7 - Taxation, 7-2-2. Definitions, L
       href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503656/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgBsfYQEoANMmylCEAIqJCuAJ7QA5BskRCYXAiUr1WnXoMgAynlIAhdQCUAogBknANQCCAOQDCTyVIwACNoUnZxcSA
-    - title: 2025 PIT-RC instructions, line 11 (income from an estate or trust)
-      href: https://taxsim.nber.org/historical_state_tax_forms/NM/2025/NM_PIT_RC_INST.PDF#page=4
+    - title: "2025 PIT-RC instructions, modified gross income (an annuity, pension, retirement pay; line 5 pensions and annuities; line 11 estate or trust) #page 2,4"
+      href: https://taxsim.nber.org/historical_state_tax_forms/NM/2025/NM_PIT_RC_INST.PDF#page=2
