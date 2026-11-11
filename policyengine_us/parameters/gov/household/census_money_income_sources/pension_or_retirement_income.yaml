@@ -11,7 +11,9 @@ values:
     # Railroad retirement, one of the eight sources Appendix A lists here.
     # railroad_benefits also holds the Railroad Retirement Board's disability
     # and survivor annuities, which Appendix A counts as disability and
-    # survivor benefits; the model does not split that variable.
+    # survivor benefits; the model does not split that variable. The default
+    # data puts the survey's railroad retirement disability payments in
+    # disability_benefits.
     - railroad_benefits
 metadata:
   unit: list

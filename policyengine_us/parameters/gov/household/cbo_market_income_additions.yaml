@@ -12,8 +12,11 @@ values:
     - cbo_corporate_income_tax
     # Other income sources: income received in retirement for past services.
     # The Current Population Survey records railroad retirement as retirement
-    # income. Survivor benefits are survivors' pensions and annuities and
-    # payments from estates and trusts.
+    # income. survivor_benefits is the survey's survivor income. Seven of the
+    # ten sources Appendix A lists for it are survivors' pensions, annuities,
+    # and payments from estates and trusts; two are workers' compensation and
+    # Black lung payments, which the model does not separate (Appendix A,
+    # source 8). The default data holds no survivor benefits.
     - railroad_benefits
     - survivor_benefits
     # Other income sources: other nongovernmental sources of income, which

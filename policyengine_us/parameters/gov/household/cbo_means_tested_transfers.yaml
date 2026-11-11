@@ -20,7 +20,9 @@ values:
     # Medicaid pays Medicare premiums and cost sharing for Medicare
     # Savings Program enrollees (42 U.S.C. 1396a(a)(10)(E)).
     - msp_cost
-    # State supplements to Supplemental Security Income.
+    # State supplements to Supplemental Security Income, and California's
+    # Cash Assistance Program for Immigrants (ca_capi), which pays immigrants
+    # whom SSI excludes.
     - al_ssp
     - ak_ssp
     - ca_state_supplement
