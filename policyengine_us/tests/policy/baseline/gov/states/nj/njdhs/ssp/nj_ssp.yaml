@@ -214,3 +214,39 @@
     ssi: [0, 0, 994]
     # J.2.a row C/B: 31.25.
     nj_ssp: [0, 0, 31.25]
+
+# POMS SI 01415.058 J.2: independent living pays $25.35 per couple
+# and $31.25 per individual. $25.35 / 2 = $12.675; federal payment
+# rounding (POMS SI 02001.010) rounds each spouse up to $12.68.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#j2
+# No marital units: only the head and spouse form the eligible couple.
+- name: NJ couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NJ
+  output:
+    nj_ssp: [12.68, 12.68, 31.25]

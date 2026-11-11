@@ -1,79 +1,69 @@
-- name: 2023 one eligible child for cccap, gross income is less than the family poverty guideline.
-  period: 2023
+# 8 CCR 1403-1 3.124(P)(3), PDF page 84 of ruleVersionId 12658: $15 for each
+# child in care after the first when income exceeds the guideline. Section
+# 3.124(P) runs through July 31, 2028, and (Q) has no such fee.
+- name: Case 1, three children in care above the guideline.
+  period: 2026-01
   input:
-    co_ccap_eligible_children: 1
-    co_ccap_countable_income: 60_000
-    spm_unit_fpg: 120_000
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 3_000
+    co_ccap_fpg: 2_000
+    co_ccap_children_in_care: 3
   output:
-    co_ccap_add_on_parent_fee: 
-      2023-01: 0
+    # (3 - 1) * 15 = 30
+    co_ccap_add_on_parent_fee: 30
 
-- name: 2023 one eligible child for cccap, gross income is more than the family poverty guideline.
-  period: 2023
+- name: Case 2, one child in care above the guideline.
+  period: 2026-01
   input:
-    co_ccap_eligible_children: 1
-    co_ccap_countable_income: 80_000
-    spm_unit_fpg: 40_000
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 3_000
+    co_ccap_fpg: 2_000
+    co_ccap_children_in_care: 1
   output:
-    co_ccap_add_on_parent_fee: 
-      2023-01: 0
+    co_ccap_add_on_parent_fee: 0
 
-- name: 2023 two eligible children for cccap, gross income is less than the family poverty guideline.
-  period: 2023
+- name: Case 3, income at the guideline.
+  period: 2026-01
   input:
-    co_ccap_eligible_children: 2
-    co_ccap_countable_income: 60_000
-    spm_unit_fpg: 120_000
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 2_000
+    co_ccap_fpg: 2_000
+    co_ccap_children_in_care: 3
   output:
-    co_ccap_add_on_parent_fee: 
-      2023-01: 0
+    co_ccap_add_on_parent_fee: 0
 
-- name: 2023 two eligible children for cccap, gross income is less than the family poverty guideline.
-  period: 2023
+- name: Case 4, no child in care.
+  period: 2026-01
   input:
-    co_ccap_eligible_children: 2
-    co_ccap_countable_income: 80_000
-    spm_unit_fpg: 40_000
+    state_code:
+      2026: CO
+    co_ccap_countable_income: 3_000
+    co_ccap_fpg: 2_000
+    co_ccap_children_in_care: 0
   output:
-    co_ccap_add_on_parent_fee: 
-      2023-01: 15
+    co_ccap_add_on_parent_fee: 0
 
-- name: 2022 one eligible child for cccap, gross income is less than the family poverty guideline.
-  period: 2022
+- name: Case 5, July 2028 still charges the fee.
+  period: 2028-07
   input:
-    co_ccap_eligible_children: 1
-    co_ccap_countable_income: 60_000
-    spm_unit_fpg: 120_000
+    state_code:
+      2028: CO
+    co_ccap_countable_income: 3_000
+    co_ccap_fpg: 2_000
+    co_ccap_children_in_care: 3
   output:
-    co_ccap_add_on_parent_fee: 
-      2022-12: 0
+    co_ccap_add_on_parent_fee: 30
 
-- name: 2022 one eligible child for cccap, gross income is more than the family poverty guideline.
-  period: 2022
+- name: Case 6, from August 2028 section 3.124(Q) has no fee for additional children.
+  period: 2028-08
   input:
-    co_ccap_eligible_children: 1
-    co_ccap_countable_income: 80_000
-    spm_unit_fpg: 40_000
+    state_code:
+      2028: CO
+    co_ccap_countable_income: 3_000
+    co_ccap_fpg: 2_000
+    co_ccap_children_in_care: 3
   output:
-    co_ccap_add_on_parent_fee: 
-      2022-12: 0
-
-- name: 2022 two eligible children for cccap, gross income is less than the family poverty guideline.
-  period: 2022
-  input:
-    co_ccap_eligible_children: 2
-    co_ccap_countable_income: 60_000
-    spm_unit_fpg: 120_000
-  output:
-    co_ccap_add_on_parent_fee: 
-      2022-12: 0
-
-- name: 2022 two eligible children for cccap, gross income is less than the family poverty guideline.
-  period: 2022
-  input:
-    co_ccap_eligible_children: 2
-    co_ccap_countable_income: 80_000
-    spm_unit_fpg: 40_000
-  output:
-    co_ccap_add_on_parent_fee: 
-      2022-12: 15
+    co_ccap_add_on_parent_fee: 0

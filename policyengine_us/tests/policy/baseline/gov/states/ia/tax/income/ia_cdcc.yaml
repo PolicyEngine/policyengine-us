@@ -165,3 +165,177 @@
     ia_taxable_income: 13_166
     cdcc_potential: 690
     ia_cdcc: 517.5
+
+
+- name: 2024 single filer who can be claimed as a dependent gets no Iowa child care credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: IA
+  output:
+    # IRC 21(b)(1)(A) needs a dependent; IRC 152(b)(1) leaves none.
+    ia_cdcc: 0
+
+- name: 2024 single filer who cannot be claimed gets the Iowa child care credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: IA
+  output:
+    # $1,000 x .35 = $350; Iowa taxable income $0 < $10,000: x .75 = $262.50.
+    ia_cdcc: 262.5
+
+- name: 2024 joint return with one claimable spouse gets no Iowa child care credit (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IA
+  output:
+    # Either spouse being claimable leaves the return no dependents.
+    ia_cdcc: 0
+
+- name: 2024 joint return with one claimable spouse gets no Iowa child care credit (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: IA
+  output:
+    ia_cdcc: 0
+
+- name: 2024 joint return with both spouses claimable gets no Iowa child care credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IA
+  output:
+    ia_cdcc: 0
+
+- name: 2024 joint return with no claimable spouse gets the Iowa child care credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IA
+  output:
+    # $1,000 x .35 = $350 federal; x .75 = $262.50.
+    ia_cdcc: 262.5

@@ -32,14 +32,16 @@ For every benefit group, in January 2025:
    interest and dividends.
 3. Discharged debt and wages never change unearned income, and negative
    interest never reduces other income (property 1 holds with them present).
-4. sc_tanf_gross_earned_income is wages, or zero for an SSI recipient.
+4. sc_tanf_gross_earned_income is wages, or zero for an SSI recipient or a
+   dependent child (Section 7.5, page 105: the children drawn here are all
+   under 18 and dependents of the head).
 5. Raising the head's interest by d raises the group's unearned income by
    between 0 and d / 12, by exactly the rise in the head's floored interest
    when the group's interest and dividends already exceed the exclusion, and
    by 0 when the head receives SSI.
 6. The benefit group size is the number of members who do not receive SSI,
-   and the need standard is 50% of the guideline for that size (0 for an
-   empty group).
+   and the need standard is 50% of the guideline for that size, rounded
+   down to a whole dollar (114-1140(A)(4)), and 0 for an empty group.
 7. Net amounts that can be losses (trust and estate, rental and
    partnership income here) count only when positive, so a loss never
    offsets another source or another member's income.
@@ -112,6 +114,8 @@ def build_situation(groups):
             person = {
                 "age": {YEAR: member["age"]},
                 "receives_ssi": {MONTH: member["ssi"]},
+                "is_tax_unit_head": {YEAR: j == 0},
+                "is_tax_unit_dependent": {YEAR: j > 0},
             }
             for variable in AMOUNT_INPUTS:
                 person[variable] = {YEAR: member.get(variable, 0)}
@@ -171,10 +175,13 @@ def reference(group):
         member_counted(m) - (exclusion * x / group_idr if group_idr > 0 else 0)
         for m, x in zip(group, idr)
     ]
-    earned = [0 if m["ssi"] else m.get(WAGES, 0) / 12 for m in group]
+    # The head is an adult; every other member is a dependent child under 18.
+    earned = [
+        0 if m["ssi"] or k > 0 else m.get(WAGES, 0) / 12 for k, m in enumerate(group)
+    ]
     size = sum(not m["ssi"] for m in group)
     fpg = (FPG_FIRST_PERSON + FPG_ADDITIONAL_PERSON * (size - 1)) / 12
-    need_standard = NEED_STANDARD_RATE * fpg if size > 0 else 0
+    need_standard = np.floor(NEED_STANDARD_RATE * fpg) if size > 0 else 0
     resources = sum(sum(m.get(v, 0) for v in ASSETS) for m in group if not m["ssi"])
     return unearned, earned, exclusion, size, need_standard, resources
 
@@ -265,9 +272,10 @@ def test_worked_example():
     (unearned, _, _, size, need, _), _ = run(groups, [0])
     # 300 + (1,000 - 400) / 12 = 350 for the parent; 400 for the child.
     assert unearned[0] == pytest.approx([350, 400, 0], abs=TOLERANCE)
-    # Volume 65 Section 8.15 guideline, three persons: (15,060 + 2 x 5,380) / 12 x 0.5.
+    # Volume 65 Section 8.15 guideline, three persons: (15,060 + 2 x 5,380) / 12
+    # x 0.5 = 1,075.83, rounded down to 1,075 (114-1140(A)(4)).
     assert size[0] == 3
-    assert need[0] == pytest.approx(1_075.83, abs=TOLERANCE)
+    assert need[0] == pytest.approx(1_075, abs=TOLERANCE)
 
 
 try:
