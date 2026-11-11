@@ -1,3 +1,10 @@
+## [2.116.18] - 2026-11-11
+
+### Changed
+
+- Mark the deciding line of Maryland's capital gains surtax source conflict, now in the register shared with Axiom, vendor the register at its newer rulespec-us commit, and drop the conflict from the candidates list.
+
+
 ## [2.116.17] - 2026-11-10
 
 ### Fixed
