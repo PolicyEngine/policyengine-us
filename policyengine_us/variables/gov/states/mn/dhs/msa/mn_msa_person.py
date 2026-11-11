@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
@@ -30,7 +33,7 @@ class mn_msa_person(Variable):
         # The SSI track substitutes the federal SSI FBR for the recipient's
         # post-disregard SSI payment so MSA tops up against the FBR rather
         # than the federal payment. FLA-D recipients are exempt from the $20
-        # general disregard. Couples are computed at the marital unit then
+        # general disregard. Couples are computed using only the two spouses then
         # split 50/50 to avoid wasting disregards on asymmetric income.
         arrangement = person("mn_msa_payment_category", period)
         LA = arrangement.possible_values
@@ -43,7 +46,9 @@ class mn_msa_person(Variable):
         need_standard = standard + special_needs
         # Couple income is tested at the assistance-unit level, but modeled
         # special needs remain attached to the spouse with the allowance.
-        couple_special_needs = person.marital_unit.sum(special_needs)
+        couple_special_needs = _ssi_couple_total(
+            person, period.this_year, special_needs
+        )
         special_needs_share = special_needs / max_(couple_special_needs, 1)
         ssi = person("ssi", period)
         receives_ssi = ssi > 0
@@ -60,11 +65,11 @@ class mn_msa_person(Variable):
         )
         disregard = where(is_medicaid_facility, 0, p.general)
 
-        # SSI track: aggregate FBR + unearned at marital unit for couples,
+        # SSI track: aggregate FBR + unearned for the two spouses,
         # apply $20 once, then split supplement 50/50.
         couple_ssi_countable = max_(
-            person.marital_unit.sum(ssi_fbr)
-            + person.marital_unit.sum(raw_unearned)
+            _ssi_couple_total(person, period.this_year, ssi_fbr)
+            + _ssi_couple_total(person, period.this_year, raw_unearned)
             - disregard,
             0,
         )
@@ -97,8 +102,8 @@ class mn_msa_person(Variable):
                 "ssi_unearned_income_deemed_from_ineligible_parent",
             ],
         )
-        couple_earned = person.marital_unit.sum(annual_earned)
-        couple_unearned = person.marital_unit.sum(annual_unearned)
+        couple_earned = _ssi_couple_total(person, period.this_year, annual_earned)
+        couple_unearned = _ssi_couple_total(person, period.this_year, annual_unearned)
         couple_non_ssi_countable_annual = _apply_ssi_exclusions(
             couple_earned, couple_unearned, parameters, period
         )
