@@ -31,11 +31,15 @@ def _slug(heading):
 
 def _headings(text):
     """Anchors of the Markdown headings, skipping `#` lines in code blocks."""
-    headings, fenced = set(), False
+    headings, fence = set(), None
     for line in text.splitlines():
-        if line.startswith(("```", "~~~")):
-            fenced = not fenced
-        elif not fenced and re.match(r"#{1,6} ", line):
+        if line[:3] in ("```", "~~~"):
+            # Only the opening fence's own marker closes the block.
+            if fence is None:
+                fence = line[:3]
+            elif line[:3] == fence:
+                fence = None
+        elif fence is None and re.match(r"#{1,6} ", line):
             headings.add(_slug(line.lstrip("#")))
     return headings
 
@@ -65,10 +69,12 @@ def test_notice_workflow_watches_the_partner_folder():
     )
     steps = workflow["jobs"]["notify-slack"]["steps"]
     scripts = "\n".join(step.get("run", "") for step in steps)
-    # The step that lists the PR's partner files filters on the same folder.
-    # Only a plain or extended grep keeps the matching files: -v would drop
-    # them and -c would count them, and either would silence the notice.
-    assert re.search(rf"grep (?:-E )?'\^{re.escape(PARTNERS)}/'", scripts)
+    # The step that lists the PR's partner files pipes them through a grep
+    # that keeps the paths in the same folder. Any option, such as -v or -c,
+    # would drop or count them and silence the notice, and GNU grep reads
+    # options after the pattern too, so nothing but -E may sit on that line.
+    pattern = rf"^\s*\|\s*grep (?:-E )?'\^{re.escape(PARTNERS)}/[^']*'\s*(?:\\|\||$)"
+    assert re.search(pattern, scripts, re.M)
     assert any(
         "SLACK_PARTNER_WEBHOOK_URL" in str(step.get("env", {})) for step in steps
     )
