@@ -34,3 +34,28 @@
     cohabitating_spouses: true
   output:
     taxsim_v12: 4_250
+
+- name: Case 5, TAXSIM counts a railroad retiree's social security equivalent benefit as Social Security.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 20_000
+        railroad_social_security_equivalent_benefits: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxsim_gssi: 20_000
+    taxable_ss_magi: 20_000
+    # Section 86(d)(1) counts the benefit as Social Security. Combined income
+    # is 20,000 + 0.5 x 20,000 = 30,000, which exceeds the $25,000 base by
+    # 5,000. Half of that excess, 2,500, is less than half the benefits, so
+    # 2,500 enters AGI.
+    taxsim_v12: 2_500
+    adjusted_gross_income: 22_500

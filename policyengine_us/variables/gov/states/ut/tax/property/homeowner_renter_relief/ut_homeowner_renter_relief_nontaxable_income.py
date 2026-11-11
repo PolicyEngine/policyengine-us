@@ -8,7 +8,7 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=5"
+        "https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=4"
     )
     defined_for = StateCode.UT
 
@@ -20,6 +20,13 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
         taxable_social_security = person("taxable_social_security", period)
         nontaxable_social_security = max_(
             0, social_security - ssdi - taxable_social_security
+        )
+        # Federal AGI includes the head's and spouse's taxable railroad
+        # retirement benefits, so the rest of the benefits is added here.
+        nontaxable_railroad_benefits = max_(
+            0,
+            person("railroad_benefits", period)
+            - person("taxable_railroad_benefits", period),
         )
         total_unemployment_compensation = person(
             "total_unemployment_compensation", period
@@ -34,5 +41,6 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
         return (
             listed_sources
             + nontaxable_social_security
+            + nontaxable_railroad_benefits
             + nontaxable_unemployment_compensation
         )

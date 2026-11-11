@@ -8,6 +8,7 @@ values:
     - us_govt_interest # Line 18
     - student_loan_interest_ald # Line 18
     - hi_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2025-01-01:
     - taxable_pension_income # Line 13
     - military_retirement_income # Line 13
@@ -16,6 +17,7 @@ values:
     - us_govt_interest # Line 18
     - hi_student_loan_interest_subtraction # Line 18
     - hi_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 
 metadata:
@@ -31,3 +33,5 @@ metadata:
       href: https://law.justia.com/codes/hawaii/2022/title-14/chapter-235/section-235-7/
     - title: 2025 Hawaii N-11 Instructions Subtractions
       href: https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=13
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

@@ -5,6 +5,7 @@ values:
     - nc_standard_or_itemized_deductions
     - nc_child_deduction
     - taxable_social_security
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
     - salt_refund_income
     - nc_other_subtractions
   2022-01-01:
@@ -12,6 +13,7 @@ values:
     - nc_standard_or_itemized_deductions
     - nc_child_deduction
     - taxable_social_security
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
     - nc_military_retirement_deduction
     - salt_refund_income
     - nc_other_subtractions
@@ -30,3 +32,5 @@ metadata:
       href: https://www.ncdor.gov/2022-d-400-schedule-s-web-fill-version/open#page=17
     - title: 2021 D-400 Schedule S
       href: https://www.ncdor.gov/2021-d-400-schedule-s-north-carolina-supplemental-schedule-web/open
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

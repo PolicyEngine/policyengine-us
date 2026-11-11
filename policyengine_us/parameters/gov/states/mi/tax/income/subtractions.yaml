@@ -12,6 +12,7 @@ values:
     - mi_529_deduction
     - salt_refund_income # Line 16
     - mi_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2026-01-01:
     - us_govt_interest # Line 10
     - mi_military_retirement_subtraction # Line 11
@@ -27,6 +28,7 @@ values:
     - mi_qualified_overtime_deduction  # Qualified overtime compensation (PA 24 of 2025), TY2026-2028
     - salt_refund_income # Line 16
     - mi_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 metadata:
   unit: list  
   label: Michigan taxable income subtraction sources  
@@ -48,3 +50,5 @@ metadata:
       href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=13
     - title: Michigan Retirement and Pension Benefits
       href: https://web.archive.org/web/20250202214915/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

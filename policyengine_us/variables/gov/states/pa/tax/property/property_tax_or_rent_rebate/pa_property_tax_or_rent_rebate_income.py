@@ -12,6 +12,8 @@ class pa_property_tax_or_rent_rebate_income(Variable):
         "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/"
         "formsandpublications/formsforindividuals/ptrr/documents/"
         "2025_pa-1000_inst.pdf#page=3",
+        # Taxpayer Relief Act section 1303, "Income" (2) and (3)(i)
+        "https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/2006/1/0001..PDF#page=38",
     )
     defined_for = StateCode.PA
 
@@ -22,6 +24,9 @@ class pa_property_tax_or_rent_rebate_income(Variable):
         adjusted_gross_income = tax_unit("adjusted_gross_income", period)
         above_the_line_deductions = tax_unit("above_the_line_deductions", period)
         taxable_social_security = tax_unit("tax_unit_taxable_social_security", period)
+        # Section 1303 counts half of all railroad retirement benefits, so the
+        # part that federal AGI holds comes out before the half goes in.
+        taxable_railroad_benefits = add(tax_unit, period, ["taxable_railroad_benefits"])
         half_counted_benefits = tax_unit.sum(
             head_or_spouse
             * add(
@@ -34,6 +39,8 @@ class pa_property_tax_or_rent_rebate_income(Variable):
                     # Medicaid facility residents; the PA-1000 does not say
                     # whether the Department of Revenue treats it as SSP.
                     "pa_ssp",
+                    # Section 1303 "Income" (2): 50% of railroad retirement
+                    # benefits, every tier, from 1999.
                     "railroad_benefits",
                 ],
             )
@@ -81,6 +88,7 @@ class pa_property_tax_or_rent_rebate_income(Variable):
             adjusted_gross_income
             + above_the_line_deductions
             - taxable_social_security
+            - taxable_railroad_benefits
             + p.benefit_income_rate * half_counted_benefits
             + tax_exempt_income
             + pa_1000_line_11_income

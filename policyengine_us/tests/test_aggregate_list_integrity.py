@@ -290,12 +290,16 @@ SHARED_CASH_PROGRAMS = {
         "ma_eaedc",
         "nj_property_tax_relief",
         "ny_drive_clean_rebate",
+        "railroad_benefits",
         "state_property_tax_refunds",
+        "veterans_benefits",
     },
     "household_benefits": {
         "ak_energy_relief",
         "household_local_benefits",
         "ny_drive_clean_rebate",
+        "railroad_benefits",
+        "veterans_benefits",
     },
 }
 

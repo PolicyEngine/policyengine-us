@@ -1,0 +1,47 @@
+# IRC 36B(d)(2)(B)(iii): MAGI adds back social security benefits as section
+# 86(d) defines them that section 86 leaves out of gross income, so it adds
+# the nontaxable tier 1 railroad benefits just as it adds nontaxable title II
+# benefits. Medicaid MAGI follows 36B (42 U.S.C. 1396a(e)(14)(G)).
+
+- name: Nontaxable tier 1 railroad benefits are in MAGI.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 20_000
+        railroad_social_security_equivalent_benefits: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Combined income = 30,000, so 2,500 is taxable and 17,500 is not.
+    adjusted_gross_income: 22_500
+    tax_exempt_railroad_social_security_equivalent_benefits: 17_500
+    medicaid_magi: 40_000
+    aca_magi: 40_000
+    medicaid_magi_person: 40_000
+
+- name: MAGI is the same whether the benefits are title II or tier 1.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 20_000
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    adjusted_gross_income: 22_500
+    medicaid_magi: 40_000
+    aca_magi: 40_000

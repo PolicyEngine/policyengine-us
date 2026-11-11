@@ -21,6 +21,10 @@ values:
     - dividend_income
     - taxable_pension_income
     # Pension income includes annuities and endowment contracts
+    # Railroad Retirement Act benefits other than the social security
+    # equivalent benefit, which IRC 72(r)(1) treats as benefits from a
+    # qualified employer plan (Form 1040 line 5b).
+    - taxable_railroad_pension_benefits
     # Disability benefits from a plan paid for by the employer (§ 105(a)),
     # on Form 1040 line 1h until minimum retirement age, then line 5.
     # Benefits from a plan the recipient paid for are excluded (§ 104(a)(3)).
@@ -35,6 +39,9 @@ values:
     - estate_income
     - taxable_unemployment_compensation
     - taxable_social_security
+    # Tier 1 railroad retirement benefits, which section 86 taxes together
+    # with Social Security (IRC 86(d)(1)(B); Form 1040 line 6b).
+    - taxable_railroad_social_security_equivalent_benefits
     - illicit_income
     - taxable_retirement_distributions
     - taxable_roth_conversions
@@ -56,6 +63,10 @@ metadata:
   reference:
     - title: 26 U.S. Code § 61 - Gross income defined
       href: https://www.law.cornell.edu/uscode/text/26/61
+    - title: 26 U.S. Code § 72(r) - Certain railroad retirement benefits treated as received under employer plans
+      href: https://www.law.cornell.edu/uscode/text/26/72#r
+    - title: 26 U.S. Code § 86(d) - Social security benefit
+      href: https://www.law.cornell.edu/uscode/text/26/86#d
     - title: 26 U.S. Code § 129 - Dependent care assistance programs
       href: https://www.law.cornell.edu/uscode/text/26/129
     - title: 26 U.S. Code § 111 - Recovery of tax benefit items

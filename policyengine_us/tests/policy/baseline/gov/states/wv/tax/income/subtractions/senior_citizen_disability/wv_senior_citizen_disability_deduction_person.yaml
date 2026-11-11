@@ -53,6 +53,21 @@
     wv_subtractions: 6_000
     wv_agi: 0
 
+- name: Railroad retirement benefits on line 40 stay out of box c.
+  period: 2025
+  input:
+    age: 70
+    taxable_private_pension_income: 5_000
+    taxable_railroad_pension_benefits: 20_000
+    state_code: WV
+  output:
+    adjusted_gross_income_person: 25_000
+    # Line 40 subtracts the 20,000 of railroad benefits in federal AGI.
+    # Box (c) = min(25,000 - 20,000, 8,000) = 5,000; box (d) = 0.
+    wv_senior_citizen_disability_deduction_person: 5_000
+    wv_subtractions: 25_000
+    wv_agi: 0
+
 - name: The 2024 line 49 excludes taxable state refunds from box c.
   period: 2024
   input:
@@ -82,6 +97,9 @@
     adjusted_gross_income_person: 6_000
     salt_refund_income: 2_000
     wv_senior_citizen_disability_deduction_total_modifications: 1_000
+    # The case enters AGI directly. Federal taxable railroad benefits build on
+    # 401(k) limits that the model holds only from 2018.
+    taxable_railroad_benefits: 0
   output:
     # Available income = 6,000 - 2,000 - 1,000 = 3,000.
     # Remaining allowance = 8,000 - 1,000 = 7,000; min = 3,000.

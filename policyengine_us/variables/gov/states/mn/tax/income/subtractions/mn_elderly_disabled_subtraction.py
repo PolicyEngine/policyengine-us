@@ -10,6 +10,7 @@ class mn_elderly_disabled_subtraction(Variable):
     reference = (
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_22.pdf",
+        "https://www.revisor.mn.gov/statutes/cite/290.0802",
     )
     defined_for = StateCode.MN
 
@@ -45,13 +46,29 @@ class mn_elderly_disabled_subtraction(Variable):
         unit_socsec = add(tax_unit, period, ["social_security"])
         unit_taxed_socsec = add(tax_unit, period, ["taxable_social_security"])
         untaxed_social_security = unit_socsec - unit_taxed_socsec
-        # ... determine total disability and social security benefits
-        benefits = disability_income + untaxed_social_security
+        # Minn. Stat. 290.0802, subd. 1(c), counts as nontaxable retirement
+        # benefits both the section 22(c)(3) reduction, which takes in the
+        # Railroad Retirement Act benefits that gross income leaves out, and
+        # the benefits in federal gross income that Minnesota doesn't tax,
+        # which take in the rest (45 U.S.C. 231m(a)). So all of the head's
+        # and spouse's railroad benefits reduce the base.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        railroad = tax_unit.sum(head_or_spouse * person("railroad_benefits", period))
+        # ... determine total disability, social security and railroad benefits
+        benefits = disability_income + untaxed_social_security + railroad
         # ... subtract benefits from base amount
         amount = max_(0, base_amount - benefits)
         # ... determine net agi
         fed_agi = tax_unit("adjusted_gross_income", period)
-        agi = fed_agi + tax_unit("form_4972_lumpsum_distributions", period)
+        # Subd. 1(a) takes out of AGI the pension and annuity benefits in
+        # federal gross income that Minnesota doesn't tax: the taxable
+        # railroad benefits.
+        taxable_railroad = add(tax_unit, period, ["taxable_railroad_benefits"])
+        agi = (
+            fed_agi
+            + tax_unit("form_4972_lumpsum_distributions", period)
+            - taxable_railroad
+        )
         agi_offset_base = p.agi_offset_base[filing_status]
         joint = filing_status == filing_status.possible_values.JOINT
         head_eligible = tax_unit.any(elderly_head | disabled_head)

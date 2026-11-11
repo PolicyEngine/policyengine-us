@@ -1,12 +1,16 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.irs_gross_income.social_security.tax_unit_taxable_section_86_benefits import (
+    SECTION_86_GROSS_INCOME_SOURCES,
+)
 
 
 class ira_219g_taxable_social_security(Variable):
     """Section 86 taxable benefits figured without the IRA deduction.
 
     Pub. 590-A Appendix B, Worksheet 1 lines 1-17. Same inputs and thresholds as
-    the engine's taxable_ss_magi / tax_unit_taxable_social_security, except that
-    the IRA deduction is not subtracted (it is what is being computed).
+    the engine's taxable_ss_magi / tax_unit_taxable_section_86_benefits, except
+    that the IRA deduction is not subtracted (it is what is being computed).
+    Like section 86, it covers title II and tier 1 railroad benefits together.
     """
 
     value_type = float
@@ -26,7 +30,8 @@ class ira_219g_taxable_social_security(Variable):
         sources = [
             s
             for s in irs.gross_income.sources
-            if s not in ["taxable_social_security", "taxable_unemployment_compensation"]
+            if s not in SECTION_86_GROSS_INCOME_SOURCES
+            and s != "taxable_unemployment_compensation"
         ]
         if "taxable_unemployment_compensation" in irs.gross_income.sources:
             sources.append("total_unemployment_compensation")
@@ -54,7 +59,7 @@ class ira_219g_taxable_social_security(Variable):
         )
         ss_magi = max_(0, gross - total_deductions)
         # tax_unit_taxable_social_security, with that MAGI.
-        gross_ss = tax_unit("tax_unit_social_security_for_taxability", period)
+        gross_ss = tax_unit("tax_unit_section_86_benefits", period)
         combined = ss_magi + p.combined_income_ss_fraction * gross_ss
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE

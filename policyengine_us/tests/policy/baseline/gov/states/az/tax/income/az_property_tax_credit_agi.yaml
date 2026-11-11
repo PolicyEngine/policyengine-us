@@ -186,3 +186,33 @@
     az_property_tax_credit_agi: 3_000
     az_property_tax_credit_household_income: 3_000
     az_property_tax_credit: 212
+
+- name: Railroad retirement benefits are excluded, a dependent's too.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_railroad_pension_benefits: 3_000
+        taxable_interest_income: 2_000
+      child:
+        age: 15
+        taxable_railroad_pension_benefits: 1_000
+        taxable_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Combined income is 3,000 + 2,000 + 0.5 x 10,000 = 10,000, under the
+    # $25,000 base, so federal AGI holds 3,000 of tier 2 benefits and 2,000
+    # of interest. The 2025 Form 140PTC instructions (page 4) leave railroad
+    # retirement benefits out of household income.
+    adjusted_gross_income: 5_000
+    az_property_tax_credit_agi: 2_000
+    # The child's railroad annuity stays out too; the interest counts.
+    az_property_tax_credit_dependent_income: 500

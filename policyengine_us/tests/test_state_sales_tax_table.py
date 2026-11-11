@@ -94,15 +94,17 @@ SIMULATED_FAMILY_SIZES = range(1, 9)
 # the nontaxable part of social security and railroad retirement benefits; the
 # nontaxable part of IRA, pension, or annuity distributions; and public
 # assistance payments.
-# These are the PolicyEngine variables for those items. Combat pay and
-# railroad retirement benefits are not included.
+# These are the PolicyEngine variables for those items. Combat pay is not
+# included.
 TABLE_INCOME_SOURCES = [
     "adjusted_gross_income",
     "tax_exempt_interest_income",
     "veterans_benefits",
     "workers_compensation",
     "tax_exempt_social_security",
+    "tax_exempt_railroad_social_security_equivalent_benefits",
     "tax_exempt_pension_income",
+    "tax_exempt_railroad_pension_benefits",
     "tax_exempt_retirement_distributions",
     "tanf",
     "ssi",

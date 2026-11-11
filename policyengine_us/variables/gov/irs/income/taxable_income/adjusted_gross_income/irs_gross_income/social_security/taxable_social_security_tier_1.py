@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.irs_gross_income.social_security.tax_unit_taxable_social_security import (
+    section_86_share,
+)
 
 
 class taxable_social_security_tier_1(Variable):
@@ -9,14 +12,17 @@ class taxable_social_security_tier_1(Variable):
     documentation = (
         "First-tier component of current-law taxable Social Security. "
         "Above the adjusted base amount this is the bracket amount in section "
-        "86(a)(2)(A)(ii), rather than the pre-1993 inclusion used for OASDI revenue."
+        "86(a)(2)(A)(ii), rather than the pre-1993 inclusion used for OASDI revenue. "
+        "Section 86 figures it on title II and tier 1 railroad benefits "
+        "together; this is the title II share, as in "
+        "tax_unit_taxable_social_security."
     )
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/86#a_1"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.social_security.taxability
-        gross_ss = tax_unit("tax_unit_social_security_for_taxability", period)
+        gross_ss = tax_unit("tax_unit_section_86_benefits", period)
         combined_income = tax_unit(
             "tax_unit_combined_income_for_social_security_taxability", period
         )
@@ -53,8 +59,12 @@ class taxable_social_security_tier_1(Variable):
             p.rate.additional.bracket * (adjusted_base_amount - base_amount),
         )
 
-        return select(
+        tier_1 = select(
             [under_first_threshold, under_second_threshold],
             [0, amount_under_paragraph_1],
             default=bracket_amount,
         )
+        share = section_86_share(
+            tax_unit, period, "tax_unit_social_security_for_taxability"
+        )
+        return tier_1 * share

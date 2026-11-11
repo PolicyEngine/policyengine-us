@@ -9,10 +9,15 @@ class me_agi_subtractions(Variable):
     documentation = "Subtractions from ME AGI over federal AGI."
     definition_period = YEAR
     defined_for = StateCode.ME
-    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf"
+    reference = (
+        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf",
+        "https://www.law.cornell.edu/uscode/text/45/231m#a",
+    )
 
     adds = [
         "tax_unit_taxable_social_security",
+        # 45 U.S.C. 231m(a): railroad retirement benefits in federal AGI.
+        "taxable_railroad_benefits",
         "us_govt_interest",
         "me_pension_income_deduction",
         "me_529_plan_subtraction",

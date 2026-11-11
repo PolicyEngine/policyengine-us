@@ -11,7 +11,9 @@ class az_property_tax_credit_agi(Variable):
         "Adjusted gross income as defined for Arizona property tax credit purposes, "
         "for members who are not dependents. Per ARS 43-1072(H)(6) and ITR 12-1, "
         "this starts with federal AGI and subtracts taxable Social Security (ARS "
-        "43-1072(I)) and the unemployment compensation it holds, as (I) excludes "
+        "43-1072(I)), the taxable railroad retirement benefits, which the Form "
+        "140PTC instructions also leave out of income, and the unemployment "
+        "compensation it holds, as (I) excludes "
         "Arizona unemployment insurance payments; other states' payments are "
         "added back in az_property_tax_credit_unemployment. Federal AGI already "
         "leaves out most other subsection (I) items. Federal above-the-line "
@@ -43,14 +45,17 @@ class az_property_tax_credit_agi(Variable):
 
         # Per ARS 43-1072(I) and ITR 12-1 "Items Excluded from Income",
         # we exclude Social Security benefits and Arizona unemployment
-        # compensation (below). Other excluded items, like railroad
-        # retirement, workers comp, veterans disability pensions, welfare and
-        # gifts, are typically not in Federal AGI anyway.
+        # compensation (below). The 2025 Form 140PTC instructions (page 4)
+        # also leave out railroad retirement benefits. Other excluded items,
+        # like workers comp, veterans disability pensions, welfare and gifts,
+        # are typically not in Federal AGI anyway.
         #
         # Federal AGI only includes the TAXABLE portion of Social Security,
         # but for property tax credit, ALL Social Security should be excluded.
-        # So we subtract the taxable portion that's in Federal AGI.
+        # So we subtract the taxable portion that's in Federal AGI. The same
+        # holds for the railroad retirement benefits federal AGI includes.
         taxable_social_security = tax_unit("tax_unit_taxable_social_security", period)
+        taxable_railroad_benefits = add(tax_unit, period, ["taxable_railroad_benefits"])
 
         # NOTE: We do NOT subtract Arizona's regular subtractions here because:
         # - Pension exclusions (az_public_pension_exclusion,
@@ -156,6 +161,7 @@ class az_property_tax_credit_agi(Variable):
         return (
             federal_agi
             - taxable_social_security
+            - taxable_railroad_benefits
             - federal_capital_gains
             + federal_capital_loss
             + line_d

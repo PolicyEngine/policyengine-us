@@ -11,6 +11,7 @@ values:
     - taxable_social_security
     - ga_investment_in_529_plan_deduction
     - ga_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2022-01-01:
     - us_govt_interest
     - ga_retirement_exclusion
@@ -18,6 +19,7 @@ values:
     - taxable_social_security
     - ga_investment_in_529_plan_deduction
     - ga_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2026-01-01:
     - us_govt_interest
     - ga_retirement_exclusion
@@ -27,6 +29,7 @@ values:
     - ga_qualified_overtime_exclusion
     - ga_cash_tip_exclusion
     - ga_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2029-01-01:
     - us_govt_interest
     - ga_retirement_exclusion
@@ -34,6 +37,7 @@ values:
     - taxable_social_security
     - ga_investment_in_529_plan_deduction
     - ga_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 metadata:
   unit: list
@@ -52,3 +56,5 @@ metadata:
       href: https://www.legis.ga.gov/api/legislation/document/20252026/249080#page=6
     - title: Georgia HB463 (2025-2026), Section 2-4 adding O.C.G.A. § 48-7-27(a)(17) - cash tips exclusion
       href: https://www.legis.ga.gov/api/legislation/document/20252026/249080#page=7
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

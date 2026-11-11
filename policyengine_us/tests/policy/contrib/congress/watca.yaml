@@ -353,6 +353,32 @@
     # MAGI = 50_000 + (20_000 - 5_000) = 65_000
     watca_alternative_tax_magi: 65_000
 
+- name: Alternative tax MAGI includes non-taxable tier 1 railroad retirement benefits
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    people:
+      person1:
+        age: 67
+        employment_income: 20_000
+        railroad_social_security_equivalent_benefits: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Section 86(d)(1) counts the benefit as Social Security. Combined income
+    # is 20,000 + 0.5 x 20,000 = 30,000, which exceeds the $25,000 base by
+    # 5,000, so 2,500 enters AGI and 17,500 stays out.
+    adjusted_gross_income: 22_500
+    tax_exempt_railroad_social_security_equivalent_benefits: 17_500
+    # MAGI = 22,500 + 17,500 = 40,000
+    watca_alternative_tax_magi: 40_000
+
 - name: Alternative tax MAGI includes specified possession income
   period: 2026
   reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object

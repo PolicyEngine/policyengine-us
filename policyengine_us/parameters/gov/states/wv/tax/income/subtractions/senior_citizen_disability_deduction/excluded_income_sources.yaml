@@ -12,6 +12,8 @@ values:
     # removes income within the form's excluded range. Use the contributor's
     # own amount rather than projecting the tax-unit 529 deduction to spouses.
     - investment_in_529_plan_indv # Line 39
+    # Line 40 subtracts the Railroad Retirement Act benefits in federal AGI.
+    - taxable_railroad_benefits # Line 40
 
 metadata:
   unit: list

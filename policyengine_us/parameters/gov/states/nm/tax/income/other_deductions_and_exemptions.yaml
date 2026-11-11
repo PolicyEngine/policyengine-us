@@ -5,6 +5,7 @@ values:
     - nm_529_plan_deduction
     - military_service_income
     - salt_refund_income # Form PIT-ADJ
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
     - nm_other_subtractions
 metadata:
   unit: list
@@ -22,3 +23,5 @@ metadata:
       href: https://www.srca.nm.gov/parts/title03/03.003.0001.html
     - title: New Mexico Income Tax Act, Chapter 7 - Taxation, 7-2-32. Deduction; payments into education trust fund.
       href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc141270056/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWDgJgHYADIICsANgCUAGmTZShCAEVEhXAE9oAck1SIhMLgTLVG7bv2GQAZTykAQhoBKAUQAyzgGoBBAHIBhZylSMAAjaFJ2CQkgA
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

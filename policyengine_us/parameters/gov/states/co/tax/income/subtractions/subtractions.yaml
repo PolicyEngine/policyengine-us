@@ -8,6 +8,7 @@ values:
     - co_collegeinvest_subtraction
     - co_charitable_contribution_subtraction
     - co_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
     # Colorado Agricultural Land Capital Gain Subtraction
     # Qualified Reservation Income
     # PERA/DPSRS Subtraction, for PERA contributions made in 1984–1986 or DPSRS contributions made in 1986
@@ -29,6 +30,7 @@ values:
     - co_charitable_contribution_subtraction
     - co_able_contribution_subtraction
     - co_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
     # Colorado Agricultural Land Capital Gain Subtraction
     # Qualified Reservation Income
     # PERA/DPSRS Subtraction, for PERA contributions made in 1984–1986 or DPSRS contributions made in 1986
@@ -58,3 +60,5 @@ metadata:
       href: https://tax.colorado.gov/sites/tax/files/documents/DR0104_book_2024.pdf#page=18
     - title: 2025 Colorado Individual Tax Filing Guide 104 Book
       href: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=18
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

@@ -14,7 +14,9 @@ class tax_unit_combined_income_for_social_security_taxability(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.social_security.taxability
-        gross_ss = tax_unit("tax_unit_social_security_for_taxability", period)
+        # IRC 86(b)(1)(A)(ii) and (d)(1): one-half of the social security
+        # benefits, title II and tier 1 railroad benefits alike.
+        gross_ss = tax_unit("tax_unit_section_86_benefits", period)
 
         # The legislation directs the usage of an income definition that is
         # a particularly modified AGI, plus half of gross Social Security

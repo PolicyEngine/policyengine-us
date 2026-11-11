@@ -20,6 +20,8 @@ metadata:
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=13
     - title: 2025 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2025.pdf#page=14
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a
 values:
   2020-01-01:
     - or_federal_tax_liability_subtraction
@@ -28,3 +30,4 @@ values:
     - salt_refund_income
     - or_federal_pension_subtraction
     - or_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)

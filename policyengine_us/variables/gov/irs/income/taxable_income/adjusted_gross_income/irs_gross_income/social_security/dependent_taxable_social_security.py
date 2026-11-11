@@ -1,11 +1,21 @@
 from policyengine_us.model_api import *
 
 
-def dependent_taxable_social_security_amount(person, period, parameters, modified_agi):
-    """A dependent's taxable Social Security under IRC 86 for a given modified
-    AGI, on the dependent's own marital circumstances."""
+def dependent_section_86_benefits(person, period):
+    """A dependent's social security benefits as IRC 86(d)(1) defines them:
+    title II benefits and tier 1 railroad retirement benefits."""
+    title_ii = max_(0, person("social_security", period))
+    tier_1 = max_(0, person("railroad_social_security_equivalent_benefits", period))
+    return title_ii, tier_1
+
+
+def dependent_taxable_section_86_amount(person, period, parameters, modified_agi):
+    """A dependent's taxable social security benefits under IRC 86 for a given
+    modified AGI, on the dependent's own marital circumstances. Section 86
+    figures one amount on title II and tier 1 railroad benefits together."""
     p = parameters(period).gov.irs.social_security.taxability
-    gross_ss = max_(0, person("social_security", period))
+    title_ii, tier_1 = dependent_section_86_benefits(person, period)
+    gross_ss = title_ii + tier_1
     # IRC 86(b)(1): modified AGI plus one-half of the benefits.
     combined_income = modified_agi + p.combined_income_ss_fraction * gross_ss
     lives_with_spouse = person("dependent_lives_with_spouse", period)
@@ -61,7 +71,11 @@ class dependent_taxable_social_security(Variable):
     dependent does not file a joint return (IRC 152(b)(2)), so the joint
     amounts never apply. A dependent who lives with their spouse has zero
     base and adjusted base amounts under IRC 86(c)(1)(C) and (c)(2)(C), and
-    every other dependent has the unmarried amounts.
+    every other dependent has the unmarried amounts. Section 86 figures one
+    amount on title II and tier 1 railroad retirement benefits together; this
+    is the title II share, and
+    dependent_taxable_railroad_social_security_equivalent_benefits is the
+    railroad share.
     """
     definition_period = YEAR
     defined_for = "is_tax_unit_dependent"
@@ -76,6 +90,21 @@ class dependent_taxable_social_security(Variable):
     )
 
     def formula(person, period, parameters):
-        return dependent_taxable_social_security_amount(
-            person, period, parameters, person("dependent_taxable_ss_magi", period)
+        return dependent_taxable_section_86_share(
+            person, period, parameters, title_ii=True
         )
+
+
+def dependent_taxable_section_86_share(person, period, parameters, title_ii):
+    """The title II or tier 1 railroad share of a dependent's taxable section
+    86 benefits, in proportion to the two kinds of benefits."""
+    taxable = dependent_taxable_section_86_amount(
+        person, period, parameters, person("dependent_taxable_ss_magi", period)
+    )
+    title_ii_benefits, tier_1_benefits = dependent_section_86_benefits(person, period)
+    benefits = title_ii_benefits if title_ii else tier_1_benefits
+    total = title_ii_benefits + tier_1_benefits
+    share = np.zeros_like(total)
+    mask = total > 0
+    share[mask] = benefits[mask] / total[mask]
+    return taxable * share

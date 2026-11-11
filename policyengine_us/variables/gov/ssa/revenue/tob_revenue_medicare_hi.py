@@ -18,13 +18,20 @@ class tob_revenue_medicare_hi(Variable):
         "retaining negative unit differences for aggregation. The OASDI "
         "allocation caps old-law inclusion at actual inclusion, so HI gets "
         "nothing from a unit whose inclusion does not exceed the pre-1993 "
-        "amount."
+        "amount. Section 121(e)(3)(C) gives social security benefits the "
+        "section 86(d)(1) meaning, so section 121(e)(1)(B) also credits HI "
+        "with the 1993 amendments' increase on the social security "
+        "equivalent part of tier 1 railroad retirement benefits. The "
+        "counterfactuals change only title II benefits' taxable share "
+        "(tax_unit_taxable_social_security), so this variable leaves that "
+        "railroad amount out."
     )
     unit = USD
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/401",
         "https://www.law.cornell.edu/uscode/text/26/1411",
         "https://www.ssa.gov/OP_Home/comp2/F098-021.html",
+        "https://www.law.cornell.edu/uscode/text/26/86#d_1",
     )
 
     def formula(tax_unit, period, parameters):

@@ -9182,6 +9182,41 @@ candidates:
   state: unreviewed
   note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
     than" (or_liheap_eligible.py).
+- id: us-or:retirement-credit-household-income-railroad-tier-2
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: Does household income for Oregon's retirement income credit count the tier 2 railroad annuity, or leave
+    out every Railroad Retirement benefit?
+  sources:
+  - kind: statute
+    citation: ORS 316.157(2)(b), (c) and (f)
+    url: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+  - kind: regulation
+    citation: OAR 150-316-0225(3)
+    url: https://secure.sos.state.or.us/oard/view.action?ruleNumber=150-316-0225
+  - kind: guidance
+    citation: 2025 Publication OR-17, retirement income credit
+    url: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=107
+  readings:
+    statute: Household income leaves out Social Security benefits, which (2)(f) defines as section 86 benefits,
+      "Title II Social Security or tier 1 railroad retirement benefits", so the tier 2 annuity in federal AGI stays
+      in. OR-17 lists "RRB benefits (Tier 2 only)" as household income.
+    other: The rule says that "benefits received from Social Security or Railroad Retirement are not included in
+      computing the household income limitation", which, read literally, leaves tier 2 out as well.
+  example: Joint filers aged 66 with $25,000 of pension income, $5,000 of interest, $4,000 of tier 1 benefits and a
+    $3,000 taxable tier 2 annuity have household income of $33,000 and a credit of $720 under the statute. Leaving
+    tier 2 out gives $30,000 and $990.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/tax/income/credits/retirement_credit/or_retirement_credit_household_income.py
+    - policyengine_us/variables/gov/states/or/tax/income/credits/retirement_credit/or_retirement_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10696
+  state: ruled
+  note: The statute comes first, and the department's own publication reads it the same way.
 - id: us-pa:liheap-interest-dividend-threshold
   program: liheap
   years:
@@ -9286,6 +9321,37 @@ candidates:
   state: ruled
   note: PE-US follows the memoranda, the issuance directives for a payment the plan says "may" be issued (ruled
     2026-10-28). The memoranda are served only over http.
+- id: us-pa:ptrr-railroad-retirement-tier-2-share
+  program: property-tax-credit
+  years:
+    from: 2025
+    type: calendar
+  question: Does Pennsylvania Property Tax/Rent Rebate income count half of all railroad retirement benefits, or half
+    of tier 1 and the whole gross tier 2 annuity?
+  sources:
+  - kind: statute
+    citation: Taxpayer Relief Act (Act 1 of 2006, Special Session 1), section 1303, "Income" (2)
+    url: https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/2006/1/0001..PDF#page=38
+  - kind: instructions
+    citation: 2025 PA-1000 instructions, lines 5 and 6
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/ptrr/documents/2025_pa-1000_inst.pdf#page=7
+  readings:
+    statute: Income includes "50% of railroad retirement benefits for calendar years 1999 and thereafter". The act
+      names no tiers.
+    other: Line 5 takes one-half of Railroad Retirement Tier 1 Benefits, and line 6 takes the gross amount, not the
+      taxable amount, of Tier 2 Railroad Retirement Benefits.
+  example: A claimant aged 65 with $10,000 of tier 1 benefits, a $10,000 taxable tier 2 annuity and a $2,000 tax-free
+    recovery has income of $11,000 under the act and $17,000 under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/pa/tax/property/property_tax_or_rent_rebate/pa_property_tax_or_rent_rebate_income.py
+    - policyengine_us/parameters/gov/states/pa/tax/property/property_tax_or_rent_rebate/benefit_income_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10696
+  state: ruled
+  note: The act's only railroad words sit in "Income" (2). PE-US takes the railroad benefits in federal AGI out of
+    income and adds half of all of them, so the tier 2 annuity counts once, at half.
 - id: us-pa:snap-child-support-deduction
   program: snap
   years:
@@ -13382,6 +13448,40 @@ candidates:
     zero and kept apart from the passive basket, so these royalties count although Worksheet 1 line 8 reads only Schedule
     E line 23b. Where rental real estate goes is a separate reading (us:eitc-rental-real-estate-basket). Register the
     entry and add the marker once #10297 is on main.
+- id: us:elderly-credit-railroad-tier-2-return-of-cost
+  program: income-tax
+  years:
+    from: 2023
+    type: tax
+  question: Does the tax-free recovery of tier 2 employee contributions from a Railroad Retirement Act annuity reduce
+    the section 22 amount for the credit for the elderly or disabled?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 22(c)(3)(A)(i)(II); 72(b), (d) and (r)
+    url: https://www.law.cornell.edu/uscode/text/26/22#c_3_A
+  - kind: instructions
+    citation: 2026 Instructions for Schedule R (Form 1040), lines 13a and 13b
+    url: https://www.irs.gov/pub/irs-pdf/i1040sr.pdf#page=4
+  readings:
+    statute: Section 22(c)(3)(A)(i)(II) reduces the section 22 amount by amounts the individual, or either spouse on a
+      joint return, receives as a pension or annuity "which is excluded from gross income and payable under" the
+      Railroad Retirement Act of 1974. The tax-free part of the annuity other than the social security equivalent
+      benefit, which recovers tier 2 employee taxes under 72(r)(2) and 72(d) (72(b) for some annuities that started
+      before November 19, 1996), meets both conditions.
+    other: Line 13a takes nontaxable tier 1 benefits treated as social security. Line 13b says "Don't include amounts
+      that are treated as a return of your cost of a pension or annuity," so the tax-free recovery reduces nothing.
+  example: A single filer aged 67 with $3,000 of social security equivalent benefits, all nontaxable, $2,000 of taxable
+    tier 2 benefits and $500 recovered tax free has a section 22 amount of $1,500 under the statute ($5,000 - $3,000 -
+    $500) and $2,000 under the instructions ($5,000 - $3,000); the model gives $1,500.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/credits/elderly_and_disabled/section_22_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10696
+  state: ruled
+  note: The 2023, 2024 and 2025 instructions carry the same line 13b sentence. The model takes the tax-free recovery
+    from tax_exempt_railroad_pension_benefits for the head and spouse.
 - id: us:filing-chart-a-blindness-and-equality
   program: income-tax
   years:

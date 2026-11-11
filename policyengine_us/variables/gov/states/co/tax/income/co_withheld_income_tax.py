@@ -10,7 +10,7 @@ class co_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        agi = person("adjusted_gross_income_person", period)
+        agi = person("state_withholding_agi", period)
         # Colorado adopts federal taxable income, so use federal standard deduction.
         p_irs = parameters(period).gov.irs.deductions.standard
         standard_deduction = p_irs.amount["SINGLE"]

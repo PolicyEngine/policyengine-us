@@ -17,13 +17,18 @@ class tob_revenue_oasdi(Variable):
         "impact. Negative unit differences are retained when aggregating "
         "tax liabilities. Actual inclusion caps the old-law inclusion. When "
         "a reform cuts inclusion below the pre-1993 amount, the 1993 "
-        "amendments add nothing, and OASDI takes the whole increase."
+        "amendments add nothing, and OASDI takes the whole increase. It "
+        "covers title II benefits only: under 45 U.S.C. 231n-1(b)(1)(B), the "
+        "section 121(e) amount from taxing the social security equivalent "
+        "part of tier 1 railroad retirement benefits goes to the Social "
+        "Security Equivalent Benefit Account, not to OASDI."
     )
     unit = USD
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/401",
         "https://www.law.cornell.edu/uscode/text/26/1411",
         "https://www.ssa.gov/OP_Home/comp2/F098-021.html",
+        "https://www.law.cornell.edu/uscode/text/45/231n-1",
     )
 
     def formula(tax_unit, period, parameters):

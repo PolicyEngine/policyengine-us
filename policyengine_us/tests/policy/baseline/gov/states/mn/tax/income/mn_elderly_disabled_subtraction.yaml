@@ -120,3 +120,28 @@
         state_code: MN
   output:
     mn_elderly_disabled_subtraction: 0  # = 12_000 - 0.5 * (42_000 - 18_000)
+
+- name: Railroad retirement benefits reduce the base and leave AGI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_ira_distributions: 15_000
+        railroad_social_security_equivalent_benefits: 1_000
+        taxable_railroad_pension_benefits: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Combined income is 17,000 + 0.5 x 1,000 = 17,500, under the $25,000
+    # base, so none of the tier 1 benefits enters federal AGI of 17,000.
+    adjusted_gross_income: 17_000
+    # Minn. Stat. 290.0802, subd. 1(a): AGI = 17,000 - 2,000 = 15,000.
+    # Subd. 1(c) and 2(b)(2): 9,600 - (1,000 + 2,000) - 0.5 x (15,000 -
+    # 14,500) = 6,350.
+    mn_elderly_disabled_subtraction: 6_350

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.irs_gross_income.social_security.tax_unit_taxable_section_86_benefits import (
+    SECTION_86_GROSS_INCOME_SOURCES,
+)
 
 
 class taxable_ss_magi(Variable):
@@ -23,7 +26,8 @@ class taxable_ss_magi(Variable):
                 else income_source
             )
             for income_source in gross_income_sources
-            if income_source != "taxable_social_security"
+            # IRC 86(b)(2)(A): determined without regard to section 86.
+            if income_source not in SECTION_86_GROSS_INCOME_SOURCES
         ]
         income_sources_without_ss.append("tax_exempt_interest_income")
         gross_income = 0

@@ -10,7 +10,7 @@ class nj_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        agi = person("adjusted_gross_income_person", period)
+        agi = person("state_withholding_agi", period)
         p = parameters(period).gov.states.nj.tax.income
         # Since New Jersey does not have a standard deduction
         # we apply the regular personal exemption amount

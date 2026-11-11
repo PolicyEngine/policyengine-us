@@ -13,6 +13,7 @@ values:
     - sc_young_child_deduction
     - sc_dependent_exemption
     - sc_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
     # - Out of state income/gain
     # - Volunteer deductions
     # - Active Trade or Business Income deduction
@@ -36,6 +37,7 @@ values:
     - sc_dependent_exemption
     - sc_sciad
     - sc_other_subtractions 
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 metadata:
   unit: list
@@ -60,3 +62,5 @@ metadata:
       href: https://dor.sc.gov/forms-site/Forms/IITPacket_2023.pdf#page=43
     - title: SC 1040 tax form instructions (2024)
       href: https://dor.sc.gov/forms-site/Forms/SC1040Instr_2024.pdf#page=8
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a

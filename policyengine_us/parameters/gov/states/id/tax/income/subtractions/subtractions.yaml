@@ -13,6 +13,7 @@ values:
     - id_529_plan_subtraction # Idaho Code 63-3022(n)
     - id_health_insurance_premiums_subtraction # Idaho Code 63-3022P
     - id_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2025-01-01:
     - salt_refund_income # (2)
     - us_govt_interest # (3)(a)
@@ -27,6 +28,7 @@ values:
     - id_529_plan_subtraction # Idaho Code 63-3022(n)
     - id_health_insurance_premiums_subtraction # Idaho Code 63-3022P
     - id_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 
 metadata:
@@ -44,3 +46,5 @@ metadata:
     href: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022P/
   - title: Section 35.01.01.254 - (5) / (3) (a)
     href: https://regulations.justia.com/states/idaho/35/35-01-01/section-35-01-01-254/
+  - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+    href: https://www.law.cornell.edu/uscode/text/45/231m#a

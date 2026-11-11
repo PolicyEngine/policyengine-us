@@ -10,6 +10,7 @@ values:
     - md_529_deduction
     - salt_refund_income
     - md_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
   2022-01-01:
     - us_govt_interest
     - md_dependent_care_subtraction
@@ -21,6 +22,7 @@ values:
     - md_529_deduction
     - salt_refund_income
     - md_other_subtractions
+    - taxable_railroad_benefits  # 45 U.S.C. 231m(a)
 
 metadata:
   reference:
@@ -33,6 +35,8 @@ metadata:
     # Bill introducing the hundred year subtraction
     - title: House Bill 186
       href: https://mgaleg.maryland.gov/mgawebsite/Legislation/Details/hb0186?ys=2022RS
+    - title: 45 U.S. Code § 231m(a) - Railroad Retirement Act annuities are exempt from state tax
+      href: https://www.law.cornell.edu/uscode/text/45/231m#a
   period: year
   unit: list
   label: Maryland adjusted gross income subtractions

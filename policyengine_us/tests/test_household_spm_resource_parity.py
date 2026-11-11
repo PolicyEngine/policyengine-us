@@ -4,7 +4,7 @@ household_net_income and spm_unit_net_income are two views of one family's
 cash. Each total keeps its own list of what it adds, in two different files, and
 the lists drift: a cash program reaches one total and not the other.
 
-Seven invariants hold for every input.
+Nine invariants hold for every input.
 
 1. The list difference is exactly the documented one. Every program that one
    total counts and the other does not appears below with its reason.
@@ -24,6 +24,12 @@ Seven invariants hold for every input.
    same amount. A state income tax credit list or state_property_tax_refunds
    carries each payment into both totals, and the bill reductions documented
    below reach neither, since neither total subtracts property tax.
+8. For a household with no means-tested benefits to lose, a dollar of veterans'
+   or railroad benefits adds a dollar to both benefit totals and to market
+   income plus benefits.
+9. Veterans' benefits never change federal gross income or AGI, and they leave
+   federal income tax unchanged for a filer under 65 without a disability who
+   doesn't itemize.
 
 Child care stays out of this file: household_state_benefits and the SPM treat
 subsidies differently on purpose, and #9405 and #10569 cover that difference.
@@ -107,10 +113,14 @@ GROSS_INCOME_IN_RESOURCES = {
     "rental_income": "rental_income",
     "dividend_income": "dividend_income",
     "taxable_pension_income": "pension_income",
+    # railroad_benefits holds the whole Railroad Retirement Act annuity; these
+    # two sources tax its non-SSEB part (IRC 72(r)) and its SSEB (IRC 86).
+    "taxable_railroad_pension_benefits": "railroad_benefits",
     "taxable_disability_benefits": "disability_benefits",
     "estate_income": "estate_income",
     "taxable_unemployment_compensation": "total_unemployment_compensation",
     "taxable_social_security": "social_security",
+    "taxable_railroad_social_security_equivalent_benefits": "railroad_benefits",
     "illicit_income": "illicit_income",
     "taxable_retirement_distributions": "retirement_distributions",
     "miscellaneous_income": "miscellaneous_income",
@@ -601,3 +611,76 @@ def test_property_tax_credits_move_both_net_incomes_together(amount):
         expected = 0 if name in PROPERTY_TAX_BILL_REDUCTIONS else amount
         assert household_change == pytest.approx(expected, abs=TOLERANCE), name
         assert spm_change == pytest.approx(expected, abs=TOLERANCE), name
+
+
+# Federal cash benefits, paid in every state to the person who receives them.
+# Census P60-200 Appendix A counts veterans' payments as money income and
+# railroad retirement as a government transfer, so both totals count them.
+FEDERAL_CASH_BENEFITS = ("veterans_benefits", "railroad_benefits")
+
+
+@settings(max_examples=30, deadline=None)
+@given(
+    name=st.sampled_from(FEDERAL_CASH_BENEFITS),
+    amount=st.integers(min_value=1, max_value=60_000),
+    state=st.sampled_from(STATES),
+)
+@example(name="veterans_benefits", amount=12_000, state="TX")
+@example(name="railroad_benefits", amount=30_000, state="VA")
+def test_a_dollar_of_federal_cash_benefits_adds_a_dollar_to_both_totals(
+    name, amount, state
+):
+    year = 2026
+    # Earnings this high rule out every means-tested response.
+    zero = Simulation(
+        situation=one_person(state, 500_000, year, **{name: ("person", 0)})
+    )
+    paid = Simulation(
+        situation=one_person(state, 500_000, year, **{name: ("person", amount)})
+    )
+    for names in (
+        ("spm_unit_benefits",),
+        ("household_benefits",),
+        SPM_RESOURCES,
+        HOUSEHOLD_RESOURCES,
+    ):
+        change = total(paid, names, year) - total(zero, names, year)
+        assert change == pytest.approx(amount, abs=TOLERANCE), names
+
+
+@settings(max_examples=20, deadline=None)
+@given(
+    amount=st.integers(min_value=1, max_value=60_000),
+    earnings=st.integers(min_value=0, max_value=300_000),
+    state=st.sampled_from(STATES),
+)
+@example(amount=30_000, earnings=0, state="TX")
+@example(amount=20_000, earnings=45_000, state="VT")
+def test_veterans_benefits_stay_out_of_federal_gross_income(amount, earnings, state):
+    """38 U.S.C. 5301(a)(1) exempts VA benefits from taxation.
+
+    The IRS still counts them as income for the optional sales tax tables
+    (state_sales_tax.yaml), so a filer who itemizes and deducts sales tax can
+    owe less federal income tax with them. The test checks income tax only
+    when neither household itemizes. The person is 40 and has no disability,
+    so the credit for the elderly or disabled doesn't apply. 26 U.S.C.
+    22(c)(3)(A)(i)(III) reduces that credit by VA pensions, and the model
+    doesn't yet.
+    """
+    year = 2026
+    zero = Simulation(
+        situation=one_person(state, earnings, year, veterans_benefits=("person", 0))
+    )
+    paid = Simulation(
+        situation=one_person(
+            state, earnings, year, veterans_benefits=("person", amount)
+        )
+    )
+    for name in ("irs_gross_income", "adjusted_gross_income"):
+        assert total(paid, [name], year) == pytest.approx(
+            total(zero, [name], year), abs=TOLERANCE
+        ), name
+    if not any(total(s, ["tax_unit_itemizes"], year) for s in (zero, paid)):
+        assert total(paid, ["income_tax"], year) == pytest.approx(
+            total(zero, ["income_tax"], year), abs=TOLERANCE
+        )
