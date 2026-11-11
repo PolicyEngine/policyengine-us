@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.parameters import add_to_list_parameter
 
 
 def create_boost_middle_class_tax_credit() -> Reform:
@@ -43,128 +44,39 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 return previous_credits
             return middle_class_credit + previous_credits
 
-    class household_benefits(Variable):
+    class boost_middle_class_tax_credit_paid_through_ssa(Variable):
         value_type = float
-        entity = Household
-        label = "benefits"
+        entity = TaxUnit
+        label = "BOOST Middle Class Tax Credit paid through SSA"
         unit = USD
         definition_period = YEAR
+        documentation = (
+            "The credit as a benefit when the Social Security Administration "
+            "pays it, and zero when it is a refundable income tax credit."
+        )
 
-        def formula(household, period, parameters):
-            BENEFITS = [
-                "social_security",
-                "ssi",
-                "snap",
-                "wic",
-                "free_school_meals",
-                "reduced_price_school_meals",
-                "child_support_received",
-                "workers_compensation",
-                "educational_assistance",
-                "financial_assistance",
-                "survivor_benefits",
-                # Broadband subsidies.
-                "acp",
-                "ebb",
-                "tanf",
-                "high_efficiency_electric_home_rebate",
-                "residential_efficiency_electrification_rebate",
-                "total_unemployment_compensation",
-                # Contributed.
-                "basic_income",
-                "trump_dividend",
-                "housing_assistance",
-                "household_state_benefits",
-                "household_local_benefits",
-                "household_head_start_benefits",
-                "ak_energy_relief",
-                "ny_drive_clean_rebate",
-            ]
-            if parameters(period).gov.hud.abolition:
-                BENEFITS = [
-                    benefit for benefit in BENEFITS if benefit != "housing_assistance"
-                ]
-            previous_benefits = add(household, period, BENEFITS)
-            middle_class_credit = add(
-                household, period, ["boost_middle_class_tax_credit"]
-            )
+        def formula(tax_unit, period, parameters):
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.boost.middle_class_tax_credit
-            if p.administered_through_ssa is False:
-                return previous_benefits
-            return middle_class_credit + previous_benefits
+            credit = tax_unit("boost_middle_class_tax_credit", period)
+            return credit * p.administered_through_ssa
 
-    class spm_unit_benefits(Variable):
-        value_type = float
-        entity = SPMUnit
-        label = "Benefits"
-        definition_period = YEAR
-        unit = USD
-
-        def formula(spm_unit, period, parameters):
-            BENEFITS = [
-                "social_security",
-                "ssi",
-                "ma_state_supplement",  # Massachusetts benefits
-                # California programs.
-                "ca_cvrp",  # California Clean Vehicle Rebate Project.
-                # Colorado programs.
-                "co_ccap_subsidy",
-                "co_state_supplement",
-                "co_oap",
-                "snap",
-                "wic",
-                "free_school_meals",
-                "reduced_price_school_meals",
-                "child_support_received",
-                "workers_compensation",
-                "educational_assistance",
-                "financial_assistance",
-                "survivor_benefits",
-                # Broadband subsidies.
-                "acp",
-                "ebb",
-                "spm_unit_energy_subsidy",
-                "tanf",
-                "high_efficiency_electric_home_rebate",
-                "residential_efficiency_electrification_rebate",
-                "total_unemployment_compensation",
-                # Contributed.
-                "basic_income",
-                "trump_dividend",
-                # Cash programs that household_benefits also counts.
-                "ca_capi",  # California Cash Assistance Program for Immigrants.
-                "ca_la_expectant_parent_payment",  # Los Angeles County.
-                "ca_la_infant_supplement",  # Los Angeles County.
-                "co_denver_property_tax_relief",  # Denver.
-                "ma_eaedc",  # Massachusetts.
-                "ak_energy_relief",
-                "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
-                "state_property_tax_refunds",  # Paid outside the income tax.
-                "ny_drive_clean_rebate",
-            ]
-            if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
-                BENEFITS.append("aca_ptc")
-            if not parameters(period).gov.hud.abolition:
-                BENEFITS.append("spm_unit_capped_housing_subsidy")
-            p = parameters(
-                period
-            ).gov.contrib.congress.tlaib.boost.middle_class_tax_credit
-            middle_class_tax_credit = add(
-                spm_unit, period, ["boost_middle_class_tax_credit"]
-            )
-            previous_benefits = add(spm_unit, period, BENEFITS)
-            if p.administered_through_ssa is False:
-                return previous_benefits
-            return add(spm_unit, period, BENEFITS) + middle_class_tax_credit
+    def modify_parameters(parameters):
+        # Paid through SSA, the credit is a benefit in both income totals;
+        # otherwise income_tax_refundable_credits counts it.
+        household = parameters.gov.household
+        paid_through_ssa = ["boost_middle_class_tax_credit_paid_through_ssa"]
+        add_to_list_parameter(household.household_benefits, paid_through_ssa)
+        add_to_list_parameter(household.spm_unit_benefits, paid_through_ssa)
+        return parameters
 
     class reform(Reform):
         def apply(self):
             self.update_variable(boost_middle_class_tax_credit)
+            self.update_variable(boost_middle_class_tax_credit_paid_through_ssa)
             self.update_variable(income_tax_refundable_credits)
-            self.update_variable(household_benefits)
-            self.update_variable(spm_unit_benefits)
+            self.modify_parameters(modify_parameters)
 
     return reform
 

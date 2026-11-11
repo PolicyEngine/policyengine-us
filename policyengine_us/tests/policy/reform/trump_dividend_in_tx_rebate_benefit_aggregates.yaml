@@ -1,11 +1,9 @@
-# The Trump dividend must survive stacking with the Texas rebate, which
-# replaces spm_unit_benefits with its own static list. The rebate itself is
-# $1,500 per Texas household, and the reform also appends tx_rebate to the
-# gov.household.household_state_benefits parameter, so both aggregates are the
-# rebate plus the two $5,000 dividends. household_benefits is not replaced by
-# this reform and so still reads the gov.household.household_benefits
-# parameter list, which already carries trump_dividend. Two adult citizens at
-# $500,000 of employment income so no other benefit fires.
+# The Trump dividend must survive stacking with the Texas rebate. The rebate
+# is $1,500 per Texas household, and the reform appends tx_rebate to the
+# gov.household.spm_unit_benefits and household_state_benefits parameters, so
+# both aggregates are the rebate plus the two $5,000 dividends. Both read the
+# baseline parameter lists, which already carry trump_dividend. Two adult
+# citizens at $500,000 of employment income so no other benefit fires.
 #
 # NOTE: This lives under tests/policy/reform (one subprocess per file) rather
 # than contrib/states/tx because the contrib states batches pack whole state

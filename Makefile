@@ -52,7 +52,7 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # from its dry run and spreads their files over parallel runners by recent
 # CI times, splitting a long group into chunks. A process still runs files
 # of one group only, in this order, so none holds more than its group here.
-REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy ss-calculator-engine ss-calculator-differential ss-history-engine ss-history-differential social-security-inputs core policy-parameters policy remaining-heavy remaining
+REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy ss-calculator-engine ss-calculator-differential ss-history-engine ss-history-differential social-security-inputs core policy-parameters policy reform-benefit-lists remaining-heavy remaining
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
@@ -96,6 +96,11 @@ REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS := $(TESTS)/core/test_ss_pia_ratio_in
 # a default Microsimulation only to read parameters. Release their heap before
 # the remaining policy tests, rather than stacking both in the 13.9 GB group.
 REST_POLICY_PARAMETER_TESTS := $(TESTS)/policy/baseline/parameters
+# test_reform_benefit_lists.py builds a full system for each of four reforms,
+# one at a time. Local macOS run on a loaded host: 21 passed in 23.5 minutes
+# with 5.7 GiB peak RSS. Its own process keeps that heap apart from the systems
+# remaining-heavy retains (10.5 GiB peak RSS in release run 42082143005).
+REST_REFORM_BENEFIT_LIST_TESTS := $(TESTS)/test_reform_benefit_lists.py
 # The first four files retain three independent full systems (the two CTC
 # files share one). The last two use transient TX simulations and balance
 # elapsed time without warming the NY/AL pinned-system cache.
@@ -109,7 +114,7 @@ REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEA
 	$(REST_CORE_HEAVY_TESTS) $(REST_SS_CALCULATOR_ENGINE_TESTS) $(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS) \
 	$(REST_SS_HISTORY_ENGINE_TESTS) $(REST_SS_HISTORY_DIFFERENTIAL_TESTS) \
 	$(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS) \
-	$(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
+	$(REST_POLICY_PARAMETER_TESTS) $(REST_REFORM_BENEFIT_LIST_TESTS) $(REST_REMAINING_HEAVY_TESTS)
 REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
 # command for one group. With REST_REPORT_DIR set, each group writes its own
@@ -362,6 +367,8 @@ test-other-python-rest-policy-parameters:
 	$(call rest_pytest,policy-parameters,$(REST_POLICY_PARAMETER_TESTS))
 test-other-python-rest-policy:
 	$(call rest_pytest,policy,$(TESTS)/policy,$(REST_LISTED_TESTS))
+test-other-python-rest-reform-benefit-lists:
+	$(call rest_pytest,reform-benefit-lists,$(REST_REFORM_BENEFIT_LIST_TESTS))
 test-other-python-rest-remaining-heavy:
 	$(call rest_pytest,remaining-heavy,$(REST_REMAINING_HEAVY_TESTS))
 test-other-python-rest-remaining:

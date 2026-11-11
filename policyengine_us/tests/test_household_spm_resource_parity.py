@@ -246,12 +246,11 @@ def household_members(year):
     return (members | nested) - {"household_state_benefits", "household_local_benefits"}
 
 
-def spm_members():
+def spm_members(year):
+    """spm_unit_benefits: its parameter list and what its formula appends."""
     source = PACKAGE / "variables/household/income/spm_unit/spm_unit_benefits.py"
-    text = source.read_text()
-    listed = set(re.findall(r'^\s+"([a-z0-9_]+)",', text, re.M))
-    appended = set(re.findall(r'BENEFITS\.append\("([a-z0-9_]+)"\)', text))
-    return listed | appended
+    appended = set(re.findall(r'\.append\("([a-z0-9_]+)"\)', source.read_text()))
+    return block_for("spm_unit_benefits", year) | appended
 
 
 def person_market_members():
@@ -262,7 +261,7 @@ def person_market_members():
 @pytest.mark.parametrize("year", YEARS)
 def test_benefit_lists_differ_only_where_documented(year):
     household = {name for name in household_members(year) if not is_child_care(name)}
-    spm = {name for name in spm_members() if not is_child_care(name)}
+    spm = {name for name in spm_members(year) if not is_child_care(name)}
 
     household_extra = household - spm - set(HOUSEHOLD_ONLY)
     spm_extra = spm - household - set(SPM_ONLY)
@@ -295,14 +294,17 @@ def test_every_gross_income_source_reaches_spm_resources_or_is_documented():
     )
     assert (counted | left_out) - sources == set(), "stale entries above"
 
-    resources = person_market_members() | spm_members()
-    uncounted = {
-        source: resource
-        for source, resource in GROSS_INCOME_IN_RESOURCES.items()
-        if resource not in resources
-    }
-    assert uncounted == {}, f"mapped to a variable SPM resources lack: {uncounted}"
-    assert not left_out & resources
+    for year in YEARS:
+        resources = person_market_members() | spm_members(year)
+        uncounted = {
+            source: resource
+            for source, resource in GROSS_INCOME_IN_RESOURCES.items()
+            if resource not in resources
+        }
+        assert uncounted == {}, (
+            f"{year}: mapped to a variable SPM resources lack: {uncounted}"
+        )
+        assert not left_out & resources, year
 
 
 def market_situation(name, entity, amount, year=2026, state="TX"):

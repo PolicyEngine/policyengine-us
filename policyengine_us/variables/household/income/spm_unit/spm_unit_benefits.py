@@ -9,107 +9,14 @@ class spm_unit_benefits(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        BENEFITS = [
-            "social_security",
-            "ssi",
-            "in_ssp",
-            "ct_ssp",
-            "ga_ssp",
-            "al_ssp",
-            "ak_ssp",
-            "dc_ossp",  # DC benefits
-            "id_aabd",  # Idaho benefits
-            "vt_aabd",  # Vermont benefits
-            "ky_ssp",  # Kentucky benefits
-            "de_ssp",  # Delaware benefits
-            "fl_oss",
-            "nj_ssp",  # New Jersey benefits
-            "nh_ssp",  # New Hampshire benefits
-            "pa_ssp",  # Pennsylvania benefits
-            "wy_ssp",  # Wyoming benefits
-            "or_ssp",  # Oregon benefits
-            "nc_sa",  # North Carolina benefits
-            "mt_ssp",  # Montana benefits
-            "ok_ssp",  # Oklahoma benefits
-            "oh_rss",  # Ohio benefits
-            "ny_ssp",  # New York benefits
-            "ri_ssp",  # Rhode Island benefits
-            "ut_ssp",  # Utah benefits
-            "sd_ssp",  # South Dakota benefits
-            "va_ag",  # Virginia benefits
-            "ia_ssa",  # Iowa benefits
-            "ks_sspp",  # Kansas benefits
-            "hi_oss",
-            "la_oss",  # Louisiana benefits
-            "ma_state_supplement",  # Massachusetts benefits
-            "md_paa",  # Maryland benefits
-            "wa_ssp",  # Washington benefits
-            "wi_ssp",  # Wisconsin benefits
-            "mi_ssp",  # Michigan benefits
-            "me_ssp",  # Maine benefits
-            "mo_ssp",  # Missouri benefits
-            "mn_msa",  # Minnesota benefits
-            "ne_aabd",  # Nebraska benefits
-            "nv_oss",  # Nevada benefits
-            # California programs.
-            "ca_cvrp",  # California Clean Vehicle Rebate Project.
-            # California SSI state supplement (SSP). The formula nets federal
-            # SSI and countable income out of the state payment standard, so
-            # summing it with ssi does not double-count.
-            "ca_state_supplement",
-            # Colorado programs.
-            "co_ccap_subsidy",
-            "co_state_supplement",
-            "co_oap",
-            # Washington programs.
-            "wa_child_care_subsidies",
-            # New Mexico programs.
-            "nm_ssi_state_supplement",
-            # South Carolina programs.
-            "sc_ssi_state_supplement",
-            # Texas programs.
-            "tx_ssi_state_supplement",
-            # West Virginia programs.
-            "wv_child_care_subsidies",
-            "snap",
-            "wic",
-            "free_school_meals",
-            "reduced_price_school_meals",
-            "child_support_received",
-            "workers_compensation",
-            "educational_assistance",
-            "financial_assistance",
-            "survivor_benefits",
-            "spm_unit_energy_subsidy",
-            "tanf",
-            # Washington (WA) cash-assistance programs. wa_sfa and wa_rca
-            # sit alongside the federal TANF aggregator entry; under default
-            # rules these three are mutually exclusive at the SPM-unit level
-            # so summing them does not double-count.
-            "wa_sfa",
-            "wa_rca",
-            "high_efficiency_electric_home_rebate",
-            "residential_efficiency_electrification_rebate",
-            "total_unemployment_compensation",
-            # One-time energy relief payments.
-            # Paid at the same time as the Alaska Permanent Fund Dividend,
-            # which is part of IRS gross income.
-            "ak_energy_relief",
-            # Contributed.
-            "basic_income",
-            "trump_dividend",
-            # Cash programs that household_benefits also counts.
-            "ca_capi",  # California Cash Assistance Program for Immigrants.
-            "ca_la_expectant_parent_payment",  # Los Angeles County.
-            "ca_la_infant_supplement",  # Los Angeles County.
-            "co_denver_property_tax_relief",  # Denver.
-            "ma_eaedc",  # Massachusetts.
-            "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
-            "state_property_tax_refunds",  # Paid outside the income tax.
-            "ny_drive_clean_rebate",
-        ]
-        if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
-            BENEFITS.append("assigned_aca_ptc")
-        if not parameters(period).gov.hud.abolition:
-            BENEFITS.append("spm_unit_capped_housing_subsidy")
-        return add(spm_unit, period, BENEFITS)
+        p = parameters(period)
+        # A reform that pays a new benefit adds it to this parameter rather
+        # than redefining this variable, so it counts every baseline program.
+        benefits = list(p.gov.household.spm_unit_benefits)
+        if p.gov.contrib.ubi_center.flat_tax.deduct_ptc:
+            benefits.append("assigned_aca_ptc")
+        # The SPM's capped value of housing assistance. It stays out of the
+        # parameter so that no other aggregate can read an SPM valuation cap.
+        if not p.gov.hud.abolition:
+            benefits.append("spm_unit_capped_housing_subsidy")
+        return add(spm_unit, period, benefits)

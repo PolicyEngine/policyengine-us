@@ -1,0 +1,110 @@
+# The End Child Poverty Act once replaced spm_unit_benefits with its own copy
+# of the program list (#10226). The copy lacked 42 state SSI supplements,
+# Washington's State Family Assistance and Refugee Cash Assistance, and the
+# Washington and West Virginia child care subsidies. It also listed acp and
+# ebb, which spm_unit_net_income adds itself, so both counted twice. Its copy
+# of household_benefits lacked CSFP and household_health_benefits.
+#
+# The reform now adds ecpa_child_benefit to the gov.household benefit lists, so
+# every baseline program counts once. One adult at $500,000 of employment
+# income, so no means-tested benefit fires and each total isolates the program
+# under test.
+#
+# This lives under tests/policy/reform (one subprocess per file) rather than
+# contrib/congress/tlaib because the congress structural batch runs each
+# proposal directory in a single process at its memory ceiling.
+
+- name: Under ECPA, Washington's SSI supplement and State Family Assistance count in both benefit totals.
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    age: 40
+    employment_income: 500_000
+    wa_ssp: 300
+    wa_sfa: 1_000
+    state_code: WA
+  output:
+    spm_unit_benefits: 1_300
+    household_benefits: 1_300
+
+- name: Under ECPA, New York's SSI supplement counts in both benefit totals.
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    age: 70
+    employment_income: 500_000
+    ny_ssp: 1_052
+    state_code: NY
+  output:
+    spm_unit_benefits: 1_052
+    household_benefits: 1_052
+
+- name: Under ECPA, West Virginia's child care subsidy counts in SPM benefits.
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    age: 40
+    employment_income: 500_000
+    wv_child_care_subsidies: 3_000
+    state_code: WV
+  output:
+    spm_unit_benefits: 3_000
+
+- name: Under ECPA, the Affordable Connectivity Program counts once in SPM net income.
+  period: 2023
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    age: 40
+    employment_income: 500_000
+    acp: 360
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+    state_code: NY
+  output:
+    spm_unit_benefits: 0
+    spm_unit_net_income: 500_360
+
+- name: Under ECPA, the Emergency Broadband Benefit counts once in SPM net income.
+  period: 2021
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    age: 40
+    employment_income: 500_000
+    ebb: 120
+    spm_unit_taxes: 0
+    spm_unit_spm_expenses: 0
+    state_code: NY
+  output:
+    spm_unit_benefits: 0
+    spm_unit_net_income: 500_120
+
+- name: Under ECPA, the Commodity Supplemental Food Program counts in household benefits.
+  period: 2024
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    age: 65
+    employment_income: 500_000
+    commodity_supplemental_food_program: 600
+    state_code: NY
+  output:
+    household_benefits: 600
+
+- name: Under ECPA, health benefits count in household benefits when the switch is on.
+  period: 2024
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    age: 40
+    employment_income: 500_000
+    gov.simulation.include_health_benefits_in_net_income: true
+    chip: 2_000
+    state_code: NY
+  output:
+    household_health_benefits: 2_000
+    household_benefits: 2_000

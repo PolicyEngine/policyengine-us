@@ -15,6 +15,7 @@ as households. The rebate is paid once (2027) and reverts to $0 from 2028.
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
+from policyengine_us.tools.parameters import add_to_list_parameter
 
 
 def create_tx_rebate() -> Reform:
@@ -40,104 +41,19 @@ def create_tx_rebate() -> Reform:
                 stop=instant("2027-12-31"),
                 value=new_benefits,
             )
+        # CountryTaxBenefitSystem clears every modified flag below the root
+        # before it applies a reform it is given for the second time, and the
+        # check above then skips the update, so mark the list here: the macro
+        # cache reads the flag as "differs from current law".
+        state_benefits.mark_as_modified()
+        # SPM resources count the rebate as a benefit. It is zero outside
+        # 2027, so the list carries it in every year.
+        add_to_list_parameter(parameters.gov.household.spm_unit_benefits, ["tx_rebate"])
         return parameters
-
-    class spm_unit_benefits(Variable):
-        value_type = float
-        entity = SPMUnit
-        label = "Benefits"
-        definition_period = YEAR
-        unit = USD
-
-        def formula(spm_unit, period, parameters):
-            BENEFITS = [
-                "social_security",
-                "ssi",
-                "in_ssp",
-                "ct_ssp",
-                "ga_ssp",
-                "al_ssp",
-                "ak_ssp",
-                "dc_ossp",  # DC benefits
-                "id_aabd",  # Idaho benefits
-                "ky_ssp",  # Kentucky benefits
-                "de_ssp",  # Delaware benefits
-                "fl_oss",
-                "ks_sspp",  # Kansas benefits
-                "hi_oss",
-                "la_oss",  # Louisiana benefits
-                "ma_state_supplement",  # Massachusetts benefits
-                "md_paa",  # Maryland benefits
-                "wa_ssp",  # Washington benefits
-                "mi_ssp",  # Michigan benefits
-                "me_ssp",  # Maine benefits
-                "mo_ssp",  # Missouri benefits
-                "mn_msa",  # Minnesota benefits
-                "ne_aabd",  # Nebraska benefits
-                # California programs.
-                "ca_cvrp",  # California Clean Vehicle Rebate Project.
-                # Colorado programs.
-                "co_ccap_subsidy",
-                "co_state_supplement",
-                "co_oap",
-                # Washington programs.
-                "wa_child_care_subsidies",
-                # New Mexico programs.
-                "nm_ssi_state_supplement",
-                # South Carolina programs.
-                "sc_ssi_state_supplement",
-                # Texas programs.
-                "tx_ssi_state_supplement",
-                # West Virginia programs.
-                "wv_child_care_subsidies",
-                "snap",
-                "wic",
-                "free_school_meals",
-                "reduced_price_school_meals",
-                "child_support_received",
-                "workers_compensation",
-                "educational_assistance",
-                "financial_assistance",
-                "survivor_benefits",
-                "spm_unit_energy_subsidy",
-                "tanf",
-                # Washington (WA) cash-assistance programs. wa_sfa and wa_rca
-                # sit alongside the federal TANF aggregator entry; under default
-                # rules these three are mutually exclusive at the SPM-unit level
-                # so summing them does not double-count.
-                "wa_sfa",
-                "wa_rca",
-                "high_efficiency_electric_home_rebate",
-                "residential_efficiency_electrification_rebate",
-                "total_unemployment_compensation",
-                # One-time energy relief payments.
-                # Paid at the same time as the Alaska Permanent Fund Dividend,
-                # which is part of IRS gross income.
-                "ak_energy_relief",
-                # Contributed.
-                "basic_income",
-                "trump_dividend",
-                # Cash programs that household_benefits also counts.
-                "ca_capi",  # California Cash Assistance Program for Immigrants.
-                "ca_la_expectant_parent_payment",  # Los Angeles County.
-                "ca_la_infant_supplement",  # Los Angeles County.
-                "co_denver_property_tax_relief",  # Denver.
-                "ma_eaedc",  # Massachusetts.
-                "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.
-                "state_property_tax_refunds",  # Paid outside the income tax.
-                "ny_drive_clean_rebate",
-                "tx_rebate",
-            ]
-            if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
-                BENEFITS.append("assigned_aca_ptc")
-            if not parameters(period).gov.hud.abolition:
-                BENEFITS.append("spm_unit_capped_housing_subsidy")
-            return add(spm_unit, period, BENEFITS)
 
     class reform(Reform):
         def apply(self):
             self.update_variable(tx_rebate)
-            self.update_variable(spm_unit_benefits)
             self.modify_parameters(modify_parameters)
 
     return reform
