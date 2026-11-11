@@ -56,9 +56,9 @@ def _ssa_ism(person, period, parameters):
     ssi_amount_if_eligible is the rate after that reduction.
     """
     # A matching ISM equals what SSA charges for the same month
-    # (3.520.79(B)(6), 3.520.71(E)). SSA dates ISM by the income month
-    # (20 CFR 416.420(a)), so a change in food or shelter support within a
-    # year reaches only the months in which SSA counts it.
+    # (3.520.79(B)(6), 3.520.71(E)), so read that month's
+    # ssi_in_kind_support_and_maintenance. It dates food by the
+    # 20 CFR 416.420(a) income month and shelter by the payment month.
     pmv_ism = person("ssi_in_kind_support_and_maintenance", period)
     couple_computation = person("ssi_couple_computation_applies", period)
     pmv_ism = where(couple_computation, pmv_ism / 2, pmv_ism)
