@@ -34,9 +34,10 @@ class nd_renters_refund_federally_excluded_income(Variable):
         # Interest on state and local bonds.
         "https://www.law.cornell.edu/uscode/text/26/103#a",
         # Pensions and retirement accounts: the investment in the contract
-        # (72(b)(1)), rollovers (402(c)(1), 408(d)(3)), and qualified Roth
-        # distributions (402A(d)(1), 408A(d)(1)).
+        # (72(b)(1)), rollovers (402(c)(1), 403(b)(8), 408(d)(3)), and
+        # qualified Roth distributions (402A(d)(1), 408A(d)(1)).
         "https://www.law.cornell.edu/uscode/text/26/72#b_1",
+        "https://www.law.cornell.edu/uscode/text/26/403#b_8",
         "https://www.law.cornell.edu/uscode/text/26/402A#d_1",
         "https://www.law.cornell.edu/uscode/text/26/408#d",
         "https://www.law.cornell.edu/uscode/text/26/408A#d_1",
@@ -60,7 +61,7 @@ class nd_renters_refund_federally_excluded_income(Variable):
         # contributions through payroll, and dependent care assistance), plus
         # the dependent care assistance above the IRC 129 limit. Pre-tax
         # premiums leave income here, and itemized_medical_expenses leaves
-        # them out, so no premium is subtracted twice.
+        # them out, so neither subtracts a premium the other has.
         wages = person("employment_income", period)
         counted_wages = person("irs_employment_income", period) + person(
             "taxable_dependent_care_benefits", period
@@ -71,14 +72,16 @@ class nd_renters_refund_federally_excluded_income(Variable):
             person("interest_income", period),
             person("tax_exempt_interest_income", period),
         )
-        # The investment in the contract, rollovers and qualified distributions
-        # from designated Roth accounts (IRC 72(b)(1), 402(c)(1), 402A(d)(1)).
+        # The investment in the contract and rollovers from public and private
+        # employer pensions (IRC 72(b)(1), 402(c)(1)).
         pensions = excluded_part(
             person("pension_income", period),
             person("tax_exempt_pension_income", period),
         )
-        # Qualified Roth IRA distributions, rollovers and nondeductible
-        # contributions returned (IRC 408(d), 408A(d)(1)).
+        # Qualified distributions from Roth IRAs and from designated Roth
+        # accounts in 401(k) and 403(b) plans, rollovers, and nondeductible IRA
+        # and SEP contributions returned (IRC 402A(d)(1), 402(c)(1), 403(b)(8),
+        # 408(d), 408A(d)(1)).
         retirement_distributions = excluded_part(
             person("retirement_distributions", period),
             person("tax_exempt_retirement_distributions", period),
@@ -88,8 +91,9 @@ class nd_renters_refund_federally_excluded_income(Variable):
             person("disability_benefits", period),
             person("tax_exempt_disability_benefits", period),
         )
-        # Alimony under an instrument executed after 2018 is not included in
-        # the recipient's gross income; taxable_alimony_income holds the rest.
+        # Federal gross income leaves out alimony under an instrument executed
+        # after 2018 (Pub. L. 115-97 section 11051); taxable_alimony_income
+        # holds the rest.
         alimony = person("alimony_income", period)
         excluded_alimony = excluded_part(
             alimony, alimony - person("taxable_alimony_income", period)

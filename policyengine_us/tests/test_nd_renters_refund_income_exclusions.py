@@ -18,21 +18,29 @@ Four invariants hold for every input.
    not exclude it (each named below, with the reason). Every above-the-line
    deduction in the federal model is likewise either a deduction, which leaves
    the income in, or an exclusion, which North Dakota subtracts. A new
-   component or deduction fails until it is classified, so a wider
+   component or deduction fails until someone classifies it, so a wider
    market_income cannot bring excluded income into the refund again, as
    #10663's wider market_income did.
 2. Each excluded part lies between zero and the market_income component it
-   comes from, so the exclusions never exceed what those components hold. The
-   exclusions the model deducts above the line come only out of the market
-   income left after the others, so social security always counts in full.
+   comes from, so the exclusions never exceed what those components hold.
+   Each exclusion the model deducts above the line comes out of the tax unit's
+   income that holds it: savings bond interest out of taxable interest,
+   adoption assistance out of wages after payroll deductions, and income from
+   Puerto Rico and the possessions out of the market income left. None comes
+   out of social security, so a dollar of social security raises income by a
+   dollar unless income stays at zero.
 3. Differential: for a filer whose income comes only from sources that
    market_income and federal gross income share, renter's refund income equals
    irs_gross_income less the exclusions the federal model deducts above the
    line. The statute's federal exclusions and the federal model agree on every
-   shared source.
+   shared source. For interest, pensions, retirement distributions, disability
+   benefits and the deducted exclusions, the two sides read different inputs.
+   For wages and alimony both read the same federal variables, so the YAML
+   cases and invariant 4 test those against the law.
 4. Moving a dollar from the taxable form of a source to its excluded form
-   lowers renter's refund income by that dollar. A dollar of social security
-   raises it by a dollar, however much of the benefit federal law taxes.
+   lowers renter's refund income by that dollar, whatever losses the income
+   holds elsewhere. A dollar of social security raises it by a dollar, however
+   much of the benefit federal law taxes.
 
 YAML pins one household per case. These need random amounts over many
 households at once, and lists read from market_income's source file and the
@@ -91,10 +99,10 @@ PARTLY_EXCLUDED = {
         "payroll deductions",
     ),
     "interest_income": ("taxable_interest_income", "IRC 103(a)"),
-    "pension_income": ("taxable_pension_income", "IRC 72(b)(1), 402(c), 402A(d)"),
+    "pension_income": ("taxable_pension_income", "IRC 72(b)(1), 402(c)(1)"),
     "retirement_distributions": (
         "taxable_retirement_distributions",
-        "IRC 408(d), 408A(d)(1)",
+        "IRC 402A(d)(1), 402(c)(1), 403(b)(8), 408(d), 408A(d)(1)",
     ),
     "disability_benefits": ("taxable_disability_benefits", "IRC 104(a)(3)"),
     "alimony_income": (
@@ -122,15 +130,17 @@ ABOVE_THE_LINE_DEDUCTIONS = {
     "self_employment_tax_ald": "IRC 164(f)",
     "student_loan_interest_ald": "IRC 221",
     "early_withdrawal_penalty": "IRC 62(a)(9)",
-    "alimony_expense_ald": "IRC 215, for the payer",
+    "alimony_expense_ald": "IRC 215, for the payer under an instrument "
+    "executed before 2019",
     "educator_expense_ald": "IRC 62(a)(2)(D)",
-    "capped_qualified_tuition_expenses_ald": "IRC 222",
-    "domestic_production_ald": "IRC 199",
+    "capped_qualified_tuition_expenses_ald": "IRC 222, before its repeal for "
+    "years after 2020",
+    "domestic_production_ald": "IRC 199, before its repeal for years after 2017",
     "health_savings_account_ald": "IRC 223(a): contributions outside payroll",
     "self_employed_health_insurance_ald": "IRC 162(l)",
     "self_employed_pension_contribution_ald": "IRC 404",
     "traditional_ira_deduction": "IRC 219",
-    "charitable_contributions_ald": "IRC 62(a)(22)",
+    "charitable_contributions_ald": "IRC 62(a)(22), which applied to 2020",
 }
 # Exclusions from gross income that the federal model deducts above the line,
 # with market_income holding the income they exclude. North Dakota subtracts
@@ -141,12 +151,50 @@ ABOVE_THE_LINE_EXCLUSIONS = {
     "specified_possession_income": "IRC 931(a)",
     "puerto_rico_income": "IRC 933",
 }
-# The two a household records on a person; the other two are tax unit inputs,
-# which the YAML tests cover.
+# The two a household records on a person; the other two are tax unit inputs.
 PERSON_DEDUCTED_EXCLUSIONS = [
     "qualified_adoption_assistance_expense",
     "us_bonds_for_higher_ed",
 ]
+TAX_UNIT_DEDUCTED_EXCLUSIONS = ["specified_possession_income", "puerto_rico_income"]
+
+PAYROLL_DEDUCTIONS = (
+    "traditional_401k_contributions",
+    "traditional_403b_contributions",
+    "pre_tax_health_insurance_premiums",
+    "health_savings_account_payroll_contributions",
+    "dependent_care_employer_benefits",
+)
+# The inputs that feed each partly excluded component.
+SOURCE_INPUTS = {
+    "employment_income": ("employment_income", *PAYROLL_DEDUCTIONS),
+    "interest_income": (
+        "interest_income",
+        "taxable_interest_income",
+        "tax_exempt_interest_income",
+    ),
+    "pension_income": (
+        "pension_income",
+        "taxable_private_pension_income",
+        "tax_exempt_private_pension_income",
+        "taxable_public_pension_income",
+        "tax_exempt_public_pension_income",
+    ),
+    "retirement_distributions": (
+        "retirement_distributions",
+        "taxable_ira_distributions",
+        "tax_exempt_ira_distributions",
+        "taxable_401k_distributions",
+        "tax_exempt_401k_distributions",
+        "taxable_403b_distributions",
+        "tax_exempt_403b_distributions",
+        "taxable_sep_distributions",
+        "tax_exempt_sep_distributions",
+    ),
+    "disability_benefits": ("disability_benefits", "tax_exempt_disability_benefits"),
+    "alimony_income": ("alimony_income", "divorce_year"),
+}
+assert set(SOURCE_INPUTS) == set(PARTLY_EXCLUDED)
 
 
 def market_income_components():
@@ -212,14 +260,29 @@ def test_every_above_the_line_deduction_has_a_stated_treatment():
 
 def situation(households):
     """Single adults in North Dakota, one per household."""
-    people, groups = {}, {}
+    people, groups, tax_units = {}, {}, {}
     for index, inputs in enumerate(households):
         name = f"person_{index}"
-        people[name] = {"age": {YEAR: 40}, **{k: {YEAR: v} for k, v in inputs.items()}}
+        people[name] = {
+            "age": {YEAR: 40},
+            **{
+                k: {YEAR: v}
+                for k, v in inputs.items()
+                if k not in TAX_UNIT_DEDUCTED_EXCLUSIONS
+            },
+        }
         groups[name] = {"members": [name]}
+        tax_units[f"tax_unit_{name}"] = {
+            "members": [name],
+            **{
+                k: {YEAR: v}
+                for k, v in inputs.items()
+                if k in TAX_UNIT_DEDUCTED_EXCLUSIONS
+            },
+        }
     return {
         "people": people,
-        "tax_units": {f"tax_unit_{k}": v for k, v in groups.items()},
+        "tax_units": tax_units,
         "spm_units": {f"spm_unit_{k}": v for k, v in groups.items()},
         "families": {f"family_{k}": v for k, v in groups.items()},
         "marital_units": {f"marital_unit_{k}": v for k, v in groups.items()},
@@ -243,13 +306,7 @@ def shared_sources(draw):
     """Nonnegative income from sources market_income and gross income share."""
     deductions = {
         name: draw(st.integers(min_value=0, max_value=8_000))
-        for name in (
-            "traditional_401k_contributions",
-            "traditional_403b_contributions",
-            "pre_tax_health_insurance_premiums",
-            "health_savings_account_payroll_contributions",
-            "dependent_care_employer_benefits",
-        )
+        for name in PAYROLL_DEDUCTIONS
     }
     disability = draw(amount)
     other_wages = draw(st.integers(min_value=0, max_value=150_000))
@@ -276,6 +333,10 @@ def shared_sources(draw):
         "tax_exempt_ira_distributions": draw(amount),
         "taxable_401k_distributions": draw(amount),
         "tax_exempt_401k_distributions": draw(amount),
+        "taxable_403b_distributions": draw(amount),
+        "tax_exempt_403b_distributions": draw(amount),
+        "taxable_sep_distributions": draw(amount),
+        "tax_exempt_sep_distributions": draw(amount),
         "disability_benefits": disability,
         "tax_exempt_disability_benefits": draw(
             st.integers(min_value=0, max_value=disability)
@@ -329,7 +390,8 @@ def test_renters_refund_income_equals_gross_income_on_shared_sources(households)
 
 
 # Inputs for the bounds test: shared sources, plus totals reported without
-# their split and tax-exempt parts larger than the totals they belong to.
+# their split, tax-exempt parts larger than the totals they belong to, losses,
+# and deducted exclusions larger than the income that should hold them.
 TOTALS = ("interest_income", "pension_income", "retirement_distributions")
 
 
@@ -343,35 +405,62 @@ def any_sources(draw):
             "disability_benefits", 0
         ) + draw(amount)
     inputs["capital_gains"] = draw(st.integers(min_value=-60_000, max_value=40_000))
+    inputs["rental_income"] = draw(st.integers(min_value=-60_000, max_value=40_000))
     inputs["strike_benefits"] = draw(amount)
     inputs["social_security_retirement"] = draw(amount)
-    # Person-level exclusions larger than the income that should hold them.
-    for name in draw(st.sets(st.sampled_from(PERSON_DEDUCTED_EXCLUSIONS))):
+    for name in draw(
+        st.sets(
+            st.sampled_from(PERSON_DEDUCTED_EXCLUSIONS + TAX_UNIT_DEDUCTED_EXCLUSIONS)
+        )
+    ):
         inputs[name] = draw(st.integers(min_value=0, max_value=400_000))
     return inputs
 
 
 @settings(max_examples=12, deadline=None)
-@given(households=st.lists(any_sources(), min_size=1, max_size=12))
+@given(households=st.lists(any_sources(), min_size=1, max_size=6))
 def test_each_excluded_part_lies_within_its_component(households):
+    # Each household as drawn; then each partly excluded source alone, so a
+    # part above its component can't hide behind another part below its own;
+    # then each household without its social security.
+    alone = [
+        {k: v for k, v in inputs.items() if k in SOURCE_INPUTS[component]}
+        for inputs in households
+        for component in PARTLY_EXCLUDED
+    ]
+    without_social_security = [
+        {k: v for k, v in inputs.items() if k != "social_security_retirement"}
+        for inputs in households
+    ]
+    count = len(households)
     names = [
         "nd_renters_refund_federally_excluded_income",
         "nd_renters_refund_income",
-        "market_income",
         "social_security",
+        *PARTLY_EXCLUDED,
     ]
-    names += list(PARTLY_EXCLUDED)
-    excluded, nd_income, market, social_security, *components = calculate(
-        households, *names
+    excluded, nd_income, social_security, *components = calculate(
+        households + alone + without_social_security, *names
     )
-    ceiling = sum(component.clip(min=0) for component in components)
     assert (excluded >= -TOLERANCE).all()
-    assert (excluded <= ceiling + TOLERANCE).all()
     assert (nd_income >= 0).all()
-    # The exclusions the model deducts above the line come out of the market
-    # income left after the person-level parts, never out of social security.
-    floor = np.minimum(social_security, market + social_security - excluded)
-    assert (nd_income >= floor - TOLERANCE).all()
+    drawn = slice(0, count)
+    ceiling = sum(component[drawn].clip(min=0) for component in components)
+    assert (excluded[drawn] <= ceiling + TOLERANCE).all()
+    for index in range(len(alone)):
+        position = count + index
+        component = components[index % len(PARTLY_EXCLUDED)][position]
+        assert excluded[position] <= max(component, 0) + TOLERANCE
+    # Social security counts in full: removing it lowers income by all of it,
+    # unless income without it stays at zero.
+    with_it = nd_income[drawn]
+    without_it = nd_income[-count:]
+    benefit = social_security[drawn]
+    positive = without_it > TOLERANCE
+    assert with_it[positive] - without_it[positive] == pytest.approx(
+        benefit[positive], abs=TOLERANCE
+    )
+    assert (with_it[~positive] <= benefit[~positive] + TOLERANCE).all()
 
 
 # Each pair moves a dollar from the taxable form of a source to its excluded
@@ -389,56 +478,81 @@ SHIFTS = [
 
 @settings(max_examples=12, deadline=None)
 @given(
-    shift=st.sampled_from(SHIFTS),
     taxable=st.integers(min_value=1, max_value=60_000),
     exempt=st.integers(min_value=0, max_value=60_000),
-    share=st.floats(min_value=0, max_value=1),
+    share=st.floats(min_value=0.01, max_value=1),
     wages=st.integers(min_value=0, max_value=100_000),
     social_security=st.integers(min_value=0, max_value=40_000),
+    loss_share=st.floats(min_value=0, max_value=1),
+)
+@example(
+    taxable=3_000,
+    exempt=0,
+    share=2 / 3,
+    wages=0,
+    social_security=10_000,
+    loss_share=0.3,
 )
 def test_a_dollar_moved_to_its_excluded_form_leaves_income(
-    shift, taxable, exempt, share, wages, social_security
+    taxable, exempt, share, wages, social_security, loss_share
 ):
-    taxable_name, exempt_name = shift
-    moved = round(taxable * share)
-    base = {
-        "employment_income": wages,
-        "social_security_retirement": social_security,
-        taxable_name: taxable,
-        exempt_name: exempt,
-    }
-    shifted = {**base, taxable_name: taxable - moved, exempt_name: exempt + moved}
-    # A wage dollar deferred into a traditional 401(k), and a disability
-    # dollar from a plan the recipient paid for, leave the same way.
+    # Every run moves at least a dollar of every source.
+    moved = max(round(taxable * share), 1)
     deferral = round(wages * share)
-    deferred = {**base, "traditional_401k_contributions": deferral}
-    disability = {**base, "disability_benefits": exempt + moved}
-    paid_for = {**disability, "tax_exempt_disability_benefits": moved}
-    # Social security counts in full however much of it is taxed.
-    more_social_security = {
-        **base,
-        "social_security_retirement": social_security + moved,
-    }
-    # A dollar of taxable interest that IRC 135 excludes leaves too, though
-    # the federal model deducts it above the line.
-    interest = {**base, "taxable_interest_income": taxable}
-    bonds = {**interest, "us_bonds_for_higher_ed": moved}
-    households = [
-        base,
-        shifted,
-        deferred,
-        disability,
-        paid_for,
-        more_social_security,
-        interest,
-        bonds,
-    ]
+    # A business loss no larger than social security, so income stays above
+    # zero and every dollar shows.
+    loss = round(social_security * loss_share)
+    households = []
+    for taxable_name, exempt_name in SHIFTS:
+        base = {
+            "employment_income": wages,
+            "self_employment_income": -loss,
+            "social_security_retirement": social_security,
+            taxable_name: taxable,
+            exempt_name: exempt,
+        }
+        shifted = {**base, taxable_name: taxable - moved, exempt_name: exempt + moved}
+        # A wage dollar deferred into a traditional 401(k), and a disability
+        # dollar from a plan the recipient paid for, leave the same way.
+        deferred = {**base, "traditional_401k_contributions": deferral}
+        disability = {**base, "disability_benefits": exempt + moved}
+        paid_for = {**disability, "tax_exempt_disability_benefits": moved}
+        # Social security counts in full however much of it federal law taxes.
+        more_social_security = {
+            **base,
+            "social_security_retirement": social_security + moved,
+        }
+        # A dollar of taxable interest that IRC 135 excludes leaves too, though
+        # the federal model deducts it above the line.
+        interest = {**base, "taxable_interest_income": taxable}
+        bonds = {**interest, "us_bonds_for_higher_ed": moved}
+        households += [
+            base,
+            shifted,
+            deferred,
+            disability,
+            paid_for,
+            more_social_security,
+            interest,
+            bonds,
+        ]
     (income,) = calculate(households, "nd_renters_refund_income")
-    assert income[0] - income[1] == pytest.approx(moved, abs=TOLERANCE)
-    assert income[0] - income[2] == pytest.approx(deferral, abs=TOLERANCE)
-    assert income[3] - income[4] == pytest.approx(moved, abs=TOLERANCE)
-    assert income[5] - income[0] == pytest.approx(moved, abs=TOLERANCE)
-    assert income[6] - income[7] == pytest.approx(moved, abs=TOLERANCE)
+    for group in range(len(SHIFTS)):
+        (
+            base,
+            shifted,
+            deferred,
+            disability,
+            paid_for,
+            more_social_security,
+            interest,
+            bonds,
+        ) = income[8 * group : 8 * group + 8]
+        assert base - shifted == pytest.approx(moved, abs=TOLERANCE)
+        assert base - deferred == pytest.approx(deferral, abs=TOLERANCE)
+        assert disability - paid_for == pytest.approx(moved, abs=TOLERANCE)
+        assert more_social_security - base == pytest.approx(moved, abs=TOLERANCE)
+        assert interest - bonds == pytest.approx(moved, abs=TOLERANCE)
 
 
 def test_alimony_leaves_income_only_under_a_post_2018_instrument():

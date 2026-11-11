@@ -20,8 +20,8 @@ class nd_renters_refund_income(Variable):
         "of each person's market income components "
         "(nd_renters_refund_federally_excluded_income) and the federal "
         "exclusions the model deducts above the line (excluded_deductions), "
-        "which come out of the market income left after the first. Social "
-        "security counts in full. "
+        "each of which comes out of the tax unit's income that holds it. "
+        "Social security counts in full. "
         "The paid-cost base restores the self-employed premiums excluded from "
         "the federal subtotal: by the federal formula, or as supplied with a "
         "caller's subtotal in itemized_medical_expenses_applied_exclusion. A "
@@ -42,18 +42,36 @@ class nd_renters_refund_income(Variable):
             tax_unit, period, ["nd_renters_refund_federally_excluded_income"]
         )
         # The model deducts some federal exclusions above the line, so
-        # market_income still holds the income they exclude: savings bond
-        # interest spent on higher education (IRC 135), employer adoption
-        # assistance (IRC 137) and income from Puerto Rico and the specified
-        # possessions (IRC 931, 933). A household may record the first two on a
-        # dependent, so they come out of the tax unit's market income left after
-        # the person-level exclusions, and never out of social security.
+        # market_income still holds the income they exclude. Each comes out of
+        # the income that holds it, summed over the tax unit, because a
+        # household may record savings bond interest spent on higher education
+        # (IRC 135) on the student and employer adoption assistance (IRC 137)
+        # on the child. Income from Puerto Rico and the specified possessions
+        # (IRC 931, 933) can sit in any component, so it comes out of the
+        # market income left after the rest. None of them comes out of social
+        # security, and a loss elsewhere in the unit keeps neither savings bond
+        # interest nor adoption assistance in.
+        holders = {
+            "us_bonds_for_higher_ed": "taxable_interest_income",
+            "qualified_adoption_assistance_expense": "irs_employment_income",
+        }
+        deducted_exclusions = 0
+        without_holder = 0
+        for name in p.excluded_deductions:
+            excluded = max_(add(tax_unit, period, [name]), 0)
+            if name in holders:
+                holder = max_(add(tax_unit, period, [holders[name]]), 0)
+                deducted_exclusions = deducted_exclusions + min_(excluded, holder)
+            else:
+                without_holder = without_holder + excluded
         market_income_left = max_(
-            add(tax_unit, period, ["market_income"]) - person_exclusions, 0
+            add(tax_unit, period, ["market_income"])
+            - person_exclusions
+            - deducted_exclusions,
+            0,
         )
-        deducted_exclusions = min_(
-            max_(add(tax_unit, period, p.excluded_deductions), 0),
-            market_income_left,
+        deducted_exclusions = deducted_exclusions + min_(
+            without_holder, market_income_left
         )
         # Restore premiums excluded from the federal subtotal (computed, or
         # supplied with a caller's subtotal).

@@ -6761,9 +6761,9 @@ candidates:
   years:
     from: 2025
     type: tax
-  question: Does the renter's refund count the interest, pensions, IRA distributions, wages and alimony that federal
-    law leaves out of gross income, when the Tax Commissioner's guideline and the application list those sources as
-    income with no exception?
+  question: Does the renter's refund count the interest, pensions, retirement distributions, wages, alimony and other
+    income that federal law leaves out of gross income, when the Tax Commissioner's guideline and the application list
+    those sources as income with no exception?
   sources:
   - kind: statute
     citation: N.D.C.C. 57-02-08.1(5)(c)
@@ -6775,15 +6775,19 @@ candidates:
     citation: SFN 24777 (10-2025), lines 5 to 7 and the instructions for lines 4 to 9
     url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
   readings:
-    statute: Income comes from all sources but leaves out "any amount excluded from income by federal or state law
+    statute: Income comes from all sources, "including any county, state, or federal public assistance benefits, social
+      security, or other retirement benefits", but leaves out "any amount excluded from income by federal or state law
       with the exception of income from social security benefits". Federal law leaves out of gross income the interest
       on state and local bonds (IRC 103(a)) and savings bond interest spent on higher education (IRC 135(a)); the return
-      of a pension's cost, rollovers and qualified Roth distributions (IRC 72(b)(1), 402(c)(1), 402A(d)(1), 408(d)(3),
-      408A(d)(1)); the pre-tax payroll deductions of IRC 106, 125, 129, 402(e)(3) and 403(b)(1) and employer adoption
-      assistance (IRC 137(a)); and alimony under a divorce or separation instrument executed after 2018.
+      of a pension's cost, rollovers and qualified Roth distributions (IRC 72(b)(1), 402(c)(1), 402A(d)(1), 403(b)(8),
+      408(d), 408A(d)(1)); the pre-tax payroll deductions of IRC 106, 125, 129, 402(e)(3) and 403(b)(1) and employer
+      adoption assistance (IRC 137(a)); income of bona fide residents of Puerto Rico, Guam, American Samoa and the
+      Northern Mariana Islands from sources there (IRC 931(a), 933); and alimony under a divorce or separation
+      instrument executed after 2018, since Pub. L. 115-97 section 11051 repealed IRC 71 and 61(a)(8).
     other: Item 10 lists pensions "including military pension and I.R.A.", salaries and wages, dividends and interest,
       and alimony as income. The application asks for income from salary and wages (line 5) and from interest (line
-      6), and its instructions for lines 4 to 9 repeat the list. Neither leaves out the amounts federal law excludes.
+      6), and its instructions for lines 4 to 9 list most of the same sources. Neither leaves out the amounts federal
+      law excludes.
   example: A renter with $20,000 of wages, $1,000 of taxable interest and $5,000 of interest on municipal bonds has
     income of $21,000 under the statute and $26,000 under item 10 and line 6.
   pe_us:
@@ -6796,8 +6800,12 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10697
   state: ruled
   note: The statute names the exclusion, so it governs over the general lists, as in
-    us-nd:renters-refund-insurance-proceeds. Social security counts in full by the statute's own exception. The
-    state-law half of the clause has its own entry, us-nd:renters-refund-state-income-tax-reductions.
+    us-nd:renters-refund-insurance-proceeds. The definition also counts "other retirement benefits", but the exception
+    to the exclusion names only social security, so the exclusion reaches the parts of other retirement benefits that
+    federal law leaves out. An amount leaves when a federal statute or regulation leaves it out of gross income,
+    including by repealing the provision that counted it, as for alimony; a doctrine with no statutory basis, such as
+    the IRS's general welfare exclusion, doesn't remove it. Social security counts in full by the statute's own
+    exception. The state-law half of the clause has its own entry, us-nd:renters-refund-state-income-tax-reductions.
 - id: us-nd:renters-refund-state-income-tax-reductions
   program: renter-credit
   years:
@@ -6822,6 +6830,12 @@ candidates:
   - kind: agency-practice
     citation: Office of Tax Commissioner, fiscal note on House Bill 1174 (2019), on section 1
     url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=1
+  - kind: agency-practice
+    citation: Office of Tax Commissioner, fiscal note on House Bill 1174 (2019) as introduced, on sections 1 and 2
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=7
+  - kind: agency-practice
+    citation: Tax Department testimony on House Bill 1174, Senate Appropriations Committee, March 25, 2019
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=28
   - kind: guidance
     citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
     url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
@@ -6851,12 +6865,18 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10697
   state: ruled
   note: N.D.C.C. 57-02-08.1(5)(c) doesn't say whether these reductions exclude amounts from income, so PolicyEngine
-    follows the Tax Commissioner's reading and counts them. The Legislative Assembly wrote the reductions as adjustments
-    to taxable income. In its fiscal note, the Tax Commissioner's office tied the exception for social security to the
-    reduction House Bill 1174 created. The exception also keeps in income the part of benefits that IRC 86 leaves out
-    of gross income, so it has effect even if the reductions exclude nothing. N.D.C.C. 1-02-39 lets a court weigh
-    legislative history and administrative construction when a statute is ambiguous, and the Commissioner kept military
-    pensions and net gains in item 10 after both 2019 Acts.
+    follows the Tax Commissioner's administrative practice, item 10 and line 7, and counts them. The Legislative
+    Assembly wrote the reductions as adjustments to taxable income, and both 2019 Acts call theirs a deduction in their
+    titles. The 2019 record leans the other way. The final fiscal note keeps benefits in the income test "even though
+    they are excluded from income tax", and a Tax Department witness called the retired military reduction an
+    exclusion. But the office's first fiscal note called sections 1 and 2 technical changes "for purposes of clarity
+    and consistency", and the bill's sponsor said of section 1, "I do not know why council put that in there." The
+    words "or state law" still do work under this reading, since N.D.C.C. 54-01.1-13 bars counting relocation
+    payments as income for the purposes of the state's tax laws. The exception also keeps in income the part of
+    benefits that IRC 86 leaves out of gross income, so it has effect even if the reductions exclude nothing. N.D.C.C.
+    1-02-39 lets a court weigh legislative history and administrative construction when a statute is ambiguous, N.D.A.G.
+    Letter Opinion 2008-L-12 deferred to the Tax Commissioner's reading of an ambiguous property tax provision, and the
+    Commissioner kept military pensions and net gains in item 10 after both 2019 Acts.
 - id: us-nd:renters-refund-insurance-proceeds
   program: renter-credit
   years:
@@ -6882,8 +6902,10 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_federally_excluded_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10663
+    - https://github.com/PolicyEngine/policyengine-us/pull/10697
   state: ruled
   note: The statute's text settles the case, so it governs over the guideline's general list.
 - id: us-nd:stillborn-subtraction-dependency-condition
