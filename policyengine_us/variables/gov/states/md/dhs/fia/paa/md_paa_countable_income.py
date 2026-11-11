@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
-    _apply_ssi_exclusions,
+    _apply_ssi_exclusions_monthly,
 )
 
 
@@ -9,7 +9,7 @@ class md_paa_countable_income(Variable):
     entity = Person
     label = "Maryland PAA countable income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MD
     reference = (
         "https://regs.maryland.gov/us/md/exec/comar/07.03.07.07",
@@ -37,7 +37,7 @@ class md_paa_countable_income(Variable):
                 "ssi_in_kind_support_and_maintenance",
             ],
         )
-        personal_countable = _apply_ssi_exclusions(
+        personal_countable = _apply_ssi_exclusions_monthly(
             adjusted_earned,
             unearned,
             parameters,

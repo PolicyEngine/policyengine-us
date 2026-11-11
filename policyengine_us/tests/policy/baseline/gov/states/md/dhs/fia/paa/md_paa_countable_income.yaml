@@ -45,3 +45,92 @@
     # $2,500 monthly SSDI - $20 general exclusion.
     ssi_countable_income: 0
     md_paa_countable_income: 2_480
+
+- name: Maryland counts January food support in January PAA income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+        md_paa_living_arrangement:
+          2024: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person]
+        state_code:
+          2024: MD
+  output:
+    # ISM = 943 / 3 + 20; countable = ISM - 20 = 314.333333.
+    ssi_in_kind_support_and_maintenance: 334.333333
+    md_paa_countable_income: 314.333333
+    # Imputed SSI = 943 - 314.333333 = 628.666667.
+    md_paa_imputed_federal_ssi: 628.666667
+    # PAA = 1,173 + 98 - 314.333333 - 628.666667 = 328.
+    md_paa: 328
+
+- name: Maryland counts September food support in November PAA income.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+        md_paa_living_arrangement:
+          2024: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person]
+        state_code:
+          2024: MD
+  output:
+    # November retains food ISM from September under SSI's payment timing.
+    ssi_in_kind_support_and_maintenance: 334.333333
+    md_paa_countable_income: 314.333333
+    md_paa_imputed_federal_ssi: 628.666667
+    # PAA = 1,173 + 102 - 943 = 332 after the July PNA increase.
+    md_paa: 332
+
+- name: Maryland excludes food support from December PAA income.
+  period: 2024-12
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+        md_paa_living_arrangement:
+          2024: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person]
+        state_code:
+          2024: MD
+  output:
+    # October food no longer counts, so December ISM and countable income = 0.
+    ssi_in_kind_support_and_maintenance: 0
+    md_paa_countable_income: 0
+    md_paa_imputed_federal_ssi: 943
+    # PAA = 1,173 + 102 - 0 - 943 = 332.
+    md_paa: 332
+
+- name: Maryland sums monthly countable income without carrying December's unused exclusion.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: MD
+    ssi_receives_food_from_others: true
+  output:
+    # 11 * (943 / 3 + 20) = 3,677.666667 gross ISM.
+    ssi_in_kind_support_and_maintenance: 3_677.666667
+    # 11 * (943 / 3) + 0 = 3,457.666667 countable income.
+    md_paa_countable_income: 3_457.666667

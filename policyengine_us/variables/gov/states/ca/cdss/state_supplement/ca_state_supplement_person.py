@@ -89,8 +89,9 @@ class ca_state_supplement_person(Variable):
         )
         # NOTE: in-kind support uses the couple's presumed maximum value here,
         # because SSI still treats the pair as a couple.
-        unearned = person("ssi_unearned_income", period.this_year) + person(
-            "ssi_in_kind_support_and_maintenance", period.this_year
+        unearned = (
+            person("ssi_unearned_income", period.this_year)
+            + person("ssi_in_kind_support_and_maintenance", period) * MONTHS_IN_YEAR
         )
         # _apply_ssi_exclusions takes and returns annual amounts.
         own_countable_income = (

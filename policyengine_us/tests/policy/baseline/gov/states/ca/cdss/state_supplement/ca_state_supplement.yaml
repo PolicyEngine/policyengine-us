@@ -833,3 +833,115 @@
     # 1,233.94 - 0 - (800.0833 - 20) = 453.8567, which rounds up to 453.86
     # (POMS SI 02001.010 A.2).
     ca_state_supplement_person: [453.86, 0]
+
+- name: California counts January food ISM for the SSI member of a split SSI and CAPI couple.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      citizen:
+        age:
+          2024: 72
+        immigration_status:
+          2024: CITIZEN
+        ssi_receives_food_from_others:
+          2024: true
+      noncitizen:
+        age:
+          2024: 68
+        immigration_status:
+          2024: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings:
+          2024: 39
+    marital_units:
+      couple:
+        members: [citizen, noncitizen]
+    households:
+      household:
+        members: [citizen, noncitizen]
+        state_code:
+          2024: CA
+        living_arrangements_allow_for_food_preparation:
+          2024: true
+  output:
+    ca_capi_eligible_person: [false, true]
+    # Couple PMV = 1,415 / 3 + 20 = 491.666667 for the recipient.
+    ssi_in_kind_support_and_maintenance: [491.666667, 0]
+    # SSI = 1,415 / 2 - (491.666667 - 20) / 2 = 471.666667.
+    ssi: [471.666667, 0]
+    # Own income = 491.666667 - 20 = 471.666667.
+    # SSP = ceil_cent(1,182.94 - 471.666667 - 471.666667) = 239.61.
+    ca_state_supplement_person: [239.61, 0]
+
+- name: California counts September food ISM in the split couple's November supplement.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      citizen:
+        age:
+          2024: 72
+        immigration_status:
+          2024: CITIZEN
+        ssi_receives_food_from_others:
+          2024: true
+      noncitizen:
+        age:
+          2024: 68
+        immigration_status:
+          2024: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings:
+          2024: 39
+    marital_units:
+      couple:
+        members: [citizen, noncitizen]
+    households:
+      household:
+        members: [citizen, noncitizen]
+        state_code:
+          2024: CA
+        living_arrangements_allow_for_food_preparation:
+          2024: true
+  output:
+    ca_capi_eligible_person: [false, true]
+    # November uses September food; the January arithmetic still applies.
+    ssi_in_kind_support_and_maintenance: [491.666667, 0]
+    ssi: [471.666667, 0]
+    ca_state_supplement_person: [239.61, 0]
+
+- name: California excludes food ISM from the split couple's December supplement.
+  period: 2024-12
+  absolute_error_margin: 0.01
+  input:
+    people:
+      citizen:
+        age:
+          2024: 72
+        immigration_status:
+          2024: CITIZEN
+        ssi_receives_food_from_others:
+          2024: true
+      noncitizen:
+        age:
+          2024: 68
+        immigration_status:
+          2024: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings:
+          2024: 39
+    marital_units:
+      couple:
+        members: [citizen, noncitizen]
+    households:
+      household:
+        members: [citizen, noncitizen]
+        state_code:
+          2024: CA
+        living_arrangements_allow_for_food_preparation:
+          2024: true
+  output:
+    ca_capi_eligible_person: [false, true]
+    # October food no longer counts; SSI = 1,415 / 2 = 707.50.
+    ssi_in_kind_support_and_maintenance: [0, 0]
+    ssi: [707.50, 0]
+    # SSP = 1,182.94 - 707.50 - 0 = 475.44.
+    ca_state_supplement_person: [475.44, 0]
