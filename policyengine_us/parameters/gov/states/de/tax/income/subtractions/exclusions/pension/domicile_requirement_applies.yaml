@@ -1,0 +1,19 @@
+description: Delaware limits the pension exclusion for filers at or above the age threshold to those who meet its domicile requirement, if this is true.
+values:
+  2007-01-01: false
+  # 30 Del. C. 1106(b)(3)f.4, added by 85 Del. Laws c. 426 (Senate Bill 219
+  # with Senate Amendment 1). The act took effect when the Governor signed it
+  # on August 17, 2026 and names no first tax year for this rule; its fiscal
+  # note applies the act from tax year 2027.
+  2027-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Delaware pension exclusion domicile requirement applies
+  reference:
+    - title: 30 Del. C. § 1106(b)(3)f.4
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
+    - title: Senate Amendment 1 to Senate Bill 219, 153rd General Assembly
+      href: https://legis.delaware.gov/json/BillDetail/GenerateHtmlDocument?legislationId=143006&legislationTypeId=5&docTypeId=2&legislationName=SA1
+    - title: Senate Bill 219 fiscal note, assumption 1
+      href: https://legis.delaware.gov/json/BillDetail/GetPdfDocument?fileAttachmentId=653814#page=1

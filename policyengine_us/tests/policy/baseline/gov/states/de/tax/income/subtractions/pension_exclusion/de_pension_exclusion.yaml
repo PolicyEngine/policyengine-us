@@ -133,8 +133,14 @@
   output:
     de_pension_exclusion: 10_000
 
-- name: DE under-60 survivor benefits treated as pension (capped at 2,000)
-  period: 2024
+# 30 Del. C. 1106(b)(3)f.2, added by 84 Del. Laws c. 437 (approved September
+# 26, 2024): a United States military pension is "a pension received as a
+# result of an individual's service", so from 2024 a survivor's annuity takes
+# the military pension exclusion. Before 2024 the term had no definition, and
+# the survivor's annuity stays in the $2,000 pension exclusion.
+
+- name: DE under-60 survivor annuity stays in the $2,000 pension exclusion in 2023.
+  period: 2023
   input:
     age: 50
     military_retirement_pay_survivors: 3_000
@@ -142,6 +148,16 @@
     state_code: DE
   output:
     de_pension_exclusion: 2_000
+
+- name: DE under-60 survivor annuity takes the military pension exclusion from 2024.
+  period: 2024
+  input:
+    age: 50
+    military_retirement_pay_survivors: 3_000
+    is_tax_unit_head_or_spouse: true
+    state_code: DE
+  output:
+    de_pension_exclusion: 3_000
 
 - name: DE 60+ filer with military retirement and survivor benefits in retirement basket
   period: 2024
@@ -153,3 +169,267 @@
     state_code: DE
   output:
     de_pension_exclusion: 12_500
+
+# 30 Del. C. 1106(b)(3)c-e: the military pension cap rises to $15,000 for
+# 2027, $20,000 for 2028 and $25,000 from 2029, and from 2027 filers age 60 or
+# older take the greater of the $12,500 pension exclusion and the military
+# pension exclusion.
+
+- name: DE under-60 military pension cap stays $12,500 in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE under-60 military pension cap is $15,000 in 2027.
+  period: 2027
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 15_000
+
+- name: DE under-60 military pension cap is $20,000 in 2028.
+  period: 2028
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 20_000
+
+- name: DE under-60 military pension cap is $25,000 in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 25_000
+
+- name: DE under-60 military pension cap stays $25,000 after 2029.
+  period: 2031
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 25_000
+
+- name: DE military pension under the cap is excluded in full in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 18_000
+  output:
+    de_pension_exclusion: 18_000
+
+- name: DE 60+ filer excludes $12,500 of military pension in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE 60+ filer takes the $15,000 military pension exclusion in 2027.
+  period: 2027
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 15_000
+
+- name: DE 60+ filer takes the $25,000 military pension exclusion in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+  output:
+    de_pension_exclusion: 25_000
+
+- name: DE 60+ filer keeps the $12,500 pension exclusion when it is larger in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 10_000
+    taxable_ira_distributions: 20_000
+  output:
+    # The greater of min(12,500, 30,000) and min(25,000, 10,000).
+    de_pension_exclusion: 12_500
+
+- name: DE 60+ filer without military pension keeps the $12,500 cap in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    taxable_pension_income: 30_000
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE 60+ filer with a capital loss takes military pension alone from 2027.
+  period: 2027
+  input:
+    state_code: DE
+    age: 75
+    military_retirement_pay: 10_000
+    long_term_capital_gains: -3_000
+  output:
+    # The basket nets to 7,000; the military pension exclusion gives 10,000.
+    de_pension_exclusion: 10_000
+
+- name: DE 60+ filer with a capital loss keeps the netted basket in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 75
+    military_retirement_pay: 10_000
+    long_term_capital_gains: -3_000
+  output:
+    de_pension_exclusion: 7_000
+
+- name: DE under-60 survivor annuity takes the $12,500 military pension exclusion in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 50
+    military_retirement_pay_survivors: 30_000
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE under-60 survivor annuity takes the $25,000 military pension exclusion in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 50
+    military_retirement_pay_survivors: 30_000
+  output:
+    de_pension_exclusion: 25_000
+
+- name: DE 60+ survivor annuity takes the $25,000 military pension exclusion in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay_survivors: 30_000
+  output:
+    # The greater of min(12,500, 30,000) and min(25,000, 30,000).
+    de_pension_exclusion: 25_000
+
+- name: DE 60+ filer adds retired pay and a survivor annuity under the military cap in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 8_000
+    military_retirement_pay_survivors: 8_000
+  output:
+    # The greater of min(12,500, 16,000) and min(25,000, 8,000 + 8,000).
+    de_pension_exclusion: 16_000
+
+- name: DE one military cap covers retired pay and a survivor annuity together in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 50
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    # min(25,000, 20,000 + 10,000), not 20,000 + 10,000.
+    de_pension_exclusion: 25_000
+
+- name: DE joint return gives each spouse the 2029 cap on their own military pension.
+  period: 2029
+  input:
+    people:
+      head:
+        age: 65
+        military_retirement_pay: 30_000
+      spouse:
+        age: 58
+        military_retirement_pay: 22_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_pension_exclusion: [25_000, 22_000]
+
+# 30 Del. C. 1106(b)(3)f.4 (85 Del. Laws c. 426, Senate Amendment 1): from
+# 2027, a person 60 or older claims the subtraction only after 3 years of
+# Delaware domicile, or 5 years for a person domiciled in Delaware from 2027.
+
+- name: DE 60+ filer who fails the domicile requirement gets no exclusion in 2027.
+  period: 2027
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+    de_pension_exclusion_domicile_requirement_met: false
+  output:
+    de_pension_exclusion: 0
+
+- name: DE domicile requirement also removes the 60+ pension exclusion in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 70
+    taxable_ira_distributions: 20_000
+    de_pension_exclusion_domicile_requirement_met: false
+  output:
+    de_pension_exclusion: 0
+
+- name: DE domicile requirement does not apply in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 30_000
+    de_pension_exclusion_domicile_requirement_met: false
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE domicile requirement does not apply under 60.
+  period: 2027
+  input:
+    state_code: DE
+    age: 45
+    military_retirement_pay: 30_000
+    de_pension_exclusion_domicile_requirement_met: false
+  output:
+    de_pension_exclusion: 15_000
+
+- name: DE joint return applies the domicile requirement to each spouse.
+  period: 2029
+  input:
+    people:
+      head:
+        age: 65
+        military_retirement_pay: 30_000
+        de_pension_exclusion_domicile_requirement_met: false
+      spouse:
+        age: 62
+        military_retirement_pay: 22_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_pension_exclusion: [0, 22_000]

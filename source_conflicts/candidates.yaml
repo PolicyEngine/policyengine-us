@@ -2459,6 +2459,45 @@ candidates:
     checkbox summary. On minors, manual 418 is the specific rule, and the statement of work asks for income documentation
     from members aged 18 and over not attending school. The manual also fills what the plan does not list: trusts
     (estate_income, 416.2) and other taxable income (miscellaneous_income, 416.1). Its sections carry 2011-2015 dates.'
+- id: us-de:military-pension-survivor-annuity
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does an annuity paid to a uniformed-services member's survivor, such as a Survivor Benefit Plan annuity,
+    count as a "United States military pension" under 30 Del. C. 1106(b)(3), or only the retiree's own retired pay, as
+    the PIT-RES Line 6 instructions provide?
+  sources:
+  - kind: statute
+    citation: 30 Del. C. 1106(b)(3)f.2, added as (b)(3)c.2 by 84 Del. Laws c. 437 (SB 329, approved September 26, 2024)
+    url: https://delcode.delaware.gov/title30/c011/sc02/index.html
+  - kind: instructions
+    citation: Delaware PIT-RES instructions, Line 6, 2024 and 2025
+    url: https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=6
+  readings:
+    statute: '"United States military pension" means a pension received as a result of an individual''s service in the
+      Army, Navy, Air Force, Marine Corps, Space Force, Coast Guard, the commissioned corps of the National Oceanic and
+      Atmospheric Administration, the commissioned corps of the Public Health Service, or the National Guard. A
+      survivor''s annuity is received as a result of the deceased member''s service.'
+    other: The instructions give the military pension exclusion to a filer who "retired from the United States military
+      and received pension income", which leaves a survivor's annuity in the $2,000 or $12,500 pension exclusion.
+  example: A 50-year-old with a $30,000 Survivor Benefit Plan annuity and no other income excludes $25,000 in 2029 under
+    the statute and $2,000 under the instructions. In 2024 a 50-year-old with a $3,000 annuity excludes $3,000 under
+    the statute and $2,000 under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/de/tax/income/subtractions/exclusions/pension/military_income_sources.yaml
+    - policyengine_us/variables/gov/states/de/tax/income/subtractions/pension_exclusion/de_pension_exclusion.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10716
+  state: ruled
+  note: Definitions control, so from 2024 the military pension branch counts retired pay and survivor annuities
+    (military_retirement_pay and military_retirement_pay_survivors), each person's total under one cap. 83 Del. Laws
+    c. 352 (approved July 20, 2022) created the military pension exclusion for 2022 without defining the term, and the
+    2022 and 2023 instructions give it to a filer who retired from the military; the statute was silent for those years,
+    so the code reads retired pay alone for 2022 and 2023. The SB 219 fiscal note (assumption 4) counts "1,337 survivors
+    receiving a military pension" in Delaware.
 - id: us-de:snap-child-support-exclusion
   program: snap
   years:
