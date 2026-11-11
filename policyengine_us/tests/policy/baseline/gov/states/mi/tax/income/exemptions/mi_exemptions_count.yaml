@@ -63,10 +63,10 @@
     people:
       person1:
         mi_disabled_exemption_eligible_person: false
-        has_service_connected_disability: true
+        is_service_connected_disabled_veteran: true
       person2:
         mi_disabled_exemption_eligible_person: false
-        has_service_connected_disability: false
+        is_service_connected_disabled_veteran: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -75,3 +75,56 @@
       state_code: MI
   output: # 2 people + 1 qualified disabled veteran
     mi_exemptions_count: 3
+
+- name: 2026 a veteran with both rating inputs adds one exemption to the count
+  period: 2026
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: false
+        is_service_connected_disabled_veteran: true
+        is_fully_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 1 person + 1 qualified disabled veteran
+    mi_exemptions_count: 2
+
+- name: 2026 four single filers cover every combination of the two rating inputs
+  period: 2026
+  input:
+    people:
+      neither:
+        mi_disabled_exemption_eligible_person: false
+        is_service_connected_disabled_veteran: false
+        is_fully_disabled_service_connected_veteran: false
+      any_rating_only:
+        mi_disabled_exemption_eligible_person: false
+        is_service_connected_disabled_veteran: true
+        is_fully_disabled_service_connected_veteran: false
+      full_rating_only:
+        mi_disabled_exemption_eligible_person: false
+        is_service_connected_disabled_veteran: false
+        is_fully_disabled_service_connected_veteran: true
+      both:
+        mi_disabled_exemption_eligible_person: false
+        is_service_connected_disabled_veteran: true
+        is_fully_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit_neither:
+        members: [neither]
+      tax_unit_any_rating_only:
+        members: [any_rating_only]
+      tax_unit_full_rating_only:
+        members: [full_rating_only]
+      tax_unit_both:
+        members: [both]
+    households:
+      household:
+        members: [neither, any_rating_only, full_rating_only, both]
+        state_code: MI
+  output: # 1 person each, plus 1 for each qualified disabled veteran
+    mi_exemptions_count: [1, 2, 2, 2]

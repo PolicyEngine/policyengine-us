@@ -540,7 +540,7 @@
   input:
     people:
       person1:
-        has_service_connected_disability: true
+        is_service_connected_disabled_veteran: true
         is_fully_disabled_service_connected_veteran: false
     tax_units:
       tax_unit:
@@ -553,7 +553,7 @@
     # MCL 206.30(3)(b) and MI-1040 line 9c: $5,900 personal + $500 qualified disabled veteran.
     mi_exemptions: 6_400
 
-- name: 2026 fully disabled service-connected veteran gets the exemption once
+- name: 2026 veteran with only the 100% rating input gets the exemption
   period: 2026
   input:
     people:
@@ -569,14 +569,32 @@
   output:
     mi_exemptions: 6_400
 
+- name: 2026 veteran with both rating inputs gets the exemption once
+  period: 2026
+  input:
+    people:
+      person1:
+        is_service_connected_disabled_veteran: true
+        is_fully_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 5_900
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    # One $500 exemption for the person, not one for each input.
+    mi_exemptions: 6_400
+
 - name: 2026 joint return where each spouse has a service-connected disability
   period: 2026
   input:
     people:
       person1:
-        has_service_connected_disability: true
+        is_service_connected_disabled_veteran: true
       person2:
-        has_service_connected_disability: true
+        is_service_connected_disabled_veteran: true
     tax_units:
       tax_unit:
         mi_personal_exemptions: 11_800
@@ -588,12 +606,44 @@
     # $11,800 personal + 2 x $500 qualified disabled veteran.
     mi_exemptions: 12_800
 
+- name: 2026 joint return where the head and an adult dependent each have a service-connected disability
+  period: 2026
+  input:
+    people:
+      head:
+        age: 55
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_service_connected_disabled_veteran: true
+      spouse:
+        age: 55
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      dependent:
+        age: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_service_connected_disabled_veteran: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: MI
+  output:
+    # "each taxpayer and every dependent of the taxpayer": 3 x $5,900
+    # personal + 2 x $500 qualified disabled veteran.
+    mi_exemptions: 18_700
+
 - name: 2026 veteran without a service-connected disability gets no veteran exemption
   period: 2026
   input:
     people:
       person1:
-        has_service_connected_disability: false
+        is_service_connected_disabled_veteran: false
         veterans_benefits: 1_000
     tax_units:
       tax_unit:
