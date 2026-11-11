@@ -77,10 +77,13 @@ def test_notice_workflow_watches_the_partner_folder():
     scripts = "\n".join(step.get("run", "") for step in steps)
     # The step that lists the PR's partner files pipes them through a grep
     # that keeps the paths in the same folder. An option such as -v or -c,
-    # anywhere on that line, or a further pipe stage would drop or count the
-    # paths and silence the notice, so the line must end after the pattern
-    # (a trailing backslash continues the command to `|| true`).
-    pattern = rf"^\s*\|\s*grep (?:-E )?'\^{re.escape(PARTNERS)}/[^']*'\s*(?:\\)?$"
+    # or a further pipe stage, would drop or count the paths and silence the
+    # notice, so the grep line must end after its pattern, and only
+    # `|| true` may follow it on the continuation line.
+    pattern = (
+        rf"^[ \t]*\|[ \t]*grep (?:-E )?'\^{re.escape(PARTNERS)}/[^']*'"
+        r"[ \t]*(?:\\\n[ \t]*\|\| true)?[ \t]*$"
+    )
     assert re.search(pattern, scripts, re.M)
     assert any(
         "SLACK_PARTNER_WEBHOOK_URL" in str(step.get("env", {})) for step in steps
