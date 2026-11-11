@@ -7,12 +7,18 @@ class amt_separate_addition(Variable):
     definition_period = YEAR
     label = "AMT taxable income separate addition"
     unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/26/55#b_2"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/55#d_2",
+        # Line 4, married filing separately
+        "https://www.irs.gov/pub/irs-prior/i6251--2025.pdf#page=9",
+    )
 
     def formula(tax_unit, period, parameters):
-        taxable_income = tax_unit("taxable_income", period)
-        excluded_deductions = tax_unit("amt_excluded_deductions", period)
-        amt_inc = taxable_income + excluded_deductions
+        # 26 U.S.C. 55(d)(2) figures the increase on alternative minimum
+        # taxable income "determined without regard to this sentence", so
+        # with every other AMT adjustment, such as the refund and section 68
+        # lines.
+        amt_inc = tax_unit("amt_income_before_separate_addition", period)
         p = parameters(period).gov.irs.income.amt.exemption
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
