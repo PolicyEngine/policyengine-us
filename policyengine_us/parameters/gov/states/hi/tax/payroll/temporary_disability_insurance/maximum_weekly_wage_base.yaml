@@ -1,32 +1,38 @@
 description: Hawaii counts weekly wages up to this amount toward the employee temporary disability insurance contribution.
 values:
   # Zero marks years before the first notice read (2004), not a law without a
-  # wage base. The Director publishes one amount a year under HRS 392-43(b)(2):
-  # the State's average annual wage / 52 * 1.21.
+  # wage base. HRS 392-43(b)(2) sets the base at one fifty-second of the State's
+  # average annual wage as HRS 383-61(b) determines it for the preceding year,
+  # times 1.21, and HRS 383-61(b) computes that average rounded to the nearest
+  # hundred dollars. Each value takes the average from that year's DLIR notice,
+  # rounds it to $100, multiplies by 1.21 / 52 and rounds once to the cent. For
+  # 2026, 64,471.82 rounds to 64,500, and 64,500 * 1.21 / 52 = 1,500.87. DLIR's
+  # notices use the average before rounding (1,500.21 for 2026), so the values
+  # here run from 0.84 below to 1.15 above the published bases.
   0000-01-01: 0
-  2004-01-01: 720.70
-  2005-01-01: 752.44
-  2006-01-01: 791.70
-  2007-01-01: 820.26
-  2008-01-01: 842.56
-  2009-01-01: 877.69
-  2010-01-01: 901.70
-  2011-01-01: 884.29
-  2012-01-01: 903.28
-  2013-01-01: 921.78
-  2014-01-01: 940.05
-  2015-01-01: 951.23
-  2016-01-01: 982.36
-  2017-01-01: 1_023.31
-  2018-01-01: 1_068.62
-  2019-01-01: 1_088.08
-  2020-01-01: 1_119.44
-  2021-01-01: 1_102.90
-  2022-01-01: 1_200.30
-  2023-01-01: 1_318.48
-  2024-01-01: 1_374.78
-  2025-01-01: 1_441.72
-  2026-01-01: 1_500.21
+  2004-01-01: 721.35
+  2005-01-01: 751.60
+  2006-01-01: 791.15
+  2007-01-01: 821.40
+  2008-01-01: 842.35
+  2009-01-01: 877.25
+  2010-01-01: 902.85
+  2011-01-01: 884.23
+  2012-01-01: 902.85
+  2013-01-01: 921.46
+  2014-01-01: 940.08
+  2015-01-01: 951.71
+  2016-01-01: 981.96
+  2017-01-01: 1_023.85
+  2018-01-01: 1_068.06
+  2019-01-01: 1_089.00
+  2020-01-01: 1_119.25
+  2021-01-01: 1_102.96
+  2022-01-01: 1_200.69
+  2023-01-01: 1_319.37
+  2024-01-01: 1_375.21
+  2025-01-01: 1_442.69
+  2026-01-01: 1_500.87
 
 metadata:
   period: week
@@ -35,6 +41,8 @@ metadata:
   reference:
     - title: Hawaii Revised Statutes Section 392-43(b)(2)
       href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0043.htm
+    - title: Hawaii Revised Statutes Section 383-61(b)
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0061.htm
     - title: Hawaii DLIR, 2004 maximum weekly wage base notice
       href: https://web.archive.org/web/20050226051453/http://hawaii.gov:80/labor/dcd/pdf/TDI/2004%20TDI%20Wage%20Base.pdf#page=1
     - title: Hawaii DLIR, 2005 maximum weekly wage base notice

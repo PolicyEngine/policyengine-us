@@ -3,10 +3,11 @@
 YAML covers the policy examples. This module covers what one YAML case cannot
 state:
 
-1. Code against published figures. The wage base parameter matches every DLIR
-   notice, each notice's base follows HRS 392-43(b)(2) from that notice's
-   average annual wage, and each notice's maximum weekly deduction is 0.5% of
-   its base.
+1. Code against published figures. The wage base parameter follows HRS
+   392-43(b)(2) from each DLIR notice's average annual wage, rounded to $100 as
+   HRS 383-61(b) computes it; each notice's own base follows from the same
+   average before rounding; each notice's maximum weekly deduction is 0.5% of
+   its base; and the two bases stay within the gap that rounding can open.
 2. The annual formula against the weekly statute. The law caps wages week by
    week. For any wages spread over a worker's weeks, the annual amount is at
    least the weekly sum, and the two match when wages are even.
@@ -20,10 +21,14 @@ state:
 
 Intended differences from the published figures:
 
-- The 2010 notice's 901.70 equals the unrounded product rounded once. Every
-  other notice matches rounding the weekly wage first, which gives 901.69 for
-  2010. HRS 392-43(b)(2) sets no rounding rule, and the parameter holds the
-  published amount.
+- HRS 392-43(b)(2) takes the average annual wage as HRS 383-61(b) determines
+  it, and 383-61(b) computes that average rounded to the nearest hundred
+  dollars. DLIR's notices use the average before rounding, so the parameter
+  runs from 0.84 below to 1.15 above the published base
+  (us-hi:tdi-wage-base-rounded-average in source_conflicts/candidates.yaml).
+- The parameter rounds the base once, to the cent. The 2010 notice does the
+  same; every other notice rounds the weekly wage to the cent first, which
+  would move 14 of the 23 parameter values by a cent.
 - A full-year worker over the cap pays 52 * 0.5% * base here. DLIR rounds each
   week's maximum deduction to the cent, so 52 weeks of it differ by at most 26
   cents.
@@ -104,8 +109,16 @@ def cents(amount):
     return amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
+def statutory_base(year):
+    # HRS 383-61(b) rounds the average to the nearest hundred dollars, and HRS
+    # 392-43(b)(2) takes one fifty-second of it times 1.21.
+    average = Decimal(NOTICES[year][0])
+    hundreds = (average / 100).quantize(Decimal("1"), rounding=ROUND_HALF_UP) * 100
+    return cents(hundreds * FACTOR / 52)
+
+
 def base_for(year):
-    return float(NOTICES[year][1])
+    return float(statutory_base(year))
 
 
 def simulate(year, workers, **overrides):
@@ -152,7 +165,7 @@ def simulate(year, workers, **overrides):
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_parameters_match_the_published_notice(year):
+def test_parameters_follow_the_statute_from_each_notice_average(year):
     instant = f"{year}-01-01"
     assert TDI.maximum_weekly_wage_base(instant) == pytest.approx(
         base_for(year), abs=1e-9
@@ -161,13 +174,16 @@ def test_parameters_match_the_published_notice(year):
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_notice_follows_the_statutory_formula(year):
+def test_notice_applies_the_formula_to_the_average_before_rounding(year):
     annual_wage, base, deduction = (Decimal(value) for value in NOTICES[year])
     rounded_once = cents(annual_wage / 52 * FACTOR)
     weekly_wage_rounded_first = cents(cents(annual_wage / 52) * FACTOR)
     assert base == (rounded_once if year == 2010 else weekly_wage_rounded_first)
     assert deduction == cents(base * RATE)
     assert abs(52 * base * RATE - 52 * deduction) <= Decimal("0.26")
+    # Rounding moves the average by at most 50, so the bases differ by at most
+    # 50 * 1.21 / 52 = 1.1635, plus up to 0.016 of rounding to cents.
+    assert abs(statutory_base(year) - base) <= Decimal("1.18")
 
 
 workers = st.fixed_dictionaries(
@@ -350,8 +366,8 @@ def test_contribution_lowers_household_net_income_dollar_for_dollar():
     without = simulate(2026, batch, **{CONTRIBUTION: 0})
 
     contribution = baseline.calculate(CONTRIBUTION, period)
-    # 0.5% of 30,000 and 60,000, then 0.5% * 52 * 1,500.21.
-    assert contribution == pytest.approx([150, 300, 390.0546], abs=TOLERANCE)
+    # 0.5% of 30,000 and 60,000, then 0.5% * 52 * 1,500.87.
+    assert contribution == pytest.approx([150, 300, 390.2262], abs=TOLERANCE)
 
     for variable in (
         "employee_state_payroll_tax",

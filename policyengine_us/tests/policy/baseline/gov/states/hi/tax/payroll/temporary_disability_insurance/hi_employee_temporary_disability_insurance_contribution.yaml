@@ -1,6 +1,8 @@
-# Each year's maximum weekly wage base comes from the Hawaii DLIR notice for
-# that year, cited in maximum_weekly_wage_base.yaml. The 0.5% rate comes from
-# HRS 392-43(a), and the $400, 14-week and 20-hour test from HRS 392-43(b)(1).
+# Each year's maximum weekly wage base is the State's average annual wage from
+# that year's DLIR notice, rounded to $100 under HRS 383-61(b), times 1.21 / 52
+# (HRS 392-43(b)(2)), rounded to the cent; maximum_weekly_wage_base.yaml cites
+# each notice. The 0.5% rate comes from HRS 392-43(a), and the $400, 14-week
+# and 20-hour test from HRS 392-43(b)(1).
 
 - name: Hawaii 2024 contribution is 0.5% of wages under the cap.
   period: 2024
@@ -16,20 +18,20 @@
     hi_employee_state_payroll_tax: 250.00
     employee_state_payroll_tax: 250.00
 
-- name: Hawaii 2024 contribution stops at the 1,374.78 weekly wage base.
+- name: Hawaii 2024 contribution stops at the 1,375.21 weekly wage base.
   period: 2024
   absolute_error_margin: 0.01
   input:
     employment_income: 100_000
     state_code: HI
   output:
-    # 52 * 1,374.78 = 71,488.56.
-    hi_temporary_disability_insurance_taxable_wages: 71_488.56
-    # 0.5% * 71,488.56 = 357.44. DLIR's 6.87 weekly maximum * 52 = 357.24, and
-    # the 0.20 gap comes from DLIR rounding each week's maximum to the cent.
-    hi_employee_temporary_disability_insurance_contribution: 357.44
-    hi_employee_state_payroll_tax: 357.44
-    employee_state_payroll_tax: 357.44
+    # 59,081.47 rounds to 59,100, and 59,100 * 1.21 / 52 = 1,375.21.
+    # 52 * 1,375.21 = 71,510.92.
+    hi_temporary_disability_insurance_taxable_wages: 71_510.92
+    # 0.5% * 71,510.92 = 357.55.
+    hi_employee_temporary_disability_insurance_contribution: 357.55
+    hi_employee_state_payroll_tax: 357.55
+    employee_state_payroll_tax: 357.55
 
 - name: Hawaii 2026 contribution is 0.5% of wages under the cap.
   period: 2026
@@ -42,35 +44,37 @@
     hi_employee_temporary_disability_insurance_contribution: 300.00
     employee_state_payroll_tax: 300.00
 
-- name: Hawaii 2026 contribution stops at the 1,500.21 weekly wage base.
+- name: Hawaii 2026 contribution stops at the 1,500.87 weekly wage base.
   period: 2026
   absolute_error_margin: 0.01
   input:
     employment_income: 100_000
     state_code: HI
   output:
-    # 52 * 1,500.21 = 78,010.92.
-    hi_temporary_disability_insurance_taxable_wages: 78_010.92
-    # 0.5% * 78,010.92 = 390.05. DLIR's 7.50 weekly maximum * 52 = 390.00.
-    hi_employee_temporary_disability_insurance_contribution: 390.05
+    # 64,471.82 rounds to 64,500, and 64,500 * 1.21 / 52 = 1,500.87.
+    # 52 * 1,500.87 = 78,045.24.
+    hi_temporary_disability_insurance_taxable_wages: 78_045.24
+    # 0.5% * 78,045.24 = 390.23.
+    hi_employee_temporary_disability_insurance_contribution: 390.23
     # Social Security 6.2% * 100,000 = 6,200.00, Medicare 1.45% * 100,000 =
-    # 1,450.00, and 6,200.00 + 1,450.00 + 390.05 = 8,040.05.
-    employee_payroll_tax: 8_040.05
-    spm_unit_payroll_tax: 8_040.05
+    # 1,450.00, and 6,200.00 + 1,450.00 + 390.23 = 8,040.23.
+    employee_payroll_tax: 8_040.23
+    spm_unit_payroll_tax: 8_040.23
 
-- name: Hawaii 2004, the first published year, uses the 720.70 weekly wage base.
+- name: Hawaii 2004, the first modeled year, uses the 721.35 weekly wage base.
   period: 2004
   absolute_error_margin: 0.01
   input:
     employment_income: 50_000
     state_code: HI
   output:
-    # 52 * 720.70 = 37,476.40.
-    hi_temporary_disability_insurance_taxable_wages: 37_476.40
-    # 0.5% * 37,476.40 = 187.38.
-    hi_employee_temporary_disability_insurance_contribution: 187.38
+    # 30,972.13 rounds to 31,000, and 31,000 * 1.21 / 52 = 721.35.
+    # 52 * 721.35 = 37,510.20.
+    hi_temporary_disability_insurance_taxable_wages: 37_510.20
+    # 0.5% * 37,510.20 = 187.55.
+    hi_employee_temporary_disability_insurance_contribution: 187.55
 
-- name: Hawaii 2009 uses the 877.69 weekly wage base and counts pre-tax premiums out.
+- name: Hawaii 2009 uses the 877.25 weekly wage base and counts pre-tax premiums out.
   period: 2009
   absolute_error_margin: 0.01
   input:
@@ -78,13 +82,13 @@
     pre_tax_health_insurance_premiums: 10_000
     state_code: HI
   output:
-    # 50,000 - 10,000 = 40,000, under 52 * 877.69 = 45,639.88.
+    # 50,000 - 10,000 = 40,000, under 52 * 877.25 = 45,617.00.
     hi_temporary_disability_insurance_taxable_wages: 40_000
     # 0.5% * 40,000 = 200.00.
     hi_employee_temporary_disability_insurance_contribution: 200.00
     employee_state_payroll_tax: 200.00
 
-- name: Hawaii models no contribution before the first published year.
+- name: Hawaii models no contribution before the first modeled year.
   period: 2003
   absolute_error_margin: 0.01
   input:
@@ -94,29 +98,29 @@
     hi_temporary_disability_insurance_taxable_wages: 0
     hi_employee_temporary_disability_insurance_contribution: 0
 
-- name: Hawaii 2020 contribution stops at the 1,119.44 weekly wage base.
+- name: Hawaii 2020 contribution stops at the 1,119.25 weekly wage base.
   period: 2020
   absolute_error_margin: 0.01
   input:
     employment_income: 100_000
     state_code: HI
   output:
-    # 52 * 1,119.44 = 58,210.88.
-    hi_temporary_disability_insurance_taxable_wages: 58_210.88
-    # 0.5% * 58,210.88 = 291.05.
-    hi_employee_temporary_disability_insurance_contribution: 291.05
+    # 52 * 1,119.25 = 58,201.00.
+    hi_temporary_disability_insurance_taxable_wages: 58_201.00
+    # 0.5% * 58,201.00 = 291.005.
+    hi_employee_temporary_disability_insurance_contribution: 291.005
 
-- name: Hawaii 2021 contribution falls with the lower 1,102.90 weekly wage base.
+- name: Hawaii 2021 contribution falls with the lower 1,102.96 weekly wage base.
   period: 2021
   absolute_error_margin: 0.01
   input:
     employment_income: 100_000
     state_code: HI
   output:
-    # 52 * 1,102.90 = 57,350.80.
-    hi_temporary_disability_insurance_taxable_wages: 57_350.80
-    # 0.5% * 57,350.80 = 286.75.
-    hi_employee_temporary_disability_insurance_contribution: 286.75
+    # 52 * 1,102.96 = 57,353.92.
+    hi_temporary_disability_insurance_taxable_wages: 57_353.92
+    # 0.5% * 57,353.92 = 286.77.
+    hi_employee_temporary_disability_insurance_contribution: 286.77
 
 - name: Hawaii applies the weekly cap only to weeks worked.
   period: 2024
@@ -127,10 +131,10 @@
     weekly_hours_worked_before_lsr: 40
     state_code: HI
   output:
-    # 26 * 1,374.78 = 35,744.28.
-    hi_temporary_disability_insurance_taxable_wages: 35_744.28
-    # 0.5% * 35,744.28 = 178.72.
-    hi_employee_temporary_disability_insurance_contribution: 178.72
+    # 26 * 1,375.21 = 35,755.46.
+    hi_temporary_disability_insurance_taxable_wages: 35_755.46
+    # 0.5% * 35,755.46 = 178.78.
+    hi_employee_temporary_disability_insurance_contribution: 178.78
 
 - name: Hawaii taxes part-year wages in full when they stay under the weekly cap.
   period: 2024
@@ -141,7 +145,7 @@
     weekly_hours_worked_before_lsr: 40
     state_code: HI
   output:
-    # 26 * 1,374.78 = 35,744.28 exceeds 20,000.
+    # 26 * 1,375.21 = 35,755.46 exceeds 20,000.
     hi_temporary_disability_insurance_taxable_wages: 20_000
     # 0.5% * 20,000 = 100.00.
     hi_employee_temporary_disability_insurance_contribution: 100.00
@@ -156,7 +160,7 @@
     state_code: HI
   output:
     hi_temporary_disability_insurance_qualified: true
-    # 14 * 1,374.78 = 19,246.92 exceeds 15,000.
+    # 14 * 1,375.21 = 19,252.94 exceeds 15,000.
     hi_temporary_disability_insurance_taxable_wages: 15_000
     # 0.5% * 15,000 = 75.00.
     hi_employee_temporary_disability_insurance_contribution: 75.00
@@ -272,10 +276,10 @@
     traditional_401k_contributions: 10_000
     state_code: HI
   output:
-    # 100,000 - 10,000 = 90,000 exceeds 52 * 1,500.21 = 78,010.92.
-    hi_temporary_disability_insurance_taxable_wages: 78_010.92
-    # 0.5% * 78,010.92 = 390.05.
-    hi_employee_temporary_disability_insurance_contribution: 390.05
+    # 100,000 - 10,000 = 90,000 exceeds 52 * 1,500.87 = 78,045.24.
+    hi_temporary_disability_insurance_taxable_wages: 78_045.24
+    # 0.5% * 78,045.24 = 390.23.
+    hi_employee_temporary_disability_insurance_contribution: 390.23
 
 - name: Hawaii tests the 400 minimum against wages after excluded payments.
   period: 2024
@@ -328,12 +332,12 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # 52 * 1,500.21 = 78,010.92 for person1, and 40,000 is under the cap.
-    hi_temporary_disability_insurance_taxable_wages: [78_010.92, 40_000]
-    # 0.5% * 78,010.92 = 390.05 and 0.5% * 40,000 = 200.00.
-    hi_employee_temporary_disability_insurance_contribution: [390.05, 200.00]
-    # 390.05 + 200.00 = 590.05.
-    employee_state_payroll_tax: 590.05
+    # 52 * 1,500.87 = 78,045.24 for person1, and 40,000 is under the cap.
+    hi_temporary_disability_insurance_taxable_wages: [78_045.24, 40_000]
+    # 0.5% * 78,045.24 = 390.23 and 0.5% * 40,000 = 200.00.
+    hi_employee_temporary_disability_insurance_contribution: [390.23, 200.00]
+    # 390.23 + 200.00 = 590.23.
+    employee_state_payroll_tax: 590.23
 
 - name: Hawaii leaves a 2014 deferral out of the contribution.
   period: 2014
@@ -343,7 +347,7 @@
     traditional_401k_contributions: 4_000
     state_code: HI
   output:
-    # 0.5% * (30,000 - 4,000) = 130, under 52 * 940.05 = 48,882.60.
+    # 0.5% * (30,000 - 4,000) = 130, under 52 * 940.08 = 48,884.16.
     hi_employee_temporary_disability_insurance_contribution: 130
 
 - name: Hawaii leaves out only the deferral the 2009 limit allows.
@@ -355,7 +359,7 @@
     traditional_401k_contributions_desired: 20_000
     state_code: HI
   output:
-    # 50,000 - 16,500 = 33,500, under 52 * 877.69 = 45,639.88.
+    # 50,000 - 16,500 = 33,500, under 52 * 877.25 = 45,617.00.
     hi_temporary_disability_insurance_wages: 33_500
     # 0.5% * 33,500 = 167.50.
     hi_employee_temporary_disability_insurance_contribution: 167.50
@@ -421,7 +425,7 @@
         state_code: HI
   output:
     hi_temporary_disability_insurance_qualified: true
-    # One week's 1,000 falls under the 1,500.21 cap: 0.5% * 1,000 = 5.
+    # One week's 1,000 falls under the 1,500.87 cap: 0.5% * 1,000 = 5.
     hi_employee_temporary_disability_insurance_contribution: 5
 
 - name: Hawaii counts final-year wages under 400 when the previous year passes.
@@ -746,7 +750,7 @@
         state_code: HI
   output:
     hi_temporary_disability_insurance_qualified: true
-    # 900 falls under the 951.23 cap for one week: 0.5% * 900 = 4.50.
+    # 900 falls under the 951.71 cap for one week: 0.5% * 900 = 4.50.
     hi_employee_temporary_disability_insurance_contribution: 4.50
 
 - name: Hawaii scales the contribution by the employer's deduction share.
@@ -771,8 +775,8 @@
     employer_state_payroll_premium_deduction_share: 0
     state_code: HI
   output:
-    # 52 * 1,500.21 = 78,010.92.
-    hi_temporary_disability_insurance_taxable_wages: 78_010.92
+    # 52 * 1,500.87 = 78,045.24.
+    hi_temporary_disability_insurance_taxable_wages: 78_045.24
     hi_employee_temporary_disability_insurance_contribution: 0
     employee_state_payroll_tax: 0
 
@@ -784,5 +788,5 @@
     employer_state_payroll_premium_deduction_share: 1.5
     state_code: HI
   output:
-    # The employer may withhold at most 0.5% * 78,010.92 = 390.05.
-    hi_employee_temporary_disability_insurance_contribution: 390.05
+    # The employer may withhold at most 0.5% * 78,045.24 = 390.23.
+    hi_employee_temporary_disability_insurance_contribution: 390.23
