@@ -1,3 +1,10 @@
+## [2.117.3] - 2026-11-11
+
+### Fixed
+
+- North Dakota renter's refund income leaves out the parts of market income that federal law excludes from gross income, as N.D.C.C. 57-02-08.1(5)(c) requires: tax-exempt interest and savings bond interest spent on higher education, the nontaxable parts of pensions and retirement distributions, the payroll deductions and employer adoption assistance that federal law excludes from wages, income from Puerto Rico and American Samoa that federal law excludes, and alimony under divorce instruments executed after 2018, besides the disability benefits it already left out.
+
+
 ## [2.117.2] - 2026-11-11
 
 ### Fixed
