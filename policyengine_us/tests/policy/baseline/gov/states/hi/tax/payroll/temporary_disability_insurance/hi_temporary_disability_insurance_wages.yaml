@@ -74,8 +74,8 @@
     traditional_401k_contributions: 24_500
     hi_temporary_disability_insurance_wages: 75_500
 
-- name: Hawaii wages leave out deferrals in 2003, the first year the model holds a limit.
-  period: 2003
+- name: Hawaii wages leave out deferrals in 2000, the first modeled year.
+  period: 2000
   absolute_error_margin: 0.01
   input:
     age: 55
@@ -85,6 +85,32 @@
   output:
     # 60,000 - 4,000 = 56,000.
     hi_temporary_disability_insurance_wages: 56_000
+
+- name: Hawaii wages leave out no catch-up before 2002.
+  period: 2001
+  absolute_error_margin: 0.01
+  input:
+    age: 55
+    employment_income: 100_000
+    traditional_401k_contributions_desired: 30_000
+    state_code: HI
+  output:
+    # The 2001 limit is 10,500 at any age: 100,000 - 10,500 = 89,500.
+    traditional_401k_contributions: 10_500
+    hi_temporary_disability_insurance_wages: 89_500
+
+- name: Hawaii wages leave out the 2002 catch-up from age 50.
+  period: 2002
+  absolute_error_margin: 0.01
+  input:
+    age: 50
+    employment_income: 100_000
+    traditional_401k_contributions_desired: 30_000
+    state_code: HI
+  output:
+    # 11,000 plus the 1,000 catch-up is 12,000: 100,000 - 12,000 = 88,000.
+    traditional_401k_contributions: 12_000
+    hi_temporary_disability_insurance_wages: 88_000
 
 - name: Hawaii wages leave out only the deferral the 2003 limit allows.
   period: 2003
@@ -136,17 +162,17 @@
     # 60,000 - 4,000 = 56,000.
     hi_temporary_disability_insurance_wages: 56_000
 
-- name: Hawaii wages keep deferrals in 2002, before the model holds a limit.
-  period: 2002
+- name: Hawaii wages keep deferrals in 1998, before the model holds a limit.
+  period: 1998
   absolute_error_margin: 0.01
   input:
     employment_income: 60_000
     traditional_401k_contributions: 4_000
     state_code: HI
   output:
-    # HRS 383-11 left these deferrals out in 2002 too. excluded_payments.yaml
-    # lists them only from 2003, the first year the model holds the federal
-    # limit, and the contribution rate and wage base are zero in 2002.
+    # HRS 383-11 left these deferrals out in 1998 too. excluded_payments.yaml
+    # lists them only from 1999, the year the 2000 wages test looks back to,
+    # and the contribution rate and wage base are zero in 1998.
     hi_temporary_disability_insurance_wages: 60_000
 
 - name: Hawaii wages leave out military basic pay.

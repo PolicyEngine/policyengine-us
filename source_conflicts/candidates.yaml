@@ -3192,7 +3192,7 @@ candidates:
 - id: us-hi:tdi-wage-base-rounded-average
   program: hi-tdi
   years:
-    from: 2003
+    from: 2000
     type: calendar
   question: Does Hawaii's temporary disability insurance maximum weekly wage base start from the State's average annual
     wage rounded to the nearest hundred dollars, as HRS 383-61(b) computes it, or from the average before rounding, as
@@ -3210,9 +3210,10 @@ candidates:
       2003 to 2025), dividing the unrounded average by 52
     url: https://labor.hawaii.gov/dcd/files/2025/12/2026-Maximum-Weekly-Wage-Base.pdf
   - kind: agency-practice
-    citation: Hawaii DLIR Unemployment Insurance Division, taxable wage bases for 2003 to 2026 (this page from 2020, the
-      December 2019 trust fund evaluation before), each the same average rounded to the nearest hundred dollars, or 90%
-      of it in 2010 and 2011, except the fixed $13,000 of 2008 and 2009
+    citation: Hawaii DLIR Unemployment Insurance Division, taxable wage bases for 2000 to 2026 (this page from 2020;
+      before that, Appendix B of the December 2019 trust fund evaluation, file page 29 of
+      https://labor.hawaii.gov/wp-content/uploads/2020/01/UI-Fund-Evaluation-2020.pdf), each the same average rounded to
+      the nearest hundred dollars, or 90% of it in 2010 and 2011, except the fixed $13,000 of 2008 and 2009
     url: https://labor.hawaii.gov/ui/tax-rate-schedule-and-weekly-benefit-amount/
   readings:
     statute: HRS 383-61(b) says how the average annual wage is computed, and the computation ends by rounding to the
@@ -3234,12 +3235,13 @@ candidates:
   state: ruled
   note: Definitions control, and the text settles the reading, so the agency-breaks-ties principle doesn't reach it. The
     same reading of HRS 383-61(b) decides us-hi:ui-taxable-wage-base-2010-rounding. Within the formula the parameter
-    rounds once to the cent, because HRS 392-43(b)(2) sets no intermediate rounding. Short excerpts are in
-    source_conflicts/sources/us-hi/.
+    rounds once to the cent, because HRS 392-43(b)(2) sets no intermediate rounding. No notice survives for 2000 to
+    2002, so the parameter takes those years' rounded averages from the unemployment insurance base. Short excerpts are
+    in source_conflicts/sources/us-hi/.
 - id: us-hi:tdi-wages-salary-reductions
   program: hi-tdi
   years:
-    from: 2004
+    from: 2000
     type: calendar
   question: Do amounts an employer pays into a retirement or medical plan out of an employee's salary count as wages for
     Hawaii's temporary disability insurance contribution, and do dependent care benefits?
@@ -3279,6 +3281,7 @@ candidates:
     - policyengine_us/variables/gov/states/hi/tax/payroll/temporary_disability_insurance/hi_temporary_disability_insurance_wages.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10677
+    - https://github.com/PolicyEngine/policyengine-us/pull/10771
   state: ruled
   note: The code follows the statute's text because we found no agency reading of salary reductions in the temporary
     disability rules, the unemployment insurance rules (HAR 12-5) or the employer handbook. A published agency reading

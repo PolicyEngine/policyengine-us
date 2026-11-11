@@ -5,9 +5,13 @@ state:
 
 1. Code against published figures. The wage base parameter follows HRS
    392-43(b)(2) from each DLIR notice's average annual wage, rounded to $100 as
-   HRS 383-61(b) computes it; each notice's own base follows from the same
-   average before rounding; each notice's maximum weekly deduction is 0.5% of
-   its base; and the two bases stay within the gap that rounding can open.
+   HRS 383-61(b) computes it, and for 2000-2002, when no notice survives, from
+   the unemployment insurance taxable wage base, which 383-61(b) sets at that
+   rounded average. Each notice's own base follows from the same average
+   before rounding; each notice's maximum weekly deduction is 0.5% of its base;
+   the two bases stay within the gap that rounding can open; and in each year
+   with both figures, the unemployment insurance base equals the notice's
+   average rounded to $100.
 2. The annual formula against the weekly statute. The law caps wages week by
    week. For any wages spread over a worker's weeks, the annual amount is at
    least the weekly sum, and the two match when wages are even.
@@ -28,7 +32,7 @@ Intended differences from the published figures:
   (us-hi:tdi-wage-base-rounded-average in source_conflicts/candidates.yaml).
 - The parameter rounds the base once, to the cent. The 2010 notice does the
   same; every other notice rounds the weekly wage to the cent first, which
-  would move 14 of the 24 parameter values by a cent.
+  would move 16 of the 27 parameter values by a cent.
 - A full-year worker over the cap pays 52 * 0.5% * base here. DLIR rounds each
   week's maximum deduction to the cent, so 52 weeks of it differ by at most 26
   cents.
@@ -80,7 +84,37 @@ NOTICES = {
     2025: ("61958.21", "1441.72", "7.21"),
     2026: ("64471.82", "1500.21", "7.50"),
 }
-YEARS = sorted(NOTICES)
+# DLIR's unemployment insurance taxable wage base, from its December 2019 trust
+# fund evaluation (Appendix B) for 2000-2020 and its tax rate schedule page for
+# 2021-2026. HRS 383-61(b) sets that base at the rounded average annual wage.
+# HRS 383-61(c) set it in 2008-2011, so those years stay out. No TDI notice
+# survives for 2000-2002, so the parameter takes those years' averages from here.
+UI_BASES = {
+    2000: 27_500,
+    2001: 28_400,
+    2002: 29_300,
+    2003: 30_200,
+    2004: 31_000,
+    2005: 32_300,
+    2006: 34_000,
+    2007: 35_300,
+    2012: 38_800,
+    2013: 39_600,
+    2014: 40_400,
+    2015: 40_900,
+    2016: 42_200,
+    2017: 44_000,
+    2018: 45_900,
+    2019: 46_800,
+    2020: 48_100,
+    2021: 47_400,
+    2022: 51_600,
+    2023: 56_700,
+    2024: 59_100,
+    2025: 62_000,
+    2026: 64_500,
+}
+YEARS = sorted(set(NOTICES) | set(UI_BASES))
 # HRS 383-11(1)(A) and (4)(A).
 DEFERRALS = (
     "traditional_401k_contributions",
@@ -111,12 +145,18 @@ def cents(amount):
     return amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
+def to_hundreds(amount):
+    return (amount / 100).quantize(Decimal("1"), rounding=ROUND_HALF_UP) * 100
+
+
 def statutory_base(year):
     # HRS 383-61(b) rounds the average to the nearest hundred dollars, and HRS
     # 392-43(b)(2) takes one fifty-second of it times 1.21.
-    average = Decimal(NOTICES[year][0])
-    hundreds = (average / 100).quantize(Decimal("1"), rounding=ROUND_HALF_UP) * 100
-    return cents(hundreds * FACTOR / 52)
+    if year in NOTICES:
+        average = Decimal(NOTICES[year][0])
+    else:
+        average = Decimal(UI_BASES[year])
+    return cents(to_hundreds(average) * FACTOR / 52)
 
 
 def base_for(year):
@@ -167,7 +207,7 @@ def simulate(year, workers, **overrides):
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_parameters_follow_the_statute_from_each_notice_average(year):
+def test_parameters_follow_the_statute_from_each_average(year):
     instant = f"{year}-01-01"
     assert TDI.maximum_weekly_wage_base(instant) == pytest.approx(
         base_for(year), abs=1e-9
@@ -175,7 +215,12 @@ def test_parameters_follow_the_statute_from_each_notice_average(year):
     assert TDI.employee_rate(instant) == float(RATE)
 
 
-@pytest.mark.parametrize("year", YEARS)
+@pytest.mark.parametrize("year", sorted(set(NOTICES) & set(UI_BASES)))
+def test_unemployment_base_is_the_notice_average_rounded(year):
+    assert to_hundreds(Decimal(NOTICES[year][0])) == UI_BASES[year]
+
+
+@pytest.mark.parametrize("year", sorted(NOTICES))
 def test_notice_applies_the_formula_to_the_average_before_rounding(year):
     annual_wage, base, deduction = (Decimal(value) for value in NOTICES[year])
     rounded_once = cents(annual_wage / 52 * FACTOR)
@@ -226,7 +271,19 @@ def pinned_worker(wages, weeks=52, hours=40, state="HI", **amounts):
     batch=st.lists(workers, min_size=5, max_size=30),
     bump=st.integers(1, 20_000),
 )
-# The scanned 2003 notice is the oldest; pin a batch that reaches its cap.
+# Pin batches that reach the cap in 2000, the first modeled year, and in 2003,
+# the year of the oldest notice.
+@example(
+    year=2000,
+    batch=[
+        pinned_worker(1_000_000),
+        pinned_worker(33_275),  # Just over 52 * 639.90 = 33,274.80.
+        pinned_worker(200_000, weeks=14, hours=20, premiums=5_000, deferral=10_000),
+        pinned_worker(399, weeks=13, hours=19),
+        pinned_worker(1_000_000, state="TX"),
+    ],
+    bump=1,
+)
 @example(
     year=2003,
     batch=[

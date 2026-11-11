@@ -61,7 +61,44 @@
     employee_payroll_tax: 8_040.23
     spm_unit_payroll_tax: 8_040.23
 
-- name: Hawaii 2003, the first modeled year, uses the 702.73 weekly wage base.
+- name: Hawaii 2000, the first modeled year, uses the 639.90 weekly wage base.
+  period: 2000
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: HI
+  output:
+    # The 2000 unemployment insurance base gives the rounded average, 27,500,
+    # and 27,500 * 1.21 / 52 = 639.90. 52 * 639.90 = 33,274.80.
+    hi_temporary_disability_insurance_taxable_wages: 33_274.80
+    # 0.5% * 33,274.80 = 166.37.
+    hi_employee_temporary_disability_insurance_contribution: 166.37
+
+- name: Hawaii 2001 uses the 660.85 weekly wage base.
+  period: 2001
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: HI
+  output:
+    # 28,400 * 1.21 / 52 = 660.85, and 52 * 660.85 = 34,364.20.
+    hi_temporary_disability_insurance_taxable_wages: 34_364.20
+    # 0.5% * 34,364.20 = 171.82.
+    hi_employee_temporary_disability_insurance_contribution: 171.82
+
+- name: Hawaii 2002 uses the 681.79 weekly wage base.
+  period: 2002
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: HI
+  output:
+    # 29,300 * 1.21 / 52 = 681.79, and 52 * 681.79 = 35,453.08.
+    hi_temporary_disability_insurance_taxable_wages: 35_453.08
+    # 0.5% * 35,453.08 = 177.27.
+    hi_employee_temporary_disability_insurance_contribution: 177.27
+
+- name: Hawaii 2003 uses the 702.73 weekly wage base.
   period: 2003
   absolute_error_margin: 0.01
   input:
@@ -103,7 +140,7 @@
     employee_state_payroll_tax: 200.00
 
 - name: Hawaii models no contribution before the first modeled year.
-  period: 2002
+  period: 1999
   absolute_error_margin: 0.01
   input:
     employment_income: 50_000
@@ -822,6 +859,62 @@
     # one week: 0.5% * 700 = 3.50.
     hi_temporary_disability_insurance_qualified: true
     hi_employee_temporary_disability_insurance_contribution: 3.50
+
+- name: Hawaii leaves a provided 1999 deferral out of 1999 wages for a short 2000.
+  period: 2000
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr:
+          1999: 10_000
+        traditional_401k_contributions:
+          1999: 9_700
+        employment_income:
+          2000: 600
+        weeks_worked:
+          1999: 52
+          2000: 1
+        weekly_hours_worked_before_lsr:
+          1999: 40
+          2000: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 10,000 - 9,700 = 300 of 1999 wages, under the 400 minimum, and one
+    # week in 2000 fails the 14-week minimum.
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii passes 1999 history at exactly 400 after a provided deferral.
+  period: 2000
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr:
+          1999: 10_000
+        traditional_401k_contributions:
+          1999: 9_600
+        employment_income:
+          2000: 600
+        weeks_worked:
+          1999: 52
+          2000: 1
+        weekly_hours_worked_before_lsr:
+          1999: 40
+          2000: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 10,000 - 9,600 = 400 of 1999 wages. 600 falls under the 639.90 cap for
+    # one week: 0.5% * 600 = 3.00.
+    hi_temporary_disability_insurance_qualified: true
+    hi_employee_temporary_disability_insurance_contribution: 3.00
 
 - name: Hawaii scales the contribution by the employer's deduction share.
   period: 2026

@@ -1,15 +1,24 @@
 description: Hawaii counts weekly wages up to this amount toward the employee temporary disability insurance contribution.
 values:
-  # Zero marks years before the first notice read (2003), not a law without a
-  # wage base. HRS 392-43(b)(2) sets the base at one fifty-second of the State's
-  # average annual wage as HRS 383-61(b) determines it for the preceding year,
-  # times 1.21, and HRS 383-61(b) computes that average rounded to the nearest
-  # hundred dollars. Each value takes the average from that year's DLIR notice,
+  # Zero marks years before 2000, when Act 30 of 1999 set the 52-week wages
+  # test the model applies, not a law without a wage base. HRS 392-43(b)(2)
+  # sets the base at one fifty-second of the State's average annual wage as HRS
+  # 383-61(b) determines it for the preceding year, times 1.21, and HRS
+  # 383-61(b) computes that average rounded to the nearest hundred dollars.
+  # From 2003, each value takes the average from that year's DLIR notice,
   # rounds it to $100, multiplies by 1.21 / 52 and rounds once to the cent. For
   # 2026, 64,471.82 rounds to 64,500, and 64,500 * 1.21 / 52 = 1,500.87. DLIR's
   # notices use the average before rounding (1,500.21 for 2026), so the values
-  # here run from 0.84 below to 1.15 above the published bases.
+  # from 2003 run from 0.84 below to 1.15 above the published bases.
+  # No notice survives for 2000-2002. Those values take the rounded average from
+  # that year's unemployment insurance taxable wage base, which HRS 383-61(b)
+  # sets at the same average: 27,500 * 1.21 / 52 = 639.90 for 2000. That base
+  # equals the notice's average rounded to $100 in every year from 2003 to 2026
+  # except 2008-2011, when HRS 383-61(c) set it.
   0000-01-01: 0
+  2000-01-01: 639.90
+  2001-01-01: 660.85
+  2002-01-01: 681.79
   2003-01-01: 702.73
   2004-01-01: 721.35
   2005-01-01: 751.60
@@ -44,6 +53,10 @@ metadata:
       href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0043.htm
     - title: Hawaii Revised Statutes Section 383-61(b)
       href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0061.htm
+    - title: Hawaii Session Laws 1999, Act 30
+      href: https://data.capitol.hawaii.gov/slh/Years/SLH1999/SLH1999_Act30.pdf#page=1
+    - title: Hawaii DLIR, Annual Evaluation of the Unemployment Compensation Trust Fund, December 2019 (taxable wage bases, 2000 to 2002)
+      href: https://labor.hawaii.gov/wp-content/uploads/2020/01/UI-Fund-Evaluation-2020.pdf#page=29
     - title: Hawaii DLIR, 2003 maximum weekly wage base notice
       href: https://web.archive.org/web/20030315040801/http://dlir.state.hi.us:80/dcd/WC%20weekly%20wage%20base.pdf#page=1
     - title: Hawaii DLIR, 2004 maximum weekly wage base notice

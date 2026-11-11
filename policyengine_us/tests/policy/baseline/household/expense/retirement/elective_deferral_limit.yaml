@@ -221,7 +221,35 @@
   output:
     elective_deferral_limit: 18_000
 
-- name: Case 24, the 2003 limit applies.
+- name: Case 24, the 1999 limit applies at any age.
+  period: 1999
+  input:
+    age: 55
+    traditional_401k_contributions_desired: 20_000
+  output:
+    elective_deferral_limit: 10_000
+    traditional_401k_contributions: 10_000
+
+- name: Case 25, the 2000 limit applies at any age.
+  period: 2000
+  input:
+    age: 55
+    traditional_401k_contributions_desired: 20_000
+  output:
+    elective_deferral_limit: 10_500
+    traditional_401k_contributions: 10_500
+
+- name: Case 26, the 2002 limit adds the 2002 catch-up.
+  period: 2002
+  input:
+    age: 55
+    traditional_401k_contributions_desired: 20_000
+  output:
+    # 11,000 + 1,000 = 12,000.
+    elective_deferral_limit: 12_000
+    traditional_401k_contributions: 12_000
+
+- name: Case 27, the 2003 limit applies.
   period: 2003
   input:
     age: 40
@@ -230,7 +258,7 @@
     elective_deferral_limit: 12_000
     traditional_401k_contributions: 12_000
 
-- name: Case 25, the 2003 limit adds the 2003 catch-up.
+- name: Case 28, the 2003 limit adds the 2003 catch-up.
   period: 2003
   input:
     age: 55
