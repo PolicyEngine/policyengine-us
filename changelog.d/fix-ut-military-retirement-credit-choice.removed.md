@@ -1,0 +1,1 @@
+Remove the `gov.states.ut.tax.income.credits.military_retirement.rate` parameter; Utah's military retirement credit now reads `gov.states.ut.tax.income.rate`, the 59-10-104(2) percentage that 59-10-1043 names. The two parameters held the same values for 2021 through 2025.

@@ -19,8 +19,8 @@ class ut_claims_retirement_credit(Variable):
         "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1019.html",
         "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1042.html",
         "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1043.html",
+        # PDF pages 21, 23
         "https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=21",
-        "https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=23",
     )
     definition_period = YEAR
     defined_for = StateCode.UT

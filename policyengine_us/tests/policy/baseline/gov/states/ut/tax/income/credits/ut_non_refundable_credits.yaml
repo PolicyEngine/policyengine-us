@@ -1,0 +1,111 @@
+# The military retirement credit (Utah Code 59-10-1043, TC-40A Part 3 code AJ)
+# has reduced Utah tax since tax year 2021: 2021 S.B. 11, Section 4, gives the
+# credit retrospective operation for taxable years beginning on or after
+# January 1, 2021, and the 2021, 2022 and 2023 TC-40 instructions each list it
+# among the line 24 apportionable nonrefundable credits (page 11) with a
+# worksheet at that year's rate (2021 page 22, 2022 page 22, 2023 page 23).
+#
+# Each expected amount below follows the TC-40 for its year:
+#   line 10  tax = Utah taxable income x the rate
+#   line 16  initial taxpayer credit = 6% x the federal standard deduction
+#   line 19  phase-out = 1.3% x (Utah taxable income - the line 17 base amount)
+#   line 22  tax before nonrefundable credits = line 10 - (line 16 - line 19)
+
+- name: 2021 - a 75-year-old's military retirement credit, limited to tax, brings Utah tax to zero
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Born in 1946: 450 - 2.5% x (30,000 - 25,000) = 325.
+    ut_retirement_credit_max: 325
+    # 2021 worksheet: 30,000 x 0.0495 = 1,485, more than 325.
+    ut_military_retirement_credit_max: 1_485
+    ut_claims_retirement_credit: false
+    # Line 10: 30,000 x 4.95% = 1,485.
+    # Line 16: 6% x (12,550 + 1,700 for age 65 or over) = 855.
+    # Line 19: 1.3% x (30,000 - 15,095) = 193.765.
+    # Line 22: 1,485 - (855 - 193.765) = 823.765.
+    ut_income_tax_before_non_refundable_credits: 823.765
+    # The 1,485 credit cannot exceed the tax.
+    ut_military_retirement_credit: 823.765
+    ut_non_refundable_credits: 823.765
+    ut_income_tax: 0
+
+- name: 2022 - a working couple's military retirement credit comes off Utah tax in full
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        military_retirement_pay: 30_000
+        employment_income: 60_000
+      person2:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Both spouses were born after 1952.
+    ut_retirement_credit_max: 0
+    # 2022 worksheet: 30,000 x 0.0485 = 1,455.
+    ut_military_retirement_credit_max: 1_455
+    ut_claims_retirement_credit: false
+    # Line 10: 90,000 x 4.85% = 4,365.
+    # Line 16: 6% x 25,900 = 1,554.
+    # Line 19: 1.3% x (90,000 - 31,096) = 765.752.
+    # Line 22: 4,365 - (1,554 - 765.752) = 3,576.752.
+    ut_income_tax_before_non_refundable_credits: 3_576.752
+    ut_military_retirement_credit: 1_455
+    ut_non_refundable_credits: 1_455
+    # 3,576.752 - 1,455 = 2,121.752.
+    ut_income_tax: 2_121.752
+
+- name: 2023 - a 75-year-old's military retirement credit, limited to tax, brings Utah tax to zero
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Born in 1948: 450 - 2.5% x (30,000 - 25,000) = 325.
+    ut_retirement_credit_max: 325
+    # 2023 worksheet: 30,000 x 0.0465 = 1,395, more than 325.
+    ut_military_retirement_credit_max: 1_395
+    ut_claims_retirement_credit: false
+    # Line 10: 30,000 x 4.65% = 1,395.
+    # Line 16: 6% x (13,850 + 1,850 for age 65 or over) = 942.
+    # Line 19: 1.3% x (30,000 - 16,742) = 172.354.
+    # Line 22: 1,395 - (942 - 172.354) = 625.354.
+    ut_income_tax_before_non_refundable_credits: 625.354
+    # The 1,395 credit cannot exceed the tax.
+    ut_military_retirement_credit: 625.354
+    ut_non_refundable_credits: 625.354
+    ut_income_tax: 0
