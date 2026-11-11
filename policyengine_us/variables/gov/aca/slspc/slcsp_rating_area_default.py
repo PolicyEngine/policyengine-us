@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.parameters.gov.hhs.medicaid.geography import (
     aca_rating_areas,
+    aca_rating_area_corrections,
 )
 
 
@@ -9,27 +10,36 @@ class slcsp_rating_area_default(Variable):
     entity = Household
     label = "Second-lowest ACA silver-plan cost rating area outside of LA County"
     definition_period = YEAR
+    reference = "https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-gra"
+    documentation = (
+        "The county's ACA rating area: aca_rating_areas.csv, with the counties in "
+        "aca_rating_area_corrections.csv moved to CMS's rating area from their "
+        "start_year. Counties not in either file fall in rating area 1."
+    )
 
     def formula(household, period, parameters):
-        # 1) Read the county string from the Household
         county_str = household("county_str", period)
 
-        # 2) Ensure 'rating_area' is a string in aca_rating_areas
-        aca_rating_areas["rating_area"] = aca_rating_areas["rating_area"].astype(str)
+        # Corrections in effect this year replace the base map's rows.
+        corrections = aca_rating_area_corrections[
+            aca_rating_area_corrections["start_year"] <= period.start.year
+        ]
+        corrections = corrections.sort_values("start_year").drop_duplicates(
+            "county", keep="last"
+        )
+        mapping = pd.concat(
+            [
+                aca_rating_areas[
+                    ~aca_rating_areas["county"].isin(corrections["county"])
+                ],
+                corrections[["county", "rating_area"]],
+            ]
+        )
 
-        # 3) Create a DataFrame using county_str
-        df = pd.DataFrame({"county": county_str})
-
-        # 4) Merge on "county"
         df_matched = pd.merge(
-            df,
-            aca_rating_areas,
+            pd.DataFrame({"county": county_str}),
+            mapping,
             how="left",
             on="county",
         )
-
-        # 5) Fill missing rating areas with "1", convert to int
-        df_matched["rating_area"] = df_matched["rating_area"].fillna("1").astype(int)
-
-        # 6) Return the rating_area column
-        return df_matched["rating_area"]
+        return df_matched["rating_area"].fillna(1).astype(int).values

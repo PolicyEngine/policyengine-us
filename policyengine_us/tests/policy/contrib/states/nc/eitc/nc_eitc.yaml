@@ -49,3 +49,21 @@
     nc_eitc: 3_000
     nc_refundable_credits: 3_000
     nc_income_tax: -2_500
+
+- name: NC EITC reform keeps the baseline claim of right payment
+  # Regression test for #8775: the reform adds its EITC to North Carolina's
+  # baseline refundable credits instead of replacing them.
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.eitc.nc_eitc
+  input:
+    gov.contrib.states.nc.eitc.match: 0.1
+    state_code: NC
+    eitc: 1_000
+    nc_claim_of_right_payment: 250
+    nc_income_tax_before_credits: 600
+    nc_use_tax: 0
+    nc_non_refundable_credits: 0
+  output:
+    nc_eitc: 100
+    nc_refundable_credits: 350
+    nc_income_tax: 250

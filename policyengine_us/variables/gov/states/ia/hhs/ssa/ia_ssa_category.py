@@ -30,6 +30,10 @@ class ia_ssa_category(Variable):
     resources, which 441 IAC 51.5(2) counts with the recipient's; the model
     tests only the recipient's and spouse's resources.
     For residential care, set ia_ssa_care_initial_partial_month in the month
-    of entry; a married resident is budgeted alone from the next month.
+    of entry; a married resident is budgeted alone from the next month. If
+    spouses enter separate facilities, ia_ssa_rcf_received_ssi_before_entry
+    records prior SSI receipt for their entry-month couple budget. Without
+    prior SSI, the same-month couple entry rule also requires
+    ia_ssa_rcf_shares_room_with_spouse.
     NONE also excludes the blind allowance; otherwise it may accompany care.
     """
