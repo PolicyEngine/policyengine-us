@@ -105,9 +105,11 @@ TIER_2 = "taxable_railroad_pension_benefits"
 TAX_FREE = "tax_exempt_railroad_pension_benefits"
 PARAMETERS = system.parameters(f"{YEAR}-01-01")
 
-# The Idaho skip in S2 ends once the SNAP income list counts railroad benefits.
-SNAP_COUNTS_RAILROAD = "railroad_benefits" in (
-    PARAMETERS.gov.usda.snap.income.sources.unearned
+# The Idaho skip in S2 ends once the SNAP income list counts railroad benefits,
+# as the total or as all three parts.
+SNAP_UNEARNED = set(PARAMETERS.gov.usda.snap.income.sources.unearned)
+SNAP_COUNTS_RAILROAD = (
+    "railroad_benefits" in SNAP_UNEARNED or {TIER_1, TIER_2, TAX_FREE} <= SNAP_UNEARNED
 )
 
 MN_RATES = PARAMETERS.gov.states.mn.tax.income.rates
