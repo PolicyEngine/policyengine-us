@@ -23,20 +23,28 @@ Invariants:
   NO_RAILROAD_INCOME with the reason it doesn't. A new reader fails this test
   until its author reads the rule and does one or the other. R3 reads names
   written out in full, so a name built with an f-string or concatenation, or a
-  scalar parameter, passes unseen.
-- R4: no parameter list or variable adds list holds a railroad amount twice, or
-  holds a railroad amount with a part of it.
+  scalar parameter, passes unseen. So does a module that names Social Security in
+  one top-level list and railroad benefits in another, since R3 reads a
+  module's top level as one scope.
+- R4: no two entries of a parameter list or variable adds list hold the same
+  railroad dollars. The total, the tier 1 amount, the taxable total and each
+  part map to the taxable and tax-free tier 1 benefits and the taxable and
+  tax-free rest of the annuity.
 - R5: a state or county program that reads a federal total, list or test takes
-  its sources. R5 finds each federal list that holds Social Security without
-  railroad benefits and each federal variable that adds such a list or reads it
-  in a formula. It then follows those variables through up to two more formulas
-  that name no railroad amount. Two steps reach the MAGI amounts and poverty
-  ratios that state code reads; a third would reach eligibility tests and
-  benefit amounts, such as is_snap_eligible and aca_ptc, so R5 stops at two.
-  Each source that state or county code reads must appear in FEDERAL_GAPS, and
-  the test fails on an entry once its source counts railroad benefits or no
-  state or county code reads it. A new reader of a source already in
-  FEDERAL_GAPS passes.
+  its sources. R5 starts from each federal list that holds Social Security
+  without railroad benefits, each federal variable that adds such a list or
+  reads it in a formula, and each federal variable whose own code names a
+  Social Security amount and no railroad amount, as R3 checks state code. It
+  then follows those variables through up to two more formulas that name no
+  railroad amount. Each source that state or county code reads must appear in
+  FEDERAL_GAPS, and the test fails on an entry once its source counts railroad
+  benefits or no state or county code reads it. A new reader of a source
+  already in FEDERAL_GAPS passes. A third formula step would reach further
+  eligibility tests and benefit amounts, such as is_snap_eligible and aca_ptc,
+  and R5 doesn't follow it. R5 reads a parameter path written out in code, or
+  built through names assigned in the same module or function, or named in a
+  string. A path passed as a function argument or read with getattr passes
+  unseen.
 """
 
 import ast
@@ -152,9 +160,9 @@ ALREADY_COUNTED = [
     ("WY", "wy_lieap_countable_income", "LIEAP income list"),
 ]
 
-# These totals count cash aid (ca_tanf, ks_tanf or tanf) that falls as income
-# rises, so a benefit the aid program counts removes aid from a household on the
-# program. Wages above the aid programs' limits keep the aid at zero with and
+# These totals count cash aid (ca_tanf, hi_tanf, ks_tanf or tanf) that falls as
+# income rises, so a benefit the aid program counts removes aid from a household
+# on the program. Wages above the aid programs' limits keep the aid at zero with and
 # without the benefit.
 WAGES_ABOVE_AID_LIMITS = {"employment_income": 60_000}
 BASE_INPUTS = {
@@ -163,6 +171,7 @@ BASE_INPUTS = {
     "ca_la_ez_save_countable_income": WAGES_ABOVE_AID_LIMITS,
     "ca_riv_liheap_countable_income": WAGES_ABOVE_AID_LIMITS,
     "ca_riv_share_countable_income": WAGES_ABOVE_AID_LIMITS,
+    "hi_ccap_countable_income": WAGES_ABOVE_AID_LIMITS,
     "ks_liheap_countable_unearned_income": WAGES_ABOVE_AID_LIMITS,
     "la_general_relief_gross_income": WAGES_ABOVE_AID_LIMITS,
     "wa_eceap_family_income": WAGES_ABOVE_AID_LIMITS,
@@ -274,33 +283,51 @@ SOCIAL_SECURITY = {
     "tax_exempt_social_security",
 }
 
-# The total and its parts. PolicyEngine/policyengine-us#10696 splits
-# railroad_benefits into the tier 1, taxable tier 2 and tax-free tier 2 parts and
-# defines the federal tax amounts.
-RAILROAD = {
-    "railroad_benefits",
-    "railroad_social_security_equivalent_benefits",
-    "taxable_railroad_pension_benefits",
-    "tax_exempt_railroad_pension_benefits",
-    "taxable_railroad_social_security_equivalent_benefits",
-    "tax_exempt_railroad_social_security_equivalent_benefits",
-    "taxable_railroad_benefits",
-}
-RAILROAD_PARTS = RAILROAD - {"railroad_benefits"}
-# Each railroad amount and the amounts it holds.
-RAILROAD_HOLDS = {
-    "railroad_benefits": RAILROAD_PARTS,
+# Each railroad amount and the dollars it holds: the taxable and tax-free tier 1
+# social security equivalent benefits, and the taxable and tax-free rest of the
+# annuity. PolicyEngine/policyengine-us#10696 splits railroad_benefits into the
+# tier 1 amount and the two parts of the rest, and defines the tax amounts.
+TIER_1_TAXABLE = "taxable_railroad_social_security_equivalent_benefits"
+TIER_1_TAX_FREE = "tax_exempt_railroad_social_security_equivalent_benefits"
+REST_TAXABLE = "taxable_railroad_pension_benefits"
+REST_TAX_FREE = "tax_exempt_railroad_pension_benefits"
+RAILROAD_DOLLARS = {
+    "railroad_benefits": {
+        TIER_1_TAXABLE,
+        TIER_1_TAX_FREE,
+        REST_TAXABLE,
+        REST_TAX_FREE,
+    },
     "railroad_social_security_equivalent_benefits": {
-        "taxable_railroad_social_security_equivalent_benefits",
-        "tax_exempt_railroad_social_security_equivalent_benefits",
+        TIER_1_TAXABLE,
+        TIER_1_TAX_FREE,
     },
-    "taxable_railroad_benefits": {
-        "taxable_railroad_social_security_equivalent_benefits",
-        "taxable_railroad_pension_benefits",
+    "tax_unit_railroad_social_security_equivalent_benefits": {
+        TIER_1_TAXABLE,
+        TIER_1_TAX_FREE,
     },
+    "tax_unit_railroad_social_security_equivalent_benefits_for_taxability": {
+        TIER_1_TAXABLE,
+        TIER_1_TAX_FREE,
+    },
+    "taxable_railroad_benefits": {TIER_1_TAXABLE, REST_TAXABLE},
+    "tax_unit_taxable_railroad_social_security_equivalent_benefits": {TIER_1_TAXABLE},
+    TIER_1_TAXABLE: {TIER_1_TAXABLE},
+    TIER_1_TAX_FREE: {TIER_1_TAX_FREE},
+    REST_TAXABLE: {REST_TAXABLE},
+    REST_TAX_FREE: {REST_TAX_FREE},
+}
+# A dependent's own return taxes the dependent's tier 1 benefits, so this amount
+# and the filers' taxable tier 1 amount hold different people's dollars.
+RAILROAD = set(RAILROAD_DOLLARS) | {
+    "dependent_taxable_railroad_social_security_equivalent_benefits"
 }
 
-SIGNAL = "Reads receipt of a benefit as a yes-or-no test, not an income amount."
+SIGNAL = (
+    "Reads receipt of a benefit as a yes-or-no test, not an income amount. "
+    "railroad_benefits doesn't separate disability annuities, so it can't stand "
+    "in for Social Security disability in a disability test."
+)
 SOCIAL_SECURITY_ONLY = "The rule or list covers Social Security benefits alone."
 DISABILITY_ONLY = (
     "The list holds disability income, and railroad_benefits doesn't separate "
@@ -470,14 +497,13 @@ def test_each_social_security_reader_counts_railroad_benefits_or_says_why():
 
 
 def counts_railroad_twice(names):
-    """Whether a list holds a railroad amount twice, or with a part of it."""
-    return any(names.count(name) > 1 for name in RAILROAD & set(names)) or any(
-        RAILROAD_HOLDS[name] & set(names) for name in set(RAILROAD_HOLDS) & set(names)
-    )
+    """Whether two entries of a list hold the same railroad dollars."""
+    dollars = [part for name in names for part in RAILROAD_DOLLARS.get(name, ())]
+    return len(dollars) != len(set(dollars))
 
 
 def test_no_list_holds_railroad_benefits_twice():
-    """R4. A second entry, or an amount with its part, would count dollars twice."""
+    """R4. Two entries that hold the same dollars would count them twice."""
     repeated = []
     for path in (PACKAGE / "parameters" / "gov").rglob("*.yaml"):
         text = path.read_text(encoding="utf8")
@@ -496,8 +522,7 @@ def test_no_list_holds_railroad_benefits_twice():
 
 # Federal totals, lists and tests that state and county programs read. Each one
 # counts Social Security, or tests for Social Security disability, and leaves
-# railroad benefits out, so the programs that read it leave them out too,
-# although their rules count them.
+# railroad benefits out, so the programs that read it leave them out too.
 FEDERAL_GAPS = {
     # Issue PolicyEngine/policyengine-us#10551 covers the TANF, SNAP and school
     # meals lists. Under 7 CFR 273.9(b)(2)(ii), state SNAP agencies count
@@ -521,8 +546,20 @@ FEDERAL_GAPS = {
     # annuitant as disabled, and railroad_benefits doesn't separate disability
     # annuities from the others.
     "is_usda_disabled": "SNAP disability test: NC, NV, NY and OK energy aid",
+    # Under 42 U.S.C. 426(b)(2)(B), a person under 65 gets Medicare Part A
+    # after 24 months as "a disabled qualified railroad retirement beneficiary".
+    # is_medicare_eligible tests age 65, or Social Security disability for 24
+    # months, and the premiums, enrollment and Medicaid tests below read it.
+    "is_medicare_eligible": "Medicare test: IL SMIB and fares, MBTA, MS HMW, DART",
+    "base_part_b_premium": "Part B premium: IL SMIB",
+    "medicare_enrolled": "Medicare enrollment: RI Medicaid third-party coverage",
+    "medicare_part_a_premium": "Part A premium: energy aid income in eight states",
+    "medicare_part_b_premium": "Part B premium: energy aid in 28 states, WA exemption",
+    "is_adult_for_medicaid": "Medicaid adult test: MS HMW other coverage",
+    "is_medicaid_eligible": "Medicaid test: CA CCHIP, CO CHP+",
+    "medicaid_optional_senior_or_disabled_countable_income": "MS HMW income",
 }
-# Formulas R5 follows past a federal list or the variable that adds it.
+# Formulas R5 follows past each federal variable it starts from.
 FEDERAL_FORMULA_STEPS = 2
 
 
@@ -546,36 +583,67 @@ def federal_lists_without_railroad():
     return found
 
 
-def attribute_chains(tree):
-    """Dotted parameter paths from gov onward, and every attribute name."""
-    chains, attributes = set(), set()
-    for node in ast.walk(tree):
+def parameter_paths(node, aliases):
+    """The dotted paths from gov onward that an expression can name."""
+    parts = []
+    while isinstance(node, ast.Attribute):
+        parts.append(node.attr)
+        node = node.value
+    parts.reverse()
+    if "gov" in parts:
+        return {".".join(parts[parts.index("gov") :])}
+    if isinstance(node, ast.Name):
+        return {".".join([base, *parts]) for base in aliases.get(node.id, ())}
+    return set()
+
+
+def scope_nodes(scope):
+    """The nodes of a module or function, without the bodies of functions inside."""
+    pending = list(ast.iter_child_nodes(scope))
+    while pending:
+        node = pending.pop()
+        yield node
+        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            pending.extend(ast.iter_child_nodes(node))
+
+
+def scope_paths(scope, outer):
+    """The parameter paths a scope reads, through the names it assigns paths to."""
+    aliases = {name: set(paths) for name, paths in outer.items()}
+    nodes = list(scope_nodes(scope))
+    assignments = [
+        (node.targets[0].id, node.value)
+        for node in nodes
+        if isinstance(node, ast.Assign)
+        and len(node.targets) == 1
+        and isinstance(node.targets[0], ast.Name)
+    ]
+    grew = True
+    while grew:
+        grew = False
+        for name, value in assignments:
+            new = parameter_paths(value, aliases) - aliases.get(name, set())
+            if new:
+                aliases.setdefault(name, set()).update(new)
+                grew = True
+    paths = set()
+    for node in nodes:
         if isinstance(node, ast.Attribute):
-            attributes.add(node.attr)
-            parts = []
-            current = node
-            while isinstance(current, ast.Attribute):
-                parts.append(current.attr)
-                current = current.value
-            parts.reverse()
-            if "gov" in parts:
-                chains.add(".".join(parts[parts.index("gov") :]))
-    return chains, attributes
+            paths |= parameter_paths(node, aliases)
+    return paths, aliases
 
 
 def reads_a_list(tree, lists):
-    """The listed parameter paths that parsed code reads."""
-    chains, attributes = attribute_chains(tree)
-    found = set()
-    for listed in lists:
-        parent, leaf = listed.rsplit(".", 1)
-        if listed in chains or (parent in chains and leaf in attributes):
-            found.add(listed)
-    return found
+    """The listed parameter paths that parsed code reads or names in a string."""
+    paths, aliases = scope_paths(tree, {})
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            paths |= scope_paths(node, aliases)[0]
+    return lists & (paths | code_strings([tree], set()))
 
 
 def federal_variables():
-    """Each federal variable, its adds, and the variables and lists its code names."""
+    """Each federal variable: its adds, the variables it names, its code and scopes."""
     found = {}
     for name, variable in system.variables.items():
         try:
@@ -586,32 +654,41 @@ def federal_variables():
         if is_state_or_local(relative):
             continue
         adds = variable.adds
-        tree = ast.parse(source.read_text(encoding="utf8"))
+        text = source.read_text(encoding="utf8")
+        tree = ast.parse(text)
         names = code_strings([tree], set())
         if isinstance(adds, (list, tuple)):
             names |= set(adds)
-        found[name] = (adds, names & set(system.variables), tree)
+        scopes = list(code_scopes(text))
+        found[name] = (adds, names & set(system.variables), tree, scopes)
     return found
+
+
+def counts_social_security_alone(adds, names, tree, scopes, lists):
+    """Whether a federal variable takes Social Security with no railroad amount."""
+    if isinstance(adds, str):
+        listed = adds in lists
+    else:
+        listed = isinstance(adds, (list, tuple)) and lacks_railroad(adds)
+    if (listed or reads_a_list(tree, lists)) and not names & RAILROAD:
+        return True
+    return any(lacks_railroad(scope) for scope in scopes)
 
 
 def federal_sources_without_railroad():
     """Federal lists and variables that count Social Security without railroad."""
     lists = federal_lists_without_railroad()
     variables = federal_variables()
-    found = set()
-    for name, (adds, names, tree) in variables.items():
-        if name in SOCIAL_SECURITY or names & RAILROAD:
-            continue
-        if (
-            (isinstance(adds, str) and adds in lists)
-            or (isinstance(adds, (list, tuple)) and lacks_railroad(adds))
-            or reads_a_list(tree, lists)
-        ):
-            found.add(name)
+    found = {
+        name
+        for name, (adds, names, tree, scopes) in variables.items()
+        if name not in SOCIAL_SECURITY
+        and counts_social_security_alone(adds, names, tree, scopes, lists)
+    }
     for _ in range(FEDERAL_FORMULA_STEPS):
         found |= {
             name
-            for name, (_, names, _) in variables.items()
+            for name, (_, names, _, _) in variables.items()
             if name not in SOCIAL_SECURITY and names & found and not names & RAILROAD
         }
     return lists, found
