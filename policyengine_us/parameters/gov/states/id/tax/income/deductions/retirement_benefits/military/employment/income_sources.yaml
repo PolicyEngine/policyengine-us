@@ -5,11 +5,13 @@ values:
   2021-01-01:
     # Wages: Form 1040 line 1a, as in the federal gross income test.
     - irs_employment_income
-    # Idaho Code 63-3022A(1)(b)(iii) ("was employed during the tax year and
+    # Idaho Code 63-3022A(1)(b)(iii) ("Was employed during the tax year and
     # received sufficient income from such employment") doesn't define
     # employment, and the Form 39R line 8e instructions repeat its words.
     # PolicyEngine counts business and farm profits as income from
-    # employment.
+    # employment: the section 6012 gross income test that the statute
+    # borrows counts them, and a self-employed recipient works for the
+    # income as an employee does.
     - self_employment_income
     - sstb_self_employment_income
     - farm_operations_income

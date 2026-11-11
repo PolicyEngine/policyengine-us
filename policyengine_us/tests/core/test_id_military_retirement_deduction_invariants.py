@@ -14,8 +14,10 @@ widow or widower, who:
 Before 2025 the benefits had the age test of 63-3022A(1)(a): age 65, or age 62
 and classified as disabled. In every year they share the deduction's cap,
 63-3022A(2) ($48,216 single and $72,324 joint for 2025, Form 39R line 8a, and
-nothing on a separate return), which the Social Security and Railroad
-Retirement benefits of the taxpayer and spouse reduce, 63-3022A(3).
+nothing on a separate return). 63-3022A(3) reduces the cap by the Social
+Security and Railroad Retirement benefits of the taxpayer and spouse. The
+model subtracts the head's and spouse's Social Security retirement benefits
+only; the units here have no Railroad Retirement benefits.
 
 The reference rules below restate the law from published amounts, not from
 the model's parameters. `test_grid` runs one simulation over 2024 to 2026 for
@@ -35,7 +37,7 @@ pension:
    statute's tests admit, restated here, in every year.
 3. Cap and offset: in 2025 the deduction equals the lesser of the counted
    benefits and the published cap less the head's and spouse's Social
-   Security benefits, and never falls below zero.
+   Security retirement benefits, and never falls below zero.
 4. Monotonicity: more military retired pay never lowers the deduction and
    never raises it by more than the added pay. For a recipient the tests
    don't admit, it doesn't change the deduction.

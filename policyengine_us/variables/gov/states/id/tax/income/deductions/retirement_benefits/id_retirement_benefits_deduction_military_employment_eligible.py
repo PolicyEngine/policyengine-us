@@ -7,17 +7,36 @@ class id_retirement_benefits_deduction_military_employment_eligible(Variable):
     label = "Employment income requires a federal return, for the Idaho military retirement benefits deduction"
     documentation = """
     Idaho Code 63-3022A(1)(b)(iii) admits the military retirement benefits of
-    a recipient who "was employed during the tax year and received sufficient
+    a recipient who "Was employed during the tax year and received sufficient
     income from such employment to be required to file a federal return under
     section 6012(a)(1) of the Internal Revenue Code". This is true when the
     person's income from employment, by itself, meets the gross income test
     of the federal filing requirement for the person's return, as
-    tax_unit_is_required_to_file applies it to a return nobody can claim:
-    section 6012(f), more than the standard deduction, for 2018 to 2025, and
-    section 6012(a)(1)(A) and (B), at least the basic standard deduction plus
-    the additions for age, in other years. On a joint return the threshold is
-    the joint one. As in the federal gross income, a loss from one source
-    doesn't reduce income from another.
+    tax_unit_is_required_to_file applies it to a return nobody can claim. As
+    in the federal gross income, a loss from one source doesn't reduce income
+    from another.
+
+    The statute and the Form 39R line 8e instructions, which repeat its words
+    without the section number, leave four points open. PolicyEngine takes
+    these readings:
+
+    1. The test for 2025. For 2018 to 2025, section 6012(f) says "subsection
+       (a)(1) shall not apply" and requires a return when gross income
+       exceeds the standard deduction, which includes the additions for age
+       and blindness. The model applies section 6012(f) for 2025, the federal
+       requirement in force that year, and section 6012(a)(1)(A) and (B) from
+       2026: at least the basic standard deduction plus the additions for
+       age. Applying the (a)(1) thresholds to 2025 would also admit income
+       equal to the threshold and leave out blindness, and a literal reading
+       would admit nobody for 2025, when (a)(1) requires no return.
+    2. Self-employment. Business and farm profits count as income from
+       employment, as wages do.
+    3. Joint returns. The person's own income from employment is compared
+       with the joint return's threshold, whatever the spouse earns. Section
+       6012 itself combines the spouses' gross income.
+    4. Self-employment tax returns. Section 6017 requires a return from an
+       individual with $400 of net earnings from self-employment. The statute
+       names section 6012(a)(1), so that requirement doesn't count here.
     """
     definition_period = YEAR
     defined_for = StateCode.ID
