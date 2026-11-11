@@ -37,6 +37,7 @@ AGGREGATE_LISTS = [
     "gov/states/household/state_cdccs.yaml",
     "gov/hhs/ccdf/child_care_subsidy_programs.yaml",
     "gov/household/household_state_benefits.yaml",
+    "gov/states/household/state_property_tax_refunds.yaml",
 ]
 
 # Gates that restrict a variable geographically without a StateCode
@@ -290,6 +291,7 @@ SHARED_CASH_PROGRAMS = {
         "nj_property_tax_relief",
         "ny_drive_clean_rebate",
         "railroad_benefits",
+        "state_property_tax_refunds",
         "veterans_benefits",
     },
     "household_benefits": {

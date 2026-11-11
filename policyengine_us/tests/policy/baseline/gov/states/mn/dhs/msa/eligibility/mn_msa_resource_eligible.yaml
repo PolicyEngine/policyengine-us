@@ -332,3 +332,56 @@
         state_code: MN
   output:
     mn_msa_resource_eligible: true
+
+- name: Minnesota non-SSI resource test excludes the third adult's resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        ssi: 0
+        ssi_countable_resources:
+          2026: 1_000
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ssi: 0
+        ssi_countable_resources:
+          2026: 1_000
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        ssi: 0
+        ssi_countable_resources:
+          2026: 9_000
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: MN
+  output:
+    # Minn. Stat. 256P.02 Subd. 2 limits each assistance unit to $10,000:
+    # the couple has $2,000; the individual has $9,000.
+    # https://www.revisor.mn.gov/statutes/cite/256P.02#stat.256P.02.2
+    mn_msa_resource_eligible: [true, true, true]
+    # CM 0020.21, with no countable income: 1,058 / 2 = 529 each;
+    # the third adult's individual living-with-others standard is 755.33.
+    # https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=4
+    mn_msa_person: [529, 529, 755.33]

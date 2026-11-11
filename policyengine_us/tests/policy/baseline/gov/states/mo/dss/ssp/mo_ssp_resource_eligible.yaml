@@ -383,3 +383,45 @@
     # Combined $7,000 exceeds the $6,068.80 individual limit but not the
     # $12,137.55 couple limit in effect in January 2026.
     mo_ssp_resource_eligible: [true, true]
+
+# DSS Manual 1035.005.00 counts property owned by either spouse. MHABD Appendix J (July 2026) allows $12,441 per couple and $6,220.50 per individual. The couple has $7,000 + $1,000 = $8,000; the third adult has $1,000.
+# https://dssmanuals.mo.gov/december-1973-eligibility-requirements/1035-000-00/1035-005-00/
+- name: Missouri identifies co-resident spouses for the SNC resource limit
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        ssi_countable_resources:
+          2026: 7000
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        ssi_countable_resources:
+          2026: 1000
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        ssi_countable_resources:
+          2026: 1000
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: MO
+  output:
+    mo_ssp_resource_eligible: [true, true, true]

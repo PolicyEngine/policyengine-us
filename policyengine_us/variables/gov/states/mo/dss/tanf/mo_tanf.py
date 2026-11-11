@@ -9,6 +9,9 @@ class mo_tanf(Variable):
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",
+        # 13 CSR 40-2.310(14): payments lowered to the whole dollar; no
+        # payment below $10.
+        "https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-2.pdf#page=36",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-010-15/",
     )
     defined_for = "mo_tanf_eligible"
@@ -19,4 +22,10 @@ class mo_tanf(Variable):
         benefit = max_(maximum_benefit - countable_income, 0)
         capped_benefit = min_(benefit, maximum_benefit)
         p = parameters(period).gov.states.mo.dss.tanf
-        return where(capped_benefit >= p.minimum_payment, capped_benefit, 0)
+        # Missouri lowers the deficit to whole dollars and pays no grant
+        # below $10 under 13 CSR 40-2.310(14). Round to four decimals
+        # before flooring to remove float32 error from earned disregards.
+        # This precision policy can change deficits within $0.00005 of a
+        # dollar; cents-valued deficits keep their whole-dollar floor.
+        payment = np.floor(np.round(capped_benefit, 4))
+        return where(payment >= p.minimum_payment, payment, 0)
