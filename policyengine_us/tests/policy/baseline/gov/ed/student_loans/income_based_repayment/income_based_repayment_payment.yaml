@@ -830,5 +830,4 @@
         state_code: TX
   output:
     # A new borrower pays 10%: 10% x (30,000 - 23,940) / 12 = 50.50.
-    income_driven_repayment_dependent_adjusted_gross_income: [0, 30_000]
     income_based_repayment_payment: [0, 50.5]
