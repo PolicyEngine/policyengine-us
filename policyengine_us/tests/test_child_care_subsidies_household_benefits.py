@@ -22,8 +22,8 @@ the one list of state programs.
    the state rate less the family share, and the family owes tuition less that
    payment. The family owes less than its share when tuition falls below the
    state rate, and its share plus the excess when tuition reaches the state rate.
-   With more than one child in care, one program's payment above its tuition
-   offsets another child's bill, and this test doesn't cover that case.
+   test_vt_ccfap_per_provider_properties covers families with more than one
+   child in care, where each program's invoice nets only its own payment.
 
 The YAML cases pin single families. These read every dated block of the list and
 generate programs, years and amounts, which YAML can't express.

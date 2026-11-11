@@ -10776,6 +10776,10 @@ candidates:
   - kind: guidance
     citation: Child Development Division memo of January 13, 2026, separate tuition example 1
     url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/CDD-Memo-UPK-and-CCFAP-family-tuition%20(1).pdf#page=6
+  - kind: guidance
+    citation: Child Development Division memo of August 14, 2026, which replaces the January memo, separate tuition
+      example 1
+    url: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/CDD-Memo-UPK-and-CCFAP-family-tuition-Summer-2026-Update.pdf#page=10
   - kind: agency-practice
     citation: Child Development Division, Act 76 update to the House Human Services Committee, January 3, 2024, slide 6
     url: https://legislature.vermont.gov/Documents/2024/WorkGroups/House%20Human%20Services/Act%2076%20of%202023/W~Janet%20McLaughlin~Act%2076%20Update~1-3-2024.pdf#page=6
@@ -10799,10 +10803,13 @@ candidates:
     code:
     - policyengine_us/variables/household/expense/childcare/childcare_expenses.py
     - policyengine_us/variables/gov/hhs/ccdf/household_child_care_subsidies.py
-    - policyengine_us/variables/gov/states/vt/dcf/ccfap/vt_ccfap.py
+    - policyengine_us/variables/gov/hhs/ccdf/child_care_subsidies_above_provider_bills.py
+    - policyengine_us/variables/gov/states/vt/dcf/ccfap/vt_ccfap_child_payment.py
+    - policyengine_us/variables/gov/states/vt/dcf/ccfap/vt_ccfap_payment_above_bill.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10668
     - https://github.com/PolicyEngine/policyengine-us/pull/10678
+    - https://github.com/PolicyEngine/policyengine-us/pull/10720
   state: ruled
   note: Ruled 2026-11-06 for the remainder and kept 2026-11-07 after weighing the January 2024 testimony. Under section
     IV A and under the January 2026 memo the family owes the remainder, so the reading stands whether or not state
@@ -10811,7 +10818,11 @@ candidates:
     CCFAP and prekindergarten. In it, the department sets the invoice rule and works a case with tuition below the state
     rate. Following the memo, the bill stands for what the program charges a CCFAP family, so a program that charges such
     a family the full state rate collects the whole share. No department example states what the family owes when the
-    state's payment exceeds tuition, and the test of that case follows section IV A.
+    state's payment exceeds tuition, and the test of that case follows section IV A. The department's August 14, 2026
+    memo replaces the January memo. It keeps the invoice rule (PDF page 1) and the separate example (PDF page 10), and
+    it lets a program collect more from the state than its tuition (PDF page 2), so the reading stands. Since PolicyEngine/policyengine-us#10720,
+    each child's payment nets against that child's own bill, so a payment above one program's tuition pays none of
+    another program's bill.
 - id: us-vt:liheap-income-maximum-large-households
   program: liheap
   years:

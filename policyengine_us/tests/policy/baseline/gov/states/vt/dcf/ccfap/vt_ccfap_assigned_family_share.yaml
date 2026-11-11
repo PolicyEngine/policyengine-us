@@ -1,0 +1,257 @@
+# The department states these amounts by the week. The model's year has 52 weeks,
+# so a weekly amount w comes to w x 52 / 12 a month.
+# The 2023 cases key their yearly inputs to 2023, since the test runner stores a
+# yearly input given at an August period for the year that starts in August.
+
+- name: The Mountains pay 75 of their 100 share to the infant's home and 25 to the center.
+  # CCFAP Family Booklet, "The Mountains" (PDF page 12): the infant's registered home
+  # charges 75 for one day a week and the three-year-old's center 250 for five days.
+  # Before December 17, 2023 the state paid the lesser of its rate and the provider's,
+  # so the infant's rate is 75 and the preschooler's 250. The booklet's state covers
+  # the rest of the center's tuition, which takes the full-time preschool rate, 325.
+  period: 2023-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2023: 30
+      infant:
+        age:
+          2023: 1
+        is_tax_unit_dependent:
+          2023: true
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week:
+          2023: 1
+        childcare_hours_per_day:
+          2023: 8
+        pre_subsidy_childcare_expenses:
+          2023: 3_900 # 75 x 52
+      preschooler:
+        age:
+          2023: 3
+        is_tax_unit_dependent:
+          2023: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week:
+          2023: 5
+        childcare_hours_per_day:
+          2023: 7
+        pre_subsidy_childcare_expenses:
+          2023: 13_000 # 250 x 52
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 433.3333 # 100 x 52 / 12
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code:
+          2023: VT
+  output:
+    vt_ccfap_child_rate: [0, 325, 1_083.33] # 75 and 250, x 52 / 12
+    vt_ccfap_assigned_family_share: [0, 325, 108.33] # 75 and 25, x 52 / 12
+    vt_ccfap_child_payment: [0, 0, 975] # 75 - 75 and 250 - 25, x 52 / 12
+    vt_ccfap: 975
+
+- name: The Greens' whole 125 share lowers the state's payment for the infant at their one center.
+  # CCFAP Family Booklet, "The Greens" (PDF page 12): the center charges 280 for the
+  # one-year-old and 240 for the four-year-old. Before December 17, 2023 each child's
+  # rate is the lesser of its tuition and the full-time center rate (349 and 325), so
+  # the state pays 280 - 125 = 155 and 240.
+  period: 2023-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2023: 30
+      infant:
+        age:
+          2023: 1
+        is_tax_unit_dependent:
+          2023: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week:
+          2023: 5
+        childcare_hours_per_day:
+          2023: 7
+        pre_subsidy_childcare_expenses:
+          2023: 14_560 # 280 x 52
+      preschooler:
+        age:
+          2023: 4
+        is_tax_unit_dependent:
+          2023: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week:
+          2023: 5
+        childcare_hours_per_day:
+          2023: 7
+        pre_subsidy_childcare_expenses:
+          2023: 12_480 # 240 x 52
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 541.6667 # 125 x 52 / 12
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code:
+          2023: VT
+  output:
+    vt_ccfap_child_rate: [0, 1_213.33, 1_040] # 280 and 240, x 52 / 12
+    vt_ccfap_assigned_family_share: [0, 541.67, 0] # 125 x 52 / 12
+    vt_ccfap_child_payment: [0, 671.67, 1_040] # 155 and 240, x 52 / 12
+    vt_ccfap: 1_711.67 # 395 x 52 / 12
+
+- name: A 425 share above both children's state rates fills each child's rate and leaves the state paying nothing.
+  # CCFAP Understanding Payments, question 1 (PDF page 1): the state pays up to the
+  # state rate after subtracting the family share. The registered home's part-time
+  # rates in 2026 are 210 for a toddler and 198 for a preschooler. The two-year-old
+  # takes 210 of the share, the four-year-old 198, and 17 goes unused.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      toddler:
+        age: 2
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 4
+        childcare_hours_per_day: 5
+        pre_subsidy_childcare_expenses:
+          2026: 11_440 # 220 x 52
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: REGISTERED_HOME
+        childcare_days_per_week: 4
+        childcare_hours_per_day: 5
+        pre_subsidy_childcare_expenses:
+          2026: 10_400 # 200 x 52
+    spm_units:
+      spm_unit:
+        members: [parent, toddler, preschooler]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 1_841.6667 # 425 x 52 / 12
+    households:
+      household:
+        members: [parent, toddler, preschooler]
+        state_code: VT
+  output:
+    vt_ccfap_child_rate: [0, 910, 858] # 210 and 198, x 52 / 12
+    vt_ccfap_assigned_family_share: [0, 910, 858]
+    vt_ccfap_child_payment: [0, 0, 0]
+    vt_ccfap: 0
+
+- name: Before December 17, 2023, a 380 share fills the infant's capped 349 rate and puts 31 on the preschooler's center, though the infant's center charges 400.
+  # The infant's center charges 400 a week, above the 349 full-time infant rate, so
+  # the state's rate for the infant is 349. The preschooler's center charges 300,
+  # below the 325 full-time preschool rate, so that child's rate is 300. The share
+  # fills the infant's certificate up to 349, the most the state would pay there,
+  # and the other 31 goes to the preschooler's, so the state pays 0 and
+  # 300 - 31 = 269. Under the booklet's wording that the family pays its share to the
+  # youngest child's provider first, all 380 would go to the infant's center and the
+  # state would pay the preschooler's 300.
+  period: 2023-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2023: 30
+      infant:
+        age:
+          2023: 0
+        is_tax_unit_dependent:
+          2023: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week:
+          2023: 5
+        childcare_hours_per_day:
+          2023: 7
+        pre_subsidy_childcare_expenses:
+          2023: 20_800 # 400 x 52
+      preschooler:
+        age:
+          2023: 3
+        is_tax_unit_dependent:
+          2023: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week:
+          2023: 5
+        childcare_hours_per_day:
+          2023: 7
+        pre_subsidy_childcare_expenses:
+          2023: 15_600 # 300 x 52
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 1_646.6667 # 380 x 52 / 12
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code:
+          2023: VT
+  output:
+    vt_ccfap_child_rate: [0, 1_512.33, 1_300] # 349 and 300, x 52 / 12
+    vt_ccfap_assigned_family_share: [0, 1_512.33, 134.33] # 349 and 31, x 52 / 12
+    vt_ccfap_child_payment: [0, 0, 1_165.67] # 269 x 52 / 12
+    vt_ccfap: 1_165.67
+
+- name: Before December 17, 2023, a child whose provider charges nothing draws nothing, though a sibling's bill gives the unit a bill.
+  # Both children have care hours. The infant's provider charges nothing, so the
+  # lesser of the 349 state rate and that charge is zero. The preschooler's center
+  # charges 300, below the 325 full-time preschool rate, and the family share is zero.
+  period: 2023-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2023: 30
+      infant:
+        age:
+          2023: 0
+        is_tax_unit_dependent:
+          2023: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week:
+          2023: 5
+        childcare_hours_per_day:
+          2023: 7
+        pre_subsidy_childcare_expenses:
+          2023: 0
+      preschooler:
+        age:
+          2023: 3
+        is_tax_unit_dependent:
+          2023: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week:
+          2023: 5
+        childcare_hours_per_day:
+          2023: 7
+        pre_subsidy_childcare_expenses:
+          2023: 15_600 # 300 x 52
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 0
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code:
+          2023: VT
+  output:
+    vt_ccfap_child_rate: [0, 0, 1_300] # 300 x 52 / 12
+    vt_ccfap_child_payment: [0, 0, 1_300]
+    vt_ccfap: 1_300
