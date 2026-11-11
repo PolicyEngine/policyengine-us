@@ -6,3 +6,21 @@
     ctc_arpa_max_addition: 15_000 # e.g. 15 kids * $1,000 extra.
   output:
     ctc_arpa_phase_out_cap: 12_500 # 400k - 150k = 250k * 0.05 = 12.5k
+
+- name: The first ARPA reduction cannot exceed the child credit enhancement.
+  period: 2021
+  input:
+    filing_status: JOINT
+    ctc_arpa_max_addition: 1_600
+  output:
+    ctc_arpa_phase_out_cap: 1_600
+
+- name: Surviving spouses use the 2500 threshold-difference cap in the Line 5 Worksheet.
+  period: 2021
+  input:
+    filing_status: SURVIVING_SPOUSE
+    ctc_arpa_max_addition: 5_000
+  output:
+    ctc_arpa_phase_out_threshold: 150_000
+    ctc_phase_out_threshold: 200_000
+    ctc_arpa_phase_out_cap: 2_500
