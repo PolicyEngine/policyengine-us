@@ -1,0 +1,29 @@
+description: Delaware counts these income sources as a United States military pension under the pension exclusion.
+values:
+  # 83 Del. Laws c. 352 added the military pension exclusion at
+  # 30 Del. C. 1106(b)(3)b.1.B without defining the term. For those years the
+  # Division of Revenue's Line 6 instructions give it to a filer who retired
+  # from the United States military.
+  2022-01-01:
+    - military_retirement_pay
+  # 84 Del. Laws c. 437, approved September 26, 2024, defined the term as "a
+  # pension received as a result of an individual's service" (now
+  # 1106(b)(3)f.2), which reaches an annuity paid to a member's survivor.
+  2024-01-01:
+    - military_retirement_pay
+    - military_retirement_pay_survivors
+metadata:
+  unit: list
+  period: year
+  label: Delaware military pension exclusion income sources
+  reference:
+    - title: 30 Del. C. § 1106(b)(3)f.2
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
+    - title: 84 Del. Laws c. 437 (Senate Bill 329, 152nd General Assembly)
+      href: https://legis.delaware.gov/SessionLaws/Chapter?id=42068
+    - title: 83 Del. Laws c. 352 (Senate Substitute 1 for Senate Bill 188, 151st General Assembly)
+      href: https://legis.delaware.gov/SessionLaws/Chapter?id=41416
+    - title: Delaware individual income tax instructions for 2022 Line 6
+      href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=6
+    - title: Delaware individual income tax instructions for 2023 Line 6
+      href: https://revenuefiles.delaware.gov/2023/PIT-RES_TY23_2023-01_Instructions.pdf#page=6
