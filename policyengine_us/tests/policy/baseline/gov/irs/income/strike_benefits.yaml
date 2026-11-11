@@ -38,6 +38,27 @@
     tax_exempt_strike_benefits: 5_000
   output:
     taxable_strike_benefits: 0
+    strike_benefits_in_gross_income: 0
+    # The part federal gross income leaves out is at most the total.
+    strike_benefits_excluded_from_gross_income: 3_000
+
+- name: The part in federal gross income and the part left out add to the total
+  period: 2025
+  input:
+    strike_benefits: 10_000
+    tax_exempt_strike_benefits: 4_000
+  output:
+    strike_benefits_in_gross_income: 6_000
+    strike_benefits_excluded_from_gross_income: 4_000
+
+- name: A gift part below zero does not add to the benefits received
+  period: 2025
+  input:
+    strike_benefits: 10_000
+    tax_exempt_strike_benefits: -2_000
+  output:
+    taxable_strike_benefits: 10_000
+    strike_benefits_excluded_from_gross_income: 0
 
 - name: 2025, strike benefits are gross income and adjusted gross income
   period: 2025
@@ -262,6 +283,22 @@
     # Before 2022 the worksheet does not count strike benefits as earned
     # income, so they are unearned income: $2,000 is over $1,100.
     tax_unit_is_required_to_file: true
+
+- name: 2022, a dependent's strike benefits are worksheet earned income
+  period: 2022
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    strike_benefits: 5_000
+  output:
+    # From 2022 the worksheet counts Form 1040 line 1z, which holds line 1h
+    # strike benefits. Rev. Proc. 2021-45 sec. 3.15(2): the greater of $1,150
+    # or $400 plus earned income, so 400 + 5,000 = 5,400.
+    basic_standard_deduction: 5_400
+    # Earned income of $5,000 is under the $12,950 single standard deduction,
+    # and there is no unearned income, so the dependent need not file.
+    tax_unit_is_required_to_file: false
 
 - name: 2025, a dependent with $2,000 of interest must file
   period: 2025

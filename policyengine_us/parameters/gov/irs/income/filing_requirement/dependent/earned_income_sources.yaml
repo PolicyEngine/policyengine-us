@@ -6,10 +6,12 @@ values:
     - irs_employment_income
     # plus taxable dependent care benefits (Form 2441 line 26),
     - taxable_dependent_care_benefits
-    # Schedule 1 line 3 (business income, Schedule C).
+    # business income (Schedule C): Form 1040 line 12 through 2017, Schedule 1
+    # line 12 in 2018 and Schedule 1 line 3 from 2019,
     - self_employment_income
     - sstb_self_employment_income
-    # Schedule 1 line 6 (farm income, Schedule F).
+    # and farm income (Schedule F): Form 1040 line 18 through 2017, Schedule 1
+    # line 18 in 2018 and Schedule 1 line 6 from 2019.
     - farm_operations_income
   2022-01-01:
     # Form 1040 line 1z (wages): line 1a, the total of Form(s) W-2, box 1,

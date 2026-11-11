@@ -41,10 +41,16 @@ Invariants, for every drawn household:
    credit household income (ARS 43-1072(H)(6)(c)) count every adult member's
    strike benefits once, the taxable part through adjusted gross income (an
    adult dependent's own) and the gift part, never more than the benefits, as
-   nontaxable income, so the split leaves them unchanged and they hold the
-   whole amount. Montana's measure also counts federal refundable credits,
-   which move with adjusted gross income, so the state cases have $60,000
-   more wages, which keeps the EITC at zero in both (checked).
+   nontaxable income, so the split leaves them unchanged and they equal the
+   members' wages plus their whole strike benefits. Montana's measure also
+   counts federal refundable credits, which move with adjusted gross income,
+   so the state cases have $60,000 more wages, which keeps the EITC at zero
+   in both (checked).
+6. Personal services (differential): with alternative minimum taxable income
+   held fixed, strike benefits change neither the kiddie tax support test nor
+   the federal AMT child exemption cap (2017; IRC 59(j), 911(d)(2)), nor
+   California's AMT child exemption (2025 Schedule P (540), Exemption
+   Worksheet line 8), all of which count only payments for personal services.
 """
 
 import numpy as np
@@ -262,16 +268,89 @@ def test_strike_benefit_invariants(filers):
             tolerance = max(0.01, 1e-6 * abs(base))
             assert abs(base - split_free) < tolerance, (state, base, split_free)
             # The measure holds both people's whole amounts, not just the
-            # taxable parts.
-            floor = (
+            # taxable parts, and nothing else: the drawn households have no
+            # other income, and the extra wages keep every refundable credit
+            # Montana counts at zero.
+            total = (
                 wages
                 + STATE_EXTRA_WAGES
                 + strike
                 + filer["dependent_wages"]
                 + filer["dependent_strike"]
             )
-            assert base >= floor - tolerance, (state, base, floor)
+            assert abs(base - total) < tolerance, (state, base, total)
             # The dependent is a dependent, so their income is not in the
             # head's adjusted gross income.
             agi = value("adjusted_gross_income", i, "state_split_free", state)
             assert agi <= wages + STATE_EXTRA_WAGES + strike + tolerance, agi
+
+
+CHILD = st.fixed_dictionaries(
+    {
+        "wages": MONEY,
+        "strike": MONEY,
+        "gift_share": st.sampled_from([0, 0.5, 1.5]),
+        # Under 18; under 24 and a full-time student; or 19 and not a student,
+        # who is outside the kiddie tax.
+        "age": st.sampled_from([(16, False), (20, True), (19, False)]),
+        "support": st.sampled_from([0, 10_000, 40_000]),
+    }
+)
+
+
+def _child_situation(children: list, year: int, state: str) -> dict:
+    """Two single-person tax units per drawn child, with and without the
+    strike benefits, in the given year and state."""
+    people, tax_units, households = {}, {}, {}
+    y = str(year)
+    for i, child in enumerate(children):
+        age, student = child["age"]
+        gift = round(child["strike"] * child["gift_share"], 2)
+        for variant, strike in [("with", child["strike"]), ("without", 0.0)]:
+            name = f"{variant}_{i}"
+            people[name] = {
+                "age": {y: age},
+                "is_full_time_student": {y: student},
+                "is_qualifying_child_dependent": {y: True},
+                "employment_income": {y: child["wages"]},
+                "strike_benefits": {y: strike},
+                "tax_exempt_strike_benefits": {y: gift if strike else 0.0},
+                "care_and_support_costs": {y: child["support"]},
+            }
+            tax_units[f"unit_{name}"] = {
+                "members": [name],
+                "filing_status": {y: "SINGLE"},
+                # Held fixed, so only the earned income measures can differ.
+                "amt_income": {y: 50_000},
+                "ca_amti": {y: 50_000},
+            }
+            households[f"home_{name}"] = {
+                "members": [name],
+                "state_code": {y: state},
+            }
+    return {"people": people, "tax_units": tax_units, "households": households}
+
+
+@settings(
+    max_examples=5,
+    deadline=None,
+    derandomize=True,
+    database=None,
+    phases=[Phase.explicit, Phase.reuse, Phase.generate],
+    suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
+)
+@given(children=st.lists(CHILD, min_size=4, max_size=6))
+def test_strike_benefits_are_not_pay_for_personal_services(children):
+    for year, state, variables in [
+        (2017, "TX", ["amt_kiddie_tax_applies", "amt_exemption"]),
+        (2025, "CA", ["ca_amt_exemption"]),
+    ]:
+        sim = Simulation(situation=_child_situation(children, year, state))
+        for variable in variables:
+            values = sim.calculate(variable, year)
+            # Tax units alternate with and without strike benefits.
+            assert np.allclose(values[0::2], values[1::2], atol=0.01), (
+                year,
+                variable,
+                values,
+            )

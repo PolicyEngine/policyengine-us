@@ -21,8 +21,11 @@ class amt_kiddie_tax_applies(Variable):
         "https://www.law.cornell.edu/uscode/text/26/1#g_2",
         "https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=10",
         "https://www.irs.gov/pub/irs-prior/p929--2021.pdf",
-        # Earned income for the support test (line 4 of the conditions).
-        "https://www.irs.gov/pub/irs-prior/i8615--2025.pdf#page=2",
+        # Earned income for the support test, which the model applies
+        # through 2017. The instructions then counted Form 1040 lines 7, 12
+        # and 18 (wages, business and farm income) and named no line for
+        # strike benefits.
+        "https://www.irs.gov/pub/irs-prior/i8615--2017.pdf#page=2",
     ]
 
     def formula(tax_unit, period, parameters):

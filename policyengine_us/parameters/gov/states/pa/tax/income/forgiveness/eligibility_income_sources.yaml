@@ -7,11 +7,19 @@ values:
     # non-taxable dividends and gains
     # insurance proceeds and inheritances (Schedule SP line 4, includes survivor annuities)
     - military_retirement_pay_survivors
-    # Strike benefits a union pays, which PA taxable income leaves out (72 P.S.
-    # 7301(d)(vi)): eligibility income counts "all other income received in
-    # the form of cash and property from any other source", gifts of cash
-    # included, and excludes only payments employers or unions make for
-    # programs covering strike benefits (PIT Guide, Tax Forgiveness).
+    # Strike benefits a union pays, which PA taxable income leaves out.
+    # Eligibility income is "all moneys or property ... received of whatever
+    # nature and from whatever source derived" (72 P.S. 7301(o.2)). Its (vi)
+    # exclusion covers "payments made by employers or labor unions for
+    # programs covering ... strike benefits", which 61 Pa. Code 101.6(c)(9)
+    # reads, for the same words in the compensation definition, as payments
+    # to a strike benefit plan. The Tax Forgiveness guide repeats the (vi)
+    # words in its exclusions and counts employee payments to a cafeteria
+    # plan for strike benefits. Schedule SP (2025) line 10 counts "any
+    # payments received from other persons outside your household", line 5
+    # counts gifts, and the list of income not to include leaves strike
+    # benefits out. So the whole union payment counts, gift part included
+    # (us-pa:tax-forgiveness-strike-benefits in candidates.yaml).
     - strike_benefits
     # gifts awards and prizes
     # non-PA income
@@ -26,7 +34,11 @@ metadata:
   reference:
     - title: PA PIT Guide - Chapter 20, Tax Forgiveness, eligibility income and its exclusions, page 5-6
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_taxforgiveness.pdf#page=5
-    - title: PA PIT Guide - Chapter 20, Tax Forgiveness, page 15
-      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_taxforgiveness.pdf#page=5
+    - title: 72 P.S. 7301(o.2), poverty income
+      href: https://www.palegis.us/statutes/unconsolidated/law-information/view-statute?txtType=HTM&SessYr=1971&ActNum=0002.&ChapterNum=003.&SectionNum=001.&SubsectionNum=0
+    - title: 61 Pa. Code 101.6(c)(9), payments for strike benefit plans
+      href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
+    - title: "2025 PA-40 instructions, Schedule SP Section III, lines 5 and 10 and the income not to include #page 38-39"
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40in.pdf#page=38
     - title: PA Form PA-40 Instructions, page 1
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40in.pdf#page=39

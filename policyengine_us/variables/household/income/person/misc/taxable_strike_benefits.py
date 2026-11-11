@@ -20,5 +20,7 @@ class taxable_strike_benefits(Variable):
 
     def formula(person, period, parameters):
         strike_benefits = person("strike_benefits", period)
-        tax_exempt = person("tax_exempt_strike_benefits", period)
+        # A gift part below zero is not a gift, so it never adds to the
+        # benefits received.
+        tax_exempt = max_(0, person("tax_exempt_strike_benefits", period))
         return max_(0, strike_benefits - tax_exempt)

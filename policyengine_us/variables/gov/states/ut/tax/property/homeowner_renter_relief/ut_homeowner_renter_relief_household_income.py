@@ -15,11 +15,10 @@ class ut_homeowner_renter_relief_household_income(Variable):
     documentation = (
         "Counts adult household members' income: federal adjusted gross income "
         "plus nontaxable income (Utah Code 59-2a-101(15), (17)). A tax unit "
-        "dependent's adjusted gross income is on their own return, so it is "
-        "their own gross income (dependent_gross_income) less their own "
-        "above-the-line deductions. Parent and grandparent exclusions are not "
-        "modeled because household relationship data do not identify those "
-        "relatives."
+        "dependent's adjusted gross income is on their own return "
+        "(dependent_adjusted_gross_income). Members under 18 and members who "
+        "are a parent or grandparent of the filer or spouse are left out "
+        "(59-2a-101(15)(b))."
     )
     defined_for = StateCode.UT
 
@@ -29,18 +28,24 @@ class ut_homeowner_renter_relief_household_income(Variable):
         person_agi = person("adjusted_gross_income_person", period)
         # Household income counts every member 18 or older (59-2a-101(15)).
         # adjusted_gross_income_person is zero for a tax unit dependent, whose
-        # income is on their own return, so an adult dependent's adjusted
-        # gross income is their own gross income less their own above-the-line
-        # deductions.
+        # income is on their own return, so a dependent's adjusted gross
+        # income comes from that return.
         is_dependent = person("is_tax_unit_dependent", period)
-        dependent_agi = person("dependent_gross_income", period) - person(
-            "above_the_line_deductions_person", period
+        own_agi = where(
+            is_dependent,
+            person("dependent_adjusted_gross_income", period),
+            person_agi,
         )
-        own_agi = where(is_dependent, dependent_agi, person_agi)
         nontaxable_income = person(
             "ut_homeowner_renter_relief_nontaxable_income", period
         )
         is_adult = person("age", period) >= p.adult_age_threshold
+        # Income of a member who is a parent or grandparent of the claimant or
+        # the claimant's spouse is left out (59-2a-101(15)(b)(ii)).
+        parent_or_grandparent = person("is_parent_of_filer_or_spouse", period) | person(
+            "is_grandparent_of_filer_or_spouse", period
+        )
+        counted = is_adult & ~parent_or_grandparent
         tax_unit_person_agi = person.tax_unit.sum(person_agi)
         tax_unit_agi = person.tax_unit("adjusted_gross_income", period)
         tax_unit_has_adult = (
@@ -53,5 +58,5 @@ class ut_homeowner_renter_relief_household_income(Variable):
             * tax_unit_agi
         )
         return household.sum(
-            (own_agi + nontaxable_income) * is_adult + tax_unit_agi_fallback
+            (own_agi + nontaxable_income) * counted + tax_unit_agi_fallback
         )

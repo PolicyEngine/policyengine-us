@@ -18,9 +18,12 @@
 
 # Eligibility income counts "all other income received in the form of cash
 # and property from any other source", including gifts of cash, unless
-# specifically excluded (PIT Guide, Tax Forgiveness, page 5). Strike benefits
-# a union pays are not on the exclusion list, which names only payments
-# employers or unions make for programs covering strike benefits.
+# specifically excluded (PIT Guide, Tax Forgiveness, page 5; 72 P.S.
+# 7301(o.2)). The exclusion for "payments made by employers or labor unions
+# for programs covering ... strike benefits" reaches payments to a strike
+# benefit plan (61 Pa. Code 101.6(c)(9) reads the same words that way), and
+# Schedule SP (2025) counts payments from persons outside the household
+# (line 10) and gifts (line 5), so the strike benefits a union pays count.
 - name: Case 3, strike benefits are PA tax forgiveness eligibility income though not PA taxable income.
   period: 2025
   input:

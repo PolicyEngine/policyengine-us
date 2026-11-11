@@ -42,3 +42,24 @@
     # $6,000 in federal adjusted gross income plus $4,000 of nontaxable
     # strike benefits.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 10_000
+
+- name: 2025, a gift part above the total counts only the total
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 75
+        strike_benefits: 3_000
+        tax_exempt_strike_benefits: 5_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # None is in federal adjusted gross income, and the nontaxable part is
+    # never more than the $3,000 received.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 3_000

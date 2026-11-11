@@ -21,3 +21,14 @@
     state_code: AZ
   output:
     az_property_tax_credit_nontaxable_income: 4_000
+
+- name: 2025, a gift part above the total counts only the total
+  period: 2025
+  input:
+    age: 70
+    strike_benefits: 3_000
+    tax_exempt_strike_benefits: 5_000
+    state_code: AZ
+  output:
+    # Line I takes the nontaxable part, never more than the $3,000 received.
+    az_property_tax_credit_nontaxable_income: 3_000

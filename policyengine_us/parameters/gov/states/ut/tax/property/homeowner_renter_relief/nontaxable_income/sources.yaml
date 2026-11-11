@@ -6,7 +6,9 @@ values:
     - railroad_benefits
     # Nontaxable strike benefits (59-2a-101(20)(a)(v)): the part federal
     # gross income leaves out, since the taxable part is in federal adjusted
-    # gross income.
+    # gross income. (20)(b) leaves out gifts and contributions from
+    # tax-exempt nongovernmental sources, but (a)(v) names nontaxable strike
+    # benefits, which are gifts from a union, so the specific item governs.
     - strike_benefits_excluded_from_gross_income
     - tax_exempt_interest_income
     - tax_exempt_pension_income

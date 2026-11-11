@@ -136,3 +136,143 @@
   output:
     # 59-2a-101(15)(b)(i) leaves out income of a member under 18.
     ut_homeowner_renter_relief_household_income: 30_000
+
+# A dependent's adjusted gross income is figured on their own return under
+# IRC 62: losses net against income, and taxable Social Security is part of
+# it, so the rest of the benefit is the nontaxable part (59-2a-101(17),
+# (20)(a)(vii)).
+- name: 2025, an adult dependent's Social Security counts once
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 40_000
+        social_security_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    # IRC 86 on the dependent's own return: provisional income 40,000 +
+    # 10,000 / 2 = 45,000. Taxable: min(85% x 10,000, 85% x (45,000 - 34,000)
+    # + min(4,500, 5,000)) = min(8,500, 13,850) = 8,500.
+    dependent_taxable_social_security: [0, 8_500]
+    dependent_adjusted_gross_income: [0, 48_500]
+    # Nontaxable: 10,000 - 8,500 = 1,500.
+    ut_homeowner_renter_relief_nontaxable_income: [0, 1_500]
+    # 30,000 + 48,500 + 1,500.
+    ut_homeowner_renter_relief_household_income: 80_000
+
+- name: 2025, an adult dependent's capital loss counts up to the IRC 1211(b) limit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 8_000
+        short_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    # 8,000 less the 3,000 loss limit.
+    dependent_adjusted_gross_income: [0, 5_000]
+    ut_homeowner_renter_relief_household_income: 35_000
+
+- name: 2025, an adult dependent's business loss nets against their wages
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 8_000
+        self_employment_income: -3_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    dependent_adjusted_gross_income: [0, 5_000]
+    ut_homeowner_renter_relief_household_income: 35_000
+
+- name: 2025, an adult dependent's self-employment tax deduction is their own
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        self_employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  absolute_error_margin: 0.1
+  output:
+    # Self-employment tax: 10,000 x 92.35% x 15.3% = 1,412.96; half of it,
+    # 706.48, is deductible. 10,000 - 706.48 = 9,293.52.
+    dependent_adjusted_gross_income: [0, 9_293.52]
+    ut_homeowner_renter_relief_household_income: 39_293.52
+
+- name: 2025, a parent of the claimant adds no household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      parent:
+        age: 92
+        is_tax_unit_dependent: true
+        is_parent_of_filer_or_spouse: true
+        taxable_interest_income: 4_000
+        strike_benefits: 1_000
+        tax_exempt_strike_benefits: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, parent]
+        state_code: UT
+  output:
+    # 59-2a-101(15)(b)(ii) leaves out a parent's or grandparent's income.
+    ut_homeowner_renter_relief_household_income: 30_000

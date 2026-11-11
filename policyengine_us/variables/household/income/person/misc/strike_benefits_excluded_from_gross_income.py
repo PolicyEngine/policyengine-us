@@ -10,9 +10,11 @@ class strike_benefits_excluded_from_gross_income(Variable):
         "The part of strike_benefits that federal gross income leaves out: "
         "the nontaxable strike benefits that Utah homeowner's and renter's "
         "relief, Montana's elderly homeowner/renter credit and Arizona's "
-        "property tax credit add to federal income. With "
-        "taxable_strike_benefits among the gross income sources, this is the "
-        "gift part, at most the whole amount; without it, the whole amount."
+        "property tax credit add to federal income. It is the whole amount "
+        "less strike_benefits_in_gross_income, floored at zero: the gift part "
+        "(at most the whole amount) under current law, the whole amount under "
+        "a reform that drops taxable_strike_benefits from gross income, and "
+        "zero under one that lists strike_benefits itself."
     )
     definition_period = YEAR
     reference = (
@@ -22,10 +24,5 @@ class strike_benefits_excluded_from_gross_income(Variable):
 
     def formula(person, period, parameters):
         strike_benefits = person("strike_benefits", period)
-        sources = parameters(period).gov.irs.gross_income.sources
-        if "taxable_strike_benefits" not in sources:
-            return strike_benefits
-        # taxable_strike_benefits is max(0, strike - gift part), so this is the
-        # gift part capped at the whole amount.
-        taxable = person("taxable_strike_benefits", period)
-        return max_(strike_benefits - taxable, 0)
+        in_gross_income = person("strike_benefits_in_gross_income", period)
+        return max_(strike_benefits - in_gross_income, 0)
