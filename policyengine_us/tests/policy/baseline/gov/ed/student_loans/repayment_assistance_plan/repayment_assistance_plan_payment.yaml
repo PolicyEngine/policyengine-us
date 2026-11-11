@@ -10,8 +10,10 @@
 # Cases labelled rulespec-us#1455 Cn are companion cases for the payment
 # encoding in TheAxiomFoundation/rulespec-us issue 1455 (C1-C8 and the bracket
 # edges are in repayment_assistance_plan_base_payment.yaml; C15 and C18 are in
-# integration.yaml). C17, a borrower claimed as a tax dependent, is not yet
-# modeled.
+# integration.yaml). C17, a borrower claimed as a tax dependent, is Case 26.
+#   A borrower claimed as a tax dependent: base on their own income, no
+#     dependent reduction, no proration, min $10 ((q)(4)(A); 685.209(c)(6),
+#     (e)(1)(i)).
 
 - name: Case 1, AGI 10,000 gives the low-income base payment over 12 months.
   period: 2027-01
@@ -363,7 +365,7 @@
     repayment_assistance_plan_applicable_monthly_payment: 10
     repayment_assistance_plan_payment: 5
 
-- name: Case 18, a tax dependent with a loan balance owes nothing.
+- name: Case 18, a tax dependent with a loan balance and no income of their own owes the minimum.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -385,12 +387,13 @@
         filing_status: HEAD_OF_HOUSEHOLD
         adjusted_gross_income: 90_000
   output:
-    # 8% x 90,000 = 7,200 / 12 = 600; 600 - 1 x 50 = 550. The dependent's own
-    # balance neither makes them a borrower nor dilutes the parent's share.
+    # 8% x 90,000 = 7,200 / 12 = 600; 600 - 1 x 50 = 550. The dependent's
+    # balance does not dilute the parent's share. The dependent's own income
+    # is 0, so their base is 120 / 12 = 10, the minimum.
     repayment_assistance_plan_applicable_monthly_payment: 550
-    repayment_assistance_plan_payment: [550, 0]
+    repayment_assistance_plan_payment: [550, 10]
 
-- name: Case 19, a parent whose only borrower is a tax dependent owes nothing.
+- name: Case 19, a parent whose only borrower is a tax dependent owes nothing, and the dependent owes the minimum.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -411,8 +414,10 @@
         filing_status: HEAD_OF_HOUSEHOLD
         adjusted_gross_income: 90_000
   output:
+    # The tax unit's applicable payment is the head and spouse's, and neither
+    # borrows. The dependent's own income is 0: 120 / 12 = 10.
     repayment_assistance_plan_applicable_monthly_payment: 0
-    repayment_assistance_plan_payment: [0, 0]
+    repayment_assistance_plan_payment: [0, 10]
 
 - name: Case 20, rulespec-us#1455 C10, one dependent takes the payment to zero and then the minimum.
   period: 2027-01
@@ -562,3 +567,87 @@
       2027-01: 100
       2027-02: 0
       2027: 100
+
+- name: Case 26, rulespec-us#1455 C17, a tax dependent pays on their own AGI of 10,000.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        # A college student claimed as the parent's dependent.
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+        income_driven_repayment_dependent_adjusted_gross_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+  output:
+    # Own AGI of 10,000 is not more than 10,000: base 120, 120 / 12 = 10.
+    # The parent's 90,000 does not replace the borrower's AGI, and the parent
+    # has no loans.
+    repayment_assistance_plan_payment: [0, 10]
+
+- name: Case 27, a tax dependent's wages set their payment by default, with no dependent reduction.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 20_000
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        employment_income: 45_000
+        federal_student_loan_balance: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+  output:
+    # person1: 8% x 90,000 / 12 - 1 x 50 = 550, with the dependent still
+    # counted in the parent's reduction. person2: 4% x 45,000 / 12 = 150,
+    # with no reduction (26 U.S.C. 152(b)(1)).
+    income_driven_repayment_dependent_adjusted_gross_income: [0, 45_000]
+    repayment_assistance_plan_applicable_monthly_payment: 550
+    repayment_assistance_plan_payment: [550, 150]
+
+- name: Case 28, a tax dependent's FFEL loans do not prorate their payment.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 20_000
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+        federal_ffel_loan_balance: 5_000
+        income_driven_repayment_dependent_adjusted_gross_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+  output:
+    # person2: 2% x 25,000 / 12 = 41.67. 685.209(g)(3) prorates only between
+    # spouses, so the dependent owes the whole amount, and their loans stay
+    # out of the parent's share.
+    repayment_assistance_plan_payment: [550, 41.67]
