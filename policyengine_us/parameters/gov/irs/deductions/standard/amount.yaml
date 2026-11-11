@@ -1,5 +1,19 @@
 description: Federal deduction from AGI if not itemizing.
 
+# Which 1(f)(3) index. These amounts, like the CTC's, project on
+# gov.irs.uprating, the index the tax brackets and other chained IRS amounts
+# use. Its window ends in July, not August as 1(f)(4) has it (#9105); open
+# #9621 moves it, and these projections with it. The dependent amounts and
+# the educator cap project on gov.irs.indexing.c_cpi_u instead: the
+# dependent amounts' base years (1987, 1997) predate gov.irs.uprating's
+# 2010 start, and that index reproduces get_irs_cola, which the dependent
+# and educator projections used before. It reads the August window but, for
+# projected years, CBO's calendar-year points, about 0.7% high (#9608). On
+# the shipped C-CPI-U series, gov.irs.uprating runs 0.6% below
+# gov.irs.indexing.c_cpi_u in 2028 and 1.0% below in 2029 and 2030, so from
+# the 2024 base these amounts grow 0.4% to 0.9% less: $16,950 single in
+# 2028 and $17,550 in 2030, against $17,000 and $17,700 on the other index.
+
 SINGLE:
   values:
     2015-01-01: 6_300

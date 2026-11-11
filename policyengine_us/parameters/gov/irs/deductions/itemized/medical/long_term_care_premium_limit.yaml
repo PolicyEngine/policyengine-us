@@ -161,14 +161,26 @@ metadata:
   amount_unit: currency-USD
   period: year
   label: Eligible long-term care premium limit
-  # 26 U.S.C. 213(d)(10)(B) increases each 1997 amount in (A), $200, $375,
-  # $750, $2,000 and $2,500, by its medical care cost adjustment: the
-  # percentage (if any) by which the medical care component of the chained
-  # CPI-U for August of the preceding year exceeds that component of the CPI
-  # for August 1996, rounding each increase to the nearest $10. The index's
-  # 1997 value covers August 1996. After the last published August, the
-  # index grows with CBO's projection of the CPI-U medical care component,
-  # by calendar year, since neither CBO nor CMS projects the chained one.
+  # 26 U.S.C. 213(d)(10)(B)(i) increases each 1997 amount in (A), $200,
+  # $375, $750, $2,000 and $2,500, by its medical care cost adjustment and
+  # rounds each increase to the nearest $10. (B)(ii): "the medical care cost
+  # adjustment for any calendar year is the percentage (if any) by which—
+  # (I) the medical care component of the C-CPI-U (as defined in section
+  # 1(f)(6)) for August of the preceding calendar year, exceeds (II) such
+  # component of the CPI (as defined in section 1(f)(4)) for August of
+  # 1996, multiplied by the amount determined under section 1(f)(3)(B)."
+  # That amount, the C-CPI-U for 2016 over the CPI for 2016, is an all-items
+  # ratio. The index (gov.irs.indexing.medical_care_c_cpi_u) uses the two
+  # medical care components' ratio for August 2016 in its place, which
+  # reproduces all five 2027 limits in Rev. Proc. 2026-35, section 3.29. The index's 1997
+  # value covers August 1996. After the last published August (2026), the
+  # index grows the chained component at CBO's projected rate for the
+  # unchained CPI-U medical care component, by calendar year, since neither
+  # CBO nor CMS projects the chained one. From August 2016 to August 2026
+  # the unchained component grew about 0.28 percentage points a year faster
+  # than the chained one (2.39% against 2.10%, cpi_u_medical_care_nsa_august
+  # and c_cpi_u_medical_care_august). If that gap persists, the projected
+  # limits run high by a margin that compounds each year.
   reference:
     - title: 26 U.S. Code § 213(d)(10) - Eligible long-term care premiums
       href: https://www.law.cornell.edu/uscode/text/26/213#d_10
