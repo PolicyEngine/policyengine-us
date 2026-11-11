@@ -37,10 +37,10 @@ Invariants:
    cost per beneficiary (Table V.D1).
 5. Calendar years: every date in a year reads the January 1 value; between
    the Trustees' five-year enrollment points the share holds the earlier one.
-6. Consumer (Hypothesis, differential): ``medicare_cost`` equals a reference
-   implementation, max(gross - Part A - Part B - share x premium - IRMAA, 0),
-   for any year and premiums; it lies in [0, ``medicare_gross_cost``], which
-   does not change with the Part D premium.
+6. Consumer (Hypothesis): ``medicare_cost`` lies in [0,
+   ``medicare_gross_cost``] for any year and premiums, and
+   ``medicare_gross_cost`` does not change with the premiums. The cases in
+   ``medicare_cost.yaml`` pin the formula's value.
 7. Accounting (Hypothesis): the person's Part D IRMAA lowers
    ``medicare_cost`` dollar for dollar until the zero floor, as it raises
    what the person pays; the enrollment share does not scale it.
