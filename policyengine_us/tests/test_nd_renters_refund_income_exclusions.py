@@ -24,11 +24,13 @@ Four invariants hold for every input.
 2. Each excluded part lies between zero and the market_income component it
    comes from, so the exclusions never exceed what those components hold.
    Each exclusion the model deducts above the line comes out of the tax unit's
-   income that holds it: savings bond interest out of taxable interest,
-   adoption assistance out of wages after payroll deductions, and income from
-   Puerto Rico and the possessions out of the market income left. None comes
-   out of social security, so a dollar of social security raises income by a
-   dollar unless income stays at zero.
+   income that holds it: savings bond interest out of the interest North
+   Dakota counts, adoption assistance out of wages after payroll deductions,
+   and income from Puerto Rico and American Samoa out of market income before
+   losses, less the other exclusions. None comes out of social security, so
+   with no loss in income, renter's refund income never falls below social
+   security, and a dollar of social security raises income by a dollar unless
+   income stays at zero.
 3. Differential: for a filer whose income comes only from sources that
    market_income and federal gross income share, renter's refund income equals
    irs_gross_income less the exclusions the federal model deducts above the
@@ -38,9 +40,9 @@ Four invariants hold for every input.
    For wages and alimony both read the same federal variables, so the YAML
    cases and invariant 4 test those against the law.
 4. Moving a dollar from the taxable form of a source to its excluded form
-   lowers renter's refund income by that dollar, whatever losses the income
-   holds elsewhere. A dollar of social security raises it by a dollar, however
-   much of the benefit federal law taxes.
+   lowers renter's refund income by that dollar, beside a loss elsewhere in
+   income, as long as income stays above zero. A dollar of social security
+   raises it by a dollar, however much of the benefit federal law taxes.
 
 YAML pins one household per case. These need random amounts over many
 households at once, and lists read from market_income's source file and the
@@ -62,10 +64,9 @@ PACKAGE = Path(__file__).parent.parent
 MARKET_INCOME = PACKAGE / "variables/household/income/person/general/market_income.py"
 GROSS_INCOME_SOURCES = PACKAGE / "parameters/gov/irs/gross_income/sources.yaml"
 ABOVE_THE_LINE = PACKAGE / "parameters/gov/irs/ald/deductions.yaml"
-ND_DEDUCTED_EXCLUSIONS = (
-    PACKAGE
-    / "parameters/gov/states/nd/tax/property/renters_refund/excluded_deductions.yaml"
-)
+RENTERS_REFUND = PACKAGE / "parameters/gov/states/nd/tax/property/renters_refund"
+ND_DEDUCTED_EXCLUSIONS = RENTERS_REFUND / "excluded_deductions.yaml"
+ND_MARKET_INCOME_COMPONENTS = RENTERS_REFUND / "market_income_components.yaml"
 YEAR = 2026
 # Amounts are float32 in the model.
 TOLERANCE = 0.5
@@ -148,7 +149,9 @@ ABOVE_THE_LINE_DEDUCTIONS = {
 ABOVE_THE_LINE_EXCLUSIONS = {
     "us_bonds_for_higher_ed": "IRC 135(a)",
     "qualified_adoption_assistance_expense": "IRC 137(a)",
-    "specified_possession_income": "IRC 931(a)",
+    # Only American Samoa has the implementing agreement IRC 931 requires
+    # (26 CFR 1.931-1(c)).
+    "specified_possession_income": "IRC 931(a), for American Samoa",
     "puerto_rico_income": "IRC 933",
 }
 # The two a household records on a person; the other two are tax unit inputs.
@@ -229,6 +232,9 @@ def test_every_market_income_component_has_a_stated_treatment():
         "nd_renters_refund_federally_excluded_income."
     )
     assert classified - components == set(), "stale entries above"
+    # Income from Puerto Rico and American Samoa comes out of these components
+    # before losses, so the list must match market_income's.
+    assert list_parameter_entries(ND_MARKET_INCOME_COMPONENTS) == components
 
 
 def test_each_treatment_matches_the_federal_gross_income_list():
@@ -298,6 +304,21 @@ def calculate(households, *names):
     return [simulation.calculate(name, YEAR).astype(float) for name in names]
 
 
+def calculate_by_totals(households, *names):
+    """calculate, with one Simulation for each set of totals the households
+    report. A total one household reports becomes an input for every person in
+    its Simulation, which would hide the parts the others report."""
+    groups = {}
+    for index, inputs in enumerate(households):
+        groups.setdefault(frozenset(set(inputs) & set(TOTALS)), []).append(index)
+    results = [np.zeros(len(households)) for _ in names]
+    for indices in groups.values():
+        values = calculate([households[i] for i in indices], *names)
+        for result, value in zip(results, values):
+            result[indices] = value
+    return results
+
+
 amount = st.integers(min_value=0, max_value=40_000)
 
 
@@ -311,17 +332,21 @@ def shared_sources(draw):
     disability = draw(amount)
     other_wages = draw(st.integers(min_value=0, max_value=150_000))
     taxable_interest = draw(amount)
+    adoption = draw(st.integers(min_value=0, max_value=other_wages))
+    possession = draw(st.integers(min_value=0, max_value=other_wages - adoption))
     inputs = {
         # Wages cover the payroll deductions and any adoption assistance.
         "employment_income": sum(deductions.values()) + other_wages,
         **deductions,
         # Exclusions the federal model deducts above the line, each within the
         # income that holds it.
-        "qualified_adoption_assistance_expense": draw(
-            st.integers(min_value=0, max_value=other_wages)
-        ),
+        "qualified_adoption_assistance_expense": adoption,
         "us_bonds_for_higher_ed": draw(
             st.integers(min_value=0, max_value=taxable_interest)
+        ),
+        "specified_possession_income": possession,
+        "puerto_rico_income": draw(
+            st.integers(min_value=0, max_value=other_wages - adoption - possession)
         ),
         "taxable_interest_income": taxable_interest,
         "tax_exempt_interest_income": draw(amount),
@@ -374,6 +399,7 @@ def shared_sources(draw):
             "taxable_interest_income": 3_000,
             "us_bonds_for_higher_ed": 2_000,
             "qualified_adoption_assistance_expense": 4_000,
+            "puerto_rico_income": 3_000,
         }
     ]
 )
@@ -439,7 +465,7 @@ def test_each_excluded_part_lies_within_its_component(households):
         "social_security",
         *PARTLY_EXCLUDED,
     ]
-    excluded, nd_income, social_security, *components = calculate(
+    excluded, nd_income, social_security, *components = calculate_by_totals(
         households + alone + without_social_security, *names
     )
     assert (excluded >= -TOLERANCE).all()
@@ -461,6 +487,11 @@ def test_each_excluded_part_lies_within_its_component(households):
         benefit[positive], abs=TOLERANCE
     )
     assert (with_it[~positive] <= benefit[~positive] + TOLERANCE).all()
+    # With no loss in income, no exclusion comes out of social security.
+    no_loss = np.array(
+        [min(inputs.values(), default=0) >= 0 for inputs in households], dtype=bool
+    )
+    assert (with_it[no_loss] >= benefit[no_loss] - TOLERANCE).all()
 
 
 # Each pair moves a dollar from the taxable form of a source to its excluded

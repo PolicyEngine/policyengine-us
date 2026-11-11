@@ -6774,6 +6774,9 @@ candidates:
   - kind: form
     citation: SFN 24777 (10-2025), lines 5 to 7 and the instructions for lines 4 to 9
     url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  - kind: regulation
+    citation: 26 CFR 1.931-1(c)
+    url: https://www.law.cornell.edu/cfr/text/26/1.931-1
   readings:
     statute: Income comes from all sources, "including any county, state, or federal public assistance benefits, social
       security, or other retirement benefits", but leaves out "any amount excluded from income by federal or state law
@@ -6781,9 +6784,11 @@ candidates:
       on state and local bonds (IRC 103(a)) and savings bond interest spent on higher education (IRC 135(a)); the return
       of a pension's cost, rollovers and qualified Roth distributions (IRC 72(b)(1), 402(c)(1), 402A(d)(1), 403(b)(8),
       408(d), 408A(d)(1)); the pre-tax payroll deductions of IRC 106, 125, 129, 402(e)(3) and 403(b)(1) and employer
-      adoption assistance (IRC 137(a)); income of bona fide residents of Puerto Rico, Guam, American Samoa and the
-      Northern Mariana Islands from sources there (IRC 931(a), 933); and alimony under a divorce or separation
-      instrument executed after 2018, since Pub. L. 115-97 section 11051 repealed IRC 71 and 61(a)(8).
+      adoption assistance (IRC 137(a)); income of bona fide residents of Puerto Rico from sources there (IRC 933) and
+      of American Samoa from sources there or from a business there (IRC 931(a), which reaches only a possession with
+      an implementing agreement in effect, and only American Samoa has one, 26 CFR 1.931-1(c)); and alimony under a
+      divorce or separation instrument executed after 2018, since Pub. L. 115-97 section 11051 repealed IRC 71 and
+      61(a)(8).
     other: Item 10 lists pensions "including military pension and I.R.A.", salaries and wages, dividends and interest,
       and alimony as income. The application asks for income from salary and wages (line 5) and from interest (line
       6), and its instructions for lines 4 to 9 list most of the same sources. Neither leaves out the amounts federal
@@ -6796,6 +6801,7 @@ candidates:
     - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_federally_excluded_income.py
     - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
     - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/excluded_deductions.yaml
+    - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/market_income_components.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10697
   state: ruled
@@ -6833,15 +6839,24 @@ candidates:
   - kind: agency-practice
     citation: Office of Tax Commissioner, fiscal note on House Bill 1174 (2019) as introduced, on sections 1 and 2
     url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=7
+  - kind: statute
+    citation: House Bill 1174 (2019), Senate Appropriations Committee minutes, March 25, 2019, the sponsor on section 1
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=25
   - kind: agency-practice
     citation: Tax Department testimony on House Bill 1174, Senate Appropriations Committee, March 25, 2019
     url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=28
+  - kind: statute
+    citation: N.D.C.C. 57-38-04
+    url: https://ndlegis.gov/cencode/t57c38.pdf#page=25
   - kind: statute
     citation: N.D.C.C. 54-01.1-13
     url: https://ndlegis.gov/cencode/t54c01-1.pdf#page=6
   - kind: statute
     citation: N.D.C.C. 1-02-39
     url: https://ndlegis.gov/cencode/t01c02.pdf#page=6
+  - kind: guidance
+    citation: N.D.A.G. Letter Opinion 2008-L-12
+    url: https://attorneygeneral.nd.gov/wp-content/uploads/2023/02/2008-L-12.pdf
   - kind: guidance
     citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
     url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
@@ -6876,8 +6891,10 @@ candidates:
     Assembly wrote the reductions as adjustments to taxable income, and both 2019 Acts call theirs a deduction in their
     titles. The 2019 record leans the other way. The final fiscal note keeps benefits in the income test "even though
     they are excluded from income tax", and a Tax Department witness called the retired military reduction an
-    exclusion. But the office's first fiscal note called sections 1 and 2 technical changes "for purposes of clarity
-    and consistency", and the bill's sponsor said of section 1, "I do not know why council put that in there." The
+    exclusion. In the Senate Appropriations Committee, the bill's sponsor said of section 1, "I do not know why council
+    put that in there", then answered "That would probably be true" when a committee member suggested it keeps the
+    removal of social security from income out of the homestead law. But the office's first fiscal note called
+    sections 1 and 2 technical changes "for purposes of clarity and consistency". The
     words "or state law" still do work under this reading, since N.D.C.C. 54-01.1-13 bars counting relocation
     payments as income for the purposes of the state's tax laws. The exception also keeps in income the part of
     benefits that IRC 86 leaves out of gross income, so it has effect even if the reductions exclude nothing. N.D.C.C.

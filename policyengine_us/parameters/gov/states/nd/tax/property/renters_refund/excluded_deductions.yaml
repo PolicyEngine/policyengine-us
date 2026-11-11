@@ -5,8 +5,9 @@ values:
     - us_bonds_for_higher_ed
     # Employer adoption assistance.
     - qualified_adoption_assistance_expense
-    # Income of bona fide residents of Guam, American Samoa or the Northern
-    # Mariana Islands from sources there.
+    # Income of bona fide residents of American Samoa from sources there or
+    # from a business there. Only American Samoa has the implementing
+    # agreement that IRC 931 requires (26 CFR 1.931-1(c)).
     - specified_possession_income
     # Income of bona fide residents of Puerto Rico from sources there.
     - puerto_rico_income
@@ -23,5 +24,7 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/26/137#a
     - title: 26 U.S. Code § 931(a)
       href: https://www.law.cornell.edu/uscode/text/26/931#a
+    - title: 26 CFR 1.931-1(c)
+      href: https://www.law.cornell.edu/cfr/text/26/1.931-1#c
     - title: 26 U.S. Code § 933
       href: https://www.law.cornell.edu/uscode/text/26/933

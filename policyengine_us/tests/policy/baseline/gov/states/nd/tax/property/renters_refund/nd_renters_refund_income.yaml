@@ -464,6 +464,20 @@
     # Only the 1,000 of taxable interest can leave: 1,000 + 8,000 - 1,000.
     nd_renters_refund_income: 8_000
 
+- name: North Dakota takes savings bond interest out of interest reported only as a total.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    interest_income: 3_000
+    # IRC 135(a) excludes 2,000 of the interest.
+    us_bonds_for_higher_ed: 2_000
+    social_security_retirement: 10_000
+  output:
+    # 3,000 + 10,000 - 2,000.
+    nd_renters_refund_income: 11_000
+
 - name: A business loss doesn't keep savings bond interest spent on higher education in income.
   period: 2026
   absolute_error_margin: 0.01
@@ -498,6 +512,12 @@
     tax_units:
       tax_unit:
         members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        # The rental loss would qualify the family for TANF; this case leaves
+        # it out to test the loss alone.
+        tanf: 0
     households:
       household:
         members: [parent, child]
@@ -506,7 +526,31 @@
     # 40,000 - 40,000 + 10,000 - 5,000.
     nd_renters_refund_income: 5_000
 
-- name: North Dakota leaves out income from Guam, American Samoa or the Northern Mariana Islands that federal law excludes.
+- name: Employer adoption assistance comes out only up to the wages that hold it.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 3_000
+        social_security_retirement: 10_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        qualified_adoption_assistance_expense: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # 3,000 - 3,000 + 10,000.
+    nd_renters_refund_income: 10_000
+
+- name: North Dakota leaves out income from American Samoa that federal law excludes.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -517,8 +561,8 @@
     tax_units:
       tax_unit:
         members: [person]
-        # IRC 931(a) excludes it. The model deducts it above the line, so the
-        # wages include it.
+        # IRC 931(a) excludes it for a bona fide resident of American Samoa.
+        # The model deducts it above the line, so the wages include it.
         specified_possession_income: 10_000
     households:
       household:
@@ -526,6 +570,72 @@
         state_code: ND
   output:
     # 30,000 - 10,000.
+    nd_renters_refund_income: 20_000
+
+- name: A rental loss doesn't keep income from American Samoa in income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 30_000
+        rental_income: -30_000
+        social_security_retirement: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        # IRC 931(a) excludes 10,000 of the wages.
+        specified_possession_income: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    market_income: 0
+    # 30,000 - 10,000 - 30,000 + 10,000.
+    nd_renters_refund_income: 0
+
+- name: A self-employment loss doesn't keep income from Puerto Rico in income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 30_000
+        self_employment_income: -35_000
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        # IRC 933 excludes 10,000 of the wages.
+        puerto_rico_income: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    # 30,000 - 10,000 - 35,000 + 20,000.
+    nd_renters_refund_income: 5_000
+
+- name: Income from American Samoa that no market income component holds never comes out of social security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        specified_possession_income: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
     nd_renters_refund_income: 20_000
 
 - name: North Dakota's income tax reductions leave retired military benefits, capital gains and dividends in income.
