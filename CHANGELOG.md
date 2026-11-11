@@ -1,3 +1,10 @@
+## [2.117.1] - 2026-11-11
+
+### Fixed
+
+- Count military retired pay and survivor annuities in New Mexico's modified gross income and Oklahoma's credit gross income.
+
+
 ## [2.117.0] - 2026-11-11
 
 ### Added
