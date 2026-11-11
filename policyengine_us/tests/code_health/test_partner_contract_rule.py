@@ -30,14 +30,20 @@ def _slug(heading):
 
 
 def _headings(text):
-    """Anchors of the Markdown headings, skipping `#` lines in code blocks."""
+    """Anchors of the Markdown headings, skipping `#` lines in code blocks.
+
+    A fence opens with three or more backticks or tildes, indented by up to
+    three spaces. Only a bare run of the same character, at least as long,
+    closes it.
+    """
     headings, fence = set(), None
     for line in text.splitlines():
-        if line[:3] in ("```", "~~~"):
-            # Only the opening fence's own marker closes the block.
+        match = re.match(r" {0,3}(`{3,}|~{3,})(.*)$", line)
+        if match:
+            run, rest = match.groups()
             if fence is None:
-                fence = line[:3]
-            elif line[:3] == fence:
+                fence = run
+            elif run[0] == fence[0] and len(run) >= len(fence) and not rest.strip():
                 fence = None
         elif fence is None and re.match(r"#{1,6} ", line):
             headings.add(_slug(line.lstrip("#")))
@@ -70,10 +76,11 @@ def test_notice_workflow_watches_the_partner_folder():
     steps = workflow["jobs"]["notify-slack"]["steps"]
     scripts = "\n".join(step.get("run", "") for step in steps)
     # The step that lists the PR's partner files pipes them through a grep
-    # that keeps the paths in the same folder. Any option, such as -v or -c,
-    # would drop or count them and silence the notice, and GNU grep reads
-    # options after the pattern too, so nothing but -E may sit on that line.
-    pattern = rf"^\s*\|\s*grep (?:-E )?'\^{re.escape(PARTNERS)}/[^']*'\s*(?:\\|\||$)"
+    # that keeps the paths in the same folder. An option such as -v or -c,
+    # anywhere on that line, or a further pipe stage would drop or count the
+    # paths and silence the notice, so the line must end after the pattern
+    # (a trailing backslash continues the command to `|| true`).
+    pattern = rf"^\s*\|\s*grep (?:-E )?'\^{re.escape(PARTNERS)}/[^']*'\s*(?:\\)?$"
     assert re.search(pattern, scripts, re.M)
     assert any(
         "SLACK_PARTNER_WEBHOOK_URL" in str(step.get("env", {})) for step in steps
