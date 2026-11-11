@@ -51,21 +51,23 @@ class de_pension_exclusion(Variable):
         # Filer over a certain age are eligible to receive an exclsuion
         # for the total of pension income and eligible retirement income pre and after 2022
 
-        # Filers under a certain age and retired from military,
-        # are eligible to receive a pension exclusion of a max amount after 2022
+        # Filers with a United States military pension take a larger pension
+        # exclusion from 2022.
         if p.military_retirement_exclusion_available:
-            military_retirement_pay = (
-                person("military_retirement_pay", period) * head_or_spouse
+            # A United States military pension is a retiree's own pay and,
+            # from 2024, an annuity paid to a member's survivor: "a pension
+            # received as a result of an individual's service"
+            # (30 Del. C. 1106(b)(3)f.2, added by 84 Del. Laws c. 437).
+            military_pension = (
+                add(person, period, p.military_income_sources) * head_or_spouse
             )
-            capped_military_retirement_pay = min_(
-                p.cap.military, military_retirement_pay
-            )
+            capped_military_pension = min_(p.cap.military, military_pension)
             # Filers under the age threshold take the greater of the pension
             # exclusion and the military pension exclusion from 2022
             # (30 Del. C. 1106(b)(3)b.1), and filers at or above it from 2027
             # (1106(b)(3)c.2, d.2 and e.2).
             greater_amount = max_(
-                capped_military_retirement_pay, capped_eligible_pension_income
+                capped_military_pension, capped_eligible_pension_income
             )
             if p.military_retirement_exclusion_available_at_age_threshold:
                 older_amount = greater_amount

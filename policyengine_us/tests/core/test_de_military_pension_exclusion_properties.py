@@ -9,18 +9,27 @@ the greater of the $12,500 exclusion and the military pension up to that cap.
 From 2027 ((b)(3)f.4), a person 60 or older who fails the domicile requirement
 gets no subtraction.
 
+A United States military pension is "a pension received as a result of an
+individual's service" ((b)(3)f.2, added by 84 Del. Laws c. 437 in 2024), so
+from 2024 it is a retiree's own pay plus an annuity paid to a member's
+survivor. For 2022 and 2023, when the term had no definition, it is the
+retiree's own pay.
+
 The reference below restates those rules from the statute, not from the
 model's parameters. Hypothesis draws batches of single filers (any age;
-military retired pay, survivor benefits, other pensions, IRA distributions,
+military retired pay, survivor annuities, other pensions, IRA distributions,
 interest, capital gains or losses, and the domicile requirement), runs each
 batch as one simulation with the same inputs in every year, and checks for
 every filer and year:
 
 1. The exclusion equals the reference amount.
-2. It is never negative and never exceeds the military pension plus the
-   pension basket floored at zero.
+2. It is never negative and never exceeds the retired pay and survivor
+   annuity plus the pension basket floored at zero.
 3. From 2027, a filer 60 or older who meets the domicile requirement never
    gets less than the 2026 rule gives.
+4. From 2024, exchanging a filer's retired pay and survivor annuity leaves
+   the exclusion unchanged. Each batch carries every filer's twin with the
+   two amounts exchanged, so this check does not rest on the reference.
 """
 
 import numpy as np
@@ -52,8 +61,15 @@ def basket(filer):
     )
 
 
+def military_pension(year, filer):
+    """Retired pay, plus a survivor's annuity from 2024."""
+    if year <= 2023:
+        return filer["military_retirement_pay"]
+    return filer["military_retirement_pay"] + filer["military_retirement_pay_survivors"]
+
+
 def reference(year, filer):
-    military = min(military_cap(year), filer["military_retirement_pay"])
+    military = min(military_cap(year), military_pension(year, filer))
     if (
         year >= 2027
         and filer["age"] >= 60
@@ -79,7 +95,7 @@ filers = st.fixed_dictionaries(
         "military_retirement_pay": st.sampled_from(
             [0, 1_000, 12_500, 15_000, 18_000, 20_000, 25_000, 40_000]
         ),
-        "military_retirement_pay_survivors": st.sampled_from([0, 3_000]),
+        "military_retirement_pay_survivors": st.sampled_from([0, 3_000, 30_000]),
         "taxable_pension_income": st.sampled_from([0, 1_500, 20_000]),
         "taxable_ira_distributions": st.sampled_from([0, 5_000, 20_000]),
         "taxable_interest_income": st.sampled_from([0, 2_000]),
@@ -87,6 +103,15 @@ filers = st.fixed_dictionaries(
         "de_pension_exclusion_domicile_requirement_met": st.booleans(),
     }
 )
+
+
+def exchanged(filer):
+    """The same filer with retired pay and the survivor annuity exchanged."""
+    return {
+        **filer,
+        "military_retirement_pay": filer["military_retirement_pay_survivors"],
+        "military_retirement_pay_survivors": filer["military_retirement_pay"],
+    }
 
 
 def simulate(batch):
@@ -123,17 +148,22 @@ def simulate(batch):
 )
 @given(batch=st.lists(filers, min_size=10, max_size=30))
 def test_military_pension_exclusion(batch):
-    simulation = simulate(batch)
+    simulation = simulate(batch + [exchanged(filer) for filer in batch])
     for year in YEARS:
         exclusion = np.asarray(simulation.calculate("de_pension_exclusion", year))
-        for filer, amount in zip(batch, exclusion):
+        amounts, twin_amounts = exclusion[: len(batch)], exclusion[len(batch) :]
+        for filer, amount, twin_amount in zip(batch, amounts, twin_amounts):
             assert amount == reference(year, filer), (year, filer, amount)
-            assert (
-                0 <= amount <= filer["military_retirement_pay"] + max(basket(filer), 0)
+            received = (
+                filer["military_retirement_pay"]
+                + filer["military_retirement_pay_survivors"]
             )
+            assert 0 <= amount <= received + max(basket(filer), 0)
             if (
                 year >= 2027
                 and filer["age"] >= 60
                 and filer["de_pension_exclusion_domicile_requirement_met"]
             ):
                 assert amount >= reference(2026, filer)
+            if year >= 2024:
+                assert amount == twin_amount, (year, filer, amount, twin_amount)

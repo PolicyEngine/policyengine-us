@@ -133,8 +133,14 @@
   output:
     de_pension_exclusion: 10_000
 
-- name: DE under-60 survivor benefits treated as pension (capped at 2,000)
-  period: 2024
+# 30 Del. C. 1106(b)(3)f.2, added by 84 Del. Laws c. 437 (approved September
+# 26, 2024): a United States military pension is "a pension received as a
+# result of an individual's service", so from 2024 a survivor's annuity takes
+# the military pension exclusion. Before 2024 the term had no definition, and
+# the survivor's annuity stays in the $2,000 pension exclusion.
+
+- name: DE under-60 survivor annuity stays in the $2,000 pension exclusion in 2023.
+  period: 2023
   input:
     age: 50
     military_retirement_pay_survivors: 3_000
@@ -142,6 +148,16 @@
     state_code: DE
   output:
     de_pension_exclusion: 2_000
+
+- name: DE under-60 survivor annuity takes the military pension exclusion from 2024.
+  period: 2024
+  input:
+    age: 50
+    military_retirement_pay_survivors: 3_000
+    is_tax_unit_head_or_spouse: true
+    state_code: DE
+  output:
+    de_pension_exclusion: 3_000
 
 - name: DE 60+ filer with military retirement and survivor benefits in retirement basket
   period: 2024
@@ -281,14 +297,55 @@
   output:
     de_pension_exclusion: 7_000
 
-- name: DE under-60 survivor benefits stay in the $2,000 pension exclusion in 2029.
+- name: DE under-60 survivor annuity takes the $12,500 military pension exclusion in 2026.
+  period: 2026
+  input:
+    state_code: DE
+    age: 50
+    military_retirement_pay_survivors: 30_000
+  output:
+    de_pension_exclusion: 12_500
+
+- name: DE under-60 survivor annuity takes the $25,000 military pension exclusion in 2029.
   period: 2029
   input:
     state_code: DE
     age: 50
     military_retirement_pay_survivors: 30_000
   output:
-    de_pension_exclusion: 2_000
+    de_pension_exclusion: 25_000
+
+- name: DE 60+ survivor annuity takes the $25,000 military pension exclusion in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay_survivors: 30_000
+  output:
+    # The greater of min(12,500, 30,000) and min(25,000, 30,000).
+    de_pension_exclusion: 25_000
+
+- name: DE 60+ filer adds retired pay and a survivor annuity under the military cap in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 65
+    military_retirement_pay: 8_000
+    military_retirement_pay_survivors: 8_000
+  output:
+    # The greater of min(12,500, 16,000) and min(25,000, 8,000 + 8,000).
+    de_pension_exclusion: 16_000
+
+- name: DE one military cap covers retired pay and a survivor annuity together in 2029.
+  period: 2029
+  input:
+    state_code: DE
+    age: 50
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    # min(25,000, 20,000 + 10,000), not 20,000 + 10,000.
+    de_pension_exclusion: 25_000
 
 - name: DE joint return gives each spouse the 2029 cap on their own military pension.
   period: 2029
