@@ -6836,6 +6836,12 @@ candidates:
   - kind: agency-practice
     citation: Tax Department testimony on House Bill 1174, Senate Appropriations Committee, March 25, 2019
     url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=28
+  - kind: statute
+    citation: N.D.C.C. 54-01.1-13
+    url: https://ndlegis.gov/cencode/t54c01-1.pdf#page=6
+  - kind: statute
+    citation: N.D.C.C. 1-02-39
+    url: https://ndlegis.gov/cencode/t01c02.pdf#page=6
   - kind: guidance
     citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
     url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
@@ -6856,7 +6862,8 @@ candidates:
       military pension and I.R.A." and "Net gains from the sale of property" as income. SFN 24777 line 7 asks for
       capital gains.
   example: A renter with $30,000 of retired military benefits and no other income has income of $30,000 if the benefits
-    count and $0 if the reduction excludes them.
+    count, and less if the reduction, which reaches the part of the benefits in federal taxable income, excludes
+    amounts from income.
   pe_us:
     follows: gap-fill
     code:
