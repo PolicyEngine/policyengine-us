@@ -1,1 +1,0 @@
-Use the VA 100% service-connected rating flag for the Medicaid work requirement veteran exemption, the Kansas disabled veteran exemption, Hawaii LIHEAP points and SNAP's elderly or disabled member, and document both VA rating flags.
