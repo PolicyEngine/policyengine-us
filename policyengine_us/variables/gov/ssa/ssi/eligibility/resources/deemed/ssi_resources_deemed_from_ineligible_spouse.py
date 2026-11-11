@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_eligible_apart_from_means,
     _ssi_spouse_index,
 )
 
@@ -26,11 +27,7 @@ class ssi_resources_deemed_from_ineligible_spouse(Variable):
         # A spouse who fails SSI's citizenship or qualified-noncitizen
         # condition is 'not eligible for SSI benefits' (416.1160) whatever
         # their age or disability, so keeps the ineligible-spouse exclusions.
-        immigration_status = person("immigration_status", period)
-        could_be_eligible = person("is_ssi_aged_blind_disabled", period) & (
-            (immigration_status == immigration_status.possible_values.CITIZEN)
-            | person("is_ssi_qualified_noncitizen", period)
-        )
+        could_be_eligible = _ssi_eligible_apart_from_means(person, period)
         resources = where(
             could_be_eligible[spouse],
             person("ssi_countable_resources", period)[spouse],

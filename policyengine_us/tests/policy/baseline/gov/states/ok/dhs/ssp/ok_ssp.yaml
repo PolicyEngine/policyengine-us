@@ -245,3 +245,45 @@
     # (1_257 - 85) / 2 = 586 + 458.17 = 1_044.17, not below 1_034, so 0.
     ok_ssp_own_countable_income: 1_044.17
     ok_ssp: 0
+
+- name: Oklahoma couple countable income excludes a third aged adult.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        social_security_retirement:
+          2026: 1_200
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: OK
+  output:
+    # OKDHS Appendix C-1 Schedule VIII.A: eligible couple standard 1,571;
+    # individual standard 1,034; maximum $40 per recipient.
+    # https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=3
+    # Couple income is SSI 1,491, so (1,571 - 1,491) / 2 = 40 each.
+    # Third adult: (100 - 20) + SSI (994 - 80) = 994; 1,034 - 994 = 40.
+    ok_ssp_countable_income: [1_491, 1_491, 994]
+    ok_ssp: [40, 40, 40]

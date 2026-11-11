@@ -13,6 +13,7 @@ SINGLE:
   2024-01-01: 14_600
   2025-01-01: 15_750
   2026-01-01: 16_100
+  2027-01-01: 16_600
 JOINT:
   2015-01-01: 12_600
   2016-01-01: 12_600
@@ -26,6 +27,7 @@ JOINT:
   2024-01-01: 29_200
   2025-01-01: 31_500
   2026-01-01: 32_200
+  2027-01-01: 33_200
 SEPARATE:
   2015-01-01: 6_300
   2016-01-01: 6_300
@@ -39,6 +41,7 @@ SEPARATE:
   2024-01-01: 14_600
   2025-01-01: 15_750
   2026-01-01: 16_100
+  2027-01-01: 16_600
 HEAD_OF_HOUSEHOLD:
   2015-01-01: 9_250
   2016-01-01: 9_300
@@ -52,6 +55,7 @@ HEAD_OF_HOUSEHOLD:
   2024-01-01: 21_900
   2025-01-01: 23_625
   2026-01-01: 24_150
+  2027-01-01: 24_925
 SURVIVING_SPOUSE:
   2015-01-01: 12_600
   2016-01-01: 12_600
@@ -65,6 +69,7 @@ SURVIVING_SPOUSE:
   2024-01-01: 29_200
   2025-01-01: 31_500
   2026-01-01: 32_200
+  2027-01-01: 33_200
 metadata:
   unit: currency-USD
   label: Standard deduction
@@ -75,6 +80,8 @@ metadata:
   reference:
     - title: 26 U.S. Code § 63(c) - Standard deduction
       href: https://www.law.cornell.edu/uscode/text/26/63#c
+    - title: 2027 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=13
     - title: 2026 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
     - title: 2025 IRS data release
