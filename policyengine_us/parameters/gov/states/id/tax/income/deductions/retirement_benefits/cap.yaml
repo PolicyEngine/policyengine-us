@@ -26,8 +26,14 @@ metadata:
       href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_10-23-2024.pdf#page=32
     - title: Idaho Individual Income Tax Instructions Packet 2025
       href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
-    - title: Social Security Administration, 2026 Social Security changes (maximum benefit for a worker retiring at full retirement age)
+    - title: Social Security Administration, 2026 Cost-of-Living Adjustment (COLA) Fact Sheet
       href: https://www.ssa.gov/news/en/cola/factsheets/2026.html
+    - title: Social Security Administration, 2027 Cost-of-Living Adjustment (COLA) Fact Sheet
+      href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
+    - title: 42 U.S.C. § 402(b)(2) and (c)(2)
+      href: https://www.law.cornell.edu/uscode/text/42/402#b_2
+    - title: 42 U.S.C. § 415(g)
+      href: https://www.law.cornell.edu/uscode/text/42/415#g
 
 SINGLE:
   2021-01-01: 37_776
@@ -35,19 +41,33 @@ SINGLE:
   2023-01-01: 43_524
   2024-01-01: 45_864
   2025-01-01: 48_216
-  # 12 times SSA's 2026 maximum benefit for a worker retiring at full
-  # retirement age ($4,152 a month), as 63-3022A(2)(b) defines it.
+  # The 2026 and 2027 amounts are derived, pending the Tax Commission's own
+  # amounts in the 2026 and 2027 Form 39R instructions: 12 times SSA's
+  # maximum monthly benefit for a worker retiring at full retirement age
+  # ($4,152 in 2026 and $4,188 in 2027), as 63-3022A(2)(b) defines it. Each
+  # of the Commission's 2021-2025 amounts equals 12 times SSA's figure for
+  # that year.
   2026-01-01: 49_824
+  2027-01-01: 50_256
 JOINT:
   2021-01-01: 56_664
   2022-01-01: 60_210
   2023-01-01: 65_286
   2024-01-01: 68_796
   2025-01-01: 72_324
-  # 63-3022A(2)(a) sets the joint amount for a worker whose spouse draws
-  # benefits only on the worker's record. The Tax Commission's 2021-2025
-  # joint amounts equal 1.5 times the single amount, as this one does.
+  # The 2026 and 2027 amounts are derived, pending the Tax Commission's own:
+  # 1.5 times the single amount. 63-3022A(2)(a) sets the joint amount for a
+  # worker whose spouse draws benefits only on the worker's record, and 42
+  # U.S.C. 402(b)(2) and (c)(2) set that spouse's benefit at one-half of the
+  # worker's primary insurance amount. Each of the Commission's 2021-2025
+  # joint amounts equals 1.5 times its single amount.
+  # SSA rounds each monthly benefit down to a whole dollar (42 U.S.C.
+  # 415(g)), so 12 times the two rounded benefits falls $6 short of 1.5
+  # times the single amount when the monthly maximum is odd: in 2022,
+  # 1.5 x 40,140 = 60,210, and 12 x (3,345 + 1,672) = 60,204. The 2026 and
+  # 2027 maximums are even, so both computations give these amounts.
   2026-01-01: 74_736
+  2027-01-01: 75_384
 SEPARATE:
   # Per Idaho Form 39R instructions: "If you're married, you can't claim
   # this deduction if you file separately." (Idaho Code 63-3022A(2)(e))
@@ -60,7 +80,9 @@ SURVIVING_SPOUSE:
   2023-01-01: 43_524
   2024-01-01: 45_864
   2025-01-01: 48_216
+  # Derived as the SINGLE amounts are, pending the Tax Commission's own.
   2026-01-01: 49_824
+  2027-01-01: 50_256
 HEAD_OF_HOUSEHOLD:
   # Per Idaho Code 63-3022A(2)(b): "not married" taxpayers use single cap
   2021-01-01: 37_776
@@ -68,4 +90,6 @@ HEAD_OF_HOUSEHOLD:
   2023-01-01: 43_524
   2024-01-01: 45_864
   2025-01-01: 48_216
+  # Derived as the SINGLE amounts are, pending the Tax Commission's own.
   2026-01-01: 49_824
+  2027-01-01: 50_256
