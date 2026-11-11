@@ -3,6 +3,8 @@ from __future__ import annotations
 import math
 from typing import Any
 
+from policyengine_core.periods import instant
+
 from policyengine_us.model_api import Reform
 
 
@@ -14,7 +16,9 @@ TRUSTEES_CORE_THRESHOLD_ASSUMPTION: dict[str, Any] = {
         "parameters that otherwise use IRS CPI uprating after 2034 using the "
         "active NAWI path. Parameters that follow one of those, such as the "
         "joint standard deduction at twice the single amount, follow it onto "
-        "the wage path."
+        "the wage path. Amounts a statute indexes from a base amount, such "
+        "as the head of household standard deduction, round their increase "
+        "over that base, as the statute does."
     ),
     "source": "SSA 2025 Trustees Report V.C.7 and OACT email clarification, May 6, 2026",
     "start_year": 2035,
@@ -91,6 +95,22 @@ def _iter_updatable_parameters(
     return result
 
 
+def _statutory_base(parameter) -> float | None:
+    """The base amount of a parameter on core's base-mode uprating, else None.
+
+    That is ``uprating.base.value``, or the parameter's value at
+    ``uprating.base.period`` when the block states no value.
+    """
+    uprating = getattr(parameter, "metadata", {}).get("uprating")
+    if not isinstance(uprating, dict) or "base" not in uprating:
+        return None
+    base = uprating["base"]
+    value = base.get("value")
+    if value is None:
+        value = parameter(instant(base["period"]))
+    return float(value)
+
+
 def _apply_wage_growth_to_parameter(
     parameter,
     *,
@@ -109,6 +129,7 @@ def _apply_wage_growth_to_parameter(
     # Validate that the referenced default uprating parameter exists.
     _get_parameter_by_name(parameters, uprating_name)
     values_by_year = {}
+    statutory_base = _statutory_base(parameter)
 
     for year in range(projection_base_year + 1, start_year):
         values_by_year[year] = float(parameter(f"{year}-01-01"))
@@ -117,10 +138,19 @@ def _apply_wage_growth_to_parameter(
     base_nawi = float(parameters.gov.ssa.nawi(f"{start_year - 2}-01-01"))
     for year in range(start_year, end_year + 1):
         nawi_ratio = float(parameters.gov.ssa.nawi(f"{year - 1}-01-01")) / base_nawi
-        updated_value = _round_amount(
-            base_value * nawi_ratio,
-            rounding,
-        )
+        if statutory_base is None:
+            updated_value = _round_amount(
+                base_value * nawi_ratio,
+                rounding,
+            )
+        else:
+            # The statute rounds the increase over its base amount, as
+            # 63(c)(7)(B)(ii) does over the $23,625 head of household amount,
+            # so the wage path keeps the base plus whole rounding steps.
+            updated_value = statutory_base + _round_amount(
+                base_value * nawi_ratio - statutory_base,
+                rounding,
+            )
         values_by_year[year] = updated_value
 
     for year, value in values_by_year.items():
@@ -163,6 +193,58 @@ def _federal_income_tax_roots(parameters) -> list:
     ]
 
 
+def _wage_indexing_plan(parameters) -> list[tuple[Any, Any]]:
+    """The parameters the reform re-projects, each with its leader.
+
+    First every IRS parameter that uprates by one of the assumption's CPI
+    indices, in tree order, with no leader; then each parameter that uprates
+    by one of those, such as the joint standard deduction, which follows
+    the single amount, with that leader; then their own followers, a
+    generation at a time. A leader always comes before its followers.
+    """
+    plan = []
+    seen = set()
+    leaders = {}
+    for root in _federal_income_tax_roots(parameters):
+        for parameter in _iter_updatable_parameters(
+            root,
+            uprating_parameter=TRUSTEES_CORE_THRESHOLD_ASSUMPTION[
+                "uprating_parameters"
+            ],
+        ):
+            if parameter.name in seen:
+                continue
+            seen.add(parameter.name)
+            plan.append((parameter, None))
+            leaders[parameter.name] = parameter
+    while leaders:
+        followers = {}
+        for root in _federal_income_tax_roots(parameters):
+            for parameter in _iter_updatable_parameters(
+                root, uprating_parameter=tuple(leaders)
+            ):
+                if parameter.name in seen:
+                    continue
+                seen.add(parameter.name)
+                plan.append((parameter, leaders[_uprating_parameter_name(parameter)]))
+                followers[parameter.name] = parameter
+        leaders = followers
+    return plan
+
+
+def trustees_core_threshold_parameters(parameters) -> list:
+    """Every parameter the Trustees core-thresholds reform re-projects.
+
+    The IRS parameters that uprate by one of
+    ``TRUSTEES_CORE_THRESHOLD_ASSUMPTION["uprating_parameters"]``, in tree
+    order, then the parameters that follow one of them (the joint and
+    surviving spouse standard deductions follow the single amount) and
+    their own followers. The reform re-projects exactly these, in this
+    order; some keep their values, such as amounts of zero.
+    """
+    return [parameter for parameter, _ in _wage_indexing_plan(parameters)]
+
+
 def _parameters_have_long_run_projection(parameters, end_year: int) -> bool:
     parameter = parameters.gov.irs.income.bracket.thresholds.children["1"].SINGLE
     return any(
@@ -188,17 +270,10 @@ def create_trustees_core_thresholds_reform(
         if not _parameters_have_long_run_projection(parameters, end_year):
             return parameters
 
-        seen = {}
-        for root in _federal_income_tax_roots(parameters):
-            for parameter in _iter_updatable_parameters(
-                root,
-                uprating_parameter=TRUSTEES_CORE_THRESHOLD_ASSUMPTION[
-                    "uprating_parameters"
-                ],
-            ):
-                if parameter.name in seen:
-                    continue
-                seen[parameter.name] = parameter
+        # The same plan trustees_core_threshold_parameters lists, leaders
+        # before their followers.
+        for parameter, leader in _wage_indexing_plan(parameters):
+            if leader is None:
                 _apply_wage_growth_to_parameter(
                     parameter,
                     parameters=parameters,
@@ -206,25 +281,13 @@ def create_trustees_core_thresholds_reform(
                     end_year=end_year,
                     projection_base_year=projection_base_year,
                 )
-        # Followers of a wage-indexed parameter, and their own followers.
-        leaders = dict(seen)
-        while leaders:
-            followers = {}
-            for root in _federal_income_tax_roots(parameters):
-                for parameter in _iter_updatable_parameters(
-                    root, uprating_parameter=tuple(leaders)
-                ):
-                    if parameter.name in seen:
-                        continue
-                    seen[parameter.name] = parameter
-                    _apply_leader_growth_to_follower(
-                        parameter,
-                        leaders[_uprating_parameter_name(parameter)],
-                        start_year=start_year,
-                        end_year=end_year,
-                    )
-                    followers[parameter.name] = parameter
-            leaders = followers
+            else:
+                _apply_leader_growth_to_follower(
+                    parameter,
+                    leader,
+                    start_year=start_year,
+                    end_year=end_year,
+                )
         return parameters
 
     class reform(Reform):

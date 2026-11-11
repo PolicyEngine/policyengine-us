@@ -45,6 +45,7 @@ from policyengine_us.reforms.ssa.trustees_2025 import (
     TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS,
 )
 from policyengine_us.reforms.ssa.trustees_2026 import (
+    _rederive_reader,
     apply_trustees_2026_path_readers,
     trustees_2026_path_readers,
 )
@@ -880,12 +881,39 @@ def _tree_with_reader(values, **uprating):
             },
             "cadence",
         ),
+        (
+            {"2026-01-01": 100},
+            {"base": {"period": 2026, "value": 100, "floor": True}},
+            "statutory base",
+        ),
     ],
 )
 def test_a_reader_outside_the_rule_stops_the_assumption(values, uprating, message):
     tree = _tree_with_reader(values, **uprating)
     with pytest.raises(ValueError, match=message):
         apply_trustees_2026_path_readers(tree)
+
+
+@pytest.mark.parametrize("path", [NAWI, UPRATING])
+def test_rederive_reader_refuses_a_base_mode_reader(path):
+    """Base mode projects from a statutory base, not from the last stated
+    value, so re-deriving it as core's chained uprating would be wrong."""
+    tree = _tree_with_reader(
+        {"2026-01-01": 100}, base={"period": 2026, "value": 100, "floor": True}
+    )
+    reader = tree.gov.ssa.reader
+    reader.metadata["uprating"]["parameter"] = path
+    before = [(value.instant_str, value.value) for value in reader.values_list]
+    with pytest.raises(ValueError, match="from a statutory base year"):
+        _rederive_reader(
+            reader,
+            get_parameter(tree, path),
+            last_unchanged_year=2027,
+            end_year=2100,
+        )
+    assert [(value.instant_str, value.value) for value in reader.values_list] == (
+        before
+    )
 
 
 YEARS = st.integers(1990, 2150)
@@ -1018,7 +1046,23 @@ def _core_thresholds_under(reforms):
     return nawi, thresholds, followers
 
 
-def _round_like_core_thresholds(amount, rounding):
+def _statutory_base(parameter):
+    """A base-mode parameter's base amount, else None."""
+    uprating = parameter.metadata.get("uprating")
+    if not isinstance(uprating, dict) or "base" not in uprating:
+        return None
+    base = uprating["base"]
+    if base.get("value") is not None:
+        return base["value"]
+    return parameter(f"{base['period']}-01-01")
+
+
+def _round_like_core_thresholds(amount, rounding, base=None):
+    """The core-thresholds reform's rounding, half up for nearest. With a
+    statutory base, it rounds the increase over the base, as the statute
+    does; otherwise the amount."""
+    if base is not None:
+        return base + _round_like_core_thresholds(amount - base, rounding)
     if not rounding:
         return amount
     if rounding["type"] == "downwards":
@@ -1057,13 +1101,14 @@ def test_core_thresholds_follow_the_trustees_2026_nawi(order):
     for path, values in thresholds.items():
         default = get_parameter(system.parameters, path)
         rounding = _rounding(default.metadata["uprating"])
+        statutory_base = _statutory_base(default)
         base = default("2034-01-01")
         for year, value in values.items():
             if year <= 2034:
                 expected = default(f"{year}-01-01")
             else:
                 expected = _round_like_core_thresholds(
-                    base * (nawi[year - 1] / nawi[2033]), rounding
+                    base * (nawi[year - 1] / nawi[2033]), rounding, statutory_base
                 )
             assert value == pytest.approx(expected, rel=1e-12), (path, year)
     for path in (
@@ -1078,6 +1123,7 @@ def test_core_thresholds_follow_the_trustees_2026_nawi(order):
                 * _value(system.parameters, NAWI, year - 1)
                 / _value(system.parameters, NAWI, 2033),
                 rounding,
+                _statutory_base(default),
             )
             assert thresholds[path][year] != on_default_nawi
     # 26 U.S.C. 63(c)(2)(A): the joint and surviving spouse amounts, which
