@@ -24,3 +24,7 @@ values:
     - tax_exempt_interest_income
     - workers_compensation
     - tax_exempt_social_security
+    # W. Va. Code 11-21-23(d)(1)(D) counts "nontaxable Social Security
+    # benefits", and 11-21-9(a) gives terms their federal meaning. IRC
+    # 86(d)(1)(B) makes tier 1 railroad benefits social security benefits.
+    - tax_exempt_railroad_social_security_equivalent_benefits

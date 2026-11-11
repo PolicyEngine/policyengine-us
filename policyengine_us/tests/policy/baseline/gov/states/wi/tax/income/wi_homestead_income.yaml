@@ -99,3 +99,18 @@
     # loss_ald deducts each category's loss on its own, so AGI is 0 and the
     # add-back is the 5,000 non-SSTB loss.
     wi_homestead_income: 5_000
+
+- name: Case 4, railroad benefits count in full, as Wis. Stat. 71.52(6) requires.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    age: 70
+    state_code: WI
+    employment_income: 30_000
+    railroad_social_security_equivalent_benefits: 10_000
+    taxable_railroad_pension_benefits: 3_000
+    tax_exempt_railroad_pension_benefits: 2_000
+  output:
+    # AGI: 30,000 + 7,900 taxable of the 10,000 + 3,000 = 40,900.
+    # Add 2,100 of tier 1 and 2,000 of tier 2 outside AGI.
+    wi_homestead_income: 45_000

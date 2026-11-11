@@ -70,3 +70,16 @@
     ok_ssp: 480
     ok_gross_income: 12_408
     ok_ptc: 0
+
+- name: OK gross income counts every railroad tier, as line 5 of Forms 538-S and 538-H does.
+  period: 2024
+  input:
+    age: 70
+    state_code: OK
+    social_security_retirement: 4_000
+    railroad_social_security_equivalent_benefits: 10_000
+    taxable_railroad_pension_benefits: 3_000
+    tax_exempt_railroad_pension_benefits: 2_000
+  output:
+    # Line 4: 4,000 of Social Security. Line 5: 10,000 + 3,000 + 2,000.
+    ok_gross_income: 19_000

@@ -20,6 +20,11 @@ values:
     - total_unemployment_compensation
     - workers_compensation
     - social_security
+    # Forms 538-S and 538-H, line 5: Railroad Retirement benefits, every tier,
+    # whether or not federal AGI includes them.
+    - railroad_social_security_equivalent_benefits
+    - taxable_railroad_pension_benefits
+    - tax_exempt_railroad_pension_benefits
     - alimony_income
     - child_support_received
     - illicit_income

@@ -249,3 +249,15 @@
     # The 5,000 from a plan the recipient paid for is excluded by IRC
     # 104(a)(3), and NDCC 57-02-08.1(5)(c) excludes it: 10,000 + 7,000.
     nd_renters_refund_income: 17_000
+
+- name: North Dakota counts tier 1 benefits in full and the taxable rest of a railroad annuity.
+  period: 2025
+  input:
+    state_code: ND
+    employment_income: 4_000
+    railroad_social_security_equivalent_benefits: 10_000
+    taxable_railroad_pension_benefits: 3_000
+    tax_exempt_railroad_pension_benefits: 2_000
+  output:
+    # NDCC 57-02-08.1(5)(c): 4,000 + 10,000 + 3,000. IRC 72 excludes the 2,000.
+    nd_renters_refund_income: 17_000

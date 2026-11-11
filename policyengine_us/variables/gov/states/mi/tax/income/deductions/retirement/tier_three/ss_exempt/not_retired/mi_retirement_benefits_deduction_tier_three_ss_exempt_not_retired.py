@@ -59,14 +59,16 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable
             uncapped_pension_income * is_head_or_spouse
         )
 
-        # If a filer is recieving military retirement pay, the calculation includes the smaller of
-        # the tier one or tier three deduction amount
-        # Worksheet 3.2 counts only military retirement income on the filer's Schedule 1, line 11,
-        # which excludes a dependent's pay (not in the filer's AGI).
-        military_pay = (
-            person("mi_military_retirement_subtraction", period) * is_head_or_spouse
+        # If a filer subtracts military retirement benefits or taxable
+        # railroad retirement benefits on Schedule 1, line 11, the calculation
+        # includes the smaller of the tier one or tier three deduction amount
+        # (Worksheet 3.2). Line 11 is the filer's, so a dependent's benefits
+        # (not in the filer's AGI) do not count.
+        line_11_benefits = (
+            person("mi_military_and_railroad_retirement_subtraction", period)
+            * is_head_or_spouse
         )
-        military_retirement_pay_received = tax_unit.sum(military_pay) > 0
+        line_11_benefits_received = tax_unit.sum(line_11_benefits) > 0
         # Line 8
         tier_one_amount = tax_unit(
             "mi_retirement_benefits_deduction_tier_one_amount",
@@ -76,7 +78,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable
         smaller_of_cap_or_tier_one_amount = min_(cap, tier_one_amount)
 
         eligible_deduction = where(
-            military_retirement_pay_received,
+            line_11_benefits_received,
             smaller_of_cap_or_tier_one_amount,
             cap,
         )

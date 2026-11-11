@@ -19,8 +19,9 @@ class railroad_benefits(Variable):
         "government transfer, and household and SPM benefits include these "
         "benefits. Enter the parts, not this total, so that taxes see them. "
         "A total entered here replaces the sum of the parts and reaches "
-        "income totals and benefit programs but no tax, and it applies only "
-        "to the year it is entered for, while the parts carry into later "
+        "income totals, benefit programs and the few state tax provisions "
+        "that read this total, but no federal tax, and it applies only to "
+        "the year it is entered for, while the parts carry into later "
         "years. Do not also enter them as social_security, pension_income, "
         "disability_benefits or survivor_benefits."
     )

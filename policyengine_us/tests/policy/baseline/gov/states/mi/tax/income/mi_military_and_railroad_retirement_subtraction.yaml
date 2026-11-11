@@ -1,0 +1,134 @@
+# MCL 206.30(1)(e) deducts military retirement benefits and Railroad Retirement
+# Act benefits alike, and the limits in subsections (1)(f)(iv), (1)(p) and (9)
+# count both. The MI-1040 worksheets take both from Schedule 1, line 11.
+
+- name: Schedule 1 line 11 holds military retirement pay and taxable railroad retirement benefits
+  period: 2025
+  input:
+    state_code: MI
+    military_retirement_pay: 4_000
+    taxable_railroad_pension_benefits: 6_000
+  output:
+    mi_military_retirement_subtraction: 4_000
+    taxable_railroad_benefits: 6_000
+    mi_military_and_railroad_retirement_subtraction: 10_000
+
+- name: Taxable railroad retirement benefits reduce a senior's private pension cap
+  period: 2024
+  input:
+    state_code: MI
+    age: 82
+    taxable_private_pension_income: 70_000
+    taxable_railroad_pension_benefits: 10_000
+  output:
+    # Form 4884 line 10: 64,040 - 10,000 = 54,040.
+    mi_retirement_benefits_deduction_tier_one_amount: 54_040
+
+- name: Taxable railroad retirement benefits reduce a senior's investment income deduction
+  period: 2024
+  input:
+    state_code: MI
+    age: 82
+    taxable_interest_income: 20_000
+    taxable_railroad_pension_benefits: 10_000
+  output:
+    # Worksheet line 2 takes Schedule 1, line 11: 14,274 - 10,000 = 4,274.
+    mi_interest_dividends_capital_gains_deduction: 4_274
+
+- name: Taxable railroad retirement benefits reduce the 2025 expanded retirement cap
+  period: 2025
+  input:
+    state_code: MI
+    age: 62
+    taxable_private_pension_income: 50_000
+    taxable_railroad_pension_benefits: 10_000
+  output:
+    # Worksheet 3.3: (65,897 - 10,000) x 75% = 41,922.75.
+    mi_expanded_retirement_benefits_deduction: 41_922.75
+
+- name: Taxable railroad retirement benefits reduce the tier 3 standard deduction
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 1_000
+        taxable_railroad_pension_benefits: 3_000
+        military_service_income: 500
+        taxable_social_security: 100
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_three_eligible: true
+        mi_personal_exemptions: 2_000
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 20,000 - (1,000 + 3,000) - (500 > 100) - 2,000
+    mi_standard_deduction_tier_three: 13_500
+
+- name: Taxable railroad retirement benefits reduce the tier 2 standard deduction
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_railroad_pension_benefits: 6_000
+        military_service_income: 5_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_two_eligible: true
+        mi_standard_deduction_tier_two_increase_eligible_people: 0
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 20,000 - 6,000 - 5,000
+    mi_standard_deduction_tier_two: 9_000
+
+- name: Taxable railroad retirement benefits bring in the tier 1 limit for retired SSA-exempt filers
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 20_000
+        taxable_railroad_pension_benefits: 1_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_pension_income: 40_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_people: 2
+        mi_retirement_benefits_deduction_tier_one_amount: 50_000
+        members: [person1, person2]
+        filing_status: JOINT
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output: # Worksheet 3.1: min(min(70,000, 50,000), 20,000 + 40,000)
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 50_000
+
+- name: Taxable railroad retirement benefits bring in the tier 1 limit for SSA-exempt filers not retired in 2013
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        taxable_railroad_pension_benefits: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 1
+        mi_retirement_benefits_deduction_tier_one_amount: 10_000
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # Worksheet 3.2: min(min(15,000, 10,000), 40,000)
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 10_000

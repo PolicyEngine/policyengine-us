@@ -7,10 +7,19 @@ class mn_elderly_disabled_subtraction(Variable):
     label = "Minnesota elderly/disabled subtraction"
     unit = USD
     definition_period = YEAR
+    documentation = (
+        "Schedule M1R. Minn. Stat. 290.0802 reduces the base amount by the "
+        "nontaxable retirement and disability benefits of subd. 1(c), which "
+        "take in all of the head's and spouse's railroad retirement benefits, "
+        "and measures adjusted gross income (subd. 1(a)) without the railroad "
+        "benefits in federal gross income, which 45 U.S.C. 231m(a) keeps the "
+        "state from taxing."
+    )
     reference = (
+        "https://www.revisor.mn.gov/statutes/cite/290.0802",
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_22.pdf",
-        "https://www.revisor.mn.gov/statutes/cite/290.0802",
+        "https://www.revenue.state.mn.us/sites/default/files/2026-07/m1r-25.pdf",
     )
     defined_for = StateCode.MN
 
@@ -42,33 +51,39 @@ class mn_elderly_disabled_subtraction(Variable):
         dinc_person = person("total_disability_payments", period)
         disinc_person = dinc_person * ~is_dependent * ~is_elderly
         disability_income = tax_unit.sum(disinc_person)
-        # ... determine untaxed social security benefits
-        unit_socsec = add(tax_unit, period, ["social_security"])
+        # ... determine nontaxable retirement and disability benefits,
+        # subd. 1(c): the amounts section 22(c)(3) counts, which include the
+        # title II and tier 1 benefits section 86 leaves out and the tax-free
+        # rest of the railroad annuity (as section_22_income reads it), plus
+        # the pension and annuity benefits in federal gross income that the
+        # state cannot tax, the taxable railroad benefits. Section 22(c)(3)
+        # counts what the individual, or either spouse on a joint return,
+        # receives, so a dependent's benefits stay out.
+        unit_socsec = tax_unit_non_dep_add(tax_unit, period, ["social_security"])
         unit_taxed_socsec = add(tax_unit, period, ["taxable_social_security"])
-        untaxed_social_security = unit_socsec - unit_taxed_socsec
-        # Minn. Stat. 290.0802, subd. 1(c), counts as nontaxable retirement
-        # benefits both the section 22(c)(3) reduction, which takes in the
-        # Railroad Retirement Act benefits that gross income leaves out, and
-        # the benefits in federal gross income that Minnesota doesn't tax,
-        # which take in the rest (45 U.S.C. 231m(a)). So all of the head's
-        # and spouse's railroad benefits reduce the base.
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        railroad = tax_unit.sum(head_or_spouse * person("railroad_benefits", period))
-        # ... determine total disability, social security and railroad benefits
-        benefits = disability_income + untaxed_social_security + railroad
+        untaxed_social_security = max_(0, unit_socsec - unit_taxed_socsec)
+        railroad_retirement_benefits = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            [
+                "railroad_social_security_equivalent_benefits",
+                "taxable_railroad_pension_benefits",
+                "tax_exempt_railroad_pension_benefits",
+            ],
+        )
+        # ... determine total disability and retirement benefits
+        benefits = (
+            disability_income + untaxed_social_security + railroad_retirement_benefits
+        )
         # ... subtract benefits from base amount
         amount = max_(0, base_amount - benefits)
-        # ... determine net agi
+        # ... determine net agi: subd. 1(a) adds lump-sum distributions to
+        # federal AGI and takes out the railroad benefits that federal gross
+        # income includes.
         fed_agi = tax_unit("adjusted_gross_income", period)
-        # Subd. 1(a) takes out of AGI the pension and annuity benefits in
-        # federal gross income that Minnesota doesn't tax: the taxable
-        # railroad benefits.
-        taxable_railroad = add(tax_unit, period, ["taxable_railroad_benefits"])
-        agi = (
-            fed_agi
-            + tax_unit("form_4972_lumpsum_distributions", period)
-            - taxable_railroad
-        )
+        lump_sum = tax_unit("form_4972_lumpsum_distributions", period)
+        exempt_railroad = add(tax_unit, period, ["taxable_railroad_benefits"])
+        agi = fed_agi + lump_sum - exempt_railroad
         agi_offset_base = p.agi_offset_base[filing_status]
         joint = filing_status == filing_status.possible_values.JOINT
         head_eligible = tax_unit.any(elderly_head | disabled_head)

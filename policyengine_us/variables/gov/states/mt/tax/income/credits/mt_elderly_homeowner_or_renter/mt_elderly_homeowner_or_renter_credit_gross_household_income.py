@@ -23,6 +23,9 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # The statutory federal-AGI definition remains after the 2024 form
         # began displaying separate income categories: HB191 § 1(9), p.2.
         "https://archive.legmt.gov/bills/2021/HB0199/HB0191_X.pdf#page=2",
+        # 2025 Schedule 2EC, line 5: pensions and annuities without "your
+        # cost or net investment"
+        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45",
     )
 
     def formula(person, period, parameters):
@@ -67,6 +70,28 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
             person("taxable_social_security", period),
         )
         untaxed_social_security = max_(social_security - counted_social_security, 0)
+        # § 15-30-2337(9)(a)(i) counts "Railroad Retirement Act benefits", so
+        # the tier 1 social security equivalent benefit counts in full in the
+        # same way. The tax-free rest of the annuity stays out: it returns
+        # the employee's own contributions, which under IRC 72(r)(2) include
+        # tier 2 taxes, and § 15-30-2337(9)(b) reduces income "by the
+        # taxpayer's basis" (2025 Schedule 2EC line 5: "do not include ...
+        # your cost or net investment").
+        railroad_benefits = person(
+            "railroad_social_security_equivalent_benefits", period
+        )
+        counted_railroad_benefits = where(
+            is_dependent,
+            ~head_or_spouse
+            * person(
+                "dependent_taxable_railroad_social_security_equivalent_benefits",
+                period,
+            ),
+            person("taxable_railroad_social_security_equivalent_benefits", period),
+        )
+        untaxed_railroad_benefits = max_(
+            railroad_benefits - counted_railroad_benefits, 0
+        )
         # Income is federal AGI "without regard to loss" (§ 15-30-2337(9)(a)),
         # so the business and capital losses deducted in computing federal
         # AGI are added back (2023 Elderly Homeowner/Renter Credit Schedule,
@@ -127,6 +152,7 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
             sources
             + dependent_income
             + untaxed_social_security
+            + untaxed_railroad_benefits
             + losses
             + lost_capital_gains
         )

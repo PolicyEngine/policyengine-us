@@ -812,3 +812,62 @@
     # The parts show a 10_000 gain and a 4_000 loss; line 7 counts 10_000,
     # not the inconsistent 20_000 net: 30_000.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
+
+- name: Railroad Retirement Act benefits count in gross household income, less the employee's basis
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 75
+        social_security_retirement: 10_000
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_railroad_pension_benefits: 6_000
+        tax_exempt_railroad_pension_benefits: 1_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Provisional income is 6,000 + 50% x 20,000 = 16,000, below the 25,000
+    # base, so none of the title II or tier 1 benefits are taxable and
+    # federal AGI is the 6,000 taxable railroad pension.
+    adjusted_gross_income: 6_000
+    # § 15-30-2337(9)(a)(i) counts "Railroad Retirement Act benefits" and
+    # (viii) all Social Security payments: AGI 6,000 + 10,000 of title II +
+    # 10,000 of tier 1 social security equivalent benefits. The 1,000 of the
+    # annuity outside AGI returns the employee's own contributions, the
+    # taxpayer's basis, which (9)(b) takes out of income.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 26_000
+
+- name: A dependent's tier 1 railroad retirement benefits count once, in full
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        # No SSI for the claimant, so the case isolates the dependent's income.
+        ssi: 0
+      person2:
+        age: 17
+        employment_income: 25_000
+        railroad_social_security_equivalent_benefits: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # On the dependent's own return, provisional income is
+    # 25_000 + 10_000 / 2 = 30_000, so 50% x (30_000 - 25_000) = 2_500 of the
+    # tier 1 benefits is taxable (IRC 86(d)(1)(B)) and is part of
+    # dependent_gross_income.
+    dependent_taxable_railroad_social_security_equivalent_benefits: [0, 2_500]
+    # § 15-30-2337(9)(a)(i) counts all Railroad Retirement Act benefits:
+    # wages 25_000 + tier 1 benefits 10_000 = 35_000, not 27_500 or 37_500.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [0, 35_000]

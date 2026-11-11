@@ -267,3 +267,42 @@
     # Line 9: 6,000 - 3,000 = 3,000.
     mo_pension_and_ss_or_ssd_deduction_section_b: [3_000, 0]
     mo_pension_and_ss_or_ssd_deduction: 3_000
+
+# Tier 1 railroad retirement benefits. Form MO-A, Part 3, Section B, line 2
+# takes the taxable benefits on Form 1040 line 6b, which include the taxable
+# tier 1 benefits. RSMo 143.124.8 subtracts only the Social Security benefits
+# "otherwise included in Missouri adjusted gross income", and Form MO-A, Part
+# 1, line 11 already removes the taxable tier 1 benefits from Missouri AGI
+# (taxable_railroad_benefits, 45 U.S.C. 231m(a)), so line 2 leaves them out.
+- name: MO private pension deduction 2024 leaves the taxable tier 1 benefits out of line 2
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 64
+        is_tax_unit_head: true
+        railroad_social_security_equivalent_benefits: 20_000
+        taxable_private_pension_income: 6_000
+        taxable_interest_income: 22_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: MO
+  output:
+    # Federal: provisional income 28,000 + 50% x 20,000 = 38,000; taxable
+    # benefits min(85% x 20,000, 85% x (38,000 - 34,000) + 4,500) = 7,900,
+    # all tier 1.
+    taxable_railroad_benefits: 7_900
+    adjusted_gross_income: 35_900
+    # Line 1: 35,900 - 7,900 railroad subtraction.
+    mo_adjusted_gross_income: 28_000
+    # Line 2: no taxable title II benefits. Line 5: 28,000 - 25,000 = 3,000.
+    # Line 8: min(6,000, 6,000). Line 9: 6,000 - 3,000. With line 6b on
+    # line 2, line 5 would be 0 and line 9 6,000.
+    mo_pension_and_ss_or_ssd_deduction_section_b: 3_000
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0

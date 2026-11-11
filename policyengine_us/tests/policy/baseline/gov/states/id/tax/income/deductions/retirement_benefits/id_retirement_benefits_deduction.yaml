@@ -135,3 +135,28 @@
   output:
     id_retirement_benefits_deduction_relevant_income: 10_000
     id_retirement_benefits_deduction: 10_000
+
+- name: Idaho reduces the cap by every railroad tier, taxable or not, and by Social Security.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 67
+        public_pension_income: 20_000
+        social_security_retirement: 5_000
+        railroad_social_security_equivalent_benefits: 25_000
+        taxable_railroad_pension_benefits: 3_000
+        tax_exempt_railroad_pension_benefits: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: ID
+  output:
+    # Form 39R: line 8a 48,216; line 8b 25,000 + 3,000 + 2,000 = 30,000;
+    # line 8c 5,000; line 8d 13,216; line 8e 20,000; line 8f 13,216.
+    id_retirement_benefits_deduction: 13_216

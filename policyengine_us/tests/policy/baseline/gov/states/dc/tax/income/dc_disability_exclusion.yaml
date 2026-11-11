@@ -66,3 +66,25 @@
         state_code: DC
   output:
     dc_disability_exclusion: 7_000
+
+- name: taxable tier 1 railroad benefits leave the income that limits the exclusion
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        total_disability_payments: 5_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 25_000
+        tax_unit_taxable_social_security: 2_000
+        tax_unit_taxable_railroad_social_security_equivalent_benefits: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # Form D-2440: line 6 takes Form D-40 line 10, $2,000 + $4,000. Line 7 is
+    # $19,000, line 9 is $4,000 and line 10 is $5,200 - $4,000.
+    dc_disability_exclusion: 1_200
