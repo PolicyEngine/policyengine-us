@@ -125,10 +125,13 @@
         age: 45
         employment_income: 50_000
       dependent:
-        # A qualifying child has no gross income test (IRC 152(c)).
+        # A qualifying child has no gross income test (IRC 152(c)), and a
+        # child disabled before 22 keeps survivors benefits past 19
+        # (42 U.S.C. 402(d)(1)(B)).
         age: 20
         is_tax_unit_dependent: true
         is_full_time_student: true
+        is_disabled: true
         social_security_survivors: 20_000
         taxable_interest_income: 30_000
     tax_units:

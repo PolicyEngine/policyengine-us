@@ -38,8 +38,10 @@ income in a new IRC 139M, needs more:
   (gov.irs.income.filing_requirement.dependent.earned_income_sources) counts
   Form 1040 line 1z, which an exclusion would leave without strike benefits,
   so the reform must edit that list;
-- adjusted_earnings (the child and dependent care credit) needs its own
-  reading.
+- adjusted_earnings, which the child and dependent care credit and the
+  IRC 129 exclusion read, takes its meaning of earned income from IRC
+  32(c)(2) (Treas. Reg. 1.21-2(b)(3), IRC 129(e)(2)), so the bill's election
+  reaches it as well.
 """
 
 import pytest

@@ -27,7 +27,8 @@ class ut_homeowner_renter_relief_household_income(Variable):
         "flag can also leave out a member who is related only to another "
         "unit's filer, and ut_homeowner_renter_relief_selected_claimant takes "
         "the oldest eligible head or spouse as the claimant whether or not "
-        "they carry a flag."
+        "they carry a flag, so a flagged member the model selects as claimant "
+        "has their own income left out."
     )
     defined_for = StateCode.UT
 
