@@ -227,6 +227,42 @@
     # is not more than the larger of $1,350 or $2,000 plus $450.
     tax_unit_is_required_to_file: false
 
+- name: 2021, a dependent's strike benefits are not worksheet earned income
+  period: 2021
+  input:
+    people:
+      head:
+        age: 20
+        strike_benefits: 5_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # The 2021 worksheet footnote counts Form 1040 line 1 and Schedule 1
+    # lines 3 and 6; the 2021 instructions name no line for strike benefits,
+    # which line 1h (inside line 1z) takes from 2022. Rev. Proc. 2020-45 sec.
+    # 3.16(2): the greater of $1,100 or $350 plus earned income, so
+    # max($1,100, $350 + $0).
+    basic_standard_deduction: 1_100
+
+- name: 2021, a dependent with $2,000 of strike benefits must file
+  period: 2021
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    strike_benefits: 2_000
+  output:
+    # Before 2022 the worksheet does not count strike benefits as earned
+    # income, so they are unearned income: $2,000 is over $1,100.
+    tax_unit_is_required_to_file: true
+
 - name: 2025, a dependent with $2,000 of interest must file
   period: 2025
   input:

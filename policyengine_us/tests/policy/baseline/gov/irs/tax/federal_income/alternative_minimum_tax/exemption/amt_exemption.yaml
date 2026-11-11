@@ -83,6 +83,23 @@
     # amt_exemption = min(34,475, 17,500) = 17,500
     amt_exemption: 17_500
 
+- name: Strike benefits are not earned income for the child limitation
+  period: 2017
+  input:
+    amt_income: 20_000
+    amt_kiddie_tax_applies: true
+    employment_income: 2_000
+    strike_benefits: 8_000
+    filing_status: SINGLE
+  output:
+    # IRC 59(j)(1)(A) uses earned income under IRC 911(d)(2), "amounts
+    # received as compensation for personal services actually rendered";
+    # strike benefits a union pays are not. Rev. Proc. 2016-55 sec. 3.10 and
+    # 3.11: $54,300 for a single filer, and a cap of earned income plus
+    # $7,500. No phase-out at $20,000 of AMT income.
+    # amt_exemption = min(54,300, 2,000 + 7,500) = 9,500
+    amt_exemption: 9_500
+
 - name: 2018 single 18-year-old receives the ordinary exemption at the transition
   period: 2018
   input:

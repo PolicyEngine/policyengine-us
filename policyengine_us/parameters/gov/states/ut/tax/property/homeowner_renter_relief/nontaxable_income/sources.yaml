@@ -4,9 +4,10 @@ values:
     - alimony_income
     - child_support_received
     - railroad_benefits
-    # Nontaxable strike benefits (59-2a-101(20)(a)(v)); taxable ones are in
-    # federal adjusted gross income.
-    - tax_exempt_strike_benefits
+    # Nontaxable strike benefits (59-2a-101(20)(a)(v)): the part federal
+    # gross income leaves out, since the taxable part is in federal adjusted
+    # gross income.
+    - strike_benefits_excluded_from_gross_income
     - tax_exempt_interest_income
     - tax_exempt_pension_income
     - tax_exempt_retirement_distributions

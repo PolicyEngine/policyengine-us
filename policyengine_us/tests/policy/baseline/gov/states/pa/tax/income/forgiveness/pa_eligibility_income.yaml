@@ -15,3 +15,27 @@
     military_retirement_pay_survivors: 10_000
   output:
     pa_eligibility_income: 15_000
+
+# Eligibility income counts "all other income received in the form of cash
+# and property from any other source", including gifts of cash, unless
+# specifically excluded (PIT Guide, Tax Forgiveness, page 5). Strike benefits
+# a union pays are not on the exclusion list, which names only payments
+# employers or unions make for programs covering strike benefits.
+- name: Case 3, strike benefits are PA tax forgiveness eligibility income though not PA taxable income.
+  period: 2025
+  input:
+    state_code: PA
+    employment_income: 5_000
+    strike_benefits: 4_000
+  output:
+    pa_eligibility_income: 9_000
+
+- name: Case 4, strike benefits the union meant as gifts are eligibility income too.
+  period: 2025
+  input:
+    state_code: PA
+    employment_income: 5_000
+    strike_benefits: 4_000
+    tax_exempt_strike_benefits: 1_500
+  output:
+    pa_eligibility_income: 9_000

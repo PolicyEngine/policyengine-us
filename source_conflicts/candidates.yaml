@@ -13105,8 +13105,8 @@ candidates:
     read the same measure (standard_deduction_worksheet_earned_income_person.py, standard_deduction_worksheet_earned_income.py,
     filing_requirement/dependent/earned_income_sources.yaml, basic_standard_deduction.py). Verify the line 15 subtraction
     for partnership self-employment income, which the list leaves out. Strike or lockout benefits other than bona fide
-    gifts (Form 1040 line 1h, part of line 1z) joined the list in PR 10727; us:strike-benefits-earned-income records
-    the earned income question.'
+    gifts (Form 1040 line 1h, part of line 1z) joined the list from 2022 in PR 10727; us:strike-benefits-earned-income
+    records the earned income question.'
 - id: us:education-benefits-joint-claimed-spouse
   program: income-tax
   years:
@@ -13932,7 +13932,7 @@ candidates:
     from: 2010
     type: tax
   question: Are taxable strike and lockout benefits a union pays earned income for the earned income credit, the
-    child and dependent care credit and the dependent standard deduction?
+    child and dependent care credit, the dependent standard deduction and the kiddie tax?
   sources:
   - kind: statute
     citation: 26 U.S.C. 32(c)(2)(A)(i)
@@ -13943,11 +13943,22 @@ candidates:
   - kind: guidance
     citation: Publication 503 (2025), page 4, Earned income
     url: https://www.irs.gov/pub/irs-prior/p503--2025.pdf#page=4
+  - kind: instructions
+    citation: Form 1040 instructions (2022), line 1h, and (2021), Standard Deduction Worksheet for Dependents footnote
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2022.pdf
+  - kind: statute
+    citation: 26 U.S.C. 911(d)(2), as used by 26 U.S.C. 1(g)(2)(A)(ii)(II) and 59(j)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/26/911#d_2
   readings:
     statute: Section 32(c)(2)(A)(i) counts wages, salaries, tips and other employee compensation includible in gross
       income; neither it nor Treas. Reg. 1.32-2(c)(2) names strike benefits, which a union rather than an employer pays.
+      Section 911(d)(2) counts amounts received as compensation for personal services actually rendered, which strike
+      benefits are not.
     other: Publication 596 makes taxable strike and lockout benefits generally earned income, and Publication 503 says
-      earned income includes strike benefits.
+      earned income includes strike benefits. The dependent worksheet counts Form 1040 line 1z, which takes strike
+      benefits through line 1h from 2022; the 2021 and earlier instructions name no line for them, Publication 17
+      discusses them under other income, and the worksheet then counted line 1 and Schedule 1 lines 3 and 6.
+      Publication 501 describes earned income as compensation for personal services performed.
   example: A 2025 head of household with one child and $20,000 of taxable strike benefits and no other income gets the
     $4,328 maximum earned income credit; with the benefits outside earned income the credit is zero.
   pe_us:
@@ -13956,14 +13967,18 @@ candidates:
     - policyengine_us/variables/gov/irs/credits/earned_income/eitc_earned_income.py
     - policyengine_us/variables/gov/irs/income/adjusted_earnings.py
     - policyengine_us/parameters/gov/irs/income/filing_requirement/dependent/earned_income_sources.yaml
+    - policyengine_us/variables/gov/irs/tax/federal_income/alternative_minimum_tax/exemption/amt_exemption.py
+    - policyengine_us/variables/gov/irs/tax/federal_income/alternative_minimum_tax/kiddie_tax/amt_kiddie_tax_applies.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: unreviewed
-  note: 'PE-US follows the publications: taxable_strike_benefits (strike_benefits less the tax_exempt_strike_benefits
-    gift part) counts in eitc_earned_income (the EITC, and the refundable CTC through ctc_phase_in_relevant_earnings),
-    in earnings_before_zero_floor (adjusted_earnings: the child and dependent care credit, section 129 and the
-    California dependent care credit) and in the dependent earned income sources (standard deduction worksheet and
-    filing test). Payroll taxes do not read it.'
+  note: 'PE-US follows the publications and forms: taxable_strike_benefits (strike_benefits less the
+    tax_exempt_strike_benefits gift part) counts from 2010 in eitc_earned_income (the EITC, and the refundable CTC
+    through ctc_phase_in_relevant_earnings) and in earnings_before_zero_floor (adjusted_earnings: the child and
+    dependent care credit, section 129 and the California dependent care credit), and from 2022, when line 1h puts it
+    in line 1z, in the dependent earned income sources (standard deduction worksheet and filing test). The kiddie tax
+    support test and the AMT child exemption cap follow section 911(d)(2) and the Form 8615 definition (payments for
+    personal services performed) and leave it out of adjusted_earnings. Payroll taxes do not read it.'
 - id: us:student-loan-interest-joint-claimed-spouse
   program: income-tax
   years:

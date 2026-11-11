@@ -27,12 +27,7 @@ class az_property_tax_credit_nontaxable_income(Variable):
         # dependents, the same sources in az_property_tax_credit_dependent_income
         # for dependents) holds taxable_strike_benefits, the strike benefits
         # other than gifts, when that is a listed source. Line I adds the rest.
-        strike = person("strike_benefits", period)
-        if "taxable_strike_benefits" in sources:
-            taxable_strike = person("taxable_strike_benefits", period)
-            excluded_strike = max_(strike - taxable_strike, 0)
-        else:
-            excluded_strike = strike
+        excluded_strike = person("strike_benefits_excluded_from_gross_income", period)
         # Line H counts "all alimony received by each member of the household";
         # federal gross income holds taxable_alimony_income (alimony under
         # pre-2019 divorce instruments).

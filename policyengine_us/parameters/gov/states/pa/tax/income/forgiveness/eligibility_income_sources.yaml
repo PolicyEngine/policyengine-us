@@ -7,6 +7,12 @@ values:
     # non-taxable dividends and gains
     # insurance proceeds and inheritances (Schedule SP line 4, includes survivor annuities)
     - military_retirement_pay_survivors
+    # Strike benefits a union pays, which PA taxable income leaves out (72 P.S.
+    # 7301(d)(vi)): eligibility income counts "all other income received in
+    # the form of cash and property from any other source", gifts of cash
+    # included, and excludes only payments employers or unions make for
+    # programs covering strike benefits (PIT Guide, Tax Forgiveness).
+    - strike_benefits
     # gifts awards and prizes
     # non-PA income
     # nontaxable military income (military pension benefits excluded per PA-40 SP)
@@ -18,6 +24,8 @@ metadata:
   period: year
   label: PA eligibility income sources
   reference:
+    - title: PA PIT Guide - Chapter 20, Tax Forgiveness, eligibility income and its exclusions, page 5-6
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_taxforgiveness.pdf#page=5
     - title: PA PIT Guide - Chapter 20, Tax Forgiveness, page 15
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_taxforgiveness.pdf#page=5
     - title: PA Form PA-40 Instructions, page 1

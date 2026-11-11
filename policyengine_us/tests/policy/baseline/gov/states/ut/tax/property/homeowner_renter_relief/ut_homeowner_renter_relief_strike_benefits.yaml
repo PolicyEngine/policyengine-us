@@ -23,3 +23,116 @@
     state_code: UT
   output:
     ut_homeowner_renter_relief_nontaxable_income: 3_000
+
+- name: 2025, a gift part above the total counts only the total
+  period: 2025
+  input:
+    age: 70
+    strike_benefits: 3_000
+    tax_exempt_strike_benefits: 5_000
+    state_code: UT
+  output:
+    # Nontaxable strike benefits are the part federal gross income leaves
+    # out, which is never more than the benefits received.
+    ut_homeowner_renter_relief_nontaxable_income: 3_000
+
+# Household income is "all income received by all members of a claimant's
+# household" 18 or older (59-2a-101(15)). An adult dependent's adjusted gross
+# income is on their own return, so it counts like anyone else's.
+- name: 2025, an adult dependent's taxable strike benefits are household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        strike_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    # $30,000 of the head's AGI plus the dependent's own AGI of $5,000; the
+    # head's AGI leaves the dependent's income out.
+    adjusted_gross_income: 30_000
+    ut_homeowner_renter_relief_household_income: 35_000
+
+- name: 2025, an adult dependent's strike benefits count once if all are a gift
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        strike_benefits: 5_000
+        tax_exempt_strike_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    # $30,000 plus $5,000 of nontaxable strike benefits.
+    ut_homeowner_renter_relief_household_income: 35_000
+
+- name: 2025, an adult dependent's wages are household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    ut_homeowner_renter_relief_household_income: 35_000
+
+- name: 2025, a dependent under 18 adds no household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      dependent:
+        age: 16
+        is_tax_unit_dependent: true
+        employment_income: 5_000
+        strike_benefits: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    # 59-2a-101(15)(b)(i) leaves out income of a member under 18.
+    ut_homeowner_renter_relief_household_income: 30_000

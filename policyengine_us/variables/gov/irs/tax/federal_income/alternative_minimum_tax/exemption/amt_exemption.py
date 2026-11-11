@@ -57,10 +57,17 @@ class amt_exemption(Variable):
         # uses adjusted_earnings, which leaves out pre-tax payroll deductions.
         # IRC 59(j)(1)(A) counts the child's own earned income, and a covered
         # filer never files jointly, so the cap reads only the head's earnings.
+        # Strike benefits, which adjusted_earnings counts for the child and
+        # dependent care credit (Pub. 503), are not compensation for personal
+        # services actually rendered, so they come out here (floored at zero,
+        # which gives the same result as leaving them out before the floor).
         person = tax_unit.members
-        adj_earnings = tax_unit.sum(
-            person("adjusted_earnings", period) * person("is_tax_unit_head", period)
+        earned = max_(
+            person("adjusted_earnings", period)
+            - person("taxable_strike_benefits", period),
+            0,
         )
+        adj_earnings = tax_unit.sum(earned * person("is_tax_unit_head", period))
         child_amount = p.exemption.child.amount
 
         exemption_cap = where(
