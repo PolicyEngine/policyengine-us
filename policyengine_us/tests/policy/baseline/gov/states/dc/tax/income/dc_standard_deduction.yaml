@@ -201,6 +201,24 @@
   output:
     dc_standard_deduction: 22_500
 
+- name: DC 2026 separate basic standard deduction stays at $15,000.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: DC
+    filing_status: SEPARATE
+  output:
+    dc_standard_deduction: 15_000
+
+- name: DC 2026 surviving spouse basic standard deduction stays at $30,000.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: DC
+    filing_status: SURVIVING_SPOUSE
+  output:
+    dc_standard_deduction: 30_000
+
 - name: DC 2026 joint elderly couple adds the federal 2026 amounts for age.
   period: 2026
   absolute_error_margin: 0.1

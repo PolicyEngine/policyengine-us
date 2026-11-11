@@ -280,3 +280,29 @@
     dc_taxable_income_joint: 43_950
     # 2,200 + 6.5% * 3,950
     dc_income_tax_before_credits: 2_456.75
+
+- name: 2026 filer with $90,000 of wages, $8,000 of overtime premium and $3,000 of qualified vehicle loan interest.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 90_000
+        fsla_overtime_premium: 8_000
+        qualified_passenger_vehicle_loan_interest_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # Federal overtime deduction 8,000 + car loan interest deduction 3,000
+    dc_additional_deductions: 11_000
+    # 15,000 basic standard deduction + 11,000
+    dc_deduction_joint: 26_000
+    dc_taxable_income_joint: 64_000
+    # 3,500 + 8.5% * 4,000
+    dc_income_tax_before_credits: 3_840
