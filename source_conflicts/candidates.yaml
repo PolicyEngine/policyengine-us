@@ -3189,6 +3189,104 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows state rules; verify their effective text throughout the historical periods.
+- id: us-hi:tdi-wage-base-rounded-average
+  program: hi-tdi
+  years:
+    from: 2000
+    type: calendar
+  question: Does Hawaii's temporary disability insurance maximum weekly wage base start from the State's average annual
+    wage rounded to the nearest hundred dollars, as HRS 383-61(b) computes it, or from the average before rounding, as
+    DLIR's yearly notices do?
+  sources:
+  - kind: statute
+    citation: HRS 392-43(b)(2), which takes one fifty-second of the average annual wage determined pursuant to section
+      383-61(b), times 1.21
+    url: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0043.htm
+  - kind: statute
+    citation: HRS 383-61(b), which computes the average annual wage and rounds it to the nearest hundred dollars
+    url: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0061.htm
+  - kind: agency-practice
+    citation: Hawaii DLIR Disability Compensation Division, 2026 maximum weekly wage base notice (and each notice from
+      2003 to 2025), dividing the unrounded average by 52
+    url: https://labor.hawaii.gov/dcd/files/2025/12/2026-Maximum-Weekly-Wage-Base.pdf
+  - kind: agency-practice
+    citation: Hawaii DLIR Unemployment Insurance Division, taxable wage bases for 2000 to 2026 (this page from 2020;
+      before that, Appendix B of the December 2019 trust fund evaluation, file page 29 of
+      https://labor.hawaii.gov/wp-content/uploads/2020/01/UI-Fund-Evaluation-2020.pdf), each the same average rounded to
+      the nearest hundred dollars, or 90% of it in 2010 and 2011, except the fixed $13,000 of 2008 and 2009
+    url: https://labor.hawaii.gov/ui/tax-rate-schedule-and-weekly-benefit-amount/
+  readings:
+    statute: HRS 383-61(b) says how the average annual wage is computed, and the computation ends by rounding to the
+      nearest hundred dollars. HRS 392-43(b)(2) takes the average as determined under that subsection, so the base is
+      the rounded average times 1.21 / 52. DLIR's own determination under 383-61(b), the unemployment insurance wage
+      base, is the rounded figure.
+    other: DLIR's temporary disability insurance notices divide the average before rounding by 52 and multiply by 1.21,
+      so each published base runs from 1.15 below to 0.84 above the statutory one.
+  example: For 2026, the notice's average of $64,471.82 gives a published base of $1,500.21; rounded to $64,500 it gives
+    $1,500.87. A worker paid $100,000 contributes 0.5% of 52 weeks at the base, $390.23 under the statute against $390.05
+    under the notice.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/hi/tax/payroll/temporary_disability_insurance/maximum_weekly_wage_base.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10677
+    - https://github.com/PolicyEngine/policyengine-us/pull/10771
+  state: ruled
+  note: Definitions control, and the text settles the reading, so the agency-breaks-ties principle doesn't reach it. The
+    same reading of HRS 383-61(b) decides us-hi:ui-taxable-wage-base-2010-rounding. Within the formula the parameter
+    rounds once to the cent, because HRS 392-43(b)(2) sets no intermediate rounding. No notice survives for 2000 to
+    2002, so the parameter takes those years' rounded averages from the unemployment insurance base. Short excerpts are
+    in source_conflicts/sources/us-hi/.
+- id: us-hi:tdi-wages-salary-reductions
+  program: hi-tdi
+  years:
+    from: 2000
+    type: calendar
+  question: Do amounts an employer pays into a retirement or medical plan out of an employee's salary count as wages for
+    Hawaii's temporary disability insurance contribution, and do dependent care benefits?
+  sources:
+  - kind: statute
+    citation: HRS 392-3 (wages), adopting HRS 383-11(1)(A), (1)(C), (4)(A) and (5)
+    url: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0011.htm
+  - kind: regulation
+    citation: HAR 12-11-1, which takes wages from HRS 392-3
+    url: https://labor.hawaii.gov/dcd/files/2012/11/TDI-Admin-Rules.pdf#page=5
+  - kind: regulation
+    citation: HAR 12-11-47(a), on pay in kind given rather than deducted from money wages
+    url: https://labor.hawaii.gov/dcd/files/2012/11/TDI-Admin-Rules.pdf#page=17
+  - kind: guidance
+    citation: Hawaii DLIR Unemployment Insurance Division, Handbook for Employers, on the wages that chapter 383 reaches
+    url: https://labor.hawaii.gov/ui/test-handbook-for-employers/
+  - kind: statute
+    citation: IRC 3306(b)(5)(D), (b)(5)(G), (b)(13) and (r)(1), the federal comparison
+    url: https://www.law.cornell.edu/uscode/text/26/3306
+  readings:
+    statute: A salary-reduction amount the employer pays under a medical or retirement plan, or to a section 401(a) trust,
+      is a listed payment, so it falls outside wages. HRS 383-11(5) limits one paragraph to payments without a deduction
+      from pay, and paragraphs (1) and (4) carry no such limit. The list names no dependent care payment, so those benefits
+      stay in wages.
+    other: The federal payroll wage base keeps 401(k) deferrals in through IRC 3306(r)(1)(A) and 403(b) salary reductions
+      in through 3306(b)(5)(D), and takes cafeteria-plan amounts and dependent care out through 3306(b)(5)(G) and (b)(13).
+      Hawaii enacted none of these. A second alternative treats every salary reduction as the employee's own remuneration,
+      so all of it stays in wages. The rules address pay in kind but name no plan contribution or salary reduction. The
+      handbook lists payments to welfare plans among its exclusions but doesn't address salary reductions.
+  example: In 2026, $60,000 of salary with a $4,000 traditional 401(k) deferral gives a $280 contribution under the statute,
+    versus $300 on the federal base. $60,000 with $5,000 of dependent care benefits gives $300, versus $275 on the federal
+    base.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/hi/tax/payroll/temporary_disability_insurance/excluded_payments.yaml
+    - policyengine_us/variables/gov/states/hi/tax/payroll/temporary_disability_insurance/hi_temporary_disability_insurance_wages.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10677
+    - https://github.com/PolicyEngine/policyengine-us/pull/10771
+  state: ruled
+  note: The code follows the statute's text because we found no agency reading of salary reductions in the temporary
+    disability rules, the unemployment insurance rules (HAR 12-5) or the employer handbook. A published agency reading
+    would reopen this under the agency-breaks-ties principle if the text leaves the question open. Short excerpts are
+    in source_conflicts/sources/us-hi/.
 - id: us-ia:alternate-tax-claimed-spouse
   program: income-tax
   years:

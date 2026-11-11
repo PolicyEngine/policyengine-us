@@ -3,10 +3,10 @@
 In some state programs the law caps what the employer may deduct from wages
 and leaves it to decide how much of that to deduct: Colorado FAMLI, Delaware
 Paid Leave, Maine and Massachusetts PFML, Minnesota Paid Leave and the Vermont
-Child Care Contribution, whose premium the statute puts on the employer; New
-York PFL and DBL, which the employer is authorized but not required to
-collect; and Washington PFML, whose employee share the employer may deduct up
-to and may pay in any part.
+Child Care Contribution, whose premium the statute puts on the employer;
+Hawaii TDI and New York PFL and DBL, which the employer is authorized but not
+required to collect; and Washington PFML, whose employee share the employer
+may deduct up to and may pay in any part.
 `employer_state_payroll_premium_deduction_share` says how much of the
 permitted employee share the employer deducts (default 1). Hypothesis draws
 workers in those states, in states whose contributions are mandatory
@@ -22,8 +22,8 @@ left at its default. For every worker, in 2026 and 2027:
    the share.
 3. Where the employer side is modeled (CO, DE, MA, ME, MN, VT, WA), employee
    plus employer premium does not depend on the share: the employer pays
-   exactly what it does not deduct. The New York employer cost is not
-   modeled, so its employer amount is zero at any share.
+   exactly what it does not deduct. Hawaii and New York employer costs are not
+   modeled, so their employer amount is zero at any share.
 4. A larger share never lowers the employee amount or raises the employer
    amount.
 5. With employer-level wage totals equal to the worker's own wages, capped at
@@ -61,12 +61,13 @@ from policyengine_us import Simulation
 from policyengine_us.system import system
 
 YEARS = (2026, 2027)
-OPTIONAL_STATES = ("CO", "DE", "MA", "ME", "MN", "NY", "VT", "WA")
+OPTIONAL_STATES = ("CO", "DE", "HI", "MA", "ME", "MN", "NY", "VT", "WA")
 MANDATORY_STATES = ("CA", "CT", "NJ", "OR", "PA", "RI")
 EMPLOYER_MODELED_STATES = ("CO", "DE", "MA", "ME", "MN", "VT", "WA")
 OPTIONAL_EMPLOYEE_VARIABLES = (
     "co_employee_famli_contribution",
     "de_employee_paid_leave_contribution",
+    "hi_employee_temporary_disability_insurance_contribution",
     "ma_employee_paid_leave_contribution",
     "me_employee_paid_leave_contribution",
     "mn_employee_paid_leave_contribution",
@@ -75,8 +76,8 @@ OPTIONAL_EMPLOYEE_VARIABLES = (
     "vt_employee_child_care_contribution",
     "wa_employee_paid_leave_contribution",
 )
-# Below the 2026 Social Security wage base, so every program's wage base is
-# the worker's wages in both years.
+# Below the 2026 Social Security wage base, so Massachusetts' wage base is the
+# worker's wages in both years (property 6).
 UNCAPPED_WAGES = 184_500
 SOCIAL_SECURITY_CAP = {
     year: system.parameters(f"{year}-01-01").gov.irs.payroll.social_security.cap
@@ -219,7 +220,7 @@ def test_state_payroll_premium_deduction_share_invariants(rows):
     shares = np.clip(np.array([[row[3], row[4], 1.0] for row in rows]), 0, 1)
     average_wages = np.array([row[5] for row in rows])
     modeled = np.isin(states, EMPLOYER_MODELED_STATES)
-    unmodeled = states == "NY"
+    unmodeled = np.isin(states, ("HI", "NY"))
     mn = states == "MN"
     mn_small = (headcounts <= MN_SMALL_MAX_HEADCOUNT) & (
         average_wages <= MN_SMALL_MAX_AVERAGE_QUARTERLY_WAGE

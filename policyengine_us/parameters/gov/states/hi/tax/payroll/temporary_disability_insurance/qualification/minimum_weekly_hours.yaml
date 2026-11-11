@@ -1,0 +1,16 @@
+description: Hawaii treats a week as qualifying for the temporary disability insurance contribution only if the employee was paid for at least this many hours in that week.
+values:
+  # Act 30 of 1999 applies from 2000 and left this count in place. Later acts
+  # did not change it. Zero marks earlier years, which this program does not model.
+  0000-01-01: 0
+  2000-01-01: 20
+
+metadata:
+  period: week
+  unit: hour
+  label: Hawaii TDI minimum paid hours in a qualifying week
+  reference:
+    - title: Hawaii Revised Statutes Section 392-43(b)(1)
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0043.htm
+    - title: Session Laws of Hawaii 1999, Act 30
+      href: https://data.capitol.hawaii.gov/slh/Years/SLH1999/SLH1999_Act30.pdf#page=1
