@@ -25,7 +25,12 @@ Batches of tax units share one simulation per example. The tests check:
    the reduction.
 5. The tips deduction lies between 0 and the smaller of $25,000 and the
    qualified tips, never rises with Hawaii AGI, is zero for married filing
-   separately, and is zero in 2025 and 2029.
+   separately, and is zero in 2025 and 2029. An independent oracle checks
+   the $100 reduction for each whole $1,000 above the filing threshold.
+6. Each single-category charitable deduction applies its percentage ceiling
+   before the 2026 floor and uses Hawaii AGI in both calculations.
+7. Miscellaneous expenses and repayments outside section 1341 share one
+   2 percent floor through 2025 and allow no deduction in 2026.
 """
 
 import numpy as np
@@ -45,7 +50,7 @@ SEPARATE_THRESHOLD = 83_400
 EXCLUDED = ("hi_medical_expense_deduction", "hi_casualty_loss_deduction")
 EXCLUDED_PERSON = ("investment_interest_expense",)
 OTHER = ("hi_charitable_deduction", "hi_salt_deduction", "hi_misc_deduction")
-OTHER_PERSON = ("mortgage_interest",)
+OTHER_PERSON = ("home_mortgage_interest",)
 TAX_UNIT_COMPONENTS = EXCLUDED + OTHER
 PERSON_COMPONENTS = EXCLUDED_PERSON + OTHER_PERSON
 ALL_COMPONENTS = TAX_UNIT_COMPONENTS + PERSON_COMPONENTS
@@ -267,6 +272,17 @@ def test_tips_deduction_bounds_and_years():
         }
         for i in range(n)
     ]
+    units.extend(
+        {
+            "filing_status": status,
+            "hi_agi": threshold + excess,
+            "tip_income": 10_000.0,
+            "occupation_code": 102,
+        }
+        for status in STATUSES
+        for threshold in (300_000 if status == "JOINT" else 150_000,)
+        for excess in (0, 500, 999, 1_000, 1_001, 1_999, 2_000)
+    )
     arrays = _arrays(units)
     qualified = arrays["tip_income"] * (arrays["occupation_code"] > 0)
     separate = arrays["filing_status"] == "SEPARATE"
@@ -287,8 +303,152 @@ def test_tips_deduction_bounds_and_years():
             "hi_tip_income_deduction", period
         )
         scale = qualified + np.abs(arrays["hi_agi"])
+        expected = []
+        richer_expected = []
+        for unit in units:
+            threshold = 300_000 if unit["filing_status"] == "JOINT" else 150_000
+            tips = unit["tip_income"] if unit["occupation_code"] == 102 else 0
+            for income_increase, oracle in ((0, expected), (5_000, richer_expected)):
+                excess = max(0, unit["hi_agi"] + income_increase - threshold)
+                whole_increments = int(excess // 1_000)
+                allowed = max(0, min(25_000, tips) - 100 * whole_increments)
+                oracle.append(0 if unit["filing_status"] == "SEPARATE" else allowed)
+        _close(base, np.array(expected), scale, f"{year} whole increments")
+        _close(richer, np.array(richer_expected), scale, f"{year} richer increments")
         assert np.all(base >= 0)
         assert np.all(base <= np.minimum(25_000, qualified) + _slack(scale))
         assert np.all(base[separate] == 0)
         assert np.all(richer <= base + _slack(scale))
         assert np.any(base > 0)
+
+
+CHARITY_CATEGORIES = (
+    ("resolved_charitable_cash_donations_50_pct", 0.60),
+    ("resolved_charitable_non_cash_donations_50_pct", 0.50),
+    ("resolved_charitable_cash_donations_non_50_pct", 0.30),
+    ("resolved_charitable_non_cash_donations_non_50_pct", 0.30),
+    ("resolved_charitable_capital_gain_donations_50_pct", 0.30),
+    ("resolved_charitable_capital_gain_donations_non_50_pct", 0.20),
+)
+
+
+def _charity_situation(cases, period):
+    people, groups, households = {}, {}, {}
+    for i, (agi, donation, category, _) in enumerate(cases):
+        person = f"p{i}"
+        people[person] = {
+            "age": {period: 45},
+            **{
+                name: {period: donation if name == category else 0}
+                for name, _ in CHARITY_CATEGORIES
+            },
+        }
+        groups[f"t{i}"] = {
+            "members": [person],
+            "filing_status": {period: "SINGLE"},
+            "hi_agi": {period: agi},
+            "adjusted_gross_income": {period: agi + 100_000},
+        }
+        households[f"h{i}"] = {"members": [person], "state_code": {period: "HI"}}
+    return {"people": people, "tax_units": groups, "households": households}
+
+
+@settings(**SETTINGS)
+@given(
+    st.lists(
+        st.tuples(st.integers(-50_000, 400_000), st.integers(0, 300_000)),
+        min_size=8,
+        max_size=20,
+    )
+)
+def test_charity_single_category_ceilings_precede_the_2026_floor(amounts):
+    amounts = amounts + [(-10_000, 1_000), (0, 1_000), (50_000, 40_000), (100_000, 300)]
+    cases = [
+        (agi, donation, category, ceiling)
+        for agi, donation in amounts
+        for category, ceiling in CHARITY_CATEGORIES
+    ]
+    scale = np.array([abs(agi) + donation for agi, donation, _, _ in cases])
+    for year in (2025, 2026):
+        period = str(year)
+        deduction = Simulation(situation=_charity_situation(cases, period)).calculate(
+            "hi_charitable_deduction", period
+        )
+        expected = []
+        for agi, donation, _, ceiling in cases:
+            positive_agi = max(0, agi)
+            allowed_before_floor = min(donation, ceiling * positive_agi)
+            floor = 0.005 * positive_agi if year == 2026 else 0
+            expected.append(max(0, allowed_before_floor - floor))
+        _close(
+            deduction, np.array(expected), scale, f"{year} charity ceiling and floor"
+        )
+
+
+def _misc_situation(units, period):
+    people, groups, households = {}, {}, {}
+    for i, unit in enumerate(units):
+        person = f"p{i}"
+        people[person] = {
+            "age": {period: 45},
+            "tax_preparation_fees": {period: unit["expenses"]},
+        }
+        groups[f"t{i}"] = {
+            "members": [person],
+            "hi_agi": {period: unit["hi_agi"]},
+            "hi_claim_of_right_repayment": {period: unit["repayment"]},
+        }
+        households[f"h{i}"] = {"members": [person], "state_code": {period: "HI"}}
+    return {"people": people, "tax_units": groups, "households": households}
+
+
+def test_miscellaneous_expenses_and_repayments_share_one_floor():
+    rng = np.random.default_rng(67)
+    units = [
+        {
+            "hi_agi": float(rng.integers(-20_000, 250_000)),
+            "expenses": float(rng.integers(0, 10_000)),
+            "repayment": float(rng.integers(0, 3_001)),
+        }
+        for _ in range(120)
+    ]
+    units.extend(
+        {"hi_agi": 50_000, "expenses": expenses, "repayment": repayment}
+        for expenses, repayment in (
+            (800, 800),
+            (800, 1_500),
+            (0, 1_500),
+            (800, 0),
+            (0, 0),
+            (1_000, 0),
+            (0, 1_000),
+            (500, 500),
+        )
+    )
+    arrays = _arrays(units)
+    scale = np.abs(arrays["hi_agi"]) + arrays["expenses"] + arrays["repayment"]
+    for year in (2025, 2026):
+        period = str(year)
+        simulation = Simulation(situation=_misc_situation(units, period))
+        misc = simulation.calculate("hi_misc_deduction", period)
+        repayment = simulation.calculate("hi_claim_of_right_deduction", period)
+        eligible = simulation.calculate(
+            "hi_claim_of_right_section_1341_eligible", period
+        )
+        assert np.all(~eligible)
+        expected = np.array(
+            [
+                max(
+                    0,
+                    unit["expenses"]
+                    + unit["repayment"]
+                    - 0.02 * max(unit["hi_agi"], 0),
+                )
+                for unit in units
+            ]
+        )
+        if year == 2026:
+            assert np.all(misc == 0)
+            assert np.all(repayment == 0)
+            expected.fill(0)
+        _close(misc + repayment, expected, scale, f"{year} pooled miscellaneous floor")

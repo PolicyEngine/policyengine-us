@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.irs.income.taxable_income.deductions.itemizing._charitable_deduction_helpers import (
+from policyengine_us.variables.gov.irs.income.taxable_income.deductions.itemizing.charitable_deduction import (
     charitable_deduction_given_contribution_base,
 )
 
@@ -12,11 +12,10 @@ class hi_charitable_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
     reference = (
-        # Line 21d and the limits stated as a share of Hawaii AGI.
+        # PDF pages 17-18: line 21d and limits as a share of Hawaii AGI.
         "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=17",
-        "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=18",
         # Act 35, SLH 2026 conforms to the section 170(b)(1)(I) floor.
-        "https://files.hawaii.gov/tax/news/announce/ann26-06.pdf#page=2",
+        "https://files.hawaii.gov/tax/news/announce/ann26-06.pdf#page=3",
     )
 
     def formula(tax_unit, period, parameters):

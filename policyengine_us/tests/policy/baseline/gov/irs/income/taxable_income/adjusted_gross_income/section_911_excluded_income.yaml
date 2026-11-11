@@ -1,0 +1,94 @@
+- name: Defaults to the stacking amount when no deductions are disallowed
+  period: 2024
+  input:
+    foreign_earned_income_exclusion: 15_000
+  output:
+    section_911_excluded_income: 15_000
+
+- name: A provided Form 2555 amount overrides the default
+  period: 2024
+  input:
+    foreign_earned_income_exclusion: 15_000
+    section_911_excluded_income: 25_000
+  output:
+    section_911_excluded_income: 25_000
+
+- name: The rate stacking keeps the amount net of disallowed deductions
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        irs_employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        # Form 2555 lines 45 and 50: 25,000; worksheet line 2c: 15,000.
+        section_911_excluded_income: 25_000
+        foreign_earned_income_exclusion: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 100_000
+    agi_plus_section_911_931_933_exclusions: 125_000
+    # Foreign Earned Income Tax Worksheet line 3: taxable income 85,400
+    # (100,000 less the 14,600 standard deduction) plus line 2c, 15,000.
+    taxable_income_plus_section_911_exclusion: 100_400
+
+- name: Worksheet deductions reduce stacking but not Form 2555 lines 45 and 50
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        irs_gross_income: 50_000
+      person2:
+        age: 40
+        irs_gross_income: 50_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        foreign_earned_income_exclusion_amount: 8_000
+        foreign_housing_exclusion: 2_000
+        foreign_earned_income_exclusion_allocable_deductions: 1_000
+        foreign_housing_deduction: 500
+        foreign_earned_income_exclusion_disallowed_deductions: 0
+      tax_unit2:
+        members: [person2]
+        foreign_earned_income_exclusion_amount: 8_000
+        foreign_housing_exclusion: 2_000
+        foreign_earned_income_exclusion_allocable_deductions: 1_000
+        foreign_housing_deduction: 500
+        foreign_earned_income_exclusion_disallowed_deductions: 700
+    households:
+      household1:
+        members: [person1]
+        state_code: MA
+      household2:
+        members: [person2]
+        state_code: MA
+  output:
+    # Schedule 1-A lines 2b and 2c add Form 2555 lines 45 and 50.
+    section_911_excluded_income: [9_500, 9_500]
+    # Foreign Earned Income Tax Worksheet line 2b affects stacking only.
+    foreign_earned_income_exclusion: [9_500, 8_800]
+
+- name: A negative Form 2555 line 45 remains signed before the stacking floor
+  period: 2025
+  input:
+    age: 40
+    irs_gross_income: 50_000
+    state_code: MA
+    foreign_earned_income_exclusion_amount: 1_000
+    foreign_housing_exclusion: 0
+    foreign_earned_income_exclusion_allocable_deductions: 2_000
+    foreign_housing_deduction: 0
+    foreign_earned_income_exclusion_disallowed_deductions: 0
+  output:
+    # Publication 54, How To Report Deductions, Example 4 permits line 44
+    # to exceed line 43. The zero floor belongs to worksheet line 2c.
+    section_911_excluded_income: -1_000
+    foreign_earned_income_exclusion: 0

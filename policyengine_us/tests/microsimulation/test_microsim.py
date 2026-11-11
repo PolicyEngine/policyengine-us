@@ -104,7 +104,7 @@ def test_county_persists_across_periods():
 
 
 def test_default_dataset_loads_and_runs():
-    """The no-argument default (certified Populace build) resolves via the
+    """The no-argument default (certified Microcosm build) resolves via the
     hf://datasets/ path and entity-level interception, and produces sane
     aggregates.
 
@@ -118,7 +118,7 @@ def test_default_dataset_loads_and_runs():
     from policyengine_us.system import DEFAULT_DATASET
 
     assert "populace" in DEFAULT_DATASET, (
-        "Default dataset should be the certified Populace build."
+        "Default dataset should be the certified Microcosm build."
     )
 
     sim = Microsimulation()  # no dataset -> DEFAULT_DATASET (hf://datasets/...)
@@ -236,4 +236,83 @@ def test_legacy_enhanced_cps_allocates_no_housing_share_to_an_unclassified_unit(
         f"enhanced_cps_2024 (legacy file): {unclassified} of {allocated.size} "
         "SPM units hold an allocated housing share while classifying no "
         "measurement adult."
+    )
+
+
+def test_default_dataset_uses_its_supplied_tax_unit_roles():
+    """Every tax-unit role on the certified default build is its own.
+
+    `populace_us_2024` ships its tax-unit constructor's roles
+    (`tax_unit_role_input`). Without supplied roles, the oldest adult heads
+    the tax unit; when two candidates share a two-person marital unit in the
+    tax unit, the older of that couple heads instead. An adult outside the
+    head's marital unit who meets the qualifying child age test is not the
+    inferred spouse, so supplied marital units no longer pair an adult student
+    with a parent; when marital units are omitted, plain age order applies.
+    The fallback still heads couples by the older partner rather than the
+    reference person and leaves lone minors with no head.
+    This checks the whole population, person by person, in the data year and
+    in an extended year, since the loader carries the column forward rather
+    than the formulas. Filing status is not checked against the build: the
+    model computes it from these roles and the filing rules.
+    """
+    import numpy as np
+    import pandas as pd
+
+    from policyengine_us import Microsimulation
+    from policyengine_us.system import DEFAULT_DATASET, _resolve_dataset_path
+
+    with pd.HDFStore(_resolve_dataset_path(DEFAULT_DATASET), mode="r") as store:
+        person = store["person"][["person_id", "tax_unit_role_input"]]
+    roles = person.set_index("person_id")["tax_unit_role_input"].astype(str)
+
+    simulation = Microsimulation(dataset_end_year=2026)
+    for year in (2024, 2026):
+        person_id = np.asarray(simulation.calculate("person_id", year))
+        role = roles.reindex(person_id).to_numpy()
+        for name, variable in (
+            ("HEAD", "is_tax_unit_head"),
+            ("SPOUSE", "is_tax_unit_spouse"),
+            ("DEPENDENT", "is_tax_unit_dependent"),
+        ):
+            modelled = np.asarray(simulation.calculate(variable, year)).astype(bool)
+            mismatched = int((modelled != (role == name)).sum())
+            assert mismatched == 0, (
+                f"populace_us_2024 (certified default build), {year}: "
+                f"{variable} disagrees with tax_unit_role_input == {name} for "
+                f"{mismatched} of {role.size} people."
+            )
+
+
+def test_default_dataset_has_no_modeled_state_unemployment_compensation():
+    """Modeled state unemployment insurance is zero on the certified default build.
+
+    `total_unemployment_compensation` falls back to the modeled state
+    unemployment insurance programs only when no unemployment compensation is
+    reported. Those programs need wage-history and claim inputs (base-period
+    wages, high-quarter wages, credit weeks, weeks claimed) that default to 0
+    and that `populace_us_2024` does not carry, so routing income flows through
+    the total leaves population results unchanged. 2025 is checked because its
+    modeled list holds every program (AL, NJ, NY, OK, PA, UT); earlier years
+    hold a subset.
+
+    The whole population is checked, with no subsample, because a build that
+    gains those inputs for a few records would be missed by a sample. Only this
+    one variable and the person weights are computed. If this fails, the build
+    now feeds modeled UI into every program that counts unemployment
+    compensation, and that aggregate effect needs review.
+    """
+    import numpy as np
+
+    from policyengine_us import Microsimulation
+
+    simulation = Microsimulation()  # populace_us_2024, full population.
+    modeled = np.asarray(
+        simulation.calculate("modeled_state_unemployment_compensation", 2025)
+    )
+    nonzero = int((modeled != 0).sum())
+    assert nonzero == 0, (
+        f"populace_us_2024 (certified default build), 2025: {nonzero} of "
+        f"{modeled.size} people have nonzero modeled state unemployment "
+        f"compensation (unweighted total {modeled.sum():,.0f})."
     )

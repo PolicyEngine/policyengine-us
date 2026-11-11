@@ -6,13 +6,19 @@ class aca_magi_fraction(Variable):
     entity = TaxUnit
     label = "ACA-related modified AGI as fraction of prior-year FPL"
     documentation = (
-        "ACA-related MAGI as fraction of federal poverty line.\n"
-        "Documentation on use of prior-year FPL in the following reference:\n"
-        "  title: 2022 IRS Form 8962 (ACA PTC) instructions, Line 4\n"
-        "  href: https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=7\n"
-        "Documentation on truncation of fraction in the following reference:\n"
-        "  title: 2022 IRS Form 8962 instructions, Line 5 Worksheet 2\n"
-        "  href: https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=8"
+        "ACA-related MAGI as fraction of federal poverty line. The first "
+        "reference documents the use of the prior-year FPL; the second "
+        "documents the truncation of the fraction."
+    )
+    reference = (
+        dict(
+            title="2022 IRS Form 8962 (ACA PTC) instructions, Line 4",
+            href="https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=7",
+        ),
+        dict(
+            title="2022 IRS Form 8962 instructions, Line 5 Worksheet 2",
+            href="https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=8",
+        ),
     )
     definition_period = YEAR
 

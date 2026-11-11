@@ -39,3 +39,326 @@
     state_code: CA
   output:
     ca_exemptions: 658
+
+# RTC 17054 and the Form 540 line 6-10 instructions: a filer whom another
+# taxpayer can claim gets no personal, blind or senior credit (line 7 enters
+# 0 for a single or head of household filer, and on a joint return 1 when only
+# one spouse can be claimed and 0 when both can), and the dependents must be
+# federal dependents, of which such a return has none (IRC 152(b)(1)). 2025
+# amounts: $153 per personal, blind or senior credit and $475 per dependent;
+# income is zero, so nothing phases out.
+
+- name: 2025 single filer who can be claimed as a dependent with a child gets no exemption credits
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    ca_exemptions: 0
+
+- name: 2025 single filer who cannot be claimed with a child gets the personal and dependent credits
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    # $153 + $475.
+    ca_exemptions: 628
+
+- name: 2025 joint return with one claimable spouse with a child gets only the other spouse's personal credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_exemptions: 153
+
+- name: 2025 joint return with one claimable spouse with a child gets only the other spouse's personal credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: CA
+  output:
+    ca_exemptions: 153
+
+- name: 2025 joint return with both spouses claimable with a child gets no exemption credits
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_exemptions: 0
+
+- name: 2025 joint return with neither spouse claimable with a child gets two personal credits and a dependent credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+      person_b:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    # 2 x $153 + $475.
+    ca_exemptions: 781
+
+- name: 2025 single filer who can be claimed as a dependent aged 70 and blind gets no personal, senior or blind credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 70
+        is_blind: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_exemptions: 0
+
+- name: 2025 single filer who cannot be claimed aged 70 and blind gets personal, senior and blind credits
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 70
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    # 3 x $153.
+    ca_exemptions: 459
+
+- name: 2025 joint return with one claimable spouse both aged 70 and blind keeps only the other spouse's three credits (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        is_blind: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        is_blind: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # 3 x $153.
+    ca_exemptions: 459
+
+- name: 2025 joint return with one claimable spouse both aged 70 and blind keeps only the other spouse's three credits (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 70
+        is_blind: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 70
+        is_blind: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: CA
+  output:
+    # 3 x $153.
+    ca_exemptions: 459
+
+- name: 2025 joint return with both spouses claimable both aged 70 and blind gets no exemption credits
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        is_blind: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 70
+        is_blind: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_exemptions: 0
+
+- name: 2025 joint return with neither spouse claimable both aged 70 and blind gets six credits
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        is_blind: true
+      person_b:
+        age: 70
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # 6 x $153.
+    ca_exemptions: 918
+
+- name: 2025 single filer who can be claimed as a dependent filing as head of household gets no exemption credits
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    # Line 7 instructions: head of household, enter -0-.
+    ca_exemptions: 0
+
+- name: 2025 single filer who cannot be claimed filing as head of household gets the personal and dependent credits
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    # $153 + $475.
+    ca_exemptions: 628

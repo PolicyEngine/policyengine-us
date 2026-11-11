@@ -1,3 +1,6 @@
+# School-meal daily subsidy is the combined breakfast/lunch valuation per
+# enrolled child. Calendar 2026 uses published SY 2025-26 rates: $4.60 + $2.46;
+# see edge_cases/federal/nutrition/school_meals/federal.yaml for sources.
 # Signature-fidelity fix (2026-07-04): state_code added on each household per
 # analytics (every MFB state-output request sends the state_code enum);
 # employment_income / self_employment_income / capital_gains converted to the
@@ -265,7 +268,7 @@
         il_liheap_income_eligible: true
         il_tanf: 11319.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
         snap: 12015.0
 - name: signature_71 (4 reqs)
@@ -516,7 +519,7 @@
         il_liheap_income_eligible: true
         il_tanf: 11319.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
         snap: 12015.0
 - name: signature_102 (2 reqs)
@@ -771,7 +774,7 @@
         il_liheap_income_eligible: true
         il_tanf: 11319.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
 - name: signature_131 (1 reqs, +1 dupes)
   period: 2026
@@ -1021,7 +1024,7 @@
         il_liheap_income_eligible: true
         il_tanf: 11319.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
 - name: signature_145 (1 reqs)
   period: 2026
@@ -1275,7 +1278,7 @@
         il_liheap_income_eligible: true
         il_tanf: 11319.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
 - name: signature_170 (1 reqs)
   period: 2026
@@ -1525,7 +1528,7 @@
         il_liheap_income_eligible: true
         il_tanf: 11319.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
 - name: signature_180 (1 reqs)
   period: 2026
@@ -1775,6 +1778,6 @@
         il_liheap_income_eligible: true
         il_tanf: 11319.0
         lifeline: 111.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
         snap: 12015.0

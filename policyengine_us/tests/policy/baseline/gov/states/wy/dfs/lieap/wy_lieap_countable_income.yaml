@@ -1,0 +1,301 @@
+# Modeling assumption: annual inputs approximate monthly income.
+# FY2026 plan section 1.9 and adopted rule section 8: the plan excludes minors,
+# TANF and child support; the rule excludes lump sums. Conflicts remain documented.
+
+- name: Case 1, adult earnings less paid child support.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    employment_income: 24000
+    child_support_expense: 2400
+  output:
+    wy_lieap_countable_income: 21600
+
+- name: Case 2, all earnings of a seventeen-year-old nonstudent are excluded.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 17
+    is_full_time_student: false
+    employment_income: 6000
+    self_employment_income: 1200
+  output:
+    wy_lieap_countable_income: 0
+
+- name: Case 3, earnings start counting at eighteen.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 18
+    employment_income: 6000
+  output:
+    wy_lieap_countable_income: 6000
+
+- name: Case 4, business and rental losses do not offset wages.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    employment_income: 10000
+    self_employment_income: -5000
+    rental_income: -2000
+    farm_rent_income: -500
+  output:
+    wy_lieap_countable_income: 10000
+
+- name: Case 5, paid support cannot reduce unearned income.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    employment_income: 1000
+    child_support_expense: 3000
+    pension_income: 5000
+  output:
+    wy_lieap_countable_income: 5000
+
+- name: Case 6, interest at thirty dollars per month is excluded.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    interest_income: 360
+  output:
+    wy_lieap_countable_income: 0
+
+- name: Case 7, interest above thirty dollars per month counts in full.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    interest_income: 372
+  output:
+    wy_lieap_countable_income: 372
+
+- name: Case 8, dividends do not receive the interest threshold.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    ordinary_dividend_income: 360
+  output:
+    wy_lieap_countable_income: 360
+
+- name: Case 9, small monthly gifts are excluded.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    financial_assistance: 360
+  output:
+    wy_lieap_countable_income: 0
+
+- name: Case 10, gifts above the monthly threshold count in full.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    financial_assistance: 372
+  output:
+    wy_lieap_countable_income: 372
+
+- name: Case 11, total veterans benefits below one-person poverty guideline are excluded.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 50
+    veterans_benefits: 15000
+  output:
+    wy_lieap_countable_income: 0
+
+- name: Case 12, veterans benefits exactly at one-person poverty guideline are excluded.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 50
+    veterans_benefits: 15650
+  output:
+    wy_lieap_countable_income: 0
+
+- name: Case 13, only veterans benefits above the guideline count.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 50
+    veterans_benefits: 30000
+  output:
+    wy_lieap_countable_income: 14350
+
+- name: Case 14, unused veterans exclusion cannot offset other income.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 50
+    veterans_benefits: 10000
+    pension_income: 5000
+  output:
+    wy_lieap_countable_income: 5000
+
+- name: Case 15, tanf and child support received are excluded.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    wy_power: 6000
+    tanf: 6000
+    child_support_received: 3000
+  output:
+    wy_lieap_countable_income: 0
+
+- name: Case 16, tax credits and asset balances are not countable receipts.
+  period: 2026
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    eitc: 2000
+    income_tax_refundable_credits: 3000
+    bank_account_assets: 100000
+  output:
+    wy_lieap_countable_income: 0
+
+- name: Case 17, regular nonexcluded unearned sources count once.
+  period: 2026
+  input:
+    state_code: WY
+    age: 40
+    social_security: 1000
+    ssi: 500
+    pension_income: 2000
+    retirement_distributions: 3000
+    railroad_benefits: 400
+    survivor_benefits: 300
+    unemployment_compensation: 2000
+    general_assistance: 100
+    alimony_income: 800
+    rental_income: 900
+    farm_rent_income: 700
+    ordinary_dividend_income: 200
+  output:
+    wy_lieap_countable_income: 11900
+
+- name: Case 18, two veterans share one two-person poverty exclusion.
+  period: 2026
+  input:
+    people:
+      person1: {age: 50, veterans_benefits: 30_000, ssi: 0}
+      person2: {age: 52, veterans_benefits: 30_000, ssi: 0}
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+    households:
+      household1: {members: [person1, person2], state_code: WY}
+  output:
+    wy_lieap_household_size: 2
+    # 60,000 - 2025 two-person FPG 21,150 = 38,850.
+    wy_lieap_countable_income: 38_850
+
+- name: Case 19, support paid by one member cannot offset another members wages.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, child_support_expense: 3_000, ssi: 0}
+      person2: {age: 38, employment_income: 12_000, ssi: 0}
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+    households:
+      household1: {members: [person1, person2], state_code: WY}
+  output:
+    wy_lieap_countable_income: 12_000
+
+- name: Case 20, excluded immigration status does not exclude otherwise countable income.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, immigration_status: UNDOCUMENTED, employment_income: 20_000, ssi: 0}
+      person2: {age: 8, immigration_status: CITIZEN, employment_income: 2_000, ssi: 0}
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+    households:
+      household1: {members: [person1, person2], state_code: WY}
+  output:
+    wy_lieap_household_size: 1
+    wy_lieap_countable_income: 20_000
+
+- name: Case 21, separate SPM units each receive one veterans exclusion.
+  period: 2026
+  input:
+    people:
+      person1: {age: 50, veterans_benefits: 30_000, ssi: 0}
+      person2: {age: 52, veterans_benefits: 30_000, ssi: 0}
+      person3: {age: 40, veterans_benefits: 10_000, ssi: 0}
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3]}
+    households:
+      household1: {members: [person1, person2, person3], state_code: WY}
+  output:
+    wy_lieap_countable_income: [38_850, 0]
+
+- name: Case 22, Wyoming income calculation is zero in another state.
+  period: 2026
+  input:
+    state_code: CO
+    age: 40
+    employment_income: 20_000
+  output:
+    wy_lieap_countable_income: 0
+
+# Each listed source gets a distinct amount, so dropping any one changes the
+# total. Earned: 1,000 + 2,000 + 3,000 + 4,000 = 10,000 for an adult.
+# Unearned: 500 + 600 + 700 = 1,800. Countable: 10,000 + 1,800 = 11,800.
+- name: Case 23, business, farm, partnership, workers compensation, disability and estate income each count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    ssi: 0
+    age: 40
+    self_employment_income: 1_000
+    sstb_self_employment_income: 2_000
+    farm_operations_income: 3_000
+    partnership_s_corp_income: 4_000
+    workers_compensation: 500
+    disability_benefits: 600
+    estate_income: 700
+  output:
+    wy_lieap_countable_income: 11_800
+
+# Rule 8(a)(ii)(U) exempts Medicare deducted from SSA. The 2026 Part B
+# premium is 202.90 * 12 = 2,434.80. It is entered directly because at this
+# income a Medicare Savings Program would pay it; Case 154 in wy_lieap.yaml
+# derives the premium for a person who pays it. Social Security counts as
+# max(1,000 - 2,434.80, 0) = 0, and the excess premium cannot reduce wages:
+# 10,000 + 0 = 10,000.
+- name: Case 24, a Part B premium above Social Security cannot reduce other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    ssi: 0
+    age: 70
+    employment_income: 10_000
+    social_security: 1_000
+    medicare_part_b_premium: 2_434.8
+  output:
+    wy_lieap_countable_income: 10_000

@@ -1,0 +1,16 @@
+description: Wisconsin nets these self-employment sources across sources and household members under the Home Energy Assistance Program.
+# Net business inputs are used without a further expense deduction. Income
+# reported on a Self-Generated Income Report Form is not separable.
+values:
+  2025-10-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin WHEAP self-employment income sources
+  reference:
+    - title: "Wisconsin PY26 WHEAP Manual, section 3.3.5 and Table 3.4 #page 50-51,56"
+      href: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=50

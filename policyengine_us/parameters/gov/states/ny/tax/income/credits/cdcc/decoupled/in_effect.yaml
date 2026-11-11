@@ -1,0 +1,17 @@
+description: New York computes the child and dependent care credit from qualifying care expenses under Tax Law 606(c-2), rather than as a percentage of the federal credit under 606(c), if this is true.
+values:
+  2000-01-01: false
+  # 606(c)(1) applies to "taxable years beginning before January first, two
+  # thousand twenty-six"; 606(c-2)(1) to taxable years beginning on or after.
+  2026-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: New York expense-based child and dependent care credit in effect
+  reference:
+    - title: N.Y. Tax Law 606(c-2)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: L.2026, ch. 59 (S.9009-C), Part A, secs. 1 and 2
+      href: https://www.nysenate.gov/legislation/bills/2025/S9009/amendment/C
+    - title: N.Y. Tax Law 606(c)(1)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

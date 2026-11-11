@@ -14,8 +14,10 @@ class mt_property_tax_rebate(Variable):
         # Modeling limitation: this does not encode the statutory eligibility
         # conditions for the rebate (principal residence; at least 7 months of
         # ownership and occupancy during the year; property taxes billed and
-        # paid; a timely rebate claim). Revisit if the rebate is ever wired
-        # into a benefit-side channel where those conditions would bind.
+        # paid; a timely rebate claim). household_state_benefits and
+        # spm_unit_benefits count the rebate through state_property_tax_refunds,
+        # so for tax years 2022 through 2024 they credit it to every Montana
+        # tax unit with real estate taxes, claimants or not.
         p = parameters(period).gov.states.mt.tax.income.credits.rebate.property
         person = tax_unit.members
         mt_property_tax = person("real_estate_taxes", period)

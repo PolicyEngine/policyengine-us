@@ -13,10 +13,44 @@ class nd_renters_refund_income(Variable):
     )
     defined_for = StateCode.ND
 
+    documentation = (
+        "Renter refund income after unreimbursed medical costs actually paid. "
+        "The paid-cost base restores the self-employed premiums excluded from "
+        "the federal subtotal: by the federal formula, or as supplied with a "
+        "caller's subtotal in itemized_medical_expenses_applied_exclusion. A "
+        "caller-supplied subtotal without that amount is used unchanged, "
+        "including when components are supplied. Premium inputs use payer "
+        "attribution: each person reports premiums that person paid, including "
+        "family coverage regardless of whom it covers."
+    )
+
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nd.tax.property.renters_refund
+        # NDCC 57-02-08.1(5)(c) excludes income excluded by federal or state
+        # law. market_income includes wages before payroll deductions, so
+        # subtract the separate pretax premium input once from this base.
+        # These premiums are disjoint from itemized_medical_expenses,
+        # whose medical definition follows state income tax law.
+        excluded_premiums = add(tax_unit, period, ["pre_tax_health_insurance_premiums"])
+        # market_income counts disability benefits in full, and federal law
+        # excludes the part from a plan the recipient paid for (IRC 104(a)(3)).
+        excluded_disability_benefits = add(
+            tax_unit, period, ["disability_benefits"]
+        ) - add(tax_unit, period, ["taxable_disability_benefits"])
+        # Restore premiums excluded from the federal subtotal (computed, or
+        # supplied with a caller's subtotal).
+        medical_expenses = add(
+            tax_unit,
+            period,
+            [
+                "itemized_medical_expenses",
+                "itemized_medical_expenses_applied_exclusion",
+            ],
+        )
         return max_(
             add(tax_unit, period, p.income_sources)
-            - tax_unit("itemized_medical_expenses", period),
+            - excluded_premiums
+            - excluded_disability_benefits
+            - medical_expenses,
             0,
         )

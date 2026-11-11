@@ -1,3 +1,7 @@
+# Act 115 (SLH 2022), Section 3(a): the refund per exemption is $300 or $100
+# by federal AGI, "multiplied by the number of qualified exemptions to which
+# the taxpayer is entitled". Additional exemptions for age or disability do
+# not give additional refunds.
 - name: Single, higher amount
   period: 2021
   input:
@@ -16,20 +20,477 @@
   output:
     hi_act_115_rebate: 100
 
-- name: Joint, higher amount
+- name: Single with negative federal AGI is under $100,000
   period: 2021
   input:
-    adjusted_gross_income: 100_000
-    filing_status: JOINT
+    adjusted_gross_income: -20_000
+    filing_status: SINGLE
     state_code: HI
   output:
     hi_act_115_rebate: 300
 
-- name: Joint, lower amount
+- name: Joint, higher amount for two exemptions
   period: 2021
   input:
-    adjusted_gross_income: 200_000
-    filing_status: JOINT
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 100_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    # 2 exemptions * $300
+    hi_act_115_rebate: 600
+
+- name: Joint, lower amount for two exemptions
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 200_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    # 2 exemptions * $100
+    hi_act_115_rebate: 200
+
+- name: Joint with two dependents
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        adjusted_gross_income: 60_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: HI
+  output:
+    # 4 exemptions * $300
+    hi_act_115_rebate: 1_200
+
+- name: Head of household with two dependents
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        adjusted_gross_income: 60_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: HI
+  output:
+    # 3 exemptions * $300
+    hi_act_115_rebate: 900
+
+- name: Aged joint filers get one refund per person
+  period: 2021
+  input:
+    people:
+      head:
+        age: 70
+      spouse:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 60_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    # The additional age exemptions do not count: 2 exemptions * $300
+    hi_act_115_rebate: 600
+
+- name: Filer claimed as a dependent by another taxpayer is not eligible
+  period: 2021
+  input:
+    people:
+      head:
+        age: 19
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 5_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+# Act 115 refunds went only to filers of a 2021 Form N-11 (DOTAX
+# Announcement 2022-03, p.2).
+- name: No refund for 2017
+  period: 2017
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
     state_code: HI
   output:
-    hi_act_115_rebate: 100
+    hi_act_115_rebate: 0
+
+- name: No refund for 2020
+  period: 2020
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+# The amount schedules persist after 2021 for standalone calculations, but
+# the 2022 refundable credit list leaves the refund out. With the other
+# refundable credits set to zero: 0 + 0 + 0 = 0.
+- name: No refund in 2022 refundable credits
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    state_code: HI
+    hi_food_excise_credit: 0
+    hi_cdcc: 0
+    hi_tax_credit_for_low_income_household_renters: 0
+  output:
+    hi_refundable_credits: 0
+
+- name: No refund for joint filers for 2020
+  period: 2020
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 60_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+# A single filer, age 30, with $8,000 of wages in the refund's year and the
+# year after. The Hawaii food/excise credit is $100 for federal AGI of $5,000
+# to $10,000 (Form N-311, 2017-2022).
+- name: Single filer with $8,000 of wages gets the Act 115 refund for 2021
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 15.3% * 8,000 under the 2021 phase-in.
+    eitc: 1_224
+    # 20% * 1,224
+    hi_eitc_potential: 244.8
+    # One exemption * $300 for federal AGI under $100,000.
+    hi_act_115_rebate: 300
+    # 100 food/excise + 300 Act 115
+    hi_refundable_credits: 400
+  absolute_error_margin: 0.01
+
+- name: Single filer with $8,000 of wages gets no Act 115 refund for 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    eitc: 560
+    # 20% * 560
+    hi_eitc_potential: 112
+    # The 2022 refundable list leaves the Act 115 refund out: 100 food/excise.
+    hi_refundable_credits: 100
+  absolute_error_margin: 0.01
+
+- name: Joint return with a child where only one spouse can be claimed (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 5_000
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    # Only the spouse who cannot be claimed has a qualified exemption; a joint
+    # return on which a spouse can be claimed claims no dependents. 1 x $300.
+    hi_act_115_rebate: 300
+
+- name: Joint return with a child where only one spouse can be claimed (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 5_000
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: HI
+  output:
+    # Only the spouse who cannot be claimed has a qualified exemption; a joint
+    # return on which a spouse can be claimed claims no dependents. 1 x $300.
+    hi_act_115_rebate: 300
+
+- name: Joint return where both spouses can be claimed
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        adjusted_gross_income: 5_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+# Act 115 sec.3(a)-(b), HRS 235-54(a), and Pub. 501 PDF p.11.
+- name: Joint return filing exception restores own dependent but excludes claimable head from Act 115
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 26
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 600
+
+- name: Joint return filing exception restores own dependent but excludes claimable spouse from Act 115
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 26
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 600
+
+# Historical guard regression.
+# Act 115 (2022), section 3(a), PDF p2, limits the refund to taxable year 2021;
+# section 3(d), PDF p3, ties eligibility to filing that year's return.
+# https://data.capitol.hawaii.gov/sessions/sessionlaws/Years/SLH2022/SLH2022_Act115.pdf#page=2
+# Hand calculation for 2020: rebate $0; other refundable credits $0;
+# income tax $1,000 - $0 = $1,000, irrespective of the one exemption/AGI tier.
+- name: Hawaii Act 115 refund does not reduce 2020 tax
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: false
+    exemptions_count: 1
+    hi_income_tax_before_refundable_credits: 1_000
+    hi_food_excise_credit: 0
+    hi_cdcc: 0
+    hi_tax_credit_for_low_income_household_renters: 0
+  output:
+    hi_act_115_rebate: 0
+    hi_refundable_credits: 0
+    hi_income_tax: 1_000
+
+# Backdating must keep every amount bracket at zero in both schedules before
+# 2021; otherwise either the $300 or $100 tier could recreate a historical refund.
+- name: Hawaii Act 115 schedules are zero in the earliest modeled year
+  period: 2015
+  absolute_error_margin: 0
+  input:
+    people:
+      single_low: {}
+      single_high: {}
+      joint_low: {}
+      joint_high: {}
+    tax_units:
+      single_low_unit:
+        members: [single_low]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+        exemptions_count: 1
+      single_high_unit:
+        members: [single_high]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+        exemptions_count: 1
+      joint_low_unit:
+        members: [joint_low]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000
+        exemptions_count: 1
+      joint_high_unit:
+        members: [joint_high]
+        filing_status: JOINT
+        adjusted_gross_income: 200_000
+        exemptions_count: 1
+    households:
+      single_low_household:
+        members: [single_low]
+        state_code: HI
+      single_high_household:
+        members: [single_high]
+        state_code: HI
+      joint_low_household:
+        members: [joint_low]
+        state_code: HI
+      joint_high_household:
+        members: [joint_high]
+        state_code: HI
+  output:
+    hi_act_115_rebate: [0, 0, 0, 0]

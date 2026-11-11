@@ -75,3 +75,61 @@
     hi_salt_deduction: 0
   output:
     hi_total_itemized_deductions: 4_500
+
+- name: Case 7, expenses and a small repayment share one 2% floor.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    tax_preparation_fees: 800
+    hi_claim_of_right_repayment: 800
+    hi_agi: 50_000
+    hi_salt_deduction: 0
+  output:
+    # 800 + 800 - 2% * 50,000 = 600.
+    hi_claim_of_right_deduction: 0
+    hi_misc_deduction: 600
+    hi_total_itemized_deductions: 600
+
+- name: Case 8, expenses use the floor that the repayment has already absorbed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    tax_preparation_fees: 800
+    hi_claim_of_right_repayment: 1_500
+    hi_agi: 50_000
+    hi_salt_deduction: 0
+  output:
+    # 800 + 1,500 - 2% * 50,000 = 1,300.
+    hi_claim_of_right_deduction: 500
+    hi_misc_deduction: 800
+    hi_total_itemized_deductions: 1_300
+
+- name: Case 9, a section 1341 repayment stays outside the miscellaneous floor.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    tax_preparation_fees: 800
+    hi_claim_of_right_repayment: 4_000
+    hi_claim_of_right_credit_applies: false
+    hi_agi: 50_000
+    hi_salt_deduction: 0
+  output:
+    hi_claim_of_right_section_1341_eligible: true
+    hi_claim_of_right_deduction: 4_000
+    hi_misc_deduction: 0
+    hi_total_itemized_deductions: 4_000
+
+- name: Case 10, Hawaii allows miscellaneous expenses from 2018.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    unreimbursed_business_employee_expenses: 5_000
+    tax_preparation_fees: 500
+    hi_agi: 50_000
+  output:
+    # 5,500 - 2% * 50,000 = 4,500.
+    hi_misc_deduction: 4_500

@@ -63,3 +63,28 @@
         puerto_rico_income: 10_000
   output:
     additional_senior_deduction_magi: 110_000
+
+- name: Senior MAGI adds Form 2555 lines 45 and 50 before worksheet deductions
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        irs_gross_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 100_000
+        foreign_earned_income_exclusion_amount: 8_000
+        foreign_housing_exclusion: 2_000
+        foreign_earned_income_exclusion_allocable_deductions: 1_000
+        foreign_housing_deduction: 500
+        foreign_earned_income_exclusion_disallowed_deductions: 700
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Schedule 1-A adds lines 45 and 50 (9,500), while the tax worksheet
+    # subtracts the 700 of related itemized deductions for stacking only.
+    additional_senior_deduction_magi: 109_500

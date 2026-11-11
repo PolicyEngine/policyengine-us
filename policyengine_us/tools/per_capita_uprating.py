@@ -10,8 +10,9 @@ population makes the weighted total of the input track the national total.
 For every national total that a variable uprates by, this module adds a
 sibling parameter holding the total divided by population
 (``<path>_per_capita``) and points the variable at it. Series that are
-already per-person rates or price indices (CMS per-capita spending, CPI-U)
-are left alone, as is the population series that uprates the weights.
+already per-person rates or price indices (CMS per-capita spending, CMS
+premiums per enrollee, CPI-U) are left alone, as is the population series
+that uprates the weights.
 
 Parameters can follow a per-capita series too: a parameter whose ``uprating``
 metadata names ``<national total>_per_capita`` gets that sibling built before
@@ -32,16 +33,26 @@ NATIONAL_TOTAL_PREFIXES = (
     "calibration.gov.irs.soi.",
 )
 CALIBRATION_PREFIX = "calibration."
-PER_CAPITA_MARKER = "per_capita"
+# Fragments that mark a per-person rate when they appear in a path's last
+# segment: spending per capita, or premiums per enrollee. Such a series already
+# divides by the people it covers, so it is neither a national total nor
+# divided again. A marker in an ancestor segment (a folder of estimates) does
+# not make the series under it a rate.
+PER_PERSON_MARKERS = ("per_capita", "per_enrollee")
 PER_CAPITA_SUFFIX = "_per_capita"
 DERIVED_FROM = "derived_from"
+
+
+def _is_per_person_rate(path: str) -> bool:
+    name = path.rpartition(".")[2]
+    return any(marker in name for marker in PER_PERSON_MARKERS)
 
 
 def is_national_total_path(path: str | None) -> bool:
     """Whether an uprating parameter path names a national total."""
     if not path:
         return False
-    return path.startswith(NATIONAL_TOTAL_PREFIXES) and PER_CAPITA_MARKER not in path
+    return path.startswith(NATIONAL_TOTAL_PREFIXES) and not _is_per_person_rate(path)
 
 
 def per_capita_path(path: str) -> str:
@@ -50,12 +61,12 @@ def per_capita_path(path: str) -> str:
 
 def _is_unclassified_calibration_path(path: str | None) -> bool:
     """A ``calibration`` path this module cannot classify: not a national
-    total, not already per capita, not the population series."""
+    total, not already a per-person rate, not the population series."""
     if not path or not path.startswith(CALIBRATION_PREFIX):
         return False
     return not (
         is_national_total_path(path)
-        or PER_CAPITA_MARKER in path
+        or _is_per_person_rate(path)
         or path == POPULATION_PATH
     )
 

@@ -1,0 +1,234 @@
+# N.Y. Tax Law 606(c-2)(2)(D), added by L.2026, ch. 59, Part A: care expenses,
+# less amounts paid from a dependent care account, capped at $3,000 / $6,000 /
+# $7,500 / $8,500 / $9,000 for one to five or more qualifying individuals and at
+# earned income (the lesser spouse's on a joint return).
+- name: Case 1, one qualifying individual caps expenses at $3,000.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 1
+    tax_unit_childcare_expenses: 9_600
+    employment_income: 100_195
+  output:
+    ny_cdcc_qualifying_expenses: 3_000
+
+- name: Case 2, three qualifying individuals use the $7,500 New York cap, not the $6,000 federal limit.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 3
+    tax_unit_childcare_expenses: 12_000
+    employment_income: 50_000
+  output:
+    ny_cdcc_qualifying_expenses: 7_500
+
+- name: Case 3, four qualifying individuals with expenses exactly at the $8,500 cap.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 4
+    tax_unit_childcare_expenses: 8_500
+    employment_income: 100_000
+  output:
+    ny_cdcc_qualifying_expenses: 8_500
+
+- name: Case 4, five or more qualifying individuals cap expenses at $9,000.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 6
+    tax_unit_childcare_expenses: 20_000
+    employment_income: 500_000
+  output:
+    ny_cdcc_qualifying_expenses: 9_000
+
+- name: Case 5, expenses capped at earned income.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 1
+    tax_unit_childcare_expenses: 3_000
+    employment_income: 2_000
+  output:
+    ny_cdcc_qualifying_expenses: 2_000
+
+- name: Case 6, no qualifying individual means no qualifying expenses.
+  period: 2026
+  input:
+    state_code: NY
+    count_cdcc_eligible: 0
+    tax_unit_childcare_expenses: 5_000
+    employment_income: 40_000
+  output:
+    ny_cdcc_qualifying_expenses: 0
+
+- name: Case 7, joint return caps expenses at the lesser spouse's earned income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+      person2:
+        age: 35
+        employment_income: 4_000
+      person3:
+        age: 3
+      person4:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 7_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    count_cdcc_eligible: 2
+    ny_cdcc_qualifying_expenses: 4_000
+
+- name: Case 8, a joint return with a non-earning spouse has no qualifying expenses; 606(c-2) deems no earned income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+      person2:
+        age: 35
+        is_full_time_student: true
+      person3:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ny_cdcc_qualifying_expenses: 0
+
+- name: Case 9, amounts paid from a dependent care account are not qualifying expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+        dependent_care_employer_benefits: 2_000
+      person2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # min(4,000 - 2,000, 3,000 cap, 50,000 earned) = 2,000
+    ny_cdcc_qualifying_expenses: 2_000
+
+- name: Case 10, a 401(k) deferral stays in New York earned income from 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 38
+        employment_income: 4_000
+        traditional_401k_contributions_desired: 1_500
+      person3:
+        age: 5
+      person4:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # Federal earned income (IRC 32(c)(2)) leaves out the deferral:
+    # 4,000 - 1,500 = 2,500.
+    spouse_earned: 2_500
+    # 606(c-2)(2)(C) counts "wages, salaries, tips and other employee
+    # compensation" with no gross-income inclusion test, so the spouse's
+    # earned income stays 4,000.
+    # min(9,000 expenses, 6,000 two-person cap, 4,000 earned) = 4,000
+    ny_cdcc_qualifying_expenses: 4_000
+
+# 606(c-2)(2)(C) counts wages "and those items of gross income which are
+# includible in the computation of net earnings from self-employment", so a
+# business loss offsets the gross wages before the zero floor.
+- name: Case 11, a self-employment loss that offsets all wages leaves no New York earned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 90_000
+      person2:
+        age: 38
+        employment_income: 4_000
+        traditional_401k_contributions_desired: 1_000
+        self_employment_income: -4_000
+      person3:
+        age: 5
+      person4:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # Federal: max(4,000 - 1,000 deferral - 4,000 loss, 0) = 0.
+    spouse_earned: 0
+    # New York: max(4,000 gross wages - 4,000 loss, 0) = 0. Adding the
+    # 1,000 deferral back after the federal floor would give 1,000.
+    ny_cdcc_qualifying_expenses: 0
+
+- name: Case 12, a self-employment loss that offsets part of the gross wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 90_000
+      person2:
+        age: 38
+        employment_income: 4_000
+        traditional_401k_contributions_desired: 1_000
+        self_employment_income: -3_500
+      person3:
+        age: 5
+      person4:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # Federal: max(4,000 - 1,000 deferral - 3,500 loss, 0) = 0.
+    spouse_earned: 0
+    # New York: 4,000 gross wages - 3,500 loss = 500.
+    # min(9,000 expenses, 6,000 two-person cap, 500 earned) = 500
+    ny_cdcc_qualifying_expenses: 500

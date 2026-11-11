@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.taxable_income.deductions.tip_income.tip_income_deduction import (
+    compute_tip_income_deduction,
+)
 
 
 class hi_tip_income_deduction(Variable):
@@ -19,27 +22,8 @@ class hi_tip_income_deduction(Variable):
             period
         ).gov.states.hi.tax.income.deductions.tip_income.in_effect:
             return 0
-        p = parameters(period).gov.irs.deductions.tip_income
-        person = tax_unit.members
-        tip_income = person("tip_income", period)
-        occupation_requirement_met = person(
-            "tip_income_deduction_occupation_requirement_met", period
-        )
-        qualified_tips = tax_unit.sum(tip_income * occupation_requirement_met)
-        capped_tips = min_(p.cap, qualified_tips)
-        # Section 224(b)(2) phases the deduction out with modified adjusted
-        # gross income. HRS 235-1 defines adjusted gross income as determined
-        # under the Internal Revenue Code as modified by chapter 235, so the
-        # phase-out uses Hawaii adjusted gross income.
+        # HRS 235-1 defines AGI using the chapter 235 modifications.
+        # Hawaii makes sections 911, 931 and 933 inoperative, so Hawaii AGI
+        # needs no addback for those exclusions under section 224(b)(2)(B).
         hi_agi = tax_unit("hi_agi", period)
-        filing_status = tax_unit("filing_status", period)
-        agi_excess = max_(0, hi_agi - p.phase_out.start[filing_status])
-        phase_out_amount = agi_excess * p.phase_out.rate
-        deduction = max_(0, capped_tips - phase_out_amount)
-        # Section 224(e) requires a social security number, and section 224(f)
-        # requires married individuals to file a joint return.
-        ssn_requirement_met = tax_unit(
-            "tip_income_deduction_ssn_requirement_met", period
-        )
-        separate = filing_status == filing_status.possible_values.SEPARATE
-        return where(ssn_requirement_met & ~separate, deduction, 0)
+        return compute_tip_income_deduction(tax_unit, period, parameters, hi_agi)

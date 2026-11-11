@@ -9,9 +9,8 @@ class hi_itemized_deductions(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
     reference = (
+        # PDF pages 20, 34: itemized deductions and worksheet line 11.
         "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=20",
-        # Total Itemized Deductions Worksheet, line 11.
-        "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=34",
     )
 
     def formula(tax_unit, period, parameters):
