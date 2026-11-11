@@ -1,0 +1,76 @@
+# MCL 206.30(3)(b)(i)-(ii) and MI-1040 line 9c: a veteran with a disability
+# incurred or aggravated in the line of duty, with no rating threshold.
+
+- name: Case 1, a veteran with a partial service-connected rating qualifies.
+  period: 2026
+  input:
+    is_service_connected_disabled_veteran: true
+    is_fully_disabled_service_connected_veteran: false
+    state_code: MI
+  output:
+    mi_qualified_disabled_veteran: true
+
+- name: Case 2, a veteran with only the 100% rating input qualifies.
+  period: 2026
+  input:
+    is_fully_disabled_service_connected_veteran: true
+    state_code: MI
+  output:
+    mi_qualified_disabled_veteran: true
+
+- name: Case 3, a veteran with a 100% rating whose any-rating input is false still qualifies.
+  period: 2026
+  input:
+    is_service_connected_disabled_veteran: false
+    is_fully_disabled_service_connected_veteran: true
+    state_code: MI
+  output:
+    mi_qualified_disabled_veteran: true
+
+- name: Case 4, a person with neither input does not qualify.
+  period: 2026
+  input:
+    state_code: MI
+  output:
+    mi_qualified_disabled_veteran: false
+
+- name: Case 5, a veteran who receives VA benefits without a service-connected disability does not qualify.
+  period: 2026
+  input:
+    veterans_benefits: 1_000
+    is_veteran: true
+    state_code: MI
+  output:
+    mi_qualified_disabled_veteran: false
+
+- name: Case 6, a veteran outside Michigan is not a Michigan qualified disabled veteran.
+  period: 2026
+  input:
+    is_service_connected_disabled_veteran: true
+    is_fully_disabled_service_connected_veteran: true
+    state_code: OH
+  output:
+    mi_qualified_disabled_veteran: false
+
+- name: Case 7, four Michigan residents cover every combination of the two inputs.
+  period: 2026
+  input:
+    people:
+      neither:
+        is_service_connected_disabled_veteran: false
+        is_fully_disabled_service_connected_veteran: false
+      any_rating_only:
+        is_service_connected_disabled_veteran: true
+        is_fully_disabled_service_connected_veteran: false
+      full_rating_only:
+        is_service_connected_disabled_veteran: false
+        is_fully_disabled_service_connected_veteran: true
+      both:
+        is_service_connected_disabled_veteran: true
+        is_fully_disabled_service_connected_veteran: true
+    households:
+      household:
+        members: [neither, any_rating_only, full_rating_only, both]
+        state_code: MI
+  output:
+    mi_qualified_disabled_veteran: [false, true, true, true]
