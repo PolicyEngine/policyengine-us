@@ -3614,6 +3614,170 @@ candidates:
     the same checklist. The ruling covers VA benefits, general assistance, minors'' earnings and id_aabd; Part B netting
     under plan 1.9 and miscellaneous_income, pfml_benefits, life_insurance_benefits, gi_cash_assistance and capital_gains,
     which stay uncounted, are unchanged and outside it.'
+- id: us-id:military-retirement-employment-2025-filing-test
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Idaho Code 63-3022A(1)(b)(iii) requires income from employment sufficient "to be required to file a
+    federal return under section 6012(a)(1) of the Internal Revenue Code". For taxable years 2018 to 2025, 26 U.S.C.
+    6012(f) provides that "subsection (a)(1) shall not apply" and sets its own test. Which test decides a 2025 return?
+  sources:
+  - kind: statute
+    citation: Idaho Code 63-3022A(1)(b)(iii)
+    url: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+  - kind: statute
+    citation: 26 U.S.C. 6012(f)
+    url: https://www.law.cornell.edu/uscode/text/26/6012#f
+  - kind: statute
+    citation: 26 U.S.C. 6012(a)(1)(A) and (B)
+    url: https://www.law.cornell.edu/uscode/text/26/6012#a_1
+  - kind: instructions
+    citation: 2025 Form 39R instructions, line 8e, PDF page 45
+    url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
+  readings:
+    statute: Section 6012(f), the federal requirement in force for 2025. The income must exceed the standard deduction,
+      which includes the additions for age and blindness. Idaho Code 63-3004 defines the Internal Revenue Code as that
+      code "as amended and in effect" on a set date, and the code so adopted replaces the (a)(1) test with (f) for 2025.
+    other: Apply the thresholds of section 6012(a)(1)(A) and (B) to 2025 as though (f) didn't displace them, so income of
+      at least the basic standard deduction plus the additions for age, without blindness, qualifies. Or read "(a)(1)"
+      literally, so that nobody qualifies under (iii) for 2025, a year for which (a)(1) requires no return. The Form
+      39R instructions drop the section number and say "required to file a federal return".
+  example: In 2025 a single recipient aged 45 with $15,750 of wages and $30,000 of military retired pay fails under
+    section 6012(f), because the wages don't exceed the $15,750 standard deduction, and deducts $0. The (a)(1)
+    threshold admits wages equal to $15,750, for a $30,000 deduction. A blind recipient with $17,750 of wages fails
+    under (f), whose threshold is $17,750, and meets the (a)(1) threshold of $15,750.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/deductions/retirement_benefits/id_retirement_benefits_deduction_military_employment_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10715
+  state: ruled
+  note: Ruled 2026-11-11 for section 6012(f). It is the federal filing requirement in force for 2025, the instructions'
+    wording points to it, and the literal reading would leave (iii) without effect for 2025, the year from which 2025
+    House Bills 40 and 479 apply it. From 2026 section 6012(f) no longer applies, and the model uses section
+    6012(a)(1)(A) and (B). The 2025 cases at $15,750 and $15,751 of wages and the blind filer's case at $17,750 in
+    id_retirement_benefits_deduction_military_employment_eligible.yaml pin the reading.
+- id: us-id:military-retirement-employment-includes-self-employment
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: Idaho Code 63-3022A(1)(b)(iii) admits the military retirement benefits of a recipient who "Was employed
+    during the tax year and received sufficient income from such employment to be required to file a federal return".
+    Does a business or farm profit count as income from such employment, or do wages alone?
+  sources:
+  - kind: statute
+    citation: Idaho Code 63-3022A(1)(b)(iii)
+    url: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+  - kind: instructions
+    citation: 2025 Form 39R instructions, line 8e, PDF page 45
+    url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
+  - kind: statute
+    citation: 26 U.S.C. 6012(a)(1) and (f)
+    url: https://www.law.cornell.edu/uscode/text/26/6012
+  readings:
+    statute: A self-employed recipient is employed, and a business or farm profit is income from that employment.
+      Section 63-3022A doesn't define "employed", and the gross income test it borrows from section 6012 counts
+      business and farm income.
+    other: Only an employee is employed, so wages alone count. The Form 39R instructions repeat the statute's words and
+      take neither side.
+  example: In 2025 a single recipient aged 45 with a $20,000 business profit and $30,000 of military retired pay deducts
+    $30,000 when the profit counts, since $20,000 exceeds the $15,750 threshold, and $0 on the wages-only reading.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/id/tax/income/deductions/retirement_benefits/military/employment/income_sources.yaml
+    - policyengine_us/variables/gov/states/id/tax/income/deductions/retirement_benefits/id_retirement_benefits_deduction_military_employment_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10715
+  state: ruled
+  note: Ruled 2026-11-08. The model counts wages (irs_employment_income) and business and farm profits
+    (self_employment_income, sstb_self_employment_income, farm_operations_income), each floored at zero. Partnership
+    and S corporation income doesn't count. The wages-only reading would deny the deduction to a recipient who earns
+    the same income from a business. The statement of purpose of 2025 House Bill 40, which under Joint Rule 18 is not
+    an expression of legislative intent, describes "undisabled veterans under age 62 who are also employed and earn
+    sufficient income to owe federal income taxes". Removing three entries from income_sources.yaml gives the
+    wages-only reading.
+- id: us-id:military-retirement-employment-joint-threshold
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: For the employment test of Idaho Code 63-3022A(1)(b)(iii) on a joint return, which amount must the
+    recipient's income from employment reach, the joint return's filing threshold by itself, an unmarried individual's
+    threshold, or any amount once the couple's combined gross income requires a return?
+  sources:
+  - kind: statute
+    citation: Idaho Code 63-3022A(1)(b)(iii)
+    url: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+  - kind: statute
+    citation: 26 U.S.C. 6012(a)(1)(A)(iv), (B) and (f)(2)
+    url: https://www.law.cornell.edu/uscode/text/26/6012
+  - kind: instructions
+    citation: 2025 Form 39R instructions, line 8e, PDF page 45
+    url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
+  readings:
+    statute: The recipient's own income from employment, by itself, must reach the threshold of the return the recipient
+      files, which on a joint return is the joint threshold. "Sufficient income from such employment" makes that income
+      the measure, and section 6012 gives an individual who files jointly no threshold but the joint one
+      ((a)(1)(A)(iv), and (f)(2) for 2018 to 2025).
+    other: Combine the spouses' gross income, as section 6012(a)(1)(A)(iv) and (f)(2)(A) do, so that any income from
+      employment admits a recipient whose joint return is required. Or compare the recipient's income with an unmarried
+      individual's threshold. The Form 39R instructions repeat the statute's words and take no side.
+  example: On a 2026 joint return, a recipient aged 45 with $20,000 of wages and $30,000 of military retired pay, whose
+    spouse earns $40,000, fails the test, because $20,000 is under the $32,200 joint threshold, and deducts $0, although
+    the couple must file. The combined-income reading and the unmarried threshold of $16,100 both admit the recipient,
+    who then deducts $30,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/deductions/retirement_benefits/id_retirement_benefits_deduction_military_employment_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10715
+  state: ruled
+  note: Ruled 2026-11-08. A threshold for each spouse has no footing in section 6012, and admitting any income from
+    employment once the couple must file would read "sufficient ... from such employment" out of the statute. The 2026
+    joint cases in id_retirement_benefits_deduction_military_employment_eligible.yaml pin the reading, including the
+    recipient with $20,000 of wages whose spouse earns $40,000.
+- id: us-id:military-retirement-employment-self-employment-tax-return
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: Does a recipient meet the employment test of Idaho Code 63-3022A(1)(b)(iii) with net earnings from
+    self-employment of $400 or more, which require a self-employment tax return under 26 U.S.C. 6017, given that the
+    Form 39R instructions say "required to file a federal return" without naming a section?
+  sources:
+  - kind: statute
+    citation: Idaho Code 63-3022A(1)(b)(iii)
+    url: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+  - kind: instructions
+    citation: 2025 Form 39R instructions, line 8e, PDF page 45
+    url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=45
+  - kind: statute
+    citation: 26 U.S.C. 6017
+    url: https://www.law.cornell.edu/uscode/text/26/6017
+  readings:
+    statute: No. The statute requires a return "under section 6012(a)(1) of the Internal Revenue Code", the gross income
+      test, and net earnings of $400 don't meet that test.
+    other: The instructions' words, "required to file a federal return", could reach any federal return requirement,
+      section 6017's included.
+  example: In 2025 a single recipient aged 45 with a $5,000 business profit and $30,000 of military retired pay deducts $0
+    under the statute, because $5,000 doesn't exceed $15,750. If section 6017's requirement counted, the recipient
+    would deduct $30,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/deductions/retirement_benefits/id_retirement_benefits_deduction_military_employment_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10715
+  state: ruled
+  note: Ruled 2026-11-11 for the statute. The instructions shorten the statute's words and state no different rule. The
+    2025 case with a $5,000 business profit in id_retirement_benefits_deduction_military_employment_eligible.yaml pins
+    the reading.
 - id: us-il:2022-rebate-claimed-vs-claimable
   program: income-tax
   years:
