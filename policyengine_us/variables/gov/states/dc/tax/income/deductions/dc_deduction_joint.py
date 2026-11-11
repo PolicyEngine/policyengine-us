@@ -7,6 +7,11 @@ class dc_deduction_joint(Variable):
     label = "DC deduction for each tax unit"
     unit = USD
     definition_period = YEAR
+    reference = (
+        # D.C. Code 47-1803.04(a)(1), (b) and (e), as added by D.C. Act 26-416,
+        # sec. 7112(e).
+        "https://code.dccouncil.gov/us/dc/council/acts/26-416",
+    )
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
@@ -18,8 +23,12 @@ class dc_deduction_joint(Variable):
         #    type of deduction (itemized or standard) on your DC return as
         #    taken on your federal return.
         # https://web.archive.org/web/20220726171620/https://otr.cfo.dc.gov/page/individual-income-tax-special-circumstances-faqs
-        return where(
+        standard_or_itemized = where(
             tax_unit("tax_unit_itemizes", period),
             tax_unit("dc_itemized_deductions", period),
             tax_unit("dc_standard_deduction", period),
         )
+        # 47-1803.04(e) allows its additional deductions "in computing net
+        # income of any individual", on top of either the standard deduction
+        # or itemized deductions.
+        return standard_or_itemized + tax_unit("dc_additional_deductions", period)

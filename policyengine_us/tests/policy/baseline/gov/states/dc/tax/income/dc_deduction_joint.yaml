@@ -17,3 +17,27 @@
     state_code: DC
   output:
     dc_deduction_joint: 18_000
+
+- name: 2026 standard deduction filer adds the 47-1803.04(e) additional deductions.
+  period: 2026
+  input:
+    tax_unit_itemizes: false
+    dc_standard_deduction: 33_300
+    dc_itemized_deductions: 10_000
+    dc_additional_deductions: 12_000
+    state_code: DC
+  output:
+    # 33,300 + 12,000
+    dc_deduction_joint: 45_300
+
+- name: 2026 itemizer adds the 47-1803.04(e) additional deductions.
+  period: 2026
+  input:
+    tax_unit_itemizes: true
+    dc_standard_deduction: 15_000
+    dc_itemized_deductions: 18_000
+    dc_additional_deductions: 4_000
+    state_code: DC
+  output:
+    # 18,000 + 4,000
+    dc_deduction_joint: 22_000

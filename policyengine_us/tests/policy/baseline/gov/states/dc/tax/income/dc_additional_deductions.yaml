@@ -1,0 +1,120 @@
+# D.C. Code 47-1803.04(d)(6) to (9) and (e)(3) to (6), added by D.C. Act
+# 26-416: DC denies the federal deductions for qualified tips, qualified
+# overtime, personal car loan interest and the enhanced senior deduction before
+# 2026 and allows each from 2026, in the amount allowed on the federal return.
+
+- name: 2025, DC allows none of the four federal deductions.
+  period: 2025
+  input:
+    state_code: DC
+    tip_income_deduction: 4_000
+    overtime_income_deduction: 3_000
+    auto_loan_interest_deduction: 2_000
+    additional_senior_deduction: 6_000
+  output:
+    dc_additional_deductions: 0
+
+- name: 2026, DC allows all four federal deductions.
+  period: 2026
+  input:
+    state_code: DC
+    tip_income_deduction: 4_000
+    overtime_income_deduction: 3_000
+    auto_loan_interest_deduction: 2_000
+    additional_senior_deduction: 6_000
+  output:
+    # 4,000 + 3,000 + 2,000 + 6,000
+    dc_additional_deductions: 15_000
+
+- name: 2028, the last year of the federal deductions, DC still allows them.
+  period: 2028
+  input:
+    state_code: DC
+    tip_income_deduction: 1_000
+    overtime_income_deduction: 0
+    auto_loan_interest_deduction: 500
+    additional_senior_deduction: 12_000
+  output:
+    dc_additional_deductions: 13_500
+
+- name: 2026, outside DC the variable is zero.
+  period: 2026
+  input:
+    state_code: MD
+    additional_senior_deduction: 6_000
+  output:
+    dc_additional_deductions: 0
+
+- name: 2026 single aged 70 with $40,000 of pension, the full $6,000 senior deduction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # Federal MAGI 40,000 is below the $75,000 phase-out start.
+    dc_additional_deductions: 6_000
+
+- name: 2026 single aged 70 with $100,000 of pension, a partly phased-out senior deduction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 6,000 - 6% * (100,000 - 75,000) = 6,000 - 1,500 = 4,500
+    dc_additional_deductions: 4_500
+
+- name: 2026 single aged 70 with $200,000 of pension, above the senior deduction's phase-out.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 6% * (200,000 - 75,000) = 7,500 exceeds 6,000, so nothing remains.
+    dc_additional_deductions: 0
+
+- name: 2026 tipped worker, $10,000 of qualified tips within $40,000 of wages.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        tip_income: 10_000
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # Federal MAGI 40,000 is below the $150,000 phase-out start.
+    dc_additional_deductions: 10_000
