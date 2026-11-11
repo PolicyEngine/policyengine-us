@@ -5,8 +5,8 @@ SINGLE:
     2023-01-01: 140
     2024-01-01: 150
     2025-01-01: 155
-    # 125 x 1.279 = 159.88, rounded down to a multiple of $5.
-    2026-01-01: 155
+    # 2026: 125 x 1.279 = 159.88, rounded down to a multiple of $5, is 155,
+    # which uprating the 2025 value already gives.
 JOINT:
   values:
     2021-01-01: 180
