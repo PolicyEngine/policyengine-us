@@ -24,8 +24,8 @@ Four invariants hold for every input.
    income rises.
 4. TANF counts once in total across the tax units of an SPM unit: the shares
    the tax units count sum to the unit's benefit, each in proportion to the
-   tax unit's members. This per-person split is the model's attribution of an
-   SPM unit's benefit, which this test pins.
+   tax unit's members. The model splits an SPM unit's benefit by head count,
+   and the test pins that split.
 
 YAML pins one household per case. These need random amounts, medical costs
 that push income to the floor, and SPM units that hold more than one tax unit.
@@ -41,7 +41,7 @@ from hypothesis import strategies as st
 from policyengine_us import Simulation
 
 YEAR = 2026
-# Amounts are float32 in the model.
+# The model stores amounts as float32.
 TOLERANCE = 0.5
 
 
@@ -89,7 +89,7 @@ def without(unit, *benefits):
 
 def situation(units):
     """One household, family and SPM unit per unit, all in North Dakota.
-    Every benefit is an input, so no formula adds any other."""
+    It enters every benefit as an input, so no formula adds any other."""
     people, tax_units, marital_units = {}, {}, {}
     spm, families, households = {}, {}, {}
     for index, unit in enumerate(units):
