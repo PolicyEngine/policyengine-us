@@ -19,6 +19,8 @@ class dc_additional_deductions(Variable):
         "which D.C. Code 47-1803.04(e) allows from 2026 in the amounts allowed "
         "on the federal return. Subsection (e) allows them in computing the "
         "net income of any individual, so they apply with either the standard "
-        "deduction or itemized deductions."
+        "deduction or itemized deductions. Federal law allows none of the four "
+        "for taxable years beginning after 2028, so DC allows them through "
+        "2028."
     )
     adds = "gov.states.dc.tax.income.deductions.additional.sources"

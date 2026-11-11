@@ -2,6 +2,9 @@
 # 26-416: DC denies the federal deductions for qualified tips, qualified
 # overtime, personal car loan interest and the enhanced senior deduction before
 # 2026 and allows each from 2026, in the amount allowed on the federal return.
+# Federal law allows none of the four for taxable years beginning after 2028
+# (26 U.S.C. 224(h), 225(g), 163(h)(4)(A) and 151(d)(5)(C)(i)), so DC allows
+# none from 2029.
 
 - name: 2025, DC allows none of the four federal deductions.
   period: 2025
@@ -36,6 +39,15 @@
     additional_senior_deduction: 12_000
   output:
     dc_additional_deductions: 13_500
+
+- name: 2029, federal law no longer allows the car loan or senior deduction, so DC allows neither.
+  period: 2029
+  input:
+    state_code: DC
+    auto_loan_interest_deduction: 2_000
+    additional_senior_deduction: 6_000
+  output:
+    dc_additional_deductions: 0
 
 - name: 2026, outside DC the variable is zero.
   period: 2026
@@ -118,3 +130,63 @@
   output:
     # Federal MAGI 40,000 is below the $150,000 phase-out start.
     dc_additional_deductions: 10_000
+
+- name: 2029 single aged 70 with $40,000 of pension, no senior deduction after 2028.
+  period: 2029
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 26 U.S.C. 151(d)(5)(C)(i) allows the senior deduction only for taxable
+    # years beginning before January 1, 2029.
+    dc_additional_deductions: 0
+
+- name: 2029 filer with $5,000 of qualified vehicle loan interest, no car loan deduction after 2028.
+  period: 2029
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        qualified_passenger_vehicle_loan_interest_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 26 U.S.C. 163(h)(4)(A) applies only to taxable years beginning before
+    # January 1, 2029.
+    dc_additional_deductions: 0
+
+- name: 2029 tipped worker, no tip deduction after 2028.
+  period: 2029
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        tip_income: 10_000
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 26 U.S.C. 224(h) allows no deduction for taxable years beginning after
+    # December 31, 2028.
+    dc_additional_deductions: 0
