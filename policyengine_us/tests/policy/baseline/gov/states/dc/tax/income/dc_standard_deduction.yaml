@@ -1,6 +1,7 @@
-# DC established its own standard deduction for 2025 per DC Act 26-214.
-# Before 2025, DC conformed to federal standard deduction.
-# After 2025, amounts are uprated by CPI with $50 downward rounding.
+# DC established its own standard deduction for 2025 per DC Act 26-214, and
+# D.C. Act 26-416 (FY2027 Budget Support Act) set it in D.C. Code
+# 47-1801.04(3A) and (44) for 2025 to 2029. Before 2025 and from 2030, DC
+# follows the federal standard deduction.
 
 # --- Pre-2025: Federal conformity ---
 
@@ -168,40 +169,73 @@
     # $15,000 DC basic + $2,000 * 2 additional (single, 65+ AND blind) = $19,000
     dc_standard_deduction: 19_000
 
-# --- 2026: Uprated from DC base (NOT federal base) ---
-# CPI ratio ~1.023 (from EITC max: 8231/8046), $50 downward rounding.
-# DC MFJ: $30,000 * ~1.023 ≈ $30,690 → $30,650
-# Federal MFJ 2026: $32,200 — DC must be well below this.
+# --- 2026: the 2025 amounts, since the cost-of-living adjustment is zero ---
+# 47-1801.04(3A)(B) sets the base year to 2025, and 47-1801.04(11) compares
+# the CPI for the preceding calendar year (2025 for tax year 2026) with the
+# base year's. The 2026 federal amounts are $16,100, $32,200 and $24,150.
 
-- name: DC 2026 joint uprated from DC base, not federal.
+- name: DC 2026 joint basic standard deduction stays at $30,000.
   period: 2026
   absolute_error_margin: 0.1
   input:
     state_code: DC
     filing_status: JOINT
   output:
-    # Uprated from $30,000 DC base. Must NOT be $32,200 (federal).
-    dc_standard_deduction: 30_650
+    dc_standard_deduction: 30_000
 
-- name: DC 2026 single uprated from DC base, not federal.
+- name: DC 2026 single basic standard deduction stays at $15,000.
   period: 2026
   absolute_error_margin: 0.1
   input:
     state_code: DC
     filing_status: SINGLE
   output:
-    # Uprated from $15,000 DC base. Must NOT be $16,100 (federal).
-    dc_standard_deduction: 15_300
+    dc_standard_deduction: 15_000
 
-- name: DC 2026 head of household uprated from DC base, not federal.
+- name: DC 2026 head of household basic standard deduction stays at $22,500.
   period: 2026
   absolute_error_margin: 0.1
   input:
     state_code: DC
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    # Uprated from $22,500 DC base. Must NOT be $24,150 (federal).
-    dc_standard_deduction: 23_000
+    dc_standard_deduction: 22_500
+
+- name: DC 2026 joint elderly couple adds the federal 2026 amounts for age.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # $30,000 DC basic + $1,650 * 2 federal additional amounts = $33,300
+    dc_standard_deduction: 33_300
+
+# --- 2030: back to the federal standard deduction (47-1801.04(44)(C)(vi)) ---
+
+- name: DC 2030 joint takes the federal basic and additional amounts.
+  period: 2030
+  absolute_error_margin: 0.1
+  input:
+    state_code: DC
+    filing_status: JOINT
+    basic_standard_deduction: 40_000
+    additional_standard_deduction: 1_700
+  output:
+    # IRC 63(c), not DC's basic amount: $40,000 + $1,700.
+    dc_standard_deduction: 41_700
 
 # --- Separate filer whose spouse itemizes: D.C. Code 47-1803.03(c) ---
 
