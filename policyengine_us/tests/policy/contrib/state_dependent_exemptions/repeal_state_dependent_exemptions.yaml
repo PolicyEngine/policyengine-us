@@ -535,3 +535,60 @@
     households: {household: {members: [person_b, person_a], state_code: CA}}
   output:
     ca_exemptions: 153
+
+- name: Joint filers with a claimable spouse in Maryland keep both spouses' exemptions (the claimable spouse is the head)
+  period: 2024
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: MD}}
+  # Tax-General 10-211(a)(1): each spouse keeps an own exemption, and the
+  # repeal drops the child: 2 x 3,200.
+  output: {md_total_personal_exemptions: 6_400}
+
+- name: Joint filers with a claimable spouse in Maryland keep both spouses' exemptions (the claimable spouse is the spouse)
+  period: 2024
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_name: MD}}
+  output: {md_total_personal_exemptions: 6_400}
+
+
+- name: Joint filers with a claimable spouse in Kansas keep the other spouse's exemption in 2022 (the claimable spouse is the head)
+  period: 2022
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: KS}}
+  # K.S.A. 79-32,121(a) with IRC 151(d)(2): only the unclaimable spouse has
+  # an exemption, and the repeal drops the child: 1 x $2,250.
+  output: {ks_exemptions: 2_250}
+
+- name: Joint filers with a claimable spouse in Kansas keep the other spouse's exemption in 2022 (the claimable spouse is the spouse)
+  period: 2022
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_name: KS}}
+  output: {ks_exemptions: 2_250}

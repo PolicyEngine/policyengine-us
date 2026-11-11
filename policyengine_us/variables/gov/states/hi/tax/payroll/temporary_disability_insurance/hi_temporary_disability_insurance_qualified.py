@@ -1,4 +1,36 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
+
+
+def previous_year_wages(person, period, parameters):
+    """Hawaii TDI wages in the year before ``period``.
+
+    These follow hi_temporary_disability_insurance_wages without its state
+    test, since a household's state is often entered for the simulation year
+    alone. Pay comes from employment_income_before_lsr, where situations and
+    datasets store employment income, so the earlier year calculates no labor
+    supply response. Before the first modeled year, only values provided for
+    that year count, so nothing is calculated or cached for an unmodeled year.
+    """
+    last_year = period.last_year
+    excluded = parameters(
+        last_year
+    ).gov.states.hi.tax.payroll.temporary_disability_insurance.excluded_payments
+    if last_year.start.year >= FIRST_MODELED_YEAR:
+        pay = person("employment_income_before_lsr", last_year)
+        excluded_pay = add(person, last_year, excluded)
+    else:
+        simulation = person.simulation
+
+        def provided(variable):
+            value = simulation.get_holder(variable).get_array(
+                last_year, simulation.branch_name
+            )
+            return person.empty_array() if value is None else value
+
+        pay = provided("employment_income_before_lsr")
+        excluded_pay = sum(provided(variable) for variable in excluded)
+    return max_(pay - excluded_pay, 0)
 
 
 class hi_temporary_disability_insurance_qualified(Variable):
@@ -12,12 +44,18 @@ class hi_temporary_disability_insurance_qualified(Variable):
         "tests the simulation year's wages, weeks worked and usual weekly "
         "hours, and there zero weeks or zero hours mean the value went "
         "unreported, so that part of the test passes. The second tests the "
-        "previous year's weeks worked and usual weekly hours, and it needs "
-        "both on file. A single year of inputs leaves the previous year at "
-        "zero, so a worker with a short year and no history on file does not "
-        "pass. Usual weekly hours stand in for each week's hours, so a worker "
-        "whose usual hours fall under the minimum does not pass even with "
-        "enough qualifying weeks."
+        "previous year's wages, weeks worked and usual weekly hours, and it "
+        "needs all three on file. A single year of inputs leaves the previous "
+        "year at zero, so a worker with a short year and no history on file "
+        "does not pass. The previous year's wages leave out what the wage "
+        "definition leaves out, such as military basic pay, but skip its "
+        "state test, so a worker new to Hawaii can pass on wages earned "
+        "elsewhere. They come from employment_income_before_lsr, and before "
+        "2015, the first year the model covers, only values provided for that "
+        "year count. Weeks and hours count all work, self-employment "
+        "included. Usual weekly hours stand in for each week's hours, so a "
+        "worker whose usual hours fall under the minimum does not pass even "
+        "with enough qualifying weeks."
     )
     definition_period = YEAR
     defined_for = StateCode.HI
@@ -38,13 +76,16 @@ class hi_temporary_disability_insurance_qualified(Variable):
         meets_hours = (hours == 0) | (hours >= p.minimum_weekly_hours)
         passes_in_year = meets_wages & meets_weeks & meets_hours
         # The previous year passes only on positive evidence, because zero
-        # there means no history on file. The minimum weeks and hours make
-        # 280 paid hours, which reach the minimum wages at about $1.43 an
-        # hour, so the wages part of the test needs no separate read.
+        # there means no history on file. Weeks and hours count all work, so
+        # that year's wages must also clear the minimum: a year of military
+        # basic pay or self-employment holds no Hawaii covered wages.
         last_year = period.last_year
         weeks_last_year = person("weeks_worked", last_year)
         hours_last_year = person("weekly_hours_worked_before_lsr", last_year)
-        passes_last_year = (weeks_last_year >= p.minimum_weeks) & (
-            hours_last_year >= p.minimum_weekly_hours
+        wages_last_year = previous_year_wages(person, period, parameters)
+        passes_last_year = (
+            (wages_last_year >= p.minimum_wages)
+            & (weeks_last_year >= p.minimum_weeks)
+            & (hours_last_year >= p.minimum_weekly_hours)
         )
         return passes_in_year | passes_last_year

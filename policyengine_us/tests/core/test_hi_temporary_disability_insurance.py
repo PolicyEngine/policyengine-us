@@ -13,7 +13,8 @@ state:
 3. Properties across drawn batches of workers: bounds, monotonicity in wages,
    state masking, and aggregation to the tax unit.
 4. Qualification. Previous-year history can only add workers, and exactly the
-   workers whose history clears the weeks and hours minimums.
+   workers whose history clears the wages, weeks and hours minimums, when the
+   simulation year's weeks and hours are on file.
 5. Net income. Removing the contribution raises household net income by exactly
    the contribution.
 
@@ -37,6 +38,7 @@ from hypothesis import strategies as st
 
 from policyengine_us import Simulation
 from policyengine_us.system import system as SYSTEM
+from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
 
 CONTRIBUTION = "hi_employee_temporary_disability_insurance_contribution"
 QUALIFIED = "hi_temporary_disability_insurance_qualified"
@@ -116,7 +118,10 @@ def simulate(year, workers, **overrides):
         person = f"person_{i}"
         situation["people"][person] = {
             "age": {period: 40},
-            "employment_income": {period: worker["wages"]},
+            "employment_income": {
+                previous: worker.get("previous_wages", 0),
+                period: worker["wages"],
+            },
             "pre_tax_health_insurance_premiums": {period: worker.get("premiums", 0)},
             "military_basic_pay": {period: worker.get("military", 0)},
             "dependent_care_employer_benefits": {
@@ -238,6 +243,7 @@ def test_contribution_properties(year, batch, bump):
     batch=st.lists(
         st.tuples(
             workers,
+            st.sampled_from([0, 399, 400, 10_000]),
             st.sampled_from([0, 13, 14, 52]),
             st.sampled_from([0, 19, 20, 40]),
         ),
@@ -246,22 +252,67 @@ def test_contribution_properties(year, batch, bump):
     ),
 )
 def test_previous_year_history_only_adds_workers_who_clear_it(year, batch):
+    # simulate() enters the simulation year's weeks and hours, zero included,
+    # so no history carries into that year.
     period = str(year)
-    alone = simulate(year, [worker for worker, _, _ in batch]).calculate(
+    alone = simulate(year, [worker for worker, _, _, _ in batch]).calculate(
         QUALIFIED, period
     )
     with_history = simulate(
         year,
         [
-            {**worker, "previous_weeks": weeks, "previous_hours": hours}
-            for worker, weeks, hours in batch
+            {
+                **worker,
+                "previous_wages": wages,
+                "previous_weeks": weeks,
+                "previous_hours": hours,
+            }
+            for worker, wages, weeks, hours in batch
         ],
     ).calculate(QUALIFIED, period)
 
-    in_hawaii = np.array([worker["state"] == "HI" for worker, _, _ in batch])
-    clears = np.array([weeks >= 14 and hours >= 20 for _, weeks, hours in batch])
+    in_hawaii = np.array([worker["state"] == "HI" for worker, _, _, _ in batch])
+    clears = np.array(
+        [
+            wages >= 400 and weeks >= 14 and hours >= 20
+            for _, wages, weeks, hours in batch
+        ]
+    )
     assert (with_history[in_hawaii] == (alone | clears)[in_hawaii]).all()
     assert not with_history[~in_hawaii].any()
+
+
+def test_history_before_the_first_modeled_year_is_read_not_calculated():
+    # A short 2015 passes on 2014 history provided as inputs, and 2014 keeps
+    # only those inputs: the model calculates and caches nothing before 2015.
+    year = FIRST_MODELED_YEAR
+    sim = simulate(
+        year,
+        [
+            {
+                "wages": 900,
+                "weeks": 1,
+                "hours": 40,
+                "previous_wages": 52_000,
+                "previous_weeks": 52,
+                "previous_hours": 40,
+                "state": "HI",
+            }
+        ],
+    )
+    assert sim.calculate(QUALIFIED, str(year)).tolist() == [True]
+    early = {
+        name
+        for population in sim.populations.values()
+        for name, holder in population._holders.items()
+        for known in holder.get_known_periods()
+        if known.unit != "eternity" and known.start.year < FIRST_MODELED_YEAR
+    }
+    assert early == {
+        "employment_income_before_lsr",
+        "weeks_worked",
+        "weekly_hours_worked_before_lsr",
+    }
 
 
 # At least 14 weeks of at least 30 dollars clears the $400 and 14-week test.

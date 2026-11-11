@@ -179,7 +179,49 @@
   output:
     elective_deferral_limit: 18_500
 
-- name: Case 18, the 2003 limit applies.
+- name: Case 18, the limit rises to 14,000 in 2005.
+  period: 2005
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 14_000
+
+- name: Case 19, the limit rises to 15,000 in 2006.
+  period: 2006
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 15_000
+
+- name: Case 20, the limit rises to 15,500 in 2007.
+  period: 2007
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 15_500
+
+- name: Case 21, the limit rises to 17,000 in 2012.
+  period: 2012
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 17_000
+
+- name: Case 22, the limit rises to 17,500 in 2013.
+  period: 2013
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 17_500
+
+- name: Case 23, the limit rises to 18,000 in 2015.
+  period: 2015
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 18_000
+
+- name: Case 24, the 2003 limit applies.
   period: 2003
   input:
     age: 40
@@ -188,7 +230,7 @@
     elective_deferral_limit: 12_000
     traditional_401k_contributions: 12_000
 
-- name: Case 19, the 2003 limit adds the 2003 catch-up.
+- name: Case 25, the 2003 limit adds the 2003 catch-up.
   period: 2003
   input:
     age: 55

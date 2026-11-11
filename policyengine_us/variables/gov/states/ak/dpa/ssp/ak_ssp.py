@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class ak_ssp(Variable):
@@ -25,8 +28,11 @@ class ak_ssp(Variable):
             "ak_ssp_eligible", period
         )
         claim_type_values = claim_type.possible_values
+        couple_supplement = _ssi_couple_total(
+            person, period.this_year, state_supplement
+        )
         return where(
             claim_type == claim_type_values.COUPLE_BOTH_ELIGIBLE,
-            person.marital_unit.sum(state_supplement) / 2,
+            couple_supplement / 2,
             state_supplement,
         )
