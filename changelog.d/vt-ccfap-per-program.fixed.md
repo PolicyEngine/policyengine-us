@@ -1,1 +1,1 @@
-Compute a Vermont child care family's balance provider by provider. The family share goes to the youngest child's provider first, and a payment above one provider's bill no longer pays another provider's bill.
+Compute a Vermont child care family's balance program by program. The family share goes to the youngest child's certificate first, a payment above one program's bill no longer pays another program's bill, and a family that reports no care hours counts only children young enough for the program as in care.

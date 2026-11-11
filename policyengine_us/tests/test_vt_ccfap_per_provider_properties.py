@@ -1,12 +1,13 @@
 """Vermont's child care family balance, provider by provider.
 
-Vermont's family booklet (CCFAP-Family-Booklet, PDF page 10) has the family pay
-its weekly share to the youngest child's provider first, with what's left going
-to the next provider. The state pays each provider the child's rate less the
-share assigned there, and each program's invoice takes that payment off that
-child's tuition (CDD-Memo-UPK-and-CCFAP-family-tuition, PDF pages 1 and 6). A
-payment above one child's tuition stays with that program (the same memo, PDF
-page 4), so it pays none of another child's bill.
+Vermont assigns the weekly family share to the youngest child's certificate
+first, with what's left going to the next child (CCFAP-Family-Booklet, PDF page
+10; CDD.1050 B(2), PDF page 3; CDD-Memo-UPK-and-CCFAP-family-tuition-Summer-2026-
+Update, PDF page 9). The state pays each provider the child's rate less the share
+assigned there, and each program's invoice takes that payment off that child's
+tuition (the August 2026 memo, PDF pages 1 and 10). A payment above one child's
+tuition stays with that program (the same memo, PDF pages 2 and 7), so it pays
+none of another child's bill.
 
 For families of up to three children with any ages, care hours, provider types,
 bills and share:
@@ -29,10 +30,16 @@ bills and share:
    bill less the subsidy, floored at zero, and household benefits count the
    subsidy up to the bill.
 8. Through 2023 the state paid no more than each provider charged, so no
-   payment exceeds its child's bill and netting the whole bill gives the same
-   expense.
+   payment counts as above its child's bill and netting the whole bill gives
+   the same expense. (With no bill recorded, no payment ever counts as above
+   one.)
 9. With Vermont's subsidy set to zero, the family owes its whole bill and
    household benefits count nothing.
+10. A family that reports no care hours gets the same result as when each
+    child young enough for CCFAP with a share of the bill reports part-time
+    hours.
+11. With one bill for the unit, split evenly by the model, the members in care
+    split the whole bill evenly, an 18-year-old with special needs included.
 
 The YAML cases pin the booklet's and the memo's families. These generate
 families that YAML can't enumerate.
@@ -146,9 +153,9 @@ def model(children, weekly_share, year, subsidy=None):
 def reference(children, weekly_share, weekly_state_rates, pays_above):
     """Each program's invoice, month by month, from the booklet's order.
 
-    Once a child has care hours, the children with hours carry the bills of the
-    children without them (the attendance rule); with no hours anywhere, each
-    child with a bill is in care.
+    Once a child has care hours, the children with hours are in care (the
+    attendance rule); with no hours anywhere, each child young enough for CCFAP
+    with a bill is. The children in care carry the bills of the others.
     """
     kids = list(children.values())
     bills = np.array([kid["bill"] * WEEKS for kid in kids], dtype=float)
@@ -157,18 +164,16 @@ def reference(children, weekly_share, weekly_state_rates, pays_above):
     eligible = ages < AGE_LIMIT
     if (hours > 0).any():
         in_care = hours > 0
-        moved = bills[~in_care].sum() / in_care.sum()
-        annual_bill = np.where(in_care, bills + moved, 0)
     else:
-        in_care = bills > 0
-        annual_bill = np.where(in_care, bills, 0)
+        in_care = (bills > 0) & eligible
+    moved = bills[~in_care].sum() / max(in_care.sum(), 1)
+    annual_bill = np.where(in_care, bills + moved, 0)
     payment = np.zeros(len(kids))
     assigned_total = np.zeros(len(kids))
     for state_rate, state_pays_above in zip(weekly_state_rates, pays_above):
         weekly_rate = state_rate
-        if not state_pays_above:
-            capped = np.minimum(state_rate, annual_bill / WEEKS)
-            weekly_rate = np.where(annual_bill > 0, capped, state_rate)
+        if not state_pays_above and bills.sum() > 0:
+            weekly_rate = np.minimum(state_rate, annual_bill / WEEKS)
         rate = np.where(in_care & eligible, weekly_rate * WEEKS / MONTHS, 0)
         remaining = weekly_share * WEEKS / MONTHS
         assigned = np.zeros(len(kids))
@@ -218,7 +223,8 @@ def kid(age, hours, provider, bill):
     weekly_share=300,
     year=2026,
 )
-# No hours anywhere: a teenager carries a share of the bill with no payment.
+# No hours anywhere: the teenager is past CCFAP's age limit, so the
+# preschooler carries the teenager's share of the bill too.
 @example(
     children={"preschooler": kid(3, 0, 0, 150), "teenager": kid(15, 0, 0, 150)},
     weekly_share=50,
@@ -250,10 +256,17 @@ def kid(age, hours, provider, bill):
     weekly_share=75,
     year=2026,
 )
+# Before December 17, 2023: the infant's 400 tuition exceeds the 349 capped
+# rate, and the share fills 349 there before 31 goes to the preschooler.
+@example(
+    children={"infant": kid(0, 35, 0, 400), "preschooler": kid(3, 35, 0, 300)},
+    weekly_share=380,
+    year=2023,
+)
 @given(
     children=family_strategy(),
     weekly_share=st.integers(min_value=0, max_value=600),
-    year=st.sampled_from([2024, 2026]),
+    year=st.sampled_from([2023, 2024, 2026]),
 )
 def test_each_program_nets_its_own_payment(children, weekly_share, year):
     got = model(children, weekly_share, year)
@@ -332,9 +345,13 @@ def test_one_child_gets_the_one_payment_result(child, weekly_share, year):
     children={"infant": kid(1, 8, 1, 75), "preschooler": kid(3, 35, 0, 250)},
     weekly_share=100,
 )
+# A provider that charges nothing for a child in care beside a sibling's bill.
+@example(
+    children={"infant": kid(0, 35, 0, 0), "preschooler": kid(3, 35, 0, 300)},
+    weekly_share=0,
+)
 @given(
-    # Every child carries a bill, so the state's rate never goes uncapped.
-    children=family_strategy(min_size=2, min_bill=1),
+    children=family_strategy(min_size=2),
     weekly_share=st.integers(min_value=0, max_value=600),
 )
 def test_through_2023_no_payment_exceeds_its_bill(children, weekly_share):
@@ -365,3 +382,122 @@ def test_without_the_subsidy_the_family_owes_its_whole_bill(
     assert got["above_bills"] == pytest.approx(0, abs=TOLERANCE)
     assert got["expense"] == pytest.approx(bill, abs=TOLERANCE)
     assert got["counted"] == pytest.approx(0, abs=TOLERANCE)
+
+
+@settings(max_examples=10, deadline=None)
+@example(
+    children={"preschooler": kid(3, 0, 0, 150), "teenager": kid(15, 0, 0, 150)},
+    weekly_share=50,
+    year=2026,
+)
+@example(
+    children={"infant": kid(0, 0, 0, 400), "preschooler": kid(3, 0, 0, 300)},
+    weekly_share=380,
+    year=2023,
+)
+@given(
+    children=family_strategy(),
+    weekly_share=st.integers(min_value=0, max_value=600),
+    year=st.sampled_from([2023, 2024, 2026]),
+)
+def test_without_hours_the_children_of_ccfap_age_stand_in_for_care(
+    children, weekly_share, year
+):
+    no_hours = {name: {**child, "hours": 0} for name, child in children.items()}
+    # Ten hours a week is part-time, the schedule the model gives no hours.
+    with_hours = {
+        name: {
+            **child,
+            "hours": 10 if child["age"] < AGE_LIMIT and child["bill"] > 0 else 0,
+        }
+        for name, child in children.items()
+    }
+    without = model(no_hours, weekly_share, year)
+    reported = model(with_hours, weekly_share, year)
+    for key in ("bill", "assigned", "payment", "above"):
+        assert without[key] == pytest.approx(reported[key], abs=TOLERANCE), key
+    for key in ("subsidies", "above_bills", "expense", "counted"):
+        assert without[key] == pytest.approx(reported[key], abs=TOLERANCE), key
+
+
+def unit_bill_situation(members, weekly_bill, weekly_share, year):
+    names = ["parent", *members]
+    people = {"parent": {"age": {year: 40}}}
+    for name, member in members.items():
+        person = {
+            "age": {year: member["age"]},
+            "is_disabled": {year: member["special_needs"]},
+            "is_tax_unit_dependent": {year: True},
+        }
+        if member["hours"]:
+            person["childcare_hours_per_week"] = {year: member["hours"]}
+        people[name] = person
+    return {
+        "people": people,
+        "tax_units": {"tax_unit": {"members": names}},
+        "spm_units": {
+            "spm_unit": {
+                "members": names,
+                "vt_ccfap_eligible": {year: True},
+                "vt_ccfap_family_share": {year: weekly_share * WEEKS},
+                "spm_unit_pre_subsidy_childcare_expenses": {year: weekly_bill * WEEKS},
+            }
+        },
+        "families": {"family": {"members": names}},
+        "marital_units": {"marital_unit": {"members": ["parent"]}},
+        "households": {"household": {"members": names, "state_name": {year: "VT"}}},
+    }
+
+
+@settings(max_examples=10, deadline=None)
+# An 18-year-old with special needs in care beside a 5-year-old: the model's
+# split gives the 18-year-old none of the bill.
+@example(
+    members={
+        "young_adult": dict(age=18, hours=35, special_needs=True),
+        "child": dict(age=5, hours=35, special_needs=False),
+    },
+    weekly_bill=600,
+    weekly_share=0,
+    year=2026,
+)
+@given(
+    members=st.lists(
+        st.fixed_dictionaries(
+            {
+                "age": st.integers(min_value=0, max_value=18),
+                "hours": st.sampled_from([0, 10, 35]),
+                "special_needs": st.booleans(),
+            }
+        ),
+        min_size=1,
+        max_size=3,
+    ).map(lambda kids: {f"member{i}": kid for i, kid in enumerate(kids)}),
+    weekly_bill=st.integers(min_value=1, max_value=1_200),
+    weekly_share=st.integers(min_value=0, max_value=600),
+    year=st.sampled_from([2023, 2024, 2026]),
+)
+def test_with_one_unit_bill_the_members_in_care_split_it_evenly(
+    members, weekly_bill, weekly_share, year
+):
+    simulation = Simulation(
+        situation=unit_bill_situation(members, weekly_bill, weekly_share, year)
+    )
+    shares = np.array(
+        simulation.calculate("pre_subsidy_childcare_expenses", year)[1:], dtype=float
+    )
+    bills = np.array(simulation.calculate("vt_ccfap_child_bill", year)[1:], dtype=float)
+    unit_bill = shares.sum()
+    for month in months(year):
+        in_care = np.array(simulation.calculate("vt_ccfap_in_care", month)[1:])
+        monthly = np.array(
+            simulation.calculate("vt_ccfap_child_bill", month)[1:], dtype=float
+        )
+        if in_care.any():
+            even = unit_bill / MONTHS / in_care.sum()
+            assert monthly == pytest.approx(
+                np.where(in_care, even, 0), abs=MONTHLY_TOLERANCE
+            )
+        else:
+            assert monthly == pytest.approx(0, abs=MONTHLY_TOLERANCE)
+    assert bills.sum() <= unit_bill + TOLERANCE

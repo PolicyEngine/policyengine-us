@@ -17,6 +17,11 @@ class child_care_subsidies_above_provider_bills(Variable):
 
     def formula(spm_unit, period, parameters):
         above_bills = add(spm_unit, period, ["vt_ccfap_payment_above_bill"])
-        # These payments make up part of child_care_subsidies, so a reform or
-        # input that removes the subsidy takes them away too.
-        return min_(above_bills, spm_unit("child_care_subsidies", period))
+        paid = add(spm_unit, period, ["vt_ccfap_child_payment"])
+        subsidies = spm_unit("child_care_subsidies", period)
+        # These payments make up part of child_care_subsidies. When a reform or
+        # input sets the subsidy apart from the modeled payments, it pays the
+        # providers' bills first, and only what it leaves after the part of
+        # the modeled payments that went to bills counts as above them. A
+        # subsidy of zero leaves nothing above.
+        return max_(min_(subsidies - (paid - above_bills), above_bills), 0)

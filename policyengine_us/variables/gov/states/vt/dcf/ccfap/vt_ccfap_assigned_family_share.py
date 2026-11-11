@@ -11,17 +11,27 @@ class vt_ccfap_assigned_family_share(Variable):
     reference = (
         # PDF pages 10, 12
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/Benefits/CCFAP-Family-Booklet.pdf#page=10",
+        # Section B(2), effective September 15, 2025
+        "https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/CDD.1050-Child-Care-Authorizations-and-Certificates.pdf#page=3",
+        # Blended example 5
+        "https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/CDD-Memo-UPK-and-CCFAP-family-tuition-Summer-2026-Update.pdf#page=9",
+        # Questions 1, 3 and 7
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Understanding-Payments.pdf#page=1",
     )
 
     def formula(person, period, parameters):
-        # In its 2023/24 family booklet, the department has the family pay its
-        # share to the youngest child's provider first, with any share left
-        # over going to the next provider. Each provider takes the share up to
-        # what the state would otherwise pay it for the child, the child's
-        # rate, so the share lowers the state's payment dollar for dollar until
-        # it runs out. Since December 17, 2023 that rate is the state rate
-        # (Understanding Payments, questions 1 and 3). Children of the same age
+        # The department assigns the family share to the youngest child's
+        # certificate first, with any share left over going to the next child
+        # (2023/24 family booklet; CDD.1050 B(2) from September 15, 2025;
+        # example 5 of the August 2026 memo). CDD.1050 ranks a registered or
+        # licensed provider on a fixed schedule ahead of a relative or a
+        # variable schedule; every certificate modeled here is of that first
+        # kind. No source says how much share one certificate takes before the
+        # rest moves on. We take it up to what the state would otherwise pay
+        # for the child, the child's rate, because the certificate carries the
+        # family share but not what the family owes above the state rate
+        # (Understanding Payments, question 7). Since December 17, 2023 that
+        # rate is the state rate (questions 1 and 3). Children of the same age
         # take the share in the order the SPM unit lists them.
         rate = person("vt_ccfap_child_rate", period)
         age = person("age", period.this_year)

@@ -1,10 +1,11 @@
 # The department states these amounts by the week. The model's year has 52 weeks.
 # Each child's bill stands for what that child's program charges a CCFAP family.
-# The family pays its share to the youngest child's provider first (CCFAP Family
-# Booklet, PDF page 10), and each program's invoice takes the state's payment for
-# the child off that child's tuition (department memo of January 13, 2026, PDF
-# pages 1 and 6). A payment above one child's tuition stays with that program
-# (the same memo, blended tuition example 3, PDF page 4).
+# The family share goes to the youngest child's certificate first (CCFAP Family
+# Booklet, PDF page 10; CDD.1050 B(2), PDF page 3), and each program's invoice takes
+# the state's payment for the child off that child's tuition (department memo of
+# August 14, 2026, PDF pages 1 and 10). A payment above one child's tuition stays
+# with that program (the same memo, PDF page 2 and blended tuition example 3 on
+# PDF page 7).
 
 - name: Centers charging 360 for an infant and 325 for a preschooler, with a 200 share, leave the family 65 a week.
   # The 2026 full-time center rates are 495 for an infant and 439 for a preschooler.
@@ -50,7 +51,7 @@
     childcare_expenses: 3_380 # 65 x 52
 
 - name: The memo's 350 tuition with a 300 share leaves 211 due, and a sibling's payment above its tuition pays none of it.
-  # Department memo of January 13, 2026, separate tuition example 1 (PDF page 6):
+  # Department memo of August 14, 2026, separate tuition example 1 (PDF page 10):
   # the state pays 439 - 300 = 139 for the preschooler and the invoice shows
   # 350 - 139 = 211 due. A seven-year-old in part-time care at another center, which
   # charges 150, draws the 204 part-time school-age rate, 54 above that tuition.
@@ -136,11 +137,12 @@
     household_child_care_subsidies: 15_600 # 300 x 52
     childcare_expenses: 10_400 # 200 x 52
 
-- name: Without care hours, a teenager's share of the bill stays the family's while the preschooler's payment exceeds its share.
-  # The unit reports a 300 weekly bill and no care hours, so each child carries
-  # 150. The preschooler draws the 240 part-time center rate, and the state pays
-  # 240 - 50 = 190, 40 above the preschooler's 150. The 15-year-old is past
-  # CCFAP's age limit, so the family owes the teenager's 150.
+- name: Without care hours, a teenager past CCFAP's age limit carries none of the bill, so the preschooler's provider bills all of it.
+  # The unit reports a 300 weekly bill and no care hours, and the model splits it
+  # 150 to each child. The 15-year-old is past CCFAP's age limit of 13, so the
+  # preschooler, the one child of CCFAP age, stands in as the child in care and
+  # carries the whole 300. The preschooler draws the 240 part-time center rate, so
+  # the state pays 240 - 50 = 190 and the family owes 300 - 190 = 110.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -165,9 +167,141 @@
         state_code: VT
   output:
     pre_subsidy_childcare_expenses: [0, 7_800, 7_800] # 150 x 52 each
+    vt_ccfap_child_bill: [0, 15_600, 0] # 300 x 52
     vt_ccfap_child_payment: [0, 9_880, 0] # 190 x 52
-    vt_ccfap_payment_above_bill: [0, 2_080, 0] # 40 x 52
+    vt_ccfap_payment_above_bill: [0, 0, 0]
     child_care_subsidies: 9_880
-    child_care_subsidies_above_provider_bills: 2_080
-    household_child_care_subsidies: 7_800 # 150 x 52
-    childcare_expenses: 7_800 # 150 x 52
+    child_care_subsidies_above_provider_bills: 0
+    household_child_care_subsidies: 9_880
+    childcare_expenses: 5_720 # 110 x 52
+
+- name: The August 2026 memo's infant at 495 and preschooler at 439 with a 300 share leave the family 300 at the infant's tuition.
+  # Department memo of August 14, 2026, blended example 5 (PDF page 9): "Family
+  # share is assigned to the youngest child in care first," so the state pays
+  # 495 - 300 = 195 for the infant and 439 for the preschooler. The memo's
+  # preschooler also has 114 of prekindergarten tuition, which the model leaves
+  # out; without it each child's tuition less its payment is 300 and 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      infant:
+        age: 0
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 7
+        pre_subsidy_childcare_expenses: 25_740 # 495 x 52
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 7
+        pre_subsidy_childcare_expenses: 22_828 # 439 x 52
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 15_600 # 300 x 52
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code: VT
+  output:
+    vt_ccfap_assigned_family_share: [0, 15_600, 0] # 300 x 52
+    vt_ccfap_child_payment: [0, 10_140, 22_828] # 195 x 52 and 439 x 52
+    vt_ccfap_payment_above_bill: [0, 0, 0]
+    child_care_subsidies: 32_968 # 634 x 52
+    household_child_care_subsidies: 32_968
+    childcare_expenses: 15_600 # 300 x 52
+
+- name: An 18-year-old with special needs in care splits the 600 bill evenly with a 5-year-old, so each payment covers its own 300.
+  # The model splits the unit's bill over members under 18, which gives the
+  # 18-year-old none of it. CCFAP covers a child with special needs to age 19, so
+  # both children are in care and carry 300 each. The 2026 full-time center rates
+  # are 371 for a school-age child and 439 for a preschooler (Vermont counts
+  # children as preschoolers to 72 months from July 13, 2025). With no share, each
+  # payment covers its child's 300, with 71 and 139 to spare, and the family owes
+  # nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+      young_adult:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 7
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 7
+    spm_units:
+      spm_unit:
+        members: [parent, young_adult, child]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 0
+        spm_unit_pre_subsidy_childcare_expenses: 31_200 # 600 x 52
+    households:
+      household:
+        members: [parent, young_adult, child]
+        state_code: VT
+  output:
+    pre_subsidy_childcare_expenses: [0, 0, 31_200]
+    vt_ccfap_child_bill: [0, 15_600, 15_600] # 300 x 52 each
+    vt_ccfap_child_payment: [0, 19_292, 22_828] # 371 x 52 and 439 x 52
+    vt_ccfap_payment_above_bill: [0, 3_692, 7_228] # 71 x 52 and 139 x 52
+    child_care_subsidies: 42_120
+    child_care_subsidies_above_provider_bills: 10_920
+    household_child_care_subsidies: 31_200
+    childcare_expenses: 0
+
+- name: A 1,000 subsidy entered for the 360 and 325 centers pays the bills before anything counts as above them.
+  # The first case's family, with Vermont's subsidy entered as 1,000 a year. The
+  # modeled payments put 32,240 toward the bills and 5,928 above them; an entered
+  # subsidy pays the bills first, so the whole 1,000 counts and the family owes
+  # 35,620 - 1,000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      infant:
+        age: 0
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 7
+        pre_subsidy_childcare_expenses: 18_720 # 360 x 52
+      preschooler:
+        age: 3
+        is_tax_unit_dependent: true
+        vt_ccfap_provider_type: LICENSED_CENTER
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 7
+        pre_subsidy_childcare_expenses: 16_900 # 325 x 52
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        vt_ccfap_eligible: true
+        vt_ccfap_family_share: 10_400 # 200 x 52
+        vt_child_care_subsidies: 1_000
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code: VT
+  output:
+    child_care_subsidies: 1_000
+    child_care_subsidies_above_provider_bills: 0
+    household_child_care_subsidies: 1_000
+    childcare_expenses: 34_620
