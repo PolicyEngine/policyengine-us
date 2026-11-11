@@ -1,0 +1,17 @@
+description: California accepts an individual taxpayer identification number, or a social security number not valid for work, for a CalEITC and young child tax credit qualifying child if this is true.
+values:
+  2015-01-01: false
+  # R&TC 17052(p), added by AB 1876, applies to taxable years beginning on or
+  # after January 1, 2020.
+  2020-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: California EITC ITIN eligibility for qualifying children
+  reference:
+    - title: California Revenue and Taxation Code § 17052(p)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.
+    - title: AB 1876 (Stats. 2020, ch. 87), section 1
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201920200AB1876
+    - title: 2020 FTB 3514 instructions, Step 1 and Line 7
+      href: https://www.ftb.ca.gov/forms/2020/2020-3514-instructions.html

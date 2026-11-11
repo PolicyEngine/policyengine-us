@@ -347,3 +347,49 @@
     # 1,800 - 1,417.46 = 382.54; 382.54 / 31 = 12.34 a day exactly;
     # 12.34 x 16 days = 197.44.
     oh_rss: 197.44
+
+# OAC 5160:1-5-01(E)(2) combines spouses in the same RSS living arrangement. OAC 5160:1-3-03.2 applies one $20 exclusion: ($300 + $200 - $20) / 2 = $240 each; the third adult has $400 - $20 = $380. The $1,600 allowable fee plus $200 personal needs gives grants of $1,560, $1,560 and $1,420.
+# https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01
+- name: Ohio pools only the RSS couple income
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        oh_rss_eligible: true
+        ssi: 0
+        ssi_unearned_income:
+          2026: 3600
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        oh_rss_eligible: true
+        ssi: 0
+        ssi_unearned_income:
+          2026: 2400
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        oh_rss_eligible: true
+        ssi: 0
+        ssi_unearned_income:
+          2026: 4800
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: OH
+  output:
+    oh_rss_countable_income: [240, 240, 380]
+    oh_rss: [1560, 1560, 1420]

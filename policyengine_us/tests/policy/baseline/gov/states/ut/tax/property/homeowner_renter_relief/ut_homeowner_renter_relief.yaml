@@ -8,6 +8,8 @@
     state_code: UT
   output:
     ut_homeowner_renter_relief: 1_140
+    ut_renters_credit: 1_140
+    ut_homeowners_credit: 0
 
 - name: Case 2, renter credit capped by maximum amount.
   period: 2025
@@ -54,6 +56,8 @@
           2025: UT
   output:
     ut_homeowner_renter_relief: 429
+    ut_renters_credit: 0
+    ut_homeowners_credit: 429
 
 - name: Case 5, homeowner credit capped by property tax paid.
   period: 2025
@@ -115,6 +119,8 @@
           2025: UT
   output:
     ut_homeowner_renter_relief: 1_550
+    ut_renters_credit: 950
+    ut_homeowners_credit: 600
 
 - name: Case 8, ineligible claimant receives no relief.
   period: 2025
@@ -215,6 +221,7 @@
 
 - name: Case 12, nontaxable income uses self-employed pension contributions.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -230,5 +237,7 @@
         members: [person1]
         state_code: UT
   output:
-    self_employed_pension_contributions: 72_000
-    ut_homeowner_renter_relief_nontaxable_income: 72_000
+    # Pub. 560 worksheet: 20% x 92,935.23 of earned income + 24,500 of
+    # deferrals + the 8,000 catch-up at age 66.
+    self_employed_pension_contributions: 51_087.05
+    ut_homeowner_renter_relief_nontaxable_income: 51_087.05

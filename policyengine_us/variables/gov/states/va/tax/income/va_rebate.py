@@ -8,12 +8,14 @@ class va_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia rebate"
-    unit = USD
     documentation = (
-        "The one-time Virginia income tax rebate, limited to the tax liability "
-        "after every deduction, subtraction and credit under Chapter 3 of "
-        "Title 58.1, including the refundable Virginia EITC."
+        "Virginia one-time rebates are attributed to the return year that determines "
+        "eligibility and amount: 2021 for the 2022 payment, 2022 for the 2023 "
+        "payment, and 2024 for the 2025 payment. The rebate enters "
+        "va_non_refundable_credits in those eligibility years and is limited by "
+        "available tax liability. It is zero in other years."
     )
+    unit = USD
     definition_period = YEAR
     reference = (
         # 2021 return: 2022 Special Session I, HB30 (Chapter 2), Item 3-5.22.
