@@ -143,3 +143,195 @@
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
     me_sales_tax_fairness_credit: 210
+
+# 2026 amounts follow 36 MRS 5403(5) with the cost-of-living adjustments in
+# Maine Revenue Services' 2026 Individual Income Tax Rates: 1.279 on the June
+# 2017 base for the base credit and 1.303 on the June 2015 base for the income
+# threshold. Base credits: single 125 x 1.279 = 159.88 -> 155; joint, head of
+# household and surviving spouse 175 x 1.279 = 223.83 -> 220; with the
+# smaller additional amount 200 x 1.279 = 255.80 -> 255; with the larger
+# 225 x 1.279 = 287.78 -> 285. Thresholds: single 20,000 x 1.303 = 26,060 ->
+# 26,050; head of household 30,000 x 1.303 = 39,090 -> 39,050; joint 40,000 x
+# 1.303 = 52,120 -> 52,100. The phase-out steps ($10 per $500, $15 per $750,
+# $20 per $1,000 or portion) are not indexed.
+# https://www.maine.gov/revenue/sites/maine.gov.revenue/files/2026-05/ind_tax_rate_sched_2026_rev.pdf#page=1
+- name: 2026 ME STFC MFJ no dependents with $30,000 of income gets the full 220
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 0
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 30_000
+  output:
+    # 30,000 is below the 52,100 threshold.
+    me_sales_tax_fairness_credit: 220
+
+- name: 2026 ME STFC MFJ no dependents with $60,000 of income gets 60
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 0
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 60_000
+  output:
+    # 60,000 - 52,100 = 7,900, which is 8 portions of $1,000; 220 - 8 x 20 = 60.
+    me_sales_tax_fairness_credit: 60
+
+- name: 2026 ME STFC MFJ no dependents in the last phase-out band keeps 20
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 0
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 62_100
+  output:
+    # 62,100 - 52,100 = 10,000, which is 10 portions; 220 - 10 x 20 = 20.
+    me_sales_tax_fairness_credit: 20
+
+- name: 2026 ME STFC MFJ no dependents one dollar past the full phase-out gets 0
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 0
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 62_101
+  output:
+    # 62,101 - 52,100 = 10,001, which is 11 portions; 220 - 11 x 20 < 0.
+    me_sales_tax_fairness_credit: 0
+
+- name: 2026 ME STFC MFJ one dependent with no income gets 255
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 1
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 255
+
+- name: 2026 ME STFC MFJ two dependents with $60,000 of income gets 125
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 2
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 60_000
+  output:
+    # 285 - 8 x 20 = 125.
+    me_sales_tax_fairness_credit: 125
+
+- name: 2026 ME STFC surviving spouse no dependents with no income gets 220
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 0
+    filing_status: SURVIVING_SPOUSE
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 220
+
+- name: 2026 ME STFC single at the 26,050 threshold keeps the full 155
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 0
+    filing_status: SINGLE
+    me_sales_and_property_tax_fairness_credit_income: 26_050
+  output:
+    me_sales_tax_fairness_credit: 155
+
+- name: 2026 ME STFC single $500 over the threshold loses one step
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 0
+    filing_status: SINGLE
+    me_sales_and_property_tax_fairness_credit_income: 26_550
+  output:
+    # 26,550 - 26,050 = 500, which is 1 portion of $500; 155 - 10 = 145.
+    me_sales_tax_fairness_credit: 145
+
+- name: 2026 ME STFC single $501 over the threshold loses two steps
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 0
+    filing_status: SINGLE
+    me_sales_and_property_tax_fairness_credit_income: 26_551
+  output:
+    # 501 is 2 portions of $500; 155 - 2 x 10 = 135.
+    me_sales_tax_fairness_credit: 135
+
+- name: 2026 ME STFC head of household no dependents at the 39,050 threshold gets 220
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 0
+    filing_status: HEAD_OF_HOUSEHOLD
+    me_sales_and_property_tax_fairness_credit_income: 39_050
+  output:
+    me_sales_tax_fairness_credit: 220
+
+- name: 2026 ME STFC head of household two dependents with no income gets 255
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 2
+    filing_status: HEAD_OF_HOUSEHOLD
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 255
+
+- name: 2026 ME STFC head of household three dependents with $40,000 of income gets 255
+  period: 2026
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    me_fairness_credit_qualifying_children: 3
+    filing_status: HEAD_OF_HOUSEHOLD
+    me_sales_and_property_tax_fairness_credit_income: 40_000
+  output:
+    # 40,000 - 39,050 = 950, which is 2 portions of $750; 285 - 2 x 15 = 255.
+    me_sales_tax_fairness_credit: 255
+
+- name: 2026 ME STFC married couple with $60,000 of wages gets 60
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    me_sales_and_property_tax_fairness_credit_income: 60_000
+    me_sales_tax_fairness_credit: 60
+
+- name: 2026 ME STFC married couple with $30,000 of Social Security gets 220
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        social_security_retirement: 15_000
+      spouse:
+        age: 70
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    # None of the benefits are taxable federally, and 36 MRS 5213-A(1)(B)(3)
+    # adds them back, so income is 30,000.
+    me_sales_and_property_tax_fairness_credit_income: 30_000
+    me_sales_tax_fairness_credit: 220

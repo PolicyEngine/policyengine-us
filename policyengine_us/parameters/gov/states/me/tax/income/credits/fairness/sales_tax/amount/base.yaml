@@ -5,6 +5,8 @@ SINGLE:
     2023-01-01: 140
     2024-01-01: 150
     2025-01-01: 155
+    # 125 x 1.279 = 159.88, rounded down to a multiple of $5.
+    2026-01-01: 155
 JOINT:
   values:
     2021-01-01: 180
@@ -12,6 +14,8 @@ JOINT:
     2023-01-01: 200
     2024-01-01: 210
     2025-01-01: 215
+    # 175 x 1.279 = 223.83, rounded down to a multiple of $5.
+    2026-01-01: 220
 SEPARATE:
   values:
     2021-01-01: 0
@@ -22,6 +26,8 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 200
     2024-01-01: 210
     2025-01-01: 215
+    # 175 x 1.279 = 223.83, rounded down to a multiple of $5.
+    2026-01-01: 220
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 180
@@ -29,6 +35,8 @@ SURVIVING_SPOUSE:
     2023-01-01: 200
     2024-01-01: 210
     2025-01-01: 215
+    # 175 x 1.279 = 223.83, rounded down to a multiple of $5.
+    2026-01-01: 220
 metadata:
   propagate_metadata_to_children: true
   uprating:
@@ -53,6 +61,8 @@ metadata:
     href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_Form%201040ME_Sch%20PTFC_ff.pdf#page=4
   - title: 2025 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
     href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=4
+  - title: Maine Revenue Services, 2026 Individual Income Tax Rates (cost-of-living adjustment of 1.279 on the June 2017 base)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/2026-05/ind_tax_rate_sched_2026_rev.pdf#page=1
   period: year
   label: Maine sales tax fairness credit base amount
   breakdown:

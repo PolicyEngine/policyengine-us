@@ -1,0 +1,1 @@
+Index Maine's 2026 sales tax fairness credit base amounts and income thresholds with Maine Revenue Services' 2026 cost-of-living adjustments under 36 M.R.S. § 5403(5): $220 base for joint, head of household and surviving spouse filers, and income thresholds of $26,050 (single), $39,050 (head of household) and $52,100 (joint and surviving spouse).
