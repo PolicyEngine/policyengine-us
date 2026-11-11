@@ -1050,7 +1050,10 @@ def test_dependent_standard_deduction_encoded_values_take_precedence():
     statute_differs = []
     for name, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
         parameter = getattr(dependent, name)
-        # The 0001 placeholder in additional_earned_income.yaml is not a year.
+        # From TCJA's 2018, when 1(f)(3) moved to the C-CPI-U that
+        # statutory_dependent_standard_deduction_amount reads. The earlier
+        # earned income additions follow the CPI-U; test_base_mode_uprating.py
+        # checks them.
         encoded = {
             year: value
             for year, value in encoded_dependent_standard_deduction_values(name).items()
