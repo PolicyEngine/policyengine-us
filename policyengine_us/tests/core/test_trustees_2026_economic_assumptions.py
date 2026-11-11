@@ -49,6 +49,7 @@ from policyengine_us.reforms.ssa.trustees_2026 import (
     trustees_2026_path_readers,
 )
 from policyengine_us.reforms.ssa.trustees_core_thresholds import (
+    TRUSTEES_CORE_THRESHOLD_ASSUMPTION,
     _iter_updatable_parameters,
 )
 from policyengine_us.system import system
@@ -999,10 +1000,22 @@ def _core_thresholds_under(reforms):
     thresholds = {
         parameter.name: {year: parameter(f"{year}-01-01") for year in range(2027, 2101)}
         for parameter in _iter_updatable_parameters(
-            parameters.gov.irs, uprating_parameter="gov.irs.uprating"
+            parameters.gov.irs,
+            uprating_parameter=TRUSTEES_CORE_THRESHOLD_ASSUMPTION[
+                "uprating_parameters"
+            ],
         )
     }
-    return nawi, thresholds
+    # The joint and surviving spouse amounts follow the single amount.
+    standard = parameters.gov.irs.deductions.standard.amount
+    followers = {
+        status: {
+            year: getattr(standard, status)(f"{year}-01-01")
+            for year in range(2027, 2101)
+        }
+        for status in ("JOINT", "SURVIVING_SPOUSE")
+    }
+    return nawi, thresholds, followers
 
 
 def _round_like_core_thresholds(amount, rounding):
@@ -1037,7 +1050,7 @@ def test_core_thresholds_follow_the_trustees_2026_nawi(order):
     """
     for cached in (_reformed_system, _applied_once, _end_to_end, _cap_policy_run):
         cached.cache_clear()
-    nawi, thresholds = _core_thresholds_under(COMPOSITIONS[order])
+    nawi, thresholds, followers = _core_thresholds_under(COMPOSITIONS[order])
     for year in range(2026, 2101):
         assert nawi[year] == pytest.approx(_tr_nawi(year), rel=1e-12)
     assert len(thresholds) > 100
@@ -1067,3 +1080,9 @@ def test_core_thresholds_follow_the_trustees_2026_nawi(order):
                 rounding,
             )
             assert thresholds[path][year] != on_default_nawi
+    # 26 U.S.C. 63(c)(2)(A): the joint and surviving spouse amounts, which
+    # follow the single amount, stay at twice it on the Trustees' NAWI.
+    single = thresholds["gov.irs.deductions.standard.amount.SINGLE"]
+    for status, values in followers.items():
+        for year, value in values.items():
+            assert value == 2 * single[year], (status, year)

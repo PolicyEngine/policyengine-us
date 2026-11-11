@@ -13382,7 +13382,7 @@ candidates:
   state: unreviewed
   note: 'PE-US follows IRS practice: projections after the published limits use 12-month windows ending March 31,
     except the 2016 C-CPI-U-to-CPI ratio, which keeps the window ending August 31, and the docstring says these
-    windows reproduce every published 2019-2027 limit (get_hsa_cola and extend_hsa_contribution_limits in uprating_extensions.py,
+    windows reproduce every published 2019-2027 limit (get_hsa_cola and set_hsa_c_cpi_u_index in uprating_extensions.py,
     limit/self_only.yaml, limit/family.yaml). The statute-first rule requires changing conflicting projections;
     verify the statutory window substitution first, and preserve the distinction from published limits fixed through
     2027.'

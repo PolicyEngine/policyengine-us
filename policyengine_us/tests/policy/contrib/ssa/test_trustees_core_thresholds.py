@@ -31,8 +31,10 @@ def test_metadata_marks_trustees_core_thresholds_as_explicit_assumption():
         "all_gov_irs_uprating_parameters"
         in TRUSTEES_CORE_THRESHOLD_ASSUMPTION["parameter_groups"]
     )
-    assert (
-        TRUSTEES_CORE_THRESHOLD_ASSUMPTION["uprating_parameter"] == "gov.irs.uprating"
+    assert TRUSTEES_CORE_THRESHOLD_ASSUMPTION["uprating_parameters"] == (
+        "gov.irs.uprating",
+        "gov.irs.indexing.c_cpi_u",
+        "gov.irs.indexing.hsa_c_cpi_u",
     )
     assert "OACT email clarification" in TRUSTEES_CORE_THRESHOLD_ASSUMPTION["source"]
 
@@ -57,6 +59,9 @@ def test_reform_leaves_long_run_economic_assumptions_unchanged():
 
 
 def test_reform_only_changes_federal_irs_uprating_parameters():
+    """The reform moves IRS parameters on the CPI indices it names, and
+    parameters that uprate by one of those, such as the joint standard
+    deduction, which follows the single amount."""
     baseline = _parameters()
     reformed = _trustees_parameters()
     reformed_parameters_by_name = {
@@ -64,7 +69,7 @@ def test_reform_only_changes_federal_irs_uprating_parameters():
         for parameter in [reformed, *reformed.get_descendants()]
         if parameter.__class__.__name__ == "Parameter"
     }
-    changed_names = []
+    uprating_by_name = {}
 
     for parameter in [baseline, *baseline.get_descendants()]:
         if parameter.__class__.__name__ != "Parameter":
@@ -76,14 +81,32 @@ def test_reform_only_changes_federal_irs_uprating_parameters():
             continue
 
         uprating = parameter.metadata.get("uprating")
-        uprating_parameter = (
+        assert parameter.name.startswith("gov.irs.")
+        uprating_by_name[parameter.name] = (
             uprating.get("parameter") if isinstance(uprating, dict) else uprating
         )
-        assert parameter.name.startswith("gov.irs.")
-        assert uprating_parameter == "gov.irs.uprating"
-        changed_names.append(parameter.name)
 
-    assert changed_names
+    indices = TRUSTEES_CORE_THRESHOLD_ASSUMPTION["uprating_parameters"]
+    for name, uprating_parameter in uprating_by_name.items():
+        assert (
+            uprating_parameter in indices or uprating_parameter in uprating_by_name
+        ), name
+    assert set(uprating_by_name.values()) >= set(indices)
+    standard = "gov.irs.deductions.standard.amount"
+    for status in ("JOINT", "SURVIVING_SPOUSE"):
+        assert uprating_by_name[f"{standard}.{status}"] == f"{standard}.SINGLE"
+
+
+def test_joint_standard_deduction_stays_twice_the_single_amount():
+    """26 U.S.C. 63(c)(2)(A): 200% of the single amount, on the wage path too."""
+    standard = _trustees_parameters().gov.irs.deductions.standard.amount
+    baseline = _parameters().gov.irs.deductions.standard.amount
+    for year in range(2026, 2101):
+        period = f"{year}-01-01"
+        assert standard.JOINT(period) == 2 * standard.SINGLE(period), year
+        assert standard.SURVIVING_SPOUSE(period) == standard.JOINT(period), year
+        assert standard.SEPARATE(period) == standard.SINGLE(period), year
+    assert standard.SINGLE("2100-01-01") != baseline.SINGLE("2100-01-01")
 
 
 def test_reported_social_security_components_use_aggregate_ss_uprater():

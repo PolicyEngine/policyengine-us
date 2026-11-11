@@ -1,6 +1,6 @@
 description: The basic standard deduction of a filer who can be claimed as a dependent is limited to the greater of the floor or earned income plus this amount.
 values:
-  0001-01-01: 350
+  2013-01-01: 350
   2022-01-01: 400
   2024-01-01: 450
   2025-01-01: 450
@@ -10,17 +10,18 @@ metadata:
   unit: currency-USD
   period: year
   label: Dependent standard deduction earned income addition
-  # Values after the last IRS publication are computed in
-  # parameters/uprating_extensions.py per 26 U.S.C. 63(c)(4)(B)(ii): the
-  # statutory $250 increased by the 1(f)(3) cost-of-living adjustment with
-  # calendar year 1997 as the base year (C-CPI-U for the 12 months ending
-  # August 31 of the prior year), each increase rounded down to the next
-  # lowest multiple of $50 under 1(f)(7)(A). Computing from the $250 base
-  # rather than chaining from the rounded $450 keeps the projection from
-  # lagging the statute by a $50 step; those values supersede this
-  # uprating rule, which describes the index and rounding.
   uprating:
-    parameter: gov.irs.uprating
+    # 26 U.S.C. 63(c)(4)(B)(ii): the statutory $250 plus its 1(f)(3)
+    # cost-of-living increase with calendar year 1997 as the base year,
+    # rounded down to a multiple of $50 under 1(f)(7)(A). The index's 1998
+    # value covers calendar year 1997. Projecting from the $250 base rather
+    # than chaining from a rounded published value keeps the projection
+    # from lagging the statute by a $50 step.
+    parameter: gov.irs.indexing.c_cpi_u
+    base:
+      period: 1998
+      value: 250
+      floor: true
     rounding:
       type: downwards
       interval: 50
@@ -47,3 +48,7 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=13
     - title: Rev. Proc. 2018-57, sec. 3.16(2) (tax year 2019)
       href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=16
+    - title: Rev. Proc. 2014-61, sec. 3.14(2) (tax year 2015)
+      href: https://www.irs.gov/pub/irs-drop/rp-14-61.pdf#page=13
+    - title: Rev. Proc. 2013-15, sec. 3.07(2) (tax year 2013)
+      href: https://www.irs.gov/pub/irs-drop/rp-13-15.pdf#page=10

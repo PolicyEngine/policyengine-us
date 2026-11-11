@@ -1,0 +1,13 @@
+description: New York City increases the income tax elimination credit income thresholds by the change in this Consumer Price Index for All Urban Consumers from its 2024 value, under Tax Law § 1310(h)(1)(B)(iii).
+values:
+  # Computed in parameters/uprating_extensions.py
+  # (set_nyc_income_tax_elimination_credit_cpi): for each tax year, the
+  # CPI-U averaged over the 12 months ending August 31 of the year before
+  # (§ 1310(h)(3)(A)). Its 2025 value, the base, is the 2024 index.
+  2025-01-01: 1
+metadata:
+  unit: /1
+  label: NYC income tax elimination credit cost-of-living index
+  reference:
+    - title: NY Tax Law § 1310(h)
+      href: https://www.nysenate.gov/legislation/laws/TAX/1310
