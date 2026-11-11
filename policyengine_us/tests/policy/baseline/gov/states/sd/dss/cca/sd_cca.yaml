@@ -1,14 +1,10 @@
-# Tests for sd_cca (SPMUnit, MONTH, USD), the South Dakota Child Care
-# Assistance benefit. The benefit is the lesser of the summed per-child weekly
-# maximum rates (converted to a monthly amount with WEEKS_IN_YEAR /
-# MONTHS_IN_YEAR = 52/12 = 4.3333) and the family's billed child care expenses,
-# minus the monthly co-payment, floored at zero (ARSD 67:47:01:16). Only
-# eligible children with positive care hours contribute to the rate cap (the
-# limited-time rate tier starts at one hour per week). There are
-# no separate additive bonuses. sd_child_care_subsidies is the YEAR aggregator
-# (adds sd_cca); read at a month period it reports the monthly value, and
-# sd_cca is registered in the federal child_care_subsidies total.
-# Urban family day care full-time infant weekly rate 180 -> 180 x 52/12 = 780.
+# Tests for monthly South Dakota Child Care Assistance.
+# DSS caps a family's payment at billed expenses and summed eligible-child
+# reimbursement ceilings, subtracts the co-payment, and floors the result at zero.
+# Before August 2026, the model multiplies hourly county rates by
+# ceil(weekly care hours * 4.3). The hourly schedules start July 1, 2024.
+# From August 2026, weekly rates convert to months with 52 / 12.
+# sd_child_care_subsidies aggregates monthly payments over the year.
 
 - name: Case 1, rate-limited benefit, co-payment zero.
   period: 2027-01
@@ -271,14 +267,14 @@
     # protective-services children. Benefit = 780.
     sd_cca: 780
 
-- name: Case 10, pre-effective period, weekly rate era not yet in effect, no benefit.
+- name: Case 10, DSS pays the Minnehaha hourly rate before August 2026.
   period: 2025-01
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        employment_income: 24_000
+        employment_income: 24000
       person2:
         age: 0.5
         sd_cca_provider_type: FAMILY_DAY_CARE
@@ -287,16 +283,394 @@
       spm_unit:
         members: [person1, person2]
         meets_ccdf_activity_test: true
-        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 24000
     households:
       household:
         members: [person1, person2]
         state_code: SD
         county_str: MINNEHAHA_COUNTY_SD
   output:
-    # Same household as Case 1, evaluated before the weekly rate schedule
-    # takes effect in August 2026: the uses_weekly_rates gate zeroes the
-    # benefit even though the family is otherwise eligible. Only the weekly
-    # rate era is modeled; the earlier hourly schedule is a follow-up.
+    # ceil(40 * 4.3) = 172 hours; 172 * $3.80 = $653.60.
+    # Expenses $24,000 / 12 = $2,000 exceed the ceiling; co-payment = $0.
+    sd_cca: 653.6
+    sd_child_care_subsidies: 653.6
+
+- name: Case 11, DSS pays the lower Aurora hourly rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD
+  output:
+    # ceil(40 * 4.3) * $3.15 = 172 * $3.15 = $541.80.
+    sd_cca: 541.8
+
+- name: Case 12, DSS caps the hourly payment at billed expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 3600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # min(172 * $3.80, $3,600 / 12) = min($653.60, $300) = $300.
+    sd_cca: 300
+
+- name: Case 13, DSS pays no hourly benefit without care hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # ceil(0 * 4.3) * $3.80 = $0, despite positive expenses.
     sd_cca: 0
-    sd_child_care_subsidies: 0
+
+- name: Case 14, DSS pays no hourly benefit without billed expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # min(172 * $3.80, $0) = $0.
+    sd_cca: 0
+
+- name: Case 15, DSS subtracts the co-payment after the hourly expense cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47500
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+        spm_unit_fpg: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # Countable income = $47,500 / 12 * 0.96 = $3,800.
+    # Co-payment = ($3,800 - 1.7 * $24,000 / 12) * 0.05 = $20.
+    # Benefit = min($653.60, $2,000) - $20 = $633.60.
+    sd_cca: 633.6
+
+- name: Case 16, DSS floors the hourly payment at zero after the co-payment.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 1200
+        spm_unit_fpg: 24000
+        hhs_smi: 120000
+        is_sd_cca_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # Countable income = $100,000 / 12 * 0.96 = $8,000.
+    # Co-payment = ($8,000 - $3,400) * 0.05 = $230.
+    # Benefit = max(min($653.60, $100) - $230, 0) = $0.
+    sd_cca: 0
+
+- name: Case 17, DSS sums the hourly ceilings for both eligible children.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+      person3:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 36000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # Two children * 172 hours * $3.80 = $1,307.20; expenses = $3,000.
+    sd_cca: 1307.2
+
+- name: Case 18, DSS still uses hourly rates in July 2026.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # 172 * $3.80 = $653.60 before the weekly schedule starts.
+    sd_cca: 653.6
+
+- name: Case 19, DSS switches to weekly rates in August 2026.
+  period: 2026-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # The weekly infant rate gives $180 * 52 / 12 = $780.
+    sd_cca: 780
+
+- name: Case 20, The model pays zero before the first sourced hourly schedule.
+  period: 2024-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # No sourced schedule covers June 2024, so hourly availability remains false.
+    sd_cca: 0
+
+- name: Case 21, DSS pays hourly rates from July 2024.
+  period: 2024-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # 172 * $3.80 = $653.60 from the sheet effective July 1, 2024.
+    sd_cca: 653.6
+
+- name: Case 22, The model rounds monthly authorized hours up.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 45
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # The manual converts 45 * 4.3 = 193.5 to 194 monthly hours.
+    # 194 * $3.80 = $737.20.
+    sd_cca: 737.2
+
+- name: Case 23, DSS caps the specialized infant payment at billed expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+        sd_cca_specialized_infant_toddler_rate_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 7200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # The specialized rate = $3.80 * 1.25 = $4.75.
+    # min(172 * $4.75, $7,200 / 12) = min($817, $600) = $600.
+    sd_cca: 600
+
+- name: Case 24, DSS caps the approved special needs payment at billed expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+        sd_cca_special_needs_rate_approved: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 10800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # min(172 * $6.80, $10,800 / 12) = min($1,169.60, $900) = $900.
+    sd_cca: 900

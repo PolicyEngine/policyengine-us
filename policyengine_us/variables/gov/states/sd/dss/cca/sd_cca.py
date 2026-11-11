@@ -8,31 +8,41 @@ class sd_cca(Variable):
     label = "South Dakota Child Care Assistance benefit amount"
     definition_period = MONTH
     defined_for = "sd_cca_eligible"
-    reference = "https://web.archive.org/web/20251031171652/https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=21"
+    reference = (
+        "https://sdlegislature.gov/Rules/Administrative/67:47:01:15",
+        "https://sdlegislature.gov/Rules/Administrative/67:47:01:16",
+        # PDF pages 18-24.
+        "https://web.archive.org/web/20251031171652/https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=18",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sd.dss.cca.rates
-        # Only the weekly region-based rate schedule (effective 2026-08-03) is
-        # modeled. The monthly model starts it in August 2026; the earlier
-        # hourly county-based schedule is deferred to a follow-up implementation.
-        if not p.uses_weekly_rates:
-            return 0
-        # The benefit is the lesser of the summed per-child weekly maximum rates
-        # (converted to a monthly amount) and the family's billed child care
-        # expenses, minus the monthly co-payment, floored at zero. The
-        # special-needs multiplier is already folded into sd_cca_weekly_rate, so
-        # it sits inside the expense cap. Billed expenses are a single SPM-unit
-        # input, so the per-child maximum rates are pooled across the unit.
         person = spm_unit.members
         is_eligible_child = person("sd_cca_eligible_child", period)
-        # The rate schedule's limited-time tier starts at one hour of care per
-        # week, so a child with no care hours generates no reimbursement.
-        in_care = person("childcare_hours_per_week", period.this_year) > 0
-        weekly_rate = person("sd_cca_weekly_rate", period)
-        weekly_to_monthly = WEEKS_IN_YEAR / MONTHS_IN_YEAR
-        max_reimbursement = (
-            spm_unit.sum(weekly_rate * is_eligible_child * in_care) * weekly_to_monthly
-        )
+        if p.uses_weekly_rates:
+            # The weekly schedule starts at one hour of care per week.
+            in_care = person("childcare_hours_per_week", period.this_year) > 0
+            weekly_rate = person("sd_cca_weekly_rate", period)
+            weekly_to_monthly = WEEKS_IN_YEAR / MONTHS_IN_YEAR
+            max_reimbursement = (
+                spm_unit.sum(weekly_rate * is_eligible_child * in_care)
+                * weekly_to_monthly
+            )
+        else:
+            if not p.hourly.available:
+                return 0
+            hourly_rate = person("sd_cca_hourly_rate", period)
+            # Care hours stand in for DSS-authorized weekly need. Section 8
+            # converts weekly need with 4.3; rounding up matches its example
+            # of 45 weekly hours becoming 194 monthly hours. DSS imposes no
+            # general monthly cap on ordinary CCA authorized hours.
+            hours = max_(person("childcare_hours_per_week", period.this_year), 0)
+            monthly_hours = np.ceil(hours * p.hourly.weeks_per_month)
+            max_reimbursement = spm_unit.sum(
+                hourly_rate * monthly_hours * is_eligible_child
+            )
+        # Family expenses pool the per-child ceilings. Both eras subtract the
+        # co-payment after applying the billed-expense ceiling.
         actual_expenses = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
         capped_expenses = min_(actual_expenses, max_reimbursement)
         copay = spm_unit("sd_cca_copay", period)
