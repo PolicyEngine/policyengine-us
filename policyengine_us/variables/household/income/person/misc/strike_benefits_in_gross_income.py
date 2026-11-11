@@ -7,7 +7,9 @@ class strike_benefits_in_gross_income(Variable):
     label = "strike benefits in federal gross income"
     unit = USD
     documentation = (
-        "The part of strike_benefits that federal gross income counts: "
+        "The part of a person's strike_benefits that federal gross income "
+        "counts, on whichever return reports it (a tax unit dependent's on "
+        "their own): "
         "taxable_strike_benefits while it is among the gross income sources "
         "(as it is under current law), or the whole amount under a reform "
         "that lists strike_benefits itself. States that subtract strike "
@@ -23,8 +25,9 @@ class strike_benefits_in_gross_income(Variable):
 
     def formula(person, period, parameters):
         sources = parameters(period).gov.irs.gross_income.sources
-        in_gross_income = 0
-        for source in ["strike_benefits", "taxable_strike_benefits"]:
-            if source in sources:
-                in_gross_income = in_gross_income + person(source, period)
-        return in_gross_income
+        listed = [
+            source
+            for source in ["strike_benefits", "taxable_strike_benefits"]
+            if source in sources
+        ]
+        return add(person, period, listed)

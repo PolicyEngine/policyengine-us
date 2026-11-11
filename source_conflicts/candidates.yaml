@@ -13072,7 +13072,7 @@ candidates:
 - id: us:dependent-deduction-worksheet-earned-income
   program: income-tax
   years:
-    from: 2024
+    from: 2010
     type: tax
   question: Where section 63(c)(5) leaves earned income undefined, should the dependent standard deduction use the
     Form 1040 worksheet's reported-income measure?
@@ -13106,7 +13106,8 @@ candidates:
     filing_requirement/dependent/earned_income_sources.yaml, basic_standard_deduction.py). Verify the line 15 subtraction
     for partnership self-employment income, which the list leaves out. Strike or lockout benefits other than bona fide
     gifts (Form 1040 line 1h, part of line 1z) joined the list from 2022 in PR 10727; us:strike-benefits-earned-income
-    records the earned income question.'
+    records the earned income question. The list runs from 2010, when the worksheet already counted reported income
+    (Form 1040 lines 7, 12 and 18 minus line 27).'
 - id: us:education-benefits-joint-claimed-spouse
   program: income-tax
   years:
@@ -13967,9 +13968,10 @@ candidates:
       them under other income, and the worksheet then counted wages (Form 1040 line 7 through 2017, line 1 from 2018)
       and the business and farm income lines. Publication 501 describes earned income as compensation for personal
       services performed, and the filing test reads the same list as the worksheet. The Form 8615 instructions define
-      earned income as wages, tips and other payments received for personal services performed; from 2022 they add
-      that it is generally Form 1040 line 1z plus Schedule 1 lines 3 and 6, which then holds strike benefits. California's
-      Schedule P worksheet uses the same personal services words.
+      earned income as wages, tips and other payments received for personal services performed; their sentence naming
+      the Form 1040 lines (lines 7, 12 and 18 in 2017, line 1z and Schedule 1 lines 3 and 6 from 2022) covers a child's
+      trade or business in which capital is not an income-producing factor. California's Schedule P worksheet uses the
+      same personal services words.
   example: A 2025 head of household with one child and $20,000 of taxable strike benefits and no other income gets the
     $4,328 maximum earned income credit; with the benefits outside earned income the credit is zero.
   pe_us:
@@ -14005,6 +14007,9 @@ candidates:
     citation: 72 P.S. 7301(o.2)(vi) and 7301(d)(vi)
     url: https://www.palegis.us/statutes/unconsolidated/law-information/view-statute?txtType=HTM&SessYr=1971&ActNum=0002.&ChapterNum=003.&SectionNum=001.&SubsectionNum=0
   - kind: regulation
+    citation: 61 Pa. Code 101.1, poverty income (i)(F), (ii) and (iii), applied by 61 Pa. Code 123.3
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.1.html
+  - kind: regulation
     citation: 61 Pa. Code 101.6(c)(9)
     url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
   - kind: instructions
@@ -14017,30 +14022,34 @@ candidates:
     citation: Pennsylvania Personal Income Tax Guide, Gross Compensation, nontaxable benefits
     url: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/gross-compensation.html#IncomeItemsNeverTaxablePA
   readings:
-    statute: Poverty income is all moneys or property received from whatever source, except (vi) payments made by
-      employers or labor unions for programs covering strike benefits. Read as reaching the benefits a striker
-      receives, it leaves them out of eligibility income. The Gross Compensation guide reads the same words in
-      7301(d)(vi) that way for compensation; it quotes them, then calls strike benefits nontaxable "provided that the
-      program does not discriminate" and lists them among income items never taxable as compensation.
-    other: 61 Pa. Code 101.6(c)(9) reads the same words in the compensation definition as payments to a strike benefit
-      plan. The Tax Forgiveness guide repeats the statute's words in its exclusions, and its inclusions count gifts,
-      cash from persons outside the household and employee payments to a cafeteria plan for strike benefits. The 2025
+    statute: Poverty income is all moneys or property "received of whatever nature and from whatever source derived",
+      not including (vi) "payments made by employers or labor unions for programs covering hospitalization, sickness,
+      disability or death, supplemental unemployment benefits, strike benefits, Social Security and retirement". The
+      words do not say whether they mean payments into such a program or the benefits a striker receives from it.
+    other: The poverty income regulation, 61 Pa. Code 101.1 (i)(F), restates (vi) as "payments made by employers to
+      labor unions for programs covering" those benefits; its (ii) counts "gifts of cash or property" and "other income
+      not specified as 'Income Not Included'", and its (iii) list of income not included leaves strike benefits out.
+      61 Pa. Code 101.6(c)(9) reads the same words in the compensation definition as payments to a strike benefit plan.
+      The Tax Forgiveness guide repeats the statute's words in its exclusions, and its inclusions count gifts, cash
+      from persons outside the household and employee payments to a cafeteria plan for strike benefits. The 2025
       Schedule SP counts gifts (line 5) and payments received from persons outside the household (line 10), and its
-      list of income not to include leaves strike benefits out.
+      list of income not to include leaves strike benefits out. Only the Gross Compensation guide's framing points
+      the other way. After quoting 7301(d)(vi) in its cafeteria plan section, it calls strike benefits nontaxable
+      "provided that the program does not discriminate".
   example: A 2025 single filer with $5,000 of wages and $4,000 of strike benefits has eligibility income of $9,000 when
     the benefits count and $5,000 when they do not.
   pe_us:
     follows: gap-fill
     code:
     - policyengine_us/parameters/gov/states/pa/tax/income/forgiveness/eligibility_income_sources.yaml
-    - policyengine_us/parameters/gov/states/pa/tax/income/nontaxable_income_sources.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: unreviewed
-  note: 'PE-US counts the whole union payment, gift part included, in eligibility income, following the regulation
-    and Schedule SP, and keeps strike benefits out of PA taxable income, following the Gross Compensation guide''s list
-    of income never taxable as compensation. The department''s compensation reading, applied to the same words in
-    7301(o.2)(vi), would leave them out of eligibility income instead.'
+  note: 'PE-US counts the whole union payment, gift part included, in eligibility income, following 61 Pa. Code 101.1,
+    the Tax Forgiveness guide and Schedule SP where the statute''s words leave the question open. PA taxable income
+    leaves strike benefits out under either reading: compensation is remuneration "received for services rendered"
+    (7301(d)), and the Gross Compensation guide lists strike benefits among income items never taxable as
+    compensation.'
 - id: us:student-loan-interest-joint-claimed-spouse
   program: income-tax
   years:

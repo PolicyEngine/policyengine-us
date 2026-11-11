@@ -51,10 +51,12 @@ Invariants, for every drawn household:
    the federal AMT child exemption cap (2017; IRC 59(j), 911(d)(2)), nor
    California's AMT child exemption (2025 Schedule P (540), Exemption
    Worksheet line 8), all of which count only payments for personal services.
+   An explicit example puts each measure where counting strike benefits as
+   pay would change it.
 """
 
 import numpy as np
-from hypothesis import HealthCheck, Phase, given, settings
+from hypothesis import HealthCheck, Phase, example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
@@ -310,6 +312,9 @@ def _child_situation(children: list, year: int, state: str) -> dict:
             name = f"{variant}_{i}"
             people[name] = {
                 "age": {y: age},
+                # A lone child heads their own return; the model makes only
+                # adults heads by default.
+                "is_tax_unit_head": {y: True},
                 "is_full_time_student": {y: student},
                 "is_qualifying_child_dependent": {y: True},
                 "employment_income": {y: child["wages"]},
@@ -340,6 +345,29 @@ def _child_situation(children: list, year: int, state: str) -> dict:
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
 )
 @given(children=st.lists(CHILD, min_size=4, max_size=6))
+# Cases where counting strike benefits as pay would change each measure: a
+# student of 20 whose $4,000 of wages pass the support test (no more than
+# half of $20,000) but whose wages plus $8,000 of strike benefits would not,
+# and a child of 16 whose exemption caps would rise by $8,000 (federal 2017:
+# $7,500 plus earned income; California 2025: $9,750 plus earned income).
+@example(
+    children=[
+        {
+            "wages": 4_000.0,
+            "strike": 8_000.0,
+            "gift_share": 0,
+            "age": (20, True),
+            "support": 20_000,
+        },
+        {
+            "wages": 5_000.0,
+            "strike": 8_000.0,
+            "gift_share": 0,
+            "age": (16, False),
+            "support": 0,
+        },
+    ]
+)
 def test_strike_benefits_are_not_pay_for_personal_services(children):
     for year, state, variables in [
         (2017, "TX", ["amt_kiddie_tax_applies", "amt_exemption"]),

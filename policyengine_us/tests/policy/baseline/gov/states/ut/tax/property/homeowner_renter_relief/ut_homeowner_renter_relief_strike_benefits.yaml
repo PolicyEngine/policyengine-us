@@ -276,3 +276,87 @@
   output:
     # 59-2a-101(15)(b)(ii) leaves out a parent's or grandparent's income.
     ut_homeowner_renter_relief_household_income: 30_000
+
+- name: 2025, a parent filing their own return adds no household income if flagged
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      parent:
+        age: 92
+        is_parent_of_filer_or_spouse: true
+    tax_units:
+      claimant_unit:
+        members: [head]
+        filing_status: SINGLE
+      parent_unit:
+        members: [parent]
+        filing_status: SINGLE
+        # Adjusted gross income given for the return, not for a person.
+        adjusted_gross_income: 10_000
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parent_marital_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, parent]
+        state_code: UT
+  output:
+    # 59-2a-101(15)(b)(ii): the parent's 10,000 is left out.
+    ut_homeowner_renter_relief_household_income: 30_000
+
+- name: 2025, a return's adjusted gross income adds to an adult dependent's own
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # Adjusted gross income given for the head's return, not for a person.
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    # 30,000 on the head's return plus the dependent's own 5,000.
+    ut_homeowner_renter_relief_household_income: 35_000
+
+- name: 2025, an adult dependent's estate loss nets against their wages
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 8_000
+        estate_income: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, dependent]
+        state_code: UT
+  output:
+    # A trust or estate loss on Schedule E, Part III, nets in adjusted gross
+    # income (IRC 62): 8,000 - 2,000.
+    dependent_adjusted_gross_income: [0, 6_000]
+    ut_homeowner_renter_relief_household_income: 36_000

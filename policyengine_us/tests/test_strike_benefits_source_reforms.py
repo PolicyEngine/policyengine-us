@@ -16,7 +16,20 @@ dollar of strike benefits exactly once, and Pennsylvania taxable income
 never holds any of it.
 
 One single filer per state, aged 70, with $20,000 of wages and $6,000 of
-strike benefits, $1,000 of them a gift.
+strike benefits, $1,000 of them a gift; and one household per state whose
+head, aged 70, has $80,000 of wages (which ends the EITC that Montana's
+measure would count) and $6,000 of strike benefits ($1,000 a gift), with an
+adult dependent, a full-time student aged 20, who has $5,000 of wages and
+$4,000 of strike benefits ($500 a gift).
+
+The federal earned income measures (eitc_earned_income, adjusted_earnings
+and the dependent earned income list) keep reading taxable_strike_benefits
+under these reforms. The Tax Cut for Striking Workers Act (S. 2779, 119th
+Congress), which would exclude strike benefits from gross income in a new
+IRC 139M, also adds 139M to the IRC 32(c)(2)(B)(vi) election that lets a
+filer count excluded combat pay as earned income for the EITC. A reform for
+that bill needs its own election logic; these reforms test only the state
+measures.
 """
 
 import pytest
@@ -130,6 +143,61 @@ def test_property_relief_counts_strike_benefits_once(scenario):
         sim, "mt_elderly_homeowner_or_renter_credit_gross_household_income"
     )
     assert montana["MT"] == pytest.approx(expected)
+
+
+HEAD_WAGES = 80_000
+DEPENDENT_WAGES = 5_000
+DEPENDENT_STRIKE = 4_000
+DEPENDENT_GIFT = 500
+
+
+def _household_situation():
+    year = str(YEAR)
+    people, tax_units, households = {}, {}, {}
+    for state in STATES:
+        head, dependent = f"{state}_head", f"{state}_dependent"
+        people[head] = {
+            "age": {year: 70},
+            "employment_income": {year: HEAD_WAGES},
+            "strike_benefits": {year: STRIKE},
+            "tax_exempt_strike_benefits": {year: GIFT},
+            "ssi": {year: 0},
+        }
+        people[dependent] = {
+            "age": {year: 20},
+            "is_full_time_student": {year: True},
+            "is_tax_unit_dependent": {year: True},
+            "employment_income": {year: DEPENDENT_WAGES},
+            "strike_benefits": {year: DEPENDENT_STRIKE},
+            "tax_exempt_strike_benefits": {year: DEPENDENT_GIFT},
+            "ssi": {year: 0},
+        }
+        tax_units[f"{state}_unit"] = {"members": [head, dependent]}
+        households[f"{state}_home"] = {
+            "members": [head, dependent],
+            "state_code": {year: state},
+        }
+    return {"people": people, "tax_units": tax_units, "households": households}
+
+
+@pytest.fixture(scope="module", params=list(SCENARIOS))
+def household_scenario(request):
+    reform, _ = SCENARIOS[request.param]
+    return Simulation(situation=_household_situation(), reform=reform)
+
+
+def test_adult_dependents_strike_benefits_count_once(household_scenario):
+    sim = household_scenario
+    expected = HEAD_WAGES + STRIKE + DEPENDENT_WAGES + DEPENDENT_STRIKE
+    for variable, state in [
+        ("ut_homeowner_renter_relief_household_income", "UT"),
+        ("az_property_tax_credit_household_income", "AZ"),
+        ("mt_elderly_homeowner_or_renter_credit_gross_household_income", "MT"),
+    ]:
+        values = dict(zip(STATES, sim.calculate(variable, YEAR, map_to="household")))
+        assert values[state] == pytest.approx(expected), (variable, values)
+    taxable = dict(zip(STATES, sim.calculate("pa_total_taxable_income", YEAR)))
+    assert taxable["PA"] == pytest.approx(HEAD_WAGES)
 
 
 def test_pennsylvania_never_taxes_strike_benefits(scenario):

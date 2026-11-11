@@ -12,10 +12,12 @@ class dependent_adjusted_gross_income(Variable):
     unit = USD
     documentation = """
     The adjusted gross income of IRC 62 on a tax unit dependent's own return:
-    their gross income with business losses, and capital losses within the
-    IRC 1211(b) limit, netted; less their own above-the-line deductions; plus
-    their taxable Social Security. It shares dependent_taxable_ss_magi's
-    income measure, so unemployment compensation counts in full (the IRC
+    their gross income with business, rental, farm, partnership and estate
+    losses, and capital losses within the IRC 1211(b) limit, netted; less
+    their own above-the-line deductions; plus their taxable Social Security.
+    The IRC 461(l) limit on excess business losses is not applied. It
+    shares dependent_taxable_ss_magi's income measure, so unemployment
+    compensation counts in full (the IRC
     85(c) exclusion applied only in 2020), taxable dependent care benefits
     are left out, and above-the-line deductions the model records only for
     the tax unit (health savings account contributions, which IRC 223(b)(6)

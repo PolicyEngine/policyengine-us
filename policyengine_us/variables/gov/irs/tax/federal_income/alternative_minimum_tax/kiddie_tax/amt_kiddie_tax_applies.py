@@ -22,9 +22,10 @@ class amt_kiddie_tax_applies(Variable):
         "https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=10",
         "https://www.irs.gov/pub/irs-prior/p929--2021.pdf",
         # Earned income for the support test, which the model applies
-        # through 2017. The instructions then counted Form 1040 lines 7, 12
-        # and 18 (wages, business and farm income) and named no line for
-        # strike benefits.
+        # through 2017: "wages, tips, and other payments received for
+        # personal services performed" (page 2). The instructions' sentence
+        # naming Form 1040 lines 7, 12 and 18 covers a child's trade or
+        # business in which capital is not an income-producing factor.
         "https://www.irs.gov/pub/irs-prior/i8615--2017.pdf#page=2",
     ]
 

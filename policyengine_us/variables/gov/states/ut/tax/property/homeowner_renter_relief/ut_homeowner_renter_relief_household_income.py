@@ -17,8 +17,13 @@ class ut_homeowner_renter_relief_household_income(Variable):
         "plus nontaxable income (Utah Code 59-2a-101(15), (17)). A tax unit "
         "dependent's adjusted gross income is on their own return "
         "(dependent_adjusted_gross_income). Members under 18 and members who "
-        "are a parent or grandparent of the filer or spouse are left out "
-        "(59-2a-101(15)(b))."
+        "are a parent or grandparent of the claimant or spouse are left out "
+        "(59-2a-101(15)(b)). The model marks the second group with "
+        "is_parent_of_filer_or_spouse and is_grandparent_of_filer_or_spouse, "
+        "which describe a member's relation to the filer of their own tax "
+        "unit. That filer is the claimant in a household with one tax unit. "
+        "A claimant's parent who files their own return counts unless they "
+        "carry one of the flags."
     )
     defined_for = StateCode.UT
 
@@ -41,7 +46,10 @@ class ut_homeowner_renter_relief_household_income(Variable):
         )
         is_adult = person("age", period) >= p.adult_age_threshold
         # Income of a member who is a parent or grandparent of the claimant or
-        # the claimant's spouse is left out (59-2a-101(15)(b)(ii)).
+        # the claimant's spouse is left out (59-2a-101(15)(b)(ii)). The flags
+        # describe the member's relation to the filer of their own tax unit,
+        # which is the claimant when the household has one tax unit; a parent
+        # who files their own return is left out only if flagged.
         parent_or_grandparent = person("is_parent_of_filer_or_spouse", period) | person(
             "is_grandparent_of_filer_or_spouse", period
         )
@@ -51,10 +59,13 @@ class ut_homeowner_renter_relief_household_income(Variable):
         tax_unit_has_adult = (
             person.tax_unit("age_head", period) >= p.adult_age_threshold
         ) | (person.tax_unit("age_spouse", period) >= p.adult_age_threshold)
+        # The fallback sits on the head, so the head's own flag decides
+        # whether it counts.
         tax_unit_agi_fallback = (
             (tax_unit_person_agi == 0)
             * person("is_tax_unit_head", period)
             * tax_unit_has_adult
+            * ~parent_or_grandparent
             * tax_unit_agi
         )
         return household.sum(

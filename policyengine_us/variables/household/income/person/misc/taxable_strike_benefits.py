@@ -7,9 +7,11 @@ class taxable_strike_benefits(Variable):
     label = "taxable strike benefits"
     unit = USD
     documentation = (
-        "The part of strike_benefits included in gross income: strike and "
-        "lockout benefits other than gifts (Pub. 525). They are earned income "
-        "(Pub. 596), reported on Form 1040 line 1h from 2022."
+        "Strike and lockout benefits other than gifts, which federal gross "
+        "income includes under current law (Pub. 525); "
+        "strike_benefits_in_gross_income follows the gross income sources "
+        "under a reform. They are earned income (Pub. 596), reported on Form "
+        "1040 line 1h from 2022."
     )
     definition_period = YEAR
     reference = (

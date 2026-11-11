@@ -11,14 +11,19 @@ values:
     # Eligibility income is "all moneys or property ... received of whatever
     # nature and from whatever source derived" (72 P.S. 7301(o.2)). Its (vi)
     # exclusion covers "payments made by employers or labor unions for
-    # programs covering ... strike benefits", which 61 Pa. Code 101.6(c)(9)
-    # reads, for the same words in the compensation definition, as payments
-    # to a strike benefit plan. The Tax Forgiveness guide repeats the (vi)
-    # words in its exclusions and counts employee payments to a cafeteria
-    # plan for strike benefits. Schedule SP (2025) line 10 counts "any
-    # payments received from other persons outside your household", line 5
-    # counts gifts, and the list of income not to include leaves strike
-    # benefits out. So the whole union payment counts, gift part included
+    # programs covering ... strike benefits". The poverty income regulation
+    # (61 Pa. Code 101.1, applied by 123.3) reads those words as "payments
+    # made by employers to labor unions for programs covering ... strike
+    # benefits", counts "gifts of cash or property" and "other income not
+    # specified as 'Income Not Included'", and its list of income not
+    # included leaves strike benefits out; 61 Pa. Code 101.6(c)(9) reads the
+    # same words in the compensation definition as payments to a strike
+    # benefit plan. The Tax Forgiveness guide repeats the (vi) words in its
+    # exclusions and counts employee payments to a cafeteria plan for strike
+    # benefits. Schedule SP (2025) line 10 counts "any payments received from
+    # other persons outside your household", line 5 counts gifts, and its
+    # list of income not to include leaves strike benefits out. So the whole
+    # union payment counts, gift part included
     # (us-pa:tax-forgiveness-strike-benefits in candidates.yaml).
     - strike_benefits
     # gifts awards and prizes
@@ -36,6 +41,10 @@ metadata:
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_taxforgiveness.pdf#page=5
     - title: 72 P.S. 7301(o.2), poverty income
       href: https://www.palegis.us/statutes/unconsolidated/law-information/view-statute?txtType=HTM&SessYr=1971&ActNum=0002.&ChapterNum=003.&SectionNum=001.&SubsectionNum=0
+    - title: 61 Pa. Code 101.1, poverty income (i)(F), (ii) and (iii)
+      href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.1.html
+    - title: 61 Pa. Code 123.3, taxability under special provisions
+      href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter123/s123.3.html
     - title: 61 Pa. Code 101.6(c)(9), payments for strike benefit plans
       href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
     - title: "2025 PA-40 instructions, Schedule SP Section III, lines 5 and 10 and the income not to include #page 38-39"
