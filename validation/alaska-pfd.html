@@ -334,24 +334,118 @@
           <section class="tex2jax_ignore mathjax_ignore" id="alaska-permanent-fund-dividend-in-model-comparisons">
 <h1>Alaska Permanent Fund Dividend in model comparisons<a class="headerlink" href="#alaska-permanent-fund-dividend-in-model-comparisons" title="Link to this heading">¶</a></h1>
 <p>PolicyEngine automatically calculates <code class="docutils literal notranslate"><span class="pre">ak_permanent_fund_dividend</span></code> and
-<code class="docutils literal notranslate"><span class="pre">ak_energy_relief</span></code> for each person whose household is in Alaska. These amounts
-are calculated benefits, rather than imputed income or fixed default inputs.
-Current Alaska residence is an eligibility proxy: the model does not check an
-application, prior-year residence, or actual receipt. Supplying wages and other
-known income does not disable either calculation.</p>
+<code class="docutils literal notranslate"><span class="pre">ak_energy_relief</span></code> for each person who lives in Alaska, holds one of the
+immigration statuses in the dividend statute, and takes up the dividend. These
+amounts are calculated benefits, rather than imputed income or fixed default
+inputs. PolicyEngine cannot resolve the statute’s other tests from its inputs:
+an application, residence on the application date and during all of the prior
+calendar year, 72 consecutive hours of presence in the prior two years,
+allowable absences, Selective Service compliance, or a felony sentence or
+conviction-based incarceration during that year. <code class="docutils literal notranslate"><span class="pre">is_incarcerated</span></code> records no
+conviction and does not tie to that year, so it does not affect the dividend.
+Supplying wages and other known income does not disable either calculation.</p>
 <p>The regular PFD is included in federal gross income for nondependent people.
 A dependent child’s PFD is not automatically added to the parent’s adjusted
 gross income (AGI). Tax-unit membership alone does not determine dependent
 status; supply explicit roles or dependent status when constructing a household.
 The regular dividend appears on <a class="reference external" href="https://www.irs.gov/pub/irs-prior/f1040s1--2022.pdf#page=1">2022 Schedule 1, line
 8g</a>.</p>
+<section id="who-receives-the-dividend">
+<h2>Who receives the dividend<a class="headerlink" href="#who-receives-the-dividend" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ak_permanent_fund_dividend_eligible</span></code> applies the status test in <a class="reference external" href="https://www.akleg.gov/basis/statutes.asp#43.23.005">AS
+43.23.005(a)(5)</a>: a citizen,
+an alien lawfully admitted for permanent residence, a refugee, or an asylee.</p>
+<p>In <em>State v. Andrade</em>, 23 P.3d 58 (Alaska 2001), the Alaska Supreme Court held
+that the state phrase does not incorporate the federal definition: an alien must
+be legally present and able to form the intent to remain in Alaska. In <a class="reference external" href="https://www.akleg.gov/basis/aac.asp#15.23.154">15 AAC
+23.154(a)</a>, the Department of
+Revenue applies that reading to a status under 8 U.S.C. 1101 to 1189 that lets
+the alien adopt the United States as their domicile. The department lists
+immigrants, nonimmigrants whose status requires no foreign residence, people on
+indefinite parole, and conditional permanent residents. PolicyEngine has no
+status for the last three, so code them as <code class="docutils literal notranslate"><span class="pre">LEGAL_PERMANENT_RESIDENT</span></code>. Under 15
+AAC 23.154(b) and (d), a person whose status requires a foreign residence fails,
+and a limited-stay nonimmigrant fails the residence test until they take a
+significant step toward a permanent or indefinite status. On its <a class="reference external" href="https://pfd.alaska.gov/eligibility/immigration">immigration
+page</a>, the department’s
+Permanent Fund Dividend Division also describes paths for US nationals and
+Compact of Free Association migrants. PolicyEngine has no status for those
+either, so code a person the Division accepts as <code class="docutils literal notranslate"><span class="pre">LEGAL_PERMANENT_RESIDENT</span></code>.</p>
+<p>PolicyEngine leaves the other values of <code class="docutils literal notranslate"><span class="pre">immigration_status</span></code> out:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PAROLED_ONE_YEAR</span></code> does not say a parole runs indefinitely. In <a class="reference external" href="https://aws.state.ak.us/OAH/Decision/Display?rec=7350">OAH No.
+25-3180-PFD</a>, an
+administrative law judge upheld the Division’s denial of a 2025 dividend to a
+fixed-term parolee.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TPS</span></code> (8 U.S.C. 1254a) and <code class="docutils literal notranslate"><span class="pre">DEPORTATION_WITHHELD</span></code> (8 U.S.C. 1231(b)(3)) fall
+outside 8 U.S.C. 1101 to 1189, and a person coded <code class="docutils literal notranslate"><span class="pre">DACA</span></code> holds no status under
+those sections. A TPS holder might meet <em>Andrade</em>’s test alone, but the court
+did not address TPS, and PolicyEngine follows the regulation’s range.</p></li>
+<li><p>A person coded <code class="docutils literal notranslate"><span class="pre">UNDOCUMENTED</span></code> lacks the legal presence the court required in
+<em>Andrade</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUBAN_HAITIAN_ENTRANT</span></code> and <code class="docutils literal notranslate"><span class="pre">CONDITIONAL_ENTRANT</span></code> do not say whether the person
+may adopt the United States as their domicile.</p></li>
+</ul>
+<p>Alaska tests the status a person holds during the qualifying year and on the
+application date (15 AAC 23.154(e)), and under 15 AAC 23.154(c) an alien’s
+qualifying year starts on January 1 after the person gains the status.
+PolicyEngine has no status history, so it reads the status for the dividend year.</p>
+<p><code class="docutils literal notranslate"><span class="pre">takes_up_ak_permanent_fund_dividend_if_eligible</span></code> covers the statute’s other
+tests and anyone who does not apply. It defaults to true, so a household
+calculation pays every eligible Alaska resident unless an input says otherwise.
+Set it to false for a person Alaska did not pay. Both variables gate
+<code class="docutils literal notranslate"><span class="pre">ak_energy_relief</span></code> as well, because Alaska pays energy relief as part of the
+dividend (<a class="reference external" href="https://www.akleg.gov/PDF/34/Bills/HB0263Z.PDF#page=84">sec. 13, ch. 34, SLA
+2026</a>).</p>
+<section id="children-under-one">
+<h3>Children under one<a class="headerlink" href="#children-under-one" title="Link to this heading">¶</a></h3>
+<p>A child born during the dividend year cannot receive that year’s dividend. The
+child fails AS 43.23.005(a)(3), and under (c) only children born in the two
+calendar years before the dividend year qualify. The Division <a class="reference external" href="https://pfd.alaska.gov/application/applying-for-a-child">takes
+applications</a> for a child
+“born on or before December 31st of the qualifying year.” A child born during the
+qualifying year qualifies only under (c), and only through a parent eligible for
+that dividend. <code class="docutils literal notranslate"><span class="pre">ak_permanent_fund_dividend_eligible</span></code> tests the child’s own
+status, not a parent’s eligibility.</p>
+<p>PolicyEngine cannot identify a child born during the dividend year from <code class="docutils literal notranslate"><span class="pre">age</span></code>,
+because a child aged 0 may have a birth date in either calendar year. Populace
+takes <code class="docutils literal notranslate"><span class="pre">age</span></code> from the CPS ASEC, which the Census Bureau <a class="reference external" href="https://www.census.gov/topics/income-poverty/poverty/guidance/surveys-programs.html">conducts in February,
+March and
+April</a>,
+recording each person’s age <a class="reference external" href="https://www.census.gov/programs-surveys/cps/technical-documentation/subject-definitions.html">as of the survey
+date</a>.
+In each survey, the Bureau asks about income in the year before, which Populace
+records as <code class="docutils literal notranslate"><span class="pre">source_year</span></code>. Of the people aged 0 in Populace’s 2024 Alaska records,
+74% come from the 2023 survey. If each record keeps its own survey date, 92% to
+96% of them have birth dates in 2022 or 2023 and can qualify under (c). If every
+survey fell in the dividend year instead, 71% to 87% could. The ranges run from
+mid-February to mid-April interviews. <code class="docutils literal notranslate"><span class="pre">birth_year</span></code>, which subtracts <code class="docutils literal notranslate"><span class="pre">age</span></code> from
+the year, would put all of them in the dividend year. So the model pays a
+resident aged 0 unless the take-up input says otherwise. Set that input to false
+for a child born during the dividend year, or for a child born during the
+qualifying year who has no eligible parent.</p>
+</section>
+<section id="recipients-in-microsimulation">
+<h3>Recipients in microsimulation<a class="headerlink" href="#recipients-in-microsimulation" title="Link to this heading">¶</a></h3>
+<p>Populace does not set <code class="docutils literal notranslate"><span class="pre">takes_up_ak_permanent_fund_dividend_if_eligible</span></code> yet, so
+the default microsimulation pays everyone who passes the status test: 730,150
+people for 2024, against the <a class="reference external" href="https://pfd.alaska.gov/division-info/summary-of-dividend-applications-payments">624,489 applications Alaska
+paid</a>
+for that dividend year. The Microcosm data pipeline can close that gap by setting
+the flag from reported receipt and Alaska’s paid count; see
+<a class="reference external" href="https://github.com/PolicyEngine/microcosm/issues/1551">microcosm issue 1551</a>.
+The microsimulation has no inputs before its 2024 base year, so it cannot report
+recipients for earlier years.</p>
+</section>
+</section>
 <section id="override-calculated-payments">
 <h2>Override calculated payments<a class="headerlink" href="#override-calculated-payments" title="Link to this heading">¶</a></h2>
 <p>Supply either variable as an input on the person to replace its calculated
-amount. To exclude both transfers from a controlled comparison, set both to zero
-for <strong>every person</strong>. Overriding only <code class="docutils literal notranslate"><span class="pre">ak_permanent_fund_dividend</span></code> leaves energy
-relief in place. Overriding only tax-unit AGI leaves the underlying person income
-and benefit amounts unchanged.</p>
+amount. Overriding only <code class="docutils literal notranslate"><span class="pre">ak_permanent_fund_dividend</span></code> leaves energy relief in
+place. To exclude both transfers from a controlled comparison, set
+<code class="docutils literal notranslate"><span class="pre">takes_up_ak_permanent_fund_dividend_if_eligible</span></code> to false or set both payments
+to zero, for <strong>every person</strong>. Overriding only tax-unit AGI leaves the underlying
+person income and benefit amounts unchanged.</p>
 <p>This complete situation retains Alaska residence while excluding both payments:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">people</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">person</span><span class="p">:</span>
@@ -552,6 +646,11 @@ does not establish those facts or extend the 2022 IRS policy to other years.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Alaska Permanent Fund Dividend in model comparisons</a><ul>
+<li><a class="reference internal" href="#who-receives-the-dividend">Who receives the dividend</a><ul>
+<li><a class="reference internal" href="#children-under-one">Children under one</a></li>
+<li><a class="reference internal" href="#recipients-in-microsimulation">Recipients in microsimulation</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#override-calculated-payments">Override calculated payments</a></li>
 <li><a class="reference internal" href="#amounts-by-year">Amounts by year</a></li>
 <li><a class="reference internal" href="#the-2022-regular-dividend-and-energy-relief-split">The 2022 regular dividend and energy relief split</a></li>
