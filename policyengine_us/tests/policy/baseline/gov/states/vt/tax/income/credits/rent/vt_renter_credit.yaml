@@ -146,6 +146,140 @@
   output:
     vt_renter_credit: 1_692
 
+- name: test 11, out-of-state and unknown-county households in one simulation with a Chittenden County household.
+  # defined_for masks the output but the formula still runs over every
+  # household in the simulation. Before the county guard, the New Hampshire
+  # county and the UNKNOWN county reached the Vermont county-keyed tables and
+  # raised ParameterNotFoundError.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+      person3:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_size: 2
+        vt_renter_credit_income: 49_370
+        rent_is_shared_with_another_tax_unit: false
+      tax_unit2:
+        members: [person2]
+        tax_unit_size: 2
+        vt_renter_credit_income: 49_370
+        rent_is_shared_with_another_tax_unit: false
+      tax_unit3:
+        members: [person3]
+        tax_unit_size: 2
+        vt_renter_credit_income: 44_145
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        housing_assistance: 0
+      spm_unit2:
+        members: [person2]
+        housing_assistance: 0
+      spm_unit3:
+        members: [person3]
+        housing_assistance: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+      household2:
+        members: [person2]
+        state_code: NH
+        county: GRAFTON_COUNTY_NH
+      household3:
+        members: [person3]
+        state_code: VT
+        county: UNKNOWN
+  output:
+    # tax_unit1: Chittenden 2025, size 2: full credit limit 31,200, partial
+    #   credit limit 67,540, fair market rent 1,936.
+    #   (67,540 - 49,370) / (67,540 - 31,200) = 0.5;
+    #   Base: ROUND(1,936 * 12 * 0.1, 0) = 2,323;
+    #   0.5 * 2,323 = 1,161.5 -> 1,162 (half up).
+    # tax_unit2: New Hampshire; defined_for zeroes the result.
+    # tax_unit3: UNKNOWN county falls back to Addison 2025, size 2: limits
+    #   27,900 and 60,390, fair market rent 1,410.
+    #   (60,390 - 44,145) / (60,390 - 27,900) = 0.5;
+    #   Base: ROUND(1,410 * 12 * 0.1, 0) = 1,692;
+    #   0.5 * 1,692 = 846. (Chittenden would give 1,496.)
+    # The Department of Taxes 2025 Renter Credit Website Calculator gives
+    # 1,162 (Chittenden) and 846 (Addison) for these inputs.
+    vt_renter_credit: [1_162, 0, 846]
+
+- name: test 12, tax units of nine or more use the eight-person income limits and fair market rent.
+  # The income limit and fair market rent tables run through family size 8.
+  # The Department of Taxes renter credit calculator looks up
+  # IF(Household_Size>8,8,Household_Size), so larger households use the
+  # 8-person values. Before the size cap, sizes 9 and 12 raised
+  # ParameterNotFoundError even with only Vermont households.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+      person3:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_size: 8
+        vt_renter_credit_income: 82_780
+        rent_is_shared_with_another_tax_unit: false
+      tax_unit2:
+        members: [person2]
+        tax_unit_size: 9
+        vt_renter_credit_income: 82_780
+        rent_is_shared_with_another_tax_unit: false
+      tax_unit3:
+        members: [person3]
+        tax_unit_size: 12
+        vt_renter_credit_income: 82_780
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        housing_assistance: 0
+      spm_unit2:
+        members: [person2]
+        housing_assistance: 0
+      spm_unit3:
+        members: [person3]
+        housing_assistance: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+      household2:
+        members: [person2]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+      household3:
+        members: [person3]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # Chittenden 2025, size 8: full credit limit 54,150, partial credit limit
+    # 111,410, fair market rent 2,083.
+    # (111,410 - 82,780) / (111,410 - 54,150) = 0.5;
+    # Base: ROUND(2,083 * 12 * 0.1, 0) = 2,500;
+    # 0.5 * 2,500 = 1,250 for all three tax units.
+    # (The 7-person limits, 48,650 and 104,650, would give 976.)
+    # The Department of Taxes 2025 Renter Credit Website Calculator gives
+    # 1,250 for family sizes 8, 9 and 10 (its maximum input) and 976 for 7.
+    vt_renter_credit: [1_250, 1_250, 1_250]
+
 # Franklin and Grand Isle use the state-average fair market rent (32 V.S.A.
 # 6061(7)(C)). Expected values are the department's Renter Credit Website
 # Calculators (2022, 2023, 2025), recalculated in LibreOffice for each household:
@@ -496,3 +630,91 @@
     # Full limit 31,050 = HUD FY2021 extremely low-income limit (PE had 31,040).
     # Full credit: ROUND(2,083 x 12 x 0.1, 0) = ROUND(2,499.6, 0) = 2,500.
     vt_renter_credit: 2_500
+
+- name: Vermont household with a New Hampshire county uses Addison in a mixed simulation
+  # An in-state household with another state's county must not reach the
+  # Vermont county-keyed tables, even with a normal Vermont household present.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_size: 2
+        vt_renter_credit_income: 49_370
+        rent_is_shared_with_another_tax_unit: false
+      tax_unit2:
+        members: [person2]
+        tax_unit_size: 2
+        vt_renter_credit_income: 44_145
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        housing_assistance: 0
+      spm_unit2:
+        members: [person2]
+        housing_assistance: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+      household2:
+        members: [person2]
+        state_code: VT
+        county: GRAFTON_COUNTY_NH
+  output:
+    # tax_unit1: Chittenden, size 2: ROUND(1,936 * 12 * 0.1, 0) = 2,323;
+    #   (67,540 - 49,370) * 2,323 / (67,540 - 31,200) = 1,161.5 -> 1,162.
+    # tax_unit2: the NH county falls back to Addison, size 2:
+    #   ROUND(1,410 * 12 * 0.1, 0) = 1,692;
+    #   (60,390 - 44,145) * 1,692 / (60,390 - 27,900) = 846.
+    vt_renter_credit: [1_162, 846]
+
+- name: UTF-8 byte counties preserve the Vermont credit in a mixed-state simulation
+  # !!binary supplies actual bytes through Core's YAML loader. The second
+  # county is DOÑA_ANA_COUNTY_NM encoded as UTF-8; an ASCII cast raises before
+  # defined_for can mask the New Mexico household.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_size: 2
+        vt_renter_credit_income: 49_370
+        rent_is_shared_with_another_tax_unit: false
+      tax_unit2:
+        members: [person2]
+        tax_unit_size: 2
+        vt_renter_credit_income: 49_370
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        housing_assistance: 0
+      spm_unit2:
+        members: [person2]
+        housing_assistance: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+        county_str: !!binary Q0hJVFRFTkRFTl9DT1VOVFlfVlQ=  # CHITTENDEN_COUNTY_VT
+      household2:
+        members: [person2]
+        state_code: NM
+        county_str: !!binary RE/DkUFfQU5BX0NPVU5UWV9OTQ==  # DOÑA_ANA_COUNTY_NM
+  output:
+    # Chittenden, size 2: midpoint of the income limits gives half the
+    # rounded $2,323 base credit, rounded half up to $1,162.
+    vt_renter_credit: [1_162, 0]

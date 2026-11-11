@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.geography.county_helpers import county_has_state_suffix
 from policyengine_us.variables.gov.states.md.msde.ccs.md_ccs_provider_type import (
     MDCCSProviderType,
 )
@@ -27,9 +28,17 @@ class md_ccs_payment_rate(Variable):
         center_rate = p.formal.licensed_center[region][age_group] * unit_share
         family_rate = p.formal.licensed_family[region][age_group] * unit_share
 
+        # defined_for does not short-circuit vectorized execution, so
+        # non-Maryland counties are masked before indexing the county-keyed
+        # informal rate table. A Maryland household with an unknown county or
+        # another state's county also falls back to Allegany.
         county = person.household("county_str", period)
         in_md = person.household("state_code_str", period) == "MD"
-        safe_county = where(in_md, county, "ALLEGANY_COUNTY_MD")
+        safe_county = where(
+            in_md & county_has_state_suffix(county, "MD"),
+            county,
+            "ALLEGANY_COUNTY_MD",
+        )
         informal_rate = p.informal.rates[safe_county][age_group] * unit_share
 
         return select(
