@@ -45,8 +45,9 @@ values:
     # Nontaxable combat pay - not available.
     - workers_compensation
     # Nontaxable part of social security and railroad retirement benefits;
-    # railroad retirement benefits are not included.
-    - tax_exempt_social_security
+    # railroad retirement benefits are not included. The head's and spouse's
+    # benefits only: a tax unit dependent's benefits are the dependent's own.
+    - filer_tax_exempt_social_security
     # Nontaxable IRA, pension, or annuity distributions (excluding rollovers).
     - tax_exempt_pension_income
     - tax_exempt_retirement_distributions

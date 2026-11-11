@@ -2,13 +2,21 @@ description: Maine accounts for the following income sources for the sales and p
 values:
   2021-01-01:
     - irs_gross_income
-    - tax_exempt_social_security
+    # Social Security "to the extent not included in federal adjusted gross
+    # income": the filers' own, Form 1040 line 6a less line 6b (Schedule
+    # PTFC/STFC line 2b). A tax unit dependent's benefits are the dependent's
+    # own.
+    - filer_tax_exempt_social_security
     - tax_exempt_interest_income
 metadata:
   unit: list
   label: Maine sales and property tax credit income sources
   reference:
-    - title: §5213-A. Sales tax fairness credit (1) (B) 
+    - title: §5213-A. Sales tax fairness credit (1) (B)
       href: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
     - title: §5219-KK. Property tax fairness credit for tax (1) (D)
       href: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+    - title: "Maine Revenue Services Rule 813, Property Tax Fairness Credit, .01(C) and .03 #page 1,4"
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/Rule_813_May_2023.pdf#page=1
+    - title: 2025 Form 1040ME Schedule PTFC/STFC, lines 2a-3
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=1
