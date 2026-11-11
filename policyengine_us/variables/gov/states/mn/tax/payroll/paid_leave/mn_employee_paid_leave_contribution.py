@@ -11,9 +11,9 @@ class mn_employee_paid_leave_contribution(Variable):
         "under subd. 5a, at least a quarter of the full rate); employees pay "
         "by wage deduction only the part the employer does not pay (Minn. "
         "Stat. 268B.14, subds. 1, 3 and 5a). This is the largest such part, "
-        "half the premium at the full rate, times "
-        "state_payroll_premium_deduction_share. The employer premium is not "
-        "modeled."
+        "mn_paid_leave_permitted_employee_rate times taxable wages, times "
+        "state_payroll_premium_deduction_share. The employer pays the rest "
+        "of the premium (mn_employer_paid_leave_contribution)."
     )
     definition_period = YEAR
     unit = USD
@@ -21,6 +21,6 @@ class mn_employee_paid_leave_contribution(Variable):
     reference = "https://www.revisor.mn.gov/statutes/cite/268B.14"
 
     def formula(person, period, parameters):
-        rate = parameters(period).gov.states.mn.tax.payroll.paid_leave.employee_rate
+        rate = person("mn_paid_leave_permitted_employee_rate", period)
         permitted = rate * person("mn_paid_leave_taxable_wages", period)
         return permitted * person("state_payroll_premium_deduction_share", period)

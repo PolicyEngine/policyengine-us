@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
     _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_budget_total,
+)
 
 
 class medicaid_optional_senior_or_disabled_countable_income(Variable):
@@ -92,9 +95,15 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             max_(paid_premiums - paid_part_b, 0) + full_part_b,
             paid_premiums,
         )
+        # 22 CCR 50555.2(a) deducts premiums paid by and purchased for any
+        # person in the family. A couple's budget takes both spouses'
+        # premiums and those of unmarried tax dependents in their marital
+        # unit and tax unit. It leaves out another couple's dependent and an
+        # unrelated adult, whose income also stays out of
+        # ssi_marital_unearned_income when a situation omits marital units.
         premiums = where(
             couple_computation,
-            person.marital_unit.sum(own_premiums),
+            _ssi_couple_budget_total(person, period, own_premiums),
             own_premiums,
         )
         deducts_premiums = p.deducts_health_insurance_premiums[state].astype(bool)

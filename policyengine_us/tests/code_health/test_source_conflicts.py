@@ -145,6 +145,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/parameters/gov/states/or/ohcs/liheap/payment/income_band.yaml": 1,
     "policyengine_us/parameters/gov/states/sd/dss/liheap/income/limits/table/in_effect.yaml": 1,
     "policyengine_us/parameters/gov/states/ut/dwf/ccap/copay/income_limits.yaml": 1,
+    "policyengine_us/parameters/gov/states/vt/tax/income/agi/student_loan_interest/income_limit.yaml": 1,
     "policyengine_us/parameters/gov/states/wi/tax/income/credits/homestead/income/disqualified_loss_sources.yaml": 1,
     "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/eligibility/min.yaml": 1,
     "policyengine_us/parameters/gov/territories/pr/tax/income/credits/earned_income/eligibility/separate_filer.yaml": 1,
@@ -170,9 +171,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/fl/commerce/liheap/fl_liheap.py": 1,
     "policyengine_us/variables/gov/states/hi/tax/income/credits/cdcc/hi_cdcc_qualifying_individuals.py": 1,
     "policyengine_us/variables/gov/states/hi/tax/income/subtractions/hi_student_loan_interest_adjustment.py": 1,
-    "policyengine_us/variables/gov/states/ks/tax/income/deductions/ks_itemized_deductions.py": 1,
     "policyengine_us/variables/gov/states/ky/dcbs/liheap/ky_liheap.py": 1,
-    "policyengine_us/variables/gov/states/md/tax/income/capital_gains/md_net_capital_gain.py": 1,
     "policyengine_us/variables/gov/states/mn/dcyf/mfip/income/earned/mn_mfip_dependent_care_deduction.py": 1,
     "policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py": 1,
     "policyengine_us/variables/gov/states/mo/dese/ccs/eligibility/mo_ccs_income_eligible.py": 1,
@@ -180,7 +179,6 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/ny/tax/income/credits/ny_household_credit_potential.py": 2,
     "policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py": 1,
     "policyengine_us/variables/gov/states/vt/tax/income/credits/cdcc/vt_low_income_cdcc_eligible.py": 1,
-    "policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_categorical_eligible.py": 1,
     "policyengine_us/variables/gov/territories/pr/tax/income/pr_agi.py": 1,
 }
 

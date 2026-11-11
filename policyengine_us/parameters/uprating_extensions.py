@@ -864,6 +864,303 @@ def extend_wa_millionaires_standard_deduction(
     )
 
 
+# 42 U.S.C. 1395i-2(d)(4): an individual with 30 to 39 quarters of coverage
+# pays the Part A premium reduced by 45 percent.
+MEDICARE_PART_A_REDUCED_PREMIUM_SHARE = 0.55
+
+
+def round_half_up(value: float, interval: float) -> float:
+    """Round ``value`` to the nearest multiple of ``interval``, sending an
+    amount midway between two multiples to the higher one, as 42 U.S.C.
+    1395i-2(d)(2) does for the Part A premium and 1395e(b)(1) for the Part A
+    deductible."""
+    step = Decimal(repr(interval))
+    return float(
+        (Decimal(repr(value)) / step).quantize(Decimal(1), rounding=ROUND_HALF_UP)
+        * step
+    )
+
+
+def extend_medicare_part_a_premiums(parameters: ParameterNode, end_year: int) -> None:
+    """Project the Medicare Part A full and reduced monthly premiums.
+
+    Each year after the last CMS-published one, the full premium is the last
+    published premium grown with the Medicare Trustees' projected standard
+    premium, rounded to the nearest dollar with 50-cent amounts rounded up
+    (42 U.S.C. 1395i-2(d)(2)). The reduced premium is the full premium less
+    45 percent (1395i-2(d)(4)), rounded the same way; CMS's published
+    reduced premiums follow that rule in every year from 2015 to 2026. CMS
+    values encoded in the YAML take precedence for their own years.
+    """
+    part_a = parameters.gov.hhs.medicare.part_a
+    series = parameters.calibration.gov.hhs.cms.medicare_part_a_premium_per_enrollee
+    full, reduced = part_a.full_premium, part_a.reduced_premium
+
+    def last_published_year(parameter: Parameter) -> int:
+        return max(int(value.instant_str[:4]) for value in parameter.values_list)
+
+    last_full_year = last_published_year(full)
+    last_reduced_year = last_published_year(reduced)
+    base_period = f"{last_full_year}-01-01"
+    scale = full(base_period) / series(base_period)
+    for year in range(last_full_year + 1, end_year + 1):
+        period = f"{year}-01-01"
+        full_premium = round_half_up(scale * series(period), 1)
+        full.update(period=f"year:{period}:1", value=full_premium)
+    for year in range(last_reduced_year + 1, end_year + 1):
+        period = f"{year}-01-01"
+        reduced.update(
+            period=f"year:{period}:1",
+            value=round_half_up(
+                MEDICARE_PART_A_REDUCED_PREMIUM_SHARE * full(period), 1
+            ),
+        )
+    for parameter in (full, reduced):
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
+
+
+def extend_medicare_part_a_deductible(parameters: ParameterNode, end_year: int) -> None:
+    """Project the Medicare Part A inpatient hospital deductible.
+
+    Each year after the last CMS-published one, the deductible is the last
+    published deductible grown with the Medicare Trustees' projected
+    deductible, rounded to the nearest multiple of $4. An amount midway
+    between two multiples goes to the higher one (42 U.S.C. 1395e(b)(1)),
+    which core's ``nearest`` uprating rounding would send to the even
+    multiple. CMS values encoded in the YAML take precedence for their own
+    years.
+    """
+    deductible = parameters.gov.hhs.medicare.part_a.deductible
+    series = parameters.calibration.gov.hhs.cms.medicare_part_a_deductible
+    last_year = max(int(value.instant_str[:4]) for value in deductible.values_list)
+    base_period = f"{last_year}-01-01"
+    scale = deductible(base_period) / series(base_period)
+    for year in range(last_year + 1, end_year + 1):
+        period = f"{year}-01-01"
+        deductible.update(
+            period=f"year:{period}:1",
+            value=round_half_up(scale * series(period), 4),
+        )
+    deductible.update(
+        start=instant(f"{end_year}-01-01"),
+        value=deductible(f"{end_year}-01-01"),
+    )
+
+
+# 42 U.S.C. 1395r(i)(3)(C)(i)(III): the dollar amounts of the applicable
+# percentage table for an unmarried individual, before the (5) inflation
+# adjustment. The first is also the (2)(A) threshold amount.
+MEDICARE_IRMAA_STATUTORY_AMOUNTS = (85_000, 107_000, 133_500, 160_000)
+MEDICARE_IRMAA_STATUTORY_TOP_AMOUNT = 500_000
+# 1395r(i)(5)(A): for 2020 on, CPI-U for the 12 months ending August of the
+# preceding year over the 12 months ending August 2018. (5)(C): the $500,000
+# amount is not adjusted before 2028, and from 2028 is adjusted against the 12
+# months ending August 2026.
+MEDICARE_IRMAA_CPI_BASE_YEAR = 2018
+MEDICARE_IRMAA_FIRST_INDEXED_YEAR = 2020
+MEDICARE_IRMAA_TOP_CPI_BASE_YEAR = 2026
+MEDICARE_IRMAA_TOP_FIRST_INDEXED_YEAR = 2028
+# 1395r(i)(3)(C)(i)(III): the applicable percentage of each adjusted tier, by
+# bracket of each filing status's scale (the first bracket pays no
+# adjustment). A married individual filing separately who lives with the
+# spouse pays an adjustment only above the unmarried threshold amount
+# ((i)(1)), which is above where (C)(iii) starts the 80 percent tier, so that
+# scale has only the 80 and 85 percent tiers.
+MEDICARE_IRMAA_APPLICABLE_PERCENTAGES = {
+    "single": (0.35, 0.50, 0.65, 0.80, 0.85),
+    "joint": (0.35, 0.50, 0.65, 0.80, 0.85),
+    "head_of_household": (0.35, 0.50, 0.65, 0.80, 0.85),
+    "surviving_spouse": (0.35, 0.50, 0.65, 0.80, 0.85),
+    "separate": (0.80, 0.85),
+}
+
+
+def round_medicare_irmaa_amount(amount: float) -> float:
+    """Round an adjusted dollar amount to the nearest multiple of $1,000.
+
+    42 U.S.C. 1395r(i)(5)(B) names no rule for an amount midway between two
+    multiples; it rounds up here.
+    """
+    return float(
+        (Decimal(repr(amount)) / 1_000).quantize(Decimal(1), rounding=ROUND_HALF_UP)
+        * 1_000
+    )
+
+
+def get_medicare_irmaa_unmarried_amounts(
+    parameters: ParameterNode, year: int
+) -> Tuple[Tuple[float, ...], float]:
+    """The unmarried dollar amounts of the IRMAA table for ``year``.
+
+    Returns the four amounts above which the 35, 50, 65 and 80 percent tiers
+    begin, and the amount at which the 85 percent tier begins, each adjusted
+    under 42 U.S.C. 1395r(i)(5): increased by the percentage (if any) by which
+    average CPI-U for the 12 months ending August of the preceding year
+    exceeds its base-period average, then rounded to the nearest $1,000.
+    """
+    if year < MEDICARE_IRMAA_FIRST_INDEXED_YEAR:
+        raise ValueError(
+            f"1395r(i)(5) adjusts against August 2018 only from "
+            f"{MEDICARE_IRMAA_FIRST_INDEXED_YEAR}; got {year}."
+        )
+    window = get_cpi_u_average_for_12_months_ending_august(parameters, year - 1)
+
+    def adjust(amount: int, base_year: int) -> float:
+        base = get_cpi_u_average_for_12_months_ending_august(parameters, base_year)
+        return round_medicare_irmaa_amount(amount * (1 + max(window / base - 1, 0)))
+
+    lower = tuple(
+        adjust(amount, MEDICARE_IRMAA_CPI_BASE_YEAR)
+        for amount in MEDICARE_IRMAA_STATUTORY_AMOUNTS
+    )
+    if year < MEDICARE_IRMAA_TOP_FIRST_INDEXED_YEAR:
+        top = float(MEDICARE_IRMAA_STATUTORY_TOP_AMOUNT)
+    else:
+        top = adjust(
+            MEDICARE_IRMAA_STATUTORY_TOP_AMOUNT, MEDICARE_IRMAA_TOP_CPI_BASE_YEAR
+        )
+    return lower, top
+
+
+def get_medicare_irmaa_thresholds(
+    lower: Tuple[float, ...], top: float
+) -> Dict[str, Tuple[float, ...]]:
+    """Bracket thresholds of each filing status's IRMAA scale.
+
+    The first four tiers cover income "more than" a dollar amount and the top
+    tier income of "at least" its amount (42 U.S.C. 1395r(i)(3)(C)(i)(III)).
+    A bracket applies from its threshold, so, as in the published years, the
+    first four thresholds sit $1 above their amounts.
+    """
+    if lower[3] - lower[0] >= lower[0]:
+        raise ValueError(
+            "The married filing separately scale assumes its 80 percent tier "
+            "starts below the unmarried threshold amount."
+        )
+    unmarried = (0, *(amount + 1 for amount in lower), top)
+    return {
+        "single": unmarried,
+        "head_of_household": unmarried,
+        "surviving_spouse": unmarried,
+        # (C)(ii): twice the unmarried amounts for the calendar year, but 150 percent
+        # of the unmarried top amount for the calendar year (the $500,000 amount as
+        # adjusted under (5)(C)). Under (5)(B), the Secretary rounds only amounts
+        # increased under (A) or (C).
+        "joint": (0, *(2 * amount + 1 for amount in lower), 1.5 * top),
+        # (C)(iii): each amount less the unmarried threshold amount, with no
+        # adjustment at or below that threshold ((i)(1)).
+        "separate": (0, lower[0] + 1, top - lower[0]),
+    }
+
+
+def extend_medicare_irmaa_thresholds(parameters: ParameterNode, end_year: int) -> None:
+    """Project the Medicare Part B and Part D IRMAA income thresholds.
+
+    Part D uses the Part B thresholds (42 U.S.C. 1395w-113(a)(7)(A) and
+    (B)(i)(I)). Each year after the last CMS-published one is computed from
+    the statutory amounts (see ``get_medicare_irmaa_unmarried_amounts``)
+    rather than chained from the prior year's rounded values. CMS values
+    encoded in the YAML take precedence for their own years.
+    """
+    medicare = parameters.gov.hhs.medicare
+    thresholds_by_year = {}
+    for program in (medicare.part_b, medicare.part_d):
+        for name, scale in program.irmaa.children.items():
+            if name not in MEDICARE_IRMAA_APPLICABLE_PERCENTAGES:
+                raise ValueError(f"Unexpected Medicare IRMAA scale: {name}.")
+            for index, bracket in enumerate(scale.brackets):
+                threshold = bracket.threshold
+                first_projected_year = 1 + max(
+                    int(value.instant_str[:4]) for value in threshold.values_list
+                )
+                for year in range(first_projected_year, end_year + 1):
+                    if year not in thresholds_by_year:
+                        thresholds_by_year[year] = get_medicare_irmaa_thresholds(
+                            *get_medicare_irmaa_unmarried_amounts(parameters, year)
+                        )
+                    year_thresholds = thresholds_by_year[year][name]
+                    if len(year_thresholds) != len(scale.brackets):
+                        raise ValueError(
+                            f"Expected {len(year_thresholds)} brackets in the "
+                            f"{name} Medicare IRMAA scale; found "
+                            f"{len(scale.brackets)}."
+                        )
+                    threshold.update(
+                        period=f"year:{year}-01-01:1",
+                        value=float(year_thresholds[index]),
+                    )
+                threshold.update(
+                    start=instant(f"{end_year}-01-01"),
+                    value=threshold(f"{end_year}-01-01"),
+                )
+
+
+def get_medicare_part_d_irmaa_amount(
+    base_beneficiary_premium: float,
+    applicable_percentage: float,
+    base_percent: float,
+) -> float:
+    """One Part D income-related monthly adjustment amount.
+
+    42 U.S.C. 1395w-113(a)(7)(B): the base beneficiary premium times the
+    applicable percentage less the base beneficiary premium percent, divided
+    by that percent. CMS publishes the amounts to the nearest 10 cents.
+    """
+    premium = Decimal(repr(base_beneficiary_premium))
+    applicable = Decimal(repr(applicable_percentage))
+    base = Decimal(repr(base_percent))
+    amount = premium * (applicable - base) / base
+    return float(amount.quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))
+
+
+def extend_medicare_part_d_irmaa_amounts(
+    parameters: ParameterNode, end_year: int
+) -> None:
+    """Project the Medicare Part D income-related monthly adjustment amounts.
+
+    Each year after the last CMS-published one applies 42 U.S.C.
+    1395w-113(a)(7)(B) to the Medicare Trustees' projected base beneficiary
+    premium. The base beneficiary premium percent falls from 25.5 percent to
+    the (a)(9) percent in 2030, which raises every amount; the Trustees
+    expect 20 percent. CMS values encoded in the YAML take precedence for
+    their own years.
+    """
+    base_beneficiary_premium = parameters.calibration.gov.hhs.cms.medicare_part_d_base_beneficiary_premium_per_enrollee
+    part_d = parameters.gov.hhs.medicare.part_d
+    for name, scale in part_d.irmaa.children.items():
+        applicable_percentages = MEDICARE_IRMAA_APPLICABLE_PERCENTAGES.get(name)
+        if applicable_percentages is None or len(applicable_percentages) != len(
+            scale.brackets[1:]
+        ):
+            raise ValueError(
+                f"Unexpected Medicare Part D IRMAA scale or bracket count: {name}."
+            )
+        for bracket, applicable_percentage in zip(
+            scale.brackets[1:], applicable_percentages
+        ):
+            amount = bracket.amount
+            first_projected_year = 1 + max(
+                int(value.instant_str[:4]) for value in amount.values_list
+            )
+            for year in range(first_projected_year, end_year + 1):
+                period = f"{year}-01-01"
+                amount.update(
+                    period=f"year:{period}:1",
+                    value=get_medicare_part_d_irmaa_amount(
+                        base_beneficiary_premium(period),
+                        applicable_percentage,
+                        part_d.base_beneficiary_premium_percent(period),
+                    ),
+                )
+            amount.update(
+                start=instant(f"{end_year}-01-01"),
+                value=amount(f"{end_year}-01-01"),
+            )
+
+
 def long_range_growth_rate(
     year: int,
     last_projected_year: int,
@@ -1349,6 +1646,43 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_month=1,
         period_day=1,
     )
+
+    # Medicare Part A standard premium and inpatient hospital deductible, and
+    # Part D base beneficiary premium (January values, last Trustees
+    # projection year 2035). The Part A premiums, the deductible and the Part
+    # D income-related adjustment amounts are computed from them below.
+    for medicare_series in (
+        parameters.calibration.gov.hhs.cms.medicare_part_a_premium_per_enrollee,
+        parameters.calibration.gov.hhs.cms.medicare_part_a_deductible,
+        parameters.calibration.gov.hhs.cms.medicare_part_d_base_beneficiary_premium_per_enrollee,
+    ):
+        extend_parameter_values(
+            medicare_series,
+            last_projected_year=2035,
+            end_year=END_YEAR,
+            period_month=1,
+            period_day=1,
+        )
+
+    # Medicare Part A full and reduced premiums follow the Trustees' projected
+    # standard premium extended above, with the reduced premium 45 percent
+    # below the full one (42 U.S.C. 1395i-2(d)).
+    extend_medicare_part_a_premiums(parameters, end_year=END_YEAR)
+
+    # The Medicare Part A deductible follows the Trustees' projected
+    # deductible extended above, rounded to $4 with midpoints rounded up
+    # (42 U.S.C. 1395e(b)(1)).
+    extend_medicare_part_a_deductible(parameters, end_year=END_YEAR)
+
+    # Medicare IRMAA income thresholds follow 42 U.S.C. 1395r(i)(5)'s CPI-U
+    # schedule (12 months ending August), computed from the statutory
+    # amounts. Must run after the CPI-U extension above.
+    extend_medicare_irmaa_thresholds(parameters, end_year=END_YEAR)
+
+    # Medicare Part D income-related adjustment amounts follow 42 U.S.C.
+    # 1395w-113(a)(7)(B) applied to the base beneficiary premium extended
+    # above.
+    extend_medicare_part_d_irmaa_amounts(parameters, end_year=END_YEAR)
 
     # Gross Social Security benefit inputs should age with gross Social
     # Security benefits, not taxable Social Security income.
