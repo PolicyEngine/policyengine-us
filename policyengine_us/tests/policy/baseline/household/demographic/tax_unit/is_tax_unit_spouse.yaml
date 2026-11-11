@@ -103,3 +103,230 @@
     is_tax_unit_head: [true, false, false, false]
     is_tax_unit_spouse: [false, true, false, false]
     tax_unit_dependents: 2
+
+- name: Supplied singleton marital units keep an adult child out of the spouse role.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 20_000
+      adult_child:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [adult_child]
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, false]
+    is_tax_unit_dependent: [false, true]
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc_child_count: 1
+    eitc: 4_328
+
+- name: The supplied marital partner takes precedence over an older adult in the same tax unit.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 60
+      relative:
+        age: 55
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, relative, spouse]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      relative_unit:
+        members: [relative]
+  output:
+    is_tax_unit_spouse: [false, false, true]
+    is_tax_unit_dependent: [false, true, false]
+
+- name: An explicit empty marital mapping gives each person a singleton marital unit.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+      adult_child:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    marital_units: {}
+  output:
+    is_tax_unit_spouse: [false, false]
+
+- name: An adult past the qualifying child age in their own marital unit stays the head's spouse.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 75
+        social_security_retirement: 15_000
+      adult_child:
+        age: 45
+        employment_income_before_lsr: 50_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      child_marital_unit:
+        members: [adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: TX
+  output:
+    # No roles are supplied, and the parent has no partner in their marital
+    # unit. At 45 the adult child fails the qualifying child age test
+    # (26 USC 152(c)(3)), so they can't be the parent's dependent. The age
+    # order pairs them with the parent, which keeps their wages on the one
+    # return the model computes for the unit.
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, true]
+    filing_status: JOINT
+    # Provisional income 50,000 + 15,000 x 0.5 = 57,500 is over the 44,000
+    # joint adjusted base. Taxable Social Security is the lesser of
+    # 15,000 x 0.85 = 12,750 and (57,500 - 44,000) x 0.85
+    # + (44,000 - 32,000) x 0.5 = 17,475, so 12,750.
+    # AGI = 50,000 + 12,750 = 62,750.
+    adjusted_gross_income: 62_750
+
+- name: A 19-year-old non-student in their own marital unit stays the head's spouse.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+      adult_child:
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      child_marital_unit:
+        members: [adult_child]
+  output:
+    # The non-student limit is under 19, so a 19-year-old fails the age test.
+    is_tax_unit_spouse: [false, true]
+
+- name: An 18-year-old the same age as the head stays the head's spouse.
+  period: 2025
+  input:
+    people:
+      adult_1:
+        age: 18
+        employment_income_before_lsr: 10_000
+      adult_2:
+        age: 18
+        employment_income_before_lsr: 8_000
+    tax_units:
+      tax_unit:
+        members: [adult_1, adult_2]
+    marital_units:
+      marital_unit_1:
+        members: [adult_1]
+      marital_unit_2:
+        members: [adult_2]
+    households:
+      household:
+        members: [adult_1, adult_2]
+        state_code: TX
+  output:
+    # A qualifying child must be younger than the taxpayer unless permanently
+    # and totally disabled (26 USC 152(c)(3)(A)). adult_2 is under 19 but not
+    # younger than the head, so they fail the age test and are paired with the
+    # head.
+    is_tax_unit_spouse: [false, true]
+    filing_status: JOINT
+
+- name: A 23-year-old full-time student in their own marital unit is a dependent.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+      student:
+        age: 23
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      student_marital_unit:
+        members: [student]
+  output:
+    # The student limit is under 24, and the student is younger than the
+    # parent, so they meet the age test and are not paired as the spouse.
+    is_tax_unit_spouse: [false, false]
+    is_tax_unit_dependent: [false, true]
+
+- name: A 26-year-old full-time student in their own marital unit is a dependent before 1989.
+  period: 1988
+  input:
+    people:
+      parent:
+        age: 60
+      student:
+        age: 26
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      student_marital_unit:
+        members: [student]
+  output:
+    # Before Pub. L. 100-647 added the under-24 limit for 1989, a student of
+    # any age met the age test.
+    is_tax_unit_spouse: [false, false]
+    is_tax_unit_dependent: [false, true]
+
+- name: A permanently and totally disabled adult child in their own marital unit is a dependent.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+        employment_income_before_lsr: 30_000
+      adult_child:
+        age: 40
+        is_disabled: true
+        is_permanently_and_totally_disabled: true
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      child_marital_unit:
+        members: [adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: TX
+  output:
+    # A permanently and totally disabled child meets the age test at any age
+    # (26 USC 152(c)(3)(B)), so the parent files as head of household.
+    is_tax_unit_spouse: [false, false]
+    is_tax_unit_dependent: [false, true]
+    filing_status: HEAD_OF_HOUSEHOLD

@@ -39,6 +39,7 @@ AGGREGATE_LISTS = [
     "gov/states/household/state_cdccs.yaml",
     "gov/hhs/ccdf/child_care_subsidy_programs.yaml",
     "gov/household/household_state_benefits.yaml",
+    "gov/states/household/state_property_tax_refunds.yaml",
 ]
 
 # Gates that restrict a variable geographically without a StateCode

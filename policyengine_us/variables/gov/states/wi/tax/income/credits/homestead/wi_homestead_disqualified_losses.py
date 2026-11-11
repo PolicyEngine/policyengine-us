@@ -39,8 +39,12 @@ class wi_homestead_disqualified_losses(Variable):
         # (Form 4797), a tax-unit amount. other_net_gain does not separate
         # the losses from involuntary conversions that line 9 leaves out.
         business_property_loss = max_(0, -tax_unit("other_net_gain", period))
-        # Schedule 4, line 3: net capital loss included in income.
-        capital_loss = max_(0, -tax_unit("loss_limited_net_capital_gains", period))
+        # Schedule 4, line 3: net capital loss included in income. Only the
+        # claimant's and spouse's: a dependent's gains and losses are on the
+        # dependent's own return and outside the household (71.52(4)).
+        capital_loss = max_(
+            0, -tax_unit("filer_loss_limited_net_capital_gains", period)
+        )
         return (
             tax_unit.sum(person_losses * head_or_spouse)
             + business_property_loss

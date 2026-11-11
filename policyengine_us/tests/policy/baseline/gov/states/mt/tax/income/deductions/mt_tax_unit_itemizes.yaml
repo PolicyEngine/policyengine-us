@@ -16,7 +16,7 @@
   output:
     mt_tax_unit_itemizes: false
 
-- name: Combined-AGI care phaseout keeps itemized deductions below the standard deduction
+- name: Combined-AGI care phaseout keeps itemized deductions below the standard deduction, but itemizing lowers the tax
   period: 2022
   input:
     people:
@@ -47,9 +47,64 @@
     # max(min(.2 * 20,000, 5,090), 2,260) = 4,000 and the 2,260 floor.
     # https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=35
     # Itemized total = 4,650 + 700 + 700 = 6,050 < 4,000 + 2,260 = 6,260.
-    # Using each spouse's AGI would give the spouse 1,200 and total 6,550,
-    # incorrectly switching the couple to itemization.
+    # Using each spouse's AGI would give the spouse 1,200 and total 6,550.
     mt_itemized_deductions_indiv: [5_350, 700, 0]
     mt_standard_deduction_indiv: [4_000, 2_260, 0]
+    # The election goes by the couple's tax, not the sums. The spouse's
+    # column has no income, so only the head's deduction matters. With the
+    # 2,710 exemption and the child's 2,710 in the head's column:
+    # itemizing, 20,000 - 2,710 - 5,350 - 2,710 = 9,230 gives 176 + 330 x 4%
+    # = 189.20; standard, 20,000 - 2,710 - 4,000 - 2,710 = 10,580 gives
+    # 176 + 1,680 x 4% = 243.20. So the couple itemizes.
+    mt_tax_unit_itemizes: true
+    mt_deductions_indiv: [5_350, 700, 0]
+
+- name: Spouses filing separately take the standard deduction when itemizing would raise their tax
+  # Itemized deductions sum to more than the standard deductions, but the
+  # couple may elect the standard deduction (MCA 2021 15-30-2132(1); spouses
+  # must both itemize or both take it), so the election goes by tax. The
+  # child's 10,250 of bills is split equally here by input.
+  period: 2022
+  absolute_error_margin: 0.05
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 60_000
+        mt_non_medical_itemized_deductions_indiv: 3_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 15_000
+        mt_non_medical_itemized_deductions_indiv: 700
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 10_250
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_dependent_medical_expense_head_share: 0.5
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    # Medical: head 5,125 - 7.5% x 60,000 = 625; spouse 5,125 - 1,125 = 4,000.
+    mt_itemized_deductions_indiv: [3_625, 4_700, 0]
+    # 2022: 20% of AGI, at most 5,090 and at least 2,260.
+    mt_standard_deduction_indiv: [5_090, 3_000, 0]
+    # Itemized 8,325 > standard 8,090, but the tax decides. Exemptions are
+    # 2,710 each, and the child's goes to the head. 2022 rates reach 734 at
+    # 19,800 and are 6.75% above; 300 at 12,000 and 4% from 8,900 to 12,000;
+    # 83 at 5,800 and 3% to 8,900.
+    # Itemizing: head 60,000 - 3,625 - 5,420 = 50,955 gives 734 + 31,155 x
+    # 6.75% = 2,836.9625; spouse 15,000 - 4,700 - 2,710 = 7,590 gives 83 +
+    # 1,790 x 3% = 136.70; together 2,973.66.
+    # Standard: head 60,000 - 5,090 - 5,420 = 49,490 gives 734 + 29,690 x
+    # 6.75% = 2,738.075; spouse 15,000 - 3,000 - 2,710 = 9,290 gives 176 +
+    # 390 x 4% = 191.60; together 2,929.675.
     mt_tax_unit_itemizes: false
-    mt_deductions_indiv: [4_000, 2_260, 0]
+    mt_deductions_indiv: [5_090, 3_000, 0]
+    mt_income_tax_before_refundable_credits_indiv: [2_738.08, 191.60, 0]

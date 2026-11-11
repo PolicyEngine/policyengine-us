@@ -26,3 +26,238 @@
     state_code: WA
   output:
     ak_permanent_fund_dividend: 0
+
+- name: Case 5, Alaska paid a $2,072 dividend in 2015.
+  period: 2015
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 2_072
+
+- name: Case 6, Alaska paid a $1,022 dividend in 2016.
+  period: 2016
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_022
+
+- name: Case 7, Alaska paid a $1,100 dividend in 2017.
+  period: 2017
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_100
+
+- name: Case 8, Alaska paid a $1,600 dividend in 2018.
+  period: 2018
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_600
+
+- name: Case 9, Alaska paid a $1,606 dividend in 2019.
+  period: 2019
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_606
+
+- name: Case 10, Alaska paid a $992 dividend in 2020.
+  period: 2020
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 992
+
+- name: Case 11, Alaska paid a $1,114 dividend in 2021.
+  period: 2021
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_114
+
+- name: Case 12, Alaska has set no dividend for 2027, so PolicyEngine keeps the 2026 dividend.
+  period: 2027
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_000
+
+- name: Case 13, a 2019 filer with $50,000 of wages gets the $1,606 dividend and no energy relief, so federal gross income and AGI come to $51,606.
+  period: 2019
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_606
+    ak_energy_relief: 0
+    irs_gross_income: 51_606
+    adjusted_gross_income: 51_606
+
+- name: Case 14, a 2027 filer with $50,000 of wages gets the $1,000 dividend and no energy relief, so federal gross income and AGI come to $51,000.
+  period: 2027
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_000
+    ak_energy_relief: 0
+    irs_gross_income: 51_000
+    adjusted_gross_income: 51_000
+
+- name: Case 15, a resident with no status input gets the dividend, since the status defaults to citizen and take-up to true.
+  period: 2026
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend_eligible: true
+    takes_up_ak_permanent_fund_dividend_if_eligible: true
+    ak_permanent_fund_dividend: 1_000
+
+- name: Case 16, a lawful permanent resident gets the dividend under AS 43.23.005(a)(5)(B).
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    ak_permanent_fund_dividend: 1_000
+
+- name: Case 17, a refugee gets the dividend under AS 43.23.005(a)(5)(C).
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: REFUGEE
+  output:
+    ak_permanent_fund_dividend: 1_000
+
+- name: Case 18, an asylee gets the dividend under AS 43.23.005(a)(5)(D).
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: ASYLEE
+  output:
+    ak_permanent_fund_dividend: 1_000
+
+- name: Case 19, an undocumented Alaska resident gets no dividend.
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: UNDOCUMENTED
+  output:
+    ak_permanent_fund_dividend_eligible: false
+    ak_permanent_fund_dividend: 0
+
+- name: Case 20, a resident who does not take up the dividend gets none, though eligible.
+  period: 2026
+  input:
+    state_code: AK
+    takes_up_ak_permanent_fund_dividend_if_eligible: false
+  output:
+    ak_permanent_fund_dividend_eligible: true
+    ak_permanent_fund_dividend: 0
+
+- name: Case 21, each person in one household gets the dividend on their own status and take-up.
+  period: 2026
+  input:
+    people:
+      citizen:
+        age: 40
+      permanent_resident:
+        age: 38
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      undocumented_parent:
+        age: 36
+        immigration_status: UNDOCUMENTED
+      non_applicant:
+        age: 15
+        takes_up_ak_permanent_fund_dividend_if_eligible: false
+      child:
+        age: 5
+    households:
+      household:
+        members: [citizen, permanent_resident, undocumented_parent, non_applicant, child]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: [1_000, 1_000, 0, 0, 1_000]
+
+- name: Case 22, a filer who does not take up the dividend has no dividend in federal gross income or AGI.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 50_000
+        takes_up_ak_permanent_fund_dividend_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: 0
+    ak_energy_relief: 0
+    irs_gross_income: 50_000
+    adjusted_gross_income: 50_000
+
+- name: Case 23, a supplied dividend overrides the calculation for an ineligible person.
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: UNDOCUMENTED
+    ak_permanent_fund_dividend: 1_000
+  output:
+    ak_permanent_fund_dividend: 1_000
+
+- name: Case 24, an undocumented child gets no dividend though a citizen parent does, since under AS 43.23.005(c) a child still needs a status in (a)(5).
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 6
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: [1_000, 0]
+
+- name: Case 25, a resident child under one gets the dividend unless an input says otherwise, since age 0 does not show a birth during the dividend year.
+  period: 2026
+  input:
+    people:
+      infant:
+        age: 0
+      infant_born_during_the_dividend_year:
+        age: 0
+        takes_up_ak_permanent_fund_dividend_if_eligible: false
+      one_year_old:
+        age: 1
+    households:
+      household:
+        members: [infant, infant_born_during_the_dividend_year, one_year_old]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend: [1_000, 0, 1_000]
