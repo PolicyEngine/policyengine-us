@@ -639,6 +639,25 @@
   output:
     nd_renters_refund_income: 20_000
 
+- name: Income from Puerto Rico that no market income component holds never comes out of social security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        puerto_rico_income: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    nd_renters_refund_income: 20_000
+
 - name: North Dakota's income tax reductions leave retired military benefits, capital gains and dividends in income.
   period: 2026
   absolute_error_margin: 0.01

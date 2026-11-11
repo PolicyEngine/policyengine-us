@@ -29,8 +29,8 @@ Four invariants hold for every input.
    and income from Puerto Rico and American Samoa out of market income before
    losses, less the other exclusions. None comes out of social security, so
    with no loss in income and no medical costs, renter's refund income never
-   falls below social security, and a dollar of social security raises income by a dollar unless
-   income stays at zero.
+   falls below social security, and a dollar of social security raises income
+   by a dollar unless income stays at zero.
 3. Differential: for a filer whose income comes only from sources that
    market_income and federal gross income share, renter's refund income equals
    irs_gross_income less the exclusions the federal model deducts above the
@@ -524,6 +524,15 @@ SHIFTS = [
     exempt=0,
     share=2 / 3,
     wages=0,
+    social_security=10_000,
+    loss_share=0.3,
+)
+# With wages, so the adoption assistance line moves a dollar too.
+@example(
+    taxable=3_000,
+    exempt=0,
+    share=2 / 3,
+    wages=1_000,
     social_security=10_000,
     loss_share=0.3,
 )
