@@ -23,7 +23,11 @@ class ut_homeowner_renter_relief_household_income(Variable):
         "which describe a member's relation to the filer of their own tax "
         "unit. That filer is the claimant in a household with one tax unit. "
         "A claimant's parent who files their own return counts unless they "
-        "carry one of the flags."
+        "carry one of the flags. In a household of more than one tax unit a "
+        "flag can also leave out a member who is related only to another "
+        "unit's filer, and ut_homeowner_renter_relief_selected_claimant takes "
+        "the oldest eligible head or spouse as the claimant whether or not "
+        "they carry a flag."
     )
     defined_for = StateCode.UT
 

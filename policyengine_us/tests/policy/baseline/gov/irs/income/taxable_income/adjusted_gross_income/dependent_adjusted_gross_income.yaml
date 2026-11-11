@@ -124,18 +124,19 @@
       head:
         age: 45
         employment_income: 50_000
-      parent:
-        age: 70
+      dependent:
+        # A qualifying child has no gross income test (IRC 152(c)).
+        age: 20
         is_tax_unit_dependent: true
-        is_tax_unit_spouse: false
-        social_security_retirement: 20_000
+        is_full_time_student: true
+        social_security_survivors: 20_000
         taxable_interest_income: 30_000
     tax_units:
       tax_unit:
-        members: [head, parent]
+        members: [head, dependent]
     households:
       household:
-        members: [head, parent]
+        members: [head, dependent]
   output:
     # IRC 86 with the unmarried amounts: provisional income 30,000 +
     # 20,000 / 2 = 40,000. Paragraph (1): min(10,000, (40,000 - 25,000) / 2)

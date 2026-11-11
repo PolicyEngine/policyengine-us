@@ -30,4 +30,7 @@ class strike_benefits_in_gross_income(Variable):
             for source in ["strike_benefits", "taxable_strike_benefits"]
             if source in sources
         ]
+        if not listed:
+            # add() over an empty list returns no array.
+            return person.empty_array()
         return add(person, period, listed)

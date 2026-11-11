@@ -22,14 +22,24 @@ measure would count) and $6,000 of strike benefits ($1,000 a gift), with an
 adult dependent, a full-time student aged 20, who has $5,000 of wages and
 $4,000 of strike benefits ($500 a gift).
 
-The federal earned income measures (eitc_earned_income, adjusted_earnings
-and the dependent earned income list) keep reading taxable_strike_benefits
-under these reforms. The Tax Cut for Striking Workers Act (S. 2779, 119th
-Congress), which would exclude strike benefits from gross income in a new
-IRC 139M, also adds 139M to the IRC 32(c)(2)(B)(vi) election that lets a
-filer count excluded combat pay as earned income for the EITC. A reform for
-that bill needs its own election logic; these reforms test only the state
-measures.
+These reforms test only the state measures; they edit only the gross income
+sources, so the federal earned income measures keep reading
+taxable_strike_benefits. A reform for the Tax Cut for Striking Workers Act
+(S. 2779, 119th Congress), which would exclude strike benefits from gross
+income in a new IRC 139M, needs more:
+- the bill adds 139M to the IRC 32(c)(2)(B)(vi) election that lets a filer
+  count excluded combat pay as earned income for the EITC, so
+  eitc_earned_income needs election logic;
+- the refundable CTC phase-in (ctc_phase_in_relevant_earnings, which reads
+  eitc_earned_income) counts earned income "taken into account in computing
+  taxable income", and IRC 24(d)(1) deems only section 112 amounts to be, so
+  it must leave the excluded benefits out;
+- the dependent earned income list
+  (gov.irs.income.filing_requirement.dependent.earned_income_sources) counts
+  Form 1040 line 1z, which an exclusion would leave without strike benefits,
+  so the reform must edit that list;
+- adjusted_earnings (the child and dependent care credit) needs its own
+  reading.
 """
 
 import pytest
