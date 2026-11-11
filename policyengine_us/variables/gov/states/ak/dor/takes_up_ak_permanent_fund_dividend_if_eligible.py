@@ -9,7 +9,7 @@ class takes_up_ak_permanent_fund_dividend_if_eligible(Variable):
         "Whether Alaska pays this person the Permanent Fund Dividend and any "
         "energy relief when they pass ak_permanent_fund_dividend_eligible. Set "
         "this to false for someone who did not apply or who fails a test "
-        "PolicyEngine's inputs cannot resolve, such as residence during all "
+        "PolicyEngine cannot resolve from its inputs, such as residence during all "
         "of the prior calendar year or a child's birth during the dividend "
         "year. It defaults to true, so a household calculation pays every "
         "eligible Alaska resident unless an input says otherwise. "

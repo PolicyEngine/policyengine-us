@@ -1,17 +1,18 @@
 """Invariants for who receives the Alaska Permanent Fund Dividend and energy relief.
 
-AS 43.23.005(a)(5) limits the dividend to citizens, lawful permanent residents,
-refugees and asylees, and Alaska pays energy relief as part of the dividend
-(sec. 13, ch. 34, SLA 2026). PolicyEngine also lets an input say a person does
-not take up the dividend, for the statute's tests its inputs cannot resolve. These
-properties hold for every modeled year, every mix of people in a household and
-every age, unless an input overrides the eligibility variable or a payment:
+Under AS 43.23.005(a)(5), Alaska limits the dividend to citizens, lawful
+permanent residents, refugees and asylees, and it pays energy relief as part of
+the dividend (sec. 13, ch. 34, SLA 2026). PolicyEngine also lets an input say a
+person does not take up the dividend, for the statute's tests it cannot resolve
+from its inputs. These properties hold for every modeled year, every mix of
+people in a household and every age, unless an input overrides the eligibility
+variable or a payment:
 
 1. A person's dividend and energy relief each equal zero or the full amount
    for the year.
-2. A person gets the dividend exactly when they live in Alaska, hold a status
-   the statute names, and take it up. A status or take-up flag left unset
-   counts as citizen and true, so a household calculation pays a resident
+2. A person gets the dividend exactly when they live in Alaska, hold one of the
+   statute's statuses, and take it up. An unset status counts as citizen and an
+   unset take-up flag as true, so a household calculation pays a resident
    unless an input says otherwise. Age plays no part: age 0 does not show a
    birth during the dividend year.
 3. Energy relief passes through the same gate as the dividend.
@@ -19,12 +20,11 @@ every age, unless an input overrides the eligibility variable or a payment:
 5. Turning one person's take-up off lowers that person's payment to zero and
    changes nobody else's.
 
-ELIGIBLE_STATUSES restates AS 43.23.005(a)(5) here on purpose, so a change to
-the parameter file that the statute does not support fails these tests. The
-YAML tests pin examples. These tests run the real model on every combination of
-state, status, take-up and representative age, and on drawn years, states, ages
-and household mixes, through one shared tax-benefit system, so they build no
-extra model and load no dataset.
+ELIGIBLE_STATUSES restates AS 43.23.005(a)(5), so these tests fail if someone
+edits the parameter's list alone. The YAML tests pin examples. These tests run
+the real model on every combination of state, status, take-up and
+representative age, and on drawn years, states, ages and household mixes. They
+share one tax-benefit system, so they build no extra model and load no dataset.
 """
 
 from collections import defaultdict, namedtuple
@@ -58,8 +58,8 @@ AGE_INPUTS = (None, 0, 1, 17, 18, 65)
 EXHAUSTIVE_STATES = ("AK", "WA")
 ALL_STATES = tuple(state.name for state in StateCode)
 LAST_YEAR = 2100
-# 2015 starts the modeled years, 2022 and 2026 pay energy relief, and 2027 pays
-# none.
+# 2015 starts the modeled years. Alaska paid energy relief in 2022 and 2026 and
+# has appropriated none for 2027.
 EXHAUSTIVE_YEARS = (2015, 2022, 2026, 2027)
 
 Person = namedtuple("Person", ["state", "status", "take_up", "age"])

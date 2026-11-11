@@ -228,7 +228,7 @@
   output:
     ak_permanent_fund_dividend: 1_000
 
-- name: Case 24, an undocumented child gets no dividend though a citizen parent does, since AS 43.23.005(c) waives (a)(2) to (4) but not the status test in (a)(5).
+- name: Case 24, an undocumented child gets no dividend though a citizen parent does, since under AS 43.23.005(c) a child still needs a status in (a)(5).
   period: 2026
   input:
     people:

@@ -7,7 +7,7 @@ class ak_permanent_fund_dividend_eligible(Variable):
     label = "Alaska Permanent Fund Dividend eligible"
     documentation = (
         "Applies the immigration status test in AS 43.23.005(a)(5). "
-        "PolicyEngine's inputs cannot resolve the statute's other tests: an "
+        "PolicyEngine cannot resolve the statute's other tests from its inputs: an "
         "application, residence on the application date and during all of "
         "the qualifying year, 72 consecutive hours of presence in the prior "
         "two years, allowable absences, Selective Service compliance, a "

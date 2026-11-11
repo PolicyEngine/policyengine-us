@@ -1,16 +1,16 @@
 # Alaska Permanent Fund Dividend in model comparisons
 
 PolicyEngine automatically calculates `ak_permanent_fund_dividend` and
-`ak_energy_relief` for each person who lives in Alaska, holds an immigration
-status the dividend statute names, and takes up the dividend. These amounts are
-calculated benefits, rather than imputed income or fixed default inputs. The
-model's inputs cannot resolve the statute's other tests: an application,
-residence on the application date and during all of the prior calendar year, 72
-consecutive hours of presence in the prior two years, allowable absences,
-Selective Service compliance, or a felony sentence or conviction-based
-incarceration during that year. `is_incarcerated` records no conviction and does
-not tie to that year, so it does not affect the dividend. Supplying wages and
-other known income does not disable either calculation.
+`ak_energy_relief` for each person who lives in Alaska, holds one of the
+immigration statuses in the dividend statute, and takes up the dividend. These
+amounts are calculated benefits, rather than imputed income or fixed default
+inputs. PolicyEngine cannot resolve the statute's other tests from its inputs:
+an application, residence on the application date and during all of the prior
+calendar year, 72 consecutive hours of presence in the prior two years,
+allowable absences, Selective Service compliance, or a felony sentence or
+conviction-based incarceration during that year. `is_incarcerated` records no
+conviction and does not tie to that year, so it does not affect the dividend.
+Supplying wages and other known income does not disable either calculation.
 
 The regular PFD is included in federal gross income for nondependent people.
 A dependent child's PFD is not automatically added to the parent's adjusted
@@ -30,37 +30,37 @@ that the state phrase does not incorporate the federal definition: an alien must
 be legally present and able to form the intent to remain in Alaska. In [15 AAC
 23.154(a)](https://www.akleg.gov/basis/aac.asp#15.23.154), the Department of
 Revenue applies that reading to a status under 8 U.S.C. 1101 to 1189 that lets
-the alien adopt the United States as their domicile. The regulation names
+the alien adopt the United States as their domicile. The department lists
 immigrants, nonimmigrants whose status requires no foreign residence, people on
-indefinite parole, and conditional permanent residents.
-PolicyEngine has no status for the last three, so code them as
-`LEGAL_PERMANENT_RESIDENT`. Under 15 AAC 23.154(b) and (d), a status that requires
-a foreign residence fails, and a limited-stay nonimmigrant fails the residence
-test until they take a significant step toward a permanent or indefinite status.
-The Division's [immigration
-page](https://pfd.alaska.gov/eligibility/immigration) also describes paths for
-US nationals and Compact of Free Association migrants. PolicyEngine has no status
-for those either, so code a person the Division accepts as
-`LEGAL_PERMANENT_RESIDENT`.
+indefinite parole, and conditional permanent residents. PolicyEngine has no
+status for the last three, so code them as `LEGAL_PERMANENT_RESIDENT`. Under 15
+AAC 23.154(b) and (d), a person whose status requires a foreign residence fails,
+and a limited-stay nonimmigrant fails the residence test until they take a
+significant step toward a permanent or indefinite status. On its [immigration
+page](https://pfd.alaska.gov/eligibility/immigration), the Division also
+describes paths for US nationals and Compact of Free Association migrants.
+PolicyEngine has no status for those either, so code a person the Division
+accepts as `LEGAL_PERMANENT_RESIDENT`.
 
-The other values of `immigration_status` stay out:
+PolicyEngine leaves the other values of `immigration_status` out:
 
-- `PAROLED_ONE_YEAR` does not say a parole runs indefinitely. [OAH No.
-  25-3180-PFD](https://aws.state.ak.us/OAH/Decision/Display?rec=7350) denied a
-  fixed-term parolee a 2025 dividend.
+- `PAROLED_ONE_YEAR` does not say a parole runs indefinitely. In [OAH No.
+  25-3180-PFD](https://aws.state.ak.us/OAH/Decision/Display?rec=7350), an
+  administrative law judge upheld the Division's denial of a 2025 dividend to a
+  fixed-term parolee.
 - `TPS` (8 U.S.C. 1254a) and `DEPORTATION_WITHHELD` (8 U.S.C. 1231(b)(3)) fall
   outside 8 U.S.C. 1101 to 1189, and a person coded `DACA` holds no status under
-  those sections.
-  *Andrade*'s test alone might reach a TPS holder, but the court did not address
-  TPS, and PolicyEngine follows the regulation's range.
-- `UNDOCUMENTED` does not meet *Andrade*'s legal presence requirement.
+  those sections. A TPS holder might meet *Andrade*'s test alone, but the court
+  did not address TPS, and PolicyEngine follows the regulation's range.
+- A person coded `UNDOCUMENTED` lacks the legal presence the court required in
+  *Andrade*.
 - `CUBAN_HAITIAN_ENTRANT` and `CONDITIONAL_ENTRANT` do not say whether the person
   may adopt the United States as their domicile.
 
-Alaska tests the status held during the qualifying year and on the application
-date (15 AAC 23.154(e)), and under 15 AAC 23.154(c) an alien's qualifying year
-starts on January 1 after the person gains the status. PolicyEngine has no status
-history, so it reads the status for the dividend year.
+Alaska tests the status a person holds during the qualifying year and on the
+application date (15 AAC 23.154(e)), and under 15 AAC 23.154(c) an alien's
+qualifying year starts on January 1 after the person gains the status.
+PolicyEngine has no status history, so it reads the status for the dividend year.
 
 `takes_up_ak_permanent_fund_dividend_if_eligible` covers the statute's other
 tests and anyone who does not apply. It defaults to true, so a household
@@ -73,25 +73,26 @@ dividend ([sec. 13, ch. 34, SLA
 ### Children under one
 
 A child born during the dividend year cannot receive that year's dividend. The
-child fails AS 43.23.005(a)(3), and (c) reaches only children born in the two
-calendar years before the dividend year. The Division [takes
+child fails AS 43.23.005(a)(3), and under (c) only children born in the two
+calendar years before the dividend year qualify. The Division [takes
 applications](https://pfd.alaska.gov/application/applying-for-a-child) for a child
 "born on or before December 31st of the qualifying year." A child born during the
-qualifying year qualifies only under (c), which also requires a parent who is
-eligible for that dividend. `ak_permanent_fund_dividend_eligible` tests the
-child's own status, not a parent's eligibility.
+qualifying year qualifies only under (c), and only through a parent eligible for
+that dividend. `ak_permanent_fund_dividend_eligible` tests the child's own
+status, not a parent's eligibility.
 
-`age` cannot identify a child born during the dividend year, because a child aged
-0 may have a birth date in either calendar year. Populace takes `age` from the
-CPS ASEC, which the Census Bureau [conducts in February, March and
-April](https://www.census.gov/topics/income-poverty/poverty/guidance/surveys-programs.html)
-and which records age [as of the survey
+PolicyEngine cannot identify a child born during the dividend year from `age`,
+because a child aged 0 may have a birth date in either calendar year. Populace
+takes `age` from the CPS ASEC, which the Census Bureau [conducts in February,
+March and
+April](https://www.census.gov/topics/income-poverty/poverty/guidance/surveys-programs.html),
+recording each person's age [as of the survey
 date](https://www.census.gov/programs-surveys/cps/technical-documentation/subject-definitions.html).
-Each survey asks about income in the year before, which Populace records as
-`source_year`. If each record keeps its own survey date, 92% to 96% of the people
-aged 0 in Populace's 2024 Alaska records have birth dates in 2022 or 2023 and can
-qualify under (c), because 74% of them come from the 2023 survey. If every survey
-fell in the dividend year instead, 71% to 87% could. The ranges run from
+In each survey, the Bureau asks about income in the year before, which Populace
+records as `source_year`. Of the people aged 0 in Populace's 2024 Alaska records,
+74% come from the 2023 survey. If each record keeps its own survey date, 92% to
+96% of them have birth dates in 2022 or 2023 and can qualify under (c). If every
+survey fell in the dividend year instead, 71% to 87% could. The ranges run from
 mid-February to mid-April interviews. `birth_year`, which subtracts `age` from
 the year, would put all of them in the dividend year. So the model pays a
 resident aged 0 unless the take-up input says otherwise. Set that input to false

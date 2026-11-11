@@ -1,4 +1,4 @@
-- name: Case 1, a citizen in Alaska is eligible under AS 43.23.005(a)(5)(A).
+- name: Case 1, a citizen in Alaska qualifies under AS 43.23.005(a)(5)(A).
   period: 2026
   input:
     state_code: AK
@@ -6,7 +6,7 @@
   output:
     ak_permanent_fund_dividend_eligible: true
 
-- name: Case 2, a lawful permanent resident in Alaska is eligible under AS 43.23.005(a)(5)(B).
+- name: Case 2, a lawful permanent resident in Alaska qualifies under AS 43.23.005(a)(5)(B).
   period: 2026
   input:
     state_code: AK
@@ -14,7 +14,7 @@
   output:
     ak_permanent_fund_dividend_eligible: true
 
-- name: Case 3, a refugee in Alaska is eligible under AS 43.23.005(a)(5)(C).
+- name: Case 3, a refugee in Alaska qualifies under AS 43.23.005(a)(5)(C).
   period: 2026
   input:
     state_code: AK
@@ -22,7 +22,7 @@
   output:
     ak_permanent_fund_dividend_eligible: true
 
-- name: Case 4, an asylee in Alaska is eligible under AS 43.23.005(a)(5)(D).
+- name: Case 4, an asylee in Alaska qualifies under AS 43.23.005(a)(5)(D).
   period: 2026
   input:
     state_code: AK
@@ -30,7 +30,7 @@
   output:
     ak_permanent_fund_dividend_eligible: true
 
-- name: Case 5, the statuses AS 43.23.005(a)(5) and 15 AAC 23.154(a) do not reach are not eligible, including parole that does not say it runs indefinitely.
+- name: Case 5, people with statuses outside AS 43.23.005(a)(5) and 15 AAC 23.154(a) do not qualify, including PAROLED_ONE_YEAR, which does not say a parole runs indefinitely.
   period: 2026
   input:
     people:
@@ -56,7 +56,7 @@
   output:
     ak_permanent_fund_dividend_eligible: [false, false, false, false, false, false, false]
 
-- name: Case 6, a citizen outside Alaska is not eligible.
+- name: Case 6, a citizen outside Alaska does not qualify.
   period: 2026
   input:
     state_code: WA
@@ -64,7 +64,7 @@
   output:
     ak_permanent_fund_dividend_eligible: false
 
-- name: Case 7, the status test applies in 2015, PolicyEngine's first modeled dividend year.
+- name: Case 7, PolicyEngine applies the status test in 2015, its first modeled dividend year.
   period: 2015
   input:
     people:
