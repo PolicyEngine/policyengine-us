@@ -1,0 +1,241 @@
+# The employer deducts a share of the largest employee premium the law lets it
+# deduct; it pays the rest. Wages are 100,000, below every 2026 wage base.
+
+- name: The deduction share defaults to the full permitted share.
+  period: 2026
+  input:
+    employment_income: 100_000
+    state_code: CO
+  output:
+    employer_state_payroll_premium_deduction_share: 1
+    state_payroll_premium_deduction_share: 1
+    # 0.44% * 100,000 = 440.
+    co_employee_famli_contribution: 440
+    co_employer_famli_contribution: 440
+
+- name: The deduction share is held between 0 and 1.
+  period: 2026
+  input:
+    people:
+      over:
+        employment_income: 100_000
+        employer_state_payroll_premium_deduction_share: 1.5
+      under:
+        employment_income: 100_000
+        employer_state_payroll_premium_deduction_share: -0.5
+    tax_units:
+      over_unit:
+        members: [over]
+      under_unit:
+        members: [under]
+    households:
+      over_household:
+        members: [over]
+        state_code: CO
+      under_household:
+        members: [under]
+        state_code: CO
+  output:
+    state_payroll_premium_deduction_share: [1, 0]
+    co_employee_famli_contribution: [440, 0]
+    # 0.44% + 0.44% = 0.88% when the employer deducts nothing.
+    co_employer_famli_contribution: [440, 880]
+
+- name: Colorado FAMLI employer pays the half of the employee share it does not deduct.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: CO
+  output:
+    # 0.5 * 0.44% * 100,000 = 220.
+    co_employee_famli_contribution: 220
+    co_employee_state_payroll_tax: 220
+    employee_state_payroll_tax: 220
+    # 0.44% * 100,000 + 220 = 660.
+    co_employer_famli_contribution: 660
+    co_employer_additional_state_payroll_tax: 660
+
+- name: Colorado FAMLI employer with fewer than 10 employees still pays the employee share it does not deduct.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_headcount: 9
+    employer_state_payroll_premium_deduction_share: 0.25
+    state_code: CO
+  output:
+    # 0.25 * 0.44% * 100,000 = 110.
+    co_employee_famli_contribution: 110
+    # No employer half; 0.75 * 440 = 330 of the 0.44% it must remit.
+    co_employer_famli_contribution: 330
+
+- name: Massachusetts PFML employer pays the part of the 0.46% employee share it does not deduct.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: MA
+  output:
+    # 0.5 * (0.18% family + 40% * 0.70% medical) * 100,000 = 0.5 * 460 = 230.
+    ma_employee_paid_leave_contribution: 230
+    employee_state_payroll_tax: 230
+    # 60% * 0.70% * 100,000 = 420, plus the 230 not deducted.
+    ma_employer_paid_leave_contribution: 650
+
+- name: Massachusetts PFML small employer that deducts nothing remits the 0.46% itself.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_headcount: 24
+    employer_state_payroll_premium_deduction_share: 0
+    state_code: MA
+  output:
+    ma_employee_paid_leave_contribution: 0
+    ma_employer_paid_leave_contribution: 460
+
+- name: Maine PFML employer pays the part of the employee half it does not deduct.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: ME
+  output:
+    # 0.5 * 0.5% * 100,000 = 250.
+    me_employee_paid_leave_contribution: 250
+    # 0.5% * 100,000 + 250 = 750.
+    me_employer_paid_leave_contribution: 750
+
+- name: Maine PFML employer with fewer than 15 employees remits the half it does not deduct.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_headcount: 14
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: ME
+  output:
+    me_employee_paid_leave_contribution: 250
+    # No employer half; it must still remit 0.5%, of which it deducted 250.
+    me_employer_paid_leave_contribution: 250
+
+- name: Delaware Paid Leave employer pays the part of the employee half it does not deduct.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: DE
+  output:
+    # 0.5 * 50% * (0.40% + 0.08% + 0.32%) * 100,000 = 0.25 * 800 = 200.
+    de_employee_paid_leave_contribution: 200
+    # 800 - 200 = 600.
+    de_employer_paid_leave_contribution: 600
+
+- name: Delaware Paid Leave employer with 10 to 24 employees that deducts nothing pays the parental rate itself.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_headcount: 20
+    employer_state_payroll_premium_deduction_share: 0
+    state_code: DE
+  output:
+    de_employee_paid_leave_contribution: 0
+    # 0.32% * 100,000 = 320.
+    de_employer_paid_leave_contribution: 320
+
+- name: Vermont employer pays the part of the permitted quarter it does not withhold.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: VT
+  output:
+    # 0.5 * 0.11% * 100,000 = 55.
+    vt_employee_child_care_contribution: 55
+    # 0.33% * 100,000 + 55 = 385.
+    vt_employer_child_care_contribution: 385
+
+- name: Washington PFML employer pays the part of the employee share it does not deduct; WA Cares does not change.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: WA
+  output:
+    # 0.5 * 1.13% * (1 - 0.2857) * 100,000 = 0.5 * 807.159 = 403.5795.
+    wa_employee_paid_leave_contribution: 403.5795
+    # WA Cares is mandatory withholding: 0.58% * 100,000 = 580.
+    wa_employee_long_term_care_contribution: 580
+    wa_employee_state_payroll_tax: 983.5795
+    # 1.13% * 0.2857 * 100,000 = 322.841, plus 403.5795 not deducted.
+    wa_employer_paid_leave_contribution: 726.4205
+
+- name: Washington PFML employer with fewer than 50 employees that deducts nothing pays the employee share.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_headcount: 49
+    employer_state_payroll_premium_deduction_share: 0
+    state_code: WA
+  output:
+    wa_employee_paid_leave_contribution: 0
+    # 1.13% * (1 - 0.2857) * 100,000 = 807.159.
+    wa_employer_paid_leave_contribution: 807.159
+
+- name: Minnesota Paid Leave employer pays the premium the employee share leaves.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: MN
+  output:
+    # 0.5 * 0.44% * 100,000 = 220.
+    mn_employee_paid_leave_contribution: 220
+    employee_state_payroll_tax: 220
+    # 0.88% * 100,000 - 220 = 660.
+    mn_employer_paid_leave_contribution: 660
+
+- name: New York PFL and DBL scale the capped permitted contribution.
+  period: 2026
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: NY
+  output:
+    # 0.432% * 100,000 = 432 exceeds the 411.91 maximum; 0.5 * 411.91 = 205.955.
+    ny_employee_paid_family_leave_contribution: 205.955
+    # 0.5% * 100,000 = 500 exceeds 52 weeks * 0.60 = 31.20; 0.5 * 31.20 = 15.60.
+    ny_employee_disability_benefits_contribution: 15.6
+    ny_employee_state_payroll_tax: 221.555
+
+- name: Mandatory employee withholding does not depend on the deduction share.
+  period: 2026
+  input:
+    people:
+      ca_worker:
+        employment_income: 100_000
+        employer_state_payroll_premium_deduction_share: 0
+      ct_worker:
+        employment_income: 100_000
+        employer_state_payroll_premium_deduction_share: 0
+      pa_worker:
+        employment_income: 100_000
+        employer_state_payroll_premium_deduction_share: 0
+    tax_units:
+      ca_unit:
+        members: [ca_worker]
+      ct_unit:
+        members: [ct_worker]
+      pa_unit:
+        members: [pa_worker]
+    households:
+      ca_household:
+        members: [ca_worker]
+        state_code: CA
+      ct_household:
+        members: [ct_worker]
+        state_code: CT
+      pa_household:
+        members: [pa_worker]
+        state_code: PA
+  output:
+    # CA SDI 1.3%, CT Paid Leave 0.5%, PA UC 0.07%, each of 100,000.
+    employee_state_payroll_tax: [1_300, 500, 70]
