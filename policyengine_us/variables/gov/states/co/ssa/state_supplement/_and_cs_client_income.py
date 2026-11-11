@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states._spouses import state_is_married
 
 
 def and_cs_client_income(person, period, parameters):
@@ -16,18 +17,15 @@ def and_cs_client_income(person, period, parameters):
     """
     p = parameters(period).gov.states.co.ssa.state_supplement.income.disregards
     earned = person("ssi_earned_income", period)
-    # A joint couple's in-kind support and maintenance is one presumed
-    # maximum value for the couple (ssi_pmv_amount), which SSI splits
-    # equally between the spouses. 3.520.71(E) and 3.520.79(B)(6) charge an
-    # SSI recipient the same ISM that SSA charges.
-    ism = person("ssi_in_kind_support_and_maintenance", period)
-    couple_computation = person("ssi_couple_computation_applies", period)
-    ism = where(couple_computation, ism / 2, ism)
+    # 3.520.79 counts in-kind support and maintenance as unearned income.
+    ism = person("co_ssa_in_kind_support_and_maintenance", period)
     unearned = person("ssi_unearned_income", period) + ism
     ssi = person("ssi", period)
     # 3.549(A)(2)(c)(1): a married client's $20 disregard is split with the
-    # spouse.
-    married = person.marital_unit.nb_persons() == 2
+    # spouse. As in Old Age Pension's 3.533(A)(2)(c), a declared spouse
+    # counts even when living apart, and a default marital unit counts only
+    # SSI's identified spouse, not a third adult.
+    married = state_is_married(person, period.this_year)
     disregard = where(married, p.unearned / 2, p.unearned)
     # 3.549(A)(2)(c)(2): a client whose only unearned income is SSI gets no
     # unearned income disregard; min_ gives 0 when there is no other

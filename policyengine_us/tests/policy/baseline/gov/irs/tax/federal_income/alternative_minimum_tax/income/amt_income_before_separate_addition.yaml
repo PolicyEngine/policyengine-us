@@ -1,0 +1,108 @@
+# 26 U.S.C. 56(b)(1)(C); 2025 Form 6251 line 2b: refunds of state and local
+# taxes included in income are subtracted.
+- name: Single itemizer subtracts a state income tax refund, 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    tax_unit_itemizes: true
+    taxable_income: 100_000
+    salt_deduction: 8_000
+    salt_refund_income: 2_000
+    filing_status: SINGLE
+  output:
+    # 100,000 + 8,000 - 2,000
+    amt_income_before_separate_addition: 106_000
+    amt_income: 106_000
+
+# 26 U.S.C. 56(b)(1)(E): section 68 does not apply, so the itemized deduction
+# reduction in taxable income comes back out.
+- name: Single itemizer reverses the section 68 reduction, 2026
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    tax_unit_itemizes: true
+    taxable_income: 1_000_000
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions_reduction: 5_000
+    filing_status: SINGLE
+  output:
+    # 1,000,000 + 10,000 - 5,000
+    amt_income_before_separate_addition: 1_005_000
+    amt_income: 1_005_000
+
+- name: Non-itemizer has no section 68 reduction to reverse, 2026
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    tax_unit_itemizes: false
+    taxable_income: 50_000
+    standard_deduction: 1_000
+    itemized_taxable_income_deductions_reduction: 5_000
+    filing_status: SINGLE
+  output:
+    amt_income_before_separate_addition: 51_000
+    amt_income: 51_000
+
+# 2017 Form 6251 line 6 enters line 9 of the Schedule A Itemized Deductions
+# Worksheet (the section 68 reduction) as a negative amount. 26 U.S.C.
+# 56(b)(1)(F) then; (E) since P.L. 116-94. A 4,155 reduction is 3% of AGI over
+# 261,500, so AGI is at least 400,000 and the personal exemption has phased
+# out (it does above 384,000 for a single filer).
+- name: Single itemizer reverses the 2017 overall limitation on itemized deductions
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    tax_unit_itemizes: true
+    taxable_income: 300_000
+    exemptions: 0
+    salt_deduction: 20_000
+    misc_deduction: 0
+    itemized_taxable_income_deductions_reduction: 4_155
+    filing_status: SINGLE
+  output:
+    # 300,000 + 20,000 - 4,155
+    amt_income_before_separate_addition: 315_845
+    amt_income: 315_845
+
+- name: A dependent's state tax refund is not subtracted from the filer's AMTI, 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        salt_refund_income: 1_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        salt_refund_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_itemizes: true
+        taxable_income: 100_000
+        salt_deduction: 8_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # 100,000 + 8,000 - 1,000
+    amt_income_before_separate_addition: 107_000
+    amt_income: 107_000
+
+# irs_gross_income adds each person's refund floored at zero, so a negative
+# refund input never enters AGI, and AMTI must not take it back out.
+- name: A negative refund input is not in AGI and adds nothing to AMTI, 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    tax_unit_itemizes: true
+    taxable_income: 100_000
+    salt_deduction: 8_000
+    salt_refund_income: -2_000
+    filing_status: SINGLE
+  output:
+    # 100,000 + 8,000 - max(0, -2,000)
+    amt_income_before_separate_addition: 108_000
+    amt_income: 108_000

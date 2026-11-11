@@ -359,3 +359,84 @@
         state_code: MT
   output:
     mt_liheap_categorical_eligibility: NONE
+
+# ARM 37.70.401(23), numbered (24) from May 23, 2026: a spouse whose income was
+# considered for an SSI grant is covered. With marital units omitted, the
+# spouse without SSI of their own is still identified by tax roles and stays
+# covered; the unrelated adult receives SSI in their own right.
+- name: Case 12, a spouse without SSI stays covered when marital units are omitted.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_head: true
+        ssi: 6_000
+      spouse:
+        age: 66
+        immigration_status: CITIZEN
+        is_tax_unit_spouse: true
+        employment_income: 15_000
+        ssi: 0
+      outsider:
+        age: 72
+        immigration_status: CITIZEN
+        is_tax_unit_head: true
+        ssi: 11_604
+    tax_units:
+      couple:
+        members: [head, spouse]
+      outsider:
+        members: [outsider]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, outsider]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, outsider]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+
+# An unrelated adult whose income was not considered for anyone's SSI is not
+# covered, even when omitted marital units put them in the SSI couple's
+# default marital unit.
+- name: Case 13, an unrelated adult without SSI in a default marital unit defeats SSI categorical eligibility.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_head: true
+        ssi: 8_700
+      spouse:
+        age: 68
+        immigration_status: CITIZEN
+        is_tax_unit_spouse: true
+        ssi: 8_700
+      outsider:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_head: true
+        pension_income: 60_000
+        ssi: 0
+    tax_units:
+      couple:
+        members: [head, spouse]
+      outsider:
+        members: [outsider]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, outsider]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, outsider]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: NONE

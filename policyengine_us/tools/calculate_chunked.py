@@ -497,7 +497,8 @@ def calculate_chunked(
                 "household_chunks must assign each household an integer in [0, n_chunks)."
             )
 
-    # _ssi_spouses.py tests whether the simulation holds one marital unit.
+    # _ssi_spouses.py and gov/states/_spouses.py test whether the simulation
+    # holds one marital unit.
     # Count each nonempty chunk's units before any chunk is built; empty
     # chunks are skipped, and labels can be any integers below n_chunks.
     _, marital_units = np.unique(
