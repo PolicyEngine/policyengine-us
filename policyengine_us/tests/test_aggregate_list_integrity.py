@@ -15,11 +15,12 @@ hardcoded copy of the list, and every copy fell behind: the Trump dividend
 (#9430) and dozens of state SSI supplements reached the baseline lists only, so
 those reforms dropped them for every household (#10226). Both lists are now
 parameters, and a reform adds its own programs to them with
-add_to_list_parameter. These tests keep it that way: no reform may redefine a
-benefit total (household_benefits, spm_unit_benefits, or a list total that
-household_benefits sums), and every reform that reaches one of those lists
-must appear in test_reform_benefit_lists.py, which fails when a reform's list
-drops a baseline program.
+add_to_list_parameter. These tests keep it that way. No reform may redefine a
+benefit total: household_benefits, spm_unit_benefits, or a variable that sums
+a list feeding them, at any depth. Every reform that names one of those totals
+or lists must appear in test_reform_benefit_lists.py, which fails when a
+reform changes any list parameter beyond its own additions, or neutralizes or
+redefines a benefit total.
 
 The last test keeps reforms from copying the household tax totals at all. The
 abolish-federal-income-tax and abolish-payroll-tax reforms once did, from a
@@ -203,37 +204,102 @@ def test_benefit_lists_hold_each_member_once(list_path):
 # --- Reforms extend the benefit lists rather than copy them ----------------
 
 
-def benefit_totals():
-    """The benefit totals that sum a gov.household list of their own name.
+ADDS_PARAMETER = re.compile(r'^\s+adds\s*=\s*"(gov(?:\.\w+)+)"', re.MULTILINE)
 
-    household_benefits and spm_unit_benefits, and each member of
-    household_benefits that sums its own list (household_state_benefits, for
-    one). A reform that redefines one of these variables, or changes its list,
-    can drop a baseline program from the household or SPM totals.
+
+def is_list_parameter(path):
+    """True when a dotted path names a parameter whose values are lists."""
+    source = PARAMETERS / (path.replace(".", "/") + ".yaml")
+    if not source.is_file():
+        return False
+    raw = yaml.load(source.read_text(), Loader=yaml.BaseLoader)
+    values = raw.get("values") if isinstance(raw, dict) else None
+    return isinstance(values, dict) and any(
+        isinstance(members, list) for members in values.values()
+    )
+
+
+def summed_list(variable, sources):
+    """The list parameter a variable sums, or None.
+
+    A total reads a gov.household list of its own name (household_benefits,
+    household_health_benefits), or names a list in its adds
+    (state_property_tax_refunds adds
+    gov.states.household.state_property_tax_refunds).
     """
-    totals = {"household_benefits", "spm_unit_benefits"}
-    for member in members_of("gov/household/household_benefits.yaml"):
-        path = PARAMETERS / "gov/household" / f"{member}.yaml"
-        if path.exists():
-            raw = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
-            if raw.get("metadata", {}).get("unit") == "list":
-                totals.add(member)
-    return tuple(sorted(totals))
+    own = f"gov.household.{variable}"
+    if is_list_parameter(own):
+        return own
+    for source in sources.get(variable, ()):
+        match = ADDS_PARAMETER.search(source.read_text())
+        if match and is_list_parameter(match[1]):
+            return match[1]
+    return None
 
 
-AGGREGATE_VARIABLES = benefit_totals()
+def benefit_list_totals():
+    """{total: the list it sums, or None} for every benefit total.
+
+    The totals are household_benefits, spm_unit_benefits, and each member of
+    their lists, at any depth, that sums a list of its own or caps a total in
+    CAPPED_AGGREGATES. household_child_care_subsidies sums no list: it caps
+    child_care_subsidies, which sums gov.hhs.ccdf.child_care_subsidy_programs.
+    A reform that redefines one of these variables, or changes its list, can
+    drop a baseline program from the household or SPM totals.
+    test_reform_benefit_lists.py derives the same totals from the built model
+    and checks that the two agree.
+    """
+    sources = {}
+    for source in (PACKAGE / "variables").rglob("*.py"):
+        sources.setdefault(source.stem, []).append(source)
+    totals = {}
+    pending = ["household_benefits", "spm_unit_benefits"]
+    while pending:
+        variable = pending.pop()
+        if variable in totals:
+            continue
+        totals[variable] = summed_list(variable, sources)
+        members = set(CAPPED_AGGREGATES.get(variable, ()))
+        if totals[variable] is not None:
+            members |= members_of(totals[variable].replace(".", "/") + ".yaml")
+        pending += [
+            member
+            for member in sorted(members)
+            if member in CAPPED_AGGREGATES or summed_list(member, sources)
+        ]
+    return totals
 
 
-def test_benefit_totals_include_the_lists_household_benefits_sums():
+BENEFIT_LIST_TOTALS = benefit_list_totals()
+AGGREGATE_VARIABLES = tuple(sorted(BENEFIT_LIST_TOTALS))
+BENEFIT_LIST_PARAMETERS = tuple(
+    sorted({path for path in BENEFIT_LIST_TOTALS.values() if path})
+)
+# What a reform module may not name without a check against the baseline: each
+# total, and the last part of each list's path.
+GUARDED_NAMES = frozenset(AGGREGATE_VARIABLES) | {
+    path.rsplit(".", 1)[1] for path in BENEFIT_LIST_PARAMETERS
+}
+
+
+def test_benefit_totals_include_every_list_that_feeds_household_benefits():
     """The guards below cover a list only while this derivation finds it."""
-    assert set(AGGREGATE_VARIABLES) >= {
-        "household_benefits",
-        "spm_unit_benefits",
-        "household_state_benefits",
-        "household_local_benefits",
-        "household_health_benefits",
-        "household_head_start_benefits",
+    expected = {
+        "household_benefits": "gov.household.household_benefits",
+        "spm_unit_benefits": "gov.household.spm_unit_benefits",
+        "household_state_benefits": "gov.household.household_state_benefits",
+        "household_local_benefits": "gov.household.household_local_benefits",
+        "household_health_benefits": "gov.household.household_health_benefits",
+        "household_head_start_benefits": (
+            "gov.household.household_head_start_benefits"
+        ),
+        "state_property_tax_refunds": (
+            "gov.states.household.state_property_tax_refunds"
+        ),
+        "household_child_care_subsidies": None,
+        "child_care_subsidies": "gov.hhs.ccdf.child_care_subsidy_programs",
     }
+    assert expected.items() <= BENEFIT_LIST_TOTALS.items()
 
 
 def aggregate_redefinitions(source_text):
@@ -282,60 +348,145 @@ def test_reforms_extend_benefit_lists_rather_than_copy_them():
     )
 
 
-# A reform can also drop a baseline program by changing a benefit list
-# parameter. test_reform_benefit_lists.py checks, for each reform in its
-# REFORMS and each year from 2015 to 2035, that every list equals the baseline
-# list followed by the reform's own additions. It builds a full reformed system
-# per reform, so it runs in its own CI group; the scan below makes sure no
-# reform that reaches a benefit list escapes it.
+# A reform can also drop a baseline program by changing a list parameter, or by
+# neutralizing a benefit total. test_reform_benefit_lists.py checks each reform
+# in its REFORMS: every list parameter in the model must hold, on every day,
+# the baseline list followed by the reform's own additions, and every benefit
+# total must keep its baseline formula. It builds a full reformed system per
+# reform, so it runs in its own CI group; the scan below makes sure no reform
+# that names a benefit total or list escapes it.
 CHECKED_AGAINST_THE_BASELINE = PACKAGE / "tests/test_reform_benefit_lists.py"
+
+# Strings a variable sets to describe itself, which can name a list without
+# reaching it.
+DESCRIPTIONS = {"label", "documentation", "reference", "description"}
+GUARDED_WORD = re.compile(r"\b(?:%s)\b" % "|".join(sorted(GUARDED_NAMES)))
 
 
 def benefit_list_references(source_text):
-    """The benefit lists a module reaches as parameters.
+    """The benefit totals and lists a module names.
 
-    An attribute named after a list counts, through an alias too
+    Any mention outside comments, docstrings and the strings a variable sets
+    to describe itself counts: an attribute, through an alias too
     (``household = parameters.gov.household; household.spm_unit_benefits``),
-    and so does a string path such as ``"gov.household.spm_unit_benefits"``.
-    A formula that reads a benefit total by variable name does not, and
-    neither does a docstring.
+    a name, a class, an import, and a word in a string
+    (``"gov.household.spm_unit_benefits"``,
+    ``getattr(household, "household_benefits")``,
+    ``neutralize_variable("household_state_benefits")``). A scan cannot tell
+    a route that changes a list from one that only reads it, so a reform that
+    reads a total by name joins REFORMS too, with no additions of its own. It
+    cannot follow a name built at run time, such as an f-string path.
     """
     tree = ast.parse(source_text)
-    docstrings = {
-        id(node.value)
-        for node in ast.walk(tree)
-        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant)
-    }
+    skipped = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant):
+            skipped.add(id(node.value))
+        elif isinstance(node, ast.Assign) and any(
+            isinstance(target, ast.Name) and target.id in DESCRIPTIONS
+            for target in node.targets
+        ):
+            skipped.update(id(part) for part in ast.walk(node.value))
     found = set()
     for node in ast.walk(tree):
-        if isinstance(node, ast.Attribute) and node.attr in AGGREGATE_VARIABLES:
-            found.add(node.attr)
+        if isinstance(node, ast.Attribute):
+            names = [node.attr]
+        elif isinstance(node, ast.Name):
+            names = [node.id]
+        elif isinstance(node, ast.ClassDef):
+            names = [node.name]
+        elif isinstance(node, ast.alias):
+            names = [*node.name.split("."), node.asname]
         elif (
             isinstance(node, ast.Constant)
             and isinstance(node.value, str)
-            and id(node) not in docstrings
+            and id(node) not in skipped
         ):
-            found.update(
-                name
-                for name in AGGREGATE_VARIABLES
-                if re.search(rf"\bgov\.household\.{name}\b", node.value)
-            )
+            names = GUARDED_WORD.findall(node.value)
+        else:
+            continue
+        found.update(name for name in names if name in GUARDED_NAMES)
     return sorted(found)
 
 
-def test_benefit_list_references_finds_each_route():
-    source = (
-        '"""Mentions gov.household.household_state_benefits in a docstring."""\n'
-        "def modify_parameters(parameters):\n"
-        "    household = parameters.gov.household\n"
-        "    household.household_benefits.update(value=['snap'])\n"
-        "    parameters.get_child('gov.household.spm_unit_benefits')\n"
-        "    return spm_unit('household_local_benefits', period)\n"
-    )
-    assert benefit_list_references(source) == [
-        "household_benefits",
-        "spm_unit_benefits",
-    ]
+REFERENCE_ROUTES = [
+    (
+        "parameters.gov.household.spm_unit_benefits.update(value=['snap'])",
+        ["spm_unit_benefits"],
+    ),
+    (
+        "household = parameters.gov.household\n"
+        "household.household_benefits.update(value=['snap'])",
+        ["household_benefits"],
+    ),
+    (
+        "parameters.get_child('gov.household.household_local_benefits')",
+        ["household_local_benefits"],
+    ),
+    (
+        "parameters.gov.household.get_child('household_health_benefits')",
+        ["household_health_benefits"],
+    ),
+    (
+        "getattr(parameters.gov.household, 'household_head_start_benefits')",
+        ["household_head_start_benefits"],
+    ),
+    (
+        "parameters.gov.household.children['household_state_benefits']",
+        ["household_state_benefits"],
+    ),
+    (
+        "for name in ('spm_unit_benefits', 'household_benefits'):\n"
+        "    getattr(parameters.gov.household, name).update(value=[])",
+        ["household_benefits", "spm_unit_benefits"],
+    ),
+    (
+        "self.neutralize_variable('household_state_benefits')",
+        ["household_state_benefits"],
+    ),
+    (
+        "parameters.gov.states.household.state_property_tax_refunds.update(value=[])",
+        ["state_property_tax_refunds"],
+    ),
+    (
+        "parameters.gov.hhs.ccdf.child_care_subsidy_programs.update(value=[])",
+        ["child_care_subsidy_programs"],
+    ),
+    (
+        "class household_child_care_subsidies(Variable):\n    adds = []",
+        ["household_child_care_subsidies"],
+    ),
+    (
+        "from policyengine_us.variables.gov.hhs.ccdf.child_care_subsidies "
+        "import child_care_subsidies as base",
+        ["child_care_subsidies"],
+    ),
+    (
+        "def formula(spm_unit, period, parameters):\n"
+        "    return spm_unit('spm_unit_benefits', period)",
+        ["spm_unit_benefits"],
+    ),
+    # What does not reach a list.
+    ('"""Mentions gov.household.spm_unit_benefits in a docstring."""', []),
+    ("# parameters.gov.household.spm_unit_benefits.update(value=[])", []),
+    (
+        "class tx_rebate(Variable):\n"
+        "    label = 'household_benefits'\n"
+        "    documentation = 'Counted in gov.household.spm_unit_benefits.'",
+        [],
+    ),
+    (
+        "parameters.gov.household.household_benefits_cap.update(value=1)\n"
+        "spm_unit('cbo_household_benefits', period)",
+        [],
+    ),
+]
+
+
+@pytest.mark.parametrize("source, expected", REFERENCE_ROUTES)
+def test_benefit_list_references_finds_each_route(source, expected):
+    """The scan below is only a guard while it finds each route."""
+    assert benefit_list_references(source) == expected
 
 
 def reforms_checked_against_the_baseline():
@@ -386,11 +537,12 @@ def test_reforms_that_reach_a_benefit_list_are_checked_against_the_baseline():
         if lists and source not in checked
     }
     assert not unchecked, (
-        f"These reforms reach a benefit list without a check that they keep "
-        f"every baseline program: {unchecked}. Add each to REFORMS in "
-        "test_reform_benefit_lists.py, which fails when a reform's list "
-        "drops a baseline member, and extend the lists only with "
-        "add_to_list_parameter (policyengine_us/tools/parameters.py)."
+        f"These reforms name a benefit total or list without a check that "
+        f"they keep every baseline program: {unchecked}. Add each to REFORMS "
+        "in test_reform_benefit_lists.py, which fails when a reform changes a "
+        "list parameter beyond its own additions or neutralizes a benefit "
+        "total, and extend the lists only with add_to_list_parameter "
+        "(policyengine_us/tools/parameters.py)."
     )
     assert not checked - set(reaching), (
         f"REFORMS names reforms with no source file: {checked - set(reaching)}"

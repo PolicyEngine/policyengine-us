@@ -24,28 +24,39 @@ for every input:
    lists it reads unchanged, and it changes values only through
    Parameter.update, so the parent node returns the new lists. Every call
    marks the parameter and its parent modified, even a call that adds nothing.
-2. Under each reform, each benefit list in each year is the baseline list,
-   followed by the reform's own additions and nothing else. A reformed system
-   marks modified exactly the lists its reform changes, and current law marks
-   none.
+2. Under each reform, every list parameter in the model holds, on every day,
+   the baseline list followed by the reform's own additions and nothing else.
+   That covers the household and SPM benefit lists, the lists their members
+   sum (household_state_benefits, state_property_tax_refunds,
+   child_care_subsidy_programs and the rest) and every other list. A reformed
+   system marks modified exactly the lists its reform changes, and current law
+   marks none.
 3. Applying a reform a second time changes no list. A simulation can apply a
    structural reform twice: once when its system is built, once at start.
-4. For any household, spm_unit_benefits and household_benefits equal the sum
+4. No reform neutralizes a benefit total or changes its formula. The totals
+   are household_benefits, spm_unit_benefits and every variable that sums a
+   list feeding them, at any depth; this file derives them from the built model
+   and checks that test_aggregate_list_integrity.py, which scans the source,
+   finds the same ones. A total that a reform zeroed would drop out of both
+   sides of the sums in 5, so 5 alone would not catch it.
+5. For any household, spm_unit_benefits and household_benefits equal the sum
    of the baseline list's programs and the reform's own additions, each as the
    simulation computes it; spm_unit_benefits also adds the SPM's capped housing
    subsidy. A program that a copy drops, or that it counts twice, breaks the
    sum.
-5. A dollar of ACP or EBB adds a dollar to spm_unit_net_income, under current
+6. A dollar of ACP or EBB adds a dollar to spm_unit_net_income, under current
    law and under each reform.
 """
 
 import gc
+import importlib.util
 from datetime import date, timedelta
+from pathlib import Path
 
 import pytest
 from hypothesis import example, given, settings
 from hypothesis import strategies as st
-from policyengine_core.parameters import ParameterNode
+from policyengine_core.parameters import Parameter, ParameterNode
 from policyengine_core.periods import instant
 
 from policyengine_us import Simulation
@@ -67,10 +78,15 @@ STATES = (
     "MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY"
 ).split()
 
-LISTS = ("spm_unit_benefits", "household_benefits", "household_state_benefits")
+SPM = "gov.household.spm_unit_benefits"
+HOUSEHOLD = "gov.household.household_benefits"
+STATE = "gov.household.household_state_benefits"
 
-# The structural reforms that pay a benefit, and the variable each adds to the
-# household and SPM benefit lists.
+# The structural reforms that name a benefit total or list, and the variable
+# each adds to the household and SPM benefit lists. A reform that only reads a
+# total belongs here too, with None in place of a variable.
+# test_aggregate_list_integrity.py fails when a reform names one and is missing
+# from this dict.
 REFORMS = {
     "tx_rebate": (tx_rebate, "tx_rebate"),
     "end_child_poverty_act": (end_child_poverty_act, "ecpa_child_benefit"),
@@ -80,7 +96,7 @@ REFORMS = {
         "boost_middle_class_tax_credit_paid_through_ssa",
     ),
 }
-OWN_BENEFITS = sorted({benefit for _, benefit in REFORMS.values()})
+OWN_BENEFITS = sorted({benefit for _, benefit in REFORMS.values() if benefit})
 
 # What the spm_unit_benefits formula adds to its parameter list under current
 # law. The housing subsidy stays out of the parameter so that no other
@@ -88,32 +104,155 @@ OWN_BENEFITS = sorted({benefit for _, benefit in REFORMS.values()})
 SPM_FORMULA_BENEFITS = ["spm_unit_capped_housing_subsidy"]
 
 
-def additions(name, list_name, year):
-    """The variables a reform adds to a benefit list in a year."""
-    if name == "baseline":
+# additions() changes only on January 1 of these years.
+ADDITION_YEARS = range(2000, 2051)
+
+
+def additions(name, parameter, year):
+    """The variables a reform adds to a list parameter in a year."""
+    if name == "baseline" or REFORMS[name][1] is None:
         return []
     own = REFORMS[name][1]
     if name == "tx_rebate":
         # A state benefit: household_benefits reads it through
         # household_state_benefits, which carries it in 2027, its paid year.
-        if list_name == "spm_unit_benefits":
-            return [own]
-        if list_name == "household_state_benefits" and year == 2027:
+        if parameter == SPM or (parameter == STATE and year == 2027):
             return [own]
         return []
-    if list_name == "household_state_benefits":
-        return []
-    return [own]
+    return [own] if parameter in (SPM, HOUSEHOLD) else []
 
 
-def benefit_list(tax_benefit_system, list_name, year):
+def changes(name, parameter):
+    """True when a reform adds to a list parameter in any year."""
+    return any(additions(name, parameter, year) for year in ADDITION_YEARS)
+
+
+def benefit_list(tax_benefit_system, parameter, year):
     """A benefit list as formulas read it in a year.
 
     Reading the one parameter, not parameters(year), keeps the test from
     building and caching the whole parameter tree for every year it draws.
     """
-    parameter = getattr(tax_benefit_system.parameters.gov.household, list_name)
-    return list(parameter(f"{year}-01-01"))
+    return list(tax_benefit_system.parameters.get_child(parameter)(f"{year}-01-01"))
+
+
+def list_parameters(tax_benefit_system):
+    """{name: parameter} for every parameter in the model whose values are lists."""
+    return {
+        parameter.name: parameter
+        for parameter in tax_benefit_system.parameters.get_descendants()
+        if isinstance(parameter, Parameter)
+        and any(isinstance(value.value, list) for value in parameter.values_list)
+    }
+
+
+def dated(parameter):
+    """A parameter's dated values, as (first day, value) pairs."""
+    return [(value.instant_str, value.value) for value in parameter.values_list]
+
+
+def members_on(parameter, day):
+    """The members a list parameter holds on a day, or None in a gap."""
+    value = parameter(day)
+    return None if value is None else list(value)
+
+
+def breakpoints(*parameters):
+    """The days on which these lists, or a reform's additions, can change.
+
+    Lists that agree on each of these days agree on every day from the year
+    1000 on: a list changes only on the first day of one of its values, and
+    additions() only on January 1 of a year in ADDITION_YEARS.
+    """
+    starts = {
+        value.instant_str
+        for parameter in parameters
+        for value in parameter.values_list
+        if value.instant_str >= "1000"
+    }
+    years = {f"{year}-01-01" for year in ADDITION_YEARS}
+    return sorted(starts | years | {"1000-01-01"})
+
+
+BASELINE_LISTS = list_parameters(system)
+
+# The integrity test reads the source and never builds the model; load it by
+# path to compare its benefit totals with the ones the built model gives.
+_spec = importlib.util.spec_from_file_location(
+    "aggregate_list_integrity",
+    Path(__file__).with_name("test_aggregate_list_integrity.py"),
+)
+integrity = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(integrity)
+
+
+def list_at(parameters, path):
+    """The list parameter at a dotted path, or None."""
+    node = parameters
+    for part in path.split("."):
+        node = getattr(node, "children", {}).get(part)
+        if node is None:
+            return None
+    if isinstance(node, Parameter) and any(
+        isinstance(value.value, list) for value in node.values_list
+    ):
+        return node
+    return None
+
+
+def benefit_list_totals(tax_benefit_system):
+    """{total: the list it sums, or None}, from the built model.
+
+    The same derivation as test_aggregate_list_integrity.benefit_list_totals:
+    household_benefits, spm_unit_benefits, and each member of their lists, at
+    any depth, that sums a gov.household list of its own name, names a list in
+    its adds, or caps another total.
+    """
+    parameters = tax_benefit_system.parameters
+    variables = tax_benefit_system.variables
+
+    def summed_list(variable):
+        own = f"gov.household.{variable}"
+        if list_at(parameters, own):
+            return own
+        adds = getattr(variables.get(variable), "adds", None)
+        if isinstance(adds, str) and list_at(parameters, adds):
+            return adds
+        return None
+
+    totals = {}
+    pending = ["household_benefits", "spm_unit_benefits"]
+    while pending:
+        variable = pending.pop()
+        if variable in totals:
+            continue
+        totals[variable] = summed_list(variable)
+        members = set(integrity.CAPPED_AGGREGATES.get(variable, ()))
+        if totals[variable] is not None:
+            parameter = list_at(parameters, totals[variable])
+            members |= {
+                member
+                for value in parameter.values_list
+                if isinstance(value.value, list)
+                for member in value.value
+            }
+        pending += [
+            member
+            for member in sorted(members)
+            if member in integrity.CAPPED_AGGREGATES or summed_list(member)
+        ]
+    return totals
+
+
+BENEFIT_LIST_TOTALS = benefit_list_totals(system)
+
+
+def formula_sources(variable):
+    """Where each of a variable's formulas is defined, by first day."""
+    return {
+        str(start): (formula.__code__.co_filename, formula.__code__.co_firstlineno)
+        for start, formula in variable.formulas.items()
+    }
 
 
 # --- 1. add_to_list_parameter --------------------------------------------
@@ -255,13 +394,20 @@ def policy(request):
     gc.collect()
 
 
-@settings(max_examples=60, deadline=None)
-@given(year=st.integers(2015, 2035), list_name=st.sampled_from(LISTS))
-def test_reform_lists_are_baseline_lists_plus_own_additions(policy, year, list_name):
+def test_reform_lists_are_baseline_lists_plus_own_additions(policy):
     name, reformed = policy
-    assert benefit_list(reformed, list_name, year) == (
-        benefit_list(system, list_name, year) + additions(name, list_name, year)
-    )
+    lists = list_parameters(reformed)
+    assert lists.keys() == BASELINE_LISTS.keys()
+    for parameter_name, baseline in BASELINE_LISTS.items():
+        changed = lists[parameter_name]
+        if not changes(name, parameter_name):
+            assert dated(changed) == dated(baseline), parameter_name
+            continue
+        for day in breakpoints(baseline, changed):
+            expected = members_on(baseline, day)
+            if expected is not None:
+                expected += additions(name, parameter_name, int(day[:4]))
+            assert members_on(changed, day) == expected, (parameter_name, day)
 
 
 def test_reformed_systems_mark_exactly_the_lists_they_change(policy):
@@ -269,23 +415,33 @@ def test_reformed_systems_mark_exactly_the_lists_they_change(policy):
     # The fixture passes each reform to CountryTaxBenefitSystem, which clears
     # every flag below the root between its two applications of that reform.
     name, reformed = policy
-    node = reformed.parameters.gov.household
-    for list_name in LISTS:
-        changed = any(additions(name, list_name, year) for year in range(2015, 2036))
-        assert getattr(node, list_name).modified == changed, list_name
-    assert node.modified == (name != "baseline")
+    for parameter_name, parameter in list_parameters(reformed).items():
+        assert parameter.modified == changes(name, parameter_name), parameter_name
+    assert reformed.parameters.gov.household.modified == (name != "baseline")
 
 
 def test_applying_a_reform_twice_changes_no_list(policy):
     name, reformed = policy
     if name == "baseline":
         pytest.skip("current law applies no reform")
-    twice = REFORMS[name][0](reformed)
-    for year in (2015, 2023, 2026, 2027, 2028, 2035):
-        for list_name in LISTS:
-            assert benefit_list(twice, list_name, year) == benefit_list(
-                reformed, list_name, year
-            )
+    once = list_parameters(reformed)
+    twice = list_parameters(REFORMS[name][0](reformed))
+    assert twice.keys() == once.keys()
+    for parameter_name, parameter in once.items():
+        assert dated(twice[parameter_name]) == dated(parameter), parameter_name
+
+
+def test_benefit_list_totals_match_the_integrity_test():
+    assert BENEFIT_LIST_TOTALS == integrity.BENEFIT_LIST_TOTALS
+
+
+def test_reforms_keep_every_benefit_list_total(policy):
+    name, reformed = policy
+    for total in BENEFIT_LIST_TOTALS:
+        variable, baseline = reformed.variables[total], system.variables[total]
+        assert not variable.is_neutralized, total
+        assert variable.adds == baseline.adds, total
+        assert formula_sources(variable) == formula_sources(baseline), total
 
 
 def program_state(program):
@@ -306,7 +462,7 @@ def households(draw):
     state = draw(st.sampled_from(STATES))
     candidates = [
         program
-        for program in benefit_list(system, "spm_unit_benefits", year)
+        for program in benefit_list(system, SPM, year)
         if program_state(program) in (None, state)
     ] + [*SPM_FORMULA_BENEFITS, *OWN_BENEFITS, "acp", "ebb"]
     programs = draw(st.lists(st.sampled_from(candidates), max_size=8, unique=True))
@@ -363,16 +519,16 @@ def test_benefit_totals_sum_the_baseline_lists_and_own_additions(policy, househo
     )
 
     spm_programs = (
-        benefit_list(system, "spm_unit_benefits", year)
-        + additions(name, "spm_unit_benefits", year)
+        benefit_list(system, SPM, year)
+        + additions(name, SPM, year)
         + SPM_FORMULA_BENEFITS
     )
     assert float(simulation.calculate("spm_unit_benefits", year).sum()) == (
         pytest.approx(summed(simulation, spm_programs, year), abs=ROUNDING)
     )
 
-    household_programs = benefit_list(system, "household_benefits", year) + (
-        additions(name, "household_benefits", year)
+    household_programs = benefit_list(system, HOUSEHOLD, year) + (
+        additions(name, HOUSEHOLD, year)
     )
     assert float(simulation.calculate("household_benefits", year).sum()) == (
         pytest.approx(summed(simulation, household_programs, year), abs=ROUNDING)
