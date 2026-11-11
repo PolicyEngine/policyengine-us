@@ -1,0 +1,37 @@
+# Target: policyengine_us/tests/policy/baseline/gov/local/co/denver/dhs/property_tax_relief/co_denver_property_tax_relief_income.yaml (new file)
+# Batch F (sweep). Not run. Fails on main (06c0dcbc54), where
+# gov.local.co.denver.dhs.property_tax_relief.income_sources lists
+# pension_income but not military_retirement_income, retirement account
+# distributions, or Colorado Old Age Pension.
+#
+# Law: Denver HOST Property Tax Relief Program Guidelines (effective May 2026),
+# Definitions: "Income: ... all financial income resources of the household
+# members will be considered as 'income,' except: [gifts, prior-year rebates,
+# tax refunds, Medicaid, SNAP, child support, TANF, LEAP, education
+# assistance, SSDI, SSI, Social Security retirement benefits]". Proof of
+# income: "e. Old Age Pension (OAP) ... g. Pension or annuity benefits".
+# The ordinance (D.R.M.C. 53-492) could not be opened; confirm it first.
+
+- name: Batch F Denver, military retired pay, IRA distributions and Old Age Pension count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 10_000
+        military_retirement_pay: 20_000
+        taxable_ira_distributions: 4_000
+        co_oap: 3_000
+        # Excluded by the guidelines (item m), so it must not be added.
+        social_security_retirement: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+        in_denver: true
+  output:
+    # 10,000 pension + 20,000 military retired pay + 4,000 IRA distribution
+    # + 3,000 Old Age Pension = 37,000. Social Security is excluded.
+    # Main returns 10,000 (pension_income only).
+    co_denver_property_tax_relief_income: 37_000

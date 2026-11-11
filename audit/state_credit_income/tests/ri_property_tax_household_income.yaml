@@ -1,0 +1,141 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/ri/tax/income/credits/property_tax/ri_property_tax_household_income.yaml
+# (not on main at 06c0dcbc54; open PRs #10647 and #10722 create it)
+# Each case fails on main and passes once the gap is fixed.
+# R.I. Gen. Laws 44-33-3(7): income is federal adjusted gross income plus "all
+# non-taxable income including, but not limited to ... alimony, support money
+# ... cash public assistance and relief ... the gross amount of any pension or
+# annuity (including ... veterans' disability pensions) ... and the gross
+# amount of 'loss of time' insurance", and "shall not include any deductions
+# for rental losses, business losses, capital losses, exclusion for foreign
+# income, and any losses received from pass-through entities".
+# 44-33-3(6): household income is "all income received by all persons of a
+# household".
+
+- name: A business loss is not deducted.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 70
+    employment_income: 20_000
+    self_employment_income: -5_000
+  output:
+    # RI-1040H line 28 (federal AGI) 15,000 + line 31 (addback of losses)
+    # 5,000 = 20,000. Main: 15,000.
+    ri_property_tax_household_income: 20_000
+
+- name: A capital loss is not deducted.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 70
+    employment_income: 20_000
+    long_term_capital_gains: -4_000
+  output:
+    # Federal AGI deducts 3,000 of the loss (IRC 1211(b)): 17,000. Rhode
+    # Island allows no deduction for capital losses: 20,000. Main: 17,000.
+    ri_property_tax_household_income: 20_000
+
+- name: Alimony from a pre-2019 divorce counts once.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 70
+    taxable_private_pension_income: 10_000
+    alimony_income: 4_000
+    divorce_year: 2010
+  output:
+    # Federal AGI already holds the alimony: 10,000 + 4,000 = 14,000.
+    # Main adds it again: 18,000.
+    ri_property_tax_household_income: 14_000
+
+- name: Veterans' disability benefits count.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 70
+    taxable_private_pension_income: 10_000
+    veterans_benefits: 5_000
+  output:
+    # 10,000 + veterans' disability pension 5,000 = 15,000. Main: 10,000.
+    ri_property_tax_household_income: 15_000
+
+- name: A Roth IRA distribution counts at its gross amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 70
+    taxable_private_pension_income: 10_000
+    tax_exempt_ira_distributions: 3_000
+  output:
+    # RI-1040H line 20 takes IRA distributions from Form 1040 line 4a (the
+    # gross amount): 10,000 + 3,000 = 13,000. Main: 10,000.
+    ri_property_tax_household_income: 13_000
+
+- name: General assistance counts as cash public assistance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 70
+    taxable_private_pension_income: 10_000
+    general_assistance: 2_400
+  output:
+    # 10,000 + line 29 (cash public assistance) 2,400 = 12,400. Main: 10,000.
+    ri_property_tax_household_income: 12_400
+
+- name: Tax-exempt disability insurance benefits count at their gross amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 70
+    taxable_private_pension_income: 10_000
+    disability_benefits: 3_000
+    tax_exempt_disability_benefits: 3_000
+  output:
+    # 10,000 + gross "loss of time" insurance 3,000 = 13,000. Main: 10,000.
+    ri_property_tax_household_income: 13_000
+
+- name: Foreign earned income excluded under section 911 counts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 70
+    employment_income: 10_000
+    foreign_earned_income_exclusion: 4_000
+  output:
+    # PolicyEngine income inputs are net of the exclusion, so federal AGI is
+    # 10,000. No "exclusion for foreign income" is allowed: 14,000.
+    # Main: 10,000.
+    ri_property_tax_household_income: 14_000
+
+- name: Another household member's income counts, though they file their own return.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 70
+        taxable_private_pension_income: 10_000
+      child:
+        age: 40
+        employment_income: 6_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: RI
+  output:
+    # 44-33-3(6): all income received by all persons of the household:
+    # 10,000 + 6,000 = 16,000 for either claimant. Main: [10,000, 6,000].
+    ri_property_tax_household_income: [16_000, 16_000]

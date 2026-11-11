@@ -1,0 +1,103 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_gross_household_income.yaml
+# Each case fails on main (06c0dcbc54) and passes once the gap is fixed.
+# MCA 15-30-2337(9)(a): "Income" means "federal adjusted gross income, without
+# regard to loss, ... plus all nontaxable income, including but not limited
+# to: (i) the amount of any pension or annuity ... (iii) alimony ... (vii)
+# interest on federal, state, county, and municipal bonds".
+
+- name: Alimony outside federal AGI (divorce after 2018) counts in gross household income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        alimony_income: 6_000
+        # From 2019, alimony is not in the recipient's federal gross income,
+        # so taxable_alimony_income is 0 and federal AGI is 20,000.
+        divorce_year: 2020
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # § 15-30-2337(9)(a)(iii) "alimony"; 2025 Schedule 2EC line 9, "Enter the
+    # total of all alimony received during the year."
+    # 20,000 + 6,000 = 26,000 (main: 20,000).
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 26_000
+
+- name: Tax-exempt 401(k), 403(b) and SEP distributions count as nontaxable pensions
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        # Nontaxable distributions, entered net of the taxpayer's cost
+        # (§ 15-30-2337(9)(b): "income is reduced by the taxpayer's basis").
+        tax_exempt_401k_distributions: 4_000
+        tax_exempt_403b_distributions: 2_000
+        tax_exempt_sep_distributions: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # § 15-30-2337(9)(a)(i) "the amount of any pension or annuity"; ARM
+    # 42.4.301(2)(d) "all federal taxable and nontaxable pension, annuity,
+    # and IRA payments received during the year"; 2025 Schedule 2EC line 5.
+    # 20,000 + 4,000 + 2,000 + 1,000 = 27,000 (main: 20,000).
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 27_000
+
+- name: Savings bond interest excluded under IRC 135 is nontaxable interest on federal bonds
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        taxable_interest_income: 700
+        # The IRC 135 exclusion is an above-the-line amount in the model:
+        # federal AGI is 20,000 + 700 - 700 = 20,000.
+        us_bonds_for_higher_ed: 700
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # § 15-30-2337(9)(a)(vii); 2025 Schedule 2EC line 2, "Enter all interest,
+    # both taxable and nontaxable".
+    # 20,000 + 700 = 20,700 (main: 20,000).
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_700
+
+- name: Foreign earned income excluded under IRC 911 is nontaxable income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # The other income inputs are the amounts left after the exclusion,
+        # so federal AGI is 20,000.
+        foreign_earned_income_exclusion: 10_000
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # § 15-30-2337(9)(a): federal AGI "plus all nontaxable income, including
+    # but not limited to" the listed items.
+    # 20,000 + 10,000 = 30,000 (main: 20,000).
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
