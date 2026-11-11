@@ -37,3 +37,139 @@
     # Each over-65 spouse gets $5,500 subtraction
     mt_old_age_subtraction: [5_500, 5_500]
     mt_subtractions: [5_500, 5_500]
+
+# MCA 15-30-2120(3)(g) and (7): $5,500 x CPI-U June of the prior year /
+# CPI-U June 2023 (305.109), rounded to the nearest $10 (15-30-2101(12)).
+- name: 2025 amount stays $5,660
+  period: 2025
+  input:
+    age: 65
+    state_code: MT
+  output:
+    # 5,500 x 314.175 / 305.109 = 5,663.43 -> 5,660
+    mt_old_age_subtraction: 5_660
+
+- name: 2026 amount at age 65 is $5,810
+  period: 2026
+  input:
+    age: 65
+    state_code: MT
+  output:
+    # 5,500 x 322.561 / 305.109 = 5,814.60 -> 5,810
+    mt_old_age_subtraction: 5_810
+
+- name: 2026 filer aged 64 gets no subtraction
+  period: 2026
+  input:
+    age: 64
+    state_code: MT
+  output:
+    mt_old_age_subtraction: 0
+
+- name: 2026 married couple aged 67 and 65 with no Montana earnings
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse1:
+        age: 67
+        taxable_private_pension_income: 45_000
+        social_security_retirement: 15_000
+      spouse2:
+        age: 65
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: MT
+  output:
+    # IRC 86: provisional income 45,000 + 0.5 x 30,000 = 60,000;
+    # taxable SS = min(0.85 x 30,000, 0.85 x (60,000 - 44,000) + 6,000) = 19,600.
+    # AGI 64,600 - standard deduction 32,200 - aged additions 2 x 1,650
+    # - senior deduction 2 x 6,000 = 17,100.
+    taxable_income: 17_100
+    mt_old_age_subtraction: [5_810, 5_810]
+    # 17,100 - 2 x 5,810 = 5,480
+    mt_taxable_income_joint: [5_480, 0]
+    # 5,480 x 4.7% = 257.56
+    mt_income_tax: 257.56
+
+- name: 2025 married couple aged 67 and 65 keeps the $5,660 amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse1:
+        age: 67
+        taxable_private_pension_income: 45_000
+        social_security_retirement: 15_000
+      spouse2:
+        age: 65
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: MT
+  output:
+    # Taxable SS 19,600 as in 2026. AGI 64,600 - standard deduction 31,500
+    # - aged additions 2 x 1,600 - senior deduction 2 x 6,000 = 17,900.
+    taxable_income: 17_900
+    mt_old_age_subtraction: [5_660, 5_660]
+    # 17,900 - 2 x 5,660 = 6,580
+    mt_taxable_income_joint: [6_580, 0]
+    # 6,580 x 4.7% = 309.26
+    mt_income_tax: 309.26
+
+- name: 2026 single filer aged 70
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        taxable_private_pension_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MT
+  output:
+    # AGI 40,000 - standard deduction 16,100 - aged addition 2,050
+    # - senior deduction 6,000 = 15,850.
+    taxable_income: 15_850
+    mt_old_age_subtraction: 5_810
+    # 15,850 - 5,810 = 10,040
+    mt_taxable_income_joint: 10_040
+    # 10,040 x 4.7% = 471.88
+    mt_income_tax: 471.88
+
+- name: 2026 single filer aged 64 gets no subtraction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 64
+        taxable_private_pension_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MT
+  output:
+    # AGI 40,000 - standard deduction 16,100 = 23,900.
+    taxable_income: 23_900
+    mt_old_age_subtraction: 0
+    mt_taxable_income_joint: 23_900
+    # 23,900 x 4.7% = 1,123.30
+    mt_income_tax: 1_123.30
