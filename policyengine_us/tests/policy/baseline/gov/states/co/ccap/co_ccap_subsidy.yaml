@@ -202,8 +202,11 @@
         state_code: CO
   output:
     co_ccap_child_eligible: [false, true, true]
-    # $958.53 + $500 (below the $808.82 school-age rate) - $200.
-    co_ccap_subsidy: 1_258.53
+    # Care after school alone reads the part-time unit, so the 12-year-old's
+    # Adams school-age rate is 37.33 x 0.55 = 20.53 a day, or 20.53 x 260 /
+    # 12 = $444.82 a month, below the $500 charge.
+    # $958.53 + $444.82 - $200 = $1,203.35.
+    co_ccap_subsidy: 1_203.35
 
 - name: Case 8, a teenager's charge doesn't absorb a fee above the eligible child's charge.
   period: 2026-01

@@ -19,11 +19,7 @@ class co_ccap_reimbursement(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         eligible_child = person("co_ccap_child_eligible", period)
-        charge = add(
-            person,
-            period,
-            ["pre_subsidy_childcare_expenses", "after_school_expenses"],
-        )
+        charges = person("co_ccap_child_charges", period)
         county_rate = person("co_ccap_maximum_monthly_payment", period)
-        reimbursable = min_(max_(charge, 0), county_rate)
+        reimbursable = min_(charges, county_rate)
         return spm_unit.sum(reimbursable * eligible_child)

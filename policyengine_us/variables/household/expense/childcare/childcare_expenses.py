@@ -13,4 +13,7 @@ class childcare_expenses(Variable):
             spm_unit, period, ["pre_subsidy_childcare_expenses"]
         )
         subsidies = spm_unit("child_care_subsidies", period)
-        return max_(pre_subsidy_childcare_expenses - subsidies, 0)
+        # Charges a subsidy program bars the provider from collecting never
+        # reach the family.
+        absorbed = spm_unit("child_care_charges_providers_absorb", period)
+        return max_(pre_subsidy_childcare_expenses - subsidies - absorbed, 0)

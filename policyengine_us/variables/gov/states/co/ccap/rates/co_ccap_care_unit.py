@@ -20,9 +20,17 @@ class co_ccap_care_unit(Variable):
         p = parameters(period).gov.states.co.ccap.rates
         hours = person("co_ccap_care_hours_per_day", period)
         # Without hours of care, read the full-time unit: the schedule that
-        # the daily rate prices. A user who knows the hours enters them.
+        # the daily rate prices. A user who knows the hours enters them. A
+        # child in grade 1 or above whose only care comes after school reads
+        # the part-time unit instead, as the parent fee does.
+        part_time_unit = p.care_unit.amounts[0]
+        unit_without_hours = where(
+            person("co_ccap_after_school_care_only", period),
+            part_time_unit,
+            FULL_TIME_UNIT,
+        )
         return where(
             hours > 0,
             p.care_unit.calc(hours, right=True),
-            FULL_TIME_UNIT,
+            unit_without_hours,
         )

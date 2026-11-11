@@ -92,3 +92,43 @@
     # exceed the two scheduled days: 20 / 4.62 = 4.33 hours. Daily hours win
     # over weekly hours: 4 hours.
     co_ccap_care_unit: [0.55, 0.55, 1, 1, 1.55, 1.55, 2, 1, 0.55, 0.55]
+
+- name: A child in grade 1 or above whose only care comes after school reads the part-time unit.
+  period: 2026-01
+  input:
+    people:
+      after_school_only:
+        age: 8
+        is_in_k12_school: true
+        after_school_expenses: 3_000
+      kindergarten_after_school:
+        age: 5
+        is_in_k12_school: true
+        after_school_expenses: 3_000
+      after_school_and_other_care:
+        age: 8
+        is_in_k12_school: true
+        after_school_expenses: 3_000
+        pre_subsidy_childcare_expenses: 3_000
+      after_school_with_days:
+        age: 8
+        is_in_k12_school: true
+        after_school_expenses: 3_000
+        childcare_days_per_week: 5
+    households:
+      household:
+        members:
+          [
+            after_school_only,
+            kindergarten_after_school,
+            after_school_and_other_care,
+            after_school_with_days,
+          ]
+        state_code: CO
+  output:
+    # after_school_only: no hours or days and only an after-school charge,
+    # so 55%, as the parent fee reads it.
+    # kindergarten_after_school: below grade 1, so full time.
+    # after_school_and_other_care: other care leaves the hours unknown.
+    # after_school_with_days: reported days, so not after-school care alone.
+    co_ccap_care_unit: [0.55, 1, 1, 1]

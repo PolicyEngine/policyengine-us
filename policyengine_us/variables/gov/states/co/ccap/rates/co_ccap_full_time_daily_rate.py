@@ -23,11 +23,15 @@ class co_ccap_full_time_daily_rate(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.co.ccap.rates
         county = person.household("county_str", period.this_year)
-        # A county outside Colorado, such as UNKNOWN for a household that
-        # doesn't report one, reads Denver's rates, as co_ccap_fpg_eligible
-        # does. The tables' county breakdown fills them with every county in
-        # the country at zero, so their keys can't tell Colorado's counties
-        # apart; the state suffix in each county's name does.
+        # A county outside Colorado, or UNKNOWN, reads Denver's rates, as
+        # co_ccap_fpg_eligible does. A household that reports neither a
+        # county nor a county FIPS code gets Adams County, which county's
+        # formula assigns as Colorado's first county, unless other
+        # households in the simulation report a county; then it gets
+        # UNKNOWN, and so Denver's rates. The tables' county
+        # breakdown fills them with every county in the country at zero, so
+        # their keys can't tell Colorado's counties apart; the state suffix
+        # in each county's name does.
         in_colorado = np.char.endswith(county.astype(str), "_CO")
         county = np.where(in_colorado, county, "DENVER_COUNTY_CO")
         tier = person("co_ccap_quality_tier", period)

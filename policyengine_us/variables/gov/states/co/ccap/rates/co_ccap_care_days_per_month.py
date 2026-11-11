@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
-
-# Without a schedule, read a five-day week of care.
-DEFAULT_DAYS_PER_WEEK = 5
+from policyengine_us.variables.gov.states.co.ccap.co_ccap_care_hours_per_day import (
+    WEEKDAYS_PER_WEEK,
+)
 
 
 class co_ccap_care_days_per_month(Variable):
@@ -26,7 +26,9 @@ class co_ccap_care_days_per_month(Variable):
         # model carries no county's absence policy, so the scheduled days set
         # the most a county may pay. Attending days above the schedule count
         # the drop-in days a county may pay (3.130(F)).
-        scheduled_days = days_per_week * WEEKS_IN_YEAR / MONTHS_IN_YEAR
-        days = max_(scheduled_days, attending_days)
-        default_days = DEFAULT_DAYS_PER_WEEK * WEEKS_IN_YEAR / MONTHS_IN_YEAR
-        return where(days > 0, days, default_days)
+        weeks_per_month = WEEKS_IN_YEAR / MONTHS_IN_YEAR
+        days = max_(days_per_week * weeks_per_month, attending_days)
+        # Without a schedule, read a five-day week of care.
+        default_days = WEEKDAYS_PER_WEEK * weeks_per_month
+        # A county pays for at most every day of the month.
+        return min_(where(days > 0, days, default_days), period.size_in_days)

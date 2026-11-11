@@ -25,14 +25,22 @@ recompute each rate by the rule, apart from the model's formulas:
    exceeds the fee or the reimbursement; and the payment plus the capped fee
    equals the reimbursement.
 4. More charges never lower the payment, and a higher fee never raises it.
+5. 3.128(T) bars a provider from charging a CCCAP family more than the daily
+   reimbursement rate, so the provider absorbs each eligible child's charges
+   above the county rate, and the family's child care expenses for the year
+   come to the capped fees, less any after-school charges, which
+   `childcare_expenses` leaves out of the charges.
 
 Without daily hours, the model spreads a child's weekly hours over the days
 of care in a week: the larger of days a week and attending days a month x
 12 / 52, else five weekdays. Without hours of care a child takes the full-time
-unit, and without a weekly schedule or attending days, a five-day week
-(5 x 52 / 12 days a month).
+unit, except that a child in grade 1 or above whose only care comes after
+school takes the part-time unit, as the parent fee does. Without a weekly
+schedule or attending days, a child takes a five-day week (5 x 52 / 12 days a
+month), and no child takes more days than the month has.
 """
 
+from calendar import monthrange
 from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
@@ -52,6 +60,9 @@ WEEKS_IN_YEAR = 52
 MONTHS_IN_YEAR = 12
 DEFAULT_DAYS_PER_WEEK = 5
 PARENT_AGE = 30
+# PolicyEngine puts children aged 5 to 17 in school, and the model takes a
+# child in school aged 6 or older to be in grade 1 or above.
+FIRST_GRADE_MONTHS = 72
 # A county outside Colorado's list reads Denver's rates.
 FALLBACK_COUNTY = "DENVER_COUNTY_CO"
 # The bands as CDEC's tables head them, in months of age.
@@ -158,10 +169,24 @@ def care_hours(child):
     return child["weekly_hours"] / days_in_a_week
 
 
-def care_unit(hours):
-    """3.130(C); without hours, the full-time unit."""
+def after_school_only(child):
+    """A child in grade 1 or above with no hours or days of care whose only
+    charge comes after school."""
+    return (
+        child["age_months"] >= FIRST_GRADE_MONTHS
+        and care_hours(child) == 0
+        and child["days_per_week"] == 0
+        and child["attending_days"] == 0
+        and child["after_school"] > 0
+        and child["charge"] == 0
+    )
+
+
+def care_unit(hours, after_school_care_only=False):
+    """3.130(C); without hours, the full-time unit, or the part-time unit for
+    after-school care alone."""
     if hours <= 0:
-        return Decimal("1")
+        return Decimal("0.55") if after_school_care_only else Decimal("1")
     if hours <= 5:
         return Decimal("0.55")
     if hours <= 12:
@@ -175,11 +200,11 @@ def daily_rate(full_time, unit):
     return (full_time * unit).quantize(CENT, rounding=ROUND_HALF_UP)
 
 
-def days_of_care(days_per_week, attending_days):
+def days_of_care(days_per_week, attending_days, instant):
     days = max(days_per_week * WEEKS_IN_YEAR / MONTHS_IN_YEAR, attending_days)
-    if days > 0:
-        return days
-    return DEFAULT_DAYS_PER_WEEK * WEEKS_IN_YEAR / MONTHS_IN_YEAR
+    if days <= 0:
+        days = DEFAULT_DAYS_PER_WEEK * WEEKS_IN_YEAR / MONTHS_IN_YEAR
+    return min(days, monthrange(instant.year, instant.month)[1])
 
 
 def county_rate(child, county, instant):
@@ -187,17 +212,25 @@ def county_rate(child, county, instant):
     full_time = full_time_rate(
         county, child["provider"], child["age_months"], child["rating"], instant
     )
-    daily = daily_rate(full_time, care_unit(care_hours(child)))
-    return float(daily) * days_of_care(child["days_per_week"], child["attending_days"])
+    unit = care_unit(care_hours(child), after_school_only(child))
+    daily = daily_rate(full_time, unit)
+    days = days_of_care(child["days_per_week"], child["attending_days"], instant)
+    return float(daily) * days
 
 
-def simulate(month, units, variables):
-    """`variables` for `month`, with each unit one Colorado household, SPM
-    unit and tax unit of a parent and the unit's children.
+def child_charges(child):
+    return child["charge"] + child["after_school"]
+
+
+def simulate(period, units, variables, months=None):
+    """`variables` for `period`, with each unit one Colorado household, SPM
+    unit and tax unit of a parent and the unit's children, eligible and owing
+    its fee in each of `months` (by default, the month `period` names).
 
     Returns each variable's values by person, or by SPM unit for SPM unit
     variables, in the order of `units` and their children."""
-    year = int(month[:4])
+    year = int(period[:4])
+    months = months or [period]
     people, households, spm_units, tax_units, families, marital_units = (
         {},
         {},
@@ -227,6 +260,7 @@ def simulate(month, units, variables):
                 "pre_subsidy_childcare_expenses": {
                     year: child["charge"] * MONTHS_IN_YEAR
                 },
+                "after_school_expenses": {year: child["after_school"] * MONTHS_IN_YEAR},
             }
         households[f"household_{u}"] = {
             "members": members,
@@ -235,8 +269,8 @@ def simulate(month, units, variables):
         }
         spm_units[f"spm_unit_{u}"] = {
             "members": members,
-            "co_ccap_eligible": {month: True},
-            "co_ccap_parent_fee": {month: unit["fee"]},
+            "co_ccap_eligible": {month: True for month in months},
+            "co_ccap_parent_fee": {month: unit["fee"] for month in months},
         }
         tax_units[f"tax_unit_{u}"] = {"members": members}
         families[f"family_{u}"] = {"members": members}
@@ -252,7 +286,7 @@ def simulate(month, units, variables):
     )
     results = {}
     for variable in variables:
-        values = simulation.calculate(variable, month)
+        values = simulation.calculate(variable, period)
         if simulation.tax_benefit_system.variables[variable].entity.key == "person":
             # Drop the parents, leaving the children in order.
             children = [i for i, name in enumerate(people) if name.startswith("child_")]
@@ -291,7 +325,8 @@ children = st.fixed_dictionaries(
         weekly_hours=weekly_hours,
         days_per_week=st.integers(min_value=0, max_value=7),
         attending_days=st.integers(min_value=0, max_value=31),
-        charge=st.integers(min_value=0, max_value=4_000),
+        charge=st.one_of(st.just(0), st.integers(min_value=0, max_value=4_000)),
+        after_school=st.one_of(st.just(0), st.integers(min_value=0, max_value=1_000)),
     )
 )
 units = st.fixed_dictionaries(
@@ -313,6 +348,7 @@ def child(**overrides):
         days_per_week=0,
         attending_days=0,
         charge=0,
+        after_school=0,
     )
     return {**base, **overrides}
 
@@ -473,6 +509,23 @@ def test_each_care_unit_pays_its_share_of_the_full_time_rate(month, unit):
         )
     ],
 )
+# A school child whose only care comes after school, at the part-time unit,
+# beside a kindergartner and a child with a schedule, who take full time.
+@example(
+    month="2026-02",
+    many=[
+        dict(
+            county="DENVER_COUNTY_CO",
+            fee=0,
+            children=[
+                child(age_months=96, after_school=1_000),
+                child(age_months=66, after_school=1_000),
+                child(age_months=96, days_per_week=5, after_school=1_000),
+                child(age_months=96, days_per_week=7, charge=4_000),
+            ],
+        )
+    ],
+)
 @given(month=months, many=st.lists(units, min_size=1, max_size=4))
 def test_the_payment_is_the_capped_charges_less_the_fee(month, many):
     instant = instant_of(month)
@@ -484,6 +537,7 @@ def test_the_payment_is_the_capped_charges_less_the_fee(month, many):
             "co_ccap_reimbursement",
             "co_ccap_capped_parent_fee",
             "co_ccap_subsidy",
+            "co_ccap_charges_above_rate",
         ],
     )
     caps = iter(results["co_ccap_maximum_monthly_payment"])
@@ -491,8 +545,9 @@ def test_the_payment_is_the_capped_charges_less_the_fee(month, many):
         rates = [county_rate(kid, unit["county"], instant) for kid in unit["children"]]
         for rate in rates:
             assert next(caps) == pytest.approx(rate, abs=TOLERANCE)
-        charges = [kid["charge"] for kid in unit["children"]]
+        charges = [child_charges(kid) for kid in unit["children"]]
         reimbursement = sum(min(c, r) for c, r in zip(charges, rates))
+        above_rate = sum(max(c - r, 0) for c, r in zip(charges, rates))
         fee = unit["fee"]
         model_reimbursement = results["co_ccap_reimbursement"][u]
         capped_fee = results["co_ccap_capped_parent_fee"][u]
@@ -505,6 +560,12 @@ def test_the_payment_is_the_capped_charges_less_the_fee(month, many):
         assert paid <= max(sum(charges) - fee, 0) + TOLERANCE
         assert capped_fee <= min(fee, model_reimbursement) + TOLERANCE
         assert paid + capped_fee == pytest.approx(model_reimbursement, abs=TOLERANCE)
+        # 3.128(T): the provider absorbs the charges above the county rate.
+        model_above_rate = results["co_ccap_charges_above_rate"][u]
+        assert model_above_rate == pytest.approx(above_rate, abs=TOLERANCE)
+        assert model_reimbursement + model_above_rate == pytest.approx(
+            sum(charges), abs=TOLERANCE
+        )
 
 
 @settings(max_examples=15, deadline=None)
@@ -534,3 +595,46 @@ def test_more_charges_never_lower_the_payment_and_a_higher_fee_never_raises_it(
     base, with_more_charge, with_more_fee = paid
     assert with_more_charge >= base - TOLERANCE
     assert with_more_fee <= base + TOLERANCE
+
+
+@settings(max_examples=6, deadline=None)
+# An infant's $2,000 a month in an Adams County center against $1,662.05: the
+# family pays its $100 fee, and the provider absorbs $337.95.
+@example(
+    year=2026,
+    unit=dict(county="ADAMS_COUNTY_CO", fee=100, children=[child(charge=2_000)]),
+)
+# A fee above the reimbursement: the family pays the reimbursement.
+@example(
+    year=2026,
+    unit=dict(county="ADAMS_COUNTY_CO", fee=2_000, children=[child(charge=2_000)]),
+)
+@given(year=st.integers(min_value=2024, max_value=2026), unit=units)
+def test_the_family_pays_only_the_capped_fee(year, unit):
+    months_of_year = [f"{year}-{m:02d}" for m in range(1, MONTHS_IN_YEAR + 1)]
+    results = simulate(
+        str(year),
+        [unit],
+        ["childcare_expenses", "child_care_charges_providers_absorb"],
+        months=months_of_year,
+    )
+    capped_fees = 0
+    above_rate = 0
+    for month in months_of_year:
+        instant = instant_of(month)
+        rates = [county_rate(kid, unit["county"], instant) for kid in unit["children"]]
+        charges = [child_charges(kid) for kid in unit["children"]]
+        capped_fees += min(unit["fee"], sum(min(c, r) for c, r in zip(charges, rates)))
+        above_rate += sum(max(c - r, 0) for c, r in zip(charges, rates))
+    after_school = sum(kid["after_school"] for kid in unit["children"])
+    # A month's rounding in each of 12 months.
+    tolerance = MONTHS_IN_YEAR * TOLERANCE
+    assert results["child_care_charges_providers_absorb"][0] == pytest.approx(
+        above_rate, abs=tolerance
+    )
+    # childcare_expenses counts the child care charges, less the payment and
+    # the charges the provider absorbs: the capped fees, less the after-school
+    # charges it leaves out, floored at zero.
+    assert results["childcare_expenses"][0] == pytest.approx(
+        max(capped_fees - after_school * MONTHS_IN_YEAR, 0), abs=tolerance
+    )

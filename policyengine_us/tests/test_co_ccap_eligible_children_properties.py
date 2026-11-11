@@ -15,6 +15,8 @@ The tests set eligibility and the parent fee as inputs, so they exercise the
 payment formula alone.
 """
 
+from decimal import ROUND_HALF_UP, Decimal
+
 import pytest
 from hypothesis import example, given, settings
 from hypothesis import strategies as st
@@ -34,6 +36,12 @@ MONTHS_IN_YEAR = 12
 ADAMS_CENTER_DAILY_RATES = ((18, 76.71), (36, 62.26), (72, 44.24))
 ADAMS_CENTER_SCHOOL_AGE_DAILY_RATE = 37.33
 DAYS_PER_MONTH = 5 * 52 / 12
+# A child in school (PolicyEngine puts ages 5 to 17 there) aged 6 or older
+# whose only charge comes after school takes the part-time unit, 55% of the
+# daily rate rounded half up to the cent (3.130(C)).
+FIRST_GRADE_AGE = 6
+LAST_SCHOOL_AGE = 17
+PART_TIME_UNIT = Decimal("0.55")
 
 
 def colorado(children, monthly_fee):
@@ -75,13 +83,26 @@ def eligible(child):
     )
 
 
-def county_rate(child):
-    """3.130: the most Adams County pays for the child's care in a month."""
+def full_time_daily_rate(child):
     age_months = child["age"] * MONTHS_IN_YEAR
     for limit, daily in ADAMS_CENTER_DAILY_RATES:
         if age_months < limit:
-            return daily * DAYS_PER_MONTH
-    return ADAMS_CENTER_SCHOOL_AGE_DAILY_RATE * DAYS_PER_MONTH
+            return daily
+    return ADAMS_CENTER_SCHOOL_AGE_DAILY_RATE
+
+
+def county_rate(child):
+    """3.130: the most Adams County pays for the child's care in a month."""
+    daily = full_time_daily_rate(child)
+    after_school_only = (
+        FIRST_GRADE_AGE <= child["age"] <= LAST_SCHOOL_AGE
+        and child["care"] == 0
+        and child["after_school"] > 0
+    )
+    if after_school_only:
+        part_time = Decimal(str(daily)) * PART_TIME_UNIT
+        daily = float(part_time.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+    return daily * DAYS_PER_MONTH
 
 
 charges = dict(
@@ -173,6 +194,15 @@ def test_a_member_outside_the_age_limits_adds_nothing(child, other, fee):
         dict(age=15, disabled=False, court=False, care=1_000, after_school=0),
     ],
     fee=200,
+)
+# A 12-year-old whose only care comes after school takes the part-time unit
+# ($20.53 a day), and a sibling with child care charges takes full time.
+@example(
+    children=[
+        dict(age=12, disabled=False, court=False, care=0, after_school=800),
+        dict(age=12, disabled=False, court=False, care=100, after_school=800),
+    ],
+    fee=0,
 )
 @given(
     children=st.lists(

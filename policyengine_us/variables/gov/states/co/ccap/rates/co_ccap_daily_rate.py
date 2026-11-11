@@ -21,7 +21,8 @@ class co_ccap_daily_rate(Variable):
         full_time_rate = person("co_ccap_full_time_daily_rate", period)
         unit = person("co_ccap_care_unit", period)
         # The county rate plans round each unit's rate half up to the cent: a
-        # $60.90 full-time rate pays $33.50 part time (60.90 x 0.55 = 33.495).
+        # $63.50 full-time rate pays $34.93 part time (63.50 x 0.55 = 34.925),
+        # where rounding half to even would pay $34.92.
         # Working in whole cents keeps the halves exact.
         cents = np.round(full_time_rate * 100) * np.round(unit * 100) / 100
         return np.floor(cents + 0.5) / 100
