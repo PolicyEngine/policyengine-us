@@ -1,0 +1,120 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.yaml
+# Each case fails on main (06c0dcbc54) and passes once the gap is fixed.
+# RSMo 135.010(5): "Income" is Missouri adjusted gross income as defined in
+# section 143.121, less the spouse exemption, "and increased, where
+# necessary, to reflect the following: (a) Social Security, railroad
+# retirement, and veterans payments and benefits ...; (b) The total amount of
+# all other public and private pensions and annuities; (c) Public relief,
+# public assistance, and unemployment benefits received in cash ...; (d) No
+# deduction being allowed for losses not incurred in a trade or business;
+# (e) Interest on the obligations of the United States, any state, or any of
+# their subdivisions and instrumentalities".
+# Pensions of 15,000 or more keep the modeled SSI at zero in every case.
+
+- name: Military retirement benefits subtracted from Missouri AGI count as a public pension.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 15_000
+    military_retirement_pay: 20_000
+  output:
+    # Federal AGI 35,000. RSMo 143.121.3(12) subtracts the 20,000 of
+    # military retirement benefits, so Missouri AGI is 15,000.
+    # 135.010(5)(b) adds back the total amount of all public pensions; Form
+    # MO-PTS line 3 takes pensions "not included in Line 1".
+    # 15,000 + 20,000 = 35,000 (main: 15,000).
+    mo_ptc_gross_income: 35_000
+
+- name: Interest on U.S. obligations subtracted from Missouri AGI is added back.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    taxable_interest_income: 3_000
+    # The 3,000 is Treasury interest: in federal AGI, subtracted for
+    # Missouri AGI (RSMo 143.121.3(1); Form MO-A, Part 1, line 8).
+    us_govt_interest_person: 3_000
+  output:
+    # Missouri AGI: 23,000 - 3,000 = 20,000. 135.010(5)(e) adds the
+    # interest back: 23,000 (main: 20,000).
+    mo_ptc_gross_income: 23_000
+
+- name: General assistance is public assistance received in cash.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    general_assistance: 2_400
+  output:
+    # 135.010(5)(c); Form MO-PTS line 6, "public assistance".
+    # 20,000 + 2,400 = 22,400 (main: 20,000).
+    mo_ptc_gross_income: 22_400
+
+- name: A rental loss is a nonbusiness loss and is added back.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    rental_income: -6_000
+  output:
+    # Federal and Missouri AGI: 20,000 - 6,000 = 14,000. 135.010(5)(d)
+    # allows no deduction for losses not incurred in a trade or business,
+    # and the MO-1040 instructions for Form MO-PTS line 7 treat only
+    # Schedule C and Schedule F losses as business losses.
+    # 14,000 + 6,000 = 20,000 (main: 14,000).
+    mo_ptc_gross_income: 20_000
+
+- name: A tax-exempt 401(k) distribution counts as a pension outside Missouri AGI.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 67
+    state_code: MO
+    taxable_private_pension_income: 20_000
+    # Entered net of the excludable cost (the employee's own contributions),
+    # which Form MO-PTS line 3 leaves out.
+    tax_exempt_401k_distributions: 4_000
+  output:
+    # 135.010(5)(b); MO-1040 instructions, Form MO-PTS line 3: "Form(s)
+    # 1099-R - Total amount before deduction not included on Form MO-1040,
+    # Line 6".
+    # 20,000 + 4,000 = 24,000 (main: 20,000).
+    mo_ptc_gross_income: 24_000
+
+- name: The spouse of a 100 percent service-connected disabled veteran does not list veterans benefits.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      veteran:
+        is_tax_unit_head: true
+        age: 67
+        taxable_private_pension_income: 20_000
+        veterans_benefits: 40_000
+        is_fully_disabled_service_connected_veteran: true
+      spouse:
+        is_tax_unit_spouse: true
+        age: 66
+        veterans_benefits: 6_000
+    tax_units:
+      tax_unit:
+        members: [veteran, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [veteran, spouse]
+        state_code: MO
+  output:
+    # 135.010(5)(a) adds veterans payments and benefits "unless the claimant
+    # is a one hundred percent service-connected, disabled veteran or a
+    # spouse of" one. Neither spouse's benefits count.
+    # 20,000 (main: 20,000 + 6,000 = 26,000).
+    mo_ptc_gross_income: 20_000

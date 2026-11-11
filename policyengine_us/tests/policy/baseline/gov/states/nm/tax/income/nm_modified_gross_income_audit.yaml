@@ -1,0 +1,187 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/nm/tax/income/nm_modified_gross_income.yaml
+# Each case fails on main (06c0dcbc54), with or without #10769, and passes once
+# the gap is fixed.
+# NMSA 1978 7-2-2(L): "modified gross income" means all income of the taxpayer
+# and, if any, the taxpayer's spouse and dependents, undiminished by losses
+# and from whatever source, including the 21 listed items.
+# 3.3.1.10(B) NMAC: zero is the lowest amount which may be reported for any
+# item, and the loss from one business or activity shall not reduce the
+# income from another business or activity.
+
+- name: NM modified gross income includes farm income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    farm_operations_income: 15_000
+    farm_rent_income: 1_000
+  output:
+    # 7-2-2(L)(2) net profit from business and (L)(5) net rents; PIT-RC line
+    # 8, net profit from business, farm, or rentals.
+    # 20,000 + 15,000 + 1,000 = 36,000 (main: 20,000).
+    nm_modified_gross_income: 36_000
+
+- name: NM modified gross income includes partnership income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    partnership_income: 12_000
+  output:
+    # 7-2-2(L)(13) distributive share of partnership income.
+    # 20,000 + 12,000 = 32,000 (main: 20,000).
+    nm_modified_gross_income: 32_000
+
+- name: NM one spouse's business loss does not reduce the other spouse's business income
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        self_employment_income: 30_000
+      spouse:
+        is_tax_unit_spouse: true
+        self_employment_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    # 3.3.1.10(B) NMAC: the spouse's business counts as zero and its loss
+    # does not reduce the head's business income.
+    # 30,000 + 0 = 30,000 (main: max(30,000 - 10,000, 0) = 20,000).
+    nm_modified_gross_income: 30_000
+
+- name: NM capital gains are not reduced by capital losses
+  period: 2025
+  input:
+    state_code: NM
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: -4_000
+  output:
+    # PIT-RC line 9: gross capital gains, not reduced by capital losses.
+    # 10,000 (main: max(10,000 - 4,000, 0) = 6,000).
+    nm_modified_gross_income: 10_000
+
+- name: NM modified gross income includes capital gain distributions
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    non_sch_d_capital_gains: 500
+  output:
+    # 7-2-2(L)(3) gains from dealings in property.
+    # 20,000 + 500 = 20,500 (main: 20,000).
+    nm_modified_gross_income: 20_500
+
+- name: NM modified gross income includes general assistance
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 5_000
+    general_assistance: 3_000
+  output:
+    # 7-2-2(L)(19) public assistance and welfare benefits; 3.3.1.10(A)(1)(d)
+    # NMAC names general assistance.
+    # 5,000 + 3,000 = 8,000 (main: 5,000).
+    nm_modified_gross_income: 8_000
+
+- name: NM modified gross income includes workers' compensation
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    workers_compensation: 8_000
+  output:
+    # 7-2-2(L)(18) workers' compensation benefits.
+    # 20,000 + 8,000 = 28,000 (main: 20,000).
+    nm_modified_gross_income: 28_000
+
+- name: NM modified gross income includes disability benefits
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    disability_benefits: 6_000
+  output:
+    # 3.3.1.10(C) NMAC: sick pay and disability payments from whatever
+    # source are modified gross income.
+    # 20,000 + 6,000 = 26,000 (main: 20,000).
+    nm_modified_gross_income: 26_000
+
+- name: NM modified gross income includes discharge of indebtedness
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    debt_relief: 5_000
+  output:
+    # 7-2-2(L)(12) discharge of indebtedness.
+    # 20,000 + 5,000 = 25,000 (main: 20,000).
+    nm_modified_gross_income: 25_000
+
+- name: NM modified gross income includes gross gambling winnings
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    gambling_winnings: 4_000
+    gambling_losses: 4_000
+  output:
+    # PIT-RC line 11: gross gambling, gaming and lottery winnings from any
+    # source, without reducing winnings by any losses.
+    # 20,000 + 4,000 = 24,000 (main: 20,000).
+    nm_modified_gross_income: 24_000
+
+- name: NM modified gross income includes gifts of cash
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    financial_assistance: 2_000
+  output:
+    # 7-2-2(L)(21) gifts; PIT-RC line 10, all gifts of cash.
+    # 20,000 + 2,000 = 22,000 (main: 20,000).
+    nm_modified_gross_income: 22_000
+
+- name: NM modified gross income includes scholarships and grants
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    educational_assistance: 4_000
+  output:
+    # 3.3.1.10(A)(2) NMAC: scholarships, grants, fellowships or similar
+    # payments which do not have to be repaid are modified gross income.
+    # 20,000 + 4,000 = 24,000 (main: 20,000).
+    nm_modified_gross_income: 24_000
+
+- name: NM modified gross income includes miscellaneous income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    miscellaneous_income: 1_500
+  output:
+    # 7-2-2(L): all income from whatever source; PIT-RC line 11, all income
+    # not included on the lines above (prizes, awards and the like).
+    # 20,000 + 1,500 = 21,500 (main: 20,000).
+    nm_modified_gross_income: 21_500
+
+- name: NM modified gross income includes foreign earned income excluded from federal income
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    # Wage inputs are the amounts left after the IRC 911 exclusion.
+    foreign_earned_income_exclusion: 10_000
+  output:
+    # 7-2-2(L): all income from whatever source. PIT-RC: all income and
+    # other compensation from all sources, whether or not taxable by the
+    # U.S. Government.
+    # 20,000 + 10,000 = 30,000 (main: 20,000).
+    nm_modified_gross_income: 30_000

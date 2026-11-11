@@ -1,0 +1,38 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/va/tax/income/credits/low_income_credit/va_low_income_tax_credit_agi_eligible.yaml
+# Batch F (sweep). Not run. Fails on main (06c0dcbc54), where the test reads
+# va_agi (the filers' Virginia AGI) alone.
+#
+# Law: Va. Code 58.1-339.8(A): "'Family Virginia adjusted gross income' means
+# the combined Virginia adjusted gross income of an individual, the
+# individual's spouse, and any person claimed as a dependent on the
+# individual's or his spouse's income tax return for the taxable year."
+# (B)(1): the credit is allowed if family Virginia adjusted gross income
+# "does not exceed 100 percent of the poverty guideline amount".
+
+- name: Batch F VA, a dependent's own Virginia AGI counts in family VAGI.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        va_low_income_tax_credit_eligible: true
+        # The filer's Virginia AGI and the poverty guideline are set directly
+        # so the arithmetic is exact.
+        va_agi: 18_000
+        tax_unit_fpg: 21_150
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    # Family VAGI = 18,000 (parent) + 6,000 (the child's wages; the child's
+    # federal and Virginia AGI are both 6,000) = 24,000 > 21,150.
+    # Main compares 18,000 with 21,150 and returns true.
+    va_low_income_tax_credit_agi_eligible: false
