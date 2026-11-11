@@ -136,3 +136,39 @@
   output:
     # Three household members against a two-person marital unit.
     nj_ssp_living_arrangement: [LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS]
+
+# POMS SI 01415.025 NY B.2 and SI 01415.058 J.1: the higher variation is
+# for someone living ONLY with an ineligible spouse. A third adult rules it
+# out; the ordinary individual independent-living supplement is $31.25.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415025NY
+- name: NJ third adult rules out living only with an ineligible spouse
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 60
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NJ
+  output:
+    nj_ssp_living_arrangement: [LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS]
+    nj_ssp: [31.25, 0, 31.25]

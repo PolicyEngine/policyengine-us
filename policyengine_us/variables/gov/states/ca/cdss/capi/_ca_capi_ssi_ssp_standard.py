@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 from policyengine_us.variables.gov.states.ca.cdss.state_supplement._ca_state_supplement_rates import (
     ca_in_title_xix_facility,
     ca_state_supplement_rates,
@@ -10,29 +14,30 @@ def ca_capi_couple_computation(person, period):
 
     SSI's couple computation, except that a couple with exactly one spouse in
     a Title XIX facility is computed separately (20 CFR 416.414(b)(3)), when
-    only the California facility input marks it. Only a head or spouse is in a
-    couple, because a situation with no marital units puts a dependent in the
-    couple's unit.
+    only the California facility input marks it. The facility count covers
+    the person and the spouse SSI's spouse test identifies, so the default
+    marital unit of a situation that omits marital units adds no one else.
     """
-    head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
     in_facility = ca_in_title_xix_facility(person, period)
-    one_in_facility = person.marital_unit.sum(in_facility & head_or_spouse) == 1
-    return (
-        person("ssi_couple_computation_applies", period)
-        & ~one_in_facility
-        & head_or_spouse
+    one_in_facility = (
+        _ssi_couple_total(person, period.this_year, in_facility.astype(int)) == 1
     )
+    return person("ssi_couple_computation_applies", period) & ~one_in_facility
 
 
 def ca_capi_spouse_ssi_ssp(person, period):
     """Return the SSI and state supplement paid to the person's spouse.
 
-    Only a head or spouse who is not CAPI-eligible counts.
+    Only a spouse, as SSI's spouse test identifies one, who is not
+    CAPI-eligible counts.
     """
-    head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-    spouse = ~person("ca_capi_eligible_person", period.this_year) & head_or_spouse
+    spouse_index = _ssi_spouse_index(person, period.this_year)
+    safe_spouse = np.maximum(spouse_index, 0)
+    spouse = (spouse_index >= 0) & ~person("ca_capi_eligible_person", period.this_year)[
+        safe_spouse
+    ]
     payment = add(person, period, ["ssi", "ca_state_supplement_person"])
-    return person.marital_unit.sum(payment * spouse)
+    return payment[safe_spouse] * spouse
 
 
 def ca_capi_ssi_ssp_standard(person, period, parameters):
@@ -56,6 +61,6 @@ def ca_capi_ssi_ssp_standard(person, period, parameters):
     )
     couple_federal = where(medical_facility, 2 * fbr.medical_facility, fbr.couple)
     couple = couple_federal + where(
-        joint, person.marital_unit.sum(couple_rate / 2), couple_rate
+        joint, _ssi_couple_total(person, period.this_year, couple_rate / 2), couple_rate
     )
     return individual, couple

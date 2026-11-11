@@ -145,3 +145,111 @@
   output:
     is_tax_unit_head: [false, true]
     is_tax_unit_spouse: [true, false]
+
+- name: A married couple heads the unit ahead of an older parent outside their marital unit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 78
+        social_security_retirement: 15_000
+      head:
+        age: 50
+        employment_income_before_lsr: 80_000
+      spouse:
+        age: 48
+        employment_income_before_lsr: 40_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [parent, head, spouse, child]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      couple:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, head, spouse, child]
+    households:
+      household:
+        members: [parent, head, spouse, child]
+        state_code: TX
+  output:
+    # No roles are supplied. The head and spouse share a two-person marital
+    # unit, so the older of the couple (50) heads the unit instead of the
+    # parent (78), who is outside it and becomes a dependent.
+    is_tax_unit_head: [false, true, false, false]
+    is_tax_unit_spouse: [false, false, true, false]
+    is_tax_unit_dependent: [true, false, false, true]
+    filing_status: JOINT
+    # Wages 80,000 + 40,000 = 120,000. The parent's 15,000 of Social Security
+    # is a dependent's income, so it is left off the couple's return.
+    adjusted_gross_income: 120_000
+
+- name: A separated member of a two-person marital unit does not head the unit ahead of an older parent.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 78
+        social_security_retirement: 15_000
+      separated_adult:
+        age: 40
+        is_separated: true
+        employment_income_before_lsr: 30_000
+      partner:
+        age: 38
+        employment_income_before_lsr: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, separated_adult, partner]
+    marital_units:
+      parent_marital_unit:
+        members: [parent]
+      couple:
+        members: [separated_adult, partner]
+    households:
+      household:
+        members: [parent, separated_adult, partner]
+        state_code: TX
+  output:
+    # A unit with a separated member infers no spouse, so the two-person
+    # marital unit is not a couple that can file jointly. The oldest adult
+    # heads the unit.
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, false, false]
+    filing_status: SINGLE
+
+- name: With marital units omitted, two adults living with a separated older adult do not head the unit as a couple.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 78
+        is_separated: true
+        social_security_retirement: 15_000
+      adult_1:
+        age: 50
+        employment_income_before_lsr: 80_000
+      adult_2:
+        age: 48
+        employment_income_before_lsr: 40_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_1, adult_2]
+    households:
+      household:
+        members: [parent, adult_1, adult_2]
+        state_code: TX
+  output:
+    # With marital units omitted, Core puts all three adults in one marital
+    # unit. It isn't a two-person unit, so the two non-separated adults aren't
+    # a couple, and the oldest adult heads the unit. A unit with a separated
+    # member infers no spouse.
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, false, false]

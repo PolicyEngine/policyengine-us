@@ -21,7 +21,10 @@ class employer_headcount(Variable):
     label = "Employer headcount"
     documentation = (
         "Employer employee count used as a proxy for size-based payroll "
-        "contribution rules, including paid leave and similar programs."
+        "contribution rules, including paid leave and similar programs. For "
+        "Minnesota Paid Leave's small employer rate it stands in for the "
+        "employer's highest quarterly employee count in the basis period "
+        "(Minn. Stat. 268B.14, subd. 5b)."
     )
     definition_period = YEAR
     default_value = 100
@@ -42,13 +45,13 @@ class employer_state_payroll_premium_deduction_share(Variable):
         "Medical Leave. 1, the default, deducts the full permitted share; 0 "
         "deducts nothing. Hawaii permits the lesser of half the cost of "
         "coverage and 0.5% of wages. The model holds no cost and uses 0.5%, "
-        "so there a share of 1 gives an upper bound. Outside Hawaii, "
-        "Minnesota and New York, whose employer cost is not modeled, the "
-        "employer-side variables carry any part the employer does not "
-        "deduct. For the state paid family and medical leave funds, "
-        "the federal treatment of an employer's payment of the employee "
-        "share as the employee's wages (Rev. Rul. 2025-4; Notice 2026-6) is "
-        "not modeled. Values outside 0 to 1 are treated as the nearer bound."
+        "so there a share of 1 gives an upper bound. Outside Hawaii and New "
+        "York, whose employer cost is not modeled, the employer-side "
+        "variables carry any part the employer does not deduct. For the "
+        "state paid family and medical leave funds, the federal treatment of "
+        "an employer's payment of the employee share as the employee's wages "
+        "(Rev. Rul. 2025-4; Notice 2026-6) is not modeled. Values outside 0 "
+        "to 1 are treated as the nearer bound."
     )
     unit = "/1"
     definition_period = YEAR
