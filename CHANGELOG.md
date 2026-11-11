@@ -1,3 +1,10 @@
+## [2.116.19] - 2026-11-11
+
+### Fixed
+
+- Uprate Philadelphia wage tax taxable wages by IRS employment income per capita, the series wages follow, instead of the default CBO adjusted gross income per capita, so taxable wages keep pace with wages in later years.
+
+
 ## [2.116.18] - 2026-11-11
 
 ### Changed

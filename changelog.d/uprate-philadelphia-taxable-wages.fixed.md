@@ -1,1 +1,0 @@
-Uprate Philadelphia wage tax taxable wages by IRS employment income per capita, the series wages follow, instead of the default CBO adjusted gross income per capita, so taxable wages keep pace with wages in later years.
