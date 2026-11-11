@@ -21,11 +21,11 @@ input overrides the eligibility variable or a payment:
    changes nobody else's.
 
 ELIGIBLE_STATUSES restates AS 43.23.005(a)(5), so these tests fail if someone
-changes the parameter's statuses in a year they test without changing this file.
-The YAML tests pin examples. These tests run the real model on every combination
-of state, status, take-up and representative age, and on drawn years, states,
-ages and household mixes. They share one tax-benefit system, so they build no
-extra model and load no dataset.
+changes the parameter's statuses in a year these tests cover without changing
+this file. The YAML tests pin examples. These tests run the real model on every
+combination of state, status, take-up and representative age, and on drawn
+years, states, ages and household mixes. They share one tax-benefit system, so
+they build no extra model and load no dataset.
 """
 
 from collections import defaultdict, namedtuple
