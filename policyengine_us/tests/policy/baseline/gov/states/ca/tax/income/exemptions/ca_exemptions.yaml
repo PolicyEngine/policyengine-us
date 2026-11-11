@@ -362,3 +362,47 @@
   output:
     # $153 + $475.
     ca_exemptions: 628
+
+# FTB Tax News, October 2026, 2026 Indexing: personal exemption credit $158
+# (single, separate, head of household), $316 for joint filers and surviving
+# spouses, and $491 for each dependent.
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/2026/10.html#article1
+
+- name: 2026 single filer gets FTB's $158 personal exemption credit
+  period: 2026
+  input:
+    people:
+      filer:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_exemptions: 158
+
+- name: 2026 joint filers with one child get FTB's $316 personal and $491 dependent exemption credits
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 40
+      person_b:
+        age: 40
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    # $316 + $491.
+    ca_exemptions: 807
