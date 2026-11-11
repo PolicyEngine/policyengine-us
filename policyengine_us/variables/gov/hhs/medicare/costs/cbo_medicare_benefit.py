@@ -6,22 +6,22 @@ class cbo_medicare_benefit(Variable):
     entity = Person
     label = "CBO Medicare benefit"
     documentation = (
-        "Medicare benefit as the Congressional Budget Office counts it in "
-        "household income: the government's average cost per enrollee of "
-        "providing Medicare Parts A, B and D, net of premium income "
-        "(premiums paid by or on behalf of enrollees, as the Medicare "
-        "Trustees count it; this includes premiums state Medicaid programs "
-        "pay, which PolicyEngine counts in Medicaid). CBO assigns the same "
-        "average to every enrollee and counts the Part D low-income subsidy "
-        "separately as a means-tested transfer, so this subtracts "
-        "per-enrollee averages of premium income and of the low-income "
-        "subsidy from Medicare spending per enrollee, rather than the "
-        "person's own premiums."
+        "PolicyEngine values Medicare Parts A, B and D in CBO household "
+        "income at average spending per enrollee, less premium income and the "
+        "Part D low-income subsidy. The Medicare Trustees count premiums that "
+        "enrollees or others pay on their behalf, including premiums state "
+        "Medicaid programs pay. PolicyEngine's state Medicaid spending totals "
+        "include these buy-ins, so PolicyEngine nets them here to avoid "
+        "counting them twice. CBO counts Medicaid-paid premiums as Medicare "
+        "spending. CBO assigns every enrollee the same average and counts the "
+        "Part D low-income subsidy separately as a means-tested transfer. "
+        "PolicyEngine subtracts average premium income and subsidy costs per "
+        "Medicare enrollee rather than the person's own premiums."
     )
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.cbo.gov/publication/61910",
+        "https://www.cbo.gov/system/files/2026-01/61910-DOHI-health.pdf#page=27",
         # PDF pages 27, 39
         "https://www.cbo.gov/system/files/2024-09/60341-income.pdf#page=27",
         # PDF pages 46, 52
