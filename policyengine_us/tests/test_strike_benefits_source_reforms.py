@@ -6,14 +6,16 @@ gross income holds, and strike_benefits_excluded_from_gross_income is the
 rest. Utah homeowner's and renter's relief, Montana's elderly
 homeowner/renter credit and Arizona's property tax credit add the rest to
 federal income; Pennsylvania subtracts the part federal gross income holds
-and then counts the whole amount in Tax Forgiveness eligibility income.
+and then counts the whole amount in Tax Forgiveness eligibility income; and
+North Dakota's renter's refund subtracts the rest from market income.
 
 Invariant: under current law, under a reform that drops
 taxable_strike_benefits from gov.irs.gross_income.sources (a federal
 exclusion, as the Tax Cut for Striking Workers Act proposes), and under one
 that lists the whole strike_benefits instead, every measure counts each
-dollar of strike benefits exactly once, and Pennsylvania taxable income
-never holds any of it.
+dollar of strike benefits exactly once, Pennsylvania taxable income never
+holds any of it, and North Dakota renter's refund income holds exactly the
+part federal gross income holds.
 
 One single filer per state, aged 70, with $20,000 of wages and $6,000 of
 strike benefits, $1,000 of them a gift; and one household per state whose
@@ -54,7 +56,7 @@ YEAR = 2025
 WAGES = 20_000
 STRIKE = 6_000
 GIFT = 1_000
-STATES = ["UT", "MT", "AZ", "PA"]
+STATES = ["UT", "MT", "AZ", "PA", "ND"]
 
 
 def _sources_reform(change):
@@ -184,7 +186,13 @@ def _household_situation():
             "tax_exempt_strike_benefits": {year: DEPENDENT_GIFT},
             "ssi": {year: 0},
         }
-        tax_units[f"{state}_unit"] = {"members": [head, dependent]}
+        tax_units[f"{state}_unit"] = {
+            "members": [head, dependent],
+            # The head pays a Medicare Part B premium, which North Dakota
+            # subtracts as a medical cost paid; zero keeps the sums to wages
+            # and strike benefits.
+            "itemized_medical_expenses": {year: 0},
+        }
         households[f"{state}_home"] = {
             "members": [head, dependent],
             "state_code": {year: state},
@@ -210,6 +218,22 @@ def test_adult_dependents_strike_benefits_count_once(household_scenario):
         assert values[state] == pytest.approx(expected), (variable, values)
     taxable = dict(zip(STATES, sim.calculate("pa_total_taxable_income", YEAR)))
     assert taxable["PA"] == pytest.approx(HEAD_WAGES)
+    in_gross_income = dict(
+        zip(
+            STATES,
+            sim.calculate("strike_benefits_in_gross_income", YEAR, map_to="tax_unit"),
+        )
+    )
+    north_dakota = dict(zip(STATES, sim.calculate("nd_renters_refund_income", YEAR)))
+    assert north_dakota["ND"] == pytest.approx(
+        HEAD_WAGES + DEPENDENT_WAGES + in_gross_income["ND"]
+    )
+
+
+def test_north_dakota_counts_what_federal_gross_income_holds(scenario):
+    sim, in_gross_income = scenario
+    income = dict(zip(STATES, sim.calculate("nd_renters_refund_income", YEAR)))
+    assert income["ND"] == pytest.approx(WAGES + in_gross_income)
 
 
 def test_pennsylvania_never_taxes_strike_benefits(scenario):

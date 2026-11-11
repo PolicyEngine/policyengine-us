@@ -7003,8 +7003,9 @@ candidates:
       adoption assistance (IRC 137(a)); income of bona fide residents of Puerto Rico from sources there (IRC 933) and
       of American Samoa from sources there or from a business there (IRC 931(a), which reaches only a possession with
       an implementing agreement in effect, 26 CFR 1.931-1(c)(1), and which IRS Publication 570 applies only to
-      American Samoa); and alimony under a divorce or separation instrument executed after 2018, since Pub. L. 115-97
-      section 11051 repealed IRC 71 and 61(a)(8).
+      American Samoa); alimony under a divorce or separation instrument executed after 2018, since Pub. L. 115-97
+      section 11051 repealed IRC 71 and 61(a)(8); and gifts (IRC 102(a)), which take in the strike benefits a union
+      pays as a gift (IRS Publication 525).
     other: Item 10 lists pensions "including military pension and I.R.A.", salaries and wages, dividends and interest,
       and alimony as income. The application asks for income from salary and wages (line 5) and from interest (line
       6), and its instructions for lines 4 to 9 list most of the same sources. Neither leaves out the amounts federal
@@ -7020,6 +7021,7 @@ candidates:
     - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/market_income_components.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10697
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: ruled
   note: The statute names the exclusion, so it governs over the general lists, as in
     us-nd:renters-refund-insurance-proceeds. The definition also counts "other retirement benefits", but the exception
