@@ -37,10 +37,10 @@ status for the last three, so code them as `LEGAL_PERMANENT_RESIDENT`. Under 15
 AAC 23.154(b) and (d), a person whose status requires a foreign residence fails,
 and a limited-stay nonimmigrant fails the residence test until they take a
 significant step toward a permanent or indefinite status. On its [immigration
-page](https://pfd.alaska.gov/eligibility/immigration), the Division also
-describes paths for US nationals and Compact of Free Association migrants.
-PolicyEngine has no status for those either, so code a person the Division
-accepts as `LEGAL_PERMANENT_RESIDENT`.
+page](https://pfd.alaska.gov/eligibility/immigration), the department's
+Permanent Fund Dividend Division also describes paths for US nationals and
+Compact of Free Association migrants. PolicyEngine has no status for those
+either, so code a person the Division accepts as `LEGAL_PERMANENT_RESIDENT`.
 
 PolicyEngine leaves the other values of `immigration_status` out:
 

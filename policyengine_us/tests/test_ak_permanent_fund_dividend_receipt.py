@@ -3,10 +3,10 @@
 Under AS 43.23.005(a)(5), Alaska limits the dividend to citizens, lawful
 permanent residents, refugees and asylees, and it pays energy relief as part of
 the dividend (sec. 13, ch. 34, SLA 2026). PolicyEngine also lets an input say a
-person does not take up the dividend, for the statute's tests it cannot resolve
-from its inputs. These properties hold for every modeled year, every mix of
-people in a household and every age, unless an input overrides the eligibility
-variable or a payment:
+person does not take up the dividend, to cover the statute's tests that
+PolicyEngine cannot resolve from its other inputs. These properties hold for
+every modeled year, every mix of people in a household and every age, unless an
+input overrides the eligibility variable or a payment:
 
 1. A person's dividend and energy relief each equal zero or the full amount
    for the year.
@@ -21,10 +21,11 @@ variable or a payment:
    changes nobody else's.
 
 ELIGIBLE_STATUSES restates AS 43.23.005(a)(5), so these tests fail if someone
-edits the parameter's list alone. The YAML tests pin examples. These tests run
-the real model on every combination of state, status, take-up and
-representative age, and on drawn years, states, ages and household mixes. They
-share one tax-benefit system, so they build no extra model and load no dataset.
+changes the parameter's statuses in a year they test without changing this file.
+The YAML tests pin examples. These tests run the real model on every combination
+of state, status, take-up and representative age, and on drawn years, states,
+ages and household mixes. They share one tax-benefit system, so they build no
+extra model and load no dataset.
 """
 
 from collections import defaultdict, namedtuple

@@ -30,7 +30,7 @@
   output:
     ak_permanent_fund_dividend_eligible: true
 
-- name: Case 5, people with statuses outside AS 43.23.005(a)(5) and 15 AAC 23.154(a) do not qualify, including PAROLED_ONE_YEAR, which does not say a parole runs indefinitely.
+- name: Case 5, people coded with statuses that PolicyEngine does not map to AS 43.23.005(a)(5) or 15 AAC 23.154(a) do not qualify, including PAROLED_ONE_YEAR, which does not say a parole runs indefinitely.
   period: 2026
   input:
     people:
