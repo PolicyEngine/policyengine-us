@@ -12,7 +12,8 @@ Each generated household runs three times in one simulation. The bondholder's
 taxable_interest_income and us_govt_interest_person are (I, u), (I, 0) and
 (0, 0). The first two differ only in the classification input; the third
 measures how much of the interest federal AGI includes. The generator keeps
-u <= I on the same person, the input contract the model relies on.
+to the input contract the model relies on: u <= I on the same person, with
+none of the interest excluded under 26 U.S.C. 135 (us_bonds_for_higher_ed).
 
 Let TI_0 be Montana taxable income without the subtraction, and
 u_in = min(u, AGI(I) - AGI(0)) the US interest that federal AGI includes.
@@ -27,8 +28,8 @@ return. For every household and each year from 2024 to 2026:
 
 The (3) lead-in allows a subtraction only to the extent federal taxable income
 included the amount. Under the input contract the subtraction never exceeds
-u_in; issue #10780 tracks inputs outside it, such as US interest above taxable
-interest or interest excluded under 26 U.S.C. 135.
+u_in; issue #10780 tracks inputs outside it (US interest above taxable
+interest, or interest that section 135 excludes).
 
 From 2025 the enhanced senior deduction phases out at 6% of MAGI, so taxable
 income can carry cents. Amount comparisons allow the larger of one cent and
