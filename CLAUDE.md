@@ -167,19 +167,6 @@ changelog.d/medicaid-ce-exclusions.md
   - Code that lives near dead code is not necessarily dead — verify each piece independently
   - Existing tests may bypass the code being removed (e.g. providing a variable as direct input rather than testing its derivation) — passing tests ≠ safe to delete
 
-- **PARTNER API CONTRACT TESTS ARE NOT ORDINARY SNAPSHOTS**
-  - Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests
-  - Do not rewrite these expected outputs merely to match changed model behavior or make CI pass
-  - If a model change causes partner tests to fail, treat that as a possible partner-facing API change
-  - Ziming Hua (@hua7450) approves every edit to files in this folder (Max Ghenis, 2026-10-09). Before editing them, flag the partner-facing risk to the user and put these three questions to Ziming:
-    1. Are you sure you want to edit this test file?
-    2. Have you notified a team member about this change?
-    3. Have you notified the API partner about this change?
-  - Ask on the PR that causes the change. Request his review (`gh pr edit <number> --add-reviewer hua7450`) and post a comment (`gh pr comment <number> --body-file <file>`) that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, show him the changed cases and ask him directly with the `AskUserQuestion` tool instead; record his answer in a PR comment, which counts as his approval of those edits.
-  - Do not edit partner test files until Ziming has answered yes to all three questions, and do not merge a PR that changes them until he has approved a head that contains the edits.
-  - Subagents and agent teammates must not edit partner test files. If a subagent or agent teammate finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
-  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to Ziming and the user
-
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations
   - NEVER use period.start.year or other conditional checks to return hardcoded values for test cases
@@ -189,6 +176,36 @@ changelog.d/medicaid-ce-exclusions.md
   - Use period-appropriate parameter values
   - Document any special time-period specific logic in BOTH code comments and variable documentation
   - Focus on preserving the calculation PROCESS rather than just matching specific OUTCOMES
+
+## Partner API contract tests
+Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests, not ordinary snapshots. Never rewrite an expected value there merely to make CI pass. When a model change makes one of these cases fail, treat the failure as a possible change to what partners see.
+
+This rule replaces the 2026-10-09 rule under which Ziming Hua approved every edit to this folder. Ziming now approves only the changes listed under "Changes that need Ziming's approval first".
+
+### Updating expected values
+Anyone, agents and subagents included, may update an expected value in this folder when all four of these hold:
+
+1. **A cited model change explains every changed value.** The PR that changes the values also makes the model change, and it cites the law or source behind that change.
+2. **The PR body tables every changed value.** Give one row per changed value: file, case name, variable, old value, new value and cause. Build the table by computing every output variable of each affected case, never from the test log alone: the YAML test runner stops a case at its first failing variable, so the log hides the rest. Update any comment in the case that derives a changed value.
+3. **An independent review recomputes the values.** The review that gates the merge comes from someone other than the PR's author and the agent that edited the values. It recomputes the changed values from the cited source and confirms that no partner value changed without a stated cause.
+4. **Ziming and the partner team get notice.** The PR posts a comment that tags Ziming Hua (`hua7450`) with the table as an FYI, and `.github/workflows/partner-api-impact-notice.yaml` posts the change to Slack. The merge needn't wait for Ziming's reply, but he can still request changes, and his CHANGES_REQUESTED review blocks the merge like any other.
+
+### Changes that need Ziming's approval first
+Ziming approves each of these before anyone edits the case, and a PR that makes one waits for his approving review on a head that contains the edit:
+
+- a change to a case's inputs or name;
+- an added or removed case, or an added or removed output variable;
+- a case whose purpose the model change defeats, such as a boundary case that no longer sits on its boundary. For example, California's 2026 indexing from the Franchise Tax Board's published amounts (PolicyEngine/policyengine-us#10810) raises the CalEITC investment income limit from $4,923.10 to $4,976.61, so `ca_eitc_investment_income_above_limit_4924_ineligible` no longer tests income above the limit. Check each changed case's name and comments: a new value that contradicts words such as `ineligible`, `above_limit` or `at_max` signals a defeated purpose;
+- a changed value that the review can't trace to a cause;
+- a case that a partner has flagged as one they depend on. Ziming marks such a case with a `# partner-flagged: <partner>` comment line directly above its `- name:` line, so search the file for `partner-flagged` before you edit it.
+
+For these cases, keep the three-question checklist and put it to Ziming on the PR that causes the change:
+
+1. Are you sure you want to edit this test file?
+2. Have you notified a team member about this change?
+3. Have you notified the API partner about this change?
+
+Request his review (`gh pr edit <number> --add-reviewer hua7450`) and post a comment (`gh pr comment <number> --body-file <file>`) that names each such case, its old and new expected values or inputs, and the model change and law behind it. Leave those cases unedited until he answers yes to all three. If Ziming is the person you work with, show him the cases and ask him directly with the `AskUserQuestion` tool, then record his answer in a PR comment, which counts as his approval of those edits. A subagent or agent teammate that reaches one of these cases stops and reports back, and the top-level agent takes the checklist to Ziming.
 
 ## Code Coverage Exclusions
 Use `# pragma: no cover` **only** for code that cannot be tested in unit tests:

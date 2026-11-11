@@ -12,22 +12,7 @@ When a statute conflicts with a regulation, form, instructions, manual or stated
 
 ## Partner API contract tests
 
-Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests.
+Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests. Never rewrite their expected values merely to make CI pass. Follow [Partner API contract tests](CLAUDE.md#partner-api-contract-tests) before you edit any of them. In short:
 
-Do not rewrite these expected outputs merely to match changed model behavior or make CI pass. If a model change causes one of these tests to fail, treat that as a possible partner-facing API change.
-
-Ziming Hua (@hua7450) approves every edit to these files (Max Ghenis, 2026-10-09). Subagents and agent teammates must not edit partner test files. If a subagent or agent teammate finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
-
-Before changing expected outputs in this folder:
-
-- Flag the partner-facing risk to the user.
-- Put these three questions to Ziming on the PR that causes the change (per CLAUDE.md): request his review with `gh pr edit <number> --add-reviewer hua7450`, and post a comment that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, show him the changed cases and ask him directly with the `AskUserQuestion` tool instead; record his answer in a PR comment, which counts as his approval of those edits.
-  1. Are you sure you want to edit this test file?
-  2. Have you notified a team member about this change?
-  3. Have you notified the API partner about this change?
-- Do not edit partner test files until Ziming has answered yes to all three questions, and do not merge a PR that changes them until he has approved a head that contains the edits.
-- Identify the model change that caused the partner output change.
-- Preserve the failing behavior as evidence unless the change is intentional.
-- Explain the partner-facing impact to Ziming and the user.
-
-Changing these tests without Ziming's explicit approval is unsafe, even if CI passes afterward.
+- Anyone, agents and subagents included, may update an expected value when a cited model change in the same PR explains every changed value; the PR body tables every changed value (file, case, variable, old value, new value, cause), computed from every output variable of each affected case, because the test runner stops a case at its first failing variable; an independent review recomputes the values from the cited source; and the PR tags Ziming Hua (`hua7450`) with the table as an FYI.
+- Ziming approves first, through the three-question checklist, any change to a case's inputs or name, any added or removed case or output variable, a case whose purpose the model change defeats (such as a boundary case that leaves its boundary), any changed value the review can't trace, and any case marked `# partner-flagged`.

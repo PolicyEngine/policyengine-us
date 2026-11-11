@@ -1,0 +1,1 @@
+Let anyone, agents included, update partner contract test values that a cited model change explains, with a table of every changed value, an independent review and an FYI to Ziming Hua; keep Ziming's approval for changes to a case's inputs, name, outputs or purpose, untraced values and partner-flagged cases.
