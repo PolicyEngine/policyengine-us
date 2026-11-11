@@ -6554,6 +6554,41 @@ candidates:
     Montana AGI (Itemized Deductions Schedule line 1b), and from 2024 the federal floor on federal AGI applies (mt_medical_expense_deduction_joint.py,
     itemized/state_specific_deduction_applies.yaml); the joint standard deduction also uses pooled Montana AGI (mt_standard_deduction_joint.py).
     Verify the incorporated federal provision against the form''s AGI choice.'
+- id: us-mt:rate-table-offset-rounding
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does Montana's 2025 ordinary income tax subtract the statutory bracket amounts (253.20, 506.40 and 380.40)
+    or the whole-dollar amounts the rate table prints?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2103(1) and (3) (2023 MCA)
+    url: https://mca.legmt.gov/bills/2023/mca/title_0150/chapter_0300/part_0210/section_0030/0150-0300-0210-0030.html
+  - kind: instructions
+    citation: 2025 Form 2 instructions, 2025 Montana Income Tax Rates table, PDF page 18
+    url: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=18
+  readings:
+    statute: Tax the indexed bracket (21,100 single and separate, 42,200 joint and surviving spouse, 31,700 head of household)
+      at 4.7% and income above it at 5.9%, so a 5.9% shortcut subtracts 1.2% of the bracket, 253.20, 506.40 or 380.40.
+    other: Multiply taxable income by 5.9% and subtract $253, $506 or $380.
+  example: A 2025 single filer with $34,250 of Montana taxable income owes $1,767.55 on the statute's brackets and $1,767.75
+    by the rate table.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/main/single.yaml
+    - policyengine_us/parameters/gov/states/mt/tax/income/main/joint.yaml
+    - policyengine_us/parameters/gov/states/mt/tax/income/main/head_of_household.yaml
+    - policyengine_us/parameters/gov/states/mt/tax/income/main/separate.yaml
+    - policyengine_us/parameters/gov/states/mt/tax/income/main/surviving_spouse.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10772
+  state: unreviewed
+  note: The 2024 table's offsets (246, 492 and 369) equal 1.2% of that year's brackets exactly, so only 2025 differs,
+    by 20 to 40 cents a return above the first bracket. PE-US applies the marginal rates to the brackets; the tests in
+    mt_taxable_income.yaml expect the statutory amounts.
 - id: us-nc:lieap-gross-versus-net-income
   program: liheap
   years:

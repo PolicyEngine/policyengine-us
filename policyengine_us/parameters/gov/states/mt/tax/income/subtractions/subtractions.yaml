@@ -20,6 +20,9 @@ values:
     # benefits regardless of other income ((3)(n)(ii), Form WMRE); not yet modeled.
     - mt_interest_exemption_person
     # MCA 15-30-2120(3)(b)(i); 2024 Form 2 Schedule I, Part I, line 11.
+    # The (3) lead-in allows the subtraction only to the extent federal
+    # taxable income included the interest. The model reads the input as
+    # entered and leaves that limit to issue #10780.
     - us_govt_interest_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
@@ -35,6 +38,7 @@ values:
     # flow through into MT taxable income via mt_federal_obbba_subtraction.
     - mt_interest_exemption_person
     # MCA 15-30-2120(3)(b)(i); 2025 Form 2 Schedule I, Part I, line 9.
+    # Issue #10780 tracks the (3) lead-in's inclusion limit, as in 2024.
     - us_govt_interest_person
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction

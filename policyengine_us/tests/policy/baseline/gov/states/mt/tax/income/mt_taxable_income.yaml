@@ -14,6 +14,9 @@
 # Tax: 2024 single 5.9% x TI - 246 above 20,500 (joint - 492 above 41,000);
 # 2025 single 5.9% x TI - 253.20 above 21,100 (joint - 506.40 above 42,200);
 # 2026 single 4.7% to 47,500, then 5.65%.
+# The 2025 instructions' rate table (PDF page 18) prints whole-dollar offsets
+# of 253, 506 and 380. The brackets that MCA 15-30-2103(1) and (3) set give
+# 253.20, 506.40 and 380.40, and these cases use the statutory amounts.
 
 - name: 2024 medical itemizer reaches the federal standard deduction floor
   # Federal medical: 20,000 - 7.5% x 100,000 = 12,500; SALT = 5,000.
@@ -52,8 +55,9 @@
   # Federal medical: 16,000 - 7.5% x 100,000 = 8,500;
   # itemized=8,500 + 3,000 SALT=11,500 < 14,600, so Worksheet A is unused.
   # Form 2 L1=100,000; L2=14,600; L3=85,400; L4=L5=L6=0;
-  # L7=85,400; tax=4,792.60. The repealed Montana medical schedule
-  # would have deducted all 16,000.
+  # L7=85,400; tax=4,792.60. Montana's repealed 2023 Itemized Deductions
+  # Schedule (2023 Form 2, page 7, lines 1a-1c) also floored medical expenses
+  # at 7.5% of Montana AGI, so it too would have allowed 8,500 here.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -507,3 +511,35 @@
     mt_federal_deductions: 70_945.95
     mt_taxable_income: 929_054.05
     mt_income_tax: 52_040.30
+
+- name: 2026 US government interest is subtracted from federal taxable income
+  # Statutory inference (MCA 15-30-2120(3)(b)(i); no 2026 Montana form yet).
+  # Itemized=2,000 < 16,100; Worksheet B is unused.
+  # Form 2 L1=51,000; L2=16,100; L3=34,900; L4=0; L5=1,000; L6=0;
+  # L7=33,900; tax=33,900 x 4.7% = 1,593.30.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        taxable_interest_income: 1_000
+        us_govt_interest_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 2_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: false
+    mt_federal_deductions: 16_100
+    mt_subtractions: [1_000]
+    mt_taxable_income: 33_900
+    mt_income_tax: 1_593.30
