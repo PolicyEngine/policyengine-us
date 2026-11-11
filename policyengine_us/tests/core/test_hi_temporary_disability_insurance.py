@@ -33,7 +33,7 @@ from decimal import ROUND_HALF_UP, Decimal
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings
+from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
@@ -190,11 +190,37 @@ workers = st.fixed_dictionaries(
 )
 
 
+def pinned_worker(wages, weeks=52, hours=40, state="HI", **amounts):
+    return {
+        "state": state,
+        "wages": wages,
+        "premiums": amounts.get("premiums", 0),
+        "military": amounts.get("military", 0),
+        "deferral": amounts.get("deferral", 0),
+        "deferral_kind": amounts.get("deferral_kind", DEFERRALS[0]),
+        "dependent_care": amounts.get("dependent_care", 0),
+        "weeks": weeks,
+        "hours": hours,
+    }
+
+
 @settings(**SETTINGS)
 @given(
     year=st.sampled_from(YEARS),
     batch=st.lists(workers, min_size=5, max_size=30),
     bump=st.integers(1, 20_000),
+)
+# The scanned 2003 notice is the oldest; pin a batch that reaches its cap.
+@example(
+    year=2003,
+    batch=[
+        pinned_worker(1_000_000),
+        pinned_worker(36_524),  # Just over 52 * 702.38 = 36,523.76.
+        pinned_worker(200_000, weeks=14, hours=20, premiums=5_000, deferral=10_000),
+        pinned_worker(399, weeks=13, hours=19),
+        pinned_worker(1_000_000, state="TX"),
+    ],
+    bump=1,
 )
 def test_contribution_properties(year, batch, bump):
     period = str(year)

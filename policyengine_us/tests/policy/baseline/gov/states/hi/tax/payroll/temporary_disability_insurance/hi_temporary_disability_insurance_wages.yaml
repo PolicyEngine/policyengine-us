@@ -144,6 +144,9 @@
     traditional_401k_contributions: 4_000
     state_code: HI
   output:
+    # HRS 383-11 left these deferrals out in 2002 too. excluded_payments.yaml
+    # lists them only from 2003, the first year the model holds the federal
+    # limit, and the contribution rate and wage base are zero in 2002.
     hi_temporary_disability_insurance_wages: 60_000
 
 - name: Hawaii wages leave out military basic pay.

@@ -762,6 +762,62 @@
     # 900 falls under the 951.23 cap for one week: 0.5% * 900 = 4.50.
     hi_employee_temporary_disability_insurance_contribution: 4.50
 
+- name: Hawaii leaves a provided 2003 deferral out of 2003 wages for a short 2004.
+  period: 2004
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr:
+          2003: 10_000
+        traditional_401k_contributions:
+          2003: 9_700
+        employment_income:
+          2004: 700
+        weeks_worked:
+          2003: 52
+          2004: 1
+        weekly_hours_worked_before_lsr:
+          2003: 40
+          2004: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 10,000 - 9,700 = 300 of 2003 wages, under the 400 minimum, and one
+    # week in 2004 fails the 14-week minimum.
+    hi_temporary_disability_insurance_qualified: false
+    hi_employee_temporary_disability_insurance_contribution: 0
+
+- name: Hawaii passes 2003 history at exactly 400 after a provided deferral.
+  period: 2004
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income_before_lsr:
+          2003: 10_000
+        traditional_401k_contributions:
+          2003: 9_600
+        employment_income:
+          2004: 700
+        weeks_worked:
+          2003: 52
+          2004: 1
+        weekly_hours_worked_before_lsr:
+          2003: 40
+          2004: 40
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 10,000 - 9,600 = 400 of 2003 wages. 700 falls under the 720.70 cap for
+    # one week: 0.5% * 700 = 3.50.
+    hi_temporary_disability_insurance_qualified: true
+    hi_employee_temporary_disability_insurance_contribution: 3.50
+
 - name: Hawaii scales the contribution by the employer's deduction share.
   period: 2026
   absolute_error_margin: 0.01
