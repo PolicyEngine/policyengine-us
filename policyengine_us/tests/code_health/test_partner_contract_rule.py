@@ -30,9 +30,14 @@ def _slug(heading):
 
 
 def _headings(text):
-    return {
-        _slug(line.lstrip("#")) for line in text.splitlines() if line.startswith("#")
-    }
+    """Anchors of the Markdown headings, skipping `#` lines in code blocks."""
+    headings, fenced = set(), False
+    for line in text.splitlines():
+        if line.startswith("```"):
+            fenced = not fenced
+        elif not fenced and re.match(r"#{1,6} ", line):
+            headings.add(_slug(line.lstrip("#")))
+    return headings
 
 
 def _section(text, title):
@@ -52,8 +57,8 @@ def test_rule_names_the_folder_the_notice_workflow_and_the_approver():
 
 def test_notice_workflow_watches_the_partner_folder():
     workflow = yaml.safe_load((REPO / WORKFLOW_PATH).read_text())
-    # PyYAML reads the bare `on` key as True.
-    trigger = workflow[True]["pull_request_target"]
+    # PyYAML reads a bare `on` key as True and a quoted one as "on".
+    trigger = workflow.get(True, workflow.get("on"))["pull_request_target"]
     assert f"{PARTNERS}/**" in trigger["paths"]
     assert {"opened", "reopened", "synchronize", "ready_for_review"} <= set(
         trigger["types"]
@@ -61,7 +66,7 @@ def test_notice_workflow_watches_the_partner_folder():
     steps = workflow["jobs"]["notify-slack"]["steps"]
     scripts = "\n".join(step.get("run", "") for step in steps)
     # The step that lists the PR's partner files filters on the same folder.
-    assert f"grep '^{PARTNERS}/'" in scripts
+    assert re.search(rf"grep [^\n|]*\^{re.escape(PARTNERS)}/", scripts)
     assert any(
         "SLACK_PARTNER_WEBHOOK_URL" in str(step.get("env", {})) for step in steps
     )
