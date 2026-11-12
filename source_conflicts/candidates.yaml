@@ -14349,6 +14349,15 @@ candidates:
   - kind: regulation
     citation: LII reproduction of 18 NYCRR 404.5(b)(5)(vi) and (b)(6), retrieved November 12, 2026
     url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5
+  - kind: rulemaking
+    citation: New York State Register, October 18, 2023, CFS-42-23-00002-EP, printed page 1
+    url: https://dos.ny.gov/system/files/documents/2023/10/101823.pdf#page=7
+  - kind: rulemaking
+    citation: New York State Register, February 28, 2024, CFS-42-23-00002-ERP, printed pages 1-2
+    url: https://dos.ny.gov/system/files/documents/2024/02/022824.pdf#page=8
+  - kind: rulemaking
+    citation: New York State Register, June 12, 2024, CFS-42-23-00002-A, printed page 1
+    url: https://dos.ny.gov/system/files/documents/2024/06/061224.pdf#page=7
   readings:
     statute: No statute supplied; OCFS excludes children's SSI, including state supplemental payments, from child
       care assistance income under both the income-source provision and the exclusions provision.
@@ -14363,7 +14372,10 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10827
   state: ruled
   note: PolicyEngine follows OCFS's regulatory compilation and excludes children's SSI and state supplements while
-    counting adults' benefits. The captures preserve the relevant OCFS provision and LII's end-of-exclusions text
-    under source_conflicts/sources/us-ny/. The OCFS capture records archive snapshot 20240522174247. The years begin
-    with the model's first countable-income source parameter on October 1, 2021. The compilation confirms the
-    exclusion by October 1, 2023, without establishing its original effective date.
+    counting adults' benefits. OCFS put the emergency amendment into effect on October 1, 2023 and retained the
+    child exclusion in the February 2024 revised rule. OCFS adopted that rule permanently, without further changes,
+    effective June 12, 2024. The captures under source_conflicts/sources/us-ny/ preserve the OCFS provision, LII's
+    end-of-exclusions text and the three rulemaking notices. The OCFS compilation capture records archive snapshot
+    20240522174247; the Department of State serves the rulemaking notices directly. The years begin with the model's
+    first countable-income source parameter on October 1, 2021. We have not verified the exclusion before October
+    2023 or the current consolidated 2026 text. Westlaw returned HTTP 403 when we requested its regulatory text.

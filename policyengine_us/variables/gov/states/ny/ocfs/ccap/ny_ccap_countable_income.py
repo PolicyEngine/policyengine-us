@@ -16,7 +16,8 @@ class ny_ccap_countable_income(Variable):
         "TANF aggregate. Count reported Safety Net Assistance amounts and "
         "adults' SSI and state supplements under 404.5(b)(5)(vi). OCFS "
         "excludes children's SSI and state supplements under "
-        "404.5(b)(6)(xxi). OCFS uses the child care services unit under "
+        "404.5(b)(6)(xxi), which OCFS retained when adopting the rule "
+        "permanently on June 12, 2024. OCFS uses the child care services unit under "
         "415.1(l). It separates cohabiting adults without a common child "
         "and treats an 18-year-old as an adult outside the parent's unit. "
         "When children live with no parent, OCFS counts only the children "
@@ -28,6 +29,8 @@ class ny_ccap_countable_income(Variable):
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5",
         "https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10",
         "https://ocfs.ny.gov/main/policies/external/2023/adm/23-OCFS-ADM-18.pdf#page=4",
+        "https://dos.ny.gov/system/files/documents/2024/02/022824.pdf#page=8",
+        "https://dos.ny.gov/system/files/documents/2024/06/061224.pdf#page=7",
     )
 
     def formula(spm_unit, period, parameters):
