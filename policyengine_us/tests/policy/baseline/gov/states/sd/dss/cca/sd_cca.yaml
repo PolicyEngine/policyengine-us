@@ -495,22 +495,30 @@
   input:
     people:
       person1:
-        age: 30
-        employment_income: 24000
+        age:
+          2026: 30
+        employment_income:
+          2026: 24000
       person2:
-        age: 0.5
+        age:
+          2026: 0.5
         sd_cca_provider_type: FAMILY_DAY_CARE
-        childcare_hours_per_week: 40
+        childcare_hours_per_week:
+          2026: 40
     spm_units:
       spm_unit:
         members: [person1, person2]
-        meets_ccdf_activity_test: true
-        spm_unit_pre_subsidy_childcare_expenses: 24000
+        meets_ccdf_activity_test:
+          2026: true
+        spm_unit_pre_subsidy_childcare_expenses:
+          2026: 24000
     households:
       household:
         members: [person1, person2]
-        state_code: SD
-        county_str: MINNEHAHA_COUNTY_SD
+        state_code:
+          2026: SD
+        county_str:
+          2026: MINNEHAHA_COUNTY_SD
   output:
     # 172 * $3.80 = $653.60 before the weekly schedule starts.
     sd_cca: 653.6
@@ -521,22 +529,30 @@
   input:
     people:
       person1:
-        age: 30
-        employment_income: 24000
+        age:
+          2026: 30
+        employment_income:
+          2026: 24000
       person2:
-        age: 0.5
+        age:
+          2026: 0.5
         sd_cca_provider_type: FAMILY_DAY_CARE
-        childcare_hours_per_week: 40
+        childcare_hours_per_week:
+          2026: 40
     spm_units:
       spm_unit:
         members: [person1, person2]
-        meets_ccdf_activity_test: true
-        spm_unit_pre_subsidy_childcare_expenses: 24000
+        meets_ccdf_activity_test:
+          2026: true
+        spm_unit_pre_subsidy_childcare_expenses:
+          2026: 24000
     households:
       household:
         members: [person1, person2]
-        state_code: SD
-        county_str: MINNEHAHA_COUNTY_SD
+        state_code:
+          2026: SD
+        county_str:
+          2026: MINNEHAHA_COUNTY_SD
   output:
     # The weekly infant rate gives $180 * 52 / 12 = $780.
     sd_cca: 780
@@ -547,22 +563,30 @@
   input:
     people:
       person1:
-        age: 30
-        employment_income: 24000
+        age:
+          2024: 30
+        employment_income:
+          2024: 24000
       person2:
-        age: 0.5
+        age:
+          2024: 0.5
         sd_cca_provider_type: FAMILY_DAY_CARE
-        childcare_hours_per_week: 40
+        childcare_hours_per_week:
+          2024: 40
     spm_units:
       spm_unit:
         members: [person1, person2]
-        meets_ccdf_activity_test: true
-        spm_unit_pre_subsidy_childcare_expenses: 24000
+        meets_ccdf_activity_test:
+          2024: true
+        spm_unit_pre_subsidy_childcare_expenses:
+          2024: 24000
     households:
       household:
         members: [person1, person2]
-        state_code: SD
-        county_str: MINNEHAHA_COUNTY_SD
+        state_code:
+          2024: SD
+        county_str:
+          2024: MINNEHAHA_COUNTY_SD
   output:
     # No sourced schedule covers June 2024, so hourly availability remains false.
     sd_cca: 0
@@ -573,22 +597,30 @@
   input:
     people:
       person1:
-        age: 30
-        employment_income: 24000
+        age:
+          2024: 30
+        employment_income:
+          2024: 24000
       person2:
-        age: 0.5
+        age:
+          2024: 0.5
         sd_cca_provider_type: FAMILY_DAY_CARE
-        childcare_hours_per_week: 40
+        childcare_hours_per_week:
+          2024: 40
     spm_units:
       spm_unit:
         members: [person1, person2]
-        meets_ccdf_activity_test: true
-        spm_unit_pre_subsidy_childcare_expenses: 24000
+        meets_ccdf_activity_test:
+          2024: true
+        spm_unit_pre_subsidy_childcare_expenses:
+          2024: 24000
     households:
       household:
         members: [person1, person2]
-        state_code: SD
-        county_str: MINNEHAHA_COUNTY_SD
+        state_code:
+          2024: SD
+        county_str:
+          2024: MINNEHAHA_COUNTY_SD
   output:
     # 172 * $3.80 = $653.60 from the sheet effective July 1, 2024.
     sd_cca: 653.6

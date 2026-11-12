@@ -342,18 +342,23 @@
   input:
     people:
       child:
-        age: 8
+        age:
+          2026: 8
         sd_cca_provider_type: BEFORE_AFTER_SCHOOL
-        childcare_hours_per_week: 40
+        childcare_hours_per_week:
+          2026: 40
     spm_units:
       unit:
         members: [child]
-        meets_ccdf_activity_test: true
+        meets_ccdf_activity_test:
+          2026: true
     households:
       household:
         members: [child]
-        state_code: SD
-        county_str: MINNEHAHA_COUNTY_SD
+        state_code:
+          2026: SD
+        county_str:
+          2026: MINNEHAHA_COUNTY_SD
   output:
     # The weekly sheet groups licensed centers and school age programs.
     # The urban school age full-time ceiling equals $185 per week.
@@ -365,17 +370,22 @@
   input:
     people:
       child:
-        age: 8
+        age:
+          2026: 8
         sd_cca_provider_type: LICENSED_CENTER
-        childcare_hours_per_week: 40
+        childcare_hours_per_week:
+          2026: 40
     spm_units:
       unit:
         members: [child]
-        meets_ccdf_activity_test: true
+        meets_ccdf_activity_test:
+          2026: true
     households:
       household:
         members: [child]
-        state_code: SD
-        county_str: MINNEHAHA_COUNTY_SD
+        state_code:
+          2026: SD
+        county_str:
+          2026: MINNEHAHA_COUNTY_SD
   output:
     sd_cca_weekly_rate: 185

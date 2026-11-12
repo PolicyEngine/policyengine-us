@@ -14182,6 +14182,7 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/sd/dss/cca/sd_cca.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
