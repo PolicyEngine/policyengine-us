@@ -30,20 +30,12 @@
 # - nyc_income_tax = line 54 - (NYC CDCC + NYC EIC + NYC school tax credit
 #   + this credit), the model's NYC refundable credit list for 2025.
 #
-# Set-aside assertions (pre-existing model component, not this credit):
-# Tax Law § 606(ggg)(4-b) and the IT-201-I line 69a worksheets give the NYC
-# school tax credit rate reduction amount as "$25 plus 0.228% of the excess
-# over $14,400" (head of household), "$37 plus ... over $21,600" (joint) and
-# "$21 plus ... over $12,000" (single/separate). The model's
-# school/rate_reduction/amount parameters are plain marginal schedules, so the
-# base is 0.171% x 14,400 = 24.624 (joint 36.936, single 20.52). Once city
-# taxable income passes the first bracket, the model's school tax credit, and
-# so nyc_income_tax, differ from the forms by 0.376 (head of household) or
-# 0.064 (joint). In Cases 1, 2, 3, 5 and 6 the nyc_school_tax_credit and
-# nyc_income_tax assertions are commented out with their form values. The
-# elimination credit does not use the school tax credit (IT-270 lines 6-10),
-# so every credit assertion stays active. Case 4 (city taxable income below
-# $14,400) asserts both.
+# NYC school tax credit (line 69 / 69a): Tax Law § 606(ggg)(4-b) and the
+# IT-201-I line 69a worksheets give the rate reduction amount as "$25 plus
+# 0.228% of the excess over $14,400" (head of household), "$37 plus ... over
+# $21,600" (joint) and "$21 plus ... over $12,000" (single/separate). The
+# model uses these statutory bases, so the nyc_school_tax_credit and
+# nyc_income_tax assertions hold the form values in every case.
 
 - name: Case 1, head of household with two children below the threshold gets the full credit.
   period: 2025
@@ -105,12 +97,11 @@
     # Line 69a: HOH, city taxable income 22,800 over 14,400:
     # $25 + 0.228% x 8,400 = 25 + 19.152 = 44.152 (Tax Law § 606(ggg)(4-b)(B)).
     # Total = 63 + 44.152 = 107.152.
-    # Set aside (see header; the model's base is 24.624, not $25):
-    # nyc_school_tax_credit: 107.152
+    nyc_school_tax_credit: 107.152
     # 759.24 - (0 + 673.1865 + 107.152 + 86.0535) = 759.24 - 866.392
     # = -107.152: the credit zeroes the NYC tax, leaving only the school
-    # tax credit refund. Set aside with the school tax credit:
-    # nyc_income_tax: -107.152
+    # tax credit refund.
+    nyc_income_tax: -107.152
 
 - name: Case 2, head of household with two children inside the $5,000 band gets a partial credit.
   period: 2025
@@ -165,11 +156,10 @@
     nyc_income_tax_elimination_credit: 165.8724408
     # Line 69 fixed $63; line 69a HOH: 25 + 0.228% x 11,400 = 25 + 25.992
     # = 50.992; total 113.992.
-    # Set aside (see header; the model's base is 24.624, not $25):
-    # nyc_school_tax_credit: 113.992
+    nyc_school_tax_credit: 113.992
     # 872.10 - (0 + 578.4165 + 113.992 + 165.8724408) = 872.10 - 858.2809408
-    # = 13.8190592. Set aside with the school tax credit:
-    # nyc_income_tax: 13.8190592
+    # = 13.8190592.
+    nyc_income_tax: 13.8190592
 
 - name: Case 3, married couple with three children one dollar above the threshold plus $5,000 gets no credit.
   period: 2025
@@ -228,11 +218,9 @@
     # Line 69 fixed $125 (MFJ); line 69a MFJ: $37 + 0.228% x 18,896
     # = 37 + 43.08288 = 80.08288 (Tax Law § 606(ggg)(4-b)(A));
     # total 205.08288.
-    # Set aside (see header; the model's base is 36.936, not $37):
-    # nyc_school_tax_credit: 205.08288
+    nyc_school_tax_credit: 205.08288
     # 1,375.71552 - (0 + 192.25944 + 205.08288 + 0) = 978.3732.
-    # Set aside with the school tax credit:
-    # nyc_income_tax: 978.3732
+    nyc_income_tax: 978.3732
 
 - name: Case 4, head of household with one child whose NYC EIC exceeds line 54 gets no credit.
   period: 2025
@@ -350,11 +338,9 @@
     nyc_income_tax_elimination_credit: 2_361.852
     # Line 69 fixed $63; line 69a HOH: 25 + 0.228% x (64,800 - 14,400
     # = 50,400) = 25 + 114.912 = 139.912; total 202.912.
-    # Set aside (see header; the model's base is 24.624, not $25):
-    # nyc_school_tax_credit: 202.912
+    nyc_school_tax_credit: 202.912
     # 2,361.852 - (0 + 0 + 202.912 + 2,361.852) = -202.912.
-    # Set aside with the school tax credit:
-    # nyc_income_tax: -202.912
+    nyc_income_tax: -202.912
 
 - name: Case 6, head of household with $10,001 of interest income is ineligible despite positive line 10.
   period: 2025
@@ -410,8 +396,6 @@
     nyc_income_tax_elimination_credit: 0
     # Line 69 fixed $63; line 69a HOH: 25 + 0.228% x 7,401 = 25 + 16.87428
     # = 41.87428; total 104.87428.
-    # Set aside (see header; the model's base is 24.624, not $25):
-    # nyc_school_tax_credit: 104.87428
+    nyc_school_tax_credit: 104.87428
     # 721.65762 - (0 + 704.74491 + 104.87428 + 0) = -87.96157.
-    # Set aside with the school tax credit:
-    # nyc_income_tax: -87.96157
+    nyc_income_tax: -87.96157

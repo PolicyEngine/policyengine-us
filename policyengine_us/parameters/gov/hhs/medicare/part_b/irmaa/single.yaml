@@ -5,6 +5,12 @@ metadata:
   period: month
   type: single_amount
   label: Medicare Part B income brackets for single filers
+  # After the last announced year, each income-related adjustment amount
+  # follows the Medicare Trustees' projected standard Part B premium: 42
+  # U.S.C. 1395r(i)(3)(A) makes each a fixed multiple of the same
+  # unsubsidized premium amount. The thresholds are indexed to CPI-U under
+  # 1395r(i)(5); see extend_medicare_irmaa_thresholds in
+  # uprating_extensions.py.
   reference:
     - title: 42 U.S.C. § 1395r(i)
       href: https://www.law.cornell.edu/uscode/text/42/1395r#i
@@ -59,18 +65,25 @@ brackets:
       2025-01-01: 106_001
       2026-01-01: 109_001
     amount:
-      2015-01-01: 42.00
-      2016-01-01: 48.70
-      2017-01-01: 53.50
-      2018-01-01: 53.50
-      2019-01-01: 54.10
-      2020-01-01: 57.80
-      2021-01-01: 59.40
-      2022-01-01: 68.00
-      2023-01-01: 65.90
-      2024-01-01: 69.90
-      2025-01-01: 74
-      2026-01-01: 81.20
+      values:
+        2015-01-01: 42.00
+        2016-01-01: 48.70
+        2017-01-01: 53.50
+        2018-01-01: 53.50
+        2019-01-01: 54.10
+        2020-01-01: 57.80
+        2021-01-01: 59.40
+        2022-01-01: 68.00
+        2023-01-01: 65.90
+        2024-01-01: 69.90
+        2025-01-01: 74
+        2026-01-01: 81.20
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
   - threshold:
       2015-01-01: 107_001
       2016-01-01: 107_001
@@ -85,18 +98,25 @@ brackets:
       2025-01-01: 133_001
       2026-01-01: 137_001
     amount:
-      2015-01-01: 104.90
-      2016-01-01: 121.80
-      2017-01-01: 133.90
-      2018-01-01: 133.90
-      2019-01-01: 135.40
-      2020-01-01: 144.60
-      2021-01-01: 148.50
-      2022-01-01: 170.10
-      2023-01-01: 164.80
-      2024-01-01: 174.70
-      2025-01-01: 185
-      2026-01-01: 202.90
+      values:
+        2015-01-01: 104.90
+        2016-01-01: 121.80
+        2017-01-01: 133.90
+        2018-01-01: 133.90
+        2019-01-01: 135.40
+        2020-01-01: 144.60
+        2021-01-01: 148.50
+        2022-01-01: 170.10
+        2023-01-01: 164.80
+        2024-01-01: 174.70
+        2025-01-01: 185
+        2026-01-01: 202.90
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
   - threshold:
       2015-01-01: 160_001
       2016-01-01: 160_001
@@ -111,18 +131,25 @@ brackets:
       2025-01-01: 167_001
       2026-01-01: 171_001
     amount:
-      2015-01-01: 167.80
-      2016-01-01: 194.90
-      2017-01-01: 214.30
-      2018-01-01: 214.30
-      2019-01-01: 216.70
-      2020-01-01: 231.40
-      2021-01-01: 237.60
-      2022-01-01: 272.20
-      2023-01-01: 263.70
-      2024-01-01: 279.50
-      2025-01-01: 295.9
-      2026-01-01: 324.60
+      values:
+        2015-01-01: 167.80
+        2016-01-01: 194.90
+        2017-01-01: 214.30
+        2018-01-01: 214.30
+        2019-01-01: 216.70
+        2020-01-01: 231.40
+        2021-01-01: 237.60
+        2022-01-01: 272.20
+        2023-01-01: 263.70
+        2024-01-01: 279.50
+        2025-01-01: 295.9
+        2026-01-01: 324.60
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
   - threshold:
       2015-01-01: 214_001
       2016-01-01: 214_001
@@ -137,18 +164,25 @@ brackets:
       2025-01-01: 200_001
       2026-01-01: 205_001
     amount:
-      2015-01-01: 230.80
-      2016-01-01: 268.00
-      2017-01-01: 294.60
-      2018-01-01: 294.60
-      2019-01-01: 297.90
-      2020-01-01: 318.10
-      2021-01-01: 326.70
-      2022-01-01: 374.20
-      2023-01-01: 362.60
-      2024-01-01: 384.30
-      2025-01-01: 406.9
-      2026-01-01: 446.30
+      values:
+        2015-01-01: 230.80
+        2016-01-01: 268.00
+        2017-01-01: 294.60
+        2018-01-01: 294.60
+        2019-01-01: 297.90
+        2020-01-01: 318.10
+        2021-01-01: 326.70
+        2022-01-01: 374.20
+        2023-01-01: 362.60
+        2024-01-01: 384.30
+        2025-01-01: 406.9
+        2026-01-01: 446.30
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
   - threshold:
       # The 85% tier begins in 2019 (Bipartisan Budget Act of 2018, section 53114).
       2015-01-01: .inf
@@ -164,16 +198,23 @@ brackets:
       2025-01-01: 500_000
       2026-01-01: 500_000
     amount:
-      # Before 2019 the threshold is unreachable and the amount repeats the 80% tier.
-      2015-01-01: 230.80
-      2016-01-01: 268.00
-      2017-01-01: 294.60
-      2018-01-01: 294.60
-      2019-01-01: 325.00
-      2020-01-01: 347.00
-      2021-01-01: 356.40
-      2022-01-01: 408.20
-      2023-01-01: 395.60
-      2024-01-01: 419.30
-      2025-01-01: 443.9
-      2026-01-01: 487
+      values:
+        # Before 2019 the threshold is unreachable and the amount repeats the 80% tier.
+        2015-01-01: 230.80
+        2016-01-01: 268.00
+        2017-01-01: 294.60
+        2018-01-01: 294.60
+        2019-01-01: 325.00
+        2020-01-01: 347.00
+        2021-01-01: 356.40
+        2022-01-01: 408.20
+        2023-01-01: 395.60
+        2024-01-01: 419.30
+        2025-01-01: 443.9
+        2026-01-01: 487
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
