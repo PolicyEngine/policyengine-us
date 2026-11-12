@@ -498,3 +498,78 @@
   output:
     is_ssi_ineligible_parent: [false, false, false]
     ssi: [8_946, 8_946, 11_928]
+
+# 20 CFR 416.1166 counts a federally administered State supplement as an SSI
+# benefit, and 416.1161(a)(2) leaves the income of a parent who receives one out
+# of deeming (POMS SI 01320.620 B.6). Countable income of 14,000 - 240 = 13,760 is
+# above the federal rate of 994 x 12 = 11,928 and below California's SSI/SSP
+# standard of 1,233.94 x 12 = 14,807.28 (POMS SI 01415.058 B.2.a), so this parent
+# is still due the supplement. Nothing is deemed, and the child's SSI is 11,928.
+# In Ohio the same parent is ineligible, as in Case 5.
+- name: Case 15, California disabled parent with income between the federal rate and the SSI/SSP standard deems nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 14_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    is_ssi_ineligible_parent: [false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
+    ssi: [0, 11_928]
+
+# A permanent resident with 40 qualifying quarters is a qualified noncitizen, so
+# this disabled parent with no income is eligible for SSI and deems nothing. Case 7's
+# undocumented parent fails the same test.
+- name: Case 16, disabled permanent resident parent with 40 qualifying quarters is eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 40
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
+    ssi: [11_928, 11_928]

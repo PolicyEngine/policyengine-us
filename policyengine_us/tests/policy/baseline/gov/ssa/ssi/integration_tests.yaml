@@ -227,7 +227,7 @@
     households:
       household:
         members: [adult1, adult2, child]
-        state_code: CA
+        state_code: TX
   output:
     is_ssi_eligible: [true, false, true]
     # Spouse's countable: $5,000 - $20 - $65 - $2,457.50 = $2,457.50/month = $29,490/year

@@ -20,6 +20,10 @@ class is_ssi_ineligible_parent(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1160#d",
         "https://www.law.cornell.edu/cfr/text/20/416.1163#d",
+        "https://www.law.cornell.edu/cfr/text/20/416.1161#a_2",
+        "https://www.law.cornell.edu/cfr/text/20/416.1166",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501320620",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415058",
     )
 
     def formula(person, period, parameters):
@@ -49,7 +53,23 @@ class is_ssi_ineligible_parent(Variable):
             p.amount.couple,
             p.amount.individual,
         )
-        meets_income_test = countable_income <= benefit_rate * MONTHS_IN_YEAR
+        # 20 CFR 416.1166 counts a federally administered State supplement as an
+        # SSI benefit, and 416.1161(a)(2) leaves out of deeming the income of a
+        # parent who receives one (POMS SI 01320.620 B.6 and C.3). This formula
+        # cannot read the supplement level, because the state supplement
+        # variables depend on this one. So where SSA administers the supplement
+        # (POMS SI 01415.058 A), an aged, blind or disabled parent is not treated
+        # as ineligible on income alone.
+        # NOTE: in those states a parent whose income also rules out the
+        # supplement deems nothing, and a parent's spouse is still allocated the
+        # federal couple rate alone.
+        federally_administered = np.isin(
+            person.household("state_code_str", period),
+            p.state_supplement.federally_administered,
+        )
+        meets_income_test = (
+            countable_income <= benefit_rate * MONTHS_IN_YEAR
+        ) | federally_administered
         resources = person("ssi_countable_resources", period)
         limit = p.eligibility.resources.limit
         first, second = co_resident_parent_indices(person, period)

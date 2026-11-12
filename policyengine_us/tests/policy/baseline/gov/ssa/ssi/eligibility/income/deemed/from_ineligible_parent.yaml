@@ -374,3 +374,97 @@
     ssi_unearned_income_deemed_from_ineligible_parent: [5_598, 0, 0]
     ssi_countable_income: [5_358, 0, 0]
     ssi: [6_570, 0, 0]
+
+# The same family, with the father earning 30,000 in his own tax unit. He lives
+# with the child as the mother's spouse, so 20 CFR 416.1160(d) makes him an
+# ineligible parent and 416.1165 counts his wages with hers:
+# (78,000 - 240 - 780) / 2 = 38,490, less the couple rate of 17,892, deems 20,598.
+# The child's countable income is 20,598 - 240 = 20,358, above 994 x 12 = 11,928.
+- name: Married parents in separate tax units pool both parents' wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        person_id: 1
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        person_id: 2
+        is_tax_unit_head: true
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        person_id: 3
+        is_tax_unit_head: true
+        employment_income_before_lsr: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [false, true, true]
+    ssi_ineligible_parent_allocation: [0, 17_892, 17_892]
+    ssi_unearned_income_deemed_from_ineligible_parent: [20_598, 0, 0]
+    ssi_countable_income: [20_358, 0, 0]
+    ssi: [0, 0, 0]
+
+# Unmarried parents in one tax unit, both named by the child's parent ids. Both
+# live with the child, so 20 CFR 416.1165(d)(3)(i) subtracts the couple rate, which
+# the two share: 1,491 x 12 / 2 = 8,946 each. (48,000 - 240 - 780) / 2 = 23,490,
+# less 17,892, deems 5,598, and the child's SSI is 11,928 - (5,598 - 240) = 6,570.
+# Two individual rates would total 23,856 and deem nothing.
+- name: Unmarried parents in one tax unit share the couple rate.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        person_id: 1
+        parent_1_id: 2
+        parent_2_id: 3
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        person_id: 2
+        is_tax_unit_head: true
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        person_id: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [false, true, true]
+    ssi_ineligible_parent_allocation: [0, 8_946, 8_946]
+    ssi_unearned_income_deemed_from_ineligible_parent: [5_598, 0, 0]
+    ssi_countable_income: [5_358, 0, 0]
+    ssi: [6_570, 0, 0]

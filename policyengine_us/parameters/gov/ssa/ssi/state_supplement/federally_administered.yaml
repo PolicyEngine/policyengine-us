@@ -1,0 +1,26 @@
+description: The Social Security Administration administers the optional state supplement to Supplemental Security Income in these states.
+
+# The list is SSA's for January 2026. It is applied backward to 1975, the first year
+# of the SSI parameters, as an approximation: earlier lists were not checked.
+values:
+  1975-01-01:
+    - CA
+    - DC
+    - DE
+    - HI
+    - IA
+    - MI
+    - MT
+    - NJ
+    - NV
+    - PA
+    - RI
+    - VT
+
+metadata:
+  unit: list
+  period: year
+  label: SSI states with a federally administered optional state supplement
+  reference:
+    - title: POMS SI 01415.058 A - List of States participating in the federally administered optional supplementary payment program
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415058

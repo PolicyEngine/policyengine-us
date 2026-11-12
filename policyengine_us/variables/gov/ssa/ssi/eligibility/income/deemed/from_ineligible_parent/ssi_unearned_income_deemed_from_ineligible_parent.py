@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_spouse_index,
+)
 
 
 class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
@@ -18,9 +21,24 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
         )
         ineligible_parent = person("is_ssi_ineligible_parent", period)
         tax_unit = person.tax_unit
+        # 20 CFR 416.1160(d): a parent's spouse who lives with the child is an
+        # ineligible parent too. When that spouse files in another tax unit,
+        # their income still joins the parent's (416.1165), as the couple rate
+        # in ssi_ineligible_parent_allocation already assumes.
+        spouse = _ssi_spouse_index(person, period)
+        tax_unit_id = tax_unit.reference_entity.members_entity_id
+        spouse_files_elsewhere = (
+            ineligible_parent
+            & (spouse >= 0)
+            & ineligible_parent[spouse]
+            & (tax_unit_id[spouse] != tax_unit_id)
+        )
+        earned = person("ssi_earned_income", period)
+        unearned = person("ssi_unearned_income", period)
 
         prereduction_parental_earned_income = eligible_child * tax_unit.sum(
-            person("ssi_earned_income", period) * ineligible_parent
+            earned * ineligible_parent
+            + where(spouse_files_elsewhere, earned[spouse], 0)
         )
         blind_disabled_working_student_income = person(
             "ssi_blind_or_disabled_working_student_exclusion", period
@@ -31,7 +49,8 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
         )
 
         parental_unearned_income = eligible_child * tax_unit.sum(
-            person("ssi_unearned_income", period) * ineligible_parent
+            unearned * ineligible_parent
+            + where(spouse_files_elsewhere, unearned[spouse], 0)
         )
 
         child_allocations = eligible_child * add(
