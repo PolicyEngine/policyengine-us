@@ -9,21 +9,25 @@
   input:
     people:
       person1:
+        takes_up_csfp_if_eligible: true
         age: 60
         ssi: 1_200
         receives_ssi: false
         msp: 0
       person2:
+        takes_up_csfp_if_eligible: true
         age: 68
         ssi: 0
         receives_ssi: false
         msp: 0
       person3:
+        takes_up_csfp_if_eligible: true
         age: 35
         ssi: 1_200
         receives_ssi: false
         msp: 0
       person4:
+        takes_up_csfp_if_eligible: true
         age: 70
         ssi: 0
         receives_ssi: false
@@ -56,21 +60,25 @@
   input:
     people:
       person1:
+        takes_up_csfp_if_eligible: true
         age: 60
         ssi: 0
         receives_ssi: true
         msp: 0
       person2:
+        takes_up_csfp_if_eligible: true
         age: 68
         ssi: 0
         receives_ssi: false
         msp: 0
       person3:
+        takes_up_csfp_if_eligible: true
         age: 35
         ssi: 0
         receives_ssi: true
         msp: 0
       person4:
+        takes_up_csfp_if_eligible: true
         age: 70
         ssi: 0
         receives_ssi: false
@@ -103,21 +111,25 @@
   input:
     people:
       person1:
+        takes_up_csfp_if_eligible: true
         age: 60
         ssi: 0
         receives_ssi: false
         msp: 0
       person2:
+        takes_up_csfp_if_eligible: true
         age: 68
         ssi: 0
         receives_ssi: false
         msp: 0
       person3:
+        takes_up_csfp_if_eligible: true
         age: 35
         ssi: 0
         receives_ssi: false
         msp: 0
       person4:
+        takes_up_csfp_if_eligible: true
         age: 70
         ssi: 0
         receives_ssi: false
@@ -150,21 +162,25 @@
   input:
     people:
       person1:
+        takes_up_csfp_if_eligible: true
         age: 60
         ssi: 0
         receives_ssi: false
         msp: 0
       person2:
+        takes_up_csfp_if_eligible: true
         age: 68
         ssi: 0
         receives_ssi: false
         msp: 0
       person3:
+        takes_up_csfp_if_eligible: true
         age: 35
         ssi: 0
         receives_ssi: false
         msp: 0
       person4:
+        takes_up_csfp_if_eligible: true
         age: 70
         ssi: 0
         receives_ssi: false
@@ -197,21 +213,25 @@
   input:
     people:
       person1:
+        takes_up_csfp_if_eligible: true
         age: 60
         ssi: 0
         receives_ssi: false
         msp: 0
       person2:
+        takes_up_csfp_if_eligible: true
         age: 68
         ssi: 0
         receives_ssi: false
         msp: 0
       person3:
+        takes_up_csfp_if_eligible: true
         age: 35
         ssi: 0
         receives_ssi: false
         msp: 0
       person4:
+        takes_up_csfp_if_eligible: true
         age: 70
         ssi: 0
         receives_ssi: false
@@ -244,21 +264,25 @@
   input:
     people:
       person1:
+        takes_up_csfp_if_eligible: true
         age: 60
         ssi: 0
         receives_ssi: false
         msp: 1_200
       person2:
+        takes_up_csfp_if_eligible: true
         age: 68
         ssi: 0
         receives_ssi: false
         msp: 0
       person3:
+        takes_up_csfp_if_eligible: true
         age: 35
         ssi: 0
         receives_ssi: false
         msp: 1_200
       person4:
+        takes_up_csfp_if_eligible: true
         age: 70
         ssi: 0
         receives_ssi: false
@@ -289,6 +313,7 @@
 - name: Case 7, income at the limit qualifies without program receipt.
   period: 2026
   input:
+    takes_up_csfp_if_eligible: true
     age: 60
     school_meal_fpg_ratio: 1.5
     state_code: KS
@@ -306,6 +331,7 @@
 - name: Case 8, income above the limit fails without program receipt.
   period: 2026
   input:
+    takes_up_csfp_if_eligible: true
     age: 68
     school_meal_fpg_ratio: 1.51
     state_code: KS
@@ -323,6 +349,7 @@
 - name: Case 9, categorical income eligibility does not waive the county gate.
   period: 2026
   input:
+    takes_up_csfp_if_eligible: true
     age: 68
     school_meal_fpg_ratio: 2
     state_code: KS
@@ -340,6 +367,7 @@
 - name: Case 10, categorical income eligibility does not waive minimum age.
   period: 2026
   input:
+    takes_up_csfp_if_eligible: true
     age: 59
     school_meal_fpg_ratio: 2
     state_code: KS
@@ -357,6 +385,7 @@
 - name: Case 11, Kansas categorical option does not apply to other states.
   period: 2026
   input:
+    takes_up_csfp_if_eligible: true
     age: 68
     school_meal_fpg_ratio: 2
     state_code: MO
@@ -374,6 +403,7 @@
 - name: Case 12, categorical income bypass is not backdated before the state plan.
   period: 2024
   input:
+    takes_up_csfp_if_eligible: true
     age: 68
     school_meal_fpg_ratio: 2
     state_code: KS
@@ -391,6 +421,7 @@
 - name: Case 13, categorical income bypass applies in the state plan year.
   period: 2025
   input:
+    takes_up_csfp_if_eligible: true
     age: 68
     school_meal_fpg_ratio: 2
     state_code: KS
@@ -410,11 +441,13 @@
   input:
     people:
       person2:
+        takes_up_csfp_if_eligible: true
         age: 68
         ssi: 10_800
         receives_ssi: false
         msp: 0
       person3:
+        takes_up_csfp_if_eligible: true
         age: 35
         ssi: 0
         receives_ssi: false
@@ -442,10 +475,12 @@
   input:
     people:
       person2:
+        takes_up_csfp_if_eligible: true
         age: 68
         receives_ssi: false
         msp: 0
       person3:
+        takes_up_csfp_if_eligible: true
         age: 35
         receives_ssi: false
         msp: 0
@@ -479,6 +514,7 @@
 - name: Case 16, single senior with reported SSI receipt qualifies in a post-plan year.
   period: 2026
   input:
+    takes_up_csfp_if_eligible: true
     age: 68
     school_meal_fpg_ratio: 2
     state_code: KS

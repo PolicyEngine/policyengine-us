@@ -1,0 +1,39 @@
+- name: CSFP pays only eligible people who take it up
+  period: 2025
+  input:
+    commodity_supplemental_food_program_eligible: [true, true, false, false]
+    takes_up_csfp_if_eligible: [true, false, true, false]
+  output:
+    # $601 times eligibility times take-up gives [601, 0, 0, 0].
+    commodity_supplemental_food_program: [601, 0, 0, 0]
+
+- name: CSFP requires an explicit take-up input
+  period: 2025
+  input:
+    commodity_supplemental_food_program_eligible: true
+  output:
+    takes_up_csfp_if_eligible: false
+    # $601 times the default false take-up flag gives $0.
+    commodity_supplemental_food_program: 0
+
+- name: Declining CSFP leaves eligibility unchanged
+  period: 2025
+  input:
+    age: 60
+    school_meal_fpg_ratio: 1.50
+    takes_up_csfp_if_eligible: false
+  output:
+    commodity_supplemental_food_program_eligible: true
+    # $601 times false gives $0 despite eligibility.
+    commodity_supplemental_food_program: 0
+
+- name: Taking up CSFP does not override age eligibility
+  period: 2025
+  input:
+    age: 59
+    school_meal_fpg_ratio: 1.50
+    takes_up_csfp_if_eligible: true
+  output:
+    commodity_supplemental_food_program_eligible: false
+    # An ineligible person receives $0 even when take-up equals true.
+    commodity_supplemental_food_program: 0
