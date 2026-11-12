@@ -260,6 +260,10 @@ def test_legacy_annual_override_replaces_cached_monthly_budgets():
         np.testing.assert_allclose(
             branch.calculate(monthly_name, month), [180, 0], atol=TOLERANCE
         )
+    # An explicit zero overrides calculated deeming as an amount, too.
+    zero_branch = simulation.get_branch("zero_annual_deemed_override")
+    zero_branch.set_input(annual_name, YEAR, [0, 0])
+    np.testing.assert_array_equal(zero_branch.calculate(monthly_name, PERIOD), [0, 0])
     np.testing.assert_allclose(
         simulation.calculate(monthly_name, PERIOD), [967.50, 0], atol=TOLERANCE
     )
