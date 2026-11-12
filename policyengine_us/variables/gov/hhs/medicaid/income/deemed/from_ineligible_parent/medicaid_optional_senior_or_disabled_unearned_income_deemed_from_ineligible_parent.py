@@ -76,7 +76,10 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         # the home whose income was used in deeming" (DSS Manual § 0805.020.15
         # step 8), so a stepparent or a parent on SSI does not raise it.
         ssi = parameters(period).gov.ssa.ssi.amount
-        deeming_parents = tax_unit.sum(ineligible_parent + spouse_files_elsewhere)
+        # Count as integers: adding two boolean arrays would be a logical OR.
+        deeming_parents = tax_unit.sum(
+            ineligible_parent.astype(int) + spouse_files_elsewhere.astype(int)
+        )
         missouri_allowance = (
             where(deeming_parents == 2, ssi.couple, deeming_parents * ssi.individual)
             * MONTHS_IN_YEAR

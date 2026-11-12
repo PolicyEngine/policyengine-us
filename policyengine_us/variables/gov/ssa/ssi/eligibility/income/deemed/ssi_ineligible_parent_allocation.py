@@ -62,6 +62,11 @@ class ssi_ineligible_parent_allocation(Variable):
         # benefits to zero". So the allowance adds the at-home supplement the
         # parent's own test used: the couple's in a shared pool or beside an
         # eligible spouse, and a lone parent's own.
+        # For a lone parent, and for two such parents on a joint claim, 416.1165(d)(3)
+        # names only the Federal benefit rate. PE takes the POMS reading there too,
+        # as the project lead ruled on 2026-11-12 (candidate
+        # us:ssi-parent-allowance-state-supplement): it avoids a jump in deemed
+        # income where the parent's income passes the federal rate plus supplement.
         # NOTE: two unmarried flagged parents share the federal couple rate alone.
         level = _ssi_parent_supplement_level(person, period, parameters)
         couple_level = max_(level, level[safe_spouse] * has_spouse)

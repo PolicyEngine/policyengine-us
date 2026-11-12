@@ -698,3 +698,190 @@
     is_ssi_ineligible_parent: [true, false]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 47_832]
     ssi: [0, 0]
+
+# The model's California supplement rates start in 1991, so before then a California
+# parent is tested on the federal rate alone. In 1986 that is 336 x 12 = 4,032: a
+# disabled parent with a 6,000 pension has 6,000 - 240 = 5,760 and deems 5,760 -
+# 4,032 = 1,728.
+- name: Case 20, California parent before the model's supplement rates start is tested on the federal rate.
+  period: 1986
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 6_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    is_ssi_ineligible_parent: [true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 1_728]
+
+# New Jersey pays a parent living with a child its code B rate, 31.25 a month in 2026
+# (POMS SI 01415.058 J). A disabled parent with a 12,400 pension has 12,400 - 240 =
+# 12,160, within 11,928 + 31.25 x 12 = 12,303, so the parent stays eligible and deems
+# nothing. In Ohio the same parent would deem 12,160 - 11,928 = 232.
+- name: Case 21, New Jersey parent still due the supplement deems nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 12_400
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    is_ssi_ineligible_parent: [false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
+
+# Vermont pays independent living, 55.68 a month in 2026 (POMS SI 01415.058 M). A
+# disabled parent with a 12,700 pension has 12,700 - 240 = 12,460, within 11,928 +
+# 55.68 x 12 = 12,596.16, so the parent stays eligible and deems nothing.
+- name: Case 22, Vermont parent still due the supplement deems nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 12_700
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    is_ssi_ineligible_parent: [false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
+
+# Two disabled parents in California on a joint claim, each with a 14,000 pension.
+# Their 28,000 - 240 = 27,760 is above the at-home couple standard of 17,892 +
+# 607.83 x 12 = 25,185.96 (POMS SI 01415.058 B), so both are ineligible parents and
+# share it: 12,592.98 each (POMS SI 01320.630 B.1). The child is deemed 27,760 -
+# 25,185.96 = 2,574.04, and SSI is 11,928 - (2,574.04 - 240) = 9,593.96.
+- name: Case 23, California parents on a joint claim share the couple's federal and state standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 14_000
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 14_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    is_ssi_ineligible_parent: [true, true, false]
+    ssi_ineligible_parent_allocation: [12_592.98, 12_592.98, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 2_574.04]
+    ssi: [0, 0, 9_593.96]
+
+# A lone California disabled parent with a 60,000 pension. 20 CFR 416.1165(d)(3)(ii)
+# subtracts the federal rate alone, which would deem 59,760 - 11,928 = 47,832. The
+# model follows POMS SI 01320.630 B.1 and subtracts the federal rate plus the
+# supplement, 11,928 + 239.94 x 12 = 14,807.28, as the project lead ruled on
+# 2026-11-12 (candidate us:ssi-parent-allowance-state-supplement): 59,760 -
+# 14,807.28 = 44,952.72.
+- name: Case 24, lone California parent's allowance includes the at-home supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 60_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    is_ssi_ineligible_parent: [true, false]
+    ssi_ineligible_parent_allocation: [14_807.28, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 44_952.72]
+    ssi: [0, 0]

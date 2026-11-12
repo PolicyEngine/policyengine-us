@@ -522,7 +522,9 @@
 # Without parent ids, the mother's spouse in his own tax unit is still an ineligible
 # parent (20 CFR 416.1160(d)), as on the resource side, so his 30,000 pension joins
 # her 48,000 of wages: (30,000 - 240) + (48,000 - 780) / 2 = 53,370, less 17,892,
-# deems 35,478. The child's countable income is above 11,928.
+# deems 35,478. The child's countable income is above 11,928. Ohio's Medicaid deeming
+# pools the pension the same way and applies the SSI exclusions with its 20 disregard,
+# so it deems 35,478 too.
 - name: Without parent ids, a father with a pension in his own tax unit is counted with the mother.
   period: 2026
   absolute_error_margin: 0.01
@@ -560,3 +562,96 @@
     ssi_ineligible_parent_allocation: [0, 17_892, 17_892]
     ssi_unearned_income_deemed_from_ineligible_parent: [35_478, 0, 0]
     ssi: [0, 0, 0]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [35_478, 0, 0]
+
+# The two-unit family above with a non-disabled sibling, 7, in the father's tax unit.
+# The sibling's allocation of (1,491 - 994) x 12 = 5,964 (20 CFR 416.1165(b)) comes
+# off the pooled wages for both units' children: (78,000 - 5,964 - 240 - 780) / 2 =
+# 35,508, less 17,892, leaves 17,616, or 8,808 for each disabled child. SSI is 11,928
+# - (8,808 - 240) = 3,360 each. Ohio's Medicaid deeming gives the same 8,808.
+- name: A sibling's allocation in the other tax unit comes off the pooled income for both units' children.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 48_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 38
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        employment_income_before_lsr: 30_000
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person5:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4, person5]
+    marital_units:
+      marital_unit1:
+        members: [person1, person3]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person4]
+      marital_unit4:
+        members: [person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [true, false, true, false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 8_808, 0, 8_808, 0]
+    ssi: [0, 3_360, 0, 3_360, 0]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 8_808, 0, 8_808, 0]
+
+# Without parent ids, a stepfather in the mother's tax unit is an ineligible parent as
+# her spouse (20 CFR 416.1160(d)), so his 120,000 of wages joins her 48,000: (168,000 -
+# 240 - 780) / 2 = 83,490, less 17,892, deems 65,598.
+- name: Without parent ids, a stepparent in the parent's tax unit is counted as her spouse.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        is_tax_unit_spouse: true
+        employment_income_before_lsr: 120_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [false, true, true]
+    ssi_unearned_income_deemed_from_ineligible_parent: [65_598, 0, 0]

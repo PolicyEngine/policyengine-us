@@ -5,8 +5,9 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spo
 
 
 def _rate(parameter, period):
-    # New Jersey's and Vermont's rates start after the earliest years the model
-    # computes, where the parameter tree has no value; read them as zero there.
+    # These rates are read for every person, and each state's start after the
+    # earliest years the model computes (California's in 1991), where the
+    # parameter tree has no value; read them as zero there.
     value = parameter(period.start)
     return 0 if value is None else value
 
@@ -24,9 +25,11 @@ def _ssi_parent_supplement_rates(person, period, parameters):
     of Columbia, Hawaii, Michigan, Montana and Rhode Island pay one only in care
     or facility settings, and Pennsylvania only in care homes or with an
     essential person, so their rates here are zero.
-    NOTE: Nevada pays aged or blind people at home (I) and Iowa blind people at
-    home (F); the model has no rates for either, so their parents are tested
-    against the federal rate alone.
+    NOTE: Nevada pays aged or blind people at home (I), and Iowa pays blind
+    people and people living with a dependent (F); the model has no rates for
+    either, so their parents are tested against the federal rate alone. Before
+    New Jersey's (2026) and Vermont's (2017) parameters start, their parents are
+    tested against the federal rate alone too.
     The rates read parameters, not the state supplement variables, because those
     depend on is_ssi_ineligible_parent. The facility and care-home rates do not
     apply to a parent living with the child.
@@ -34,23 +37,29 @@ def _ssi_parent_supplement_rates(person, period, parameters):
     state = person.household("state_code_str", period)
     joint = person("ssi_claim_is_joint", period)
     blind = person("is_blind", period)
-    states = parameters(period).gov.states
 
     # California, WIC 12200 and POMS SI 01415.058 B: the highest category the
     # person or couple qualifies for. Outside a joint claim the ineligible
     # spouse takes the person's category (POMS SI 01320.430 C.7), as in
     # ca_state_supplement_rates.
-    ca = states.ca.cdss.state_supplement.payment_standard
-    aged_or_disabled = (person("age", period) >= ca.aged_or_disabled.age_threshold) | (
+    ca = parameters.gov.states.ca.cdss.state_supplement.payment_standard
+    age_threshold = _rate(ca.aged_or_disabled.age_threshold, period)
+    aged_or_disabled_single = _rate(ca.aged_or_disabled.amount.single, period)
+    aged_or_disabled_married = _rate(ca.aged_or_disabled.amount.married, period)
+    food_single = _rate(ca.allowance.food.single, period)
+    food_married = _rate(ca.allowance.food.married, period)
+    blind_single = _rate(ca.blind.single, period)
+    one_blind = _rate(ca.blind.married.one_blind, period)
+    two_blind = _rate(ca.blind.married.two_blind, period)
+    aged_or_disabled = (person("age", period) >= age_threshold) | (
         person("is_ssi_disabled", period)
     )
     no_cooking = ~person.household(
         "living_arrangements_allow_for_food_preparation", period
     )
     ca_individual = max_(
-        blind * ca.blind.single,
-        aged_or_disabled
-        * (ca.aged_or_disabled.amount.single + no_cooking * ca.allowance.food.single),
+        blind * blind_single,
+        aged_or_disabled * (aged_or_disabled_single + no_cooking * food_single),
     )
     blind_count = where(
         joint, _ssi_couple_total(person, period, blind.astype(int)), 2 * blind
@@ -61,12 +70,9 @@ def _ssi_parent_supplement_rates(person, period, parameters):
         2 * aged_or_disabled,
     )
     ca_couple = max_(
-        max_(
-            (blind_count > 1) * ca.blind.married.two_blind,
-            (blind_count == 1) * ca.blind.married.one_blind,
-        ),
+        max_((blind_count > 1) * two_blind, (blind_count == 1) * one_blind),
         (aged_or_disabled_count > 1)
-        * (ca.aged_or_disabled.amount.married + no_cooking * ca.allowance.food.married),
+        * (aged_or_disabled_married + no_cooking * food_married),
     )
 
     # New Jersey, POMS SI 01415.058 J: a parent with a child in the home is in
