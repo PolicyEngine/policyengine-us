@@ -16,12 +16,14 @@ values:
   #   convention: each spouse enters one-half of Form 2441-M line 7.
   # The federal rule for separate returns also treats payments from a joint
   # account as paid equally.
-  2021-01-01: 0.5
+  2017-01-01: 0.5
 metadata:
   label: Montana itemized deductions spouse allocation rate
   period: year
   unit: /1
   reference:
+    - title: 2017 Montana Form 2 instructions, line 19, separate-filing care expense allocation
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
     - title: Montana Administrative Rule 42.15.524 - Itemized Deductions of Married Taxpayers (archived text, in effect until its repeal effective Jan. 25, 2025)
       href: https://web.archive.org/web/20201030190413/http://www.mtrules.org/gateway/ruleno.asp?RN=42.15.524
     - title: 2022 Montana Form 2 Instructions, Allocation of deductions
