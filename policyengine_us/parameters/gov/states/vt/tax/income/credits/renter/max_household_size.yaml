@@ -1,0 +1,25 @@
+description: Vermont applies the renter credit income limits and fair market rents for this household size to larger households.
+# The income limit and fair market rent tables run through family size 8. The
+# Department of Taxes' renter credit calculators use Calculator sheet cells
+# G10-G12 in 2021-2022 and G11-G13 in 2023-2025. The income limit lookups use
+# IF(Household_Size>8,8,Household_Size), and the calculators accept family sizes
+# 1 through 10. Their credit amount lookup caps the size at 4, which the fair
+# market rent table already reflects by repeating the 4-person value through
+# size 8.
+values:
+  2021-01-01: 8
+metadata:
+  unit: person
+  period: year
+  label: Vermont renter credit maximum household size
+  reference:
+    - title: 2025 Renter Credit Website Calculator (Calculator sheet, cells G11-G13)
+      href: https://tax.vermont.gov/sites/tax/files/documents/2025%20Renter%20Credit%20Website%20Calculator.xlsx
+    - title: 2024 Renter Credit Website Calculator (Calculator sheet, cells G11-G13)
+      href: https://tax.vermont.gov/sites/tax/files/documents/2024%20Renter%20Credit%20Website%20Calculator.xlsx
+    - title: 2023 Renter Credit Website Calculator (Calculator sheet, cells G11-G13)
+      href: https://web.archive.org/web/20250526044955/https://tax.vermont.gov/sites/tax/files/documents/2023%20Renter%20Credit%20Website%20Calculator_1.xlsx
+    - title: 2022 Renter Credit Website Calculator (Calculator sheet, cells G10-G12)
+      href: https://tax.vermont.gov/sites/tax/files/documents/2022%20Renter%20Credit%20Website%20Calculator_1.xlsx
+    - title: 2021 Renter Credit Website Calculator (Calculator sheet, cells G10-G12)
+      href: https://tax.vermont.gov/sites/tax/files/documents/2021%20Renter%20Credit%20Website%20Calculator_8.xlsx

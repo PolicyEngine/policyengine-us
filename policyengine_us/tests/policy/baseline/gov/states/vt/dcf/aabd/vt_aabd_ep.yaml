@@ -592,3 +592,44 @@
     # home, who has no state resource determination.
     vt_aabd_ep_resources_eligible: [false, false]
     vt_aabd_ep: [0, 0]
+
+# Vermont AABD rules 2780(A), 2783.1, 2784(C), 2786: one EP grant per
+# eligible couple, using the highest level certified on either spouse.
+# https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=44
+# Couple maximum = 1,491 + 105.80 + 183.84 = $1,780.64. With no own
+# income, SSI + federal AABD = 1,491 + 105.80 = $1,596.80. EP is
+# floor(1,780.64 - 1,596.80) / 2 = $91.50 each. Uncertified third gets $0.
+- name: VT essential-person certification and income exclude the third adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        vt_aabd_ep_level: FULL
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        pension_income:
+          2026: 12_000
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: VT
+  output:
+    vt_aabd_ep_is_spouse: [false, false, false]
+    vt_aabd_ep: [91.5, 91.5, 0]

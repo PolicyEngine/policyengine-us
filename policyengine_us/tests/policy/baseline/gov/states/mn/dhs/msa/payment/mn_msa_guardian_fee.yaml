@@ -238,3 +238,46 @@
   output:
     # Unit gross income is $3,000/mo: only the nonstaff guardian gets the $100 cap.
     mn_msa_guardian_fee: [0, 100]
+
+- name: Minnesota guardian fee cap uses only the recipient and spouse's gross income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        mn_msa_gross_income: 1_000
+        mn_msa_has_guardian: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        mn_msa_gross_income: 500
+        mn_msa_has_guardian: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        mn_msa_gross_income: 1_000
+        mn_msa_has_guardian: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: MN
+  output:
+    # Minn. Stat. 256D.44 Subd. 5(d): min(5% of AU gross income, $100).
+    # https://www.revisor.mn.gov/statutes/cite/256D.44#stat.256D.44.5
+    # Couple: min((1,000 + 500) * .05, 100) = 75; individual: 1,000 * .05 = 50.
+    mn_msa_guardian_fee: [75, 75, 50]
