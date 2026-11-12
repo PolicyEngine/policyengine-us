@@ -52,3 +52,18 @@
     state_code: TX
   output:
     msp_part_b_premium_coverage: 0
+
+# Same person as the case above, in California. State-funded Medi-Cal covers a person
+# with temporary protected status, but the federal Medicaid immigration test still bars
+# MSP coverage of the premium (42 U.S.C. 1396b(v)(1)).
+- name: MSP part B coverage is zero for a California person with temporary protected status
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+    pension_income: 18_240
+    state_code: CA
+  output:
+    msp_part_b_premium_coverage: 0

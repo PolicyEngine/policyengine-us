@@ -19,10 +19,11 @@ class is_qi_eligible(Variable):
         p = parameters(period).gov.hhs.medicare.savings_programs.eligibility.income
 
         medicare_eligible = person("is_medicare_eligible", period.this_year)
-        # QMB, SLMB and QI are Medicaid benefits, so the Medicaid immigration test
-        # (42 U.S.C. 1396b(v), 8 U.S.C. 1611(a) and 1613(a)) applies.
+        # QMB, SLMB and QI are federal Medicaid benefits, so the federal Medicaid
+        # immigration test (42 U.S.C. 1396b(v), 8 U.S.C. 1611(a) and 1613(a))
+        # applies. State-funded Medicaid coverage does not open them.
         immigration_eligible = person(
-            "is_medicaid_immigration_status_eligible", period.this_year
+            "is_federal_medicaid_immigration_status_eligible", period.this_year
         )
         asset_eligible = person("msp_asset_eligible", period)
 

@@ -190,3 +190,78 @@
     medicare_quarters_of_coverage: 40
   output:
     is_medicare_eligible: true
+
+# 8 U.S.C. 1611(b)(3): through 2026 every lawfully present status is on the list, so
+# 40 quarters of coverage open Medicare at 65 for each of these seven. Taking any one
+# of them off the pre-2027 list fails this case.
+- name: is_medicare_eligible unit test 20
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: REFUGEE
+        medicare_quarters_of_coverage: 40
+      person2:
+        age: 70
+        immigration_status: ASYLEE
+        medicare_quarters_of_coverage: 40
+      person3:
+        age: 70
+        immigration_status: DEPORTATION_WITHHELD
+        medicare_quarters_of_coverage: 40
+      person4:
+        age: 70
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+        medicare_quarters_of_coverage: 40
+      person5:
+        age: 70
+        immigration_status: CONDITIONAL_ENTRANT
+        medicare_quarters_of_coverage: 40
+      person6:
+        age: 70
+        immigration_status: PAROLED_ONE_YEAR
+        medicare_quarters_of_coverage: 40
+      person7:
+        age: 70
+        immigration_status: DACA
+        medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: [true, true, true, true, true, true, true]
+
+# 42 U.S.C. 1395mmm(a): from 2027 only the Cuban and Haitian entrant among the same
+# seven people keeps Medicare.
+- name: is_medicare_eligible unit test 21
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: REFUGEE
+        medicare_quarters_of_coverage: 40
+      person2:
+        age: 70
+        immigration_status: ASYLEE
+        medicare_quarters_of_coverage: 40
+      person3:
+        age: 70
+        immigration_status: DEPORTATION_WITHHELD
+        medicare_quarters_of_coverage: 40
+      person4:
+        age: 70
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+        medicare_quarters_of_coverage: 40
+      person5:
+        age: 70
+        immigration_status: CONDITIONAL_ENTRANT
+        medicare_quarters_of_coverage: 40
+      person6:
+        age: 70
+        immigration_status: PAROLED_ONE_YEAR
+        medicare_quarters_of_coverage: 40
+      person7:
+        age: 70
+        immigration_status: DACA
+        medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: [false, false, false, true, false, false, false]

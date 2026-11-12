@@ -184,3 +184,21 @@
   output:
     msp_category:
       2026-01: NONE
+
+# QMB is a federal Medicaid benefit (42 U.S.C. 1396a(a)(10)(E), 1396d(p)), and
+# 42 U.S.C. 1396b(v)(1) bars federal payment for a person with temporary protected
+# status. California's state-funded Medi-Cal covers this person, but that coverage
+# does not open a Medicare Savings Program. Same household as Case 9, in California.
+- name: Case 15, California person with temporary protected status on Medicare gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    pension_income: 10_000
+    state_code: CA
+  output:
+    is_medicare_eligible: true
+    is_medicaid_immigration_status_eligible: true
+    is_federal_medicaid_immigration_status_eligible: false
+    msp_category:
+      2026-01: NONE
