@@ -135,11 +135,11 @@ def test_no_pairing_across_households_or_disjoint_role_periods():
         {"is_tax_unit_dependent": {"2024": True}},
     ],
 )
-def test_ambiguous_or_changing_roles_require_explicit_membership(extra_inputs):
+def test_ambiguous_or_changing_roles_give_everyone_their_own_unit(extra_inputs):
+    # These computed on main, so the hook pairs no one rather than raising.
     situation = _explicit_pair()
     situation["people"]["spouse"].update(extra_inputs)
-    with pytest.raises(ValueError, match="Supply marital_units explicitly"):
-        infer_missing_marital_units(situation)
+    assert _pairs(situation) == []
 
 
 def test_separated_pair_and_partial_tax_units_stay_singletons():
@@ -204,6 +204,12 @@ def test_a_married_family_pairs_its_two_adults_but_not_its_children():
 )
 def test_a_married_family_stays_unpaired_when_ambiguous(people):
     assert _pairs(_married_family(**people)) == []
+
+
+def test_a_changing_is_married_input_pairs_no_one():
+    situation = _married_family()
+    situation["families"]["family"]["is_married"] = {"2024": True, "2025": False}
+    assert _pairs(situation) == []
 
 
 @pytest.mark.parametrize(
@@ -305,3 +311,81 @@ def test_fallback_stops_at_a_false_is_married_or_another_household():
         "two": {"members": ["second"]},
     }
     assert _fallback_pairs(adults, households=apart) == []
+
+
+@pytest.mark.parametrize(
+    "order",
+    [
+        ["grandchild", "husband", "wife"],
+        ["husband", "grandchild", "wife"],
+    ],
+)
+def test_inputs_dated_after_the_default_input_year_keep_the_couple(order):
+    # Simulation's default input year is 2024; a payload dated 2026 must
+    # still pair its couple wherever they are listed.
+    people = {
+        "grandchild": {"age": {"2026": 10}},
+        "husband": {"age": {"2026": 70}},
+        "wife": {"age": {"2026": 68}},
+    }
+    sim = Simulation(situation={"people": {name: people[name] for name in order}})
+    units = sim.marital_unit.members_entity_id.tolist()
+    index = {name: position for position, name in enumerate(order)}
+    assert units[index["husband"]] == units[index["wife"]]
+    assert units[index["grandchild"]] != units[index["husband"]]
+
+
+def test_two_tax_units_each_pair_their_own_couple():
+    people = {
+        "first_head": {"age": 45},
+        "first_spouse": {"age": 43},
+        "second_head": {"age": 40},
+        "second_spouse": {"age": 38},
+        "child": {"age": 5},
+    }
+    situation = {
+        "people": people,
+        "tax_units": {
+            "first": {"members": ["first_head", "first_spouse", "child"]},
+            "second": {"members": ["second_head", "second_spouse"]},
+        },
+    }
+    units = infer_missing_marital_units(situation, "2024", system)["marital_units"]
+    pairs = sorted(
+        sorted(unit["members"]) for unit in units.values() if len(unit["members"]) > 1
+    )
+    assert pairs == [["first_head", "first_spouse"], ["second_head", "second_spouse"]]
+
+
+def test_two_couples_in_one_tax_unit_pair_only_the_role_couple():
+    # A known limitation: the role formulas pick one head and one spouse.
+    people = {
+        "older_husband": {"age": 70},
+        "older_wife": {"age": 68},
+        "younger_husband": {"age": 45},
+        "younger_wife": {"age": 43},
+    }
+    assert _fallback_pairs(people) == [["older_husband", "older_wife"]]
+
+
+def test_integer_person_ids_pair():
+    people = {1: {"age": 45}, 2: {"age": 43}, 3: {"age": 10}}
+    assert _fallback_pairs(people) == [["1", "2"]]
+
+
+def test_a_false_spouse_input_leaves_the_roles_without_a_couple():
+    people = {"first": {"age": 45}, "second": {"age": 43, "is_tax_unit_spouse": False}}
+    assert _fallback_pairs(people) == []
+
+
+def test_the_adult_age_matches_is_child():
+    from policyengine_us.tools import marital_units
+
+    sim = Simulation(
+        situation={
+            "people": {"minor": {"age": {"2024": 17}}, "adult": {"age": {"2024": 18}}}
+        }
+    )
+    assert sim.calculate("is_child", 2024).tolist() == [
+        age < marital_units._ADULT_AGE for age in (17, 18)
+    ]

@@ -13,6 +13,10 @@ class _LeaveToCore(Exception):
     """Malformed input that the situation builder reports more clearly."""
 
 
+class _Ambiguous(Exception):
+    """Inputs that can't settle one static couple, so no one is paired."""
+
+
 # Supplied role inputs that settle a tax unit without a couple.
 _NO_PAIR = object()
 
@@ -29,10 +33,8 @@ def _true_input_periods(entity, variable, default_period, require_constant=False
         values = {default_period: values}
     supplied = {key: value for key, value in values.items() if value is not None}
     if require_constant and len({_is_true(value) for value in supplied.values()}) > 1:
-        raise ValueError(
-            f"Cannot infer static marital units from changing {variable} inputs. "
-            "Supply marital_units explicitly."
-        )
+        # Membership can't change between periods.
+        raise _Ambiguous
     try:
         return {
             periods.period(key)
@@ -140,15 +142,19 @@ def infer_missing_marital_units(situation, default_period=None, system=None):
        ``is_tax_unit_head`` and ``is_tax_unit_spouse`` infer from age order
        when everyone has their own marital unit: the oldest adult, and the
        next-oldest adult who fails the qualifying child age test against
-       them, with no couple when anyone in the unit is separated or a
-       family says the two aren't married.
+       them, with no couple when anyone in the unit is separated, a family
+       says the two aren't married, or either has a false input for the role
+       step 4 gives them.
 
     Everyone else receives their own unit, without claiming that their
-    marital status is known. Calculated values are never read: step 4 reads
-    the same inputs and parameters the role formulas read, so the units it
-    builds agree with the inferred tax roles. Core calls this hook on a
-    private copy before building populations; malformed input is left to
-    its validation.
+    marital status is known. Inputs that can't settle one static couple
+    (several heads or spouses, a dependent also marked head or spouse, or
+    role or is_married inputs that change between periods) leave everyone in
+    that tax unit and household in their own unit. Calculated values are
+    never read: step 4 reads the same inputs and parameters the role
+    formulas read, so the units it builds agree with the inferred tax roles.
+    Core calls this hook on a private copy before building populations;
+    malformed input is left to its validation.
     """
     if situation.get("marital_units") is not None:
         return situation
@@ -186,15 +192,18 @@ def _infer_units(situation, people, default_period, system):
 
     units = {name: {"members": [name]} for name in people}
     for (tax_unit, _), members in groups.items():
-        pair = _group_pair(
-            members,
-            tax_unit_members[tax_unit],
-            people,
-            situation,
-            families,
-            default_period,
-            system,
-        )
+        try:
+            pair = _group_pair(
+                members,
+                tax_unit_members[tax_unit],
+                people,
+                situation,
+                families,
+                default_period,
+                system,
+            )
+        except _Ambiguous:
+            pair = None
         if pair is not None:
             first, second = pair
             units[first]["members"].append(second)
@@ -224,6 +233,12 @@ def _group_pair(
     )
     if len(heads) > 1 or len(spouses) > 1:
         return None
+    # A one-sided role input that changes between periods can't fix a
+    # static couple either.
+    for name in heads:
+        _true_input_periods(people[name], "is_tax_unit_head", default_period, True)
+    for name in spouses:
+        _true_input_periods(people[name], "is_tax_unit_spouse", default_period, True)
     pair = _tax_fallback_pair(
         unit_members,
         people,
@@ -250,10 +265,7 @@ def _true_role_inputs(members, people, variable, default_period):
 
 def _explicit_role_pair(heads, spouses, people, default_period):
     if len(heads) != 1 or len(spouses) != 1 or heads.keys() == spouses.keys():
-        raise ValueError(
-            "Cannot infer an unambiguous head/spouse pair. "
-            "Supply marital_units explicitly."
-        )
+        raise _Ambiguous
     head = next(iter(heads))
     spouse = next(iter(spouses))
     if not _periods_overlap(heads[head], spouses[spouse]):
@@ -262,10 +274,7 @@ def _explicit_role_pair(heads, spouses, people, default_period):
     _true_input_periods(people[spouse], "is_tax_unit_spouse", default_period, True)
     for name in (head, spouse):
         if _true_input_periods(people[name], "is_tax_unit_dependent", default_period):
-            raise ValueError(
-                "Cannot infer a marital pair from an explicit dependent "
-                "also marked as head or spouse. Supply marital_units explicitly."
-            )
+            raise _Ambiguous
     if any(
         _true_input_periods(people[name], "is_separated", default_period)
         for name in (head, spouse)
@@ -299,10 +308,7 @@ def _supplied_role_pair(members, people):
             if value is not None and _role_name(value) != "UNSPECIFIED"
         }
         if len(supplied) > 1:
-            raise ValueError(
-                "Cannot infer static marital units from changing "
-                "tax_unit_role_input inputs. Supply marital_units explicitly."
-            )
+            raise _Ambiguous
         if supplied:
             roles[name] = supplied.pop()
     if not roles:
@@ -317,6 +323,8 @@ def _supplied_role_pair(members, people):
 # Inputs the role formulas read for the age-order fallback.
 _FALLBACK_INPUTS = (
     "age",
+    "is_tax_unit_head",
+    "is_tax_unit_spouse",
     "is_tax_unit_dependent",
     "is_separated",
     "is_full_time_student",
@@ -354,17 +362,23 @@ def _dated_values(person, variable, default_period):
 
 
 def _fallback_years(members, people, default_period):
+    """The years the inputs name, or the default period's year if none do.
+
+    An undated input lands in the default period, so it names that year. The
+    default period alone doesn't: Simulation's default input year can differ
+    from the year a payload's inputs are dated for.
+    """
     years = set()
-    if default_period is not None:
-        try:
-            years.add(periods.period(default_period).start.year)
-        except ValueError as error:
-            raise _LeaveToCore from error
     for name in members:
         for variable in _FALLBACK_INPUTS:
             for start, _ in _dated_values(people[name], variable, default_period):
                 if start is not None:
                     years.add(start.year)
+    if not years and default_period is not None:
+        try:
+            years.add(periods.period(default_period).start.year)
+        except ValueError as error:
+            raise _LeaveToCore from error
     return sorted(years)
 
 
@@ -372,12 +386,21 @@ def _value_in_year(person, variable, year, default_period, default, carries):
     """The input value the year's calculation reads.
 
     Core carries an input of a variable without a formula forward to later
-    years; a variable with a formula computes years without an input.
+    years; a variable with a formula computes years without an input. A year
+    before a person's first input of a variable reads that first input, so a
+    person dated only in later years keeps their own values, not defaults.
     """
+    dated = _dated_values(person, variable, default_period)
     value = default
-    for start, supplied in _dated_values(person, variable, default_period):
+    found = False
+    for start, supplied in dated:
         if start is None or start.year == year or (carries and start.year < year):
             value = supplied
+            found = True
+    if not found:
+        later = [supplied for start, supplied in dated if start.year > year]
+        if later:
+            value = later[0]
     return value
 
 
@@ -424,9 +447,16 @@ def _fallback_pair_in_year(members, people, year, default_period, system, head, 
     candidates = [
         name for name in adults if not _is_true(value(name, "is_tax_unit_dependent"))
     ] or adults
+
+    def input_is_false(name, variable):
+        supplied = value(name, variable, None)
+        return supplied is not None and not _is_true(supplied)
+
     if head is None:
         head = _oldest([name for name in candidates if name != spouse], ages)
-        if head is None:
+        # A false is_tax_unit_head input leaves the formula's head without
+        # the role, so the roles have no couple.
+        if head is None or input_is_false(head, "is_tax_unit_head"):
             return None
     if spouse is not None:
         return head, spouse
@@ -434,8 +464,8 @@ def _fallback_pair_in_year(members, people, year, default_period, system, head, 
     if any(_is_true(value(name, "is_separated")) for name in members):
         return None
     # The qualifying child age test (26 USC 152(c)(3)), as is_tax_unit_spouse
-    # applies it to adults outside the head's marital unit. A reform delegates
-    # this hook to its baseline, so these are the baseline's age limits.
+    # applies it to adults outside the head's marital unit. Under a reform,
+    # Core passes the reformed system, so these are the reform's age limits.
     limits = system.parameters(f"{year}-01-01").gov.irs.dependent.ineligible_age
 
     def meets_age_test(name):
@@ -454,4 +484,7 @@ def _fallback_pair_in_year(members, people, year, default_period, system, head, 
         [name for name in candidates if name != head and not meets_age_test(name)],
         ages,
     )
-    return None if spouse is None else (head, spouse)
+    # Likewise a false is_tax_unit_spouse input on the formula's spouse.
+    if spouse is None or input_is_false(spouse, "is_tax_unit_spouse"):
+        return None
+    return head, spouse

@@ -28,19 +28,35 @@ applies, and gives everyone else their own unit:
    next-oldest adult who fails the qualifying child age test against them
    (under 19, or under 24 if a full-time student, and younger than the head,
    or permanently and totally disabled). No couple is formed when anyone in
-   the tax unit is separated, when the two live in different households, or
-   when a family they share has a false `is_married` input.
+   the tax unit is separated, when the two live in different households, when
+   a family they share has a false `is_married` input, or when either has a
+   false `is_tax_unit_head` or `is_tax_unit_spouse` input for the role this
+   step gives them.
 
 The fourth step reads the same inputs and parameters as the role formulas, so
 the units it builds agree with the inferred tax roles: a couple sent without
 marriage information is a couple for SSI and Medicaid as well as for tax, and
-a parent's adult child who meets the age test is neither. Like the role
-fallback, it pairs an adult child who fails the age test with their parent;
-supply `marital_units` for such households. Changing role or `is_married`
-inputs require an explicit marital mapping, because membership can't change
-between periods, and a unit whose fourth-step couple differs between years
-pairs no one. Under a reform, the fourth step uses the baseline's dependent age
-limits.
+a parent's adult child who meets the age test is neither. The fourth step
+checks the years the inputs are dated for, so a payload dated for a year other
+than the simulation's default input year pairs the same couple. Under a reform,
+it uses the reform's dependent age limits.
+
+Membership can't change between periods. Inputs that can't settle one static
+couple give everyone in that tax unit and household their own unit: two head
+or two spouse inputs, a dependent also marked head or spouse, role or
+`is_married` inputs that change between periods, or a fourth-step couple that
+differs between years.
+
+Known limitations, which callers avoid by supplying `marital_units`:
+
+- Like the role fallback, the fourth step pairs an adult who fails the age test
+  with the head, such as a parent and their adult child or two unrelated adults
+  in one tax unit.
+- A tax unit with two couples pairs only the couple the role formulas pick;
+  the other two adults get their own units.
+- A married couple who file separately, in two tax units, get their own units
+  even when their family's `is_married` input is true, because each step works
+  within one tax unit.
 
 These rules apply to Python household simulations and entity-form YAML tests,
 including tests with reforms or inline parameters. Variable-only tests keep
