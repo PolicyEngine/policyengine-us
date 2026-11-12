@@ -2,7 +2,7 @@
 # Property Tax Exemption (RCW 84.36.379-389; WAC 458-16A-100..150).
 #
 # Eligibility: someone who is the tax-unit head (or spouse in a joint return)
-# satisfies the age threshold (62 pre-2020, 61 from 2020), retired from regular
+# satisfies the age threshold (62 at collection-year end), retired from regular
 # gainful employment by reason of disability, or the disabled veteran pathway;
 # the tax unit owns an occupied residence (real_estate_taxes > 0);
 # combined disposable income (annual) <= Tier 3 threshold for the household's county.
@@ -428,3 +428,41 @@
     wa_pte_combined_disposable_income: 67_500
     wa_pte_tier: 1
     wa_senior_disabled_property_tax_exemption: 5_340
+
+- name: Case 15, an owner aged 61 in collection year 2024 does not qualify by age.
+  period: 2024
+  input:
+    state_code: WA
+    county: KING_COUNTY_WA
+    age: 61
+    real_estate_taxes: 5_000
+    assessed_property_value: 500_000
+    adjusted_gross_income: 25_000
+    is_veteran: false
+    wa_pte_retired_due_to_disability: false
+  output:
+    # 61 - 1 = 60 at December 31, 2023; compare with the filing-year minimum of 61.
+    # Eligible Tier 1 amount: 5,000 x 0.30 + 500,000 x 0.60 x 0.007 = 3,600.
+    # Regular rate = 5,000 x 0.70 / 500,000 = 0.007; no eligibility gives zero.
+    wa_pte_categorical_eligible: false
+    wa_pte_eligible: false
+    wa_senior_disabled_property_tax_exemption: 0
+
+- name: Case 16, an owner aged 62 in collection year 2024 qualifies by age.
+  period: 2024
+  input:
+    state_code: WA
+    county: KING_COUNTY_WA
+    age: 62
+    real_estate_taxes: 5_000
+    assessed_property_value: 500_000
+    adjusted_gross_income: 25_000
+    is_veteran: false
+    wa_pte_retired_due_to_disability: false
+  output:
+    # 62 - 1 = 61 at December 31, 2023; compare with the filing-year minimum of 61.
+    # Eligible Tier 1 amount: 5,000 x 0.30 + 500,000 x 0.60 x 0.007 = 3,600.
+    # Regular rate = 5,000 x 0.70 / 500,000 = 0.007.
+    wa_pte_categorical_eligible: true
+    wa_pte_eligible: true
+    wa_senior_disabled_property_tax_exemption: 3_600
