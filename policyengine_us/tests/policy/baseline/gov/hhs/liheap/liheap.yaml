@@ -29,14 +29,15 @@
     tx_ceap: 1_200
     liheap: 1_200
 
-- name: Case 2, a Michigan household gets nothing because the Home Heating Credit is not in the total.
-  period: 2026
+- name: Case 2, a Michigan household's Home Heating Credit is not in the total.
+  period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 41
-        employment_income_before_lsr: 24_000
+        # Part-time wages.
+        employment_income_before_lsr: 9_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -49,8 +50,12 @@
         members: [person1]
         state_code: MI
   output:
-    # Michigan's regular heating help is the refundable Home Heating Credit,
-    # which the list leaves out, and Michigan has no regular cooling payment.
+    # TY2025 MI-1040CR-7 standard credit: the one-exemption allowance of 604
+    # less 3.5% of 9,000 household resources (315) is 289, paid at 60%:
+    # 173.40. The alternate credit is 70% of (1,020 - 11% of 9,000) = 21.
+    # Michigan's regular heating help is this refundable credit, which the
+    # list leaves out, and Michigan has no regular cooling payment.
+    mi_home_heating_credit: 173.4
     liheap: 0
 
 - name: Case 3, Illinois counts the regular heating payment but not the crisis amount.
@@ -205,3 +210,36 @@
     il_liheap_regular_heating: [0, 0, 425]
     # No household is paid by another state's program.
     liheap: [1_200, 529, 425]
+
+# California's ordinary liquid-fuel payment applies in Madera County only. Base
+# benefit 411 for one person in burden group 4, plus 105 for the priority
+# category at exactly 20 points (ca_liheap_covered_liquid_heating.yaml Case 5).
+# A liquid-fuel payment rules out the utility payment the same year.
+- name: Case 6, a Madera County propane household's liquid-fuel payment counts once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 12
+        pre_subsidy_electricity_expense: 2_028
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+  output:
+    ca_liheap_covered_liquid_heating: 516
+    ca_liheap_utility_heating: 0
+    liheap: 516

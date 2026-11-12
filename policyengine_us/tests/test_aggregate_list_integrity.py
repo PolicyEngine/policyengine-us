@@ -177,13 +177,20 @@ def test_no_silent_removals_between_year_blocks(list_path):
 
 LIHEAP_PAYMENTS = "gov/hhs/liheap/regular_payments.yaml"
 
-# Registry payment variables the national LIHEAP total leaves out on purpose.
-LIHEAP_PAYMENTS_NOT_SUMMED = {
-    # il_liheap_regular_heating is summed instead: il_liheap also counts
-    # crisis assistance.
-    "il_liheap",
+# Registry payment variables that reach the national LIHEAP total through
+# other list entries, or not at all. Every other registry payment variable must
+# be in the list itself.
+LIHEAP_PAYMENT_STAND_INS = {
+    # il_liheap also counts crisis assistance; its regular part is summed.
+    "il_liheap": {"il_liheap_regular_heating"},
+    # California's three regular components are exclusive by eligibility.
+    "ca_liheap_utility_heating": {
+        "ca_liheap_utility_heating",
+        "ca_liheap_covered_liquid_heating",
+        "ca_liheap_wood_heating",
+    },
     # The Home Heating Credit already counts as a refundable state credit.
-    "mi_home_heating_credit",
+    "mi_home_heating_credit": set(),
 }
 
 
@@ -191,9 +198,11 @@ def test_liheap_total_sums_every_registered_state_payment(variables):
     """A state payment in the registry must reach the national total.
 
     The LIHEAP registry entry names one variable per state implementation.
-    Each one that is a dollar amount belongs in the list `liheap` sums, so a
-    new state payment, or a list line deleted by mistake, cannot drop a state
-    from the total unnoticed. Eligibility flags carry no amount.
+    Each one that is a dollar amount belongs in the list `liheap` sums, or its
+    stand-ins in LIHEAP_PAYMENT_STAND_INS do, so a new state payment, or a list
+    line deleted or swapped by mistake, cannot drop a state from the total
+    unnoticed. A registry variable that a stand-in replaces must stay out of
+    the list, so it is not counted twice. Eligibility flags carry no amount.
     """
     programs = yaml.safe_load((PACKAGE / "programs.yaml").read_text())["programs"]
     liheap = next(program for program in programs if program["id"] == "liheap")
@@ -202,13 +211,26 @@ def test_liheap_total_sums_every_registered_state_payment(variables):
         for implementation in liheap["state_implementations"]
         if variables[implementation["variable"]].value_type is float
     }
+    listed = members_of(LIHEAP_PAYMENTS)
     missing = sorted(
-        payments - LIHEAP_PAYMENTS_NOT_SUMMED - members_of(LIHEAP_PAYMENTS)
+        entry
+        for payment in payments
+        for entry in LIHEAP_PAYMENT_STAND_INS.get(payment, {payment})
+        if entry not in listed
     )
     assert not missing, (
         f"{LIHEAP_PAYMENTS} lacks these state payments from the LIHEAP "
-        f"registry entry: {missing}. Add each to the list, or record why it "
-        "is left out in LIHEAP_PAYMENTS_NOT_SUMMED in this test."
+        f"registry entry: {missing}. Add each to the list, or record what "
+        "stands in for it in LIHEAP_PAYMENT_STAND_INS in this test."
+    )
+    double_counted = sorted(
+        payment
+        for payment, stand_ins in LIHEAP_PAYMENT_STAND_INS.items()
+        if payment not in stand_ins and payment in listed
+    )
+    assert not double_counted, (
+        f"{LIHEAP_PAYMENTS} lists {double_counted}, which "
+        "LIHEAP_PAYMENT_STAND_INS replaces or leaves out on purpose."
     )
 
 
