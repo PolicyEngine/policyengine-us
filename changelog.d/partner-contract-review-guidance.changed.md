@@ -1,1 +1,1 @@
-Require source-backed partner test expectations and independent automated review, reserve human review for questions that need specific expertise, and load applicable development skills without a routine permission prompt.
+Require source-derived partner test values, boundary checks, preserved failing evidence and independent automated review at the current head. Reserve human review for specific expertise questions, remove routine notification gates and load applicable development skills directly.
