@@ -63,3 +63,15 @@
     # x 1.44 = 106,295). At size 12, 150% of the 2025 guideline (76,150 x 1.5 =
     # 114,225) is the higher federal maximum, so the printed amount stays.
     or_liheap_income_limit: [50_194, 73_816, 97_437, 101_866, 106_295, 110_725]
+
+- name: Case 5, PY2027 limits whose 60 percent product ends in 50 cents stop at the federal maximum.
+  period: 2027
+  input:
+    state_code: [OR, OR, OR]
+    spm_unit_size: [7, 9, 11]
+  output:
+    # The FY2027 four-person median is $129,250, and 60% of it is $77,550.
+    # Times the size factors 1.35, 1.41 and 1.47 that is $104,692.50,
+    # $109,345.50 and $113,998.50. Rounded up they would be $104,693,
+    # $109,346 and $113,999; HHS rounds down, so each limit is $1 lower.
+    or_liheap_income_limit: [104_692, 109_345, 113_998]
