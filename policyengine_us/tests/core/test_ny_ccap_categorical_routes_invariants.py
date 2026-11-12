@@ -119,7 +119,7 @@ def _situation(cases, year):
             "members": members,
             "is_tanf_enrolled": {month: family["tanf"]},
             "meets_ccdf_activity_test": {year: family["fallback"]},
-            "ny_ccap_countable_income": {month: family["income"]},
+            "ny_ccap_countable_income": {year: 12 * family["income"]},
             "spm_unit_fpg": {year: 12 * family["fpg"]},
             "spm_unit_pre_subsidy_childcare_expenses": {year: 12 * family["expenses"]},
             "ny_ccap_income_eligible": {month: family["income_eligible"]},
