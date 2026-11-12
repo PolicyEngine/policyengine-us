@@ -1,9 +1,9 @@
 """Compare Montana's chosen medical split with an independent share grid.
 
 Form 2 permits spouses to divide jointly paid dependent bills in any proportion.
-For each generated couple, the chosen combined line 20 cannot exceed any grid
-share, including when one or both capital gain credits exhaust a column's tax.
-Swapping columns and adding dependent bills cannot raise the combined tax.
+Within the tested input ranges, the chooser stays within a numerical tolerance
+of an independent grid, including when capital gain credits exhaust a column's
+tax. Swapping columns and adding dependent bills use the same tolerance.
 The oracle uses the Form 2 schedules and the model's dependent-exemption
 allocation convention, without calling the closed-form tax helpers.
 """
