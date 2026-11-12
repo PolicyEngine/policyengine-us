@@ -1,4 +1,4 @@
-description: Program participation that qualifies families for free school meals.
+description: Program participation that qualifies every child in a family for free school meals.
 
 values:
   2009-09-01:
@@ -7,11 +7,6 @@ values:
     - tanf # Temporary Assistance to Needy Families. Currently only available in CA and IL.
     - receives_tanf # Reported TANF receipt, for households the model gives a $0 benefit.
     - fdpir # Food Distribution Program on Indian Reservations.
-    - was_in_foster_care
-    - is_homeless
-    - is_runaway_child
-    - is_migratory_child
-    - is_head_start_eligible
 
 metadata:
   unit: list
@@ -20,5 +15,7 @@ metadata:
   reference:
     - title: 7 CFR § 245.2 - Definitions
       href: https://www.law.cornell.edu/cfr/text/7/245.2
+    - title: 7 CFR § 245.6(b)(7)-(8) - Household and child categorical eligibility
+      href: https://www.ecfr.gov/current/title-7/section-245.6#p-245.6(b)(7)
     - title: 42 U.S. Code § 1758 - Program requirements
       href: https://www.law.cornell.edu/uscode/text/42/1758#b_5

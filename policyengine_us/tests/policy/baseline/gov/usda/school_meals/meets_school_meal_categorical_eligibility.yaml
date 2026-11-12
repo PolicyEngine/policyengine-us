@@ -26,7 +26,7 @@
   output:
       meets_school_meal_categorical_eligibility: true
 
-- name: Is homeless and is migratory child.
+- name: Homelessness and migrant status qualify the child separately.
   period: 2022
   input:
       snap: 0
@@ -38,9 +38,10 @@
       is_migratory_child: true
       is_head_start_eligible: false
   output:
-      meets_school_meal_categorical_eligibility: true
+      meets_school_meal_categorical_eligibility: false
+      is_school_meal_categorically_eligible: true
 
-- name: Is runaway child.
+- name: Runaway status qualifies the child separately.
   period: 2022
   input:
       snap: 0
@@ -52,9 +53,10 @@
       is_migratory_child: false
       is_head_start_eligible: false
   output:
-      meets_school_meal_categorical_eligibility: true
+      meets_school_meal_categorical_eligibility: false
+      is_school_meal_categorically_eligible: true
 
-- name: Is Head Start child.
+- name: Head Start enrollment qualifies the child separately.
   period: 2022
   input:
       snap: 0
@@ -62,11 +64,12 @@
       fdpir: 0
       was_in_foster_care: false
       is_homeless: false
-      is_runaway_child: true
+      is_runaway_child: false
       is_migratory_child: false
-      is_head_start_eligible: true
+      is_enrolled_in_head_start: true
   output:
-      meets_school_meal_categorical_eligibility: true
+      meets_school_meal_categorical_eligibility: false
+      is_school_meal_categorically_eligible: true
 
 - name: No participation in any programs.
   period: 2022
@@ -89,7 +92,8 @@
       fdpir: [0, 1, 1, 0, 0, 0, 0, 0]
       is_homeless: [False, False, True, True, False, False, False, False]
   output:
-      meets_school_meal_categorical_eligibility: [True, True, True, True, False, False, False, False]
+      meets_school_meal_categorical_eligibility: [True, True, True, False, False, False, False, False]
+      is_school_meal_categorically_eligible: [True, True, True, True, False, False, False, False]
 
 - name: Reported SNAP receipt qualifies even when the modeled allotment is zero.
   period: 2022
@@ -120,3 +124,45 @@
       is_head_start_eligible: false
   output:
       meets_school_meal_categorical_eligibility: true
+
+# 42 USC 1758(b)(12)(A)(iii) requires Head Start enrollment.
+# 7 CFR 245.6(b)(8) limits that category to the enrolled child.
+# Alabama, three people, 2026: FPG = 15,960 + 2 * 5,680 = 27,320.
+# Head Start counts 26,000 in wages, below 27,320, so the preschooler
+# meets its income test. School meals count 26,000 + 20,000 rent = 46,000.
+# ceil(1.30 * 27,320) = 35,516 < 46,000 <= 50,542 = ceil(1.85 * 27,320).
+# The older child qualifies for reduced-price meals through income alone.
+- name: A preschooler's Head Start eligibility does not give a sibling free meals.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 26_000
+        rental_income: 20_000
+        ssi: 0
+      preschooler:
+        age: 4
+        ssi: 0
+      sibling:
+        age: 10
+        ssi: 0
+    spm_units:
+      unit:
+        members: [parent, preschooler, sibling]
+        snap: 0
+        tanf: 0
+        fdpir: 0
+    households:
+      household:
+        members: [parent, preschooler, sibling]
+        state_code: AL
+  output:
+    is_head_start_eligible: [false, true, false]
+    school_meal_countable_income: 46_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: REDUCED
+    # (SBP 2.16 + NSLP 4.20 - paid 0.84) * 180 * 1 = 993.60.
+    free_school_meals: 0
+    reduced_price_school_meals: 993.60
