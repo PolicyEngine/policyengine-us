@@ -182,3 +182,398 @@
     itemized_medical_expenses: 50_227.267125
     medical_expense_deduction: 42_727.267125
     tax_unit_itemizes: true
+
+- name: A supplied dependent deduction of -1 excludes only its own premium parts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 500
+        other_medical_expenses: 100
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 500
+        self_employed_health_insurance_ald_person: -1
+      sibling:
+        age: 15
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent, sibling]
+  output:
+    # min(1,000, max(0, -1) - 0) = 0.
+    itemized_medical_expenses_excluded_dependent_premiums: 0
+    # Parent and sibling premiums (1,500) and other costs (100) stay intact.
+    # LTC remaining: 480 - 0.
+    itemized_medical_expenses_long_term_care_premiums: 480
+    itemized_medical_expenses: 3080
+
+- name: A supplied dependent deduction of 0 excludes only its own premium parts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 500
+        other_medical_expenses: 100
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 500
+        self_employed_health_insurance_ald_person: 0
+      sibling:
+        age: 15
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent, sibling]
+  output:
+    # min(1,000, max(0, 0) - 0) = 0.
+    itemized_medical_expenses_excluded_dependent_premiums: 0
+    # Parent and sibling premiums (1,500) and other costs (100) stay intact.
+    # LTC remaining: 480 - 0.
+    itemized_medical_expenses_long_term_care_premiums: 480
+    itemized_medical_expenses: 3080
+
+- name: A supplied dependent deduction of 0.01 excludes only its own premium parts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 500
+        other_medical_expenses: 100
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 500
+        self_employed_health_insurance_ald_person: 0.01
+      sibling:
+        age: 15
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent, sibling]
+  output:
+    # min(1,000, max(0, 0.01) - 0) = 0.01.
+    itemized_medical_expenses_excluded_dependent_premiums: 0.01
+    # Parent and sibling premiums (1,500) and other costs (100) stay intact.
+    # LTC remaining: 480 - 0.
+    itemized_medical_expenses_long_term_care_premiums: 480
+    itemized_medical_expenses: 3079.99
+
+- name: A supplied dependent deduction of 999.99 excludes only its own premium parts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 500
+        other_medical_expenses: 100
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 500
+        self_employed_health_insurance_ald_person: 999.99
+      sibling:
+        age: 15
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent, sibling]
+  output:
+    # min(1,000, max(0, 999.99) - 0) = 999.99.
+    itemized_medical_expenses_excluded_dependent_premiums: 999.99
+    # Parent and sibling premiums (1,500) and other costs (100) stay intact.
+    # LTC remaining: 480 - 0.
+    itemized_medical_expenses_long_term_care_premiums: 480
+    itemized_medical_expenses: 2080.01
+
+- name: A supplied dependent deduction of 1000 excludes only its own premium parts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 500
+        other_medical_expenses: 100
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 500
+        self_employed_health_insurance_ald_person: 1000
+      sibling:
+        age: 15
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent, sibling]
+  output:
+    # min(1,000, max(0, 1000) - 0) = 1000.
+    itemized_medical_expenses_excluded_dependent_premiums: 1000
+    # Parent and sibling premiums (1,500) and other costs (100) stay intact.
+    # LTC remaining: 480 - 0.
+    itemized_medical_expenses_long_term_care_premiums: 480
+    itemized_medical_expenses: 2080
+
+- name: A supplied dependent deduction of 1000.01 excludes only its own premium parts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 500
+        other_medical_expenses: 100
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 500
+        self_employed_health_insurance_ald_person: 1000.01
+      sibling:
+        age: 15
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent, sibling]
+  output:
+    # min(1,000, max(0, 1000.01) - 0.01) = 1000.
+    itemized_medical_expenses_excluded_dependent_premiums: 1000
+    # Parent and sibling premiums (1,500) and other costs (100) stay intact.
+    # LTC remaining: 480 - 0.01.
+    itemized_medical_expenses_long_term_care_premiums: 479.99
+    itemized_medical_expenses: 2079.99
+
+- name: A supplied dependent deduction of 1480 excludes only its own premium parts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 500
+        other_medical_expenses: 100
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 500
+        self_employed_health_insurance_ald_person: 1480
+      sibling:
+        age: 15
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent, sibling]
+  output:
+    # min(1,000, max(0, 1480) - 480) = 1000.
+    itemized_medical_expenses_excluded_dependent_premiums: 1000
+    # Parent and sibling premiums (1,500) and other costs (100) stay intact.
+    # LTC remaining: 480 - 480.
+    itemized_medical_expenses_long_term_care_premiums: 0
+    itemized_medical_expenses: 1600
+
+- name: A supplied dependent deduction of 2000 excludes only its own premium parts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 500
+        other_medical_expenses: 100
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        health_insurance_premiums: 1_000
+        long_term_health_insurance_premiums: 500
+        self_employed_health_insurance_ald_person: 2000
+      sibling:
+        age: 15
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent, sibling]
+  output:
+    # min(1,000, max(0, 2000) - 480) = 1000.
+    itemized_medical_expenses_excluded_dependent_premiums: 1000
+    # Parent and sibling premiums (1,500) and other costs (100) stay intact.
+    # LTC remaining: 480 - 480.
+    itemized_medical_expenses_long_term_care_premiums: 0
+    itemized_medical_expenses: 1600
+
+- name: North Dakota retains its medical cost base after a dependent deducts premiums.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+        other_medical_expenses: 2_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent]
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: ND
+  output:
+    itemized_medical_expenses: 4_000 # 2,000 + 3,000 - 1,000.
+    itemized_medical_expenses_applied_exclusion: 1_000
+    nd_renters_refund_income: 35_000 # 40,000 - (4,000 + 1,000).
+
+- name: New Mexico retains its senior medical credit at the paid cost boundary.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 65
+        medicare_enrolled: false
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 28_000
+        self_employed_health_insurance_ald_person: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent]
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: NM
+  output:
+    itemized_medical_expenses: 27_000 # 28,000 - 1,000.
+    itemized_medical_expenses_applied_exclusion: 1_000
+    nm_medical_expense_credit: 2_800 # The paid cost base stays 28,000.
+    nm_medical_expense_exemption: 0 # The exemption requires more than 28,000.
+
+- name: Montana retains non-premium expenses after a dependent deducts medical premiums.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 100_000
+        other_medical_expenses: 8_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent]
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: MT
+  output:
+    itemized_medical_expenses: 10_000 # 8,000 + (3,000 - 1,000).
+    # Remove the remaining premiums (2,000); 8,000 - 7.5% x 100,000 = 500.
+    # The parent paid no premiums for Montana's separate deduction.
+    mt_medical_expense_deduction_joint: [500, 0]
+
+- name: A dependent deducting only long-term care leaves medical premiums available.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        other_medical_expenses: 100
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        self_employment_income: 10_000
+        health_insurance_premiums: 1_000
+        self_employed_health_insurance_premiums: 0
+        long_term_health_insurance_premiums: 480
+    tax_units:
+      parents:
+        members: [parent, dependent]
+  output:
+    self_employed_health_insurance_ald_person: [0, 480]
+    self_employed_health_insurance_ald_long_term_care_part: [0, 480]
+    itemized_medical_expenses_excluded_dependent_premiums: 0
+    itemized_medical_expenses_long_term_care_premiums: 0
+    itemized_medical_expenses: 1_100 # 100 + 1,000; the 480 was deducted.
+
+- name: Montana preserves a supplied exclusion with a computed subtotal.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 100_000
+        health_insurance_premiums: 1_000
+        other_medical_expenses: 8_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent]
+        itemized_medical_expenses_applied_exclusion: 500
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: MT
+  output:
+    itemized_medical_expenses: 11_000 # 1,000 + 3,000 - 1,000 + 8,000.
+    itemized_medical_expenses_applied_exclusion: 500
+    # Main: 12,000 - (4,000 - 500) = 8,500, then a 7,500 floor.
+    # The computed subtotal removes 1,000 more premiums; Montana restores
+    # that amount when separating premiums from the other expenses.
+    # The parent's 1,000 premium deduction adds to the 1,000 floored amount.
+    mt_medical_expense_deduction_joint: [2_000, 0]
+
+- name: Montana preserves a supplied exclusion without a dependent deduction.
+  period: 2023
+  input:
+    age: 40
+    employment_income: 100_000
+    health_insurance_premiums: 1_000
+    other_medical_expenses: 8_000
+    itemized_medical_expenses_applied_exclusion: 500
+    state_code: MT
+  output:
+    itemized_medical_expenses: 9_000
+    # (9,000 - (1,000 - 500) - 7,500) + 1,000 premiums = 2,000.
+    mt_medical_expense_deduction_joint: 2_000

@@ -36,14 +36,23 @@ class mt_medical_expense_deduction_joint(Variable):
             filer_premiums = tax_unit_non_dep_sum(
                 "medical_expense_health_insurance_premiums", tax_unit, period
             )
-            if has_input_for_period(
+            supplied_subtotal = has_input_for_period(
                 tax_unit.simulation, "itemized_medical_expenses", period
+            )
+            if supplied_subtotal or has_input_for_period(
+                tax_unit.simulation,
+                "itemized_medical_expenses_applied_exclusion",
+                period,
             ):
-                # Supplied subtotals use the pooled filer-first split.
+                # Supplied amounts use the pooled filer-first split.
                 excluded = tax_unit(
                     "itemized_medical_expenses_applied_exclusion", period
                 )
                 medical_exclusion = min_(filer_premiums, max_(0, excluded))
+                if not supplied_subtotal:
+                    medical_exclusion += tax_unit(
+                        "itemized_medical_expenses_excluded_dependent_premiums", period
+                    )
             else:
                 medical_exclusion = add(
                     tax_unit,

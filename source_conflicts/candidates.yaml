@@ -14335,3 +14335,29 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us:dependent-se-health-premiums-parents-schedule-a
+  program: federal_income_tax
+  years:
+    from: 2013
+    type: tax
+  question: May parents count a dependent's medical premiums under section 213(a) after the dependent deducts the same payment under section 162(l)?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 162(l)(1)-(3)
+    url: https://www.law.cornell.edu/uscode/text/26/162#l
+  - kind: statute
+    citation: 26 U.S.C. 213(a)
+    url: https://www.law.cornell.edu/uscode/text/26/213#a
+  readings:
+    statute: A dependent's section 162(l) deduction removes the same premium payment from the parents' section 213(a) expenses. The canon against double deductions supplies the cross-return coordination.
+    other: Section 162(l)(3) refers to the taxpayer taking the deduction, so a taxpayer-only reading leaves the dependent's deducted medical premiums in the parents' medical expense base.
+  example: A dependent deducts 3,480 from 3,000 medical premiums and 480 eligible long-term care premiums. Parents retain none of those premiums. With a 929.35225 deduction, they retain 2,070.64775 medical premiums and 480 eligible long-term care premiums.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/itemizing/itemized_medical_expenses_excluded_dependent_premiums.py
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/itemizing/itemized_medical_expenses.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10831
+  state: ruled
+  note: Premium inputs hold one payment per person without a separate payer. Bound each dependent's exclusion to their own medical premiums and deduction after its long-term care part. Preserve the existing long-term care exclusion and state paid-cost bases. Captures of the operative statutes accompany this candidate in source_conflicts/sources/us/usc-26-162-2024-coordination.txt and usc-26-213-2024-coordination.txt. The household cases in itemized_medical_expenses_excluded_dependent_premiums.yaml pin the reading. Add the shared-register marker after registration, as CONTRIBUTING.md requires.
