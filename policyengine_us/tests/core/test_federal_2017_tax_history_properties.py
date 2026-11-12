@@ -9,6 +9,9 @@ Before 2018, IRC 24(e)(1) permits a child's SSN, ITIN or ATIN. Holding a
 valid TIN fixed, changing the child's SSN-card category cannot change the
 2017 identification result. A child without any TIN does not qualify.
 
+IRC 25B(b) preserves the Saver credit rate at each published AGI ceiling
+and reduces it immediately above that ceiling, including fractional AGI.
+
 Each example contains a generated mixed population, which the YAML runner
 cannot express. Individual and end-to-end source examples remain in YAML.
 """
@@ -25,6 +28,36 @@ THRESHOLDS_2017 = {
     "SEPARATE": 156_900,
     "HEAD_OF_HOUSEHOLD": 287_650,
     "SURVIVING_SPOUSE": 313_800,
+}
+# Published joint-return AGI ceilings, independently transcribed from IRS notices:
+# 2017: https://www.irs.gov/pub/irs-drop/n-16-62.pdf#page=2
+# 2018: https://www.irs.gov/pub/irs-drop/n-17-64.pdf#page=2
+# 2019: https://www.irs.gov/pub/irs-drop/n-18-83.pdf#page=2
+# 2020: https://www.irs.gov/pub/irs-drop/n-19-59.pdf#page=2
+# 2021: https://www.irs.gov/pub/irs-drop/n-20-79.pdf#page=2
+# 2022: https://www.irs.gov/pub/irs-drop/n-21-61.pdf#page=3
+# 2023: https://www.irs.gov/pub/irs-drop/n-22-55.pdf#page=3
+# 2024: https://www.irs.gov/pub/irs-drop/n-23-75.pdf#page=3
+# 2025/2026: https://www.irs.gov/pub/irs-drop/n-25-67.pdf#page=3
+SAVER_JOINT_CEILINGS = {
+    2017: (37_000, 40_000, 62_000),
+    2018: (38_000, 41_000, 63_000),
+    2019: (38_500, 41_500, 64_000),
+    2020: (39_000, 42_500, 65_000),
+    2021: (39_500, 43_000, 66_000),
+    2022: (41_000, 44_000, 68_000),
+    2023: (43_500, 47_500, 73_000),
+    2024: (46_000, 50_000, 76_500),
+    2025: (47_500, 51_000, 79_000),
+    2026: (48_500, 52_500, 80_500),
+}
+# IRC 25B(b)(2); Form 8880 puts qualifying widow(er) in the other-return column.
+SAVER_STATUS_FACTORS = {
+    "JOINT": 1,
+    "HEAD_OF_HOUSEHOLD": 0.75,
+    "SINGLE": 0.5,
+    "SEPARATE": 0.5,
+    "SURVIVING_SPOUSE": 0.5,
 }
 SETTINGS = settings(
     max_examples=6,
@@ -146,3 +179,57 @@ def test_employer_care_exclusion_and_credit_do_not_reuse_expenses(system, year, 
     assert (exclusion <= earnings + 0.01).all()
     assert (remaining <= earnings + 0.01).all()
     assert (exclusion + remaining <= qualified + 0.01).all()
+
+
+@pytest.mark.parametrize("year", range(2017, 2027))
+@settings(SETTINGS, max_examples=3)
+@given(
+    contributions=st.tuples(*(st.integers(1, 4_000) for _ in range(3))),
+    excess_cents=st.integers(1, 99),
+)
+def test_saver_rates_change_immediately_above_published_ceilings(
+    system, year, contributions, excess_cents
+):
+    """Every generated population covers all statuses, bands and fractional gaps."""
+    people, units, expected, capped = {}, {}, [], []
+    rates = (0.5, 0.2, 0.1, 0)
+    offsets = (0, 0.01, 0.49, 0.5, 0.75, 1, excess_cents / 100)
+    for status, factor in SAVER_STATUS_FACTORS.items():
+        for band, ceiling in enumerate(SAVER_JOINT_CEILINGS[year]):
+            contribution = contributions[band]
+            for offset in offsets:
+                name = f"person_{len(people)}"
+                people[name] = {
+                    "savers_credit_eligible_person": {year: True},
+                    "savers_credit_qualified_contributions": {year: contribution},
+                }
+                units[name] = {
+                    "members": [name],
+                    "filing_status": {year: status},
+                    "agi_plus_section_911_931_933_exclusions": {
+                        year: ceiling * factor + offset
+                    },
+                }
+                capped.append(min(contribution, 2_000))
+                expected.append(capped[-1] * rates[band + (offset > 0)])
+        for income in (-100_000, 0):
+            name = f"person_{len(people)}"
+            people[name] = {
+                "savers_credit_eligible_person": {year: True},
+                "savers_credit_qualified_contributions": {year: 4_000},
+            }
+            units[name] = {
+                "members": [name],
+                "filing_status": {year: status},
+                "agi_plus_section_911_931_933_exclusions": {year: income},
+            }
+            capped.append(2_000)
+            expected.append(1_000)
+    sim = Simulation(
+        situation={"people": people, "tax_units": units}, tax_benefit_system=system
+    )
+    credits = sim.calculate("savers_credit_person", year)
+    assert np.isfinite(credits).all()
+    assert (credits >= 0).all()
+    assert (credits <= 0.5 * np.array(capped) + 0.01).all()
+    np.testing.assert_allclose(credits, expected, atol=0.01, rtol=0)
