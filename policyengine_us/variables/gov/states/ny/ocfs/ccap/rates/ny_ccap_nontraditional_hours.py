@@ -9,10 +9,11 @@ class ny_ccap_nontraditional_hours(Variable):
     default_value = False
     defined_for = StateCode.NY
     documentation = (
-        "Records whether the child receives care before 6 a.m. or after 7 "
-        "p.m. Monday through Friday, at any time on Saturday or Sunday, or on "
+        "Records whether the child receives care before 6 a.m. or after "
+        "7 p.m. Monday through Friday. Any care on Saturday, Sunday, "
         "New Year's Day, Memorial Day, Independence Day, Labor Day, "
-        "Thanksgiving Day, or Christmas Day, under 24-OCFS-LCM-22. "
+        "Thanksgiving Day, or Christmas Day also qualifies under "
+        "24-OCFS-LCM-22."
     )
     reference = (
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.9",
