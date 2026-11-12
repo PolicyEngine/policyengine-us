@@ -13,7 +13,36 @@ class ss_calculator_source(Variable):
     definition_period = ETERNITY
     default_value = "off"
     label = "Social Security calculator source"
-    documentation = "Explicit source: off, aime, pia or survivor."
+    documentation = "Explicit source: off, aime, pia, survivor or history."
+
+
+class ss_calculator_earnings_history(Variable):
+    value_type = str
+    entity = Person
+    definition_period = ETERNITY
+    default_value = ""
+    label = "Social Security calculator annual earnings history"
+    documentation = (
+        "Complete JSON source with first_year, records (year, covered_wages, "
+        "covered_self_employment), certified_zero_years and an explicit "
+        "certified_zero_before_first_year assertion. Existing SE is adjusted "
+        "covered earnings, not gross profits. Earnings stop at claim year minus "
+        "one; missing years cannot inherit values from another year."
+    )
+    reference = "https://secure.ssa.gov/poms.nsf/lnx/0300605018"
+
+
+class ss_calculator_donut_variant(Variable):
+    value_type = str
+    entity = Person
+    definition_period = ETERNITY
+    default_value = "custom"
+    label = "Social Security calculator donut provision"
+    documentation = (
+        "Named annual parameter set: custom, oact_2025_e2_13 or oact_2025_e2_14. "
+        "Several variants may be configured independently; only this selected "
+        "set applies to a worker record. All sets are inactive by default."
+    )
 
 
 class ss_calculator_worker_id(Variable):
@@ -373,4 +402,15 @@ class ss_calculator_withhold_cola(Variable):
     definition_period = YEAR
     default_value = False
     label = "Social Security calculator withhold cola"
-    documentation = "Already-resolved COLA withholding decision for this check year, for example from an E3 policy."
+    documentation = (
+        "Legacy A5 withholding decision for this exact check year when E3 is disabled."
+    )
+
+
+class ss_calculator_cola_override(Variable):
+    value_type = int
+    entity = Person
+    definition_period = YEAR
+    default_value = -1
+    label = "Social Security calculator COLA means-test override"
+    documentation = "Exact check-year E3 decision: -1 automatic (default), 0 paid, 1 withheld. Takes precedence over the component override for this person."

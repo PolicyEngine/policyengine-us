@@ -1,0 +1,60 @@
+- name: Income tax on a beneficiary couple's benefits sends OASDI its pre-1993 share
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        social_security_retirement: 15_000
+        taxable_interest_income: 50_000
+      spouse:
+        age: 70
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Provisional income $50,000 + 50% * $30,000 = $65,000.
+    tax_unit_combined_income_for_social_security_taxability: 65_000
+    # Pre-1993: min(50% * $30,000, 50% * ($65,000 - $32,000)) = $15,000.
+    tax_unit_taxable_social_security_pre_1993: 15_000
+    # Current: min(85% * $30,000, 85% * ($65,000 - $44,000) + $6,000) = $23,850.
+    tax_unit_taxable_social_security: 23_850
+    # Deductions $32,200 + 2 * $1,650 + 2 * $6,000 = $47,500. Taxable income
+    # $2,500 / $17,500 / $26,350 without, with pre-1993 and with current
+    # inclusion. Tax $250 / $1,750 / $2,480 + 12% * $1,550 = $2,666.
+    income_tax: 2_666
+    tob_revenue_oasdi: 1_500
+    tob_revenue_medicare_hi: 916
+    # OASDI gets $1,750 - $250 = $1,500; the sum leaves out the $916 HI share.
+    oasdi_benefit_taxation_revenue: 1_500
+
+- name: A negative OASDI share is kept, not floored
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 67
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    social_security: 1_000
+    taxable_interest_income: 11_500
+    tax_exempt_interest_income: 23_000
+    charitable_cash_donations: 20_000
+    itemized_medical_expenses: 0
+    salt_deduction: 0
+    takes_up_tanf_if_eligible: false
+    state_code: TX
+  output:
+    # The tob_revenue_oasdi witness: inclusion releases charitable deductions
+    # and raises the elderly credit, so tax falls from $160 to $142.50.
+    tob_revenue_oasdi: -17.50
+    oasdi_benefit_taxation_revenue: -17.50

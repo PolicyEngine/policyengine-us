@@ -149,3 +149,70 @@
     slcsp_rating_area: 0
   output:
     slcsp_age_0: 0
+
+- name: slcsp_age_0 2026 California rating area 16 (Los Angeles County)
+  period: 2026-01
+  input:
+    state_code: CA
+    slcsp_rating_area: 16
+  output:
+    slcsp_age_0: 275
+
+- name: slcsp_age_0 2026 Florida rating area 22 (Gulf County)
+  period: 2026-01
+  input:
+    state_code: FL
+    slcsp_rating_area: 22
+  output:
+    slcsp_age_0: 409
+
+- name: slcsp_age_0 2026 Washington rating area 9
+  period: 2026-01
+  input:
+    state_code: WA
+    slcsp_rating_area: 9
+  output:
+    slcsp_age_0: 339
+
+- name: slcsp_age_0 2027 Texas rating area 3
+  period: 2027-01
+  input:
+    state_code: TX
+    slcsp_rating_area: 3
+  output:
+    slcsp_age_0: 441
+
+- name: slcsp_age_0 2027 New York rating area 4 (adult rate)
+  period: 2027-01
+  input:
+    state_code: NY
+    slcsp_rating_area: 4
+  output:
+    slcsp_age_0: 1_053
+
+# Florida area 22 and South Carolina areas 9 and 19 had no values before 2026:
+# 2024 and 2025 are from KFF's calculator data, and 2018-2023 scale the 2024
+# value by the median change across the state's other areas.
+- name: slcsp_age_0 2025 Florida rating area 22 (Gulf County)
+  period: 2025-01
+  input:
+    state_code: FL
+    slcsp_rating_area: 22
+  output:
+    slcsp_age_0: 305  # KFF 2025: 6,123.84 a year at age 40 / 12 / 1.6706
+
+- name: slcsp_age_0 2020 Florida rating area 22 (Gulf County)
+  period: 2020-01
+  input:
+    state_code: FL
+    slcsp_rating_area: 22
+  output:
+    slcsp_age_0: 286  # 296.69 (2024) x the median 2020/2024 ratio across FL's other areas
+
+- name: slcsp_age_0 2025 South Carolina rating area 19 (Edgefield County)
+  period: 2025-01
+  input:
+    state_code: SC
+    slcsp_rating_area: 19
+  output:
+    slcsp_age_0: 245

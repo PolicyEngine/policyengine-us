@@ -137,11 +137,11 @@ hh_eitc = sim.calc("eitc", map_to="household")
 
 ### The default build
 
-The default is the certified Populace build, pinned by build id and hosted as a
+The default is the certified Microcosm build, pinned by build id and hosted as a
 HuggingFace *dataset* repository:
 
 ```python
-# Default: the certified Populace build named in DEFAULT_DATASET.
+# Default: the certified Microcosm build named in DEFAULT_DATASET.
 sim = Microsimulation()
 ```
 
@@ -189,7 +189,7 @@ variable-centric HDF5 format.
 
 A population file can supply the tax units its constructor built, not just
 their membership, through `tax_unit_role_input` (person): `HEAD`, `SPOUSE` or
-`DEPENDENT`. The certified Populace build supplies it. When every member of a
+`DEPENDENT`. The certified Microcosm build supplies it. When every member of a
 tax unit has a supplied role, `is_tax_unit_head` and `is_tax_unit_spouse`
 follow it and `is_tax_unit_dependent` covers everyone else. Explicitly set
 `is_tax_unit_head`, `is_tax_unit_spouse` or `is_tax_unit_dependent` inputs
@@ -197,12 +197,43 @@ still take precedence.
 
 Without supplied roles, a unit falls back to age ordering. The oldest adult is
 the head, skipping adults input as tax-unit dependents unless every adult in
-the unit is one. The next-oldest such adult is the spouse, unless any member of
-the unit is separated. Without dependent inputs, that pairs an adult student
-with a parent as joint filers and leaves a minor living without a parent with
-no head.
+the unit is one. When two such adults share a two-person marital unit within
+the tax unit, the older of that couple is the head instead: a married couple
+can file jointly (26 USC 6013(a)), and a couple who files a joint return can't
+be claimed as anyone's dependents (26 USC 152(b)(2)). The spouse is the head's
+partner in their marital unit. A head without one takes the next-oldest such
+adult, except an adult who meets the qualifying child age test against the head
+(26 USC 152(c)(3)): under 19, or under 24 if a full-time student, and younger
+than the head, or permanently and totally disabled at any age. That adult stays
+a dependent. No spouse is inferred when any member of the unit is separated,
+and a separated member doesn't count toward a couple. When a situation omits
+marital units, Core puts everyone in one marital unit, so plain age order
+applies. A minor living without a parent is left with no head.
 
-The Populace build carries its constructor's filing status in a
+This rule has four known limitations. Supply `is_tax_unit_head`,
+`is_tax_unit_spouse` or `tax_unit_role_input` for these households:
+
+- When a tax unit holds a married couple and an older adult outside their
+  marital unit, the couple heads the unit and the older adult becomes their
+  dependent, whatever that adult's income. The older adult may file instead,
+  for example a parent who claims a married child and the child's spouse who
+  don't file jointly.
+- An adult outside the head's marital unit who fails the age test, such as a
+  45-year-old child with wages, is still paired with the head, and the unit
+  files jointly. Under the law each would file their own return, or the adult
+  could be a qualifying relative, but the pairing keeps the adult's income on
+  the one return the model computes for the unit.
+- A permanently and totally disabled adult outside the head's marital unit
+  becomes the head's dependent, whatever their income. Examples are a spouse
+  living apart in a care facility, or a self-supporting sibling, whose income
+  then leaves the return.
+- When a separated adult outside a married couple's marital unit shares their
+  tax unit, the couple heads the unit but no spouse is inferred, since a unit
+  with a separated member infers none. The other member of the couple becomes
+  a dependent. Under the law a spouse can't be the other spouse's dependent,
+  and the couple could file jointly.
+
+The Microcosm build carries its constructor's filing status in a
 `filing_status_input` column. No variable has that name, so the column is
 ignored. By default, `filing_status` is computed from the unit's members,
 including any supplied roles, and the filing rules. Reforms to those rules

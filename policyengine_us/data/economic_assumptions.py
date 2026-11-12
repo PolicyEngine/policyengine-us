@@ -20,6 +20,17 @@ DEFAULT_MICRODATA_UPRATING = (
     "calibration.gov.cbo.income_by_source.adjusted_gross_income"
 )
 
+# These controls describe a decision for one supplied payment year, rather
+# than a characteristic to project. Legacy COLA-withheld booleans retain
+# their existing carry-forward behavior.
+_EXACT_YEAR_COLA_OVERRIDES = (
+    "social_security_retirement_cola_override",
+    "social_security_disability_cola_override",
+    "social_security_survivors_cola_override",
+    "social_security_dependents_cola_override",
+    "ss_calculator_cola_override",
+)
+
 MICRODATA_UPRATING_OVERRIDES = {
     "american_opportunity_credit": DEFAULT_MICRODATA_UPRATING,
     "cdcc_relevant_expenses": DEFAULT_MICRODATA_UPRATING,
@@ -99,7 +110,10 @@ def extend_single_year_dataset(
     If ``end_year`` is not provided, it defaults to the latest year
     covered by the CPI-U parameter (gov.bls.cpi.cpi_u).
 
-    Variables without an uprating parameter are carried forward unchanged.
+    Variables without an uprating parameter are carried forward unchanged,
+    except the four component COLA overrides and ``ss_calculator_cola_override``.
+    Those exact-year decisions become automatic (``-1``) in generated rows;
+    the supplied base year and legacy COLA-withheld booleans are preserved.
     """
     if system is None:
         from policyengine_us.system import system as _system
@@ -122,6 +136,9 @@ def extend_single_year_dataset(
     for year in range(start_year + 1, end_year + 1):
         next_year = dataset.copy(deep=False)
         next_year.time_period = str(year)
+        for name in _EXACT_YEAR_COLA_OVERRIDES:
+            if name in next_year.person:
+                next_year.person[name] = -1
         datasets.append(next_year)
 
     multi_year_dataset = USMultiYearDataset(datasets=datasets)
