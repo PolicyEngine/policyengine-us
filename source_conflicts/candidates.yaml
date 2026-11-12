@@ -11391,7 +11391,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/ut/tax/income/credits/taxpayer_credit/ut_federal_deductions_for_taxpayer_credit.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10843
   state: ruled
   note: Follow the statute when the federal SALT cap binds. Subtract at most $10,000 for every filing status.
     Through H.B. 77 sections 17 and 29, Utah's Legislature replaced that limit from 2026 with income tax included
