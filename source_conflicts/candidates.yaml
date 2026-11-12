@@ -4031,6 +4031,43 @@ candidates:
   state: ruled
   note: Statute text is in the Axiom corpus; registering needs a pdftotext capture of the official instructions
     page.
+- id: us-ks:disabled-veteran-exemption-2025-amount
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: From tax year 2025, is the Kansas disabled veteran exemption $2,320, as K.S.A. 79-32,121b(b)(2) and the
+    K-40 instructions say, or $2,250, as K.S.A. 79-32,121(b), re-enacted in the same 2025 session, still says?
+  sources:
+  - kind: statute
+    citation: K.S.A. 79-32,121(b), as amended by L. 2025, ch. 112, § 6
+    url: https://www.kslegislature.gov/li/b2025_26/statute/079_000_0000_chapter/079_032_0000_article/079_032_0121_section/079_032_0121_k/
+  - kind: statute
+    citation: K.S.A. 79-32,121b(b)(2), as amended by L. 2025, ch. 123, § 9
+    url: https://www.kslegislature.gov/li/b2025_26/statute/079_000_0000_chapter/079_032_0000_article/079_032_0121b_section/079_032_0121b_k/
+  - kind: instructions
+    citation: 2025 K-40 instructions, p.2 and p.6
+    url: https://www.ksrevenue.gov/pdf/ip25.pdf#page=2
+  readings:
+    statute: '79-32,121b(b)(2) allows "an additional Kansas exemption of $2,320 for tax year 2025 and all tax years
+      thereafter"; 79-32,121(b) allows "$2,250 for tax year 2023 and all tax years thereafter".'
+    other: The 2025 instructions allow "an additional exemption allowance of $2,320" for "each qualified disabled
+      veteran" (p.2) and multiply the number of disabled veterans by $2,320 (p.6).
+  example: A 2025 single filer whom the VA pays at the 100% rate for a permanent service-connected disability has
+    $9,160 + $2,320 = $11,480 of exemptions under 79-32,121b and the instructions, and $9,160 + $2,250 = $11,410
+    under 79-32,121(b).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ks/tax/income/exemptions/disabled_veteran/base.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/7065
+    - https://github.com/PolicyEngine/policyengine-us/pull/10811
+  state: unreviewed
+  note: Both statute pages say "Section was amended multiple times in the 2025 session". The code follows
+    79-32,121b and the instructions with $2,320 from 2025; ks_disabled_veteran_exemption_2025.yaml pins $11,480 for
+    2025 and $11,410 for 2024. Which 2025 enactment controls under Kansas law on conflicting amendments in one session
+    has not been checked.
 - id: us-ks:food-sales-credit-exemption-count
   program: income-tax
   years:
