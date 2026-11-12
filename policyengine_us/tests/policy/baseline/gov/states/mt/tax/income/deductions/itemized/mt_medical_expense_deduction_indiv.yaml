@@ -170,3 +170,153 @@
      # give 0 + 4,000 + 1,000 = 5,000.
      mt_married_filing_separately_on_same_return_eligible: true
      mt_medical_expense_deduction_indiv: 1_500
+
+- name: A dependent's medical expenses go to the column where they lower the couple's tax most
+  # Other medical expenses sit on the person cared for, so the child's 6,000
+  # is in neither spouse's own input. Two tax units with the same people label
+  # the earner head and then spouse; each column's amount does not depend on
+  # the label. The couple may divide the child's bills in any proportion, and
+  # the model takes the candidate share with the lowest combined tax.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      a_earner:
+        age: 45
+        is_tax_unit_head: true
+        other_medical_expenses: 1_000
+        mt_agi_indiv: 60_000
+      a_partner:
+        age: 45
+        is_tax_unit_spouse: true
+        other_medical_expenses: 500
+        mt_agi_indiv: 20_000
+      a_child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 6_000
+      b_earner:
+        age: 45
+        is_tax_unit_spouse: true
+        other_medical_expenses: 1_000
+        mt_agi_indiv: 60_000
+      b_partner:
+        age: 45
+        is_tax_unit_head: true
+        other_medical_expenses: 500
+        mt_agi_indiv: 20_000
+      b_child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 6_000
+    tax_units:
+      a:
+        members: [a_earner, a_partner, a_child]
+      b:
+        members: [b_partner, b_earner, b_child]
+    households:
+      a:
+        members: [a_earner, a_partner, a_child]
+        state_code: MT
+      b:
+        members: [b_partner, b_earner, b_child]
+        state_code: MT
+  output:
+    # Floors: earner 7.5% x 60,000 = 4,500; partner 7.5% x 20,000 = 1,500.
+    # Taxable income before the medical deduction (2022 exemptions of 2,710
+    # each; the child's goes to the earner, the larger income): earner
+    # 60,000 - 5,420 = 54,580, at the 6.75% rate; partner 20,000 - 2,710 =
+    # 17,290, in the 6% bracket from 15,400 and 5% from 12,000.
+    # Tax saved by the medical deduction at each share to the earner:
+    #   all to the partner: partner 500 + 6,000 - 1,500 = 5,000, taking
+    #     17,290 to 12,290: 1,890 x 6% + 3,110 x 5% = 268.90;
+    #   all to the earner: earner 1,000 + 6,000 - 4,500 = 2,500 x 6.75% =
+    #     168.75;
+    #   equal split: partner 3,500 - 1,500 = 2,000: 1,890 x 6% + 110 x 5% =
+    #     118.90; earner 4,000 is under the floor;
+    #   the floors' kinks (shares 3,500 / 6,000 and 1 - 1,000 / 6,000): 90.00
+    #     and 101.25.
+    #   The incomes before the medical deduction differ by more than the
+    #   bills, so the balancing share clips to 1 (all to the earner).
+    # So all of the child's bills go to the partner's column.
+    mt_dependent_medical_expense_head_share: [0, 1]
+    mt_medical_and_dental_expenses_indiv: [1_000, 6_500, 0, 1_000, 6_500, 0]
+    # Earner: max(0, 1,000 - 4,500) = 0. Partner: 6,500 - 1,500 = 5,000.
+    # Leaving out the child's expenses would give max(0, 500 - 1,500) = 0.
+    mt_medical_expense_deduction_indiv: [0, 5_000, 0, 0, 5_000, 0]
+
+- name: An unmarried filer's column holds every dependent's medical expenses
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        other_medical_expenses: 500
+        mt_agi_indiv: 30_000
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+        other_medical_expenses: 2_000
+      child2:
+        age: 5
+        is_tax_unit_dependent: true
+        other_medical_expenses: 1_500
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        mt_agi_joint: 30_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MT
+  output:
+    mt_medical_and_dental_expenses_indiv: [4_000, 0, 0]
+    # Line 1: (500 + 2,000 + 1,500) - 7.5% x 30,000 = 4,000 - 2,250 = 1,750,
+    # as on the single-column return. Leaving out the children's expenses
+    # would give max(0, 500 - 2,250) = 0.
+    mt_medical_expense_deduction_indiv: [1_750, 0, 0]
+    mt_medical_expense_deduction_joint: [1_750, 0, 0]
+
+- name: A reform that allows separate filing in 2024 also allocates a dependent's expenses
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.mt.tax.income.enable_mt_mfss_2024_reform.enable_mt_mfss_2024_reform
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        health_insurance_premiums: 2_000
+        mt_agi_indiv: 40_000
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 10_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Premiums stay under the floor with the other expenses from 2024.
+    # Floors: head 7.5% x 40,000 = 3,000; spouse 7.5% x 10,000 = 750. 2024
+    # separate rates: 4.7% to 20,500 and 5.9% above, so the head's column is
+    # taxed at 5.9% and the spouse's at 4.7%. Tax saved at each share:
+    #   all to the head: (2,000 + 4,000) - 3,000 = 3,000 x 5.9% = 177.00;
+    #   all to the spouse: 4,000 - 750 = 3,250 x 4.7% = 152.75;
+    #   equal split: 1,000 x 5.9% + 1,250 x 4.7% = 117.75;
+    #   the floors' kinks (shares 1,000 / 4,000 and 1 - 750 / 4,000):
+    #   2,250 x 4.7% = 105.75 and 2,250 x 5.9% = 132.75.
+    #   The balancing share clips to 1: the incomes differ by more than the
+    #   bills.
+    mt_dependent_medical_expense_head_share: 1
+    mt_medical_and_dental_expenses_indiv: [4_000, 0, 0]
+    mt_medical_expense_deduction_indiv: [3_000, 0, 0]

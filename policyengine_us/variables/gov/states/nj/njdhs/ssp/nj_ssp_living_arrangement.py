@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.states.nj.njdhs.ssp.nj_ssp_care_setting import (
     NJSSPCareSetting,
 )
@@ -42,10 +45,15 @@ class nj_ssp_living_arrangement(Variable):
         other_medical = (
             person("ssi_lives_in_medical_treatment_facility", period) & ~medical
         )
-        ineligible_spouse = person.marital_unit.any(
-            person("is_ssi_ineligible_spouse", period.this_year)
+        ineligible_spouse = (
+            _ssi_couple_total(
+                person,
+                period.this_year,
+                person("is_ssi_ineligible_spouse", period.this_year).astype(int),
+            )
+            > 0
         )
-        no_others = person.household.nb_persons() == person.marital_unit.nb_persons()
+        no_others = person.household.nb_persons() == 2
         return select(
             [
                 (care == NJSSPCareSetting.EXCLUDED) | other_medical,

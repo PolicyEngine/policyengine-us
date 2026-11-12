@@ -22,6 +22,6 @@ class medicaid_medically_needy_medical_expenses(Variable):
     )
 
     adds = [
-        "medical_expense_health_insurance_premiums",
+        "medicaid_eligibility_health_insurance_premiums",
         "other_medical_expenses",
     ]

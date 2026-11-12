@@ -7,7 +7,8 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 50_000
     tax_units:
@@ -28,11 +29,13 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 40_000
       person2:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 30_000
     tax_units:
@@ -54,7 +57,8 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 60_000
       person2:
@@ -81,7 +85,8 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 50_000
     tax_units:
@@ -102,7 +107,8 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
     tax_units:
       tax_unit:

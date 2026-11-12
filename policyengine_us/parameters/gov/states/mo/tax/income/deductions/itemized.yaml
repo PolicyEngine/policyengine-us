@@ -7,7 +7,8 @@ values:
     - employee_social_security_tax
     - employee_medicare_tax
     - additional_medicare_tax
-    - self_employment_tax
+    # RSMo 143.141(4)(c): only the part not deducted in federal AGI.
+    - mo_self_employment_tax_addback
 metadata:
   unit: list
   label: Missouri itemized deduction sources
