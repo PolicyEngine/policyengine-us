@@ -123,6 +123,10 @@ For code already on `main` that the PR doesn't change, you can skip step 1: pin 
 
 The marker comes only in the follow-up PR, because the guard rejects a marker whose entry isn't in the pinned copy, or whose entry doesn't list the marker's file under `implementations`. A `proposed` row doesn't count.
 
+When a source site serves bot-check scripts, capture it as pandoc text with a
+`Source:` URL line and an extraction line, as [the capture guide](source_conflicts/sources/README.md)
+describes, to avoid publishing visitor tokens or the fetching machine's address.
+
 `policyengine_us/tests/code_health/test_source_conflicts.py` checks structure, not whether the code follows a statute. It fails when:
 
 - the vendored register (`source_conflicts/known-source-conflicts.yaml`) differs from its pin (`source_conflicts/pin.yaml`: rulespec-us commit and sha256);
@@ -130,7 +134,8 @@ The marker comes only in the follow-up PR, because the guard rejects a marker wh
 - a marker names an entry that isn't in the pinned copy, or whose entry doesn't list the file under `implementations`;
 - an implementation the register marks `cites_entry: true` is missing here or has lost its marker;
 - the count of comments that read like a conflict between sources ("the instructions say", "in practice", "discrepancy", "Source conflict:", ...) changes in a file without a marker. A new file or a higher count means reword a comment that describes no conflict. If it describes a real conflict, keep it, record the conflict as a candidate (step 1) and add or raise the file's `KNOWN_UNMARKED` line in the same PR; the marker in step 3 then exempts the file, and its line comes out. A lower count means lower `KNOWN_UNMARKED`. A file with any valid marker is exempt, so the count doesn't prove every conflict in it is marked;
-- a backlog item (`source_conflicts/candidates.yaml`) is malformed, already registered, cites a code path that isn't a file git tracks here (absolute, with `..`, or under a hidden directory such as `.github`), or contains a decision-queue id, a session id, a local path or an email address anywhere in the file: in its raw text, comments and keys included, and in every parsed value and key (escapes, `!!binary`, sets). Homoglyphs, such as a Cyrillic letter in "Source", are not caught; review catches those.
+- a backlog item (`source_conflicts/candidates.yaml`) is malformed, already registered, cites a code path that isn't a file git tracks here (absolute, with `..`, or under a hidden directory such as `.github`), or contains a decision-queue id, a session id, a local path or an email address anywhere in the file: in its raw text, comments and keys included, and in every parsed value and key (escapes, `!!binary`, sets). Homoglyphs, such as a Cyrillic letter in "Source", are not caught; review catches those;
+- any file under `source_conflicts/sources/` contains a bot-manager marker or a base64 token that decodes to a UUID, a dollar sign and an IPv4 address. Failures name the file and match kind without printing token values or addresses.
 
 A model that departs from the statute with no official source behind it is a bug, not a source conflict. Fix it, or open an issue.
 

@@ -7,5 +7,9 @@ repository, a commit and the file's sha256; rulespec-us's `verify` checks that e
 excerpt appears verbatim in the capture. Each `.txt` file starts with the source URL
 and how the text was extracted. `.html` files are the official page as fetched.
 
+When a site serves bot-check scripts, capture the page as pandoc text and include
+a `Source:` URL line and an extraction line. This removes scripts that can expose
+the fetching machine's address or visitor tokens.
+
 Do not edit a capture after an entry pins it: add a new file instead, and move the
 entry's snapshot to it.
