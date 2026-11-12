@@ -43,3 +43,192 @@
     state_code: HI
   output:
     hi_eitc: 400
+
+# Act 107 (SLH 2017) created the credit for taxable years beginning after
+# December 31, 2017 (2018 Form N-356 instructions, p.2).
+- name: No Hawaii EITC in 2015, the first modeled year
+  period: 2015
+  input:
+    eitc: 503
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    hi_eitc_potential: 0
+    hi_eitc: 0
+    hi_non_refundable_credits: 0
+
+- name: No Hawaii EITC in 2016
+  period: 2016
+  input:
+    eitc: 506
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    hi_eitc_potential: 0
+    hi_eitc: 0
+    hi_non_refundable_credits: 0
+
+- name: No Hawaii EITC in 2017
+  period: 2017
+  input:
+    eitc: 510
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    hi_eitc_potential: 0
+    hi_eitc: 0
+    hi_non_refundable_credits: 0
+
+- name: 20% nonrefundable match in 2018, the first year
+  period: 2018
+  input:
+    eitc: 519
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    # 20% * 519
+    hi_eitc_potential: 103.8
+    hi_eitc: 103.8
+    hi_non_refundable_credits: 103.8
+
+- name: 20% nonrefundable match in 2020
+  period: 2020
+  input:
+    eitc: 538
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    # 20% * 538
+    hi_eitc_potential: 107.6
+    hi_eitc: 107.6
+    hi_non_refundable_credits: 107.6
+
+- name: 20% nonrefundable match in 2021
+  period: 2021
+  input:
+    eitc: 1_000
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    hi_eitc_potential: 200
+    hi_eitc: 200
+    hi_non_refundable_credits: 200
+
+- name: 40% refundable match in 2027
+  period: 2027
+  input:
+    eitc: 1_000
+    state_code: HI
+  output:
+    hi_eitc_potential: 400
+    hi_eitc: 400
+
+- name: 20% refundable match in 2028
+  period: 2028
+  input:
+    eitc: 1_000
+    state_code: HI
+  output:
+    # HRS 235-55.75(a) is repealed and reenacted on December 31, 2027
+    # (L 2023, c 163, sec. 5), so the match returns to 20%. hi_eitc is not in
+    # the nonrefundable list from 2023, so hi_eitc equals the potential.
+    hi_eitc_potential: 200
+    hi_eitc: 200
+
+# A single filer, age 30, with $8,000 of wages in each year around the
+# credit's start date. The federal EITC is on its plateau in each year
+# tested (single, no qualifying child), and the Hawaii food/excise credit is
+# $100 for federal AGI of $5,000 to $10,000 (Form N-311, 2017-2022). Act 115
+# (SLH 2022) refunds went only to filers of a 2021 Form N-11 (DOTAX
+# Announcement 2022-03, p.2).
+- name: Single filer with $8,000 of wages gets no Hawaii EITC or Act 115 refund in 2016
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_eitc_potential: 0
+    hi_non_refundable_credits: 0
+    hi_act_115_rebate: 0
+    hi_refundable_credits: 100
+  absolute_error_margin: 0.01
+
+- name: Single filer with $8,000 of wages gets no Hawaii EITC or Act 115 refund in 2017
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    eitc: 510
+    hi_eitc_potential: 0
+    hi_non_refundable_credits: 0
+    hi_act_115_rebate: 0
+    hi_food_excise_credit: 100
+    hi_refundable_credits: 100
+    # Taxable income: 8,000 - 2,200 standard deduction - 1,144 exemption
+    # = 4,656. Tax: 1.4% * 2,400 + 3.2% * 2,256 = 105.792.
+    # 105.792 - 0 nonrefundable - 100 refundable = 5.792.
+    hi_income_tax: 5.792
+  absolute_error_margin: 0.01
+
+- name: Single filer with $8,000 of wages gets the Hawaii EITC from 2018, with no Act 115 refund
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    eitc: 519
+    # 20% * 519
+    hi_eitc_potential: 103.8
+    hi_act_115_rebate: 0
+    hi_refundable_credits: 100
+  absolute_error_margin: 0.01
+
+- name: Single filer with $8,000 of wages gets the Hawaii EITC and no Act 115 refund in 2020
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    eitc: 538
+    # 20% * 538
+    hi_eitc_potential: 107.6
+    hi_act_115_rebate: 0
+    hi_refundable_credits: 100
+  absolute_error_margin: 0.01

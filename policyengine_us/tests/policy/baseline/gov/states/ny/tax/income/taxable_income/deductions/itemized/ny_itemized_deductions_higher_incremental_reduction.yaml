@@ -21,3 +21,36 @@
     state_code: NY
   output:
     ny_itemized_deductions_higher_incremental_reduction: 25
+
+- name: Case 3, the higher share uses the base after the line 40 limitation.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    ny_agi: 500_000
+    ny_itemized_deductions_max: 50_000
+    ny_itemized_deductions_phase_out: 640.50
+    charitable_deduction: 0
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    # IT-196 (2021) line 46 Worksheet 4: line 1 = 50,000 - 640.50 = 49,359.50.
+    # Line 2 = min(500,000 - 475,000, 50,000) / 50,000 = 0.5.
+    # Line 3 = 0.25 * 49,359.50 = 12,339.875; higher amount = 0.5 * 12,339.875.
+    ny_itemized_deductions_higher_incremental_reduction: 6_169.9375
+
+- name: Case 4, the higher share base includes the college tuition deduction.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    ny_agi: 500_000
+    ny_itemized_deductions_max: 60_000
+    ny_college_tuition_deduction: 10_000
+    ny_itemized_deductions_phase_out: 640.50
+    charitable_deduction: 0
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    # Tax Law 615(f)(2) uses the deduction allowable under 615(a), with the
+    # 615(d)(4) tuition deduction: base = 60,000 - 640.50 = 59,359.50.
+    # Fraction = 25,000 / 50,000 = 0.5; 0.5 * 0.25 * 59,359.50 = 7,419.9375.
+    ny_itemized_deductions_higher_incremental_reduction: 7_419.9375

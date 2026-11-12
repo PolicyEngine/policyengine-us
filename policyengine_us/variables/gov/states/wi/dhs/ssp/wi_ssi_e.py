@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class wi_ssi_e(Variable):
@@ -37,5 +40,5 @@ class wi_ssi_e(Variable):
             & person("wi_ssp_eligible", period)
             & ~household_of_another
         )
-        both = person.marital_unit.sum(certified) == 2
+        both = _ssi_couple_total(person, period.this_year, certified.astype(int)) == 2
         return certified * where(both, p.couple / 2, p.individual)

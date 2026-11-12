@@ -35,7 +35,7 @@ class mn_eap_countable_income(Variable):
         unearned = 0
         for source in p.sources.unearned:
             # ADD sums monthly sources such as ssi over the year.
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            unearned = unearned + max_(person(source, period), 0)
         # Retirement payments count from age 59 1/2. Early benefits before that
         # age count only when not penalized; no input shows whether a withdrawal
         # was penalized, so the age cut-off approximates the penalty test.
