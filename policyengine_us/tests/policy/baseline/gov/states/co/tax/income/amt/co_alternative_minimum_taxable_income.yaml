@@ -100,11 +100,11 @@
 # DR 0104AMT line 2 takes DR 0104 lines 3 through 7 and 9, so it carries the
 # line 4 addback of federal deductions but not the line 2 state income tax
 # addback. Sales taxes are zero, so the SALT deduction is the 5,000 of state
-# income tax withheld plus the 5,000 of real estate tax. DR 0104AMT also says
-# not to enter on line 2 "any amount ... that duplicates any income or
-# adjustment made in arriving at federal alternative minimum taxable income".
-# These cases keep the whole line 4 addback; if the 5,000 of real estate tax in
-# it counts as a duplicate of Form 6251 line 2a, line 5 is 5,000 lower.
+# income tax withheld plus the 5,000 of real estate tax. We retain the
+# section 63 deduction base under the statute-first principle; see entry
+# us-co:dr0104amt-line-2-duplication-bar in source_conflicts/candidates.yaml.
+# Removing the 5,000 property tax overlap gives 349,900 and 358,900; both
+# readings leave tentative minimum tax below normal tax in these cases.
 - name: Colorado AMTI for a 2025 single itemizer with $450,000 of wages
   absolute_error_margin: 0.01
   period: 2025
@@ -141,6 +141,9 @@
     co_federal_deduction_addback: 13_000
     # DR 0104AMT line 1 341,900 + line 2 13,000 - line 4 0.
     co_alternative_minimum_taxable_income: 354_900
+    # Normal tax: (420,000 + 5,000 + 13,000) * 4.4% = 19,272.
+    # Tentative minimum tax: 354,900 * 3.47% = 12,315.03 < 19,272.
+    co_amt: 0
 
 - name: Colorado AMTI for a 2026 single itemizer with $450,000 of wages
   absolute_error_margin: 0.01
@@ -178,3 +181,57 @@
     co_federal_deduction_addback: 24_000
     # DR 0104AMT line 1 339,900 + line 2 24,000 - line 4 0.
     co_alternative_minimum_taxable_income: 363_900
+    # Normal tax: (420,000 + 5,000 + 24,000) * 4.4% = 19,756.
+    # Tentative minimum tax: 363,900 * 3.47% = 12,627.33 < 19,756.
+    co_amt: 0
+
+# The same choice retains the section 63 standard deduction in the Colorado
+# addback even though federal AMT disallows it. The broad duplication reading
+# would remove the entire Colorado deduction addback in each case.
+- name: Colorado AMTI retains the 2025 standard deduction addback
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 450_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    standard_deduction: 15_750
+    amt_income: 450_000
+    amt_income_less_exemptions: 361_900
+    # 15,750 - 12,000 = 3,750; 361,900 + 3,750 = 365,650.
+    co_federal_deduction_addback: 3_750
+    co_alternative_minimum_taxable_income: 365_650
+    co_amt: 0
+
+- name: Colorado AMTI retains the 2026 standard deduction addback
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 450_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    standard_deduction: 16_100
+    amt_income: 450_000
+    amt_income_less_exemptions: 359_900
+    # 16,100 - 1,000 = 15,100; 359,900 + 15,100 = 375,000.
+    co_federal_deduction_addback: 15_100
+    co_alternative_minimum_taxable_income: 375_000
+    co_amt: 0
