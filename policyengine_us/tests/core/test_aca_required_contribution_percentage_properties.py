@@ -40,7 +40,10 @@ entries leaking into later years.
 These tests run in the `core` group of the rest Python tests.
 """
 
+import gc
+
 import numpy as np
+import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
@@ -77,7 +80,28 @@ fractions = st.lists(
 )
 
 
+def clear_parameter_caches(system):
+    root = system.parameters
+    system._parameters_at_instant_cache.clear()
+    for node in (root, *root.get_descendants()):
+        cache = getattr(node, "_at_instant_cache", None)
+        if cache is not None:
+            cache.clear()
+
+
+@pytest.fixture(autouse=True)
+def clear_shared_parameter_caches():
+    # Monthly benchmark reads cache snapshots of the entire parameter tree.
+    system = Simulation.default_tax_benefit_system_instance
+    clear_parameter_caches(system)
+    yield
+    clear_parameter_caches(system)
+    gc.collect()
+
+
 def build(tax_unit_inputs, years):
+    # Collect simulation reference cycles between generated cases.
+    gc.collect()
     people, tax_units, households = {}, {}, {}
     groups = {"marital_units": {}, "spm_units": {}, "families": {}}
     for index, inputs in enumerate(tax_unit_inputs):
@@ -122,39 +146,43 @@ def table(simulation, year):
 @given(fractions.map(lambda drawn: sorted(KNOTS + drawn)))
 def test_applicable_percentage_table(points):
     simulation = build([{"aca_magi_fraction": x} for x in points], YEARS)
-    x = np.array(points)
-    # The fractions the model sees, after float32 storage.
-    seen = x.astype(np.float32).astype(float)
-    for year in YEARS:
-        thresholds, initial, final = table(simulation, year)
-        # Every edge is probed; a new or mistyped edge must be added to EDGES.
-        assert set(thresholds) <= set(EDGES), (year, thresholds)
-        rate = np.asarray(
-            simulation.calculate("aca_required_contribution_percentage", year)
-        )
-        # Property 1.
-        for tier, edge in enumerate(thresholds[:-1]):
-            np.testing.assert_allclose(
-                rate[x == edge], initial[tier], atol=TOLERANCE, err_msg=str(year)
+    try:
+        x = np.array(points)
+        # The fractions the model sees, after float32 storage.
+        seen = x.astype(np.float32).astype(float)
+        for year in YEARS:
+            thresholds, initial, final = table(simulation, year)
+            # Every edge is probed; a new or mistyped edge must be added to EDGES.
+            assert set(thresholds) <= set(EDGES), (year, thresholds)
+            rate = np.asarray(
+                simulation.calculate("aca_required_contribution_percentage", year)
             )
-        np.testing.assert_allclose(
-            rate[x == thresholds[-1]], final[-1], atol=TOLERANCE, err_msg=str(year)
-        )
-        # Property 2.
-        tier = np.clip(
-            np.searchsorted(thresholds, seen, side="right") - 1, 0, len(initial) - 1
-        )
-        slope = (final - initial) / np.diff(thresholds)
-        assert (rate >= initial[tier] - TOLERANCE).all(), year
-        assert (rate <= final[tier] + TOLERANCE).all(), year
-        for upper, top, rise in zip(thresholds[1:], final, slope):
-            below = rate[x == upper - EPSILON]
-            assert (top - below >= -TOLERANCE).all(), year
-            assert (top - below <= rise * EPSILON + TOLERANCE).all(), year
-        line = initial[tier] + slope[tier] * (seen - thresholds[tier])
-        assert (np.abs(rate - line) <= ROUNDING / 2 + TOLERANCE).all(), year
-        # Property 3.
-        assert (np.diff(rate) >= -TOLERANCE).all(), year
+            # Property 1.
+            for tier, edge in enumerate(thresholds[:-1]):
+                np.testing.assert_allclose(
+                    rate[x == edge], initial[tier], atol=TOLERANCE, err_msg=str(year)
+                )
+            np.testing.assert_allclose(
+                rate[x == thresholds[-1]], final[-1], atol=TOLERANCE, err_msg=str(year)
+            )
+            # Property 2.
+            tier = np.clip(
+                np.searchsorted(thresholds, seen, side="right") - 1, 0, len(initial) - 1
+            )
+            slope = (final - initial) / np.diff(thresholds)
+            assert (rate >= initial[tier] - TOLERANCE).all(), year
+            assert (rate <= final[tier] + TOLERANCE).all(), year
+            for upper, top, rise in zip(thresholds[1:], final, slope):
+                below = rate[x == upper - EPSILON]
+                assert (top - below >= -TOLERANCE).all(), year
+                assert (top - below <= rise * EPSILON + TOLERANCE).all(), year
+            line = initial[tier] + slope[tier] * (seen - thresholds[tier])
+            assert (np.abs(rate - line) <= ROUNDING / 2 + TOLERANCE).all(), year
+            # Property 3.
+            assert (np.diff(rate) >= -TOLERANCE).all(), year
+    finally:
+        del simulation
+        gc.collect()
 
 
 @settings(
@@ -178,23 +206,30 @@ def test_required_contribution_rises_with_income(incomes, slcsp):
         ],
         CONTRIBUTION_YEARS,
     )
-    income = np.array(incomes, dtype=float)
-    for year in CONTRIBUTION_YEARS:
-        fraction = np.asarray(simulation.calculate("aca_magi_fraction", year))
-        rate = np.asarray(
-            simulation.calculate("aca_required_contribution_percentage", year)
-        )
-        credit = np.asarray(simulation.calculate("aca_ptc_before_filing_gate", year))
-        # Property 5 also covers the zero floor outside the income range.
-        assert (credit >= 0).all(), year
-        bounded = np.ones(len(income), dtype=bool) if year < 2018 else income >= 0
-        assert (credit[bounded] <= slcsp + 1e-6).all(), year
-        within = fraction <= 4
-        contribution_income = np.maximum(income, 0) if year < 2018 else income
-        contribution = (contribution_income * rate)[within]
-        # Property 4.
-        assert (np.diff(contribution) >= -1e-6).all(), year
-        assert (np.diff(credit[within]) <= 1e-6).all(), year
+    try:
+        income = np.array(incomes, dtype=float)
+        for year in CONTRIBUTION_YEARS:
+            fraction = np.asarray(simulation.calculate("aca_magi_fraction", year))
+            rate = np.asarray(
+                simulation.calculate("aca_required_contribution_percentage", year)
+            )
+            credit = np.asarray(
+                simulation.calculate("aca_ptc_before_filing_gate", year)
+            )
+            benchmark = np.asarray(simulation.calculate("slcsp", year))
+            # Property 5 also covers the zero floor outside the income range.
+            assert (credit >= 0).all(), year
+            bounded = np.ones(len(income), dtype=bool) if year < 2018 else income >= 0
+            assert (credit[bounded] <= benchmark[bounded] + 1e-6).all(), year
+            within = fraction <= 4
+            contribution_income = np.maximum(income, 0) if year < 2018 else income
+            contribution = (contribution_income * rate)[within]
+            # Property 4.
+            assert (np.diff(contribution) >= -1e-6).all(), year
+            assert (np.diff(credit[within]) <= 1e-6).all(), year
+    finally:
+        del simulation
+        gc.collect()
 
 
 # Freeze the tables used before extending historical coverage. Repeated knots
@@ -260,28 +295,34 @@ def test_post_2017_credit_matches_existing_rules(drawn):
         ],
         tuple(POST_2017_TABLES),
     )
-    fractions, incomes, premiums = np.array(rows, dtype=np.float32).T
-    for year, (initial, final) in POST_2017_TABLES.items():
-        thresholds = [0, 1.5, 2, 2.5, 3, 4]
-        if not 2021 <= year <= 2025:
-            thresholds.insert(1, 1.33)
-        knots = np.repeat(thresholds, 2)[1:-1]
-        expected_rate = np.interp(
-            fractions, knots, np.column_stack((initial, final)).ravel()
-        )
-        if not 2021 <= year <= 2025:
-            expected_rate = np.where(fractions > 4, 0, expected_rate)
-        rate = simulation.calculate("aca_required_contribution_percentage", year)
-        np.testing.assert_allclose(
-            rate, expected_rate, atol=TOLERANCE, err_msg=str(year)
-        )
-        expected_credit = np.maximum(0, premiums - incomes * expected_rate)
-        for variable in ("aca_ptc_before_filing_gate", "aca_ptc"):
-            credit = simulation.calculate(variable, year)
-            np.testing.assert_allclose(
-                credit,
-                expected_credit,
-                rtol=1e-6,
-                atol=0.02,
-                err_msg=f"{year}: {variable}",
+    try:
+        fractions, incomes, premiums = np.array(rows, dtype=np.float32).T
+        for year, (initial, final) in POST_2017_TABLES.items():
+            thresholds = [0, 1.5, 2, 2.5, 3, 4]
+            if not 2021 <= year <= 2025:
+                thresholds.insert(1, 1.33)
+            knots = np.repeat(thresholds, 2)[1:-1]
+            expected_rate = np.interp(
+                fractions, knots, np.column_stack((initial, final)).ravel()
             )
+            if not 2021 <= year <= 2025:
+                expected_rate = np.where(fractions > 4, 0, expected_rate)
+            rate = simulation.calculate("aca_required_contribution_percentage", year)
+            np.testing.assert_allclose(
+                rate, expected_rate, atol=TOLERANCE, err_msg=str(year)
+            )
+            expected_credit = np.maximum(0, premiums - incomes * expected_rate)
+            for variable in ("aca_ptc_before_filing_gate", "aca_ptc"):
+                credit = simulation.calculate(variable, year)
+                np.testing.assert_allclose(
+                    credit,
+                    expected_credit,
+                    rtol=1e-6,
+                    atol=0.02,
+                    err_msg=f"{year}: {variable}",
+                )
+            clear_parameter_caches(simulation.tax_benefit_system)
+            gc.collect()
+    finally:
+        del simulation
+        gc.collect()
