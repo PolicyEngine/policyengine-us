@@ -1053,3 +1053,41 @@
     # The claimant's budget is 30,000, above 4,404. Deducting the third
     # adult's 28,000 would leave 2,000, under it.
     is_medically_needy_for_medicaid: [false, false, false]
+
+# Illinois has a medically needy program, so the child's spend down runs through
+# it. SSI countable income: (70,000 / 12 - 85) / 2 x 12 = 34,490, less 11,928,
+# is 22,562, and 22,562 - 240 = 22,322. The parent's 12,000 of expenses bring it
+# to 10,322, within the 15,960 limit.
+- name: Case 40, Illinois blind child spends down through medically needy on the parent's medical expenses.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+        other_medical_expenses: 12_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    ssi_countable_income: [0, 22_322]
+    medicaid_parental_medical_expense_share: [0, 12_000]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    is_medically_needy_for_medicaid: [false, true]
+    medicaid_category: [NONE, MEDICALLY_NEEDY]

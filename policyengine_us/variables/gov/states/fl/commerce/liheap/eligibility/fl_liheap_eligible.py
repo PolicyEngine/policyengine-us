@@ -6,15 +6,17 @@ class fl_liheap_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR
-    label = "Florida LIHEAP regular heating eligibility"
+    label = "Florida LIHEAP regular home energy eligibility"
     defined_for = StateCode.FL
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
-        # PDF pages 5, 8, 45
-        "https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=5",
+        "https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-73C-26-022",
+        "https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-73C-26-023",
+        # PDF pages 4-5, 8, 45
+        "https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=4",
         # PDF pages 8-9
         "https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=8",
-        # PDF pages 4, 23, 39, 41, 43, 47-48, 50-51
+        # PDF pages 4, 8, 23, 39, 41, 43, 47-48, 50-51
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=4",
         # PDF pages 12-13
         "https://www.pbcgov.com/pubInf/Agenda/20260106/3E2.pdf#page=12",
@@ -73,6 +75,23 @@ class fl_liheap_eligible(Variable):
         fuel_qualifies = (heating_type != types.NONE) & (
             heat_in_rent | (heating_type != types.UNSPECIFIED)
         )
+        # The one non-crisis benefit per 12 months (R. 73C-26.022(2)(a)) is a
+        # Home Energy benefit for heating or cooling (manual 200 P and Q, page
+        # 8), and electricity is a home energy type (R. 73C-26.022(6)). An
+        # applicant responsible for all or part of its home heating and cooling
+        # costs is eligible (700.01 E, page 23; 900.08 A, page 43). So a
+        # household with any reported heating type, including a home without
+        # heating or one with heat in subsidized rent, qualifies when it pays
+        # its own electricity bill for cooling. UNSPECIFIED does not. Cooling
+        # wholly in the rent with no obligation of its own pays nothing, as
+        # R. 73C-26.023(4) provides.
+        cooling_only = (
+            (heating_type != types.UNSPECIFIED)
+            & spm_unit("has_cooling_expense", period)
+            & (spm_unit("pre_subsidy_electricity_expense", period) > 0)
+        )
         return (
-            (size > 0) & (income_eligible | categorical) & responsible & fuel_qualifies
+            (size > 0)
+            & (income_eligible | categorical)
+            & ((responsible & fuel_qualifies) | cooling_only)
         )
