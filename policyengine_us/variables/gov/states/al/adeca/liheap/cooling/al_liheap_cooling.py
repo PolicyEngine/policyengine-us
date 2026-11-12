@@ -33,9 +33,8 @@ class al_liheap_cooling(Variable):
         "https://liheapch.acf.gov/docs/2025/state-plans/AL_Plan_2025.pdf#page=4",
         # The chart effective February 17, 2025, on the 2025 guidelines.
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/AL_BenefitMatrix_Cooling_2026.pdf",
-        # The chart effective May 15, 2026, attached to the draft FY2027 plan.
-        "https://adeca.alabama.gov/wp-content/uploads/FY27-LIHEAP-State-Plan.pdf#page=53",
-        # Section 3.5: the 2026 guideline limit and band arithmetic.
+        # Section 3.5: the 2026 guideline limit and band arithmetic of the chart
+        # effective May 15, 2026.
         "https://liheapch.acf.gov/docs/2027/state-plans/AL_Plan_2027.pdf#page=12",
     )
 
