@@ -29,7 +29,8 @@ class la_liheap_cooling_eligible(Variable):
         fuel_known = heating_type != heating_type.possible_values.UNSPECIFIED
         # As for heating, a subsidized household needs a positive total energy
         # cost: a cooling utility allowance greater than the bill makes it
-        # ineligible (Section 4.1 C.1).
+        # ineligible (Section 4.1 C.1), and an allowance equal to the bill
+        # leaves no excess energy charge (Section 3.6 E.1).
         subsidized = spm_unit("receives_housing_assistance", period) | (
             spm_unit.household("is_in_public_housing", period)
         )
