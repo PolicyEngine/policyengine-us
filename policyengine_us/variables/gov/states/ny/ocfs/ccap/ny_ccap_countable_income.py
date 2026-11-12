@@ -16,13 +16,13 @@ class ny_ccap_countable_income(Variable):
         "TANF aggregate. Count reported Safety Net Assistance amounts and "
         "adults' SSI and state supplements under 404.5(b)(5)(vi). OCFS "
         "excludes children's SSI and state supplements under "
-        "404.5(b)(6)(xxi). 404.5(b)(5) measures "
-        "income over the 415.1(l) child care services unit, which splits "
-        "cohabiting adults without a common child into separate units, treats "
-        "an 18-year-old as an adult outside the parent's unit, and reduces to "
-        "the children alone when they live with no parent; the SPM unit used "
-        "here merges those cases. Defined annually so the monthly consumers "
-        "read it with the bare period and Core divides it."
+        "404.5(b)(6)(xxi). OCFS uses the child care services unit under "
+        "415.1(l). It separates cohabiting adults without a common child "
+        "and treats an 18-year-old as an adult outside the parent's unit. "
+        "When children live with no parent, OCFS counts only the children "
+        "in their unit. PolicyEngine uses the SPM unit, which combines "
+        "those cases. Monthly consumers read this annual income with the "
+        "bare period and Core divides it."
     )
     reference = (
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5",
