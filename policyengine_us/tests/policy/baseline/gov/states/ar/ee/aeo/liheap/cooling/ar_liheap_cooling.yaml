@@ -5,7 +5,8 @@
 # electric bill shows that the household pays its own electric bill, which the summer grant
 # pays; the bill does not change the grant. TEA is pinned to 0, as in the heating tests.
 
-# FY2026: size three uses the 3&4 column; the size-three limit is 3_792 x 12 = 45_504.
+# FY2026: size three uses the 3&4 column; the size-three limit is 45_501, HHS's 60% state
+# median income amount, which is below the chart's 3_792 x 12 = 45_504.
 # Electric row 1510-1569 pays 114 for 3&4.
 - name: Case 1, a minimum wage parent with two children receives the 3 and 4 person summer grant.
   period: 2026
@@ -39,7 +40,7 @@
   output:
     ar_liheap_household_size: 3
     ar_liheap_countable_income: 18_300
-    ar_liheap_income_limit: 45_504
+    ar_liheap_income_limit: 45_501
     ar_liheap_cooling_eligible: true
     ar_liheap_cooling: 114
 
@@ -104,7 +105,7 @@
   output:
     ar_liheap_cooling: [242, 233]
 
-# FY2025: MCI 1_525 is within the 2_251 size-one limit (x12 = 27_012). The FFY 2025
+# FY2025: MCI 1_525 (x12 = 18_300) is within the 27_011 size-one limit. The FFY 2025
 # electric row 1,510-1,569 pays 84 for 1&2 (the FY2026 row pays 77). With electric heat
 # the winter grant reads the same cell, so the household receives 84 in each season, and
 # the national LIHEAP total is 84 + 84 = 168.
@@ -131,7 +132,7 @@
         state_code: AR
   output:
     ar_liheap_countable_income: 18_300
-    ar_liheap_income_limit: 27_012
+    ar_liheap_income_limit: 27_011
     ar_liheap_cooling_eligible: true
     ar_liheap_cooling: 84
     ar_liheap: 84

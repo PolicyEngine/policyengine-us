@@ -1,7 +1,13 @@
 # Independent AR component tests; no final household eligibility or total benefit is asserted.
 
-# Official 2026 income chart sizes 1-20 plus the printed 688 monthly amount for the extra person at 21; source limits are literal, independent of the SMI/FPG formula.
-- name: Case 1, all published household limits and the first additional person match.
+# Official 2026 income chart sizes 1-20 plus the printed 688 monthly amount for the extra person at 21, each
+# stopped at the federal maximum of 42 U.S.C. 8624(b)(2)(B): the greater of HHS's FY2026 60% state median income
+# amount (28_167, 36_834, 45_501, 54_168, 62_834, 71_501 for sizes 1-6; 54_168 x 1.35 = 73_126 for size 7) and
+# 150% of the 2025 poverty guideline (15_650 + 5_500 per extra person). The chart is higher at size 2
+# (3_070 x 12 = 36_840), size 3 (3_792 x 12 = 45_504), size 7 (6_094 x 12 = 73_128), every even size from 8 to 20
+# (size 8: 6_769 x 12 = 81_228 against 54_150 x 1.5 = 81_225) and size 21 (15_707 x 12 = 188_484 against
+# 125_650 x 1.5 = 188_475).
+- name: Case 1, published household limits and the first additional person stop at the federal maximum.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -13,9 +19,9 @@
       1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
     ar_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
   output:
-    ar_liheap_income_limit: [28_164, 36_840, 45_504, 54_168, 62_832, 71_496, 73_128, 81_228, 89_472,
-      97_728, 105_972, 114_228, 122_472, 130_728, 138_972, 147_228, 155_472, 163_728, 171_972, 180_228,
-      188_484]
+    ar_liheap_income_limit: [28_164, 36_834, 45_501, 54_168, 62_832, 71_496, 73_126, 81_225, 89_472,
+      97_725, 105_972, 114_225, 122_472, 130_725, 138_972, 147_225, 155_472, 163_725, 171_972, 180_225,
+      188_475]
 
 
 # FY2025 chart (2024 FPG 15060 + 5380 per extra person): size 8 52720 x 1.5 / 12 = 6590; size 20 117280 x 1.5 / 12 = 14660;
@@ -35,7 +41,9 @@
 # SMI x 0.6 / 12 x size factor: 0.52 -> 2251.00 -> 2251; 0.68 -> 2943.62 -> 2944; 0.84 -> 3636.23 -> 3636;
 # 1.00 -> 4328.85 -> 4329; 1.16 -> 5021.47 -> 5021; 1.32 -> 5714.08 -> 5714.
 # Size 7: 47340x1.5/12=5917.50 -> 5918 (60% SMI would be 5844); size 9: 58100x1.5/12=7262.50 -> 7263.
-# Annual = monthly x 12.
+# Annual = monthly x 12, stopped at the federal maximum. HHS's 60% amount is floor(86_577 x 0.6) = 51_946 for
+# four, times the size factor, rounded down: 27_011 (size 1), 35_323 (size 2), 51_946 (size 4). 150% of the 2024
+# guideline is 47_340 x 1.5 = 71_010 (size 7) and 58_100 x 1.5 = 87_150 (size 9).
 - name: Case 3, FY2025 state median income rows and the size seven poverty guideline row.
   period: 2025
   absolute_error_margin: 0.01
@@ -46,11 +54,12 @@
     gas_expense: [900, 900, 900, 900, 900, 900, 900, 900]
     ar_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 9]
   output:
-    ar_liheap_income_limit: [27_012, 35_328, 43_632, 51_948, 60_252, 68_568, 71_016, 87_156]
+    ar_liheap_income_limit: [27_011, 35_323, 43_632, 51_946, 60_252, 68_568, 71_010, 87_150]
 
 # FY2026 chart: size 20 prints $15,019 and "ADD $688 FOR EACH ADDITIONAL HOUSEHOLD
-# MEMBER": size 22 = 15,019 + 2 x 688 = 16,395 a month; x 12 = 196,740.
-- name: Case 4, FY2026 second additional person adds the printed amount twice.
+# MEMBER": size 22 = 15,019 + 2 x 688 = 16,395 a month; x 12 = 196,740. The federal maximum is 150% of the
+# 2025 guideline for 22 people: (15,650 + 21 x 5,500) x 1.5 = 196,725.
+- name: Case 4, FY2026 second additional person stops at the federal maximum.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -59,4 +68,4 @@
     gas_expense: 1_200
     ar_liheap_household_size: 22
   output:
-    ar_liheap_income_limit: 196_740
+    ar_liheap_income_limit: 196_725

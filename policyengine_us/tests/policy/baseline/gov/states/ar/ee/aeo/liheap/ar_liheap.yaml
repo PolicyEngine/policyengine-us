@@ -32,7 +32,7 @@
   output:
     ar_liheap_household_size: 2
     ar_liheap_countable_income: 4_800
-    ar_liheap_income_limit: 36_840
+    ar_liheap_income_limit: 36_834
     ar_liheap_matrix_amount: 227
     ar_liheap: 227
 
@@ -144,7 +144,7 @@
   output:
     ar_liheap_household_size: 1
     ar_liheap_countable_income: 16_800
-    ar_liheap_income_limit: 27_012
+    ar_liheap_income_limit: 27_011
     ar_liheap_eligible: true
     ar_liheap_matrix_amount: 91
     ar_liheap: 91
@@ -235,7 +235,7 @@
   output:
     ar_liheap_household_size: 7
     ar_liheap_countable_income: 70_800
-    ar_liheap_income_limit: 71_016
+    ar_liheap_income_limit: 71_010
     ar_liheap_eligible: true
     ar_liheap_matrix_amount: 60
     ar_liheap: 60
@@ -265,7 +265,7 @@
   output:
     ar_liheap_household_size: 1
     ar_liheap_countable_income: 24_180
-    ar_liheap_income_limit: 27_012
+    ar_liheap_income_limit: 27_011
     ar_liheap_eligible: true
     ar_liheap_matrix_amount: 73
     ar_liheap: 73
@@ -484,7 +484,7 @@
 
 # Current application section III excludes under-18 earnings whether or not the member
 # attends school, so countable income is 0. The FY2026 natural gas matrix awards 308 at
-# zero income for size two (limit 3_070 x 12 = 36_840).
+# zero income for size two (limit 36_834, HHS's 60% state median income amount).
 - name: Case 17, age 17 nonstudent earnings determine the final heating award.
   period: 2026
   input:
@@ -511,13 +511,13 @@
         state_code: AR
   output:
     ar_liheap_countable_income: 0
-    ar_liheap_income_limit: 36_840
+    ar_liheap_income_limit: 36_834
     ar_liheap_eligible: true
     ar_liheap: 308
 
 # At 18, a member who is not in high school (manual section 4.7, p56) or college
 # reports work income: wages 48_000 x 0.8 = 38_400 exceed the two-person FY2026 limit
-# 36_840, so no grant is paid.
+# 36_834, so no grant is paid.
 - name: Case 18, age 18 nonstudent earnings determine the final heating award.
   period: 2026
   input:
@@ -545,7 +545,7 @@
         state_code: AR
   output:
     ar_liheap_countable_income: 38_400
-    ar_liheap_income_limit: 36_840
+    ar_liheap_income_limit: 36_834
     ar_liheap_eligible: false
     ar_liheap: 0
 
