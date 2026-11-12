@@ -42,6 +42,9 @@ from policyengine_us.variables.household.expense.health.self_employed_health_ins
 from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.self_employment_tax_ald_person import (
     self_employment_tax_ald_person,
 )
+from policyengine_us.variables.household.expense.retirement.self_employed_pension_earned_income import (
+    self_employed_pension_earned_income,
+)
 from policyengine_us.variables.gov.irs.tax.payroll.social_security.taxable_earnings_for_social_security import (
     taxable_earnings_for_social_security,
 )
@@ -73,6 +76,7 @@ BASELINE_VARIABLES = {
         self_employment_tax,
         self_employment_tax_ald_person,
         self_employed_health_insurance_earned_income_limit,
+        self_employed_pension_earned_income,
     )
 }
 PERIOD = period("2027")
