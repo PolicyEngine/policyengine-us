@@ -66,10 +66,9 @@ class md_net_capital_gain(Variable):
         # 1222(11): a net short-term capital loss reduces the net long-term
         # capital gain, and a net short-term capital gain does not add to it.
         # That is the smaller of Schedule D lines 15 and 16, as on line 7 of
-        # the Schedule D Tax Worksheet.
-        # Source conflict: the Form 502CG instructions use Form 502 line 1c,
-        # the Form 1040 line 7a gain, which also counts a net short-term
-        # capital gain; 10-105(a)(3) and Technical Bulletin 58 use the
-        # 1222(11) amount, which this follows (candidate
-        # us-md:capital-gains-surtax-short-term-gains).
+        # the Schedule D Tax Worksheet. The Form 502CG instructions take Form
+        # 502 line 1c, the Form 1040 line 7a gain, which also counts a net
+        # short-term capital gain; this follows 10-105(a)(3) and the 1222(11)
+        # definition that Technical Bulletin 58 section I restates.
+        # Source conflict us-md:capital-gains-surtax-short-term-gains
         return max_(0, min_(long_term, combined))

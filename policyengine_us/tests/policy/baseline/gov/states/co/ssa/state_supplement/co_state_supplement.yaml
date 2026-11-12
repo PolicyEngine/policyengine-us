@@ -904,3 +904,45 @@
     co_ssa_in_kind_support_and_maintenance: 208
     co_state_supplement_countable_income: 188
     co_state_supplement: 37
+
+- name: Case 42, a disabled SSI couple beside a third adult, without explicit marital units.
+  # One tax unit and one default marital unit hold the spouses and a third
+  # adult whom the head claims. SSI pairs only the spouses: couple income is
+  # 300 + 200 - 20 = 480, so each gets (1,491 - 480) / 2 = 505.50 a month.
+  # 9 CCR 2503-5 3.549(A)(2)(c)(1): the married clients split the $20
+  # disregard, so their own countable income is 300 - 10 = 290 and
+  # 200 - 10 = 190. 3.549(F): each spouse receives SSI, so neither deems
+  # income to the other, and the third adult isn't a spouse. Grants are
+  # 994 - 505.50 - 290 = 198.50 and 994 - 505.50 - 190 = 298.50 a month.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 3_600
+        is_tax_unit_head: true
+      wife:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 2_400
+        is_tax_unit_spouse: true
+      third_adult:
+        age: 30
+        pension_income: 14_400
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code: CO
+  output:
+    ssi: [6_066, 6_066, 0]
+    co_state_supplement_own_countable_income: [3_480, 2_280, 0]
+    co_state_supplement_deemed_income: [0, 0, 0]
+    co_state_supplement: [2_382, 3_582, 0]
