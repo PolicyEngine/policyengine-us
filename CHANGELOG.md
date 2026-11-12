@@ -1,3 +1,10 @@
+## [2.117.9] - 2026-11-12
+
+### Fixed
+
+- Pay Oregon's LIHEAP standard payment from the matrix cooling column to households with no heating cost, including homes without heating, that pay an electric bill for cooling. Stop Oregon's LIHEAP income limits at the federal maximum, the greater of HHS's 60% state median income amount and 150% of the poverty guideline.
+
+
 ## [2.117.8] - 2026-11-12
 
 ### Fixed
