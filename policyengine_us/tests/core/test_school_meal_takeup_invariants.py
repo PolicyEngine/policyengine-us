@@ -1,6 +1,6 @@
 """Check school-meal take-up across generated SPM units.
 
-Core applies defined_for masks after aggregating people into SPM units.
+Core applies defined_for masks to SPM-unit calculations.
 Hypothesis checks those masks across mixed group sizes and participation
 settings, including omitted inputs, in one vectorized simulation per example.
 YAML covers the fixed policy amounts.
@@ -80,8 +80,8 @@ def _main_amounts(rows, year, breakfast_tier, lunch_tier):
         state_group = state if state in ("AK", "HI") else "CONTIGUOUS_US"
         breakfast_rates = p.amount.sbp[state_group]
         lunch_rates = p.amount.nslp[state_group]
-        breakfast_value = breakfast_rates[breakfast] - breakfast_rates.PAID
-        lunch_value = lunch_rates[lunch] - lunch_rates.PAID
+        breakfast_value = breakfast_rates[str(breakfast)] - breakfast_rates.PAID
+        lunch_value = lunch_rates[str(lunch)] - lunch_rates.PAID
         child_days = sum(5 <= age <= 17 for age in ages) * p.school_days
         expected["school_meal_net_subsidy"].append(
             (breakfast_value + lunch_value) * child_days
