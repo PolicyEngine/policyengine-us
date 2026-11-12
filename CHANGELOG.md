@@ -1,3 +1,14 @@
+## [2.118.0] - 2026-11-12
+
+### Added
+
+- Add a national LIHEAP total that sums each state's regular payment, an Illinois regular heating payment without crisis assistance, a Michigan Home Heating Credit registry entry, and cooling notes for each state's LIHEAP registry entry.
+
+### Fixed
+
+- Fix state LIHEAP formulas that raised an error when calculated in a microsimulation.
+
+
 ## [2.117.10] - 2026-11-12
 
 ### Fixed
