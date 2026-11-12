@@ -39,8 +39,8 @@
     is_wic_eligible: true
     takes_up_wic_if_eligible: true
   output:
-    # Multiply by ratio of 2022-01 to 2018-01 CPI-U.
-    wic: 48.92 * 281.148 / 247.867
+    # Remove the uprated embedded $11 CVB and add the FY 2022 $47 CVB.
+    wic: (48.92 - 11) * 281.148 / 247.867 + 47
 
 - name: Current child packages use the current cash-value benefit amount.
   period: 2024-01
@@ -81,3 +81,360 @@
     takes_up_wic_if_eligible: true
   output:
     wic: 60.42
+
+
+- name: Pregnant Texas parent and three-year-old receive WIC in 2022-01.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: {2022: 30}
+        employment_income: {2022: 15_000}
+        is_pregnant: {2022: true}
+      child:
+        age: {2022: 3}
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2022: TX}
+  output:
+    is_wic_eligible: [true, true]
+    wic_food_package: [PREGNANT_SINGLETON, CHILD_24_59_MONTHS]
+    # Parent: (39.12 - 11) * 281.148 / 247.867 + 43.
+    # Child: (33.65 - 8) * 281.148 / 247.867 + 24.
+    wic:
+      - 74.90 # (39.12 - 11) * 281.148 / 247.867 + 43
+      - 53.09 # (33.65 - 8) * 281.148 / 247.867 + 24
+
+
+- name: Pregnant Texas parent and three-year-old receive WIC in 2022-10.
+  period: 2022-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: {2022: 30}
+        employment_income: {2022: 15_000}
+        is_pregnant: {2022: true}
+      child:
+        age: {2022: 3}
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2022: TX}
+  output:
+    is_wic_eligible: [true, true]
+    wic_food_package: [PREGNANT_SINGLETON, CHILD_24_59_MONTHS]
+    # Parent: (39.12 - 11) * 298.012 / 247.867 + 44.
+    # Child: (33.65 - 8) * 298.012 / 247.867 + 25.
+    wic:
+      - 77.81 # (39.12 - 11) * 298.012 / 247.867 + 44
+      - 55.84 # (33.65 - 8) * 298.012 / 247.867 + 25
+
+
+- name: Pregnant Texas parent and three-year-old receive WIC in 2024-01.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: {2024: 30}
+        employment_income: {2024: 15_000}
+        is_pregnant: {2024: true}
+      child:
+        age: {2024: 3}
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    families:
+      family:
+        members: [parent, child]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2024: TX}
+  output:
+    is_wic_eligible: [true, true]
+    wic_food_package: [PREGNANT_SINGLETON, CHILD_24_59_MONTHS]
+    # Parent: (39.12 - 11) * 309.794 / 247.867 + 47.
+    # Child: (33.65 - 8) * 309.794 / 247.867 + 26.
+    wic:
+      - 82.15 # (39.12 - 11) * 309.794 / 247.867 + 47
+      - 58.06 # (33.65 - 8) * 309.794 / 247.867 + 26
+
+- name: Every woman and child package uses the scheduled CVB in 2021-09.
+  period: 2021-09
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
+    # Before October 2021, multiply the full 2018 package value by CPI-U.
+    # Fully breastfeeding multiples receive 1.5 times the breastfeeding CVB.
+    wic:
+      - 41.31 # PREGNANT: 37.33 * 274.31 / 247.867
+      - 43.29 # PREGNANT_SINGLETON: 39.12 * 274.31 / 247.867
+      - 43.29 # PREGNANT_MULTIPLE_FETUSES: 39.12 * 274.31 / 247.867
+      - 41.79 # BREASTFEEDING: 37.76 * 274.31 / 247.867
+      - 43.29 # PARTIALLY_BREASTFEEDING: 39.12 * 274.31 / 247.867
+      - 54.14 # FULLY_BREASTFEEDING: 48.92 * 274.31 / 247.867
+      - 81.21 # FULLY_BREASTFEEDING_MULTIPLES: 73.38 * 274.31 / 247.867
+      - 34.00 # POSTPARTUM: 30.72 * 274.31 / 247.867
+      - 35.71 # POSTPARTUM_NON_BREASTFEEDING: 32.27 * 274.31 / 247.867
+      - 35.17 # CHILD: 31.78 * 274.31 / 247.867
+      - 37.23 # CHILD_12_23_MONTHS: 33.64 * 274.31 / 247.867
+      - 37.24 # CHILD_24_59_MONTHS: 33.65 * 274.31 / 247.867
+      - 37.23 # IV-A: 33.64 * 274.31 / 247.867
+      - 37.24 # IV-B: 33.65 * 274.31 / 247.867
+      - 43.29 # V: 39.12 * 274.31 / 247.867
+      - 35.71 # VI: 32.27 * 274.31 / 247.867
+      - 54.14 # VII: 48.92 * 274.31 / 247.867
+
+- name: Every woman and child package uses the scheduled CVB in 2021-10.
+  period: 2021-10
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
+    # Before October 2021, multiply the full 2018 package value by CPI-U.
+    # Fully breastfeeding multiples receive 1.5 times the breastfeeding CVB.
+    wic:
+      - 72.38 # PREGNANT: (37.33 - 11) * 276.589 / 247.867 + 43
+      - 74.38 # PREGNANT_SINGLETON: (39.12 - 11) * 276.589 / 247.867 + 43
+      - 78.38 # PREGNANT_MULTIPLE_FETUSES: (39.12 - 11) * 276.589 / 247.867 + 47
+      - 76.86 # BREASTFEEDING: (37.76 - 11) * 276.589 / 247.867 + 47
+      - 78.38 # PARTIALLY_BREASTFEEDING: (39.12 - 11) * 276.589 / 247.867 + 47
+      - 89.31 # FULLY_BREASTFEEDING: (48.92 - 11) * 276.589 / 247.867 + 47
+      - 133.97 # FULLY_BREASTFEEDING_MULTIPLES: (73.38 - 16.5) * 276.589 / 247.867 + 70.5
+      - 65.01 # POSTPARTUM: (30.72 - 11) * 276.589 / 247.867 + 43
+      - 66.73 # POSTPARTUM_NON_BREASTFEEDING: (32.27 - 11) * 276.589 / 247.867 + 43
+      - 50.54 # CHILD: (31.78 - 8) * 276.589 / 247.867 + 24
+      - 52.61 # CHILD_12_23_MONTHS: (33.64 - 8) * 276.589 / 247.867 + 24
+      - 52.62 # CHILD_24_59_MONTHS: (33.65 - 8) * 276.589 / 247.867 + 24
+      - 52.61 # IV-A: (33.64 - 8) * 276.589 / 247.867 + 24
+      - 52.62 # IV-B: (33.65 - 8) * 276.589 / 247.867 + 24
+      - 74.38 # V: (39.12 - 11) * 276.589 / 247.867 + 43
+      - 66.73 # VI: (32.27 - 11) * 276.589 / 247.867 + 43
+      - 89.31 # VII: (48.92 - 11) * 276.589 / 247.867 + 47
+
+- name: Every woman and child package uses the scheduled CVB in 2022-09.
+  period: 2022-09
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
+    # Before October 2021, multiply the full 2018 package value by CPI-U.
+    # Fully breastfeeding multiples receive 1.5 times the breastfeeding CVB.
+    wic:
+      - 74.53 # PREGNANT: (37.33 - 11) * 296.808 / 247.867 + 43
+      - 76.67 # PREGNANT_SINGLETON: (39.12 - 11) * 296.808 / 247.867 + 43
+      - 80.67 # PREGNANT_MULTIPLE_FETUSES: (39.12 - 11) * 296.808 / 247.867 + 47
+      - 79.04 # BREASTFEEDING: (37.76 - 11) * 296.808 / 247.867 + 47
+      - 80.67 # PARTIALLY_BREASTFEEDING: (39.12 - 11) * 296.808 / 247.867 + 47
+      - 92.41 # FULLY_BREASTFEEDING: (48.92 - 11) * 296.808 / 247.867 + 47
+      - 138.61 # FULLY_BREASTFEEDING_MULTIPLES: (73.38 - 16.5) * 296.808 / 247.867 + 70.5
+      - 66.61 # POSTPARTUM: (30.72 - 11) * 296.808 / 247.867 + 43
+      - 68.47 # POSTPARTUM_NON_BREASTFEEDING: (32.27 - 11) * 296.808 / 247.867 + 43
+      - 52.48 # CHILD: (31.78 - 8) * 296.808 / 247.867 + 24
+      - 54.70 # CHILD_12_23_MONTHS: (33.64 - 8) * 296.808 / 247.867 + 24
+      - 54.71 # CHILD_24_59_MONTHS: (33.65 - 8) * 296.808 / 247.867 + 24
+      - 54.70 # IV-A: (33.64 - 8) * 296.808 / 247.867 + 24
+      - 54.71 # IV-B: (33.65 - 8) * 296.808 / 247.867 + 24
+      - 76.67 # V: (39.12 - 11) * 296.808 / 247.867 + 43
+      - 68.47 # VI: (32.27 - 11) * 296.808 / 247.867 + 43
+      - 92.41 # VII: (48.92 - 11) * 296.808 / 247.867 + 47
+
+- name: Every woman and child package uses the scheduled CVB in 2022-10.
+  period: 2022-10
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
+    # Before October 2021, multiply the full 2018 package value by CPI-U.
+    # Fully breastfeeding multiples receive 1.5 times the breastfeeding CVB.
+    wic:
+      - 75.66 # PREGNANT: (37.33 - 11) * 298.012 / 247.867 + 44
+      - 77.81 # PREGNANT_SINGLETON: (39.12 - 11) * 298.012 / 247.867 + 44
+      - 82.81 # PREGNANT_MULTIPLE_FETUSES: (39.12 - 11) * 298.012 / 247.867 + 49
+      - 81.17 # BREASTFEEDING: (37.76 - 11) * 298.012 / 247.867 + 49
+      - 82.81 # PARTIALLY_BREASTFEEDING: (39.12 - 11) * 298.012 / 247.867 + 49
+      - 94.59 # FULLY_BREASTFEEDING: (48.92 - 11) * 298.012 / 247.867 + 49
+      - 141.89 # FULLY_BREASTFEEDING_MULTIPLES: (73.38 - 16.5) * 298.012 / 247.867 + 73.5
+      - 67.71 # POSTPARTUM: (30.72 - 11) * 298.012 / 247.867 + 44
+      - 69.57 # POSTPARTUM_NON_BREASTFEEDING: (32.27 - 11) * 298.012 / 247.867 + 44
+      - 53.59 # CHILD: (31.78 - 8) * 298.012 / 247.867 + 25
+      - 55.83 # CHILD_12_23_MONTHS: (33.64 - 8) * 298.012 / 247.867 + 25
+      - 55.84 # CHILD_24_59_MONTHS: (33.65 - 8) * 298.012 / 247.867 + 25
+      - 55.83 # IV-A: (33.64 - 8) * 298.012 / 247.867 + 25
+      - 55.84 # IV-B: (33.65 - 8) * 298.012 / 247.867 + 25
+      - 77.81 # V: (39.12 - 11) * 298.012 / 247.867 + 44
+      - 69.57 # VI: (32.27 - 11) * 298.012 / 247.867 + 44
+      - 94.59 # VII: (48.92 - 11) * 298.012 / 247.867 + 49
+
+- name: Every woman and child package uses the scheduled CVB in 2023-09.
+  period: 2023-09
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
+    # Before October 2021, multiply the full 2018 package value by CPI-U.
+    # Fully breastfeeding multiples receive 1.5 times the breastfeeding CVB.
+    wic:
+      - 76.70 # PREGNANT: (37.33 - 11) * 307.789 / 247.867 + 44
+      - 78.92 # PREGNANT_SINGLETON: (39.12 - 11) * 307.789 / 247.867 + 44
+      - 83.92 # PREGNANT_MULTIPLE_FETUSES: (39.12 - 11) * 307.789 / 247.867 + 49
+      - 82.23 # BREASTFEEDING: (37.76 - 11) * 307.789 / 247.867 + 49
+      - 83.92 # PARTIALLY_BREASTFEEDING: (39.12 - 11) * 307.789 / 247.867 + 49
+      - 96.09 # FULLY_BREASTFEEDING: (48.92 - 11) * 307.789 / 247.867 + 49
+      - 144.13 # FULLY_BREASTFEEDING_MULTIPLES: (73.38 - 16.5) * 307.789 / 247.867 + 73.5
+      - 68.49 # POSTPARTUM: (30.72 - 11) * 307.789 / 247.867 + 44
+      - 70.41 # POSTPARTUM_NON_BREASTFEEDING: (32.27 - 11) * 307.789 / 247.867 + 44
+      - 54.53 # CHILD: (31.78 - 8) * 307.789 / 247.867 + 25
+      - 56.84 # CHILD_12_23_MONTHS: (33.64 - 8) * 307.789 / 247.867 + 25
+      - 56.85 # CHILD_24_59_MONTHS: (33.65 - 8) * 307.789 / 247.867 + 25
+      - 56.84 # IV-A: (33.64 - 8) * 307.789 / 247.867 + 25
+      - 56.85 # IV-B: (33.65 - 8) * 307.789 / 247.867 + 25
+      - 78.92 # V: (39.12 - 11) * 307.789 / 247.867 + 44
+      - 70.41 # VI: (32.27 - 11) * 307.789 / 247.867 + 44
+      - 96.09 # VII: (48.92 - 11) * 307.789 / 247.867 + 49
+
+- name: Every woman and child package uses the scheduled CVB in 2023-10.
+  period: 2023-10
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
+    # Before October 2021, multiply the full 2018 package value by CPI-U.
+    # Fully breastfeeding multiples receive 1.5 times the breastfeeding CVB.
+    wic:
+      - 79.68 # PREGNANT: (37.33 - 11) * 307.671 / 247.867 + 47
+      - 81.90 # PREGNANT_SINGLETON: (39.12 - 11) * 307.671 / 247.867 + 47
+      - 86.90 # PREGNANT_MULTIPLE_FETUSES: (39.12 - 11) * 307.671 / 247.867 + 52
+      - 85.22 # BREASTFEEDING: (37.76 - 11) * 307.671 / 247.867 + 52
+      - 86.90 # PARTIALLY_BREASTFEEDING: (39.12 - 11) * 307.671 / 247.867 + 52
+      - 99.07 # FULLY_BREASTFEEDING: (48.92 - 11) * 307.671 / 247.867 + 52
+      - 148.60 # FULLY_BREASTFEEDING_MULTIPLES: (73.38 - 16.5) * 307.671 / 247.867 + 78
+      - 71.48 # POSTPARTUM: (30.72 - 11) * 307.671 / 247.867 + 47
+      - 73.40 # POSTPARTUM_NON_BREASTFEEDING: (32.27 - 11) * 307.671 / 247.867 + 47
+      - 55.52 # CHILD: (31.78 - 8) * 307.671 / 247.867 + 26
+      - 57.83 # CHILD_12_23_MONTHS: (33.64 - 8) * 307.671 / 247.867 + 26
+      - 57.84 # CHILD_24_59_MONTHS: (33.65 - 8) * 307.671 / 247.867 + 26
+      - 57.83 # IV-A: (33.64 - 8) * 307.671 / 247.867 + 26
+      - 57.84 # IV-B: (33.65 - 8) * 307.671 / 247.867 + 26
+      - 81.90 # V: (39.12 - 11) * 307.671 / 247.867 + 47
+      - 73.40 # VI: (32.27 - 11) * 307.671 / 247.867 + 47
+      - 99.07 # VII: (48.92 - 11) * 307.671 / 247.867 + 52
+
+- name: Every woman and child package uses the scheduled CVB in 2026-09.
+  period: 2026-09
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
+    # Before October 2021, multiply the full 2018 package value by CPI-U.
+    # Fully breastfeeding multiples receive 1.5 times the breastfeeding CVB.
+    wic:
+      - 83.33 # PREGNANT: (37.33 - 11) * 332.568 / 247.867 + 48
+      - 85.73 # PREGNANT_SINGLETON: (39.12 - 11) * 332.568 / 247.867 + 48
+      - 89.73 # PREGNANT_MULTIPLE_FETUSES: (39.12 - 11) * 332.568 / 247.867 + 52
+      - 87.90 # BREASTFEEDING: (37.76 - 11) * 332.568 / 247.867 + 52
+      - 89.73 # PARTIALLY_BREASTFEEDING: (39.12 - 11) * 332.568 / 247.867 + 52
+      - 102.88 # FULLY_BREASTFEEDING: (48.92 - 11) * 332.568 / 247.867 + 52
+      - 154.32 # FULLY_BREASTFEEDING_MULTIPLES: (73.38 - 16.5) * 332.568 / 247.867 + 78
+      - 74.46 # POSTPARTUM: (30.72 - 11) * 332.568 / 247.867 + 48
+      - 76.54 # POSTPARTUM_NON_BREASTFEEDING: (32.27 - 11) * 332.568 / 247.867 + 48
+      - 57.91 # CHILD: (31.78 - 8) * 332.568 / 247.867 + 26
+      - 60.40 # CHILD_12_23_MONTHS: (33.64 - 8) * 332.568 / 247.867 + 26
+      - 60.42 # CHILD_24_59_MONTHS: (33.65 - 8) * 332.568 / 247.867 + 26
+      - 60.40 # IV-A: (33.64 - 8) * 332.568 / 247.867 + 26
+      - 60.42 # IV-B: (33.65 - 8) * 332.568 / 247.867 + 26
+      - 85.73 # V: (39.12 - 11) * 332.568 / 247.867 + 48
+      - 76.54 # VI: (32.27 - 11) * 332.568 / 247.867 + 48
+      - 102.88 # VII: (48.92 - 11) * 332.568 / 247.867 + 52
+
+- name: Every woman and child package uses the scheduled CVB in 2026-10.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
+    # Before October 2021, multiply the full 2018 package value by CPI-U.
+    # Fully breastfeeding multiples receive 1.5 times the breastfeeding CVB.
+    wic:
+      - 83.33 # PREGNANT: (37.33 - 11) * 332.568 / 247.867 + 48
+      - 85.73 # PREGNANT_SINGLETON: (39.12 - 11) * 332.568 / 247.867 + 48
+      - 90.73 # PREGNANT_MULTIPLE_FETUSES: (39.12 - 11) * 332.568 / 247.867 + 53
+      - 88.90 # BREASTFEEDING: (37.76 - 11) * 332.568 / 247.867 + 53
+      - 90.73 # PARTIALLY_BREASTFEEDING: (39.12 - 11) * 332.568 / 247.867 + 53
+      - 103.88 # FULLY_BREASTFEEDING: (48.92 - 11) * 332.568 / 247.867 + 53
+      - 155.82 # FULLY_BREASTFEEDING_MULTIPLES: (73.38 - 16.5) * 332.568 / 247.867 + 79.5
+      - 74.46 # POSTPARTUM: (30.72 - 11) * 332.568 / 247.867 + 48
+      - 76.54 # POSTPARTUM_NON_BREASTFEEDING: (32.27 - 11) * 332.568 / 247.867 + 48
+      - 58.91 # CHILD: (31.78 - 8) * 332.568 / 247.867 + 27
+      - 61.40 # CHILD_12_23_MONTHS: (33.64 - 8) * 332.568 / 247.867 + 27
+      - 61.42 # CHILD_24_59_MONTHS: (33.65 - 8) * 332.568 / 247.867 + 27
+      - 61.40 # IV-A: (33.64 - 8) * 332.568 / 247.867 + 27
+      - 61.42 # IV-B: (33.65 - 8) * 332.568 / 247.867 + 27
+      - 85.73 # V: (39.12 - 11) * 332.568 / 247.867 + 48
+      - 76.54 # VI: (32.27 - 11) * 332.568 / 247.867 + 48
+      - 103.88 # VII: (48.92 - 11) * 332.568 / 247.867 + 53
