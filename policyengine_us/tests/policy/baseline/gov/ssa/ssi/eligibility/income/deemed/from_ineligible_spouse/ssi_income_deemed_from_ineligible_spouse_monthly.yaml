@@ -1,0 +1,490 @@
+# POMS SI 01320.150 B.1.a and SI 01320.400 B.1.e: include claimant ISM
+# in combined unearned income before applying one general exclusion.
+# https://secure.ssa.gov/poms.nsf/lnx/0501320150
+# https://secure.ssa.gov/poms.nsf/lnx/0501320400
+
+- name: Claimant cash unearned income shares one exclusion with shelter support.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 100 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: true
+      spouse:
+        age: 60
+        pension_income: 0 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 100 + 0 + 258.5; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $1306; alone: $338.5; deemed: $1306 - $338.5 = $967.5.
+    # SSI: min($1,491 - $1306, $562.6667) = $185.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [967.5, 0]
+    ssi_countable_income: [1306, 0]
+    ssi: [185, 0]
+
+- name: Spouse unearned income shares one exclusion with claimant shelter support.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 0 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: true
+      spouse:
+        age: 60
+        pension_income: 700 * 12
+        employment_income: 0 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 0 + 700 + 258.5; earned: 0 + 0.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $938.5; alone: $238.5; deemed: $938.5 - $238.5 = $700.
+    # SSI: min($1,491 - $938.5, $662.6667) = $552.5.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [700, 0]
+    ssi_countable_income: [938.5, 0]
+    ssi: [552.5, 0]
+
+- name: Mixed spouse income shares one exclusion with claimant shelter support.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 0 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: true
+      spouse:
+        age: 60
+        pension_income: 100 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 0 + 100 + 258.5; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $1306; alone: $238.5; deemed: $1306 - $238.5 = $1067.5.
+    # SSI: min($1,491 - $1306, $662.6667) = $185.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [1067.5, 0]
+    ssi_countable_income: [1306, 0]
+    ssi: [185, 0]
+
+- name: Cash income without shelter support preserves wages-only deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 0 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: false
+      spouse:
+        age: 60
+        pension_income: 0 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 0 + 0 + 0; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $957.5; alone: $0; deemed: $957.5 - $0 = $957.5.
+    # SSI: min($1,491 - $957.5, $994.0000) = $533.5.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [957.5, 0]
+    ssi_countable_income: [957.5, 0]
+    ssi: [533.5, 0]
+
+- name: Cash income without shelter support preserves unearned-only deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 0 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: false
+      spouse:
+        age: 60
+        pension_income: 700 * 12
+        employment_income: 0 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 0 + 700 + 0; earned: 0 + 0.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $680; alone: $0; deemed: $680 - $0 = $680.
+    # SSI: min($1,491 - $680, $994.0000) = $811.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [680, 0]
+    ssi_countable_income: [680, 0]
+    ssi: [811, 0]
+
+- name: Cash income without shelter support preserves mixed-income deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 100 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: false
+      spouse:
+        age: 60
+        pension_income: 100 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 100 + 100 + 0; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $1147.5; alone: $80; deemed: $1147.5 - $80 = $1067.5.
+    # SSI: min($1,491 - $1147.5, $914.0000) = $343.5.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [1067.5, 0]
+    ssi_countable_income: [1147.5, 0]
+    ssi: [343.5, 0]
+
+- name: Shelter support below the general exclusion leaves one dollar for wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 0 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: true
+        ssi_shelter_support_value: 19
+      spouse:
+        age: 60
+        pension_income: 0 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 0 + 0 + 19; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $967; alone: $0; deemed: $967 - $0 = $967.
+    # SSI: min($1,491 - $967, $994.0000) = $524.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [967, 0]
+    ssi_countable_income: [967, 0]
+    ssi: [524, 0]
+
+- name: Shelter support at the general exclusion leaves none for wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 0 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: true
+        ssi_shelter_support_value: 20
+      spouse:
+        age: 60
+        pension_income: 0 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 0 + 0 + 20; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $967.5; alone: $0; deemed: $967.5 - $0 = $967.5.
+    # SSI: min($1,491 - $967.5, $994.0000) = $523.5.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [967.5, 0]
+    ssi_countable_income: [967.5, 0]
+    ssi: [523.5, 0]
+
+- name: Shelter support above the general exclusion adds countable unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 0 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: true
+        ssi_shelter_support_value: 21
+      spouse:
+        age: 60
+        pension_income: 0 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 0 + 0 + 21; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $968.5; alone: $1; deemed: $968.5 - $1 = $967.5.
+    # SSI: min($1,491 - $968.5, $993.0000) = $522.5.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [967.5, 0]
+    ssi_countable_income: [968.5, 0]
+    ssi: [522.5, 0]
+
+- name: Claimant cash below the general exclusion shares the remainder with support.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 19 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: true
+      spouse:
+        age: 60
+        pension_income: 0 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 19 + 0 + 258.5; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $1225; alone: $257.5; deemed: $1225 - $257.5 = $967.5.
+    # SSI: min($1,491 - $1225, $643.6667) = $266.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [967.5, 0]
+    ssi_countable_income: [1225, 0]
+    ssi: [266, 0]
+
+- name: Claimant cash at the general exclusion leaves none for support.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 20 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: true
+      spouse:
+        age: 60
+        pension_income: 0 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 20 + 0 + 258.5; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $1226; alone: $258.5; deemed: $1226 - $258.5 = $967.5.
+    # SSI: min($1,491 - $1226, $642.6667) = $265.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [967.5, 0]
+    ssi_countable_income: [1226, 0]
+    ssi: [265, 0]
+
+- name: Claimant cash above the general exclusion leaves none for support.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 21 * 12
+        employment_income: 0 * 12
+        ssi_receives_outside_shelter_support: true
+      spouse:
+        age: 60
+        pension_income: 0 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 21 + 0 + 258.5; earned: 0 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $1227; alone: $259.5; deemed: $1227 - $259.5 = $967.5.
+    # SSI: min($1,491 - $1227, $641.6667) = $264.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [967.5, 0]
+    ssi_countable_income: [1227, 0]
+    ssi: [264, 0]
+
+- name: Claimant earnings share the earned exclusion across the couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        pension_income: 0 * 12
+        employment_income: 100 * 12
+        ssi_receives_outside_shelter_support: true
+      spouse:
+        age: 60
+        pension_income: 0 * 12
+        employment_income: 2000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Unearned: 0 + 0 + 258.5; earned: 100 + 2000.
+    # Subtract $20 from unearned, carry any remainder to earnings,
+    # then subtract $65 from earnings and count half the remainder.
+    # Couple: $1256; alone: $256; deemed: $1256 - $256 = $1000.
+    # SSI: min($1,491 - $1256, $645.1667) = $235.
+    ssi_income_deemed_from_ineligible_spouse_monthly: [1000, 0]
+    ssi_countable_income: [1256, 0]
+    ssi: [235, 0]
+
+- name: Shelter support in July leaves other months unchanged and annual deeming sums the months.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        ssi_receives_outside_shelter_support:
+          2026-07: true
+      spouse:
+        age: 60
+        employment_income: 2_000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Without support: ($2,000 - $20 - $65) / 2 = $957.50 deemed;
+    # SSI = $1,491 - $957.50 = $533.50.
+    # July: ($258.50 - $20) + ($2,000 - $65) / 2 = $1,206 countable;
+    # deemed = $1,206 - $238.50 = $967.50; SSI = $285.
+    # Annual deemed: 11 x $957.50 + $967.50 = $11,500.
+    # Annual SSI: 11 x $533.50 + $285 = $6,153.50.
+    ssi_income_deemed_from_ineligible_spouse_monthly:
+      2026-01: [957.50, 0]
+      2026-07: [967.50, 0]
+    ssi_income_deemed_from_ineligible_spouse: [11_500, 0]
+    ssi_countable_income:
+      2026-01: [957.50, 0]
+      2026-07: [1_206, 0]
+    ssi:
+      2026-01: [533.50, 0]
+      2026-07: [285, 0]
+      2026: [6_153.50, 0]
