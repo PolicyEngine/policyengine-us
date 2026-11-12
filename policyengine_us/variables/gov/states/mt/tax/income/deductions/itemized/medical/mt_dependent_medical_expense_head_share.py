@@ -44,7 +44,7 @@ class mt_dependent_medical_expense_head_share(Variable):
         "dependents' expenses get the equal split, which has no effect."
     )
     reference = (
-        # PDF pages 11, 32-33: "Allocation of deductions" and line 1.
+        # PDF pages 11, 32-33, 43: deduction allocation, line 1, capital gain credit.
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=11",
         # ARM 42.15.524(3)(b): on the same form, a deduction not clearly
         # attributable to one spouse "may be divided as provided on the form".

@@ -1,3 +1,15 @@
+- name: An unmarried filer keeps the joint path when rounding lowers the individual tax
+  # The 0.009 difference falls below the one-cent comparison tolerance.
+  period: 2022
+  input:
+    state_code: MT
+    age: 40
+    mt_income_tax_indiv: 99.991
+    mt_income_tax_joint: 100
+  output:
+    mt_files_separately: false
+    mt_income_tax: 100
+
 - name: Joint over individual income
   period: 2021
   input:
