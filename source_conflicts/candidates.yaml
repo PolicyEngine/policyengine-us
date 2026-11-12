@@ -9219,6 +9219,50 @@ candidates:
   state: unreviewed
   note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
     than" (or_liheap_eligible.py).
+- id: us-or:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: federal-fiscal
+  question: Can Oregon's rounded-up LIHEAP income limits pay a household whose income exceeds both 150% of the poverty
+    guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Oregon, page 2
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=2
+  - kind: manual
+    citation: 2026 Energy Assistance Intake, Operations and Policy Manual, 60% of State Median Income by Household Size,
+      PDF page 77
+    url: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=77
+  - kind: manual
+    citation: PY2025 Energy Assistance Operations and Policy Manual, income limits, PDF page 57
+    url: https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=57
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The manuals print 60% of the size-adjusted median rounded up to the next dollar, $1 or $2 above HHS's amount
+      at most sizes.
+  example: In FY2026, two people with $50,195 of countable income and electric heat in Multnomah County are within the
+    printed $50,196 limit, which would pay $275, but exceed the $50,194 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/ohcs/liheap/eligibility/or_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10736
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Printed and capped
+    annual limits: FY2026 size 1, $38,385 and $38,384; 2, $50,196 and $50,194; 3, $62,006 and $62,005; 4, $73,817 and
+    $73,816; 5, $85,627 and $85,626; 6, $97,438 and $97,437; sizes 7 to 11, $1 lower ($99,652 and $99,651 at 7); from
+    size 12 the printed amount stays, because 150% of the guideline is the higher maximum. PY2025, with the 60% amounts
+    computed from the $117,983 four-person median because HHS''s FY2025 table was not located: size 1, $36,811 and
+    $36,810; 3, $59,464 and $59,462; 5, $82,117 and $82,115. The PY2027 limits printed at sizes 1 to 6 are whole-dollar
+    products and equal HHS''s method. The last payment band for two people ends at $50,195, above the capped limit; see
+    us-or:liheap-final-payment-band-bound.'
 - id: us-pa:liheap-interest-dividend-threshold
   program: liheap
   years:

@@ -115,9 +115,9 @@
     pre_subsidy_electricity_expense: [1_500, 1_500, 0, 1_500, 1_500, 1_500, 1_500]
     receives_housing_assistance: [false, false, false, false, true, false, false]
     # About 30 hours a week at the Portland-metro minimum wage, as in Case 1;
-    # the sixth household is one dollar above the size 1 limit of $38,385
-    # (page 77).
-    or_liheap_countable_income: [26_000, 26_000, 26_000, 26_000, 26_000, 38_386, 26_000]
+    # the sixth household is one dollar above the size 1 limit of $38,384,
+    # HHS's FY2026 60% state median income amount (page 77 prints $38,385).
+    or_liheap_countable_income: [26_000, 26_000, 26_000, 26_000, 26_000, 38_385, 26_000]
   output:
     # "Eligible" households are "responsible for their home heating or cooling
     # expenses" (page 90), and the matrices pay electric cooling from their
