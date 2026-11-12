@@ -19,6 +19,10 @@ def annual_input(person, period, name):
 
         holder._record_store(period.this_year, next_sequence_number())
 
+    # Monthly readers retain dated abolition switches on the annual name.
+    if simulation.tax_benefit_system.parameters(period).gov.abolitions[name]:
+        return 0
+
     abolished = simulation.tax_benefit_system.parameters(
         period.this_year
     ).gov.abolitions[name]
