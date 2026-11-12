@@ -225,3 +225,125 @@
     wi_ssi_e: 0
     # Regular individual rate only.
     wi_ssp: 92.16
+
+- name: Wisconsin couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: WI
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    wi_ssp_eligible: [true, true, true]
+    # Wisconsin DMS Operations Memo 26-12, effective May 1, 2026:
+    # https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-12.pdf#page=2
+    # Eligible couple $145.26 / 2 = $72.63 each; individual $92.16.
+    wi_ssp_regular: [72.63, 72.63, 92.16]
+    wi_ssp: [72.63, 72.63, 92.16]
+
+- name: Wisconsin SSI-E couple amount excludes the third certified adult.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        wi_ssi_e_certified: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        wi_ssi_e_certified: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        wi_ssi_e_certified: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: WI
+  output:
+    # The memo's SSI-E rates are $379.90/couple and $105.59/individual.
+    # https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-12.pdf#page=2
+    # $379.90 / 2 = $189.95 each; plus regular $72.63 = $262.58 each.
+    # Third adult: $105.59 + $92.16 = $197.75.
+    wi_ssi_e: [189.95, 189.95, 105.59]
+    wi_ssp: [262.58, 262.58, 197.75]
+
+- name: Wisconsin ineligible-spouse rate applies only to the actual eligible spouse.
+  period: 2026-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 40
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: WI
+  output:
+    is_ssi_ineligible_spouse: [false, true, false]
+    wi_ssp_eligible: [true, false, true]
+    # The memo pays $143.47 to an eligible person with an ineligible spouse.
+    # https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-12.pdf#page=2
+    # The third adult has no spouse and keeps the $92.16 individual amount.
+    wi_ssp_regular: [143.47, 0, 92.16]
+    wi_ssp: [143.47, 0, 92.16]

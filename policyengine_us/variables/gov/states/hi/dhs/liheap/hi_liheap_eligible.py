@@ -31,8 +31,7 @@ class hi_liheap_eligible(Variable):
         # for the first day of the application month.
         person = spm_unit.members
         receives_ssi = spm_unit.any(
-            (person("ssi", period, options=[ADD]) > 0)
-            | (add(person, period, ["receives_ssi"]) > 0)
+            (person("ssi", period) > 0) | (add(person, period, ["receives_ssi"]) > 0)
         )
         categorical = receives_ssi | (
             add(spm_unit, period, ["snap", "tanf", "general_assistance"]) > 0
