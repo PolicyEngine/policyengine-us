@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
     SSIFederalLivingArrangement,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_spouse_index,
+)
 
 
 class ssi_couple_computation_applies(Variable):
@@ -31,6 +34,7 @@ class ssi_couple_computation_applies(Variable):
         in_facility = (
             arrangement == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
         )
-        one_in_facility = person.marital_unit.sum(in_facility) == 1
+        spouse = np.maximum(_ssi_spouse_index(person, period.this_year), 0)
+        one_in_facility = in_facility != in_facility[spouse]
 
         return joint_claim & ~one_in_facility

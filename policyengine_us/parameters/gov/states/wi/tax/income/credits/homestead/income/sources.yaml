@@ -7,15 +7,26 @@ metadata:
       href: https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=14
     - title: 2025 Wisconsin Schedule H instructions
       href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=6
+    - title: Wis. Stat. 71.52(4)-(6)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52
+    - title: Wisconsin DOR Publication 127, Homestead Credit Situations and Solutions
+      href: https://www.revenue.wi.gov/DOR%20Publications/pb127.pdf#page=9
 values:
   2021-01-01:
     - adjusted_gross_income
     # additional homestead income sources:
     - tax_exempt_interest_income
-    - tax_exempt_social_security
+    # The household is the claimant and spouse (Wis. Stat. 71.52(4)), so
+    # this leaves out a dependent's benefits, unlike tax_exempt_social_security.
+    - filer_tax_exempt_social_security
     - tax_exempt_pension_income
     - tax_exempt_unemployment_compensation
     # cash transfer income sources:
     - ssi
-    # wi_state_supplement
+    # Wisconsin counts state SSI, SSI-E and Caretaker Supplement payments in
+    # household income as cash public assistance (Wis. Stat. 71.52(6)), and
+    # DOR has claimants report them with SSI (Publication 127, page 9). As
+    # with ssi, Wisconsin leaves a dependent child's own supplement out of
+    # household income (71.52(4)-(5)).
+    - wi_ssp
     - tanf

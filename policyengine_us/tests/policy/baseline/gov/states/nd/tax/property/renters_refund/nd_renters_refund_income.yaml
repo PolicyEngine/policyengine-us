@@ -249,3 +249,432 @@
     # The 5,000 from a plan the recipient paid for is excluded by IRC
     # 104(a)(3), and NDCC 57-02-08.1(5)(c) excludes it: 10,000 + 7,000.
     nd_renters_refund_income: 17_000
+
+- name: North Dakota leaves out interest on state and local bonds, which federal law excludes from income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 20_000
+    taxable_interest_income: 1_000
+    tax_exempt_interest_income: 5_000
+  output:
+    market_income: 26_000
+    # IRC 103(a) excludes the 5,000 of bond interest, and NDCC
+    # 57-02-08.1(5)(c) excludes any amount federal law excludes:
+    # 20,000 + 1,000.
+    nd_renters_refund_income: 21_000
+
+- name: North Dakota counts social security in full but leaves out the nontaxable parts of pensions and IRA distributions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    taxable_private_pension_income: 10_000
+    # The investment in the contract (IRC 72(b)(1)).
+    tax_exempt_private_pension_income: 4_000
+    # A qualified Roth IRA distribution (IRC 408A(d)(1)).
+    tax_exempt_ira_distributions: 6_000
+    taxable_ira_distributions: 3_000
+    social_security_retirement: 8_000
+  output:
+    # Social security is the one federal exclusion the statute keeps in
+    # income: 10,000 + 3,000 + 8,000.
+    nd_renters_refund_income: 21_000
+
+- name: North Dakota leaves out the payroll deductions federal law excludes from wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 50_000
+    # IRC 402(e)(3) and 402(g)(1) elective deferrals, and HSA contributions
+    # through payroll (IRC 106(d)).
+    traditional_401k_contributions: 5_000
+    health_savings_account_payroll_contributions: 2_000
+  output:
+    irs_employment_income: 43_000
+    nd_renters_refund_income: 43_000
+
+- name: North Dakota counts dependent care assistance above the IRC 129 limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 50_000
+    dependent_care_employer_benefits: 9_000
+  output:
+    # IRC 129(a)(2)(A) excludes 7,500 for 2026, and the other 1,500 is
+    # gross income: 50,000 - 7,500.
+    taxable_dependent_care_benefits: 1_500
+    nd_renters_refund_income: 42_500
+
+- name: North Dakota leaves out alimony under a divorce instrument executed after 2018.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 10_000
+    alimony_income: 12_000
+    divorce_year: 2020
+  output:
+    # The recipient's gross income leaves out alimony under an instrument
+    # executed after 2018 (IRS Topic 452).
+    nd_renters_refund_income: 10_000
+
+- name: North Dakota counts alimony under a divorce instrument executed before 2019.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 10_000
+    alimony_income: 12_000
+    divorce_year: 2015
+  output:
+    nd_renters_refund_income: 22_000
+
+- name: North Dakota leaves out a dependent's tax-exempt interest and counts the rest of the dependent's income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 30_000
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+        taxable_interest_income: 500
+        tax_exempt_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # NDCC 57-02-08.1(5)(c) counts the dependent's income and excludes what
+    # federal law excludes: 30,000 + 500.
+    nd_renters_refund_income: 30_500
+
+- name: North Dakota leaves out savings bond interest spent on higher education, which federal law excludes from income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 20_000
+    taxable_interest_income: 3_000
+    # IRC 135(a) excludes it. The model deducts it above the line, so
+    # interest_income still holds it.
+    us_bonds_for_higher_ed: 2_000
+  output:
+    market_income: 23_000
+    # 20,000 + 3,000 - 2,000.
+    nd_renters_refund_income: 21_000
+
+- name: North Dakota leaves out savings bond interest whose exclusion the household records on the student it paid for.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 30_000
+        taxable_interest_income: 4_000
+      child:
+        age: 19
+        is_tax_unit_dependent: true
+        us_bonds_for_higher_ed: 2_500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # 30,000 + 4,000 - 2,500.
+    nd_renters_refund_income: 31_500
+
+- name: North Dakota leaves out employer adoption assistance, which federal law excludes from income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 45_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        # IRC 137(a) excludes it, and households record it on the adopted
+        # child. The model deducts it above the line, so the wages include it.
+        qualified_adoption_assistance_expense: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # 45,000 - 5,000.
+    nd_renters_refund_income: 40_000
+
+- name: North Dakota leaves out income from Puerto Rico that federal law excludes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        # IRC 933 excludes it. The model deducts it above the line, so the
+        # wages include it.
+        puerto_rico_income: 15_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    # 40,000 - 15,000.
+    nd_renters_refund_income: 25_000
+
+- name: North Dakota takes savings bond interest out of the interest that holds it, never out of social security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    taxable_interest_income: 1_000
+    us_bonds_for_higher_ed: 3_000
+    social_security_retirement: 8_000
+  output:
+    # Only the 1,000 of taxable interest can leave: 1,000 + 8,000 - 1,000.
+    nd_renters_refund_income: 8_000
+
+- name: North Dakota takes savings bond interest out of interest reported only as a total.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    interest_income: 3_000
+    # IRC 135(a) excludes 2,000 of the interest.
+    us_bonds_for_higher_ed: 2_000
+    social_security_retirement: 10_000
+  output:
+    # 3,000 + 10,000 - 2,000.
+    nd_renters_refund_income: 11_000
+
+- name: A business loss doesn't keep savings bond interest spent on higher education in income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    taxable_interest_income: 3_000
+    # IRC 135(a) excludes 2,000 of the interest.
+    us_bonds_for_higher_ed: 2_000
+    self_employment_income: -3_000
+    social_security_retirement: 10_000
+  output:
+    market_income: 0
+    # 3,000 - 3,000 + 10,000 - 2,000.
+    nd_renters_refund_income: 8_000
+
+- name: A rental loss doesn't keep employer adoption assistance in income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+        rental_income: -40_000
+        social_security_retirement: 10_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        # IRC 137(a) excludes 5,000 of the wages.
+        qualified_adoption_assistance_expense: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        # Once renter's refund income counts TANF (#10724), the rental loss
+        # would qualify the family for it; this case sets TANF to zero to test
+        # the loss alone.
+        tanf: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # 40,000 - 40,000 + 10,000 - 5,000.
+    nd_renters_refund_income: 5_000
+
+- name: Employer adoption assistance comes out only up to the wages that hold it.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 3_000
+        social_security_retirement: 10_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        qualified_adoption_assistance_expense: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ND
+  output:
+    # 3,000 - 3,000 + 10,000.
+    nd_renters_refund_income: 10_000
+
+- name: North Dakota leaves out income from American Samoa that federal law excludes.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        # IRC 931(a) excludes it for a bona fide resident of American Samoa.
+        # The model deducts it above the line, so the wages include it.
+        specified_possession_income: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    # 30,000 - 10,000.
+    nd_renters_refund_income: 20_000
+
+- name: A rental loss doesn't keep income from American Samoa in income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 30_000
+        rental_income: -30_000
+        social_security_retirement: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        # IRC 931(a) excludes 10,000 of the wages.
+        specified_possession_income: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    market_income: 0
+    # 30,000 - 10,000 - 30,000 + 10,000.
+    nd_renters_refund_income: 0
+
+- name: A self-employment loss doesn't keep income from Puerto Rico in income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 30_000
+        self_employment_income: -35_000
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        # IRC 933 excludes 10,000 of the wages.
+        puerto_rico_income: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    # 30,000 - 10,000 - 35,000 + 20,000.
+    nd_renters_refund_income: 5_000
+
+- name: Income from American Samoa that no market income component holds never comes out of social security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        specified_possession_income: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    nd_renters_refund_income: 20_000
+
+- name: Income from Puerto Rico that no market income component holds never comes out of social security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        puerto_rico_income: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    nd_renters_refund_income: 20_000
+
+- name: North Dakota's income tax reductions leave retired military benefits, capital gains and dividends in income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    state_code: ND
+    # N.D.C.C. 57-38-30.3(2)(d) and (r) reduce North Dakota taxable income by
+    # 40 percent of net long-term gains and qualified dividends and by retired
+    # military benefits. Item 10 of the Tax Commissioner's guideline lists
+    # military pensions and net gains as income.
+    military_retirement_pay: 30_000
+    long_term_capital_gains: 5_000
+    qualified_dividend_income: 1_000
+  output:
+    # North Dakota's income tax takes each reduction.
+    nd_military_retirement_subtraction: 30_000
+    nd_ltcg_subtraction: 2_000
+    nd_qdiv_subtraction: 400
+    # 30,000 + 5,000 + 1,000, with no state-law subtraction.
+    nd_renters_refund_income: 36_000

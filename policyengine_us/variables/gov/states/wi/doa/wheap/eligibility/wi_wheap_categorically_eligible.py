@@ -35,7 +35,7 @@ class wi_wheap_categorically_eligible(Variable):
             [~person("is_snap_excluded_member", month) for month in months],
             axis=0,
         )
-        receives_snap = spm_unit("snap", period, options=[ADD]) > 0
+        receives_snap = spm_unit("snap", period) > 0
         foodshare_member = in_snap_unit & spm_unit.project(receives_snap)
         receives_w2_cash = spm_unit("tanf", period) > 0
         w2_member = person("is_citizen_or_legal_immigrant", period) & spm_unit.project(

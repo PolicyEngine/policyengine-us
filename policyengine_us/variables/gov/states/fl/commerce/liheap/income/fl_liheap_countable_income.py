@@ -39,7 +39,7 @@ class fl_liheap_countable_income(Variable):
             earned = earned + max_(person(source, period), 0)
         unearned = 0
         for source in p.sources.unearned:
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            unearned = unearned + max_(person(source, period), 0)
         # Plan section 1.9 counts "net gambling or lottery winnings", so
         # losses offset only winnings.
         gambling = max_(
@@ -48,7 +48,7 @@ class fl_liheap_countable_income(Variable):
         )
         # Count TANF once at SPM level. The take-up-gated tanf total includes
         # fl_tca; fl_tca alone is the entitlement a nonrecipient could get.
-        cash_grant = add(spm_unit, period, p.sources.household, options=[ADD])
+        cash_grant = add(spm_unit, period, p.sources.household)
         # Annual inputs approximate the prior 30 days/current economic situation.
         # Nonqualified members' countable income is retained in full. UI and
         # cash gifts are excluded by the plans. Gross SSA is included; the

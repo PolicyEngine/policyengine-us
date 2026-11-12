@@ -1067,3 +1067,39 @@
         county: HONOLULU_COUNTY_HI
   output:
     hi_liheap_points: [5, 5, 5, 4]
+
+- name: Case 17, a 100% service-connected veteran adds the disabled-adult point.
+  period: 2026
+  # Same income as Case 16's person3 (5 points with the disabled point).
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        employment_income: 12_000
+        is_fully_disabled_service_connected_veteran: true
+      person2:
+        age: 40
+        ssi: 0
+        employment_income: 12_000
+        is_fully_disabled_service_connected_veteran: false
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: [5, 4]

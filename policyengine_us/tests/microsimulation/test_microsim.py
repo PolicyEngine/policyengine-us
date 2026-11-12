@@ -243,14 +243,18 @@ def test_default_dataset_uses_its_supplied_tax_unit_roles():
     """Every tax-unit role on the certified default build is its own.
 
     `populace_us_2024` ships its tax-unit constructor's roles
-    (`tax_unit_role_input`). Without them, age ordering made the oldest adult
-    the head and the next-oldest the spouse, pairing adult students with their
-    parents as joint filers, heading couples by the older partner rather than
-    the reference person, and leaving lone minors with no head. This checks the
-    whole population, person by person, in the data year and in an extended
-    year, since the loader carries the column forward rather than the formulas.
-    Filing status is not checked against the build: the model computes it from
-    these roles and the filing rules.
+    (`tax_unit_role_input`). Without supplied roles, the oldest adult heads
+    the tax unit; when two candidates share a two-person marital unit in the
+    tax unit, the older of that couple heads instead. An adult outside the
+    head's marital unit who meets the qualifying child age test is not the
+    inferred spouse, so supplied marital units no longer pair an adult student
+    with a parent; when marital units are omitted, plain age order applies.
+    The fallback still heads couples by the older partner rather than the
+    reference person and leaves lone minors with no head.
+    This checks the whole population, person by person, in the data year and
+    in an extended year, since the loader carries the column forward rather
+    than the formulas. Filing status is not checked against the build: the
+    model computes it from these roles and the filing rules.
     """
     import numpy as np
     import pandas as pd

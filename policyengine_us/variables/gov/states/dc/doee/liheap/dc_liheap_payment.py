@@ -14,7 +14,8 @@ class dc_liheap_payment(Variable):
         p = parameters(period).gov.states.dc.doee.liheap.payment
         housing_type = spm_unit("dc_liheap_housing_type", period)
         heating_type = spm_unit("dc_liheap_heating_type", period)
-        income_level = spm_unit("dc_liheap_income_level", period)
+        # The floor keeps units outside DC (income level 0) on a valid matrix key.
+        income_level = max_(spm_unit("dc_liheap_income_level", period), 1)
         capped_size = clip(spm_unit("spm_unit_size", period), 1, 4)
         types = heating_type.possible_values
 
