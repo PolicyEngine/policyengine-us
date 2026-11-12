@@ -10,7 +10,13 @@ class is_federal_medicaid_immigration_status_eligible(Variable):
         "a citizen, a qualified noncitizen who is exempt from or past the "
         "five-year bar, or a lawfully residing child or pregnant person in a "
         "state that takes the option in 42 U.S.C. 1396b(v)(4). State-funded "
-        "coverage is left to is_medicaid_immigration_status_eligible."
+        "coverage is left to is_medicaid_immigration_status_eligible. "
+        "Because this variable is YEAR-defined, the status list dated "
+        "2026-10-01 is read at January 1, so the 42 U.S.C. 1396b(v)(5) "
+        "narrowing that starts October 1, 2026 applies in the model only from "
+        "2027. The test also assumes every state covers qualified noncitizens "
+        "who are exempt from or past the bar, though 8 U.S.C. 1612(b)(1) lets "
+        "each state decide."
     )
     definition_period = YEAR
     reference = (

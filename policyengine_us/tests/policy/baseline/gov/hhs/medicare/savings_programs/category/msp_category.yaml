@@ -202,3 +202,22 @@
     is_federal_medicaid_immigration_status_eligible: false
     msp_category:
       2026-01: NONE
+
+# Pins the SLMB gate on the federal test. $18,240 pension: $18,240 / 12 - $20 =
+# $1,500 countable, inside the SLMB band ($1,330 to $1,596). Temporary protected
+# status fails the federal Medicaid immigration test, so no tier, although the
+# broader is_medicaid_immigration_status_eligible is true in California.
+# Same household as Case 12, in California.
+- name: Case 16, California person with temporary protected status in the SLMB band gets no tier.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+    pension_income: 18_240
+    state_code: CA
+  output:
+    is_medicaid_immigration_status_eligible: true
+    is_federal_medicaid_immigration_status_eligible: false
+    msp_category:
+      2026-01: NONE
