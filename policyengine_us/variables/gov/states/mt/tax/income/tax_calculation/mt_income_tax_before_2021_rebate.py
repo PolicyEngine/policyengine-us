@@ -68,7 +68,7 @@ class mt_income_tax_before_2021_rebate(Variable):
             where=claimants > 0,
         )
         # The couple files separately when doing so lowers the rebate-free
-        # line 20 by more than one cent, mirroring
+        # line 20 by more than one cent plus float32 roundoff, mirroring
         # mt_income_tax_before_refundable_credits_unit.
         p = parameters(period).gov.states.mt.tax.income
         separate_allowed = p.married_filing_separately_on_same_return_allowed

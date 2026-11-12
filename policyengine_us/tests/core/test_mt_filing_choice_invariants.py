@@ -1,7 +1,7 @@
 """Keep Montana filing choices stable within one cent.
 
 Spouses may choose a joint return or separate returns on the same form.
-PolicyEngine keeps the joint path when the savings do not exceed one cent.
+PolicyEngine keeps the joint path within one cent plus float32 roundoff.
 The rebate base repeats this election before refundable credits, so both
 comparisons must make the same choice when credits are zero.
 """
@@ -10,6 +10,7 @@ import numpy as np
 from hypothesis import given, settings, strategies as st
 
 from policyengine_us import Simulation
+from policyengine_us.tools.mt_filing_choice import mt_separate_filing_is_cheaper
 
 
 @settings(max_examples=4, deadline=None)
@@ -87,4 +88,34 @@ def test_filing_ties_and_rebate_base_agree(columns, year):
         expected_rebate_base,
         atol=0,
         rtol=0,
+    )
+
+
+@settings(max_examples=100, deadline=None, derandomize=True)
+@given(
+    head_cents=st.integers(-10_000_000, 10_000_000),
+    spouse_cents=st.integers(-10_000_000, 10_000_000),
+)
+def test_nominal_one_cent_ties_keep_joint_filing(head_cents, spouse_cents):
+    columns = np.array([head_cents / 100, spouse_cents / 100], dtype=np.float32)
+    separate = columns.astype(np.float64).sum()
+    joint = np.float32((head_cents + spouse_cents + 1) / 100)
+    magnitude = np.abs(columns.astype(np.float64)).sum()
+    assert not mt_separate_filing_is_cheaper(separate, joint, magnitude)
+
+
+@settings(max_examples=100, deadline=None, derandomize=True)
+@given(
+    head_cents=st.integers(0, 200_000),
+    spouse_cents=st.integers(0, 200_000),
+)
+def test_resolvable_savings_on_both_sides_of_one_cent(head_cents, spouse_cents):
+    columns = np.array([head_cents / 100, spouse_cents / 100], dtype=np.float32)
+    separate = columns.astype(np.float64).sum()
+    nominal = (head_cents + spouse_cents) / 100
+    joint = np.array(
+        [nominal + saving for saving in [0.009, 0.01, 0.011]], dtype=np.float32
+    )
+    np.testing.assert_array_equal(
+        mt_separate_filing_is_cheaper(separate, joint), [False, False, True]
     )

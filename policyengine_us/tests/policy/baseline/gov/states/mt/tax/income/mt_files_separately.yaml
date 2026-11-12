@@ -119,3 +119,87 @@
   output:
     mt_files_separately: false
     mt_income_tax: 100
+
+- name: Spouses keep joint filing when column rounding changes a one-cent tie
+  period: 2022
+  input:
+    people:
+      head:
+        mt_income_tax_indiv: 0.375
+      spouse:
+        mt_income_tax_indiv: 0.115
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_income_tax_joint: 0.5
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # 0.5 - (0.375 + 0.115) = 0.01; preserve the nominal tie after float32 inputs.
+    mt_files_separately: false
+    mt_income_tax: 0.5
+
+- name: Spouses keep joint filing when both paths round a one-cent tie upward
+  period: 2022
+  input:
+    people:
+      head:
+        mt_income_tax_indiv: 69.96
+      spouse:
+        mt_income_tax_indiv: 81.77
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_income_tax_joint: 151.74
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # 151.74 - (69.96 + 81.77) = 0.01; both totals carry float32 rounding.
+    mt_files_separately: false
+    mt_income_tax: 151.74
+
+- name: Spouses file separately when two columns save more than the roundoff tolerance
+  period: 2022
+  input:
+    people:
+      head:
+        mt_income_tax_indiv: 0.375
+      spouse:
+        mt_income_tax_indiv: 0.114
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_income_tax_joint: 0.5
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # 0.5 - (0.375 + 0.114) = 0.011, above one cent plus float32 roundoff.
+    mt_files_separately: true
+    mt_income_tax: 0.489
+
+- name: Spouses keep joint filing when refundable credits offset the columns at a one-cent tie
+  period: 2022
+  input:
+    people:
+      head:
+        mt_income_tax_indiv: 69.95
+      spouse:
+        mt_income_tax_indiv: -69.96
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_income_tax_joint: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # 0 - (69.95 - 69.96) = 0.01; count both columns' rounding exposure.
+    mt_files_separately: false
+    mt_income_tax: 0
