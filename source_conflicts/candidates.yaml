@@ -11158,6 +11158,57 @@ candidates:
     income list, whose comment records that Policy Manual Revision 24-2 still describes regular VA payments as countable
     (income/sources/unearned.yaml, tx_fpp_countable_unearned_income.py). Confirm overlapping manual versions and
     effective years.'
+- id: us-tx:msp-spouse-deeming-allowance
+  program: medicare-savings-programs
+  years:
+    from: 2026
+    type: calendar
+  question: When Texas deems an ineligible spouse's income for the Medicare Savings Programs, is the deeming threshold,
+    and each ineligible child's allocation, MEPD Appendix XXIX's program-specific living allowance ($474 for QMB, $568
+    for SLMB and $639 for QI-1 in 2026) or SSI's $497 difference between the couple and individual benefit rates?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396d(p)(1)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/1396d
+  - kind: regulation
+    citation: 20 CFR 416.1163(b)(1) and (d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  - kind: manual
+    citation: Texas MEPD Handbook, Appendix XXIX (Rev. 26-2)
+    url: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxix-special-deeming-eligibility-test-spouse-spouse
+  readings:
+    statute: 'Section 1396d(p)(1)(B) measures income "as determined under section 1382a of this title for purposes of
+      the supplemental security income program". 20 CFR 416.1163(b)(1) sets each ineligible child''s allocation at "the
+      difference between the Federal benefit rate for an eligible couple and the Federal benefit rate for an eligible
+      individual", and (d) deems nothing from a spouse whose income after allocations "is not more than" that
+      difference: $1,491 - $994 = $497 a month in 2026, the same for every program.'
+    other: 'Appendix XXIX (Rev. 26-2, information effective March 1, 2026) gives a "Program-Specific Living Allowance
+      Allocation: Community MEPD $497,CAS $497, QMB $474,SLMB $568, QI-1 $639", deducts it for each ineligible child
+      (step 3), deems nothing when the spouse''s remaining income "is no more than the program- specific living
+      allowance" (step 4a), and tells the worker to "re-budget for SLMB or QI-1 if applicable" when an applicant who
+      passes the QMB pretest fails QMB in the deeming test (step 8).'
+  example: A Texas applicant, 68, on Medicare with $1,340 a month and a spouse, 50, with $497 a month is QMB under the
+    regulation, because $497 is not more than $497, so nothing is deemed and $1,320 is within the one-person $1,330.
+    Under Appendix XXIX, $497 is above $474, so it is deemed for QMB, and $1,340 + $497 - $20 = $1,817 is above the
+    $1,804 couple limit. Re-budgeted for SLMB, $497 is not above $568, so nothing is deemed, and the applicant gets
+    SLMB.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_tests_as_couple.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/_msp_spouse_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10633
+  state: open
+  note: 'PE-US uses SSI''s $497 in every state, as the deeming threshold (msp_tests_as_couple) and as each ineligible
+    child''s allocation (ssi_ineligible_child_allocation, read in msp_spouse_income); msp_countable_income.yaml Case 35
+    is the household in the example. The Texas amounts are the gaps between its couple and individual limits for each
+    program ($1,804 - $1,330, $2,164 - $1,596, $2,435 - $1,796). For QMB the $474 deems more income than SSI''s $497
+    would; for SLMB and QI-1 the Texas amounts deem less. With no ineligible children, the tiers differ only when the
+    spouse has more than $474 and up to $497, the applicant''s own income is within the one-person QMB limit and the
+    deemed income is above the QMB couple limit. With ineligible children the allocations differ in both directions,
+    and Cases 24 and 37 keep their tiers either way. Following the handbook would need a Texas allowance parameter for
+    each program.'
 - id: us-tx:ssi-facility-supplement-amount-and-start
   program: ssi-state-supplement
   years:
@@ -13667,6 +13718,9 @@ candidates:
   - kind: regulation
     citation: 20 CFR 416.1801(c)
     url: https://www.law.cornell.edu/cfr/text/20/416.1801
+  - kind: regulation
+    citation: 20 CFR 416.1160(d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1160
   - kind: guidance
     citation: HCFA Center for Medicaid and State Operations memorandum, October 2, 1997, Policy Governing Family Size
       in Determining Eligibility for Qualified Medicare Beneficiaries and Specified Low Income Beneficiaries
@@ -13735,8 +13789,10 @@ candidates:
       ineligible spouse as someone who "is not eligible for SSI benefits"; POMS SI 00501.154 A.1 applies couple
       computation rules if "each is eligible for benefits". 416.1163 then allocates to ineligible children and deems
       only a remainder above the rate difference.'
-  example: A, on Medicare, has $1,000 a month and B, 62 and disabled, has $1,500, with two ineligible children. Combined
-    income is $2,480 and no tier; under deeming it is $1,000 + ($1,500 - 2 x $497) - $20 = $1,486 and QMB.
+  example: A, on Medicare, has $1,000 a month and B, 62 and disabled, has $1,500, with two ineligible children. Under
+    deeming it is $1,000 + ($1,500 - 2 x $497) - $20 = $1,486 and QMB. When this was ruled, the statute's reading combined
+    the two, $2,480 and no tier; since the ruling of 2026-11-10 (us:msp-couple-standard-one-spouse-on-medicare) it would
+    leave A alone, $980 and QMB.
   pe_us:
     follows: conflicting-source
     code:

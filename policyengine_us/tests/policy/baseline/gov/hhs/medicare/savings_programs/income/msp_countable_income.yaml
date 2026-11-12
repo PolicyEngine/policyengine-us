@@ -942,6 +942,9 @@
     # 20 CFR 416.1163(d)(1): person2's 5,964 / 12 = 497 is not above 497, so person1 is
     # tested alone: 1,340 - 20 = 1,320, at or below the one-person 1,330, so QMB.
     # Deemed, it would be 1,340 + 497 - 20 = 1,817 against the two-person 1,803.33: SLMB.
+    # Texas MEPD Appendix XXIX deems above 474 for QMB, so it would deem person2's 497,
+    # find 1,817 above its 1,804 couple limit and re-budget person1 to SLMB. The model
+    # uses SSI's 497; the open candidate us-tx:msp-spouse-deeming-allowance records it.
     # person2 has person1's 1,340 deemed: 497 + 1,340 - 20 = 1,817.
     msp_tests_as_couple: [false, true]
     msp_countable_income: [1_320, 1_817]
@@ -1026,3 +1029,43 @@
     msp_countable_income: [1_200.5, 1_247.5, 0, 0]
     msp_fpg: [1_803.33, 1_330, 1_330, 1_330]
     msp_category: [QMB, NONE, NONE, NONE]
+
+- name: Case 38, a spouse who is eligible for SSI and not on Medicare has no wages deemed.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 3_600
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+        ssi_earned_income: 14_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1801(c): (300 - 20) + (1,200 - 65) / 2 = 280 + 567.50 = 847.50 is
+    # below the 1,491 couple rate, so each spouse is eligible for SSI:
+    # (1,491 - 847.50) / 2 = 321.75.
+    # person2 is not on Medicare and is not an ineligible spouse (20 CFR 416.1160(d)),
+    # so person2's wages are not deemed, though 1,200 is above 497: person1 has
+    # 300 - 20 = 280 against the one-person 1,330, so QMB. Deemed, it would be
+    # 280 + (1,200 - 65) / 2 = 847.50 against the two-person 1,803.33.
+    # person2 alone has no unearned income, so the 20 comes off wages before the 65:
+    # (1,200 - 20 - 65) / 2 = 557.50.
+    uncapped_ssi: [321.75, 321.75]
+    msp_tests_as_couple: [false, false]
+    msp_countable_income: [280, 557.5]
+    msp_fpg: [1_330, 1_330]
+    msp_category: [QMB, NONE]
