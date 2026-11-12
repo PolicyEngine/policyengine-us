@@ -9275,6 +9275,46 @@ candidates:
   state: ruled
   note: The code follows the statute and subtracts every federal refundable credit except the EITC, plus the premium
     tax credit, including credits the worksheet does not list, such as the additional child tax credit outside 2021.
+- id: us-or:liheap-cooling-payment-after-heating-payment
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: program
+    note: program year as the program defines it
+  question: Can an Oregon household that received a LIHEAP standard payment for heating also receive one for cooling in the
+    same program year?
+  sources:
+  - kind: manual
+    citation: 2026 Energy Assistance Intake, Operations and Policy Manual, separated households and standard payment, PDF
+      pages 31 and 61
+    url: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=31
+  - kind: plan
+    citation: Oregon FFY2026 LIHEAP State Plan, items 1.1 and 1.2 (PDF page 4) and the crisis explanation (PDF page 13)
+    url: https://liheapch.acf.gov/docs/2026/state-plans/OR_Plan_2026.pdf#page=4
+  - kind: guidance
+    citation: Oregon Health Authority, OHOP Housing Services page, LIHEAP cooling season announcements (2024, 2025 and 2026
+      seasons; 2026 capture of August 13, 2026)
+    url: https://web.archive.org/web/20260813121701/https://www.oregon.gov/oha/PH/DiseasesConditions/HIVSTDViralHepatitis/HIVCareTreatment/Pages/housing.aspx
+  readings:
+    statute: No statute is supplied; the manual pays one standard payment a program year, and a separated household's adults
+      may not "receive another standard payment during the current program year".
+    other: The Oregon Health Authority's OHOP page says "Clients who have already received a heating payment during the year
+      may still be eligible for a cooling payment!", and the plans fund heating and cooling as separate components.
+  example: In 2026, one person in Multnomah County with $26,000 of countable income, gas heat with a $960 bill, a cooling
+    cost and a $1,500 electric bill receives $435 under the one-payment reading, and $435 plus $300 from the COOLING column,
+    $735, if a cooling payment can follow a heating payment.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/or/ohcs/liheap/or_liheap.py
+    - policyengine_us/variables/gov/states/or/ohcs/liheap/eligibility/or_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10736
+  state: open
+  note: 'PE-US follows the manual: a household with a heating cost gets its heating fuel column, never a second cooling
+    payment. The OHOP page is a subgrantee notice and says "may". If OHCS confirms both are payable, Oregon needs a separate
+    cooling amount and a second entry in the national LIHEAP list.'
 - id: us-or:liheap-final-payment-band-bound
   program: liheap
   years:
@@ -9334,6 +9374,53 @@ candidates:
   state: unreviewed
   note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
     than" (or_liheap_eligible.py).
+- id: us-or:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: federal-fiscal
+  question: Can Oregon's rounded-up LIHEAP income limits pay a household whose income exceeds both 150% of the poverty
+    guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Oregon, page 2
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=2
+  - kind: manual
+    citation: 2026 Energy Assistance Intake, Operations and Policy Manual, 60% of State Median Income by Household Size,
+      PDF page 77
+    url: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=77
+  - kind: manual
+    citation: PY2025 Energy Assistance Operations and Policy Manual, income limits, PDF page 57
+    url: https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=57
+  - kind: guidance
+    citation: HHS LIHEAP IM 2024-02 Attachment 4, Mandatory Use in LIHEAP for FY25, Oregon, pages 2 and 5
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=2
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The manuals print 60% of the size-adjusted median rounded up to the next dollar, $1 or $2 above HHS's amount
+      at most sizes.
+  example: In FY2026, two people with $50,195 of countable income and electric heat in Multnomah County are within the
+    printed $50,196 limit, which would pay $275, but exceed the $50,194 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/ohcs/liheap/eligibility/or_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10736
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Printed and capped
+    annual limits: FY2026 size 1, $38,385 and $38,384; 2, $50,196 and $50,194; 3, $62,006 and $62,005; 4, $73,817 and
+    $73,816; 5, $85,627 and $85,626; 6, $97,438 and $97,437; sizes 7 to 11, $1 lower ($99,652 and $99,651 at 7); from
+    size 12 the printed amount stays, because 150% of the guideline is the higher maximum. PY2025, from HHS''s FY2025
+    amounts (LIHEAP IM 2024-02 Attachment 4): size 1, $36,811 and $36,810; 3, $59,464 and $59,462; 5, $82,117 and
+    $82,115. PY2027: sizes 7, 9 and 11 are $1 lower ($104,693 and $104,692 at 7); the other sizes are whole-dollar
+    products and equal HHS''s method. The last payment band for two people ends at $50,195, above the capped limit; see
+    us-or:liheap-final-payment-band-bound.'
 - id: us-pa:liheap-interest-dividend-threshold
   program: liheap
   years:
