@@ -1,0 +1,236 @@
+- name: Spouses move dependent bills until the head uses the capital gain credit
+  # TY2022: each spouse has AGI 20,000 and personal exemption 2,710.
+  # The child's exemption is 2,710; each medical floor is 1,500.
+  # Head credit: 10,000 x 2% = 200. Tax at 8,900 is 176, so the
+  # head can retain 8,900 + (200 - 176) / 4% = 9,500 of taxable income.
+  # Head bills: 20,000 - 2,710 - 2,710 + 1,500 - 9,500 = 6,580.
+  # Share: 6,580 / 25,000 = 0.2632. Spouse taxable income:
+  # 20,000 - 2,710 - (18,420 - 1,500) = 370; tax = 370 x 1% = 3.70.
+  # At an equal split, each taxable income is 4,935; the spouse owes
+  # 33 + (4,935 - 3,300) x 2% = 65.70, exceeding the minimum by 62.
+  period: 2022
+  absolute_error_margin: 0.005
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        long_term_capital_gains: 10_000
+        mt_non_medical_itemized_deductions_indiv: 0
+      spouse:
+        age: 40
+        employment_income: 20_000
+        mt_non_medical_itemized_deductions_indiv: 0
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 25_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 0.2632
+    mt_taxable_income_indiv: [9_500, 370, 0]
+    mt_income_tax_before_refundable_credits_indiv: [0, 3.70, 0]
+    mt_tax_unit_itemizes: true
+
+- name: Spouses move dependent bills until the spouse uses the capital gain credit
+  # Swap the credit recipient in the preceding computation.
+  period: 2022
+  absolute_error_margin: 0.005
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        mt_non_medical_itemized_deductions_indiv: 0
+      spouse:
+        age: 40
+        employment_income: 10_000
+        long_term_capital_gains: 10_000
+        mt_non_medical_itemized_deductions_indiv: 0
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 25_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 0.7368
+    mt_taxable_income_indiv: [370, 9_500, 0]
+    mt_income_tax_before_refundable_credits_indiv: [3.70, 0, 0]
+    mt_tax_unit_itemizes: true
+
+# Moving 2.50 of bills across the optimum changes the head tax by 0.10
+# and the spouse tax by 0.025, until the head tax reaches zero.
+- name: A forced share of 0.2631 brackets the head credit exhaustion
+  period: 2022
+  absolute_error_margin: 0.005
+  input:
+    people:
+      head:
+        age: 40
+        mt_agi_indiv: 20000
+        long_term_capital_gains: 10000
+        mt_non_medical_itemized_deductions_indiv: 0
+      spouse:
+        age: 40
+        mt_agi_indiv: 20000
+        mt_non_medical_itemized_deductions_indiv: 0
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 25000
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        - child
+        mt_agi_joint: 40000
+        mt_dependent_medical_expense_head_share: 0.2631
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        - child
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 0.2631
+    mt_taxable_income_indiv:
+    - 9502.5
+    - 367.5
+    - 0
+    mt_income_tax_before_refundable_credits_indiv:
+    - 0.1
+    - 3.675
+    - 0
+    mt_tax_unit_itemizes: true
+
+# Moving 2.50 of bills across the optimum changes the head tax by 0.10
+# and the spouse tax by 0.025, until the head tax reaches zero.
+- name: A forced share of 0.2633 brackets the head credit exhaustion
+  period: 2022
+  absolute_error_margin: 0.005
+  input:
+    people:
+      head:
+        age: 40
+        mt_agi_indiv: 20000
+        long_term_capital_gains: 10000
+        mt_non_medical_itemized_deductions_indiv: 0
+      spouse:
+        age: 40
+        mt_agi_indiv: 20000
+        mt_non_medical_itemized_deductions_indiv: 0
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 25000
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        - child
+        mt_agi_joint: 40000
+        mt_dependent_medical_expense_head_share: 0.2633
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        - child
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 0.2633
+    mt_taxable_income_indiv:
+    - 9497.5
+    - 372.5
+    - 0
+    mt_income_tax_before_refundable_credits_indiv:
+    - 0
+    - 3.725
+    - 0
+    mt_tax_unit_itemizes: true
+
+- name: The head share stays at its default after separate filing ends
+  period: 2024
+  input:
+    state_code: MT
+    age: 40
+  output:
+    mt_dependent_medical_expense_head_share: 0.5
+- name: The head share stays at its default without dependent bills
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        mt_agi_indiv: 20000
+        long_term_capital_gains: 10000
+      spouse:
+        age: 40
+        mt_agi_indiv: 20000
+    tax_units:
+      unit:
+        members:
+        - head
+        - spouse
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 0.5
+
+- name: Zero credits retain the former balancing candidate when dependent exemptions cover both columns
+  period: 2022
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 30_000
+        mt_non_medical_itemized_deductions_indiv: 0
+        mt_non_refundable_credits: 0
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 10_000
+        mt_non_medical_itemized_deductions_indiv: 0
+        mt_non_refundable_credits: 0
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 36_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    # Levels are 30,000 - 2,710 + 2,250 = 29,540 and
+    # 10,000 - 2,710 + 750 = 8,040. The former balancing share is
+    # 0.5 + (29,540 - 8,040) / 72,000 = 0.7986111111.
+    # Each pre-dependent income is 790, so the child's 2,710 exemption
+    # leaves both columns at zero. A zero-credit kink at 0.7766666667
+    # also gives zero tax but must not replace the former candidate.
+    mt_dependent_medical_expense_head_share: 0.7986111111
