@@ -1,1 +1,1 @@
-DC LIHEAP Regular benefit now pays households without heating that pay their own electricity bill for cooling, from the Electric row capped at that bill.
+DC LIHEAP Regular benefit now pays households without heating that pay their own electricity bill for cooling, from the Electric row capped at that bill. DC LIHEAP income limits now use HHS's 60% state median income amounts, rounded down by household size, as DOEE publishes them.
