@@ -82,3 +82,73 @@
     state_code: AK
   output:
     ak_energy_relief: 0
+
+- name: Case 13, a resident with no status input gets the 2026 energy relief, since the status defaults to citizen and take-up to true.
+  period: 2026
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 200
+
+- name: Case 14, an undocumented Alaska resident gets no energy relief, because Alaska pays it as part of the dividend.
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: UNDOCUMENTED
+  output:
+    ak_energy_relief: 0
+
+- name: Case 15, a resident who does not take up the dividend gets no energy relief.
+  period: 2026
+  input:
+    state_code: AK
+    takes_up_ak_permanent_fund_dividend_if_eligible: false
+  output:
+    ak_energy_relief: 0
+
+- name: Case 16, each person in one household gets energy relief on their own status and take-up.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      citizen:
+        age: 40
+      undocumented_parent:
+        age: 36
+        immigration_status: UNDOCUMENTED
+      non_applicant:
+        age: 15
+        takes_up_ak_permanent_fund_dividend_if_eligible: false
+      asylee:
+        age: 22
+        immigration_status: ASYLEE
+    households:
+      household:
+        members: [citizen, undocumented_parent, non_applicant, asylee]
+        state_code: AK
+  output:
+    ak_energy_relief: [298.17, 0, 0, 298.17]
+
+- name: Case 17, a supplied zero dividend leaves energy relief in place, since each payment has its own override.
+  period: 2026
+  input:
+    state_code: AK
+    ak_permanent_fund_dividend: 0
+  output:
+    ak_energy_relief: 200
+
+- name: Case 18, an undocumented child gets no energy relief though a citizen parent does.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 6
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    ak_energy_relief: [200, 0]
