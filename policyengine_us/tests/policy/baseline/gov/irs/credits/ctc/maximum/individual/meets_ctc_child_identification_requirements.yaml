@@ -10,6 +10,54 @@
   output:
     meets_ctc_child_identification_requirements: false
 
+- name: Contiguous history, an ITIN alone fails the 2019 child SSN rule.
+  period: 2019
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
+  output:
+    meets_ctc_child_identification_requirements: false
+
+- name: Contiguous history, an ITIN alone fails the 2020 child SSN rule.
+  period: 2020
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
+  output:
+    meets_ctc_child_identification_requirements: false
+
+- name: Contiguous history, an ITIN alone fails the 2021 child SSN rule.
+  period: 2021
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
+  output:
+    meets_ctc_child_identification_requirements: false
+
+- name: Contiguous history, an ITIN alone fails the 2022 child SSN rule.
+  period: 2022
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
+  output:
+    meets_ctc_child_identification_requirements: false
+
+- name: Contiguous history, an ITIN alone fails the 2023 child SSN rule.
+  period: 2023
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
+  output:
+    meets_ctc_child_identification_requirements: false
+
+- name: Contiguous history, an ITIN alone fails the 2024 child SSN rule.
+  period: 2024
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
+  output:
+    meets_ctc_child_identification_requirements: false
+
 - name: Person is eligible for the CTC. 
   period: 2023
   input:
@@ -21,5 +69,39 @@
   period: 2026
   input:
     ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    meets_ctc_child_identification_requirements: false
+
+# IRC 24(e)(1), before the 2018 section 24(h)(7) SSN restriction;
+# 2017 Publication 972, PDF page 3, permits an SSN, ITIN or ATIN.
+- name: Case 1, a child with an ITIN meets the 2017 identification requirement.
+  period: 2017
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
+  output:
+    meets_ctc_child_identification_requirements: true
+
+- name: Case 2, a child without any TIN fails the 2017 identification requirement.
+  period: 2017
+  input:
+    ssn_card_type: NONE
+    has_tin: false
+  output:
+    meets_ctc_child_identification_requirements: false
+
+- name: Case 3, a child's ITIN does not satisfy the SSN requirement beginning in 2018.
+  period: 2018
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
+  output:
+    meets_ctc_child_identification_requirements: false
+
+- name: Case 4, the 2025 child SSN requirement continues to exclude an ITIN alone.
+  period: 2025
+  input:
+    ssn_card_type: OTHER_NON_CITIZEN
+    has_tin: true
   output:
     meets_ctc_child_identification_requirements: false

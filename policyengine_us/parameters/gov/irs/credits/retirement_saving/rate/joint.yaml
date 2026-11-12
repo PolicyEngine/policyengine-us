@@ -6,6 +6,10 @@ metadata:
   period: year
   label: Saver's Credit joint rate
   reference:
+    - title: 2017 Form 8880
+      href: https://www.irs.gov/pub/irs-prior/f8880--2017.pdf#page=1
+    - title: "IRS Notice 2016-62 #page 2-3"
+      href: https://www.irs.gov/pub/irs-drop/n-16-62.pdf#page=2
     - title: 26 U.S. Code § 25B(b)(1)
       href: https://www.law.cornell.edu/uscode/text/26/25B#b
     - title: IRS | Retirement Savings Contributions Credit (Saver's Credit)
@@ -25,11 +29,14 @@ brackets:
   # The first row of the Form 8880 line 9 table has no lower bound ("---"), so
   # a negative adjusted gross income takes the highest rate.
   - threshold:
+      2017-01-01: -.inf
       2018-01-01: -.inf
     amount:
+      2017-01-01: 0.5
       2018-01-01: 0.5
   - threshold:
       values:
+        2017-01-01: 37_001
         2018-01-01: 38_001
         2019-01-01: 38_501
         2020-01-01: 39_001
@@ -40,9 +47,11 @@ brackets:
         2025-01-01: 47_501
         2026-01-01: 48_501
     amount:
+      2017-01-01: 0.2
       2018-01-01: 0.2
   - threshold:
       values:
+        2017-01-01: 40_001
         2018-01-01: 41_001
         2019-01-01: 41_501
         2020-01-01: 42_501
@@ -53,9 +62,11 @@ brackets:
         2025-01-01: 51_001
         2026-01-01: 52_501
     amount:
+      2017-01-01: 0.1
       2018-01-01: 0.1
   - threshold:
       values:
+        2017-01-01: 62_001
         2018-01-01: 63_001
         2019-01-01: 64_001
         2020-01-01: 65_001
@@ -66,4 +77,5 @@ brackets:
         2025-01-01: 79_001
         2026-01-01: 80_501
     amount:
+      2017-01-01: 0
       2018-01-01: 0

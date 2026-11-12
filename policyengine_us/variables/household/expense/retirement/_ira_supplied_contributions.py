@@ -64,7 +64,9 @@ def traditional_ira_contributions_without_spousal_rule(person, period, own_limit
     supplied_traditional = supplied["traditional_ira_contributions"]
     if supplied_traditional is not None:
         return max_(supplied_traditional, 0)
-    desired_traditional = person("traditional_ira_contributions_desired", period)
+    desired_traditional = person(
+        "traditional_ira_contributions_desired", period
+    ) * person("traditional_ira_age_eligible", period)
     supplied_roth = supplied["roth_ira_contributions"]
     if supplied_roth is None:
         generated_desired = desired_traditional + person(

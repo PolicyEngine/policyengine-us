@@ -10,20 +10,19 @@ class cdcc_relevant_expenses(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/21#c",
         "https://www.law.cornell.edu/uscode/text/26/21#d_1",
+        "https://www.irs.gov/pub/irs-prior/f2441--2017.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/f2441--2021.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/f2441--2025.pdf#page=2",
     )
 
     def formula(tax_unit, period, parameters):
-        # Section 21 employment-related expenses cover care for any qualifying
-        # individual: childcare for children under 13
-        # (tax_unit_childcare_expenses) plus care for a disabled qualifying
-        # individual of any age — a disabled adult dependent or spouse
-        # (care_expenses, a person-level yearly input).
-        # cdcc_qualifying_childcare_expenses leaves out childcare for a child
-        # who is not a qualifying individual because a filer can be claimed
-        # as a dependent.
-        childcare = tax_unit("cdcc_qualifying_childcare_expenses", period)
-        adult_care = add(tax_unit, period, ["care_expenses"])
-        expenses = childcare + adult_care
+        # Form 2441 line 30 excludes expenses paid with the benefits already
+        # excluded under section 129; line 29 separately reduces the dollar cap.
+        expenses = max_(
+            tax_unit("cdcc_qualified_care_expenses", period)
+            - tax_unit("dependent_care_assistance_exclusion", period),
+            0,
+        )
         cdcc_limit = tax_unit("cdcc_limit", period)
         eligible_capped_expenses = min_(expenses, cdcc_limit)
         # cap further to the lowest earnings between the taxpayer and spouse

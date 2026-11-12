@@ -140,3 +140,59 @@
     exemptions_count: 2
   output:
     exemptions: 0
+
+- name: Personal exemptions remain suspended in 2019.
+  period: 2019
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2020.
+  period: 2020
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2021.
+  period: 2021
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2022.
+  period: 2022
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2023.
+  period: 2023
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2024.
+  period: 2024
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2025.
+  period: 2025
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0

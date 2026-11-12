@@ -88,4 +88,6 @@ class dependent_traditional_ira_deduction(Variable):
         spouse_active = person.marital_unit.sum(active) > active.astype(int)
         phased = active | (lives_with_spouse & spouse_active)
         limit = min_(compensation, where(phased, phased_limit, dollar_limit))
-        return min_(contributions, limit)
+        return min_(contributions, limit) * person(
+            "traditional_ira_age_eligible", period
+        )

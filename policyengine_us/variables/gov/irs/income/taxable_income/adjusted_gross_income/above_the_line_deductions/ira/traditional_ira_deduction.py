@@ -39,7 +39,7 @@ class traditional_ira_deduction(Variable):
         # Only the higher earner's allowance is needed for the lower earner.
         compensation_consumed = min_(
             max_(0, contributions), min_(compensation, dollar_limit)
-        ) + max_(0, roth_contributions)
+        ) * person("traditional_ira_age_eligible", period) + max_(0, roth_contributions)
         spouse_contributions = max_(
             0,
             person.tax_unit.sum(compensation_consumed * filer) - compensation_consumed,
@@ -61,8 +61,9 @@ class traditional_ira_deduction(Variable):
         # A tax unit dependent's deduction is on the dependent's own return.
         # It is recorded on the dependent so that person-level consumers see
         # it; the filers' above-the-line total sums the head and spouse only.
-        return where(
+        deduction = where(
             person("is_tax_unit_dependent", period),
             person("dependent_traditional_ira_deduction", period),
             filer_deduction,
         )
+        return deduction * person("traditional_ira_age_eligible", period)

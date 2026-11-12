@@ -20,7 +20,9 @@ class dependent_care_assistance_exclusion(Variable):
         # ARPA section 9632 temporarily increased the cap for 2021.
         "https://www.govinfo.gov/content/pkg/PLAW-117publ2/pdf/PLAW-117publ2.pdf#page=158",
         # Form 2441 Part III lines 12-26 compute the excluded benefit.
+        "https://www.irs.gov/pub/irs-prior/f2441--2017.pdf#page=2",
         "https://www.irs.gov/pub/irs-prior/f2441--2021.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/f2441--2025.pdf#page=2",
         "https://www.irs.gov/instructions/i2441",
     )
 
@@ -48,4 +50,11 @@ class dependent_care_assistance_exclusion(Variable):
         # min_head_spouse_earned returns the taxpayer's earnings when unmarried
         # and the lesser of the two when married filing jointly.
         earned_income_limit = tax_unit("min_head_spouse_earned", period)
-        return min_(benefits, min_(dollar_cap, earned_income_limit))
+        qualified_expenses = tax_unit("cdcc_qualified_care_expenses", period)
+        return max_(
+            min_(
+                benefits,
+                min_(qualified_expenses, min_(dollar_cap, earned_income_limit)),
+            ),
+            0,
+        )
