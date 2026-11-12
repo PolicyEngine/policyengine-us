@@ -2195,15 +2195,15 @@
     meets_ssi_resource_test: [false, false]
 
 
-# SI 01330.200 B reallocates resources in the month a child becomes ineligible.
-# Parent excess: $6,000 - $2,000 = $4,000.
-# January and November: $700 + ($943 / 3 + $20) - $20 = $1,014.3333.
-# This exceeds $943, so one eligible child receives the full $4,000 share;
-# the income-ineligible sibling also receives $4,000 under 416.1202(b).
-# December: $700 - $20 = $680, so both divide $4,000 / 2 = $2,000.
-# The annual income average, (11 x $1,014.3333 + $680) / 12 = $986.4722,
-# would wrongly exclude the food-supported child from December's divisor.
-- name: Monthly food income changes the resource divisor only in December 2024
+# The parent is aged and over the $2,000 resource limit, so is not eligible for
+# SSI and is an ineligible parent (20 CFR 416.1160(d)). Food that such a parent
+# provides is not income to the child (20 CFR 416.1148(b)(1)), so the food
+# changes nothing in any month: $700 - $20 = $680, under $943.
+# Both children stay eligible and divide the parent's excess (SI 01330.200 B):
+# ($6,000 - $2,000) / 2 = $2,000 each, which meets the limit.
+# The inputs cannot say that food comes from outside the household. That food
+# would count through November 2024 and change the divisor in December.
+- name: Food for a child living with an ineligible parent does not change the resource divisor
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -2249,14 +2249,14 @@
         members: [parent, food_supported_child, sibling]
   output:
     ssi_countable_income:
-      2024-01: [0, 1_014.33, 0]
-      2024-11: [0, 1_014.33, 0]
+      2024-01: [0, 680, 0]
+      2024-11: [0, 680, 0]
       2024-12: [0, 680, 0]
     ssi_resources_deemed_from_ineligible_parent:
-      2024-01: [0, 4_000, 4_000]
-      2024-11: [0, 4_000, 4_000]
+      2024-01: [0, 2_000, 2_000]
+      2024-11: [0, 2_000, 2_000]
       2024-12: [0, 2_000, 2_000]
     meets_ssi_resource_test:
-      2024-01: [false, false, false]
-      2024-11: [false, false, false]
+      2024-01: [false, true, true]
+      2024-11: [false, true, true]
       2024-12: [false, true, true]
