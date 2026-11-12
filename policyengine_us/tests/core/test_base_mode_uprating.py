@@ -31,13 +31,16 @@ hand-coded extensions used.
 """
 
 import math
+import numbers
 from dataclasses import dataclass
 from fractions import Fraction
 from typing import Optional
 
 import pytest
+from hypothesis import given, settings, strategies as st
 from policyengine_core.parameters import Parameter
 from policyengine_core.parameters.operations.get_parameter import get_parameter
+from policyengine_core.parameters.operations.uprate_parameters import project_from_base
 
 from policyengine_us.parameters.uprating_extensions import (
     get_average_for_12_months_ending_august,
@@ -124,21 +127,27 @@ def _projected_years(parameter):
     return range(_last_stated_year(parameter) + 1, LAST_YEAR + 1)
 
 
-def _ratio(index, period, year, floor):
-    ratio = index(f"{year}-01-01") / index(f"{period}-01-01")
-    return max(ratio, 1) if floor else ratio
-
-
-def _round_increase(increase, rounding):
+def _projection(base, index_at_year, index_at_base, rounding, floor):
+    """One projection from recorded decimals; no snap or precision guessing."""
+    if math.isinf(base):
+        return float(base)
     if rounding is None:
-        return increase
-    interval = rounding["interval"]
-    # Absorb float error from the index ratio, as core's snap does.
-    steps = round(increase / interval, 9)
-    if rounding["type"] == "downwards":
-        return math.floor(steps) * interval
-    assert rounding["type"] == "nearest", rounding
-    return round(steps) * interval
+        ratio = index_at_year / index_at_base
+        return float(base * (max(ratio, 1.0) if floor else ratio))
+    ratio = _exact(index_at_year) / _exact(index_at_base)
+    if floor:
+        ratio = max(ratio, Fraction(1))
+    step = _exact(rounding["interval"])
+    intervals = _exact(base) * (ratio - 1) / step
+    whole, remainder = divmod(intervals.numerator, intervals.denominator)
+    kind = rounding["type"]
+    if kind == "upwards":
+        whole += bool(remainder)
+    elif kind == "nearest":
+        whole += 2 * remainder >= intervals.denominator
+    else:
+        assert kind == "downwards", kind
+    return float(_exact(base) + whole * step)
 
 
 @pytest.mark.parametrize("parameter", BASE_MODE_PARAMETERS, ids=BASE_MODE_IDS)
@@ -169,9 +178,14 @@ def test_projections_keep_the_base_mode_invariants(parameter):
 def test_projections_match_the_formula_from_the_index(parameter):
     index, period, base, rounding, floor = _spec(parameter)
     for year in _projected_years(parameter):
-        increase = base * (_ratio(index, period, year, floor) - 1)
-        expected = base + _round_increase(increase, rounding)
-        assert parameter(f"{year}-01-01") == pytest.approx(expected, rel=1e-12), year
+        expected = _projection(
+            base, index(f"{year}-01-01"), index(f"{period}-01-01"), rounding, floor
+        )
+        actual = parameter(f"{year}-01-01")
+        if rounding is None:
+            assert actual == pytest.approx(expected, rel=1e-12), year
+        else:
+            assert actual == expected, year
 
 
 # (c) The statute, read independently of the metadata. Each row gives the
@@ -392,52 +406,26 @@ def test_joint_and_surviving_spouse_follow_the_single_amount(status):
 
 
 def _exact(value):
-    return Fraction(repr(value))
+    if isinstance(value, numbers.Integral) and not isinstance(value, bool):
+        return Fraction(int(value))
+    return Fraction(repr(float(value)))
 
 
-# An increase within this many intervals of a whole multiple, or of a half
-# for nearest, may land on either side of it: float error in the index ratio,
-# not the statute. Both outcomes pass there, so no expected value depends on
-# how an engine snaps or breaks a tie.
-SNAP = Fraction(1, 10**9)
-
-
-def _statutory_values(statute, base, year):
-    """Every value the statute's formula allows for ``year``, exactly.
-
-    Base plus the increase, rounded by the statute's rule: downwards to the
-    interval below, upwards to the one above, nearest half up. Two values
-    come back only where the increase lands within ``SNAP`` of a whole step
-    but not on it, which an engine may snap onto as float error or not, or
-    within ``SNAP`` of a half step, which an engine may break either way.
-    """
+def _statutory_value(statute, base, year):
+    """The single value required by the table's exact decimal rounding rule."""
     index = get_parameter(PARAMETERS, statute.index)
-    ratio = _exact(index(f"{year}-01-01")) / _exact(index(f"{statute.period}-01-01"))
-    if statute.floor:
-        ratio = max(ratio, Fraction(1))
-    increase = _exact(base) * (ratio - 1)
-    if statute.rounding is None:
-        return [float(_exact(base) + increase)]
-    interval = _exact(statute.interval)
-    exact_steps = increase / interval
-    readings = [exact_steps]
-    whole = Fraction(round(exact_steps))
-    if exact_steps != whole and abs(exact_steps - whole) <= SNAP:
-        readings.append(whole)
-    candidates = set()
-    for steps in readings:
-        if statute.rounding == "downwards":
-            candidates.add(math.floor(steps))
-        elif statute.rounding == "upwards":
-            candidates.add(math.ceil(steps))
-        else:
-            assert statute.rounding == "nearest", statute
-            half = steps - math.floor(steps) - Fraction(1, 2)
-            if abs(half) <= SNAP:
-                candidates.update({math.floor(steps), math.floor(steps) + 1})
-            else:
-                candidates.add(math.floor(steps + Fraction(1, 2)))
-    return sorted(float(_exact(base) + step * interval) for step in candidates)
+    rounding = (
+        {"type": statute.rounding, "interval": statute.interval}
+        if statute.rounding is not None
+        else None
+    )
+    return _projection(
+        base,
+        index(f"{year}-01-01"),
+        index(f"{statute.period}-01-01"),
+        rounding,
+        statute.floor,
+    )
 
 
 @pytest.mark.parametrize("parameter", BASE_MODE_PARAMETERS, ids=BASE_MODE_IDS)
@@ -452,11 +440,11 @@ def test_projections_follow_the_statute_table(parameter):
     first = max(2028, _last_stated_year(parameter) + 1)
     for year in range(first, LAST_YEAR + 1):
         value = parameter(f"{year}-01-01")
-        expected = _statutory_values(statute, base, year)
+        expected = _statutory_value(statute, base, year)
         if statute.rounding is None:
-            assert value == pytest.approx(expected[0], rel=1e-12), year
+            assert value == pytest.approx(expected, rel=1e-12), year
         else:
-            assert value in expected, (year, value, expected)
+            assert value == expected, (year, value, expected)
 
 
 def test_joint_standard_deduction_is_twice_the_single_amount_in_every_year():
@@ -735,3 +723,73 @@ def test_printed_long_term_care_limits_against_the_statutory_formula(bracket, ba
             found[year] = (printed, formula)
     assert found == LTC_DEPARTURES[base]
     assert 2027 not in found
+
+
+@pytest.mark.parametrize(
+    "base, index, interval, kind, expected",
+    [
+        (100, 1.0099999999995, 1, "downwards", 100),
+        (100, 1.0100000000005, 1, "upwards", 102),
+        (100, 1.01, 1, "downwards", 101),
+        (100, 1.01, 1, "upwards", 101),
+        (100, math.nextafter(1.005, 0), 1, "nearest", 100),
+        (100, 1.005, 1, "nearest", 101),
+        (100, math.nextafter(1.005, math.inf), 1, "nearest", 101),
+        (100, 0.995, 1, "nearest", 100),
+        (100, 0.985, 1, "nearest", 99),
+        (375, 2.32, 10, "nearest", 875),
+        (1400, 1.4, 10, "downwards", 1960),
+    ],
+)
+def test_exact_projection_has_one_boundary_outcome(
+    base, index, interval, kind, expected
+):
+    """Final core and independent oracle select the same single outcome."""
+    rounding = {"interval": interval, "type": kind}
+    assert _projection(base, index, 1, rounding, False) == expected
+    assert project_from_base(base, index, 1, (interval, kind)) == expected
+
+
+@pytest.mark.parametrize("floor", [False, True])
+@pytest.mark.parametrize("base", [-math.inf, math.inf])
+def test_projection_keeps_the_final_infinite_base_guard(base, floor):
+    for rounding in (None, {"interval": 1, "type": "downwards"}):
+        parsed = None if rounding is None else (1, "downwards")
+        assert _projection(base, 1e-300, 1e300, rounding, floor) == base
+        assert project_from_base(base, 1e-300, 1e300, parsed, floor) == base
+
+
+@settings(max_examples=25, deadline=None)
+@given(
+    base=st.integers(min_value=1, max_value=10000),
+    current=st.integers(min_value=1, max_value=20000),
+    initial=st.integers(min_value=1, max_value=10000),
+    interval=st.sampled_from([1, 10, 50, 100]),
+    kind=st.sampled_from(["downwards", "upwards", "nearest"]),
+    floor=st.booleans(),
+)
+def test_projection_oracle_agrees_and_adjacent_indices_are_monotone(
+    base, current, initial, interval, kind, floor
+):
+    """Positive-base projections agree exactly and never fall as indices rise."""
+    current /= 100
+    initial /= 100
+    indices = [math.nextafter(current, 0), current, math.nextafter(current, math.inf)]
+    rounding = {"interval": interval, "type": kind}
+    expected = [_projection(base, value, initial, rounding, floor) for value in indices]
+    actual = [
+        project_from_base(base, value, initial, (interval, kind), floor)
+        for value in indices
+    ]
+    assert actual == expected
+    assert actual == sorted(actual)
+    if floor:
+        assert all(value >= base for value in actual)
+    for value in actual:
+        assert (_exact(value) - _exact(base)) % _exact(interval) == 0
+    # Unrounded projections retain the final engine's floating-point order.
+    expected_unrounded = (
+        base * max(current / initial, 1.0) if floor else base * (current / initial)
+    )
+    assert _projection(base, current, initial, None, floor) == expected_unrounded
+    assert project_from_base(base, current, initial, None, floor) == expected_unrounded
