@@ -1,20 +1,13 @@
 # PolicyEngine US - Development Guide
 
-## ⚠️ MANDATORY FIRST ACTION
+## Development skills
 
-At the START of each session, ask the user:
+Load the available PolicyEngine development skills that apply to the task without asking whether to load them:
 
-"Would you like to load PolicyEngine development skills for this session?"
-
-**Options to present:**
-1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
-2. "No, skip" - Proceed without loading skills
-
-**If Option 1 selected, load ALL of these** (from the `policyengine-claude` plugin):
 - /complete:policyengine-model-development (variable, parameter, period, and testing patterns)
 - /complete:policyengine-standards (code style, formatting, changelog, PR workflow)
 
-If these skills are unavailable (plugin not installed), skip loading and proceed.
+If these skills are unavailable, follow the repository guidance and report any gap that blocks the task.
 
 ---
 
@@ -171,14 +164,12 @@ changelog.d/medicaid-ce-exclusions.md
   - Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests
   - Do not rewrite these expected outputs merely to match changed model behavior or make CI pass
   - If a model change causes partner tests to fail, treat that as a possible partner-facing API change
-  - Ziming Hua (@hua7450) approves every edit to files in this folder (Max Ghenis, 2026-10-09). Before editing them, flag the partner-facing risk to the user and put these three questions to Ziming:
-    1. Are you sure you want to edit this test file?
-    2. Have you notified a team member about this change?
-    3. Have you notified the API partner about this change?
-  - Ask on the PR that causes the change. Request his review (`gh pr edit <number> --add-reviewer hua7450`) and post a comment (`gh pr comment <number> --body-file <file>`) that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, show him the changed cases and ask him directly with the `AskUserQuestion` tool instead; record his answer in a PR comment, which counts as his approval of those edits.
-  - Do not edit partner test files until Ziming has answered yes to all three questions, and do not merge a PR that changes them until he has approved a head that contains the edits.
-  - Subagents and agent teammates must not edit partner test files. If a subagent or agent teammate finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
-  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to Ziming and the user
+  - Use one designated editor for each partner test file. The coordinator assigns files to agents or teammates; avoid conflicting parallel writes.
+  - Before changing expected outputs, identify the causal model change and derive the expected outputs from primary sources independently of the implementation.
+  - Document each changed case, its old and new expected values, and the source justification in the PR. Explain the partner-facing impact to the user and why the contract change is intentional.
+  - Preserve the pre-change failing results as evidence.
+  - Before merging, obtain independent automated review of the source derivation, expected outputs, and partner impact at the current head, and pass all required CI checks.
+  - Request human review only for a specific material open question that requires that person's expertise, and name the question in the request. Do not request human review or notify a person to keep them informed or because they own the area.
 
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations

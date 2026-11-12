@@ -1,0 +1,1 @@
+Require source-backed partner test expectations and independent automated review, reserve human review for questions that need specific expertise, and load applicable development skills without a routine permission prompt.
