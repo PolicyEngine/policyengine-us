@@ -10,7 +10,8 @@ class ny_ccap(Variable):
     defined_for = StateCode.NY
     reference = (
         "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=39",
-        "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=9",
+        # PDF pages 3, 9-10
+        "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=3",
     )
 
     def formula(spm_unit, period, parameters):

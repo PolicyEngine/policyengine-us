@@ -18,7 +18,9 @@ class ny_ccap_regular_market_rate(Variable):
     )
     reference = (
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.9",
-        "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=9",
+        # PDF pages 6, 8-9
+        "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=6",
+        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=45",
         "https://www.nyc.gov/assets/acs/pdf/earlycare/2024/FS023.pdf#page=2",
     )
 
