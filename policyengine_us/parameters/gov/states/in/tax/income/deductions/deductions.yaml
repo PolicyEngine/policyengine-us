@@ -11,6 +11,8 @@ values:
     - in_nol
     - in_unemployment_compensation_deduction
     - in_other_subtractions
+    # IC 6-3-1-3.5(a)(22) / IT-40 Schedule 2 (code 630)
+    - in_claim_of_right_deduction
     - in_disability_retirement_deduction # IC 6-3-2-9 (code 602)
     - in_civil_service_annuity_deduction
     - in_military_retirement_deduction
@@ -36,6 +38,8 @@ values:
     - in_unemployment_compensation_deduction
     # IC 6-3-2
     - in_other_subtractions
+    # IC 6-3-1-3.5(a)(22) / IT-40 Schedule 2 (code 630)
+    - in_claim_of_right_deduction
     # IC 6-3-2-9 (code 602)
     - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
@@ -66,6 +70,8 @@ values:
     - in_unemployment_compensation_deduction
     # IC 6-3-2
     - in_other_subtractions
+    # IC 6-3-1-3.5(a)(22) / IT-40 Schedule 2 (code 630)
+    - in_claim_of_right_deduction
     # IC 6-3-2-9 (code 602)
     - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
@@ -98,6 +104,8 @@ values:
     - in_unemployment_compensation_deduction
     # IC 6-3-2
     - in_other_subtractions
+    # IC 6-3-1-3.5(a)(22) / IT-40 Schedule 2 (code 630)
+    - in_claim_of_right_deduction
     # IC 6-3-2-9 (code 602)
     - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
@@ -136,6 +144,8 @@ values:
     - in_unemployment_compensation_deduction
     # IC 6-3-2
     - in_other_subtractions
+    # IC 6-3-1-3.5(a)(22) / IT-40 Schedule 2 (code 630)
+    - in_claim_of_right_deduction
     # IC 6-3-2-9 (code 602)
     - in_disability_retirement_deduction
     # IC 6-3-2-4 (b)
@@ -158,5 +168,5 @@ metadata:
       href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3
     - title: U.S. Code
       href: https://www.law.cornell.edu/uscode/text
-    - title: 2025 IT-40 Income Tax Form Instruction Booklet, pg. 19
+    - title: "2025 IT-40 Income Tax Form Instruction Booklet #page 19,23"
       href: https://forms.in.gov/Download.aspx?id=16915#page=19

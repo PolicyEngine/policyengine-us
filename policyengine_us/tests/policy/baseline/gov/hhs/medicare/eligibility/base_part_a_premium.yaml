@@ -179,3 +179,44 @@
     medicare_quarters_of_coverage: 20
   output:
     base_part_a_premium: 6_780  # $565 * 12 months
+
+# Projected years follow the Trustees' Table V.E1.
+- name: 2027 projected reduced Part A premium.
+  period: 2027
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 3_960  # $330 * 12 months
+
+- name: 2027 projected full Part A premium.
+  period: 2027
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 7_200  # $600 * 12 months
+
+# 2038 extends the Trustees' Table V.E1 standard premium at its 2034-2035
+# growth: $900 x (900 / 862)^3 = $1,024.35, rounded to $1,024. The reduced
+# premium is $1,024 less 45 percent, $563.20, rounded to $563 (42 U.S.C.
+# 1395i-2(d)(4)).
+- name: 2038 projected reduced Part A premium.
+  period: 2038
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 6_756  # $563 * 12 months
+
+- name: 2038 projected full Part A premium.
+  period: 2038
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 12_288  # $1,024 * 12 months

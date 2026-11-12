@@ -37,3 +37,236 @@
         state_code: MT
   output:
     mt_income_tax: 4_000
+
+- name: A dependent's medical bills lower a couple's tax when spouses file separately on the same form
+  # TY2022. The head has 60,000 of Montana AGI and 3,000 of other itemized
+  # deductions, the spouse 15,000 and 700, and their child 10,250 of medical
+  # bills. The couple may divide the bills in any proportion and elect the
+  # standard deduction, so the model takes the lowest tax over the candidate
+  # shares and the two elections. Exemptions are 2,710 each, and the child's
+  # goes to the head. 2022 rates: 734 at 19,800 and 6.75% above; 300 at
+  # 12,000 and 5% to 15,400; 176 at 8,900 and 4% to 12,000; 83 at 5,800 and
+  # 3% to 8,900; 33 at 3,300 and 2% to 5,800; 1% below 3,300.
+  # Combined tax by share of the bills to the head, itemizing (floors 4,500
+  # and 1,125):
+  #   all to the head: medical 5,750 and 0. Head 60,000 - 8,750 - 5,420 =
+  #     45,830: 734 + 26,030 x 6.75% = 2,491.025. Spouse 15,000 - 700 -
+  #     2,710 = 11,590: 176 + 2,690 x 4% = 283.60. Total 2,774.625.
+  #   all to the spouse: medical 0 and 9,125. Head 51,580: 2,879.15. Spouse
+  #     2,465: 24.65. Total 2,903.80.
+  #   equal split: medical 625 and 4,000. Total 2,973.66.
+  #   the head's floor kink (head 4,500, spouse 5,750): 2,879.15 + 117.95 =
+  #     2,997.10; the spouse's (head 9,125, spouse 1,125): 2,566.9625 +
+  #     283.60 = 2,850.5625.
+  #   the balancing share: the columns' levels (60,000 - 2,710 - 3,000 +
+  #     4,500 and 15,000 - 2,710 - 700 + 1,125) differ by 46,075, more than
+  #     the bills, so it clips to 1 (all to the head).
+  # Standard deductions (5,090 and 3,000): 2,738.075 + 191.60 = 2,929.675.
+  # The joint return (AGI 75,000, standard deduction 10,180 over itemized
+  # 10,250 - 5,625 = 4,625, three exemptions): 75,000 - 10,180 - 8,130 =
+  # 56,690 gives 734 + 36,890 x 6.75% = 3,224.075.
+  # Before this change the bills were left out and the couple took the
+  # standard deduction (2,929.675). Splitting them equally with the election
+  # by deduction sums (8,325 > 8,090) would give 2,973.66.
+  period: 2022
+  absolute_error_margin: 0.05
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 60_000
+        mt_non_medical_itemized_deductions_indiv: 3_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 15_000
+        mt_non_medical_itemized_deductions_indiv: 700
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 10_250
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_agi_joint: 75_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 1
+    mt_medical_and_dental_expenses_indiv: [10_250, 0, 0]
+    mt_itemized_deductions_indiv: [8_750, 700, 0]
+    mt_tax_unit_itemizes: true
+    mt_income_tax_before_refundable_credits_indiv: [2_491.03, 283.60, 0]
+    mt_income_tax_joint: 3_224.08
+    mt_files_separately: true
+    mt_income_tax: 2_774.63
+
+- name: The tax-minimizing split balances the two columns' incomes
+  # TY2022. Montana AGI is 25,000 for the head and 15,000 for the spouse, with
+  # no other itemized deductions; their child has 25,000 of medical bills.
+  # Exemptions are 2,710 each and floors 7.5% of AGI (1,875 and 1,125).
+  # 2022 rates: 1% to 3,300; 33 at 3,300 and 2% to 5,800; 83 at 5,800 and 3%
+  # to 8,900; 176 at 8,900 and 4% to 12,000; 300 at 12,000 and 5% to 15,400.
+  # While both columns are above their floors, the total deduction is fixed
+  # and each column's income before the child's exemption is its level less
+  # its share of the bills: head 25,000 - 2,710 + 1,875 = 24,165 - 25,000 s;
+  # spouse 15,000 - 2,710 + 1,125 = 13,415 - 25,000 (1 - s). They balance at
+  # s = 0.5 + (24,165 - 13,415) / 50,000 = 0.715:
+  #   head line 1a 17,875, deduction 16,000; 25,000 - 2,710 - 16,000 = 6,290;
+  #   spouse line 1a 7,125, deduction 6,000; 15,000 - 2,710 - 6,000 = 6,290.
+  #   The child's 2,710 is halved: 4,935 each, taxed 33 + 1,635 x 2% = 65.70.
+  #   Total 131.40.
+  # Other candidates: equal split 178.20 + 9.15 = 187.35; all to the head
+  # 0 + 203.20 = 203.20; all to the spouse 720.80. Standard deductions (5,000
+  # and 3,000): 429 + 191.60 = 620.60. Joint return: 40,000 - 22,000 itemized
+  # - 8,130 exemptions = 9,870, taxed 176 + 970 x 4% = 214.80.
+  period: 2022
+  absolute_error_margin: 0.05
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 25_000
+        mt_non_medical_itemized_deductions_indiv: 0
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 15_000
+        mt_non_medical_itemized_deductions_indiv: 0
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 25_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 0.715
+    mt_medical_and_dental_expenses_indiv: [17_875, 7_125, 0]
+    mt_medical_expense_deduction_indiv: [16_000, 6_000, 0]
+    mt_tax_unit_itemizes: true
+    mt_income_tax_before_refundable_credits_indiv: [65.70, 65.70, 0]
+    mt_income_tax_joint: 214.80
+    mt_files_separately: true
+    mt_income_tax: 131.40
+
+- name: The balancing share counts the head's medical insurance premiums
+  # TY2022. The case above, with 3,000 of medical insurance premiums on the
+  # head. The premiums lower the head's level by 3,000:
+  #   head 25,000 - 2,710 - 3,000 + 1,875 = 21,165; spouse 13,415.
+  #   s = 0.5 + (21,165 - 13,415) / 50,000 = 0.5 + 7,750 / 50,000 = 0.655.
+  #   Head line 1a 16,375, deduction 14,500 + 3,000 = 17,500;
+  #   25,000 - 2,710 - 17,500 = 4,790.
+  #   Spouse line 1a 8,625, deduction 7,500; 15,000 - 2,710 - 7,500 = 4,790.
+  #   The child's 2,710 is halved: 3,435 each, taxed 33 + 135 x 2% = 35.70.
+  # Leaving the premiums out of the level would keep s at 0.715, giving
+  # line 20 of 32.90 and 38.60 (71.50 in total).
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 25_000
+        mt_non_medical_itemized_deductions_indiv: 0
+        medical_expense_health_insurance_premiums: 3_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 15_000
+        mt_non_medical_itemized_deductions_indiv: 0
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 25_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    mt_dependent_medical_expense_head_share: 0.655
+    mt_medical_and_dental_expenses_indiv: [16_375, 8_625, 0]
+    mt_income_tax_before_refundable_credits_indiv: [35.70, 35.70, 0]
+    # Joint: 40,000 - 3 x 2,710 - (22,000 + 3,000) = 6,870 taxable,
+    # tax 33 + 50 + 1,070 x 3% = 115.10.
+    mt_income_tax_joint: 115.10
+    mt_files_separately: true
+    mt_income_tax: 71.40
+
+- name: The balancing share holds each column's miscellaneous deductions after the 2% floor fixed
+  # TY2017, the only year in which the code applies both the 2% floor on
+  # miscellaneous deductions (misc_floor_applies is true only in 2017) and
+  # the status 2a path (married_filing_separately_on_same_return_allowed
+  # starts in 2021, and its first value extends back). The model's 2017
+  # exemption (2,580), rate schedule and standard deduction are its 2021
+  # values, extended back the same way. The case pins the model's arithmetic.
+  # The balancing case above, with a floor-subject expense in each column.
+  #   Floor deductions: head 2,500 - 2% x 25,000 = 2,000; spouse 500 - 2% x
+  #   15,000 = 200; joint 3,000 - 2% x 40,000 = 2,200.
+  #   Medical floors: 1,875 and 1,125. Levels: head 25,000 - 2,580 - 2,000 +
+  #   1,875 = 22,295; spouse 15,000 - 2,580 - 200 + 1,125 = 13,345.
+  #   s = 0.5 + (22,295 - 13,345) / 50,000 = 0.679.
+  #   Head line 1a 16,975, medical 15,100, itemized 17,100;
+  #   25,000 - 2,580 - 17,100 = 5,320.
+  #   Spouse line 1a 8,025, medical 6,900, itemized 7,100;
+  #   15,000 - 2,580 - 7,100 = 5,320.
+  #   The child's 2,580 is halved: 4,030 each, taxed 31 + 930 x 2% = 49.60.
+  # Other candidates: equal split 130.45 + 8.45 = 138.90; all to the head
+  # 0 + 215.60; all to the spouse 640.40 + 0. Standard deductions (4,830
+  # and 3,000): 470.60 + 206.80 = 677.40.
+  # Joint: 40,000 - (22,000 + 2,200) - 3 x 2,580 = 8,060 taxable,
+  # tax 31 + 48 + 2,560 x 3% = 155.80.
+  # Without the floor deductions in the columns, s would be 0.715, itemized
+  # deductions 16,000 and 6,000, and the tax 2 x 71.60 = 143.20.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 25_000
+        unreimbursed_business_employee_expenses: 2_500
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 15_000
+        tax_preparation_fees: 500
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 25_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    mt_married_filing_separately_on_same_return_eligible: [true, true, true]
+    mt_misc_deductions_subject_to_floor_indiv: [2_000, 200, 0]
+    mt_non_medical_itemized_deductions_indiv: [2_000, 200, 0]
+    mt_dependent_medical_expense_head_share: 0.679
+    mt_medical_and_dental_expenses_indiv: [16_975, 8_025, 0]
+    mt_itemized_deductions_indiv: [17_100, 7_100, 0]
+    mt_tax_unit_itemizes: true
+    mt_income_tax_before_refundable_credits_indiv: [49.60, 49.60, 0]
+    mt_income_tax_joint: 155.80
+    mt_files_separately: true
+    mt_income_tax: 99.20

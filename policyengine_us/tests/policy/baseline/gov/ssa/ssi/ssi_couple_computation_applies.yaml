@@ -138,3 +138,30 @@
     # Not a joint claim → couple computation does not apply
     ssi_claim_is_joint: [false, false]
     ssi_couple_computation_applies: [false, false]
+
+- name: Case 6, an unrelated facility resident does not separate the spouses.
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 72
+        is_tax_unit_head: true
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+      unrelated:
+        age: 40
+        is_tax_unit_head: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+      unrelated:
+        members: [unrelated]
+    households:
+      household:
+        members: [claimant, spouse, unrelated]
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    ssi_couple_computation_applies: [true, true, false]
