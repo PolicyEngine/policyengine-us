@@ -3,6 +3,14 @@ metadata:
   unit: currency-USD
   period: month
   label: Medicare Part B base premium
+  # After the last announced year, the premium follows the Medicare Trustees'
+  # projected standard premium, rounded to the nearest 10 cents as 42 U.S.C.
+  # 1395r(c) requires.
+  uprating:
+    parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+    rounding:
+      type: nearest
+      interval: 0.1
   reference:
     - title: Medicare Part B premium rates beginning January 1, 2015 (79 FR 61314)
       href: https://www.govinfo.gov/content/pkg/FR-2014-10-10/pdf/2014-24248.pdf#page=1
@@ -22,6 +30,8 @@ metadata:
       href: https://www.govinfo.gov/content/pkg/FR-2021-11-17/pdf/2021-25050.pdf#page=1
     - title: Medicare Part B premium rates beginning January 1, 2023 (87 FR 59080)
       href: https://www.govinfo.gov/content/pkg/FR-2022-09-29/pdf/2022-21090.pdf#page=1
+    - title: 42 U.S.C. § 1395r(a)(3) and (c)
+      href: https://www.law.cornell.edu/uscode/text/42/1395r#a_3
     - title: 2021 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/press-releases/2021-medicare-part-b-premiums-remain-steady
     - title: 2022 Medicare Parts A & B Premiums and Deductibles

@@ -2,6 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.co.ssa.state_supplement._and_cs_client_income import (
     and_cs_client_income,
 )
+from policyengine_us.variables.gov.states._spouses import state_couple_total
 from policyengine_us.variables.household.demographic.person._parent_links import (
     co_resident_parent_indices,
     has_parent_ids,
@@ -46,11 +47,14 @@ class co_state_supplement_deemed_income(Variable):
                 0, unearned_income - remaining_disregard
             )
 
-        # 3.549(C)-(D): the client's spouse.
-        marital_unit = person.marital_unit
+        # 3.549(C)-(D): the client's spouse. The rule sets no shared-household
+        # condition, and 3.549(F) provides for an institutionalized spouse, so
+        # a declared spouse living apart counts, as in Old Age Pension. A
+        # default marital unit counts only SSI's identified spouse.
+        year = period.this_year
         spouse_deemed = deem(
-            marital_unit.sum(gross_earned) - gross_earned,
-            marital_unit.sum(gross_unearned) - gross_unearned,
+            state_couple_total(person, year, gross_earned) - gross_earned,
+            state_couple_total(person, year, gross_unearned) - gross_unearned,
         )
 
         # 3.549(E): for an unemancipated child under 18, "the parents' income
@@ -60,7 +64,6 @@ class co_state_supplement_deemed_income(Variable):
         # household, whatever their age; without ids, the tax unit's other
         # members who are parents of a child no id names, as the parent-link
         # contract requires (this cannot tell a grandparent from a parent).
-        year = period.this_year
         first, second = co_resident_parent_indices(person, year)
 
         def from_named_parents(values):

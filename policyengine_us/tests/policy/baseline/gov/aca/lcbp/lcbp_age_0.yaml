@@ -4,7 +4,7 @@
     state_code: AK
     slcsp_rating_area: 1
   output:
-    lcbp_age_0: 507
+    lcbp_age_0: 388  # age-0 basis (the table held the age-21 premium, 507)
 
 - name: lcbp_age_0 2026 California rating area 15
   period: 2026-01
@@ -12,7 +12,7 @@
     state_code: CA
     slcsp_rating_area: 15
   output:
-    lcbp_age_0: 271
+    lcbp_age_0: 207  # age-0 basis (the table held the age-21 premium, 271)
 
 - name: lcbp_age_0 2026 Florida rating area 4
   period: 2026-01
@@ -20,7 +20,7 @@
     state_code: FL
     slcsp_rating_area: 4
   output:
-    lcbp_age_0: 403
+    lcbp_age_0: 308  # age-0 basis (the table held the age-21 premium, 403)
 
 - name: lcbp_age_0 2026 Nebraska rating area 1
   period: 2026-01
@@ -28,7 +28,7 @@
     state_code: NE
     slcsp_rating_area: 1
   output:
-    lcbp_age_0: 386
+    lcbp_age_0: 296  # age-0 basis (the table held the age-21 premium, 386)
 
 - name: lcbp_age_0 2026 New York rating area 1
   period: 2026-01
@@ -53,3 +53,66 @@
     slcsp_rating_area: 0
   output:
     lcbp_age_0: 0
+
+- name: lcbp_age_0 2026 Texas rating area 3 on the age-0 basis
+  period: 2026-01
+  input:
+    state_code: TX
+    slcsp_rating_area: 3
+  output:
+    lcbp_age_0: 259  # KFF age-40 premium / 1.6706 (the stored age-21 value was 339)
+
+- name: lcbp_age_0 2027 Texas rating area 3
+  period: 2027-01
+  input:
+    state_code: TX
+    slcsp_rating_area: 3
+  output:
+    lcbp_age_0: 304
+
+# Bronze values start in 2026. Before 2026 households are placed by the earlier
+# county map, so Idaho's and Washington's earlier areas and Massachusetts area 3
+# have a 2018 row with their 2026 premium.
+- name: lcbp_age_0 2025 Idaho rating area 5 follows the earlier map
+  period: 2025-01
+  input:
+    state_code: ID
+    slcsp_rating_area: 5
+  output:
+    lcbp_age_0: 198  # the earlier area 5's 259 age-21 premium, on the age-0 basis
+
+- name: lcbp_age_0 2026 Idaho rating area 5
+  period: 2026-01
+  input:
+    state_code: ID
+    slcsp_rating_area: 5
+  output:
+    lcbp_age_0: 209
+
+- name: lcbp_age_0 2025 Massachusetts rating area 3 follows the earlier map
+  period: 2025-01
+  input:
+    state_code: MA
+    slcsp_rating_area: 3
+  output:
+    lcbp_age_0: 210  # Middlesex and Norfolk counties' KFF premiums, MA curve
+
+# Ada County is in area 5 on the earlier map and area 3 from 2026; both give
+# its 2026 premium.
+- name: Ada County ID bronze before 2026 (earlier map's area 5)
+  period: 2025-01
+  input:
+    state_code: ID
+    county_str: ADA_COUNTY_ID
+  output:
+    slcsp_rating_area: 5
+    lcbp_age_0: 198
+
+- name: Ada County ID bronze from 2026 (area 3)
+  period: 2026-01
+  input:
+    state_code: ID
+    county_str: ADA_COUNTY_ID
+  output:
+    slcsp_rating_area: 3
+    lcbp_age_0: 198
