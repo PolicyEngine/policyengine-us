@@ -47,9 +47,13 @@ class hi_liheap_eligible(Variable):
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         gas_bill = spm_unit("gas_expense", period) > 0
         electric_bill = spm_unit("pre_subsidy_electricity_expense", period) > 0
-        # Draft 2.1 and 4.2 and application Q23-24 accept a share of utilities in
-        # rent, which has no input; plan 2.3 and the 2020 manual do not.
-        responsible = ((gas_bill | electric_bill) & (fuel != types.UNSPECIFIED)) | (
-            heat_in_rent & (fuel == types.NATURAL_GAS)
-        )
+        # The draft's Energy Credit definition, 2.1 and 4.2 and application Q23-24
+        # accept a share of utilities in rent, "electric/gas" alike. Utilities in
+        # rent (tenant_pays_utilities false) qualify any known fuel, and gas or
+        # electric heat in rent qualifies too. The size of the share has no input.
+        utilities_in_rent = ~spm_unit.household("tenant_pays_utilities", period)
+        rent_fuel = (fuel == types.NATURAL_GAS) | (fuel == types.ELECTRICITY)
+        responsible = (
+            (gas_bill | electric_bill | utilities_in_rent) & (fuel != types.UNSPECIFIED)
+        ) | (heat_in_rent & rent_fuel)
         return (size > 0) & (income_eligible | categorical) & responsible

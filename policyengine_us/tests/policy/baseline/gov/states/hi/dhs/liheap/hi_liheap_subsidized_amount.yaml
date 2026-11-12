@@ -434,3 +434,33 @@
     hi_liheap_countable_income: [33_280, 33_280, 33_280, 33_280]
     hi_liheap_eligible: [true, true, true, true]
     hi_liheap_subsidized_amount: [375, 0, 375, 425]
+
+- name: Case 6, a public-housing tenant whose utilities are in the rent receives the flat benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  # One person aged 70 in Honolulu public housing with $18,000 of Social Security,
+  # under the one-person limit of 41_941. Rent includes the utilities and there
+  # is no separate bill; the draft's Energy Credit offsets "rent or applicant's
+  # share of the electric/gas cost when rent includes electric/gas". Size one
+  # receives 375.
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+        is_in_public_housing: true
+        tenant_pays_utilities: false
+  output:
+    hi_liheap_eligible: true
+    hi_liheap_subsidized_amount: 375
