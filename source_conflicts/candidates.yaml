@@ -2394,7 +2394,8 @@ candidates:
     to: 2027
     type: federal-fiscal
   question: Does the Delaware Summer Cooling Assistance electric benefit need a purchased source of heating or cooling,
-    as the manual's SCAP chart and the plan provide, or responsibility for a heating bill, as manual section 415 provides?
+    as the manual's SCAP chart provides (plan item 3.3 sets no different cooling policy for renters), or responsibility
+    for a heating bill, as manual section 415 provides?
   sources:
   - kind: manual
     citation: DEAP Policies and Procedures Manual, SCAP eligibility chart (final, 2/24/2015), PDF page 100
@@ -2402,6 +2403,9 @@ candidates:
   - kind: plan
     citation: Delaware FY2026 LIHEAP State Plan, item 3.3, PDF page 12
     url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=12
+  - kind: plan
+    citation: Delaware FY2027 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=11
   - kind: manual
     citation: DEAP Policies and Procedures Manual, section 415, PDF page 32
     url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=32
@@ -2419,9 +2423,9 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10762
   state: ruled
-  note: 'Ruled 2026-11-12: follow the plan and the SCAP chart. us-de:liheap-plan-income-checklist follows the manual over
-    the plan''s checklist; here the manual itself is split between section 415 and its own chart, and the plan sides with
-    the chart.'
+  note: 'Ruled 2026-11-12 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10762#issuecomment-6837369871. Follow the plan and the SCAP chart.
+    us-de:liheap-plan-income-checklist follows the manual over the plan''s checklist; here the manual itself is split
+    between section 415 and its own chart, and the plan sides with the chart.'
 - id: us-de:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
