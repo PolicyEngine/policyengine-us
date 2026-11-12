@@ -101,6 +101,7 @@ def _situation(year, units):
         people[name] = {
             "age": {period: 40},
             "real_estate_taxes": {period: unit["real_estate"]},
+            "investment_interest_expense": {period: 0},
         }
         tax_units[f"t{i}"] = {
             "members": [name],
@@ -108,7 +109,6 @@ def _situation(year, units):
             "tax_unit_itemizes": {period: True},
             "charitable_deduction": {period: unit["charitable"]},
             "interest_deduction": {period: unit["extra_itemized"]},
-            "investment_interest_expense": {period: 0},
             "medical_expense_deduction": {period: 0},
             "casualty_loss_deduction": {period: 0},
             "misc_deduction": {period: 0},
