@@ -11661,32 +11661,43 @@ candidates:
 - id: us-tx:msp-spouse-deeming-allowance
   program: medicare-savings-programs
   years:
-    from: 2026
+    from: 2025
     type: calendar
   question: When Texas deems an ineligible spouse's income for the Medicare Savings Programs, is the deeming threshold,
     and each ineligible child's allocation, MEPD Appendix XXIX's program-specific living allowance ($474 for QMB, $568
-    for SLMB and $639 for QI-1 in 2026) or SSI's $497 difference between the couple and individual benefit rates?
+    for SLMB and $639 for QI-1 in 2026; $458, $550 and $619 in 2025) or SSI's difference between the couple and
+    individual benefit rates ($497 in 2026; $483 in 2025)?
   sources:
   - kind: statute
     citation: 42 U.S.C. 1396d(p)(1)(B)
     url: https://www.law.cornell.edu/uscode/text/42/1396d
+  - kind: statute
+    citation: 42 U.S.C. 1396a(r)(2)(A)
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#r_2
   - kind: regulation
     citation: 20 CFR 416.1163(b)(1) and (d)
     url: https://www.law.cornell.edu/cfr/text/20/416.1163
   - kind: manual
     citation: Texas MEPD Handbook, Appendix XXIX (Rev. 26-2)
     url: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxix-special-deeming-eligibility-test-spouse-spouse
+  - kind: manual
+    citation: Texas MEPD Handbook, Revision 25-2 (archived), Appendix XXIX
+    url: https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-25-2.pdf#page=488
   readings:
     statute: 'Section 1396d(p)(1)(B) measures income "as determined under section 1382a of this title for purposes of
       the supplemental security income program". 20 CFR 416.1163(b)(1) sets each ineligible child''s allocation at "the
       difference between the Federal benefit rate for an eligible couple and the Federal benefit rate for an eligible
       individual", and (d) deems nothing from a spouse whose income after allocations "is not more than" that
-      difference: $1,491 - $994 = $497 a month in 2026, the same for every program.'
+      difference: $1,491 - $994 = $497 a month in 2026 and $1,450 - $967 = $483 in 2025, the same for every program.
+      Section 1396a(r)(2)(A) says the methodology for individuals "under section 1396d(p) of this title may be less
+      restrictive, and shall be no more restrictive, than the methodology" of the supplemental security income program
+      for aged, blind or disabled groups.'
     other: 'Appendix XXIX (Rev. 26-2, information effective March 1, 2026) gives a "Program-Specific Living Allowance
       Allocation: Community MEPD $497,CAS $497, QMB $474,SLMB $568, QI-1 $639", deducts it for each ineligible child
       (step 3), deems nothing when the spouse''s remaining income "is no more than the program- specific living
       allowance" (step 4a), and tells the worker to "re-budget for SLMB or QI-1 if applicable" when an applicant who
-      passes the QMB pretest fails QMB in the deeming test (step 8).'
+      passes the QMB pretest fails QMB in the deeming test (step 8). Revision 25-2 (information effective March 1,
+      2025) has the same steps with 2025 amounts: "Community MEPD $483, CAS $483, QMB $458, SLMB $550, QI-1 $619".'
   example: A Texas applicant, 68, on Medicare with $1,340 a month and a spouse, 50, with $497 a month is QMB under the
     regulation, because $497 is not more than $497, so nothing is deemed and $1,320 is within the one-person $1,330.
     Under Appendix XXIX, $497 is above $474, so it is deemed for QMB, and $1,340 + $497 - $20 = $1,817 is above the
