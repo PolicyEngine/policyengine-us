@@ -35,7 +35,7 @@ class nv_liheap_countable_income(Variable):
         # Each unearned source is floored at zero.
         unearned = 0
         for source in p.sources.unearned:
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            unearned = unearned + max_(person(source, period), 0)
         # The only deductions from unearned income are the Medicare premiums
         # taken from a Social Security check; only the Part B premium has an
         # input.

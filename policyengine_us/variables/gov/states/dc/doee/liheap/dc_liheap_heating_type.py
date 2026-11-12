@@ -15,7 +15,7 @@ class dc_liheap_heating_type(Variable):
     default_value = DCLIHEAPHeatingType.ELECTRICITY
     definition_period = YEAR
     label = "Household heating types for DC LIHEAP"
-    documentation = "Derived from heat_expense_included_in_rent and the canonical heating_type input. Fuel oil, kerosene and propane take the oil row; wood, coal, other and solar heating have no DC matrix row and take the electricity row, as do UNSPECIFIED and NONE. Setting this directly is deprecated during the vocabulary migration and changes only the matrix row: the expense cap still follows the canonical heating_type."
+    documentation = "Derived from heat_expense_included_in_rent and the canonical heating_type input. Fuel oil, kerosene and propane take the oil row; wood, coal, other and solar heating have no DC matrix row and take the electricity row, as do UNSPECIFIED and NONE. Setting this directly is deprecated during the vocabulary migration and changes only the matrix row: the expense cap still follows the canonical heating_type, and a cooling-only household (a known heating_type, no heat in rent, no heating cost and a cooling cost) takes the electricity amount whatever this row is."
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
