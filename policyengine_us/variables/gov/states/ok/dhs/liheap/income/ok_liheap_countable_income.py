@@ -26,6 +26,6 @@ class ok_liheap_countable_income(Variable):
         for source in p.unearned:
             # SSI is monthly; ADD annualizes it exactly once here. Other
             # listed streams are disjoint annual personal income inputs.
-            income = income + max_(add(person, period, [source], options=[ADD]), 0)
+            income = income + max_(add(person, period, [source]), 0)
         # TANF is an SPM aggregate and is counted separately once.
         return income

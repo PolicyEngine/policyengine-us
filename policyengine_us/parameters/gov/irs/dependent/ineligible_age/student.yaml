@@ -6,5 +6,13 @@ metadata:
   reference:
     - title: 26 U.S. Code § 152 - Dependent defined
       href: https://www.law.cornell.edu/uscode/text/26/152#c_3_A_ii
+    # The 1988 amendment and its effective date are in the section's notes.
+    - title: 26 U.S. Code § 151(c)(1)(B)(ii) (2000 edition), with Pub. L. 100-647 § 6010
+      href: https://www.govinfo.gov/content/pkg/USCODE-2000-title26/html/USCODE-2000-title26-subtitleA-chap1-subchapB-partV-sec151.htm
+    - title: 26 U.S. Code § 7851(a)(1)(A) - Applicability of revenue laws
+      href: https://www.law.cornell.edu/uscode/text/26/7851#a_1_A
 values:
-  2018-01-01: 24
+  # The 1954 Code allowed a student of any age; Pub. L. 100-647 added the
+  # age limit for taxable years beginning after December 31, 1988.
+  1954-01-01: .inf
+  1989-01-01: 24

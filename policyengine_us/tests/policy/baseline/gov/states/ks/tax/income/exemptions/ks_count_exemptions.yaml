@@ -1,0 +1,289 @@
+
+
+- name: 2022 single filer who can be claimed as a dependent has no Kansas exemptions
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: KS
+  output:
+    # K.S.A. 79-32,121(a) with IRC 151(d)(2): a filer whom another taxpayer
+    # may claim has no exemption of their own.
+    ks_count_exemptions: 0
+    ks_exemptions: 0
+
+- name: 2022 joint return with one claimable spouse keeps the other spouse's Kansas exemption (the claimable spouse is the head)
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    # IRC 151(d)(2) applies to each spouse separately; no dependents.
+    ks_count_exemptions: 1
+    ks_exemptions: 2250
+
+- name: 2022 joint return with one claimable spouse keeps the other spouse's Kansas exemption (the claimable spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: KS
+  output:
+    ks_count_exemptions: 1
+    ks_exemptions: 2250
+
+- name: 2022 joint return with both spouses claimable has no Kansas exemptions
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    ks_count_exemptions: 0
+    ks_exemptions: 0
+
+- name: 2022 joint return with no claimable spouse has three Kansas exemptions
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    # 2 + 1 child = 3 exemptions x $2,250 = $6,750.
+    ks_count_exemptions: 3
+    ks_exemptions: 6750
+
+
+- name: 2022 single filer who can be claimed but is not claimed has no Kansas exemptions
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: KS
+  output:
+    # IRC 151(d)(2) turns on whether another taxpayer is allowed the
+    # deduction, not whether they take it; the child is not the filer's
+    # dependent (IRC 152(b)(1)).
+    ks_count_exemptions: 0
+    ks_exemptions: 0
+
+- name: 2022 joint return with one spouse who can be claimed but is not claimed keeps only the other spouse's exemption (the claimable spouse is the head)
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    # The claimable spouse has no exemption (IRC 151(d)(2)) and there are
+    # no dependents (IRC 152(b)(1)): 1 x $2,250 = $2,250.
+    ks_count_exemptions: 1
+    ks_exemptions: 2250
+
+- name: 2022 joint return with one spouse who can be claimed but is not claimed keeps only the other spouse's exemption (the claimable spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: KS
+  output:
+    ks_count_exemptions: 1
+    ks_exemptions: 2250
+
+- name: A claimable but unclaimed 2021 filer has no personal exemption
+  period: 2021
+  input:
+    state_code: KS
+    filing_status: SINGLE
+    age: 20
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: false
+  output:
+    # 0 unclaimable filers + 0 dependents = 0; 0 x $2,250 = $0.
+    ks_count_exemptions: 0
+    ks_exemptions: 0
+
+- name: A claimed spouse does not remove the other spouse's exemption
+  period: 2023
+  input:
+    people:
+      head:
+        age: 21
+        claimable_as_dependent_on_another_return: false
+      spouse:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KS
+  output:
+    # 1 unclaimable head + 0 for the claimable spouse = 1; 1 x $2,250.
+    ks_count_exemptions: 1
+    ks_exemptions: 2_250
+
+- name: A 2022 head of household receives no additional adult exemption
+  period: 2022
+  input:
+    people:
+      head:
+        age: 35
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: KS
+  output:
+    # 1 unclaimable filer + 1 dependent = 2; 2 x $2,250 = $4,500.
+    ks_count_exemptions: 2
+    ks_exemptions: 4_500

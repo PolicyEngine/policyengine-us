@@ -1070,6 +1070,91 @@ entries:
     name: A farm loss is netted against wages like other self-employment (2024)
     pins:
     - reading
+- id: capital-gains-surtax-short-term-gains
+  jurisdiction: us-md
+  program: income-tax
+  question: Does Maryland's additional 2% tax on net capital gain under Tax-General 10-105(a)(3) leave out a net short-term capital gain, as the Internal
+    Revenue Code's definition does, or count it, as Form 502CG Line 1 does for residents by taking Form 502 Line 1c, the federal Form 1040 Line 7a
+    gain?
+  texts:
+  - corpus_citation_path: us-md/statute/gtg/10-105
+    excerpt: includes any amount of net capital gain, as defined and determined under the Internal Revenue Code
+  - corpus_citation_path: us-md/statute/gtg/10-105
+    excerpt: an additional 2% of the amount of net capital gain
+  - corpus_citation_path: us/statute/26/1222
+    excerpt: (11) Net capital gain The term “net capital gain” means the excess of the net long-term capital gain for the taxable year over the net short-term
+      capital loss for such year.
+  pending_texts:
+  - citation: Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section I, PDF p. 1
+    kind: guidance
+    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-58.pdf#page=1
+    excerpt: “Net capital gain” means the excess of the net long-term capital gain for the taxable year over the net short-term capital loss for such year.
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 3b2d580765153f77d9ea18d5940d05d6618903e7
+      path: source_conflicts/sources/us-md/technical-bulletin-58-2025-p1.txt
+      sha256: 3f6af2f3f839a6d2f3cf0b8fb5f448511175c8e902210c0249536a1658314efe
+  - citation: 2025 Maryland Form 502CG instructions, Line 1, PDF p. 2
+    kind: instructions
+    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/2025/502cg.pdf#page=2
+    excerpt: 'Line 1: Enter the amount of federal net capital gain income included in your Maryland adjusted gross income. Residents use Line 1c of Form 502.'
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 3b2d580765153f77d9ea18d5940d05d6618903e7
+      path: source_conflicts/sources/us-md/form-502cg-instructions-2025-p2.txt
+      sha256: b4c6551f7ca94c6a855cbf275cad59109094a0eab62db48d223c3d46840730af
+  - citation: 2025 Maryland resident tax booklet, Line 1c instruction, PDF p. 13
+    kind: instructions
+    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=13
+    excerpt: Line 1c. Enter on Line 1c the amount of net capital gain or loss reported as taxable income on Line 7a of the federal Form 1040.
+    snapshot:
+      repo: PolicyEngine/policyengine-us
+      commit: 3b2d580765153f77d9ea18d5940d05d6618903e7
+      path: source_conflicts/sources/us-md/resident-booklet-2025-p13.txt
+      sha256: e140bc6dcfbdf427675f4ac1dcf0ff9807becf5c36fd15c578c13c17493aeafe
+  reading: Tax the net capital gain that Internal Revenue Code section 1222(11) defines, the excess of net long-term capital gain over any net short-term
+    capital loss, so a net short-term capital gain adds nothing to the base.
+  alternatives:
+  - id: form-1040-line-7a-gain
+    reading: Tax the Form 1040 Line 7a capital gain, which Form 502 Line 1c carries and Form 502CG Line 1 takes. That gain combines the net short-term
+      and net long-term amounts, so a net short-term capital gain counts in the base.
+    effect: Before gains from excepted assets come off, the base also counts a net short-term capital gain, to the extent a net long-term capital loss
+      does not offset it.
+  basis: Tax-General 10-105(a)(3)(i) taxes net capital gain "as defined and determined under the Internal Revenue Code", and section 1222(11) leaves a net
+    short-term capital gain out of that definition. Technical Bulletin 58 restates that definition in section I, though its section III.A.2 example
+    reproduces Form 502CG, whose Line 1 points to Form 502 Line 1c. The form instructions take the broader line, but a form fills a gap only where the
+    statute is silent, and here it is not.
+  status: open
+  outcome: computed
+  years:
+    from: 2025
+    type: tax
+  implementations:
+  - repo: PolicyEngine/policyengine-us
+    commit: e7bcd59c1e3bffe2fac8f8f26c72a99bacde1921
+    path: policyengine_us/variables/gov/states/md/tax/income/capital_gains/md_net_capital_gain.py
+    follows: reading
+    adopts: reading
+    basis: PolicyEngine-US follows the statute when it conflicts with forms or their instructions.
+    ruling:
+      by: PolicyEngine
+      date: '2026-11-08'
+      record: https://github.com/PolicyEngine/policyengine-us/pull/9898
+      principle: statute-first
+    cites_entry: true
+  tests:
+  - repo: PolicyEngine/policyengine-us
+    commit: e7bcd59c1e3bffe2fac8f8f26c72a99bacde1921
+    path: policyengine_us/tests/policy/baseline/gov/states/md/tax/income/capital_gains/md_net_capital_gain.yaml
+    name: Spouses' short-term amounts net to a gain, which adds nothing
+    pins:
+    - reading
+  - repo: PolicyEngine/policyengine-us
+    commit: e7bcd59c1e3bffe2fac8f8f26c72a99bacde1921
+    path: policyengine_us/tests/policy/baseline/gov/states/md/tax/income/capital_gains/md_capital_gains_surtax.yaml
+    name: A net short-term capital gain is not net capital gain
+    pins:
+    - reading
 - id: niit-magi-trust-code-h-adjustment
   jurisdiction: us
   program: income-tax

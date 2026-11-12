@@ -49,7 +49,7 @@ class ia_liheap_countable_unearned_income(Variable):
         unearned = 0
         for source in p.sources.unearned:
             # ADD sums monthly sources such as ssi over the year.
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            unearned = unearned + max_(person(source, period), 0)
         # Plan Section 1.9 (page 6) counts Social Security Administration
         # benefits "Excluding MediCare deduction". Section 6.10 (page 25) and
         # Appendix C, Social Security Benefits (page 114), count "the net
