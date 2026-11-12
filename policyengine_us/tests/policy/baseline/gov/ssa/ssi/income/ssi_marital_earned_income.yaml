@@ -88,7 +88,7 @@
     # 20 CFR 416.1802(b)(1) combines an eligible couple's income through
     # June, so person1's 1,000 a month of wages counts for both spouses.
     # 20 CFR 416.414(b)(3) counts each spouse's own income from July, the
-    # first month person2 spends in the facility.
+    # first month person2 spends throughout in the facility (416.414(a)(1)).
     ssi_marital_earned_income:
       2026-06: [1_000, 1_000]
       2026-07: [1_000, 0]

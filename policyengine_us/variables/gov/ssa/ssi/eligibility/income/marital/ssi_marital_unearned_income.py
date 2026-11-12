@@ -11,6 +11,7 @@ class ssi_marital_unearned_income(Variable):
     definition_period = MONTH
     reference = (
         "https://www.ecfr.gov/current/title-20/section-416.1802#p-416.1802(b)(1)",
+        "https://www.ecfr.gov/current/title-20/section-416.414#p-416.414(a)(1)",
         "https://www.ecfr.gov/current/title-20/section-416.414#p-416.414(b)(3)",
     )
 
@@ -18,6 +19,7 @@ class ssi_marital_unearned_income(Variable):
         # 416.1802(b)(1): with an eligible spouse 'we will count your combined
         # income'. Combine the two spouses, not every member of the unit.
         # 416.414(b)(3) counts 'each individual's own countable income' in a
-        # month one spouse spends in a medical treatment facility, so each
+        # month one spouse spends throughout in a medical treatment facility,
+        # from the start of the month to its end (416.414(a)(1)), so each
         # month follows its own status.
         return _ssi_couple_income(person, period, "ssi_unearned_income")

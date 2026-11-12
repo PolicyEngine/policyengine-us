@@ -118,7 +118,8 @@ def _ssi_couple_income(person, period, variable):
 
     416.1802(b)(1) counts an eligible couple's combined income. 416.414(b)(3)
     counts 'each individual's own countable income' in a month one spouse
-    spends in a medical treatment facility. The status and the income are
+    spends throughout in a medical treatment facility, from the start of the
+    month to its end (416.414(a)(1)). The status and the income are
     both read for ``period``, so a monthly formula follows that month's
     status. An annual formula applies one status to the whole year, the
     status of the year's last month, which is how Core reads a monthly status

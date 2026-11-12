@@ -192,7 +192,7 @@
     ssi_countable_income: [25_370, 0]
     ssi: [0, 0]
 
-- name: A couple is paid as a couple until one spouse enters a Medicaid facility and as individuals from that month.
+- name: A couple is paid as a couple through the month one spouse enters a Medicaid facility and as individuals from the first full month.
   period: 2000
   absolute_error_margin: 0.01
   input:
