@@ -1,0 +1,139 @@
+# A child's spend down deducts the expenses of financially responsible relatives
+# (42 CFR 435.121(f)(1)(iii), 435.831(d)): the parents whose income is deemed
+# (MHABD 0805.020.15). Children split them as they split the deemed income.
+- name: Case 1, two disabled children split the parent's medical expenses equally.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        other_medical_expenses: 9_000
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # 9,000 / 2 = 4,500.
+    medicaid_parental_medical_expense_share: [0, 4_500, 4_500]
+
+- name: Case 2, a sibling who is not disabled takes no share of the parent's medical expenses.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        other_medical_expenses: 6_000
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    medicaid_parental_medical_expense_share: [0, 6_000, 0]
+
+- name: Case 3, a disabled child receives both parents' medical expenses.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        other_medical_expenses: 3_000
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        other_medical_expenses: 2_000
+      person3:
+        age: 11
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # 3,000 + 2,000 = 5,000.
+    medicaid_parental_medical_expense_share: [0, 0, 5_000]
+
+# A disabled parent is not an ineligible parent, so their income is not deemed
+# and their expenses are not shared.
+- name: Case 4, a disabled parent's medical expenses are not shared with the child.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        other_medical_expenses: 6_000
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_parental_medical_expense_share: [0, 0]

@@ -48,8 +48,9 @@
     # 14,400 + pension 600 (page 44) + interest 201, counted because it is
     # over $200 a year (pages 43 and 50) = 15,201.
     or_liheap_countable_income: 15_201
-    # 60% of state median income, size 2: $50,196 (page 77).
-    or_liheap_income_limit: 50_196
+    # 60% of state median income, size 2: HHS's FY2026 amount is $50,194
+    # (page 77 prints $50,196).
+    or_liheap_income_limit: 50_194
     # Deschutes County is in the Region 2 list (page 80).
     or_liheap_region: 2
     # Size 2, second row "$12,550 $25,098" (page 80). Counting the child's
@@ -78,8 +79,9 @@
     # Income earned by a member aged 18 or over who is enrolled in high
     # school is not counted (pages 41 and 53); there is no other income.
     or_liheap_countable_income: 0
-    # 60% of state median income, size 1: $38,385 (page 77).
-    or_liheap_income_limit: 38_385
+    # 60% of state median income, size 1: HHS's FY2026 amount is $38,384
+    # (page 77 prints $38,385).
+    or_liheap_income_limit: 38_384
     # Size 1, first row "$0 $9,597" (page 78). Counting the 13,100 of wages
     # would give the second row instead.
     or_liheap_income_band: 1
