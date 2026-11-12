@@ -31,8 +31,9 @@ class is_tax_unit_spouse(Variable):
         # the head, or permanently and totally disabled (26 USC 152(c)(3)).
         # That adult can be the head's dependent, so an adult child isn't
         # paired with their parent, while an older adult's income stays on
-        # the return. When a situation omits marital units, Core puts
-        # everyone in one unit, so the age order applies unchanged. Compare
+        # the return. When a situation omits marital units,
+        # tools/marital_units.py builds them by these same rules, so they give
+        # the same spouse. Compare
         # memberships, not the ID variable: situations can supply groups
         # without numeric ID inputs.
         # NOTE: an adult outside the head's marital unit who fails the age

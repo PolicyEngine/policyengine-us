@@ -207,8 +207,9 @@ adult, except an adult who meets the qualifying child age test against the head
 than the head, or permanently and totally disabled at any age. That adult stays
 a dependent. No spouse is inferred when any member of the unit is separated,
 and a separated member doesn't count toward a couple. When a situation omits
-marital units, Core puts everyone in one marital unit, so plain age order
-applies. A minor living without a parent is left with no head.
+marital units, the model builds them by these same rules (see "Marital
+membership and tax roles" above), so they give the same roles. A minor living
+without a parent is left with no head.
 
 This rule has four known limitations. Supply `is_tax_unit_head`,
 `is_tax_unit_spouse` or `tax_unit_role_input` for these households:
