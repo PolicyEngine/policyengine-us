@@ -20,12 +20,14 @@ metadata:
     href: https://www.azleg.gov/ars/43/01041.htm
   - title: Laws 2026, ch. 140 (HB 4168), secs. 16 and 35(A)
     href: https://www.azleg.gov/legtext/57leg/2R/laws/0140.htm
-  # 2026: 43-1041(H) indexes the subsection A amounts "in the same manner in
-  # which the federal basic standard deduction is adjusted for inflation
-  # pursuant to section 63". The Arizona and federal 2025 bases are equal, so
-  # the 2026 amounts equal the federal ones.
+  # 2026 and 2027: 43-1041(H) indexes the subsection A amounts "in the same
+  # manner in which the federal basic standard deduction is adjusted for
+  # inflation pursuant to section 63". The Arizona and federal 2025 bases are
+  # equal, so the 2026 and 2027 amounts equal the federal ones.
   - title: Rev. Proc. 2025-32, sec. 4.14(1) (2026 federal standard deduction)
     href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
+  - title: Rev. Proc. 2026-35, sec. 3.15(1) (2027 federal standard deduction)
+    href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=13
   # Each filing-status amount below carries its own uprating, because
   # policyengine-core uprates only parameters whose own metadata names one.
 
@@ -37,6 +39,7 @@ JOINT:
     2024-01-01: 29_200
     2025-01-01: 31_500
     2026-01-01: 32_200
+    2027-01-01: 33_200
   metadata:
     unit: currency-USD
     period: year
@@ -57,6 +60,7 @@ HEAD_OF_HOUSEHOLD:
     2024-01-01: 21_900
     2025-01-01: 23_625
     2026-01-01: 24_150
+    2027-01-01: 24_925
   metadata:
     unit: currency-USD
     period: year
@@ -73,6 +77,7 @@ SINGLE:
     2024-01-01: 14_600
     2025-01-01: 15_750
     2026-01-01: 16_100
+    2027-01-01: 16_600
   metadata:
     unit: currency-USD
     period: year
@@ -89,6 +94,7 @@ SEPARATE:
     2024-01-01: 14_600
     2025-01-01: 15_750
     2026-01-01: 16_100
+    2027-01-01: 16_600
   metadata:
     unit: currency-USD
     period: year

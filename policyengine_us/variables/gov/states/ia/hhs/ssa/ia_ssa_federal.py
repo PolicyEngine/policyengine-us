@@ -1,4 +1,10 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_spouses import (
+    ia_ssa_spouse_value,
+)
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi._ssi_state_supplement import (
     ssi_state_supplement,
 )
@@ -31,14 +37,22 @@ class ia_ssa_federal(Variable):
         # not apply as part of a joint claim (issue 10243).
         joint = person("ssi_couple_computation_applies", period)
         blind = person("is_blind", period.this_year)
-        blind_count = person.marital_unit.sum(blind)
+        blind_count = _ssi_couple_total(person, period.this_year, blind.astype(int))
         dependent = person("ia_ssa_dependent_countable_income", period)
-        dependent = where(joint, person.marital_unit.max(dependent), dependent)
+        dependent = where(
+            joint,
+            max_(dependent, ia_ssa_spouse_value(person, period, dependent)),
+            dependent,
+        )
         recipient_income = person("ssi_countable_income", period) + person(
             "ssi", period
         )
         group_income = (
-            where(joint, person.marital_unit.sum(recipient_income), recipient_income)
+            where(
+                joint,
+                _ssi_couple_total(person, period.this_year, recipient_income),
+                recipient_income,
+            )
             + dependent
         )
         need = (
@@ -60,7 +74,9 @@ class ia_ssa_federal(Variable):
         # couple applies the couple level (integration.yaml Cases 11-12),
         # whatever the other spouse's category.
         certified = category == c.DEPENDENT_PERSON
-        certified = where(joint, person.marital_unit.any(certified), certified)
+        certified = where(
+            joint, certified | ia_ssa_spouse_value(person, period, certified), certified
+        )
         dp = certified & (dependent < p.dependent_amount) & (group_income < need)
         # 6-B: the family-life home standard is "$1,156", and the maximum
         # supplement is "$162 ($1,156 - $994 SSI standard)". SSA pays at most
@@ -108,7 +124,7 @@ class ia_ssa_federal(Variable):
             + 2 * blind * p.blind_amount
         )
         recipient = (individual_rate > 0) & ~medical & person("ia_ssa_eligible", period)
-        count = person.marital_unit.sum(recipient)
+        count = _ssi_couple_total(person, period.this_year, recipient.astype(int))
         payment = ssi_state_supplement(
             person,
             period,

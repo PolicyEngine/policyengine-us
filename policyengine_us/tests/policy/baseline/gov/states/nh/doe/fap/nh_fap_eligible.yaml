@@ -915,8 +915,8 @@
   output:
     nh_fap_eligible: true
 
-# Manual pp17,74: the 2027 Part B premium of 202.90 * 12 = 2,434.80 withheld from
-# Social Security is deducted for the enrollee: 50,000 - 2,434.80 = 47,565.20, within
+# Manual pp17,74: the projected 2027 premium of 209.50 * 12 = 2,514 withheld from
+# Social Security is deducted for the enrollee: 50,000 - 2,514 = 47,486, within
 # the 48,713 ceiling. Social Security of 50,000 is far above the MSP limit. The
 # person who is not enrolled in Medicare pays no premium and stays above it.
 - name: "Case 26, the withheld Part B premium brings an enrollee within the income ceiling."
@@ -961,8 +961,8 @@
         members: ["person2"]
         state_code: "NH"
   output:
-    medicare_part_b_premium: [0, 2_434.8]
-    nh_fap_countable_income: [50_000, 47_565.2]
+    medicare_part_b_premium: [0, 2_514]
+    nh_fap_countable_income: [50_000, 47_486]
     nh_fap_eligible: [false, true]
 
 # Manual pp12,18,21,35: estimate may replace an absent actual bill; retain income, qualified-member, subsidized heat-in-rent, fuel and state requirements.

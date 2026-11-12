@@ -67,3 +67,65 @@ def _ssi_spouse_index(person, period):
     """The row of each person's co-resident spouse, or -1."""
     first, second = co_resident_parent_indices(person, period)
     return _ssi_established_spouse_indices(person, period, first, second)
+
+
+def _ssi_eligible_apart_from_means(person, period):
+    """Aged, blind or disabled and meeting SSI's citizenship condition.
+
+    416.1160(d) makes an ineligible spouse one who 'is not eligible for SSI
+    benefits'. The resource test runs before eligibility is known, so this
+    tests the conditions that do not depend on it: aged, blind or disabled
+    status, and citizenship or qualified-noncitizen status (as is_ssi_eligible
+    requires).
+    """
+    immigration_status = person("immigration_status", period)
+    is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
+    return person("is_ssi_aged_blind_disabled", period) & (
+        is_citizen | person("is_ssi_qualified_noncitizen", period)
+    )
+
+
+def _ssi_resource_couple(person, period):
+    """Whether 416.1205(b) combines a joint claim's resources.
+
+    A joint claim pairs two aged, blind or disabled spouses. When one of them
+    fails the citizenship condition, they are not an eligible couple
+    (416.1801(c)), so the other's resources are tested with the spouse's
+    deemed under 416.1202(a), with the ineligible-spouse exclusions.
+    """
+    eligible = _ssi_eligible_apart_from_means(person, period)
+    spouse = np.maximum(_ssi_spouse_index(person, period), 0)
+    return person("ssi_claim_is_joint", period) & eligible & eligible[spouse]
+
+
+def _ssi_couple_total(person, period, values):
+    """Each person's value plus their co-resident spouse's, if they have one.
+
+    This equals the marital-unit sum for a one-person unit and for a
+    two-person unit whose members the spouse test pairs, and adds only the
+    spouse when a unit holds more people, as the default unit of a situation
+    that omits marital units can. ``period`` is the year of the spouse test.
+    The sum is float64, as the marital-unit sum is, so float32 input rounds
+    the same way.
+    """
+    values = np.asarray(values, dtype=float)
+    spouse = _ssi_spouse_index(person, period)
+    return values + where(spouse >= 0, values[np.maximum(spouse, 0)], 0)
+
+
+def _ssi_couple_budget_total(person, period, values):
+    """A couple's total: both spouses' values plus their dependents'.
+
+    A dependent is an unmarried tax dependent who shares the marital unit of
+    a couple and the tax unit of the person whose total this is. Another
+    couple's dependent and an unrelated member of a default marital unit stay
+    out. ``period`` is the year of the spouse test.
+    """
+    dependent = (
+        person("is_tax_unit_dependent", period)
+        & (_ssi_spouse_index(person, period) < 0)
+        & person.marital_unit.any(person("ssi_couple_computation_applies", period))
+    )
+    return _ssi_couple_total(person, period, values) + person.tax_unit.sum(
+        where(dependent, values, 0)
+    )

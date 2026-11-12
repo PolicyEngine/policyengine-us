@@ -175,6 +175,43 @@ def test_no_silent_removals_between_year_blocks(list_path):
         )
 
 
+LIHEAP_PAYMENTS = "gov/hhs/liheap/regular_payments.yaml"
+
+# Registry payment variables the national LIHEAP total leaves out on purpose.
+LIHEAP_PAYMENTS_NOT_SUMMED = {
+    # il_liheap_regular_heating is summed instead: il_liheap also counts
+    # crisis assistance.
+    "il_liheap",
+    # The Home Heating Credit already counts as a refundable state credit.
+    "mi_home_heating_credit",
+}
+
+
+def test_liheap_total_sums_every_registered_state_payment(variables):
+    """A state payment in the registry must reach the national total.
+
+    The LIHEAP registry entry names one variable per state implementation.
+    Each one that is a dollar amount belongs in the list `liheap` sums, so a
+    new state payment, or a list line deleted by mistake, cannot drop a state
+    from the total unnoticed. Eligibility flags carry no amount.
+    """
+    programs = yaml.safe_load((PACKAGE / "programs.yaml").read_text())["programs"]
+    liheap = next(program for program in programs if program["id"] == "liheap")
+    payments = {
+        implementation["variable"]
+        for implementation in liheap["state_implementations"]
+        if variables[implementation["variable"]].value_type is float
+    }
+    missing = sorted(
+        payments - LIHEAP_PAYMENTS_NOT_SUMMED - members_of(LIHEAP_PAYMENTS)
+    )
+    assert not missing, (
+        f"{LIHEAP_PAYMENTS} lacks these state payments from the LIHEAP "
+        f"registry entry: {missing}. Add each to the list, or record why it "
+        "is left out in LIHEAP_PAYMENTS_NOT_SUMMED in this test."
+    )
+
+
 # --- Reform-side copies of the benefit aggregates -------------------------
 
 AGGREGATE_VARIABLES = ("household_benefits", "spm_unit_benefits")
