@@ -2,9 +2,9 @@
 - name: Personal exemptions remain zero under current law after 2035
   period: 2036
   input:
-    exemptions_count: 1
+    exemptions_count: [1, 1, 1, 1, 1]
     adjusted_gross_income: [0, 414_199, 414_200, 414_201, 1_000_000]
-    filing_status: SINGLE
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
   output:
     exemptions: [0, 0, 0, 0, 0]
 
@@ -17,9 +17,9 @@
   input:
     gov.irs.income.exemption.suspended: false
     gov.irs.income.exemption.amount: 1_000
-    exemptions_count: 1
+    exemptions_count: [1, 1, 1]
     adjusted_gross_income: [414_199, 414_200, 416_700]
-    filing_status: SINGLE
+    filing_status: [SINGLE, SINGLE, SINGLE]
   output:
     exemptions: [1_000, 1_000, 980]
 
@@ -31,8 +31,8 @@
   input:
     gov.irs.income.exemption.suspended: false
     gov.irs.income.exemption.amount: 1_000
-    exemptions_count: 1
+    exemptions_count: [1, 1, 1]
     adjusted_gross_income: [248_499, 248_500, 249_750]
-    filing_status: SEPARATE
+    filing_status: [SEPARATE, SEPARATE, SEPARATE]
   output:
     exemptions: [1_000, 1_000, 980]

@@ -67,9 +67,9 @@
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
   input:
-    filing_status: SINGLE
+    filing_status: [SINGLE, SINGLE, SINGLE]
     taxable_income: [1_028_830, 1_028_830.6820735942, 1_028_832]
-    long_term_capital_gains: 100_000
+    long_term_capital_gains: [100_000, 100_000, 100_000]
   output:
     capital_gains_tax: [20_000, 20_000, 20_000.2240475]
 
@@ -80,8 +80,8 @@
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
   input:
-    filing_status: SEPARATE
+    filing_status: [SEPARATE, SEPARATE, SEPARATE]
     taxable_income: [514_415, 514_415.3410367971, 514_417]
-    long_term_capital_gains: 100_000
+    long_term_capital_gains: [100_000, 100_000, 100_000]
   output:
     capital_gains_tax: [20_000, 20_000, 20_000.2820237]

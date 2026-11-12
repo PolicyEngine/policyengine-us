@@ -44,8 +44,8 @@
   period: 2026
   input:
     investment_in_529_plan: [26_199, 26_200, 26_201]
-    filing_status: SINGLE
-    state_code: CO
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    state_code: [CO, CO, CO]
   output:
     co_collegeinvest_subtraction: [26_199, 26_200, 26_200]
 
@@ -53,17 +53,17 @@
   period: 2026
   input:
     investment_in_529_plan: [39_199, 39_200, 39_201]
-    filing_status: JOINT
-    state_code: CO
+    filing_status: [JOINT, JOINT, JOINT]
+    state_code: [CO, CO, CO]
   output:
     co_collegeinvest_subtraction: [39_199, 39_200, 39_200]
 
 - name: Other filing statuses use the published 2026 single limit
   period: 2026
   input:
-    investment_in_529_plan: 50_000
+    investment_in_529_plan: [50_000, 50_000, 50_000]
     filing_status: [SEPARATE, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE]
-    state_code: CO
+    state_code: [CO, CO, CO]
   output:
     co_collegeinvest_subtraction: [26_200, 26_200, 26_200]
 
@@ -74,8 +74,8 @@
   period: 2027
   input:
     investment_in_529_plan: [26_999, 27_000, 27_001]
-    filing_status: SINGLE
-    state_code: CO
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    state_code: [CO, CO, CO]
   output:
     co_collegeinvest_subtraction: [26_999, 27_000, 27_000]
 
@@ -83,8 +83,8 @@
   period: 2027
   input:
     investment_in_529_plan: [40_399, 40_400, 40_401]
-    filing_status: JOINT
-    state_code: CO
+    filing_status: [JOINT, JOINT, JOINT]
+    state_code: [CO, CO, CO]
   output:
     co_collegeinvest_subtraction: [40_399, 40_400, 40_400]
 
