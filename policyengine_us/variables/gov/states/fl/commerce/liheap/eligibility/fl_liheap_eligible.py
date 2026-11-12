@@ -11,6 +11,7 @@ class fl_liheap_eligible(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
         "https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-73C-26-022",
+        "https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-73C-26-023",
         # PDF pages 4-5, 8, 45
         "https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=4",
         # PDF pages 8-9
@@ -81,7 +82,9 @@ class fl_liheap_eligible(Variable):
         # costs is eligible (700.01 E, page 23; 900.08 A, page 43). So a
         # household with any reported heating type, including a home without
         # heating or one with heat in subsidized rent, qualifies when it pays
-        # its own electricity bill for cooling. UNSPECIFIED does not.
+        # its own electricity bill for cooling. UNSPECIFIED does not. Cooling
+        # wholly in the rent with no obligation of its own pays nothing, as
+        # R. 73C-26.023(4) provides.
         cooling_only = (
             (heating_type != types.UNSPECIFIED)
             & spm_unit("has_cooling_expense", period)

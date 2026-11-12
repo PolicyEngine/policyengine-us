@@ -2489,9 +2489,12 @@ candidates:
     from: 2025
     to: 2026
     type: federal-fiscal
-  question: Does including energy costs in unsubsidized rent permit Florida LIHEAP eligibility or prevent the required
-    landlord certification?
+  question: Is a Florida household whose energy costs are wholly included in unsubsidized rent, with no obligation of its own,
+    eligible for LIHEAP?
   sources:
+  - kind: regulation
+    citation: Fla. Admin. Code R. 73C-26.023(4)
+    url: https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-73C-26-023
   - kind: manual
     citation: Florida LIHEAP manual parts 900.01A p.39 and 100.01 p.4
     url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=4
@@ -2499,28 +2502,35 @@ candidates:
     citation: Florida LIHEAP manual part 1100.04B(1), p.47
     url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=47
   readings:
-    statute: No statute is supplied; parts 900.01A and 100.01 allow utilities in unsubsidized rent and payment to
-      the landlord.
-    other: Part 1100.04B(1) requests a statement that home energy costs are not included in rent.
+    statute: No statute is supplied; R. 73C-26.023(4) says "The applicant is not eligible for assistance if home energy
+      costs are totally included in the rent and the applicant has no obligation to pay any portion of the energy costs",
+      and part 1100.04B(1) requests a statement that home energy costs are not included in rent.
+    other: Parts 900.01A and 100.01 allow "non-subsidized rent that includes utilities" and payment to the landlord.
+  example: In 2026, an unsubsidized renter aged 40 with $14,820 of wages, gas heat included in the rent and no bill of its
+    own receives $350 under part 900.01A and $0 under R. 73C-26.023(4); the same renter with no heating and cooling in the
+    rent receives $0 under the rule and $350 under part 900.01A.
   pe_us:
     follows: unknown
     code:
     - policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9969
-  state: unreviewed
-  note: 'PE-US follows parts 900.01A and 100.01: heat in unsubsidized rent qualifies (fl_liheap_eligible.py). Verify whether the 1100.04B(1) statement applies to a narrower payment situation.'
+    - https://github.com/PolicyEngine/policyengine-us/pull/10740
+  state: open
+  note: 'The heating route follows parts 900.01A and 100.01: heat in unsubsidized rent qualifies (fl_liheap_eligible.py).
+    The cooling route added by PR 10740 requires the household''s own electricity bill, so cooling wholly in the rent pays
+    $0, as R. 73C-26.023(4) reads. A ruling is needed on the heating route.'
 - id: us-fl:liheap-fy2026-payment-range
   program: liheap
   years:
     from: 2026
     to: 2026
     type: federal-fiscal
-  question: Do Florida's FY2026 regular heating payments range from the plan's estimated $400 to $1,350 or from the
-    October 2025 payment matrix's $200 to $700?
+  question: Does Florida's FY2026 Home Energy benefit, for heating or cooling, range from the plan's estimated $400 to $1,350
+    or from the October 2025 payment matrix's $200 to $700?
   sources:
   - kind: guidance
-    citation: FY2026 LIHEAP State Plan item 2.6, p.9
+    citation: "FY2026 LIHEAP State Plan items 2.6 (heating) and 3.6 (cooling) #page 9,11"
     url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=9
   - kind: form
     citation: October 2025 LIHEAP payment matrix
@@ -2534,7 +2544,7 @@ candidates:
   readings:
     statute: No statute is supplied; the manual and contract D(10)b require the current matrix, which pays $200 to
       $700 with all additions.
-    other: Plan item 2.6 prints the FY2025 estimates, a $400 minimum and a $1,350 maximum.
+    other: Plan items 2.6 and 3.6 print the FY2025 estimates, a $400 minimum and a $1,350 maximum.
   pe_us:
     follows: unknown
     code:
@@ -2542,9 +2552,11 @@ candidates:
     - policyengine_us/variables/gov/states/fl/commerce/liheap/fl_liheap.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9969
+    - https://github.com/PolicyEngine/policyengine-us/pull/10740
   state: unreviewed
-  note: PE-US follows the October 2025 matrix (base_amount.yaml, fl_liheap.py). The draft FFY2027 plan, section 2.6,
-    estimates a $200 minimum and a $700 maximum, matching it.
+  note: PE-US follows the October 2025 matrix (base_amount.yaml, fl_liheap.py) for heating and for the cooling route PR
+    10740 adds, which can pay $350, below the printed $400 minimum. The draft FFY2027 plan, section 2.6, estimates a $200
+    minimum and a $700 maximum, matching it.
 - id: us-fl:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
