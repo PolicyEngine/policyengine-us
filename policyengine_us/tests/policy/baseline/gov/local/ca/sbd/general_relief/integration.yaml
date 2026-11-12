@@ -118,14 +118,14 @@
         # $5,400 per year is $450 per month of Social Security.
         social_security: 5_400
         ssi: 0
+        # Pin the CA state supplement off: state_code defaults to CA, so it
+        # would otherwise self-compute for the aged member and bar them,
+        # excluding their income and leaving an empty unit.
+        ca_state_supplement_person: 0
     spm_units:
       spm_unit:
         members: [person1]
         tanf: 0
-        # Pin the CA state supplement off: state_code defaults to CA, so it
-        # would otherwise self-compute for the aged member and bar them,
-        # excluding their income and leaving an empty unit.
-        ca_state_supplement: 0
     households:
       household:
         members: [person1]
@@ -148,12 +148,12 @@
         age: 65
         social_security: 5_400
         ssi: 0
+        # Pin the CA state supplement off (see Case 4).
+        ca_state_supplement_person: 0
     spm_units:
       spm_unit:
         members: [person1]
         tanf: 0
-        # Pin the CA state supplement off (see Case 4).
-        ca_state_supplement: 0
     households:
       household:
         members: [person1]
@@ -376,6 +376,9 @@
       person2:
         age: 68
         ssi: 0
+        # $200 per month of state supplement with no federal SSI (an
+        # SSP-only case).
+        ca_state_supplement_person: 200
     tax_units:
       tax_unit1:
         members: [person1]
@@ -384,9 +387,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        # $200 per month of state supplement with no federal SSI (an
-        # SSP-only case).
-        ca_state_supplement: 200
         tanf: 0
     households:
       household:
@@ -395,8 +395,8 @@
         state_code: CA
   output:
     # The aged SSP recipient is barred like an SSI recipient, and a barred
-    # member's income — including the unit-level supplement that serves
-    # them — is excluded from AU income entirely.
+    # member's income, including the supplement that serves them, is excluded
+    # from AU income entirely.
     ca_sbd_general_relief_receives_other_cash_assistance: [false, true]
     ca_sbd_general_relief_eligible_person: [true, false]
     ca_sbd_general_relief_assistance_unit_size: 1
@@ -466,8 +466,6 @@
         members: [person1, person2]
         # $2,400 per year is $200 per month of CAPI.
         ca_capi: 2_400
-        # Pin the CA state supplement off so only CAPI is in play.
-        ca_state_supplement: 0
         tanf: 0
     households:
       household:

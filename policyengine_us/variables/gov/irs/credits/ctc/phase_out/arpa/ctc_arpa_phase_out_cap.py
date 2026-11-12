@@ -11,7 +11,7 @@ class ctc_arpa_phase_out_cap(Variable):
     )
     definition_period = YEAR
     # Defined on Line 5 worksheet of 2021 Instructions for Schedule 8812.
-    reference = "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4"
+    reference = "https://www.irs.gov/pub/irs-prior/i1040s8--2021.pdf#page=4"
 
     def formula(tax_unit, period, parameters):
         # Logic sequence follows the form, which is clearer than the IRC.

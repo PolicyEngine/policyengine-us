@@ -1,0 +1,543 @@
+# Delaware FY2026 regular heating. Independent source-derived expectations.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5
+
+# Person income 10,000 + 3,000, TANF 12 x 200 = 2,400, helper 800 + 150 + 50 = 1,000
+# including state payroll 100, city 125; 15,400 - 1,000 - 125 = 14,275.
+- name: Case 1, TANF counts once and payroll helper includes state contributions once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        employment_income: 10_000
+        de_employee_state_payroll_tax: 100
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        social_security_survivors: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 125
+        employee_payroll_tax: 800
+        state_withheld_income_tax: 150
+        income_tax_before_credits: 50
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          2026-01: 200
+          2026-02: 200
+          2026-03: 200
+          2026-04: 200
+          2026-05: 200
+          2026-06: 200
+          2026-07: 200
+          2026-08: 200
+          2026-09: 200
+          2026-10: 200
+          2026-11: 200
+          2026-12: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    spm_unit_paycheck_withholdings: 1_000
+    de_liheap_countable_income: 14_275
+
+# max(500 - 800, 0) = 0.
+- name: Case 2, deductions cannot make household income negative.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        employment_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 800
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 0
+
+# A negative deduction is floored at zero, so 500 remains 500; refunds are not income.
+- name: Case 3, negative tax total cannot increase income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        child_support_received: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: -100
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 500
+
+# The nonqualified parent's gross 21,000 minus supplied withholding 1,000 leaves 20,000
+# for qualified size 1.
+- name: Case 4, income of members excluded from qualified size still counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        employment_income: 21_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_household_size: 1
+    de_liheap_countable_income: 20_000
+
+- name: Case 5, excluded child taxes, zero supplied deductions stay zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 26_000
+        ssi: {'2026': 0}
+      child:
+        age: 17
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_tax_unit_dependent: true
+        ssi: {'2026': 0}
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        de_tanf: {'2026': 0}
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: DE
+        in_wilmington: true
+  output:
+    de_liheap_countable_income: 26000
+
+- name: Case 6, excluded child taxes, remaining supplied deductions are retained.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 26_000
+        ssi: {'2026': 0}
+      child:
+        age: 17
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_tax_unit_dependent: true
+        ssi: {'2026': 0}
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        de_wilmington_earned_income_tax: 350
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        de_tanf: {'2026': 0}
+        spm_unit_paycheck_withholdings: 2110
+    households:
+      household:
+        members: [parent, child]
+        state_code: DE
+        in_wilmington: true
+  output:
+    de_liheap_countable_income: 25400
+
+# Ongoing retirement receipts: pension 1,000 + taxable IRA 12,000 + exempt IRA 3,000.
+# Count the two aggregates once; one-time lump sums are not represented here.
+- name: Case 7, recurring taxable and exempt retirement distributions count beside pensions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: 0
+        pension_income: 1_000
+        taxable_ira_distributions: 12_000
+        tax_exempt_ira_distributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        de_tanf: 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person]
+        state_code: DE
+  output:
+    de_liheap_countable_income: 16_000
+
+# Manual 418 excludes a minor's interest as well as earnings, so counted income
+# is the parent's 15,900 support in all four households. All of the minor's
+# estimated state tax and payroll tax is removed, so wages, pre-tax wages and
+# business adjustments cannot reduce it. Federal tax is explicitly zero here to
+# isolate the person-level state-tax deduction, not allocate federal liability.
+- name: Case 8, excluded minor income removes all of the minor's state tax, including
+    pre-tax wages and business adjustments.
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      parent_interest_only:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 15900
+        ssi: 0
+      child_interest_only:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        taxable_interest_income: 10000
+        ssi: 0
+      parent_wages:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 15900
+        ssi: 0
+      child_wages:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        taxable_interest_income: 10000
+        ssi: 0
+        employment_income: 10000
+      parent_pretax_wages:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 15900
+        ssi: 0
+      child_pretax_wages:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        taxable_interest_income: 10000
+        ssi: 0
+        employment_income: 10000
+        traditional_401k_contributions: 2000
+      parent_business:
+        age: 40
+        immigration_status: CITIZEN
+        child_support_received: 15900
+        ssi: 0
+      child_business:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        taxable_interest_income: 10000
+        ssi: 0
+        self_employment_income: 10000
+    tax_units:
+      tax_parent_interest_only:
+        members:
+        - parent_interest_only
+        income_tax_before_credits: 0
+      tax_child_interest_only:
+        members:
+        - child_interest_only
+        income_tax_before_credits: 0
+      tax_parent_wages:
+        members:
+        - parent_wages
+        income_tax_before_credits: 0
+      tax_child_wages:
+        members:
+        - child_wages
+        income_tax_before_credits: 0
+      tax_parent_pretax_wages:
+        members:
+        - parent_pretax_wages
+        income_tax_before_credits: 0
+      tax_child_pretax_wages:
+        members:
+        - child_pretax_wages
+        income_tax_before_credits: 0
+      tax_parent_business:
+        members:
+        - parent_business
+        income_tax_before_credits: 0
+      tax_child_business:
+        members:
+        - child_business
+        income_tax_before_credits: 0
+    marital_units:
+      marital_parent_interest_only:
+        members:
+        - parent_interest_only
+      marital_child_interest_only:
+        members:
+        - child_interest_only
+      marital_parent_wages:
+        members:
+        - parent_wages
+      marital_child_wages:
+        members:
+        - child_wages
+      marital_parent_pretax_wages:
+        members:
+        - parent_pretax_wages
+      marital_child_pretax_wages:
+        members:
+        - child_pretax_wages
+      marital_parent_business:
+        members:
+        - parent_business
+      marital_child_business:
+        members:
+        - child_business
+    spm_units:
+      interest_only:
+        members:
+        - parent_interest_only
+        - child_interest_only
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        de_tanf: 0
+      wages:
+        members:
+        - parent_wages
+        - child_wages
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        de_tanf: 0
+      pretax_wages:
+        members:
+        - parent_pretax_wages
+        - child_pretax_wages
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        de_tanf: 0
+      business:
+        members:
+        - parent_business
+        - child_business
+        heating_type: NATURAL_GAS
+        gas_expense: 1000
+        de_tanf: 0
+    households:
+      interest_only:
+        members:
+        - parent_interest_only
+        - child_interest_only
+        state_code: DE
+        in_wilmington: false
+      wages:
+        members:
+        - parent_wages
+        - child_wages
+        state_code: DE
+        in_wilmington: false
+      pretax_wages:
+        members:
+        - parent_pretax_wages
+        - child_pretax_wages
+        state_code: DE
+        in_wilmington: false
+      business:
+        members:
+        - parent_business
+        - child_business
+        state_code: DE
+        in_wilmington: false
+  output:
+    de_liheap_countable_income:
+    - 15_900
+    - 15_900
+    - 15_900
+    - 15_900
+
+# Net business amounts are added as reported: wages 30,000 - loss 10,000 = 20,000.
+- name: Case 9, a business loss offsets the same person's wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: DE
+    age: 40
+    ssi: 0
+    de_tanf: 0
+    employment_income: 30_000
+    self_employment_income: -10_000
+    de_wilmington_earned_income_tax: 0
+    spm_unit_paycheck_withholdings: 0
+  output:
+    de_liheap_countable_income_person: 20_000
+    de_liheap_countable_income: 20_000
+
+# Manual 418.3 verifies self-employment against Form 1040 adjusted gross income, so
+# one spouse's 40,000 loss offsets the other's 30,000 wages and the unit floors at 0.
+- name: Case 10, a business loss offsets another member's wages and the unit floors at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 40
+        ssi: 0
+        self_employment_income: -40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_tanf: 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: [30_000, -40_000]
+    de_liheap_countable_income: 0
+
+# The minor's 20,000 of nonresident Wilmington earnings carries 20,000 x 1.25% = 250
+# of city tax. That tax is removed with the excluded earnings, so the parent's 26,000
+# of support stays whole.
+- name: Case 11, Wilmington tax on an excluded member's nonresident earnings is removed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        child_support_received: 26_000
+      person2:
+        age: 17
+        ssi: 0
+        is_tax_unit_dependent: true
+        de_wilmington_nonresident_earnings: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        de_tanf: 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+        in_wilmington: false
+  output:
+    de_wilmington_earned_income_tax: 250
+    de_liheap_countable_income: 26_000

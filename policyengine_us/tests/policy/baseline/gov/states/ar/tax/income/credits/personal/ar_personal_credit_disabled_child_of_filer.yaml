@@ -1,0 +1,64 @@
+# Defaults: a parent id that names a head or spouse of the tax unit, or no
+# parent ids at all (the relationship is unknown). Parent ids also name
+# step-parents, so a stepchild needs the input set to false.
+# The filer also has no parent ids, so the helper's unknown-relationship
+# fallback is true for them. The credit separately excludes filers.
+
+- name: 2025 a claimable disabled filer gets no credit for themselves but keeps the credit for their disabled child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        person_id: 1
+        is_disabled: true
+        claimable_as_dependent_on_another_return: true
+      child:
+        age: 8
+        person_id: 2
+        parent_1_id: 1
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: AR
+  output:
+    # No parent ids makes the helper true for the filer, but the credit
+    # excludes filers. The parent's own disabled child still gets $500.
+    ar_personal_credit_disabled_child_of_filer: [true, true]
+    ar_personal_credit_disabled_dependent: [0, 500]
+
+- name: 2025 a parent id naming someone outside the tax unit does not
+  period: 2025
+  input:
+    people:
+      filer: {age: 30, person_id: 1}
+      niece: {age: 8, person_id: 2, parent_1_id: 99}
+    tax_units:
+      tax_unit:
+        members: [filer, niece]
+    households:
+      household:
+        members: [filer, niece]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_child_of_filer: [true, false]
+
+- name: 2025 a dependent without parent ids is treated as the filer's child
+  period: 2025
+  input:
+    people:
+      filer: {age: 30}
+      child: {age: 8}
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_child_of_filer: [true, true]

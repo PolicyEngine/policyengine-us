@@ -52,7 +52,7 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # from its dry run and spreads their files over parallel runners by recent
 # CI times, splitting a long group into chunks. A process still runs files
 # of one group only, in this order, so none holds more than its group here.
-REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy ss-calculator-engine ss-calculator-differential social-security-inputs core policy-parameters policy remaining-heavy remaining
+REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy ss-calculator-engine ss-calculator-differential ss-history-engine ss-history-differential social-security-inputs core policy-parameters policy remaining-heavy remaining
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
@@ -79,6 +79,11 @@ REST_SS_CALCULATOR_ENGINE_TESTS := $(TESTS)/unit/test_ss_calculator_engine.py
 # Local macOS/Python 3.13.9, four numeric threads: all eight cases passed
 # with 2.45 GiB peak RSS, below the ~10 GB per-process target above.
 REST_SS_CALCULATOR_DIFFERENTIAL_TESTS := $(TESTS)/unit/test_ss_calculator_differential.py
+# History ingress/dated-policy and optional-route differential checks retain
+# reform trees. Keep each file in its own process on the existing Rest shards.
+# Local elapsed time and memory measurements are recorded in the PR.
+REST_SS_HISTORY_ENGINE_TESTS := $(TESTS)/unit/test_ss_history_engine.py
+REST_SS_HISTORY_DIFFERENTIAL_TESTS := $(TESTS)/unit/test_ss_history_differential.py
 # Synthetic household input/branch checks load no national dataset. Keep their
 # retained reform systems in a separate process rather than growing core's heap.
 # Local 4 GiB-capped run peaked at 2.385 GiB before its 1800s loaded-host cap;
@@ -102,6 +107,7 @@ REST_REMAINING_HEAVY_TESTS := $(TESTS)/test_niit_section_911_magi.py \
 	$(TESTS)/test_schedule_d_filer_net_capital_gain.py
 REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) \
 	$(REST_CORE_HEAVY_TESTS) $(REST_SS_CALCULATOR_ENGINE_TESTS) $(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS) \
+	$(REST_SS_HISTORY_ENGINE_TESTS) $(REST_SS_HISTORY_DIFFERENTIAL_TESTS) \
 	$(REST_SOCIAL_SECURITY_INPUT_TESTS) $(REST_SOCIAL_SECURITY_PIA_RATIO_INPUT_TESTS) \
 	$(REST_POLICY_PARAMETER_TESTS) $(REST_REMAINING_HEAVY_TESTS)
 REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
@@ -337,6 +343,10 @@ test-other-python-rest-ss-calculator-engine:
 	$(call rest_pytest,ss-calculator-engine,$(REST_SS_CALCULATOR_ENGINE_TESTS))
 test-other-python-rest-ss-calculator-differential:
 	$(call rest_pytest,ss-calculator-differential,$(REST_SS_CALCULATOR_DIFFERENTIAL_TESTS))
+test-other-python-rest-ss-history-engine:
+	$(call rest_pytest,ss-history-engine,$(REST_SS_HISTORY_ENGINE_TESTS))
+test-other-python-rest-ss-history-differential:
+	$(call rest_pytest,ss-history-differential,$(REST_SS_HISTORY_DIFFERENTIAL_TESTS))
 test-other-python-rest-social-security-inputs:
 	@failed=""; for group in compatibility pia-ratio; do \
 		$(MAKE) --no-print-directory test-other-python-rest-social-security-inputs-$$group || failed="$$failed $$group"; \

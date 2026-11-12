@@ -5,6 +5,12 @@ class il_income_tax_rebate_eligible(Variable):
     value_type = float
     entity = TaxUnit
     label = "Illinois income tax rebate eligible"
+    documentation = (
+        "Eligibility for Illinois's one-time income tax rebate paid in 2022 and "
+        "determined from the 2021 return. PolicyEngine attributes the payment to "
+        "eligibility tax year 2021. A true eligibility indicator in another year does "
+        "not establish inclusion in that year's refundable-credit total."
+    )
     defined_for = StateCode.IL
     unit = USD
     definition_period = YEAR

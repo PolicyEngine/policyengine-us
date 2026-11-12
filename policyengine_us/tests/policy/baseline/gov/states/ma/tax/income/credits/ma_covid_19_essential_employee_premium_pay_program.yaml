@@ -69,3 +69,63 @@
   output:
     ma_covid_19_essential_employee_premium_pay_program: [0, 0]
 
+
+# Historical guard regression.
+# Program funding: Acts of 2021, chapter 102, section 73.
+# https://malegislature.gov/Laws/SessionLaws/Acts/2021/Chapter102#:~:text=SECTION%2073.
+# The implementing eligibility rules use the 2020 return for round 1 and the
+# 2021 return for round 2; no round uses 2019 earnings/return eligibility.
+# https://www.mass.gov/info-details/covid-19-essential-employee-premium-pay-program#eligibility-parameters-
+# Hand calculation for 2019: premium pay $0; other refundable credits $0;
+# income tax $1,000 - $0 = $1,000. Earnings $15,000 and AGI/FPG = 1.25 otherwise
+# satisfy the first round's amount calculation, so the test detects backdating.
+- name: Massachusetts essential worker premium pay does not reduce 2019 tax
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    state_code: MA
+    filing_status: SINGLE
+    earned_income: 15_000
+    adjusted_gross_income: 15_000
+    tax_unit_fpg: 12_000
+    total_unemployment_compensation: 0
+    ma_income_tax_before_refundable_credits: 1_000
+    ma_eitc: 0
+    ma_child_and_family_credit_or_dependent_care_credit: 0
+    ma_senior_circuit_breaker: 0
+  output:
+    ma_covid_19_essential_employee_premium_pay_program: 0
+    ma_refundable_credits: 0
+    ma_income_tax: 1_000
+
+# The first eligibility round is 2020, so its amount must also be zero when
+# the explicit 2019 guard is backdated to the model's earliest year.
+- name: Massachusetts essential worker premium pay is zero in 2015
+  period: 2015
+  absolute_error_margin: 0
+  input:
+    state_code: MA
+    earned_income: 15_000
+    adjusted_gross_income: 15_000
+    tax_unit_fpg: 12_000
+    total_unemployment_compensation: 0
+  output:
+    ma_covid_19_essential_employee_premium_pay_program: 0
+
+# The second modeled $500 round uses 2021 eligibility, then the amount sunsets.
+- name: Massachusetts second premium pay round retains 2021 eligibility and sunsets in 2022
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: {2021: MA, 2022: MA}
+    earned_income: {2021: 15_000, 2022: 15_000}
+    adjusted_gross_income: {2021: 15_000, 2022: 15_000}
+    tax_unit_fpg: {2021: 12_000, 2022: 12_000}
+    total_unemployment_compensation: {2021: 0, 2022: 0}
+    claimed_ma_covid_19_essential_employee_premium_pay_program_2020:
+      2021: false
+      2022: false
+  output:
+    ma_covid_19_essential_employee_premium_pay_program:
+      2021: 500
+      2022: 0

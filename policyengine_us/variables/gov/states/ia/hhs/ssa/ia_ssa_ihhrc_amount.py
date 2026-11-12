@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class ia_ssa_ihhrc_amount(Variable):
@@ -30,7 +33,7 @@ class ia_ssa_ihhrc_amount(Variable):
         # A couple's approved costs share one participation; others are alone.
         total_cost = where(
             person("ia_ssa_has_spouse", period),
-            person.marital_unit.sum(covered_cost),
+            _ssi_couple_total(person, period.this_year, covered_cost),
             covered_cost,
         )
         payable = max_(total_cost - person("ia_ssa_ihhrc_participation", period), 0)
