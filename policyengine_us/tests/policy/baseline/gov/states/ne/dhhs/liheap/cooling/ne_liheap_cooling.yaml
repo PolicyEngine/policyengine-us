@@ -149,9 +149,10 @@
   output:
     ne_liheap_cooling: 0
 
-# FY2027 carries the FY2026 table forward with the 2026 guideline of $15,960:
-# 14,400 / 15,960 = 0.902, tier 2: $595. The limit is 1.5 x 15,960 = $23,940.
-- name: Case 8, the FY2027 payment carries the FY2026 cooling table forward.
+# The Guidance Document effective October 1, 2026 (page 4) prints the FY2026 amounts
+# on the 2026 guideline of $15,960 for one person: 14,400 / 15,960 = 0.902, tier 2: $595.
+# The limit is 1.5 x 15,960 = $23,940.
+- name: Case 8, the FY2027 cooling table repeats the FY2026 amounts.
   period: 2027
   absolute_error_margin: 0.01
   input:

@@ -8,14 +8,16 @@ class ne_liheap_cooling(Variable):
     unit = USD
     label = "Nebraska LIHEAP regular cooling assistance"
     documentation = (
-        "Verified for FY2026 (the June-August 2026 cooling season). Earlier "
-        "years use model parameter backfilling and are unverified historical "
-        "estimates. Later years carry the FY2026 cooling table forward until a "
-        "new table is added."
+        "Verified for FY2026 and FY2027 (the June-August cooling seasons); the "
+        "FY2027 Guidance Document prints the FY2026 table again. Earlier years "
+        "use model parameter backfilling and are unverified historical "
+        "estimates. Later years carry the table forward until a new one is "
+        "added."
     )
     defined_for = "ne_liheap_cooling_eligible"
     reference = (
         "https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=3",
+        "https://dhhs.ne.gov/Guidance%20Docs/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document.pdf#page=4",
         # 476 NAC 3-001 and 3-003.01, PDF pages 1-2
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%203%20(12-26-2020).pdf/1748#page=1",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%201%20(12-26-2020).pdf/1746#page=1",
