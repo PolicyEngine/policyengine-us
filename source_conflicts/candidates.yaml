@@ -4447,6 +4447,67 @@ candidates:
     CPI-U change rounded to one decimal and double the rounded single deduction for joint, head of household and
     surviving spouse filers (standard/amount.yaml, retirement/cap.yaml, extend_la_cpi_u_indexed_amounts in uprating_extensions.py).
     Verify that the bulletin permissibly fills the indexing and rounding gaps for both provisions.'
+- id: us-la:dependent-exemption-of-a-claimable-filer-with-filing-exception
+  program: income-tax
+  years:
+    from: 2021
+    to: 2024
+    type: tax
+  question: Does a claimable filer whose claimant meets the refund-only filing exception receive the additional
+    dependent exemption, or does the child's exemption first satisfy the personal exemption requirement?
+  sources:
+  - kind: statute
+    citation: Pre-2025 La. R.S. 47:294, introductory paragraph and Subsections A and B; Act 11 of 2024 Third Extraordinary Session, pages 7 and 161
+    url: https://www.legis.la.gov/legis/ViewDocument.aspx?d=1391656#page=7
+  - kind: statute
+    citation: 26 U.S.C. 151(b), (c), (d)(2) and (d)(5), 2024 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/pdf/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec151.pdf
+  - kind: instructions
+    citation: 2021 IT-540 instructions, Lines 6A through 6D, PDF page 3
+    url: https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf#page=3
+  - kind: instructions
+    citation: 2022 IT-540 instructions, Lines 6A through 6F, PDF page 2
+    url: https://dam.ldr.la.gov/taxforms/IT540iWEB(2022)D1.pdf#page=2
+  - kind: instructions
+    citation: 2023 IT-540 instructions, Lines 6A through 6F, PDF page 3
+    url: https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=3
+  - kind: instructions
+    citation: 2024 IT-540 instructions, Lines 6A through 6F and single-filer tax table, PDF pages 3 and 18
+    url: https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=3
+  - kind: guidance
+    citation: IRS Publication 501 (2024), Dependent Taxpayer Test, PDF page 11
+    url: https://www.irs.gov/pub/irs-prior/p501--2024.pdf#page=11
+  - kind: guidance
+    citation: Louisiana Revenue Ruling 18-001, December 21, 2018, pages 1 through 3
+    url: https://dam.ldr.la.gov/lawspolicies/RR%2018-001%20Personal%20Exemptions.pdf
+  readings:
+    statute: One reading counts only the child's allowable federal exemption, allocates it to Subsection A's
+      single-filer requirement, and leaves no additional deduction under B. Another treats the exemptions
+      required by A as the filer's own in kind, leaving the child's exemption additional under B.
+    other: LDR counts the filer on Line 6A even when someone else claims them, and federal dependents on Line 6C.
+      The single-filer table subtracts one from that total, leaving one additional exemption for the child.
+  example: A 2024 claimable single filer aged 20 with one child aged 4 and a refund-only claimant receives
+    $1,000 for the child, $4,500 for the filer, and $5,500 in total exemptions, without blind or aged exemptions.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/la/tax/income/exemptions/personal/la_dependents_exemption.py
+    - policyengine_us/variables/gov/states/la/tax/income/exemptions/personal/la_personal_exemption.py
+    - policyengine_us/variables/gov/states/la/tax/income/exemptions/la_exemptions.py
+    - policyengine_us/parameters/gov/states/la/tax/income/exemptions/dependent.yaml
+    - policyengine_us/tests/policy/baseline/gov/states/la/tax/income/exemptions/personal/la_dependents_exemption.yaml
+    - policyengine_us/tests/policy/baseline/gov/states/la/tax/income/exemptions/personal/la_claimable_filer_exemptions.yaml
+    - policyengine_us/tests/core/test_la_claimable_filer_exemption_invariants.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10045
+  state: ruled
+  note: Ruled 2026-11-12 under the agency tie-break principle. Subsection B's qualifying-exemption language
+    does not identify which exemptions satisfy A, and A gives amounts by filing status without specifying a count.
+    Statute-first and the canons leave both readings open; follow the 2021-2024 instructions as the gap-filler.
+    Keep the formula and the existing filing-exception case unchanged. The personal and dependent exemptions
+    agree with that reading. Revenue Ruling 18-001 distinguishes exemption counts from amounts for 151(d)(5),
+    but does not resolve 151(d)(2) or this class. Searches located no direct LDR ruling or court holding on this
+    class. Selected source excerpts accompany this entry under source_conflicts/sources/us-la/.
 - id: us-la:liheap-plan-income-checklist
   program: liheap
   years:
