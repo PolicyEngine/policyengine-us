@@ -6,41 +6,45 @@ The `Microsimulation` class is the primary tool for population-level policy anal
 
 Dataset `person_marital_unit_id` and `marital_unit_id` columns define marital
 membership. Loading the dataset and extending its years preserve those IDs.
-Microcosm constructs these units from source spouse pointers; policyengine-us
-does not reconstruct them from ages or tax-unit roles.
+Microcosm builds these units from the survey's spouse pointers, and
+policyengine-us never rebuilds a dataset's units.
 
-For household situations, an explicit `marital_units` mapping is also
-authoritative. An empty mapping assigns each person their own unit using
-core's existing unallocated-person behavior. A married couple may share a
+A household situation's `marital_units` mapping also stands as supplied. An
+empty mapping gives each person their own unit. A married couple may share a
 marital unit while belonging to separate tax units.
 
-When an entity-form situation omits `marital_units`, the model pairs a couple
-in the same tax unit and household in two cases:
+When an entity-form situation omits `marital_units`, the model pairs at most
+one couple in each tax unit and household, from the first of these that
+applies, and gives everyone else their own unit:
 
-- an unambiguous, explicitly supplied `is_tax_unit_head` / `is_tax_unit_spouse`
-  pair whose true role inputs overlap in period, neither input as a dependent
-  or separated; or
-- otherwise, the two adults of a family whose explicit `is_married` input is
-  true, when exactly two of its adults in that tax unit and household are
-  neither input as dependents nor separated. Ages are read only to set its
-  children aside.
+1. an unambiguous pair of true `is_tax_unit_head` and `is_tax_unit_spouse`
+   inputs for overlapping periods, neither input as a dependent or separated;
+2. the head and spouse of a `tax_unit_role_input` supplied for every member;
+3. the two adults of a family whose `is_married` input is true, when exactly
+   two of its adults in the tax unit and household are neither input as
+   dependents nor separated;
+4. otherwise, the head and spouse that `is_tax_unit_head` and
+   `is_tax_unit_spouse` infer from age order: the oldest adult, and the
+   next-oldest adult who fails the qualifying child age test against them
+   (under 19, or under 24 if a full-time student, and younger than the head,
+   or permanently and totally disabled). No couple is formed when anyone in
+   the tax unit is separated, when the two live in different households, or
+   when a family they share has a false `is_married` input.
 
-Changing role or `is_married` inputs require an explicit marital mapping
-because population membership is static. Other people receive singleton
-units. A singleton synthesized without relationship inputs does not establish
-that the person is unmarried, but SSI and other programs that read marital
-units treat such adults as individuals: a couple sent with neither roles nor
-`is_married` still files jointly for tax but is not an SSI couple.
+The fourth step reads the same inputs and parameters as the role formulas, so
+the units it builds agree with the inferred tax roles: a couple sent without
+marriage information is a couple for SSI and Medicaid as well as for tax, and
+a parent's adult child who meets the age test is neither. Like the role
+fallback, it pairs an adult child who fails the age test with their parent;
+supply `marital_units` for such households. Changing role or `is_married`
+inputs require an explicit marital mapping, because membership can't change
+between periods, and a unit whose fourth-step couple differs between years
+pairs no one. Under a reform, the fourth step uses the baseline's dependent age
+limits.
 
-The model never uses calculated tax roles to construct marital units. When
-marital membership was explicitly supplied, inferred tax spouses must share
-the head's marital unit as well as their tax unit. When membership was omitted,
-the existing tax-role fallback is retained. Direct tax-role inputs still
-override formulas. These construction rules apply to both Python household
-simulations and entity-form YAML tests, including tests with reforms or
-inline parameters; variable-only tests retain core's singleton defaults.
-Source-input snapshots record which groups were supplied, so a reloaded
-simulation keeps the original's treatment.
+These rules apply to Python household simulations and entity-form YAML tests,
+including tests with reforms or inline parameters. Variable-only tests keep
+Core's own defaults.
 
 ## Getting started
 

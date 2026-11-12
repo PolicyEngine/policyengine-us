@@ -112,7 +112,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     modelled_policies = COUNTRY_DIR / "programs.yaml"
 
     def preprocess_situation(self, situation, default_period=None):
-        return infer_missing_marital_units(situation, default_period)
+        return infer_missing_marital_units(situation, default_period, self)
 
     def __init__(
         self,

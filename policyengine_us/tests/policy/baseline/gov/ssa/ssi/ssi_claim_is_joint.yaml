@@ -156,3 +156,24 @@
         members: [person1, person2, person3]
   output:
     ssi_claim_is_joint: [true, true, false]
+
+- name: With marital units omitted, an aged couple sent without marriage information makes a joint claim.
+  period: 2025
+  input:
+    people:
+      husband:
+        age: 70
+      wife:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [husband, wife]
+    households:
+      household:
+        members: [husband, wife]
+        state_code: TX
+  output:
+    # The model pairs the couple the tax roles pair as head and spouse, so
+    # each is the other's eligible spouse and the claim is joint
+    # (20 CFR 416.1801(c)).
+    ssi_claim_is_joint: [true, true]

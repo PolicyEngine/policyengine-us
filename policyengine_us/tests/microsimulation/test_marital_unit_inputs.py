@@ -1,10 +1,11 @@
 """Construction/data contracts that the policy YAML runner cannot assert.
 
-Policy outcomes live in is_tax_unit_spouse.yaml and
-ssi_marital_earned_income.yaml. These tests use one six-person dataset and
-small households to check identifiers, year extension, caller isolation,
-clone provenance and source-snapshot round trips. Input-validation tests call
-the preprocessing helper directly, without constructing simulations.
+Policy outcomes live in is_tax_unit_spouse.yaml and ssi_claim_is_joint.yaml.
+These tests use one six-person dataset and small households to check
+identifiers, year extension, caller isolation, clones and source-snapshot
+round trips. The pairing tests call the preprocessing helper directly, with
+the shared country system for the age-order fallback, without constructing
+simulations.
 """
 
 from copy import deepcopy
@@ -15,6 +16,7 @@ import pytest
 
 from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USSingleYearDataset
+from policyengine_us.system import system
 from policyengine_us.tools.marital_units import infer_missing_marital_units
 from policyengine_us.tools.social_security_inputs import (
     export_source_inputs,
@@ -50,9 +52,7 @@ def test_household_construction_does_not_mutate_input_and_expands_axes():
     sim = Simulation(situation=situation)
     assert situation == before
     assert sim.marital_unit.members_entity_id.tolist() == [0, 0, 1, 2, 2, 3]
-    assert "marital_unit" not in sim.input_group_entities
     clone = sim.get_branch("copy")
-    assert clone.input_group_entities == sim.input_group_entities
     np.testing.assert_array_equal(
         clone.marital_unit.members_entity_id, sim.marital_unit.members_entity_id
     )
@@ -83,7 +83,6 @@ def test_dataset_marital_ids_survive_loading_and_year_extension():
     )
     original_person = person.copy(deep=True)
     sim = Microsimulation(dataset=dataset, dataset_end_year=2025)
-    assert "marital_unit" in sim.input_group_entities
     np.testing.assert_array_equal(
         np.asarray(sim.marital_unit.ids)[sim.marital_unit.members_entity_id],
         memberships,
@@ -156,12 +155,14 @@ def test_separated_pair_and_partial_tax_units_stay_singletons():
 
 
 def test_source_snapshot_round_trip_keeps_the_inferred_tax_spouse():
-    # The snapshot writes the synthesized singleton marital units out as
-    # members; reloading must not treat them as supplied, or the spouse
-    # check would drop the second adult's tax-spouse role.
+    # The snapshot writes the inferred marital units out as members, and the
+    # reloaded simulation reads them as supplied; they agree with the tax
+    # roles, so the second adult stays the tax spouse.
     sim = Simulation(situation={"people": {"first": {}, "second": {}}})
     reloaded = reload_source_inputs(export_source_inputs(sim))
-    assert reloaded.input_group_entities == sim.input_group_entities
+    np.testing.assert_array_equal(
+        reloaded.marital_unit.members_entity_id, sim.marital_unit.members_entity_id
+    )
     assert sim.calculate("is_tax_unit_spouse", 2024).tolist() == [False, True]
     np.testing.assert_array_equal(
         reloaded.calculate("is_tax_unit_spouse", 2024),
@@ -227,3 +228,80 @@ def test_malformed_input_is_left_to_core_validation():
     listed_twice["tax_units"]["other"] = {"members": ["child"]}
     for situation in (bad_period, listed_twice):
         assert "marital_units" not in infer_missing_marital_units(situation)
+
+
+def _fallback_pairs(people, **groups):
+    situation = {
+        "people": people,
+        "tax_units": {"tax_unit": {"members": list(people)}},
+        **groups,
+    }
+    units = infer_missing_marital_units(situation, "2024", system)["marital_units"]
+    return sorted(
+        sorted(unit["members"]) for unit in units.values() if len(unit["members"]) > 1
+    )
+
+
+@pytest.mark.parametrize(
+    "people, pairs",
+    [
+        # The oldest adult and the next-oldest who fails the age test.
+        (
+            {"older": {"age": 45}, "younger": {"age": 20}, "child": {"age": 10}},
+            [["older", "younger"]],
+        ),
+        # The qualifying child age test keeps an adult child out: under 19,
+        ({"parent": {"age": 45}, "child": {"age": 18}}, []),
+        # under 24 and a full-time student,
+        (
+            {
+                "parent": {"age": 50},
+                "child": {"age": 21, "is_full_time_college_student": True},
+            },
+            [],
+        ),
+        # or permanently and totally disabled.
+        (
+            {
+                "parent": {"age": 70},
+                "child": {"age": 40, "is_permanently_and_totally_disabled": True},
+            },
+            [],
+        ),
+        # A separated member leaves the unit without a spouse.
+        ({"first": {"age": 45}, "second": {"age": 40, "is_separated": True}}, []),
+        # A pairing that changes between years pairs no one.
+        ({"parent": {"age": 45}, "child": {"age": {"2024": 18, "2025": 19}}}, []),
+    ],
+)
+def test_fallback_pairs_the_inferred_tax_head_and_spouse(people, pairs):
+    assert _fallback_pairs(people) == pairs
+
+
+@pytest.mark.parametrize(
+    "roles, pairs",
+    [
+        # Supplied roles pair an 18-year-old spouse the age test would not.
+        ({"first": "HEAD", "second": "SPOUSE"}, [["first", "second"]]),
+        # And they keep a dependent adult out of a couple.
+        ({"first": "HEAD", "second": "DEPENDENT"}, []),
+    ],
+)
+def test_supplied_tax_roles_decide_the_couple(roles, pairs):
+    people = {
+        "first": {"age": 45, "tax_unit_role_input": roles["first"]},
+        "second": {"age": 18 if roles["second"] == "SPOUSE" else 30},
+    }
+    people["second"]["tax_unit_role_input"] = roles["second"]
+    assert _fallback_pairs(people) == pairs
+
+
+def test_fallback_stops_at_a_false_is_married_or_another_household():
+    adults = {"first": {"age": 45}, "second": {"age": 40}}
+    unmarried = {"family": {"members": list(adults), "is_married": False}}
+    assert _fallback_pairs(adults, families=unmarried) == []
+    apart = {
+        "one": {"members": ["first"]},
+        "two": {"members": ["second"]},
+    }
+    assert _fallback_pairs(adults, households=apart) == []

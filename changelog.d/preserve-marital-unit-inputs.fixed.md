@@ -1,1 +1,1 @@
-Preserve supplied marital membership when inferring tax spouses, and construct omitted household marital units from explicit head/spouse pairs or a family's explicit is_married input, with singletons for other people.
+Build omitted household marital units from explicit couples, supplied tax roles or a married family, and otherwise pair the head and spouse the tax-role fallback infers, instead of putting everyone in one marital unit.
