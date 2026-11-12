@@ -113,7 +113,8 @@ def test_biden_2025_projects_from_proposed_2024_threshold(status):
 
 
 @settings(**PROPERTY_SETTINGS)
-@given(year=st.integers(2027, 2050), status=st.sampled_from(STATUSES))
+@given(year=st.integers(2027, 2100), status=st.sampled_from(STATUSES))
+@example(year=2100, status="SEPARATE")
 def test_colorado_projection_rounding_bounds_and_order(year, status):
     anchor = 39_200 if status == "JOINT" else 26_200
     value = _value(CO_PATH, status, year)
@@ -126,8 +127,11 @@ def test_colorado_projection_rounding_bounds_and_order(year, status):
 
 
 @settings(**PROPERTY_SETTINGS)
-@given(year=st.integers(2036, 2050), status=st.sampled_from(STATUSES))
+@given(year=st.integers(2036, 2100), status=st.sampled_from(STATUSES))
+@example(year=2100, status="SEPARATE")
+@example(year=2043, status="SEPARATE")
 def test_personal_exemption_projection_rounding_bounds_and_order(year, status):
+    assert system.parameters.gov.irs.income.exemption.suspended(f"{year}-01-01")
     value = _value(PEP_PATH, status, year)
     interval = 25 if status == "SEPARATE" else 50
     unrounded = PEP_ANCHORS[status] * _irs_factor(year, 2035)
@@ -141,8 +145,12 @@ def test_personal_exemption_projection_rounding_bounds_and_order(year, status):
 
 
 @settings(**PROPERTY_SETTINGS)
-@given(year=st.integers(2025, 2050), status=st.sampled_from(STATUSES))
+@given(year=st.integers(2025, 2100), status=st.sampled_from(STATUSES))
+@example(year=2100, status="SEPARATE")
 def test_biden_projection_tracks_index_and_filing_status_ratios(year, status):
+    assert not system.parameters.gov.contrib.biden.budget_2025.capital_gains.active(
+        f"{year}-01-01"
+    )
     anchor = 500_000 if status == "SEPARATE" else 1_000_000
     value = _value(BIDEN_PATH, status, year)
     assert value / anchor == pytest.approx(_irs_factor(year, 2024), rel=1e-12)
