@@ -11,9 +11,14 @@ class ia_alternate_tax_eligible(Variable):
         "https://revenue.iowa.gov/media/2650/download?inline#page=53",
         "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
         "https://revenue.iowa.gov/media/2721/download?inline#page=53",
+        # PDF pages 1-2: 422.5(2)(b) alternate tax within the subsection whose
+        # benefit a claimed dependent loses when the claimant's income is high.
+        "https://www.legis.iowa.gov/docs/code/2024/422.5.pdf#page=1",
     )
     defined_for = StateCode.IA
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        return filing_status != filing_status.possible_values.SINGLE
+        nonsingle = filing_status != filing_status.possible_values.SINGLE
+        disqualified = tax_unit("ia_claimed_filer_income_disqualified", period)
+        return nonsingle & ~disqualified

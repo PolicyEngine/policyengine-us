@@ -123,6 +123,11 @@ partnership or the S corporation named by
 `self_employed_health_insurance_plan_business`, or the one with the largest
 line 13 when none is named.
 
+The reform also replaces `self_employed_pension_earned_income` (Pub. 560
+Deduction Worksheet for Self-Employed, step 3). Step 2 takes the Schedule C
+business's share of the deductible SE tax, split by net profit as above, and
+the same draw profits join the split.
+
 ## Benefit credit and active NIIT interaction
 
 `owners_draw_credited_earnings` exposes N_D when benefit credit is enabled,
