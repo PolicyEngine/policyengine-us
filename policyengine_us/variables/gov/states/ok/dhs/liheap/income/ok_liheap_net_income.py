@@ -22,7 +22,7 @@ class ok_liheap_net_income(Variable):
             person("ok_liheap_income_deductions", period) * eligible
         )
         receives_subsidy = spm_unit("ok_child_care_subsidies", period) > 0
-        copay = spm_unit("ok_ccs_copay", period, options=[ADD])
+        copay = spm_unit("ok_ccs_copay", period)
         # The SPM copay has no payer attribution. Deduct it once at net,
         # without assigning it to an ineligible tax unit before the gross
         # test. Gross income can be overstated when that person paid it.

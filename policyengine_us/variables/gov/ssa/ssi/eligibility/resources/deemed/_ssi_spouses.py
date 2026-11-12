@@ -113,6 +113,24 @@ def _ssi_couple_total(person, period, values):
     return values + where(spouse >= 0, values[np.maximum(spouse, 0)], 0)
 
 
+def _ssi_couple_income(person, period, variable):
+    """A person's income, plus the spouse's when the couple computation applies.
+
+    416.1802(b)(1) counts an eligible couple's combined income. 416.414(b)(3)
+    counts 'each individual's own countable income' in a month one spouse
+    spends throughout in a medical treatment facility, from the start of the
+    month to its end (416.414(a)(1)). The status and the income are
+    both read for ``period``, so a monthly formula follows that month's
+    status. An annual formula applies one status to the whole year, the
+    status of the year's last month, which is how Core reads a monthly status
+    over a year.
+    """
+    couple_computation = person("ssi_couple_computation_applies", period)
+    income = person(variable, period)
+    spouse = np.maximum(_ssi_spouse_index(person, period.this_year), 0)
+    return income + where(couple_computation, income[spouse], 0)
+
+
 def _ssi_couple_budget_total(person, period, values):
     """A couple's total: both spouses' values plus their dependents'.
 

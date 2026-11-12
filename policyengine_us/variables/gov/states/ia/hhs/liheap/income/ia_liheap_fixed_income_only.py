@@ -54,6 +54,6 @@ class ia_liheap_fixed_income_only(Variable):
         other_unearned = [source for source in p.unearned if source not in p.fixed]
         other_income = 0
         for source in list(p.earned) + other_unearned:
-            other_income = other_income + max_(person(source, period, options=[ADD]), 0)
+            other_income = other_income + max_(person(source, period), 0)
         non_fixed = spm_unit.sum(other_income) + add(spm_unit, period, p.other_recorded)
         return (fixed > 0) & (non_fixed == 0)

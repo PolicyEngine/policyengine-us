@@ -12,22 +12,17 @@ When a statute conflicts with a regulation, form, instructions, manual or stated
 
 ## Partner API contract tests
 
-Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests.
+The YAML files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests. Never rewrite their expected values merely to make CI pass. Follow [Partner API contract tests](CLAUDE.md#partner-api-contract-tests) before editing them.
 
-Do not rewrite these expected outputs merely to match changed model behavior or make CI pass. If a model change causes one of these tests to fail, treat that as a possible partner-facing API change.
+Use one designated editor for each partner test file. The coordinator assigns files to agents or teammates; avoid conflicting parallel writes.
 
-Ziming Hua (@hua7450) approves every edit to these files (Max Ghenis, 2026-10-09). Subagents and agent teammates must not edit partner test files. If a subagent or agent teammate finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
+Before editing partner tests:
 
-Before changing expected outputs in this folder:
+- Identify the causal model change and derive every changed expected value from primary sources independently of the implementation.
+- Table every changed value in the PR: file, case, variable, old value, new value and source justification. Compute every output variable of each affected case; the test runner stops at the first failure and can hide other changed outputs. Explain the partner-facing impact and why the change is intentional.
+- Check affected boundary cases, failing or not. Compare parameter trees and formula-derived thresholds at the base and head for the cases' periods; uprating can move values outside the diff. Check each case whose name or own comments place it at, just above or just below a moved value. Preserve its stated purpose and justify any input or coverage change from the source. Check partner-flagged cases and any dependency a partner identified in the PR; resolve the compatibility question before merging.
+- Preserve the pre-change failing results as evidence. Do not delete, skip, rename or loosen a case merely to make CI pass.
 
-- Flag the partner-facing risk to the user.
-- Put these three questions to Ziming on the PR that causes the change (per CLAUDE.md): request his review with `gh pr edit <number> --add-reviewer hua7450`, and post a comment that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, show him the changed cases and ask him directly with the `AskUserQuestion` tool instead; record his answer in a PR comment, which counts as his approval of those edits.
-  1. Are you sure you want to edit this test file?
-  2. Have you notified a team member about this change?
-  3. Have you notified the API partner about this change?
-- Do not edit partner test files until Ziming has answered yes to all three questions, and do not merge a PR that changes them until he has approved a head that contains the edits.
-- Identify the model change that caused the partner output change.
-- Preserve the failing behavior as evidence unless the change is intentional.
-- Explain the partner-facing impact to Ziming and the user.
+Before merging, obtain independent automated review at the current head from a fresh reviewer who neither made the model change nor edited the expectations. The reviewer recomputes each changed value from the primary source, checks every changed output and confirms that the diff contains only the intended expectation, input, eligibility and coverage changes. Rerunning the changed model alone does not supply an independent expected value. Pass all required CI checks at the current head.
 
-Changing these tests without Ziming's explicit approval is unsafe, even if CI passes afterward.
+Request human review only for a specific material open question that requires that person's expertise, and name the question in the request. Resolve any source conflict, untraced value or partner compatibility question before merging. Do not request human review or notify a person to keep them informed or because they own the area.
