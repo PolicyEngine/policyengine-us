@@ -8,9 +8,10 @@ year, sharing the unreformed system without copying its parameter tree.
 
 The properties compare those arrangements, including fractional age inputs.
 They check that only claimants aged at least 61 and below 62 lose categorical
-eligibility from 2020 relative to the previous age parameter, and only when
+eligibility from 2020 relative to the previous age values, and only when
 no disability or veteran pathway applies. Separate YAML cases check the
-worked households and exemption amounts.
+worked households and exemption amounts. The 2008 case also checks that
+the rating threshold exists before the VA-rating pathway begins.
 
 References:
 - RCW 84.36.381(3):
@@ -193,12 +194,16 @@ def test_wa_pte_collection_year_age_invariants(cases):
         assert np.all(eligible[:, OLDER] >= eligible[:, DRAWN])
         np.testing.assert_array_equal(eligible[:, DISABILITY], in_wa)
         # The previous parameter used 62 before 2020 and 61 from 2020.
-        previous = alternative | (in_wa & (ages >= (62 if year < 2020 else 61)))
+        previous_age_rule = alternative | (
+            in_wa & (ages >= (62 if year < 2020 else 61))
+        )
         intended_loss = (
             (year >= 2020) & in_wa & (ages >= 61) & (ages < 62) & ~alternative
         )
-        np.testing.assert_array_equal(previous & ~eligible[:, DRAWN], intended_loss)
-        assert not np.any(eligible[:, DRAWN] & ~previous)
+        np.testing.assert_array_equal(
+            previous_age_rule & ~eligible[:, DRAWN], intended_loss
+        )
+        assert not np.any(eligible[:, DRAWN] & ~previous_age_rule)
         # Each claimant owns the home, meets the income test, and files alone.
         np.testing.assert_array_equal(
             np.asarray(simulation.calculate("wa_pte_eligible", year)).reshape(
