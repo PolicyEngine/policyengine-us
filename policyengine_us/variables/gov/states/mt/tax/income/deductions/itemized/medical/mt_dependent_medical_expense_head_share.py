@@ -102,9 +102,9 @@ class mt_dependent_medical_expense_head_share(Variable):
         gap = tax_unit.sum(level * head) - tax_unit.sum(level * spouse)
         balance = np.clip(0.5 + gap / (2 * safe_pool), 0, 1)
         candidates = [
-            np.full(tax_unit.count, 0.0),
-            np.full(tax_unit.count, 1.0),
-            balance,
+            (np.full(tax_unit.count, 0.0), True),
+            (np.full(tax_unit.count, 1.0), True),
+            (balance, True),
         ]
         if not p.main.capital_gains.in_effect:
             # A credit can hold the higher column's tax at zero. Add the
@@ -141,16 +141,16 @@ class mt_dependent_medical_expense_head_share(Variable):
                 # Ignore zero credits to preserve the existing candidates
                 # when neither spouse receives a credit.
                 has_credit = tax_unit.sum(credits * column) > 0
-                candidates.append(where(has_credit, candidate, default))
+                candidates.append((candidate, has_credit))
         best_share = default
         best_tax = couple_tax(default)
-        for candidate in candidates:
+        for candidate, eligible in candidates:
             tax = couple_tax(candidate)
             lower = tax < best_tax - TAX_TOLERANCE
             tied_and_closer = (np.abs(tax - best_tax) <= TAX_TOLERANCE) & (
                 np.abs(candidate - equal_split) < np.abs(best_share - equal_split)
             )
-            take = lower | tied_and_closer
+            take = eligible & (lower | tied_and_closer)
             best_share = where(take, candidate, best_share)
             best_tax = where(take, tax, best_tax)
         married = tax_unit("tax_unit_married", period)
