@@ -1,3 +1,10 @@
+## [2.118.4] - 2026-11-12
+
+### Fixed
+
+- Combine an SSI couple's income by each month's facility status, so a part-year medical facility stay no longer changes SSI in the other months of the year.
+
+
 ## [2.118.3] - 2026-11-12
 
 ### Fixed
