@@ -4888,6 +4888,52 @@ candidates:
     536.014(2) makes a rule that is in conflict with state law not valid. Missouri fiscal year 2018 began July 1,
     2017. Before then, RSMo 208.010.2(4) (before August 28, 2016) and 13 CSR 40-2.030(12) set a strict single-person
     test and an inclusive couple test, and the sources did not disagree.
+- id: us-mo:mhdc-blind-child-income-standard
+  program: medicaid
+  years:
+    from: 2026
+    type: program
+    note: program year as the program defines it
+  question: Is a blind Missouri child under 18 tested against the blind standard of 100% of the federal poverty level,
+    which Appendix J lists in the table that covers disabled children, or against the $1,131 that Appendix K lists
+    for MO HealthNet for Disabled Children?
+  sources:
+  - kind: manual
+    citation: MHABD Appendix J, Spend Down (includes disabled child) - MHNS, MHSD, MHDC table, income limits effective
+      04-01-26
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1
+  - kind: manual
+    citation: MHABD Appendix K (07/2026), MO HealthNet for Disabled Children (MHDC) row
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=2
+  - kind: statute
+    citation: RSMo 208.151.1(24)(b)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=208.151
+  - kind: statute
+    citation: RSMo 209.030.1
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=209.030
+  readings:
+    statute: 'RSMo 208.151.1(24)(b) covers "All persons who would be determined to be eligible for aid to the blind
+      benefits under the eligibility standards in effect December 31, 1973" and raises their income limit "to one
+      hundred percent of the federal poverty level". It does not say whether a child could meet those 1973 standards.
+      RSMo 209.030.1 pays the blind pension to "Every adult blind person, eighteen years of age or over".'
+    other: 'Appendix J lists "1 person - blind" at $1,330 in the table headed "Spend Down (includes disabled child) -
+      MHNS, MHSD, MHDC". Appendix K''s MHDC row covers a child who must "Be permanently and totally disabled, or blind"
+      and lists only "Individual: $1,131".'
+  example: A blind eight-year-old in Missouri has $22,320 a year of deemed income, and the parent has $7,000 of medical
+    expenses. The remaining $15,320 is within the blind standard of 12 x $1,330 = $15,960 and above 12 x $1,131 =
+    $13,572.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/medicaid_optional_senior_or_disabled_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10629
+  state: ruled
+  note: 'PE-US gives a blind child under 18 the standard Appendix K lists for MO HealthNet for Disabled Children,
+    and applies the blind standard in Appendix J from age 18. Appendix K is the only text that names a blind child
+    and gives that child an amount. Pinned by is_optional_senior_or_disabled_for_medicaid.yaml Case 37. The
+    aid-to-the-blind standards in effect on December 31, 1973, which RSMo 208.151.1(24)(b) refers to, were not read.
+    Ruled by the project lead, 2026-11-10: https://github.com/PolicyEngine/policyengine-us/pull/10629'
 - id: us-mo:mhdc-child-resource-limit
   program: medicaid
   years:

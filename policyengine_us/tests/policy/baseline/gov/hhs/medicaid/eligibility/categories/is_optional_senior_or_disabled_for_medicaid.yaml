@@ -761,3 +761,41 @@
   output:
     medicaid_optional_senior_or_disabled_income_limit: [18_396, 18_396]
     is_optional_senior_or_disabled_for_medicaid: [true, false]
+
+# The household of Case 28 with 7,000 of the parent's medical expenses:
+# 22,320 - 7,000 = 15,320. Appendix K lists one standard for a child under 18 who is
+# "permanently and totally disabled, or blind": 12 x 1,131 = 13,572, so the child is
+# not eligible. Appendix J's blind standard of 12 x 1,330 = 15,960 applies from age 18
+# (candidate us-mo:mhdc-blind-child-income-standard).
+- name: Case 37, Missouri blind child is tested against the standard for disabled children.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+        other_medical_expenses: 7_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [0, 22_320]
+    medicaid_parental_medical_expense_share: [0, 7_000]
+    medicaid_optional_senior_or_disabled_income_limit: [13_572, 13_572]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
