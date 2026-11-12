@@ -90,7 +90,9 @@ jobs:
                   "Author: " + $author + "\n" +
                   "Changed partner files: " + $count + "\n" +
                   $heading + "\n" + $files + "\n\n" +
-                  "Please review whether this changes partner-facing API behavior before merge."
+                  "The PR body should list each changed value and its cause " +
+                  "(Partner API contract tests in CLAUDE.md). " +
+                  "Reply on the PR if a partner depends on a changed case."
                 )
               }'
           )

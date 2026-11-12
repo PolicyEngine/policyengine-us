@@ -26,11 +26,10 @@ class ok_liheap_income_deductions(Variable):
         # age and older or persons considered disabled, per OAC 340:50-5-4".
         # 340:50-5-4(a) restates the 7 CFR 271.2 elderly or disabled member: age
         # 60 ((a)(1), is_usda_elderly) or benefit receipt (is_usda_disabled). The
-        # veteran flags that is_usda_disabled reads stand in for (a)(6)-(9), so an
-        # aid-and-attendance or housebound veteran ((a)(7)) is entered as
-        # is_permanently_disabled_veteran. Categories with no input ((a)(3)-(5)
-        # and (a)(10)-(11), such as government disability retirement and interim
-        # assistance) are not modeled.
+        # veteran flags that is_usda_disabled reads stand in for (a)(6), (a)(8)
+        # and (a)(9). Categories with no input ((a)(3)-(5), the aid-and-attendance
+        # or housebound veteran in (a)(7), and (a)(10)-(11), such as government
+        # disability retirement and interim assistance) are not modeled.
         medical_eligible = person("is_usda_elderly", period) | person(
             "is_usda_disabled", period
         )
