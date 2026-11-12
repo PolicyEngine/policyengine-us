@@ -13,9 +13,11 @@ class de_liheap_cooling_eligible(Variable):
         # PDF pages 11-12
         "https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=11",
         "https://dhss.delaware.gov/dss/division-of-social-services/utility-assistance/",
-        # Historical manual sections 303.1-303.2 and the SCAP eligibility chart.
-        # PDF pages 21-22, 100
+        # Historical manual sections 303.1-303.2 and 415 and the SCAP eligibility
+        # chart.
+        # PDF pages 21-22, 32, 100
         "https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=21",
+        "https://liheappm.acf.gov/sites/default/files/private/congress/profiles/2023/FY2023DelawareProfile-508Compliant.pdf",
         "https://liheappm.acf.gov/sites/default/files/private/congress/profiles/2024/FY2024_Delaware_Profile.pdf",
         "https://liheappm.acf.gov/sites/default/files/private/congress/profiles/2025/FY%202025%20Delaware%20Profile.pdf",
     )
@@ -27,9 +29,11 @@ class de_liheap_cooling_eligible(Variable):
         # LIHEAP during the program year". The SCAP chart (manual page 100)
         # defines LIHEAP eligibility as "Purchase Source of Heating or Cooling",
         # and plan 3.3 sets no cooling policy for subsidized renters or renters
-        # with utilities in the rent. So the household and income test applies
-        # without the heating responsibility test of regular heating, and the
-        # cooling cost below is the purchased source of cooling.
+        # with utilities in the rent. Manual section 415 asks for a heating bill
+        # for "cooling electric"; the plan and the chart are followed. So a
+        # household that buys its heating qualifies, and so does one that meets
+        # the household and income test, without the heating responsibility
+        # test, and pays for cooling.
         income_eligible = spm_unit("de_liheap_income_eligible", period)
         # PolicyEngine convention, not a Delaware rule: heating_type is a
         # required input, so an unspecified type is ineligible.
@@ -50,12 +54,15 @@ class de_liheap_cooling_eligible(Variable):
             | person("is_disabled", period)
         )
         has_vulnerable_member = spm_unit.any(vulnerable)
-        # Paying for cooling, the input every state's cooling assistance uses.
-        # Every household is assumed to hold an active electric account.
+        # Manual 303.2 A: "If applicant has a current FAP application, the SCAP
+        # application is automatically processed".
+        purchases_heating = spm_unit("de_liheap_eligible", period)
+        # Modeling reading, with no Delaware text: the cooling cost stands for
+        # the purchased source of cooling of a household that does not buy its
+        # heating. Every household is assumed to hold an active electric account.
         has_cooling_expense = spm_unit("has_cooling_expense", period)
         return (
-            income_eligible
-            & heating_type_reported
+            heating_type_reported
             & has_vulnerable_member
-            & has_cooling_expense
+            & (purchases_heating | (income_eligible & has_cooling_expense))
         )

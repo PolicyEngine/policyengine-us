@@ -2387,6 +2387,41 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-cooling-heating-bill
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does the Delaware Summer Cooling Assistance electric benefit need a purchased source of heating or cooling,
+    as the manual's SCAP chart and the plan provide, or responsibility for a heating bill, as manual section 415 provides?
+  sources:
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, SCAP eligibility chart (final, 2/24/2015), PDF page 100
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=100
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, item 3.3, PDF page 12
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=12
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, section 415, PDF page 32
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=32
+  readings:
+    statute: No statute is supplied; the SCAP chart's LIHEAP eligibility is "Purchase Source of Heating or Cooling", and
+      plan 3.3 sets no different cooling policy for subsidized renters or renters with utilities in the rent.
+    other: Section 415 says "applicants must be responsible for paying a heating bill in order to receive assistance for
+      heating, crisis and cooling electric".
+  example: One person aged 70 in public housing with $14,000 of Social Security, heat in the rent and a cooling cost is
+    eligible under the chart and the plan, and ineligible under section 415.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/cooling/de_liheap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10762
+  state: ruled
+  note: 'Ruled 2026-11-12: follow the plan and the SCAP chart. us-de:liheap-plan-income-checklist follows the manual over
+    the plan''s checklist; here the manual itself is split between section 415 and its own chart, and the plan sides with
+    the chart.'
 - id: us-de:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2410,13 +2445,14 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
+    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10612
+    - https://github.com/PolicyEngine/policyengine-us/pull/10762
   state: unreviewed
-  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_income_eligible.py).
 - id: us-de:liheap-plan-income-checklist
   program: liheap
   years:
