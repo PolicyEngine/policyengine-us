@@ -78,7 +78,7 @@ class fl_liheap_eligible(Variable):
         # Home Energy benefit for heating or cooling (manual 200 P and Q, page
         # 8), and electricity is a home energy type (R. 73C-26.022(6)). An
         # applicant responsible for all or part of its home heating and cooling
-        # costs is eligible (700.01 E, page 23; 1100.08 A, page 43). So a
+        # costs is eligible (700.01 E, page 23; 900.08 A, page 43). So a
         # household with any reported heating type, including a home without
         # heating or one with heat in subsidized rent, qualifies when it pays
         # its own electricity bill for cooling. UNSPECIFIED does not.
