@@ -45,8 +45,8 @@
   output:
     ny_ccap_activity_eligible: false
 
-# 415.1(o)(1)(i) leaves the minimum weekly hours to the Office, so any hours
-# of work count.
+# PolicyEngine retains its approximation that any positive weekly work
+# hours satisfy the calculated work test.
 - name: Case 3, one hour of work a week counts as engaged in work.
   period: 2025-01
   input:
@@ -141,7 +141,7 @@
     # for care.
     ny_ccap_activity_eligible: true
 
-- name: Case 7, a public assistance family is eligible without modeled work hours.
+- name: Case 7, a public assistance family without an activity does not qualify.
   period: 2025-01
   input:
     people:
@@ -161,7 +161,7 @@
         members: [parent, child]
         state_code: NY
   output:
-    ny_ccap_activity_eligible: true
+    ny_ccap_activity_eligible: false
 
 - name: Case 8, the federal activity input covers pathways not modeled here.
   period: 2025-01
