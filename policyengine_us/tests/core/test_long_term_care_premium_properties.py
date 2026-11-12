@@ -22,12 +22,13 @@ every tax unit:
    medical part = min(filers' medical premiums, deduction); long-term care
    part = min(filers' eligible premiums, deduction - medical part); together
    they equal min(filers' medical + eligible premiums, deduction), and the
-   applied exclusion of a computed subtotal is their sum.
+   computed subtotal's applied exclusion also includes the medical parts of
+   dependents' own deductions.
 3. Accounting: the subtotal is members' medical premiums - medical part +
    members' eligible premiums - long-term care part - dependents' own
-   long-term care parts + other expenses. A person's own long-term care part
-   is what that person's deduction leaves after their medical premiums,
-   limited to their eligible premiums. The long-term care premiums
+   medical and long-term care parts + other expenses. A person's own
+   long-term care part is what that person's deduction leaves after their
+   medical premiums, limited to their eligible premiums. The long-term care premiums
    inside it lie between what the dependents' own deductions left of their
    eligible premiums and all members' eligible premiums.
 4. Conservation (derived deduction): every eligible premium is deducted once,
@@ -290,6 +291,10 @@ def _check(units, year, supplied_deduction):
         eligible * self_employed,
         person_deduction - np.minimum(health * self_employed, person_deduction),
     )
+    dependent = ~filer.astype(bool)
+    dependent_medical_part = unit_sum(
+        np.minimum(health, person_deduction - own_long_term_care_part) * dependent
+    )
     np.testing.assert_allclose(
         run["itemized_medical_expenses_excluded_premiums"],
         medical_part,
@@ -307,15 +312,14 @@ def _check(units, year, supplied_deduction):
     )
     np.testing.assert_allclose(
         run["itemized_medical_expenses_applied_exclusion"],
-        medical_part + long_term_care_part,
+        medical_part + long_term_care_part + dependent_medical_part,
         atol=TOLERANCE,
     )
 
-    # 3. Accounting identity for the subtotal, from the raw inputs. Each
-    # dependent's own deduction took that dependent's long-term care part.
+    # 3. Each dependent excludes the medical and long-term care premiums
+    # they deducted on their own return from the parents' subtotal.
     inside = run["itemized_medical_expenses_long_term_care_premiums"]
     all_eligible = unit_sum(eligible)
-    dependent = ~filer.astype(bool)
     dependents_part = unit_sum(own_long_term_care_part * dependent)
     np.testing.assert_allclose(
         inside,
@@ -329,7 +333,11 @@ def _check(units, year, supplied_deduction):
     subtotal = run["itemized_medical_expenses"]
     np.testing.assert_allclose(
         subtotal,
-        unit_sum(health) - medical_part + inside + unit_sum(other),
+        unit_sum(health)
+        - medical_part
+        - dependent_medical_part
+        + inside
+        + unit_sum(other),
         atol=TOLERANCE,
     )
 
@@ -340,7 +348,7 @@ def _check(units, year, supplied_deduction):
             subtotal
             - unit_sum(other)
             + run["self_employed_health_insurance_ald"]
-            + dependents_part,
+            + unit_sum(person_deduction * dependent),
             unit_sum(health) + all_eligible,
             atol=TOLERANCE,
         )

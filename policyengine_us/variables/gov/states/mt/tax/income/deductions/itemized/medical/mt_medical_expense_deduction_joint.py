@@ -27,9 +27,7 @@ class mt_medical_expense_deduction_joint(Variable):
             # insurance premiums deducted in full on lines 2 and 3. Start
             # from the federal subtotal and take out the premiums still in
             # it: the members' medical insurance premiums less the part of
-            # the self-employed exclusion applied to them, which is bounded by
-            # the head's and spouse's medical premiums (any excess covered
-            # long-term care premiums, which are not in the subtotal), and the
+            # the self-employed exclusion applied to them, and the
             # long-term care premiums the subtotal includes. For a computed
             # subtotal this leaves the members' other medical expenses.
             premiums = add(
@@ -38,8 +36,24 @@ class mt_medical_expense_deduction_joint(Variable):
             filer_premiums = tax_unit_non_dep_sum(
                 "medical_expense_health_insurance_premiums", tax_unit, period
             )
-            excluded = tax_unit("itemized_medical_expenses_applied_exclusion", period)
-            premiums_in_subtotal = premiums - min_(filer_premiums, max_(0, excluded))
+            if has_input_for_period(
+                tax_unit.simulation, "itemized_medical_expenses", period
+            ):
+                # Supplied subtotals use the pooled filer-first split.
+                excluded = tax_unit(
+                    "itemized_medical_expenses_applied_exclusion", period
+                )
+                medical_exclusion = min_(filer_premiums, max_(0, excluded))
+            else:
+                medical_exclusion = add(
+                    tax_unit,
+                    period,
+                    [
+                        "itemized_medical_expenses_excluded_premiums",
+                        "itemized_medical_expenses_excluded_dependent_premiums",
+                    ],
+                )
+            premiums_in_subtotal = premiums - medical_exclusion
             expense = max_(
                 0,
                 tax_unit("itemized_medical_expenses", period)

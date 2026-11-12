@@ -12,7 +12,9 @@ class itemized_medical_expenses_applied_exclusion(Variable):
         "https://www.irs.gov/instructions/i1040sca",
     ]
     documentation = (
-        "Premiums actually excluded by the federal medical expense formula. "
+        "Filer premiums and dependent medical premiums excluded by the "
+        "federal medical expense formula. Dependent long-term care premiums "
+        "remain outside this state addback, as under the existing state bases. "
         "A caller-supplied subtotal bypasses that formula, so no exclusion "
         "was applied, unless the caller also supplies this amount: all the "
         "premiums, medical and long-term care, that a supplied Schedule A "
@@ -42,5 +44,6 @@ class itemized_medical_expenses_applied_exclusion(Variable):
             [
                 "itemized_medical_expenses_excluded_premiums",
                 "itemized_medical_expenses_excluded_long_term_care_premiums",
+                "itemized_medical_expenses_excluded_dependent_premiums",
             ],
         )

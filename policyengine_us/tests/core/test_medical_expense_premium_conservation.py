@@ -6,10 +6,11 @@ subsets, direct/decomposed premium inputs, spouses, dependents and separate
 tax units.
 Premium inputs use payer attribution: a person's inputs include all premiums
 that person paid, including family coverage regardless of who is covered.
-The federal conservation properties generate deductions within the filers'
-paid premiums; beneficiary-assigned inputs cannot establish that invariant.
+The federal conservation properties generate each deduction within the
+deducting person's paid premiums, including eligible long-term care premiums.
+Supplied filer deductions stay within the head's and spouse's paid pool.
 The independent accounting invariant is that Schedule A's premium base plus
-the self-employed health insurance deduction never exceeds premiums paid.
+every self-employed health insurance deduction never exceeds premiums paid.
 Non-premium medical expenses must remain available in full before the floor.
 
 Examples use small vectorized simulations and a shared read-only reference
@@ -38,17 +39,19 @@ def reference_system():
 
 @st.composite
 def person_expenses(draw):
-    premiums = draw(st.integers(0, 25_000))
+    premiums = draw(st.integers(0, 500_000)) / 100
     direct = draw(st.booleans())
     self_employed = draw(st.booleans())
-    covered = draw(st.integers(0, premiums)) if self_employed else 0
+    covered = draw(st.integers(0, round(premiums * 100))) / 100 if self_employed else 0
     # A direct premium can also exercise the default derivation of the SE
     # premium input. Decomposed premiums need the covered subset explicitly.
     if direct and draw(st.booleans()):
         covered = None
     return {
         "premiums": premiums,
-        "other": draw(st.integers(0, 10_000)),
+        "long_term_care": draw(st.integers(0, 800_000)) / 100,
+        "age": draw(st.sampled_from([17, 40, 41, 50, 51, 60, 61, 70, 71])),
+        "other": draw(st.integers(0, 200_000)) / 100,
         "earnings": draw(st.integers(-25_000, 50_000)) if self_employed else 0,
         "self_employed": self_employed,
         "direct": direct,
@@ -57,10 +60,18 @@ def person_expenses(draw):
 
 
 units = st.lists(
-    st.lists(person_expenses(), min_size=1, max_size=3),
+    st.lists(person_expenses(), min_size=1, max_size=5),
     min_size=2,
     max_size=4,
 )
+
+
+def _eligible_long_term_care(person):
+    limit = system.parameters(
+        f"{PERIOD}-01-01"
+    ).gov.irs.deductions.itemized.medical.long_term_care_premium_limit
+    age_limit = limit.calc(np.array([person.get("age", 40)]), right=True)[0]
+    return min(person.get("long_term_care", 0), age_limit)
 
 
 @st.composite
@@ -70,7 +81,19 @@ def units_with_deduction(draw):
         # Payer attribution puts parent-paid family premiums on that parent.
         # The head's and spouse's deduction covers their paid premium pool. A
         # dependent's own SE deduction belongs on their separate return.
-        draw(st.integers(0, sum(person["premiums"] for person in unit[:2])))
+        draw(
+            st.integers(
+                0,
+                round(
+                    sum(
+                        person["premiums"] + _eligible_long_term_care(person)
+                        for person in unit[:2]
+                    )
+                    * 100
+                ),
+            )
+        )
+        / 100
         for unit in members
     ]
     return members, deductions
@@ -89,14 +112,15 @@ def _simulation(members, reference_system, deductions=None):
                 else "health_insurance_premiums_without_medicare_part_b"
             )
             values = {
-                "age": 12 if person_index == 2 else 40,
+                "age": person.get("age", 12 if person_index >= 2 else 40),
                 "is_tax_unit_head": person_index == 0,
                 "is_tax_unit_spouse": person_index == 1,
-                "is_tax_unit_dependent": person_index == 2,
+                "is_tax_unit_dependent": person_index >= 2,
                 "is_self_employed": person["self_employed"],
                 "self_employment_income": person["earnings"],
                 "medicare_enrolled": False,
                 premium_variable: person["premiums"],
+                "long_term_health_insurance_premiums": person.get("long_term_care", 0),
                 "other_medical_expenses": person["other"],
             }
             if person["covered"] is not None:
@@ -115,8 +139,10 @@ def _simulation(members, reference_system, deductions=None):
             "state_code": {PERIOD: "TX"},
         }
         marital_units[f"marital_unit_{unit_index}"] = {"members": names[:2]}
-        for name in names[2:]:
-            marital_units[f"dependent_marital_unit_{unit_index}"] = {"members": [name]}
+        for person_index, name in enumerate(names[2:], start=2):
+            marital_units[f"dependent_marital_unit_{unit_index}_{person_index}"] = {
+                "members": [name]
+            }
     return Simulation(
         tax_benefit_system=reference_system,
         situation={
@@ -129,26 +155,78 @@ def _simulation(members, reference_system, deductions=None):
 
 
 def _assert_conservation(members, simulation):
-    paid = np.array([sum(person["premiums"] for person in unit) for unit in members])
-    other = np.array([sum(person["other"] for person in unit) for unit in members])
-    dependent_premiums = np.array(
-        [sum(person["premiums"] for person in unit[2:]) for unit in members]
+    paid = np.array(
+        [
+            sum(person["premiums"] + person.get("long_term_care", 0) for person in unit)
+            for unit in members
+        ]
     )
-    medical_base = simulation.calculate("itemized_medical_expenses", PERIOD)
-    se_deduction = simulation.calculate("self_employed_health_insurance_ald", PERIOD)
+    eligible_paid = np.array(
+        [
+            sum(
+                person["premiums"] + _eligible_long_term_care(person) for person in unit
+            )
+            for unit in members
+        ]
+    )
+    other = np.array([sum(person["other"] for person in unit) for unit in members])
+    medical_base = simulation.calculate("itemized_medical_expenses", PERIOD).astype(
+        np.float64
+    )
+    se_deduction = simulation.calculate(
+        "self_employed_health_insurance_ald", PERIOD
+    ).astype(np.float64)
+    dependent_deductions = simulation.calculate(
+        "dependents_self_employed_health_insurance_ald", PERIOD
+    ).astype(np.float64)
+    all_deductions = se_deduction + dependent_deductions
     schedule_a_premium_use = medical_base - other
 
-    # Neither the SE deduction nor a different filing unit can consume the
-    # non-premium expenses. Check the bound separately from conservation.
-    assert (schedule_a_premium_use >= 0).all()
-    assert (schedule_a_premium_use >= dependent_premiums).all()
-    # The Form 7206 earnings limit leaves cents in the derived deduction, so
-    # the sums carry float32 rounding: allow a cent.
-    assert (schedule_a_premium_use + se_deduction <= paid + 0.01).all()
-    # All premiums here are otherwise eligible: unused premiums remain in
-    # Schedule A's base, even when earnings cap the SE deduction.
+    flat_people = [person for unit in members for person in unit]
+    medical_premiums = np.array([person["premiums"] for person in flat_people])
+    eligible_care = np.array(
+        [_eligible_long_term_care(person) for person in flat_people]
+    )
+    medical_exclusion_bound = simulation.calculate(
+        "self_employed_health_insurance_ald_excluded_premiums", PERIOD
+    ).astype(np.float64)
+    care_excluded = simulation.calculate(
+        "self_employed_health_insurance_ald_long_term_care_part", PERIOD
+    ).astype(np.float64)
+    person_deductions = simulation.calculate(
+        "self_employed_health_insurance_ald_person", PERIOD
+    ).astype(np.float64)
+    medical_excluded = np.minimum(
+        medical_exclusion_bound, np.maximum(0, person_deductions) - care_excluded
+    )
+    unit_ends = np.cumsum([len(unit) for unit in members])
+    unit_starts = np.concatenate(([0], unit_ends[:-1]))
+    expected_dependent_deductions = np.array(
+        [
+            person_deductions[start + 2 : end].sum()
+            for start, end in zip(unit_starts, unit_ends)
+        ]
+    )
     np.testing.assert_allclose(
-        schedule_a_premium_use + se_deduction, paid, rtol=0, atol=0.01
+        dependent_deductions, expected_dependent_deductions, rtol=0, atol=0.01
+    )
+
+    # Each person can consume only their own premiums, across medical and
+    # long-term care coverage. A dependent cannot consume a sibling's costs.
+    assert (medical_excluded >= 0).all()
+    assert (medical_excluded <= medical_premiums + 0.01).all()
+    assert (care_excluded >= 0).all()
+    assert (care_excluded <= eligible_care + 0.01).all()
+    np.testing.assert_allclose(
+        medical_excluded + care_excluded, person_deductions, rtol=0, atol=0.01
+    )
+    # Preserve every non-premium expense and every eligible premium nobody
+    # deducts, including premiums above a dependent's earned income limit.
+    # Model arrays use float32, so compare the combined uses within one cent.
+    assert (medical_base >= other - 0.01).all()
+    assert (schedule_a_premium_use + all_deductions <= paid + 0.01).all()
+    np.testing.assert_allclose(
+        schedule_a_premium_use + all_deductions, eligible_paid, rtol=0, atol=0.01
     )
 
 
@@ -156,6 +234,8 @@ EXAMPLE_UNITS = [
     [
         dict(
             premiums=6_000,
+            long_term_care=600,
+            age=40,
             other=500,
             earnings=1_000,
             self_employed=True,
@@ -164,6 +244,8 @@ EXAMPLE_UNITS = [
         ),
         dict(
             premiums=2_000,
+            long_term_care=1_500,
+            age=51,
             other=300,
             earnings=5_000,
             self_employed=True,
@@ -172,11 +254,33 @@ EXAMPLE_UNITS = [
         ),
         dict(
             premiums=12_000,
+            long_term_care=700,
+            age=17,
             other=200,
             earnings=15_000,
             self_employed=True,
             direct=True,
             covered=None,
+        ),
+        dict(
+            premiums=3_000.01,
+            long_term_care=480,
+            age=40,
+            other=200.01,
+            earnings=1_000,
+            self_employed=True,
+            direct=False,
+            covered=2_000,
+        ),
+        dict(
+            premiums=0,
+            long_term_care=600,
+            age=71,
+            other=100,
+            earnings=0,
+            self_employed=False,
+            direct=True,
+            covered=0,
         ),
     ],
     [
@@ -203,6 +307,7 @@ def test_premiums_are_not_duplicated_with_derived_se_deduction(
 
 @settings(max_examples=12, deadline=None, derandomize=True)
 @example(case=(EXAMPLE_UNITS, [8_000, 0]))
+@example(case=(EXAMPLE_UNITS, [9_500, 0]))
 @given(case=units_with_deduction())
 def test_premiums_are_not_duplicated_with_tax_unit_se_deduction(reference_system, case):
     members, deductions = case
