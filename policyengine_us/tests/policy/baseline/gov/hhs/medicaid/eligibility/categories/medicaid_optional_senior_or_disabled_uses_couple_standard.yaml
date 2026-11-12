@@ -697,3 +697,92 @@
       - true
       - true  # WI
       - true
+
+# No marital units given, so the three adults form one default marital unit. The
+# spouse test pairs the head and spouse of the first tax unit and leaves the
+# 67-year-old in their own tax unit with no spouse. The applicant's spouse is not aged,
+# blind or disabled and has no income, so nothing is deemed (20 CFR 416.1163(d)(1))
+# and the applicant is tested alone against West Virginia's SSI rate, 12 x 994 =
+# 11,928. The spouse keeps the couple rate, 12 x 1,491 = 17,892, and the unpaired
+# 67-year-old the one-person 11,928. Counting the 67-year-old as a second aged member
+# of the couple would give the applicant the couple standard.
+- name: Case 18, an unrelated aged adult in a default marital unit does not count as the applicant's spouse.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+      person3:
+        is_tax_unit_head: true
+        age: 67
+        pension_income: 20_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, true, false]
+    medicaid_optional_senior_or_disabled_income_limit: [11_928, 17_892, 11_928]
+
+# The example in us:medicaid-abd-budgeting-together-stricter-than-ssi. The spouse's
+# interest of 5,964 equals SSI's threshold, 12 x 497 = 5,964, so SSI deems nothing
+# (20 CFR 416.1163(d)(1)). Arizona budgets the couple together (AHCCCS MA611 A):
+# 16,200 + 5,964 - 240 = 21,924 is above the two-person 21,640. Pennsylvania follows
+# SSI's rule and tests the applicant alone: 16,200 - 240 = 15,960 is within the
+# one-person 15,960. The Pennsylvania spouse's couple total is 15,960 + 0, within
+# 21,640.
+- name: Case 19, budgeting together denies an applicant whom SSI's rule tests alone and finds eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 16_200
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 5_964
+      person3:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 16_200
+      person4:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 5_964
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AZ
+      household2:
+        members: [person3, person4]
+        state_code: PA
+  output:
+    # Each pair is the applicant, then the spouse: Arizona, then Pennsylvania.
+    is_ssi_spousal_deeming_applies: [false, false, false, false]
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true, false, true]
+    medicaid_optional_senior_or_disabled_income_limit: [21_640, 21_640, 15_960, 21_640]
+    medicaid_optional_senior_or_disabled_countable_income: [21_924, 0, 15_960, 0]
+    is_optional_senior_or_disabled_income_eligible: [false, false, true, true]

@@ -5684,6 +5684,47 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual and surrounding report editions; obtain contemporaneous BEM 556 for October 2022-September
     2023.
+- id: us-mn:abd-spouse-income-statute-vs-manual
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: "Does Minnesota test an aged, blind or disabled applicant whose spouse is not aged, blind or disabled under SSI's methodology, as Minn. Stat. 256B.056, subd. 1a(a)(1) requires, or deem the spouse's income whenever the spouses live together, as EPM 2.3.3.3.2.1.1 says?"
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 256B.056, subd. 1a(a)(1)
+    url: https://www.revisor.mn.gov/statutes/cite/256B.056
+  - kind: manual
+    citation: Minnesota Health Care Programs Eligibility Policy Manual 2.3.3.3.2.1.1
+    url: https://hcopub.dhs.state.mn.us/epm/2_3_3_3_2_1_1.htm
+  readings:
+    statute: 'Minn. Stat. 256B.056, subd. 1a(a)(1): "Unless specifically required by state law or rule or federal law
+      or regulation, the methodologies used in counting income and assets to determine eligibility for medical
+      assistance for persons whose eligibility category is based on blindness, disability, or age of 65 or more
+      years, the methodologies for the Supplemental Security Income program shall be used". SSI deems an ineligible
+      spouse''s income only above the rate difference and otherwise tests the applicant alone (20 CFR 416.1163(d)).'
+    other: 'EPM 2.3.3.3.2.1.1: "Except in the situations noted below, the income of a spouse is deemed to a person if
+      the spouses live together." The page says whose income is deemed; it gives no amount and no threshold.'
+  example: A Minnesota applicant, 70, has Social Security of $16,800 a year and a spouse, 50, with no income. Minnesota
+    deducts no $20 disregard (Minn. Stat. 256B.056, subd. 1b), so countable income is $16,800. Budgeted together, as
+    the manual reads and PE-US follows, it is within the two-person $21,640 in the aged, blind and disabled pathway.
+    Under SSI's methodology nothing is deemed, the applicant is tested alone, and $16,800 is above the one-person
+    $15,960.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: open
+  note: PE-US follows the manual (MN true in both settings) pending a ruling. The case has the shape of Nebraska's
+    ruled conflict (us-ne:medically-needy-unit-size), but the rulings of 2026-11-02 do not settle it. Montana's went
+    to the regulation over the manual, and Nebraska's to a specific regulation over a general SSI clause; here the
+    specific text is a manual and the SSI clause a statute. If the ruling follows the statute, set MN false in both
+    settings and re-expect Minnesota in Case 17 of medicaid_optional_senior_or_disabled_uses_couple_standard.yaml and
+    Case 6 of medicaid_medically_needy_uses_couple_standard.yaml.
 - id: us-mn:k12-subtraction-grade-cap-default
   program: income-tax
   years:
@@ -13832,7 +13873,7 @@ candidates:
     Carolina, Vermont and Wisconsin in the aged, blind and disabled pathway, and Arkansas, California, Kansas,
     Massachusetts, Maryland, Michigan, Nebraska, Vermont and Wisconsin in medically needy. The stricter result arises
     only in a narrow band, for example a spouse''s income between $473 and $497 a month against poverty-level
-    standards. Ruled by the project lead, 2026-11-10: https://github.com/PolicyEngine/policyengine-us/pull/10640'
+    standards. Ruled by the project lead, 2026-11-10: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6812820779'
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:
