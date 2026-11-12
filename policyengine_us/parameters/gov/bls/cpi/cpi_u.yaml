@@ -1,7 +1,7 @@
 description: The Bureau of Labor Statistics publishes this Consumer Price Index for All Urban Consumers (U.S. city average, all items, not seasonally adjusted).
 values:
   # BLS series CUUR0000SA0 (U.S. city average, all items, not seasonally
-  # adjusted, 1982-84=100), as BLS published it on 2026-11-05. Published to
+  # adjusted, 1982-84=100), retrieved from BLS on 2026-11-12. Published to
   # one decimal through 2006 and three decimals from 2007.
   1913-01-01: 9.8
   1913-02-01: 9.8
@@ -1369,6 +1369,7 @@ values:
   2026-07-01: 333.918
   2026-08-01: 334.980
   2026-09-01: 336.940
+  2026-10-01: 337.511
   # CBO projections from CBO Feb 2026 forecast for future periods.
   2027-02-01: 340.3 # 2028 value.
   2028-02-01: 348.3 # 2029 value.
@@ -1386,7 +1387,7 @@ metadata:
   label: CPI-U
   economy: false
   reference:
-    - title: BLS | CPI-U, U.S. city average, all items, not seasonally adjusted (CUUR0000SA0), monthly values through September 2026
+    - title: BLS | CPI-U, U.S. city average, all items, not seasonally adjusted (CUUR0000SA0), monthly values through October 2026
       href: https://data.bls.gov/timeseries/CUUR0000SA0
     - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
       # Source: https://www.cbo.gov/data/budget-economic-data#10

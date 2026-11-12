@@ -1,10 +1,11 @@
 description: Utah provides these refundable income tax credits on Form TC-40.
 values:
   # Utah does not currently administer any refundable credits on the TC-40
-  # income tax return. The Homeowner's/Renter's Relief (Utah Code
-  # § 59-2A-205 / § 59-2A-305) is administered on a separate refund
-  # application (Form TC-90CB) and flows through the household-level
-  # state_property_tax_credits aggregate instead.
+  # income tax return. The Tax Commission pays the renter's credit
+  # (Utah Code § 59-2A-205) on a separate application (Form TC-90CB), and
+  # household and SPM benefits count it through state_property_tax_refunds.
+  # Counties apply the homeowner's credit (Utah Code § 59-2A-305) against
+  # the property tax bill.
   2025-01-01: []
 
 metadata:

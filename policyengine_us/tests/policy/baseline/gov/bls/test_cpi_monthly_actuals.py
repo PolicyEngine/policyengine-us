@@ -69,6 +69,7 @@ def test_cpi_w_monthly_actuals():
         ("2026-07-01", 333.918),
         ("2026-08-01", 334.980),
         ("2026-09-01", 336.940),
+        ("2026-10-01", 337.511),
     ],
 )
 def test_cpi_u_monthly_actuals(month, expected):
@@ -97,8 +98,8 @@ def test_cpi_u_twelve_month_averages_ending_august(year, expected):
 def test_cpi_u_keeps_the_cbo_projection_after_the_latest_actual():
     cpi_u = _cpi("cpi_u")
     listed_values = _listed_values(cpi_u)
-    assert listed_values["2026-09-01"] == 336.940
-    next_instant = min(instant for instant in listed_values if instant > "2026-09-01")
+    assert listed_values["2026-10-01"] == 337.511
+    next_instant = min(instant for instant in listed_values if instant > "2026-10-01")
     assert next_instant == "2027-02-01"
     assert listed_values[next_instant] == 340.3
     assert cpi_u(next_instant) == 340.3
