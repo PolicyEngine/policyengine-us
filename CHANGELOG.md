@@ -1,3 +1,10 @@
+## [2.118.6] - 2026-11-12
+
+### Fixed
+
+- DC LIHEAP Regular benefit now pays households with no heating cost that pay for cooling, from the Electric row capped at their electricity bill. DC LIHEAP income limits now use HHS's 60% state median income amounts, rounded down by household size, as DOEE publishes them.
+
+
 ## [2.118.5] - 2026-11-12
 
 ### Fixed
