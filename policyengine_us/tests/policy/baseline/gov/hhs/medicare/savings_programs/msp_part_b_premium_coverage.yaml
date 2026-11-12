@@ -28,6 +28,16 @@
   output:
     msp_part_b_premium_coverage: 0
 
+- name: MSP part B coverage pays the projected 2027 standard premium
+  period: 2027
+  input:
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: true
+    msp_asset_eligible: true
+  output:
+    msp_part_b_premium_coverage: 2_514  # $209.50 * 12 months
+
 # $18,240 pension: $18,240 / 12 - $20 = $1,500 countable, below 135% of the 2026
 # individual FPL ($15,960 / 12 * 1.35 = $1,795.50).
 - name: MSP part B coverage pays the 2026 standard premium for a citizen under the income limit

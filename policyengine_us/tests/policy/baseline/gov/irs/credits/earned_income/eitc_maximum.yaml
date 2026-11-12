@@ -22,3 +22,33 @@
         members: [child_1, child_2, parent]
   output:
     eitc_maximum: 6_164
+
+- name: 2027 childless EITC maximum is $685
+  # Rev. Proc. 2026-35 sec. 3.06(1).
+  period: 2027
+  absolute_error_margin: 0
+  input:
+    employment_income: 10_000
+  output:
+    eitc_maximum: 685
+
+- name: 2027 EITC maximum with three children is $8,496
+  # Rev. Proc. 2026-35 sec. 3.06(1).
+  period: 2027
+  absolute_error_margin: 0
+  input:
+    people:
+      child_1:
+        age: 7
+      child_2:
+        age: 7
+      child_3:
+        age: 7
+      parent:
+        employment_income: 20_000
+        age: 25
+    tax_units:
+      tax_unit:
+        members: [child_1, child_2, child_3, parent]
+  output:
+    eitc_maximum: 8_496

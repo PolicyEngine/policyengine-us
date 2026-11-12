@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.co.ssa.oap._spouses import (
+    co_oap_couple_total,
+)
 from policyengine_us.variables.gov.states.co.ssa.oap._precision import (
     PRECISION,
     ssi_paid,
@@ -42,7 +45,9 @@ class co_oap_deeming_exempt(Variable):
         year = period.this_year
         eligible = person("co_oap_eligible", year)
         receives_oap = eligible & (p.grant_standard - income > PRECISION)
-        spouse_of_client = person.marital_unit.sum(eligible) - eligible > 0
+        spouse_of_client = (
+            co_oap_couple_total(person, year, eligible.astype(int)) - eligible > 0
+        )
         candidate = spouse_of_client & within_limit
         exempt = candidate & (receives_ssi | receives_oap)
         # Medicaid decides only for a candidate not exempt otherwise. Skipping
@@ -51,5 +56,5 @@ class co_oap_deeming_exempt(Variable):
         needs_medicaid = candidate & ~exempt
         if not needs_medicaid.any():
             return exempt
-        medicaid = person("co_oap_medicaid_enrolled", year)
+        medicaid = person("co_adult_financial_medicaid_enrolled", year)
         return exempt | (needs_medicaid & medicaid)

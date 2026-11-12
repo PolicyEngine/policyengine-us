@@ -38,3 +38,203 @@
     # 2025 individual federal benefit rate, no countable income
     ssi_if_takes_up: 967
     ssi: 0
+
+# 20 CFR 416.1163(e)(2): 'Your SSI benefit under the deeming rules cannot be
+# higher than it would be if deeming did not apply. Therefore, your benefit
+# is the lesser of the amount computed under the rules in paragraph (d)(2) of
+# this section or the amount remaining after we subtract only your own
+# countable income from an individual's Federal benefit rate.'
+# 2026 Federal benefit rates: $994 individual, $1,491 couple; the deeming
+# threshold is their difference, $497.
+- name: Case 5, deemed benefit is the lesser of the couple computation and the benefit without deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        social_security_retirement: 743 * 12
+        bank_account_assets: 1_500
+      spouse:
+        age: 64
+        social_security_retirement: 100 * 12
+        employment_income: 400 * 12
+    tax_units:
+      tax_unit:
+        members: [claimant, spouse]
+    marital_units:
+      marital_unit:
+        members: [claimant, spouse]
+    households:
+      household:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Spouse income $100 + $400 = $500 > $497, so deeming applies
+    # (416.1163(d)(2)). Couple countable income: unearned $743 + $100 - $20
+    # = $823; earned ($400 - $65) / 2 = $167.50; total $990.50.
+    # Couple computation: $1,491 - $990.50 = $500.50.
+    # Without deeming: $994 - ($743 - $20) = $271.
+    ssi_countable_income: [990.50, 0]
+    uncapped_ssi_without_spousal_deeming: [271, 0]
+    uncapped_ssi: [271, 0]
+    ssi: [271, 0]
+
+- name: Case 6, the same couple with lower income and no deeming gets more SSI than Case 5.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        social_security_retirement: 579 * 12
+        bank_account_assets: 1_500
+      spouse:
+        age: 64
+        social_security_retirement: 78 * 12
+        employment_income: 400 * 12
+    tax_units:
+      tax_unit:
+        members: [claimant, spouse]
+    marital_units:
+      marital_unit:
+        members: [claimant, spouse]
+    households:
+      household:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Spouse income $78 + $400 = $478 <= $497: no income is deemed
+    # (416.1163(d)(1)), so SSI is $994 - ($579 - $20) = $435, above the $271
+    # of Case 5 although every income is lower.
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+    ssi: [435, 0]
+
+- name: Case 7, the benefit without deeming takes the one-third reduction of another person's household.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        social_security_retirement: 400 * 12
+        ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
+      spouse:
+        age: 60
+        employment_income: 600 * 12
+    tax_units:
+      tax_unit:
+        members: [claimant, spouse]
+    marital_units:
+      marital_unit:
+        members: [claimant, spouse]
+    households:
+      household:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # 416.1131: the individual rate is reduced by one-third, $994 x 2/3 =
+    # $662.67; without deeming $662.67 - ($400 - $20) = $282.67. Under
+    # deeming the couple countable income is $380 + ($600 - $65) / 2 =
+    # $647.50, which leaves more than $282.67 of the couple rate whether or
+    # not that rate is reduced, so the benefit is $282.67.
+    uncapped_ssi_without_spousal_deeming: [282.67, 0]
+    ssi: [282.67, 0]
+
+- name: Case 8, a claimant whose own income exceeds the individual rate gets no SSI under deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        social_security_retirement: 1_100 * 12
+      spouse:
+        age: 60
+        employment_income: 600 * 12
+    tax_units:
+      tax_unit:
+        members: [claimant, spouse]
+    marital_units:
+      marital_unit:
+        members: [claimant, spouse]
+    households:
+      household:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # Couple computation: $1,491 - ($1,080 + ($600 - $65) / 2) = $143.50.
+    # Without deeming: $994 - $1,080 = -$86, so the lesser is -$86 and the
+    # benefit is $0 (416.1163(e)(2)). Programs that read uncapped_ssi see
+    # the same shortfall.
+    uncapped_ssi_without_spousal_deeming: [-86, 0]
+    uncapped_ssi: [-86, 0]
+    ssi: [0, 0]
+
+# 416.1163(g) Examples 3 and 2 (1986: individual rate $336, couple rate $504,
+# deeming threshold $168). The examples stop at eligibility; the benefit
+# follows from (e)(2). The examples deem July income for September
+# (416.1163(e)(1)); with constant income the amounts are the same. Annual
+# amounts are twelve times the monthly ones.
+- name: Case 9, 416.1163(g) Example 3 (Mr. Smith) pays the lesser amount under 416.1163(e)(2).
+  period: 1986
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mr_smith:
+        age: 50
+        is_ssi_disabled: true
+        pension_income: 100 * 12
+      mrs_smith:
+        age: 50
+        employment_income: 201 * 12
+    tax_units:
+      tax_unit:
+        members: [mr_smith, mrs_smith]
+    marital_units:
+      marital_unit:
+        members: [mr_smith, mrs_smith]
+    households:
+      household:
+        members: [mr_smith, mrs_smith]
+  output:
+    # Example 3: '$80 ... leaving $68. This gives the couple total countable
+    # income of $148.' Couple computation $504 - $148 = $356; without
+    # deeming $336 - $80 = $256; the lesser is $256.
+    ssi_countable_income: [1_776, 0]  # $148 a month
+    uncapped_ssi_without_spousal_deeming: [3_072, 0]  # $256 a month
+    uncapped_ssi: [3_072, 0]  # $256 a month
+    ssi: [3_072, 0]  # $256 a month
+
+- name: Case 10, 416.1163(g) Example 2 (Mr. Jones) keeps the couple computation when it is lower.
+  period: 1986
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mr_jones:
+        age: 50
+        is_ssi_disabled: true
+      mrs_jones:
+        age: 48
+        employment_income: 401 * 12
+        pension_income: 252 * 12
+      christine:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [mr_jones, mrs_jones, christine]
+    marital_units:
+      marital_unit:
+        members: [mr_jones, mrs_jones]
+      child_unit:
+        members: [christine]
+    households:
+      household:
+        members: [mr_jones, mrs_jones, christine]
+  output:
+    # Example 2: allocation $168 for Christine, leaving $84 unearned;
+    # '$64 countable unearned income and $168 countable earned income ...
+    # ($232)'. Couple computation $504 - $232 = $272; without deeming
+    # $336 - $0 = $336; the lesser is $272.
+    ssi_countable_income: [2_784, 0, 0]  # $232 a month
+    ssi: [3_264, 0, 0]  # $272 a month

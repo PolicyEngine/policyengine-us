@@ -3,7 +3,7 @@
 Datasets that carry the ``county_fips`` input (but no stored ``county``)
 previously collapsed every household to ``first_county_in_state``, zeroing
 county-derived variables like ``in_nyc`` and ``nyc_income_tax`` nationwide
-(PolicyEngine/populace#34).
+(PolicyEngine/microcosm#34).
 """
 
 import numpy as np
