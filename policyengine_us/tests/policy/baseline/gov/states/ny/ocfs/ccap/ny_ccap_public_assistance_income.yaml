@@ -174,7 +174,6 @@
       child:
         age: 5
         immigration_status: CITIZEN
-        pre_subsidy_childcare_expenses: 24_000
         childcare_hours_per_day: 8
         childcare_days_per_week: 5
         ny_ccap_market_rate: {2025: 12_000}
@@ -185,6 +184,8 @@
         members: [parent, child]
         is_tanf_enrolled: {2025: true}
         takes_up_tanf_if_eligible: true
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
     households:
       household:
         members: [parent, child]

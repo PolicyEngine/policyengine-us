@@ -14359,7 +14359,8 @@ candidates:
     code:
     - policyengine_us/variables/gov/states/ny/ocfs/ccap/ny_ccap_countable_income.py
     - policyengine_us/parameters/gov/states/ny/ocfs/ccap/income/countable_income/sources.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10827
   state: ruled
   note: PolicyEngine follows OCFS's regulatory compilation and excludes children's SSI and state supplements while
     counting adults' benefits. The captures preserve the relevant OCFS provision and LII's end-of-exclusions text
