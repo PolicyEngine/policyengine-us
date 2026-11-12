@@ -1,3 +1,10 @@
+## [2.118.1] - 2026-11-12
+
+### Fixed
+
+- Give the Social Security state test backend's stand-in system the situation preprocessing hook that policyengine-core's builder calls.
+
+
 ## [2.118.0] - 2026-11-12
 
 ### Added
