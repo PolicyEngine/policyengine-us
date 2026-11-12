@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.mt_filing_choice import mt_separate_filing_is_cheaper
 
 
 class mt_income_tax_before_2021_rebate(Variable):
@@ -67,9 +68,12 @@ class mt_income_tax_before_2021_rebate(Variable):
             where=claimants > 0,
         )
         # The couple files separately when doing so lowers the rebate-free
-        # line 20, mirroring mt_income_tax_before_refundable_credits_unit.
+        # line 20 by more than one cent, mirroring
+        # mt_income_tax_before_refundable_credits_unit.
         p = parameters(period).gov.states.mt.tax.income
         separate_allowed = p.married_filing_separately_on_same_return_allowed
-        cheaper_separately = person.tax_unit.sum(indiv) < joint
+        cheaper_separately = mt_separate_filing_is_cheaper(
+            person.tax_unit.sum(indiv), joint
+        )
         files_separately = separate_allowed & cheaper_separately
         return head_or_spouse * where(files_separately, indiv, joint_share)

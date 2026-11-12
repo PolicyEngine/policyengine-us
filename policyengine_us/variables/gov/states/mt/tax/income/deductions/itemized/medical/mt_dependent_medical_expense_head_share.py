@@ -24,18 +24,18 @@ class mt_dependent_medical_expense_head_share(Variable):
         "the couple divide them in any proportion, so the model picks the "
         "share that gives the lowest combined tax before refundable credits "
         "(Form 2 line 20 in both columns), holding every other itemized "
-        "deduction fixed. It compares four candidates: the equal split "
+        "deduction fixed. It compares the equal split "
         "(spouse_allocation_rate), all to the head, all to the spouse, and "
         "the share at which the two columns' incomes before the dependent "
-        "exemptions are equal. While both columns are above their 7.5% "
+        "exemptions are equal, and the shares where each column exhausts "
+        "its capital gain credit. While both columns are above their 7.5% "
         "floors, the total deduction does not depend on the share and the "
         "couple's tax is convex in it, lowest where the columns balance. "
         "Where a column is below its floor, bills moved into it are wasted "
         "and the tax is monotone in the share, so the shares at which a "
-        "floor starts to bind never beat all to one spouse. The set reaches "
-        "the minimum unless a column's non-refundable credit (the capital "
-        "gain credit) holds its line 20 at zero, which can move the minimum "
-        "away from the balance point. Ties go to the share closest to the "
+        "floor starts to bind never beat all to one spouse. A column's "
+        "capital gain credit can move the minimum away from balance to "
+        "the point where the column exhausts its credit. Ties go to the share closest to the "
         "equal split, so the result does not depend on which spouse is "
         "labelled head. The tax is evaluated in closed form with the column "
         "variables' own formulas (policyengine_us.tools.mt_separate_return), "
@@ -106,6 +106,42 @@ class mt_dependent_medical_expense_head_share(Variable):
             np.full(tax_unit.count, 1.0),
             balance,
         ]
+        if not p.main.capital_gains.in_effect:
+            # A credit can hold the higher column's tax at zero. Add the
+            # shares where each column exhausts its credit.
+            schedule = p.main.separate
+            thresholds = np.asarray(schedule.thresholds, dtype=float)
+            tax_at_thresholds = schedule.calc(thresholds)
+            credits = person("mt_non_refundable_credits", period)
+            credit_income = np.interp(credits, tax_at_thresholds, thresholds)
+            credit_income += (
+                max_(credits - tax_at_thresholds[-1], 0) / schedule.rates[-1]
+            )
+            dependent_exemptions = tax_unit.sum(
+                person("mt_dependent_exemptions_person", period)
+            )
+            balanced_income = max_(
+                (tax_unit.sum(level * head_or_spouse) - pool - dependent_exemptions)
+                / 2,
+                0,
+            )
+            # Dependent exemptions first reduce the higher column. A credit
+            # threshold above balanced taxable income needs the full
+            # dependent exemption added back.
+            required_income = credit_income + where(
+                credit_income > tax_unit.project(balanced_income),
+                tax_unit.project(dependent_exemptions),
+                0,
+            )
+            for column, is_head in [(head, True), (spouse, False)]:
+                allocation = (
+                    tax_unit.sum((level - required_income) * column) / safe_pool
+                )
+                candidate = np.clip(allocation if is_head else 1 - allocation, 0, 1)
+                # Ignore zero credits to preserve the existing candidates
+                # when neither spouse receives a credit.
+                has_credit = tax_unit.sum(credits * column) > 0
+                candidates.append(where(has_credit, candidate, default))
         best_share = default
         best_tax = couple_tax(default)
         for candidate in candidates:

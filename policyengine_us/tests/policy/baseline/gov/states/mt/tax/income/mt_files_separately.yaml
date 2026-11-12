@@ -54,3 +54,56 @@
         state_code: MT
   output:
     mt_files_separately: false
+
+- name: Spouses file jointly when both paths have the same tax
+  period: 2022
+  input:
+    state_code: MT
+    mt_income_tax_indiv: 100
+    mt_income_tax_joint: 100
+  output:
+    mt_files_separately: false
+    mt_income_tax: 100
+
+- name: Spouses keep joint filing when separate filing saves less than one cent
+  period: 2022
+  input:
+    state_code: MT
+    mt_income_tax_indiv: 99.991
+    mt_income_tax_joint: 100
+  output:
+    # 100 - 99.991 = 0.009, within the one-cent election tolerance.
+    mt_files_separately: false
+    mt_income_tax: 100
+
+- name: Spouses keep joint filing when separate filing saves one cent
+  period: 2022
+  input:
+    state_code: MT
+    mt_income_tax_indiv: 99.99
+    mt_income_tax_joint: 100
+  output:
+    # The one-cent boundary follows the same joint-filing tie preference.
+    mt_files_separately: false
+    mt_income_tax: 100
+
+- name: Spouses file separately when the saving exceeds one cent
+  period: 2022
+  input:
+    state_code: MT
+    mt_income_tax_indiv: 99.989
+    mt_income_tax_joint: 100
+  output:
+    # 100 - 99.989 = 0.011, beyond the one-cent election tolerance.
+    mt_files_separately: true
+    mt_income_tax: 99.989
+
+- name: Spouses file jointly when the joint path saves less than one cent
+  period: 2022
+  input:
+    state_code: MT
+    mt_income_tax_indiv: 100.009
+    mt_income_tax_joint: 100
+  output:
+    mt_files_separately: false
+    mt_income_tax: 100

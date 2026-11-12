@@ -1,0 +1,78 @@
+- name: Spouses share the joint rebate base when the separate saving falls below one cent
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        mt_income_tax_before_refundable_credits_indiv: 40
+      spouse:
+        is_tax_unit_spouse: true
+        mt_income_tax_before_refundable_credits_indiv: 59.991
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_income_tax_before_refundable_credits_joint: 100
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # 100 - (40 + 59.991) = 0.009, so each spouse takes 100 / 2.
+    mt_income_tax_before_2021_rebate: [50, 50]
+    mt_income_tax_before_refundable_credits_unit: 100
+
+- name: Spouses keep their own rebate bases when the separate saving exceeds one cent
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        mt_income_tax_before_refundable_credits_indiv: 40
+      spouse:
+        is_tax_unit_spouse: true
+        mt_income_tax_before_refundable_credits_indiv: 59.989
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_income_tax_before_refundable_credits_joint: 100
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # 100 - (40 + 59.989) = 0.011, so each spouse keeps their own line 20.
+    mt_income_tax_before_2021_rebate: [40, 59.989]
+    mt_income_tax_before_refundable_credits_unit: 99.989
+
+- name: Spouses apply the joint rebate cap when their filing taxes differ by less than one cent
+  period: 2021
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_income_tax_before_refundable_credits_indiv: 2_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_income_tax_before_refundable_credits_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        mt_income_tax_before_refundable_credits_joint: 2_000.009
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Joint filing takes the near tie: 2,000.009 - 2,000 = 0.009.
+    # Each rebate base = 2,000.009 / 2 = 1,000.0045, below the 1,250 cap.
+    # A separate election would cap the rebates at 1,250 + 0 = 1,250.
+    mt_income_tax_before_2021_rebate: [1_000.0045, 1_000.0045]
+    mt_income_tax_rebate: [1_000.0045, 1_000.0045]
+    mt_files_separately: false
+    mt_income_tax_before_refundable_credits_unit: 2_000.009
+    # The joint rebate covers its full line 20: 2,000.009 - 2,000.009 = 0.
+    mt_income_tax: 0
