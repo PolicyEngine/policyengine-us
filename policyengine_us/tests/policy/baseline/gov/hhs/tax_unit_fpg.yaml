@@ -1,0 +1,107 @@
+- name: HHS 2013 guideline for 1 people in CONTIGUOUS_US
+  period: 2013
+  input:
+    tax_unit_size: 1
+    state_group_str: CONTIGUOUS_US
+  output:
+    # 11490 + 4020 * (1 - 1).
+    tax_unit_fpg: 11490
+
+- name: HHS 2013 guideline for 2 people in CONTIGUOUS_US
+  period: 2013
+  input:
+    tax_unit_size: 2
+    state_group_str: CONTIGUOUS_US
+  output:
+    # 11490 + 4020 * (2 - 1).
+    tax_unit_fpg: 15510
+
+- name: HHS 2013 guideline for 1 people in AK
+  period: 2013
+  input:
+    tax_unit_size: 1
+    state_group_str: AK
+  output:
+    # 14350 + 5030 * (1 - 1).
+    tax_unit_fpg: 14350
+
+- name: HHS 2013 guideline for 2 people in AK
+  period: 2013
+  input:
+    tax_unit_size: 2
+    state_group_str: AK
+  output:
+    # 14350 + 5030 * (2 - 1).
+    tax_unit_fpg: 19380
+
+- name: HHS 2013 guideline for 1 people in HI
+  period: 2013
+  input:
+    tax_unit_size: 1
+    state_group_str: HI
+  output:
+    # 13230 + 4620 * (1 - 1).
+    tax_unit_fpg: 13230
+
+- name: HHS 2013 guideline for 2 people in HI
+  period: 2013
+  input:
+    tax_unit_size: 2
+    state_group_str: HI
+  output:
+    # 13230 + 4620 * (2 - 1).
+    tax_unit_fpg: 17850
+
+- name: HHS 2014 guideline for 1 people in CONTIGUOUS_US
+  period: 2014
+  input:
+    tax_unit_size: 1
+    state_group_str: CONTIGUOUS_US
+  output:
+    # 11670 + 4060 * (1 - 1).
+    tax_unit_fpg: 11670
+
+- name: HHS 2014 guideline for 2 people in CONTIGUOUS_US
+  period: 2014
+  input:
+    tax_unit_size: 2
+    state_group_str: CONTIGUOUS_US
+  output:
+    # 11670 + 4060 * (2 - 1).
+    tax_unit_fpg: 15730
+
+- name: HHS 2014 guideline for 1 people in AK
+  period: 2014
+  input:
+    tax_unit_size: 1
+    state_group_str: AK
+  output:
+    # 14580 + 5080 * (1 - 1).
+    tax_unit_fpg: 14580
+
+- name: HHS 2014 guideline for 2 people in AK
+  period: 2014
+  input:
+    tax_unit_size: 2
+    state_group_str: AK
+  output:
+    # 14580 + 5080 * (2 - 1).
+    tax_unit_fpg: 19660
+
+- name: HHS 2014 guideline for 1 people in HI
+  period: 2014
+  input:
+    tax_unit_size: 1
+    state_group_str: HI
+  output:
+    # 13420 + 4670 * (1 - 1).
+    tax_unit_fpg: 13420
+
+- name: HHS 2014 guideline for 2 people in HI
+  period: 2014
+  input:
+    tax_unit_size: 2
+    state_group_str: HI
+  output:
+    # 13420 + 4670 * (2 - 1).
+    tax_unit_fpg: 18090

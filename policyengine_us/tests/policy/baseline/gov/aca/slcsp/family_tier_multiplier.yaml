@@ -184,3 +184,105 @@
         state_fips: 50
   output:
     slcsp_family_tier_multiplier: 2.81
+
+- name: New York prices a parent and child in the first marketplace year.
+  period: 2014-01
+  input:
+    people:
+      parent:
+        monthly_age: 40
+        pays_aca_premium: true
+      child:
+        monthly_age: 10
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # NY's 2014 tier factor equals 1.7 for one adult and children.
+    slcsp_family_tier_multiplier: 1.7
+
+- name: Vermont prices parents and a child in the first marketplace year.
+  period: 2014-01
+  input:
+    people:
+      parent:
+        monthly_age: 40
+        pays_aca_premium: true
+      spouse:
+        monthly_age: 40
+        pays_aca_premium: true
+      child:
+        monthly_age: 10
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, child]
+        slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [parent, spouse, child]
+        state_code: VT
+  output:
+    # Vermont's March 2013 order sets the 2014 family factor at 2.81.
+    slcsp_family_tier_multiplier: 2.81
+
+- name: New York retains its existing Age 29 adjustment from 2015.
+  period: 2015-01
+  input:
+    people:
+      parent:
+        monthly_age: 50
+        pays_aca_premium: true
+        is_aca_family_tier_dependent_child: false
+        is_aca_ny_age_29_dependent_child: false
+      child:
+        monthly_age: 26
+        pays_aca_premium: true
+        is_aca_family_tier_dependent_child: true
+        is_aca_ny_age_29_dependent_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Preserve the existing calculation: 1.7 * 1.05 = 1.785.
+    slcsp_family_tier_multiplier: 1.785
+
+- name: New York estimates the 2014 premium for an extended dependent with the ordinary child tier.
+  period: 2014-01
+  input:
+    people:
+      parent:
+        monthly_age: 50
+        pays_aca_premium: true
+        is_tax_unit_dependent: false
+      child:
+        monthly_age: 26
+        pays_aca_premium: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    # Approximate the 2014 benchmark with the ordinary parent-and-child factor.
+    is_aca_family_tier_dependent_child: [false, true]
+    slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    slcsp_family_tier_multiplier: 1.7

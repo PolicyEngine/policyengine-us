@@ -191,3 +191,63 @@
     aca_ptc: 5_940  # min(6,000, max(6,000, 3,000) - 60)
     used_aca_ptc: 2_940  # min(5,940, 3,000 - 60)
     marketplace_net_premium: 60  # 3,000 - 2,940
+
+- name: An inactive minimum premium preserves the historical credit in 2014
+  period: 2014
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    selected_marketplace_plan_premium_proxy: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 9585.0  # 12,000 - 30,000 * 0.0805.
+
+- name: An inactive minimum premium preserves the historical credit in 2017
+  period: 2017
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    selected_marketplace_plan_premium_proxy: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 9537.0  # 12,000 - 30,000 * 0.0821.
+
+- name: The historical minimum-premium path floors supplied negative MAGI in 2014
+  period: 2014
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    selected_marketplace_plan_premium_proxy: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 12_000
+
+- name: The historical minimum-premium path floors supplied negative MAGI in 2017
+  period: 2017
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    selected_marketplace_plan_premium_proxy: 13_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 12_000

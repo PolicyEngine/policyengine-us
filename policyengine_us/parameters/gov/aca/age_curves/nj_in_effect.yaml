@@ -1,0 +1,14 @@
+description: New Jersey uses its state-specific age curve for individual marketplace premiums during this period.
+values:
+  0000-01-01: false
+  2014-01-01: true
+  2018-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: New Jersey ACA state-specific individual age curve in effect
+  reference:
+    - title: CMS State Specific Age Curve Variations - August 9, 2013
+      href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/2017-state-specific-age-curve-variations-8-9-2013.pdf#page=1
+    - title: CMS State Specific Age Curve Variations - May 31, 2017
+      href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/statespecagecrv053117.pdf#page=1

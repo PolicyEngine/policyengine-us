@@ -1,0 +1,143 @@
+description: New Jersey uses these premium ratios for its historical ACA age curve, before normalization to the benchmark premium.
+metadata:
+  type: single_amount
+  period: year
+  amount_unit: /1
+  threshold_unit: year
+  label: ACA historical premium age curve ratios - NJ
+  reference:
+  - title: CMS State Specific Age Curve Variations - August 9, 2013
+    href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/2017-state-specific-age-curve-variations-8-9-2013.pdf#page=1
+brackets:
+- threshold:
+    2014-01-01: 0
+  amount:
+    2014-01-01: 0.75
+- threshold:
+    2014-01-01: 21
+  amount:
+    2014-01-01: 1.25
+- threshold:
+    2014-01-01: 29
+  amount:
+    2014-01-01: 1.275
+- threshold:
+    2014-01-01: 30
+  amount:
+    2014-01-01: 1.287
+- threshold:
+    2014-01-01: 31
+  amount:
+    2014-01-01: 1.305
+- threshold:
+    2014-01-01: 32
+  amount:
+    2014-01-01: 1.323
+- threshold:
+    2014-01-01: 33
+  amount:
+    2014-01-01: 1.334
+- threshold:
+    2014-01-01: 34
+  amount:
+    2014-01-01: 1.346
+- threshold:
+    2014-01-01: 35
+  amount:
+    2014-01-01: 1.352
+- threshold:
+    2014-01-01: 36
+  amount:
+    2014-01-01: 1.358
+- threshold:
+    2014-01-01: 37
+  amount:
+    2014-01-01: 1.363
+- threshold:
+    2014-01-01: 38
+  amount:
+    2014-01-01: 1.369
+- threshold:
+    2014-01-01: 39
+  amount:
+    2014-01-01: 1.381
+- threshold:
+    2014-01-01: 40
+  amount:
+    2014-01-01: 1.393
+- threshold:
+    2014-01-01: 41
+  amount:
+    2014-01-01: 1.41
+- threshold:
+    2014-01-01: 42
+  amount:
+    2014-01-01: 1.427
+- threshold:
+    2014-01-01: 43
+  amount:
+    2014-01-01: 1.45
+- threshold:
+    2014-01-01: 44
+  amount:
+    2014-01-01: 1.478
+- threshold:
+    2014-01-01: 45
+  amount:
+    2014-01-01: 1.511
+- threshold:
+    2014-01-01: 46
+  amount:
+    2014-01-01: 1.55
+- threshold:
+    2014-01-01: 47
+  amount:
+    2014-01-01: 1.593
+- threshold:
+    2014-01-01: 48
+  amount:
+    2014-01-01: 1.641
+- threshold:
+    2014-01-01: 49
+  amount:
+    2014-01-01: 1.688
+- threshold:
+    2014-01-01: 50
+  amount:
+    2014-01-01: 1.741
+- threshold:
+    2014-01-01: 51
+  amount:
+    2014-01-01: 1.792
+- threshold:
+    2014-01-01: 52
+  amount:
+    2014-01-01: 1.847
+- threshold:
+    2014-01-01: 53
+  amount:
+    2014-01-01: 1.902
+- threshold:
+    2014-01-01: 54
+  amount:
+    2014-01-01: 1.961
+- threshold:
+    2014-01-01: 55
+  amount:
+    2014-01-01: 2.019
+- threshold:
+    2014-01-01: 56
+  amount:
+    2014-01-01: 2.08
+- threshold:
+    2014-01-01: 57
+  amount:
+    2014-01-01: 2.142
+- threshold:
+    2014-01-01: 58
+  amount:
+    2014-01-01: 2.206
+- threshold:
+    2014-01-01: 59
+  amount:
+    2014-01-01: 2.28

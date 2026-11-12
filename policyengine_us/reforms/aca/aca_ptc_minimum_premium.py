@@ -43,6 +43,24 @@ def create_aca_ptc_minimum_premium() -> Reform:
         def formula(tax_unit, period, parameters):
             return 0
 
+        def formula_2014(tax_unit, period, parameters):
+            plan_cost = tax_unit("slcsp", period)
+            income = max_(0, tax_unit("aca_magi", period))
+            applicable_figure = tax_unit("aca_required_contribution_percentage", period)
+            return max_(0, plan_cost - income * applicable_figure)
+
+        def formula_2015(tax_unit, period, parameters):
+            plan_cost = tax_unit("slcsp", period)
+            income = max_(0, tax_unit("aca_magi", period))
+            applicable_figure = tax_unit("aca_required_contribution_percentage", period)
+            credit = max_(0, plan_cost - income * applicable_figure)
+            enrolled_premium = max_(
+                plan_cost,
+                tax_unit("selected_marketplace_plan_premium_proxy", period),
+            )
+            minimum = tax_unit("aca_ptc_minimum_premium", period)
+            return min_(credit, max_(0, enrolled_premium - minimum))
+
         def formula_2018(tax_unit, period, parameters):
             plan_cost = tax_unit("slcsp", period)
             income = tax_unit("aca_magi", period)
