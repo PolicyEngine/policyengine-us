@@ -4481,11 +4481,11 @@ candidates:
     citation: Louisiana Revenue Ruling 18-001, December 21, 2018, pages 1 through 3
     url: https://dam.ldr.la.gov/lawspolicies/RR%2018-001%20Personal%20Exemptions.pdf
   readings:
-    statute: One reading counts only the child's allowable federal exemption, allocates it to Subsection A's
-      single-filer requirement, and leaves no additional deduction under B. Another treats the exemptions
-      required by A as the filer's own in kind, leaving the child's exemption additional under B.
+    statute: Under one reading, the filer allocates the child's only allowable federal exemption to Subsection A
+      and receives no additional deduction under B. Under another, the filer uses their own exemption for A
+      and claims the child's exemption under B.
     other: LDR counts the filer on Line 6A even when someone else claims them, and federal dependents on Line 6C.
-      The single-filer table subtracts one from that total, leaving one additional exemption for the child.
+      LDR subtracts one from that total in the single-filer table, leaving one additional exemption for the child.
   example: A 2024 claimable single filer aged 20 with one child aged 4 and a refund-only claimant receives
     $1,000 for the child, $4,500 for the filer, and $5,500 in total exemptions, without blind or aged exemptions.
   pe_us:
@@ -4502,12 +4502,12 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
     - https://github.com/PolicyEngine/policyengine-us/pull/10833
   state: ruled
-  note: Ruled 2026-11-12 under the agency tie-break principle. Subsection B's qualifying-exemption language
-    does not identify which exemptions satisfy A, and A gives amounts by filing status without specifying a count.
-    Statute-first and the canons leave both readings open; follow the 2021-2024 instructions as the gap-filler.
-    Keep the formula and the existing filing-exception case unchanged. The personal and dependent exemptions
-    agree with that reading. Revenue Ruling 18-001 distinguishes exemption counts from amounts for 151(d)(5),
-    but does not resolve 151(d)(2) or this class. Searches located no direct LDR ruling or court holding on this
+  note: Ruled 2026-11-12 under the agency tie-break principle. Legislators did not identify which exemptions
+    satisfy A when they wrote B. They supplied filing-status amounts in A without specifying a count.
+    We applied statute-first and the canons and found both readings open; follow the 2021-2024 instructions
+    as the gap-filler. Keep the formula and the existing filing-exception case unchanged. The filer receives
+    both the personal and dependent amounts under this reading. LDR distinguished exemption counts from amounts
+    for 151(d)(5) in Revenue Ruling 18-001, without addressing 151(d)(2) or this class. We located no direct LDR ruling or court holding on this
     class. Selected source excerpts accompany this entry under source_conflicts/sources/us-la/.
 - id: us-la:liheap-plan-income-checklist
   program: liheap

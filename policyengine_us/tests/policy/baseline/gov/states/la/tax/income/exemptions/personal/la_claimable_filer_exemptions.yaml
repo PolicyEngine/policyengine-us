@@ -20,7 +20,7 @@
         members: [filer, child]
         state_code: LA
   output:
-    # Line 6A counts the filer; Line 6C counts the federal dependent.
+    # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
     # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
     # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
     la_personal_exemption: 4_500
@@ -49,7 +49,7 @@
         members: [filer, child]
         state_code: LA
   output:
-    # Line 6A counts the filer; Line 6C counts the federal dependent.
+    # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
     # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
     # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
     la_personal_exemption: 4_500
@@ -78,7 +78,7 @@
         members: [filer, child]
         state_code: LA
   output:
-    # Line 6A counts the filer; Line 6C counts the federal dependent.
+    # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
     # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
     # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
     la_personal_exemption: 4_500
@@ -107,7 +107,7 @@
         members: [filer, child]
         state_code: LA
   output:
-    # Line 6A counts the filer; Line 6C counts the federal dependent.
+    # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
     # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
     # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
     la_personal_exemption: 4_500
