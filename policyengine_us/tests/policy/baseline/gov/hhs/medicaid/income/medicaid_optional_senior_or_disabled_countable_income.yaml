@@ -1004,11 +1004,13 @@
   output:
     # (24,120 + 12,120 - 240) / 2 = 18,000 each. The child shares no tax unit
     # with the first couple, so the reader does not deduct their 15,000 of
-    # premiums from that couple's budget, and 36,000 exceeds 22,024.80.
+    # premiums from that couple's budget, and 36,000 exceeds the couple limit
+    # of 29,863.20 (1.38 x 21,640).
     medicaid_optional_senior_or_disabled_countable_income: [18_000, 18_000, 0, 0, 0]
-    # The second couple stays ineligible because the income reader sums the
-    # whole default unit, as on main.
-    is_optional_senior_or_disabled_for_medicaid: [false, false, false, false, false]
+    # The second couple's income test totals only the two spouses: 0 + 0 is
+    # within 29,863.20. Summing the whole default unit would add the first
+    # couple's 36,000 and fail them.
+    is_optional_senior_or_disabled_for_medicaid: [false, false, true, true, false]
 
 - name: California counts a dependent couple's premiums once.
   period: 2026
