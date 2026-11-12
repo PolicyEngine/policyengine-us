@@ -196,3 +196,766 @@
   output:
     ny_ccap_market_rate: 0
   absolute_error_margin: 0.01
+
+# ACS FS-023 pays $300 per weekly period.
+# One such period per week gives $300 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published weekly rate for infant care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 300 * 52 / 12
+    ny_ccap_market_rate: 300 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $263 per weekly period.
+# One such period per week gives $263 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published weekly rate for toddler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 263 * 52 / 12
+    ny_ccap_market_rate: 263 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $244 per weekly period.
+# One such period per week gives $244 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published weekly rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 244 * 52 / 12
+    ny_ccap_market_rate: 244 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $217 per weekly period.
+# One such period per week gives $217 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published weekly rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 217 * 52 / 12
+    ny_ccap_market_rate: 217 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $60 per daily period.
+# One such period per week gives $60 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published daily rate for infant care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 60 * 52 / 12
+    ny_ccap_market_rate: 60 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $53 per daily period.
+# One such period per week gives $53 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published daily rate for toddler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 53 * 52 / 12
+    ny_ccap_market_rate: 53 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $49 per daily period.
+# One such period per week gives $49 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published daily rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 49 * 52 / 12
+    ny_ccap_market_rate: 49 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $45 per daily period.
+# One such period per week gives $45 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published daily rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 45 * 52 / 12
+    ny_ccap_market_rate: 45 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $40 per part-day period.
+# One such period per week gives $40 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published part-day rate for infant care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 40 * 52 / 12
+    ny_ccap_market_rate: 40 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $35 per part-day period.
+# One such period per week gives $35 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published part-day rate for toddler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 35 * 52 / 12
+    ny_ccap_market_rate: 35 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $32 per part-day period.
+# One such period per week gives $32 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published part-day rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 32 * 52 / 12
+    ny_ccap_market_rate: 32 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $30 per part-day period.
+# One such period per week gives $30 * 52 / 12 monthly.
+- name: NYC enhanced informal care pays the published part-day rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+  output:
+    ny_ccap_regular_market_rate: 30 * 52 / 12
+    ny_ccap_market_rate: 30 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $356 per weekly period with health.
+# One such period per week gives $356 * 52 / 12 monthly.
+- name: NYC exempt group care receives the weekly health rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+  output:
+    ny_ccap_regular_market_rate: 356 * 52 / 12
+    ny_ccap_market_rate: 356 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $263 per weekly period with health.
+# One such period per week gives $263 * 52 / 12 monthly.
+- name: NYC exempt group care receives the weekly health rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+  output:
+    ny_ccap_regular_market_rate: 263 * 52 / 12
+    ny_ccap_market_rate: 263 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $73 per daily period with health.
+# One such period per week gives $73 * 52 / 12 monthly.
+- name: NYC exempt group care receives the daily health rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+  output:
+    ny_ccap_regular_market_rate: 73 * 52 / 12
+    ny_ccap_market_rate: 73 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $56 per daily period with health.
+# One such period per week gives $56 * 52 / 12 monthly.
+- name: NYC exempt group care receives the daily health rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+  output:
+    ny_ccap_regular_market_rate: 56 * 52 / 12
+    ny_ccap_market_rate: 56 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $49 per part-day period with health.
+# One such period per week gives $49 * 52 / 12 monthly.
+- name: NYC exempt group care receives the part-day health rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+  output:
+    ny_ccap_regular_market_rate: 49 * 52 / 12
+    ny_ccap_market_rate: 49 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $37 per part-day period with health.
+# One such period per week gives $37 * 52 / 12 monthly.
+- name: NYC exempt group care receives the part-day health rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+  output:
+    ny_ccap_regular_market_rate: 37 * 52 / 12
+    ny_ccap_market_rate: 37 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $356 per weekly period with training.
+# One such period per week gives $356 * 52 / 12 monthly.
+- name: NYC exempt group care receives the weekly training rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 356 * 52 / 12
+    ny_ccap_market_rate: 356 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $263 per weekly period with training.
+# One such period per week gives $263 * 52 / 12 monthly.
+- name: NYC exempt group care receives the weekly training rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 263 * 52 / 12
+    ny_ccap_market_rate: 263 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $73 per daily period with training.
+# One such period per week gives $73 * 52 / 12 monthly.
+- name: NYC exempt group care receives the daily training rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 73 * 52 / 12
+    ny_ccap_market_rate: 73 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $56 per daily period with training.
+# One such period per week gives $56 * 52 / 12 monthly.
+- name: NYC exempt group care receives the daily training rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 56 * 52 / 12
+    ny_ccap_market_rate: 56 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $49 per part-day period with training.
+# One such period per week gives $49 * 52 / 12 monthly.
+- name: NYC exempt group care receives the part-day training rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 49 * 52 / 12
+    ny_ccap_market_rate: 49 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $37 per part-day period with training.
+# One such period per week gives $37 * 52 / 12 monthly.
+- name: NYC exempt group care receives the part-day training rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 37 * 52 / 12
+    ny_ccap_market_rate: 37 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $382 per weekly period with health and training.
+# One such period per week gives $382 * 52 / 12 monthly.
+- name: NYC exempt group care receives the weekly health and training rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 382 * 52 / 12
+    ny_ccap_market_rate: 382 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $283 per weekly period with health and training.
+# One such period per week gives $283 * 52 / 12 monthly.
+- name: NYC exempt group care receives the weekly health and training rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 283 * 52 / 12
+    ny_ccap_market_rate: 283 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $78 per daily period with health and training.
+# One such period per week gives $78 * 52 / 12 monthly.
+- name: NYC exempt group care receives the daily health and training rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 78 * 52 / 12
+    ny_ccap_market_rate: 78 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $60 per daily period with health and training.
+# One such period per week gives $60 * 52 / 12 monthly.
+- name: NYC exempt group care receives the daily health and training rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 60 * 52 / 12
+    ny_ccap_market_rate: 60 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $52 per part-day period with health and training.
+# One such period per week gives $52 * 52 / 12 monthly.
+- name: NYC exempt group care receives the part-day health and training rate for preschooler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 52 * 52 / 12
+    ny_ccap_market_rate: 52 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 pays $40 per part-day period with health and training.
+# One such period per week gives $40 * 52 / 12 monthly.
+- name: NYC exempt group care receives the part-day health and training rate for school-age care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 40 * 52 / 12
+    ny_ccap_market_rate: 40 * 52 / 12
+  absolute_error_margin: 0.01
+
+# ACS FS-023 publishes $0 for exempt group care under age three.
+- name: NYC enhanced exempt group weekly care pays zero for infant care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 0
+    ny_ccap_market_rate: 0
+  absolute_error_margin: 0.01
+
+# ACS FS-023 publishes $0 for exempt group care under age three.
+- name: NYC enhanced exempt group weekly care pays zero for toddler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 0
+    ny_ccap_market_rate: 0
+  absolute_error_margin: 0.01
+
+# ACS FS-023 publishes $0 for exempt group care under age three.
+- name: NYC enhanced exempt group daily care pays zero for infant care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 0
+    ny_ccap_market_rate: 0
+  absolute_error_margin: 0.01
+
+# ACS FS-023 publishes $0 for exempt group care under age three.
+- name: NYC enhanced exempt group daily care pays zero for toddler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 0
+    ny_ccap_market_rate: 0
+  absolute_error_margin: 0.01
+
+# ACS FS-023 publishes $0 for exempt group care under age three.
+- name: NYC enhanced exempt group part-day care pays zero for infant care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 0
+    ny_ccap_market_rate: 0
+  absolute_error_margin: 0.01
+
+# ACS FS-023 publishes $0 for exempt group care under age three.
+- name: NYC enhanced exempt group part-day care pays zero for toddler care.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 0
+    ny_ccap_market_rate: 0
+  absolute_error_margin: 0.01
+
+# Outside NYC the state default retains the standard exempt group rate.
+# Group 1 preschool care pays $308 * 52 / 12 monthly for one period weekly.
+- name: Enhanced health and training retain the standard exempt group weekly rate outside NYC.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_1
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 308 * 52 / 12
+    ny_ccap_market_rate: 308 * 52 / 12
+  absolute_error_margin: 0.01
+
+# Outside NYC the state default retains the standard exempt group rate.
+# Group 1 preschool care pays $64 * 52 / 12 monthly for one period weekly.
+- name: Enhanced health and training retain the standard exempt group daily rate outside NYC.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_1
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 64 * 52 / 12
+    ny_ccap_market_rate: 64 * 52 / 12
+  absolute_error_margin: 0.01
+
+# Outside NYC the state default retains the standard exempt group rate.
+# Group 1 preschool care pays $43 * 52 / 12 monthly for one period weekly.
+- name: Enhanced health and training retain the standard exempt group part-day rate outside NYC.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_1
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_regular_market_rate: 43 * 52 / 12
+    ny_ccap_market_rate: 43 * 52 / 12
+  absolute_error_margin: 0.01
+
+# $900 expenses do not satisfy every condition for the $1,150 rate.
+- name: Costs below the regular rate retain the regular market rate.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_regular_market_rate: 1_000
+    ny_ccap_childcare_expenses: 900
+    is_disabled: true
+    ny_ccap_special_needs_care: true
+  output:
+    ny_ccap_market_rate: 1_000
+  absolute_error_margin: 0.01
+
+# $1,000 expenses do not satisfy every condition for the $1,150 rate.
+- name: Costs equal to the regular rate retain the regular market rate.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_regular_market_rate: 1_000
+    ny_ccap_childcare_expenses: 1_000
+    is_disabled: true
+    ny_ccap_special_needs_care: true
+  output:
+    ny_ccap_market_rate: 1_000
+  absolute_error_margin: 0.01
+
+# $1,000 * 1.15 = $1,150.
+- name: Qualifying needs and costs above the regular rate receive fifteen percent more.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_regular_market_rate: 1_000
+    ny_ccap_childcare_expenses: 1_001
+    is_disabled: true
+    ny_ccap_special_needs_care: true
+  output:
+    ny_ccap_market_rate: 1_150
+  absolute_error_margin: 0.01
+
+# $2,000 expenses do not satisfy every condition for the $1,150 rate.
+- name: A child without a disability retains the regular rate at the same high cost.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_regular_market_rate: 1_000
+    ny_ccap_childcare_expenses: 2_000
+    is_disabled: false
+    ny_ccap_special_needs_care: true
+  output:
+    ny_ccap_market_rate: 1_000
+  absolute_error_margin: 0.01
+
+# $2,000 expenses do not satisfy every condition for the $1,150 rate.
+- name: A parent who has not shown the additional care need retains the regular rate.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_regular_market_rate: 1_000
+    ny_ccap_childcare_expenses: 2_000
+    is_disabled: true
+    ny_ccap_special_needs_care: false
+  output:
+    ny_ccap_market_rate: 1_000
+  absolute_error_margin: 0.01
+
+# Six eight-hour days earn the enhanced $382 weekly rate and $78 daily rate.
+# ($382 + $78) * 52 / 12 = $1,993.33 monthly.
+- name: NYC enhanced group care prices an excess day at its enhanced daily rate.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    childcare_hours_per_day: 8
+    childcare_days_per_week: 6
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_regular_market_rate: (382 + 78) * 52 / 12
+    ny_ccap_market_rate: (382 + 78) * 52 / 12
+  absolute_error_margin: 0.01
+
+# Five sixteen-hour days earn $382 plus five enhanced $52 part-day periods.
+# ($382 + 5 * $52) * 52 / 12 = $2,782 monthly.
+- name: NYC enhanced group care prices excess hours at its enhanced part-day rate.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    childcare_hours_per_day: 16
+    childcare_days_per_week: 5
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_regular_market_rate: (382 + 5 * 52) * 52 / 12
+    ny_ccap_market_rate: (382 + 5 * 52) * 52 / 12
+  absolute_error_margin: 0.01
