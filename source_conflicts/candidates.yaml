@@ -14335,3 +14335,34 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us-ny:ccap-child-ssi-state-supplement-exclusion
+  program: child-care-assistance
+  years:
+    from: 2021
+    type: calendar
+  question: Does New York exclude children's SSI and state supplements from child care assistance income under
+    OCFS's regulatory compilation when LII omits the child exclusion?
+  sources:
+  - kind: regulation
+    citation: OCFS compilation of 18 NYCRR 404.5(b)(5)(vi) and (b)(6)(xxi), current October 1, 2023, pages 10-12
+    url: https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=12
+  - kind: regulation
+    citation: LII reproduction of 18 NYCRR 404.5(b)(5)(vi) and (b)(6), retrieved November 12, 2026
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5
+  readings:
+    statute: No statute supplied; OCFS excludes children's SSI, including state supplemental payments, from child
+      care assistance income under both the income-source provision and the exclusions provision.
+    other: LII includes SSI and state supplemental payments among public assistance income sources, omits the child
+      exception, and ends the exclusions at paragraph (xx).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/ny/ocfs/ccap/ny_ccap_countable_income.py
+    - policyengine_us/parameters/gov/states/ny/ocfs/ccap/income/countable_income/sources.yaml
+    prs: []
+  state: ruled
+  note: PolicyEngine follows OCFS's regulatory compilation and excludes children's SSI and state supplements while
+    counting adults' benefits. The captures preserve the relevant OCFS provision and LII's end-of-exclusions text
+    under source_conflicts/sources/us-ny/. The OCFS capture records archive snapshot 20240522174247. The years begin
+    with the model's first countable-income source parameter on October 1, 2021. The compilation confirms the
+    exclusion by October 1, 2023, without establishing its original effective date.

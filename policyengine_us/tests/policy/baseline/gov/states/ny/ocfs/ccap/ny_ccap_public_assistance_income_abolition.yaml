@@ -1,0 +1,15 @@
+# Keep the TANF parameter reform in its own process to bound memory.
+
+- name: Abolishing TANF removes Family Assistance while other assistance still counts.
+  period: 2025
+  input:
+    gov.hhs.tanf.abolish_tanf: true
+    age: 30
+    employment_income: 10_000
+    ny_tanf: 6_000
+    ny_safety_net_assistance: 2_400
+    ny_ssp: 1_200
+    state_code: NY
+  output:
+    # $10,000 earnings + $2,400 assistance + $1,200 supplement = $13,600.
+    ny_ccap_countable_income: 13_600

@@ -9,13 +9,14 @@ class ny_ccap_countable_income(Variable):
     unit = USD
     defined_for = StateCode.NY
     documentation = (
-        "Income counted for New York Child Care Assistance Program income "
-        "eligibility and the family share. New York defines countable income "
-        "in 18 NYCRR 404.5(b)(5) rather than in Part 415, which contains no "
-        "income-composition rule. Public assistance is countable under "
-        "404.5(b)(5)(vi) but is omitted here because counting it creates a "
-        "CCAP-to-TANF circular dependency through the TANF dependent care "
-        "deduction; see countable_income/sources.yaml. 404.5(b)(5) measures "
+        "New York counts income for Child Care Assistance Program eligibility "
+        "and the family share under 18 NYCRR 404.5(b)(5). Count Family "
+        "Assistance through ny_tanf, with TANF take-up and abolition controls, "
+        "to avoid other states' dependent care deductions in the federal "
+        "TANF aggregate. Count reported Safety Net Assistance amounts and "
+        "adults' SSI and state supplements under 404.5(b)(5)(vi). OCFS "
+        "excludes children's SSI and state supplements under "
+        "404.5(b)(6)(xxi). 404.5(b)(5) measures "
         "income over the 415.1(l) child care services unit, which splits "
         "cohabiting adults without a common child into separate units, treats "
         "an 18-year-old as an adult outside the parent's unit, and reduces to "
@@ -24,6 +25,7 @@ class ny_ccap_countable_income(Variable):
         "read it with the bare period and Core divides it."
     )
     reference = (
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5",
         "https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10",
         "https://ocfs.ny.gov/main/policies/external/2023/adm/23-OCFS-ADM-18.pdf#page=4",
     )
@@ -31,12 +33,20 @@ class ny_ccap_countable_income(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ny.ocfs.ccap.income.countable_income
         countable = add(spm_unit, period, p.sources)
+        # The federal TANF aggregate reads other states' dependent care
+        # deductions, which reach CCAP through child care subsidies.
+        # New York's own grant avoids that path. Preserve TANF's controls.
+        family_assistance = add(spm_unit, period, ["ny_tanf"]) * spm_unit(
+            "takes_up_tanf_if_eligible", period
+        )
+        family_assistance = where(
+            parameters(period).gov.hhs.tanf.abolish_tanf, 0, family_assistance
+        )
         person = spm_unit.members
         is_child = person("is_child", period)
-        # ssi is monthly, so add() sums it across the year.
-        # 404.5(b)(6)(xxi) excludes the SSI of any child in the unit; an
-        # adult's SSI stays countable.
-        adult_ssi = where(is_child, 0, add(person, period, ["ssi"]))
+        # Both payments are monthly, so add() sums them across the year.
+        # OCFS's 404.5(b)(6)(xxi) excludes children's SSI and supplements.
+        adult_ssi = where(is_child, 0, add(person, period, ["ssi", "ny_ssp"]))
         # 404.5(b)(6)(xiii) excludes the earnings of a dependent child under
         # 18 who is not legally responsible for the child needing care, and
         # directs that no inquiry be made into them. is_child is age under 18.
@@ -44,4 +54,6 @@ class ny_ccap_countable_income(Variable):
         excluded_earnings = where(
             excluded_earner, add(person, period, p.earned_sources), 0
         )
-        return countable + spm_unit.sum(adult_ssi - excluded_earnings)
+        return (
+            countable + family_assistance + spm_unit.sum(adult_ssi - excluded_earnings)
+        )
