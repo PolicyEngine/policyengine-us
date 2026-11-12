@@ -204,8 +204,8 @@
   absolute_error_margin: 0.01
   input:
     wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
-    is_wic_eligible: true
-    takes_up_wic_if_eligible: true
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   output:
     # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
     # Before October 2021, multiply the full 2018 package value by CPI-U.
@@ -234,8 +234,8 @@
   absolute_error_margin: 0.01
   input:
     wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
-    is_wic_eligible: true
-    takes_up_wic_if_eligible: true
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   output:
     # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
     # Before October 2021, multiply the full 2018 package value by CPI-U.
@@ -264,8 +264,8 @@
   absolute_error_margin: 0.01
   input:
     wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
-    is_wic_eligible: true
-    takes_up_wic_if_eligible: true
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   output:
     # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
     # Before October 2021, multiply the full 2018 package value by CPI-U.
@@ -294,8 +294,8 @@
   absolute_error_margin: 0.01
   input:
     wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
-    is_wic_eligible: true
-    takes_up_wic_if_eligible: true
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   output:
     # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
     # Before October 2021, multiply the full 2018 package value by CPI-U.
@@ -324,8 +324,8 @@
   absolute_error_margin: 0.01
   input:
     wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
-    is_wic_eligible: true
-    takes_up_wic_if_eligible: true
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   output:
     # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
     # Before October 2021, multiply the full 2018 package value by CPI-U.
@@ -354,8 +354,8 @@
   absolute_error_margin: 0.01
   input:
     wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
-    is_wic_eligible: true
-    takes_up_wic_if_eligible: true
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   output:
     # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
     # Before October 2021, multiply the full 2018 package value by CPI-U.
@@ -384,8 +384,8 @@
   absolute_error_margin: 0.01
   input:
     wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
-    is_wic_eligible: true
-    takes_up_wic_if_eligible: true
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   output:
     # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
     # Before October 2021, multiply the full 2018 package value by CPI-U.
@@ -414,8 +414,8 @@
   absolute_error_margin: 0.01
   input:
     wic_food_package_str: [PREGNANT, PREGNANT_SINGLETON, PREGNANT_MULTIPLE_FETUSES, BREASTFEEDING, PARTIALLY_BREASTFEEDING, FULLY_BREASTFEEDING, FULLY_BREASTFEEDING_MULTIPLES, POSTPARTUM, POSTPARTUM_NON_BREASTFEEDING, CHILD, CHILD_12_23_MONTHS, CHILD_24_59_MONTHS, IV-A, IV-B, V, VI, VII]
-    is_wic_eligible: true
-    takes_up_wic_if_eligible: true
+    is_wic_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    takes_up_wic_if_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   output:
     # Multiply the non-CVB package value by CPI-U, then add this fiscal year's CVB.
     # Before October 2021, multiply the full 2018 package value by CPI-U.
