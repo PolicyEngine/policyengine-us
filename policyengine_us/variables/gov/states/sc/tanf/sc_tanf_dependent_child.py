@@ -10,8 +10,8 @@ class sc_tanf_dependent_child(Variable):
     reference = (
         # PDF pages 204, 213
         "https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=204",
-        # PDF pages 105, 132, 134
-        "https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=105",
+        # PDF pages 75, 105, 132, 134
+        "https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=75",
     )
     documentation = (
         "A member who meets the dependent-child age test, under 18 or under "

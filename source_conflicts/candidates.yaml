@@ -10245,6 +10245,38 @@ candidates:
   note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
     section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
     member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-dependent-child-school-level
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Can an eighteen-year-old full-time primary-school student qualify as a South Carolina TANF dependent child,
+    or must the student attend secondary school or an equivalent level of vocational or technical training?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1130(E)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=204
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 4.10
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=75
+  readings:
+    statute: No statute is supplied; 114-1130(E) permits the extension from under eighteen to under nineteen only for
+      full-time students in secondary school or an equivalent level of vocational or technical training.
+    other: Section 4.10 permits full-time primary-school students, as well as secondary-school students, to receive
+      benefits until age nineteen.
+  example: An eighteen-year-old full-time primary-school student who does not head the household fails the regulation's
+    dependent-child age test and passes the manual's. An otherwise identical secondary-school student passes both.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_dependent_child.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: ruled
+  note: The regulation governs. The model uses is_in_secondary_school, which includes equivalent-level training, for
+    the under-nineteen extension. This entry addresses school level only; it does not resolve the manual's unmarried
+    condition or change the model's head-of-household inference.
 - id: us-sc:tanf-gross-income-limit-cents
   program: tanf
   years:

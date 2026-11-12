@@ -215,3 +215,53 @@
     # group too, 500 less the 50% January disregard, 250, would count, and
     # floor((1,110 - 250) x 0.4046 = 347.96) = 347.
     sc_tanf: 449
+
+- name: Case 10, only secondary students keep dependent-child status at eighteen.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+      primary_seventeen:
+        age: 17
+        is_in_k12_school: true
+        is_in_secondary_school: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      primary_eighteen:
+        age: 18
+        is_in_k12_school: true
+        is_in_secondary_school: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      secondary_seventeen:
+        age: 17
+        is_in_k12_school: true
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      secondary_eighteen:
+        age: 18
+        is_in_k12_school: true
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      secondary_nineteen:
+        age: 19
+        is_in_k12_school: true
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+    households:
+      household:
+        members: [parent, primary_seventeen, primary_eighteen, secondary_seventeen, secondary_eighteen, secondary_nineteen]
+        state_code: SC
+  output:
+    # Under 114-1130(E), 17 < 18 passes without secondary attendance.
+    # At 18, only secondary attendance gives 18 < 19; at 19 it fails.
+    # Primary students have K-12 attendance and no secondary attendance.
+    sc_tanf_dependent_child: [false, true, false, true, true, false]
+    # Each earner receives 6,000 / 12 = 500 a month. Only the primary
+    # student at 18 and the secondary student at 19 keep counted earnings.
+    sc_tanf_gross_earned_income: [0, 0, 500, 0, 0, 500]

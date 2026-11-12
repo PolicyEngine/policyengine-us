@@ -1,1 +1,1 @@
-Added a South Carolina TANF test at the gross income limit.
+Added South Carolina TANF boundary tests and recorded the secondary-school source conflict.
