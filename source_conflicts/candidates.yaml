@@ -2816,16 +2816,17 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/ga/dfcs/liheap/eligibility/fpg_year_lag.yaml
     - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_income_limit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
+    - https://github.com/PolicyEngine/policyengine-us/pull/10746
   state: unreviewed
   note: 'PE-US follows the statute: income below 110% of the prior year''s poverty guideline, rounded to cents,
     qualifies even above the 60% SMI limit. The comment says the limit and the printed matrices fall below that
-    floor from size 16 in FY2025 and FY2026 and that Georgia''s plans assure the floor (ga_liheap_eligible.py, gov/hhs/liheap/fpg_floor.yaml,
+    floor from size 16 in FY2025 and FY2026 and that Georgia''s plans assure the floor (ga_liheap_income_eligible.py, gov/hhs/liheap/fpg_floor.yaml,
     eligibility/fpg_year_lag.yaml, ga_liheap_income_limit.py).'
 - id: us-ga:liheap-lawful-noncitizen-household-members
   program: liheap
