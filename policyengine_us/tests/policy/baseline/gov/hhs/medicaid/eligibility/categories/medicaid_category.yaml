@@ -193,3 +193,252 @@
     is_medically_needy_for_medicaid: true
     medicaid_category: MEDICALLY_NEEDY
     is_medicaid_eligible: true
+
+# In 2019, $15,000 / $12,490 = 1.201 FPL, below 1.38.
+# On January 1, KY, VA and ME cover the adult group; ID, UT and NE do not.
+- name: Adult group covers a childless adult in KY in 2019.
+  period: 2019
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: KY
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in VA in 2019.
+  period: 2019
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: VA
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in ME in 2019.
+  period: 2019
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: ME
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group does not cover a childless adult in ID on January 1, 2019.
+  period: 2019
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: ID
+  output:
+    medicaid_category: NONE
+    is_aca_ptc_eligible: true
+
+- name: Adult group does not cover a childless adult in UT on January 1, 2019.
+  period: 2019
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: UT
+  output:
+    medicaid_category: NONE
+    is_aca_ptc_eligible: true
+
+- name: Adult group does not cover a childless adult in NE on January 1, 2019.
+  period: 2019
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: NE
+  output:
+    medicaid_category: NONE
+    is_aca_ptc_eligible: true
+
+
+# In 2020, $15,000 / $12,760 = 1.176 FPL, below 1.38.
+# On January 1, KY, VA, ME, ID and UT cover the adult group; NE does not.
+- name: Adult group covers a childless adult in KY in 2020.
+  period: 2020
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: KY
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in VA in 2020.
+  period: 2020
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: VA
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in ME in 2020.
+  period: 2020
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: ME
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in ID in 2020.
+  period: 2020
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: ID
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in UT in 2020.
+  period: 2020
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: UT
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group does not cover a childless adult in NE on January 1, 2020.
+  period: 2020
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: NE
+  output:
+    medicaid_category: NONE
+    is_aca_ptc_eligible: true
+
+
+# In 2021, $15,000 / $12,880 = 1.165 FPL, below 1.38 in all six states.
+- name: Adult group covers a childless adult in KY in 2021.
+  period: 2021
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: KY
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in VA in 2021.
+  period: 2021
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: VA
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in ME in 2021.
+  period: 2021
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: ME
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in ID in 2021.
+  period: 2021
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: ID
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in UT in 2021.
+  period: 2021
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: UT
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in NE in 2021.
+  period: 2021
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: NE
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+
+# In 2026, $15,000 / $15,960 = 0.940 FPL, below 1.38 in all six states.
+- name: Adult group covers a childless adult in KY in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: KY
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in VA in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: VA
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in ME in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: ME
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in ID in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: ID
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in UT in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: UT
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: Adult group covers a childless adult in NE in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 15_000
+    state_code: NE
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
