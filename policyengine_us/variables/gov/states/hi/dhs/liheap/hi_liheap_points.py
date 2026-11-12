@@ -52,14 +52,16 @@ class hi_liheap_points(Variable):
         age = person("age", period)
         qualified = person("hi_liheap_qualified_member", period)
         # The manuals define a disabled individual by receipt of SSI or Social
-        # Security disability payments. Veterans' 100% ratings, governmental
-        # disability retirement and railroad disability have no separate input,
-        # so is_disabled stands in for them. This affects points only.
+        # Security disability payments, or "VA benefits for a 100%
+        # service-connected disability". Governmental disability retirement
+        # and railroad disability have no separate input, so is_disabled
+        # stands in for them. This affects points only.
         disabled = (
             person("is_disabled", period)
             | (person("ssi", period) > 0)
             | (add(person, period, ["receives_ssi"]) > 0)
             | (person("social_security_disability", period) > 0)
+            | person("is_fully_disabled_service_connected_veteran", period)
         )
         ages = p.payment.points.vulnerability
         vulnerable = spm_unit.any(

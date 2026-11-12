@@ -15,7 +15,10 @@ def create_wv_dependent_exemption() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # Retain the baseline dependent taxpayer test and filing exception.
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
 
             # Apply age limit if in effect
             if p.age_limit.in_effect:
@@ -49,7 +52,10 @@ def create_wv_dependent_exemption() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # Apply the same gate to the older-dependent fallback.
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependent_exemptions = tax_unit(
                 "wv_eligible_dependents_count", period
@@ -67,22 +73,32 @@ def create_wv_dependent_exemption() -> Reform:
         def formula(tax_unit, period, parameters):
             p_base = parameters(period).gov.states.wv.tax.income.exemptions
 
-            # Personal exemptions exclude the dependent portion (head + spouse +
-            # any over-age dependents that fall back to the personal count).
-            tax_unit_size = tax_unit("tax_unit_size", period)
-            dependents = tax_unit("tax_unit_dependents", period)
-            older_dependents = tax_unit("wv_older_dependents_count", period)
-            personal_count = tax_unit_size - dependents + older_dependents
-            personal_amount = where(
-                tax_unit_size == 0,
-                p_base.base_personal,
-                p_base.personal * personal_count,
+            # Count ordinary own exemptions separately from dependent eligibility.
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
             )
+            older_dependents = tax_unit("wv_older_dependents_count", period)
+            personal_count = own_exemptions + older_dependents
+            personal_amount = p_base.personal * personal_count
 
             # Add separated dependent exemption.
             dependent_exemption_amount = tax_unit("wv_dependent_exemption", period)
 
-            return personal_amount + dependent_exemption_amount
+            # Add the baseline's 11-21-16(d) $500 for each filer who can be
+            # claimed as a dependent, on a return whose dependents add no
+            # exemption.
+            claimable_filer_exemptions = tax_unit(
+                "wv_claimable_filer_exemptions_count", period
+            )
+            amount = (
+                personal_amount
+                + dependent_exemption_amount
+                + p_base.base_personal * claimable_filer_exemptions
+            )
+            # As in the baseline, a return with no exemption at all gets $500.
+            exemptions = tax_unit("exemptions_count", period)
+            no_exemption = (exemptions + claimable_filer_exemptions) == 0
+            return where(no_exemption, p_base.base_personal, amount)
 
     class reform(Reform):
         def apply(self):

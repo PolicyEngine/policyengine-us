@@ -49,3 +49,403 @@
     md_income_tax_before_credits: 10
   output:
     is_eligible_md_poverty_line_credit: false
+
+# Tax-General 10-709(a)(3)(iii): the exclusion takes an actual claim as an
+# exemption on another Maryland return under 10-211; claimability alone does
+# not exclude the filer. These three cases supply a poverty level of 15,650 and
+# one exemption to isolate the (a)(3)(iii) test.
+- name: Claimable but unclaimed Maryland filer passes the dependency exclusion
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        md_claimed_as_exemption_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+        md_total_additions: 0
+        eitc_earned_income: 10_000
+        md_personal_exemptions_count: 1
+        md_poverty_line_credit_income_level: 15_650
+        md_income_tax_before_credits: 600
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [filer]
+        state_code: MD
+  output:
+    # 10,000 is below the supplied 15,650 level; the 0 EITC is below the 600
+    # tax; no actual Maryland claim. min(600, 0.05 x 10,000) = 500.
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 500
+
+- name: An actual Maryland exemption claim excludes the filer
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+        md_claimed_as_exemption_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+        md_total_additions: 0
+        eitc_earned_income: 10_000
+        md_personal_exemptions_count: 1
+        md_poverty_line_credit_income_level: 15_650
+        md_income_tax_before_credits: 600
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [filer]
+        state_code: MD
+  output:
+    # 10-709(a)(3)(iii) fails, so no credit although the supplied level and
+    # exemption meet the other conditions.
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit_potential: 0
+
+- name: A federal claim by a claimant who files no Maryland return does not exclude the filer
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+        md_claimed_as_exemption_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+        md_total_additions: 0
+        eitc_earned_income: 10_000
+        md_personal_exemptions_count: 1
+        md_poverty_line_credit_income_level: 15_650
+        md_income_tax_before_credits: 600
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [filer]
+        state_code: MD
+  output:
+    # The Maryland claim defaults to the federal claim; this input overrides
+    # it, so only (a)(3)(iii) is in play and nobody claims the filer on a
+    # Maryland return: min(600, 0.05 x 10,000) = 500.
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 500
+
+# Tax-General 10-709(a)(2): the applicable poverty income level is the amount
+# "that corresponds to the number of exemptions which the individual is allowed
+# and claims under § 10-211(b)(1)". Under 10-211(a)(1) every filer has an
+# exemption, whether or not someone else can claim them, so a claimable single
+# filer's level is the one-person guideline. These cases compute the level
+# rather than supplying it.
+- name: 2025 claimable but unclaimed single filer at 12,000 gets the one-exemption level and the credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        md_claimed_as_exemption_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 12_000
+        md_total_additions: 0
+        eitc_earned_income: 12_000
+        md_income_tax_before_credits: 600
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [filer]
+        state_code: MD
+  output:
+    # The filer's own exemption: 1, so the 2025 contiguous guideline for one
+    # person, 15,650. 12,000 <= 15,650 for AGI and earnings; 0 EITC < 600
+    # tax; no Maryland claim. min(600, 0.05 x 12,000) = 600.
+    md_personal_exemptions_count: 1
+    md_poverty_line_credit_income_level: 15_650
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 600
+
+- name: 2025 claimable but unclaimed single filer at 10,000 gets the one-exemption level and the credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        md_claimed_as_exemption_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+        md_total_additions: 0
+        eitc_earned_income: 10_000
+        md_income_tax_before_credits: 600
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [filer]
+        state_code: MD
+  output:
+    # 1 exemption, level 15,650; 10,000 <= 15,650; no Maryland claim.
+    # min(600, 0.05 x 10,000) = 500. The filing status 6 chart in the 2025
+    # booklet would give no exemption and no credit.
+    md_personal_exemptions_count: 1
+    md_poverty_line_credit_income_level: 15_650
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 500
+
+- name: 2025 claimable single filer claimed on another federal return is by default claimed in Maryland and gets no credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+        md_total_additions: 0
+        eitc_earned_income: 10_000
+        md_income_tax_before_credits: 600
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [filer]
+        state_code: MD
+  output:
+    # No Maryland claim input, so it follows the federal claim: a Maryland
+    # claimant takes an exemption for each IRC 152 dependent (10-211(a)(3)).
+    # The level (15,650) and income tests pass, but (a)(3)(iii) fails.
+    md_personal_exemptions_count: 1
+    md_poverty_line_credit_income_level: 15_650
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit_potential: 0
+
+- name: 2025 claimable filer whose claimant meets the filing exception keeps both exemptions, the two-exemption level and the credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 23
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        md_claimed_as_exemption_on_another_return: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+        md_total_additions: 0
+        eitc_earned_income: 10_000
+        md_income_tax_before_credits: 600
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [filer, child]
+        state_code: MD
+  output:
+    # The filer's own exemption plus the child, whom the filing exception
+    # keeps: 2. 2025 contiguous guideline for 2 = 15,650 + 5,500 = 21,150.
+    # 10,000 <= 21,150 for AGI and earnings; 0 EITC < 600 tax; no Maryland
+    # claim. min(600, 0.05 x 10,000) = 500.
+    md_personal_exemptions_count: 2
+    md_poverty_line_credit_income_level: 21_150
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 500
+
+- name: 2025 claimable filer with the filing exception is still excluded by an actual Maryland claim
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 23
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        md_claimed_as_exemption_on_another_return: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+        md_total_additions: 0
+        eitc_earned_income: 10_000
+        md_income_tax_before_credits: 600
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [filer, child]
+        state_code: MD
+  output:
+    # Same count (2) and level (21,150); (a)(3)(iii) alone removes the credit.
+    md_personal_exemptions_count: 2
+    md_poverty_line_credit_income_level: 21_150
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit_potential: 0
+
+- name: 2025 joint return with a claimable head uses the two-exemption level and qualifies at 18,000
+  period: 2025
+  input:
+    people:
+      a:
+        age: 30
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      b:
+        age: 30
+        is_tax_unit_spouse: true
+        employment_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [a, b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 1_000
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [a, b]
+        state_code: MD
+  output:
+    # Tax-General 10-709(a)(2) with 10-211(a)(1): each spouse has their own
+    # exemption, so the two-person level of 21,150 applies. Income of 18,000
+    # is below it; 0 EITC < 1,000 tax. min(1,000, 0.05 x 18,000) = 900.
+    md_personal_exemptions_count: 2
+    md_poverty_line_credit_income_level: 21_150
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 900
+
+- name: 2025 joint return with a claimable spouse uses the two-exemption level and qualifies at 18,000
+  period: 2025
+  input:
+    people:
+      a:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 18_000
+      b:
+        age: 30
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [a, b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 1_000
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [a, b]
+        state_code: MD
+  output:
+    # The same return with the claimable filer labelled spouse: 2
+    # exemptions, 21,150, and min(1,000, 0.05 x 18,000) = 900.
+    md_personal_exemptions_count: 2
+    md_poverty_line_credit_income_level: 21_150
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 900
+
+- name: 2025 joint return with both spouses claimable and no filing exception gets the two-exemption level and the credit
+  period: 2025
+  input:
+    people:
+      a:
+        age: 30
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        employment_income: 500
+      b:
+        age: 30
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        employment_income: 500
+    tax_units:
+      tax_unit:
+        members: [a, b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [a, b]
+        state_code: MD
+  output:
+    # 2 own exemptions: 21,150. 1,000 of income is below it; nobody claims
+    # either filer on a Maryland return. min(200, 5% x 1,000) = 50.
+    md_personal_exemptions_count: 2
+    md_poverty_line_credit_income_level: 21_150
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 50
+
+- name: 2025 joint return with both spouses claimable and the filing exception adds the child's exemption to the level
+  period: 2025
+  input:
+    people:
+      a:
+        age: 30
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        employment_income: 500
+      b:
+        age: 30
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        employment_income: 500
+      c:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [a, b, c]
+        filing_status: JOINT
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [a, b, c]
+        state_code: MD
+  output:
+    # 2 own + 1 child = 3 exemptions: 15,650 + 2 x 5,500 = 26,650.
+    # min(200, 5% x 1,000) = 50.
+    md_personal_exemptions_count: 3
+    md_poverty_line_credit_income_level: 26_650
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 50

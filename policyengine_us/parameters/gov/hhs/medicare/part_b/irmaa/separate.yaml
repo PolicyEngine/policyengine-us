@@ -5,6 +5,12 @@ metadata:
   period: month
   type: single_amount
   label: Medicare Part B income brackets for married filing separately
+  # After the last announced year, each income-related adjustment amount
+  # follows the Medicare Trustees' projected standard Part B premium: 42
+  # U.S.C. 1395r(i)(3)(A) makes each a fixed multiple of the same
+  # unsubsidized premium amount. The thresholds are indexed to CPI-U under
+  # 1395r(i)(5); see extend_medicare_irmaa_thresholds in
+  # uprating_extensions.py.
   reference:
     - title: 42 U.S.C. § 1395r(i)
       href: https://www.law.cornell.edu/uscode/text/42/1395r#i
@@ -60,18 +66,25 @@ brackets:
       2025-01-01: 106_001
       2026-01-01: 109_001
     amount:
-      2015-01-01: 167.80
-      2016-01-01: 194.90
-      2017-01-01: 214.30
-      2018-01-01: 294.60
-      2019-01-01: 297.90
-      2020-01-01: 318.10
-      2021-01-01: 326.70
-      2022-01-01: 374.20
-      2023-01-01: 362.60
-      2024-01-01: 384.30
-      2025-01-01: 406.9
-      2026-01-01: 446.30
+      values:
+        2015-01-01: 167.80
+        2016-01-01: 194.90
+        2017-01-01: 214.30
+        2018-01-01: 294.60
+        2019-01-01: 297.90
+        2020-01-01: 318.10
+        2021-01-01: 326.70
+        2022-01-01: 374.20
+        2023-01-01: 362.60
+        2024-01-01: 384.30
+        2025-01-01: 406.9
+        2026-01-01: 446.30
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
   - threshold:
       # The 80% tier before 2018 and the 85% tier from 2019. Married filing
       # separately reduces each individual dollar amount by the $85,000
@@ -90,16 +103,23 @@ brackets:
       2025-01-01: 394_000
       2026-01-01: 391_000
     amount:
-      # 2018 repeats the 80% tier amount; its threshold is unreachable.
-      2015-01-01: 230.80
-      2016-01-01: 268.00
-      2017-01-01: 294.60
-      2018-01-01: 294.60
-      2019-01-01: 325.00
-      2020-01-01: 347.00
-      2021-01-01: 356.40
-      2022-01-01: 408.20
-      2023-01-01: 395.60
-      2024-01-01: 419.30
-      2025-01-01: 443.9
-      2026-01-01: 487
+      values:
+        # 2018 repeats the 80% tier amount; its threshold is unreachable.
+        2015-01-01: 230.80
+        2016-01-01: 268.00
+        2017-01-01: 294.60
+        2018-01-01: 294.60
+        2019-01-01: 325.00
+        2020-01-01: 347.00
+        2021-01-01: 356.40
+        2022-01-01: 408.20
+        2023-01-01: 395.60
+        2024-01-01: 419.30
+        2025-01-01: 443.9
+        2026-01-01: 487
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1

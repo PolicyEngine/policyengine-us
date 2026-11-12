@@ -156,3 +156,50 @@
   # step-down is driven through the contrib schedule, not just a flat amount.
   output: {md_total_personal_exemptions: 2_400}
 
+
+
+- name: MD dependent exemption reform - joint return with a claimable spouse keeps both spouses' exemptions but no dependent exemption (the claimable spouse is the head)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    people:
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: MD}}
+  # Tax-General 10-211(a)(1): each spouse keeps an own exemption; no dependents
+  # (IRC 152(b)(1)). 2 x 3,200.
+  output: {md_total_personal_exemptions: 6_400}
+
+- name: MD dependent exemption reform - joint return with a claimable spouse keeps both spouses' exemptions but no dependent exemption (the claimable spouse is the spouse)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    people:
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_name: MD}}
+  output: {md_total_personal_exemptions: 6_400}
+
+- name: MD dependent exemption reform - joint return whose claimable spouse's claimant meets the filing exception keeps the dependent exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 1_000
+    people:
+      person_a: {age: 30, employment_income: 500, claimable_as_dependent_on_another_return: true, dependent_claimant_filing_exception: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: MD}}
+  # The would-be claimant meets the filing exception (Publication 501), so IRC
+  # 152(b)(1) leaves the child a dependent. Each spouse's own exemption under
+  # Tax-General 10-211(a)(1): 2 x 3,200 = 6,400, plus the flat 1 x 1,000 reform
+  # dependent amount = 7,400.
+  output: {md_total_personal_exemptions: 7_400}

@@ -22,6 +22,7 @@ brackets:
         2024-01-01: 470
         2025-01-01: 480
         2026-01-01: 500
+        2027-01-01: 500
       metadata:
         uprating:
           parameter: gov.bls.cpi.cpi_u_medical_care
@@ -47,6 +48,9 @@ brackets:
         2024-01-01: 880
         2025-01-01: 900
         2026-01-01: 930
+        # 213(d)(10)(B)(i) rounds the increase over the $375 base to the
+        # nearest $10, so Rev. Proc. 2026-35 prints an amount ending in 5.
+        2027-01-01: 945
       metadata:
         uprating:
           parameter: gov.bls.cpi.cpi_u_medical_care
@@ -72,6 +76,7 @@ brackets:
         2024-01-01: 1_760
         2025-01-01: 1_800
         2026-01-01: 1_860
+        2027-01-01: 1_890
       metadata:
         uprating:
           parameter: gov.bls.cpi.cpi_u_medical_care
@@ -97,6 +102,7 @@ brackets:
         2024-01-01: 4_710
         2025-01-01: 4_810
         2026-01-01: 4_960
+        2027-01-01: 5_030
       metadata:
         uprating:
           parameter: gov.bls.cpi.cpi_u_medical_care
@@ -122,6 +128,7 @@ brackets:
         2024-01-01: 5_880
         2025-01-01: 6_020
         2026-01-01: 6_200
+        2027-01-01: 6_290
       metadata:
         uprating:
           parameter: gov.bls.cpi.cpi_u_medical_care
@@ -171,6 +178,8 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=16
     - title: Rev. Proc. 2024-40, section 3.28 (2025)
       href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=15
+    - title: Rev. Proc. 2026-35, section 3.29 (2027)
+      href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=17
     - title: Rev. Proc. 2025-32, section 3.27 (2026)
       href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=22
     - title: 2022 Instructions for Schedule A (Form 1040), line 1 (age at the end of the year)
