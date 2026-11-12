@@ -1,0 +1,15 @@
+- name: Countable resources at the $3,000 limit are allowed.
+  period: 2025
+  input:
+    state_code: NC
+    nc_tanf_countable_resources: 3_000
+  output:
+    nc_tanf_resources_eligible: true
+
+- name: Countable resources above the $3,000 limit make the unit ineligible.
+  period: 2025
+  input:
+    state_code: NC
+    nc_tanf_countable_resources: 3_001
+  output:
+    nc_tanf_resources_eligible: false

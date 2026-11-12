@@ -12,7 +12,7 @@
     tax_units:
       tax_unit:
         members: [head]
-        loss_limited_net_capital_gains: -3_000 # line 3
+        filer_loss_limited_net_capital_gains: -3_000 # line 3
     households:
       household:
         members: [head]
@@ -156,7 +156,7 @@
     tax_units:
       tax_unit:
         members: [head, child]
-        loss_limited_net_capital_gains: 0
+        filer_loss_limited_net_capital_gains: 0
     households:
       household:
         members: [head, child]

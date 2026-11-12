@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
@@ -69,16 +72,16 @@ def ok_ssp_income(person, period, parameters, *, combined):
         allocation = ~eligible * person("ok_ssp_spouse_child_allocation", period)
         earned = max_(earned - max_(allocation - unearned, 0), 0)
         unearned = max_(unearned - allocation, 0)
-        earned = person.marital_unit.sum(earned)
-        unearned = person.marital_unit.sum(unearned)
+        earned = _ssi_couple_total(person, period.this_year, earned)
+        unearned = _ssi_couple_total(person, period.this_year, unearned)
         # 317:35-5-42(l)(2) excludes an ineligible spouse's SSI. Its exclusion
         # of "any income that was counted or excluded in figuring the amount
         # of that payment" is not modeled; the spouse's other income stays
         # counted.
-        benefit = person.marital_unit.sum(benefit * eligible)
+        benefit = _ssi_couple_total(person, period.this_year, benefit * eligible)
         # 317:35-5-42(b)(8)(A) counts the one-third value once, for the
         # individual or the eligible couple, never for an ineligible spouse.
-        shelter = person.marital_unit.sum(shelter * eligible)
+        shelter = _ssi_couple_total(person, period.this_year, shelter * eligible)
     else:
         unearned = unearned + ism
     countable = (

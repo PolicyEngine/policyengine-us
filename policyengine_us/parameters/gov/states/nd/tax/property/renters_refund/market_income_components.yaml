@@ -1,0 +1,37 @@
+description: North Dakota takes income from Puerto Rico and American Samoa out of these market income components, each counted before losses, under the Renter's Refund program.
+values:
+  2025-01-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - partnership_s_corp_income
+    - pension_income
+    - dividend_income
+    - interest_income
+    - gi_cash_assistance
+    - capital_gains
+    - non_sch_d_capital_gains
+    - other_net_gain_person
+    - rental_income
+    - farm_rent_income
+    - estate_income
+    - illicit_income
+    - farm_operations_income
+    - miscellaneous_income
+    - alimony_income
+    - strike_benefits
+    - retirement_distributions
+    - military_retirement_income
+    - disability_benefits
+    - ak_permanent_fund_dividend
+metadata:
+  unit: list
+  period: year
+  label: North Dakota Renter's Refund market income components before losses
+  reference:
+    - title: N.D.C.C. § 57-02-08.1(5)(c)
+      href: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+    - title: 26 U.S. Code § 931(a)
+      href: https://www.law.cornell.edu/uscode/text/26/931#a
+    - title: 26 U.S. Code § 933
+      href: https://www.law.cornell.edu/uscode/text/26/933
