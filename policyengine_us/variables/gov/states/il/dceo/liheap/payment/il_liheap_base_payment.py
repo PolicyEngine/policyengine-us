@@ -13,7 +13,7 @@ class il_liheap_base_payment(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.il.dceo.liheap.payment.matrix
         fuel_type = spm_unit("il_liheap_heating_type", period)
-        income_bracket = spm_unit("il_liheap_income_bracket", period)
+        income_bracket = clip(spm_unit("il_liheap_income_bracket", period), 1, 4)
         size = spm_unit("spm_unit_size", period)
         capped_size = clip(size, 1, 6)
 

@@ -337,3 +337,51 @@
     # canonical heating_type (gas bill 1_400): min(1_500, 1_400) = 1_400
     dc_liheap_heating_type: OIL
     dc_liheap_payment: 1_400
+
+- name: A DC household receives its payment alone.
+  period: 2026
+  input:
+    state_code: DC
+    age: 40
+    irs_gross_income: 0
+    heating_expense_person: 2_000
+  output:
+    # Multi-family electricity, level 1, size 1: min(904, 2_000) = 904.
+    dc_liheap_income_level: 1
+    dc_liheap_payment: 904
+
+- name: Two DC households each retain their payment.
+  period: 2026
+  input:
+    state_code: [DC, DC]
+    age: [40, 40]
+    irs_gross_income: [0, 0]
+    heating_expense_person: [2_000, 2_000]
+  output:
+    # Each household receives min(904, 2_000) = 904, as it does alone.
+    dc_liheap_payment: [904, 904]
+
+- name: A DC household retains its payment beside households in other states.
+  period: 2026
+  input:
+    state_code: [DC, NY, IL]
+    age: [40, 40, 40]
+    irs_gross_income: [0, 0, 0]
+    heating_expense_person: [2_000, 2_000, 2_000]
+  output:
+    # DC receives min(904, 2_000) = 904; the state mask zeroes NY and IL.
+    dc_liheap_income_level: [1, 0, 0]
+    dc_liheap_payment: [904, 0, 0]
+
+- name: DC bounds matrix keys and preserves both endpoint rows.
+  period: 2026
+  input:
+    state_code: [DC, DC, DC, DC]
+    dc_liheap_eligible: [true, true, true, true]
+    dc_liheap_income_level: [0, 1, 10, 11]
+    dc_liheap_housing_type: [SINGLE_FAMILY, SINGLE_FAMILY, SINGLE_FAMILY, SINGLE_FAMILY]
+    heating_expense_person: [2_000, 2_000, 2_000, 2_000]
+  output:
+    # Clip levels to [1, 1, 10, 10]; single-family electricity pays
+    # min(1_265, 2_000) = 1_265 at level 1 and min(200, 2_000) = 200 at 10.
+    dc_liheap_payment: [1_265, 1_265, 200, 200]

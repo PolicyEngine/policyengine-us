@@ -1,0 +1,38 @@
+- name: An Illinois LIHEAP recipient qualifies for IHWAP when simulated alone.
+  period: 2026
+  input:
+    state_code: IL
+    age: 40
+    irs_gross_income: 0
+    heating_expense_person: 2_000
+    ssi: 0
+    receives_ssi: false
+    il_tanf: 0
+    il_aabd: 0
+    housing_assistance: 0
+  output:
+    # All-electric, bracket 1, size 1: min(910, 2_000) = 910.
+    # With no crisis payment, LIHEAP totals 910 and establishes IHWAP
+    # categorical eligibility; zero income also passes its income test.
+    il_liheap: 910
+    il_ihwap_categorically_eligible: true
+    il_ihwap_eligible: true
+
+- name: An Illinois LIHEAP recipient retains payment and IHWAP eligibility beside other states.
+  period: 2026
+  input:
+    state_code: [IL, NY, DC]
+    age: [40, 40, 40]
+    irs_gross_income: [0, 0, 0]
+    heating_expense_person: [2_000, 2_000, 2_000]
+    ssi: [0, 0, 0]
+    receives_ssi: [false, false, false]
+    il_tanf: [0, 0, 0]
+    il_aabd: [0, 0, 0]
+    housing_assistance: [0, 0, 0]
+  output:
+    # Illinois retains 910 + 0 = 910 and both eligibility flags.
+    # Illinois's state masks zero the payment and flags for NY and DC.
+    il_liheap: [910, 0, 0]
+    il_ihwap_categorically_eligible: [true, false, false]
+    il_ihwap_eligible: [true, false, false]
