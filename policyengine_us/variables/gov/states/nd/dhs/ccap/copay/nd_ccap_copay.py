@@ -8,7 +8,10 @@ class nd_ccap_copay(Variable):
     label = "North Dakota CCAP family co-payment"
     definition_period = MONTH
     defined_for = "nd_ccap_eligible"
-    reference = "https://www.nd.gov/dhs/policymanuals/40028/40028.htm"
+    reference = (
+        "https://www.nd.gov/dhs/policymanuals/40028/Content/400_28_90_20.htm",
+        "https://www.nd.gov/dhs/policymanuals/40028/Content/400_28_20_40.htm",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nd.dhs.ccap.copay
@@ -28,10 +31,20 @@ class nd_ccap_copay(Variable):
         # never exceeds max_rate of countable income. This does not bind under
         # the current schedule (the band rate tops out at 6%).
         copay = min_(copay, p.max_rate * countable_income)
-        # The co-payment is waived for families at or below 30% of the state
-        # median income and for TANF recipients (400-28-90-20). Diversion and
-        # Crossroads recipients are also waived but are not tracked at the
-        # moment.
+        # North Dakota waives co-payments for low-income families, qualifying
+        # TANF families, Crossroads, Diversion, ARSEN and Workforce Benefit
+        # families. TANF exceptions also apply to Diversion, while Crossroads,
+        # ARSEN and Workforce Benefit families keep their independent waivers
+        # (400-28-90-20 and 400-28-20-40).
         is_tanf_enrolled = spm_unit("is_tanf_enrolled", period)
-        waived = (income_to_smi <= p.waiver_smi_threshold) | is_tanf_enrolled
+        tanf_exception = spm_unit("nd_ccap_tanf_copay_exception", period)
+        tanf_waiver = is_tanf_enrolled & ~tanf_exception
+        program_waiver = spm_unit("nd_ccap_categorical_copay_waiver", period)
+        workforce = spm_unit("nd_ccap_workforce_benefit_eligible", period)
+        waived = (
+            (income_to_smi <= p.waiver_smi_threshold)
+            | tanf_waiver
+            | program_waiver
+            | workforce
+        )
         return where(waived, 0, copay)

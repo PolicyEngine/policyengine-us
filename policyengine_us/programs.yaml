@@ -965,7 +965,7 @@ programs:
         full_name: North Dakota Child Care Assistance Program
         variable: nd_ccap
         parameter_prefix: gov.states.nd.dhs.ccap
-        notes: Models the initial (75% of SMI) and continuing (85% of SMI) income limits, the SMI-band co-payment schedule with the 30%-of-SMI and TANF waivers, and the federal family-share ceiling. Not modeled - the CCAP Workforce Benefit income-limit and co-payment waiver for early-childhood workforce families, and the Diversion and Crossroads co-payment waivers
+        notes: Models the initial (75% of SMI) and continuing (85% of SMI) income limits, the SMI-band co-payment schedule with the 30%-of-SMI and TANF waivers, and the federal family-share ceiling. Also models the Workforce Benefit income-limit and co-payment waiver, Crossroads, Diversion and ARSEN co-payment waivers, and TANF and Diversion co-payment exceptions.
       - state: NM
         status: complete
         name: New Mexico CCAP
