@@ -1037,6 +1037,7 @@ programs:
     status: partial
     coverage: AK, AR, AL, AZ, CA, CO, CT, DC, DE, GA, HI, Riverside County, MA, FL, IL, IA, ID, IN, KS, KY, LA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, SC, SD, RI, TN, TX, UT, VA, VT, WA, WI, WV, WY
     variable: liheap
+    parameter_prefix: gov.hhs.liheap
     state_implementations:
       - state: AL
         status: partial
@@ -1418,7 +1419,7 @@ programs:
         variable: wv_lieap
         parameter_prefix: gov.states.wv.dhhr.lieap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 regular heating payments for households of one to twenty qualified members. West Virginia has no regular cooling payment, and cooling help comes only through Emergency Cooling crisis payments and unit repair or replacement; crisis, equipment, weatherization and the utility discount are out of scope.
+        notes: FY2026-FY2027 regular heating payments for households of one to twenty qualified members. West Virginia's plans reserve a regular cooling payment of up to $2,000 if funds remain, which is not modeled; Emergency Cooling crisis payments, unit repair or replacement, weatherization and the utility discount are out of scope.
       - state: WY
         status: partial
         name: Wyoming LIEAP
