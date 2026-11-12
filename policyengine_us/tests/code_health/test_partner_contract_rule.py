@@ -1,26 +1,13 @@
-"""The partner contract test rule and the files it relies on agree.
-
-CLAUDE.md's "Partner API contract tests" section lets anyone update a partner
-expected value when, among other conditions, the PR tags Ziming Hua and
-`.github/workflows/partner-api-impact-notice.yaml` posts the change to Slack.
-These checks keep that rule true to the repository: the workflow must exist,
-watch the folder the rule names and list the PR's files in that folder. Both
-AGENTS.md files summarize the rule and link to the CLAUDE.md section, and a
-renamed heading would break those links without failing anything else.
-"""
+"""Keep source, review and CI safeguards consistent in partner-test guidance."""
 
 import re
 from pathlib import Path
 
-import yaml
-
 REPO = Path(__file__).resolve().parents[3]
 CLAUDE_MD = REPO / "CLAUDE.md"
 PARTNERS = "policyengine_us/tests/policy/baseline/partners"
-WORKFLOW_PATH = ".github/workflows/partner-api-impact-notice.yaml"
 AGENTS_FILES = [REPO / "AGENTS.md", REPO / PARTNERS / "AGENTS.md"]
 SECTION = "Partner API contract tests"
-APPROVER = "hua7450"
 
 
 def _slug(heading):
@@ -30,12 +17,7 @@ def _slug(heading):
 
 
 def _headings(text):
-    """Anchors of the Markdown headings, skipping `#` lines in code blocks.
-
-    A fence opens with three or more backticks or tildes, indented by up to
-    three spaces. Only a bare run of the same character, at least as long,
-    closes it.
-    """
+    """Read Markdown headings outside fenced code blocks."""
     headings, fence = set(), None
     for line in text.splitlines():
         match = re.match(r" {0,3}(`{3,}|~{3,})(.*)$", line)
@@ -51,43 +33,59 @@ def _headings(text):
 
 
 def _section(text, title):
-    """The text under `## <title>`, up to the next second-level heading."""
-    match = re.search(rf"^## {re.escape(title)}\n(.*?)(?=^## |\Z)", text, re.M | re.S)
-    assert match, f"CLAUDE.md has no '## {title}' section"
-    return match.group(1)
+    """Read one second-level section, stopping at the next heading."""
+    matches = re.findall(
+        rf"^## {re.escape(title)}\n(.*?)(?=^## |\Z)", text, re.M | re.S
+    )
+    assert len(matches) == 1, f"Expected one '## {title}' section"
+    return matches[0]
 
 
-def test_rule_names_the_folder_the_notice_workflow_and_the_approver():
+def test_all_partner_guidance_keeps_source_evidence_review_and_ci_guards():
     rule = _section(CLAUDE_MD.read_text(), SECTION)
+    safeguards = (
+        "one designated editor",
+        "primary sources independently of the implementation",
+        "file, case, variable, old value, new value and source justification",
+        "every output variable of each affected case",
+        "boundary cases, failing or not",
+        "parameter trees and formula-derived thresholds at the base and head",
+        "Preserve the pre-change failing results",
+        "Check partner-flagged cases and any dependency a partner identified",
+        "diff contains only the intended expectation, input, eligibility and coverage",
+        "Do not delete, skip, rename or loosen a case merely to make CI pass",
+        "independent automated review at the current head",
+        "neither made the model change nor edited the expectations",
+        "reviewer recomputes each changed value from the primary source",
+        "all required CI checks at the current head",
+    )
+    for text in [rule, *(path.read_text() for path in AGENTS_FILES)]:
+        for safeguard in safeguards:
+            assert safeguard in text, safeguard
     assert f"`{PARTNERS}/**`" in rule
-    assert f"`{WORKFLOW_PATH}`" in rule
-    assert APPROVER in rule
     assert (REPO / PARTNERS).is_dir()
 
 
-def test_notice_workflow_watches_the_partner_folder():
-    workflow = yaml.safe_load((REPO / WORKFLOW_PATH).read_text())
-    # PyYAML reads a bare `on` key as True and a quoted one as "on".
-    trigger = workflow.get(True, workflow.get("on"))["pull_request_target"]
-    assert f"{PARTNERS}/**" in trigger["paths"]
-    assert {"opened", "reopened", "synchronize", "ready_for_review"} <= set(
-        trigger["types"]
-    )
-    steps = workflow["jobs"]["notify-slack"]["steps"]
-    scripts = "\n".join(step.get("run", "") for step in steps)
-    # The step that lists the PR's partner files pipes them through a grep
-    # that keeps the paths in the same folder. An option such as -v or -c,
-    # or a further pipe stage, would drop or count the paths and silence the
-    # notice, so the grep line must end after its pattern, and only
-    # `|| true` may follow it on the continuation line.
-    pattern = (
-        rf"^[ \t]*\|[ \t]*grep (?:-E )?'\^{re.escape(PARTNERS)}/[^']*'"
-        r"[ \t]*(?:\\\n[ \t]*\|\| true)?[ \t]*$"
-    )
-    assert re.search(pattern, scripts, re.M)
-    assert any(
-        "SLACK_PARTNER_WEBHOOK_URL" in str(step.get("env", {})) for step in steps
-    )
+def test_human_review_requires_a_material_expertise_question():
+    rule = _section(CLAUDE_MD.read_text(), SECTION)
+    for text in [rule, *(path.read_text() for path in AGENTS_FILES)]:
+        assert "human review only for a specific material open question" in text
+        assert "requires that person's expertise" in text
+        assert "name the question in the request" in text
+        assert (
+            "Resolve any source conflict, untraced value or partner compatibility"
+            in text
+        )
+        assert (
+            "Do not request human review or notify a person to keep them informed"
+            in text
+        )
+        assert "three-question" not in text
+        assert "@-mention" not in text
+
+
+def test_partner_edits_do_not_trigger_an_automatic_external_notice():
+    assert not (REPO / ".github/workflows/partner-api-impact-notice.yaml").exists()
 
 
 def test_agents_files_link_to_the_rule():
@@ -101,3 +99,10 @@ def test_agents_files_link_to_the_rule():
         for target in rule_links:
             path = target.split("#")[0]
             assert (agents.parent / path).resolve() == CLAUDE_MD, (agents, target)
+
+
+def test_development_skills_load_without_a_permission_question():
+    rule = _section(CLAUDE_MD.read_text(), "Development skills")
+    assert "without asking whether to load them" in rule
+    assert "policyengine-model-development" in rule
+    assert "policyengine-standards" in rule
