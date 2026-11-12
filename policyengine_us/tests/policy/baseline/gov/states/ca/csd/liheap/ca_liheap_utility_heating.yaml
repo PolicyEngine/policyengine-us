@@ -5254,7 +5254,8 @@
 # bill. A wood home with an approved delivery takes that instead. Madera burden is
 # 2,040 / 12,000 = 17%, for 10 + 10 = 20 points: with a $12 propane bill WPO pays
 # 411 + 105 = 516; with no propane bill WPO pays nothing (contract 8.1.5.2, p. 364)
-# and HEAP pays 702. NONE and UNSPECIFIED get $0 even with a utility bill.
+# and HEAP pays 702. A home without heating takes HEAP on its electric bill
+# (Alameda group 1, 484); UNSPECIFIED gets $0 even with a utility bill.
 - name: Case 15, another fuel takes the utility benefit only where no other component pays.
   period: 2026
   absolute_error_margin: 0.01
@@ -5350,7 +5351,9 @@
         state_code: CA
         county: ALAMEDA_COUNTY_CA
   output:
-    ca_liheap_utility_heating: [716, 716, 0, 0, 702, 0, 0]
+    # Was 0, now 484 for spm_unit6: the guide asks only for responsibility for
+    # energy costs (p. 193).
+    ca_liheap_utility_heating: [716, 716, 0, 0, 702, 484, 0]
     ca_liheap_wood_heating: [0, 0, 600, 0, 0, 0, 0]
     ca_liheap_covered_liquid_heating: [0, 0, 0, 516, 0, 0, 0]
 
@@ -5430,3 +5433,54 @@
     ca_liheap_energy_burden_group: [1, 4, 3, 0, 0]
     ca_liheap_madera_priority_points: [8, 20, 18, 0, 0]
     ca_liheap_utility_heating: [0, 702, 0, 702, 434]
+
+# Plan p. 55: HEAP payments on electric bills from July 1 to October 31 are
+# cooling, paid from the same county table (pp. 182-184) with no bill cap. A
+# desert home in Imperial County with no heating pays an electric bill for air
+# conditioning. One adult with wages of $12,000 ($1,000 a month) is poverty
+# group 1: Imperial pays $621. The guide has no cooling-cost condition, so the
+# same home without a cooling cost also receives $621 on its electric bill.
+- name: Case 17, a home without heating receives the county utility amount on its electric bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income_before_lsr: 12_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income_before_lsr: 12_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NONE
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 1_200
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+      household2:
+        members: [person2]
+        state_code: CA
+        county: IMPERIAL_COUNTY_CA
+  output:
+    ca_liheap_income_group: [1, 1]
+    ca_liheap_utility_heating: [621, 621]
