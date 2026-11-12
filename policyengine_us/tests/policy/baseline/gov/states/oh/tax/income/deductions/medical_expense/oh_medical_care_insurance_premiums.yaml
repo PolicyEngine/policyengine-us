@@ -53,3 +53,39 @@
     health_insurance_premiums: 5_000
   output:
     oh_medical_care_insurance_premiums: 0
+
+- name: A deduction that took only long-term care premiums leaves medical premiums
+  period: 2025
+  input:
+    state_code: OH
+    age: 55
+    is_self_employed: true
+    self_employment_income: 120_000
+    health_insurance_premiums_without_medicare_part_b: 3_000
+    long_term_health_insurance_premiums: 1_800
+  output:
+    # The survey premium input is not on Form 7206 line 1
+    # (self_employed_health_insurance_premiums is 0), so the whole $1,800
+    # deduction is line 2: eligible long-term care premiums at the 2025
+    # limit for age 51-60. It took no medical premiums.
+    self_employed_health_insurance_ald_person: 1_800
+    oh_medical_care_insurance_premiums: 3_000
+    # 1,800 - 1,800 taken federally.
+    oh_long_term_care_insurance_premiums: 0
+    oh_unreimbursed_medical_care_expense_deduction: 3_000
+
+- name: A long-term care deduction leaves Medicare Part B premiums
+  period: 2025
+  input:
+    state_code: OH
+    age: 66
+    medicare_enrolled: true
+    is_self_employed: true
+    self_employment_income: 120_000
+    long_term_health_insurance_premiums: 4_000
+  output:
+    # Eligible long-term care premiums: min(4,000, 4,810 at age 61-70) =
+    # 4,000, all on line 2. Part B: $185 x 12 = $2,220, with no income-related
+    # adjustment (no income two years earlier), and none of it on line 1.
+    self_employed_health_insurance_ald_person: 4_000
+    oh_medical_care_insurance_premiums: 2_220

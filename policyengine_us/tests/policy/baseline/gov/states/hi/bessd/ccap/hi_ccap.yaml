@@ -10,7 +10,7 @@
     people:
       person1:
         age: 30
-        employment_income: 12_000  # low income -> 0% copay
+        employment_income_before_lsr: 12_000  # low income -> 0% copay
         weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
@@ -42,7 +42,7 @@
     people:
       person1:
         age: 30
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
         weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
@@ -73,7 +73,7 @@
     people:
       person1:
         age: 30
-        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
+        employment_income_before_lsr: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
         weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
@@ -105,7 +105,7 @@
     people:
       person1:
         age: 30
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
         weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
@@ -173,7 +173,7 @@
     people:
       person1:
         age: 30
-        employment_income: 0
+        employment_income_before_lsr: 0
         weekly_hours_worked_before_lsr: 0
         is_full_time_student: false
         is_disabled: false
@@ -208,7 +208,7 @@
     people:
       person1:
         age: 30
-        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
+        employment_income_before_lsr: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
         weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
@@ -241,7 +241,7 @@
     people:
       person1:
         age: 30
-        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
+        employment_income_before_lsr: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
         weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
@@ -273,7 +273,7 @@
     people:
       person1:
         age: 30
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
         weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
     spm_units:
@@ -298,7 +298,7 @@
     people:
       person1:
         age: 30
-        employment_income: 12_000  # low income -> 0% copay
+        employment_income_before_lsr: 12_000  # low income -> 0% copay
         weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
@@ -332,7 +332,7 @@
     people:
       person1:
         age: 30
-        employment_income: 12_000  # low income -> 0% copay
+        employment_income_before_lsr: 12_000  # low income -> 0% copay
         weekly_hours_worked_before_lsr: 10  # 10 x 52/12 = 43.33 monthly
         immigration_status: CITIZEN
       person2:
@@ -371,7 +371,7 @@
     people:
       person1:
         age: 30
-        employment_income: 12_000  # low income -> 0% copay
+        employment_income_before_lsr: 12_000  # low income -> 0% copay
         weekly_hours_worked_before_lsr: 10  # 10 x 52/12 = 43.33 monthly
         immigration_status: CITIZEN
       person2:
@@ -411,7 +411,7 @@
     people:
       person1:
         age: 30
-        employment_income: 56_000  # 4,666.67/mo
+        employment_income_before_lsr: 56_000  # 4,666.67/mo
         weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:

@@ -278,3 +278,196 @@
     # 326 needs standard for one person + 2.5 special needs - 277.60
     ca_riv_general_relief_eligible: true
     ca_riv_general_relief: 50.90
+
+- name: Case 11, single adult with no property.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 0
+        ssi: 0
+        bank_account_assets: 0
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # Single adult: min(300, 223 housing) + 92 food + 11 personal needs
+    # = 326 a month, plus the $30 annual transportation amount / 12 = 2.50,
+    # less $0 countable income: 328.50.
+    ca_riv_general_relief_property_eligible: true
+    ca_riv_general_relief_eligible: true
+    ca_riv_general_relief: 328.5
+
+- name: Case 12, single adult with $499.99 of cash.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 0
+        ssi: 0
+        bank_account_assets: 499.99
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # $499.99 is under the $500 limit; the grant equals Case 11's.
+    ca_riv_general_relief_property_eligible: true
+    ca_riv_general_relief_eligible: true
+    ca_riv_general_relief: 328.5
+
+- name: Case 13, single adult with exactly $500 of cash.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 0
+        ssi: 0
+        bank_account_assets: 500
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # $500 does not exceed the $500 limit, so the unit is eligible and the
+    # grant equals Case 11's no-property grant.
+    ca_riv_general_relief_property_eligible: true
+    ca_riv_general_relief_eligible: true
+    ca_riv_general_relief: 328.5
+
+- name: Case 14, single adult with $500.01 of cash.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 0
+        ssi: 0
+        bank_account_assets: 500.01
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # $500.01 exceeds the $500 limit.
+    ca_riv_general_relief_property_eligible: false
+    ca_riv_general_relief_eligible: false
+    ca_riv_general_relief: 0
+
+- name: Case 15, two adults with $499.99 of cash.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        ssi: 0
+        bank_account_assets: 499.99
+      person2:
+        age: 65
+        employment_income: 0
+        ssi: 0
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # $499.99 is under the $500 limit; the grant equals Case 1's.
+    ca_riv_general_relief_property_eligible: true
+    ca_riv_general_relief_eligible: true
+    ca_riv_general_relief: 438.5
+
+- name: Case 16, two adults with exactly $500 of cash.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        ssi: 0
+        bank_account_assets: 500
+      person2:
+        age: 65
+        employment_income: 0
+        ssi: 0
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # $500 does not exceed the $500 limit, so the unit is eligible and the
+    # grant equals Case 1's no-property grant.
+    # Two adults: min(300, 257 housing) + 160 food + 19 personal needs
+    # = 436 a month, plus 30 / 12 = 2.50, less $0 income: 438.50 (Case 1).
+    ca_riv_general_relief_property_eligible: true
+    ca_riv_general_relief_eligible: true
+    ca_riv_general_relief: 438.5
+
+- name: Case 17, two adults with $500.01 of cash.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        ssi: 0
+        bank_account_assets: 500.01
+      person2:
+        age: 65
+        employment_income: 0
+        ssi: 0
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # $500.01 exceeds the $500 limit.
+    ca_riv_general_relief_property_eligible: false
+    ca_riv_general_relief_eligible: false
+    ca_riv_general_relief: 0

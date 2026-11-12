@@ -12,7 +12,7 @@ evaluates a grid of tax units in one vectorized simulation and checks that:
    other;
 2. the rate reduction amount matches the statutory tables applied to city
    taxable income (a differential check against the text of § 606(ggg)(4-b),
-   whose second-band base amounts are rounded; see #8947) and is zero when
+   including its fixed second-band base amounts; see #8947) and is zero when
    ineligible;
 3. school tax credit income equals federal AGI minus the head's and spouse's
    IRA and SEP distributions, is never above AGI, and ignores dependents'
@@ -66,10 +66,10 @@ TABLES = {
 }
 LOW_RATE = 0.00171
 EXCESS_RATE = 0.00228
-# The model carries the first band into the second at the marginal rate
-# (e.g. 12,000 x 0.171% = 20.52) where the statute prints rounded base
-# amounts (21), a gap of at most 0.48 (#8947).
-TOLERANCE = 0.5
+# The second band starts from the statute's base amounts (e.g. $21), not the
+# first band carried forward at 0.171% (12,000 x 0.171% = 20.52; #8947), so
+# the model matches the tables up to float32 rounding.
+TOLERANCE = 1e-3
 
 
 def statutory_rate_reduction(taxable_income, filing_status):

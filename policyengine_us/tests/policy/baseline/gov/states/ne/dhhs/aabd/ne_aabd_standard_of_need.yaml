@@ -1,0 +1,37 @@
+# 469 NAC 3-006.02B3a(1)(a) and 469-000-211: spouses living independently share the $887 two-person standard, $443.50 each with no shelter costs. The third adult in assisted living uses the $1,236 individual standard, giving $1,236 - $994 SSI = $242.
+# https://dhhs.ne.gov/Documents/Title-469-Complete.pdf#page=130
+- name: Nebraska independently budgets the couple despite a third care resident
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        ne_aabd_alternate_living_arrangement: INDEPENDENT
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ne_aabd_alternate_living_arrangement: INDEPENDENT
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NE
+  output:
+    ne_aabd_couple_rate_applies: [true, true, false]
+    ne_aabd_standard_of_need: [443.5, 443.5, 1236]
+    ne_aabd: [0, 0, 242]

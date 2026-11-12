@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    couple_budget_total,
     spouses_split_by_facility,
 )
 
@@ -32,16 +33,18 @@ class is_209b_ssi_recipient_income_eligible_for_medicaid(Variable):
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
         # the individual or the married couple, not the tax filing unit.
         # 42 CFR 435.831(d) also deducts a spouse's expenses when the spouse's
-        # income is not counted, unless a facility splits the couple.
+        # income is not counted, unless a facility splits the couple. A
+        # couple's totals leave out an unrelated member of a default marital
+        # unit.
         income = where(
             person("medicaid_optional_senior_or_disabled_uses_couple_standard", period),
-            person.marital_unit.sum(personal_income),
+            couple_budget_total(person, period, personal_income),
             personal_income,
         )
         expenses = where(
             spouses_split_by_facility(person, period),
             medical_expenses,
-            person.marital_unit.sum(medical_expenses),
+            couple_budget_total(person, period, medical_expenses),
         )
         income_after_spenddown = income - expenses
 

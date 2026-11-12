@@ -148,3 +148,46 @@
     military_retirement_pay_survivors: 5_000
   output:
     ri_retirement_income_subtraction: 15_000
+
+- name: 2024 - Nonspouse survivor benefits remain eligible under the general pension rules.
+  period: 2024
+  input:
+    state_code: RI
+    age: 75
+    is_surviving_spouse: false
+    ri_retirement_income_subtraction_eligible: true
+    taxable_pension_income: 15_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    ri_military_retirement_subtraction: 0
+    ri_retirement_income_subtraction: 20_000
+    ri_subtractions: 20_000
+
+- name: 2024 - Own military pay is excluded once and nonspouse survivor benefits use the general pension cap.
+  period: 2024
+  input:
+    state_code: RI
+    age: 75
+    is_surviving_spouse: false
+    ri_retirement_income_subtraction_eligible: true
+    taxable_pension_income: 10_000
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 5_000
+  output:
+    ri_military_retirement_subtraction: 20_000
+    ri_retirement_income_subtraction: 15_000
+    ri_subtractions: 35_000
+
+- name: 2025 - Surviving spouse military benefits cannot be counted again in the general pension subtraction.
+  period: 2025
+  input:
+    state_code: RI
+    age: 75
+    is_surviving_spouse: true
+    ri_retirement_income_subtraction_eligible: true
+    taxable_pension_income: 10_000
+    military_retirement_pay_survivors: 20_000
+  output:
+    ri_military_retirement_subtraction: 20_000
+    ri_retirement_income_subtraction: 10_000
+    ri_subtractions: 30_000

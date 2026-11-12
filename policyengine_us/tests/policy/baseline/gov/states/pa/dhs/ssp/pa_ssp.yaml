@@ -274,3 +274,40 @@
   output:
     pa_ssp_living_arrangement: [PERSONAL_CARE, INDEPENDENT]
     pa_ssp: [639.3, 22.1]
+
+# PA DHS budget schedule: independent living pays $33.30 per couple
+# and $22.10 per individual; $33.30 / 2 = $16.65.
+# 55 Pa. Code chapter 299 supplies the individual/couple SSI program rules.
+# https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/docs/publications/documents/budget-information/c_259013.pdf
+# https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/chap299toc.html
+# No marital units: only the head and spouse form the eligible couple.
+- name: PA couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: PA
+  output:
+    pa_ssp: [16.65, 16.65, 22.1]

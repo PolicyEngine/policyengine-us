@@ -1,7 +1,46 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_budget_total,
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
     SSIFederalLivingArrangement,
 )
+
+
+def in_married_couple(person: Population, period: Period) -> ArrayLike:
+    # A two-person marital unit is a married couple. A larger unit is the default
+    # group of a situation that omits marital units, where the SSI spouse test
+    # finds the couple.
+    return (person.marital_unit.nb_persons() == 2) | (
+        _ssi_spouse_index(person, period) >= 0
+    )
+
+
+def spouses_sum(person: Population, period: Period, values: ArrayLike) -> ArrayLike:
+    # A person's value plus their spouse's. A default marital unit of more than
+    # two people holds others too, who stay out.
+    marital_unit = person.marital_unit
+    return where(
+        marital_unit.nb_persons() > 2,
+        _ssi_couple_total(person, period, values),
+        marital_unit.sum(values),
+    )
+
+
+def couple_budget_total(
+    person: Population, period: Period, values: ArrayLike
+) -> ArrayLike:
+    # Both spouses' values, plus their dependents' under SSI's couple
+    # computation, as a spend-down budget totals a couple. An unrelated member
+    # of a default marital unit stays out, and that member's own total leaves
+    # out the couple.
+    return where(
+        person("ssi_couple_computation_applies", period),
+        _ssi_couple_budget_total(person, period, values),
+        _ssi_couple_total(person, period, values),
+    )
 
 
 def spouses_split_by_facility(person: Population, period: Period) -> ArrayLike:
@@ -13,12 +52,13 @@ def spouses_split_by_facility(person: Population, period: Period) -> ArrayLike:
     # provision ((a)(1)). Core reads this month-defined stock at a year's last month,
     # as income reads ssi_couple_computation_applies, so both agree on a part-year
     # stay.
-    marital_unit = person.marital_unit
     in_facility = (
         person("ssi_federal_living_arrangement", period)
         == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
     )
-    return (marital_unit.nb_persons() == 2) & (marital_unit.sum(in_facility) == 1)
+    return in_married_couple(person, period) & (
+        spouses_sum(person, period, in_facility) == 1
+    )
 
 
 def uses_couple_standard(
@@ -33,11 +73,12 @@ def uses_couple_standard(
     # deeming. A person with no aged, blind or disabled status has no test of
     # their own, so stays with the couple. A couple split by a facility is never
     # tested together.
-    marital_unit = person.marital_unit
-    is_married = marital_unit.nb_persons() == 2
+    is_married = in_married_couple(person, period)
     aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
     has_ineligible_spouse = (
-        aged_blind_disabled & is_married & (marital_unit.sum(aged_blind_disabled) == 1)
+        aged_blind_disabled
+        & is_married
+        & (spouses_sum(person, period, aged_blind_disabled) == 1)
     )
     nothing_deemed = ~person("is_ssi_spousal_deeming_applies", period)
     tested_alone = has_ineligible_spouse & nothing_deemed

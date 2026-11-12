@@ -5,6 +5,9 @@ from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_
 from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
     spouses_split_by_facility,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
@@ -53,20 +56,19 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
             ]
             .astype(bool)
         )
-        marital_unit = person.marital_unit
         ineligible_spouse = person("is_ssi_ineligible_spouse", period)
         spouse_gross_earned = (
-            marital_unit.sum(ineligible_spouse * individual_earned)
+            _ssi_couple_total(person, period, ineligible_spouse * individual_earned)
             - ineligible_spouse * individual_earned
         )
         spouse_gross_unearned = (
-            marital_unit.sum(ineligible_spouse * individual_unearned)
+            _ssi_couple_total(person, period, ineligible_spouse * individual_unearned)
             - ineligible_spouse * individual_unearned
         )
         is_mo = state == "MO"
         spouse_earned = where(is_mo, spouse_gross_earned, spouse_earned)
         spouse_unearned = where(is_mo, spouse_gross_unearned, spouse_unearned)
-        has_ineligible_spouse = marital_unit.sum(ineligible_spouse) > 0
+        has_ineligible_spouse = _ssi_couple_total(person, period, ineligible_spouse) > 0
         # A couple split by a facility counts no spouse income under either method
         # (42 USC 1396r-5(b)(1)).
         deeming_applies = (
