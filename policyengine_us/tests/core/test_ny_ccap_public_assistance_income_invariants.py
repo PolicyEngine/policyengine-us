@@ -4,10 +4,10 @@ import numpy as np
 import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
-from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
 from policyengine_us.model_api import SPMUnit, StateCode, Variable, YEAR, add, where
+from policyengine_us.spm import share_spm_policy
 from policyengine_us.system import system as tax_benefit_system
 
 
@@ -40,28 +40,23 @@ PROPERTY_SETTINGS = settings(
 )
 
 
-class MainCountableIncome(Reform):
-    def apply(self):
-        # Preserve main's formula and source list as the compatibility oracle.
-        class ny_ccap_countable_income(Variable):
-            value_type = float
-            entity = SPMUnit
-            definition_period = YEAR
-            defined_for = StateCode.NY
+class ny_ccap_countable_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    defined_for = StateCode.NY
 
-            def formula(spm_unit, period, parameters):
-                p = parameters(period).gov.states.ny.ocfs.ccap.income.countable_income
-                countable = add(spm_unit, period, MAIN_INCOME_SOURCES)
-                person = spm_unit.members
-                is_child = person("is_child", period)
-                adult_ssi = where(is_child, 0, add(person, period, ["ssi"]))
-                excluded_earner = is_child & ~person("is_parent", period)
-                excluded_earnings = where(
-                    excluded_earner, add(person, period, p.earned_sources), 0
-                )
-                return countable + spm_unit.sum(adult_ssi - excluded_earnings)
-
-        self.update_variable(ny_ccap_countable_income)
+    def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.ny.ocfs.ccap.income.countable_income
+        countable = add(spm_unit, period, MAIN_INCOME_SOURCES)
+        person = spm_unit.members
+        is_child = person("is_child", period)
+        adult_ssi = where(is_child, 0, add(person, period, ["ssi"]))
+        excluded_earner = is_child & ~person("is_parent", period)
+        excluded_earnings = where(
+            excluded_earner, add(person, period, p.earned_sources), 0
+        )
+        return countable + spm_unit.sum(adult_ssi - excluded_earnings)
 
 
 @pytest.fixture(scope="module")
@@ -71,7 +66,11 @@ def system():
 
 @pytest.fixture(scope="module")
 def main_system(system):
-    return MainCountableIncome(system)
+    # The oracle changes one formula and never edits parameters. Keep its
+    # variable registry and entities private while sharing parameter values.
+    oracle = share_spm_policy(system)
+    oracle.update_variable(ny_ccap_countable_income)
+    return oracle
 
 
 @st.composite
