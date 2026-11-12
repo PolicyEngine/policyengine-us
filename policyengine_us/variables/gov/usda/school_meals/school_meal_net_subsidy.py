@@ -5,6 +5,7 @@ class school_meal_net_subsidy(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
+    defined_for = "takes_up_school_meals_if_eligible"
     label = "Free and reduced price school meals"
     unit = USD
     documentation = "Value of free and reduced price school meal subsidies"
