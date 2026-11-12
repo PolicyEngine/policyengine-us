@@ -1,5 +1,13 @@
 description: Deductions from taxable income if itemizing (that are not available if not itemizing).
 values:
+  2017-01-01:
+    - charitable_deduction
+    - interest_deduction
+    - salt_deduction
+    - medical_expense_deduction
+    - casualty_loss_deduction
+    - misc_deduction
+    - claim_of_right_deduction
   2018-01-01:
     - charitable_deduction
     - interest_deduction
@@ -10,4 +18,8 @@ values:
     - claim_of_right_deduction
 metadata:
   unit: list
+  period: year
   label: itemized deductions
+  reference:
+    - title: 2017 Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=1
