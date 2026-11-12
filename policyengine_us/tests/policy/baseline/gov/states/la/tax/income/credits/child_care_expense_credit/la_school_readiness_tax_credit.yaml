@@ -339,3 +339,63 @@
     la_school_readiness_credit: [100, 0]
     la_school_readiness_credit_refundable: [100, 0]
     la_school_readiness_credit_non_refundable: [0, 0]
+
+- name: A Louisiana adult without an eligible child gets no credit alone
+  period: 2026
+  input:
+    state_code: LA
+    age: 40
+    la_quality_rating_of_child_care_facility: 5
+    la_refundable_cdcc: 50
+    la_non_refundable_cdcc: 0
+    la_school_readiness_credit_refundable_eligible: true
+  output:
+    # With no eligible child, $50 * 2 * 0 = $0.
+    la_school_readiness_credit: 0
+    la_school_readiness_credit_refundable: 0
+    la_school_readiness_credit_non_refundable: 0
+
+- name: Two Louisiana adults without eligible children keep zero credits beside a New York adult
+  period: 2026
+  input:
+    people:
+      first_adult:
+        age: 40
+        la_quality_rating_of_child_care_facility: 5
+      second_adult:
+        age: 40
+        la_quality_rating_of_child_care_facility: 4
+      other_adult:
+        age: 40
+        la_quality_rating_of_child_care_facility: 3
+    tax_units:
+      first_tax_unit:
+        members: [first_adult]
+        la_refundable_cdcc: 50
+        la_non_refundable_cdcc: 0
+        la_school_readiness_credit_refundable_eligible: true
+      second_tax_unit:
+        members: [second_adult]
+        la_refundable_cdcc: 0
+        la_non_refundable_cdcc: 80
+        la_school_readiness_credit_refundable_eligible: false
+      other_tax_unit:
+        members: [other_adult]
+        la_refundable_cdcc: 0
+        la_non_refundable_cdcc: 120
+        la_school_readiness_credit_refundable_eligible: false
+    households:
+      first_home:
+        members: [first_adult]
+        state_code: LA
+      second_home:
+        members: [second_adult]
+        state_code: LA
+      other_home:
+        members: [other_adult]
+        state_code: NY
+  output:
+    # Without eligible children, $50 * 2 * 0 and $80 * 1.5 * 0 both give $0.
+    la_school_readiness_credit: [0, 0, 0]
+    la_school_readiness_credit_refundable: [0, 0, 0]
+    la_school_readiness_credit_non_refundable: [0, 0, 0]

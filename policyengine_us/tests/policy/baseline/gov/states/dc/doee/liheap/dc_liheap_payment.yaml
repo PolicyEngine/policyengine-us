@@ -385,3 +385,29 @@
     # Clip levels to [1, 1, 10, 10]; single-family electricity pays
     # min(1_265, 2_000) = 1_265 at level 1 and min(200, 2_000) = 200 at 10.
     dc_liheap_payment: [1_265, 1_265, 200, 200]
+
+- name: An over-income DC household receives no payment alone.
+  period: 2026
+  input:
+    state_code: DC
+    age: 40
+    irs_gross_income: 100_000
+    heating_expense_person: 2_000
+  output:
+    # The eligibility mask zeroes the payment despite the level 10 matrix row.
+    dc_liheap_income_level: 10
+    dc_liheap_eligible: false
+    dc_liheap_payment: 0
+
+- name: An over-income DC household receives no payment beside a New York household.
+  period: 2026
+  input:
+    state_code: [DC, NY]
+    age: [40, 40]
+    irs_gross_income: [100_000, 0]
+    heating_expense_person: [2_000, 2_000]
+  output:
+    # Neither household qualifies for DC LIHEAP, so both payments remain zero.
+    dc_liheap_income_level: [10, 0]
+    dc_liheap_eligible: [false, false]
+    dc_liheap_payment: [0, 0]
