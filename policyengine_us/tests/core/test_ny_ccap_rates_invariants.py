@@ -37,6 +37,7 @@ SCHEDULES = (
     (8, 7, (1, 2, 0)),
     (12, 5, (1, 0, 5)),
     (18, 7, (1, 9, 0)),
+    (8, 5, (1, 0, 0)),
 )
 LEGACY_NYC_ENHANCED = {
     "weekly": (280, 245, 228, 202),
@@ -57,26 +58,30 @@ VARIANTS = (
     "at_regular",
     "below_regular",
     "special_differentials",
+    "all",
 )
 FLAGS = {
     "ny_ccap_nontraditional_hours": {
         "nontraditional",
         "differentials",
         "special_differentials",
+        "all",
     },
     "ny_ccap_accredited_provider": {
         "accredited",
         "differentials",
         "special_differentials",
+        "all",
     },
-    "ny_ccap_enhanced_health": {"health", "enhancements"},
-    "ny_ccap_enhanced_training": {"training", "enhancements"},
+    "ny_ccap_enhanced_health": {"health", "enhancements", "all"},
+    "ny_ccap_enhanced_training": {"training", "enhancements", "all"},
     "ny_ccap_special_needs_care": {
         "special",
         "unqualified",
         "at_regular",
         "below_regular",
         "special_differentials",
+        "all",
     },
 }
 
@@ -122,6 +127,21 @@ def _coverage_households():
         }
         for group_index, group in enumerate(GROUPS)
         for provider_index, provider in enumerate(PROVIDERS)
+    ] + [
+        {
+            "group": "GROUP_4",
+            "children": [
+                {
+                    "provider": "LE_GC",
+                    "age": "PRESCHOOLER",
+                    "schedule": SCHEDULES.index((8, 5, (1, 0, 0))),
+                    "eligible": True,
+                    "disabled": False,
+                }
+            ],
+            "expenses": 10_000,
+            "family_share": 0,
+        }
     ]
 
 
@@ -177,6 +197,7 @@ def _simulate(households, parameters):
                     "at_regular",
                     "below_regular",
                     "special_differentials",
+                    "all",
                 }:
                     disabled = True
                 elif variant == "unqualified":
@@ -192,20 +213,16 @@ def _simulate(households, parameters):
                     "ny_ccap_eligible_child": {MONTH: case["eligible"]},
                     "ny_ccap_childcare_expenses": {MONTH: expense},
                 }
-                if variant == "at_regular":
-                    # Store both sides through the same float32 input path.
-                    person["ny_ccap_regular_market_rate"] = {MONTH: regular}
                 # Omit false inputs so the default twins check their defaults.
                 for flag, variants in FLAGS.items():
                     if variant in variants:
                         person[flag] = {YEAR: True}
-                person_index = len(situation["people"])
                 situation["people"][name] = person
                 situation["marital_units"][name] = {"members": [name]}
                 child_rows.append(
                     {
                         **case,
-                        "person_index": person_index,
+                        "person_id": name,
                         "expense": expense,
                         "regular": regular,
                         "legacy": _table_rate(
@@ -239,11 +256,41 @@ def _simulate(households, parameters):
                 "ny_ccap_county_group": {YEAR: unit["group"]},
                 "is_homeless": {
                     YEAR: variant
-                    in {"homeless", "differentials", "special_differentials"}
+                    in {"homeless", "differentials", "special_differentials", "all"}
                 },
             }
-            rows.append({**unit, "variant": variant, "children": child_rows})
-    return Simulation(situation=situation, tax_benefit_system=system), rows
+            rows.append(
+                {
+                    **unit,
+                    "spm_id": unit_name,
+                    "variant": variant,
+                    "children": child_rows,
+                }
+            )
+    simulation = Simulation(situation=situation, tax_benefit_system=system)
+    person_indices = {
+        str(person_id): index for index, person_id in enumerate(simulation.persons.ids)
+    }
+    spm_indices = {
+        str(spm_id): index
+        for index, spm_id in enumerate(simulation.populations["spm_unit"].ids)
+    }
+    for row in rows:
+        row["spm_index"] = spm_indices[row["spm_id"]]
+        for case in row["children"]:
+            case["person_index"] = person_indices[case["person_id"]]
+    # Match the actual float32 ceiling at the expense threshold. Supplying a
+    # partial regular-rate input would replace every omitted person's formula
+    # with the variable's zero default, so leave regular rates as calculations.
+    regular = simulation.calculate("ny_ccap_regular_market_rate", MONTH)
+    expenses = simulation.calculate("ny_ccap_childcare_expenses", MONTH).copy()
+    for row in rows:
+        if row["variant"] == "at_regular":
+            for case in row["children"]:
+                index = case["person_index"]
+                case["expense"] = expenses[index] = regular[index]
+    simulation.set_input("ny_ccap_childcare_expenses", MONTH, expenses)
+    return simulation, rows
 
 
 @settings(
@@ -274,14 +321,20 @@ def test_ny_ccap_rate_and_payment_invariants(generated):
         for case in row["children"]
     ]
     for flag in FLAGS:
-        assert not calc(flag, YEAR)[default_indices].any()
-    assert np.isfinite(benefit).all() and (benefit >= 0).all()
-    assert (payment >= 0).all()
-    assert ((differential >= 0) & (differential <= 0.25 + 1e-7)).all()
+        assert not calc(flag, YEAR)[default_indices].any(), f"default flag: {flag}"
+    assert np.isfinite(benefit).all() and (benefit >= 0).all(), "nonnegative benefits"
+    assert (payment >= 0).all(), "nonnegative payment rates"
+    assert ((differential >= 0) & (differential <= 0.25 + 1e-7)).all(), (
+        "differential bounds"
+    )
     # Every payment stays within the ordinary 25% differential ceiling.
-    assert (payment <= np.minimum(expenses, market) * 1.25 + 0.01).all()
+    assert (payment <= np.minimum(expenses, market) * 1.25 + 0.01).all(), (
+        "payment bounds"
+    )
 
-    for row_index, row in enumerate(rows):
+    for row in rows:
+        row_index = row["spm_index"]
+        context = f"{row['spm_id']}: group={row['group']}, children={row['children']}"
         indices = [case["person_index"] for case in row["children"]]
         counted = np.array(
             [
@@ -292,24 +345,59 @@ def test_ny_ccap_rate_and_payment_invariants(generated):
         np.testing.assert_allclose(
             benefit[row_index],
             max(payment[indices][counted].sum() - row["family_share"], 0),
+            err_msg=f"payment aggregation: {context}",
             **TOLERANCE,
         )
         for case in row["children"]:
             i = case["person_index"]
             if case["provider"] == "LE_GC":
-                assert payment[i] <= center[i] + 0.01
+                assert payment[i] <= center[i] + 0.01, f"group payment cap: {context}"
+                if (
+                    row["variant"] == "all"
+                    and row["group"] == "GROUP_4"
+                    and regular[i] > 0
+                    and expenses[i] >= center[i]
+                ):
+                    np.testing.assert_allclose(
+                        payment[i],
+                        center[i],
+                        err_msg=f"NYC group cap binds: {context}",
+                        **TOLERANCE,
+                    )
             if row["variant"] == "default":
                 if row["group"] == "GROUP_4" and case["provider"] == "LE_ENH":
                     # ACS's 75% informal rate intentionally exceeds main's 70%.
-                    assert market[i] >= case["legacy"] - 0.01
+                    assert market[i] >= case["legacy"] - 0.01, (
+                        f"NYC enhancement: {context}"
+                    )
                 else:
-                    np.testing.assert_allclose(market[i], case["legacy"], **TOLERANCE)
-                np.testing.assert_allclose(regular[i], case["regular"], **TOLERANCE)
-            if row["variant"] in {"special", "special_differentials"}:
+                    np.testing.assert_allclose(
+                        market[i],
+                        case["legacy"],
+                        err_msg=f"default market: {context}",
+                        **TOLERANCE,
+                    )
+                np.testing.assert_allclose(
+                    regular[i],
+                    case["regular"],
+                    err_msg=f"regular rate: {context}",
+                    **TOLERANCE,
+                )
+            if row["variant"] in {"special", "special_differentials", "all"}:
                 expected = regular[i] * (1.15 if expenses[i] > regular[i] else 1)
-                np.testing.assert_allclose(market[i], expected, **TOLERANCE)
+                np.testing.assert_allclose(
+                    market[i],
+                    expected,
+                    err_msg=f"special-needs substitution: {context}",
+                    **TOLERANCE,
+                )
             elif row["variant"] in {"unqualified", "at_regular", "below_regular"}:
-                np.testing.assert_allclose(market[i], regular[i], **TOLERANCE)
+                np.testing.assert_allclose(
+                    market[i],
+                    regular[i],
+                    err_msg=f"special-needs exclusion: {context}",
+                    **TOLERANCE,
+                )
         if row["variant"] == "default":
             legacy_payment = sum(
                 min(case["expense"], case["legacy"])
@@ -321,10 +409,15 @@ def test_ny_ccap_rate_and_payment_invariants(generated):
                 case["provider"] == "LE_ENH" for case in row["children"]
             )
             if has_nyc_enhanced:
-                assert benefit[row_index] >= legacy_benefit - 0.01
+                assert benefit[row_index] >= legacy_benefit - 0.01, (
+                    f"NYC benefit: {context}"
+                )
             else:
                 np.testing.assert_allclose(
-                    benefit[row_index], legacy_benefit, **TOLERANCE
+                    benefit[row_index],
+                    legacy_benefit,
+                    err_msg=f"default benefit: {context}",
+                    **TOLERANCE,
                 )
 
     # Each twin uses the same expenses, care and family share as its default.
@@ -339,8 +432,13 @@ def test_ny_ccap_rate_and_payment_invariants(generated):
             "health",
             "training",
             "enhancements",
+            "all",
         ):
             position = start + VARIANTS.index(variant)
             indices = [case["person_index"] for case in rows[position]["children"]]
-            assert (payment[indices] >= payment[base_indices] - 0.01).all()
-            assert benefit[position] >= benefit[start] - 0.01
+            context = f"{base['spm_id']} -> {rows[position]['spm_id']}"
+            assert (payment[indices] >= payment[base_indices] - 0.01).all(), context
+            assert (
+                benefit[rows[position]["spm_index"]]
+                >= benefit[base["spm_index"]] - 0.01
+            ), context
