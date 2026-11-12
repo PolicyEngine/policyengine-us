@@ -11,7 +11,8 @@ class medicaid_work_requirement_eligible(Variable):
         "https://www.medicaid.gov/federal-policy-guidance/downloads/cib12082025.pdf",
         "https://www.law.cornell.edu/uscode/text/42/1382c#a_3",
         "https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=242",
-        "https://www.law.cornell.edu/cfr/text/42/435.554",
+        "https://www.ecfr.gov/current/title-42/section-435.554#p-435.554(c)(4)",
+        "https://www.govinfo.gov/content/pkg/FR-2026-06-03/pdf/2026-11094.pdf#page=25",
     )
 
     def formula(person, period, parameters):
@@ -66,9 +67,11 @@ class medicaid_work_requirement_eligible(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         is_disabled = person("is_disabled", period)
         has_disabled = person.tax_unit.any(is_dependent & is_disabled)
-        # Clause (IV): a veteran with a disability rated as total under 38
-        # U.S.C. 1155, which 42 CFR 435.554(c)(4) reads as "a temporary or
-        # permanent disability ... rated as 100 percent (total)".
+        # SSA 1902(xx)(9)(A)(ii)(IV): a veteran with a disability rated as
+        # total under 38 U.S.C. 1155, which 42 CFR 435.554(c)(4) reads as "a
+        # temporary or permanent disability ... rated as 100 percent (total)".
+        # CMS treats a total rating based on individual unemployability the
+        # same way (91 FR 33372, preamble).
         eligible_veteran = person("is_fully_disabled_service_connected_veteran", period)
         # blind or disabled or is_incapable_of_self_care p.694 (V)
         is_blind = person("is_blind", period)
@@ -76,6 +79,9 @@ class medicaid_work_requirement_eligible(Variable):
         # "Blind or disabled" is defined by cross-reference to section 1614
         # of the Social Security Act, so the SSI disability test also exempts.
         is_ssi_disabled = person("is_ssi_disabled", period)
+        # NOTE: is_permanently_and_totally_disabled (IRC 22(e)(3)) is not read
+        # here. Enter a section 1614 disability as is_ssi_disabled or
+        # is_disabled.
         eligible_disabled = (
             is_blind | is_disabled | is_ssi_disabled | is_incapable_of_self_care
         )

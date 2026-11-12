@@ -1077,7 +1077,7 @@ programs:
         variable: ca_liheap_utility_heating
         parameter_prefix: gov.states.ca.csd.liheap
         verified_years: "2026"
-        notes: FY2026 regular utility heating on gas and electric accounts, Madera propane and fuel-oil heating, and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2026 regular utility benefit on gas and electric accounts, which also pays homes without heating on either bill, plus Madera propane and fuel-oil heating and statewide wood heating from an approved delivery cost; other liquid-fuel service areas and vendor-service supplements are not modeled. Crisis, weatherization and equipment assistance are out of scope.
       - state: CO
         status: partial
         name: Colorado LEAP
@@ -1167,7 +1167,7 @@ programs:
         full_name: Florida Low Income Home Energy Assistance Program
         variable: fl_liheap
         parameter_prefix: gov.states.fl.commerce.liheap
-        notes: Regular heating for FY2025-FY2026; FY2026 limits use 60% of state median income for every size, departing from contract wording for large households and from the printed size-13 row. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: Regular Home Energy benefit for FY2025-FY2026, covering heating and also households that pay their own electricity bill for cooling; FY2026 limits use 60% of state median income for every size, departing from contract wording for large households and from the printed size-13 row. Crisis, weatherization and equipment assistance are out of scope.
       - state: IL
         status: complete
         name: Illinois LIHEAP
@@ -1325,7 +1325,7 @@ programs:
         variable: nv_liheap
         parameter_prefix: gov.states.nv.dwss.liheap
         verified_years: "2026-2027"
-        notes: SFY2026-SFY2027 Fixed Annual Credit, Nevada's single regular benefit toward primary heating and electric costs, with the $360 minimum and the capped benefit tables. Crisis assistance and weatherization are out of scope.
+        notes: SFY2026-SFY2027 Fixed Annual Credit, Nevada's single regular benefit toward primary heating and electric costs, with the $360 minimum and the capped benefit tables; it also covers cooling-only households, and every household is assumed to have an active energy account. Crisis assistance and weatherization are out of scope.
       - state: NY
         status: partial
         name: New York HEAP
@@ -1341,7 +1341,7 @@ programs:
         variable: or_liheap
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
-        notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
+        notes: PY2025-PY2027 regular heating or cooling standard payment, one a year, with the two county regions, five fuel columns, the cooling column for households with no heating cost and the roomer half payment. A cooling payment on top of a heating payment, crisis, Fuel Payment, equipment and OEAP assistance are not modeled.
       - state: SC
         status: partial
         name: South Carolina LIHEAP
