@@ -1,0 +1,18 @@
+description: Utah subtracts only federally deductible state or local income tax from federal itemized deductions when calculating the taxpayer credit if this is true.
+values:
+  2013-01-01: true
+  2018-01-01: false
+  2026-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Utah taxpayer credit subtracts only deductible income tax
+  reference:
+    - title: Utah Code 59-10-1018(2)(a)(ii)(A), edition superseded May 8, 2018
+      href: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_1800010118000101.html
+    - title: Utah Code 59-10-1018(1)(e), 2023 edition
+      href: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2023050320230503.html
+    - title: Utah Code 59-10-1018(1)(e), 2026 edition
+      href: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2026050620260506.pdf#page=1
+    - title: Utah H.B. 77 of 2026, section 29
+      href: https://le.utah.gov/Session/2026/bills/enrolled/HB0077.pdf#page=138

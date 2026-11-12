@@ -11337,6 +11337,74 @@ candidates:
     Utah state supplement (ut_ssp, which adds ut_dws_ssp, a Department of Workforce Services payment, and ut_dhhs_ssp,
     another agency payment that section 405 excludes in the same item). R982-403 is a current rule with its next
     five-year review due June 17, 2027, so decide whether it governs over the manual and plan.
+- id: us-ut:taxpayer-credit-income-tax-paid-and-reported
+  program: income-tax
+  years:
+    from: 2018
+    to: 2025
+    type: tax
+  question: Does Utah subtract the income tax paid and reported, capped at $10,000, or the income tax remaining
+    within the federal SALT deduction after property taxes?
+  sources:
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(g) and (1)(h), edition effective May 8, 2018
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2018050820180508.html
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(e) and (1)(f), edition effective July 21, 2018
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2018051620180721.html
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(e) and (1)(f), edition effective May 5, 2021
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2021050520210505.html
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(e) and (1)(f), edition effective May 3, 2023
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2023050320230503.html
+  - kind: instructions
+    citation: 2019 TC-40 instructions, line 14, printed p.8, PDF p.10
+    url: https://files.tax.utah.gov/tax/forms/2019/tc-40inst.pdf#page=10
+  - kind: instructions
+    citation: 2023 TC-40 instructions, line 14, printed p.8, PDF p.10
+    url: https://files.tax.utah.gov/tax/forms/2023/tc-40inst.pdf#page=10
+  - kind: instructions
+    citation: 2025 TC-40 instructions, line 14, printed p.8, PDF p.10
+    url: https://files.tax.utah.gov/tax/forms/2025/tc-40inst.pdf#page=10
+  - kind: statute
+    citation: Utah Code 59-10-1018(1)(e) and (1)(f), edition effective January 1, 2026
+    url: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2026050620260506.pdf#page=1
+  - kind: statute
+    citation: Utah H.B. 77 (2026), sections 17 and 29
+    url: https://le.utah.gov/Session/2026/bills/enrolled/HB0077.pdf#page=138
+  - kind: instructions
+    citation: 2017 TC-40 instructions, line 14 worksheet, printed p.9, PDF p.11
+    url: https://files.tax.utah.gov/tax/forms/2017/tc-40inst.pdf#page=11
+  - kind: statute
+    citation: P.L. 119-21 section 70111, replacement of 26 U.S.C. 68 from 2026
+    url: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=94
+  readings:
+    statute: Subtract the lesser of $10,000 and the income tax the claimant pays and reports on the federal return,
+      regardless of how much the claimant can deduct. Subtract no income tax when the claimant elects sales tax.
+    other: Filers following the 2025 instructions subtract Schedule A line 5e less lines 5b and 5c, with a zero floor.
+      Filers following the 2019 instructions use line 5a without a stated $10,000 limit.
+      Filers following the 2023 instructions enter up to $10,000.
+  example: With $10,000 of real-estate tax, $8,000 of income tax and $6,000 of other deductions in 2024, federal
+    itemized deductions total $16,000. A claimant retains $8,000 under the statute and $16,000 under the 2025 instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ut/tax/income/credits/taxpayer_credit/ut_federal_deductions_for_taxpayer_credit.py
+    prs: []
+  state: ruled
+  note: Follow the statute when the federal SALT cap binds. Subtract at most $10,000 for every filing status.
+    Through H.B. 77 sections 17 and 29, Utah's Legislature replaced that limit from 2026 with income tax included
+    and allowed federally.
+    For that allocation, allocate SALT to property taxes before income taxes, following the 2025 instructions.
+    Apply the 2017 instructions' section 68 proration among deductions subject to that limitation before 2018.
+    From 2026, prorate across all itemized deductions because Congress removed section 68's category exclusions.
+    Prorate from 2026 following the earlier agency method pending published 2026 instructions.
+    Keep the signed deduction difference for 2018 through 2025 because Utah's Legislature supplied no zero floor.
+    Add the Utah personal exemption afterward when computing the initial credit.
+    For example, $5,000 of deductions less $10,000 of income tax leave a deduction base of minus $5,000.
+    Adding a supplied $6,000 personal exemption leaves $1,000, yielding a $60 initial credit.
+    Text captures under source_conflicts/sources/us-ut support registration after the ruling merges.
 - id: us-va:ag-entry-month-spouse-at-home
   program: ssi-state-supplement
   years:

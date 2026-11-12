@@ -1,0 +1,18 @@
+description: Utah limits the state or local income tax subtracted from federal itemized deductions to this amount when calculating the taxpayer credit.
+values:
+  2013-01-01: .inf
+  2018-01-01: 10_000
+  2026-01-01: .inf
+metadata:
+  unit: currency-USD
+  period: year
+  label: Utah taxpayer credit income tax subtraction limit
+  reference:
+    - title: Utah Code 59-10-1018(2)(a)(ii)(A), edition superseded May 8, 2018
+      href: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_1800010118000101.html
+    - title: Utah Code 59-10-1018(1)(e), 2023 edition
+      href: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2023050320230503.html
+    - title: Utah Code 59-10-1018(1)(e), 2026 edition
+      href: https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1018_2026050620260506.pdf#page=1
+    - title: Utah H.B. 77 of 2026, section 29
+      href: https://le.utah.gov/Session/2026/bills/enrolled/HB0077.pdf#page=138

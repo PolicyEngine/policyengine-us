@@ -330,3 +330,473 @@
     # maximum $2,160 and the credit $1,593.54, $216 less.
     ut_taxpayer_credit_reduction: 566.46
     ut_taxpayer_credit: 1_809.54
+
+- name: "Case 16: 2017 income-tax electors subtract their allowed income tax"
+  # No SALT cap: $6,000 charity + $3,000 real estate + $9,000 income tax
+  # = $18,000 federal itemized deductions. Utah base: $18,000 - $9,000.
+  period: 2017
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    charitable_deduction: 6_000
+    real_estate_taxes: 3_000
+    state_withheld_income_tax: 9_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 18_000
+  output:
+    salt_deduction: 12_000
+    ut_federal_deductions_for_taxpayer_credit: 9_000
+
+- name: "Case 17: 2017 income-tax electors retain the section 68 reduction"
+  # $100,000 charity + $20,000 income tax = $120,000 before section 68.
+  # Reduction: min(3% x ($1,500,000 - $261,500), 80% x $120,000)
+  # = $37,155. Retained fraction: ($120,000 - $37,155) / $120,000
+  # = 0.690375. Allowed income tax: $20,000 x 0.690375 = $13,807.50.
+  # Utah base: $82,845 - $13,807.50 = $69,037.50.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 1_500_000
+        charitable_cash_donations: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: true
+        state_withheld_income_tax: 20_000
+        local_income_tax: 0
+        state_sales_tax: 1_000
+        local_sales_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: UT
+  output:
+    total_itemized_taxable_income_deductions: 120_000
+    itemized_taxable_income_deductions_reduction: 37_155
+    itemized_taxable_income_deductions: 82_845
+    ut_federal_deductions_for_taxpayer_credit: 69_037.50
+
+- name: "Case 18: 2017 filers protect medical expenses, investment interest and casualty losses during allocation"
+  # Total: $40,000 charity + $20,000 income tax + $20,000 medical
+  # + $10,000 investment interest + $10,000 casualty losses = $100,000.
+  # Section 68 excludes the last three deductions: $40,000 protected.
+  # Reduction: min(3% x ($1,261,500 - $261,500), 80% x $60,000)
+  # = $30,000. Subject deductions retain ($70,000 - $40,000) / $60,000
+  # = 50%, so allowed income tax = $20,000 x 50% = $10,000.
+  # Utah base: $70,000 - $10,000 = $60,000.
+  period: 2017
+  input:
+    state_code: UT
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    adjusted_gross_income: 1_261_500
+    charitable_deduction: 40_000
+    medical_expense_deduction: 20_000
+    interest_deduction: 10_000
+    investment_interest_expense: 10_000
+    casualty_loss_deduction: 10_000
+    misc_deduction: 0
+    real_estate_taxes: 0
+    state_withheld_income_tax: 20_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+  output:
+    total_itemized_taxable_income_deductions: 100_000
+    itemized_taxable_income_deductions_reduction: 30_000
+    itemized_taxable_income_deductions: 70_000
+    ut_federal_deductions_for_taxpayer_credit: 60_000
+
+- name: "Case 19: 2018 income-tax electors subtract paid income tax when real estate exhausts SALT"
+  # Federal SALT: min($10,000 real estate + $8,000 income tax, $10,000)
+  # = $10,000. Utah subtracts min($8,000, $10,000) = $8,000.
+  # Utah base: $10,000 - $8,000 = $2,000.
+  period: 2018
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    charitable_deduction: 0
+    real_estate_taxes: 10_000
+    state_withheld_income_tax: 8_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 10_000
+  output:
+    salt_deduction: 10_000
+    ut_federal_deductions_for_taxpayer_credit: 2_000
+
+- name: "Case 20: 2024 income-tax electors subtract paid income tax when real estate exhausts SALT"
+  # Federal SALT: min($10,000 real estate + $8,000 income tax, $10,000)
+  # = $10,000. Utah subtracts min($8,000, $10,000) = $8,000.
+  # Utah base: $10,000 - $8,000 = $2,000.
+  period: 2024
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    charitable_deduction: 0
+    real_estate_taxes: 10_000
+    state_withheld_income_tax: 8_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 10_000
+  output:
+    salt_deduction: 10_000
+    ut_federal_deductions_for_taxpayer_credit: 2_000
+
+- name: "Case 21: 2024 income-tax electors subtract their income tax below the SALT cap"
+  # $6,000 charity + $1,000 real estate + $3,000 income tax = $10,000.
+  # Utah base: $10,000 - $3,000 = $7,000.
+  period: 2024
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_itemizes: true
+    charitable_deduction: 6_000
+    real_estate_taxes: 1_000
+    state_withheld_income_tax: 3_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 10_000
+  output:
+    salt_deduction: 4_000
+    ut_federal_deductions_for_taxpayer_credit: 7_000
+
+- name: "Case 22: 2024 separate filers subtract paid income tax above their federal SALT cap"
+  # Federal SALT: min($6,000 real estate + $8,000 income tax, $5,000)
+  # = $5,000. Federal itemized total: $6,000 charity + $5,000 = $11,000.
+  # Utah uses its $10,000 income-tax limit: $11,000 - $8,000 = $3,000.
+  period: 2024
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    charitable_deduction: 6_000
+    real_estate_taxes: 6_000
+    state_withheld_income_tax: 8_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 11_000
+  output:
+    salt_deduction: 5_000
+    ut_federal_deductions_for_taxpayer_credit: 3_000
+
+- name: "Case 23: 2025 income-tax electors cross Utah's ten-thousand-dollar subtraction limit"
+  # Income tax $9,999/$10,000/$10,001 plus $6,000 charity gives federal
+  # totals $15,999/$16,000/$16,001, all below the federal SALT cap.
+  # Utah subtracts $9,999/$10,000/$10,000, leaving $6,000/$6,000/$6,001.
+  period: 2025
+  input:
+    adjusted_gross_income: [100_000, 100_000, 100_000]
+    state_code: [UT, UT, UT]
+    filing_status: [JOINT, JOINT, JOINT]
+    tax_unit_itemizes: [true, true, true]
+    charitable_deduction: [6_000, 6_000, 6_000]
+    real_estate_taxes: [0, 0, 0]
+    state_withheld_income_tax: [9_999, 10_000, 10_001]
+    local_income_tax: [0, 0, 0]
+    state_sales_tax: [1_000, 1_000, 1_000]
+    local_sales_tax: [0, 0, 0]
+    itemized_taxable_income_deductions: [15_999, 16_000, 16_001]
+  output:
+    salt_deduction: [9_999, 10_000, 10_001]
+    ut_federal_deductions_for_taxpayer_credit: [6_000, 6_000, 6_001]
+
+- name: "Case 24: 2025 income-tax electors subtract ten thousand dollars under a binding SALT cap"
+  # Federal SALT: min($40,000 real estate + $15,000 income tax, $40,000)
+  # = $40,000. Utah base: $6,000 charity + $40,000 - $10,000 = $36,000.
+  period: 2025
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    charitable_deduction: 6_000
+    real_estate_taxes: 40_000
+    state_withheld_income_tax: 15_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 46_000
+  output:
+    salt_cap: 40_000
+    salt_deduction: 40_000
+    ut_federal_deductions_for_taxpayer_credit: 36_000
+
+- name: "Case 25: 2025 income-tax electors keep Utah's subtraction during the federal SALT phase-down"
+  # Federal cap: max($40,000 - 30% x ($600,000 - $500,000), $10,000)
+  # = $10,000. SALT: min($5,000 real estate + $30,000 income tax, $10,000).
+  # Utah base: $6,000 charity + $10,000 - $10,000 = $6,000.
+  period: 2025
+  input:
+    adjusted_gross_income: 600_000
+    state_code: UT
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_itemizes: true
+    agi_plus_section_911_931_933_exclusions: 600_000
+    charitable_deduction: 6_000
+    real_estate_taxes: 5_000
+    state_withheld_income_tax: 30_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 16_000
+  output:
+    salt_cap: 10_000
+    salt_deduction: 10_000
+    ut_federal_deductions_for_taxpayer_credit: 6_000
+
+- name: "Case 26: 2026 income-tax electors subtract their income tax below the SALT cap"
+  # $6,000 charity + $1,000 real estate + $3,000 income tax = $10,000.
+  # Allowed income tax: $4,000 SALT - $1,000 real estate = $3,000.
+  # Utah base: $10,000 - $3,000 = $7,000.
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_itemizes: true
+    charitable_deduction: 6_000
+    real_estate_taxes: 1_000
+    state_withheld_income_tax: 3_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 10_000
+  output:
+    salt_deduction: 4_000
+    ut_federal_deductions_for_taxpayer_credit: 7_000
+
+- name: "Case 27: 2026 income-tax electors subtract only income tax within allowed SALT"
+  # Federal SALT: min($30,000 real estate + $20,000 income tax, $40,400).
+  # Allowed income tax: $40,400 - $30,000 = $10,400.
+  # Utah base: $6,000 charity + $40,400 - $10,400 = $36,000.
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    charitable_deduction: 6_000
+    real_estate_taxes: 30_000
+    state_withheld_income_tax: 20_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 46_400
+  output:
+    salt_cap: 40_400
+    salt_deduction: 40_400
+    ut_federal_deductions_for_taxpayer_credit: 36_000
+
+- name: "Case 28: 2026 income-tax electors subtract no income tax when real estate exhausts allowed SALT"
+  # Federal SALT: min($50,000 real estate + $20,000 income tax, $40,400).
+  # Allowed income tax: max($40,400 - $50,000, $0) = $0.
+  # Utah base: $6,000 charity + $40,400 = $46,400.
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    charitable_deduction: 6_000
+    real_estate_taxes: 50_000
+    state_withheld_income_tax: 20_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 46_400
+  output:
+    salt_deduction: 40_400
+    ut_federal_deductions_for_taxpayer_credit: 46_400
+
+- name: "Case 29: 2026 income-tax electors allocate income tax after the federal SALT phase-down"
+  # Federal cap: $40,400 - 30% x ($605,000 - $505,000) = $10,400.
+  # Allowed income tax: $10,400 SALT - $5,000 real estate = $5,400.
+  # Utah base: $6,000 charity + $10,400 - $5,400 = $11,000.
+  period: 2026
+  input:
+    adjusted_gross_income: 605_000
+    state_code: UT
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    agi_plus_section_911_931_933_exclusions: 605_000
+    charitable_deduction: 6_000
+    real_estate_taxes: 5_000
+    state_withheld_income_tax: 30_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 16_400
+  output:
+    salt_cap: 10_400
+    salt_deduction: 10_400
+    ut_federal_deductions_for_taxpayer_credit: 11_000
+
+- name: "Case 30: 2026 income-tax electors keep a phased SALT total below their real-estate payments"
+  # Federal cap: $40,400 - 30% x ($605,000 - $505,000) = $10,400.
+  # Real estate $25,000 exhausts allowed SALT, leaving $0 allowed income tax.
+  # Utah base: $6,000 charity + $10,400 = $16,400.
+  period: 2026
+  input:
+    adjusted_gross_income: 605_000
+    state_code: UT
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    agi_plus_section_911_931_933_exclusions: 605_000
+    charitable_deduction: 6_000
+    real_estate_taxes: 25_000
+    state_withheld_income_tax: 30_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 16_400
+  output:
+    salt_cap: 10_400
+    salt_deduction: 10_400
+    ut_federal_deductions_for_taxpayer_credit: 16_400
+
+- name: "Case 31: 2026 separate filers allocate income tax under their phased SALT cap"
+  # Federal cap: $20,200 - 15% x ($300,000 - $252,500) = $13,075.
+  # Allowed income tax: $13,075 SALT - $5,000 real estate = $8,075.
+  # Utah base: $6,000 charity + $13,075 - $8,075 = $11,000.
+  period: 2026
+  input:
+    adjusted_gross_income: 300_000
+    state_code: UT
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    agi_plus_section_911_931_933_exclusions: 300_000
+    charitable_deduction: 6_000
+    real_estate_taxes: 5_000
+    state_withheld_income_tax: 20_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 19_075
+  output:
+    salt_cap: 13_075
+    salt_deduction: 13_075
+    ut_federal_deductions_for_taxpayer_credit: 11_000
+
+- name: "Case 32: 2026 income-tax electors subtract income tax after section 68"
+  # Charity: $100,000 - 0.5% x $1,500,000 = $92,500.
+  # The federal SALT phase-down floors the $20,000 income-tax deduction
+  # at $10,000. Total before section 68: $92,500 + $10,000 = $102,500.
+  # Reduction: 2/37 x min($102,500, $1,500,000 - $640,600) = $5,540.54.
+  # Allowed income tax: $10,000 x 35/37 = $9,459.46.
+  # Utah base: $96,959.46 - $9,459.46 = $87,500.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        long_term_capital_gains: 1_500_000
+        charitable_cash_donations: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: true
+        state_withheld_income_tax: 20_000
+        local_income_tax: 0
+        state_sales_tax: 1_000
+        local_sales_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: UT
+  output:
+    total_itemized_taxable_income_deductions: 102_500
+    itemized_taxable_income_deductions_reduction: 5_540.54
+    itemized_taxable_income_deductions: 96_959.46
+    ut_federal_deductions_for_taxpayer_credit: 87_500
+
+- name: "Case 33: 2024 separate filers subtract paid income tax before adding personal exemptions"
+  # Federal SALT: min($10,000 income tax, $5,000) = $5,000.
+  # Utah base: $5,000 - min($10,000, $10,000) = -$5,000.
+  # Credit maximum: 6% x (-$5,000 + $6,000 personal exemption) = $60.
+  period: 2024
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    charitable_deduction: 0
+    real_estate_taxes: 0
+    state_withheld_income_tax: 10_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 5_000
+    ut_personal_exemption: 6_000
+  output:
+    ut_federal_deductions_for_taxpayer_credit: -5_000
+    ut_taxpayer_credit_max: 60
+
+- name: "Case 34: 2024 income-tax electors subtract paid income tax from a reconstructed total"
+  # No supplied total: $6,000 charity + $10,000 allowed SALT = $16,000.
+  # Utah base: $16,000 - min($8,000 income tax, $10,000) = $8,000.
+  period: 2024
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    charitable_deduction: 6_000
+    real_estate_taxes: 10_000
+    state_withheld_income_tax: 8_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    itemized_taxable_income_deductions: 0
+  output:
+    salt_deduction: 10_000
+    ut_federal_deductions_for_taxpayer_credit: 8_000
+
+- name: "Case 35: 2026 income-tax electors prorate all itemized deductions after section 68"
+  # Supplied totals isolate the allocation: $40,000 charity + $20,000 income
+  # tax + $20,000 medical + $10,000 investment interest + $10,000 casualty
+  # losses = $100,000 before a supplied 10% section 68 reduction.
+  # All categories retain $90,000 / $100,000 = 90% in 2026.
+  # Allowed income tax: $20,000 x 90% = $18,000.
+  # Utah base: $90,000 - $18,000 = $72,000.
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    state_code: UT
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    charitable_deduction: 40_000
+    medical_expense_deduction: 20_000
+    interest_deduction: 10_000
+    investment_interest_expense: 10_000
+    casualty_loss_deduction: 10_000
+    misc_deduction: 0
+    real_estate_taxes: 0
+    state_withheld_income_tax: 20_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    salt_deduction: 20_000
+    itemized_taxable_income_deductions: 90_000
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 72_000
