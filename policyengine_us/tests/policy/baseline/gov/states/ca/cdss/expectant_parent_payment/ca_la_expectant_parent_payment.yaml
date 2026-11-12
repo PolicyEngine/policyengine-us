@@ -1,0 +1,36 @@
+- name: Eligible monthly
+  period: 2022-01
+  input:
+    ca_la_expectant_parent_payment_eligible: True
+  output:
+    ca_la_expectant_parent_payment: 900
+
+- name: Ineligible
+  period: 2022
+  input:
+    ca_la_expectant_parent_payment_eligible: False
+  output:
+    ca_la_expectant_parent_payment: 0
+
+- name: San Diego foster parent receives the home-based expectant rate
+  period: 2024-01
+  input:
+    state_code: CA
+    county_str: SAN_DIEGO_COUNTY_CA
+    age: 20
+    is_in_foster_care: true
+    is_in_foster_care_group_home: true
+    current_pregnancy_month: 9
+  output:
+    ca_la_expectant_parent_payment: 900  # One month * $900, in any placement.
+
+- name: Nevada foster parent receives no California expectant payment
+  period: 2024-01
+  input:
+    state_code: NV
+    county_str: CLARK_COUNTY_NV
+    age: 20
+    is_in_foster_care: true
+    current_pregnancy_month: 7
+  output:
+    ca_la_expectant_parent_payment: 0  # California residence fails, so $900 * 0.

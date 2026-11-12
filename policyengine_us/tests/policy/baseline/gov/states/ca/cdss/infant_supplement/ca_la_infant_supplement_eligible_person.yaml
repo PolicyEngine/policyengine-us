@@ -1,23 +1,26 @@
 - name: Eligible person, 
   period: 2022
   input:
-    in_la: true
+    state_code: CA
+    county_str: LOS_ANGELES_COUNTY_CA
     ca_foster_care_minor_dependent: true
   output:
     ca_la_infant_supplement_eligible_person: true
 
-- name: Not in LA
+- name: Eligible foster youth in Fresno County
   period: 2023
   input:
-    in_la: False
+    state_code: CA
+    county_str: FRESNO_COUNTY_CA
     ca_foster_care_minor_dependent: true
   output:
-    ca_la_infant_supplement_eligible_person: false
+    ca_la_infant_supplement_eligible_person: true
 
 - name: Not in foster care
   period: 2024
   input:
-    in_la: true
+    state_code: CA
+    county_str: LOS_ANGELES_COUNTY_CA
     ca_foster_care_minor_dependent: false
   output:
     ca_la_infant_supplement_eligible_person: false

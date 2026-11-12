@@ -2172,6 +2172,26 @@ programs:
     variable: ca_capi
     parameter_prefix: gov.states.ca.cdss.capi
 
+  - id: la_infant_supplement
+    name: California infant supplement
+    full_name: California Infant Supplement
+    category: Benefits
+    agency: State
+    status: partial
+    coverage: CA
+    variable: ca_la_infant_supplement
+    parameter_prefix: gov.states.ca.cdss.infant_supplement
+
+  - id: la_expectant_parent
+    name: California expectant parent payment
+    full_name: California Expectant Parent Payment
+    category: Benefits
+    agency: State
+    status: partial
+    coverage: CA
+    variable: ca_la_expectant_parent_payment
+    parameter_prefix: gov.states.ca.cdss.expectant_parent_payment
+
   - id: care
     name: California CARE
     full_name: California Alternate Rates for Energy
@@ -2472,26 +2492,6 @@ programs:
     coverage: Los Angeles County
     variable: ca_la_ez_save
     parameter_prefix: gov.local.ca.la.dwp.ez_save
-
-  - id: la_infant_supplement
-    name: Los Angeles County infant supplement
-    full_name: Los Angeles County Infant Supplement
-    category: Benefits
-    agency: Local
-    status: complete
-    coverage: Los Angeles County
-    variable: ca_la_infant_supplement
-    parameter_prefix: gov.local.ca.la.dss.infant_supplement
-
-  - id: la_expectant_parent
-    name: Los Angeles County expectant parent payment
-    full_name: Los Angeles County Expectant Parent Payment
-    category: Benefits
-    agency: Local
-    status: complete
-    coverage: Los Angeles County
-    variable: ca_la_expectant_parent_payment
-    parameter_prefix: gov.local.ca.la.dss.expectant_parent
 
   - id: la_general_relief
     name: Los Angeles County General Relief

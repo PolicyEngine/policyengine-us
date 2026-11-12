@@ -1,0 +1,96 @@
+- name: Eligible person, 
+  period: 2022-01
+  input:
+    state_code: CA
+    county_str: LOS_ANGELES_COUNTY_CA
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 6
+  output:
+    ca_la_expectant_parent_payment_eligible: true
+
+- name: Fresno foster parent qualifies at age 20 and pregnancy month 9
+  period: 2024-01
+  input:
+    state_code: CA
+    county_str: FRESNO_COUNTY_CA
+    age: 20
+    is_in_foster_care: true
+    current_pregnancy_month: 9
+  output:
+    ca_la_expectant_parent_payment_eligible: true
+    ca_la_expectant_parent_payment: 900  # One eligible month * $900.
+
+- name: Fresno parent does not qualify at age 21
+  period: 2024-01
+  input:
+    state_code: CA
+    county_str: FRESNO_COUNTY_CA
+    age: 21
+    is_in_foster_care: true
+    current_pregnancy_month: 9
+  output:
+    ca_la_expectant_parent_payment_eligible: false
+    ca_la_expectant_parent_payment: 0  # Age 21 fails the existing dependent test.
+
+- name: Fresno parent outside qualifying foster care receives no expectant payment
+  period: 2024-01
+  input:
+    state_code: CA
+    county_str: FRESNO_COUNTY_CA
+    age: 20
+    is_in_foster_care: false
+    current_pregnancy_month: 7
+  output:
+    ca_la_expectant_parent_payment_eligible: false
+    ca_la_expectant_parent_payment: 0  # No qualifying placement, so $900 * 0.
+
+- name: Pregnancy month before 6
+  period: 2023-01
+  input:
+    state_code: CA
+    county_str: LOS_ANGELES_COUNTY_CA
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 5
+  output:
+    ca_la_expectant_parent_payment_eligible: false
+
+- name: Eligible foster youth in Fresno County
+  period: 2023-01
+  input:
+    state_code: CA
+    county_str: FRESNO_COUNTY_CA
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 7
+  output:
+    ca_la_expectant_parent_payment_eligible: true
+    ca_la_expectant_parent_payment: 900  # $900 for one eligible month.
+
+- name: Not in foster care
+  period: 2024-01
+  input:
+    state_code: CA
+    county_str: LOS_ANGELES_COUNTY_CA
+    ca_foster_care_minor_dependent: false
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment_eligible: false
+
+- name: Pregnancy month after 9
+  period: 2023-01
+  input:
+    state_code: CA
+    county_str: LOS_ANGELES_COUNTY_CA
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 10
+  output:
+    ca_la_expectant_parent_payment_eligible: false
+
+- name: Eligible person, 8 months pregnant
+  period: 2022-01
+  input:
+    state_code: CA
+    county_str: LOS_ANGELES_COUNTY_CA
+    ca_foster_care_minor_dependent: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment_eligible: true
