@@ -51,12 +51,17 @@ class dc_liheap_payment(Variable):
         heating_expenses = where(
             unspecified, legacy_expense, spm_unit("heating_expense", period)
         )
-        # The one-time Regular benefit helps with heating and cooling costs. A
-        # home without heating that pays for cooling takes the Electric row
-        # (dc_liheap_heating_type), capped at its electricity bill.
+        # The one-time Regular benefit helps with heating and cooling costs, with
+        # no fuel condition. A household with a known heating type, no heat in
+        # the rent and no heating cost that pays for cooling takes the Electric
+        # row, capped at its electricity bill, whatever its heating row is.
+        heat_in_rent = heating_type == types.HEAT_IN_RENT
         cooling_only = (
-            canonical_type == canonical_type.possible_values.NONE
-        ) & spm_unit("has_cooling_expense", period)
+            ~unspecified
+            & ~heat_in_rent
+            & (heating_expenses == 0)
+            & spm_unit("has_cooling_expense", period)
+        )
         expense_cap = where(
             cooling_only,
             spm_unit("pre_subsidy_electricity_expense", period),
@@ -64,7 +69,8 @@ class dc_liheap_payment(Variable):
         )
 
         # Heat-in-rent is a direct subsidy — no expense cap.
-        matrix_amount = select(
+        electricity_amount = p.electricity[housing_type][income_level][capped_size]
+        heating_amount = select(
             [
                 heating_type == types.ELECTRICITY,
                 heating_type == types.GAS,
@@ -72,12 +78,12 @@ class dc_liheap_payment(Variable):
                 heating_type == types.OIL,
             ],
             [
-                p.electricity[housing_type][income_level][capped_size],
+                electricity_amount,
                 p.gas[housing_type][income_level][capped_size],
                 p.heat_in_rent,
                 p.oil,
             ],
             default=0,
         )
-        heat_in_rent = heating_type == types.HEAT_IN_RENT
+        matrix_amount = where(cooling_only, electricity_amount, heating_amount)
         return where(heat_in_rent, matrix_amount, min_(matrix_amount, expense_cap))

@@ -424,6 +424,56 @@
     # NONE without cooling: heating_expense = 0; min(440, 0) = 0
     dc_liheap_payment: 0
 
+- name: Cooling only, a heated home with no heating cost takes the electricity row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # Wood the household gathers itself, so there is no heating bill.
+        heating_type: WOOD
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_358.76
+        dc_liheap_housing_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # DOEE sets no fuel condition on the benefit, and its only energy cost is
+    # cooling. SF, level 3, one person: Electric 440; min(440, 1_358.76) = 440.
+    dc_liheap_payment: 440
+
+- name: A heated home with a heating bill and a cooling cost keeps its heating row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+        gas_expense: 300
+        pre_subsidy_electricity_expense: 1_358.76
+        dc_liheap_housing_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # SF, level 3, one person: Gas 1_193, capped at the 300 heating bill. The
+    # cooling cost does not move it to the electricity bill.
+    dc_liheap_payment: 300
+
 - name: Cooling only, income above the limit pays nothing.
   period: 2026
   absolute_error_margin: 0.01
