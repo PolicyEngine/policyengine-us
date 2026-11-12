@@ -57,7 +57,7 @@ class hi_liheap_points(Variable):
         # so is_disabled stands in for them. This affects points only.
         disabled = (
             person("is_disabled", period)
-            | (person("ssi", period, options=[ADD]) > 0)
+            | (person("ssi", period) > 0)
             | (add(person, period, ["receives_ssi"]) > 0)
             | (person("social_security_disability", period) > 0)
         )

@@ -35,7 +35,7 @@ class az_liheap_countable_unearned_income(Variable):
         # the year.
         unearned = 0
         for source in p.sources.unearned:
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            unearned = unearned + max_(person(source, period), 0)
         # Section VI.A.6.e.ii.B counts "gambling profits" (page 9), so
         # gambling losses offset winnings but not other income. Plan Section
         # 1.9 leaves one-time lump sums such as "winnings from lotteries"
