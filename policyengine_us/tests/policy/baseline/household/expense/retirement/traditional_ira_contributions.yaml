@@ -1,0 +1,139 @@
+# Publication 590-A (2017), PDF page 5: a traditional IRA contributor must
+# not have reached age 70 1/2 by year-end; Roth contributions have no age cap.
+# SECURE Act, Pub. L. 116-94, Division O, section 107(a),(d), repeals the
+# traditional age bar for contributions for tax years beginning after 2019.
+# Ages below are supplied fractional ages at the close of the tax year.
+- name: Case 1, 2017 traditional contributions stop exactly at age seventy and a half.
+  period: 2017
+  input:
+    age: [70.49, 70.5, 71]
+    ira_compensation: [10_000, 10_000, 10_000]
+    traditional_ira_contributions_desired: [1_000, 1_000, 1_000]
+  output:
+    traditional_ira_contributions: [1_000, 0, 0]
+    traditional_ira_deduction: [1_000, 0, 0]
+
+- name: Case 2, the traditional age bar still applies in 2019 and leaves Roth available.
+  period: 2019
+  input:
+    age: 70.5
+    ira_compensation: 10_000
+    traditional_ira_contributions_desired: 1_000
+    roth_ira_contributions_desired: 1_000
+  output:
+    traditional_ira_contributions: 0
+    roth_ira_contributions: 1_000
+
+- name: Case 3, traditional contributions become available at older ages from 2020.
+  period: 2020
+  input:
+    age: 70.5
+    ira_compensation: 10_000
+    traditional_ira_contributions_desired: 1_000
+    roth_ira_contributions_desired: 1_000
+  output:
+    traditional_ira_contributions: 1_000
+    traditional_ira_deduction: 1_000
+    roth_ira_contributions: 1_000
+
+- name: Case 4, the modern traditional contribution rule retains no age cap.
+  period: 2026
+  input:
+    age: 90
+    ira_compensation: 10_000
+    traditional_ira_contributions_desired: 1_000
+  output:
+    traditional_ira_contributions: 1_000
+    traditional_ira_deduction: 1_000
+
+- name: Case 5, ineligible desired traditional contributions do not displace Roth contributions.
+  # Publication 590-A (2017), PDF page 5: the combined allowance is $6,500
+  # at age 50+, and Roth contributions have no upper-age restriction.
+  period: 2017
+  input:
+    age: 70.5
+    ira_compensation: 20_000
+    traditional_ira_contributions_desired: 10_000
+    roth_ira_contributions_desired: 10_000
+  output:
+    ira_contribution_limit: 6_500
+    traditional_ira_contributions: 0
+    roth_ira_contributions: 6_500
+
+- name: Case 6, a supplied traditional amount cannot produce an age-barred deduction.
+  # Actual input values can override contribution formulas; section 219(d)(1)
+  # nevertheless barred the deduction before the SECURE Act's repeal.
+  period: 2017
+  input:
+    age: 70.5
+    ira_compensation: 10_000
+    traditional_ira_contributions: 1_000
+  output:
+    traditional_ira_deduction: 0
+
+- name: Case 7, an older earner's ineligible desired contributions leave compensation for a younger spouse.
+  # Publication 590-A (2017), PDF page 9, spousal IRA limit: the younger
+  # spouse can use $10,000 of joint compensation, capped at their $6,500.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 70.5
+        employment_income: 10_000
+        traditional_ira_contributions_desired: 6_500
+        is_tax_unit_head: true
+      person2:
+        age: 50
+        traditional_ira_contributions_desired: 6_500
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    traditional_ira_contributions: [0, 6_500]
+    traditional_ira_deduction: [0, 6_500]
+
+- name: Case 8, the age bar also applies to a dependent's separately calculated deduction.
+  period: 2017
+  input:
+    age: 70.5
+    ira_compensation: 10_000
+    traditional_ira_contributions: 1_000
+    is_tax_unit_dependent: true
+    is_tax_unit_head_or_spouse: false
+    ira_active_participant: false
+    dependent_lives_with_spouse: false
+  output:
+    dependent_traditional_ira_deduction: 0
+
+- name: Case 9, an age-barred supplied amount does not consume a younger spouse's compensation.
+  # 219(c)(1)(B) subtracts deductible/designated-nondeductible traditional
+  # amounts; 408(o)(2)(B) and former 219(d)(1) allow neither for the older
+  # spouse. Actual inputs remain supplied amounts, but cannot reduce the
+  # younger spouse's $6,500 allowance from $10,000 of joint compensation.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 70.5
+        employment_income: 10_000
+        traditional_ira_contributions: 6_500
+        is_tax_unit_head: true
+      person2:
+        age: 50
+        traditional_ira_contributions: 6_500
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ira_contribution_limit: [6_500, 6_500]
+    traditional_ira_deduction: [0, 6_500]

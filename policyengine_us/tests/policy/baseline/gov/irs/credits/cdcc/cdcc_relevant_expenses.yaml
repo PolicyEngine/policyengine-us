@@ -1,6 +1,7 @@
 - name: Limited at the smallest of the limit, expenses, and earned income, test 1
   period: 2021
   input:
+    count_cdcc_eligible: 1
     tax_unit_childcare_expenses: 3_000
     cdcc_limit: 5_000
     min_head_spouse_earned: 4_000
@@ -10,6 +11,7 @@
 - name: Limited at the smallest of the limit, expenses, and earned income, test 2
   period: 2018
   input:
+    count_cdcc_eligible: 1
     tax_unit_childcare_expenses: 7_000
     cdcc_limit: 5_000
     min_head_spouse_earned: 4_000
@@ -19,6 +21,7 @@
 - name: Limited at the smallest of the limit, expenses, and earned income, test 3
   period: 2018
   input:
+    count_cdcc_eligible: 1
     tax_unit_childcare_expenses: 7_000
     cdcc_limit: 5_000
     min_head_spouse_earned: 8_000
@@ -34,6 +37,7 @@
         pre_subsidy_care_expenses: 2_000
     tax_units:
       tax_unit:
+        count_cdcc_eligible: 1
         members: [person1]
         tax_unit_childcare_expenses: 1_000
         cdcc_limit: 6_000
@@ -268,3 +272,75 @@
   output:
     count_cdcc_eligible: 1
     cdcc_relevant_expenses: 1000
+- name: Case 1, 2017 expenses paid with excluded employer benefits cannot also support the credit.
+  # Form 2441 (2017), Part III lines 27-31: $2,000 total less $1,000
+  # excluded benefits leaves $1,000, below the $3,000 - $1,000 dollar cap.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        dependent_care_employer_benefits: 1_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    dependent_care_assistance_exclusion: 1_000
+    cdcc_limit: 2_000
+    cdcc_relevant_expenses: 1_000
+
+- name: Case 2, the 2025 expense base also removes excluded employer benefits.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        dependent_care_employer_benefits: 1_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    dependent_care_assistance_exclusion: 1_000
+    cdcc_limit: 2_000
+    cdcc_relevant_expenses: 1_000
+
+- name: Case 3, the 2021 higher credit cap still disallows double use of the same expenses.
+  # Form 2441 (2021), Part III lines 27-31: min(8,000 - 2,000,
+  # 5,000 - 2,000) = 3,000 of expenses for one qualifying child.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        dependent_care_employer_benefits: 2_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    dependent_care_assistance_exclusion: 2_000
+    cdcc_limit: 6_000
+    cdcc_relevant_expenses: 3_000

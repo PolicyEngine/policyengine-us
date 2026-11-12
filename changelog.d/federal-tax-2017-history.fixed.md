@@ -1,1 +1,1 @@
-Correct personal-exemption phase-out steps and duplicate tuition deductions, and add explicit 2017 federal tax histories.
+Correct 2017 personal-exemption phase-outs, tuition deduction accounting, CTC identification, retirement limits and Saver's Credit histories. Apply the pre-2020 traditional IRA age limit, cap dependent-care exclusions by qualified expenses, and prevent expense reuse in the care credit. Add annual federal tax reference cases for 2017–2026.

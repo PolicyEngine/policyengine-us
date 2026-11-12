@@ -1,16 +1,139 @@
 # IRC section 129 dependent care assistance exclusion, as reconciled on
-# Form 2441 Part III. The exclusion is the lesser of the employer benefits,
+# Form 2441 Part III. Dollar/earnings-limit unit cases explicitly supply
+# sufficient qualified expenses; the full-household cases also test that limit.
+# The exclusion is the lesser of qualified expenses, employer benefits,
 # the section 129(a)(2)(A) dollar cap (by filing status), and the section
 # 129(b) earned-income limit.
 
 - name: No employer dependent care benefits gives no exclusion
   period: 2024
   input:
+    cdcc_qualified_care_expenses: 20_000
     dependent_care_employer_benefits: 0
     filing_status: JOINT
     min_head_spouse_earned: 50_000
   output:
     dependent_care_assistance_exclusion: 0
+
+# IRC 129(e)(1) adopts 21(b)(2), which requires a qualifying individual.
+# 21(b)(1)(A) uses the dependent-child test; only the disabled-person branch
+# 21(b)(1)(B) disregards 152(b)(1). 2017/2025 Form 2441 instructions, PDF p1.
+- name: Case 13, a claimable filer's child alone does not establish qualified DCAP expenses.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+        claimable_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 0
+    cdcc_qualified_care_expenses: 0
+    dependent_care_assistance_exclusion: 0
+    taxable_dependent_care_benefits: [5_000, 0]
+    standard_deduction_worksheet_earned_income_person: [6_000, 0]
+    basic_standard_deduction: 6_450
+
+- name: Case 14, a claimable filer retains qualified DCAP care for an incapacitated dependent.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+        claimable_as_dependent_on_another_return: true
+      relative:
+        age: 40
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        pre_subsidy_care_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, relative]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, relative]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 1
+    cdcc_qualified_care_expenses: 2_000
+    # Box 1 wages $1,000 are the binding section 129 earned-income limit.
+    dependent_care_assistance_exclusion: 1_000
+    taxable_dependent_care_benefits: [4_000, 0]
+
+- name: Contiguous history, 2018 single DCAP cap.
+  period: 2018
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    dependent_care_employer_benefits: 20_000
+    filing_status: SINGLE
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+
+- name: Contiguous history, 2018 separate DCAP cap.
+  period: 2018
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    dependent_care_employer_benefits: 20_000
+    filing_status: SEPARATE
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 2_500
+
+- name: Contiguous history, 2019 single DCAP cap.
+  period: 2019
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    dependent_care_employer_benefits: 20_000
+    filing_status: SINGLE
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+
+- name: Contiguous history, 2019 separate DCAP cap.
+  period: 2019
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    dependent_care_employer_benefits: 20_000
+    filing_status: SEPARATE
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 2_500
+
+- name: Contiguous history, 2023 single DCAP cap.
+  period: 2023
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    dependent_care_employer_benefits: 20_000
+    filing_status: SINGLE
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+
+- name: Contiguous history, 2023 separate DCAP cap.
+  period: 2023
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    dependent_care_employer_benefits: 20_000
+    filing_status: SEPARATE
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 2_500
 
 - name: Benefits below the cap and earned income are excluded in full
   period: 2024
@@ -25,6 +148,7 @@
         employment_income: 60_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, spouse]
         filing_status: JOINT
   output:
@@ -44,6 +168,7 @@
         employment_income: 60_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, spouse]
         filing_status: JOINT
   output:
@@ -63,6 +188,7 @@
         employment_income: 2_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, spouse]
         filing_status: JOINT
   output:
@@ -79,6 +205,7 @@
         dependent_care_employer_benefits: 5_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head]
         filing_status: SEPARATE
   output:
@@ -98,6 +225,7 @@
         employment_income: 60_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, spouse]
         filing_status: JOINT
   output:
@@ -121,6 +249,7 @@
         age: 5
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [person1, person2]
         filing_status: SEPARATE
   output:
@@ -141,6 +270,7 @@
         age: 5
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [person1, person2]
         filing_status: SEPARATE
   output:
@@ -159,6 +289,7 @@
         age: 5
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [person1, person2]
         filing_status: SEPARATE
   output:
@@ -181,6 +312,7 @@
         employment_income: 40_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, spouse]
         filing_status: JOINT
   output:
@@ -197,6 +329,7 @@
         dependent_care_employer_benefits: 12_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head]
         filing_status: HEAD_OF_HOUSEHOLD
   output:
@@ -213,6 +346,7 @@
         dependent_care_employer_benefits: 6_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head]
         filing_status: SEPARATE
   output:
@@ -232,6 +366,7 @@
         employment_income: 40_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, spouse]
         filing_status: JOINT
   output:
@@ -243,6 +378,7 @@
 - name: The pre-ARPA joint cap is $5,000 for 2020
   period: 2020
   input:
+    cdcc_qualified_care_expenses: 20_000
     filing_status: JOINT
     dependent_care_employer_benefits: 10_500
     min_head_spouse_earned: 50_000
@@ -253,6 +389,7 @@
 - name: The pre-ARPA separate cap is $2,500 for 2020
   period: 2020
   input:
+    cdcc_qualified_care_expenses: 20_000
     filing_status: SEPARATE
     cdcc_treated_as_unmarried: false
     dependent_care_employer_benefits: 5_250
@@ -263,6 +400,7 @@
 - name: Benefits exactly at the joint 2021 cap are fully excluded
   period: 2021
   input:
+    cdcc_qualified_care_expenses: 20_000
     filing_status: JOINT
     dependent_care_employer_benefits: 10_500
     min_head_spouse_earned: 50_000
@@ -272,6 +410,7 @@
 - name: Benefits exactly at the separate 2021 cap are fully excluded
   period: 2021
   input:
+    cdcc_qualified_care_expenses: 20_000
     filing_status: SEPARATE
     cdcc_treated_as_unmarried: false
     dependent_care_employer_benefits: 5_250
@@ -292,6 +431,7 @@
         employment_income: 6_000
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, spouse]
         filing_status: JOINT
   output:
@@ -312,6 +452,7 @@
         age: 5
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, child]
         filing_status: SEPARATE
   output:
@@ -319,7 +460,7 @@
     # Section 129(a)(2)(C) applies the unmarried $10,500 cap.
     dependent_care_assistance_exclusion: 10_500
 
-- name: Living apart without a qualifying individual keeps the $5,250 cap in 2021
+- name: Living apart without a qualifying individual has no DCAP exclusion in 2021
   period: 2021
   input:
     people:
@@ -334,11 +475,12 @@
         filing_status: SEPARATE
   output:
     cdcc_treated_as_unmarried: false
-    dependent_care_assistance_exclusion: 5_250
+    dependent_care_assistance_exclusion: 0
 
 - name: The separate cap returns to $2,500 for 2022
   period: 2022
   input:
+    cdcc_qualified_care_expenses: 20_000
     filing_status: SEPARATE
     cdcc_treated_as_unmarried: false
     dependent_care_employer_benefits: 5_250
@@ -349,6 +491,7 @@
 - name: Benefits above the 2026 joint cap are limited to $7,500
   period: 2026
   input:
+    cdcc_qualified_care_expenses: 20_000
     filing_status: JOINT
     dependent_care_employer_benefits: 7_501
     min_head_spouse_earned: 50_000
@@ -358,6 +501,7 @@
 - name: Benefits exactly at the 2026 separate cap are fully excluded
   period: 2026
   input:
+    cdcc_qualified_care_expenses: 20_000
     filing_status: SEPARATE
     cdcc_treated_as_unmarried: false
     dependent_care_employer_benefits: 3_750
@@ -378,6 +522,7 @@
         age: 5
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, child]
         filing_status: SEPARATE
   output:
@@ -398,6 +543,7 @@
         age: 5
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, child]
         filing_status: SEPARATE
   output:
@@ -424,6 +570,7 @@
         age: 4
     tax_units:
       tax_unit:
+        cdcc_qualified_care_expenses: 20_000
         members: [head, spouse, child]
         filing_status: JOINT
   output:
@@ -431,3 +578,186 @@
     min_head_spouse_earned: 2_500
     # min(5,000 benefits, 5,000 joint cap, 2,500 earned income) = 2,500.
     dependent_care_assistance_exclusion: 2_500
+- name: Case 1, the 2017 single DCAP exclusion caps benefits at $5,000.
+  # 2017 Form 2441, PDF page 2, lines 20-25.
+  period: 2017
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    filing_status: SINGLE
+    dependent_care_employer_benefits: 5_001
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+
+- name: Case 2, the 2017 joint DCAP exclusion caps benefits at $5,000.
+  period: 2017
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    filing_status: JOINT
+    dependent_care_employer_benefits: 5_001
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+
+- name: Case 3, the 2017 separate DCAP exclusion caps benefits at $2,500.
+  period: 2017
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    filing_status: SEPARATE
+    cdcc_treated_as_unmarried: false
+    dependent_care_employer_benefits: 2_501
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 2_500
+
+- name: Case 4, the 2017 head-of-household DCAP exclusion caps benefits at $5,000.
+  period: 2017
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    dependent_care_employer_benefits: 5_001
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+
+- name: Case 5, the 2017 surviving-spouse DCAP exclusion caps benefits at $5,000.
+  period: 2017
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    filing_status: SURVIVING_SPOUSE
+    dependent_care_employer_benefits: 5_001
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+
+- name: Case 6, the 2017 DCAP exclusion also respects the lower earned-income limit.
+  period: 2017
+  input:
+    cdcc_qualified_care_expenses: 20_000
+    filing_status: JOINT
+    dependent_care_employer_benefits: 5_000
+    min_head_spouse_earned: 2_000
+  output:
+    dependent_care_assistance_exclusion: 2_000
+- name: Case 7, 2017 qualified expenses limit the exclusion below employer benefits.
+  # Form 2441 (2017), Part III, lines 16-25: min(5,000, 2,000, earnings).
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        dependent_care_employer_benefits: 5_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    dependent_care_assistance_exclusion: 2_000
+    taxable_dependent_care_benefits: [3_000, 0]
+
+- name: Case 8, a 2025 employer benefit with zero qualified expenses is taxable.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        dependent_care_employer_benefits: 5_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    dependent_care_assistance_exclusion: 0
+    taxable_dependent_care_benefits: [5_000, 0]
+
+- name: Case 9, a child above the qualifying age does not support a 2017 exclusion.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        dependent_care_employer_benefits: 5_000
+      person2:
+        age: 14
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 0
+    dependent_care_assistance_exclusion: 0
+
+- name: Case 10, 2025 care of an incapacitated adult qualifies without a young child.
+  # IRC 129(e)(1) uses section 21(b)(2), including a qualifying disabled adult.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 40_000
+        dependent_care_employer_benefits: 5_000
+      person2:
+        age: 40
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        pre_subsidy_care_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 1
+    dependent_care_assistance_exclusion: 2_000
+
+- name: Case 11, the raised 2021 dollar cap does not remove the qualified-expense limit.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        dependent_care_employer_benefits: 10_500
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    dependent_care_assistance_exclusion: 2_000
+
+- name: Case 12, a negative earned-income limit cannot create a negative exclusion.
+  period: 2017
+  input:
+    dependent_care_employer_benefits: 5_000
+    tax_unit_childcare_expenses: 5_000
+    count_cdcc_eligible: 1
+    min_head_spouse_earned: -100
+  output:
+    dependent_care_assistance_exclusion: 0

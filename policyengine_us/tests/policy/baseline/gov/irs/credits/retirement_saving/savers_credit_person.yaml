@@ -350,3 +350,206 @@
   output:
     # 50% x min(3,000, 2,000) = 1,000.
     savers_credit_person: 1_000
+
+# IRS Form 8880 (2017), line 9; Notice 2016-62, PDF pages 2-3.
+# Each element is an independent filer with $2,000 of eligible contributions.
+- name: Case 8, 2017 joint rate boundaries retain the last dollar in each band.
+  period: 2017
+  input:
+    filing_status: [JOINT, JOINT, JOINT, JOINT, JOINT, JOINT]
+    adjusted_gross_income: [37_000, 37_001, 40_000, 40_001, 62_000, 62_001]
+    savers_credit_eligible_person: [true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 400, 400, 200, 200, 0]
+
+- name: Case 9, 2017 nonjoint nonhead filers use the all-other-filers column.
+  # Form 8880 puts qualifying widow(er) with single and separate filers.
+  period: 2017
+  input:
+    filing_status: [SINGLE, SINGLE, SEPARATE, SEPARATE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SINGLE, SINGLE]
+    adjusted_gross_income: [18_500, 18_501, 20_000, 20_001, 31_000, 31_001, -1, 0]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 3_000]
+  output:
+    savers_credit_person: [1_000, 400, 400, 200, 200, 0, 1_000, 1_000]
+
+- name: Case 10, 2017 head-of-household rate boundaries use the published amounts.
+  period: 2017
+  input:
+    filing_status: [HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD]
+    adjusted_gross_income: [27_750, 27_751, 30_000, 30_001, 46_500, 46_501]
+    savers_credit_eligible_person: [true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 400, 400, 200, 200, 0]
+
+- name: Case 11, 2018 joint thresholds remain unchanged after adding 2017 history.
+  # IRS Form 8880 (2018), line 9.
+  period: 2018
+  input:
+    filing_status: [JOINT, JOINT]
+    adjusted_gross_income: [38_000, 38_001]
+    savers_credit_eligible_person: [true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 400]
+
+# Contiguous annual rate controls: IRS Notices 2018-83, 2019-59, 2020-79,
+# and 2021-61, their section 25B(b)(1) indexed joint-return amounts.
+- name: Case 12, 2019 Saver rate boundaries follow IRS Notice 2018-83.
+  period: 2019
+  input:
+    filing_status:
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    adjusted_gross_income:
+    - 38_500
+    - 38_501
+    - 41_500
+    - 41_501
+    - 64_000
+    - 64_001
+    savers_credit_eligible_person:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    savers_credit_qualified_contributions:
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+  output:
+    savers_credit_person:
+    - 1_000
+    - 400
+    - 400
+    - 200
+    - 200
+    - 0
+- name: Case 13, 2020 Saver rate boundaries follow IRS Notice 2019-59.
+  period: 2020
+  input:
+    filing_status:
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    adjusted_gross_income:
+    - 39_000
+    - 39_001
+    - 42_500
+    - 42_501
+    - 65_000
+    - 65_001
+    savers_credit_eligible_person:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    savers_credit_qualified_contributions:
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+  output:
+    savers_credit_person:
+    - 1_000
+    - 400
+    - 400
+    - 200
+    - 200
+    - 0
+- name: Case 14, 2021 Saver rate boundaries follow IRS Notice 2020-79.
+  period: 2021
+  input:
+    filing_status:
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    adjusted_gross_income:
+    - 39_500
+    - 39_501
+    - 43_000
+    - 43_001
+    - 66_000
+    - 66_001
+    savers_credit_eligible_person:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    savers_credit_qualified_contributions:
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+  output:
+    savers_credit_person:
+    - 1_000
+    - 400
+    - 400
+    - 200
+    - 200
+    - 0
+- name: Case 15, 2022 Saver rate boundaries follow IRS Notice 2021-61.
+  period: 2022
+  input:
+    filing_status:
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    adjusted_gross_income:
+    - 41_000
+    - 41_001
+    - 44_000
+    - 44_001
+    - 68_000
+    - 68_001
+    savers_credit_eligible_person:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    savers_credit_qualified_contributions:
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+  output:
+    savers_credit_person:
+    - 1_000
+    - 400
+    - 400
+    - 200
+    - 200
+    - 0
