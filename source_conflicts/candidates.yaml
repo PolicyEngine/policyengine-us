@@ -2489,9 +2489,12 @@ candidates:
     from: 2025
     to: 2026
     type: federal-fiscal
-  question: Does including energy costs in unsubsidized rent permit Florida LIHEAP eligibility or prevent the required
-    landlord certification?
+  question: Is a Florida household whose energy costs are wholly included in unsubsidized rent, with no obligation of its own,
+    eligible for LIHEAP?
   sources:
+  - kind: regulation
+    citation: Fla. Admin. Code R. 73C-26.023(4)
+    url: https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-73C-26-023
   - kind: manual
     citation: Florida LIHEAP manual parts 900.01A p.39 and 100.01 p.4
     url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=4
@@ -2499,28 +2502,35 @@ candidates:
     citation: Florida LIHEAP manual part 1100.04B(1), p.47
     url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=47
   readings:
-    statute: No statute is supplied; parts 900.01A and 100.01 allow utilities in unsubsidized rent and payment to
-      the landlord.
-    other: Part 1100.04B(1) requests a statement that home energy costs are not included in rent.
+    statute: No statute is supplied; R. 73C-26.023(4) says "The applicant is not eligible for assistance if home energy
+      costs are totally included in the rent and the applicant has no obligation to pay any portion of the energy costs",
+      and part 1100.04B(1) requests a statement that home energy costs are not included in rent.
+    other: Parts 900.01A and 100.01 allow "non-subsidized rent that includes utilities" and payment to the landlord.
+  example: In 2026, an unsubsidized renter aged 40 with $14,820 of wages, gas heat included in the rent and no bill of its
+    own receives $350 under part 900.01A and $0 under R. 73C-26.023(4); the same renter with no heating and cooling in the
+    rent receives $0 under the rule and $350 under part 900.01A.
   pe_us:
     follows: unknown
     code:
     - policyengine_us/variables/gov/states/fl/commerce/liheap/eligibility/fl_liheap_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9969
-  state: unreviewed
-  note: 'PE-US follows parts 900.01A and 100.01: heat in unsubsidized rent qualifies (fl_liheap_eligible.py). Verify whether the 1100.04B(1) statement applies to a narrower payment situation.'
+    - https://github.com/PolicyEngine/policyengine-us/pull/10740
+  state: open
+  note: 'The heating route follows parts 900.01A and 100.01: heat in unsubsidized rent qualifies (fl_liheap_eligible.py).
+    The cooling route added by PR 10740 requires the household''s own electricity bill, so cooling wholly in the rent pays
+    $0, as R. 73C-26.023(4) reads. A ruling is needed on the heating route.'
 - id: us-fl:liheap-fy2026-payment-range
   program: liheap
   years:
     from: 2026
     to: 2026
     type: federal-fiscal
-  question: Do Florida's FY2026 regular heating payments range from the plan's estimated $400 to $1,350 or from the
-    October 2025 payment matrix's $200 to $700?
+  question: Does Florida's FY2026 Home Energy benefit, for heating or cooling, range from the plan's estimated $400 to $1,350
+    or from the October 2025 payment matrix's $200 to $700?
   sources:
   - kind: guidance
-    citation: FY2026 LIHEAP State Plan item 2.6, p.9
+    citation: "FY2026 LIHEAP State Plan items 2.6 (heating) and 3.6 (cooling) #page 9,11"
     url: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=9
   - kind: form
     citation: October 2025 LIHEAP payment matrix
@@ -2534,7 +2544,7 @@ candidates:
   readings:
     statute: No statute is supplied; the manual and contract D(10)b require the current matrix, which pays $200 to
       $700 with all additions.
-    other: Plan item 2.6 prints the FY2025 estimates, a $400 minimum and a $1,350 maximum.
+    other: Plan items 2.6 and 3.6 print the FY2025 estimates, a $400 minimum and a $1,350 maximum.
   pe_us:
     follows: unknown
     code:
@@ -2542,9 +2552,11 @@ candidates:
     - policyengine_us/variables/gov/states/fl/commerce/liheap/fl_liheap.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9969
+    - https://github.com/PolicyEngine/policyengine-us/pull/10740
   state: unreviewed
-  note: PE-US follows the October 2025 matrix (base_amount.yaml, fl_liheap.py). The draft FFY2027 plan, section 2.6,
-    estimates a $200 minimum and a $700 maximum, matching it.
+  note: PE-US follows the October 2025 matrix (base_amount.yaml, fl_liheap.py) for heating and for the cooling route PR
+    10740 adds, which can pay $350, below the printed $400 minimum. The draft FFY2027 plan, section 2.6, estimates a $200
+    minimum and a $700 maximum, matching it.
 - id: us-fl:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -4069,6 +4081,43 @@ candidates:
   state: ruled
   note: Statute text is in the Axiom corpus; registering needs a pdftotext capture of the official instructions
     page.
+- id: us-ks:disabled-veteran-exemption-2025-amount
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: From tax year 2025, is the Kansas disabled veteran exemption $2,320, as K.S.A. 79-32,121b(b)(2) and the
+    K-40 instructions say, or $2,250, as K.S.A. 79-32,121(b), re-enacted in the same 2025 session, still says?
+  sources:
+  - kind: statute
+    citation: K.S.A. 79-32,121(b), as amended by L. 2025, ch. 112, § 6
+    url: https://www.kslegislature.gov/li/b2025_26/statute/079_000_0000_chapter/079_032_0000_article/079_032_0121_section/079_032_0121_k/
+  - kind: statute
+    citation: K.S.A. 79-32,121b(b)(2), as amended by L. 2025, ch. 123, § 9
+    url: https://www.kslegislature.gov/li/b2025_26/statute/079_000_0000_chapter/079_032_0000_article/079_032_0121b_section/079_032_0121b_k/
+  - kind: instructions
+    citation: 2025 K-40 instructions, p.2 and p.6
+    url: https://www.ksrevenue.gov/pdf/ip25.pdf#page=2
+  readings:
+    statute: '79-32,121b(b)(2) allows "an additional Kansas exemption of $2,320 for tax year 2025 and all tax years
+      thereafter"; 79-32,121(b) allows "$2,250 for tax year 2023 and all tax years thereafter".'
+    other: The 2025 instructions allow "an additional exemption allowance of $2,320" for "each qualified disabled
+      veteran" (p.2) and multiply the number of disabled veterans by $2,320 (p.6).
+  example: A 2025 single filer whom the VA pays at the 100% rate for a permanent service-connected disability has
+    $9,160 + $2,320 = $11,480 of exemptions under 79-32,121b and the instructions, and $9,160 + $2,250 = $11,410
+    under 79-32,121(b).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ks/tax/income/exemptions/disabled_veteran/base.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/7065
+    - https://github.com/PolicyEngine/policyengine-us/pull/10811
+  state: unreviewed
+  note: Both statute pages say "Section was amended multiple times in the 2025 session". The code follows
+    79-32,121b and the instructions with $2,320 from 2025; ks_disabled_veteran_exemption_2025.yaml pins $11,480 for
+    2025 and $11,410 for 2024. Which 2025 enactment controls under Kansas law on conflicting amendments in one session
+    has not been checked.
 - id: us-ks:food-sales-credit-exemption-count
   program: income-tax
   years:
@@ -6031,6 +6080,44 @@ candidates:
     in every state as an approximation. Missouri''s MHABD limits round up the same way (medicaid_optional_senior_or_disabled_income_limit.py),
     and its MHF parent limit uses the published schedule (mo_mhf_parent_income_limit.py). Verify the rounding gap-fill;
     the separate January-versus-April timing difference is a model approximation.'
+- id: us-mo:mhabd-nonblind-disabled-children
+  program: medicaid
+  years:
+    from: 2024
+    type: program
+    note: program year as the program defines it
+  question: Do Missouri's aged, blind and disabled Medicaid groups cover nonblind disabled children under 18, as
+    MHABD 0805.020.00 and Appendix K say, or leave them out, as POMS SI 01715.010 says of Missouri's definition of
+    disability?
+  sources:
+  - kind: guidance
+    citation: POMS SI 01715.010 A.1, note on Connecticut, Missouri and New Hampshire
+    url: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010
+  - kind: manual
+    citation: MHABD 0805.020.00, MO HealthNet for Disabled Children (MHDC)
+    url: https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/
+  - kind: manual
+    citation: MHABD Appendix K (07/2026), MO HealthNet for Disabled Children (MHDC) row
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=2
+  readings:
+    guidance: These States "do not include nonblind individuals under the age of 18 in their definition of disability."
+    other: '"[D]isabled children (under age 18) may receive MO HealthNet as spend down, non-spend down or vendor", and
+      the MHDC row covers a child who is "permanently and totally disabled, or blind".'
+  example: A nonblind disabled eight-year-old in Missouri whose parent earns $70,000, with $9,000 of the child's own
+    medical expenses, spends down to Medicaid under the Missouri manual and has no such route under POMS.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/ssi_recipient/section_209b/excludes_nonblind_disabled_children.yaml
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/is_209b_ssi_recipient_for_medicaid.py
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/is_optional_senior_or_disabled_for_medicaid.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10629
+  state: ruled
+  note: 'PE-US covers these children on both the 209(b) SSI route and the optional aged, blind and disabled pathway,
+    following Missouri''s own manual and Appendix K. POMS is secondhand on a state''s Medicaid rules, and 42 CFR
+    435.121(d) lets a state take either position. The Missouri state plan was not read. Ruled by the project lead,
+    2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10629'
 - id: us-mo:mhabd-resource-limit-boundary
   program: medicaid
   years:
@@ -6070,6 +6157,83 @@ candidates:
     536.014(2) makes a rule that is in conflict with state law not valid. Missouri fiscal year 2018 began July 1,
     2017. Before then, RSMo 208.010.2(4) (before August 28, 2016) and 13 CSR 40-2.030(12) set a strict single-person
     test and an inclusive couple test, and the sources did not disagree.
+- id: us-mo:mhdc-blind-child-income-standard
+  program: medicaid
+  years:
+    from: 2026
+    type: program
+    note: program year as the program defines it
+  question: Is a blind Missouri child under 18 tested against the blind standard of 100% of the federal poverty level,
+    which Appendix J lists in the table that covers disabled children, or against the $1,131 that Appendix K lists
+    for MO HealthNet for Disabled Children?
+  sources:
+  - kind: manual
+    citation: MHABD Appendix J, Spend Down (includes disabled child) - MHNS, MHSD, MHDC table, income limits effective
+      04-01-26
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1
+  - kind: manual
+    citation: MHABD Appendix K (07/2026), MO HealthNet for Disabled Children (MHDC) row
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=2
+  - kind: statute
+    citation: RSMo 208.151.1(24)(b)
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=208.151
+  - kind: statute
+    citation: RSMo 209.030.1
+    url: https://revisor.mo.gov/main/OneSection.aspx?section=209.030
+  readings:
+    statute: 'RSMo 208.151.1(24)(b) covers "All persons who would be determined to be eligible for aid to the blind
+      benefits under the eligibility standards in effect December 31, 1973" and raises their income limit "to one
+      hundred percent of the federal poverty level". It does not say whether a child could meet those 1973 standards.
+      RSMo 209.030.1 pays the blind pension to "Every adult blind person, eighteen years of age or over".'
+    other: 'Appendix J lists "1 person - blind" at $1,330 in the table headed "Spend Down (includes disabled child) -
+      MHNS, MHSD, MHDC". Appendix K''s MHDC row covers a child who must "Be permanently and totally disabled, or blind"
+      and lists only "Individual: $1,131".'
+  example: A blind eight-year-old in Missouri has $22,320 a year of deemed income, and the parent has $7,000 of medical
+    expenses. The remaining $15,320 is within the blind standard of 12 x $1,330 = $15,960 and above 12 x $1,131 =
+    $13,572.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/medicaid_optional_senior_or_disabled_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10629
+  state: ruled
+  note: 'PE-US gives a blind child under 18 the standard Appendix K lists for MO HealthNet for Disabled Children,
+    and applies the blind standard in Appendix J from age 18. Appendix K is the only text that names a blind child
+    and gives that child an amount. Pinned by is_optional_senior_or_disabled_for_medicaid.yaml Case 37. The
+    aid-to-the-blind standards in effect on December 31, 1973, which RSMo 208.151.1(24)(b) refers to, were not read.
+    Ruled by the project lead, 2026-11-10: https://github.com/PolicyEngine/policyengine-us/pull/10629'
+- id: us-mo:mhdc-child-resource-limit
+  program: medicaid
+  years:
+    from: 2026
+    type: program
+    note: program year as the program defines it
+  question: Is a Missouri disabled child who lives with two parents tested against the individual resource limit, as
+    MHABD 0805.020.10 says, or the limit Appendix K lists for a child living with two parents?
+  sources:
+  - kind: manual
+    citation: MHABD 0805.020.10, Deeming Parental Resources
+    url: https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/0805-020-10/
+  - kind: manual
+    citation: MHABD Appendix K (07/2026), MO HealthNet for Disabled Children (MHDC) row
+    url: https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=2
+  readings:
+    manual: '"If the total exceeds the individual resource limit, the child is ineligible."'
+    other: '"Child living with 1 parent: $6,220.50"; "Child living with 2 parents: $12,441.00".'
+  example: Under the July 2026 amounts, a child whose two parents hold $10,000 in a bank account fails the $6,220.50
+    individual limit and passes the $12,441 limit for a child living with two parents.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/is_optional_senior_or_disabled_asset_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10629
+  state: ruled
+  note: 'PE-US uses Appendix K''s limit, which is specific to this case and dated 07/2026, and reads it from the couple
+    limit, which holds the same amount. Both texts deem the parents'' entire resources, so PE-US does not use SSI''s
+    allocation in ssi_resources_deemed_from_ineligible_parent here. Ruled by the project lead, 2026-11-02:
+    https://github.com/PolicyEngine/policyengine-us/pull/10629'
 - id: us-mo:negative-federal-agi-combined-return
   program: income-tax
   years:
@@ -9161,6 +9325,46 @@ candidates:
   state: ruled
   note: The code follows the statute and subtracts every federal refundable credit except the EITC, plus the premium
     tax credit, including credits the worksheet does not list, such as the additional child tax credit outside 2021.
+- id: us-or:liheap-cooling-payment-after-heating-payment
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: program
+    note: program year as the program defines it
+  question: Can an Oregon household that received a LIHEAP standard payment for heating also receive one for cooling in the
+    same program year?
+  sources:
+  - kind: manual
+    citation: 2026 Energy Assistance Intake, Operations and Policy Manual, separated households and standard payment, PDF
+      pages 31 and 61
+    url: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=31
+  - kind: plan
+    citation: Oregon FFY2026 LIHEAP State Plan, items 1.1 and 1.2 (PDF page 4) and the crisis explanation (PDF page 13)
+    url: https://liheapch.acf.gov/docs/2026/state-plans/OR_Plan_2026.pdf#page=4
+  - kind: guidance
+    citation: Oregon Health Authority, OHOP Housing Services page, LIHEAP cooling season announcements (2024, 2025 and 2026
+      seasons; 2026 capture of August 13, 2026)
+    url: https://web.archive.org/web/20260813121701/https://www.oregon.gov/oha/PH/DiseasesConditions/HIVSTDViralHepatitis/HIVCareTreatment/Pages/housing.aspx
+  readings:
+    statute: No statute is supplied; the manual pays one standard payment a program year, and a separated household's adults
+      may not "receive another standard payment during the current program year".
+    other: The Oregon Health Authority's OHOP page says "Clients who have already received a heating payment during the year
+      may still be eligible for a cooling payment!", and the plans fund heating and cooling as separate components.
+  example: In 2026, one person in Multnomah County with $26,000 of countable income, gas heat with a $960 bill, a cooling
+    cost and a $1,500 electric bill receives $435 under the one-payment reading, and $435 plus $300 from the COOLING column,
+    $735, if a cooling payment can follow a heating payment.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/or/ohcs/liheap/or_liheap.py
+    - policyengine_us/variables/gov/states/or/ohcs/liheap/eligibility/or_liheap_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10736
+  state: open
+  note: 'PE-US follows the manual: a household with a heating cost gets its heating fuel column, never a second cooling
+    payment. The OHOP page is a subgrantee notice and says "may". If OHCS confirms both are payable, Oregon needs a separate
+    cooling amount and a second entry in the national LIHEAP list.'
 - id: us-or:liheap-final-payment-band-bound
   program: liheap
   years:
@@ -9220,6 +9424,53 @@ candidates:
   state: unreviewed
   note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
     than" (or_liheap_eligible.py).
+- id: us-or:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: federal-fiscal
+  question: Can Oregon's rounded-up LIHEAP income limits pay a household whose income exceeds both 150% of the poverty
+    guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Oregon, page 2
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=2
+  - kind: manual
+    citation: 2026 Energy Assistance Intake, Operations and Policy Manual, 60% of State Median Income by Household Size,
+      PDF page 77
+    url: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=77
+  - kind: manual
+    citation: PY2025 Energy Assistance Operations and Policy Manual, income limits, PDF page 57
+    url: https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=57
+  - kind: guidance
+    citation: HHS LIHEAP IM 2024-02 Attachment 4, Mandatory Use in LIHEAP for FY25, Oregon, pages 2 and 5
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=2
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The manuals print 60% of the size-adjusted median rounded up to the next dollar, $1 or $2 above HHS's amount
+      at most sizes.
+  example: In FY2026, two people with $50,195 of countable income and electric heat in Multnomah County are within the
+    printed $50,196 limit, which would pay $275, but exceed the $50,194 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/or/ohcs/liheap/eligibility/or_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10736
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Printed and capped
+    annual limits: FY2026 size 1, $38,385 and $38,384; 2, $50,196 and $50,194; 3, $62,006 and $62,005; 4, $73,817 and
+    $73,816; 5, $85,627 and $85,626; 6, $97,438 and $97,437; sizes 7 to 11, $1 lower ($99,652 and $99,651 at 7); from
+    size 12 the printed amount stays, because 150% of the guideline is the higher maximum. PY2025, from HHS''s FY2025
+    amounts (LIHEAP IM 2024-02 Attachment 4): size 1, $36,811 and $36,810; 3, $59,464 and $59,462; 5, $82,117 and
+    $82,115. PY2027: sizes 7, 9 and 11 are $1 lower ($104,693 and $104,692 at 7); the other sizes are whole-dollar
+    products and equal HHS''s method. The last payment band for two people ends at $50,195, above the capped limit; see
+    us-or:liheap-final-payment-band-bound.'
 - id: us-pa:liheap-interest-dividend-threshold
   program: liheap
   years:
