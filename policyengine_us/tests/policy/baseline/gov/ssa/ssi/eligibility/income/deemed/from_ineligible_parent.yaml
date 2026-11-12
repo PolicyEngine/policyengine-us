@@ -468,3 +468,95 @@
     ssi_unearned_income_deemed_from_ineligible_parent: [5_598, 0, 0]
     ssi_countable_income: [5_358, 0, 0]
     ssi: [6_570, 0, 0]
+
+# Married parents in separate tax units, each with a disabled child in their own unit,
+# with no parent ids. Each unit pools both parents' wages: (78,000 - 240 - 780) / 2 =
+# 38,490, less the couple rate of 17,892, leaves 20,598. 20 CFR 416.1165(e)(2) divides
+# it "equally among those eligible children", here both units' children: 10,299 each.
+# Each child's SSI is 11,928 - (10,299 - 240) = 1,869.
+- name: Married parents in separate tax units divide the pooled income among both units' children.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 48_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 38
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 30_000
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    marital_units:
+      marital_unit1:
+        members: [person1, person3]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [true, false, true, false]
+    ssi_ineligible_parent_allocation: [17_892, 0, 17_892, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 10_299, 0, 10_299]
+    ssi: [0, 1_869, 0, 1_869]
+
+# Without parent ids, the mother's spouse in his own tax unit is still an ineligible
+# parent (20 CFR 416.1160(d)), as on the resource side, so his 30,000 pension joins
+# her 48,000 of wages: (30,000 - 240) + (48,000 - 780) / 2 = 53,370, less 17,892,
+# deems 35,478. The child's countable income is above 11,928.
+- name: Without parent ids, a father with a pension in his own tax unit is counted with the mother.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        is_tax_unit_head: true
+        taxable_pension_income: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [false, true, true]
+    ssi_ineligible_parent_allocation: [0, 17_892, 17_892]
+    ssi_unearned_income_deemed_from_ineligible_parent: [35_478, 0, 0]
+    ssi: [0, 0, 0]

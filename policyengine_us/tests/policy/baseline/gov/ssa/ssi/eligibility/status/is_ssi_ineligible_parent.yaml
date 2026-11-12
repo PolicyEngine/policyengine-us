@@ -573,3 +573,128 @@
     is_ssi_ineligible_parent: [false, false]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
     ssi: [11_928, 11_928]
+
+# A California disabled parent with an 18,000 pension, a spouse earning 36,000 and a
+# disabled child. The spouse's income is deemed to the parent: (1,500 - 20) +
+# (3,000 - 65) / 2 = 2,947.50 a month, above California's at-home couple standard of
+# 1,491 + 607.83 = 2,098.83 (POMS SI 01415.058 B), so the parent is due neither SSI
+# nor the supplement and both parents are ineligible parents. They share the federal
+# couple rate plus the supplement (POMS SI 01320.630 B.1): (17,892 + 7,293.96) / 2 =
+# 12,592.98 each. The child is deemed 35,370 - 25,185.96 = 10,184.04, as 20 CFR
+# 416.1166(e)(2) gives, and SSI is 11,928 - (10,184.04 - 240) = 1,983.96.
+- name: Case 17, California parent whose income rules out the supplement deems the excess over the federal and state couple standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 18_000
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 36_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    is_ssi_ineligible_parent: [true, true, false]
+    ssi_ineligible_parent_allocation: [12_592.98, 12_592.98, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 10_184.04]
+    ssi: [0, 0, 1_983.96]
+
+# The same California family with a parent who has no income and a spouse earning
+# 40,000. The couple's (40,000 - 240 - 780) / 2 = 19,490 is above the federal couple
+# rate of 17,892 and within the SSI/SSP couple standard of 25,185.96, so the parent
+# stays eligible for the supplement. The spouse's allowance is that standard, and
+# nothing is deemed (20 CFR 416.1166(e)(1)). With the federal rate alone the child
+# would be deemed 19,490 - 17,892 = 1,598.
+- name: Case 18, California parent still due the supplement leaves the child nothing deemed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 40_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    is_ssi_ineligible_parent: [false, true, false]
+    ssi_ineligible_parent_allocation: [0, 25_185.96, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi: [0, 0, 11_928]
+
+# Michigan's federally administered supplement goes only to people in licensed care
+# settings (POMS SI 01415.058 G), not to a parent at home. So a disabled parent with a
+# 60,000 pension is tested on the federal rate, is an ineligible parent, and deems
+# (60,000 - 240) - 11,928 = 47,832. The child's countable income is above 11,928.
+- name: Case 19, Michigan parent at home is tested against the federal rate alone.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 60_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    is_ssi_ineligible_parent: [true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 47_832]
+    ssi: [0, 0]

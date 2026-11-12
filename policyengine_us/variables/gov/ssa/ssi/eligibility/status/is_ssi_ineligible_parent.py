@@ -5,10 +5,12 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusi
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_established_spouse_indices,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.status._ssi_parent_supplement import (
+    _ssi_parent_supplement_level,
+)
 from policyengine_us.variables.household.demographic.person._parent_links import (
     co_resident_parent_indices,
     is_parent_of_any,
-    linked_child_count,
 )
 
 
@@ -23,6 +25,7 @@ class is_ssi_ineligible_parent(Variable):
         "https://www.law.cornell.edu/cfr/text/20/416.1161#a_2",
         "https://www.law.cornell.edu/cfr/text/20/416.1166",
         "https://secure.ssa.gov/poms.nsf/lnx/0501320620",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501320630",
         "https://secure.ssa.gov/poms.nsf/lnx/0501415058",
     )
 
@@ -55,21 +58,12 @@ class is_ssi_ineligible_parent(Variable):
         )
         # 20 CFR 416.1166 counts a federally administered State supplement as an
         # SSI benefit, and 416.1161(a)(2) leaves out of deeming the income of a
-        # parent who receives one (POMS SI 01320.620 B.6 and C.3). This formula
-        # cannot read the supplement level, because the state supplement
-        # variables depend on this one. So where SSA administers the supplement
-        # (POMS SI 01415.058 A), an aged, blind or disabled parent is not treated
-        # as ineligible on income alone.
-        # NOTE: in those states a parent whose income also rules out the
-        # supplement deems nothing, and a parent's spouse is still allocated the
-        # federal couple rate alone.
-        federally_administered = np.isin(
-            person.household("state_code_str", period),
-            p.state_supplement.federally_administered,
+        # parent who receives one (POMS SI 01320.620 B.6 and C.3). So the test
+        # adds the state's at-home supplement where SSA pays one to the parent.
+        meets_income_test = countable_income <= (
+            benefit_rate * MONTHS_IN_YEAR
+            + _ssi_parent_supplement_level(person, period, parameters)
         )
-        meets_income_test = (
-            countable_income <= benefit_rate * MONTHS_IN_YEAR
-        ) | federally_administered
         resources = person("ssi_countable_resources", period)
         limit = p.eligibility.resources.limit
         first, second = co_resident_parent_indices(person, period)
@@ -92,11 +86,12 @@ class is_ssi_ineligible_parent(Variable):
             & meets_noncitizen_test
         )
         # 416.1160(d) limits an ineligible parent to a natural or adoptive parent
-        # who lives with the child, or that parent's spouse. Parent ids settle who
-        # they are. With no ids, the tax-unit proxy cannot tell a grandparent or
-        # an unrelated parent from the child's parent: this is a data limitation.
+        # who lives with the child, or that parent's spouse, wherever the spouse
+        # files, as on the resource side (ssi_resources_deemed_from_ineligible_parent).
+        # Parent ids settle who the parents are. With no ids, the tax-unit proxy
+        # cannot tell a grandparent or an unrelated parent from the child's parent:
+        # this is a data limitation.
         eligible_child = aged_blind_disabled & child
         has_own_child = is_parent_of_any(person, period, eligible_child)
-        named_parent = linked_child_count(person, period, eligible_child) > 0
-        spouse_of_named_parent = (spouse >= 0) & named_parent[spouse]
-        return ~eligible_parent & ~child & (has_own_child | spouse_of_named_parent)
+        spouse_of_parent = (spouse >= 0) & has_own_child[np.maximum(spouse, 0)]
+        return ~eligible_parent & ~child & (has_own_child | spouse_of_parent)

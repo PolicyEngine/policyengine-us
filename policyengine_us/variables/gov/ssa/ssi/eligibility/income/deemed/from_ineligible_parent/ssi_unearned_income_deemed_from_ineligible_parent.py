@@ -2,8 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_spouse_index,
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_parent._parent_pool import (
+    _spouse_filing_elsewhere,
+    _with_spouse_unit,
 )
 
 
@@ -21,17 +22,8 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
         )
         ineligible_parent = person("is_ssi_ineligible_parent", period)
         tax_unit = person.tax_unit
-        # 20 CFR 416.1160(d): a parent's spouse who lives with the child is an
-        # ineligible parent too. When that spouse files in another tax unit,
-        # their income still joins the parent's (416.1165), as the couple rate
-        # in ssi_ineligible_parent_allocation already assumes.
-        spouse = _ssi_spouse_index(person, period)
-        tax_unit_id = tax_unit.reference_entity.members_entity_id
-        spouse_files_elsewhere = (
-            ineligible_parent
-            & (spouse >= 0)
-            & ineligible_parent[spouse]
-            & (tax_unit_id[spouse] != tax_unit_id)
+        spouse, spouse_files_elsewhere = _spouse_filing_elsewhere(
+            person, period, ineligible_parent
         )
         earned = person("ssi_earned_income", period)
         unearned = person("ssi_unearned_income", period)
@@ -53,8 +45,11 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
             + where(spouse_files_elsewhere, unearned[spouse], 0)
         )
 
-        child_allocations = eligible_child * add(
-            tax_unit, period, ["ssi_ineligible_child_allocation"]
+        child_allocations = eligible_child * _with_spouse_unit(
+            person,
+            spouse,
+            spouse_files_elsewhere,
+            add(tax_unit, period, ["ssi_ineligible_child_allocation"]),
         )
         parental_allocations = eligible_child * add(
             tax_unit, period, ["ssi_ineligible_parent_allocation"]
@@ -81,11 +76,13 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
             0, net_parental_deemed_income - parental_allocations
         )
 
-        count_eligible_children = tax_unit.sum(eligible_child)
+        count_eligible_children = _with_spouse_unit(
+            person, spouse, spouse_files_elsewhere, tax_unit.sum(eligible_child)
+        )
         # avoid array divide-by-zero warnings by not using where() function
         # see the following GitHub issue for more details:
         # https://github.com/PolicyEngine/policyengine-us/issues/2494
-        income = np.zeros_like(count_eligible_children)
+        income = np.zeros_like(count_eligible_children, dtype=float)
         mask = count_eligible_children > 0
         income[mask] = net_parental_deemed_income[mask] / count_eligible_children[mask]
         return income
