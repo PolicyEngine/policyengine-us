@@ -149,8 +149,8 @@
 # read parameters on January 1, so coverage that starts or ends between July 1
 # and December 31 first changes the next calendar year. Every case lists:
 # AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA,
-# VA and FL. GA (left out for now) and VA are intentionally not covered, and
-# FL has no coverage.
+# VA and FL. GA covers both copays from July 2023 through June 2027; VA
+# stays false as a modeling choice, and FL has no coverage.
 # Calendar 2010 cannot be tested: the federal income limits start 2011-01-01.
 
 # DC: D.C. Law 18-209, Title II applies from 2010-08-01.
@@ -210,15 +210,16 @@
     school_meal_tier: [REDUCED, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
 
 # AR from 2023-08-01; LA and PA from 2023-07-01; OH from 2023-10-03; CT
-# STABLE for SY 2023-24. DE, RI and SC start 2024-07-01.
-- name: Arkansas, Connecticut, Louisiana, Ohio and Pennsylvania cover the reduced-price copay from 2024.
+# STABLE for SY 2023-24. GA funds both copays in SY2023-24 through ESSER.
+# DE, RI and SC start 2024-07-01.
+- name: Arkansas, Connecticut, Georgia, Louisiana, Ohio and Pennsylvania cover the reduced-price copay from 2024.
   period: 2024
   input:
     state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
     school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
     meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
   output:
-    school_meal_tier: [FREE, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
+    school_meal_tier: [FREE, FREE, FREE, FREE, REDUCED, FREE, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, REDUCED, REDUCED, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
 
 # DE, RI and SC from 2024-07-01; CT STAR for SY 2024-25.
 # HI (2025-07-01) and TX (2025-09-01) start later in 2025.
@@ -229,7 +230,7 @@
     school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
     meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
   output:
-    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
+    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED, FREE, REDUCED, REDUCED]
 
 # HI: Act 139, SLH 2025; TX: GAA 2026-27 riders 29 and 31. CT had no state
 # funding in SY 2025-26. NE and SD start 2026-07-01.
@@ -240,19 +241,19 @@
     school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
     meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
   output:
-    school_meal_tier: [FREE, FREE, REDUCED, FREE, FREE, REDUCED, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, REDUCED, REDUCED]
+    school_meal_tier: [FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, REDUCED, REDUCED]
 
 # CT RISE (SY 2026-27), NE LB966 and SD HB 1082 start 2026-07-01.
-- name: All 18 covered jurisdictions in this matrix give the free tier in 2027, while Georgia, Virginia and Florida do not.
+- name: All 19 covered jurisdictions in this matrix give the free tier in 2027, while Virginia and Florida do not.
   period: 2027
   input:
     state_code: [AR, AZ, CT, DC, DE, GA, HI, LA, MD, NE, NJ, NM, OH, PA, RI, SC, SD, TX, WA, VA, FL]
     school_meal_fpg_ratio: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8]
     meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
   output:
-    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, REDUCED, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED]
+    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, FREE, REDUCED, REDUCED]
 
-# Enacted funding ends 2027-07-01 for AZ, CT and SC, and 2027-09-01
+# Enacted funding ends 2027-07-01 for AZ, CT, GA and SC, and 2027-09-01
 # for TX. WA's breakfast copay proviso ends 2027-06-30, so WA covers only
 # lunch from 2027-07-01 (see school_meal_lunch_tier) and its tier for both
 # meals is REDUCED.

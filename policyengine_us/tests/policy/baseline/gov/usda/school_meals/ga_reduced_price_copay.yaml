@@ -1,0 +1,176 @@
+# GaDOE funds both copays in SY2023-24 through federal ESSER funds.
+# Date that school year from July 1 under 7 CFR 210.2. Annual formulas
+# read January 1, so 2023 stays reduced and 2024 first receives coverage.
+# https://gagains.org/wp-content/uploads/2024/05/GAINS-2024-Final-DOAA.pdf#page=86
+# https://content.myconnectsuite.com/api/documents/5c99a830aac74fd7aaac6bfedd1b0ca0#page=27
+# https://www.ecfr.gov/current/title-7/section-210.2
+# For every annual case below, 16,000 / 10,000 = 1.60, between the
+# federal free limit of 1.30 and reduced-price limit of 1.85.
+- name: Georgia retains reduced-price charges at the start of 2023.
+  period: 2023
+  input:
+    state_code: GA
+    spm_unit_fpg: 10_000
+    school_meal_countable_income: 16_000
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: REDUCED
+    school_meal_breakfast_tier: REDUCED
+    school_meal_lunch_tier: REDUCED
+
+- name: Georgia funds both reduced-price copays with federal funds in 2024.
+  period: 2024
+  input:
+    state_code: GA
+    spm_unit_fpg: 10_000
+    school_meal_countable_income: 16_000
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+
+# HB 916 (FY2025), program 24.13, line 1871 funds both copays from
+# July 1, 2024 through state appropriations.
+# https://opb.georgia.gov/document/appropriations-bills/hb-916-fy-2025-appropriations-bill/download#page=66
+- name: Georgia funds both reduced-price copays in 2025.
+  period: 2025
+  input:
+    state_code: GA
+    spm_unit_fpg: 10_000
+    school_meal_countable_income: 16_000
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+
+# HB 68 (FY2026), item 155.4 continues both copays from July 1, 2025.
+# https://opb.georgia.gov/document/appropriations-bills-prior-years/hb-68-fy-2026-appropriations-bill/download#page=106
+- name: Georgia continues to fund both reduced-price copays in 2026.
+  period: 2026
+  input:
+    state_code: GA
+    spm_unit_fpg: 10_000
+    school_meal_countable_income: 16_000
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+
+# HB 974 (FY2027), program 24.13 continues funding through June 30, 2027.
+# https://opb.georgia.gov/document/appropriations-bills-current-year/hb-974-fy-2027-appropriations-bill/download#page=75
+- name: Georgia funds both reduced-price copays at the start of 2027.
+  period: 2027
+  input:
+    state_code: GA
+    spm_unit_fpg: 10_000
+    school_meal_countable_income: 16_000
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+
+- name: Georgia retains reduced-price charges after enacted funding ends.
+  period: 2028
+  input:
+    state_code: GA
+    spm_unit_fpg: 10_000
+    school_meal_countable_income: 16_000
+    meets_school_meal_categorical_eligibility: false
+  output:
+    school_meal_tier: REDUCED
+    school_meal_breakfast_tier: REDUCED
+    school_meal_lunch_tier: REDUCED
+
+# Federal limits: ceil(1.30 * 10,000) = 13,000 and
+# ceil(1.85 * 10,000) = 18,500. Test $1 below, at and above each limit.
+# Georgia pays both copays throughout the existing reduced-price band.
+# Florida retains the federal tiers at the same incomes.
+- name: Georgia covers the reduced-price band and preserves its upper boundary.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA, FL, FL, FL, FL, FL, FL]
+    spm_unit_fpg: [10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000]
+    school_meal_countable_income: [12_999, 13_000, 13_001, 18_499, 18_500, 18_501, 12_999, 13_000, 13_001, 18_499, 18_500, 18_501]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    school_meal_tier: [FREE, FREE, FREE, FREE, FREE, PAID, FREE, FREE, REDUCED, REDUCED, REDUCED, PAID]
+    school_meal_breakfast_tier: [FREE, FREE, FREE, FREE, FREE, PAID, FREE, FREE, REDUCED, REDUCED, REDUCED, PAID]
+    school_meal_lunch_tier: [FREE, FREE, FREE, FREE, FREE, PAID, FREE, FREE, REDUCED, REDUCED, REDUCED, PAID]
+
+# Categorical eligibility provides free meals regardless of state copay
+# funding or income: 30,000 / 10,000 = 3.00, above the income limits.
+- name: Georgia keeps categorical eligibility before the first funded school year.
+  period: 2023
+  input:
+    state_code: GA
+    spm_unit_fpg: 10_000
+    school_meal_countable_income: 30_000
+    meets_school_meal_categorical_eligibility: true
+  output:
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+
+- name: Georgia keeps categorical eligibility during state copay funding.
+  period: 2026
+  input:
+    state_code: GA
+    spm_unit_fpg: 10_000
+    school_meal_countable_income: 30_000
+    meets_school_meal_categorical_eligibility: true
+  output:
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+
+- name: Georgia keeps categorical eligibility after state copay funding.
+  period: 2028
+  input:
+    state_code: GA
+    spm_unit_fpg: 10_000
+    school_meal_countable_income: 30_000
+    meets_school_meal_categorical_eligibility: true
+  output:
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+
+# For two people, the model's 2026 guideline equals 15,960 + 5,680 =
+# 21,640. Income of 34,624 / 21,640 = 1.60 falls in the reduced-price band.
+# The January 1 rates give 4.60 lunch + 2.46 breakfast = 7.06 a day.
+# Paid reimbursement equals 0.44 + 0.40 = 0.84 a day.
+# One child * 180 days * (7.06 - 0.84) = 1,119.60 of net meal value.
+# https://www.govinfo.gov/content/pkg/FR-2025-07-24/pdf/2025-13879.pdf#page=3
+- name: Georgia gives both meals at no charge to a child in the reduced-price band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 10
+    spm_units:
+      unit:
+        members: [parent, child]
+        school_meal_countable_income: 34_624
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    spm_unit_fpg: 21_640
+    school_meal_fpg_ratio: 1.6
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 7.06
+    school_meal_paid_daily_subsidy: 0.84
+    school_meal_net_subsidy: 1_119.60
+    free_school_meals: 1_119.60
+    reduced_price_school_meals: 0
