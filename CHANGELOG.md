@@ -1,3 +1,10 @@
+## [2.118.5] - 2026-11-12
+
+### Fixed
+
+- Apply each state's own rule for a Medicaid applicant whose spouse is not aged, blind or disabled, in the aged, blind and disabled pathway, the 209(b) route and medically needy: SSI's deeming rule by default, or budgeting the couple together, which keeps SSI's allocations for ineligible children except in Missouri, or keeping the couple limit without deeming. Test spouses split by a facility separately, with no spouse income counted.
+
+
 ## [2.118.4] - 2026-11-12
 
 ### Fixed
