@@ -6,8 +6,8 @@ metadata:
   unit: currency-USD
   # Keep CBO's legacy forecasts for counterfactual reforms; personal exemptions
   # remain suspended under current law. Project from the final forecast year.
-  # Historical section 68(b) rounds down to $50, then halves the joint amount
-  # for separate filers. Set rounding on each child to preserve that order.
+  # Under historical section 68(b), round down to $50 before halving the
+  # joint amount for separate filers. Set child rounding to preserve that order.
   uprating: gov.irs.uprating
   reference:
     - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(3)(B)

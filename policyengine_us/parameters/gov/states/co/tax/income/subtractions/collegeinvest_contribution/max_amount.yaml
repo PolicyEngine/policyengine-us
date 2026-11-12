@@ -7,8 +7,9 @@ metadata:
     - filing_status
   propagate_metadata_to_children: true
   # Project beyond published limits with the IRS inflation index as a proxy.
-  # C.R.S. 39-22-104(4)(i)(II)(C) uses state college tuition, room and board
-  # costs and permits the Department of Revenue to round to the nearest $100.
+  # Under C.R.S. 39-22-104(4)(i)(II)(C), the Department of Higher Education
+  # supplies annual tuition, room and board cost changes for state colleges.
+  # The Department of Revenue may round limits to the nearest $100.
   uprating:
     parameter: gov.irs.uprating
     rounding:

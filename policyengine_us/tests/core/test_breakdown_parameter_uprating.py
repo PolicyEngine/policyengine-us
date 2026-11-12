@@ -80,8 +80,8 @@ def test_colorado_2027_projects_from_published_2026_limit(status):
 
 @pytest.mark.parametrize("status", STATUSES)
 def test_personal_exemption_2036_projects_after_last_cbo_forecast(status):
-    # CBO's last forecast supplies the 2035 anchors. Historical IRC 68(b)
-    # rounds down to $50; separate filers receive half the joint amount.
+    # Use CBO's 2035 forecasts as anchors. Under historical IRC 68(b), round
+    # down to $50; separate filers receive half the joint amount.
     # Multiply by 217.05 / 212.85, then round down:
     # single: 406,200 * factor = 414,215.222 -> 414,200;
     # separate: 243,700 * factor = 248,508.739 -> 248,500;
@@ -100,8 +100,8 @@ def test_personal_exemption_2036_projects_after_last_cbo_forecast(status):
 
 @pytest.mark.parametrize("status", STATUSES)
 def test_biden_2025_projects_from_proposed_2024_threshold(status):
-    # Treasury's FY2025 proposal indexes $1 million ($500,000 for separate
-    # filers) after 2024 and specifies no rounding interval.
+    # Treasury proposes indexing $1 million ($500,000 for separate filers)
+    # after 2024 in its FY2025 proposal, without specifying a rounding interval.
     # 1,000,000 * 172.797 / 167.95475 = 1,028,830.6820735942;
     # separate filers receive half: 514,415.3410367971.
     anchor = 500_000 if status == "SEPARATE" else 1_000_000
