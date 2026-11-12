@@ -449,6 +449,33 @@
     # cooling. SF, level 3, one person: Electric 440; min(440, 1_358.76) = 440.
     dc_liheap_payment: 440
 
+- name: Cooling only, a gas-heated home with no gas bill takes the electricity amount, not its gas row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # Gas heat with no gas bill of its own, so there is no heating cost.
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_358.76
+        dc_liheap_housing_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_liheap_heating_type: GAS
+    # Its only energy cost is cooling, so it is paid the Electric amount, not
+    # the Gas row (1_193) against the electricity bill. SF, level 3, one
+    # person: Electric 440; min(440, 1_358.76) = 440.
+    dc_liheap_payment: 440
+
 - name: A heated home with a heating bill and a cooling cost keeps its heating row.
   period: 2026
   absolute_error_margin: 0.01
@@ -474,6 +501,33 @@
     # cooling cost does not move it to the electricity bill.
     dc_liheap_payment: 300
 
+- name: A heat-in-rent tenant with a cooling cost keeps the flat heat-in-rent amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_358.76
+        dc_liheap_housing_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_liheap_heating_type: HEAT_IN_RENT
+    # Heat in the rent keeps the household off the cooling route: it gets the
+    # flat heat-in-rent amount of 200, with no expense cap, not the Electric
+    # amount of 440.
+    dc_liheap_payment: 200
+
 - name: Cooling only, income above the limit pays nothing.
   period: 2026
   absolute_error_margin: 0.01
@@ -498,10 +552,10 @@
     dc_liheap_eligible: false
     dc_liheap_payment: 0
 
-# The cooling route keys on the canonical NONE type only. An unspecified fuel
-# keeps the legacy adapter even with a cooling cost: the person-level heating
-# total of 300 (as in the legacy precedence case above) caps the Electric row,
-# not the electricity bill.
+# The cooling route needs a known heating type. An unspecified fuel keeps the
+# legacy adapter even with a cooling cost: the person-level heating total of
+# 300 (as in the legacy precedence case above) caps the Electric row, not the
+# electricity bill.
 - name: Cooling cost with an unspecified fuel keeps the legacy adapter.
   period: 2026
   absolute_error_margin: 0.01
@@ -526,3 +580,29 @@
     dc_liheap_heating_type: ELECTRICITY
     # SF, level 3, one person: Electric 440; legacy expense 300; min(440, 300) = 300
     dc_liheap_payment: 300
+
+- name: Cooling cost with an unspecified fuel on the deprecated gas row and no gas bill pays nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        dc_liheap_heating_type: GAS
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_358.76
+        dc_liheap_housing_type: SINGLE_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # An unspecified fuel stays off the cooling route. The legacy adapter takes
+    # the gas bill for the direct GAS row, which is 0: min(1_193, 0) = 0, as on
+    # main.
+    dc_liheap_payment: 0
