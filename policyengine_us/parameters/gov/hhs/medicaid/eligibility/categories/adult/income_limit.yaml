@@ -50,7 +50,12 @@ IA:
   2018-01-01: 1.38
 ID:
   2018-01-01: -.inf
-  2021-01-01: 1.38
+  2020-01-01:
+    value: 1.38
+    metadata:
+      reference:
+        - title: CMS approval of Idaho State Plan Amendment ID-19-0007, November 13, 2019
+          href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/ID/ID-19-0007.pdf#page=3
 IL:
   2018-01-01: 1.38
 IN:
@@ -68,7 +73,12 @@ MD:
   2018-01-01: 1.38
 ME:
   2018-01-01: -.inf
-  2021-01-01: 1.38
+  2018-07-02:
+    value: 1.38
+    metadata:
+      reference:
+        - title: CMS approval of Maine State Plan Amendment 18-0006, April 3, 2019
+          href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/me/me-18-0006.pdf#page=2
 MI:
   2018-01-01: 1.38
 MN:
@@ -92,7 +102,12 @@ ND:
   2018-01-01: 1.38
 NE:
   2018-01-01: -.inf
-  2021-01-01: 1.38
+  2020-10-01:
+    value: 1.38
+    metadata:
+      reference:
+        - title: CMS approval of Nebraska Heritage Health Adult demonstration, October 20, 2020
+          href: https://www.medicaid.gov/sites/default/files/2020-10/ne-hha-ca.pdf#page=4
 NH:
   2018-01-01: 1.38
 NJ:
@@ -125,10 +140,26 @@ TX:
   2018-01-01: -.inf
 UT:
   2018-01-01: -.inf
-  2021-01-01: 1.38
+  2019-04-01:
+    value: 1.00
+    metadata:
+      reference:
+        - title: "CMS approval of Utah Primary Care Network demonstration, December 16, 2020 #page 6,19,25-26"
+          href: https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=6
+  2020-01-01:
+    value: 1.38
+    metadata:
+      reference:
+        - title: CMS approval of Utah Primary Care Network demonstration, December 16, 2020
+          href: https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=7
 VA:
   2018-01-01: -.inf
-  2021-01-01: 1.38
+  2019-01-01:
+    value: 1.38
+    metadata:
+      reference:
+        - title: CMS approval of Virginia demonstration amendment, July 9, 2020
+          href: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/va-gov-access-plan-gap-amendment-appvl-07092020.pdf#page=8
 VT:
   2018-01-01: 1.38
 WA:
