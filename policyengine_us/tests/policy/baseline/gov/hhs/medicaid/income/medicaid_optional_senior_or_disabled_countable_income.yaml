@@ -33,7 +33,7 @@
   absolute_error_margin: 0.01
   input:
     age: 70
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: CT
   output:
     medicaid_optional_senior_or_disabled_countable_income: 5_580
@@ -98,7 +98,7 @@
   absolute_error_margin: 0.01
   input:
     age: 70
-    ssi_marital_unearned_income: 13_821
+    ssi_unearned_income: 13_821
     state_code: MO
   output:
     # Monthly, 1,151.75 - 20 = 1,131.75, rounded down to 1,131. Without
@@ -112,7 +112,7 @@
   input:
     age: 70
     medicare_enrolled: false
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: CA
   output:
     # DHCS ACWDL 20-24, no Part B or other premiums: (1,000 - 20) x 12 = 11,760.
@@ -123,7 +123,7 @@
   absolute_error_margin: 0.01
   input:
     age: 70
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: CT
   output:
     # (1,000 - 562) x 12 = 5,256.
@@ -134,7 +134,7 @@
   absolute_error_margin: 0.01
   input:
     age: 70
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: SC
   output:
     # (1,000 - 50) x 12 = 11,400.
@@ -146,7 +146,7 @@
   input:
     age: 70
     medicare_enrolled: true
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: CA
   output:
     # DHCS ACWDL 20-24 deducts Part B regardless of how it is paid; the
@@ -161,7 +161,7 @@
     age: 70
     medicare_enrolled: true
     medicare_part_b_enrolled: false
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: CA
   output:
     # No Part B enrollment, so no Part B premium to disregard:
@@ -250,7 +250,7 @@
   input:
     age: 70
     medicare_enrolled: false
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: CA
   output:
     # ACWDL 20-24 ended the 230 disregard on December 1, 2020, which first
@@ -263,7 +263,7 @@
   input:
     age: 70
     medicare_enrolled: true
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: CA
   output:
     # ACWDL 00-57 MC 176 lines 8 and 16. 2020 reads January 1, 2020: the 230
@@ -307,7 +307,7 @@
   input:
     age: 70
     medicare_enrolled: false
-    ssi_marital_earned_income: 12_000
+    ssi_earned_income: 12_000
     state_code: CA
   output:
     # ACWDL 00-57 MC 176 lines 10-16: the unused 20-dollar deduction joins the
@@ -347,7 +347,7 @@
   input:
     age: 70
     medicare_enrolled: false
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     health_insurance_premiums_without_medicare_part_b: 1_800
     state_code: CA
   output:
@@ -360,7 +360,7 @@
   input:
     age: 70
     medicare_enrolled: true
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: CA
   output:
     # The December 2020 Part B disregard first applies in 2021 annual
@@ -374,7 +374,7 @@
   input:
     age: 70
     medicare_enrolled: false
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     health_insurance_premiums: 1_200
     state_code: CA
   output:
@@ -468,7 +468,7 @@
     age: 70
     medicare_enrolled: true
     health_insurance_premiums_without_medicare_part_b: 3_000
-    ssi_marital_unearned_income: 1_200
+    ssi_unearned_income: 1_200
     state_code: CA
   output:
     # (100 - 20) x 12 = 960, less 2,434.80 Part B and 3,000 premiums, floored at 0.
@@ -512,7 +512,7 @@
     age: 70
     medicare_enrolled: true
     health_insurance_premiums_without_medicare_part_b: 1_200
-    ssi_marital_unearned_income: 12_000
+    ssi_unearned_income: 12_000
     state_code: NC
   output:
     # Only California deducts premiums: (1,000 - 20) x 12 = 11,760.
@@ -523,7 +523,7 @@
   absolute_error_margin: 0.01
   input:
     age: 70
-    ssi_marital_earned_income: 12_000
+    ssi_earned_income: 12_000
     state_code: MN
   output:
     # Minn. Stat. 256B.056, subd. 1b: no $20, so none moves to earned income.
