@@ -6779,7 +6779,8 @@ candidates:
     code:
     - policyengine_us/parameters/gov/states/mt/tax/income/deductions/standard/cap.yaml
     - policyengine_us/parameters/gov/states/mt/tax/income/deductions/standard/floor.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10847
   state: ruled
   note: PolicyEngine retains single standard deduction limits for SURVIVING_SPOUSE in 2018-2020. The 2017
     booklet does not contain the qualifying-widow allowance. The operative excerpts and context summaries
