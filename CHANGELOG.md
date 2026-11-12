@@ -1,3 +1,10 @@
+## [2.117.5] - 2026-11-12
+
+### Fixed
+
+- Nevada LIHEAP Fixed Annual Credit now pays households without heating, including cooling-only households, and no longer requires a heating bill, assuming every household has an active energy account.
+
+
 ## [2.117.4] - 2026-11-12
 
 ### Changed
