@@ -306,8 +306,8 @@
     # Alone: 0. Deemed: 11,592 - 0 = 11,592.
     ssi_income_deemed_from_ineligible_spouse: [0, 0, 11_592, 0]
 
-# POMS SI 01320.150 B.1.a includes the claimant's ISM in the couple's
-# unearned income; SI 01320.400 B.1.e applies one general exclusion.
+# SSA includes claimant ISM in the couple's unearned income and applies
+# one general exclusion (POMS SI 01320.150 B.1.a and SI 01320.400 B.1.e).
 # https://secure.ssa.gov/poms.nsf/lnx/0501320150
 # https://secure.ssa.gov/poms.nsf/lnx/0501320400
 - name: Outside shelter support uses the general exclusion once with spouse wages.

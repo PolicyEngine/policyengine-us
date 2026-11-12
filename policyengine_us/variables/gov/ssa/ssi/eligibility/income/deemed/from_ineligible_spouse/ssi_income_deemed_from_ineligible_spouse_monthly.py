@@ -40,9 +40,9 @@ class ssi_income_deemed_from_ineligible_spouse_monthly(Variable):
             "ssi_unearned_income_deemed_from_ineligible_spouse", period
         )
         individual_earned = person("ssi_earned_income", period)
-        # SI 01320.150 B.1.a counts the claimant's ISM in combined unearned
-        # income. Include it in both budgets so their difference adds no
-        # second general exclusion when ssi_countable_income counts ISM.
+        # SSA counts claimant ISM in combined unearned income under
+        # SI 01320.150 B.1.a. Include it in both budgets so their difference
+        # adds no second general exclusion when ssi_countable_income counts ISM.
         individual_unearned = person("ssi_unearned_income", period) + person(
             "ssi_in_kind_support_and_maintenance", period
         )
