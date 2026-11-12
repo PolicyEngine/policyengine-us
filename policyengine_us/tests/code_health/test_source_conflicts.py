@@ -1026,7 +1026,8 @@ def test_source_captures_are_public():
             problems.extend(
                 _source_capture_problems(path.read_bytes(), _relative(path))
             )
-    assert not problems, "\n".join(problems)
+    if problems:
+        pytest.fail("\n".join(problems), pytrace=False)
 
 
 @pytest.mark.parametrize("marker", BOT_MANAGER_MARKERS)
@@ -1106,7 +1107,7 @@ def test_source_capture_guard_reports_only_path_and_kind(tmp_path, monkeypatch):
     path.parent.mkdir(parents=True)
     encoded = base64.b64encode(CAPTURE_EXAMPLE)
     path.write_bytes(b'\xff__uzdbm="' + encoded + b'"')
-    with pytest.raises(AssertionError) as failure:
+    with pytest.raises(pytest.fail.Exception) as failure:
         test_source_captures_are_public()
     message = str(failure.value)
     assert message == (
