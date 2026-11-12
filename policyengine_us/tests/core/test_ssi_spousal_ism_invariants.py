@@ -12,7 +12,10 @@ conversion, deemed-income decomposition, and payment cap. The existing
 Rest/core Python group collects this file.
 """
 
+from types import SimpleNamespace
+
 import numpy as np
+from policyengine_core.periods import period as make_period
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
@@ -263,3 +266,33 @@ def test_legacy_annual_override_replaces_cached_monthly_budgets():
     np.testing.assert_allclose(
         simulation.calculate(monthly_name, f"{YEAR}-02"), [957.50, 0], atol=TOLERANCE
     )
+
+
+def test_annual_input_adapter_honors_dated_legacy_abolition():
+    # Exercise the input adapter without constructing another policy system.
+    # Core checks abolition at the requested month before period conversion.
+    from policyengine_us.variables.gov.ssa.ssi.eligibility.income._annual_input import (
+        annual_input,
+    )
+
+    name = "ssi_income_deemed_from_ineligible_spouse"
+
+    class Parameters:
+        def __call__(self, period):
+            return SimpleNamespace(
+                gov=SimpleNamespace(abolitions={name: period.start.month >= 7})
+            )
+
+    holder = SimpleNamespace(
+        variable=SimpleNamespace(is_neutralized=False, definition_period="year"),
+        get_known_branch_periods=lambda: [],
+    )
+    simulation = SimpleNamespace(
+        tax_benefit_system=SimpleNamespace(parameters=Parameters()),
+        get_holder=lambda variable: holder,
+        _user_input_keys=set(),
+        _get_visible_branch_names=lambda: [],
+    )
+    person = SimpleNamespace(simulation=simulation)
+    assert annual_input(person, make_period("2026-01"), name) is None
+    assert annual_input(person, make_period("2026-07"), name) == 0

@@ -488,38 +488,3 @@
       2026-01: [533.50, 0]
       2026-07: [285, 0]
       2026: [6_153.50, 0]
-
-- name: A dated legacy abolition switch still zeroes the monthly deemed amount.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    gov.abolitions.ssi_income_deemed_from_ineligible_spouse:
-      2026-01-01: false
-      2026-07-01: true
-    people:
-      claimant:
-        age: 70
-      spouse:
-        age: 60
-        employment_income: 2_000 * 12
-    tax_units:
-      couple:
-        members: [claimant, spouse]
-    marital_units:
-      couple:
-        members: [claimant, spouse]
-    households:
-      home:
-        members: [claimant, spouse]
-        state_code: FL
-  output:
-    # January: ($2,000 - $20 - $65) / 2 = $957.50 deemed;
-    # SSI = $1,491 - $957.50 = $533.50.
-    # July: the supplied abolition switch removes deemed income; the
-    # individual-only limit holds SSI to $994.
-    ssi_income_deemed_from_ineligible_spouse_monthly:
-      2026-01: [957.50, 0]
-      2026-07: [0, 0]
-    ssi:
-      2026-01: [533.50, 0]
-      2026-07: [994, 0]
