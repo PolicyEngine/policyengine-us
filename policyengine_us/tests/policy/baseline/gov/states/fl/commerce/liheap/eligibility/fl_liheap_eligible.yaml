@@ -324,3 +324,129 @@
     has_heating_expense: [true, false]
   output:
     fl_liheap_eligible: [true, false]
+
+# A home without heating qualifies through cooling: the one non-crisis Home
+# Energy benefit per 12 months covers heating or cooling (R. 73C-26.022(2)(a);
+# manual 200 P and Q, page 8), and electricity is a home energy type
+# (R. 73C-26.022(6)). Electricity of 1_873 a year is EIA's 2024 Florida average
+# residential bill of 156.09 a month. Wages of 14_820 are part time at the
+# Florida minimum wage, as in Case 7; 35_360 is full time at 17.00 an hour.
+- name: Case 8, a home without heating that pays its own electricity bill for cooling is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_820
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_873
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # 14,820 <= 32,155; no heating fuel, a cooling cost and an electricity bill of 1,873 > 0
+    fl_liheap_eligible: true
+
+- name: Case 9, a cooling-only household with income above the limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 35_360
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_873
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # 35,360 > 32,155 and no categorical receipt
+    fl_liheap_eligible: false
+
+- name: Case 10, a home without heating that reports cooling costs but no electricity bill is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_820
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 0
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # No electricity bill to show responsibility for the home energy cost
+    fl_liheap_eligible: false
+
+- name: Case 11, an unspecified heating fuel with cooling costs and an electricity bill is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_820
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: false
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_873
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # heating_type is required; UNSPECIFIED does not open the cooling path
+    fl_liheap_eligible: false
+
+# A household with a heating fuel but no heating obligation is still responsible
+# for part of its home heating and cooling costs when it pays its own
+# electricity bill for cooling (700.01 E, page 23; 900.08 A, page 43). The
+# first household is in subsidized housing with gas heat included in the rent;
+# the second heats with gas outside the rent but reports no heating obligation,
+# as in Case 7. Wages and electricity are as in Case 8.
+- name: Case 12, a heated home without a heating obligation that pays its own electricity bill for cooling is eligible.
+  period: 2026
+  input:
+    state_code: [FL, FL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    fl_tca: [0, 0]
+    snap: [0, 0]
+    employment_income: [14_820, 14_820]
+    receives_housing_assistance: [true, false]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [0, 1_200]
+    heat_expense_included_in_rent: [true, false]
+    has_heating_expense: [false, false]
+    has_cooling_expense: [true, true]
+    pre_subsidy_electricity_expense: [1_873, 1_873]
+  output:
+    # 14,820 <= 32,155; a cooling cost and an electricity bill of 1,873 > 0
+    fl_liheap_eligible: [true, true]
