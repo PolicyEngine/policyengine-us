@@ -42,7 +42,8 @@
   absolute_error_margin: 0.000001
   input:
     monthly_age: [0, 14, 15, 20, 21, 40, 64]
-    state_code: [TX, TX, TX, TX, TX, TX, TX]
+    state_code:
+      2017: [TX, TX, TX, TX, TX, TX, TX]
   output:
     # CMS 2013 child ratio / the 2018 base ratio = 0.635 / 0.765.
     # Adult multipliers retain the model's 2018 normalization.
@@ -71,7 +72,8 @@
   absolute_error_margin: 0.000001
   input:
     monthly_age: [0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65]
-    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    state_code:
+      2017: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
   output:
     # CMS NJ ratios * the model's age-40 multiplier / CMS NJ age-40 ratio.
     # Children: 0.75 * 1.6706 / 1.393 = 0.8994615937.
