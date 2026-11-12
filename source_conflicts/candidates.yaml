@@ -10245,6 +10245,45 @@ candidates:
   note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
     section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
     member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-current-self-employment-loss-offset
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: During South Carolina TANF's fifty-percent earned-income disregard, does a current self-employment loss
+    offset other members' income, or must each person's earned income stop at zero before aggregation?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(B)(3) and (C)(1)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 sections 7.1, 8.9 and 8.16 C and E
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=102
+  - kind: instructions
+    citation: 2025 IRS Instructions for Schedule C, Line 31
+    url: https://www.irs.gov/pub/irs-pdf/i1040sc.pdf#page=14
+  readings:
+    statute: No statute is supplied; 114-1150(B)(3) computes business profit from receipts less expenses using IRS
+      methods, and (C)(1) applies the fifty-percent disregard per person. Retaining the signed current business
+      result through that calculation and the section 8.16 E sum permits offsets against other members' income.
+    other: Section 7.1 describes income as money received. Treating that general definition as a nonnegative bound
+      would floor each person's earned income at zero before aggregation. Neither source expressly addresses
+      current-loss offsets or directs that floor.
+  example: In January 2026 adult A receives $1,000 monthly alimony and adult B has a $1,200 monthly self-employment
+    loss, with one child. The signed calculation gives $400 countable income and a $287 payment. Flooring B's
+    earnings gives $1,000 countable income and a $44 payment.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_earned_income_person.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: ruled
+  note: We retain the signed calculation under the specific IRS-method and aggregation provisions. DSS supplies
+    no express current-loss offset policy in the cited sections. This entry records competing interpretations,
+    rather than an express disagreement between those sources. The continuing $100 disregard remains unchanged.
 - id: us-sc:tanf-dependent-child-school-level
   program: tanf
   years:
