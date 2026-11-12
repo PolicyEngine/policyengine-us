@@ -1,3 +1,68 @@
+## [2.118.3] - 2026-11-12
+
+### Fixed
+
+- Apply immigration tests to Medicare (42 U.S.C. 1395o(a)(2), 42 U.S.C. 1395mmm and 8 U.S.C. 1611(b)(3)) and to Medicare Savings Programs (42 U.S.C. 1396b(v), 8 U.S.C. 1611(a) and 1613(a)), so undocumented people no longer get either and, from 2027, only citizens, permanent residents and Cuban and Haitian entrants can get Medicare. Medicare Savings Programs use the federal Medicaid immigration test, so state-funded Medicaid coverage does not open them.
+
+
+## [2.118.2] - 2026-11-12
+
+### Changed
+
+- Require source-derived partner test values, boundary checks, preserved failing evidence and independent automated review at the current head. Reserve human review for specific expertise questions, remove routine notification gates and load applicable development skills directly.
+
+### Fixed
+
+- Pay Hawaii's LIHEAP Energy Credit on the electric (cooling) account to any eligible household with an electric bill or with utilities or electric heat included in its rent, including the subsidized-dwelling flat amount.
+- Apply SSI's spouse deeming rules to Medicare Savings Program countable income and the poverty guideline when only one spouse is on Medicare, including a spouse who is aged, blind or disabled: a spouse who is not eligible for SSI has income deemed above the rate difference, after allocations for ineligible children, and deeming cannot give a better tier than the person's own income does (20 CFR 416.1163). Test spouses as a couple only when both are on Medicare.
+
+
+## [2.118.1] - 2026-11-12
+
+### Fixed
+
+- Give the Social Security state test backend's stand-in system the situation preprocessing hook that policyengine-core's builder calls.
+
+
+## [2.118.0] - 2026-11-12
+
+### Added
+
+- Add a national LIHEAP total that sums each state's regular payment, an Illinois regular heating payment without crisis assistance, a Michigan Home Heating Credit registry entry, and cooling notes for each state's LIHEAP registry entry.
+
+### Fixed
+
+- Fix state LIHEAP formulas that raised an error when calculated in a microsimulation.
+
+
+## [2.117.10] - 2026-11-12
+
+### Fixed
+
+- Florida LIHEAP Home Energy benefit now pays households that pay their own electricity bill for cooling, including homes without heating and subsidized tenants with heat in the rent.
+
+
+## [2.117.9] - 2026-11-12
+
+### Fixed
+
+- Pay Oregon's LIHEAP standard payment from the matrix cooling column to households with no heating cost, including homes without heating, that pay an electric bill for cooling. Stop Oregon's LIHEAP income limits at the federal maximum, the greater of HHS's 60% state median income amount and 150% of the poverty guideline.
+
+
+## [2.117.8] - 2026-11-12
+
+### Fixed
+
+- Pay California's regular HEAP utility benefit to households with no heating that pay a gas or electric bill.
+
+
+## [2.117.7] - 2026-11-12
+
+### Fixed
+
+- Let aged, blind and disabled people in Missouri who do not receive SSI deduct incurred medical expenses to reach the state's income standard, as 42 CFR 435.121(e)(4) requires in a section 209(b) state with no medically needy program. A child's 209(b) spend down now also counts the parents' medical expenses. In Missouri, a child's resource test now counts the parents' entire resources, and nonblind disabled children are covered. A blind Missouri child under 18 is tested against the income standard for disabled children.
+
+
 ## [2.117.6] - 2026-11-12
 
 ### Changed

@@ -55,7 +55,7 @@ class la_liheap_countable_income(Variable):
             - person("medicare_part_b_premium", period),
             0,
         )
-        ssi = person("ssi", period, options=[ADD])
+        ssi = person("ssi", period)
         # Undocumented members keep all their income. FITAP is counted once at
         # the SPM level: the take-up-gated tanf total includes la_fitap, which
         # alone would count a grant a nonrecipient could get.

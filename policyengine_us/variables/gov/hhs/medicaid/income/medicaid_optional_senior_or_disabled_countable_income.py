@@ -4,6 +4,7 @@ from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_couple_budget_total,
+    _ssi_couple_income,
 )
 
 
@@ -32,7 +33,15 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
     )
 
     def formula(person, period, parameters):
-        pre_reduction_earned_income = person("ssi_marital_earned_income", period)
+        # NOTE: this annual formula applies one couple status to the whole
+        # year (couple_computation below), so it combines the spouses' annual
+        # income by that same status. ssi_marital_earned_income and
+        # ssi_marital_unearned_income are monthly and follow each month's
+        # status; their annual totals would not match it in a year with a
+        # part-year facility stay.
+        pre_reduction_earned_income = _ssi_couple_income(
+            person, period, "ssi_earned_income"
+        )
         blind_disabled_working_student_income = person(
             "ssi_blind_or_disabled_working_student_exclusion", period
         )
@@ -41,14 +50,13 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             0,
         )
 
-        total_unearned_income = add(
-            person,
-            period,
-            [
-                "ssi_marital_unearned_income",
+        total_unearned_income = (
+            _ssi_couple_income(person, period, "ssi_unearned_income")
+            + person(
                 "medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent",
-                "ssi_in_kind_support_and_maintenance",
-            ],
+                period,
+            )
+            + person("ssi_in_kind_support_and_maintenance", period)
         )
 
         couple_computation = person("ssi_couple_computation_applies", period)
@@ -99,8 +107,8 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         # person in the family. A couple's budget takes both spouses'
         # premiums and those of unmarried tax dependents in their marital
         # unit and tax unit. It leaves out another couple's dependent and an
-        # unrelated adult, whose income also stays out of
-        # ssi_marital_unearned_income when a situation omits marital units.
+        # unrelated adult, whose income also stays out of the couple's
+        # combined income above when a situation omits marital units.
         premiums = where(
             couple_computation,
             _ssi_couple_budget_total(person, period, own_premiums),

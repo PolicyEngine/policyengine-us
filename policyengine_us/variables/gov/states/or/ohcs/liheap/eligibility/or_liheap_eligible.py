@@ -6,11 +6,11 @@ class or_liheap_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR
-    label = "Oregon LIHEAP regular heating eligibility"
+    label = "Oregon LIHEAP regular heating or cooling eligibility"
     defined_for = StateCode.OR
-    # Manual PDF pages 11, 30, 36, 61, 77, 93-94; OAR 813-200-0020(1)(b).
+    # Manual PDF pages 11,30,36,61,67,77-81,90,93-94; OAR 813-200-0020(1)(b).
     reference = (
-        "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=61",
+        "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=11",
         "https://www.law.cornell.edu/regulations/oregon/Or-Admin-Code-SS-813-200-0020",
         "https://www.law.cornell.edu/uscode/text/42/8624",
     )
@@ -20,7 +20,9 @@ class or_liheap_eligible(Variable):
         "813-200-0020(1)(b) and the manual's energy burden table: subsidized housing "
         "with heat included in rent is excluded even when the household pays a "
         "separate non-heating utility bill. The Oregon sources do not prescribe a "
-        "SNAP immigration test. No asset or categorical income test applies. "
+        "SNAP immigration test. A household with no heating cost, including a home "
+        "without heating, qualifies on an electric bill when it pays for cooling. No "
+        "asset or categorical income test applies. "
         "Institutional residence, tribal duplicate awards, documentation and "
         "application timing are not modeled. A zero benefit above size 12 or for an "
         "unknown county denotes unsupported schedule coverage, not a legal denial."
@@ -33,7 +35,21 @@ class or_liheap_eligible(Variable):
         subsidized = spm_unit(
             "receives_housing_assistance", period
         ) | spm_unit.household("is_in_public_housing", period)
+        heating_type = spm_unit("heating_type", period)
         heating_cost = spm_unit("has_heating_expense", period) | heat_in_rent
+        # Eligible households are responsible for home heating or cooling costs
+        # (page 90). A household with no heating cost, including a home without
+        # heating, qualifies on an electric bill it pays for cooling; the
+        # benefit then follows the energy type it is applied to (page 67), and
+        # the matrix pays electric cooling from its COOLING column. heating_type
+        # is a required input, so UNSPECIFIED does not qualify.
+        cooling_only = (
+            (heating_type != heating_type.possible_values.UNSPECIFIED)
+            & ~heating_cost
+            & spm_unit("has_cooling_expense", period)
+            & (spm_unit("pre_subsidy_electricity_expense", period) > 0)
+        )
+        energy_cost = heating_cost | cooling_only
         income = spm_unit("or_liheap_countable_income", period)
         limit = spm_unit("or_liheap_income_limit", period)
         # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
@@ -44,4 +60,4 @@ class or_liheap_eligible(Variable):
         guideline = fpg(size, state_group, period, parameters, year_lag=p.fpg_year_lag)
         floor = np.round(guideline * p_hhs.fpg_floor, 2)
         income_eligible = (income <= limit) | (income < floor)
-        return heating_cost & ~(heat_in_rent & subsidized) & income_eligible
+        return energy_cost & ~(heat_in_rent & subsidized) & income_eligible

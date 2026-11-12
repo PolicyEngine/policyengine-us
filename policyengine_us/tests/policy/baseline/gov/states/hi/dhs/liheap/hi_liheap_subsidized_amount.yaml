@@ -348,3 +348,119 @@
     hi_liheap_countable_income: 30_000
     hi_liheap_eligible: true
     hi_liheap_subsidized_amount: 425
+
+- name: Case 5, a subsidized household with no heating receives the flat benefit on its electric account.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Plan 3.5 (page 13) gives cooling the same flat amounts, and the matrix pays
+  # one "heating and cooling energy credit". Each adult works full time at
+  # Hawaii's $16 minimum wage from 2026 (HRS 387-2): 16 x 2_080 = 33_280, under the
+  # one-person limit of 41_941 and the three-person limit of 67_751. The electric
+  # bill is 2_016 (168 x 12, Case 5 of hi_liheap_eligible). A voucher holder pays
+  # 375 for size one and a public-housing family of three pays 425. A private
+  # dwelling is eligible, but this output reads zero for it. Hawaii asks no
+  # cooling cost, so the electric bill qualifies without one.
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+      person2:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+      person3:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+      person4:
+        age: 35
+        ssi: 0
+        employment_income_before_lsr: 33_280
+      person5:
+        age: 33
+        ssi: 0
+      person6:
+        age: 8
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 2_016
+        hi_tanf: 0
+        receives_housing_assistance: true
+      spm_unit2:
+        members: [person2]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 2_016
+        hi_tanf: 0
+        receives_housing_assistance: false
+      spm_unit3:
+        members: [person3]
+        heating_type: NONE
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 2_016
+        hi_tanf: 0
+        receives_housing_assistance: true
+      spm_unit4:
+        members: [person4, person5, person6]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 2_016
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household4:
+        members: [person4, person5, person6]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+        is_in_public_housing: true
+  output:
+    hi_liheap_countable_income: [33_280, 33_280, 33_280, 33_280]
+    hi_liheap_eligible: [true, true, true, true]
+    hi_liheap_subsidized_amount: [375, 0, 375, 425]
+
+- name: Case 6, a public-housing tenant whose utilities are in the rent receives the flat benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  # One person aged 70 in Honolulu public housing with $18,000 of Social Security,
+  # under the one-person limit of 41_941. Rent includes the utilities and there
+  # is no separate bill; the draft's Energy Credit offsets "rent or applicant's
+  # share of the electric/gas cost when rent includes electric/gas". Size one
+  # receives 375.
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+        is_in_public_housing: true
+        tenant_pays_utilities: false
+  output:
+    hi_liheap_eligible: true
+    hi_liheap_subsidized_amount: 375
