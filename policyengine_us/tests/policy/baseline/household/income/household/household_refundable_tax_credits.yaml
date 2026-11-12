@@ -41,8 +41,9 @@
     household_refundable_tax_credits: 800
 
 - name: Case 4, a marketplace enrollee's credit reaches the household's refundable credits.
-  # A single 45-year-old in Lebanon County, PA, earning $40,000 (256% of the
-  # 2025 poverty guideline, which 2026 credits use). The credit is the
+  # A single 45-year-old in Lebanon County, PA, earning $40,000 (40,000 /
+  # 15,650 = 2.5559 of the 2025 poverty guideline, which 2026 credits use,
+  # floored to 255%). The credit is the
   # benchmark premium minus the required contribution; at this income there
   # is no EITC, refundable CTC or Pennsylvania refundable credit.
   period: 2026

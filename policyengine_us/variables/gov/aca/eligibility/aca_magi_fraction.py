@@ -26,9 +26,10 @@ class aca_magi_fraction(Variable):
     def formula(tax_unit, period, parameters):
         magi = max_(0, tax_unit("aca_magi", period))
         # The credit measures income against the guideline for the year before
-        # the coverage year. For coverage in the first modeled year, that year
-        # precedes the model, so the coverage year's guideline stands in and
-        # nothing is computed for an unmodeled year.
+        # the coverage year (26 U.S.C. 36B(d)(3)(B)). For coverage in the
+        # first modeled year, that year precedes the model, so the coverage
+        # year's guideline stands in and nothing is computed for an unmodeled
+        # year. This departs from the statute for that one year.
         guideline_period = period.last_year
         if guideline_period.start.year < FIRST_MODELED_YEAR:
             guideline_period = period
