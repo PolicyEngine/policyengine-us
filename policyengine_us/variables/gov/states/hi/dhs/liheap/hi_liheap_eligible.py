@@ -12,9 +12,10 @@ class hi_liheap_eligible(Variable):
         "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=5",
         # PDF pages 1, 3
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=1",
-        # Draft FY2026 manual sections 1.4, 2.1, 2.8, 2.12, 4.2 and 5.5.
-        # PDF pages 57-58, 60-61, 65, 67
-        "https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=57",
+        # Draft FY2026 manual Energy Credit definition and sections 1.4, 2.1, 2.8,
+        # 2.12, 4.2 and 5.5.
+        # PDF pages 55, 57-58, 60-61, 65, 67
+        "https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=55",
     )
 
     def formula(spm_unit, period, parameters):
@@ -50,7 +51,8 @@ class hi_liheap_eligible(Variable):
         # The draft's Energy Credit definition, 2.1 and 4.2 and application Q23-24
         # accept a share of utilities in rent, "electric/gas" alike. Utilities in
         # rent (tenant_pays_utilities false) qualify any known fuel, and gas or
-        # electric heat in rent qualifies too. The size of the share has no input.
+        # electric heat in rent qualifies too. The size of the share has no input,
+        # and a third-party payer or a rent-free home is not identified.
         utilities_in_rent = ~spm_unit.household("tenant_pays_utilities", period)
         rent_fuel = (fuel == types.NATURAL_GAS) | (fuel == types.ELECTRICITY)
         responsible = (

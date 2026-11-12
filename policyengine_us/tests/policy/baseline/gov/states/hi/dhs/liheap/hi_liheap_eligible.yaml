@@ -95,24 +95,26 @@
   # A separate gas bill still qualifies when electric heat is in the rent (row 10).
   # An electric bill qualifies the electric account, which pays as cooling (row 4).
   # Electric heat in the rent qualifies like gas in the rent (row 9). Bottled gas
-  # shows no utility account, and UNSPECIFIED pays nothing.
+  # shows no utility account, and UNSPECIFIED pays nothing. Heat in the rent
+  # qualifies only gas or electric heat, so propane or an unspecified fuel with
+  # heat in the rent and no bill gets nothing (rows 11 and 12).
   input:
-    state_code: [HI, HI, HI, HI, HI, HI, HI, HI, HI, HI]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, ELECTRICITY, PROPANE, UNSPECIFIED, NONE, ELECTRICITY, ELECTRICITY, ELECTRICITY]
-    gas_expense: [900, 0, 0, 0, 0, 900, 900, 900, 0, 900]
-    pre_subsidy_electricity_expense: [0, 0, 0, 900, 0, 0, 0, 0, 0, 0]
-    bottled_gas_expense: [0, 0, 0, 0, 900, 0, 0, 0, 0, 0]
-    heat_expense_included_in_rent: [false, false, true, false, false, false, false, false, true, true]
-    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    hi_liheap_countable_income: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000]
+    state_code: [HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, ELECTRICITY, PROPANE, UNSPECIFIED, NONE, ELECTRICITY, ELECTRICITY, ELECTRICITY, PROPANE, UNSPECIFIED]
+    gas_expense: [900, 0, 0, 0, 0, 900, 900, 900, 0, 900, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 900, 0, 0, 0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [false, false, true, false, false, false, false, false, true, true, true, true]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    hi_liheap_countable_income: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000]
   output:
     # Was false, now true for row 4: a household may have its electric account
     # credited (2.12; application Q17). Was false, now true for row 9: the Energy
     # Credit offsets "rent or applicant's share of the electric/gas cost when rent
     # includes electric/gas".
-    hi_liheap_eligible: [true, false, true, true, false, false, true, true, true, true]
+    hi_liheap_eligible: [true, false, true, true, false, false, true, true, true, true, false, false]
 
 - name: Case 5, the electric account qualifies for the cooling credit on its electric bill.
   period: 2026
@@ -139,8 +141,8 @@
 
 - name: Case 6, utilities included in the rent qualify any known fuel without a bill.
   period: 2026
-  # The draft's Energy Credit definition and 2.1 accept "the household's prorated
-  # share of the utility bill if rent includes utilities", and application Q23
+  # Draft 2.1 and 4.2 accept "the household's prorated share of the utility bill
+  # if rent includes utilities", and application Q23
   # asks whether rent includes "electric/gas service". A home with no heating whose
   # utilities are in the rent qualifies with no bill of its own (row 1). An
   # unspecified fuel still pays nothing (row 2).
