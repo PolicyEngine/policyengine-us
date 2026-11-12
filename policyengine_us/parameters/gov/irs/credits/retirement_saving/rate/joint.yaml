@@ -18,6 +18,16 @@ metadata:
       href: https://www.irs.gov/pub/irs-pdf/f8880.pdf#page=1
     - title: 2018 Form 8880
       href: https://www.irs.gov/pub/irs-prior/f8880--2018.pdf#page=1
+    - title: "IRS Notice 2018-83, 2019 retirement amounts #page 2-3"
+      href: https://www.irs.gov/pub/irs-drop/n-18-83.pdf#page=2
+    - title: "IRS Notice 2019-59, 2020 retirement amounts #page 2-3"
+      href: https://www.irs.gov/pub/irs-drop/n-19-59.pdf#page=2
+    - title: "IRS Notice 2020-79, 2021 retirement amounts #page 2-3"
+      href: https://www.irs.gov/pub/irs-drop/n-20-79.pdf#page=2
+    - title: IRS Notice 2021-61, 2022 retirement amounts
+      href: https://www.irs.gov/pub/irs-drop/n-21-61.pdf#page=3
+    - title: IRS Notice 2022-55, 2023 retirement amounts
+      href: https://www.irs.gov/pub/irs-drop/n-22-55.pdf#page=3
     - title: IRS Notice 2023-75, 2024 Amounts Relating to Retirement Plans and IRAs (25B(b)(1)(A)-(D) joint amounts $46,000/$50,000/$76,500)
       href: https://www.irs.gov/pub/irs-drop/n-23-75.pdf#page=3
     - title: IRS Notice 2024-80, 2025 Amounts Relating to Retirement Plans and IRAs (25B(b)(1)(A)-(D) joint amounts $47,500/$51,000/$79,000)
@@ -26,6 +36,8 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/n-25-67.pdf#page=3
 
 brackets:
+  # Thresholds below are the published inclusive band tops; the formula uses
+  # right=True so each reduced rate applies only above the preceding ceiling.
   # The first row of the Form 8880 line 9 table has no lower bound ("---"), so
   # a negative adjusted gross income takes the highest rate.
   - threshold:
@@ -36,46 +48,46 @@ brackets:
       2018-01-01: 0.5
   - threshold:
       values:
-        2017-01-01: 37_001
-        2018-01-01: 38_001
-        2019-01-01: 38_501
-        2020-01-01: 39_001
-        2021-01-01: 39_501
-        2022-01-01: 41_001
-        2023-01-01: 43_501
-        2024-01-01: 46_001
-        2025-01-01: 47_501
-        2026-01-01: 48_501
+        2017-01-01: 37_000
+        2018-01-01: 38_000
+        2019-01-01: 38_500
+        2020-01-01: 39_000
+        2021-01-01: 39_500
+        2022-01-01: 41_000
+        2023-01-01: 43_500
+        2024-01-01: 46_000
+        2025-01-01: 47_500
+        2026-01-01: 48_500
     amount:
       2017-01-01: 0.2
       2018-01-01: 0.2
   - threshold:
       values:
-        2017-01-01: 40_001
-        2018-01-01: 41_001
-        2019-01-01: 41_501
-        2020-01-01: 42_501
-        2021-01-01: 43_001
-        2022-01-01: 44_001
-        2023-01-01: 47_501
-        2024-01-01: 50_001
-        2025-01-01: 51_001
-        2026-01-01: 52_501
+        2017-01-01: 40_000
+        2018-01-01: 41_000
+        2019-01-01: 41_500
+        2020-01-01: 42_500
+        2021-01-01: 43_000
+        2022-01-01: 44_000
+        2023-01-01: 47_500
+        2024-01-01: 50_000
+        2025-01-01: 51_000
+        2026-01-01: 52_500
     amount:
       2017-01-01: 0.1
       2018-01-01: 0.1
   - threshold:
       values:
-        2017-01-01: 62_001
-        2018-01-01: 63_001
-        2019-01-01: 64_001
-        2020-01-01: 65_001
-        2021-01-01: 66_001
-        2022-01-01: 68_001
-        2023-01-01: 73_001
-        2024-01-01: 76_501
-        2025-01-01: 79_001
-        2026-01-01: 80_501
+        2017-01-01: 62_000
+        2018-01-01: 63_000
+        2019-01-01: 64_000
+        2020-01-01: 65_000
+        2021-01-01: 66_000
+        2022-01-01: 68_000
+        2023-01-01: 73_000
+        2024-01-01: 76_500
+        2025-01-01: 79_000
+        2026-01-01: 80_500
     amount:
       2017-01-01: 0
       2018-01-01: 0
