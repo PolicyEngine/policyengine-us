@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
     _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
@@ -39,19 +42,18 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
         # deeming methodology: the spouse's income counts without the
         # FBR-differential threshold or ineligible-child allocations.
         is_mo = state == "MO"
-        marital_unit = person.marital_unit
         ineligible_spouse = person("is_ssi_ineligible_spouse", period)
         spouse_gross_earned = (
-            marital_unit.sum(ineligible_spouse * individual_earned)
+            _ssi_couple_total(person, period, ineligible_spouse * individual_earned)
             - ineligible_spouse * individual_earned
         )
         spouse_gross_unearned = (
-            marital_unit.sum(ineligible_spouse * individual_unearned)
+            _ssi_couple_total(person, period, ineligible_spouse * individual_unearned)
             - ineligible_spouse * individual_unearned
         )
         spouse_earned = where(is_mo, spouse_gross_earned, spouse_earned)
         spouse_unearned = where(is_mo, spouse_gross_unearned, spouse_unearned)
-        has_ineligible_spouse = marital_unit.sum(ineligible_spouse) > 0
+        has_ineligible_spouse = _ssi_couple_total(person, period, ineligible_spouse) > 0
         deeming_applies = deeming_applies | (is_mo & has_ineligible_spouse)
 
         alone_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(

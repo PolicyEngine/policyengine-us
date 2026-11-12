@@ -204,13 +204,14 @@
     # defined_for = StateCode.WA on wa_pte_eligible blocks the benefit
     wa_senior_disabled_property_tax_exemption: 0
 
-- name: Case 9, age 60 disabled is benefit-eligible via disability path.
+- name: Case 9, age 60 retired by reason of disability is benefit-eligible via the disability path.
   period: 2024
   input:
     people:
       person1:
         age: 60
         is_disabled: true
+        wa_pte_retired_due_to_disability: true
         real_estate_taxes: 6_000
         assessed_property_value: 700_000
     tax_units:

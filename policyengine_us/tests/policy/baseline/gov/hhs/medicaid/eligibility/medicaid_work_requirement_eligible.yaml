@@ -412,3 +412,27 @@
     medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: true
+
+- name: Case 42, a veteran with a 100% service-connected rating is exempt.
+  period: 2027
+  # is_veteran is left at its default (veterans_benefits > 0, so false): the
+  # VA 100% flag alone must exempt.
+  input:
+    age: 40
+    monthly_hours_worked: 0
+    is_fully_disabled_service_connected_veteran: true
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 43, a veteran with only the tax permanent and total disability flag is not exempt as a veteran.
+  period: 2027
+  input:
+    age: 40
+    monthly_hours_worked: 0
+    is_veteran: true
+    is_permanently_and_totally_disabled: true
+    is_fully_disabled_service_connected_veteran: false
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false

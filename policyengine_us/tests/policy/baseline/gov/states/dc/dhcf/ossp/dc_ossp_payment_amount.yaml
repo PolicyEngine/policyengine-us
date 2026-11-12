@@ -1,0 +1,45 @@
+- name: DC foster-care couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        dc_ossp_in_adult_foster_care: true
+        dc_ossp_facility_size: 30
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: DC
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    dc_ossp_eligible: [true, true, true]
+    # DC DHCF's 2026 OSSP table, OS-A (adult foster care, at most 50 beds):
+    # https://dhcf.dc.gov/service/optional-state-supplement-payment-program
+    # $1,717 / 2 = $858.50 per spouse; the individual rate is $681.
+    dc_ossp_payment_amount: [858.5, 858.5, 681]
+    dc_ossp: [858.5, 858.5, 681]

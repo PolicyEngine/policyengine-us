@@ -12,8 +12,10 @@ class hi_liheap_points(Variable):
         "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=10",
         # PDF pages 2-3
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2",
-        # PDF pages 2, 8
+        # PDF pages 2, 8, 20
         "https://humanservices.hawaii.gov/wp-content/uploads/2019/07/Policies-and-Procedures-2020.pdf#page=2",
+        # PDF pages 55, 69
+        "https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=55",
     )
 
     def formula(spm_unit, period, parameters):
@@ -52,14 +54,18 @@ class hi_liheap_points(Variable):
         age = person("age", period)
         qualified = person("hi_liheap_qualified_member", period)
         # The manuals define a disabled individual by receipt of SSI or Social
-        # Security disability payments. Veterans' 100% ratings, governmental
-        # disability retirement and railroad disability have no separate input,
-        # so is_disabled stands in for them. This affects points only.
+        # Security disability payments, or "VA benefits for a 100%
+        # service-connected disability". Governmental disability retirement
+        # and railroad disability have no separate input, so is_disabled
+        # stands in for them. The manuals don't say whether a total rating
+        # based on individual unemployability counts; the VA flag includes
+        # it. This affects points only.
         disabled = (
             person("is_disabled", period)
             | (person("ssi", period, options=[ADD]) > 0)
             | (add(person, period, ["receives_ssi"]) > 0)
             | (person("social_security_disability", period) > 0)
+            | person("is_fully_disabled_service_connected_veteran", period)
         )
         ages = p.payment.points.vulnerability
         vulnerable = spm_unit.any(

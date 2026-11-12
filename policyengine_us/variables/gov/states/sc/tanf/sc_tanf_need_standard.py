@@ -28,4 +28,8 @@ class sc_tanf_need_standard(Variable):
             p_fpg.first_person[state_group]
             + p_fpg.additional_person[state_group] * (size - 1)
         ) / MONTHS_IN_YEAR
-        return where(size > 0, fpg * p.rate, 0)
+        # 114-1140(A)(4) rounds the standard of need down to a whole dollar.
+        # The Section 8.15 table rounds the monthly guideline before halving
+        # it ($1,762 -> $881 for two); floor(floor(x) / 2) = floor(x / 2) for
+        # x >= 0, so flooring once gives the same result.
+        return where(size > 0, np.floor(fpg * p.rate), 0)
