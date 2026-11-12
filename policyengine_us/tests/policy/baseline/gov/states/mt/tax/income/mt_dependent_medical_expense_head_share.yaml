@@ -197,3 +197,40 @@
         state_code: MT
   output:
     mt_dependent_medical_expense_head_share: 0.5
+
+- name: Zero credits retain the former balancing candidate when dependent exemptions cover both columns
+  period: 2022
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        mt_agi_indiv: 30_000
+        mt_non_medical_itemized_deductions_indiv: 0
+        mt_non_refundable_credits: 0
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 10_000
+        mt_non_medical_itemized_deductions_indiv: 0
+        mt_non_refundable_credits: 0
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        other_medical_expenses: 36_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    # Levels are 30,000 - 2,710 + 2,250 = 29,540 and
+    # 10,000 - 2,710 + 750 = 8,040. The former balancing share is
+    # 0.5 + (29,540 - 8,040) / 72,000 = 0.7986111111.
+    # Each pre-dependent income is 790, so the child's 2,710 exemption
+    # leaves both columns at zero. A zero-credit kink at 0.7766666667
+    # also gives zero tax but must not replace the former candidate.
+    mt_dependent_medical_expense_head_share: 0.7986111111
