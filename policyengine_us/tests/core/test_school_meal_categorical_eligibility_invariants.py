@@ -4,6 +4,7 @@ Each draw runs independent SPM units together, reusing one read-only system.
 We vary siblings, income tiers, enrollment, K-12 attendance and receipt months.
 The paired units hold their poverty ratios and poverty guidelines fixed
 when a child joins them. An explicit example covers every state and DC.
+With computed common tiers, household categories give every child free meals.
 """
 
 import numpy as np
@@ -346,3 +347,55 @@ def test_school_meal_categorical_eligibility_invariants(
     school_meal_system, drawn_units
 ):
     _check(drawn_units, school_meal_system)
+
+
+@settings(max_examples=6, deadline=None, derandomize=True)
+@given(
+    breakfast=st.sampled_from(("FREE", "REDUCED", "PAID")),
+    lunch=st.sampled_from(("FREE", "REDUCED", "PAID")),
+)
+@example(breakfast="PAID", lunch="REDUCED")
+def test_explicit_common_meal_tier_inputs_preserve_individual_overrides(
+    school_meal_system, breakfast, lunch
+):
+    # Explicit common tier inputs override the household calculation.
+    # Individual categories still override those inputs for that child.
+    situation, records = _situation(
+        [
+            {
+                "state": "AL",
+                "ages": [8, 15],
+                "ratio": 3.0,
+                "month": f"{YEAR}-07",
+                "amount": 100,
+                "added_in_k12": True,
+            }
+        ]
+    )
+    common_tiers = {"breakfast": breakfast, "lunch": lunch}
+    for spm_unit in situation["spm_units"].values():
+        spm_unit["meets_school_meal_categorical_eligibility"] = {YEAR: True}
+        for meal, tier in common_tiers.items():
+            spm_unit[f"school_meal_{meal}_tier"] = {YEAR: tier}
+    simulation = Simulation(situation=situation, tax_benefit_system=school_meal_system)
+    categorical = np.asarray(
+        simulation.calculate("is_school_meal_categorically_eligible", YEAR),
+        dtype=bool,
+    )
+    assert categorical.all()
+    person_index = {name: index for index, name in enumerate(situation["people"])}
+    for meal, common_tier in common_tiers.items():
+        child_tiers = simulation.calculate(
+            f"school_meal_child_{meal}_tier", YEAR
+        ).decode_to_str()
+        for record in records:
+            for name in record["members"]:
+                own_category = (
+                    name == record["added"] and record["variant"] in CHILD_CATEGORIES
+                )
+                expected = "FREE" if own_category else common_tier
+                assert child_tiers[person_index[name]] == expected, (
+                    f"meal={meal} common_tier={common_tier} "
+                    f"variant={record['variant']} person={name}: "
+                    f"tier={child_tiers[person_index[name]]}, expected={expected}"
+                )
