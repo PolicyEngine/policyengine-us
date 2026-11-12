@@ -7,9 +7,11 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2021: 30
       child:
-        age: 3
+        age:
+          2021: 3
     spm_units:
       family:
         members: [parent, child]
@@ -18,7 +20,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2021: ND
   output:
     nd_ccap_categorical_copay_waiver: false
 
@@ -28,9 +31,11 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2021: 30
       child:
-        age: 3
+        age:
+          2021: 3
     spm_units:
       family:
         members: [parent, child]
@@ -39,6 +44,7 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2021: ND
   output:
     nd_ccap_categorical_copay_waiver: true

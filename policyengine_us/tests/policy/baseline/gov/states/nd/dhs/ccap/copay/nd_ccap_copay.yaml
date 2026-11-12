@@ -396,10 +396,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -412,7 +414,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_workforce_benefit_eligible: false
     nd_ccap_copay: 88
@@ -424,11 +427,13 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2024: 30
         ssi: 0
         nd_ccap_workforce_benefit_eligible_parent: true
       child:
-        age: 3
+        age:
+          2024: 3
         ssi: 0
     spm_units:
       family:
@@ -441,7 +446,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2024: ND
   output:
     nd_ccap_workforce_benefit_eligible: true
     nd_ccap_copay: 0
@@ -453,10 +459,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2024: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2024: 3
         ssi: 0
     spm_units:
       family:
@@ -470,7 +478,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2024: ND
   output:
     nd_ccap_copay: 0
 
@@ -481,10 +490,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2024: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2024: 3
         ssi: 0
     spm_units:
       family:
@@ -498,7 +509,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2024: ND
   output:
     nd_ccap_copay: 0
 
@@ -509,10 +521,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2024: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2024: 3
         ssi: 0
     spm_units:
       family:
@@ -526,7 +540,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2024: ND
   output:
     nd_ccap_copay: 0
 
@@ -537,10 +552,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -553,7 +570,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 0
 
@@ -565,10 +583,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 100
     spm_units:
       family:
@@ -581,7 +601,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 0
 
@@ -593,10 +614,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 100
     spm_units:
       family:
@@ -609,7 +632,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 88
 
@@ -621,10 +645,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 100
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -637,7 +663,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 0
 
@@ -648,10 +675,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -665,7 +694,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 88
 
@@ -676,10 +706,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -693,7 +725,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 88
 
@@ -704,10 +737,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -721,7 +756,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 88
 
@@ -732,10 +768,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -750,7 +788,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 0
 
@@ -762,10 +801,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -780,7 +821,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 88
 
@@ -792,10 +834,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 100
     spm_units:
       family:
@@ -811,7 +855,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 0
 
@@ -824,29 +869,37 @@
   input:
     people:
       crossroads_parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       crossroads_child:
-        age: 3
+        age:
+          2026: 3
         ssi: 100
       diversion_parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       diversion_child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
       arsen_parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       arsen_child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
       workforce_parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
         nd_ccap_workforce_benefit_eligible_parent: true
       workforce_child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       crossroads:
@@ -886,16 +939,20 @@
     households:
       crossroads:
         members: [crossroads_parent, crossroads_child]
-        state_code: ND
+        state_code:
+          2026: ND
       diversion:
         members: [diversion_parent, diversion_child]
-        state_code: ND
+        state_code:
+          2026: ND
       arsen:
         members: [arsen_parent, arsen_child]
-        state_code: ND
+        state_code:
+          2026: ND
       workforce:
         members: [workforce_parent, workforce_child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: [0, 88, 0, 0]
 
@@ -907,23 +964,29 @@
   input:
     people:
       workforce_parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
         nd_ccap_workforce_benefit_eligible_parent: true
       workforce_child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
       tanf_ssi_parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       tanf_ssi_child:
-        age: 3
+        age:
+          2026: 3
         ssi: 100
       tanf_plain_parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       tanf_plain_child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       workforce:
@@ -950,13 +1013,16 @@
     households:
       workforce:
         members: [workforce_parent, workforce_child]
-        state_code: ND
+        state_code:
+          2026: ND
       tanf_ssi:
         members: [tanf_ssi_parent, tanf_ssi_child]
-        state_code: ND
+        state_code:
+          2026: ND
       tanf_plain:
         members: [tanf_plain_parent, tanf_plain_child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_workforce_benefit_eligible: [true, false, false]
     nd_ccap_copay: [0, 88, 0]
@@ -969,12 +1035,15 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 18
+        age:
+          2026: 18
         ssi: 100
-        is_disabled: true
+        is_disabled:
+          2026: true
     spm_units:
       family:
         members: [parent, child]
@@ -986,7 +1055,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 88
 
@@ -998,10 +1068,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -1016,7 +1088,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 88
 
@@ -1028,12 +1101,15 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 17
+        age:
+          2026: 17
         ssi: 100
-        is_disabled: false
+        is_disabled:
+          2026: false
     spm_units:
       family:
         members: [parent, child]
@@ -1045,7 +1121,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 88
 
@@ -1058,10 +1135,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 100
     spm_units:
       family:
@@ -1075,7 +1154,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 0
 
@@ -1088,10 +1168,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 100
     spm_units:
       family:
@@ -1105,6 +1187,7 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_copay: 88

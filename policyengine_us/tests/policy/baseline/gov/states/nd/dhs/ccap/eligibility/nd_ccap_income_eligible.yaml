@@ -161,20 +161,23 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
         nd_ccap_workforce_benefit_eligible_parent: true
         employment_income:
           2026: 240000
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
         members: [parent, child]
         hhs_smi:
           2026: 120000
-        is_ccdf_asset_eligible: true
+        is_ccdf_asset_eligible:
+          2026: true
         meets_ccdf_activity_test:
           2026: true
         is_tanf_enrolled: false
@@ -182,7 +185,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_workforce_benefit_eligible: true
     nd_ccap_countable_income: 20000
@@ -197,10 +201,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -213,7 +219,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_workforce_benefit_eligible: false
     nd_ccap_income_eligible: false
@@ -226,20 +233,23 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
         nd_ccap_workforce_benefit_eligible_parent: true
         employment_income:
           2026: 240000
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
         members: [parent, child]
         hhs_smi:
           2026: 120000
-        is_ccdf_asset_eligible: true
+        is_ccdf_asset_eligible:
+          2026: true
         meets_ccdf_activity_test:
           2026: true
         is_tanf_enrolled: false
@@ -247,7 +257,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_workforce_benefit_eligible: true
     nd_ccap_countable_income: 20000
@@ -262,10 +273,12 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       family:
@@ -278,7 +291,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_workforce_benefit_eligible: false
     nd_ccap_income_eligible: false
@@ -291,17 +305,21 @@
   input:
     people:
       workforce_parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
         nd_ccap_workforce_benefit_eligible_parent: true
       workforce_child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
       ordinary_parent:
-        age: 30
+        age:
+          2026: 30
         ssi: 0
       ordinary_child:
-        age: 3
+        age:
+          2026: 3
         ssi: 0
     spm_units:
       workforce:
@@ -321,10 +339,12 @@
     households:
       workforce:
         members: [workforce_parent, workforce_child]
-        state_code: ND
+        state_code:
+          2026: ND
       ordinary:
         members: [ordinary_parent, ordinary_child]
-        state_code: ND
+        state_code:
+          2026: ND
   output:
     nd_ccap_workforce_benefit_eligible: [true, false]
     nd_ccap_income_eligible: [true, false]

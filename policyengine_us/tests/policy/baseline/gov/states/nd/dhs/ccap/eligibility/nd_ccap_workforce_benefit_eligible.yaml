@@ -8,11 +8,13 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2024: 30
         ssi: 0
         nd_ccap_workforce_benefit_eligible_parent: true
       child:
-        age: 3
+        age:
+          2024: 3
         ssi: 0
     spm_units:
       family:
@@ -24,7 +26,8 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2024: ND
   output:
     nd_ccap_workforce_benefit_eligible: false
 
@@ -35,11 +38,13 @@
   input:
     people:
       parent:
-        age: 30
+        age:
+          2024: 30
         ssi: 0
         nd_ccap_workforce_benefit_eligible_parent: true
       child:
-        age: 3
+        age:
+          2024: 3
         ssi: 0
     spm_units:
       family:
@@ -51,6 +56,7 @@
     households:
       household:
         members: [parent, child]
-        state_code: ND
+        state_code:
+          2024: ND
   output:
     nd_ccap_workforce_benefit_eligible: true
