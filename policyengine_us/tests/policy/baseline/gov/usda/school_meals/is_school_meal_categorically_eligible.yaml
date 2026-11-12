@@ -515,3 +515,50 @@
     - PAID
     free_school_meals: 0
     reduced_price_school_meals: 0
+
+# 42 USC 1758(b)(12)(A)(vii) covers qualifying foster placement.
+# Prior placement alone supplies no current foster category.
+- name: Historical foster care alone does not qualify a child or sibling.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 10
+        was_in_foster_care: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - false
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - PAID
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - PAID
+    - PAID
+    free_school_meals: 0
+    reduced_price_school_meals: 0
