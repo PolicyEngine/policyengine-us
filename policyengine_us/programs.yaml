@@ -1330,7 +1330,7 @@ programs:
         variable: or_liheap
         parameter_prefix: gov.states.or.ohcs.liheap
         verified_years: "2025-2027"
-        notes: PY2025-PY2027 regular heating or cooling standard payment, with the two county regions, five fuel columns, the cooling column for households with no heating cost and the roomer half payment. Crisis, Fuel Payment, equipment and OEAP assistance are out of scope.
+        notes: PY2025-PY2027 regular heating or cooling standard payment, one a year, with the two county regions, five fuel columns, the cooling column for households with no heating cost and the roomer half payment. A cooling payment on top of a heating payment, crisis, Fuel Payment, equipment and OEAP assistance are not modeled.
       - state: SC
         status: partial
         name: South Carolina LIHEAP
