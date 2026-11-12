@@ -21,12 +21,15 @@ class ny_itemized_deductions_max(Variable):
     - Medical expenses deductible above 10% of AGI (not the 7.5% floor)
     - Miscellaneous deductions still allowed with 2% AGI floor
     - Casualty losses not limited to federally declared disasters
+    - Mortgage interest under the pre-TCJA acquisition and home equity
+      debt limits (ny_interest_deduction)
     - NY-specific college tuition deduction addition per § 615(d)
     """
     adds = [
         # Federal deductions that don't differ from pre-TCJA
         "charitable_deduction",
-        "interest_deduction",
+        # Federal interest components with NY's pre-TCJA mortgage interest
+        "ny_interest_deduction",
         # NY-specific pre-TCJA versions
         "ny_medical_expense_deduction",
         "ny_salt_deduction",
@@ -35,3 +38,9 @@ class ny_itemized_deductions_max(Variable):
         # NY-specific addition per Tax Law § 615(d)
         "ny_college_tuition_deduction",
     ]
+
+    # IT-196-I (2021), page 2: New York did not adopt the extension
+    # of the mortgage-insurance deduction beyond 2020.
+    subtracts = (
+        "gov.states.ny.tax.income.deductions.itemized.disallowed_interest_components"
+    )

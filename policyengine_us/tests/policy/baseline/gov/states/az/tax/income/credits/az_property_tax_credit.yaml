@@ -164,3 +164,29 @@
     # Line 11a: Schedule 1, 0 - 1,750 -> 502.
     # Line 13: 0.15 x 4,000 = 600. Line 15: smaller of 502 and 600.
     az_property_tax_credit: 502
+
+- name: A co-resident's rent does not make a claimant who paid none eligible
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+      roommate:
+        age: 40
+        rent: 6_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      roommate_unit:
+        members: [roommate]
+    households:
+      household:
+        members: [parent, roommate]
+        state_code: AZ
+  output:
+    # Ruling us-az:ptc-rent-and-taxes-shared-home: ARS 43-1072(A)(2) requires
+    # that the claimant "paid either property taxes or rent", and Form 201
+    # line 13 enters "the total rents you paid". The parent paid none; the
+    # roommate is under 65.
+    az_property_tax_credit_eligible: [false, false]
+    az_property_tax_credit: [0, 0]

@@ -9,10 +9,16 @@ the limited section 63(c)(5) deduction for these filers. Nobody else has an
 unearned income test. YAML cases pin the published amounts one case at a time;
 these tests check what must hold for every input, which YAML cannot state.
 
-Where the statute and the IRS charts differ (decision d1395: the age and
-blindness addition in the 2018-2025 joint test, a dependent filing
-separately, and in 2026 blindness and the exact dollar), the tests below
-assert nothing that depends on the difference.
+On a 2018-2025 joint return, section 6012(f)(2)(D) tests a claimable
+spouse's income other than earned income against the section 63(c)(5)(A)
+amount alone, while Table 2 adds the additional standard deduction for age or
+blindness; the model follows the statute, and property 10 states it. Where
+the statute and the IRS charts differ otherwise for 2018-2025 (a dependent
+filing separately), the tests below assert nothing that depends on the
+difference. From 2026 the model follows section 6012(a)(1): its (A) and (B)
+threshold, with the limited basic standard deduction and the addition for
+age only, binds a filer who can be claimed too, and (C)(i) adds that filer's
+unearned income and standard deduction tests.
 
 `test_table_2_boundary_grid` runs one simulation of single filers on a grid of
 earned and unearned income at every Table 2 threshold, a dollar under and a
@@ -24,15 +30,16 @@ dollar over, for each combination of age 65 and blindness:
 2. Differential: in 2025 it also equals `medicaid_person_is_required_to_file`,
    the other Table 2 implementation, which serves Medicaid and ACA household
    income for dependents inside a tax unit. In 2026 the rule is section
-   6012(a)(1), whose treatment of blindness and the exact dollar is open, so
-   the two are not compared there.
+   6012(a)(1), which leaves out blindness and requires a return at the exact
+   dollar, unlike Table 2, so the two are not compared there.
 3. For a filer nobody can claim, the result depends on gross income alone: it
    is the same however that income is split between wages and interest.
 4. On a 2025 joint return with no other income, where the spouse who can be
-   claimed is under 65 and not blind, the result is the unearned income test
-   (over $1,350), whatever the other spouse's age and blindness. (For a
-   claimed spouse who is 65 or older or blind, section 6012(f)(2)(D) and
-   Table 2 differ; that is d1395.)
+   claimed has only interest, the result is section 6012(f)(2)(D)'s unearned
+   income test (over $1,350), whatever either spouse's age and blindness.
+   Table 2 would add $1,600 for each of the claimed spouse's age 65 and
+   blindness; the grid's amounts between $1,350 and those sums tell the two
+   apart.
 
 `test_filing_requirement_properties` draws batches of tax units with
 Hypothesis (single, head of household, surviving spouse, separate and joint;
@@ -48,17 +55,17 @@ has rows to check and both answers occur; the test asserts that it does.
 6. Monotonicity: more wages, interest or self-employment profit never turns
    "required" into "not required", for any tax unit.
 7. Claimability never removes the requirement: marking the head as claimable
-   never turns "required" into "not required" (filers who are not blind and
-   do not file separately; see below).
+   never turns "required" into "not required" (every filer from 2026; for
+   2025, filers who are not blind and do not file separately; see below).
 8. A tax unit dependent's wages and interest never change the result: that
    income belongs on the dependent's own return.
 9. Table 2 and the Medicaid implementation, as in 1 and 2, on the drawn
    single filers who can be claimed and have no self-employment income.
-10. Lower bound (2025): on a single, separate or joint return, a head or
-    spouse who can be claimed and whose interest and dividends are over
-    Table 2's unearned income amount for them always makes the return
-    required. Table 2's amount is never below the statute's, so this holds
-    under either reading of d1395.
+10. Lower bound (2025): on a single or separate return, a head or spouse
+    who can be claimed and whose interest and dividends are over Table 2's
+    unearned income amount for them always makes the return required. On a
+    joint return the amount is section 6012(f)(2)(D)'s: the section
+    63(c)(5)(A) amount, $1,350, with no addition for age or blindness.
 
 `test_earned_income_sources_are_gross_income_sources`:
 
@@ -73,22 +80,14 @@ Intended exceptions, each from the law rather than the code:
   instructions, Chart A) but it does reduce the earned income that sets the
   limited standard deduction, so a smaller loss raises the threshold and not
   the income. `test_smaller_loss_can_end_the_requirement` pins the case.
-- Property 7 leaves out blind filers. Chart A does not count blindness (only
-  age), while Table 2 does, so on the charts a blind filer under 65 with
-  wages between the two amounts must file only if nobody can claim them. From
-  2026 the model follows Chart A here: section 6012(a)(1)(B) raises the
-  threshold of a filer nobody can claim for age only, while a filer who can
-  be claimed keeps the standard deduction test (decision d1395).
-- Property 7 also leaves out separate filers: Table 2 lets a claimable
-  married dependent filing separately skip a return unless the spouse
-  itemizes, while sections 6012(f) and (a)(1) require one with any gross
-  income (decision d1395).
-- From 2026, property 7 also fails at one dollar: gross income equal to the
-  threshold of a sighted filer nobody can claim. Section 6012(a)(1)(A)
-  excuses that filer only if gross income is "less than" the threshold, while
-  a filer who can be claimed is tested with "in excess of" (d1395). The
-  property skips those units, and
-  `test_claimability_can_end_the_requirement_at_the_threshold` pins the case.
+- For 2025, property 7 leaves out blind filers and separate filers. Table 2
+  adds blindness to a claimable filer's threshold, while Chart A doesn't for
+  a filer nobody can claim, and Table 2 lets a claimable married dependent
+  filing separately skip a return unless the spouse itemizes. From 2026,
+  property 7 checks every unit: the (A) threshold, which a claimable filer
+  also meets, counts age only, requires a return at equality, and reaches
+  any separate filer. `test_claimability_does_not_end_the_requirement_at_the_threshold`
+  pins the equality case.
 - Properties 1, 2 and 9 use wages as the only earned income. Earned income for
   the limited deduction is net of the deductible part of self-employment tax
   on the IRS worksheet, which Table 2 does not spell out.
@@ -215,16 +214,18 @@ def head_medicaid_requirement(simulation, units, year):
 
 
 def unearned_test_met(units):
-    """Whether Table 2's unearned income test is met by a head or spouse who
-    can be claimed, for single, separate and joint returns (2025 amounts)."""
+    """Whether the unearned income test is met by a head or spouse who can be
+    claimed (2025 amounts): Table 2's for single and separate returns, and
+    section 6012(f)(2)(D)'s, with no addition for age or blindness, for joint
+    returns."""
     met = []
     for unit in units:
-        married = unit["filing_status"] in ("SEPARATE", "JOINT")
-        per_condition = (
-            TABLE_2_MARRIED_AGED_OR_BLIND_ADDITION
-            if married
-            else TABLE_2_AGED_OR_BLIND_ADDITION
-        )
+        if unit["filing_status"] == "JOINT":
+            per_condition = 0
+        elif unit["filing_status"] == "SEPARATE":
+            per_condition = TABLE_2_MARRIED_AGED_OR_BLIND_ADDITION
+        else:
+            per_condition = TABLE_2_AGED_OR_BLIND_ADDITION
         met.append(
             unit["filing_status"] in ("SINGLE", "SEPARATE", "JOINT")
             and any(
@@ -292,8 +293,9 @@ def test_table_2_boundary_grid():
         single_filer(age, blind, False, wages, gross - wages)
         for age, blind, gross, wages in splits
     ]
-    # Joint returns whose younger spouse, under 65 and not blind, can be
-    # claimed and has only interest.
+    # Joint returns whose spouse can be claimed and has only interest, with
+    # and without age 65 and blindness: section 6012(f)(2)(D) tests every
+    # such spouse at the section 63(c)(5)(A) amount alone.
     joint = [
         {
             "filing_status": "JOINT",
@@ -305,8 +307,8 @@ def test_table_2_boundary_grid():
                     "taxable_interest_income": 0,
                 },
                 {
-                    "age": 40,
-                    "is_blind": False,
+                    "age": spouse_age,
+                    "is_blind": spouse_blind,
                     "claimed_as_dependent_on_another_return": True,
                     "taxable_interest_income": interest,
                 },
@@ -315,6 +317,8 @@ def test_table_2_boundary_grid():
         }
         for head_age in (45, 70, 80)
         for head_blind in (False, True)
+        for spouse_age in (40, 65)
+        for spouse_blind in (False, True)
         for interest in UNEARNED_GRID
     ]
     units = claimable + unclaimable + joint
@@ -498,18 +502,13 @@ def test_filing_requirement_properties(anchors, drawn):
             f"{year}: more income ended the requirement"
         )
         assert required["base"].any() and not required["base"].all()
-        # Property 7, except at the 2026 threshold (see the docstring).
-        sighted = ~anyone_blind[:, 0] & ~separate[:, 0]
-        ended = required["base"] & ~required["claimed"]
+        # Property 7; for 2025, sighted filers who don't file separately
+        # (see the docstring).
+        checked = ~anyone_blind[:, 0] & ~separate[:, 0]
         if year >= 2026:
-            gross_income = unit_totals(
-                simulation, units, "irs_gross_income", year
-            ).reshape(-1, len(VARIANTS))[:, 0]
-            standard_deduction = np.asarray(
-                simulation.calculate("standard_deduction", year)
-            ).reshape(-1, len(VARIANTS))[:, 0]
-            ended &= ~(nobody_claimable & (gross_income == standard_deduction))
-        assert not ended[sighted].any(), (
+            checked = np.ones_like(checked)
+        ended = required["base"] & ~required["claimed"]
+        assert not ended[checked].any(), (
             f"{year}: being claimable ended the requirement"
         )
         # Property 8.
@@ -552,12 +551,12 @@ def test_smaller_loss_can_end_the_requirement():
     assert required.tolist() == [True, False]
 
 
-def test_claimability_can_end_the_requirement_at_the_threshold():
-    # Intended exception to property 7 from 2026. Nobody can claim the first
-    # filer, whose $16,100 of wages equals the threshold of section
-    # 6012(a)(1)(A)(i), so a return is due. The second filer can be claimed;
-    # $16,100 does not exceed their standard deduction of $16,100
-    # ((a)(1)(C)(i)(II) and Chart B), so no return is due (decision d1395).
+def test_claimability_does_not_end_the_requirement_at_the_threshold():
+    # From 2026, $16,100 of wages equals the section 6012(a)(1)(A)(i)
+    # threshold, so a return is due whether or not the filer can be claimed:
+    # (a)(1)(C) adds to (A) for a claimable filer, whose limited basic
+    # standard deduction is also $16,100 here; it doesn't replace (A) with
+    # the "in excess of" standard deduction test.
     units = [single_filer(40, False, claimed, 16_100, 0) for claimed in (0, 1)]
     required = simulate(units).calculate("tax_unit_is_required_to_file", 2026)
-    assert required.tolist() == [True, False]
+    assert required.tolist() == [True, True]

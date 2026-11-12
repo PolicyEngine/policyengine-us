@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
-    _apply_ssi_exclusions,
+    _apply_ssi_exclusions_monthly,
 )
 
 
@@ -9,7 +9,7 @@ class ssi_countable_income(Variable):
     entity = Person
     label = "SSI countable income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/42/1382a#b"
     documentation = """
     Calculates total countable income for SSI:
@@ -23,9 +23,15 @@ class ssi_countable_income(Variable):
     ISM is added to unearned income BEFORE exclusions per 20 CFR § 416.1140.
     The PMV formula includes $20 so that after the general exclusion applies,
     the net countable ISM equals 1/3 FBR (matching POMS SI 00835.901 values).
+
+    Countable income is computed for each month, so a change in ISM within a
+    year (such as food ceasing to count on September 30, 2024) reaches the
+    months it applies to. Annual queries sum the months.
     """
 
     def formula(person, period, parameters):
+        # YEAR-defined income amounts read for a month are one-twelfth of the
+        # annual amount; ISM is MONTH-defined and read for the month itself.
         # The individual's earned income, after the blind/disabled student exclusion
         pre_reduction_earned_income = person("ssi_marital_earned_income", period)
         blind_disabled_working_student_income = person(
@@ -56,7 +62,7 @@ class ssi_countable_income(Variable):
         total_unearned = unearned_income + parent_deemed + ism
 
         # Apply standard SSI exclusions to the individual's own income
-        personal_countable = _apply_ssi_exclusions(
+        personal_countable = _apply_ssi_exclusions_monthly(
             earned_income,
             total_unearned,
             parameters,
@@ -70,14 +76,16 @@ class ssi_countable_income(Variable):
         # Add spousal deemed income (only relevant when one spouse is ineligible)
         spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
 
-        # Check if person is eligible (either as individual OR as eligible spouse)
-        is_eligible_individual = person("is_ssi_eligible_individual", period)
-        is_eligible_spouse = person("is_ssi_eligible_spouse", period)
-        is_eligible = is_eligible_individual | is_eligible_spouse
+        # People who are not aged, blind, or disabled have no countable income
+        # of their own; a spouse's income is deemed to the other spouse
+        # instead. SSI's noncitizen test is applied in is_ssi_eligible, so it
+        # does not zero the income that Medicaid and state programs count
+        # with SSI methodology.
+        is_aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
 
         # Calculate final countable income
         return where(
-            ~is_eligible,
+            ~is_aged_blind_disabled,
             0,
             where(
                 both_eligible,

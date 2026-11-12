@@ -67,7 +67,6 @@
         age: 70
         is_tax_unit_dependent: false
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
       dependent:
         age: 16
         is_tax_unit_dependent: true
@@ -79,7 +78,6 @@
         self_employed_pension_contributions: 600
         long_term_capital_gains: -3_000
         rental_income: -2_000
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [claimant, dependent]
@@ -104,14 +102,12 @@
         age: 70
         is_tax_unit_dependent: false
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
       dependent:
         age: 16
         is_tax_unit_dependent: true
         employment_income: 10_000
         qualified_adoption_assistance_expense: 500
         us_bonds_for_higher_ed: 700
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [claimant, dependent]
@@ -134,14 +130,12 @@
         age: 70
         is_tax_unit_dependent: false
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
       dependent:
         age: 19
         is_tax_unit_dependent: true
         employment_income: 10_000
         traditional_ira_contributions: 10_000
         educator_expense: 1_000
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [claimant, dependent]
@@ -169,14 +163,12 @@
         age: 70
         is_tax_unit_dependent: false
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
       dependent:
         age: 19
         is_tax_unit_dependent: true
         employment_income: 2_000
         traditional_ira_contributions: 10_000
         educator_expense: 1_000
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [claimant, dependent]

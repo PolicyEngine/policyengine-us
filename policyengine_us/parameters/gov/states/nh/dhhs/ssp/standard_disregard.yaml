@@ -1,0 +1,23 @@
+description: New Hampshire deducts this amount from the income of an assistance group of each size under the adult category financial assistance program.
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 4)
+  breakdown_label:
+    - Assistance group size
+  label: New Hampshire SSP standard disregard
+  reference:
+    - title: He-W 654.16(b), Adult standard disregard
+      href: https://gc.nh.gov/rules/state_agencies/he-w600.html
+
+1:
+  2026-01-01: 13
+
+2:
+  2026-01-01: 20
+
+3:
+  2026-01-01: 25

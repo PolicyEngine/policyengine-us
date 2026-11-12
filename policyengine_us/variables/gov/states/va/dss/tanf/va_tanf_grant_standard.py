@@ -13,10 +13,7 @@ class va_tanf_grant_standard(Variable):
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period.this_year)
         p = parameters(period).gov.states.va.dss.tanf
-        # Access July 2020 base values
-        p_grant_standard = parameters.gov.states.va.dss.tanf.payment.grant_standard(
-            f"2020-10-01"
-        )
+        p_grant_standard = p.payment.grant_standard
         ceiling = min_(unit_size, p.max_unit_size)
         additional = unit_size - ceiling
 
@@ -33,7 +30,8 @@ class va_tanf_grant_standard(Variable):
             p_grant_standard.group2.addition,
         )
 
-        base_amount = main + additional * addition
-        # Apply standard multiplier for increases since July 2020 base
-
-        return base_amount * p.standard_multiplier
+        amount = main + additional * addition
+        # The tables hold the printed Section 304, Appendix 2 standards from
+        # July 2020. Earlier periods scale the July 2020 standards by the
+        # standard multiplier, which is below 1 only before July 2020.
+        return amount * min_(p.standard_multiplier, 1)

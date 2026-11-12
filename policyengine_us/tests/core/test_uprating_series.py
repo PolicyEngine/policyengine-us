@@ -46,9 +46,12 @@ EXPECTED = {
     "military_basic_pay": EMPLOYMENT,
     "military_service_income": EMPLOYMENT,
     "state_or_federal_salary": EMPLOYMENT,
+    "pa_philadelphia_wage_tax_taxable_wages": EMPLOYMENT,
     # Wage-replacement benefits.
     "workers_compensation": EMPLOYMENT,
     "disability_benefits": EMPLOYMENT,
+    "tax_exempt_disability_benefits": EMPLOYMENT,
+    "disability_benefits_before_minimum_retirement_age": EMPLOYMENT,
     "self_employed_pension_contributions_desired": SELF_EMPLOYMENT,
     # Components of capital gains.
     "long_term_capital_gains_on_collectibles": CAPITAL_GAINS,
@@ -120,6 +123,11 @@ EXPECTED = {
     "homeowners_association_fees": CPI_U,
     "pre_subsidy_transportation_expense": CPI_U,
     "home_mortgage_interest": CPI_U,
+    "home_mortgage_points": CPI_U,
+    "mortgage_insurance_premiums": CPI_U,
+    "second_residence_mortgage_interest": CPI_U,
+    "second_residence_mortgage_points": CPI_U,
+    "second_residence_mortgage_insurance_premiums": CPI_U,
     "student_loan_interest": CPI_U,
     "investment_interest_expense": CPI_U,
     # Still on the default.
@@ -141,6 +149,26 @@ def test_variable_follows_expected_series(variable, series):
 def test_series_is_defined_across_the_projection_window(series):
     for year in (2024, 2025, 2030, 2035):
         assert _value(series, year) not in (None, 0)
+
+
+def test_default_series_has_a_value_for_every_year():
+    """A year with no value holds the previous one, so the per-capita index
+    drifts down with population and then jumps when values resume. CBO AGI
+    once held a tax-year 2013 total for 2015 and had nothing for 2016 to
+    2018. Inputs on the default series dated 2018 came out 29% too high by
+    2019, and Medicare IRMAA's lookback, which deflates income by the same
+    index, put a household entered for 2019 alone at 0.765 of its income
+    instead of 0.932. With the right 2015 total, the gap alone gives 14% and
+    0.864."""
+    total = get_parameter(system.parameters, _authored_series(DEFAULT))
+    years = sorted(
+        {
+            int(value.instant_str[:4])
+            for value in total.values_list
+            if value.instant_str.endswith("-01-01")
+        }
+    )
+    assert years == list(range(years[0], years[-1] + 1))
 
 
 @pytest.mark.parametrize("year", (2025, 2030, 2035, 2036))

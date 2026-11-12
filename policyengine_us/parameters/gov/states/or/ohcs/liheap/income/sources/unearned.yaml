@@ -12,9 +12,11 @@ values:
   - workers_compensation
   - veterans_benefits
   - pension_income
-  # Retirement pay counts as a pension. military_retirement_pay includes
-  # survivor payments, so report a survivor annuity in only one of the two.
-  - military_retirement_pay
+  # Retirement pay counts as a pension. military_retirement_income adds
+  # retiree pay and Survivor Benefit Plan annuities; a military survivor
+  # annuity belongs in military_retirement_pay_survivors, not
+  # survivor_benefits, so it counts once.
+  - military_retirement_income
   - survivor_benefits
   - disability_benefits
   - alimony_income

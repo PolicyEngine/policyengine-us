@@ -46,8 +46,8 @@ FILING_STATUSES = [
     "SURVIVING_SPOUSE",
     "SEPARATE",
 ]
-# Years with brackets of their own; earlier years are backdated from 2024.
-BRACKET_YEARS = [2024, 2025, 2026]
+# Years with brackets of their own: CMS's published schedules, 2015-2026.
+BRACKET_YEARS = list(range(2015, 2027))
 DEFLATOR = SYSTEM.parameters.calibration.gov.cbo.income_by_source.adjusted_gross_income_per_capita
 
 

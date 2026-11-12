@@ -4,13 +4,15 @@ from policyengine_us.model_api import *
 class az_property_tax_credit_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Income for the Arizona property tax credit"
+    label = "Arizona property tax credit income of the tax unit's members"
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Household income for the Arizona property tax credit, Form 140PTC Part 1 "
-        "line J. It can be negative after a capital loss; the credit schedules "
-        "then use zero."
+        "The income of the tax unit's members, dependents included, for the "
+        "Arizona property tax credit (Form 140PTC Part 1 lines A to I). "
+        "az_property_tax_credit_household_income adds it up over every tax "
+        "unit in the household to give line J. It can be negative after a "
+        "capital loss."
     )
     reference = [
         "https://www.azleg.gov/ars/43/01072.htm",  # ARS 43-1072(H)(6)

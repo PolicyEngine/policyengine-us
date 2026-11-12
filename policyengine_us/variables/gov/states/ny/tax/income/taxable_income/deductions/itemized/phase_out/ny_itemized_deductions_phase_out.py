@@ -45,7 +45,7 @@ class ny_itemized_deductions_phase_out(Variable):
     L3 = L1 - L2 (worksheet line 3) is therefore the mortgage interest, real
     estate taxes, charitable gifts, and 2%-floor miscellaneous deductions -
     exactly the 68(c) base subject to the limitation. Because investment
-    interest appears in both L1 (inside interest_deduction) and L2, it cancels
+    interest appears in both L1 (inside ny_interest_deduction) and L2, it cancels
     out of L3, as intended.
     """
 
@@ -79,7 +79,7 @@ class ny_itemized_deductions_phase_out(Variable):
         # The defined_for guard already restricts this to filers whose federal
         # AGI exceeds the applicable amount (worksheet line 7), so the excess is
         # positive; max_ guards the vectorized boundary.
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ny_recomputed_federal_agi", period)
         filing_status = tax_unit("filing_status", period)
         applicable_amount = p.start[filing_status]
         agi_excess = max_(agi - applicable_amount, 0)

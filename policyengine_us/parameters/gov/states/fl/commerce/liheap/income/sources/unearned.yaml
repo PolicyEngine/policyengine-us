@@ -1,0 +1,52 @@
+description: Florida uses these sources as unearned income of adult members under the Low Income Home Energy Assistance Program.
+values:
+  2024-10-01:
+    - social_security
+    - ssi
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other. A military survivor annuity belongs in
+    # military_retirement_pay_survivors, not survivor_benefits. Plan Section
+    # 1.9 counts retirement and pension benefits.
+    - pension_income
+    - military_retirement_income
+    - railroad_benefits
+    - survivor_benefits
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - strike_benefits
+    - general_assistance
+    - rental_income
+    - farm_rent_income
+    - interest_income
+    - ordinary_dividend_income
+    # Periodic estate/trust income, excluding separately recorded interest/dividends.
+    - estate_income
+    - child_support_received
+    - alimony_income
+# Net gambling and lottery winnings are counted in the formula, with losses
+# offsetting only winnings.
+# The FY2025 and FY2026 plans (Section 1.9) and the portal FAQ exclude
+# unemployment compensation and cash gifts.
+# Florida Optional State Supplementation (fl_oss) is not listed: it pays
+# residents of assisted living facilities, adult family-care homes and mental
+# health residential treatment facilities, whom manual 900.02B (page 39,
+# residence paid through a state residential program) and 900.03B(1) (page
+# 40, institutions) exclude from LIHEAP households.
+# Pension/SSA subcomponents are not counted twice; TANF is counted once in
+# household.yaml.
+metadata:
+  unit: list
+  period: year
+  label: Florida LIHEAP person unearned income sources
+  reference:
+    - title: "Florida FY2026 LIHEAP State Plan, Section 1.9 (included and excluded income sources) #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=5
+    - title: "Florida LIHEAP Policies and Procedures Manual, May 27 2022, parts 900.02B, 900.03B(1), 1200.01 and 1200.02 #page 39-40,49-51"
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=39
+    - title: "Florida FY2025 LIHEAP State Plan, Section 1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=5
+    - title: Florida statewide LIHEAP portal, What qualifies as income
+      href: https://floridaliheap.com/faq
