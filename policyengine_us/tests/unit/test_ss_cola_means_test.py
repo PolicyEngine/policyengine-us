@@ -906,7 +906,7 @@ def test_a9_preset_reproduces_captured_description():
     assert means_test.thresholds.joint == 170_000
     parameters = simulation.tax_benefit_system.parameters
     index = parameters.gov.bls.cpi.cpi_u
-    assert index("2026-12-01") == 332.568  # Latest BLS value: June 2026.
+    assert index("2026-12-01") == 337.511  # Latest BLS value: October 2026.
     assert index("2028-12-01") == 348.3  # CBO value authored February 2028.
     np.testing.assert_array_equal(
         simulation.calculate(
