@@ -1086,6 +1086,13 @@
         members: [parent, child1, child2]
         state_code: SC
   output:
+    # We keep the signed business result under 114-1150(B)(3)'s IRS
+    # calculation. DSS subtracts business costs in Section 8.9, applies
+    # 50% to each person's earnings in Section 8.16 C, then adds them in E.
+    # We apply those calculations to current losses without adding a zero
+    # floor; DSS does not expressly address current-loss offsets here.
+    # We read Section 7.1's general definition of income as money received
+    # together with the specific calculation of business income for current losses.
     # -14,400 / 12 = -1,200 a month, and the 50% January disregard leaves
     # -600. With no support paid, countable income stays at -600.
     sc_tanf_gross_earned_income: [-1_200, 0, 0]
@@ -1121,6 +1128,8 @@
         members: [adult_a, adult_b, child]
         state_code: SC
   output:
+    # We keep B's signed business result under 114-1150(B)(3) and
+    # Sections 8.9 and 8.16 C and E, without adding a zero floor.
     # A: 600 x 0.5 = 300, less A's 2,400 / 12 = 200 of support, leaves 100.
     # B: -1,200 x 0.5 = -600. Countable income is 100 - 600 = -500.
     # Deducting from the group's income (300 - 600 = -300) would leave
@@ -1155,3 +1164,42 @@
     sc_tanf_countable_income: 814.75
     # floor((881 - 814.75) x 0.4046 = 26.80) = 26.
     sc_tanf: 26
+
+- name: Case 38, a current self-employment loss offsets another member's unearned income in January.
+  period: 2026-01
+  input:
+    people:
+      adult_a:
+        age: 40
+        is_tax_unit_head: true
+        alimony_income: 12_000
+      adult_b:
+        age: 38
+        is_tax_unit_spouse: true
+        self_employment_income_before_lsr: -14_400
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [adult_a, adult_b]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [adult_a, adult_b, child]
+        state_code: SC
+  output:
+    # Under 114-1150(B)(3) and Sections 8.9 and 8.16 C and E, we keep
+    # the signed current business result through the disregard and sum.
+    # A: 12,000 / 12 = 1,000 of monthly unearned income.
+    # B: -14,400 / 12 = -1,200; the 50% disregard leaves -600.
+    sc_tanf_gross_earned_income: [0, -1_200, 0]
+    sc_tanf_gross_unearned_income: [1_000, 0, 0]
+    sc_tanf_child_support_deduction: 0
+    # 1,000 - 600 = 400. Flooring B's earnings at zero would leave 1,000.
+    sc_tanf_countable_income: 400
+    # Size 3: floor((15,650 + 2 x 5,500) / 12 x 0.5) = 1,110.
+    # floor((1,110 - 400) x 0.4046 = 287.266) = 287.
+    # Flooring B's earnings would give floor(110 x 0.4046 = 44.506) = 44.
+    sc_tanf: 287
