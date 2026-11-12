@@ -10617,6 +10617,59 @@ candidates:
     three places, and floors the result at the federal deduction, a PE safeguard that binds only when the rounded
     share falls below the exact federal share. Settling the federal reading (rulespec-us#1413) and using it for
     both would make that floor unnecessary.'
+- id: us:msp-couple-standard-one-spouse-on-medicare
+  program: medicare-savings-programs
+  years:
+    from: 2026
+    type: calendar
+  question: When only one spouse is on Medicare and the two are an eligible SSI couple, do the Medicare Savings Programs
+    test the applicant with the spouse, on combined income against the two-person guideline, or alone against the
+    one-person guideline?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396d(p)(1)(B) and (p)(2)(A)
+    url: https://www.law.cornell.edu/uscode/text/42/1396d
+  - kind: regulation
+    citation: 20 CFR 416.1801(c)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1801
+  - kind: guidance
+    citation: HCFA Center for Medicaid and State Operations memorandum, October 2, 1997, Policy Governing Family Size
+      in Determining Eligibility for Qualified Medicare Beneficiaries and Specified Low Income Beneficiaries
+    url: https://www.medicaid.gov/sites/default/files/2019-12/medicaid-eligibilty-memo.pdf#page=2
+  - kind: manual
+    citation: Texas MEPD Handbook, Appendix IX
+    url: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-ix-medicare-savings-program-information
+  - kind: manual
+    citation: Texas MEPD Handbook, E-7200
+    url: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/e-7200-when-deeming-procedures-are-not-used
+  readings:
+    statute: 'Section 1396d(p)(1)(B) measures income "as determined under section 1382a of this title for purposes of
+      the supplemental security income program", and (p)(2)(A) sets the limit by the poverty line "applicable to a
+      family of the size involved". Neither says who is in the family. 20 CFR 416.1801(c) defines an eligible spouse
+      as a person "Who is eligible for SSI", so two spouses who are each eligible for SSI are a couple whether or not
+      both are on Medicare.'
+    other: 'The 1997 memorandum describes the federal default: "those eligible under the various SSI-related poverty
+      level groups were treated as individuals or, if both members of a couple were eligible, as a couple". Texas
+      Appendix IX: "Use the couple income range when both spouses are applying for the same program. Use the individual
+      income range to test eligibility for each spouse separately if both are not eligible." Texas E-7200 does not
+      deem income from a spouse who "is eligible for SSI".'
+  example: A Texas applicant, 68, on Medicare with $1,400 a month and a disabled spouse, 62, with no income and not on
+    Medicare are an eligible SSI couple. Tested together, $1,380 is within the two-person $1,803.33 and QMB; tested
+    alone, $1,380 is above the one-person $1,330 and SLMB.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/_msp_spouse_income.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_tests_as_couple.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10633
+  state: ruled
+  note: 'PE-US tests the applicant alone unless both spouses are on Medicare, following the 1997 memorandum and the
+    Texas handbook, and deems nothing from a spouse who is eligible for SSI, who is not an ineligible spouse under 20
+    CFR 416.1160(d) (msp_spouses_combine_income and msp_spouse_income; msp_countable_income.yaml Cases 26 and 33). The
+    ruled candidate us:msp-eligible-spouse-ssi-definition settles a different question: whether an aged, blind or
+    disabled spouse who is not eligible for SSI is an eligible spouse. Ruled by the project lead, 2026-11-10:
+    https://github.com/PolicyEngine/policyengine-us/pull/10633'
 - id: us:msp-eligible-spouse-ssi-definition
   program: medicare-savings-programs
   years:
