@@ -1,3 +1,10 @@
+## [2.117.4] - 2026-11-12
+
+### Changed
+
+- Document the VA disability rating flags for app and API users, and tighten the notes and references in the veteran rules that read them.
+
+
 ## [2.117.3] - 2026-11-11
 
 ### Fixed
