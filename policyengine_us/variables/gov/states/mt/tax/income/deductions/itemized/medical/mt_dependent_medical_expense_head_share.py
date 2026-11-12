@@ -29,15 +29,16 @@ class mt_dependent_medical_expense_head_share(Variable):
         "the share at which the two columns' incomes before the dependent "
         "exemptions are equal, and the shares where each column exhausts "
         "its capital gain credit. While both columns are above their 7.5% "
-        "floors, the total deduction does not depend on the share and the "
-        "couple's tax is convex in it, lowest where the columns balance. "
+        "floors, the total deduction does not depend on the share. Without "
+        "binding credits, the couple's tax is convex in the share and "
+        "lowest where the columns balance. "
         "Where a column is below its floor, bills moved into it are wasted "
         "and the tax is monotone in the share, so the shares at which a "
         "floor starts to bind never beat all to one spouse. A column's "
         "capital gain credit can move the minimum away from balance to "
         "the point where the column exhausts its credit. Ties go to the share closest to the "
-        "equal split, so the result does not depend on which spouse is "
-        "labelled head. The tax is evaluated in closed form with the column "
+        "equal split. The comparisons allow numerical tolerance. "
+        "The tax is evaluated in closed form with the column "
         "variables' own formulas (policyengine_us.tools.mt_separate_return), "
         "not with simulation branches. Unmarried filers and couples without "
         "dependents' expenses get the equal split, which has no effect."
@@ -80,8 +81,9 @@ class mt_dependent_medical_expense_head_share(Variable):
         # The share at which the two columns' incomes before the dependent
         # exemptions are equal. While both columns are above their 7.5%
         # floors, each extra dollar of bills is deductible in either column,
-        # so the total deduction is fixed and the couple's tax is convex in
-        # the share, lowest where the columns balance. There a column's
+        # so the total deduction is fixed. Without binding credits, the
+        # couple's tax is convex in the share, lowest where columns balance.
+        # There a column's
         # income is level - share x pool, where level is its income with line
         # 1a at its floor (room is how far line 1a is below the floor); the
         # spouse's uses 1 - share. Where a column is below its floor, bills

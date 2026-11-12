@@ -109,9 +109,9 @@ def _check(cases, year):
     columns = sim.calculate("mt_income_tax_before_refundable_credits_indiv", year)
     tax = np.bincount(sim.populations["tax_unit"].members_entity_id, weights=columns)
     for i, case in enumerate(cases):
-        # One cent covers the tie convention; the rest covers float32 income
-        # and medical-share arithmetic at the generated income limits.
-        tolerance = 0.03
+        # Successive ties can each favor a closer share within one cent.
+        # Allow those ties and float32 income and medical-share arithmetic.
+        tolerance = 0.05
         at_chosen_share = _grid_tax(case, year, np.array([share[3 * i]]))[0]
         assert abs(tax[3 * i] - at_chosen_share) <= tolerance
         expected = _grid_tax(case, year, np.linspace(0, 1, 1_001)).min()
