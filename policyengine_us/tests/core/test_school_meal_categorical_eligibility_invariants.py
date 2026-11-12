@@ -186,9 +186,13 @@ def _situation(drawn_units):
                 "receives_tanf": dict.fromkeys(MONTHS, False),
             }
             if variant in HOUSEHOLD_CATEGORIES:
-                period = YEAR if variant in ("tanf", "fdpir") else unit["month"]
-                value = True if variant.startswith("receives_") else unit["amount"]
-                spm_unit[variant][period] = value
+                if variant.startswith("receives_"):
+                    # Core reads December for monthly stock inputs in annual
+                    # calculations. Report receipt throughout the year.
+                    spm_unit[variant] = dict.fromkeys(MONTHS, True)
+                else:
+                    period = YEAR if variant in ("tanf", "fdpir") else unit["month"]
+                    spm_unit[variant][period] = unit["amount"]
             groups["spm_units"][prefix] = spm_unit
             groups["tax_units"][prefix] = {"members": members}
             groups["families"][prefix] = {"members": members}
@@ -253,8 +257,15 @@ def _check(drawn_units, system):
     for index, record in enumerate(records):
         unit = record["unit"]
         variant = record["variant"]
+        context = (
+            f"{unit['state']} unit={record['number']} variant={variant} "
+            f"month={unit['month']} ratio={unit['ratio']}"
+        )
         household = variant in HOUSEHOLD_CATEGORIES
-        assert household_categorical[index] == household
+        assert household_categorical[index] == household, (
+            f"{context}: household eligibility={household_categorical[index]}, "
+            f"expected={household}"
+        )
         region = unit["state"] if unit["state"] in ("AK", "HI") else "CONTIGUOUS_US"
         rates = RATES[region]
         daily_total = 0
@@ -263,13 +274,19 @@ def _check(drawn_units, system):
         for name in record["members"]:
             person = person_index[name]
             own_category = name == record["added"] and variant in CHILD_CATEGORIES
-            assert categorical[person] == (household or own_category)
+            assert categorical[person] == (household or own_category), (
+                f"{context} person={name}: eligibility={categorical[person]}, "
+                f"expected={household or own_category}"
+            )
             expected_tiers = {
                 meal: "FREE" if household or own_category else common_tiers[meal][index]
                 for meal in tiers
             }
             for meal in tiers:
-                assert tiers[meal][person] == expected_tiers[meal]
+                assert tiers[meal][person] == expected_tiers[meal], (
+                    f"{context} person={name} meal={meal}: "
+                    f"tier={tiers[meal][person]}, expected={expected_tiers[meal]}"
+                )
             if not situation["people"][name]["is_in_k12_school"][YEAR]:
                 continue
             school_children += 1
@@ -293,7 +310,7 @@ def _check(drawn_units, system):
                 amount,
                 atol=0.01,
                 rtol=0,
-                err_msg=f"{unit['state']} {variant}",
+                err_msg=context,
             )
         siblings = [person_index[name] for name in record["siblings"]]
         sibling_results[record["number"], variant] = (
@@ -310,7 +327,11 @@ def _check(drawn_units, system):
             "was_in_foster_care",
         ):
             for before, after in zip(base, sibling_results[unit_number, variant]):
-                np.testing.assert_array_equal(before, after)
+                np.testing.assert_array_equal(
+                    before,
+                    after,
+                    err_msg=f"unit={unit_number} variant={variant} sibling invariance",
+                )
 
 
 @settings(
