@@ -1,3 +1,10 @@
+## [2.117.6] - 2026-11-12
+
+### Changed
+
+- Let anyone, agents included, update partner contract test values that a cited model change explains, with a table of every changed value, a boundary-case check, an independent review and an FYI to Ziming Hua; keep Ziming's approval for every other edit to the partner YAML files, value changes in cases a model change moves off their boundary, untraced values and partner-flagged cases.
+
+
 ## [2.117.5] - 2026-11-12
 
 ### Fixed
