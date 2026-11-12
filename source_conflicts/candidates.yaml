@@ -547,12 +547,13 @@ candidates:
     $2,470 standard deduction, so the repayment gives no benefit.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/claim_of_right/ar_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10203
-  state: unreviewed
-  note: 'The itemizer restriction is a legally unverified form inference; establish whether it is DFA''s intended
-    gap-fill. Code not yet on main: ar_claim_of_right_deduction.py.'
+  state: ruled
+  note: Ruled in October 2026 as an itemized deduction inside the 2% floor of section 26-51-437(b). Whether DFA intends
+    that placement remains unverified.
 - id: us-ar:claim-of-right-small-repayment-remedy
   program: income-tax
   years:
@@ -575,12 +576,13 @@ candidates:
     other: DFA2 describes amending the earlier return; DFA1 describes a deduction in the repayment year.
   pe_us:
     follows: not-modelled
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/ar/tax/income/deductions/itemized/claim_of_right/ar_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10203
   state: ruled
-  note: 'The October 2026 ruling leaves small repayments unmodelled; verify whether the fiscal notes establish a
-    post-2013 remedy. Code not yet on main: ar_claim_of_right_deduction.py.'
+  note: The October 2026 ruling leaves small repayments unmodelled; verify whether the fiscal notes establish a post-2013
+    remedy.
 - id: us-ar:gambling-loss-deduction-before-2015
   program: income-tax
   years:
@@ -1622,6 +1624,48 @@ candidates:
   note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
     $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
     side. Verify the per-recipient calculation and document the inconsistent 2026 summary tables.'
+- id: us-co:ccap-parent-fee-income-share
+  program: child-care-assistance
+  years:
+    from: 2021
+    to: 2028
+    type: calendar
+  question: Above the poverty guideline, does Colorado's parent fee start from 1% of the household's income, as 8
+    CCR 1403-1 section 3.124(P)(2) says, or from 1% of the guideline, as one of CDEC's parent fee tools computes?
+  sources:
+  - kind: regulation
+    citation: 8 CCR 1403-1 section 3.124(P)(1) and (2) (ruleVersionId 12658)
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=83
+  - kind: calculator
+    citation: CDEC Above 100% FPG Parent Fee Tool (English), Parent Fee Tool sheet, cell I9
+    url: https://drive.google.com/file/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/view
+  - kind: calculator
+    citation: CDEC At 100% FPG Parent Fee Tool (English), Parent Fee Tool sheet, cell I9
+    url: https://drive.google.com/file/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/view
+  readings:
+    statute: Section 3.124(P)(2) charges a household above the guideline "one percent (1%) of their income plus a
+      marginal rate increase of fourteen percent (14%)" on each dollar above the guideline. CDEC's Above 100% FPG
+      tool computes (E4*0.01+((E4-I8)*0.14))/12, 1% of annual income E4 plus 14% above the guideline I8.
+    other: CDEC's At 100% FPG tool computes (I8*0.01+((E4-I8)*0.14))/12 above the guideline, 1% of the guideline
+      rather than of income. CDEC tells households above the guideline to use
+      the other tool, so this branch serves no one the tool is for. PE-US used the same formula before PR 10721.
+  example: A family of three with $40,000 a year and two children in full-time care in January 2026, under the
+    $26,650 guideline in section 3.111(H)(2), pays (0.01 x $40,000 + 0.14 x $13,350) / 12 + $15 = $204.08, or $204,
+    under section 3.124(P)(2). The At 100% FPG tool's formula gives (0.01 x $26,650 + 0.14 x $13,350) / 12 + $15 =
+    $192.96, or $192.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/co/ccap/co_ccap_base_parent_fee.py
+    - policyengine_us/parameters/gov/states/co/ccap/parent_fee/income_rate.yaml
+    - policyengine_us/parameters/gov/states/co/ccap/parent_fee/marginal_rate.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10721
+  state: ruled
+  note: PE-US follows section 3.124(P)(2) as written, 1% of all gross countable income plus 14% of income above the
+    guideline (income_rate.yaml, marginal_rate.yaml, co_ccap_base_parent_fee.py). The rule and CDEC's tool for
+    households above the guideline agree; only the At 100% FPG tool's branch for incomes above the guideline differs,
+    by 1% of the income above the guideline. Ask CDEC which formula counties apply.
 - id: us-co:claim-of-right-subtraction-practice
   program: income-tax
   years:
@@ -2869,13 +2913,13 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/hi/tax/income/additions/additions.yaml
+    - policyengine_us/variables/gov/states/hi/tax/income/claim_of_right/hi_claim_of_right_deduction.py
     - policyengine_us/variables/gov/states/hi/tax/income/hi_additions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10200
   state: ruled
-  note: 'Ruled in October 2026 under the statute-first rule; N-364 first exists for 2025, so earlier claiming procedures
-    need separate verification. Code not yet on main: gov/states/hi/tax/income/claim_of_right/hi_claim_of_right.yaml,
-    hi_claim_of_right_deduction.'
+  note: Ruled in October 2026 under the statute-first rule; N-364 first exists for 2025, so earlier claiming procedures
+    need separate verification.
 - id: us-hi:joint-return-claimable-spouse-exemption
   program: income-tax
   years:
@@ -3148,8 +3192,7 @@ candidates:
 - id: us-ia:alternate-tax-claimed-spouse
   program: income-tax
   years:
-    from: 2024
-    to: 2024
+    from: 2021
     type: tax
   question: Does the statutory dependent exclusion bar alternate tax on a joint return with a claimed spouse, or
     does the worksheet's omission permit it?
@@ -3166,13 +3209,16 @@ candidates:
   example: A joint return with one claimed spouse, modified income $20,000 and ordinary tax $500 pays $500 versus
     min($500, ($20,000 − $13,500) × 5.7%) = $370.50.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_alternate_tax_eligible.py
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_claimed_filer_income_disqualified.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: Ruled statute-first in October 2026; the rule requires a model change after confirming that the exclusion
-    reaches alternate tax.
+  note: Ruled statute-first in October 2026. The bar sits in 422.5(3) and (3B) for 2021-2022 and in 422.5(2) and
+    (3) from 2023; ia_alternate_tax_eligible applies it in every year through ia_claimed_filer_income_disqualified,
+    which reads an actual claim and the claiming person's net income. The worksheet was read for 2024 only.
 - id: us-ia:itemized-limitation-2018-federal-suspension
   program: income-tax
   years:
@@ -3277,13 +3323,18 @@ candidates:
   example: In 2022, a claimed single filer with $6,000 net income and a claimant with $8,000 income is exempt, with
     tax $0, versus not exempt.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_is_tax_exempt.py
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_reduced_tax.py
+    - policyengine_us/variables/gov/states/ia/tax/income/ia_claimed_filer_income_disqualified.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; the rule requires replacing the approximation using claimant inputs,
-    with annual verification because the supplied statutory URL is for 2026. Code not yet on main: ia_is_tax_exempt.'
+  note: Ruled statute-first in October 2026; verify each year's text, because the supplied statutory URL is for
+    2026. ia_is_tax_exempt, and ia_reduced_tax for the single-filer tax reduction, apply the subsection's test
+    through ia_claimed_filer_income_disqualified, which reads an actual claim and the claiming person's net income
+    and filing status (inputs that default to no disqualification), with no Iowa-return restriction.
 - id: us-ia:rcf-maximum-per-diem-rate
   program: ssi-state-supplement
   years:
@@ -3795,22 +3846,22 @@ candidates:
     citation: 2018-2025 IT-40 instructions, code 630; 2025 Example 1 footnote
     url: https://forms.in.gov/Download.aspx?id=16915#page=23
   readings:
-    statute: The cross-reference can require an allowable federal deduction, excluding small nonbusiness repayments
-      disallowed federally from 2018.
-    other: Allow any repayment amount independently of the federal method, limited to previously taxed income and
-      adjusted for lost unemployment deductions.
+    statute: The paragraph subtracts an amount as described in section 1341(a)(2), to the extent previously included in
+      adjusted gross income, so a repayment qualifies whether or not federal law allows its deduction.
+    other: Read through IC 6-3-1-11(b), the reference could import federal allowability, excluding small nonbusiness
+      repayments disallowed federally from 2018. The IT-40 general rule asks for federal eligibility, but its 2025
+      Example 1 footnote allows a repayment the federal return cannot deduct.
   example: The 2025 instructions deduct $345 less $15 of lost unemployment deduction, giving $330; a $3,400 credit-method
     repayment gives a $3,400 state deduction.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/parameters/gov/states/in/tax/income/deductions/deductions.yaml
-    - policyengine_us/variables/gov/states/in/tax/income/deductions/in_other_subtractions.py
+    - policyengine_us/variables/gov/states/in/tax/income/deductions/claim_of_right/in_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
-  state: unreviewed
-  note: 'The statute-first rule requires changing the instructions-based scope if the federal-eligibility reading
-    is verified; the 2026 statutory text remains unverified. Code not yet on main: gov/states/in/tax/income/deductions/in_claim_of_right_deduction.yaml.'
+  state: ruled
+  note: Ruled in November 2026 as built, in line with the Massachusetts ruling on a similar reference.
 - id: us-in:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -3897,15 +3948,59 @@ candidates:
   example: A 2023 joint return with one claimed spouse receives $2,250 versus $0; a claimable but unclaimed single
     filer receives $0 versus $2,250.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/ks/tax/income/exemptions/ks_count_exemptions.py
+    - policyengine_us/reforms/state_dependent_exemptions/repeal_state_dependent_exemptions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Current behaviour unresolved: at this head ks_count_exemptions returns adults plus dependents and ks_exemptions
-    adds no dependency gate, so a joint return with one claimed spouse keeps two exemptions; check against the statute
-    and the K-40 rule before classifying.'
+  note: Ruled statute-first in October 2026. ks_count_exemptions counts each filer whom no other taxpayer may claim
+    (IRC 151(d)(2)), plus dependents only outside a claimable filer (IRC 152(b)(1), with the claimant filing
+    exception); the state dependent exemption repeal counts the same filers. The head-of-household count is a
+    separate item, us-ks:2021-2023-head-of-household-exemption.
+- id: us-ks:2021-2023-head-of-household-exemption
+  program: income-tax
+  years:
+    from: 2021
+    to: 2023
+    type: tax
+  question: From 2021 to 2023, does a Kansas head of household get an extra $2,250 exemption, as the K-40
+    instructions say, although K.S.A. 79-32,121 gave that allowance only for tax year 1998 and 2022 law removed
+    it?
+  sources:
+  - kind: statute
+    citation: K.S.A. 79-32,121 (2021 edition)
+    url: https://kslegislature.gov/li_2022/b2021_22/statute/079_000_0000_chapter/079_032_0000_article/079_032_0121_section/079_032_0121_k/
+  - kind: statute
+    citation: 2022 HB 2239 § 40 (L. 2022, ch. 63, § 40); K.S.A. 79-32,121 (2023 edition)
+    url: https://www.kslegislature.gov/li_2022/b2021_22/measures/documents/hb2239_enrolled.pdf#page=38
+  - kind: instructions
+    citation: K-40 instructions 2021-2023, p.6
+    url: https://www.ksrevenue.gov/pdf/ip22.pdf#page=6
+  - kind: form
+    citation: 2022 Form K-40, Exemptions and Dependents, instructions booklet p.17
+    url: https://www.ksrevenue.gov/pdf/ip22.pdf#page=17
+  readings:
+    statute: A head of household has one exemption for each federal exemption only; the extra $2,250 applied to
+      tax year 1998 alone, and the 2022 amendment deleted the sentence.
+    other: '"If your filing status is Head of Household, you are allowed an additional Kansas exemption; enter a
+      "1" in the box provided."'
+  example: A 2022 head of household with one child has 2 exemptions, $4,500, under the statute versus 3, $6,750,
+    under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ks/tax/income/exemptions/ks_count_exemptions.py
+    - policyengine_us/reforms/state_dependent_exemptions/repeal_state_dependent_exemptions.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10045
+  state: ruled
+  note: Ruled statute-first in November 2026.
+    The 2021 edition allows the head-of-household exemption "for tax year 1998"; the 2023 edition has no such
+    sentence and cites L. 2022, ch. 63, § 40. The 2021, 2022 and 2023 instructions repeat the p.6 text, and the Form
+    K-40 in each booklet adds one exemption for a head of household (2021 p.17, 2023 p.19). The 2026-10-19 rule
+    follows the statute; main gave a head of household two filer exemptions.
 - id: us-ks:dependent-exemption-of-a-claimed-filer
   program: income-tax
   years:
@@ -3936,6 +4031,43 @@ candidates:
   state: ruled
   note: Statute text is in the Axiom corpus; registering needs a pdftotext capture of the official instructions
     page.
+- id: us-ks:disabled-veteran-exemption-2025-amount
+  program: income-tax
+  years:
+    from: 2025
+    type: tax
+  question: From tax year 2025, is the Kansas disabled veteran exemption $2,320, as K.S.A. 79-32,121b(b)(2) and the
+    K-40 instructions say, or $2,250, as K.S.A. 79-32,121(b), re-enacted in the same 2025 session, still says?
+  sources:
+  - kind: statute
+    citation: K.S.A. 79-32,121(b), as amended by L. 2025, ch. 112, § 6
+    url: https://www.kslegislature.gov/li/b2025_26/statute/079_000_0000_chapter/079_032_0000_article/079_032_0121_section/079_032_0121_k/
+  - kind: statute
+    citation: K.S.A. 79-32,121b(b)(2), as amended by L. 2025, ch. 123, § 9
+    url: https://www.kslegislature.gov/li/b2025_26/statute/079_000_0000_chapter/079_032_0000_article/079_032_0121b_section/079_032_0121b_k/
+  - kind: instructions
+    citation: 2025 K-40 instructions, p.2 and p.6
+    url: https://www.ksrevenue.gov/pdf/ip25.pdf#page=2
+  readings:
+    statute: '79-32,121b(b)(2) allows "an additional Kansas exemption of $2,320 for tax year 2025 and all tax years
+      thereafter"; 79-32,121(b) allows "$2,250 for tax year 2023 and all tax years thereafter".'
+    other: The 2025 instructions allow "an additional exemption allowance of $2,320" for "each qualified disabled
+      veteran" (p.2) and multiply the number of disabled veterans by $2,320 (p.6).
+  example: A 2025 single filer whom the VA pays at the 100% rate for a permanent service-connected disability has
+    $9,160 + $2,320 = $11,480 of exemptions under 79-32,121b and the instructions, and $9,160 + $2,250 = $11,410
+    under 79-32,121(b).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ks/tax/income/exemptions/disabled_veteran/base.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/7065
+    - https://github.com/PolicyEngine/policyengine-us/pull/10811
+  state: unreviewed
+  note: Both statute pages say "Section was amended multiple times in the 2025 session". The code follows
+    79-32,121b and the instructions with $2,320 from 2025; ks_disabled_veteran_exemption_2025.yaml pins $11,480 for
+    2025 and $11,410 for 2024. Which 2025 enactment controls under Kansas law on conflicting amendments in one session
+    has not been checked.
 - id: us-ks:food-sales-credit-exemption-count
   program: income-tax
   years:
@@ -3957,13 +4089,16 @@ candidates:
   example: Before the liability cap, a 2024 joint return with one claimable spouse and no dependents receives $125
     versus $250; a claimable single filer receives $0 versus $125.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ks/tax/income/credits/ks_fstc.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; the rule requires replacing the Line E count with the statutory federal
-    count, subject to annual-source verification. Code not yet on main: ks_fstc.'
+  note: Ruled statute-first in October 2026; verify each year's instructions. ks_fstc gives $125 for each filer whom
+    no other taxpayer may claim (IRC 151(d)(2)) and each dependent child under 18, counting children only outside
+    a claimable filer (IRC 152(b)(1), with the claimant filing exception); the same child count opens the child
+    route.
 - id: us-ks:medicaid-parent-dependent-child-age
   program: medicaid
   years:
@@ -4394,12 +4529,18 @@ candidates:
   example: The 2023 case gives $175 × 200% = $350 under the statute and $0 under the instructions.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/la/tax/income/credits/school_readiness/la_school_readiness_tax_credit.py
+    - policyengine_us/variables/gov/states/la/tax/income/credits/school_readiness/la_school_readiness_credit_eligible_child.py
+    - policyengine_us/variables/gov/states/la/tax/income/credits/cdcc/la_refundable_cdcc.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; verify annual instructions because the supplied opposing instruction
-    is from 2023. Code not yet on main: la_refundable_cdcc.'
+  note: Ruled statute-first in October 2026; verify annual instructions because the supplied opposing instruction
+    is from 2023. The code on main already follows the statute. la_school_readiness_tax_credit multiplies
+    Louisiana's care credits, and la_refundable_cdcc matches the federal cdcc_potential, whose IRC 21(b)(1)(B)
+    route keeps an incapable child; the eligible-child test adds no qualified-dependent gate. No YAML case yet
+    pins the school readiness amount for this case.
 - id: us-la:snap-child-support-exclusion
   program: snap
   years:
@@ -4469,19 +4610,20 @@ candidates:
       2026)
     url: https://web.archive.org/web/20260211211815/https://www.mass.gov/info-details/differences-between-ma-and-federal-tax-law-for-personal-income
   readings:
-    statute: The cross-reference can require an allowable federal deduction, excluding small repayments disallowed
-      federally from 2018.
-    other: Allow any amount previously included in Massachusetts taxable income unless otherwise deductible, independently
-      of the federal method.
+    statute: The paragraph stands alone. Any amount previously included in Massachusetts taxable income counts unless
+      otherwise deductible, independently of the federal method.
+    other: DOR guidance agrees. A contrary reading would import federal allowability through the section 1341(a)(2)
+      cross-reference, excluding small repayments disallowed federally from 2018.
   example: With $60,000 wages and a $2,000 repayment, Massachusetts tax falls from $2,680 to $2,580.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ma/tax/income/deductions/claim_of_right/ma_claim_of_right_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
-  state: unreviewed
-  note: 'The statute-first rule requires changing the guidance-based scope if the cross-reference imports federal
-    deduction eligibility; verify that interpretation first. Code not yet on main: gov/states/ma/tax/income/deductions/ma_claim_of_right_deduction.yaml.'
+  state: ruled
+  note: Ruled in October 2026 as built. The paragraph states its own limits, while paragraph (13) expressly imports
+    federal conditions.
 - id: us-ma:connectorcare-income-bands-2026
   program: connectorcare
   years:
@@ -4555,26 +4697,36 @@ candidates:
   sources:
   - kind: statute
     citation: Acts 2026 c. 101 §45
-    url: null
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter101
   - kind: statute
     citation: Acts 2026 c. 101 §43(a)
-    url: null
+    url: https://malegislature.gov/Laws/SessionLaws/Acts/2026/Chapter101
   - kind: agency-practice
     citation: DFML contribution rates page (updated 2026-10-01)
-    url: null
+    url: https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
+  - kind: guidance
+    citation: Department of Revenue working draft TIR on the fiscal 2026 mid-year supplemental appropriation bill,
+      section VI (2026-06-23)
+    url: https://www.mass.gov/technical-information-release/working-draft-tir-tax-provisions-in-the-fiscal-year-2026-final-mid-year-supplemental-appropriation-bill
   readings:
-    statute: Applying §45 literally swaps caps in 2026, producing a 0.772% employee maximum.
-    other: Section 43(a) and DFML apply the swap in 2027, preserving the 0.46% employee and 0.42% employer shares.
+    statute: Applying §45 literally swaps caps in 2026, producing a 0.772% employee maximum. The Department of
+      Revenue's working draft applies the new caps from 2026.
+    other: DFML applies the swap in 2027 and section 43(a) directs guidance for calendar year 2027, preserving the
+      0.46% employee and 0.42% employer shares.
   example: At $100,000 of 2026 wages, literal §45 gives a $772 employee contribution versus $460.
   pe_us:
     follows: conflicting-source
-    code: []
+    code:
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/family_employee_share.yaml
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/medical_employee_share.yaml
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/family_rate.yaml
+    - policyengine_us/parameters/gov/states/ma/tax/payroll/paid_leave/medical_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10285
   state: open
-  note: 'A rule-required model change depends on resolving the two statutes; the open PR follows the 2027 reading,
-    while main has no cap swap. Code not yet on main: policyengine_us/variables/.../employee_state_payroll_tax,
-    ma_employee_paid_leave_contribution (YAML).'
+  note: The code follows DFML's January 1, 2027 date for the cap and rate swap and keeps 2026 on the old split, as
+    main does. Whether §45's 2026 date governs stays open. At $100,000 of 2026 wages the code gives a $460
+    employee contribution; applying the swap in 2026 under §45 would give $772.
 - id: us-ma:snap-child-support-exclusion
   program: snap
   years:
@@ -4601,39 +4753,6 @@ candidates:
   state: unreviewed
   note: PE-US follows the regulation; the October 2016-September 2024 span is approximate and needs contemporaneous-source
     verification.
-- id: us-md:capital-gains-surtax-short-term-gains
-  program: income-tax
-  years:
-    from: 2025
-    type: tax
-  question: Does Maryland's capital gains surtax base exclude a net short-term capital gain under the statute's IRC
-    definition, or include it through Form 502CG's transfer of the federal capital gain line?
-  sources:
-  - kind: statute
-    citation: Md. Code, Tax-General § 10-105(a)(3)(i), incorporating net capital gain under 26 U.S.C. 1222(11)
-    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-105&enactments=false
-  - kind: guidance
-    citation: Maryland Comptroller Technical Bulletin No. 58 (Dec. 29, 2025), section I
-    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/technical-bulletins/tb-58.pdf#page=1
-  - kind: instructions
-    citation: 2025 Form 502CG instructions, line 1, pointing to Form 502 line 1c (Form 1040 line 7a; resident booklet
-      p. 13)
-    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/2025/502cg.pdf#page=2
-  readings:
-    statute: The base is net long-term capital gain less any net short-term capital loss; a net short-term capital
-      gain adds nothing.
-    other: The base is the Form 1040 line 7a capital gain, which also counts a net short-term capital gain.
-  example: For an eligible filer, $100,000 of long-term and $50,000 of short-term gain give a $2,000 surtax under the
-    statute and $3,000 under the form; $80,000 of short-term gain alone gives $0 versus $1,600.
-  pe_us:
-    follows: statute
-    code:
-    - policyengine_us/variables/gov/states/md/tax/income/capital_gains/md_net_capital_gain.py
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9898
-  state: ruled
-  note: PR 9898 computes the base as max(0, min(Schedule D line 15, line 16)) and pins both readings' witnesses in
-    md_capital_gains_surtax.yaml. Statute-first rule of 2026-10-19; register it once PR 9898 is on main.
 - id: us-md:ccs-copay-flat-schedule
   program: child-care-assistance
   years:
@@ -4678,8 +4797,7 @@ candidates:
 - id: us-md:dependent-exemption-chart-10a
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does a claimable filer retain an eligible dependent's exemption under the claimant filing exception,
     or does Chart 10A deny every exemption?
@@ -4691,18 +4809,60 @@ candidates:
     citation: 2025 Maryland resident booklet, Chart 10A, p.12
     url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=12
   readings:
-    statute: An actual IRC 152 dependent retains an exemption under the filing exception although the filer's own
-      exemption is denied.
+    statute: An actual IRC 152 dependent retains an exemption under the filing exception.
     other: The dependent-taxpayer Each Exemption column makes all exemptions $0.
-  example: The 2025 case with one eligible child gives 1 × $3,200 = $3,200 versus $0.
+  example: A 2025 single filer who can be claimed, whose claimant meets the filing exception, with one eligible
+    child has $3,200 for the child under the statute versus $0 under the chart.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/md/tax/income/exemptions/md_personal_exemptions_count.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; verify whether the chart''s zero column applies to dependent exemptions
-    or only the filer''s own exemption. Code not yet on main: md_personal_exemptions_count.'
+  note: Ruled statute-first in October 2026. The filer's own exemption is a separate item,
+    us-md:dependent-taxpayer-own-exemption; with it the example return has 2 × $3,200 = $6,400. The code applies
+    the statute in every year; the booklet was read for 2025 only.
+- id: us-md:dependent-taxpayer-own-exemption
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does a filer who can be claimed as a dependent on another return (filing status 6) get a Maryland
+    exemption for themself under Tax-General 10-211(a)(1), or none, as the resident booklet says?
+  sources:
+  - kind: statute
+    citation: Md. Code, Tax-General 10-211(a)(1), (b)(1)
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-211&enactments=false
+  - kind: statute
+    citation: 2018 Md. Laws ch. 575 (SB 184), § 1, PDF pp.1-2
+    url: https://mgaleg.maryland.gov/2018RS/chapters_noln/Ch_575_sb0184E.pdf#page=1
+  - kind: instructions
+    citation: 2025 Maryland resident booklet, filing status 6 and Chart 10A, p.12
+    url: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=12
+  readings:
+    statute: Each filer has an exemption for "the taxpayer" under (a)(1), which has no dependency condition; (b)(1)
+      allows $3,200 "for each exemption that the individual may deduct under subsection (a)".
+    other: '"You do not get an exemption for yourself. Put a zero in Exemption Box A."'
+  example: A 2025 single filer who can be claimed but is not claimed on a Maryland return, with $10,000 of earned
+    income, $600 of State tax and no EITC, has one exemption ($3,200) and the one-person poverty level of $15,650,
+    so a $500 poverty line credit, versus no exemption and no credit. A joint return with one claimable spouse has
+    2 × $3,200 = $6,400 versus $3,200.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/md/tax/income/exemptions/md_personal_exemptions_count.py
+    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_income_level.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10045
+  state: ruled
+  note: Ruled statute-first in November 2026.
+    Before 2018, (b)(1) allowed $3,200 "for each exemption that the individual may deduct in the taxable year to
+    determine federal taxable income under § 151", which brought in IRC 151(d)(2)'s denial for a dependent. Ch.
+    575 struck that text, added the (a)(1)-(3) list and applies to tax years after December 31, 2017. The only
+    dependency condition in the section is (a)(2)(ii)'s, for a spouse on a separate return. COMAR 03.04.02.02B
+    assigns the dependent taxpayer filing status and says nothing about the exemption. Main counted the filer, as
+    the statute does. The booklet was read for 2025 only.
 - id: us-md:meap-garrett-oil-level-four
   program: liheap
   years:
@@ -4958,8 +5118,7 @@ candidates:
 - id: us-md:poverty-credit-claimed-vs-claimable
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does the poverty line credit exclude only actually claimed dependents, or all claimable filers through
     the booklet's filing-status-6 rule?
@@ -4973,21 +5132,24 @@ candidates:
   readings:
     statute: A claimable but unclaimed filer passes the exclusion.
     other: Filing status 6 excludes a claimable filer without an actual claim.
-  example: With $10,000 earned income, a claimable but unclaimed filer passes the statutory exclusion for an uncapped
-    $500 versus $0 under the instructions.
+  example: A 2025 claimable single filer whom no one claims on a Maryland return, with $10,000 of earned income,
+    $600 of State tax and no EITC, has the one-person $15,650 level and a $500 credit under the statute versus $0
+    under the instructions.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/is_eligible_md_poverty_line_credit.py
+    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_claimed_as_exemption_on_another_return.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; the rule requires replacing claimability with the statutory actual-claim
-    exclusion. Code not yet on main: is_eligible_md_poverty_line_credit.'
+  note: Ruled statute-first in October 2026. The code applies the statute in every year. The claim on another
+    Maryland return is an input that defaults to the federal claim (claimed_as_dependent_on_another_return); set
+    it to false when the claimant files no Maryland return. The booklet was read for 2025 only.
 - id: us-md:poverty-threshold-exemption-count
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does the poverty line credit threshold use allowed-and-claimed exemptions or the worksheet's federal-return
     person count?
@@ -5001,16 +5163,21 @@ candidates:
   readings:
     statute: Use the exemptions the filer is allowed and claims.
     other: Use the number of persons on the federal return.
-  example: The 2025 case uses one exemption and $15,650 under the statute versus two persons and $21,150 under the
-    worksheet.
+  example: A married filer who can be claimed and files a separate Maryland return, as filing status 6 requires,
+    has one exemption and a $15,650 level under the statute versus two persons on the joint federal return and
+    $21,150 under the worksheet.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/md/tax/income/credits/poverty_line/md_poverty_line_credit_income_level.py
+    - policyengine_us/variables/gov/states/md/tax/income/exemptions/md_personal_exemptions_count.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
   state: ruled
-  note: 'Ruled statute-first in October 2026; verify the worksheet''s person count against allowed-and-claimed exemptions.
-    Code not yet on main: md_poverty_line_credit_income_level.'
+  note: Ruled statute-first in October 2026. Since every filer keeps an exemption
+    (us-md:dependent-taxpayer-own-exemption), the statutory count equals the federal return's person count for every
+    unit the model builds; a joint return with one claimable spouse gets two and $21,150 either way. The readings
+    part only on separate Maryland returns, which the model does not compute. The booklet was read for 2025 only.
 - id: us-md:premium-assistance-200-fpl-endpoint
   program: premium-assistance
   years:
@@ -5502,6 +5669,78 @@ candidates:
   note: Ruled 2026-11-02 for the statute. Subd. 2 sends the person to subd. 3(b) with no arrangement test, and the
     manual's single-person lists do give the upgrade on arrangement B. mn_msa_payment_category reads the federal
     arrangement only for the facility test.
+- id: us-mn:paid-leave-small-employer-average-wage
+  program: paid-family-medical-leave
+  years:
+    from: 2026
+    type: calendar
+  question: Does Minnesota compare its Paid Leave small employer wage limit with an employer's highest quarterly
+    covered wages divided by its highest quarterly count of wage records, or with that quotient divided by four again?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 268B.14, subds. 5a(a)(2) and 5c(a)
+    url: https://www.revisor.mn.gov/statutes/cite/268B.14
+  - kind: guidance
+    citation: DEED, Paid Leave small employer premium rate designation (2026 premiums)
+    url: https://mn.gov/deed/assets/paid-leave-small-employer-premium-rate-designation-acc_tcm1045-716947.pdf
+  - kind: agency-practice
+    citation: Unemployment Insurance Minnesota, small employer premium rate page
+    url: https://mn.gov/uimn/employers/paid-leave/small-employer-premiums.jsp
+  readings:
+    statute: Under subd. 5c(a), an employer's average wage equals its highest quarterly covered wages divided by its
+      highest quarterly count of wage records. Subd. 5a(a)(2) sets the limit at 150 percent of the state's average
+      wage, and an average equal to that limit qualifies. In its designation notice, DEED computes the average the
+      same way and excludes only averages above $27,745.88 a quarter for 2026.
+    other: On its small employer page, Unemployment Insurance Minnesota (UIMN) calls that quotient an average annual
+      wage and divides it by four to get an average quarterly wage. UIMN states the test as less than 150 percent of
+      the statewide average, but in its last step it excludes only an average that exceeds the limit.
+  example: For 2026, an employer with 10 employees and $400,000 of covered wages in its highest-paid quarter averages
+    $40,000 under subd. 5c(a) and pays the full 0.88%. Under UIMN's steps, it would average $10,000, within the
+    $27,745.88 limit, and pay 0.66%.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/payroll/paid_leave/mn_paid_leave_small_employer.py
+    - policyengine_us/variables/gov/states/mn/tax/payroll/paid_leave/mn_paid_leave_employer_average_quarterly_wage.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10294
+  state: ruled
+  note: Ruled 2026-11-09 for the statute, which DEED follows in its notice. Users enter the subd. 5c(a) quotient with
+    no further division by four, and an average equal to the limit qualifies. On $100,000 of 2026 wages, an employer
+    that deducts the most it may from wages pays $440 of an $880 premium, against $220 of $660 under UIMN's steps.
+- id: us-mn:paid-leave-small-employer-wage-limit-cents
+  program: paid-family-medical-leave
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Does a 2026 average quarterly wage of $27,745.88 meet Minnesota's Paid Leave small employer wage test,
+    when 150 percent of DEED's $73,989 statewide average annual wage comes to $27,745.875 a quarter and DEED states
+    $27,745.88?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 268B.14, subd. 5a(a)(2)
+    url: https://www.revisor.mn.gov/statutes/cite/268B.14
+  - kind: guidance
+    citation: DEED, Paid Leave small employer premium rate designation (2026 premiums)
+    url: https://mn.gov/deed/assets/paid-leave-small-employer-premium-rate-designation-acc_tcm1045-716947.pdf
+  readings:
+    statute: Subd. 5a(a)(2) sets the limit at 150 percent of the state's average wage and admits an average equal to
+      it, but doesn't say how to state the limit per quarter or round it. A quarter of 150 percent of $73,989 comes to
+      $27,745.875, and an average of $27,745.88 exceeds it.
+    other: DEED states the limit to the cent, $27,745.88, and excludes only averages above it, so an average of
+      $27,745.88 qualifies.
+  example: An employer with 10 employees and $277,458.80 of covered wages in its highest-paid quarter averages
+    $27,745.88. Against DEED's figure it pays 0.66%; against $27,745.875 it would pay 0.88%.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/payroll/paid_leave/mn_paid_leave_small_employer.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10294
+  state: ruled
+  note: Ruled 2026-11-09 for DEED's figure, since the statute leaves the quarterly limit's rounding open. The model
+    rounds the limit half up to the cent, which reproduces $27,745.88, so an input of $27,745.88 meets it.
 - id: us-mn:small-claim-of-right-repayment-deduction
   program: income-tax
   years:
@@ -6131,40 +6370,6 @@ candidates:
     non-loss adjustments, and adds back only the business and capital losses (mt_elderly_homeowner_or_renter_credit_gross_household_income.py,
     elderly_homeowner_or_renter/gross_income_sources.yaml). Identify the omitted adjustments and verify applicability
     in both years.'
-- id: us-mt:elderly-credit-refundable-credit-timing
-  program: elderly-homeowner-renter-credit
-  years:
-    from: 2021
-    to: 2023
-    type: tax
-  question: Do refundable credits enter elderly-credit income when received under the regulation or as reported
-    on the current return under the schedule?
-  sources:
-  - kind: regulation
-    citation: ARM 42.4.301(2)(b)-(c)
-    url: null
-  - kind: form
-    citation: 2021-2023 Elderly Homeowner/Renter Credit Schedule
-    url: https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=10
-  readings:
-    statute: The cited regulation counts refundable credits actually received; no statute is supplied.
-    other: The schedule directs use of amounts reported on the current Form 2.
-  pe_us:
-    follows: unknown
-    code:
-    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
-    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_received.py
-    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
-    - policyengine_us/variables/gov/states/mt/tax/income/tax_calculation/mt_refundable_credits_before_renter_credit.py
-    - policyengine_us/parameters/gov/states/mt/tax/income/credits/refundable.yaml
-    prs:
-    - https://github.com/PolicyEngine/policyengine-us/pull/9915
-  state: unreviewed
-  note: PE-US uses the current return's federal and other Montana refundable credits (the Montana EITC from 2019)
-    as a proxy for credits received, while the elderly credit itself enters as an input for the amount received
-    during the year (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py, mt_refundable_credits_before_renter_credit.py,
-    credits/refundable.yaml, mt_elderly_homeowner_or_renter_credit_received.py, elderly_homeowner_or_renter/gross_income_sources.yaml).
-    Resolve the regulation/form timing difference, noting that the 2024 caption uses received amounts.
 - id: us-mt:elderly-credit-rent-free-occupants
   program: income-tax
   years:
@@ -6175,30 +6380,78 @@ candidates:
   sources:
   - kind: statute
     citation: MCA 15-30-2338(1)(c)
-    url: null
+    url: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0380/0150-0300-0230-0380.html
   - kind: regulation
-    citation: ARM 42.4.302(2)(b)
-    url: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.4.302
+    citation: ARM 42.4.302(2)(b), expression effective 9/7/2024
+    url: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/5eedb34b-939b-4c09-ad35-59502b699bf6/document/e7a48415-15da-4847-8132-2b196c217e14
   - kind: instructions
     citation: 2025 Form 2 instructions, Schedule 2EC line 23, PDF page 47
     url: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
   readings:
-    statute: The owner, renter or lessee condition potentially excludes a rent-free occupant.
+    statute: The owner, renter or lessee condition excludes a rent-free occupant who holds none of those statuses.
     other: Another person's property tax bill qualifies as the claimant's rent.
   example: An 80-year-old parent with a $14,000 pension living rent-free in a child's home with $4,000 property
-    tax receives a 2024 credit of $341 versus $0 before.
+    tax and no lessee status receives a 2024 credit of $0 under the statute, against $341 under the other reading.
+    Recorded as a lessee, the parent receives $341.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_eligible.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months.py
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_gross_rent.py
     - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_property_tax_billed.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9945
+    - https://github.com/PolicyEngine/policyengine-us/pull/10331
+  state: ruled
+  note: 'PE-US follows the statute from #10331: a head or spouse must have occupied a Montana dwelling as an owner,
+    renter or lessee for 6 months (mt_elderly_homeowner_or_renter_credit_eligible.py). Rent paid or property tax
+    billed to the tax unit shows that status (mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months.py);
+    a rent-free lessee is recorded through mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months.py.
+    The household''s bill still counts as rent for an eligible claimant whose tax unit is billed nothing, which
+    ARM 42.4.302(2)(b) allows "an eligible claimant" (mt_elderly_homeowner_or_renter_credit_gross_rent.py), so
+    the regulation is read as measuring rent, not as conferring eligibility. ARM 42.4.302 and the 2025 instructions
+    page are captured under source_conflicts/sources/us-mt/; MCA 15-30-2338 is in the Axiom corpus. Move to the
+    register after #10331 merges.'
+- id: us-mt:elderly-credit-federal-refundable-credits-before-2017
+  program: elderly-homeowner-renter-credit
+  years:
+    from: 2009
+    to: 2016
+    type: tax
+  question: Before ARM 42.4.301(2)(b) was amended on November 10, 2017, did gross household income count federal
+    refundable credits received, as nontaxable income under the statute, or only federal refunds that recovered
+    a prior-year Montana tax benefit, under the regulation and the form?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2337(9)(a) (2009)
+    url: https://archive.legmt.gov/bills/2009/mca/15/30/15-30-2337.htm
+  - kind: regulation
+    citation: ARM 42.4.301(2)(b) as in effect 8/20/2004 to 11/9/2017
+    url: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/788508cc-8418-41c8-926d-3dfb11af3fd6
+  - kind: form
+    citation: 2016 Montana Form 2EC Gross Household Income Worksheet, PDF pages 74-75
+    url: https://taxsim.nber.org/historical_state_tax_forms/MT/2016/Form_2_booklet_2016.pdf#page=74
+  readings:
+    statute: A refundable credit received is nontaxable income under (9)(a), so it counts from 2009.
+    other: A refundable credit paid in excess of tax is a federal refund, which the pre-2017 regulation counts only
+      to the extent it recovered a prior-year Montana tax benefit, and the 2016 worksheet lists only federal income
+      tax refunds taxable in Montana; so it does not count before 2017.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/credits/elderly_homeowner_or_renter/gross_income_sources.yaml
+    - policyengine_us/variables/gov/states/mt/tax/income/credits/mt_elderly_homeowner_or_renter/mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10331
   state: open
-  note: 'PE-US follows the regulation and instructions: when no one in the claimant''s tax unit is billed property
-    tax, the household''s property tax counts as rent, taking the larger of that and rent paid, so a rent-free occupant
-    can qualify (mt_elderly_homeowner_or_renter_credit_gross_rent.py). The source-choice question remains open;
-    the statute-first rule requires a model change if the regulation expands rather than interprets statutory eligibility.'
+  note: PE-US follows the regulation and the form before 2017. The federal refundable credits received
+    (mt_elderly_homeowner_or_renter_credit_federal_refundable_credits.py) enter the source list only from 2017
+    (elderly_homeowner_or_renter/gross_income_sources.yaml). Whether the pre-2017 regulation narrows the statute's
+    "all nontaxable income", and how far a Montana rule binds against its statute, is open for the project lead.
+    The 2009 statute, the three ARM 42.4.301 expressions in force from 8/20/2004 to 11/9/2017 (whose (2) text is
+    the same) and the 2016 booklet pages are captured under source_conflicts/sources/us-mt/.
 - id: us-mt:liheap-business-equity-limit
   program: liheap
   years:
@@ -6753,6 +7006,154 @@ candidates:
     and $105,227; 8, $107,574 and $107,565; 9, $109,914 and $109,903; 11, $114,582 and $114,580; 12, $116,922 and
     $116,919. Size 1 is below the ceiling, size 10 equals it, and from size 13 150% of the guideline exceeds the
     table. Verify each later fiscal-year table.'
+- id: us-nd:renters-refund-federally-excluded-income
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does the renter's refund count the interest, pensions, retirement distributions, wages, alimony and other
+    income that federal law leaves out of gross income, when the Tax Commissioner's guideline and the application list
+    those sources as income with no exception?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24777 (10-2025), lines 5 to 7 and the instructions for lines 4 to 9
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  - kind: regulation
+    citation: 26 CFR 1.931-1(c)(1)
+    url: https://www.law.cornell.edu/cfr/text/26/1.931-1
+  - kind: guidance
+    citation: IRS Publication 570, Tax Guide for Individuals With Income From U.S. Territories
+    url: https://www.irs.gov/publications/p570
+  readings:
+    statute: Income comes from all sources, "including any county, state, or federal public assistance benefits, social
+      security, or other retirement benefits", but leaves out "any amount excluded from income by federal or state law
+      with the exception of income from social security benefits". Federal law leaves out of gross income the interest
+      on state and local bonds (IRC 103(a)) and savings bond interest spent on higher education (IRC 135(a)); the return
+      of a pension's cost, rollovers and qualified Roth distributions (IRC 72(b)(1), 402(c)(1), 402A(d)(1), 403(b)(8),
+      408(d), 408A(d)(1)); the pre-tax payroll deductions of IRC 106, 125, 129, 402(e)(3) and 403(b)(1) and employer
+      adoption assistance (IRC 137(a)); income of bona fide residents of Puerto Rico from sources there (IRC 933) and
+      of American Samoa from sources there or from a business there (IRC 931(a), which reaches only a possession with
+      an implementing agreement in effect, 26 CFR 1.931-1(c)(1), and which IRS Publication 570 applies only to
+      American Samoa); and alimony under a divorce or separation instrument executed after 2018, since Pub. L. 115-97
+      section 11051 repealed IRC 71 and 61(a)(8).
+    other: Item 10 lists pensions "including military pension and I.R.A.", salaries and wages, dividends and interest,
+      and alimony as income. The application asks for income from salary and wages (line 5) and from interest (line
+      6), and its instructions for lines 4 to 9 list most of the same sources. Neither leaves out the amounts federal
+      law excludes.
+  example: A renter with $20,000 of wages, $1,000 of taxable interest and $5,000 of interest on municipal bonds has
+    income of $21,000 under the statute and $26,000 under item 10 and line 6.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_federally_excluded_income.py
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/excluded_deductions.yaml
+    - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/market_income_components.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10697
+  state: ruled
+  note: The statute names the exclusion, so it governs over the general lists, as in
+    us-nd:renters-refund-insurance-proceeds. The definition also counts "other retirement benefits", but the exception
+    to the exclusion names only social security, so the exclusion reaches the parts of other retirement benefits that
+    federal law leaves out. An amount leaves when a federal statute or regulation leaves it out of gross income,
+    including by repealing the provision that counted it, as for alimony; a doctrine with no statutory basis, such as
+    the IRS's general welfare exclusion, doesn't remove it. Social security counts in full by the statute's own
+    exception. The state-law half of the clause has its own entry, us-nd:renters-refund-state-income-tax-reductions.
+- id: us-nd:renters-refund-state-income-tax-reductions
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Do the amounts North Dakota's income tax reductions subtract, such as military pay, retired military
+    benefits and 40 percent of net long-term capital gains and qualified dividends, count as "excluded from income by
+    federal or state law" for the renter's refund?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: statute
+    citation: N.D.C.C. 57-38-30.3(2)
+    url: https://ndlegis.gov/cencode/t57c38.pdf#page=33
+  - kind: statute
+    citation: House Bill 1174 (2019), enrolled, sections 1 and 3
+    url: https://ndlegis.gov/assembly/66-2019/regular/documents/19-0115-05000.pdf#page=1
+  - kind: statute
+    citation: House Bill 1053 (2019), enrolled
+    url: https://ndlegis.gov/assembly/66-2019/regular/documents/19-0357-02000.pdf#page=1
+  - kind: agency-practice
+    citation: Office of Tax Commissioner, fiscal note on House Bill 1174 (2019), on section 1
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=1
+  - kind: agency-practice
+    citation: Office of Tax Commissioner, fiscal note on House Bill 1174 (2019) as introduced, on sections 1 and 2
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=7
+  - kind: statute
+    citation: House Bill 1174 (2019), Senate Appropriations Committee minutes, March 25, 2019, the sponsor on section 1
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=25
+  - kind: agency-practice
+    citation: Tax Department testimony on House Bill 1174, Senate Appropriations Committee, March 25, 2019
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=28
+  - kind: statute
+    citation: N.D.C.C. 57-38-04
+    url: https://ndlegis.gov/cencode/t57c38.pdf#page=25
+  - kind: statute
+    citation: N.D.C.C. 54-01.1-13
+    url: https://ndlegis.gov/cencode/t54c01-1.pdf#page=6
+  - kind: statute
+    citation: N.D.C.C. 1-02-39
+    url: https://ndlegis.gov/cencode/t01c02.pdf#page=6
+  - kind: guidance
+    citation: N.D.A.G. Letter Opinion 2008-L-12
+    url: https://attorneygeneral.nd.gov/wp-content/uploads/2023/02/2008-L-12.pdf
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 10
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24777 (10-2025), line 7
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  readings:
+    statute: Income leaves out "any amount excluded from income by federal or state law with the exception of income
+      from social security benefits". N.D.C.C. 57-38-30.3(2) defines North Dakota taxable income as federal taxable
+      income "adjusted as follows", and most adjustments open "Reduced by". The list names military pay, retired
+      military personnel benefits and 40 percent of net long-term capital gains and qualified dividends, along with
+      plain deductions such as organ donation expenses. In the same chapter, 57-38-04 says certain compensation "must
+      be excluded from income". House Bill 1174 (2019) created the social security reduction in section 3 and added the
+      exception in section 1. In its fiscal note, the Tax Commissioner's office wrote that section 1 keeps the full
+      benefit in the homestead income test "even though they are excluded from income tax". House Bill 1053 (2019)
+      created the retired military reduction and added no exception for it.
+    other: Item 10 of the guideline, in the edition with content revised in July 2025, lists "Pensions, including
+      military pension and I.R.A." and "Net gains from the sale of property" as income. SFN 24777 line 7 asks for
+      capital gains.
+  example: A renter with $30,000 of retired military benefits and no other income has income of $30,000 if the benefits
+    count, and less if the reduction, which reaches the part of the benefits in federal taxable income, excludes
+    amounts from income.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10697
+  state: ruled
+  note: N.D.C.C. 57-02-08.1(5)(c) doesn't say whether these reductions exclude amounts from income, so PolicyEngine
+    follows the Tax Commissioner's administrative practice, item 10 and line 7, and counts them. The Legislative
+    Assembly wrote the reductions as adjustments to taxable income, and both 2019 Acts call theirs a deduction in their
+    titles. The 2019 record leans the other way. The final fiscal note keeps benefits in the income test "even though
+    they are excluded from income tax", and a Tax Department witness called the retired military reduction an
+    exclusion. In the Senate Appropriations Committee, the bill's sponsor said of section 1, "I do not know why council
+    put that in there", then answered "That would probably be true" when a committee member suggested it keeps the
+    removal of social security from income out of the homestead law. But the office's first fiscal note called
+    sections 1 and 2 technical changes "for purposes of clarity and consistency". The
+    words "or state law" still do work under this reading, since N.D.C.C. 54-01.1-13 bars counting relocation
+    payments as income for the purposes of the state's tax laws. The exception also keeps in income the part of
+    benefits that IRC 86 leaves out of gross income, so it has effect even if the reductions exclude nothing. N.D.C.C.
+    1-02-39 lets a court weigh legislative history and administrative construction when a statute is ambiguous, N.D.A.G.
+    Letter Opinion 2008-L-12 deferred to the Tax Commissioner's reading of an ambiguous property tax provision, and the
+    Commissioner kept military pensions and net gains in item 10 after both 2019 Acts.
 - id: us-nd:renters-refund-insurance-proceeds
   program: renter-credit
   years:
@@ -6778,8 +7179,10 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_income.py
+    - policyengine_us/variables/gov/states/nd/tax/property/renters_refund/nd_renters_refund_federally_excluded_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10663
+    - https://github.com/PolicyEngine/policyengine-us/pull/10697
   state: ruled
   note: The statute's text settles the case, so it governs over the guideline's general list.
 - id: us-nd:stillborn-subtraction-dependency-condition
@@ -6965,13 +7368,14 @@ candidates:
     guidance.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_offset.py
+    - policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_repayment_category.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10198
-  state: unreviewed
-  note: 'Retain as a disputable gap-fill; verify whether repayments are statutory losses and separate this issue
-    from unsupported spouse attribution. Code not yet on main: policyengine_us/variables/gov/states/nj/tax/income/adjusted_gross_income/claim_of_right/nj_claim_of_right_repayment_category.py,
-    gov/states/nj/tax/income/adjusted_gross_income/nj_claim_of_right_offset.yaml, nj_claim_of_right_offset, nj_claim_of_right_repayment_category.'
+  state: ruled
+  note: Ruled in November 2026 as a gap-fill under TAM 2011-7. Whether repayments count as statutory losses remains
+    unverified, and the sources leave spouse attribution open.
 - id: us-nj:eitc-married-separate-filer
   program: income-tax
   years:
@@ -7665,6 +8069,112 @@ candidates:
   state: ruled
   note: Both credits halve exactly, as the statute says; the tables round for the form. Section 606 authorizes
     nearest-dollar tables only for the real property tax credit.
+- id: us-ny:nyc-school-tax-credit-fixed-amount-rounding
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Is the NYC school tax credit fixed amount for unmarried, head of household and separate filers the
+    statutory $62.50 or the $63 that the IT-201 instructions print?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 606(ggg)(4-a)(B)
+    url: https://www.nysenate.gov/legislation/laws/TAX/606
+  - kind: instructions
+    citation: 2025 Instructions for Form IT-201, line 69
+    url: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
+  readings:
+    statute: The statute sets the fixed amount for these filers at $62.50.
+    other: The instructions' table prints $63 and says the statutory amounts have been rounded.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/local/ny/nyc/tax/income/credits/school/fixed/amount.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10330
+  state: unreviewed
+  note: 'Found in review of the rate reduction amount, where the model now follows the statute over the
+    instructions; the fixed amount still follows the instructions'' rounding. The difference is $0.50 per return.'
+- id: us-ny:pre-tcja-home-equity-room-per-residence
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Under the pre-TCJA mortgage limits that New York keeps, does each home's value less its acquisition debt
+    cap the home equity debt on that home, or does the total of both homes' rooms cap the total home equity debt?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 163(h)(3)(C)(i) (2016 edition), which N.Y. Tax Law 615(a) keeps for New York from 2018
+    url: https://www.govinfo.gov/content/pkg/USCODE-2016-title26/html/USCODE-2016-title26-subtitleA-chap1-subchapB-partVI-sec163.htm
+  - kind: guidance
+    citation: 2017 Pub. 936, Home equity debt limit (p. 10) and the Table 1 line 7 instructions (p. 13)
+    url: https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=10
+  - kind: instructions
+    citation: 2025 Form IT-196 instructions, Limit on home mortgage interest, which point filers to the 2017 Pub. 936
+    url: https://www.tax.ny.gov/pdf/2025/inc/it196i_2025.pdf#page=2
+  readings:
+    statute: Home equity indebtedness is debt secured by a qualified residence "to the extent the aggregate amount of
+      such indebtedness does not exceed" that residence's fair market value less its acquisition indebtedness.
+    other: Pub. 936 caps "the total home equity debt on your main home and second home" at the smaller of $100,000
+      and the total of each home's value reduced (not below zero) by its acquisition and grandfathered debt.
+  example: 'A 2025 joint return has $30,000 of interest, a $400,000 loan from 2015 on a $2,000,000 main home, and $200,000
+    of non-acquisition debt on a $50,000 second home. Home by home, line 7 is $50,000 and $22,500 is deductible; with
+    the total room of $1,650,000, line 7 is $100,000 and $25,000 is deductible.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/ny_mortgage_interest_deduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10596
+  state: ruled
+  note: 'PE-US applies the room home by home in _ny_qualified_loan_limit and _ny_home_equity_debt. Two cases in
+    ny_mortgage_interest_deduction.yaml pin it: "The second home''s value limits its own non-acquisition debt" and "The
+    main home''s value limits its own non-acquisition debt" give $22,500 home by home and $25,000 with Pub. 936''s total.
+    The readings differ only when one home''s home equity debt exceeds its own room while the other home has room to
+    spare. Ruled in November 2026 to follow the statute.'
+- id: us-ny:itemized-deduction-adjustment-college-tuition-base
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Does the Tax Law 615(f) itemized deduction adjustment (IT-196 line 46) apply to a base that includes the
+    615(d)(4) college tuition itemized deduction, as 615(a) defines the deduction, or to a base without it, as Form
+    IT-196 lays out lines 45 and 48 for Form IT-201 filers?
+  sources:
+  - kind: statute
+    citation: N.Y. Tax Law 615(a), (d)(4), (f)(1)-(2) and (g)
+    url: https://www.nysenate.gov/legislation/laws/TAX/615
+  - kind: form
+    citation: Form IT-196 (2021), lines 40-49
+    url: https://www.tax.ny.gov/pdf/2021/inc/it196_2021.pdf#page=3
+  - kind: instructions
+    citation: Form IT-196-I (2021), lines 43, 46 and 48 and Worksheets 3 and 4
+    url: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=20
+  readings:
+    statute: 615(f) takes its percentage of "the New York itemized deduction otherwise allowable under subsection (a)",
+      and 615(a) defines that deduction "with the modifications specified in this section", which include the
+      615(d)(4) college tuition deduction. The base includes tuition, as IT-196 line 45 does for Form IT-203 filers
+      (line 43).
+    other: For Form IT-201 filers, IT-196 adds the college tuition deduction on line 48, after the line 46
+      adjustment, so the line 45 base leaves it out.
+  example: A 2021 joint return with NY AGI $360,200, $50,000 of mortgage interest, a $640.50 line 40 limitation and a
+    $10,000 college tuition deduction has a line 46 adjustment of 0.25 x 59,359.50 = 14,839.875 and a New York itemized
+    deduction of 44,519.625 under the statute, against 12,339.875 and 47,019.625 under the IT-201 form layout.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/reduction/based_on_charitable_deduction/incremental/ny_itemized_deductions_lower_incremental_reduction.py
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/reduction/based_on_charitable_deduction/incremental/ny_itemized_deductions_higher_incremental_reduction.py
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/ny_itemized_deductions.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10658
+  state: unreviewed
+  note: The 615(f) base is ny_itemized_deductions_max (which includes ny_college_tuition_deduction) minus the line 40
+    limitation, for every filer. Above NY AGI $1,000,000, ny_itemized_deductions returns only the 615(g) share of the
+    charitable deduction, so the college tuition deduction is not added back, which also follows the statute ("Notwithstanding
+    subsection (a)") over the IT-201 line 48 addition. The model has no IT-201/IT-203 split for this rule. The IT-196
+    line 40-49 layout and the Worksheets 3 and 4 "25% (.25) of line 45" wording are the same on the 2018-2025 forms
+    and instructions checked (forms 2018-2021 and 2025; instructions 2018-2022, 2024 and 2025).
 - id: us-ny:real-property-credit-claimable-spouse
   program: income-tax
   years:
@@ -9288,6 +9798,37 @@ candidates:
   state: ruled
   note: The code already uses a strict comparison and the eligibility tests pin AGI equal to the threshold as
     ineligible. Verify the statute's and the worksheet's wording before registering.
+- id: us-ri:property-tax-relief-claimant-same-person
+  program: property-tax-relief
+  years:
+    from: 2025
+    type: tax
+  question: Must one household member be both aged 65 or older (or disabled) and not claimed as a dependent, or may
+    the age test and the dependency test fall on different spouses, as the RI-1040H question allows?
+  sources:
+  - kind: statute
+    citation: R.I. Gen. Laws § 44-33-3(1)
+    url: https://webserver.rilegislature.gov/Statutes/TITLE44/44-33/44-33-3.htm
+  - kind: form
+    citation: 2025 Form RI-1040H, page 1, question D
+    url: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-10/2025%201040H_VENDOR.pdf#page=1
+  readings:
+    statute: 'The claimant is a homeowner or renter "sixty-five (65) years of age or older, and/or disabled", and the
+      claimant "shall not mean or include any person claimed as a dependent by any taxpayer".'
+    other: 'Question D asks "Were you or your spouse 65 years of age or older and/or disabled", which a joint return
+      passes when only the claimed spouse is 65.'
+  example: '2025 joint return where only the claimed spouse is 65 and the other spouse is 40 and not disabled: $0 under
+    the statute versus $700 if question D governs.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ri/tax/income/credits/property_tax/ri_property_tax_credit_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US requires a filer who is both aged 65 or older or disabled and not claimed (ri_property_tax_credit_eligible.py).
+    Household members may choose the claimant between themselves, so either spouse may claim. Only the 2025 form was
+    read; earlier editions are not checked.'
 - id: us-ri:ssp-category-d-without-federal-ssi
   program: ssi-state-supplement
   years:
@@ -9672,6 +10213,102 @@ candidates:
   state: ruled
   note: 'Ruled 2026-11-02: income other than minors'' income follows the plan.'
 
+- id: us-sc:tanf-child-support-deduction-payer
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Does child support that a South Carolina TANF benefit group member pays to dependents outside the group
+    come off only that member's own income, or off the group's income as a whole?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(L)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=212
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 sections 8.11 and 8.16 D and F
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=131
+  readings:
+    statute: No statute is supplied; 114-1140(L) says support "made by a budget group member" to legal dependents outside
+      the group "may be deducted from the income of the payor".
+    other: Section 8.16 D says to subtract support "from the remaining earned income of any adult", and 8.16 F takes
+      support "paid by any adult" from the unearned income; section 8.11 deducts it "as income to the BG".
+  example: In May 2026 adult A pays $2,400 a year and has no income, and adult B earns $600 a month, with one child.
+    From the payer's income the deduction is $0, countable income $500 and the payment floor(610 x 0.4046) = $246.
+    Pooled, the deduction is $200, countable income $300 and the payment $327.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_child_support_deduction.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
+    section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
+    member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-gross-income-limit-cents
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: Is South Carolina's TANF gross income limit 185 percent of the need standard with its cents, or that amount
+    with the cents dropped?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(A)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1150(A) says gross income "must not exceed 185 percent of the need standard by
+      family size", and 114-1140(A)(4) rounds down only "the standard of need or the payment amount".
+    other: The section 8.15 note says "To determine the Gross Income Limit, multiply the Need Standard by 1.85 and drop
+      the cents."
+  example: For two persons in 2026 the need standard is $881. Gross income of $1,629.50 a month passes the limit of
+    881 x 1.85 = $1,629.85 and fails the manual's $1,629.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/eligibility/sc_tanf_gross_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs. Section 8.1 also says "Do not round at any step of the TANF calculation." The model
+    keeps rounding the need standard and the payment down to whole dollars under 114-1140(A)(4).
+- id: us-sc:tanf-need-standard-above-eight
+  program: tanf
+  years:
+    from: 2026
+    to: 2026
+    type: federal-fiscal
+  question: For a benefit group of more than eight, is South Carolina's TANF need standard fifty percent of the poverty
+    guideline rounded down to a whole dollar, or the Policy Manual's eight-person amount plus $229 for each added person?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1140(A)(2) and (A)(4)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=210
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 8.15
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=133
+  readings:
+    statute: No statute is supplied; 114-1140(A)(2) sets the need standard "at fifty percent of the current year's" poverty
+      guidelines, and (A)(4) rounds it "down to the next lower whole dollar".
+    other: The section 8.15 table stops at eight persons, and its note says "For family sizes over 8, $229 is added to the
+      need standard for each additional person."
+  example: Under the 2025 guidelines a group of 13 has a need standard of floor($81,650 / 12 x 0.5) = $3,402 under
+    114-1140(A)(2) and (A)(4), and $2,256 + 5 x $229 = $3,401 under the manual note. The two agree through 12 persons.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_need_standard.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+  state: ruled
+  note: The regulation governs, and the manual's $229 restates the 2025 added-person guideline ($5,500 / 12 x 0.5 =
+    $229.17) without its cents. The regulation gives $1 more for 13 to 18 persons and $2 more for 19 to 24.
 - id: us-sd:liheap-2025-published-income-limit
   program: liheap
   years:
@@ -11158,10 +11795,41 @@ candidates:
   state: unreviewed
   note: 'Verify whether HUD extensions or the calculator''s caps properly fill the statutory silence. Code not yet
     on main: vt_renter_credit, gov.states.vt.tax.income.credits.renter.max_household_size.'
+- id: us-vt:renter-credit-income-limit-household-size
+  program: renter-credit
+  years:
+    from: 2021
+    to: 2025
+    type: tax
+  question: Are the renter credit's HUD income limits looked up by the number of resident family members, as the
+    department does, or by the number of personal exemptions that sizes the fair market rent?
+  sources:
+  - kind: statute
+    citation: 32 V.S.A. § 6061(19)-(20); § 6066(b)
+    url: https://legislature.vermont.gov/statutes/section/32/154/06061
+  - kind: guidance
+    citation: Vermont Department of Taxes, Renter Credit page
+    url: https://tax.vermont.gov/renter-credit
+  readings:
+    statute: The limits are HUD's extremely low-income and very low-income limits, which HUD sets by family size. The
+      statute does not say whose family size counts.
+    other: 'The department sizes the limits by "the number of family members who live with you". Another reading uses
+      the exemption count that sizes the fair market rent under 6066(b)(2).'
+  example: '2025 Chittenden joint return with one claimed spouse and $62,000 of income: $270 with resident-member limits
+    versus $0 with exemption-sized limits.'
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US looks up the income limits by tax_unit_size, capped at the tables'' eight people, and the fair market
+    rent by exemptions_count (vt_renter_credit.py). Axiom issue 1678 in rulespec-us pursues exemption-sized limits.'
 - id: us-vt:renter-credit-statewide-average-fmr
   program: renter-credit
   years:
-    from: 2022
+    from: 2021
     to: 2025
     type: tax
   question: Should the statewide fair-market-rent average use a plain HUD-area mean or the department tables' inferred
@@ -11176,7 +11844,9 @@ candidates:
   readings:
     statute: The statute calls for a statewide average without specifying weights or rounding.
     other: The published tables require inferred reconstructions rather than a plain mean of HUD areas.
-  example: '2022 sizes 4-8: PE $1,774 versus published $1,773; 2025 size 3: $2,026 versus $2,025.'
+  example: '2022 sizes 4-8: PE $1,774 versus published $1,773; 2025 size 3: $2,026 versus $2,025. Zero bedrooms: $883
+    either way in 2021, $919 versus $918 in 2022 and $1,172 versus $1,171 in 2024; a 14-county mean gives $1,273
+    versus $1,209 in 2025.'
   pe_us:
     follows: gap-fill
     code:
@@ -11184,11 +11854,14 @@ candidates:
     - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10130
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
   state: unreviewed
   note: 'PE-US fills the gap with the published tables: Franklin and Grand Isle use a reconstruction of the statewide
     average for each year that reproduces the department''s credit amounts, and the file''s comment says these are
     not department rules (fair_market_rent.yaml, read by vt_renter_credit.py). Document the inferred reconstruction
-    and distinguish averaging assumptions from official table values.'
+    and distinguish averaging assumptions from official table values. The zero-bedroom rows (2021-2025) follow
+    another convention: the unrounded mean of the 12 HUD rent areas in every year, 2021 included. No department
+    table exists for zero bedrooms, so nothing reproduces them; the parameter comment lists the alternatives.'
 - id: us-vt:renter-credit-zero-exemption-rent
   program: renter-credit
   years:
@@ -11213,12 +11886,15 @@ candidates:
   example: 'Claimable but unclaimed single Burlington renter, 2025: $1,656 versus $1,771.'
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/vt/tax/income/credits/renter/vt_renter_credit.py
+    - policyengine_us/parameters/gov/states/vt/tax/income/credits/renter/fair_market_rent.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10044
   state: ruled
   note: 'Ruled in October 2026 to follow the statute; verify the calculator editions and zero-exemption example.
-    Code not yet on main: vt_renter_credit.'
+    vt_renter_credit.py indexes the fair market rent by exemptions_count, and fair_market_rent.yaml carries the
+    zero-bedroom (efficiency) rows for 2021-2025.'
 - id: us-vt:snap-child-support-deduction
   program: snap
   years:
@@ -11244,6 +11920,44 @@ candidates:
   state: unreviewed
   note: PE-US follows Vermont's deduction; evidence concerns federal fiscal 2016-2017 and 2024 only, with intervening
     years unasserted.
+- id: us-vt:student-loan-interest-surviving-spouse-limit
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Does a qualifying surviving spouse get Vermont's student loan interest subtraction, when 32 V.S.A. §
+    5811(29)(B) sets an income limit only for single, head of household, married filing separately and joint filers?
+  sources:
+  - kind: statute
+    citation: 32 V.S.A. § 5811(21)(B)(vi), (29)(B)
+    url: https://legislature.vermont.gov/statutes/section/32/151/05811
+  - kind: form
+    citation: 2025 Vermont Schedule IN-112, line 16c
+    url: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2025.pdf#page=23
+  - kind: statute
+    citation: 32 V.S.A. § 5822(a)
+    url: https://legislature.vermont.gov/statutes/section/32/151/05822
+  - kind: statute
+    citation: 2021, No. 138 (Adj. Sess.), §§ 5, 7 (32 V.S.A. §§ 5811(29), 5830e(a)(1))
+    url: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=5
+  readings:
+    statute: (29)(B) defines a qualified resident taxpayer by a $120,000 limit for single, head of household and
+      married filing separately filers and a $200,000 limit for joint filers. It names no amount for a qualifying
+      surviving spouse, so a surviving spouse doesn't meet the definition and gets no subtraction.
+    other: Line 16c applies $120,000 to "All other filers", a qualifying surviving spouse included.
+  example: A 2025 surviving spouse with $110,000 of federal AGI and $3,000 of student loan interest, none deducted
+    federally, subtracts $3,000 under line 16c and nothing under § 5811(29)(B).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/vt/tax/income/agi/student_loan_interest/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10104
+  state: ruled
+  note: PolicyEngine follows the statute. The chapter names surviving spouses where it includes them (§ 5811(21)(C)(i)
+    and (ii), § 5822(a)(1) and (3)), and (29)(B) does not. The act that added (29)(B) did the same two sections later,
+    when its § 7 renamed the qualifying widow or widower status "surviving spouse" in § 5830e(a)(1)'s list of
+    filing statuses. The Department's form gives them the $120,000 limit. Code not yet on main.
 - id: us-wa:liheap-minimum-benefit-cost-cap
   program: liheap
   years:
@@ -11355,6 +12069,76 @@ candidates:
   state: unreviewed
   note: 'PE-US follows the rounded standards as a disputable gap-fill; verify statutory rounding requirements and
     applicability of the undated precedent. Code not yet on main: medicaid_ltss_mmmna.'
+- id: us-wa:pte-veteran-pathway-pre-2016
+  program: property-tax-exemption
+  years:
+    from: 2008
+    to: 2015
+    type: program
+    note: property tax collection year (taxes levied for collection in that year)
+  question: Before collection year 2016, does RCW 84.36.381(3)(b)'s "one hundred percent service-connected disability
+    as provided in 42 U.S.C. Sec. 423(d)(1)(A)" mean a disability wholly connected to service under Social Security's
+    definition, or a 100% VA rating?
+  sources:
+  - kind: statute
+    citation: RCW 84.36.381(3)(b), as amended by 2008 c 6 s 706
+    url: https://lawfilesext.leg.wa.gov/biennium/2007-08/Pdf/Bills/Session%20Laws/House/3104-S2.SL.pdf#page=85
+  - kind: statute
+    citation: RCW 84.36.381(3)(a)(ii), as amended by 2015 3rd sp.s. c 30 s 2, for collection in 2016 and after
+    url: https://lawfilestestext.leg.wa.gov/LawTest/RCW%20Supplement/RCW%20%2084%20%20TITLE/RCW%20%2084%20.%2036%20%20CHAPTER/RCW%20%2084%20.%2036%20.381.htm
+  - kind: statute
+    citation: 42 U.S.C. 423(d)(1)(A) (Social Security Act 223(d)(1)(A))
+    url: https://www.ssa.gov/OP_Home/ssact/title02/0223.htm
+  readings:
+    statute: A disability that meets Social Security's definition in 42 U.S.C. 423(d)(1)(A) and is wholly connected
+      to service; the cross-reference names that definition, and the 2016 amendment's move to VA-rating language marks
+      the older text as something other than a rating.
+    other: A 100% VA service-connected disability rating.
+  example: In collection year 2015 a 45-year-old veteran with a disability meeting the Social Security definition,
+    wholly service-connected but with no VA rating, qualifies under the Social Security reading and not under the
+    VA-rating reading.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_wholly_service_connected_disability.py
+    - policyengine_us/variables/gov/states/wa/dor/property_tax_exemption/senior_disabled/wa_pte_categorical_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10330
+  state: ruled
+  note: PolicyEngine ruled on 2026-10-21 for the Social Security reading. The model has no service-connection input,
+    so wa_pte_wholly_service_connected_disability defaults to is_disabled (or is_fully_disabled_service_connected_veteran)
+    as an overridable proxy, read together with is_veteran in wa_pte_categorical_eligible; it over-includes a veteran
+    whose disability is not service-connected.
+- id: us-wi:age-65-exemption-claimable-filer
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does a filer aged 65 or older who can be claimed as a dependent get Wisconsin's $250 additional exemption?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. § 71.05(23)(b)3
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/23
+  - kind: instructions
+    citation: 2025 Wisconsin Form 1 instructions, lines 10a and 10b, PDF pp. 15-16
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-Inst.pdf#page=15
+  readings:
+    statute: 'Subdivision 3 allows $250 "if the taxpayer has reached the age of 65" and $250 for a spouse who has. Age
+      is its only condition.'
+    other: 'Line 10b allows the $250 only to filers who "are allowed the $700 exemption on line 10a", and line 10a gives
+      no exemption to a filer who can be claimed as a dependent.'
+  example: '2025 single filer aged 70 who can be claimed, with $34,000 of income and a $24,000 retirement exclusion: tax
+    of $185.50 with the $250 versus $194.25 without it.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/exemptions/wi_additional_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US allows $250 for each filer aged 65 or older, as main did before this PR (wi_additional_exemption.py).
+    Only the 2025 instructions were read. The official statute site was unavailable, so the statute text came from a
+    LawServer copy. The $700 exemption is a separate item (us-wi:personal-exemption-claimable-filer).'
 - id: us-wi:claim-of-right-itemized-deduction-credit
   program: income-tax
   years:
@@ -11384,6 +12168,77 @@ candidates:
   note: An October 2026 ruling followed the worksheet; under the later statute-first rule the code includes the
     federal claim of right deduction in the credit base with the Schedule 1 components. The separate Wisconsin
     repayment credit that would trigger the 71.07(5)(a)6 exclusion is not modeled.
+- id: us-wi:dependent-standard-deduction-earned-income
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does Wisconsin's dependent standard deduction limit count earned income as IRC 911(d)(2) defines it, or as
+    the federal Standard Deduction Worksheet for Dependents measures it?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. § 71.05(22)(f)3m; 26 U.S.C. § 911(d)(2)
+    url: https://www.law.cornell.edu/uscode/text/26/911
+  - kind: instructions
+    citation: 2025 Wisconsin Form 1 instructions, Standard Deduction Worksheet for Dependents footnote, PDF p. 15
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-Inst.pdf#page=15
+  - kind: instructions
+    citation: 2025 Form 1040 instructions, Standard Deduction Worksheet for Dependents footnote
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=23
+  readings:
+    statute: 'Subdivision 3m uses "earned income, as defined in section 911 (d) (2)". That counts at most 30 percent of
+      net profits from a business in which capital is material, and subtracts no self-employment tax.'
+    other: 'The Wisconsin footnote lists "wages, salaries, tips, professional fees, and any other compensation received
+      for services you performed". The federal worksheet adds business and farm income, less the self-employment tax
+      deduction.'
+  example: '2025 claimable single filer with $10,000 of farm income: a $9,743.52 deduction under the federal worksheet
+    measure versus at most $3,450 if capital is material to the farm.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/wi_standard_deduction.py
+    - policyengine_us/variables/gov/states/wi/tax/income/wi_retirement_income_exclusion_tax.py
+    - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/standard_deduction_worksheet_earned_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'Both Wisconsin deduction paths read the federal standard_deduction_worksheet_earned_income: wages after pretax
+    deductions, taxable disability wages, and business and farm income less the self-employment tax deduction.
+    Section 911(d)(2) also needs a reasonable allowance for the filer''s services, which the model has no input for.
+    The federal item us:dependent-deduction-worksheet-earned-income rests on section 63(c)(5) leaving earned income
+    undefined, which Wisconsin''s statute does not.'
+- id: us-wi:homestead-age-disability-earned-income-routes
+  program: homestead-credit
+  years:
+    from: 2021
+    type: tax
+  question: Does a Wisconsin homestead claimant with no earned income qualify by age 62 or by disability alone, when
+    Wis. Stat. 71.54(1)(gm) read by itself denies such a claimant who is not disabled or is under 62?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 71.54(1)(dm), (em), (gm)
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54
+  - kind: instructions
+    citation: 2025 Schedule H instructions, Step 1a (PDF p. 4)
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH-inst.pdf#page=4
+  readings:
+    statute: Read together, (dm), (em) and (gm) are alternatives, since (dm) makes (em) and (gm) exceptions to its age
+      bar. A claimant qualifies by being 62 or older, by being disabled or by having earned income.
+    other: (gm) read by itself denies a claimant with no earned income unless the claimant is both disabled and 62 or
+      older.
+  example: A 2021 claimant aged 62 who is not disabled and has no earned income qualifies under the whole-text reading
+    and Step 1a, and does not under (gm) read by itself.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/credits/homestead/wi_homestead_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10104
+  state: open
+  note: PE-US follows the whole-text reading, which Schedule H Step 1a shares by listing age 62 or older, disability
+    and earned income as alternative qualifications. wi_homestead_eligible.yaml unit tests 4 (aged 62, no earnings)
+    and 6 (disabled spouse aged 60, no earnings) expect eligibility and would fail under (gm) read by itself. The
+    model's homestead parameters start in 2021.
 - id: us-wi:liheap-categorical-benefit-income
   program: liheap
   years:
@@ -11554,6 +12409,35 @@ candidates:
   note: 'PE-US follows the statute and state plan: Wisconsin elects the option, and the formula requires is_full_time_student,
     a proxy the comments say is broader than the federal option because it also captures full-time college students
     (student_option.yaml, is_parent_for_medicaid_nfc.py). Verify whether its wording reflects practice.'
+- id: us-wi:personal-exemption-claimable-filer
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Does Wisconsin's $700 personal exemption turn on the filing requirement, as the statute says, or on whether
+    the filer can be claimed as a dependent, as line 10a says?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. § 71.05(23)(b)1
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/23
+  - kind: instructions
+    citation: 2025 Wisconsin Form 1 instructions, line 10a, PDF p. 15
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-Inst.pdf#page=15
+  readings:
+    statute: 'Subdivision 1 allows $700 "if the taxpayer is required to file a return under s. 71.03 (2) (a) 1. or 2.",
+      with no condition on whether anyone can claim the taxpayer.'
+    other: 'Line 10a gives no exemption to a single filer who "can be claimed as a dependent on someone else''s return".'
+  example: 'A claimable single filer who must file under s. 71.03(2)(a)1.: a $700 exemption under the statute versus $0
+    under line 10a, which PE-US follows.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/exemptions/wi_base_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US prices the $700 at the federal exemptions_count, which gives a filer who can be claimed none
+    (wi_base_exemption.py). PR 10044 records this but does not change it. The statute text came from a LawServer copy.'
 - id: us-wi:shares-home-value-and-vehicle-asset-tests
   program: child-care-assistance
   years:
@@ -11612,13 +12496,78 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/parameters/gov/states/wv/tax/income/subtractions/subtractions.yaml
+    - policyengine_us/variables/gov/states/wv/tax/income/subtractions/claim_of_right/wv_claim_of_right_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10196
-  state: unreviewed
-  note: 'Retain as a disputable gap-fill; identify statutory authority, resolve the study''s citation, and verify
-    threshold and federal-method conditions by year. Code not yet on main: gov/states/wv/tax/income/subtractions/wv_claim_of_right_subtraction.yaml,
-    policyengine_us/variables/gov/states/wv/tax/income/subtractions/wv_subtractions.py, wv_claim_of_right_subtraction,
-    gov.states.wv.tax.income.subtractions.claim_of_right.threshold.'
+  state: ruled
+  note: Ruled in November 2026 as a gap-fill, because the statute does not address repayments and the instructions
+    provide the modification. Statutory authority remains unidentified, and the study's citation remains unresolved.
+- id: us-wv:claimable-filer-exemption-with-dependents
+  program: income-tax
+  years:
+    from: 1987
+    type: tax
+  question: When a filer who can be claimed has dependents who add exemptions under the filing exception, does the
+    filer's 11-21-16(d) exemption replace the return's count, add $500 to it, or give way to the IT-140 count?
+  sources:
+  - kind: statute
+    citation: W. Va. Code §11-21-16(d)
+    url: https://code.wvlegislature.gov/11-21-16/
+  - kind: form
+    citation: 'IT-140 (2025), exemption boxes and line 6 instructions #page 3,26'
+    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=3
+  readings:
+    statute: '"Notwithstanding any provisions in this section", the individual "shall be allowed a single West Virginia
+      exemption in the amount of $500". Read literally, that is the whole allowance; read per person, it adds to the
+      dependents'' exemptions.'
+    other: 'IT-140 counts box (c) dependents at $2,000 each and adds $500 only "If box e is zero".'
+  example: '2025 filing-exception single filer with one child: $2,000 on IT-140 (PE-US), $500 on the literal reading,
+    $2,500 per person. Joint return, one claimable spouse, two children: $6,000 (PE-US) versus $6,500 per person.'
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_claimable_filer_exemptions_count.py
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_personal_exemption.py
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/liftc/wv_low_income_family_tax_credit_fpg.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US keeps the IT-140 count on these returns: wv_claimable_filer_exemptions_count is zero when dependents add
+    exemptions, so the exemption amount and the family tax credit''s family size count no 11-21-16(d) exemption. The
+    pinned cases are in wv_personal_exemption.yaml and wv_low_income_family_tax_credit_eligible.yaml.'
+- id: us-wv:family-tax-credit-claimable-filer-family-size
+  program: income-tax
+  years:
+    from: 2007
+    type: tax
+  question: Does the low-income family tax credit's family size count each claimable filer's 11-21-16(d) exemption,
+    and may a return the form treats as having zero exemptions claim the credit?
+  sources:
+  - kind: statute
+    citation: W. Va. Code §11-21-22a(b); §11-21-16(d)
+    url: https://code.wvlegislature.gov/11-21-22A/
+  - kind: instructions
+    citation: IT-140 (2025), Family Tax Credit schedule, PDF p. 13
+    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=13
+  readings:
+    statute: 'Family size is "the total number of exemptions that may be legally claimed" on the return, leaving out
+      only the 16(c) surviving spouse exemption, and 16(d) calls the $500 "a single West Virginia exemption".'
+    other: 'The schedule says "Individuals who file their income tax return with zero exemptions cannot claim the
+      credit", and line 5 takes family size from boxes a, b and c, which leave out the $500 allowance.'
+  example: '2025, $16,000 of wages: single claimable filer $307.84 versus $0; joint with one claimable spouse $325.60
+    versus $260.48; joint with both claimable $370 versus $0.'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/liftc/wv_low_income_family_tax_credit_fpg.py
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/liftc/wv_low_income_family_tax_credit_eligible.py
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_claimable_filer_exemptions_count.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10044
+  state: open
+  note: 'PE-US counts exemptions_count plus wv_claimable_filer_exemptions_count, capped at eight, and sets no
+    zero-exemption bar. Main used tax_unit_size, which gave the same family size for these childless returns. Only the
+    2025 IT-140 was read; earlier editions are assumed to match.'
 - id: us-wv:liheap-income-limit-above-federal-ceiling
   program: liheap
   years:
@@ -11846,8 +12795,7 @@ candidates:
 - id: us-wv:zero-exemption-return-500-allowance
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 1987
     type: tax
   question: Is the $500 allowance for claimable filers applied per person under the statute or once per return under
     IT-140?
@@ -11859,17 +12807,27 @@ candidates:
     citation: IT-140 (2025), PDF p. 3
     url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=3
   readings:
-    statute: The individual wording supports a per-person allowance.
+    statute: '16(d) says "a resident individual" whose federal exemption amount is zero under IRC 151(d)(2) "shall be
+      allowed a single West Virginia exemption in the amount of $500", so each such individual gets one.'
     other: The form directs a single $500 allowance when the return's exemption count is zero.
   example: 'Joint return with one claimable spouse: $2,500 versus $2,000; both claimable: $1,000 versus $500.'
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_claimable_filer_exemptions_count.py
+    - policyengine_us/variables/gov/states/wv/tax/income/exemptions/wv_personal_exemption.py
+    - policyengine_us/parameters/gov/states/wv/tax/income/exemptions/base_personal.yaml
+    - policyengine_us/reforms/states/wv/dependent_exemption/wv_dependent_exemption_reform.py
+    - policyengine_us/reforms/state_dependent_exemptions/repeal_state_dependent_exemptions.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10044
   state: ruled
-  note: 'The October 2026 statute-first ruling requires changing the form-based allowance if the per-person reading
-    is confirmed; obtain the exact statutory text. Code not yet on main: wv_personal_exemption.'
+  note: 'The October 2026 statute-first ruling applies, and the statutory text now read supports the per-person reading.
+    PE-US gives $500 to each claimable filer on a return whose dependents add no exemption, in the baseline and the
+    contributed reform (wv_claimable_filer_exemptions_count.py, wv_personal_exemption.py, base_personal.yaml,
+    wv_dependent_exemption_reform.py). The repeal reform gives it to every claimable filer, since it repeals the
+    dependent exemptions (repeal_state_dependent_exemptions.py). 16(d) applies to taxable years beginning after December
+    31, 1986. Returns whose dependents add exemptions are a separate item (us-wv:claimable-filer-exemption-with-dependents).'
 - id: us-wy:ccap-continuing-eligibility-employment-condition
   program: child-care-assistance
   years:
@@ -12201,6 +13159,50 @@ candidates:
     Credit Limit Worksheet B (ctc_credit_limit_worksheet_b_applies.py). The legacy aggregates still count as an exclusion.
     The EITC keeps the broader section 32(c)(1)(C) test in elects_section_911_exclusion. Register the entry and add
     the marker once #10297 is on main.
+- id: us:catch-up-deferrals-after-402g1c-repeal
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Are pre-tax catch-up contributions above the section 402(g)(1)(B) amount excluded from gross income, and
+    deductible in a self-employed plan, now that SECURE 2.0 section 603(b)(1) has struck section 402(g)(1)(C)?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 402(g)(1) as amended by Pub. L. 117-328 section 603(b)(1) and (c); 414(v)(3)(A)(i)
+    url: https://www.law.cornell.edu/uscode/text/26/402#g_1
+  - kind: regulation
+    citation: 26 CFR 1.402(g)-2(a)
+    url: https://www.law.cornell.edu/cfr/text/26/1.402(g)-2
+  - kind: guidance
+    citation: Notice 2023-62, section III.A, PDF pages 4-5
+    url: https://www.irs.gov/pub/irs-drop/n-23-62.pdf#page=4
+  - kind: worksheet
+    citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, steps 16-18
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
+  readings:
+    statute: For taxable years beginning after 2023, section 402(g)(1)(A) includes elective deferrals above the
+      applicable dollar amount in gross income, except designated Roth contributions; the catch-up exclusion in former
+      subparagraph (C) is struck, and section 414(v)(3)(A)(i) does not list section 402(g).
+    other: Notice 2023-62 says non-Roth catch-up contributions are not includible under section 402(g)(1)(A), reading
+      section 414(v)(3)(A)(i); section 1.402(g)-2(a) still raises the 402(g)(1)(B) limit by the catch-up amount; and
+      Pub. 560 adds catch-up contributions to the self-employed maximum deductible contribution.
+  example: In 2025 a 55-year-old with $200,000 of Schedule C profit and $100,000 of desired contributions gets a
+    $68,280.73 plan limit, including the $7,500 catch-up. Including that $7,500 in gross income under the amended
+    section 402(g)(1)(A) would leave a net deduction of $60,780.73.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/household/expense/retirement/elective_deferral_limit.py
+    - policyengine_us/variables/household/expense/retirement/self_employed_pension_contribution_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10121
+  state: unreviewed
+  note: elective_deferral_limit adds k401_catch_up_limit to the section 402(g)(1)(B) amount in every year, and the
+    self-employed plan limit adds the same catch-up room to its maximum. The regulation binds unless it flatly
+    contradicts the amended statute, and the notice reads section 414(v)(3)(A)(i) to keep catch-ups excludable, so
+    the project lead should rule before any model change. Its texts for the register are captured in
+    source_conflicts/sources/us/notice-2023-62-p4-5.txt (section III.A), treas-reg-1-402g-2-2025-p1.txt and
+    p560-2025-p39.txt (steps 16 to 18).
 - id: us:charitable-non-itemizer-2020-separate-cap
   program: income-tax
   years:
@@ -12638,15 +13640,18 @@ candidates:
     - policyengine_us/variables/gov/states/al/tax/income/deductions/itemized/al_investment_interest.py
     - policyengine_us/variables/gov/states/nc/tax/income/deductions/nc_mortgage_and_property_tax_before_limitation.py
     - policyengine_us/variables/gov/states/hi/tax/income/deductions/itemized/hi_mortgage_interest_deduction.py
+    - policyengine_us/variables/gov/states/ny/tax/income/taxable_income/deductions/itemized/ny_mortgage_interest_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10274
+    - https://github.com/PolicyEngine/policyengine-us/pull/10596
   state: unreviewed
-  note: 'PE-US follows two conventions, so follows stays unknown until one is picked. The federal deduction
+  note: 'PE-US follows three conventions, so follows stays unknown until one is picked. The federal deduction
     (deductible_mortgage_interest_tax_unit) uses the exact ratio, and Alabama and North Carolina read that federal
     amount. Hawaii (hi_mortgage_interest_deduction) follows the 2017 worksheet as a gap-fill, rounding line 11 to
     three places, and floors the result at the federal deduction, a PE safeguard that binds only when the rounded
     share falls below the exact federal share. Settling the federal reading (rulespec-us#1413) and using it for
-    both would make that floor unnecessary.'
+    Hawaii too would make that floor unnecessary. New York (ny_mortgage_interest_deduction) allows the larger of
+    the three-place share and the exact ratio.'
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:
@@ -12775,6 +13780,43 @@ candidates:
   state: ruled
   note: Ruled October 2026; verify the worksheet version and whether claiming the rebate defeats the refund-only
     joint-return exception.
+- id: us:se-plan-step-2-multiple-businesses
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: When a self-employed person has more than one business, does Pub. 560's step 2 subtract all of Schedule 1
+    line 15 from the plan business's net profit, or only the part attributable to that business?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 401(c)(2)(A)(vi); 404(a)(8)(C)
+    url: https://www.law.cornell.edu/uscode/text/26/401#c_2_A
+  - kind: worksheet
+    citation: Publication 560 (2025), Deduction Worksheet for Self-Employed, step 2
+    url: https://www.irs.gov/pub/irs-prior/p560--2025.pdf#page=39
+  - kind: form
+    citation: Form 7206 (2023), lines 5-8
+    url: https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1
+  readings:
+    statute: Earned income is figured with regard to the section 164(f) deduction and only from the business that
+      has the plan; the statute does not say how to split the deduction among businesses.
+    other: Pub. 560's step 2 enters the deduction from Schedule 1 line 15; Form 7206 lines 5 to 8 split line 15 by
+      each business's share of the profitable businesses' net profits for the same section 401(c) earned income.
+  example: In 2025, Schedule C profit of $60,000 and farm profit of $40,000 give a Schedule 1 line 15 of $7,064.78.
+    Splitting it gives step 3 of $55,761.14 and a $34,652.23 limit; subtracting all of it gives $52,935.23 and
+    $34,087.05.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/household/expense/retirement/self_employed_pension_earned_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10121
+  state: unreviewed
+  note: 'The code follows Form 7206: the Schedule C business takes Schedule 1 line 15 in proportion to its share of
+    the positive net profits of Schedule C, Schedule F and K-1 box 14 code A, through form_7206_line_7, the helper the
+    self-employed health insurance limit uses for the same earned income. Code not yet on main:
+    self_employed_pension_earned_income. Its texts for the register are captured in
+    source_conflicts/sources/us/p560-2025-p39.txt (step 2) and f7206-2023-p1.txt (lines 5 to 8).'
 - id: us:separate-filer-zero-income-threshold
   program: income-tax
   years:

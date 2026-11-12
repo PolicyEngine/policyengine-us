@@ -47,8 +47,8 @@ reads a model output, the item says so:
 9. Known parent IDs identify the named parent independently of ages and
    own-child counts. Reusing IDs in separate households cannot link them.
 10. Omitted and explicitly zero parent IDs preserve the frozen pre-d1049
-    parent flags, NPCR identification, membership, unit sizes and zero-income
-    grants, checked against independent expectations from b9e7fff.
+    parent flags, NPCR identification, membership and unit sizes from
+    b9e7fff, with zero-income grants from the published maximum grant row.
 """
 
 import itertools
@@ -60,9 +60,8 @@ from policyengine_us import Simulation
 
 PERIOD = "2026-01"
 YEAR = 2026
-# 13 CSR 40-2.310(13) standard of need and (12) payment percentage.
-STANDARD_OF_NEED = {1: 393, 2: 678, 3: 846, 4: 990, 5: 1_123, 6: 1_247}
-PAYMENT_PERCENTAGE = 0.34526
+# 13 CSR 40-2.310(13) prints the maximum grants.
+MAXIMUM_GRANT = {1: 136, 2: 234, 3: 292, 4: 342, 5: 388, 6: 431}
 
 # How the tax-dependent adult is described to the model.
 #   parent: marked a parent of the children
@@ -210,7 +209,7 @@ def _calc(sim, variable):
 
 
 def _payment(size):
-    return STANDARD_OF_NEED.get(int(size), 0) * PAYMENT_PERCENTAGE
+    return MAXIMUM_GRANT.get(int(size), 0)
 
 
 def _adult_is_dependent_child(h):
@@ -625,7 +624,9 @@ def test_known_parent_ids_override_ages_and_stay_within_households():
 
 @pytest.mark.parametrize("explicit_zero_ids", (False, True))
 def test_unknown_parent_ids_reproduce_the_frozen_pre_d1049_rule(explicit_zero_ids):
-    """Unknown ids preserve pre-d1049 flags, caretakers, members, sizes and grants.
+    """Unknown ids preserve pre-d1049 flags, caretakers, members and sizes.
+
+    Grants use the published maximum row.
 
     Independently restate the three changed formulas at immutable commit
     b9e7fff948caf4f33313c942c09caa7c7ccc3dea, rather than reading any current

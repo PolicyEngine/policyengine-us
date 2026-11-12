@@ -54,3 +54,54 @@
   output:
     ssi_marital_both_eligible: [false, false]
 
+- name: Both spouses remain eligible with an unrelated eligible adult in the default marital unit
+  period: 2026
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      unrelated:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+      unrelated:
+        members: [unrelated]
+    households:
+      home:
+        members: [claimant, spouse, unrelated]
+  output:
+    ssi_marital_both_eligible: [true, true, false]
+
+- name: Eligible spouses in separate households do not meet the spouse test
+  period: 2026
+  input:
+    people:
+      claimant:
+        age: 70
+      spouse:
+        age: 70
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      claimant_home:
+        members: [claimant]
+      spouse_home:
+        members: [spouse]
+  output:
+    ssi_marital_both_eligible: [false, false]
