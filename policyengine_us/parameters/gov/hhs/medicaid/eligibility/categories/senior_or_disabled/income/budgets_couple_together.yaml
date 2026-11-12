@@ -128,8 +128,11 @@ NY:
   2015-01-01: false
 OH:
   2015-01-01: false
+# OAC 317:35-7-40(1) tests the applicant's own income against the individual
+# standard and the income of both spouses against the couple standard. SSI's rule
+# is the closer method; the two-part test is not modeled.
 OK:
-  2015-01-01: true
+  2015-01-01: false
 OR:
   2015-01-01: false
 PA:

@@ -288,3 +288,34 @@
     is_209b_ssi_recipient_income_eligible_for_medicaid: [true, true]
     is_209b_ssi_recipient_for_medicaid: [true, true]
     medicaid_category: [SSI_RECIPIENT, SSI_RECIPIENT]
+
+# 42 CFR 435.831(d) deducts a spouse's expenses only while the couple is budgeted as
+# one. A facility splits these spouses (20 CFR 416.414(b)(3)), so person1 deducts no
+# part of person2's 6,000 of medical expenses: 24,000 - 240 = 23,760 stays above the
+# one-person 18,360. With the couple's expenses it would be 17,760 and within the limit.
+- name: Case 14, Hawaii spouses split by a facility each deduct only their own medical expenses.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 24_000
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        other_medical_expenses: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, false]
+    medicaid_optional_senior_or_disabled_income_limit: [18_360, 18_360]
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [false, true]

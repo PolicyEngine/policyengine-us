@@ -17,6 +17,7 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1163",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-05/",
+        "https://epm.azahcccs.gov/epmplus/Policy/Chapter_600_Income_Eligibility/611_How_to_Calculate_Income_Eligibility_for_SSIMAO/611A.htm",
         "https://www.law.cornell.edu/uscode/text/42/1396r-5",
     )
     defined_for = "is_ssi_aged_blind_disabled"
@@ -38,11 +39,13 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
         state = person.household("state_code_str", period)
 
-        # Some states budget a married couple living together rather than
-        # following the SSI deeming methodology. Missouri MHABD considers the
-        # couple's gross income (DSS Manual § 0805.015.05): the spouse's income
-        # counts without the FBR-differential threshold or ineligible-child
-        # allocations.
+        # Some states budget a married couple living together: the spouse's
+        # income counts without SSI's FBR-differential threshold. The spouse's
+        # income is still what remains after the allocations for ineligible
+        # children in 20 CFR 416.1163(b), which Arizona's MA611 A also
+        # subtracts. Missouri MHABD alone considers the couple's gross income
+        # and does "not consider the income and expenses of minor children"
+        # (DSS Manual § 0805.015.05), so no allocation comes off there.
         budgets_together = (
             parameters(period)
             .gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.budgets_couple_together[
@@ -60,10 +63,9 @@ class medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse(
             marital_unit.sum(ineligible_spouse * individual_unearned)
             - ineligible_spouse * individual_unearned
         )
-        spouse_earned = where(budgets_together, spouse_gross_earned, spouse_earned)
-        spouse_unearned = where(
-            budgets_together, spouse_gross_unearned, spouse_unearned
-        )
+        is_mo = state == "MO"
+        spouse_earned = where(is_mo, spouse_gross_earned, spouse_earned)
+        spouse_unearned = where(is_mo, spouse_gross_unearned, spouse_unearned)
         has_ineligible_spouse = marital_unit.sum(ineligible_spouse) > 0
         # A couple split by a facility counts no spouse income under either method
         # (42 USC 1396r-5(b)(1)).

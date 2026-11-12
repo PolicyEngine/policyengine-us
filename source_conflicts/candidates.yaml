@@ -1462,8 +1462,7 @@ candidates:
 - id: us-co:abd-spouse-income-ssi-defined-group
   program: medicaid
   years:
-    from: 2026
-    to: 2026
+    from: 2015
     type: program
     note: program year as the program defines it
   question: "Does Colorado's SSI-related group count a non-applying spouse's income in every case, as its income rule says, or follow SSI's deeming threshold, because the group is defined by SSI eligibility?"
@@ -1474,10 +1473,17 @@ candidates:
   - kind: regulation
     citation: 10 CCR 2505-10 8.100.6.C.1.b
     url: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+  readings:
+    regulation: '10 CCR 2505-10 8.100.7.C.2: "The income and resources of both spouses are counted in determining
+      eligibility for either or both spouses", with exceptions for spouses in an institution or living apart.'
+    other: '8.100.6.C.1.b covers "persons who are eligible for financial assistance under SSI, but are not receiving
+      SSI", and SSI deems a spouse''s income only above the rate difference (20 CFR 416.1163(d)).'
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
   state: ruled
   note: "Counts both spouses' income under the express rule. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-co:claim-of-right-subtraction-practice
@@ -1680,8 +1686,7 @@ candidates:
 - id: us-ct:abd-spouse-income-hearing-decision
   program: medicaid
   years:
-    from: 2026
-    to: 2026
+    from: 2015
     type: program
     note: program year as the program defines it
   question: "Does Connecticut count a spouse's income as its Uniform Policy Manual says, or apply SSI's rule, as a 2023 hearing decision on a Medicare Savings Program case did?"
@@ -1692,10 +1697,18 @@ candidates:
   - kind: agency-practice
     citation: DSS hearing decision, Request 203652
     url: https://portal.ct.gov/-/media/departments-and-agencies/dss/fair-hearings/other-medicaid-eligibility/other-medicaid-eligibility-2023/omel_2023_203652.pdf#page=6
+  readings:
+    manual: 'UPM 5020.75 A.1.a: "The Department deems income from: a. the spouse of an MAABD applicant or recipient if
+      he or she is considered to be living with the assistance unit member".'
+    other: 'The hearing decision on Request 203652 held: "The Department incorrectly utilized income-deeming techniques
+      more restrictive than methodologies applied in the SSI program."'
   pe_us:
     follows: gap-fill
     code:
-    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
   state: ruled
   note: "Follows the manual: Connecticut is a 209(b) state. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
@@ -2307,8 +2320,7 @@ candidates:
 - id: us-hi:abd-spouse-income-household-size
   program: medicaid
   years:
-    from: 2026
-    to: 2026
+    from: 2015
     type: program
     note: program year as the program defines it
   question: "Does Hawaii test a married couple living together on combined income against the two-person standard, because HAR 17-1724.1-16(1) makes spouses' income available to each other, or apply SSI's deeming threshold, because HAR 17-1719-11.1(a)(3) says only 'a household of applicable size'?"
@@ -2319,11 +2331,18 @@ candidates:
   - kind: regulation
     citation: HAR 17-1719-11.1(a)(3)
     url: https://www.law.cornell.edu/regulations/hawaii/Haw-Code-R-SS-17-1719-11-1
+  readings:
+    regulation: 'HAR 17-1724.1-16(1): "The income of spouses living in the same residence shall be considered
+      available to each other."'
+    other: 'HAR 17-1719-11.1(a)(3) sets the standard at "one hundred per cent of the federal poverty level for a
+      household of applicable size" and does not say who is in the household.'
   pe_us:
     follows: gap-fill
     code:
     - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
     - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
   state: ruled
   note: "Budgets the couple together, in the aged, blind and disabled pathway and in medically needy. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640"
 - id: us-hi:claim-of-right-credit-agi-addback
@@ -3580,8 +3599,7 @@ candidates:
 - id: us-ma:abd-couple-income-standard
   program: medicaid
   years:
-    from: 2026
-    to: 2026
+    from: 2015
     type: program
     note: program year as the program defines it
   question: "Does Massachusetts test a couple's income against the couple standard? 130 CMR 520.002(A)(1) says 'an income standard', and only 520.003(A)(2) names the couple limit, for assets."
@@ -3595,10 +3613,20 @@ candidates:
   - kind: regulation
     citation: 130 CMR 519.005(A)(1)
     url: https://www.law.cornell.edu/regulations/massachusetts/130-CMR-519-005
+  readings:
+    regulation: '130 CMR 520.002(A)(1): "the total countable-income amount and countable assets of the individual and
+      the spouse who are living together are compared to an income standard and asset limit".'
+    other: 'Only the asset rule names a couple limit: 130 CMR 520.003(A)(2) sets $3,000 "for a couple living together
+      in the community where there is financial responsibility according to 130 CMR 520.002(A)(1)". 130 CMR
+      519.005(A)(1) tests "the countable income amount ... of the individual or couple" against 100% of the federal
+      poverty level.'
   pe_us:
     follows: gap-fill
     code:
-    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
   state: ruled
   note: "Uses the couple standard for income. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-ma:circuit-breaker-snap-income
@@ -4108,8 +4136,7 @@ candidates:
 - id: us-md:medically-needy-non-abd-spouse-unit
   program: medicaid
   years:
-    from: 2026
-    to: 2026
+    from: 2015
     type: program
     note: program year as the program defines it
   question: "Is a Maryland medically needy applicant with a spouse who is not aged, blind or disabled a unit of two, as the manual says, when COMAR 10.09.24.06 names only an aged, blind or disabled spouse as a unit member?"
@@ -4120,10 +4147,19 @@ candidates:
   - kind: manual
     citation: Medical Assistance Manual Section 600
     url: https://health.maryland.gov/mmcp/Medicaid%20Manual/Section%20600-%20The%20Assistance%20Unit.pdf#page=8
+  readings:
+    regulation: 'COMAR 10.09.24.06A-1(2): when "the person''s spouse is non-aged, blind, or disabled", "an individual
+      eligibility determination shall be conducted"; the couple "will be considered one unit" only when the spouse
+      "also applies as aged, blind, or disabled".'
+    other: 'Medical Assistance Manual Section 600: "A married ABD couple not living with related children, one or both
+      of who qualify as ABD, constitutes a two-person ABD unit. In determining the financial eligibility of the
+      unit, the income and resources of both spouses are considered."'
   pe_us:
     follows: gap-fill
     code:
-    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
   state: ruled
   note: "Uses a unit of two: COMAR counts the income and does not name the standard. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-md:pension-exclusion-maximum
@@ -5198,8 +5234,7 @@ candidates:
 - id: us-mt:abd-spouse-deeming-threshold
   program: medicaid
   years:
-    from: 2026
-    to: 2026
+    from: 2015
     type: program
     note: program year as the program defines it
   question: "Does Montana apply SSI's deeming threshold, as ARM 37.82.903(2) and 37.82.1107(1)(b) adopt, or consider both spouses' income, as manual CMA 603-1 says?"
@@ -5210,10 +5245,19 @@ candidates:
   - kind: manual
     citation: CMA 603-1
     url: https://dphhs.mt.gov/assets/hcsd/fmamanual/cma603.1.pdf#page=2
+  readings:
+    regulation: 'ARM 37.82.903(2): for aged, blind or disabled people not receiving SSI, "the SSI financial
+      requirements which are set forth in 20 CFR Part 416, Subparts J, K and L, will be used to determine whether an
+      individual or couple is eligible with respect to resources and with respect to income".'
+    other: 'CMA 603-1, Spouse to Spouse Deeming, ABD: "Both spouses'' income and resources are considered for spouses
+      who live together (as long as neither is applying for or enrolled in a HCBS Waiver program)."'
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
   state: ruled
   note: "Follows the regulation. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-mt:elderly-credit-homestead-costs
@@ -5958,8 +6002,7 @@ candidates:
 - id: us-ne:medically-needy-unit-size
   program: medicaid
   years:
-    from: 2026
-    to: 2026
+    from: 2015
     type: program
     note: program year as the program defines it
   question: "Does Nebraska's medically needy program size the unit under 477 NAC 24, counting both spouses, or follow the general SSI methodology clause in 477 NAC 25-002.03(B)?"
@@ -5970,10 +6013,19 @@ candidates:
   - kind: regulation
     citation: 477 NAC 25-002
     url: https://www.law.cornell.edu/regulations/nebraska/477-Neb-Admin-Code-ch-25-SS-002
+  readings:
+    regulation: '477 NAC 24-001.02B1: "The income and resources of spouses living together in the same household
+      shall be considered available to each other. The resource standard for two shall be used to determine
+      eligibility whether one spouse or both are eligible." 477 NAC 25-002.04 sizes the medically needy unit
+      "according to 477 NAC 24".'
+    other: '477 NAC 25-002.03(B): "The treatment of income and resources for individuals who are aged, blind, or
+      disabled is based on the methodology of the Supplemental Security Income (SSI) program."'
   pe_us:
     follows: gap-fill
     code:
-    - policyengine_us/variables/gov/hhs/medicaid/income/_couple_standard.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
   state: ruled
   note: "Follows the specific unit-size rule. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-nh:fanf-resource-limit-equality
@@ -10693,6 +10745,62 @@ candidates:
     limit/self_only.yaml, limit/family.yaml). The statute-first rule requires changing conflicting projections;
     verify the statutory window substitution first, and preserve the distinction from published limits fixed through
     2027.'
+- id: us:medicaid-abd-budgeting-together-stricter-than-ssi
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: Outside the 209(b) states, may a state count a spouse's income below SSI's deeming threshold and test the
+    couple against the couple standard, as its own rule says, where that makes ineligible an aged, blind or disabled
+    applicant whom SSI's rule would test alone and find eligible?
+  sources:
+  - kind: regulation
+    citation: 42 CFR 435.601(b), (d)(2)(i) and (d)(3)
+    url: https://www.law.cornell.edu/cfr/text/42/435.601
+  - kind: regulation
+    citation: 42 CFR 435.602(a)(2)(i) and (b)
+    url: https://www.law.cornell.edu/cfr/text/42/435.602
+  - kind: regulation
+    citation: 20 CFR 416.1163(d)(1)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  - kind: manual
+    citation: AHCCCS Eligibility Policy Manual MA611 A, Calculation for Customer and Spouse
+    url: https://epm.azahcccs.gov/epmplus/Policy/Chapter_600_Income_Eligibility/611_How_to_Calculate_Income_Eligibility_for_SSIMAO/611A.htm
+  - kind: regulation
+    citation: 10 CCR 2505-10 8.100.7.C.2 (Colorado)
+    url: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+  readings:
+    regulation: '42 CFR 435.601(d)(2) lets a state''s methodologies be "less restrictive, but no more restrictive
+      (except in States using more restrictive requirements than SSI), than" the SSI methodologies for aged, blind and
+      disabled groups, and (d)(3) counts a methodology as no more restrictive only if "no individuals who are
+      otherwise eligible are by use of that methodology made ineligible for Medicaid". 42 CFR 435.602(b) allows
+      "More extensive requirements for relative responsibility" only in "States that apply eligibility requirements
+      more restrictive than those used under SSI". Under 20 CFR 416.1163(d)(1), a spouse''s income of not more than
+      the rate difference leaves "no income to deem".'
+    other: 'The state rules count the spouse''s income with no threshold. Arizona''s MA611 A has the worker "Total the
+      customer''s and spouse''s counted unearned income" and compare the result to the standard "for a couple".
+      Colorado''s 8.100.7.C.2 says "The income and resources of both spouses are counted in determining eligibility
+      for either or both spouses". 42 CFR 435.602(a)(2)(i) itself lets a state consider a spouse''s income as
+      available to an individual.'
+  example: An applicant, 70, has Social Security of $16,200 a year and a spouse, 50, has interest of $5,964, which is
+    exactly SSI's threshold. In Arizona the couple's $21,924 is above the two-person $21,640 and the applicant is not
+    eligible. Under SSI's rule the applicant is tested alone, and $15,960 is within the one-person $15,960.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: ruled
+  note: 'PE-US follows each state''s own rule. The project lead''s general rule of 2026-11-02 says the model follows a
+    state''s rule where it differs from SSI''s deeming rule, and on 2026-11-10 the lead confirmed that it applies
+    outside the 209(b) states too: Alaska, Arizona, Colorado, Indiana, Massachusetts, Michigan, Nebraska, South
+    Carolina, Vermont and Wisconsin in the aged, blind and disabled pathway, and Arkansas, California, Kansas,
+    Massachusetts, Maryland, Michigan, Nebraska, Vermont and Wisconsin in medically needy. The stricter result arises
+    only in a narrow band, for example a spouse''s income between $473 and $497 a month against poverty-level
+    standards. Ruled by the project lead, 2026-11-10: https://github.com/PolicyEngine/policyengine-us/pull/10640'
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:

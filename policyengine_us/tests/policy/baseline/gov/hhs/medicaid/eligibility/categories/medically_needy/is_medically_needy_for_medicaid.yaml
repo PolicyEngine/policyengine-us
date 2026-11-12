@@ -1099,10 +1099,11 @@
     medicaid_category: [NONE, NONE]
 
 # 130 CMR 520.002(A)(1) compares the spouses' total countable income to the standard.
-# SSI allocates 12 x 497 = 5,964 to the child, and 11,900 - 5,964 = 5,936 is within
-# SSI's 5,964 threshold, so nothing is deemed. The spouse counts (11,900 - 780) / 2 =
-# 5,560: 40,000 - 240 + 5,560 - 35,000 = 10,320, above 12 x 650 = 7,800.
-- name: Case 42, Massachusetts counts spouse wages with no child allocation below SSI's threshold.
+# SSI allocates 12 x 497 = 5,964 to the child (20 CFR 416.1163(b)), and 11,900 - 5,964
+# = 5,936 is within SSI's 5,964 threshold, so SSI deems nothing. Budgeted together the
+# spouse still counts (5,936 - 780) / 2 = 2,578:
+# 40,000 - 240 + 2,578 - 35,000 = 7,338, within 12 x 650 = 7,800.
+- name: Case 42, Massachusetts counts spouse wages after the child allocation below SSI's threshold.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1133,17 +1134,16 @@
   output:
     is_ssi_spousal_deeming_applies: [false, false, false]
     ssi_countable_income: [39_760, 0, 0]
-    medicaid_medically_needy_income_from_spouse: [5_560, 0, 0]
+    medicaid_medically_needy_income_from_spouse: [2_578, 0, 0]
     medicaid_medically_needy_income_limit: [7_800, 7_800, 6_264]
-    is_medically_needy_for_medicaid: [false, false, false]
-    medicaid_category: [NONE, NONE, NONE]
+    is_medically_needy_for_medicaid: [true, false, false]
+    medicaid_category: [MEDICALLY_NEEDY, NONE, NONE]
 
 # 12,100 - 5,964 = 6,136 is above 5,964, so SSI deems (6,136 - 780) / 2 = 2,678 and
-# countable income is 39,760 + 2,678 = 42,438. Budgeted together the spouse counts
-# (12,100 - 780) / 2 = 5,660, so the adjustment is 5,660 - 2,678 = 2,982:
-# 42,438 + 2,982 - 35,000 = 10,420, above 7,800. Counted income does not fall when
-# wages cross SSI's threshold.
-- name: Case 43, Massachusetts counts spouse wages with no child allocation above SSI's threshold.
+# countable income is 39,760 + 2,678 = 42,438. Budgeted together the spouse counts the
+# same 2,678, so there is no adjustment: 42,438 - 35,000 = 7,438, within 7,800. Counted
+# income does not jump when wages cross SSI's threshold: 2,578 in Case 42, 2,678 here.
+- name: Case 43, Massachusetts counts spouse wages after the child allocation above SSI's threshold.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1174,16 +1174,17 @@
   output:
     is_ssi_spousal_deeming_applies: [true, false, false]
     ssi_countable_income: [42_438, 0, 0]
-    medicaid_medically_needy_income_from_spouse: [2_982, 0, 0]
+    medicaid_medically_needy_income_from_spouse: [0, 0, 0]
     medicaid_medically_needy_income_limit: [7_800, 7_800, 6_264]
-    is_medically_needy_for_medicaid: [false, false, false]
-    medicaid_category: [NONE, NONE, NONE]
+    is_medically_needy_for_medicaid: [true, false, false]
+    medicaid_category: [MEDICALLY_NEEDY, NONE, NONE]
 
 # MKEESM 4312 considers the total income of both spouses living together. SSI allocates
-# 2 x 5,964 = 11,928 to the children, and 17,000 - 11,928 = 5,072 is within 5,964, so
-# nothing is deemed. The spouse counts (17,000 - 780) / 2 = 8,110:
-# 20,000 - 240 + 8,110 - 6,000 = 21,870, above 12 x 1,491 = 17,892.
-- name: Case 44, Kansas counts spouse wages with no child allocation below SSI's threshold.
+# 2 x 5,964 = 11,928 to the children (20 CFR 416.1163(b)), and 17,000 - 11,928 = 5,072
+# is within 5,964, so SSI deems nothing. Budgeted together the spouse still counts
+# (5,072 - 780) / 2 = 2,146: 20,000 - 240 + 2,146 - 6,000 = 15,906, within
+# 12 x 1,491 = 17,892.
+- name: Case 44, Kansas counts spouse wages after the child allocations below SSI's threshold.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1220,16 +1221,15 @@
   output:
     is_ssi_spousal_deeming_applies: [false, false, false, false]
     ssi_countable_income: [19_760, 0, 0, 0]
-    medicaid_medically_needy_income_from_spouse: [8_110, 0, 0, 0]
+    medicaid_medically_needy_income_from_spouse: [2_146, 0, 0, 0]
     medicaid_medically_needy_income_limit: [17_892, 17_892, 11_928, 11_928]
-    is_medically_needy_for_medicaid: [false, false, false, false]
-    medicaid_category: [NONE, NONE, OLDER_CHILD, OLDER_CHILD]
+    is_medically_needy_for_medicaid: [true, false, false, false]
+    medicaid_category: [MEDICALLY_NEEDY, NONE, OLDER_CHILD, OLDER_CHILD]
 
 # 18,000 - 11,928 = 6,072 is above 5,964, so SSI deems (6,072 - 780) / 2 = 2,646 and
-# countable income is 19,760 + 2,646 = 22,406. Budgeted together the spouse counts
-# (18,000 - 780) / 2 = 8,610, so the adjustment is 8,610 - 2,646 = 5,964:
-# 22,406 + 5,964 - 6,000 = 22,370, above 17,892.
-- name: Case 45, Kansas counts spouse wages with no child allocation above SSI's threshold.
+# countable income is 19,760 + 2,646 = 22,406. Budgeted together the spouse counts the
+# same 2,646, so there is no adjustment: 22,406 - 6,000 = 16,406, within 17,892.
+- name: Case 45, Kansas counts spouse wages after the child allocations above SSI's threshold.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1266,10 +1266,10 @@
   output:
     is_ssi_spousal_deeming_applies: [true, false, false, false]
     ssi_countable_income: [22_406, 0, 0, 0]
-    medicaid_medically_needy_income_from_spouse: [5_964, 0, 0, 0]
+    medicaid_medically_needy_income_from_spouse: [0, 0, 0, 0]
     medicaid_medically_needy_income_limit: [17_892, 17_892, 11_928, 11_928]
-    is_medically_needy_for_medicaid: [false, false, false, false]
-    medicaid_category: [NONE, NONE, OLDER_CHILD, OLDER_CHILD]
+    is_medically_needy_for_medicaid: [true, false, false, false]
+    medicaid_category: [MEDICALLY_NEEDY, NONE, OLDER_CHILD, OLDER_CHILD]
 
 # 130 CMR 520.002(B)(2)(a): "the community spouse's income is not counted in the
 # determination of eligibility for the institutionalized spouse". The spouse's 5,900
@@ -1407,3 +1407,45 @@
     medicaid_medically_needy_uses_couple_standard: [true, true]
     medicaid_medically_needy_income_limit: [7_584, 7_584]
     medicaid_medically_needy_income_from_spouse: [3_000, 0]
+
+# Arkansas MS O-531 deducts a living allowance for each ineligible child from the
+# spouse's income before totaling it with the applicant's and comparing the result to
+# the two-person limit. The child's allocation is 12 x 497 = 5,964, so the spouse's
+# 7,000 of wages leave 1,036, which counts as (1,036 - 780) / 2 = 128:
+# 20,000 - 240 + 128 - 17,500 = 2,388, within 12 x 216.66 = 2,599.92. With no
+# allocation the spouse would count (7,000 - 780) / 2 = 3,110 and leave 5,370.
+- name: Case 51, Arkansas deducts a child allocation from spouse wages budgeted together.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 20_000
+        other_medical_expenses: 17_500
+        takes_up_medicare_if_eligible: false
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        employment_income_before_lsr: 7_000
+        takes_up_medicare_if_eligible: false
+      person3:
+        is_tax_unit_dependent: true
+        age: 10
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      child_marital_unit:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    is_ssi_spousal_deeming_applies: [false, false, false]
+    ssi_countable_income: [19_760, 0, 0]
+    medicaid_medically_needy_uses_couple_standard: [true, true, false]
+    medicaid_medically_needy_income_from_spouse: [128, 0, 0]
+    medicaid_medically_needy_income_limit: [2_599.92, 2_599.92, 1_299.96]
+    is_medically_needy_for_medicaid: [true, false, false]

@@ -18,10 +18,11 @@ class medicaid_medically_needy_income_from_spouse(Variable):
     documentation = (
         "Amount added to ssi_countable_income so that the medically needy test "
         "counts a spouse's income by the state's method. A state that budgets a "
-        "couple together counts the spouse's income with no deeming threshold or "
-        "ineligible-child allocation, in place of SSI's deemed amount. A couple "
-        "split by a facility counts no spouse income, so the amount removes SSI's "
-        "deemed amount and can be negative. It is zero otherwise."
+        "couple together counts the spouse's income with no deeming threshold, "
+        "after SSI's allocations for ineligible children (20 CFR 416.1163(b)), in "
+        "place of SSI's deemed amount. A couple split by a facility counts no "
+        "spouse income, so the amount removes SSI's deemed amount and can be "
+        "negative. It is zero otherwise."
     )
     definition_period = YEAR
     reference = (
@@ -36,16 +37,17 @@ class medicaid_medically_needy_income_from_spouse(Variable):
             period
         ).gov.hhs.medicaid.eligibility.categories.medically_needy.limit.income
         budgets_together = p.budgets_couple_together[state].astype(bool)
-        marital_unit = person.marital_unit
-        ineligible_spouse = person("is_ssi_ineligible_spouse", period)
         earned = person("ssi_earned_income", period)
         unearned = person("ssi_unearned_income", period)
-        spouse_earned = (
-            marital_unit.sum(ineligible_spouse * earned) - ineligible_spouse * earned
+        # What remains of the spouse's income after the allocations for
+        # ineligible children (20 CFR 416.1163(b)), before SSI's threshold.
+        # Arkansas MS O-531 deducts a living allowance for each ineligible child
+        # from the spouse's income in the same way.
+        spouse_earned = person(
+            "ssi_earned_income_deemed_from_ineligible_spouse", period
         )
-        spouse_unearned = (
-            marital_unit.sum(ineligible_spouse * unearned)
-            - ineligible_spouse * unearned
+        spouse_unearned = person(
+            "ssi_unearned_income_deemed_from_ineligible_spouse", period
         )
         alone = _apply_ssi_exclusions(earned, unearned, parameters, period)
         combined = _apply_ssi_exclusions(
@@ -57,7 +59,7 @@ class medicaid_medically_needy_income_from_spouse(Variable):
         )
         counted = where(budgeted_together & ~split, max_(combined - alone, 0), 0)
         # ssi_countable_income already holds SSI's deemed amount, which starts at
-        # SSI's threshold and is net of child allocations. Subtracting it leaves one
-        # method at every income, with no jump at that threshold.
+        # SSI's threshold. Subtracting it leaves one method at every income, with
+        # no jump at that threshold.
         deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
         return where(budgeted_together | split, counted - deemed, 0)
