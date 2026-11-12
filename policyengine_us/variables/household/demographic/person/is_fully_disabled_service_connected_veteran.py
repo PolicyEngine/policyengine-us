@@ -9,8 +9,11 @@ class is_fully_disabled_service_connected_veteran(Variable):
         "The Department of Veterans Affairs rates or pays a service-connected "
         "disability at the 100% (total) rate, temporary or permanent, "
         "including a total rating based on individual unemployability. Also "
-        "set is_permanently_disabled_veteran when the VA rates the disability "
-        "permanent and total. Ratings below 100% have no shared input."
+        "set 'Veteran with a VA permanent and total disability rating' "
+        "(is_permanently_disabled_veteran) when the VA rates the disability "
+        "permanent and total. Leave this false for a rating below 100%, unless "
+        "the VA pays at the 100% rate for individual unemployability. These "
+        "flags don't set is_veteran; enter VA payments as veterans_benefits."
     )
     definition_period = YEAR
     reference = (

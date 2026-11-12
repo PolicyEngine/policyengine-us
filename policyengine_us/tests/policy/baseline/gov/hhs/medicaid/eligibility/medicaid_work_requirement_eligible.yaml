@@ -415,6 +415,8 @@
 
 - name: Case 42, a veteran with a 100% service-connected rating is exempt.
   period: 2027
+  # is_veteran is left at its default (veterans_benefits > 0, so false): the
+  # VA 100% flag alone must exempt.
   input:
     age: 40
     monthly_hours_worked: 0

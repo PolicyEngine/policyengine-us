@@ -71,7 +71,7 @@ class medicaid_work_requirement_eligible(Variable):
         # total under 38 U.S.C. 1155, which 42 CFR 435.554(c)(4) reads as "a
         # temporary or permanent disability ... rated as 100 percent (total)".
         # CMS treats a total rating based on individual unemployability the
-        # same way (91 FR 33372).
+        # same way (91 FR 33372, preamble).
         eligible_veteran = person("is_fully_disabled_service_connected_veteran", period)
         # blind or disabled or is_incapable_of_self_care p.694 (V)
         is_blind = person("is_blind", period)
