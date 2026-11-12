@@ -3,6 +3,12 @@ values:
   # The tips and overtime deductions (26 U.S.C. 224 and 225) are listed in every
   # year. Their own in_effect parameters zero them outside 2025-2028, so a reform
   # that switches them on in another year also reaches taxable income.
+  2017-01-01:
+    - qualified_business_income_deduction
+    - wagering_losses_deduction
+    - itemized_taxable_income_deductions
+    - tip_income_deduction
+    - overtime_income_deduction
   2018-01-01:
     - qualified_business_income_deduction
     - wagering_losses_deduction
@@ -30,3 +36,6 @@ metadata:
   unit: list
   period: year
   label: Taxable income deductions if itemizing
+  reference:
+    - title: 2017 Form 1040, line 40
+      href: https://www.irs.gov/pub/irs-prior/f1040--2017.pdf#page=2

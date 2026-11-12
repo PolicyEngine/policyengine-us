@@ -41,3 +41,1086 @@
     income_tax_before_refundable_credits: 9_000
     self_employment_tax: 200
     household_tax_before_refundable_credits: 9_700
+
+# Historical reference cases: Tax-Calculator 6.9.1
+# Records use exact_calculations=True, no aging, weights or growth factors.
+# Wages only; credit_claim_urn=0 enforces full eligible-credit receipt.
+# Employee payroll = ptax_was/2 + ptax_amc (Additional Medicare is employee-only).
+# IRS 2017 Form 1040 instructions: https://www.irs.gov/pub/irs-prior/i1040gi--2017.pdf
+# Oracle policy/inputs: https://taxcalc.pslmodels.org/guide/policy-params/
+
+- name: Case 3, 2017 single wages matches the independent tax reference.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    adjusted_gross_income: 40000.0
+    standard_deduction: 6350.0
+    exemptions: 4050.0
+    taxable_income: 29600.0
+    income_tax_before_credits: 3973.75
+    eitc: 0.0
+    income_tax: 3973.75
+    employee_payroll_tax: 3060.0
+
+- name: Case 4, 2017 parent eitc matches the independent tax reference.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        filing_status: HEAD_OF_HOUSEHOLD
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TX
+  output:
+    adjusted_gross_income: 20000.0
+    standard_deduction: 9350.0
+    exemptions: 8100.0
+    taxable_income: 2550.0
+    income_tax_before_credits: 255.0
+    eitc: 3134.732
+    income_tax: -3879.732
+    employee_payroll_tax: 1530.0
+
+- name: Case 5, 2017 joint children matches the independent tax reference.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 40000.0
+    standard_deduction: 12700.0
+    exemptions: 16200.0
+    taxable_income: 11100.0
+    income_tax_before_credits: 1110.0
+    eitc: 2231.658
+    income_tax: -3121.658
+    employee_payroll_tax: 3060.0
+
+- name: Case 6, 2017 joint ctc phaseout matches the independent tax reference.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 120001
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 120001.0
+    standard_deduction: 12700.0
+    exemptions: 16200.0
+    taxable_income: 91101.0
+    income_tax_before_credits: 14252.75
+    eitc: 0.0
+    income_tax: 12802.75
+    employee_payroll_tax: 9180.0765
+
+- name: Case 7, 2017 single exemption phaseout matches the independent tax reference.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 300001
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    adjusted_gross_income: 300001.0
+    standard_deduction: 6350.0
+    exemptions: 2753.9999999999995
+    taxable_income: 290897.0
+    income_tax_before_credits: 79395.26000000001
+    eitc: 0.0
+    income_tax: 79395.26000000001
+    employee_payroll_tax: 13136.423499999999
+
+- name: Case 8, 2017 joint two earners matches the independent tax reference.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 35000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 35000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 70000.0
+    standard_deduction: 12700.0
+    exemptions: 16200.0
+    taxable_income: 41100.0
+    income_tax_before_credits: 5232.5
+    eitc: 0.0
+    income_tax: 3232.5
+    employee_payroll_tax: 5355.0
+
+- name: Case 9, 2018 single wages matches the independent tax reference.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    adjusted_gross_income: 40000.0
+    standard_deduction: 12000.0
+    exemptions: 0.0
+    taxable_income: 28000.0
+    income_tax_before_credits: 3169.5
+    eitc: 0.0
+    income_tax: 3169.5
+    employee_payroll_tax: 3060.0
+
+- name: Case 10, 2018 parent eitc matches the independent tax reference.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        filing_status: HEAD_OF_HOUSEHOLD
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TX
+  output:
+    adjusted_gross_income: 20000.0
+    standard_deduction: 18000.0
+    exemptions: 0.0
+    taxable_income: 2000.0
+    income_tax_before_credits: 200.0
+    eitc: 3253.26
+    income_tax: -4653.26
+    employee_payroll_tax: 1530.0
+
+- name: Case 11, 2018 joint children matches the independent tax reference.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 40000.0
+    standard_deduction: 24000.0
+    exemptions: 0.0
+    taxable_income: 16000.0
+    income_tax_before_credits: 1600.0
+    eitc: 2430.64
+    income_tax: -4830.639999999999
+    employee_payroll_tax: 3060.0
+
+- name: Case 12, 2018 joint ctc phaseout matches the independent tax reference.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 120001
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 120001.0
+    standard_deduction: 24000.0
+    exemptions: 0.0
+    taxable_income: 96001.0
+    income_tax_before_credits: 12999.22
+    eitc: 0.0
+    income_tax: 8999.22
+    employee_payroll_tax: 9180.0765
+
+- name: Case 13, 2018 single exemption phaseout matches the independent tax reference.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 300001
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    adjusted_gross_income: 300001.0
+    standard_deduction: 12000.0
+    exemptions: 0.0
+    taxable_income: 288001.0
+    income_tax_before_credits: 76489.85
+    eitc: 0.0
+    income_tax: 76489.85
+    employee_payroll_tax: 13210.8235
+
+- name: Case 14, 2018 joint two earners matches the independent tax reference.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 35000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 35000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 70000.0
+    standard_deduction: 24000.0
+    exemptions: 0.0
+    taxable_income: 46000.0
+    income_tax_before_credits: 5139.0
+    eitc: 0.0
+    income_tax: 1139.0
+    employee_payroll_tax: 5355.0
+
+- name: Case 15, 2021 single wages matches the independent tax reference.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    adjusted_gross_income: 40000.0
+    standard_deduction: 12550.0
+    exemptions: 0.0
+    taxable_income: 27450.0
+    income_tax_before_credits: 3095.0
+    eitc: 0.0
+    income_tax: 1695.0
+    employee_payroll_tax: 3060.0
+
+- name: Case 16, 2021 parent eitc matches the independent tax reference.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        filing_status: HEAD_OF_HOUSEHOLD
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TX
+  output:
+    adjusted_gross_income: 20000.0
+    standard_deduction: 18800.0
+    exemptions: 0.0
+    taxable_income: 1200.0
+    income_tax_before_credits: 120.0
+    eitc: 3541.296
+    income_tax: -9221.296
+    employee_payroll_tax: 1530.0
+
+- name: Case 17, 2021 joint children matches the independent tax reference.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 40000.0
+    standard_deduction: 25100.0
+    exemptions: 0.0
+    taxable_income: 14900.0
+    income_tax_before_credits: 1490.0
+    eitc: 2919.982
+    income_tax: -13029.982
+    employee_payroll_tax: 3060.0
+
+- name: Case 18, 2021 joint ctc phaseout matches the independent tax reference.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 120001
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 120001.0
+    standard_deduction: 25100.0
+    exemptions: 0.0
+    taxable_income: 94901.0
+    income_tax_before_credits: 12375.22
+    eitc: 0.0
+    income_tax: 775.2199999999993
+    employee_payroll_tax: 9180.0765
+
+- name: Case 19, 2021 single exemption phaseout matches the independent tax reference.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 300001
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    adjusted_gross_income: 300001.0
+    standard_deduction: 12550.0
+    exemptions: 0.0
+    taxable_income: 287451.0
+    income_tax_before_credits: 75152.1
+    eitc: 0.0
+    income_tax: 75152.1
+    employee_payroll_tax: 14103.6235
+
+- name: Case 20, 2021 joint two earners matches the independent tax reference.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 35000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 35000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 70000.0
+    standard_deduction: 25100.0
+    exemptions: 0.0
+    taxable_income: 44900.0
+    income_tax_before_credits: 4990.0
+    eitc: 0.0
+    income_tax: -6610.0
+    employee_payroll_tax: 5355.0
+
+- name: Case 21, 2026 single wages matches the independent tax reference.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    adjusted_gross_income: 40000.0
+    standard_deduction: 16100.0
+    exemptions: 0.0
+    taxable_income: 23900.0
+    income_tax_before_credits: 2620.0
+    eitc: 0.0
+    income_tax: 2620.0
+    employee_payroll_tax: 3060.0
+
+- name: Case 22, 2026 parent eitc matches the independent tax reference.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        filing_status: HEAD_OF_HOUSEHOLD
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: TX
+  output:
+    adjusted_gross_income: 20000.0
+    standard_deduction: 24150.0
+    exemptions: 0.0
+    taxable_income: 0.0
+    income_tax_before_credits: 0.0
+    eitc: 4427.0
+    income_tax: -6127.0
+    employee_payroll_tax: 1530.0
+
+- name: Case 23, 2026 joint children matches the independent tax reference.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 40000.0
+    standard_deduction: 32200.0
+    exemptions: 0.0
+    taxable_income: 7800.0
+    income_tax_before_credits: 780.0
+    eitc: 5454.296
+    income_tax: -8854.296
+    employee_payroll_tax: 3060.0
+
+- name: Case 24, 2026 joint ctc phaseout matches the independent tax reference.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 120001
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 120001.0
+    standard_deduction: 32200.0
+    exemptions: 0.0
+    taxable_income: 87801.0
+    income_tax_before_credits: 10040.119999999999
+    eitc: 0.0
+    income_tax: 5640.119999999999
+    employee_payroll_tax: 9180.0765
+
+- name: Case 25, 2026 single exemption phaseout matches the independent tax reference.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 300001
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        filing_status: SINGLE
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        state_code: TX
+  output:
+    adjusted_gross_income: 300001.0
+    standard_deduction: 16100.0
+    exemptions: 0.0
+    taxable_income: 283901.0
+    income_tax_before_credits: 68134.6
+    eitc: 0.0
+    income_tax: 68134.6
+    employee_payroll_tax: 16689.0235
+
+- name: Case 26, 2026 joint two earners matches the independent tax reference.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 35000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 33
+        employment_income: 35000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        filing_status: JOINT
+        takes_up_eitc: true
+        would_file_taxes_voluntarily: true
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: TX
+  output:
+    adjusted_gross_income: 70000.0
+    standard_deduction: 32200.0
+    exemptions: 0.0
+    taxable_income: 37800.0
+    income_tax_before_credits: 4040.0
+    eitc: 0.0
+    income_tax: -360.0
+    employee_payroll_tax: 5355.0

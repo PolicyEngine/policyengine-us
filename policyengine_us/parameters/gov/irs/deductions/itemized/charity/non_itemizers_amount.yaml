@@ -7,6 +7,8 @@ metadata:
   breakdown:
     - filing_status
   reference:
+    - title: 2017 Form 1040, line 40
+      href: https://www.irs.gov/pub/irs-prior/f1040--2017.pdf#page=2
     - title: 2021 Publication 526 Charitable Contributions
       href: https://www.irs.gov/pub/irs-prior/p526--2021.pdf#page=2
     - title: 26 U.S. Code § 170 - Charitable, etc., contributions and gifts - (p)
@@ -19,26 +21,31 @@ metadata:
 # 26 U.S.C. 170(p) starts in 2021. The 2020 deduction for non-itemizers was
 # above the line (26 U.S.C. 62(a)(22)); see gov.irs.ald.charitable_contributions.
 JOINT:
+  2017-01-01: 0
   2018-01-01: 0
   2021-01-01: 600
   2022-01-01: 0
   2026-01-01: 2_000
 SINGLE:
+  2017-01-01: 0
   2018-01-01: 0
   2021-01-01: 300
   2022-01-01: 0
   2026-01-01: 1_000
 SEPARATE:
+  2017-01-01: 0
   2018-01-01: 0
   2021-01-01: 300
   2022-01-01: 0
   2026-01-01: 1_000
 HEAD_OF_HOUSEHOLD:
+  2017-01-01: 0
   2018-01-01: 0
   2021-01-01: 300
   2022-01-01: 0
   2026-01-01: 1_000
 SURVIVING_SPOUSE:
+  2017-01-01: 0
   2018-01-01: 0
   2021-01-01: 300
   2022-01-01: 0

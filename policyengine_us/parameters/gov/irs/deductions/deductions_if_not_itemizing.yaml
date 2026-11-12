@@ -3,10 +3,16 @@ values:
   # The tips and overtime deductions (26 U.S.C. 224 and 225) are listed in every
   # year. Their own in_effect parameters zero them outside 2025-2028, so a reform
   # that switches them on in another year also reaches taxable income.
+  # Tuition and fees are deducted above AGI, not again with the standard
+  # deduction (2017 Form 1040 lines 34 and 40; 2018 Schedule 1 line 34).
+  2017-01-01:
+    - standard_deduction
+    - qualified_business_income_deduction
+    - tip_income_deduction
+    - overtime_income_deduction
   2018-01-01:
     - standard_deduction
     - qualified_business_income_deduction
-    - tuition_and_fees_deduction
     - tip_income_deduction
     - overtime_income_deduction
   # The 2020 charitable deduction for non-itemizers is above the line
@@ -42,3 +48,10 @@ metadata:
   unit: list
   period: year
   label: Taxable income deductions if not itemizing
+  reference:
+    - title: 26 U.S.C. 62(a)(18) (2017 edition), Higher education expenses
+      href: https://www.govinfo.gov/content/pkg/USCODE-2017-title26/pdf/USCODE-2017-title26-subtitleA-chap1-subchapB-partI-sec62.pdf#page=3
+    - title: "2017 Form 1040, lines 34 and 40 #page 1-2"
+      href: https://www.irs.gov/pub/irs-prior/f1040--2017.pdf#page=1
+    - title: 2018 Schedule 1 (Form 1040), line 34
+      href: https://www.irs.gov/pub/irs-prior/f1040s1--2018.pdf#page=1

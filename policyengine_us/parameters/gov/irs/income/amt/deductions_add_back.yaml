@@ -1,5 +1,6 @@
 description: The US adds these deductions from taxable income back when calculating alternative minimum taxable income, whether or not the filer itemizes.
 values:
+  2017-01-01: []
   2018-01-01: []
   # 2025 Form 6251 line 1a subtracts the enhanced deduction for seniors
   # (Schedule 1-A, line 37) from Form 1040 line 14, so the deduction is
@@ -13,6 +14,8 @@ metadata:
   unit: list
   label: AMT income deductions add back
   reference:
+    - title: 2017 Form 6251, Part I
+      href: https://www.irs.gov/pub/irs-prior/f6251--2017.pdf#page=1
     - title: Instructions for Form 6251 (2025), What's New (Enhanced deduction for seniors) and Line 1a and Line 1b, page 1-2
       href: https://www.irs.gov/pub/irs-prior/i6251--2025.pdf#page=1
     - title: 2025 Form 6251, lines 1a and 1b
