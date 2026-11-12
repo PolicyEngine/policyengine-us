@@ -4,7 +4,10 @@ metadata:
   breakdown:
     - filing_status
   unit: currency-USD
-  # This parent uprating remains inactive pending selective propagation in PolicyEngine/policyengine-core#537.
+  # Keep CBO's legacy forecasts for counterfactual reforms; personal exemptions
+  # remain suspended under current law. Project from the final forecast year.
+  # Historical section 68(b) rounds down to $50, then halves the joint amount
+  # for separate filers. Set rounding on each child to preserve that order.
   uprating: gov.irs.uprating
   reference:
     - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(3)(B)
@@ -14,6 +17,10 @@ metadata:
     - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
       # 1. Tax Parameters.
       href: https://www.cbo.gov/data/budget-economic-data
+    - title: 26 U.S.C. 68(b) (2024 edition), applicable amount and inflation adjustment
+      href: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partI-sec68.htm
+    - title: CBO January 2025 tax parameter forecasts
+      href: https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/budget/tax_parameters/annual_cy_2025-01.csv
 
 JOINT:
   values:
@@ -36,6 +43,11 @@ JOINT:
     2035-01-01: 487_400
   metadata:
     unit: currency-USD
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
 SINGLE:
   values:
     2013-01-01: 250_000
@@ -57,6 +69,11 @@ SINGLE:
     2035-01-01: 406_200
   metadata:
     unit: currency-USD
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
 SEPARATE:
   values:
     2013-01-01: 150_000
@@ -78,6 +95,11 @@ SEPARATE:
     2035-01-01: 243_700
   metadata:
     unit: currency-USD
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
 HEAD_OF_HOUSEHOLD:
   values:
     2013-01-01: 275_000
@@ -99,6 +121,11 @@ HEAD_OF_HOUSEHOLD:
     2035-01-01: 446_800
   metadata:
     unit: currency-USD
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
 SURVIVING_SPOUSE:
   values:
     2013-01-01: 300_000
@@ -120,3 +147,8 @@ SURVIVING_SPOUSE:
     2035-01-01: 487_400
   metadata:
     unit: currency-USD
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50

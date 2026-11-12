@@ -1,0 +1,1 @@
+Activated filing-status parameter uprating for Colorado's CollegeInvest subtraction, legacy personal exemption phaseout thresholds, and the Biden FY2025 capital gains proposal, and added Colorado's published 2026 limits.

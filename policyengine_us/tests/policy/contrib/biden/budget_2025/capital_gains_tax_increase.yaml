@@ -57,3 +57,31 @@
     taxable_income: 48_475
     income_tax_main_rates: 5_563.50
     capital_gains_tax: 15
+
+# Treasury indexes the 2024 $1m threshold after 2024. With the IRS proxy,
+# $1m * 172.797 / 167.95475 = $1,028,830.6820735942 in 2025.
+# Set taxable income directly to isolate the threshold. All $100,000 of gains
+# otherwise face 20%; the excess faces 37%, adding 17% of the excess.
+- name: The proposal indexes the single threshold before taxing excess gains
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    filing_status: SINGLE
+    taxable_income: [1_028_830, 1_028_830.6820735942, 1_028_832]
+    long_term_capital_gains: 100_000
+  output:
+    capital_gains_tax: [20_000, 20_000, 20_000.2240475]
+
+# Separate: $500,000 * 172.797 / 167.95475 = $514,415.3410367971.
+# At $514,417, tax = $20,000 + ($514,417 - $514,415.3410367971) * 17%.
+- name: The proposal indexes half the threshold for separate filers
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    filing_status: SEPARATE
+    taxable_income: [514_415, 514_415.3410367971, 514_417]
+    long_term_capital_gains: 100_000
+  output:
+    capital_gains_tax: [20_000, 20_000, 20_000.2820237]
