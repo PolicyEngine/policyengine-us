@@ -174,10 +174,15 @@
 - name: New Hampshire applies its secondary-student allocation limit after April 2012
   period: 2012-05
   input:
-    state_code: NH
-    age: 19
-    is_ssi_ineligible_child: true
-    is_full_time_student: true
-    is_in_secondary_school: true
+    state_code:
+      2012: NH
+    age:
+      2012: 19
+    is_ssi_ineligible_child:
+      2012-05: true
+    is_full_time_student:
+      2012: true
+    is_in_secondary_school:
+      2012: true
   output:
     nh_ssp_ineligible_child: true

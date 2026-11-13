@@ -1638,14 +1638,21 @@
     people:
       parent:
         age: 40
+        person_id: 1
         is_tax_unit_head: true
         ssi_unearned_income: 24_000
       claimant:
         age: 10
+        person_id: 2
+        parent_1_id: 1
+        immigration_status: CITIZEN
         is_tax_unit_dependent: true
         is_ssi_disabled: true
       sibling:
         age: 18
+        person_id: 3
+        parent_1_id: 1
+        immigration_status: CITIZEN
         is_tax_unit_dependent: true
         is_full_time_student: true
     tax_units:
@@ -1660,3 +1667,11 @@
       claimant:
         ssi_unearned_income_deemed_from_ineligible_parent: 5_868
         medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5_868
+        ssi_unearned_income_deemed_from_ineligible_parent_monthly:
+          2026-01: 489
+          2026-12: 489
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent_monthly:
+          2026-01: 489
+          2026-12: 489
+      sibling:
+        ssi_ineligible_child_allocation: 5_964

@@ -270,11 +270,11 @@
   output:
     medicaid_optional_senior_or_disabled_uses_couple_standard: [false, false]
 
-# A year reads this month-defined status in December, when the couple is home, so
-# income and limit agree: 8,000 + 22,000 - 240 = 29,760, or 14,880 each, is above
-# 21,640. Tested alone for the stay (20 CFR 416.414(b)(3)), person2's 21,760 is also
-# above 15,960, so person2 is not eligible in any month.
-- name: Case 12, a facility stay that ends within the year tests the couple on its December status.
+# The annual limit uses December's couple status; income sums monthly budgets.
+# January-June: (8,000 / 12 - 20) x 6 = 3,880 and
+# (22,000 / 12 - 20) x 6 = 10,880. July-December:
+# (30,000 / 12 - 20) / 2 x 6 = 7,440 each. Totals: 11,320 and 18,320.
+- name: Case 12, the annual couple limit uses December status while income follows each month's facility status.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -314,7 +314,10 @@
       2026-12: [true, true]
     medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true]
     medicaid_optional_senior_or_disabled_income_limit: [21_640, 21_640]
-    medicaid_optional_senior_or_disabled_countable_income: [14_880, 14_880]
+    medicaid_optional_senior_or_disabled_countable_income: [11_320, 18_320]
+    medicaid_optional_senior_or_disabled_countable_income_monthly:
+      2026-06: [646.666667, 1_813.333333]
+      2026-07: [1_240, 1_240]
     is_optional_senior_or_disabled_income_eligible: [false, false]
     is_medicaid_eligible: [false, false]
     medicaid_category: [NONE, NONE]
