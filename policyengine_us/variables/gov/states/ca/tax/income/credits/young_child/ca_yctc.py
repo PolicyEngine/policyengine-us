@@ -9,6 +9,8 @@ class ca_yctc(Variable):
     definition_period = YEAR
     reference = (
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.1",
+        "https://www.ftb.ca.gov/forms/2019/2019-3514-instructions.html",
+        "https://www.ftb.ca.gov/forms/2020/2020-3514-instructions.html",
         "https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html",
         "https://www.ftb.ca.gov/forms/2021/2021-3514.pdf#page=3",
         "https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html",
@@ -17,7 +19,7 @@ class ca_yctc(Variable):
     )
     defined_for = StateCode.CA
 
-    def formula(tax_unit, period, parameters):
+    def formula_2019_01_01(tax_unit, period, parameters):
         person = tax_unit.members
         p = parameters(period).gov.states.ca.tax.income.credits.young_child
 

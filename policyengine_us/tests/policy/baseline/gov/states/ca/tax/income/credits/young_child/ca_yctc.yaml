@@ -511,3 +511,413 @@
     ca_is_qualifying_child_for_caleitc: [false, false]
     ca_eitc_child_count: 0
     ca_yctc: 0
+
+# R&TC 17052.1(a)(1) starts the YCTC in tax year 2019. At $100 of
+# wages, CalEITC is $100 * 34% * 85% = $28.90, with no tax liability.
+- name: Case 1, California young child credit does not exist in 2017.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100
+      person2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 0
+    ca_refundable_credits: 28.9
+    ca_income_tax: -28.9
+
+- name: Case 2, California young child credit does not exist in 2018.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100
+      person2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 0
+    ca_refundable_credits: 28.9
+    ca_income_tax: -28.9
+
+# R&TC 17052.1(a)-(c); annual FTB 3514 line 24 amounts, 2019-2025.
+# CalEITC retains the statutory 34% rate and 85% factor before FTB
+# table banding. The finite grid checks zero/positive earnings, ages 5/6
+# and California/Nevada in 2018, 2019 and 2022. The 2026 cases check
+# age exclusion only; the published 2026 maximum remains a separate gap.
+- name: Case 3, California young child credit and final tax in 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 100}
+      person2: {age: 3}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 1000
+    ca_refundable_credits: 1028.9
+    ca_income_tax: -1028.9
+- name: Case 4, California young child credit and final tax in 2020.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 100}
+      person2: {age: 3}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 1000
+    ca_refundable_credits: 1028.9
+    ca_income_tax: -1028.9
+- name: Case 5, California young child credit and final tax in 2021.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 100}
+      person2: {age: 3}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 1000
+    ca_refundable_credits: 1028.9
+    ca_income_tax: -1028.9
+- name: Case 6, California young child credit and final tax in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 100}
+      person2: {age: 3}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 1083
+    ca_refundable_credits: 1111.9
+    ca_income_tax: -1111.9
+- name: Case 7, California young child credit and final tax in 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 100}
+      person2: {age: 3}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 1117
+    ca_refundable_credits: 1145.9
+    ca_income_tax: -1145.9
+- name: Case 8, California young child credit and final tax in 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 100}
+      person2: {age: 3}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 1154
+    ca_refundable_credits: 1182.9
+    ca_income_tax: -1182.9
+- name: Case 9, California young child credit and final tax in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 100}
+      person2: {age: 3}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 1189
+    ca_refundable_credits: 1217.9
+    ca_income_tax: -1217.9
+- name: Case 10, California excludes a child aged six from its young child credit in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 100}
+      person2: {age: 6}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_eitc: 28.9
+    ca_yctc: 0
+    ca_refundable_credits: 28.9
+    ca_income_tax: -28.9
+- name: Case 11, young child credit bounds across age income and state in 2018.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 0}
+      person2: {age: 5, is_tax_unit_dependent: true}
+      person3: {age: 30, employment_income: 100}
+      person4: {age: 5, is_tax_unit_dependent: true}
+      person5: {age: 30, employment_income: 0}
+      person6: {age: 6, is_tax_unit_dependent: true}
+      person7: {age: 30, employment_income: 100}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 30, employment_income: 0}
+      person10: {age: 5, is_tax_unit_dependent: true}
+      person11: {age: 30, employment_income: 100}
+      person12: {age: 5, is_tax_unit_dependent: true}
+      person13: {age: 30, employment_income: 0}
+      person14: {age: 6, is_tax_unit_dependent: true}
+      person15: {age: 30, employment_income: 100}
+      person16: {age: 6, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1: {members: &id001 [person1, person2]}
+      tax_unit2: {members: &id002 [person3, person4]}
+      tax_unit3: {members: &id003 [person5, person6]}
+      tax_unit4: {members: &id004 [person7, person8]}
+      tax_unit5: {members: &id005 [person9, person10]}
+      tax_unit6: {members: &id006 [person11, person12]}
+      tax_unit7: {members: &id007 [person13, person14]}
+      tax_unit8: {members: &id008 [person15, person16]}
+    households:
+      household1: {members: *id001, state_code: CA}
+      household2: {members: *id002, state_code: CA}
+      household3: {members: *id003, state_code: CA}
+      household4: {members: *id004, state_code: CA}
+      household5: {members: *id005, state_code: NV}
+      household6: {members: *id006, state_code: NV}
+      household7: {members: *id007, state_code: NV}
+      household8: {members: *id008, state_code: NV}
+  output:
+    ca_yctc: [0, 0, 0, 0, 0, 0, 0, 0]
+    ca_eitc: [0, 28.9, 0, 28.9, 0, 0, 0, 0]
+    ca_refundable_credits: [0, 28.9, 0, 28.9, 0, 0, 0, 0]
+    ca_income_tax: [0, -28.9, 0, -28.9, 0, 0, 0, 0]
+- name: Case 12, young child credit bounds across age income and state in 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 0}
+      person2: {age: 5, is_tax_unit_dependent: true}
+      person3: {age: 30, employment_income: 100}
+      person4: {age: 5, is_tax_unit_dependent: true}
+      person5: {age: 30, employment_income: 0}
+      person6: {age: 6, is_tax_unit_dependent: true}
+      person7: {age: 30, employment_income: 100}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 30, employment_income: 0}
+      person10: {age: 5, is_tax_unit_dependent: true}
+      person11: {age: 30, employment_income: 100}
+      person12: {age: 5, is_tax_unit_dependent: true}
+      person13: {age: 30, employment_income: 0}
+      person14: {age: 6, is_tax_unit_dependent: true}
+      person15: {age: 30, employment_income: 100}
+      person16: {age: 6, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1: {members: &id009 [person1, person2]}
+      tax_unit2: {members: &id010 [person3, person4]}
+      tax_unit3: {members: &id011 [person5, person6]}
+      tax_unit4: {members: &id012 [person7, person8]}
+      tax_unit5: {members: &id013 [person9, person10]}
+      tax_unit6: {members: &id014 [person11, person12]}
+      tax_unit7: {members: &id015 [person13, person14]}
+      tax_unit8: {members: &id016 [person15, person16]}
+    households:
+      household1: {members: *id009, state_code: CA}
+      household2: {members: *id010, state_code: CA}
+      household3: {members: *id011, state_code: CA}
+      household4: {members: *id012, state_code: CA}
+      household5: {members: *id013, state_code: NV}
+      household6: {members: *id014, state_code: NV}
+      household7: {members: *id015, state_code: NV}
+      household8: {members: *id016, state_code: NV}
+  output:
+    ca_yctc: [0, 1000, 0, 0, 0, 0, 0, 0]
+    ca_eitc: [0, 28.9, 0, 28.9, 0, 0, 0, 0]
+    ca_refundable_credits: [0, 1028.9, 0, 28.9, 0, 0, 0, 0]
+    ca_income_tax: [0, -1028.9, 0, -28.9, 0, 0, 0, 0]
+- name: Case 13, young child credit bounds across age income and state in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 0}
+      person2: {age: 5, is_tax_unit_dependent: true}
+      person3: {age: 30, employment_income: 100}
+      person4: {age: 5, is_tax_unit_dependent: true}
+      person5: {age: 30, employment_income: 0}
+      person6: {age: 6, is_tax_unit_dependent: true}
+      person7: {age: 30, employment_income: 100}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 30, employment_income: 0}
+      person10: {age: 5, is_tax_unit_dependent: true}
+      person11: {age: 30, employment_income: 100}
+      person12: {age: 5, is_tax_unit_dependent: true}
+      person13: {age: 30, employment_income: 0}
+      person14: {age: 6, is_tax_unit_dependent: true}
+      person15: {age: 30, employment_income: 100}
+      person16: {age: 6, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1: {members: &id017 [person1, person2]}
+      tax_unit2: {members: &id018 [person3, person4]}
+      tax_unit3: {members: &id019 [person5, person6]}
+      tax_unit4: {members: &id020 [person7, person8]}
+      tax_unit5: {members: &id021 [person9, person10]}
+      tax_unit6: {members: &id022 [person11, person12]}
+      tax_unit7: {members: &id023 [person13, person14]}
+      tax_unit8: {members: &id024 [person15, person16]}
+    households:
+      household1: {members: *id017, state_code: CA}
+      household2: {members: *id018, state_code: CA}
+      household3: {members: *id019, state_code: CA}
+      household4: {members: *id020, state_code: CA}
+      household5: {members: *id021, state_code: NV}
+      household6: {members: *id022, state_code: NV}
+      household7: {members: *id023, state_code: NV}
+      household8: {members: *id024, state_code: NV}
+  output:
+    ca_yctc: [1083, 1083, 0, 0, 0, 0, 0, 0]
+    ca_eitc: [0, 28.9, 0, 28.9, 0, 0, 0, 0]
+    ca_refundable_credits: [1083, 1111.9, 0, 28.9, 0, 0, 0, 0]
+    ca_income_tax: [-1083, -1111.9, 0, -28.9, 0, 0, 0, 0]
+- name: Case 14, California young child credit age exclusion across income and state in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 0}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 30, employment_income: 100}
+      person4: {age: 6, is_tax_unit_dependent: true}
+      person5: {age: 30, employment_income: 0}
+      person6: {age: 7, is_tax_unit_dependent: true}
+      person7: {age: 30, employment_income: 100}
+      person8: {age: 7, is_tax_unit_dependent: true}
+      person9: {age: 30, employment_income: 0}
+      person10: {age: 6, is_tax_unit_dependent: true}
+      person11: {age: 30, employment_income: 100}
+      person12: {age: 6, is_tax_unit_dependent: true}
+      person13: {age: 30, employment_income: 0}
+      person14: {age: 7, is_tax_unit_dependent: true}
+      person15: {age: 30, employment_income: 100}
+      person16: {age: 7, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1: {members: &id025 [person1, person2]}
+      tax_unit2: {members: &id026 [person3, person4]}
+      tax_unit3: {members: &id027 [person5, person6]}
+      tax_unit4: {members: &id028 [person7, person8]}
+      tax_unit5: {members: &id029 [person9, person10]}
+      tax_unit6: {members: &id030 [person11, person12]}
+      tax_unit7: {members: &id031 [person13, person14]}
+      tax_unit8: {members: &id032 [person15, person16]}
+    households:
+      household1: {members: *id025, state_code: CA}
+      household2: {members: *id026, state_code: CA}
+      household3: {members: *id027, state_code: CA}
+      household4: {members: *id028, state_code: CA}
+      household5: {members: *id029, state_code: NV}
+      household6: {members: *id030, state_code: NV}
+      household7: {members: *id031, state_code: NV}
+      household8: {members: *id032, state_code: NV}
+  output:
+    ca_yctc: [0, 0, 0, 0, 0, 0, 0, 0]
+    ca_eitc: [0, 28.9, 0, 28.9, 0, 0, 0, 0]
+    ca_refundable_credits: [0, 28.9, 0, 28.9, 0, 0, 0, 0]
+    ca_income_tax: [0, -28.9, 0, -28.9, 0, 0, 0, 0]
+- name: Case 15, California young child credit at earnings of 25_000 in 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 25000}
+      person2: {age: 5}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_yctc: 1000
+- name: Case 16, California young child credit at earnings of 25_100 in 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 25100}
+      person2: {age: 5}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_yctc: 980
+- name: Case 17, California young child credit at earnings of 30_000 in 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 30000}
+      person2: {age: 5}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_yctc: 0
+- name: Case 18, California young child credit at earnings of 30_001 in 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 30, employment_income: 30001}
+      person2: {age: 5}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    ca_yctc: 0

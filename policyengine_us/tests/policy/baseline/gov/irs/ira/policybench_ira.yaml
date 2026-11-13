@@ -178,7 +178,11 @@
         # and the separate r11 California itemized-deduction conformity fix.
         # Also includes #10034's California itemized conformity (merged), since
         # this is a two-cause IRA + CA cell.
-        state_income_tax_before_refundable_credits: 40683.11
+        # FTB Tax News, October 2026 amounts: Schedule Y on $517,386.11 of
+        # taxable income = $40,752.03, less 2 x ($158 - $54) = $208 of phased
+        # exemption credits = $40,544.03 (derivation in
+        # ca_itemized_deductions_pre_limitation.yaml, scenario_005).
+        state_income_tax_before_refundable_credits: 40544.03
 - name: PolicyBench scenario 049 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02
@@ -535,7 +539,9 @@
         income_tax_before_refundable_credits: 10711.484375
         # Also includes #10034's California itemized conformity.
         # FTB Schedule CA (540), Section C, line 11: $337.50 educator addback x 8% = $27 (R&TC 17072(b)).
-        state_income_tax_before_refundable_credits: 4468.45
+        # FTB Tax News, October 2026 amounts: Schedule Y on $138,792.30 =
+        # $5,693.62, less $316 + 2 x $491 = $1,298 of exemption credits = $4,395.62.
+        state_income_tax_before_refundable_credits: 4395.62
 - name: PolicyBench scenario 110 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02

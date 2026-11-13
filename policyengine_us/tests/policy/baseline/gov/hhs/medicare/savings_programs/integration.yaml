@@ -1,5 +1,6 @@
 # MSP uses SSI income methodology per 42 U.S.C. 1396d(p)(1)(B)
-# For married couples, MSP uses couple FPL = $20,440 for 2024
+# A married person tested as a couple (msp_tests_as_couple) uses the two-person
+# FPL = $20,440 for 2024; a married person tested alone uses the one-person FPL.
 
 - name: MSP integration - married couple, both QMB eligible
   period: 2024-01
@@ -111,8 +112,8 @@
   # Edge case: only one spouse is Medicare-eligible.
   # person.marital_unit.sum(is_medicare_eligible) == 1, not 2, so full couple
   # aggregation does not apply. With no spouse income to deem, spouse1 is
-  # tested on their own income ($10,000) against the married MSP threshold.
-  # ($10,000 - $240) / 12 = $813.33/month < $1,703.33 -> QMB.
+  # tested on their own income ($10,000) against the one-person guideline.
+  # ($10,000 - $240) / 12 = $813.33/month < $1,255 -> QMB.
   # Spouse2 is not Medicare-eligible and cannot qualify for MSP.
   input:
     people:

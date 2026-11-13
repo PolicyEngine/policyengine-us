@@ -37,3 +37,43 @@
     msp_asset_eligible: true
   output:
     msp_part_b_premium_coverage: 2_514  # $209.50 * 12 months
+
+# $18,240 pension: $18,240 / 12 - $20 = $1,500 countable, below 135% of the 2026
+# individual FPL ($15,960 / 12 * 1.35 = $1,795.50).
+- name: MSP part B coverage pays the 2026 standard premium for a citizen under the income limit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    pension_income: 18_240
+    state_code: TX
+  output:
+    msp_part_b_premium_coverage: 2_434.8  # $202.90 * 12
+
+# Same income, but the Medicaid immigration test bars MSP coverage of the premium.
+- name: MSP part B coverage is zero for a person with temporary protected status
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+    pension_income: 18_240
+    state_code: TX
+  output:
+    msp_part_b_premium_coverage: 0
+
+# Same person as the case above, in California. State-funded Medi-Cal covers a person
+# with temporary protected status, but the federal Medicaid immigration test still bars
+# MSP coverage of the premium (42 U.S.C. 1396b(v)(1)).
+- name: MSP part B coverage is zero for a California person with temporary protected status
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+    pension_income: 18_240
+    state_code: CA
+  output:
+    msp_part_b_premium_coverage: 0
