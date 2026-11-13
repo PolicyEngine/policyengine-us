@@ -14,7 +14,10 @@
     household:
       state_code: MT
   output:
-    mt_taxable_social_security_joint: 5_350
+    # Pension exemption: 5,060. Provisional income: 35,000 - 5,060 = 29,940.
+    # Taxable benefits: (29,940 - 25,000) x 0.5 = 2,470.
+    mt_pension_exemption_joint: 5_060
+    mt_taxable_social_security_joint: 2_470
     taxable_social_security: [5_350, 0]
 
 - name: Same household without the dependent's income
@@ -31,5 +34,8 @@
     household:
       state_code: MT
   output:
-    mt_taxable_social_security_joint: 5_350
+    # Pension exemption: 5,060. Provisional income: 35,000 - 5,060 = 29,940.
+    # Taxable benefits: (29,940 - 25,000) x 0.5 = 2,470.
+    mt_pension_exemption_joint: 5_060
+    mt_taxable_social_security_joint: 2_470
     taxable_social_security: [5_350, 0]
