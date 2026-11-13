@@ -65,5 +65,23 @@
     heating_type: [ELECTRICITY]
     has_cooling_expense: [true]
   output:
-    # The undocumented member is excluded from household size.
+    # The undocumented member is excluded from household size, and the deemed
+    # income of 15,080 - 2,880 - 398 x 12 = 7,424 (619 a month) exceeds the
+    # size-0 limit of 0.
     ok_liheap_cooling_eligible: [false]
+
+- name: Case 6, a household with no eligible member is ineligible even when it passes the income test.
+  period: 2026
+  input:
+    state_code: [OK]
+    age: [40]
+    immigration_status: [UNDOCUMENTED]
+    employment_income_before_lsr: [7_000]
+    heating_type: [ELECTRICITY]
+    has_cooling_expense: [true]
+  output:
+    # Deemed income max(7,000 - 2,880 - 398 x 12, 0) = 0 meets the size-0 limit
+    # of 0, so the household size of 0 alone makes the household ineligible.
+    ok_liheap_income_eligible: [true]
+    ok_liheap_cooling_eligible: [false]
+    ok_liheap_cooling: [0]

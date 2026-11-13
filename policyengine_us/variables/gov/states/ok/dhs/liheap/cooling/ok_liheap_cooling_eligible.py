@@ -25,11 +25,8 @@ class ok_liheap_cooling_eligible(Variable):
         # the rent qualifies through a verified surcharge (340:20-1-20(d)).
         responsible = spm_unit("has_cooling_expense", period)
         # The main cooling energy source is approved during the summer period
-        # (340:20-1-10(b)(2)), so a home with no heating or any known heating
-        # fuel qualifies; an unspecified fuel is paid $0, as in every LIHEAP
-        # program (#9754).
-        heating_type = spm_unit("heating_type", period)
-        fuel_known = heating_type != heating_type.possible_values.UNSPECIFIED
+        # (340:20-1-10(b)(2)) and the amount depends only on household size
+        # and net income (340:20-1-10(i)(2)), so the heating fuel is not read.
         # Pre-authorization, roomer relatedness and tribal LIHEAP receipt have
         # no existing inputs.
-        return (size > 0) & income_eligible & responsible & fuel_known
+        return (size > 0) & income_eligible & responsible
