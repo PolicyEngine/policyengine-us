@@ -296,3 +296,33 @@
         state_code: NJ
   output:
     nj_dependents_attending_college_exemption: 1000
+
+- name: "2025 single filer who can be claimed as a dependent by someone who files only for a refund: New Jersey college dependent exemption"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child_1:
+        age: 20
+        is_full_time_college_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child_1]
+    households:
+      household:
+        members: [person_a, child_1]
+        state_code: NJ
+  output:
+    # Publication 501: such a filer can still claim their own dependents.
+    nj_dependents_attending_college_exemption: 1000
