@@ -1,1 +1,0 @@
-Set California's 2026 income tax brackets, standard deductions, exemption credits and renter's credit income limits to the Franchise Tax Board's published amounts, and add the June 2026 California CPI.
