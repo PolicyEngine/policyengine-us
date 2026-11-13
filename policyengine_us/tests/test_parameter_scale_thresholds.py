@@ -1,4 +1,4 @@
-"""Parameter scales must not repeat a threshold at any instant.
+"""Check parameter dates, bracket thresholds and NaN values.
 
 To build a scale at an instant, policyengine-core's
 `ParameterScale._get_at_instant` passes brackets to `add_bracket`, which adds
@@ -20,8 +20,10 @@ and `tax_at_main_rates` reads bracket i's threshold as its top. A repeated
 threshold empties a bracket and an inverted one is clamped (#9084), so either
 silently taxes a band at the wrong rate. Each filing status's thresholds must
 therefore strictly increase at every instant, again exempting `+inf`.
+`tax_at_main_rates` leaves income above a finite final threshold untaxed,
+so the shipped ordinary income schedules must end at `+inf`.
 
-YAML's `.nan` loads as a float in a scalar or inside a list value, and every
+YAML's `.nan` loads as a float in a scalar or nested value, and every
 comparison with it is false, so no parameter value may hold NaN at any depth.
 """
 
@@ -41,7 +43,12 @@ from policyengine_core.parameters.operations.uprate_parameters import (
 from policyengine_core.taxscales.amount_tax_scale_like import AmountTaxScaleLike
 from policyengine_core.taxscales.rate_tax_scale_like import RateTaxScaleLike
 
-from policyengine_us.system import system
+
+@pytest.fixture(scope="module")
+def system():
+    from policyengine_us.system import system as us_system
+
+    return us_system
 
 
 def _add_bracket_thresholds(scale, instant_str):
@@ -121,7 +128,7 @@ def _scale(brackets):
     )
 
 
-def _all_scales():
+def _all_scales(system):
     return [
         node
         for node in system.parameters.get_descendants()
@@ -338,7 +345,7 @@ def test_calendar_date_guard_exempts_only_beginning_of_time(month, day):
     assert _non_calendar_instants(parameter) == expected
 
 
-def test_parameter_instants_are_calendar_dates():
+def test_parameter_instants_are_calendar_dates(system):
     errors = [
         f"{parameter.name}: {instant_str}"
         for parameter in system.parameters.get_descendants()
@@ -349,7 +356,9 @@ def test_parameter_instants_are_calendar_dates():
     assert not errors, "\n".join(errors)
 
 
-def test_add_bracket_thresholds_match_core_for_every_scale_and_instant(monkeypatch):
+def test_add_bracket_thresholds_match_core_for_every_scale_and_instant(
+    monkeypatch, system
+):
     # Record every threshold core passes to add_bracket, repeats included, and
     # compare that multiset with the guard's; comparing the built scale's
     # thresholds would hide exactly the repeats the guard exists to find.
@@ -364,7 +373,7 @@ def test_add_bracket_thresholds_match_core_for_every_scale_and_instant(monkeypat
         monkeypatch.setattr(scale_class, "add_bracket", recording_add_bracket)
 
     mismatches = []
-    for scale in _all_scales():
+    for scale in _all_scales(system):
         for instant_str in _change_instants(scale):
             if instant_str == YEAR_ZERO_SENTINEL:
                 # Core's public lookup cannot parse year zero.
@@ -381,15 +390,15 @@ def test_add_bracket_thresholds_match_core_for_every_scale_and_instant(monkeypat
     assert not mismatches, "\n".join(mismatches)
 
 
-def test_parameter_scales_have_no_duplicate_thresholds():
-    scales = _all_scales()
+def test_parameter_scales_have_no_duplicate_thresholds(system):
+    scales = _all_scales(system)
     errors = [error for scale in scales for error in _duplicate_threshold_errors(scale)]
 
     assert scales
     assert not errors, "\n".join(errors)
 
 
-def _mapped_threshold_tables():
+def _mapped_threshold_tables(system):
     # A rate schedule's `thresholds` node sits beside the `rates` node that
     # `tax_at_main_rates` reads with it, and maps bracket numbers 1..N.
     return [
@@ -516,8 +525,8 @@ def test_mapped_threshold_guard_ignores_only_parked_positive_infinity():
     ]
 
 
-def test_mapped_bracket_thresholds_strictly_increase():
-    tables = _mapped_threshold_tables()
+def test_mapped_bracket_thresholds_strictly_increase(system):
+    tables = _mapped_threshold_tables(system)
     errors = [error for table in tables for error in _mapped_threshold_errors(table)]
 
     assert {
@@ -527,12 +536,57 @@ def test_mapped_bracket_thresholds_strictly_increase():
     assert not errors, "\n".join(errors)
 
 
+@pytest.mark.parametrize(
+    "name",
+    [
+        "gov.irs.income.bracket",
+        "gov.contrib.additional_tax_bracket.bracket",
+    ],
+)
+def test_shipped_income_bracket_top_thresholds_are_infinite(name, system):
+    table = system.parameters.get_child(f"{name}.thresholds")
+    brackets = sorted(table.children, key=int)
+    assert brackets
+    statuses = {
+        status for bracket in brackets for status in table.children[bracket].children
+    }
+    assert statuses
+
+    for status in sorted(statuses):
+        leaves = [table.children[bracket].children[status] for bracket in brackets]
+        instants = sorted(
+            {
+                value_at_instant.instant_str
+                for leaf in leaves
+                for value_at_instant in leaf.values_list
+            }
+        )
+        checked = 0
+        for instant_str in instants:
+            values = [leaf._get_at_instant(instant_str) for leaf in leaves]
+            if all(value is None for value in values):
+                continue
+            checked += 1
+            assert values[-1] == math.inf, (
+                f"{name}.thresholds.{brackets[-1]}.{status}: "
+                f"top threshold {values[-1]} at {instant_str}"
+            )
+        assert checked, f"{name}: no active thresholds for {status}"
+
+
 def _nan_paths(value, path=""):
     if isinstance(value, float) and math.isnan(value):
         yield path or "value"
     elif isinstance(value, (list, tuple)):
         for index, item in enumerate(value):
             yield from _nan_paths(item, f"{path}[{index}]")
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            yield from _nan_paths(key, f"{path}.key[{key!r}]")
+            yield from _nan_paths(item, f"{path}[{key!r}]")
+    elif isinstance(value, (set, frozenset)):
+        for item in sorted(value, key=repr):
+            yield from _nan_paths(item, f"{path}{{{item!r}}}")
 
 
 def _nan_values(parameter):
@@ -543,15 +597,17 @@ def _nan_values(parameter):
     ]
 
 
-def test_nan_guard_flags_nan_in_scalars_and_nested_lists():
+def test_nan_guard_flags_nan_in_scalars_and_nested_containers():
     parameter = Parameter(
         "test_parameter",
         {
             "values": {
-                "2023-01-01": [1.0, [2.0, 3.0]],
+                "2023-01-01": [1.0, [2.0, 3.0], {4.0, 5.0}],
                 "2024-01-01": [1.0, [2.0, math.nan]],
                 "2025-01-01": math.nan,
                 "2026-01-01": [math.nan],
+                "2027-01-01": [{"nested": [math.nan], math.nan: 1.0}],
+                "2028-01-01": [{math.nan}],
             }
         },
     )
@@ -560,10 +616,13 @@ def test_nan_guard_flags_nan_in_scalars_and_nested_lists():
         "2024-01-01 [1][1]",
         "2025-01-01 value",
         "2026-01-01 [0]",
+        "2027-01-01 [0].key[nan]",
+        "2027-01-01 [0]['nested'][0]",
+        "2028-01-01 [0]{nan}",
     ]
 
 
-def test_parameter_values_are_not_nan():
+def test_parameter_values_are_not_nan(system):
     parameters = [
         parameter
         for parameter in system.parameters.get_descendants()

@@ -29,6 +29,8 @@ recomputes the status — SINGLE for a lone adult — silently bypassing
 the SEPARATE-specific reform under test.
 """
 
+import gc
+
 import numpy as np
 import pytest
 
@@ -194,13 +196,9 @@ def test_mixed_statuses_only_the_separate_row_responds(inverted_bracket_system):
 
 
 def test_shipped_additional_tax_bracket_reform_is_clamped():
-    # The contrib reform replaces both bracket loops, so it must clamp too.
-    # Its parameter tree used to carry the expiration projection's inverted
-    # SEPARATE thresholds (bracket 5 top 541,550 above bracket 6 top
-    # 305,875), and before the clamp a zero-income 2026 MFS filer owed a flat
-    # −$82,486 under the shipped reform. The file now has the correct
-    # 270,775, so this reform recreates that inversion. The reform's
-    # user-supplied extra bracket is filled as in its own yaml tests.
+    # Inject a SEPARATE bracket-5 top of 541,550 above bracket 6's 305,875
+    # to exercise the contrib reform's shared bracket clamp. Fill the
+    # user-supplied extra bracket as in the reform's YAML tests.
     fill_extra_bracket = Reform.from_dict(
         {
             "gov.contrib.additional_tax_bracket.bracket.thresholds.5.SEPARATE": {
@@ -223,6 +221,8 @@ def test_shipped_additional_tax_bracket_reform_is_clamped():
     before_credits = sim.calculate("income_tax_before_credits", 2026)[0]
     assert main == 0
     assert before_credits == 0
+    del sim
+    gc.collect()
 
     # A zero-income filer owes nothing under any non-negative loop, so also
     # check a filer inside the inverted band. Clamped, bracket 6 is empty and

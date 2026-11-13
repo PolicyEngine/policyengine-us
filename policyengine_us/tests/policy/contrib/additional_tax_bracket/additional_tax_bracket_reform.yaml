@@ -224,3 +224,40 @@
     # 83,480.75 on the first 300,000 (case above), plus 35% of 5,875 up to
     # 305,875, plus 39.6% of the remaining 94,125.
     income_tax_main_rates: 122_810.50
+
+- name: A single filer stays in the 35% bracket through 539900 in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    taxable_income: 539_450
+    filing_status: SINGLE
+  output:
+    # IRS Rev. Proc. 2021-45, Table 3: 49,335.50 + 35% of 323,500.
+    income_tax_main_rates: 162_560.50
+
+- name: A single filer pays 37% above 539900 in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    taxable_income: 540_000
+    filing_status: SINGLE
+  output:
+    # IRS Rev. Proc. 2021-45, Table 3: 162,718 + 37% of 100.
+    income_tax_main_rates: 162_755
+
+- name: A separate filer pays 39.6% above the projected 2035 threshold.
+  period: 2035
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
+  input:
+    gov.contrib.additional_tax_bracket.in_effect: true
+    taxable_income: 400_000
+    filing_status: SEPARATE
+  output:
+    # CBO January 2025: 87,547.25 through 323,625, then 35% of 41,950
+    # through 365,575, plus 39.6% of the remaining 34,425.
+    income_tax_main_rates: 115_862.05
