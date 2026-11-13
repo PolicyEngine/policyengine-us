@@ -18,7 +18,9 @@
     medical_expense_deduction: 10_000
     ca_investment_interest_expense_deduction: 5_000
   output:
-    ca_itemized_deductions: 12_000  # medical expenses not subject to limitation
+    # Medical expenses and investment interest are both left out of the
+    # limitation, so nothing is subject to it.
+    ca_itemized_deductions: 15_000
 
 - name: Single filer with low AGI and large charitable_deduction
   period: 2021
@@ -74,3 +76,42 @@
     # 11,414.30 - 800. Were the loss limited too, line 4 would be 9,131.44,
     # line 9 would be 3,000 and the result 8,414.30.
     ca_itemized_deductions: 10_614.30
+
+# 26 U.S.C. 68(c)(2), adopted by R&TC 17077, and the line 29 worksheet, line 2,
+# leave investment interest out of the limitation. The amount left out is the
+# FTB 3526 deduction that the pre-limitation total holds, not the interest paid.
+# Both cases set that deduction as an input, so they test the exclusion list
+# whatever formula computes FTB 3526.
+- name: California's own investment interest deduction is left out of the high-AGI limitation
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    adjusted_gross_income: 244_857 + 200_000
+    investment_interest_expense: 10_000
+    ca_investment_interest_expense_deduction: 6_000
+    ca_charitable_deduction: 10_000
+  output:
+    # 10,000 charity + 6,000 investment interest.
+    ca_itemized_deductions_pre_limitation: 16_000
+    # Worksheet: line 2 = 6,000; line 3 = 10,000; line 4 = 80% x 10,000 =
+    # 8,000; line 8 = 6% x 200,000 = 12,000; line 9 = 8,000. 16,000 - 8,000.
+    # Leaving out the 10,000 paid instead would give line 4 = 80% x 6,000 =
+    # 4,800 and 11,200.
+    ca_itemized_deductions: 8_000
+
+- name: California investment interest left out of the limitation when the 6% amount is smaller
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    adjusted_gross_income: 244_857 + 50_000
+    investment_interest_expense: 10_000
+    ca_investment_interest_expense_deduction: 6_000
+    ca_charitable_deduction: 10_000
+  output:
+    ca_itemized_deductions_pre_limitation: 16_000
+    # line 4 = 8,000; line 8 = 6% x 50,000 = 3,000; line 9 = 3,000.
+    ca_itemized_deductions: 13_000

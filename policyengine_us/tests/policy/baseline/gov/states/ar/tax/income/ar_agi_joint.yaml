@@ -19,7 +19,7 @@
   output:
     ar_agi_joint: [900, 1_800]
 
-- name: Dependent AGI gets attributed to the head; spouse net income is not floored on a joint return
+- name: A dependent's AGI stays off the filers' return; spouse net income is not floored on a joint return
   period: 2022
   input:
     people:
@@ -43,11 +43,11 @@
         members: [person1, person2, person3]
         state_code: AR 
   output:
-    # Head: 900 + dependent's 300 (dependent income floored at 0, then
-    # attributed to the head). Spouse: 100 - 200 = -100. On a joint return all
+    # Head: 900. The dependent's 300 goes on the dependent's own return (Ark.
+    # Code 26-51-801(a)-(b)). Spouse: 100 - 200 = -100. On a joint return all
     # income goes in Column A, so the spouse's amount offsets the head's; the
     # tax unit total is floored at 0 only when used as a tax base.
-    ar_agi_joint: [1_200, -100, 0]
+    ar_agi_joint: [900, -100, 0]
 
 - name: A spouse's business loss offsets the other spouse's income on a joint return
   period: 2024

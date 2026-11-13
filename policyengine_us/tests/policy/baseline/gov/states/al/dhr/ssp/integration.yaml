@@ -513,3 +513,38 @@
     al_ssp_payment_category: FOSTER_CARE
     al_ssp_eligible: [true]
     al_ssp: [110]
+
+- name: Case 18, no supplement when spousal deeming leaves no federal SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        social_security_retirement: 1_100 * 12
+        al_ssp_payment_category: IHC_LEVEL_A
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
+      spouse:
+        age: 60
+        employment_income: 600 * 12
+    tax_units:
+      tax_unit:
+        members: [claimant, spouse]
+    marital_units:
+      marital_unit:
+        members: [claimant, spouse]
+    spm_units:
+      spm_unit:
+        members: [claimant, spouse]
+    households:
+      household:
+        members: [claimant, spouse]
+        state_code: AL
+  output:
+    # 20 CFR 416.1163(e)(2): the couple computation leaves $143.50, but the
+    # claimant's own countable income ($1,080) exceeds the $994 individual
+    # rate, so federal SSI is $0 and the SSI-receipt condition fails.
+    ssi: [0, 0]
+    al_ssp_eligible: [false, false]
+    al_ssp: [0, 0]

@@ -158,3 +158,33 @@
         state_code: TX
   output:
     dependent_traditional_ira_deduction: [0, 2_200, 0]
+
+- name: A dependent's IRA compensation includes disability pay, less the deductible half of SE tax, 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        self_employment_income: 3_000
+        earned_disability_benefits: 1_000
+        traditional_ira_contributions: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    # Net earnings $3,000 x 0.9235 = $2,770.50; SE tax 15.3% = $423.89, half
+    # $211.94. Compensation $1,000 + $3,000 - $211.94 = $3,788.06, below the
+    # $5,000 of contributions and the $7,000 limit.
+    ira_compensation: [80_000, 3_788.06]
+    dependent_traditional_ira_deduction: [0, 3_788.06]

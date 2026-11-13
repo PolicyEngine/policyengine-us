@@ -591,6 +591,9 @@
         age: 67
         immigration_status: LEGAL_PERMANENT_RESIDENT
         years_since_us_entry: 2
+        # Too few quarters for Part A, so inside five years this person has no
+        # Medicare and no Part B premium to deduct.
+        medicare_quarters_of_coverage: 0
     spm_units:
       spm_unit:
         members: [person1]

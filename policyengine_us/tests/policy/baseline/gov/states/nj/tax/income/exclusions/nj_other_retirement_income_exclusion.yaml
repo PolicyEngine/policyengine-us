@@ -212,3 +212,69 @@
         state_code: NJ
   output:
     nj_other_retirement_income_exclusion: 0
+
+- name: A dependent's wages and income stay off the filer's Worksheet D
+  # Head 65, $30,000 interest and $10,000 private pension; dependent child 16 with
+  # $5,000 of wages, which go on the child's own return. Head of household maximum
+  # $75,000; line 3 = min($40,000 total income, $75,000) - $10,000 pension
+  # exclusion = $30,000; the filer's own earnings ($0) are under $3,000.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        taxable_interest_income: 30_000
+        taxable_private_pension_income: 10_000
+      person2:
+        is_tax_unit_dependent: true
+        age: 16
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 10_000
+    nj_other_retirement_income_exclusion: 30_000
+
+- name: An age-eligible dependent's income stays off the filer's Worksheet D total income
+  # Head 65 with $10,000 of private pension and $10,000 of interest; a dependent
+  # parent aged 70 with $20,000 of interest, which goes on the parent's own
+  # return. Worksheet D line 1 counts only the filer's total income ("Joint
+  # filers: If only one spouse is 62 or older, only the income of that spouse
+  # can be excluded"; 2025 NJ-1040 instructions, Worksheet D). Head of household
+  # maximum $75,000; line 1 = min($20,000, $75,000) - $10,000 pension exclusion
+  # = $10,000. Counting the dependent's interest would give $40,000 - $10,000 =
+  # $30,000.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        taxable_interest_income: 10_000
+        taxable_private_pension_income: 10_000
+      person2:
+        is_tax_unit_dependent: true
+        age: 70
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 10_000
+    nj_other_retirement_income_exclusion: 10_000

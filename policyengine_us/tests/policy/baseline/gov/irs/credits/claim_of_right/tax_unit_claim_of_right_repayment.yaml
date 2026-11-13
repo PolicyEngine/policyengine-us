@@ -1,0 +1,40 @@
+- name: Case 1, the head's and spouse's repayments add up.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        claim_of_right_repayment: 2_000
+      person2:
+        age: 44
+        claim_of_right_repayment: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tax_unit_claim_of_right_repayment: 3_500
+
+- name: Case 2, a dependent's repayment belongs on the dependent's own return.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        claim_of_right_repayment: 1_000
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tax_unit_claim_of_right_repayment: 1_000

@@ -216,7 +216,7 @@
     #   size 12 (page 81): $750, $750, $645, $460
     or_liheap: [750, 655, 545, 390, 750, 725, 605, 435, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460]
 
-- name: Case 11, the published income limit includes the dollar above the last matrix row.
+- name: Case 11, the income limit stops at the federal maximum, a dollar below the top of the last matrix row.
   period: 2026
   input:
     state_code: [OR, OR, OR]
@@ -225,18 +225,17 @@
     heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
     # About $125 a month for electric heat.
     pre_subsidy_electricity_expense: [1_500, 1_500, 1_500]
-    # The last size 2 matrix row ends at $50,195 (page 78) while the size 2
-    # income limit is $50,196 (page 77): the top of the row, the limit itself
-    # and one dollar above the limit.
-    or_liheap_countable_income: [50_195, 50_196, 50_197]
+    # The last size 2 matrix row ends at $50,195 (page 78) and page 77 prints
+    # a size 2 limit of $50,196. Both are above HHS's FY2026 60% state median
+    # income amount for two people, $50,194, the most 42 U.S.C. 8624(b)(2)(B)
+    # allows: the limit itself, the top of the row and the printed limit.
+    or_liheap_countable_income: [50_194, 50_195, 50_196]
   output:
-    # Size 2 limit $50,196 (page 77): $50,195 and $50,196 are within it,
-    # $50,197 is not.
-    or_liheap_eligible: [true, true, false]
+    # $50,194 is within the limit; $50,195 and $50,196 are not.
+    or_liheap_eligible: [true, false, false]
     # Region 1, size 2, "$37,647 $50,195", Electricity $275 (page 78). The
-    # eligible household at exactly $50,196 is paid from that same last row.
-    # The ineligible household receives $0.
-    or_liheap: [275, 275, 0]
+    # ineligible households receive $0.
+    or_liheap: [275, 0, 0]
 
 - name: Case 12, income bands include their printed tops and change at the next dollar.
   period: 2026
@@ -439,7 +438,8 @@
     or_liheap: [310, 0]
 
 # PY2026 manual, page 44: rental-property income and pensions paid to surviving
-# dependents count separately from wages. Page 77 gives the $38,385 size-one limit.
+# dependents count separately from wages. The size-one limit is $38,384, HHS's
+# FY2026 60% state median income amount (page 77 prints $38,385).
 # https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=44
 - name: Case 19, farm rental income puts a gas-heating household over the income limit.
   period: 2026
@@ -455,9 +455,9 @@
     heating_type: NATURAL_GAS
     gas_expense: 1_200
   output:
-    # $30,000 wages + $10,000 farm rents exceeds $38,385.
+    # $30,000 wages + $10,000 farm rents exceeds $38,384.
     or_liheap_countable_income: 40_000
-    or_liheap_income_limit: 38_385
+    or_liheap_income_limit: 38_384
     or_liheap_eligible: false
     or_liheap: 0
 
@@ -475,9 +475,9 @@
     heating_type: NATURAL_GAS
     gas_expense: 1_200
   output:
-    # $30,000 wages + $10,000 survivor pension exceeds $38,385.
+    # $30,000 wages + $10,000 survivor pension exceeds $38,384.
     or_liheap_countable_income: 40_000
-    or_liheap_income_limit: 38_385
+    or_liheap_income_limit: 38_384
     or_liheap_eligible: false
     or_liheap: 0
 
@@ -540,8 +540,9 @@
     fuel_oil_expense: [0, 0, 2_400, 2_400]
     or_liheap_countable_income: [9_400, 0, 20_000, 20_000]
   output:
-    # PY2025 size 1 limit $36,811 (page 57).
-    or_liheap_income_limit: [36_811, 36_811, 36_811, 36_811]
+    # PY2025 size 1 limit: page 57 prints $36,811; the federal maximum is
+    # $36,810 (60% of $117,983, rounded down, x 0.52).
+    or_liheap_income_limit: [36_810, 36_810, 36_810, 36_810]
     # PY2025 size 1 rows "$0 $9,203", "$9,204 $18,406", "$18,407 $27,609"
     # (page 58).
     or_liheap_income_band: [2, 1, 3, 3]
@@ -598,3 +599,61 @@
     # Gas $380 and Heating Oil $535 in the last row. Sizes 7 to 12 print the
     # size 6 amounts.
     or_liheap: [750, 615, 515, 370, 380, 535]
+
+# The matrices carry a COOLING Electricity column beside the HEATING columns,
+# equal to the HEATING Electricity column in every row (PY2025 pages 58-59,
+# PY2026 pages 78-81, PY2027 pages 72-75). Countable income of $26,000 is about
+# 30 hours a week at the Portland-metro minimum wage, and about $125 a month
+# pays the electric bill.
+- name: Case 26, a household with no heating cost that pays for electric cooling receives the cooling column.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, DESCHUTES_COUNTY_OR, MULTNOMAH_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [1, 1, 1, 1]
+    heating_type: [NONE, NONE, NONE, WOOD]
+    # The wood-heated home gathers its own wood, so it has no heating cost.
+    has_heating_expense: [false, false, false, false]
+    has_cooling_expense: [true, true, false, true]
+    pre_subsidy_electricity_expense: [1_500, 1_500, 1_500, 1_500]
+    or_liheap_countable_income: [26_000, 26_000, 26_000, 26_000]
+  output:
+    # PY2026 size 1 row "$19,194 $28,789" (page 78).
+    or_liheap_income_band: [3, 3, 3, 3]
+    # COOLING Electricity: Region 1 $300 (page 78), Region 2 $335 (page 80).
+    # Without a cooling cost the home is ineligible, $0. The wood-heated home
+    # applies its benefit to electricity, so it is paid from the COOLING
+    # column rather than Wood/Pellets (page 67).
+    or_liheap: [300, 335, 0, 335]
+
+- name: Case 27, program year 2025 pays the PY2025 cooling column.
+  period: 2025
+  input:
+    state_code: OR
+    county: DESCHUTES_COUNTY_OR
+    spm_unit_size: 1
+    heating_type: NONE
+    has_cooling_expense: true
+    pre_subsidy_electricity_expense: 1_500
+    or_liheap_countable_income: 26_000
+  output:
+    # PY2025 size 1 row "$18,407 $27,609" (page 58); Region 2 COOLING
+    # Electricity $270 (page 59).
+    or_liheap_income_band: 3
+    or_liheap: 270
+
+- name: Case 28, program year 2027 pays the PY2027 cooling column.
+  period: 2027
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    spm_unit_size: 1
+    heating_type: NONE
+    has_cooling_expense: true
+    pre_subsidy_electricity_expense: 1_500
+    or_liheap_countable_income: 26_000
+  output:
+    # PY2027 size 1 row "$20,164 $30,245" (page 72); Region 1 COOLING
+    # Electricity $310 (page 72).
+    or_liheap_income_band: 3
+    or_liheap: 310

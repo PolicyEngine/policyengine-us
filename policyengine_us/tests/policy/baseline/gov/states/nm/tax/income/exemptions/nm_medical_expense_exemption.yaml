@@ -15,10 +15,12 @@
     age: 65
     medicare_enrolled: false
     health_insurance_premiums: 6_000
-    other_medical_expenses: 22_000
+    other_medical_expenses: 22_001
     self_employed_health_insurance_ald: 1_000
   output:
-    itemized_medical_expenses: 27_000
+    # Gross paid: 6,000 + 22,001 = 28,001, over $28,000; the federal
+    # subtotal (27,001) excludes the 1,000 deducted premium.
+    itemized_medical_expenses: 27_001
     nm_medical_expense_exemption: 3_000
 
 - name: New Mexico senior exemption preserves caller-supplied medical expenses
@@ -27,7 +29,7 @@
     state_code: NM
     age: 65
     medicare_enrolled: false
-    itemized_medical_expenses: 28_000
+    itemized_medical_expenses: 28_001
   output:
     nm_medical_expense_exemption: 3_000
 
@@ -58,7 +60,7 @@
   input:
     state_code: NM
     age: 65
-    other_medical_expenses: 28_000
+    other_medical_expenses: 28_001
     filing_status: JOINT
   output:
     nm_medical_expense_exemption: 3_000
@@ -68,7 +70,7 @@
   input:
     state_code: NM
     age: 65
-    other_medical_expenses: 28_000
+    other_medical_expenses: 28_001
     filing_status: SEPARATE
   output:
     # Neither NMSA 7-2-5.9 nor the PIT-ADJ line 18 instructions halve the
@@ -87,7 +89,7 @@
     # PIT-ADJ line 18: "enter $3,000 on line 18 to claim the exemption".
     nm_medical_expense_exemption: 3_000
 
-- name: 2025 expenses of exactly $28,000 qualify under the PIT-ADJ instructions
+- name: 2025 expenses of exactly $28,000 do not qualify under the statute
   period: 2025
   input:
     state_code: NM
@@ -96,8 +98,20 @@
     other_medical_expenses: 28_000
     filing_status: SINGLE
   output:
-    # PIT-ADJ line 18: expenses "of $28,000 or more". NMSA 7-2-5.9(A) says
-    # expenses that "exceed" $28,000, which would give 0 here.
+    # NMSA 7-2-5.9(A): expenses that "exceed twenty-eight thousand dollars".
+    # The PIT-ADJ line 18 instructions say "of $28,000 or more", which would
+    # give 3,000; the model follows the statute.
+    nm_medical_expense_exemption: 0
+
+- name: 2025 expenses one dollar over $28,000 qualify
+  period: 2025
+  input:
+    state_code: NM
+    age: 70
+    medicare_enrolled: false
+    other_medical_expenses: 28_001
+    filing_status: SINGLE
+  output:
     nm_medical_expense_exemption: 3_000
 
 - name: 2025 expenses one dollar under $28,000 do not qualify
