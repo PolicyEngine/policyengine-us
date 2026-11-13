@@ -10,12 +10,16 @@ brackets:
       2021-01-01: 25
       2024-01-01: 30
       2025-01-01: 35
+      # (175 + 25) x 1.279 = 255.80, rounded down to 255, less the 220 base.
+      2026-01-01: 35
   - threshold:
       2021-01-01: 2
     amount:
       2021-01-01: 55
       2024-01-01: 60
       2025-01-01: 65
+      # (175 + 50) x 1.279 = 287.78, rounded down to 285, less the 220 base.
+      2026-01-01: 65
 
 metadata:
   unit: currency-USD
@@ -33,6 +37,10 @@ metadata:
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_Form%201040ME_Sch%20PTFC_ff.pdf#page=4
     - title: 2025 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=4
+    - title: §5403. Annual adjustments for inflation 5(A)
+      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+    - title: Maine Revenue Services, 2026 Individual Income Tax Rates (cost-of-living adjustment of 1.279 on the June 2017 base)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/2026-05/ind_tax_rate_sched_2026_rev.pdf#page=1
   period: year
   label: Maine sales tax fairness credit joint additional amount
   type: single_amount
