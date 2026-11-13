@@ -1,0 +1,1 @@
+Count each month's SSI in-kind support and maintenance in Maryland PAA income and in California's supplement for a couple with one SSI and one CAPI spouse, and apply each month's SSI couple status to Maryland PAA income.

@@ -46,7 +46,7 @@
     ssi_countable_income: 0
     md_paa_countable_income: 2_480
 
-- name: Case 4, a spouse's facility stay from July counts by December's status for the whole year, as an annual approximation.
+- name: Case 4, a spouse's facility stay from July separates the couple's income from July.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -79,16 +79,109 @@
     ssi_couple_computation_applies:
       2025-06: [true, true]
       2025-07: [false, false]
-    # This annual formula applies December's status, separate, to the whole
-    # year, so each spouse counts their own income in all twelve months,
-    # including January to June, when SSI combines the couple's income.
-    # person1: (1,000 - 20) + (1,000 - 65) / 2 = 980 + 467.50 = 1,447.50,
-    # x 12 = 17,370. person2: (500 - 20) x 12 = 5,760.
+    # January to June each spouse counts half of the couple's combined income
+    # (20 CFR 416.1802(b)(1)): earned 1,000 and unearned 1,000 + 500 = 1,500 a
+    # month, so (1,500 - 20) + (1,000 - 65) / 2 = 1,480 + 467.50 = 1,947.50,
+    # and 1,947.50 / 2 = 973.75 each.
+    # July to December each spouse counts their own income (20 CFR
+    # 416.414(b)(3)): person1 (1,000 - 20) + (1,000 - 65) / 2 = 1,447.50;
+    # person2 500 - 20 = 480.
     # Both spouses are aged, so neither is an ineligible spouse and no
     # income is deemed.
-    # Summing the monthly ssi_marital_* variables instead would combine the
-    # couple's income through June. Unearned, 1,500 a month: person1
-    # 15,000 - 240 + 5,610 = 20,370 and person2 12,000 - 240 = 11,760.
-    # Earned, 1,000 a month: person2 gets 6,000 a year, so
-    # 5,760 + (500 - 65) / 2 x 12 = 8,370.
-    md_paa_countable_income: [17_370, 5_760]
+    # Year: person1 6 x 973.75 + 6 x 1,447.50 = 5,842.50 + 8,685 = 14,527.50;
+    # person2 6 x 973.75 + 6 x 480 = 5,842.50 + 2,880 = 8,722.50. The two sum
+    # to 23,250 = 6 x 1,947.50 + 6 x (1,447.50 + 480), the couple's income
+    # net of exclusions.
+    md_paa_countable_income:
+      2025-06: [973.75, 973.75]
+      2025-07: [1_447.50, 480]
+      2025: [14_527.50, 8_722.50]
+
+- name: Maryland counts January's SSI in-kind support in January PAA income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+        md_paa_living_arrangement:
+          2024: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person]
+        state_code:
+          2024: MD
+  output:
+    # ISM = 943 / 3 + 20; countable = ISM - 20 = 314.333333.
+    ssi_in_kind_support_and_maintenance: 334.333333
+    md_paa_countable_income: 314.333333
+    # Imputed SSI = 943 - 314.333333 = 628.666667.
+    md_paa_imputed_federal_ssi: 628.666667
+    # PAA = 1,173 + 98 - 314.333333 - 628.666667 = 328.
+    md_paa: 328
+
+- name: Maryland counts November's SSI in-kind support in November PAA income.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+        md_paa_living_arrangement:
+          2024: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person]
+        state_code:
+          2024: MD
+  output:
+    # November retains food ISM from September under SSI's payment timing.
+    ssi_in_kind_support_and_maintenance: 334.333333
+    md_paa_countable_income: 314.333333
+    md_paa_imputed_federal_ssi: 628.666667
+    # PAA = 1,173 + 102 - 943 = 332 after the July PNA increase.
+    md_paa: 332
+
+- name: Maryland counts no SSI in-kind support in December 2024 PAA income.
+  period: 2024-12
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024: true
+        md_paa_living_arrangement:
+          2024: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person]
+        state_code:
+          2024: MD
+  output:
+    # October food no longer counts, so December ISM and countable income = 0.
+    ssi_in_kind_support_and_maintenance: 0
+    md_paa_countable_income: 0
+    md_paa_imputed_federal_ssi: 943
+    # PAA = 1,173 + 102 - 0 - 943 = 332.
+    md_paa: 332
+
+- name: Maryland sums monthly countable income without carrying December's unused exclusion.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: MD
+    ssi_receives_food_from_others: true
+  output:
+    # 11 * (943 / 3 + 20) = 3,677.666667 gross ISM.
+    ssi_in_kind_support_and_maintenance: 3_677.666667
+    # 11 * (943 / 3) + 0 = 3,457.666667 countable income.
+    md_paa_countable_income: 3_457.666667
