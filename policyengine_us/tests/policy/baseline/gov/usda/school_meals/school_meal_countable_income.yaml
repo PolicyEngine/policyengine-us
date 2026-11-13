@@ -535,7 +535,30 @@
     meets_school_meal_categorical_eligibility: false
     school_meal_tier: PAID
 
-# 45,000 wages + 6 * max(-1, 0) = 45,000.
+# 45,000 wages + max(-20,000 estate income, 0) = 45,000.
+- name: A Tennessee parent reports an estate loss and the child keeps the paid tier.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+        estate_income: -20_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 45,000 wages + 7 * max(-1, 0) = 45,000.
 - name: A parent reports -1 in each business source and schools floor each source.
   period: 2026
   input:
@@ -549,6 +572,7 @@
         farm_operations_income: -1
         farm_rent_income: -1
         partnership_s_corp_income: -1
+        estate_income: -1
       child:
         age: 10
     spm_units:
@@ -561,7 +585,7 @@
   output:
     school_meal_countable_income: 45_000
 
-# 45,000 wages + 6 * max(0, 0) = 45,000.
+# 45,000 wages + 7 * max(0, 0) = 45,000.
 - name: A parent reports 0 in each business source and schools floor each source.
   period: 2026
   input:
@@ -575,6 +599,7 @@
         farm_operations_income: 0
         farm_rent_income: 0
         partnership_s_corp_income: 0
+        estate_income: 0
       child:
         age: 10
     spm_units:
@@ -587,7 +612,7 @@
   output:
     school_meal_countable_income: 45_000
 
-# 45,000 wages + 6 * max(1, 0) = 45,006.
+# 45,000 wages + 7 * max(1, 0) = 45,007.
 - name: A parent reports 1 in each business source and schools floor each source.
   period: 2026
   input:
@@ -601,6 +626,7 @@
         farm_operations_income: 1
         farm_rent_income: 1
         partnership_s_corp_income: 1
+        estate_income: 1
       child:
         age: 10
     spm_units:
@@ -611,9 +637,9 @@
         members: [parent, child]
         state_code: TN
   output:
-    school_meal_countable_income: 45_006
+    school_meal_countable_income: 45_007
 
-# 45,000 wages + 6 * (max(-100, 0) + max(40, 0)) = 45,240.
+# 45,000 wages + 7 * (max(-100, 0) + max(40, 0)) = 45,280.
 - name: A parent has losses and another adult has gains in the same business sources.
   period: 2026
   input:
@@ -627,6 +653,7 @@
         farm_operations_income: -100
         farm_rent_income: -100
         partnership_s_corp_income: -100
+        estate_income: -100
       child:
         age: 10
       other_adult:
@@ -637,6 +664,7 @@
         farm_operations_income: 40
         farm_rent_income: 40
         partnership_s_corp_income: 40
+        estate_income: 40
     spm_units:
       spm_unit:
         members: [parent, child, other_adult]
@@ -645,9 +673,10 @@
         members: [parent, child, other_adult]
         state_code: TN
   output:
-    school_meal_countable_income: 45_240
+    school_meal_countable_income: 45_280
 
-# Each adult contributes 3 * 40; 45,000 wages + 2 * 3 * 40 = 45,240.
+# The parent contributes 3 * 40; the other adult contributes 4 * 40.
+# 45,000 wages + (3 + 4) * 40 = 45,280.
 - name: Two adults have gains and losses in different business sources.
   period: 2026
   input:
@@ -661,6 +690,7 @@
         farm_operations_income: 40
         farm_rent_income: -100
         partnership_s_corp_income: 40
+        estate_income: -100
       child:
         age: 10
       other_adult:
@@ -671,6 +701,7 @@
         farm_operations_income: -100
         farm_rent_income: 40
         partnership_s_corp_income: -100
+        estate_income: 40
     spm_units:
       spm_unit:
         members: [parent, child, other_adult]
@@ -679,7 +710,7 @@
         members: [parent, child, other_adult]
         state_code: TN
   output:
-    school_meal_countable_income: 45_240
+    school_meal_countable_income: 45_280
 
 # Federal SSI = 12 * 994 = 11,928.
 # Wisconsin SSP = 4 * 83.78 + 8 * 92.16 = 1,072.40.

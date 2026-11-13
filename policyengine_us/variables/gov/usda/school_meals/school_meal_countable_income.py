@@ -18,7 +18,7 @@ class school_meal_countable_income(Variable):
         p = parameters(period).gov.usda.school_meals.income
         income = add(spm_unit, period, p.sources)
         income += add(spm_unit, period, p.state_supplement_sources)
-        # USDA counts each person's business and rental losses as zero.
+        # Treat each person's business, rental and pass-through losses as zero.
         for source in p.business_sources:
             income += spm_unit.sum(max_(spm_unit.members(source, period), 0))
         return income

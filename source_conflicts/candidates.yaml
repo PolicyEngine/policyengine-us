@@ -15077,7 +15077,8 @@ candidates:
     code:
     - policyengine_us/parameters/gov/usda/school_meals/income/state_supplement_sources.yaml
     - policyengine_us/variables/gov/usda/school_meals/school_meal_countable_income.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10873
   state: ruled
   note: PolicyEngine counts modeled state SSI supplements under the school meal regulation, USDA's current public
     assistance definition and the Manual's page 26 state cash assistance category. The page 30 wording leaves a competing

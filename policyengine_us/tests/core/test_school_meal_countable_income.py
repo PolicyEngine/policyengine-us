@@ -15,6 +15,7 @@ BUSINESS_SOURCES = (
     "farm_operations_income",
     "farm_rent_income",
     "partnership_s_corp_income",
+    "estate_income",
 )
 ADDED_CASH_SOURCES = (
     "alimony_income",
@@ -22,7 +23,6 @@ ADDED_CASH_SOURCES = (
     "disability_benefits",
     "military_retirement_pay",
     "military_retirement_pay_survivors",
-    "estate_income",
 )
 LEGACY_PERSON_SOURCES = (
     "employment_income",
@@ -53,7 +53,7 @@ SETTINGS = dict(
 )
 
 
-def _income(units):
+def _income(units, variable="school_meal_countable_income"):
     people = {}
     groups = {
         "families": {},
@@ -81,9 +81,7 @@ def _income(units):
             "state_code": {YEAR: "TN"},
         }
     simulation = Simulation(situation={"people": people, **groups})
-    return np.asarray(
-        simulation.calculate("school_meal_countable_income", YEAR), dtype=float
-    )
+    return np.asarray(simulation.calculate(variable, YEAR), dtype=float)
 
 
 amounts = st.integers(0, 20_000)
@@ -169,3 +167,37 @@ def test_unchanged_sources_keep_the_income_sum_from_main(people, tanf):
     expected = sum(sum(person.values()) for person in people) + tanf
     actual = _income([{"people": people, "tanf": tanf}])
     np.testing.assert_allclose(actual, [expected], atol=0.01)
+
+
+@settings(**SETTINGS)
+@given(
+    people=st.lists(
+        st.fixed_dictionaries(
+            {
+                **{source: amounts for source in LEGACY_PERSON_SOURCES},
+                "educational_assistance": amounts,
+                **{source: st.integers(-20_000, 20_000) for source in BUSINESS_SOURCES},
+                **{source: amounts for source in ADDED_CASH_SOURCES},
+            }
+        ),
+        min_size=1,
+        max_size=3,
+    ),
+    tanf=amounts,
+)
+def test_ancillary_income_measures_keep_the_original_source_sum(people, tanf):
+    expected = (
+        sum(
+            sum(person[source] for source in LEGACY_PERSON_SOURCES)
+            + person["educational_assistance"]
+            for person in people
+        )
+        + tanf
+    )
+    for variable in (
+        "csfp_countable_income",
+        "tx_dta_csfp_countable_income",
+        "ca_cvrp_countable_income",
+    ):
+        actual = _income([{"people": people, "tanf": tanf}], variable)
+        np.testing.assert_allclose(actual, [expected], atol=0.01)
