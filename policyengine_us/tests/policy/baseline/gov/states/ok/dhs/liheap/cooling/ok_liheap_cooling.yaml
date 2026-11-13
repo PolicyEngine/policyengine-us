@@ -1,0 +1,305 @@
+# Oklahoma LIHEAP summer cooling cases.
+# OKDHS Appendix C-7-A page 2, Summer Cooling Program: household size 1 receives 500 at
+# net monthly income $0 - $700 and 385 at $701 - ineligible; size 2 or more receives
+# 650 and 425. OAC 340:20-1-11(a) rounds monthly income half up to the nearest dollar.
+# Appendix C-7 deducts up to 240 a month (2,880 a year) of each worker's earnings
+# before the net income band. Wages of 15,080 are full-time work at the 7.25
+# Oklahoma minimum wage (7.25 x 40 x 52); 9,425 is 25 hours a week at that wage.
+# The cooling amount uses no bill, so cases carry only the bills a heating
+# comparison needs.
+
+- name: Case 1, zero net income from a business loss receives the size-one amount for the lowest band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: -5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # max(-5,000, 0) = 0 gross and net income -> $0 - $700, size 1
+    ok_liheap_net_income: 0
+    ok_liheap_cooling: 500
+
+- name: Case 2, net monthly income of exactly 700 stays in the higher band and 701 moves to the lower one.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK]
+    age: [40, 40]
+    employment_income_before_lsr: [11_280, 11_292]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true]
+  output:
+    # 11,280 - 2,880 = 8,400 -> 700 a month; 11,292 - 2,880 = 8,412 -> 701.
+    ok_liheap_net_income: [8_400, 8_412]
+    ok_liheap_cooling: [500, 385]
+
+- name: Case 3, a parent and child with low net income receive the larger-household amount for the lowest band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_425
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Not receiving TANF or Child Care Subsidy.
+        tanf: 0
+        ok_child_care_subsidies: 0
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Gross 9,425 / 12 = 785 <= 2,292 (size 2). Net 9,425 - 2,880 = 6,545
+    # -> 545 a month: $0 - $700, size 2 or more
+    ok_liheap_cooling: 650
+
+- name: Case 4, a parent and child in a home with no heating receive the cooling payment only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 15_080
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        ok_child_care_subsidies: 0
+        heating_type: NONE
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Winter heating requires a heating fuel.
+    ok_liheap: 0
+    # Net 15,080 - 2,880 = 12,200 -> 1,017 a month: $701 - ineligible, size 2
+    # or more
+    ok_liheap_cooling: 425
+    # The national LIHEAP total is the cooling payment alone: 0 + 425.
+    liheap: 425
+
+- name: Case 5, a household without cooling costs receives no cooling payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        has_cooling_expense: false
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # The electric bill qualifies the household for winter heating: net 1,017
+    # a month, C-7-A page 1 natural gas, electricity, wood or coal, size 1-3,
+    # $701 - ineligible.
+    ok_liheap: 235
+    ok_liheap_cooling: 0
+
+- name: Case 6, gross income above the size-one limit receives no cooling payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 21_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 21,000 / 12 = 1,750 > 1,696, the FY2026 size-one limit.
+    ok_liheap_cooling: 0
+
+- name: Case 7, the FY2025 summer cooling payment uses the same amounts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # Gross 1,257 <= 1,632 (FY2025 size one). Net 12,200 -> 1,017 a month:
+    # $701 - ineligible, size 1
+    ok_liheap_cooling: 385
+
+- name: Case 8, the FY2027 summer cooling payment uses the same amounts.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 9_425
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        ok_child_care_subsidies: 0
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Gross 785 <= 2,345 (FY2027 size 2). Net 545 a month: $0 - $700, size 2 or
+    # more
+    ok_liheap_cooling: 650
+
+- name: Case 9, an unspecified heating fuel receives the same cooling payment as a home with no heating.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 15_080
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        ok_child_care_subsidies: 0
+        heating_type: UNSPECIFIED
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Otherwise identical to Case 4, which pays 425 with heating_type NONE.
+    # Was 0, now 425: the cooling payment adds no heating-fuel condition.
+    ok_liheap_cooling: 425
+
+- name: Case 10, net monthly income of 700.42 rounds to the higher band and 700.50 rounds up to the lower one.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK]
+    age: [40, 40]
+    employment_income_before_lsr: [11_285, 11_286]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true]
+  output:
+    # Gross 940 and 941 a month <= 1,696. 11,285 - 2,880 = 8,405 -> 700.42 a
+    # month -> 700; 11,286 - 2,880 = 8,406 -> 700.50 -> 701. Unrounded, 700.50
+    # is below 701 and would pay 500.
+    ok_liheap_net_income: [8_405, 8_406]
+    ok_liheap_cooling: [500, 385]
+
+- name: Case 11, a household with heating and cooling costs receives both payments in one year.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 15_080
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # Case 5 with a cooling cost. Net 1,017 a month: winter heating pays 235
+    # (natural gas, electricity, wood or coal, size 1-3, $701 - ineligible) and
+    # summer cooling pays 385 (size 1, $701 - ineligible). OAC 340:20-1-10(c)(4)
+    # allows one authorization per application-based assistance period.
+    ok_liheap: 235
+    ok_liheap_cooling: 385
+    # The national LIHEAP total is 235 + 385.
+    liheap: 620
+
+- name: Case 12, a roomer household of four with utilities in the rent receives the full cooling amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 15_080
+      person2:
+        age: 30
+      person3:
+        age: 6
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        ok_child_care_subsidies: 0
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        ok_liheap_dwelling_type: ROOMER
+        # Utility surcharge on the rent receipt: $50 a month in six winter months.
+        gas_expense: 300
+        # The verified utility surcharge on the rent stands for the cooling cost.
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: OK
+  output:
+    # Gross 15,080 / 12 = 1,257 <= 3,483 (size 4). Net 12,200 -> 1,017 a month.
+    # The winter roomer schedule pays 0 at size 4 or more; summer cooling pays
+    # roomers the same amount as other households: $701 - ineligible, size 2 or
+    # more.
+    ok_liheap_eligible: true
+    ok_liheap: 0
+    ok_liheap_cooling: 425

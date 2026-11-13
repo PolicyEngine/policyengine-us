@@ -1,0 +1,47 @@
+description: Oklahoma provides this summer cooling payment by net monthly income band and household size group under the Low Income Home Energy Assistance Program.
+# The same amount applies to every cooling energy source and to renters,
+# roomers and boarders with utilities included in their rent (OAC
+# 340:20-1-20(d)(1)). The FY2026 and FY2027 plans' $650 maximum is the
+# largest cell; their $150 minimum is the cooling equipment reimbursement cap.
+
+# Net monthly income band 1: $0 - $700.
+1:
+  # Household size 1.
+  1:
+    2021-10-01: 500
+  # Household size 2 or more.
+  2:
+    2021-10-01: 650
+# Net monthly income band 2: $701 to the income limit.
+2:
+  1:
+    2021-10-01: 385
+  2:
+    2021-10-01: 425
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Oklahoma LIHEAP summer cooling payment
+  propagate_metadata_to_children: true
+  breakdown:
+    - range(1, 3)
+    - range(1, 3)
+  breakdown_labels:
+    - Net monthly income band
+    - Household size group
+  reference:
+    - title: OKDHS Appendix C-7-A, Summer Cooling Program
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf#page=2
+    - title: Oklahoma FY2026 Benefits Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/OK_BenefitMatrix_2026.docx
+    - title: Oklahoma FY2025 State Plan, Sections 3.5-3.7
+      href: https://liheapch.acf.gov/docs/2025/state-plans/OK_Plan_2025.pdf#page=12
+    - title: Oklahoma FY2026 State Plan, Sections 3.5-3.7
+      href: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=12
+    - title: Oklahoma FY2027 State Plan, Sections 3.5-3.7
+      href: https://liheapch.acf.gov/docs/2027/state-plans/OK_Plan_2027.pdf#page=16
+    - title: OAC 340:20-1-10(i)(2) and 340:20-1-20(d), as amended effective 9-15-26
+      href: https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html
+    - title: OAC 340:20-1-20(d), September 2025 permanent adoption
+      href: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=588

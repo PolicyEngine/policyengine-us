@@ -9248,6 +9248,41 @@ candidates:
   note: 'PE-US follows the regulation: earnings are excluded only for a tax-unit dependent under the age limit who
     attends K-12 school, with tax dependency standing in for parental control (ok_liheap_countable_earned_income.py,
     income/student_earned_income_age_limit.yaml). Verify whether the broader plan checkbox reflects actual practice.'
+- id: us-ok:liheap-cooling-income-boundary
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: federal-fiscal
+  question: Does net monthly income of exactly $700 receive Oklahoma's larger summer cooling payment, as Appendix
+    C-7-A's "$0 - $700" band says, although the state plan grants the larger benefit to incomes "under $700"?
+  sources:
+  - kind: regulation
+    citation: OAC 340:20-1-20(d) and OKDHS Appendix C-7-A, page 2 (Summer Cooling Program)
+    url: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf#page=2
+  - kind: plan
+    citation: FY2026 Oklahoma LIHEAP State Plan section 3.5, page 12 (repeated in the FY2025 plan, page 12, and the
+      FY2027 plan, page 16)
+    url: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=12
+  readings:
+    statute: No statute supplied; OAC 340:20-1-20(d) refers to Appendix C-7-A for the summer cooling benefit amounts.
+      Page 2 of the appendix pays the larger amount at net monthly income "$0 - $700" and the smaller amount at
+      "$701 - ineligible".
+    other: Plan section 3.5 says "The cooling program grants a larger benefit to households with net monthly incomes
+      under $700."
+  example: A one-person household with net monthly income of exactly $700 receives $500 under Appendix C-7-A and
+    $385 under the plan's wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ok/dhs/liheap/cooling/income_band.yaml
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/cooling/ok_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10748
+  state: ruled
+  note: 'Ruled 2026-11-13 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10748#issuecomment-6863978810. Follow Appendix C-7-A, which
+    the regulation names: net monthly income of $700 or less receives the larger amount and $701 or more the smaller
+    one (band threshold 701; test Case 2 pins both sides).'
 - id: us-ok:liheap-immigration-status-list
   program: liheap
   years:
@@ -9308,7 +9343,7 @@ candidates:
     code:
     - policyengine_us/parameters/gov/states/ok/dhs/liheap/income/sources/unearned.yaml
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_income_deductions.py
-    - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_income_eligible.py
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_gross_income.py
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_deemed_income.py
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_net_income.py
@@ -9319,7 +9354,7 @@ candidates:
     premiums enter the medical deduction only for USDA elderly or disabled members. Eligible members'' deductions
     come after the gross test, in the net income that sets the payment, while ineligible members'' deductions are
     applied before their income is deemed. The list''s comment records the plan checkbox and says the plan narrative
-    also uses gross income (income/sources/unearned.yaml, ok_liheap_income_deductions.py, ok_liheap_eligible.py,
+    also uses gross income (income/sources/unearned.yaml, ok_liheap_income_deductions.py, ok_liheap_income_eligible.py,
     ok_liheap_gross_income.py, ok_liheap_deemed_income.py, ok_liheap_net_income.py). Reconcile the checkbox and
     verify page references.'
 - id: us-ok:liheap-resource-test
@@ -9350,11 +9385,14 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/cooling/ok_liheap_cooling_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9970
+    - https://github.com/PolicyEngine/policyengine-us/pull/10748
   state: unreviewed
-  note: PE-US applies no resource test, and the comment records that the September 15, 2026 amendment removed both
-    provisions (ok_liheap_eligible.py). Verify agency practice while the rules were in force.
+  note: PE-US applies no resource test to winter heating or summer cooling (ok_liheap_eligible.py,
+    ok_liheap_cooling_eligible.py), and the heating comment records that the September 15, 2026 amendment removed
+    both provisions. Verify agency practice while the rules were in force.
 - id: us-ok:ssp-ineligible-child-allocation
   program: ssi-state-supplement
   years:
