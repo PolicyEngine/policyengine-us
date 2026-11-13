@@ -1,9 +1,15 @@
-description: Montana allows a casualty and theft loss deduction on its Itemized Deductions Schedule, if this is true.
+description: Montana allows an itemized casualty and theft loss deduction, if this is true.
 metadata:
   label: Montana casualty and theft loss deduction applies
   period: year
   unit: bool
   reference:
+    - title: 2015 Montana Form 2 Instructions, Schedule III line 20
+      # PDF pages 27, 30
+      href: https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2015_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
+    - title: 2017 Montana Form 2 Instructions, Schedule III line 20
+      # PDF pages 27, 30
+      href: https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
     - title: MCA § 15-30-2131(1)(a) (2021), itemized deductions by reference to 26 U.S.C. 161 and 211 (repealed effective 2024)
       href: https://mca.legmt.gov/bills/2022/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
     - title: 2021 Montana Form 2 Instructions, Itemized Deductions Schedule, line 15

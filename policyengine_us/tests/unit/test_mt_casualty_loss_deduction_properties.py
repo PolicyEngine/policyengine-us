@@ -1,10 +1,10 @@
-"""Properties of the Montana casualty and theft loss deduction (2021-2023).
+"""Properties of Montana casualty deductions in 2015, 2017 and 2021-2024.
 
-The 2021-2023 Form 2 instructions (Itemized Deductions Schedule, line 15) say
-to complete federal Form 4684 with Montana AGI in place of federal AGI, and
-that spouses filing separately each complete their own Form 4684. Each test
-evaluates every point of an input grid in one vectorized simulation, so the
-properties hold for all grid inputs rather than for a few examples:
+Montana taxpayers use federal Form 4684 with Montana AGI and calculate
+separate spouse losses. They report losses on Schedule III line 20 in 2015
+and 2017, and Itemized Deductions Schedule line 15 in 2021-2023. Each test
+checks every point of an input grid in one vectorized
+simulation:
 
 - both variants match a closed-form reference of Form 4684 lines 11-12 and
   17-18: the loss less $100, above 10% of Montana AGI;
@@ -22,7 +22,9 @@ properties hold for all grid inputs rather than for a few examples:
 The model has no input that distinguishes federally declared disaster losses,
 so, like the federal deduction, it allows no personal casualty loss from 2018
 unless gov.irs.deductions.itemized.casualty.active is on; a reform switches it
-on so the properties are not vacuous.
+on so the properties are not vacuous. These properties cover ordinary
+losses under the model's one-event convention. They do not cover qualified
+disaster losses or casualty-gain netting.
 """
 
 import itertools
@@ -46,7 +48,7 @@ COUPLE_GRID = list(
     itertools.product(HEAD_LOSSES, SPOUSE_LOSSES, HEAD_AGIS, SPOUSE_AGIS, DEPENDENTS)
 )
 SINGLE_GRID = list(itertools.product(HEAD_LOSSES, HEAD_AGIS))
-YEARS = [2021, 2022, 2023, 2024]
+YEARS = [2015, 2017, 2021, 2022, 2023, 2024]
 
 ACTIVE = Reform.from_dict(
     {"gov.irs.deductions.itemized.casualty.active": {"2010-01-01.2100-12-31": True}},
@@ -127,7 +129,7 @@ def couple_arrays():
     return columns  # head loss, spouse loss, head AGI, spouse AGI, deps, dep loss
 
 
-@pytest.mark.parametrize("year", [2021, 2022, 2023])
+@pytest.mark.parametrize("year", [2015, 2017, 2021, 2022, 2023])
 def test_joint_return_counts_the_unit_loss_once(grid, year):
     sim, unit, role = grid
     l1, l2, a1, a2, _, _ = couple_arrays()
@@ -147,7 +149,7 @@ def test_joint_return_counts_the_unit_loss_once(grid, year):
     assert joint.max() > 0
 
 
-@pytest.mark.parametrize("year", [2021, 2022, 2023])
+@pytest.mark.parametrize("year", [2015, 2017, 2021, 2022, 2023])
 def test_separate_filers_deduct_only_their_own_loss(grid, year):
     sim, unit, role = grid
     l1, l2, a1, a2, _, _ = couple_arrays()
@@ -171,7 +173,7 @@ def test_separate_filers_deduct_only_their_own_loss(grid, year):
     assert head.max() > 0 and spouse.max() > 0
 
 
-@pytest.mark.parametrize("year", [2021, 2022, 2023])
+@pytest.mark.parametrize("year", [2015, 2017, 2021, 2022, 2023])
 def test_single_filer_variants_agree_and_are_monotone(grid, year):
     sim, unit, role = grid
     single = role == "single"

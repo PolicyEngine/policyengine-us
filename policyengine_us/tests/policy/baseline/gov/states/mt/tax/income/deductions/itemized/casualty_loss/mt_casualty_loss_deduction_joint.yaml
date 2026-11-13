@@ -5,7 +5,8 @@
 # Publication 547 (2022), PDF page 10, assigns separately owned losses to the
 # owner and applies one reduction per casualty event.
 # The model lacks a disaster-specific input and retains the federal casualty
-# activation flag. These examples enable that flag to exercise the calculation.
+# activation flag. Cases from 2021 onward enable that flag when testing
+# the calculation. Earlier cases use the ordinary-loss baseline.
 
 - name: A joint return deducts the couple's loss once, above 10% of Montana AGI
   period: 2022
@@ -241,3 +242,51 @@
         state_code: MT
   output:
     mt_casualty_loss_deduction_joint: 900
+
+# In 2015 and 2017, Montana taxpayers use Montana AGI on Form 4684.
+# Spouses filing separately calculate their own ordinary losses.
+# Schedule III line 20 appears on PDF page 30; owner allocation appears on page 27.
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2015_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
+
+- name: A joint return deducts an ordinary casualty loss in 2015
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_agi_joint: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 100,000
+    mt_casualty_loss_deduction_joint: 19_900
+
+- name: A joint return deducts an ordinary casualty loss in 2017
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_agi_joint: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 100,000
+    mt_casualty_loss_deduction_joint: 19_900
