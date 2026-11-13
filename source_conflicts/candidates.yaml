@@ -14455,9 +14455,10 @@ candidates:
       countable income in excess of what is required to reduce the parents'' FBR and any Federally-administered State
       supplement to zero is available for deeming."'
   example: In California in 2026, a lone disabled parent with a $60,000 pension and a disabled child deems 59,760 - 11,928
-    = $47,832 a year under the regulation and 59,760 - (11,928 + 239.94 x 12) = $44,952.72 under the POMS. The readings
-    differ only in California, New Jersey and Vermont, whose federally administered supplements reach a parent at home
-    in every category.
+    = $47,832 a year under the regulation and 59,760 - (11,928 + 239.94 x 12) = $44,952.72 under the POMS. In the model
+    the readings differ only in California, New Jersey and Vermont, whose federally administered supplements reach a
+    parent at home in every category; under the POMS reading, Nevada's and Iowa's supplements at home would also count
+    for some parents.
   pe_us:
     follows: conflicting-source
     code:
@@ -14466,8 +14467,8 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10630
   state: ruled
   note: "Follows the POMS, which avoids a jump in deemed income where a parent's income passes the federal rate plus the
-    supplement. Ruled by the project lead, 2026-11-12: https://github.com/PolicyEngine/policyengine-us/pull/10630. 2026
-    is the year checked; the POMS text is TN 49 (10/2024)."
+    supplement. Ruled by the project lead, 2026-11-12: https://github.com/PolicyEngine/policyengine-us/pull/10630#issuecomment-6840530008.
+    2026 is the year checked; the POMS text is TN 49 (10/2024)."
 - id: us:ssi-parental-child-allocation-order
   program: ssi
   years:
@@ -14498,7 +14499,7 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10630
   state: ruled
-  note: "Keeps the regulation's order. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10630"
+  note: "Keeps the regulation's order. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10630#issuecomment-6840530008"
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:

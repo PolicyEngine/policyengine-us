@@ -885,3 +885,131 @@
     ssi_ineligible_parent_allocation: [14_807.28, 0]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 44_952.72]
     ssi: [0, 0]
+
+# New Jersey's couple rate, 25.35 a month in 2026, is below its individual rate of
+# 31.25 (POMS SI 01415.058 J), so a parent whose spouse's income is deemed is tested
+# on the higher one. A disabled parent with no income and a spouse earning 37,500:
+# (37,500 - 240 - 780) / 2 = 18,240, within 17,892 + 31.25 x 12 = 18,267, so the
+# parent stays eligible and nothing is deemed (20 CFR 416.1166(e)(1)). On the couple
+# rate the limit would be 17,892 + 25.35 x 12 = 18,196.20 and the parent would be
+# flagged. The spouse's allowance is 18,267.
+- name: Case 25, New Jersey parent with a deemed spouse is tested on the higher individual rate.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 37_500
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    is_ssi_ineligible_parent: [false, true, false]
+    ssi_ineligible_parent_allocation: [0, 18_267, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi: [0, 0, 11_928]
+
+# Vermont's couple rate for independent living, 105.80 a month in 2026 (POMS SI
+# 01415.058 M), is the higher one. The same household with the spouse earning 39,000:
+# (39,000 - 240 - 780) / 2 = 18,990, within 17,892 + 105.80 x 12 = 19,161.60, so the
+# parent stays eligible and nothing is deemed. On the individual rate the limit would
+# be 17,892 + 55.68 x 12 = 18,560.16 and the parent would be flagged.
+- name: Case 26, Vermont parent with a deemed spouse is tested on the couple rate.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 39_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    is_ssi_ineligible_parent: [false, true, false]
+    ssi_ineligible_parent_allocation: [0, 19_161.60, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi: [0, 0, 11_928]
+
+# Two disabled parents in New Jersey on a joint claim, each with a 9,100 pension:
+# 18,200 - 240 = 17,960, within 17,892 + 25.35 x 12 = 18,196.20, so neither parent is
+# flagged and nothing is deemed. Without New Jersey's couple rate both would be
+# flagged, and the child would be deemed 17,960 - 17,892 = 68.
+- name: Case 27, New Jersey parents on a joint claim within the couple's federal and state standard deem nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 9_100
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 9_100
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    is_ssi_ineligible_parent: [false, false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi: [0, 0, 11_928]
