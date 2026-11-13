@@ -1,9 +1,10 @@
 description: North Dakota exempts the second caretaker in a Workforce Benefit household from the allowable-activity requirement under the Child Care Assistance Program if this is true.
 
-# ML 3819 (June 1, 2024) says the second caretaker "does not need to be in an
-# allowable activity"; ML 3862 and ML 3909 keep that text. Release 26.1
-# (January 1, 2026) requires the second caretaker's activity. The Workforce
-# Benefit starts June 1, 2024, so the earlier false value has no effect.
+# From June 1, 2024 (ML 3819), North Dakota exempted the second caretaker of a
+# Workforce Benefit household from the activity requirement, and it kept that
+# rule in ML 3862 and ML 3909. From January 1, 2026 (Release 26.1), North
+# Dakota requires the second caretaker's activity. North Dakota started the
+# Workforce Benefit on June 1, 2024, so the earlier false value has no effect.
 values:
   0000-01-01: false
   2024-06-01: true

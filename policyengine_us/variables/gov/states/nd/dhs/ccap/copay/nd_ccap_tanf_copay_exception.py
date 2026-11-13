@@ -48,10 +48,10 @@ class nd_ccap_tanf_copay_exception(Variable):
             person("is_disabled", period.this_year)
             & (person("age", period.this_year) < p.disabled_child_age_limit)
         )
-        # The co-pay applies to "child care for an SSI child" (400-28-45-05),
-        # so an SSI child outside care leaves the waiver in place. When an
-        # SSI child is in care, the model charges the whole family
-        # co-payment, including for a sibling whose care stays waived.
+        # North Dakota charges the co-pay for "child care for an SSI child"
+        # (400-28-45-05), so the waiver holds when the SSI child attends no
+        # care. When an SSI child attends care, the model charges the whole
+        # family co-payment, including for a sibling whose care stays waived.
         in_care = person("nd_ccap_child_in_care", period)
         child_receives_ssi = spm_unit.any(child & in_care & (person("ssi", period) > 0))
         alien = spm_unit("nd_ccap_has_disqualified_alien_caretaker", period)

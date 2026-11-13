@@ -1296,8 +1296,8 @@
     nd_ccap_copay: 88
 
 # The 10-year-old receives SSI and attends no child care; the 3-year-old attends
-# care and receives no SSI. Release 26.3 charges the co-pay for "child care for
-# an SSI child" alone, so the TANF waiver covers the 88 worksheet copay.
+# care and receives no SSI. North Dakota charges the co-pay for "child care for
+# an SSI child" (400-28-45-05), so the TANF waiver covers the 88 worksheet copay.
 - name: North Dakota keeps the TANF waiver when the SSI child attends no child care
   period: 2026-10
   absolute_error_margin: 0.01
@@ -1333,9 +1333,9 @@
   output:
     nd_ccap_copay: 0
 
-# North Dakota's incapacity age limit is under 19, so a disabled 19-year-old
-# who receives SSI and attends care does not trigger the child-SSI exception.
-# The TANF waiver covers the 88 worksheet copay.
+# The model applies North Dakota's under-19 incapacity age limit to annual age,
+# so a disabled 19-year-old who receives SSI and attends care does not trigger
+# the child-SSI exception. The TANF waiver covers the 88 worksheet copay.
 - name: North Dakota keeps the TANF waiver for a disabled 19-year-old receiving SSI
   period: 2026-10
   absolute_error_margin: 0.01

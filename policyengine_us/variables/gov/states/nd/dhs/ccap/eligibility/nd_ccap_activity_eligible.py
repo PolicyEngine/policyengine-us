@@ -31,8 +31,8 @@ class nd_ccap_activity_eligible(Variable):
         # From June 2024 through December 2025, North Dakota approved a
         # Workforce Benefit household whose second caretaker had no allowable
         # activity (400-28-20-40, ML 3819 Example 1). The qualifying caretaker's
-        # own employment meets the activity test. Release 26.1 requires the
-        # second caretaker's activity from January 2026.
+        # own employment meets the activity test. North Dakota requires the
+        # second caretaker's activity from January 2026 (Release 26.1).
         p = parameters(period).gov.states.nd.dhs.ccap.workforce
         workforce = spm_unit("nd_ccap_workforce_benefit_eligible", period)
         workforce_exempt = p.second_caretaker_activity_exempt & workforce

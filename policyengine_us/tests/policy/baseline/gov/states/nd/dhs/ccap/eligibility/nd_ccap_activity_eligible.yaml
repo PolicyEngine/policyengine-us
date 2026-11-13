@@ -162,7 +162,8 @@
   output:
     nd_ccap_activity_eligible: true
 
-# Release 26.1 requires the second caretaker's activity from January 2026.
+# North Dakota requires the second caretaker's activity from January 2026
+# (Release 26.1).
 - name: North Dakota requires the second caretaker's activity in a Workforce Benefit household from 2026
   period: 2026-01
   input:
@@ -188,7 +189,7 @@
   output:
     nd_ccap_activity_eligible: false
 
-# The Workforce Benefit starts June 1, 2024.
+# North Dakota started the Workforce Benefit on June 1, 2024.
 - name: North Dakota requires the second caretaker's activity before the Workforce Benefit starts
   period: 2024-05
   input:

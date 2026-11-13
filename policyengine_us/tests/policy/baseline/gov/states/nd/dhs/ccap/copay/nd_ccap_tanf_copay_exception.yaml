@@ -1,8 +1,9 @@
 # Tests for nd_ccap_tanf_copay_exception (SPMUnit, MONTH, bool).
 # From October 2011 through September 2026, North Dakota charged the co-pay
 # when child care followed from the activity of a TANF caretaker "In receipt
-# of SSI" (400-28-90-20, ML 3278 and ML 3605 versions). Release 26.3 repealed
-# that exception on October 1, 2026, and moved the SSI test to the child.
+# of SSI" (400-28-90-20, ML 3278 and ML 3605 versions). North Dakota repealed
+# that exception on October 1, 2026 (Release 26.3) and moved the SSI test to
+# the child.
 
 - name: North Dakota applies the caretaker-SSI exception from October 2011
   period: 2020-01

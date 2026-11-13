@@ -130,9 +130,9 @@
     # defined_for = StateCode.ND zeroes eligibility outside North Dakota.
     nd_ccap_eligible: false
 
-# ML 3819 Example 1 with the income and activity tests computed. Workforce
-# Benefit qualification excludes all income, and the second caretaker needs no
-# activity from June 2024 through December 2025.
+# ML 3819 Example 1 with the income and activity tests computed. North Dakota
+# excludes all income of a Workforce Benefit family and, from June 2024 through
+# December 2025, required no activity of its second caretaker.
 - name: North Dakota approves a Workforce Benefit household with an inactive second caretaker in 2025
   period: 2025-01
   input:
@@ -161,7 +161,7 @@
     nd_ccap_activity_eligible: true
     nd_ccap_eligible: true
 
-# Release 26.1 denies the same household from January 2026.
+# North Dakota denies the same household from January 2026 (Release 26.1).
 - name: North Dakota denies a Workforce Benefit household with an inactive second caretaker from 2026
   period: 2026-01
   input:
