@@ -35,10 +35,15 @@ class is_snap_abawd_exempt(Variable):
         # (A) Age — 7 U.S.C. 2015(o)(3)(A). Ages outside the ABAWD range are
         # exempt; HR1 (P.L. 119-21) raised the upper bound from 54 to 64.
         age = person("monthly_age", period)
+        pre_hr1_age_exempt = where(
+            p.fra_exemptions_apply,
+            p_pre.age_threshold.exempted.calc(age),
+            p.age_threshold.pre_fra_common_exempted.calc(age),
+        )
         working_age_exempt = where(
             hr1_in_effect,
             p.age_threshold.exempted.calc(age),
-            p_pre.age_threshold.exempted.calc(age),
+            pre_hr1_age_exempt,
         )
         # (B) Disability — 7 U.S.C. 2015(o)(3)(B); 7 CFR 273.24(c)(2) treats
         # receipt of government or private disability benefits as unfitness

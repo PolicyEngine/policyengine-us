@@ -1,1 +1,1 @@
-Apply SNAP exemptions for homelessness, veteran status and qualifying foster-care history from their September 2023 introduction.
+Correct pre-FRA SNAP age exemptions and apply the FRA's additional exemptions from September 2023.
