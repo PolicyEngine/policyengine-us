@@ -1,14 +1,18 @@
-description: Alabama deducts work-related expense over this percentage of adjusted gross income.
+description: Alabama allows the total of the subdivision (1) unreimbursed employee business expenses and the subdivision (14) expenses only above this percentage of adjusted gross income.
 values:
-  2021-01-01: 0.02
+  2017-01-01: 0.02
 
 metadata:
-  label: Alabama work-related expense deduction rate
+  label: Alabama miscellaneous itemized deduction floor rate
   period: year
   unit: /1
   reference:
-    - title: Code of Alabama Section 40-18-15, (a) (3) (h) (23)
-      href: https://law.justia.com/codes/alabama/2022/title-40/chapter-18/article-1/section-40-18-15/
+    - title: Code of Alabama Section 40-18-15(a)(23) (2017 edition)
+      href: https://law.justia.com/codes/alabama/2017/title-40/chapter-18/article-1/section-40-18-15/
+    - title: Code of Alabama Section 40-18-15(a)(23) (2021 edition)
+      href: https://law.justia.com/codes/alabama/2021/title-40/chapter-18/article-1/section-40-18-15/
+    - title: "Act 2026-604, Section 1, amending Code of Alabama Section 40-18-15 #page 7-8"
+      href: https://alison.legislature.state.al.us/files/pdf/SearchableInstruments/2026RS/HB527-enr.pdf#page=7
     - title: 2021 Schedule A (Form 1040)
       href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2022/06/21f40schabdc_blk.pdf#page=1
     - title: 2022 Schedule A (Form 1040)
@@ -17,3 +21,9 @@ metadata:
       href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2024/01/23f40schabdc_blk.pdf#page=1
     - title: 2024 Schedule A (Form 1040)
       href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2025/01/24f40schabdc_blk.pdf#page=20
+    - title: "2017 Alabama Form 40 instructions, Schedule A lines 20-24 #page 20-21"
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2021/10/17f40bk.pdf#page=20
+    - title: "2024 Alabama Form 40 instructions, Schedule A lines 20-24 #page 20-21"
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2025/01/24f40bk.pdf#page=20
+    - title: 2025 Alabama Form 40 instructions, Schedule A lines 20-24
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=21

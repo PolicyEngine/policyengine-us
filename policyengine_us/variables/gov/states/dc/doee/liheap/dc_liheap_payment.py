@@ -8,13 +8,21 @@ class dc_liheap_payment(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "dc_liheap_eligible"
-    reference = "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf"
+    reference = (
+        "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DOEE%20FY24%20LIHEAP_REGULAR_Benefits_Table-Matrix.pdf",
+        "https://doee.dc.gov/liheap",
+        "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/DC%20DOEE%20-%20FY26%20LIHEAP%20Benefit%20Matrix.docx",
+        "https://doee.dc.gov/sites/default/files/dc/sites/doee/service_content/attachments/LIHEAP%20FAQ_1_0.pdf#page=1",
+        # PDF pages 4, 11
+        "https://liheapch.acf.gov/docs/2026/state-plans/DC_Plan_2026.pdf#page=4",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.dc.doee.liheap.payment
         housing_type = spm_unit("dc_liheap_housing_type", period)
         heating_type = spm_unit("dc_liheap_heating_type", period)
-        income_level = spm_unit("dc_liheap_income_level", period)
+        # The floor keeps units outside DC (income level 0) on a valid matrix key.
+        income_level = max_(spm_unit("dc_liheap_income_level", period), 1)
         capped_size = clip(spm_unit("spm_unit_size", period), 1, 4)
         types = heating_type.possible_values
 
@@ -44,9 +52,26 @@ class dc_liheap_payment(Variable):
         heating_expenses = where(
             unspecified, legacy_expense, spm_unit("heating_expense", period)
         )
+        # The one-time Regular benefit helps with heating and cooling costs, with
+        # no fuel condition. A household with a known heating type, no heat in
+        # the rent and no heating cost that pays for cooling takes the Electric
+        # row, capped at its electricity bill, whatever its heating row is.
+        heat_in_rent = heating_type == types.HEAT_IN_RENT
+        cooling_only = (
+            ~unspecified
+            & ~heat_in_rent
+            & (heating_expenses == 0)
+            & spm_unit("has_cooling_expense", period)
+        )
+        expense_cap = where(
+            cooling_only,
+            spm_unit("pre_subsidy_electricity_expense", period),
+            heating_expenses,
+        )
 
         # Heat-in-rent is a direct subsidy — no expense cap.
-        matrix_amount = select(
+        electricity_amount = p.electricity[housing_type][income_level][capped_size]
+        heating_amount = select(
             [
                 heating_type == types.ELECTRICITY,
                 heating_type == types.GAS,
@@ -54,12 +79,12 @@ class dc_liheap_payment(Variable):
                 heating_type == types.OIL,
             ],
             [
-                p.electricity[housing_type][income_level][capped_size],
+                electricity_amount,
                 p.gas[housing_type][income_level][capped_size],
                 p.heat_in_rent,
                 p.oil,
             ],
             default=0,
         )
-        heat_in_rent = heating_type == types.HEAT_IN_RENT
-        return where(heat_in_rent, matrix_amount, min_(matrix_amount, heating_expenses))
+        matrix_amount = where(cooling_only, electricity_amount, heating_amount)
+        return where(heat_in_rent, matrix_amount, min_(matrix_amount, expense_cap))

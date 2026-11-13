@@ -6,11 +6,33 @@ class self_employed_health_insurance_ald_person(Variable):
     entity = Person
     label = "Self-employed health insurance ALD for each person"
     unit = USD
-    documentation = "Personal above-the-line deduction for self-employed health insurance contributions."
+    documentation = (
+        "Personal above-the-line deduction for self-employed health insurance "
+        "premiums: the smaller of the premiums and the earned income from the "
+        "business under which the plan is established (Form 7206 line 14). "
+        "The premiums are the medical insurance premiums (line 1) plus "
+        "eligible long-term care premiums up to the 26 U.S.C. 213(d)(10) "
+        "limit (line 2)."
+    )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/162#l"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/162#l",
+        "https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1",
+        "https://www.irs.gov/pub/irs-prior/i1040gi--2022.pdf#page=89",
+    )
 
     def formula(person, period, parameters):
-        earnings = max_(0, person("total_self_employment_income", period))
-        premiums = person("self_employed_health_insurance_premiums", period)
-        return min_(earnings, premiums)
+        # Line 3: health insurance premiums (line 1) plus eligible long-term
+        # care premiums (line 2).
+        premiums = add(
+            person,
+            period,
+            [
+                "self_employed_health_insurance_premiums",
+                "self_employed_long_term_care_premiums",
+            ],
+        )
+        earned_income_limit = person(
+            "self_employed_health_insurance_earned_income_limit", period
+        )
+        return min_(premiums, earned_income_limit)

@@ -8,19 +8,24 @@
 
 - name: Self-employed health insurance ALD uses SSTB income
   period: 2024
+  absolute_error_margin: 0.01
   input:
     sstb_self_employment_income: 10_000
     self_employed_health_insurance_premiums: 12_000
   output:
-    self_employed_health_insurance_ald_person: 10_000
+    # Form 7206 line 13: 10,000 - 10,000 x 0.9235 x 0.153 / 2.
+    self_employed_health_insurance_ald_person: 9_293.5225
 
 - name: Self-employed pension ALD uses SSTB income
   period: 2024
+  absolute_error_margin: 0.01
   input:
     sstb_self_employment_income: 8_000
     self_employed_pension_contributions_desired: 9_000
   output:
-    self_employed_pension_contribution_ald_person: 8_000
+    # Earned income: 8,000 - 7,388 x 15.3% / 2 = 7,434.82, all of which
+    # elective deferrals can cover (Pub. 560 Deduction Worksheet steps 9-19).
+    self_employed_pension_contribution_ald_person: 7_434.82
 
 - name: Loss ALD includes SSTB self-employment losses
   period: 2024

@@ -4,7 +4,7 @@
     state_code: ME
     me_sales_and_property_tax_fairness_credit_income: 0
     filing_status: SEPARATE
-    ctc_qualifying_children: 2
+    me_fairness_credit_qualifying_children: 2
   output:
     me_property_tax_fairness_credit_eligible: false
 
@@ -13,7 +13,7 @@
   input:
     state_code: ME
     filing_status: SINGLE
-    ctc_qualifying_children: 4
+    me_fairness_credit_qualifying_children: 4
   output:
     me_property_tax_fairness_credit_eligible: true
 
@@ -22,6 +22,6 @@
   input:
     state_code: ME
     filing_status: HEAD_OF_HOUSEHOLD
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
   output:
     me_property_tax_fairness_credit_eligible: true

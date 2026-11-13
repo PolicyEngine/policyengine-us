@@ -96,3 +96,49 @@
         state_code: AZ
   output:
     az_public_pension_exclusion: 5_000
+
+- name: In 2021, Arizona counts a non-spouse survivor's SBP payments toward the $2,500 public pension subtraction.
+  period: 2021
+  input:
+    state_code: AZ
+    age: 20
+    is_surviving_spouse: false
+    military_retirement_pay_survivors: 6_000
+  output:
+    az_military_retirement_subtraction: 0
+    # min(6,000, 2,500) = 2,500 under 43-1022(2). Arizona puts no non-spouse survivor's payments on line 29b.
+    az_public_pension_exclusion: 2_500
+
+- name: In 2023, Arizona still counts a non-spouse survivor's SBP payments toward the $2,500 public pension subtraction.
+  period: 2023
+  input:
+    state_code: AZ
+    age: 20
+    is_surviving_spouse: false
+    military_retirement_pay_survivors: 6_000
+  output:
+    az_military_retirement_subtraction: 0
+    # ADOR moved only a surviving spouse's payments to line 29b, so min(6,000, 2,500) = 2,500 under 43-1022(2).
+    az_public_pension_exclusion: 2_500
+
+- name: Arizona leaves a dependent's SBP payments out of the filer's $2,500 public pension subtraction.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 45
+        taxable_public_pension_income: 1_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay_survivors: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Only the head's 1,000 counts; the child's 4,000 goes on the child's own return.
+    az_public_pension_exclusion: 1_000

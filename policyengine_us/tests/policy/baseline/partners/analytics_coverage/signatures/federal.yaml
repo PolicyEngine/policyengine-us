@@ -167,8 +167,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         is_wic_eligible: false
@@ -185,7 +187,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_114 (2 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -352,8 +354,12 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # Oct-Dec uses the model-uprated California limited utility allowance
+        # ($170 to $176), because FY2027 values are not in the model yet.
+        # FY2026/FY2027 net $2,796/$2,781; contribution $839/$835.
+        # SNAP $155/$188/month; annual 9 x 155 + 3 x 188 = $1,959.
+        snap: 1959.0
     people:
       head:
         is_wic_eligible: false
@@ -370,7 +376,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_135 (1 reqs, +3 dupes)
   period: 2026
   absolute_error_margin: 0.1
@@ -514,8 +520,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,966/$2,957; contribution $890/$888.
+        # SNAP $104/$135/month; annual 9 x 104 + 3 x 135 = $1,341.
+        snap: 1341.0
     people:
       head:
         is_wic_eligible: false
@@ -532,7 +540,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_139 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -617,8 +625,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,966/$2,957; contribution $890/$888.
+        # SNAP $104/$135/month; annual 9 x 104 + 3 x 135 = $1,341.
+        snap: 1341.0
     people:
       head:
         is_wic_eligible: false
@@ -635,7 +645,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_142 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -724,8 +734,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         is_wic_eligible: false
@@ -742,7 +754,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_143 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -862,7 +874,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_144 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -970,7 +982,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_147 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -1048,8 +1060,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         is_wic_eligible: false
@@ -1066,7 +1080,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_151 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -1148,8 +1162,12 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # Oct-Dec uses the model-uprated California phone allowance ($20 to
+        # $20.71), because FY2027 values are not in the model yet.
+        # FY2026/FY2027 net $2,946/$2,936; contribution $884/$881.
+        # SNAP $110/$142/month; annual 9 x 110 + 3 x 142 = $1,416.
+        snap: 1416.0
     people:
       head:
         is_wic_eligible: false
@@ -1162,7 +1180,7 @@
         wic: 0.0
       child2:
         is_wic_eligible: true
-        wic: 723.73
+        wic: 726.21
 - name: signature_152 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -1248,8 +1266,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         is_wic_eligible: false
@@ -1266,7 +1286,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_159 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -1348,8 +1368,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,966/$2,957; contribution $890/$888.
+        # SNAP $104/$135/month; annual 9 x 104 + 3 x 135 = $1,341.
+        snap: 1341.0
     people:
       head:
         is_wic_eligible: false
@@ -1366,7 +1388,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_160 (1 reqs, +1 dupes)
   period: 2026
   absolute_error_margin: 0.1
@@ -1455,8 +1477,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         is_wic_eligible: false
@@ -1473,7 +1497,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_161 (1 reqs, +1 dupes)
   period: 2026
   absolute_error_margin: 0.1
@@ -1550,8 +1574,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,977/$2,971; contribution $894/$892.
+        # SNAP $100/$131/month; annual 9 x 100 + 3 x 131 = $1,293.
+        snap: 1293.0
     people:
       head:
         is_wic_eligible: false
@@ -1568,7 +1594,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_177 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -1649,8 +1675,10 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # FY2026/FY2027 net $2,966/$2,957; contribution $890/$888.
+        # SNAP $104/$135/month; annual 9 x 104 + 3 x 135 = $1,341.
+        snap: 1341.0
     people:
       head:
         is_wic_eligible: false
@@ -1667,7 +1695,7 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21
 - name: signature_179 (1 reqs)
   period: 2026
   absolute_error_margin: 0.1
@@ -1760,8 +1788,12 @@
   output:
     spm_units:
       spm_unit:
-        is_snap_eligible: false
-        snap: 0.0
+        is_snap_eligible: true
+        # Oct-Dec uses the model-uprated California limited utility allowance
+        # ($170 to $176), because FY2027 values are not in the model yet.
+        # FY2026/FY2027 net $2,796/$2,781; contribution $839/$835.
+        # SNAP $155/$188/month; annual 9 x 155 + 3 x 188 = $1,959.
+        snap: 1959.0
     people:
       head:
         is_wic_eligible: false
@@ -1778,4 +1810,4 @@
       child2:
         is_wic_eligible: true
         weekly_hours_worked: 0.0
-        wic: 723.73
+        wic: 726.21

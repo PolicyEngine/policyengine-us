@@ -1,0 +1,160 @@
+# 2025 Form 502CG line 1: net capital gain, as defined under 26 U.S.C.
+# 1222(11), included in Maryland adjusted gross income (Md. Code, Tax-General
+# 10-105(a)(3)(i)). Over the head and spouse:
+#   Schedule D line 15 = long-term gains and losses + capital gain
+#                        distributions reported without Schedule D
+#   Schedule D line 16 = line 15 + short-term gains and losses
+#   line 1             = max(0, min(line 15, line 16))
+
+- name: Spouses' long-term gains and losses net, then a short-term loss
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        long_term_capital_gains: -30_000
+      person2:
+        age: 48
+        long_term_capital_gains: 100_000
+        short_term_capital_gains: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 500_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Line 15 = -$30,000 + $100,000 = $70,000; line 16 = $60,000.
+    md_net_capital_gain: 60_000
+
+- name: Spouses' short-term amounts net to a gain, which adds nothing
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        long_term_capital_gains: 50_000
+        short_term_capital_gains: 20_000
+      person2:
+        age: 48
+        short_term_capital_gains: -15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 500_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Line 15 = $50,000; line 16 = $55,000; line 1 = $50,000.
+    md_net_capital_gain: 50_000
+
+- name: A long-term loss carryover already in long-term gains is not subtracted again
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # $20,000 of 2025 long-term gains less an $8,000 carryover (Schedule
+        # D line 14). long_term_capital_loss_carryover is a memo item.
+        long_term_capital_gains: 12_000
+        long_term_capital_loss_carryover: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_net_capital_gain: 12_000
+
+- name: Schedule D line 13 distributions are already in long-term gains
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 15_000
+        # Memo item: $5,000 of the $15,000 is distributions on line 13.
+        schedule_d_capital_gain_distributions: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_net_capital_gain: 15_000
+
+- name: Qualified dividends are not net capital gain
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 10_000
+        qualified_dividend_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # 26 U.S.C. 1(h)(11) treats qualified dividends as net capital gain only
+    # for section 1(h). Line 1 = $10,000.
+    md_net_capital_gain: 10_000
+
+- name: A dependent's capital gain distributions are on the dependent's own return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 400_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 12
+        non_sch_d_capital_gains: 5_000
+        short_term_capital_gains: 3_000
+    household:
+      state_code: MD
+  output:
+    md_net_capital_gain: 10_000
+
+- name: Not computed outside Maryland
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    md_net_capital_gain: 0

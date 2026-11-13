@@ -77,3 +77,65 @@
     tax_unit_dependents: 2
   output:
     il_income_tax_rebate: 300
+
+# Historical guard regression.
+# Public Act 102-0700: 35 ILCS 5/212.1(a), PDF p131, keys income rebate to 2021;
+# 35 ILCS 5/208.5 keys the one-time property rebate to the 2021 return.
+# https://www.ilga.gov/Documents/legislation/publicacts/102/PDF/102-0700.pdf#page=131
+# https://ilga.gov/documents/legislation/publicacts/102/102-0700.htm#:~:text=208.5
+# Hand calculation for 2020: income rebate $0 + property rebate $0 = $0;
+# refundable credits $0; income tax $1,000 - $0 = $1,000.
+- name: Illinois one-time 2021 rebates do not reduce 2020 tax
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    state_code: IL
+    filing_status: SINGLE
+    tax_unit_is_joint: false
+    adjusted_gross_income: 50_000
+    tax_unit_dependents: 0
+    il_property_tax_credit_potential: 100
+    il_income_tax_before_refundable_credits: 1_000
+    il_pass_through_withholding: 0
+    il_pass_through_entity_tax_credit: 0
+    il_eitc: 0
+  output:
+    il_income_tax_rebate: 0
+    il_property_tax_rebate: 0
+    il_refundable_credits: 0
+    il_income_tax: 1_000
+
+# A zero before 2021 must also survive parameter backdating to 2015. Both base
+# schedules and the dependent amount are exercised, together with the cap.
+- name: Illinois rebate amounts are zero in the earliest modeled year
+  period: 2015
+  absolute_error_margin: 0
+  input:
+    people:
+      single: {}
+      joint: {}
+    tax_units:
+      single_unit:
+        members: [single]
+        filing_status: SINGLE
+        tax_unit_is_joint: false
+        adjusted_gross_income: 50_000
+        tax_unit_dependents: 3
+        il_property_tax_credit_potential: 400
+      joint_unit:
+        members: [joint]
+        filing_status: JOINT
+        tax_unit_is_joint: true
+        adjusted_gross_income: 50_000
+        tax_unit_dependents: 3
+        il_property_tax_credit_potential: 400
+    households:
+      single_household:
+        members: [single]
+        state_code: IL
+      joint_household:
+        members: [joint]
+        state_code: IL
+  output:
+    il_income_tax_rebate: [0, 0]
+    il_property_tax_rebate: [0, 0]
