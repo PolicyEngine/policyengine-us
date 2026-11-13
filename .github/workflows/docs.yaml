@@ -1,21 +1,6 @@
-name: Documentation
+name: US10783 parameter validation
+run-name: US10783 Core 3.36.0 validation at 561afc5
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - "docs/**"
-      - "Makefile"
-      - "policyengine_us/tools/add_plotly_to_book.py"
-      - "policyengine_us/tools/render_plotly_outputs.py"
-      - ".github/workflows/docs.yaml"
-  push:
-    branches: [main]
-    paths:
-      - "docs/**"
-      - "Makefile"
-      - "policyengine_us/tools/add_plotly_to_book.py"
-      - "policyengine_us/tools/render_plotly_outputs.py"
-      - ".github/workflows/docs.yaml"
   workflow_dispatch:
 
 permissions:
@@ -23,66 +8,39 @@ permissions:
 
 jobs:
   Build:
-    name: Build documentation
+    if: >-
+      github.repository == 'PolicyEngine/policyengine-us' &&
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/codex/us10783-core336-validation-20261113'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     concurrency:
-      group: docs-build-${{ github.ref }}
-      cancel-in-progress: true
-    steps:
-      - uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.13"
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.13.4"
-      # The book is Jupyter Book 1 (docs/_config.yml, docs/_toc.yml), but
-      # uv.lock resolves jupyter-book 2, so the docs toolchain is installed
-      # here rather than with `uv sync --extra dev`. docs/_config.yml loads
-      # sphinxarg.ext, which needs sphinx-argparse. The book renders stored
-      # outputs and never imports policyengine_us; plotly (pinned to the
-      # uv.lock version) is only needed to render the stored charts.
-      - name: Install the Jupyter Book 1 toolchain
-        run: |
-          uv venv --python 3.13 .venv
-          uv pip install --python .venv/bin/python "jupyter-book>=1.0.4.post1,<2" "furo>=2024.8.6" sphinx-argparse "plotly==5.24.1"
-      - name: Render stored Plotly outputs
-        run: .venv/bin/python policyengine_us/tools/render_plotly_outputs.py docs
-      - name: Build the book
-        run: |
-          source .venv/bin/activate
-          make documentation
-      - uses: actions/upload-artifact@v4
-        with:
-          name: documentation
-          path: docs/_build/html
-          if-no-files-found: error
-
-  Deploy:
-    name: Deploy documentation to GitHub Pages
-    needs: Build
-    timeout-minutes: 10
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && github.repository == 'PolicyEngine/policyengine-us'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    concurrency:
-      group: docs-deploy
+      group: us10783-parameter-validation-${{ github.ref }}
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v4
+      - name: Reserve the artifact window
+        run: echo "US10783_STOP_AT=$(( $(date +%s) + 1020 ))" >> "$GITHUB_ENV"
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          name: documentation
-          path: site
-      # GitHub Pages serves the gh-pages branch with Jekyll unless .nojekyll
-      # is present, and Jekyll drops Sphinx's _static/ and _sources/ folders.
-      - name: Disable Jekyll
-        run: touch site/.nojekyll
-      - uses: JamesIves/github-pages-deploy-action@v4
+          persist-credentials: false
+      - name: Set up the bootstrap interpreter
+        id: python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          branch: gh-pages
-          folder: site
+          python-version: "3.14.7"
+      - name: Qualify one image and export parameters serially
+        timeout-minutes: 17
+        run: >-
+          "${{ steps.python.outputs.python-path }}" -B -S
+          .github/us10783-validation/remote.py run
+          --repo "$GITHUB_WORKSPACE" --work "$RUNNER_TEMP/us10783-validation"
+      - name: Preserve complete or failed validation evidence
+        if: always()
+        timeout-minutes: 2
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: us10783-core336-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/us10783-validation/artifact/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
