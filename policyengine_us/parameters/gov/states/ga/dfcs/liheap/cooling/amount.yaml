@@ -1,6 +1,7 @@
 description: Georgia provides this cooling payment by income level under the Low Income Home Energy Assistance Program.
 # The matrices print one cooling amount per income level for every main heating
-# fuel. FY2027 has no posted matrix, so the FY2026 amounts carry forward.
+# fuel. FY2027 has no posted matrix; the FY2027 plan keeps the $400 minimum and $500
+# maximum, so the FY2026 amounts carry forward.
 lower_income:
   2024-10-01: 500
 higher_income:
@@ -19,3 +20,5 @@ metadata:
       href: https://liheapch.acf.gov/docs/2025/state-plans/GA_Plan_2025.pdf#page=11
     - title: Georgia FY2026 LIHEAP State Plan, section 3.6
       href: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=11
+    - title: Georgia FY2027 LIHEAP State Plan, section 3.6
+      href: https://liheapch.acf.gov/docs/2027/state-plans/GA_Plan_2027.pdf#page=11
