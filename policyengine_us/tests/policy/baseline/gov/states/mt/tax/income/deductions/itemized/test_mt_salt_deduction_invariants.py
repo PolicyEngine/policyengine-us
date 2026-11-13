@@ -178,6 +178,11 @@ def _situation(units, year, *, raised=False, swapped=False):
             "mo_st_louis_earnings_tax_credit": values["st_louis_credit"],
         }
 
+    # Core fills unspecified entries of an input array with defaults.
+    # Set all units when any unit supplies residual local income tax.
+    has_local_income_tax_override = any(
+        unit["other_local_income_tax"] for unit in units
+    )
     for i, unit in enumerate(units):
         first, second = f"first_{i}", f"second_{i}"
         couple = unit["spouse"] is not None
@@ -200,7 +205,7 @@ def _situation(units, year, *, raised=False, swapped=False):
             "state_sales_tax": unit["state_sales_tax"],
             "local_sales_tax": unit["local_sales_tax"],
         }
-        if unit["other_local_income_tax"]:
+        if has_local_income_tax_override:
             payers = [unit["head"], *unit["dependents"]]
             if couple:
                 payers.append(unit["spouse"])
