@@ -72,7 +72,7 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
             period
         ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.deeming
         allocation_child = (age < p.ineligible_child_age_limit[state]) & (
-            ~p.ineligible_child_requires_nonblind_nondisabled[state]
+            ~p.ineligible_child_requires_nonblind_nondisabled[state].astype(bool)
             | ~person("is_ssi_aged_blind_disabled", period)
         )
         allocations = (
