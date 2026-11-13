@@ -32,7 +32,7 @@ class aca_magi_fraction(Variable):
         # them by state group.
         has_guideline = guideline > 0
         # Multiply before dividing, so income exactly on a whole percentage
-        # (100 x 35,369 / 15,650 = 226) isn't floored one point low by a
+        # (100 x 36,621 / 15,650 = 234) isn't floored one point low by a
         # quotient that isn't exactly representable.
         percent = 100 * magi / where(has_guideline, guideline, 1)
         return where(has_guideline, np.floor(percent) / 100, np.inf)

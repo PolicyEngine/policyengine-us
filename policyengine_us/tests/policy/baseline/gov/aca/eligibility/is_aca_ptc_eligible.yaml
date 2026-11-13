@@ -933,8 +933,9 @@
 
 - name: 2024 Puerto Rico single adult pays no Marketplace premium and is not eligible
   # HHS defines no guideline for Puerto Rico, and no Exchange operates there
-  # (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)), so pays_aca_premium is
-  # false. Without the no-Exchange test, the infinite fraction (the
+  # (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)), so the adult isn't a
+  # Marketplace enrollee and pays_aca_premium is false. Without the
+  # no-Exchange test, the infinite fraction (the
   # placeholder guideline is 0) is outside the coverage gap and
   # pays_aca_premium would be true. On main, with the state supplied for 2024
   # only, the 2023 guideline year fell back to the default state's guideline
@@ -957,6 +958,7 @@
         members: [person1]
         state_code: PR
   output:
+    is_aca_marketplace_enrollee: false
     pays_aca_premium: false
     is_aca_ptc_eligible: false
 
@@ -985,12 +987,14 @@
         state_code: PR
   output:
     aca_required_contribution_percentage: 0
+    is_aca_marketplace_enrollee: false
     pays_aca_premium: false
     is_aca_ptc_eligible: false
 
 - name: 2026 Guam single adult pays no Marketplace premium and is not eligible
   # Guam has no Exchange (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)). Without
-  # the Guam comparison in pays_aca_premium, the premium would be charged:
+  # the Guam comparison in is_aca_marketplace_enrollee, the premium would be
+  # charged:
   # the infinite fraction is outside the coverage gap.
   period: 2026
   input:
@@ -1010,13 +1014,14 @@
         members: [person1]
         state_code: GU
   output:
+    is_aca_marketplace_enrollee: false
     pays_aca_premium: false
     is_aca_ptc_eligible: false
 
 - name: 2026 Virgin Islands single adult pays no Marketplace premium and is not eligible
   # The Virgin Islands have no Exchange (26 U.S.C. 36B(c)(2)(A); 42 U.S.C.
-  # 18024(d)). Without the Virgin Islands comparison in pays_aca_premium, the
-  # premium would be charged: the infinite fraction is outside the coverage
+  # 18024(d)). Without the Virgin Islands comparison in
+  # is_aca_marketplace_enrollee, the premium would be charged: the infinite fraction is outside the coverage
   # gap.
   period: 2026
   input:
@@ -1036,5 +1041,6 @@
         members: [person1]
         state_code: VI
   output:
+    is_aca_marketplace_enrollee: false
     pays_aca_premium: false
     is_aca_ptc_eligible: false
