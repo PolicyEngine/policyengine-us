@@ -3,7 +3,8 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._annual_input impo
 )
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_budget_total,
+    _ssi_couple_total,
+    _ssi_spouse_index,
 )
 from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
     _apply_medicaid_optional_senior_or_disabled_exclusions,
@@ -113,15 +114,31 @@ class medicaid_optional_senior_or_disabled_countable_income_monthly(Variable):
             max_(paid_premiums - paid_part_b, 0) + full_part_b,
             paid_premiums,
         )
-        # 22 CCR 50555.2(a) deducts premiums paid by and purchased for any
-        # person in the family. A couple's budget takes both spouses'
-        # premiums and those of unmarried tax dependents in their marital
-        # unit and tax unit. It leaves out another couple's dependent and an
-        # unrelated adult, whose income also stays out of the couple's
-        # combined income above when a situation omits marital units.
+        # Under 22 CCR 50555.2(a), deduct premiums paid by and purchased
+        # for any family member. Include both spouses' premiums and, when
+        # they head their tax unit, their unmarried dependents' premiums.
+        # Spouses filing separately share both tax units' dependent premiums.
+        # Exclude another couple's dependents and dependents of a tax unit
+        # where the couple are dependents.
+        spouse = _ssi_spouse_index(person, period)
+        safe_spouse = np.maximum(spouse, 0)
+        unmarried_dependent = person("is_tax_unit_dependent", period) & (spouse < 0)
+        dependents_premiums = where(
+            person("is_tax_unit_head_or_spouse", period),
+            person.tax_unit.sum(where(unmarried_dependent, own_premiums, 0)),
+            0,
+        )
+        tax_unit_id = person.tax_unit.reference_entity.members_entity_id
+        spouse_in_another_tax_unit = (spouse >= 0) & (
+            tax_unit_id[safe_spouse] != tax_unit_id
+        )
+        family_dependents_premiums = dependents_premiums + where(
+            spouse_in_another_tax_unit, dependents_premiums[safe_spouse], 0
+        )
         premiums = where(
             couple_computation,
-            _ssi_couple_budget_total(person, period, own_premiums),
+            _ssi_couple_total(person, period, own_premiums)
+            + family_dependents_premiums,
             own_premiums,
         )
         deducts_premiums = p.deducts_health_insurance_premiums[state].astype(bool)
