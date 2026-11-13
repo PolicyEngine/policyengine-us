@@ -1,0 +1,16 @@
+description: The Centers for Medicare & Medicaid Services limits the Medicaid expansion FMAP to states whose adult-group income limit reaches the expansion FMAP income limit, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid expansion FMAP requires full adult group coverage
+  reference:
+  - title: CMS, Frequently Asked Questions on Exchanges, Market Reforms and Medicaid (December 10, 2012), Q26 — no partial expansion at the enhanced match
+    href: https://www.medicaid.gov/federal-policy-guidance/downloads/faq-12-10-2012-exchanges.pdf#page=11
+  - title: CMS letter to Utah on the Per Capita Cap demonstration (August 16, 2019) — enhanced match only if a demonstration covers the entire adult expansion group
+    href: https://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Waivers/1115/downloads/ut/per-capita-cap/ut-per-capita-cap-correspondence-ltr-20190816.pdf#page=1
+  - title: CMS, SMD# 20-001, Healthy Adult Opportunity (January 30, 2020) — increased FMAP requires an income standard of at least 133 percent FPL
+    href: https://www.medicaid.gov/sites/default/files/Federal-Policy-Guidance/Downloads/smd20001.pdf#page=5
+  - title: CMS approval of Georgia Pathways to Coverage (October 15, 2020) — enhanced match not authorized for adults covered to 100 percent FPL
+    href: https://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Waivers/1115/downloads/ga/ga-pathways-to-coverage-ca.pdf#page=8
+values:
+  2014-01-01: true
