@@ -313,3 +313,3831 @@
       2025-01: 0
       2025-06: 0
       2025-07: 67
+
+# Historical schedule component fixtures explicitly open the payment gate.
+# That override exercises the published rate table only; it does not assert
+# that the baseline model pays historical CCAP benefits before July 2025.
+# IDHS Policy 06.05.01, July 1, 2021, Group 1A licensed home, age 3+:
+# https://www.dhs.state.il.us/page.aspx?item=106228
+- name: Case 24, historical 2021 July licensed home rate with an explicit component-only gate override.
+  period: 2021-07
+  input:
+    gov.states.il.dhs.ccap.in_effect: true
+    people:
+      person1:
+        age: {2021: 30}
+        employment_income: {2021: 24_000}
+      person2:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+  output:
+    il_ccap_eligible_child: [false, true]
+    il_ccap_county_group: GROUP_1A
+    il_ccap_child_age_group: [AGE_THREE_OR_OLDER, AGE_THREE_OR_OLDER]
+    il_ccap_care_duration: [NONE, FULL_DAY]
+    il_ccap_max_daily_rate: [0, 35.08]
+
+# Source-literal complete published tables; each record is a separate
+# parent/dependent-child household. No eligibility output is supplied as input.
+# The gate override in Cases 25-30 and 32-33 is counterfactual and component-only.
+# Case 31 deliberately has no override and preserves baseline historical zeros.
+- name: Case 25, published 2021-07 provider cells and predecessor with an explicit component-only
+    gate override.
+  period: 2021-07
+  absolute_error_margin: 0.01
+  input:
+    gov.states.il.dhs.ccap.in_effect: true
+    people:
+      person1:
+        age: {2021: 30}
+      person2:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 8}
+      person3:
+        age: {2021: 30}
+      person4:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 4}
+      person5:
+        age: {2021: 30}
+      person6:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 8}
+      person7:
+        age: {2021: 30}
+      person8:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 4}
+      person9:
+        age: {2021: 30}
+      person10:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 8}
+      person11:
+        age: {2021: 30}
+      person12:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 4}
+      person13:
+        age: {2021: 30}
+      person14:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: LE_GC}
+        childcare_hours_per_day: {2021: 8}
+      person15:
+        age: {2021: 30}
+      person16:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: LE_GC}
+        childcare_hours_per_day: {2021: 4}
+      person17:
+        age: {2021: 30}
+      person18:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+      person19:
+        age: {2021: 30}
+      person20:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4}
+      person21:
+        age: {2021: 30}
+      person22:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+      person23:
+        age: {2021: 30}
+      person24:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4}
+      person25:
+        age: {2021: 30}
+      person26:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+      person27:
+        age: {2021: 30}
+      person28:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4}
+      person29:
+        age: {2021: 30}
+      person30:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 8}
+      person31:
+        age: {2021: 30}
+      person32:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 4}
+      person33:
+        age: {2021: 30}
+      person34:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 8}
+      person35:
+        age: {2021: 30}
+      person36:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 4}
+      person37:
+        age: {2021: 30}
+      person38:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 8}
+      person39:
+        age: {2021: 30}
+      person40:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 4}
+      person41:
+        age: {2021: 30}
+      person42:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: LE_GC}
+        childcare_hours_per_day: {2021: 8}
+      person43:
+        age: {2021: 30}
+      person44:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: LE_GC}
+        childcare_hours_per_day: {2021: 4}
+      person45:
+        age: {2021: 30}
+      person46:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+      person47:
+        age: {2021: 30}
+      person48:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4}
+      person49:
+        age: {2021: 30}
+      person50:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+      person51:
+        age: {2021: 30}
+      person52:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4}
+      person53:
+        age: {2021: 30}
+      person54:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+      person55:
+        age: {2021: 30}
+      person56:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4}
+      person57:
+        age: {2021: 30}
+      person58:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 8}
+      person59:
+        age: {2021: 30}
+      person60:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 4}
+      person61:
+        age: {2021: 30}
+      person62:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 8}
+      person63:
+        age: {2021: 30}
+      person64:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 4}
+      person65:
+        age: {2021: 30}
+      person66:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 8}
+      person67:
+        age: {2021: 30}
+      person68:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: DCC_SACC}
+        childcare_hours_per_day: {2021: 4}
+      person69:
+        age: {2021: 30}
+      person70:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: LE_GC}
+        childcare_hours_per_day: {2021: 8}
+      person71:
+        age: {2021: 30}
+      person72:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: LE_GC}
+        childcare_hours_per_day: {2021: 4}
+      person73:
+        age: {2021: 30}
+      person74:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+      person75:
+        age: {2021: 30}
+      person76:
+        age: {2021: 1}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4}
+      person77:
+        age: {2021: 30}
+      person78:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+      person79:
+        age: {2021: 30}
+      person80:
+        age: {2021: 2}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4}
+      person81:
+        age: {2021: 30}
+      person82:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8}
+      person83:
+        age: {2021: 30}
+      person84:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4}
+      person85:
+        age: {2021: 30}
+      person86:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: LE_STD}
+        childcare_hours_per_day: {2021: 8}
+      person87:
+        age: {2021: 30}
+      person88:
+        age: {2021: 3}
+        is_tax_unit_dependent: {2021: true}
+        childcare_provider_type_group: {2021: LE_STD}
+        childcare_hours_per_day: {2021: 4}
+    tax_units:
+      tax_unit1: {members: &id001 [person1, person2]}
+      tax_unit2: {members: &id002 [person3, person4]}
+      tax_unit3: {members: &id003 [person5, person6]}
+      tax_unit4: {members: &id004 [person7, person8]}
+      tax_unit5: {members: &id005 [person9, person10]}
+      tax_unit6: {members: &id006 [person11, person12]}
+      tax_unit7: {members: &id007 [person13, person14]}
+      tax_unit8: {members: &id008 [person15, person16]}
+      tax_unit9: {members: &id009 [person17, person18]}
+      tax_unit10: {members: &id010 [person19, person20]}
+      tax_unit11: {members: &id011 [person21, person22]}
+      tax_unit12: {members: &id012 [person23, person24]}
+      tax_unit13: {members: &id013 [person25, person26]}
+      tax_unit14: {members: &id014 [person27, person28]}
+      tax_unit15: {members: &id015 [person29, person30]}
+      tax_unit16: {members: &id016 [person31, person32]}
+      tax_unit17: {members: &id017 [person33, person34]}
+      tax_unit18: {members: &id018 [person35, person36]}
+      tax_unit19: {members: &id019 [person37, person38]}
+      tax_unit20: {members: &id020 [person39, person40]}
+      tax_unit21: {members: &id021 [person41, person42]}
+      tax_unit22: {members: &id022 [person43, person44]}
+      tax_unit23: {members: &id023 [person45, person46]}
+      tax_unit24: {members: &id024 [person47, person48]}
+      tax_unit25: {members: &id025 [person49, person50]}
+      tax_unit26: {members: &id026 [person51, person52]}
+      tax_unit27: {members: &id027 [person53, person54]}
+      tax_unit28: {members: &id028 [person55, person56]}
+      tax_unit29: {members: &id029 [person57, person58]}
+      tax_unit30: {members: &id030 [person59, person60]}
+      tax_unit31: {members: &id031 [person61, person62]}
+      tax_unit32: {members: &id032 [person63, person64]}
+      tax_unit33: {members: &id033 [person65, person66]}
+      tax_unit34: {members: &id034 [person67, person68]}
+      tax_unit35: {members: &id035 [person69, person70]}
+      tax_unit36: {members: &id036 [person71, person72]}
+      tax_unit37: {members: &id037 [person73, person74]}
+      tax_unit38: {members: &id038 [person75, person76]}
+      tax_unit39: {members: &id039 [person77, person78]}
+      tax_unit40: {members: &id040 [person79, person80]}
+      tax_unit41: {members: &id041 [person81, person82]}
+      tax_unit42: {members: &id042 [person83, person84]}
+      tax_unit43: {members: &id043 [person85, person86]}
+      tax_unit44: {members: &id044 [person87, person88]}
+    spm_units:
+      spm_unit1: {members: *id001}
+      spm_unit2: {members: *id002}
+      spm_unit3: {members: *id003}
+      spm_unit4: {members: *id004}
+      spm_unit5: {members: *id005}
+      spm_unit6: {members: *id006}
+      spm_unit7: {members: *id007}
+      spm_unit8: {members: *id008}
+      spm_unit9: {members: *id009}
+      spm_unit10: {members: *id010}
+      spm_unit11: {members: *id011}
+      spm_unit12: {members: *id012}
+      spm_unit13: {members: *id013}
+      spm_unit14: {members: *id014}
+      spm_unit15: {members: *id015}
+      spm_unit16: {members: *id016}
+      spm_unit17: {members: *id017}
+      spm_unit18: {members: *id018}
+      spm_unit19: {members: *id019}
+      spm_unit20: {members: *id020}
+      spm_unit21: {members: *id021}
+      spm_unit22: {members: *id022}
+      spm_unit23: {members: *id023}
+      spm_unit24: {members: *id024}
+      spm_unit25: {members: *id025}
+      spm_unit26: {members: *id026}
+      spm_unit27: {members: *id027}
+      spm_unit28: {members: *id028}
+      spm_unit29: {members: *id029}
+      spm_unit30: {members: *id030}
+      spm_unit31: {members: *id031}
+      spm_unit32: {members: *id032}
+      spm_unit33: {members: *id033}
+      spm_unit34: {members: *id034}
+      spm_unit35: {members: *id035}
+      spm_unit36: {members: *id036}
+      spm_unit37: {members: *id037}
+      spm_unit38: {members: *id038}
+      spm_unit39: {members: *id039}
+      spm_unit40: {members: *id040}
+      spm_unit41: {members: *id041}
+      spm_unit42: {members: *id042}
+      spm_unit43: {members: *id043}
+      spm_unit44: {members: *id044}
+    households:
+      household1:
+        members: *id001
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household2:
+        members: *id002
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household3:
+        members: *id003
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household4:
+        members: *id004
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household5:
+        members: *id005
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household6:
+        members: *id006
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household7:
+        members: *id007
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household8:
+        members: *id008
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household9:
+        members: *id009
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household10:
+        members: *id010
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household11:
+        members: *id011
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household12:
+        members: *id012
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household13:
+        members: *id013
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household14:
+        members: *id014
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household15:
+        members: *id015
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household16:
+        members: *id016
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household17:
+        members: *id017
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household18:
+        members: *id018
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household19:
+        members: *id019
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household20:
+        members: *id020
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household21:
+        members: *id021
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household22:
+        members: *id022
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household23:
+        members: *id023
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household24:
+        members: *id024
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household25:
+        members: *id025
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household26:
+        members: *id026
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household27:
+        members: *id027
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household28:
+        members: *id028
+        state_code: {2021: IL}
+        county_str: {2021: BOONE_COUNTY_IL}
+      household29:
+        members: *id029
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household30:
+        members: *id030
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household31:
+        members: *id031
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household32:
+        members: *id032
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household33:
+        members: *id033
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household34:
+        members: *id034
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household35:
+        members: *id035
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household36:
+        members: *id036
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household37:
+        members: *id037
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household38:
+        members: *id038
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household39:
+        members: *id039
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household40:
+        members: *id040
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household41:
+        members: *id041
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household42:
+        members: *id042
+        state_code: {2021: IL}
+        county_str: {2021: ADAMS_COUNTY_IL}
+      household43:
+        members: *id043
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+      household44:
+        members: *id044
+        state_code: {2021: IL}
+        county_str: {2021: COOK_COUNTY_IL}
+  output:
+    il_ccap_max_daily_rate:
+      2021-07: [0, 56.0, 0, 28.0, 0, 45.0, 0, 22.5, 0, 38.0, 0, 19.0, 0, 33.0, 0, 16.5, 0,
+        41.39, 0, 20.7, 0, 38.57, 0, 19.29, 0, 35.08, 0, 17.54, 0, 54.0, 0, 27.0, 0, 42.0,
+        0, 21.0, 0, 35.0, 0, 17.5, 0, 28.0, 0, 14.0, 0, 37.02, 0, 18.51, 0, 34.41, 0, 17.21,
+        0, 31.58, 0, 15.79, 0, 48.0, 0, 24.0, 0, 38.0, 0, 19.0, 0, 32.0, 0, 16.0, 0, 27.0,
+        0, 13.5, 0, 34.46, 0, 17.23, 0, 31.96, 0, 15.98, 0, 29.27, 0, 14.64, 0, 19.02, 0,
+        9.51]
+- name: Case 26, published 2022-01 provider cells and predecessor with an explicit component-only
+    gate override.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    gov.states.il.dhs.ccap.in_effect: true
+    people:
+      person1:
+        age: {2021: 30, 2022: 30}
+      person2:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person3:
+        age: {2021: 30, 2022: 30}
+      person4:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person5:
+        age: {2021: 30, 2022: 30}
+      person6:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person7:
+        age: {2021: 30, 2022: 30}
+      person8:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person9:
+        age: {2021: 30, 2022: 30}
+      person10:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person11:
+        age: {2021: 30, 2022: 30}
+      person12:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person13:
+        age: {2021: 30, 2022: 30}
+      person14:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: LE_GC, 2022: LE_GC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person15:
+        age: {2021: 30, 2022: 30}
+      person16:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: LE_GC, 2022: LE_GC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person17:
+        age: {2021: 30, 2022: 30}
+      person18:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person19:
+        age: {2021: 30, 2022: 30}
+      person20:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person21:
+        age: {2021: 30, 2022: 30}
+      person22:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person23:
+        age: {2021: 30, 2022: 30}
+      person24:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person25:
+        age: {2021: 30, 2022: 30}
+      person26:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person27:
+        age: {2021: 30, 2022: 30}
+      person28:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person29:
+        age: {2021: 30, 2022: 30}
+      person30:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person31:
+        age: {2021: 30, 2022: 30}
+      person32:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person33:
+        age: {2021: 30, 2022: 30}
+      person34:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person35:
+        age: {2021: 30, 2022: 30}
+      person36:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person37:
+        age: {2021: 30, 2022: 30}
+      person38:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person39:
+        age: {2021: 30, 2022: 30}
+      person40:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person41:
+        age: {2021: 30, 2022: 30}
+      person42:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: LE_GC, 2022: LE_GC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person43:
+        age: {2021: 30, 2022: 30}
+      person44:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: LE_GC, 2022: LE_GC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person45:
+        age: {2021: 30, 2022: 30}
+      person46:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person47:
+        age: {2021: 30, 2022: 30}
+      person48:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person49:
+        age: {2021: 30, 2022: 30}
+      person50:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person51:
+        age: {2021: 30, 2022: 30}
+      person52:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person53:
+        age: {2021: 30, 2022: 30}
+      person54:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person55:
+        age: {2021: 30, 2022: 30}
+      person56:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person57:
+        age: {2021: 30, 2022: 30}
+      person58:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person59:
+        age: {2021: 30, 2022: 30}
+      person60:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person61:
+        age: {2021: 30, 2022: 30}
+      person62:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person63:
+        age: {2021: 30, 2022: 30}
+      person64:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person65:
+        age: {2021: 30, 2022: 30}
+      person66:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person67:
+        age: {2021: 30, 2022: 30}
+      person68:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: DCC_SACC, 2022: DCC_SACC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person69:
+        age: {2021: 30, 2022: 30}
+      person70:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: LE_GC, 2022: LE_GC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person71:
+        age: {2021: 30, 2022: 30}
+      person72:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: LE_GC, 2022: LE_GC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person73:
+        age: {2021: 30, 2022: 30}
+      person74:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person75:
+        age: {2021: 30, 2022: 30}
+      person76:
+        age: {2021: 1, 2022: 1}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person77:
+        age: {2021: 30, 2022: 30}
+      person78:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person79:
+        age: {2021: 30, 2022: 30}
+      person80:
+        age: {2021: 2, 2022: 2}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person81:
+        age: {2021: 30, 2022: 30}
+      person82:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person83:
+        age: {2021: 30, 2022: 30}
+      person84:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: FDC_GFDC, 2022: FDC_GFDC}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+      person85:
+        age: {2021: 30, 2022: 30}
+      person86:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: LE_STD, 2022: LE_STD}
+        childcare_hours_per_day: {2021: 8, 2022: 8}
+      person87:
+        age: {2021: 30, 2022: 30}
+      person88:
+        age: {2021: 3, 2022: 3}
+        is_tax_unit_dependent: {2021: true, 2022: true}
+        childcare_provider_type_group: {2021: LE_STD, 2022: LE_STD}
+        childcare_hours_per_day: {2021: 4, 2022: 4}
+    tax_units:
+      tax_unit1: {members: &id045 [person1, person2]}
+      tax_unit2: {members: &id046 [person3, person4]}
+      tax_unit3: {members: &id047 [person5, person6]}
+      tax_unit4: {members: &id048 [person7, person8]}
+      tax_unit5: {members: &id049 [person9, person10]}
+      tax_unit6: {members: &id050 [person11, person12]}
+      tax_unit7: {members: &id051 [person13, person14]}
+      tax_unit8: {members: &id052 [person15, person16]}
+      tax_unit9: {members: &id053 [person17, person18]}
+      tax_unit10: {members: &id054 [person19, person20]}
+      tax_unit11: {members: &id055 [person21, person22]}
+      tax_unit12: {members: &id056 [person23, person24]}
+      tax_unit13: {members: &id057 [person25, person26]}
+      tax_unit14: {members: &id058 [person27, person28]}
+      tax_unit15: {members: &id059 [person29, person30]}
+      tax_unit16: {members: &id060 [person31, person32]}
+      tax_unit17: {members: &id061 [person33, person34]}
+      tax_unit18: {members: &id062 [person35, person36]}
+      tax_unit19: {members: &id063 [person37, person38]}
+      tax_unit20: {members: &id064 [person39, person40]}
+      tax_unit21: {members: &id065 [person41, person42]}
+      tax_unit22: {members: &id066 [person43, person44]}
+      tax_unit23: {members: &id067 [person45, person46]}
+      tax_unit24: {members: &id068 [person47, person48]}
+      tax_unit25: {members: &id069 [person49, person50]}
+      tax_unit26: {members: &id070 [person51, person52]}
+      tax_unit27: {members: &id071 [person53, person54]}
+      tax_unit28: {members: &id072 [person55, person56]}
+      tax_unit29: {members: &id073 [person57, person58]}
+      tax_unit30: {members: &id074 [person59, person60]}
+      tax_unit31: {members: &id075 [person61, person62]}
+      tax_unit32: {members: &id076 [person63, person64]}
+      tax_unit33: {members: &id077 [person65, person66]}
+      tax_unit34: {members: &id078 [person67, person68]}
+      tax_unit35: {members: &id079 [person69, person70]}
+      tax_unit36: {members: &id080 [person71, person72]}
+      tax_unit37: {members: &id081 [person73, person74]}
+      tax_unit38: {members: &id082 [person75, person76]}
+      tax_unit39: {members: &id083 [person77, person78]}
+      tax_unit40: {members: &id084 [person79, person80]}
+      tax_unit41: {members: &id085 [person81, person82]}
+      tax_unit42: {members: &id086 [person83, person84]}
+      tax_unit43: {members: &id087 [person85, person86]}
+      tax_unit44: {members: &id088 [person87, person88]}
+    spm_units:
+      spm_unit1: {members: *id045}
+      spm_unit2: {members: *id046}
+      spm_unit3: {members: *id047}
+      spm_unit4: {members: *id048}
+      spm_unit5: {members: *id049}
+      spm_unit6: {members: *id050}
+      spm_unit7: {members: *id051}
+      spm_unit8: {members: *id052}
+      spm_unit9: {members: *id053}
+      spm_unit10: {members: *id054}
+      spm_unit11: {members: *id055}
+      spm_unit12: {members: *id056}
+      spm_unit13: {members: *id057}
+      spm_unit14: {members: *id058}
+      spm_unit15: {members: *id059}
+      spm_unit16: {members: *id060}
+      spm_unit17: {members: *id061}
+      spm_unit18: {members: *id062}
+      spm_unit19: {members: *id063}
+      spm_unit20: {members: *id064}
+      spm_unit21: {members: *id065}
+      spm_unit22: {members: *id066}
+      spm_unit23: {members: *id067}
+      spm_unit24: {members: *id068}
+      spm_unit25: {members: *id069}
+      spm_unit26: {members: *id070}
+      spm_unit27: {members: *id071}
+      spm_unit28: {members: *id072}
+      spm_unit29: {members: *id073}
+      spm_unit30: {members: *id074}
+      spm_unit31: {members: *id075}
+      spm_unit32: {members: *id076}
+      spm_unit33: {members: *id077}
+      spm_unit34: {members: *id078}
+      spm_unit35: {members: *id079}
+      spm_unit36: {members: *id080}
+      spm_unit37: {members: *id081}
+      spm_unit38: {members: *id082}
+      spm_unit39: {members: *id083}
+      spm_unit40: {members: *id084}
+      spm_unit41: {members: *id085}
+      spm_unit42: {members: *id086}
+      spm_unit43: {members: *id087}
+      spm_unit44: {members: *id088}
+    households:
+      household1:
+        members: *id045
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household2:
+        members: *id046
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household3:
+        members: *id047
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household4:
+        members: *id048
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household5:
+        members: *id049
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household6:
+        members: *id050
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household7:
+        members: *id051
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household8:
+        members: *id052
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household9:
+        members: *id053
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household10:
+        members: *id054
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household11:
+        members: *id055
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household12:
+        members: *id056
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household13:
+        members: *id057
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household14:
+        members: *id058
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household15:
+        members: *id059
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household16:
+        members: *id060
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household17:
+        members: *id061
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household18:
+        members: *id062
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household19:
+        members: *id063
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household20:
+        members: *id064
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household21:
+        members: *id065
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household22:
+        members: *id066
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household23:
+        members: *id067
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household24:
+        members: *id068
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household25:
+        members: *id069
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household26:
+        members: *id070
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household27:
+        members: *id071
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household28:
+        members: *id072
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: BOONE_COUNTY_IL, 2022: BOONE_COUNTY_IL}
+      household29:
+        members: *id073
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household30:
+        members: *id074
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household31:
+        members: *id075
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household32:
+        members: *id076
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household33:
+        members: *id077
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household34:
+        members: *id078
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household35:
+        members: *id079
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household36:
+        members: *id080
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household37:
+        members: *id081
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household38:
+        members: *id082
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household39:
+        members: *id083
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household40:
+        members: *id084
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household41:
+        members: *id085
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household42:
+        members: *id086
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: ADAMS_COUNTY_IL, 2022: ADAMS_COUNTY_IL}
+      household43:
+        members: *id087
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+      household44:
+        members: *id088
+        state_code: {2021: IL, 2022: IL}
+        county_str: {2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL}
+  output:
+    il_ccap_max_daily_rate:
+      2021-12: [0, 56.0, 0, 28.0, 0, 45.0, 0, 22.5, 0, 38.0, 0, 19.0, 0, 33.0, 0, 16.5, 0,
+        41.39, 0, 20.7, 0, 38.57, 0, 19.29, 0, 35.08, 0, 17.54, 0, 54.0, 0, 27.0, 0, 42.0,
+        0, 21.0, 0, 35.0, 0, 17.5, 0, 28.0, 0, 14.0, 0, 37.02, 0, 18.51, 0, 34.41, 0, 17.21,
+        0, 31.58, 0, 15.79, 0, 48.0, 0, 24.0, 0, 38.0, 0, 19.0, 0, 32.0, 0, 16.0, 0, 27.0,
+        0, 13.5, 0, 34.46, 0, 17.23, 0, 31.96, 0, 15.98, 0, 29.27, 0, 14.64, 0, 19.02, 0,
+        9.51]
+      2022-01: [0, 61.0, 0, 31.0, 0, 49.0, 0, 25.0, 0, 42.0, 0, 21.0, 0, 37.0, 0, 19.0, 0,
+        44.34, 0, 22.17, 0, 41.32, 0, 20.66, 0, 37.58, 0, 18.79, 0, 58.0, 0, 29.0, 0, 46.0,
+        0, 23.0, 0, 39.0, 0, 20.0, 0, 31.0, 0, 16.0, 0, 39.65, 0, 19.82, 0, 36.86, 0, 18.43,
+        0, 33.83, 0, 16.91, 0, 52.0, 0, 26.0, 0, 42.0, 0, 21.0, 0, 36.0, 0, 18.0, 0, 29.0,
+        0, 15.0, 0, 36.92, 0, 18.46, 0, 34.23, 0, 17.11, 0, 31.35, 0, 15.68, 0, 20.37, 0,
+        10.19]
+- name: Case 27, published 2022-07 provider cells and predecessor with an explicit component-only
+    gate override.
+  period: 2022-07
+  absolute_error_margin: 0.01
+  input:
+    gov.states.il.dhs.ccap.in_effect: true
+    people:
+      person1:
+        age: {2022: 30}
+      person2:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person3:
+        age: {2022: 30}
+      person4:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person5:
+        age: {2022: 30}
+      person6:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person7:
+        age: {2022: 30}
+      person8:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person9:
+        age: {2022: 30}
+      person10:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person11:
+        age: {2022: 30}
+      person12:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person13:
+        age: {2022: 30}
+      person14:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 8}
+      person15:
+        age: {2022: 30}
+      person16:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 4}
+      person17:
+        age: {2022: 30}
+      person18:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person19:
+        age: {2022: 30}
+      person20:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person21:
+        age: {2022: 30}
+      person22:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person23:
+        age: {2022: 30}
+      person24:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person25:
+        age: {2022: 30}
+      person26:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person27:
+        age: {2022: 30}
+      person28:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person29:
+        age: {2022: 30}
+      person30:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person31:
+        age: {2022: 30}
+      person32:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person33:
+        age: {2022: 30}
+      person34:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person35:
+        age: {2022: 30}
+      person36:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person37:
+        age: {2022: 30}
+      person38:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person39:
+        age: {2022: 30}
+      person40:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person41:
+        age: {2022: 30}
+      person42:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 8}
+      person43:
+        age: {2022: 30}
+      person44:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 4}
+      person45:
+        age: {2022: 30}
+      person46:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person47:
+        age: {2022: 30}
+      person48:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person49:
+        age: {2022: 30}
+      person50:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person51:
+        age: {2022: 30}
+      person52:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person53:
+        age: {2022: 30}
+      person54:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person55:
+        age: {2022: 30}
+      person56:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person57:
+        age: {2022: 30}
+      person58:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person59:
+        age: {2022: 30}
+      person60:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person61:
+        age: {2022: 30}
+      person62:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person63:
+        age: {2022: 30}
+      person64:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person65:
+        age: {2022: 30}
+      person66:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person67:
+        age: {2022: 30}
+      person68:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person69:
+        age: {2022: 30}
+      person70:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 8}
+      person71:
+        age: {2022: 30}
+      person72:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 4}
+      person73:
+        age: {2022: 30}
+      person74:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person75:
+        age: {2022: 30}
+      person76:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person77:
+        age: {2022: 30}
+      person78:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person79:
+        age: {2022: 30}
+      person80:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person81:
+        age: {2022: 30}
+      person82:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person83:
+        age: {2022: 30}
+      person84:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person85:
+        age: {2022: 30}
+      person86:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_STD}
+        childcare_hours_per_day: {2022: 8}
+      person87:
+        age: {2022: 30}
+      person88:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_STD}
+        childcare_hours_per_day: {2022: 4}
+    tax_units:
+      tax_unit1: {members: &id089 [person1, person2]}
+      tax_unit2: {members: &id090 [person3, person4]}
+      tax_unit3: {members: &id091 [person5, person6]}
+      tax_unit4: {members: &id092 [person7, person8]}
+      tax_unit5: {members: &id093 [person9, person10]}
+      tax_unit6: {members: &id094 [person11, person12]}
+      tax_unit7: {members: &id095 [person13, person14]}
+      tax_unit8: {members: &id096 [person15, person16]}
+      tax_unit9: {members: &id097 [person17, person18]}
+      tax_unit10: {members: &id098 [person19, person20]}
+      tax_unit11: {members: &id099 [person21, person22]}
+      tax_unit12: {members: &id100 [person23, person24]}
+      tax_unit13: {members: &id101 [person25, person26]}
+      tax_unit14: {members: &id102 [person27, person28]}
+      tax_unit15: {members: &id103 [person29, person30]}
+      tax_unit16: {members: &id104 [person31, person32]}
+      tax_unit17: {members: &id105 [person33, person34]}
+      tax_unit18: {members: &id106 [person35, person36]}
+      tax_unit19: {members: &id107 [person37, person38]}
+      tax_unit20: {members: &id108 [person39, person40]}
+      tax_unit21: {members: &id109 [person41, person42]}
+      tax_unit22: {members: &id110 [person43, person44]}
+      tax_unit23: {members: &id111 [person45, person46]}
+      tax_unit24: {members: &id112 [person47, person48]}
+      tax_unit25: {members: &id113 [person49, person50]}
+      tax_unit26: {members: &id114 [person51, person52]}
+      tax_unit27: {members: &id115 [person53, person54]}
+      tax_unit28: {members: &id116 [person55, person56]}
+      tax_unit29: {members: &id117 [person57, person58]}
+      tax_unit30: {members: &id118 [person59, person60]}
+      tax_unit31: {members: &id119 [person61, person62]}
+      tax_unit32: {members: &id120 [person63, person64]}
+      tax_unit33: {members: &id121 [person65, person66]}
+      tax_unit34: {members: &id122 [person67, person68]}
+      tax_unit35: {members: &id123 [person69, person70]}
+      tax_unit36: {members: &id124 [person71, person72]}
+      tax_unit37: {members: &id125 [person73, person74]}
+      tax_unit38: {members: &id126 [person75, person76]}
+      tax_unit39: {members: &id127 [person77, person78]}
+      tax_unit40: {members: &id128 [person79, person80]}
+      tax_unit41: {members: &id129 [person81, person82]}
+      tax_unit42: {members: &id130 [person83, person84]}
+      tax_unit43: {members: &id131 [person85, person86]}
+      tax_unit44: {members: &id132 [person87, person88]}
+    spm_units:
+      spm_unit1: {members: *id089}
+      spm_unit2: {members: *id090}
+      spm_unit3: {members: *id091}
+      spm_unit4: {members: *id092}
+      spm_unit5: {members: *id093}
+      spm_unit6: {members: *id094}
+      spm_unit7: {members: *id095}
+      spm_unit8: {members: *id096}
+      spm_unit9: {members: *id097}
+      spm_unit10: {members: *id098}
+      spm_unit11: {members: *id099}
+      spm_unit12: {members: *id100}
+      spm_unit13: {members: *id101}
+      spm_unit14: {members: *id102}
+      spm_unit15: {members: *id103}
+      spm_unit16: {members: *id104}
+      spm_unit17: {members: *id105}
+      spm_unit18: {members: *id106}
+      spm_unit19: {members: *id107}
+      spm_unit20: {members: *id108}
+      spm_unit21: {members: *id109}
+      spm_unit22: {members: *id110}
+      spm_unit23: {members: *id111}
+      spm_unit24: {members: *id112}
+      spm_unit25: {members: *id113}
+      spm_unit26: {members: *id114}
+      spm_unit27: {members: *id115}
+      spm_unit28: {members: *id116}
+      spm_unit29: {members: *id117}
+      spm_unit30: {members: *id118}
+      spm_unit31: {members: *id119}
+      spm_unit32: {members: *id120}
+      spm_unit33: {members: *id121}
+      spm_unit34: {members: *id122}
+      spm_unit35: {members: *id123}
+      spm_unit36: {members: *id124}
+      spm_unit37: {members: *id125}
+      spm_unit38: {members: *id126}
+      spm_unit39: {members: *id127}
+      spm_unit40: {members: *id128}
+      spm_unit41: {members: *id129}
+      spm_unit42: {members: *id130}
+      spm_unit43: {members: *id131}
+      spm_unit44: {members: *id132}
+    households:
+      household1:
+        members: *id089
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household2:
+        members: *id090
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household3:
+        members: *id091
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household4:
+        members: *id092
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household5:
+        members: *id093
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household6:
+        members: *id094
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household7:
+        members: *id095
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household8:
+        members: *id096
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household9:
+        members: *id097
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household10:
+        members: *id098
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household11:
+        members: *id099
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household12:
+        members: *id100
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household13:
+        members: *id101
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household14:
+        members: *id102
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household15:
+        members: *id103
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household16:
+        members: *id104
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household17:
+        members: *id105
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household18:
+        members: *id106
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household19:
+        members: *id107
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household20:
+        members: *id108
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household21:
+        members: *id109
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household22:
+        members: *id110
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household23:
+        members: *id111
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household24:
+        members: *id112
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household25:
+        members: *id113
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household26:
+        members: *id114
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household27:
+        members: *id115
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household28:
+        members: *id116
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household29:
+        members: *id117
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household30:
+        members: *id118
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household31:
+        members: *id119
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household32:
+        members: *id120
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household33:
+        members: *id121
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household34:
+        members: *id122
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household35:
+        members: *id123
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household36:
+        members: *id124
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household37:
+        members: *id125
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household38:
+        members: *id126
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household39:
+        members: *id127
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household40:
+        members: *id128
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household41:
+        members: *id129
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household42:
+        members: *id130
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household43:
+        members: *id131
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household44:
+        members: *id132
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+  output:
+    il_ccap_max_daily_rate:
+      2022-06: [0, 61.0, 0, 31.0, 0, 49.0, 0, 25.0, 0, 42.0, 0, 21.0, 0, 37.0, 0, 19.0, 0,
+        44.34, 0, 22.17, 0, 41.32, 0, 20.66, 0, 37.58, 0, 18.79, 0, 58.0, 0, 29.0, 0, 46.0,
+        0, 23.0, 0, 39.0, 0, 20.0, 0, 31.0, 0, 16.0, 0, 39.65, 0, 19.82, 0, 36.86, 0, 18.43,
+        0, 33.83, 0, 16.91, 0, 52.0, 0, 26.0, 0, 42.0, 0, 21.0, 0, 36.0, 0, 18.0, 0, 29.0,
+        0, 15.0, 0, 36.92, 0, 18.46, 0, 34.23, 0, 17.11, 0, 31.35, 0, 15.68, 0, 20.37, 0,
+        10.19]
+      2022-07: [0, 64.0, 0, 32.0, 0, 51.0, 0, 26.0, 0, 44.0, 0, 22.0, 0, 39.0, 0, 20.0, 0,
+        45.89, 0, 22.94, 0, 42.76, 0, 21.38, 0, 38.9, 0, 19.45, 0, 61.0, 0, 31.0, 0, 48.0,
+        0, 24.0, 0, 41.0, 0, 21.0, 0, 33.0, 0, 17.0, 0, 41.04, 0, 20.52, 0, 38.15, 0, 19.08,
+        0, 35.02, 0, 17.51, 0, 54.0, 0, 27.0, 0, 44.0, 0, 22.0, 0, 38.0, 0, 19.0, 0, 31.0,
+        0, 16.0, 0, 38.21, 0, 19.11, 0, 35.43, 0, 17.71, 0, 32.45, 0, 16.23, 0, 21.09, 0,
+        10.54]
+- name: Case 28, published 2022-12 provider cells and predecessor with an explicit component-only
+    gate override.
+  period: 2022-12
+  absolute_error_margin: 0.01
+  input:
+    gov.states.il.dhs.ccap.in_effect: true
+    people:
+      person1:
+        age: {2022: 30}
+      person2:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person3:
+        age: {2022: 30}
+      person4:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person5:
+        age: {2022: 30}
+      person6:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person7:
+        age: {2022: 30}
+      person8:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person9:
+        age: {2022: 30}
+      person10:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person11:
+        age: {2022: 30}
+      person12:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person13:
+        age: {2022: 30}
+      person14:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 8}
+      person15:
+        age: {2022: 30}
+      person16:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 4}
+      person17:
+        age: {2022: 30}
+      person18:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person19:
+        age: {2022: 30}
+      person20:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person21:
+        age: {2022: 30}
+      person22:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person23:
+        age: {2022: 30}
+      person24:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person25:
+        age: {2022: 30}
+      person26:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person27:
+        age: {2022: 30}
+      person28:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person29:
+        age: {2022: 30}
+      person30:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person31:
+        age: {2022: 30}
+      person32:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person33:
+        age: {2022: 30}
+      person34:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person35:
+        age: {2022: 30}
+      person36:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person37:
+        age: {2022: 30}
+      person38:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person39:
+        age: {2022: 30}
+      person40:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person41:
+        age: {2022: 30}
+      person42:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 8}
+      person43:
+        age: {2022: 30}
+      person44:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 4}
+      person45:
+        age: {2022: 30}
+      person46:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person47:
+        age: {2022: 30}
+      person48:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person49:
+        age: {2022: 30}
+      person50:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person51:
+        age: {2022: 30}
+      person52:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person53:
+        age: {2022: 30}
+      person54:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person55:
+        age: {2022: 30}
+      person56:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person57:
+        age: {2022: 30}
+      person58:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person59:
+        age: {2022: 30}
+      person60:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person61:
+        age: {2022: 30}
+      person62:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person63:
+        age: {2022: 30}
+      person64:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person65:
+        age: {2022: 30}
+      person66:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 8}
+      person67:
+        age: {2022: 30}
+      person68:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4}
+      person69:
+        age: {2022: 30}
+      person70:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 8}
+      person71:
+        age: {2022: 30}
+      person72:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_GC}
+        childcare_hours_per_day: {2022: 4}
+      person73:
+        age: {2022: 30}
+      person74:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person75:
+        age: {2022: 30}
+      person76:
+        age: {2022: 1}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person77:
+        age: {2022: 30}
+      person78:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person79:
+        age: {2022: 30}
+      person80:
+        age: {2022: 2}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person81:
+        age: {2022: 30}
+      person82:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 8}
+      person83:
+        age: {2022: 30}
+      person84:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: FDC_GFDC}
+        childcare_hours_per_day: {2022: 4}
+      person85:
+        age: {2022: 30}
+      person86:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_STD}
+        childcare_hours_per_day: {2022: 8}
+      person87:
+        age: {2022: 30}
+      person88:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: LE_STD}
+        childcare_hours_per_day: {2022: 4}
+    tax_units:
+      tax_unit1: {members: &id133 [person1, person2]}
+      tax_unit2: {members: &id134 [person3, person4]}
+      tax_unit3: {members: &id135 [person5, person6]}
+      tax_unit4: {members: &id136 [person7, person8]}
+      tax_unit5: {members: &id137 [person9, person10]}
+      tax_unit6: {members: &id138 [person11, person12]}
+      tax_unit7: {members: &id139 [person13, person14]}
+      tax_unit8: {members: &id140 [person15, person16]}
+      tax_unit9: {members: &id141 [person17, person18]}
+      tax_unit10: {members: &id142 [person19, person20]}
+      tax_unit11: {members: &id143 [person21, person22]}
+      tax_unit12: {members: &id144 [person23, person24]}
+      tax_unit13: {members: &id145 [person25, person26]}
+      tax_unit14: {members: &id146 [person27, person28]}
+      tax_unit15: {members: &id147 [person29, person30]}
+      tax_unit16: {members: &id148 [person31, person32]}
+      tax_unit17: {members: &id149 [person33, person34]}
+      tax_unit18: {members: &id150 [person35, person36]}
+      tax_unit19: {members: &id151 [person37, person38]}
+      tax_unit20: {members: &id152 [person39, person40]}
+      tax_unit21: {members: &id153 [person41, person42]}
+      tax_unit22: {members: &id154 [person43, person44]}
+      tax_unit23: {members: &id155 [person45, person46]}
+      tax_unit24: {members: &id156 [person47, person48]}
+      tax_unit25: {members: &id157 [person49, person50]}
+      tax_unit26: {members: &id158 [person51, person52]}
+      tax_unit27: {members: &id159 [person53, person54]}
+      tax_unit28: {members: &id160 [person55, person56]}
+      tax_unit29: {members: &id161 [person57, person58]}
+      tax_unit30: {members: &id162 [person59, person60]}
+      tax_unit31: {members: &id163 [person61, person62]}
+      tax_unit32: {members: &id164 [person63, person64]}
+      tax_unit33: {members: &id165 [person65, person66]}
+      tax_unit34: {members: &id166 [person67, person68]}
+      tax_unit35: {members: &id167 [person69, person70]}
+      tax_unit36: {members: &id168 [person71, person72]}
+      tax_unit37: {members: &id169 [person73, person74]}
+      tax_unit38: {members: &id170 [person75, person76]}
+      tax_unit39: {members: &id171 [person77, person78]}
+      tax_unit40: {members: &id172 [person79, person80]}
+      tax_unit41: {members: &id173 [person81, person82]}
+      tax_unit42: {members: &id174 [person83, person84]}
+      tax_unit43: {members: &id175 [person85, person86]}
+      tax_unit44: {members: &id176 [person87, person88]}
+    spm_units:
+      spm_unit1: {members: *id133}
+      spm_unit2: {members: *id134}
+      spm_unit3: {members: *id135}
+      spm_unit4: {members: *id136}
+      spm_unit5: {members: *id137}
+      spm_unit6: {members: *id138}
+      spm_unit7: {members: *id139}
+      spm_unit8: {members: *id140}
+      spm_unit9: {members: *id141}
+      spm_unit10: {members: *id142}
+      spm_unit11: {members: *id143}
+      spm_unit12: {members: *id144}
+      spm_unit13: {members: *id145}
+      spm_unit14: {members: *id146}
+      spm_unit15: {members: *id147}
+      spm_unit16: {members: *id148}
+      spm_unit17: {members: *id149}
+      spm_unit18: {members: *id150}
+      spm_unit19: {members: *id151}
+      spm_unit20: {members: *id152}
+      spm_unit21: {members: *id153}
+      spm_unit22: {members: *id154}
+      spm_unit23: {members: *id155}
+      spm_unit24: {members: *id156}
+      spm_unit25: {members: *id157}
+      spm_unit26: {members: *id158}
+      spm_unit27: {members: *id159}
+      spm_unit28: {members: *id160}
+      spm_unit29: {members: *id161}
+      spm_unit30: {members: *id162}
+      spm_unit31: {members: *id163}
+      spm_unit32: {members: *id164}
+      spm_unit33: {members: *id165}
+      spm_unit34: {members: *id166}
+      spm_unit35: {members: *id167}
+      spm_unit36: {members: *id168}
+      spm_unit37: {members: *id169}
+      spm_unit38: {members: *id170}
+      spm_unit39: {members: *id171}
+      spm_unit40: {members: *id172}
+      spm_unit41: {members: *id173}
+      spm_unit42: {members: *id174}
+      spm_unit43: {members: *id175}
+      spm_unit44: {members: *id176}
+    households:
+      household1:
+        members: *id133
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household2:
+        members: *id134
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household3:
+        members: *id135
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household4:
+        members: *id136
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household5:
+        members: *id137
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household6:
+        members: *id138
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household7:
+        members: *id139
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household8:
+        members: *id140
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household9:
+        members: *id141
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household10:
+        members: *id142
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household11:
+        members: *id143
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household12:
+        members: *id144
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household13:
+        members: *id145
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household14:
+        members: *id146
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household15:
+        members: *id147
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household16:
+        members: *id148
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household17:
+        members: *id149
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household18:
+        members: *id150
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household19:
+        members: *id151
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household20:
+        members: *id152
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household21:
+        members: *id153
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household22:
+        members: *id154
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household23:
+        members: *id155
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household24:
+        members: *id156
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household25:
+        members: *id157
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household26:
+        members: *id158
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household27:
+        members: *id159
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household28:
+        members: *id160
+        state_code: {2022: IL}
+        county_str: {2022: BOONE_COUNTY_IL}
+      household29:
+        members: *id161
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household30:
+        members: *id162
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household31:
+        members: *id163
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household32:
+        members: *id164
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household33:
+        members: *id165
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household34:
+        members: *id166
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household35:
+        members: *id167
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household36:
+        members: *id168
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household37:
+        members: *id169
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household38:
+        members: *id170
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household39:
+        members: *id171
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household40:
+        members: *id172
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household41:
+        members: *id173
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household42:
+        members: *id174
+        state_code: {2022: IL}
+        county_str: {2022: ADAMS_COUNTY_IL}
+      household43:
+        members: *id175
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household44:
+        members: *id176
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+  output:
+    il_ccap_max_daily_rate:
+      2022-11: [0, 64.0, 0, 32.0, 0, 51.0, 0, 26.0, 0, 44.0, 0, 22.0, 0, 39.0, 0, 20.0, 0,
+        45.89, 0, 22.94, 0, 42.76, 0, 21.38, 0, 38.9, 0, 19.45, 0, 61.0, 0, 31.0, 0, 48.0,
+        0, 24.0, 0, 41.0, 0, 21.0, 0, 33.0, 0, 17.0, 0, 41.04, 0, 20.52, 0, 38.15, 0, 19.08,
+        0, 35.02, 0, 17.51, 0, 54.0, 0, 27.0, 0, 44.0, 0, 22.0, 0, 38.0, 0, 19.0, 0, 31.0,
+        0, 16.0, 0, 38.21, 0, 19.11, 0, 35.43, 0, 17.71, 0, 32.45, 0, 16.23, 0, 21.09, 0,
+        10.54]
+      2022-12: [0, 67.0, 0, 34.0, 0, 54.0, 0, 27.0, 0, 46.0, 0, 23.0, 0, 41.0, 0, 21.0, 0,
+        47.96, 0, 23.98, 0, 44.69, 0, 22.34, 0, 40.65, 0, 20.32, 0, 64.0, 0, 32.0, 0, 51.0,
+        0, 26.0, 0, 43.0, 0, 22.0, 0, 35.0, 0, 18.0, 0, 42.89, 0, 21.44, 0, 39.86, 0, 19.93,
+        0, 36.59, 0, 18.3, 0, 57.0, 0, 29.0, 0, 46.0, 0, 23.0, 0, 40.0, 0, 20.0, 0, 33.0,
+        0, 17.0, 0, 39.93, 0, 19.97, 0, 37.02, 0, 18.51, 0, 33.91, 0, 16.96, 0, 22.04, 0,
+        11.02]
+- name: Case 29, published 2024-01 provider cells and predecessor with an explicit component-only
+    gate override.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    gov.states.il.dhs.ccap.in_effect: true
+    people:
+      person1:
+        age: {2023: 30, 2024: 30}
+      person2:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person3:
+        age: {2023: 30, 2024: 30}
+      person4:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person5:
+        age: {2023: 30, 2024: 30}
+      person6:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person7:
+        age: {2023: 30, 2024: 30}
+      person8:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person9:
+        age: {2023: 30, 2024: 30}
+      person10:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person11:
+        age: {2023: 30, 2024: 30}
+      person12:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person13:
+        age: {2023: 30, 2024: 30}
+      person14:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: LE_GC, 2024: LE_GC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person15:
+        age: {2023: 30, 2024: 30}
+      person16:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: LE_GC, 2024: LE_GC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person17:
+        age: {2023: 30, 2024: 30}
+      person18:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person19:
+        age: {2023: 30, 2024: 30}
+      person20:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person21:
+        age: {2023: 30, 2024: 30}
+      person22:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person23:
+        age: {2023: 30, 2024: 30}
+      person24:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person25:
+        age: {2023: 30, 2024: 30}
+      person26:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person27:
+        age: {2023: 30, 2024: 30}
+      person28:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person29:
+        age: {2023: 30, 2024: 30}
+      person30:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person31:
+        age: {2023: 30, 2024: 30}
+      person32:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person33:
+        age: {2023: 30, 2024: 30}
+      person34:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person35:
+        age: {2023: 30, 2024: 30}
+      person36:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person37:
+        age: {2023: 30, 2024: 30}
+      person38:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person39:
+        age: {2023: 30, 2024: 30}
+      person40:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person41:
+        age: {2023: 30, 2024: 30}
+      person42:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: LE_GC, 2024: LE_GC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person43:
+        age: {2023: 30, 2024: 30}
+      person44:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: LE_GC, 2024: LE_GC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person45:
+        age: {2023: 30, 2024: 30}
+      person46:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person47:
+        age: {2023: 30, 2024: 30}
+      person48:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person49:
+        age: {2023: 30, 2024: 30}
+      person50:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person51:
+        age: {2023: 30, 2024: 30}
+      person52:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person53:
+        age: {2023: 30, 2024: 30}
+      person54:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person55:
+        age: {2023: 30, 2024: 30}
+      person56:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person57:
+        age: {2023: 30, 2024: 30}
+      person58:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person59:
+        age: {2023: 30, 2024: 30}
+      person60:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person61:
+        age: {2023: 30, 2024: 30}
+      person62:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person63:
+        age: {2023: 30, 2024: 30}
+      person64:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person65:
+        age: {2023: 30, 2024: 30}
+      person66:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person67:
+        age: {2023: 30, 2024: 30}
+      person68:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: DCC_SACC, 2024: DCC_SACC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person69:
+        age: {2023: 30, 2024: 30}
+      person70:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: LE_GC, 2024: LE_GC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person71:
+        age: {2023: 30, 2024: 30}
+      person72:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: LE_GC, 2024: LE_GC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person73:
+        age: {2023: 30, 2024: 30}
+      person74:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person75:
+        age: {2023: 30, 2024: 30}
+      person76:
+        age: {2023: 1, 2024: 1}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person77:
+        age: {2023: 30, 2024: 30}
+      person78:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person79:
+        age: {2023: 30, 2024: 30}
+      person80:
+        age: {2023: 2, 2024: 2}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person81:
+        age: {2023: 30, 2024: 30}
+      person82:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person83:
+        age: {2023: 30, 2024: 30}
+      person84:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: FDC_GFDC, 2024: FDC_GFDC}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+      person85:
+        age: {2023: 30, 2024: 30}
+      person86:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: LE_STD, 2024: LE_STD}
+        childcare_hours_per_day: {2023: 8, 2024: 8}
+      person87:
+        age: {2023: 30, 2024: 30}
+      person88:
+        age: {2023: 3, 2024: 3}
+        is_tax_unit_dependent: {2023: true, 2024: true}
+        childcare_provider_type_group: {2023: LE_STD, 2024: LE_STD}
+        childcare_hours_per_day: {2023: 4, 2024: 4}
+    tax_units:
+      tax_unit1: {members: &id177 [person1, person2]}
+      tax_unit2: {members: &id178 [person3, person4]}
+      tax_unit3: {members: &id179 [person5, person6]}
+      tax_unit4: {members: &id180 [person7, person8]}
+      tax_unit5: {members: &id181 [person9, person10]}
+      tax_unit6: {members: &id182 [person11, person12]}
+      tax_unit7: {members: &id183 [person13, person14]}
+      tax_unit8: {members: &id184 [person15, person16]}
+      tax_unit9: {members: &id185 [person17, person18]}
+      tax_unit10: {members: &id186 [person19, person20]}
+      tax_unit11: {members: &id187 [person21, person22]}
+      tax_unit12: {members: &id188 [person23, person24]}
+      tax_unit13: {members: &id189 [person25, person26]}
+      tax_unit14: {members: &id190 [person27, person28]}
+      tax_unit15: {members: &id191 [person29, person30]}
+      tax_unit16: {members: &id192 [person31, person32]}
+      tax_unit17: {members: &id193 [person33, person34]}
+      tax_unit18: {members: &id194 [person35, person36]}
+      tax_unit19: {members: &id195 [person37, person38]}
+      tax_unit20: {members: &id196 [person39, person40]}
+      tax_unit21: {members: &id197 [person41, person42]}
+      tax_unit22: {members: &id198 [person43, person44]}
+      tax_unit23: {members: &id199 [person45, person46]}
+      tax_unit24: {members: &id200 [person47, person48]}
+      tax_unit25: {members: &id201 [person49, person50]}
+      tax_unit26: {members: &id202 [person51, person52]}
+      tax_unit27: {members: &id203 [person53, person54]}
+      tax_unit28: {members: &id204 [person55, person56]}
+      tax_unit29: {members: &id205 [person57, person58]}
+      tax_unit30: {members: &id206 [person59, person60]}
+      tax_unit31: {members: &id207 [person61, person62]}
+      tax_unit32: {members: &id208 [person63, person64]}
+      tax_unit33: {members: &id209 [person65, person66]}
+      tax_unit34: {members: &id210 [person67, person68]}
+      tax_unit35: {members: &id211 [person69, person70]}
+      tax_unit36: {members: &id212 [person71, person72]}
+      tax_unit37: {members: &id213 [person73, person74]}
+      tax_unit38: {members: &id214 [person75, person76]}
+      tax_unit39: {members: &id215 [person77, person78]}
+      tax_unit40: {members: &id216 [person79, person80]}
+      tax_unit41: {members: &id217 [person81, person82]}
+      tax_unit42: {members: &id218 [person83, person84]}
+      tax_unit43: {members: &id219 [person85, person86]}
+      tax_unit44: {members: &id220 [person87, person88]}
+    spm_units:
+      spm_unit1: {members: *id177}
+      spm_unit2: {members: *id178}
+      spm_unit3: {members: *id179}
+      spm_unit4: {members: *id180}
+      spm_unit5: {members: *id181}
+      spm_unit6: {members: *id182}
+      spm_unit7: {members: *id183}
+      spm_unit8: {members: *id184}
+      spm_unit9: {members: *id185}
+      spm_unit10: {members: *id186}
+      spm_unit11: {members: *id187}
+      spm_unit12: {members: *id188}
+      spm_unit13: {members: *id189}
+      spm_unit14: {members: *id190}
+      spm_unit15: {members: *id191}
+      spm_unit16: {members: *id192}
+      spm_unit17: {members: *id193}
+      spm_unit18: {members: *id194}
+      spm_unit19: {members: *id195}
+      spm_unit20: {members: *id196}
+      spm_unit21: {members: *id197}
+      spm_unit22: {members: *id198}
+      spm_unit23: {members: *id199}
+      spm_unit24: {members: *id200}
+      spm_unit25: {members: *id201}
+      spm_unit26: {members: *id202}
+      spm_unit27: {members: *id203}
+      spm_unit28: {members: *id204}
+      spm_unit29: {members: *id205}
+      spm_unit30: {members: *id206}
+      spm_unit31: {members: *id207}
+      spm_unit32: {members: *id208}
+      spm_unit33: {members: *id209}
+      spm_unit34: {members: *id210}
+      spm_unit35: {members: *id211}
+      spm_unit36: {members: *id212}
+      spm_unit37: {members: *id213}
+      spm_unit38: {members: *id214}
+      spm_unit39: {members: *id215}
+      spm_unit40: {members: *id216}
+      spm_unit41: {members: *id217}
+      spm_unit42: {members: *id218}
+      spm_unit43: {members: *id219}
+      spm_unit44: {members: *id220}
+    households:
+      household1:
+        members: *id177
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household2:
+        members: *id178
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household3:
+        members: *id179
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household4:
+        members: *id180
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household5:
+        members: *id181
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household6:
+        members: *id182
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household7:
+        members: *id183
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household8:
+        members: *id184
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household9:
+        members: *id185
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household10:
+        members: *id186
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household11:
+        members: *id187
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household12:
+        members: *id188
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household13:
+        members: *id189
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household14:
+        members: *id190
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household15:
+        members: *id191
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household16:
+        members: *id192
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household17:
+        members: *id193
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household18:
+        members: *id194
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household19:
+        members: *id195
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household20:
+        members: *id196
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household21:
+        members: *id197
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household22:
+        members: *id198
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household23:
+        members: *id199
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household24:
+        members: *id200
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household25:
+        members: *id201
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household26:
+        members: *id202
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household27:
+        members: *id203
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household28:
+        members: *id204
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: BOONE_COUNTY_IL, 2024: BOONE_COUNTY_IL}
+      household29:
+        members: *id205
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household30:
+        members: *id206
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household31:
+        members: *id207
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household32:
+        members: *id208
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household33:
+        members: *id209
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household34:
+        members: *id210
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household35:
+        members: *id211
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household36:
+        members: *id212
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household37:
+        members: *id213
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household38:
+        members: *id214
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household39:
+        members: *id215
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household40:
+        members: *id216
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household41:
+        members: *id217
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household42:
+        members: *id218
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: ADAMS_COUNTY_IL, 2024: ADAMS_COUNTY_IL}
+      household43:
+        members: *id219
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+      household44:
+        members: *id220
+        state_code: {2023: IL, 2024: IL}
+        county_str: {2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL}
+  output:
+    il_ccap_max_daily_rate:
+      2023-12: [0, 67.0, 0, 34.0, 0, 54.0, 0, 27.0, 0, 46.0, 0, 23.0, 0, 41.0, 0, 21.0, 0,
+        47.96, 0, 23.98, 0, 44.69, 0, 22.34, 0, 40.65, 0, 20.32, 0, 64.0, 0, 32.0, 0, 51.0,
+        0, 26.0, 0, 43.0, 0, 22.0, 0, 35.0, 0, 18.0, 0, 42.89, 0, 21.44, 0, 39.86, 0, 19.93,
+        0, 36.59, 0, 18.3, 0, 57.0, 0, 29.0, 0, 46.0, 0, 23.0, 0, 40.0, 0, 20.0, 0, 33.0,
+        0, 17.0, 0, 39.93, 0, 19.97, 0, 37.02, 0, 18.51, 0, 33.91, 0, 16.96, 0, 22.04, 0,
+        11.02]
+      2024-01: [0, 67.0, 0, 34.0, 0, 54.0, 0, 27.0, 0, 46.0, 0, 23.0, 0, 41.0, 0, 21.0, 0,
+        50.36, 0, 25.18, 0, 46.92, 0, 23.46, 0, 42.68, 0, 21.34, 0, 64.0, 0, 32.0, 0, 51.0,
+        0, 26.0, 0, 43.0, 0, 22.0, 0, 35.0, 0, 18.0, 0, 45.03, 0, 22.52, 0, 41.85, 0, 20.93,
+        0, 38.42, 0, 19.21, 0, 57.0, 0, 29.0, 0, 46.0, 0, 23.0, 0, 40.0, 0, 20.0, 0, 33.0,
+        0, 17.0, 0, 41.93, 0, 20.97, 0, 38.87, 0, 19.44, 0, 35.61, 0, 17.81, 0, 23.14, 0,
+        11.57]
+- name: Case 30, published 2024-07 provider cells and predecessor with an explicit component-only
+    gate override.
+  period: 2024-07
+  absolute_error_margin: 0.01
+  input:
+    gov.states.il.dhs.ccap.in_effect: true
+    people:
+      person1:
+        age: {2024: 30}
+      person2:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 8}
+      person3:
+        age: {2024: 30}
+      person4:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 4}
+      person5:
+        age: {2024: 30}
+      person6:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 8}
+      person7:
+        age: {2024: 30}
+      person8:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 4}
+      person9:
+        age: {2024: 30}
+      person10:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 8}
+      person11:
+        age: {2024: 30}
+      person12:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 4}
+      person13:
+        age: {2024: 30}
+      person14:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: LE_GC}
+        childcare_hours_per_day: {2024: 8}
+      person15:
+        age: {2024: 30}
+      person16:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: LE_GC}
+        childcare_hours_per_day: {2024: 4}
+      person17:
+        age: {2024: 30}
+      person18:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 8}
+      person19:
+        age: {2024: 30}
+      person20:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 4}
+      person21:
+        age: {2024: 30}
+      person22:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 8}
+      person23:
+        age: {2024: 30}
+      person24:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 4}
+      person25:
+        age: {2024: 30}
+      person26:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 8}
+      person27:
+        age: {2024: 30}
+      person28:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 4}
+      person29:
+        age: {2024: 30}
+      person30:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 8}
+      person31:
+        age: {2024: 30}
+      person32:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 4}
+      person33:
+        age: {2024: 30}
+      person34:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 8}
+      person35:
+        age: {2024: 30}
+      person36:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 4}
+      person37:
+        age: {2024: 30}
+      person38:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 8}
+      person39:
+        age: {2024: 30}
+      person40:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 4}
+      person41:
+        age: {2024: 30}
+      person42:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: LE_GC}
+        childcare_hours_per_day: {2024: 8}
+      person43:
+        age: {2024: 30}
+      person44:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: LE_GC}
+        childcare_hours_per_day: {2024: 4}
+      person45:
+        age: {2024: 30}
+      person46:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 8}
+      person47:
+        age: {2024: 30}
+      person48:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 4}
+      person49:
+        age: {2024: 30}
+      person50:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 8}
+      person51:
+        age: {2024: 30}
+      person52:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 4}
+      person53:
+        age: {2024: 30}
+      person54:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 8}
+      person55:
+        age: {2024: 30}
+      person56:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 4}
+      person57:
+        age: {2024: 30}
+      person58:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 8}
+      person59:
+        age: {2024: 30}
+      person60:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 4}
+      person61:
+        age: {2024: 30}
+      person62:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 8}
+      person63:
+        age: {2024: 30}
+      person64:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 4}
+      person65:
+        age: {2024: 30}
+      person66:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 8}
+      person67:
+        age: {2024: 30}
+      person68:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: DCC_SACC}
+        childcare_hours_per_day: {2024: 4}
+      person69:
+        age: {2024: 30}
+      person70:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: LE_GC}
+        childcare_hours_per_day: {2024: 8}
+      person71:
+        age: {2024: 30}
+      person72:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: LE_GC}
+        childcare_hours_per_day: {2024: 4}
+      person73:
+        age: {2024: 30}
+      person74:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 8}
+      person75:
+        age: {2024: 30}
+      person76:
+        age: {2024: 1}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 4}
+      person77:
+        age: {2024: 30}
+      person78:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 8}
+      person79:
+        age: {2024: 30}
+      person80:
+        age: {2024: 2}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 4}
+      person81:
+        age: {2024: 30}
+      person82:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 8}
+      person83:
+        age: {2024: 30}
+      person84:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: FDC_GFDC}
+        childcare_hours_per_day: {2024: 4}
+      person85:
+        age: {2024: 30}
+      person86:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: LE_STD}
+        childcare_hours_per_day: {2024: 8}
+      person87:
+        age: {2024: 30}
+      person88:
+        age: {2024: 3}
+        is_tax_unit_dependent: {2024: true}
+        childcare_provider_type_group: {2024: LE_STD}
+        childcare_hours_per_day: {2024: 4}
+    tax_units:
+      tax_unit1: {members: &id221 [person1, person2]}
+      tax_unit2: {members: &id222 [person3, person4]}
+      tax_unit3: {members: &id223 [person5, person6]}
+      tax_unit4: {members: &id224 [person7, person8]}
+      tax_unit5: {members: &id225 [person9, person10]}
+      tax_unit6: {members: &id226 [person11, person12]}
+      tax_unit7: {members: &id227 [person13, person14]}
+      tax_unit8: {members: &id228 [person15, person16]}
+      tax_unit9: {members: &id229 [person17, person18]}
+      tax_unit10: {members: &id230 [person19, person20]}
+      tax_unit11: {members: &id231 [person21, person22]}
+      tax_unit12: {members: &id232 [person23, person24]}
+      tax_unit13: {members: &id233 [person25, person26]}
+      tax_unit14: {members: &id234 [person27, person28]}
+      tax_unit15: {members: &id235 [person29, person30]}
+      tax_unit16: {members: &id236 [person31, person32]}
+      tax_unit17: {members: &id237 [person33, person34]}
+      tax_unit18: {members: &id238 [person35, person36]}
+      tax_unit19: {members: &id239 [person37, person38]}
+      tax_unit20: {members: &id240 [person39, person40]}
+      tax_unit21: {members: &id241 [person41, person42]}
+      tax_unit22: {members: &id242 [person43, person44]}
+      tax_unit23: {members: &id243 [person45, person46]}
+      tax_unit24: {members: &id244 [person47, person48]}
+      tax_unit25: {members: &id245 [person49, person50]}
+      tax_unit26: {members: &id246 [person51, person52]}
+      tax_unit27: {members: &id247 [person53, person54]}
+      tax_unit28: {members: &id248 [person55, person56]}
+      tax_unit29: {members: &id249 [person57, person58]}
+      tax_unit30: {members: &id250 [person59, person60]}
+      tax_unit31: {members: &id251 [person61, person62]}
+      tax_unit32: {members: &id252 [person63, person64]}
+      tax_unit33: {members: &id253 [person65, person66]}
+      tax_unit34: {members: &id254 [person67, person68]}
+      tax_unit35: {members: &id255 [person69, person70]}
+      tax_unit36: {members: &id256 [person71, person72]}
+      tax_unit37: {members: &id257 [person73, person74]}
+      tax_unit38: {members: &id258 [person75, person76]}
+      tax_unit39: {members: &id259 [person77, person78]}
+      tax_unit40: {members: &id260 [person79, person80]}
+      tax_unit41: {members: &id261 [person81, person82]}
+      tax_unit42: {members: &id262 [person83, person84]}
+      tax_unit43: {members: &id263 [person85, person86]}
+      tax_unit44: {members: &id264 [person87, person88]}
+    spm_units:
+      spm_unit1: {members: *id221}
+      spm_unit2: {members: *id222}
+      spm_unit3: {members: *id223}
+      spm_unit4: {members: *id224}
+      spm_unit5: {members: *id225}
+      spm_unit6: {members: *id226}
+      spm_unit7: {members: *id227}
+      spm_unit8: {members: *id228}
+      spm_unit9: {members: *id229}
+      spm_unit10: {members: *id230}
+      spm_unit11: {members: *id231}
+      spm_unit12: {members: *id232}
+      spm_unit13: {members: *id233}
+      spm_unit14: {members: *id234}
+      spm_unit15: {members: *id235}
+      spm_unit16: {members: *id236}
+      spm_unit17: {members: *id237}
+      spm_unit18: {members: *id238}
+      spm_unit19: {members: *id239}
+      spm_unit20: {members: *id240}
+      spm_unit21: {members: *id241}
+      spm_unit22: {members: *id242}
+      spm_unit23: {members: *id243}
+      spm_unit24: {members: *id244}
+      spm_unit25: {members: *id245}
+      spm_unit26: {members: *id246}
+      spm_unit27: {members: *id247}
+      spm_unit28: {members: *id248}
+      spm_unit29: {members: *id249}
+      spm_unit30: {members: *id250}
+      spm_unit31: {members: *id251}
+      spm_unit32: {members: *id252}
+      spm_unit33: {members: *id253}
+      spm_unit34: {members: *id254}
+      spm_unit35: {members: *id255}
+      spm_unit36: {members: *id256}
+      spm_unit37: {members: *id257}
+      spm_unit38: {members: *id258}
+      spm_unit39: {members: *id259}
+      spm_unit40: {members: *id260}
+      spm_unit41: {members: *id261}
+      spm_unit42: {members: *id262}
+      spm_unit43: {members: *id263}
+      spm_unit44: {members: *id264}
+    households:
+      household1:
+        members: *id221
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household2:
+        members: *id222
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household3:
+        members: *id223
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household4:
+        members: *id224
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household5:
+        members: *id225
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household6:
+        members: *id226
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household7:
+        members: *id227
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household8:
+        members: *id228
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household9:
+        members: *id229
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household10:
+        members: *id230
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household11:
+        members: *id231
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household12:
+        members: *id232
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household13:
+        members: *id233
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household14:
+        members: *id234
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household15:
+        members: *id235
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household16:
+        members: *id236
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household17:
+        members: *id237
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household18:
+        members: *id238
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household19:
+        members: *id239
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household20:
+        members: *id240
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household21:
+        members: *id241
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household22:
+        members: *id242
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household23:
+        members: *id243
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household24:
+        members: *id244
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household25:
+        members: *id245
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household26:
+        members: *id246
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household27:
+        members: *id247
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household28:
+        members: *id248
+        state_code: {2024: IL}
+        county_str: {2024: BOONE_COUNTY_IL}
+      household29:
+        members: *id249
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household30:
+        members: *id250
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household31:
+        members: *id251
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household32:
+        members: *id252
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household33:
+        members: *id253
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household34:
+        members: *id254
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household35:
+        members: *id255
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household36:
+        members: *id256
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household37:
+        members: *id257
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household38:
+        members: *id258
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household39:
+        members: *id259
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household40:
+        members: *id260
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household41:
+        members: *id261
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household42:
+        members: *id262
+        state_code: {2024: IL}
+        county_str: {2024: ADAMS_COUNTY_IL}
+      household43:
+        members: *id263
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+      household44:
+        members: *id264
+        state_code: {2024: IL}
+        county_str: {2024: COOK_COUNTY_IL}
+  output:
+    il_ccap_max_daily_rate:
+      2024-06: [0, 67.0, 0, 34.0, 0, 54.0, 0, 27.0, 0, 46.0, 0, 23.0, 0, 41.0, 0, 21.0, 0,
+        50.36, 0, 25.18, 0, 46.92, 0, 23.46, 0, 42.68, 0, 21.34, 0, 64.0, 0, 32.0, 0, 51.0,
+        0, 26.0, 0, 43.0, 0, 22.0, 0, 35.0, 0, 18.0, 0, 45.03, 0, 22.52, 0, 41.85, 0, 20.93,
+        0, 38.42, 0, 19.21, 0, 57.0, 0, 29.0, 0, 46.0, 0, 23.0, 0, 40.0, 0, 20.0, 0, 33.0,
+        0, 17.0, 0, 41.93, 0, 20.97, 0, 38.87, 0, 19.44, 0, 35.61, 0, 17.81, 0, 23.14, 0,
+        11.57]
+      2024-07: [0, 67.0, 0, 34.0, 0, 54.0, 0, 27.0, 0, 46.0, 0, 23.0, 0, 41.0, 0, 21.0, 0,
+        52.88, 0, 26.44, 0, 49.27, 0, 24.64, 0, 44.82, 0, 22.41, 0, 64.0, 0, 32.0, 0, 51.0,
+        0, 26.0, 0, 43.0, 0, 22.0, 0, 35.0, 0, 18.0, 0, 47.29, 0, 23.65, 0, 43.95, 0, 21.98,
+        0, 40.34, 0, 20.17, 0, 57.0, 0, 29.0, 0, 46.0, 0, 23.0, 0, 40.0, 0, 20.0, 0, 33.0,
+        0, 17.0, 0, 44.02, 0, 22.01, 0, 40.81, 0, 20.41, 0, 37.39, 0, 18.7, 0, 24.3, 0, 12.15]
+- name: Case 31, unreformed 2017 through 2026 controls preserve the historical payment gate
+    and modern center rates.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: {2017: 30, 2018: 30, 2019: 30, 2020: 30, 2021: 30, 2022: 30, 2023: 30, 2024: 30,
+          2025: 30, 2026: 30}
+        employment_income: {2017: 12000, 2018: 12000, 2019: 12000, 2020: 12000, 2021: 12000,
+          2022: 12000, 2023: 12000, 2024: 12000, 2025: 12000, 2026: 12000}
+      person2:
+        age: {2017: 3, 2018: 3, 2019: 3, 2020: 3, 2021: 3, 2022: 3, 2023: 3, 2024: 3, 2025: 3,
+          2026: 3}
+        is_tax_unit_dependent: {2017: true, 2018: true, 2019: true, 2020: true, 2021: true,
+          2022: true, 2023: true, 2024: true, 2025: true, 2026: true}
+        childcare_provider_type_group: {2017: DCC_SACC, 2018: DCC_SACC, 2019: DCC_SACC, 2020: DCC_SACC,
+          2021: DCC_SACC, 2022: DCC_SACC, 2023: DCC_SACC, 2024: DCC_SACC, 2025: DCC_SACC,
+          2026: DCC_SACC}
+        childcare_hours_per_day: {2017: 8, 2018: 8, 2019: 8, 2020: 8, 2021: 8, 2022: 8, 2023: 8,
+          2024: 8, 2025: 8, 2026: 8}
+        childcare_attending_days_per_month: {2017: 20, 2018: 20, 2019: 20, 2020: 20, 2021: 20,
+          2022: 20, 2023: 20, 2024: 20, 2025: 20, 2026: 20}
+        pre_subsidy_childcare_expenses: {2017: 24000, 2018: 24000, 2019: 24000, 2020: 24000,
+          2021: 24000, 2022: 24000, 2023: 24000, 2024: 24000, 2025: 24000, 2026: 24000}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: {2017: IL, 2018: IL, 2019: IL, 2020: IL, 2021: IL, 2022: IL, 2023: IL,
+          2024: IL, 2025: IL, 2026: IL}
+        county_str: {2017: COOK_COUNTY_IL, 2018: COOK_COUNTY_IL, 2019: COOK_COUNTY_IL, 2020: COOK_COUNTY_IL,
+          2021: COOK_COUNTY_IL, 2022: COOK_COUNTY_IL, 2023: COOK_COUNTY_IL, 2024: COOK_COUNTY_IL,
+          2025: COOK_COUNTY_IL, 2026: COOK_COUNTY_IL}
+  output:
+    il_ccap_max_daily_rate:
+      2017-07: [0, 0]
+      2018-07: [0, 0]
+      2019-07: [0, 0]
+      2020-07: [0, 0]
+      2021-07: [0, 0]
+      2022-07: [0, 0]
+      2023-07: [0, 0]
+      2024-07: [0, 0]
+      2025-06: [0, 0]
+      2025-07: [0, 46]
+      2026-07: [0, 46]
+    il_ccap:
+      2017-07: 0
+      2018-07: 0
+      2019-07: 0
+      2020-07: 0
+      2021-07: 0
+      2022-07: 0
+      2023-07: 0
+      2024-07: 0
+      2025-06: 0
+- name: Case 32, July 2022 duration boundaries use the published rates with an explicit component-only
+    gate override.
+  period: 2022-07
+  absolute_error_margin: 0.01
+  input:
+    gov.states.il.dhs.ccap.in_effect: true
+    people:
+      person1:
+        age: {2022: 30}
+      person2:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 0}
+      person3:
+        age: {2022: 30}
+      person4:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: -1}
+      person5:
+        age: {2022: 30}
+      person6:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 4.99}
+      person7:
+        age: {2022: 30}
+      person8:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 5}
+      person9:
+        age: {2022: 30}
+      person10:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 12}
+      person11:
+        age: {2022: 30}
+      person12:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 12.01}
+      person13:
+        age: {2022: 30}
+      person14:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 16.99}
+      person15:
+        age: {2022: 30}
+      person16:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 17}
+      person17:
+        age: {2022: 30}
+      person18:
+        age: {2022: 3}
+        is_tax_unit_dependent: {2022: true}
+        childcare_provider_type_group: {2022: DCC_SACC}
+        childcare_hours_per_day: {2022: 24}
+    tax_units:
+      tax_unit1: {members: &id265 [person1, person2]}
+      tax_unit2: {members: &id266 [person3, person4]}
+      tax_unit3: {members: &id267 [person5, person6]}
+      tax_unit4: {members: &id268 [person7, person8]}
+      tax_unit5: {members: &id269 [person9, person10]}
+      tax_unit6: {members: &id270 [person11, person12]}
+      tax_unit7: {members: &id271 [person13, person14]}
+      tax_unit8: {members: &id272 [person15, person16]}
+      tax_unit9: {members: &id273 [person17, person18]}
+    spm_units:
+      spm_unit1: {members: *id265}
+      spm_unit2: {members: *id266}
+      spm_unit3: {members: *id267}
+      spm_unit4: {members: *id268}
+      spm_unit5: {members: *id269}
+      spm_unit6: {members: *id270}
+      spm_unit7: {members: *id271}
+      spm_unit8: {members: *id272}
+      spm_unit9: {members: *id273}
+    households:
+      household1:
+        members: *id265
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household2:
+        members: *id266
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household3:
+        members: *id267
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household4:
+        members: *id268
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household5:
+        members: *id269
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household6:
+        members: *id270
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household7:
+        members: *id271
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household8:
+        members: *id272
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+      household9:
+        members: *id273
+        state_code: {2022: IL}
+        county_str: {2022: COOK_COUNTY_IL}
+  output:
+    il_ccap_max_daily_rate: [0, 0, 0, 0, 0, 22, 0, 44, 0, 44, 0, 66, 0, 66, 0, 88, 0, 88]
+- name: Case 33, June and July 2025 preserve the official rate transition with an explicit
+    component-only gate override.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.states.il.dhs.ccap.in_effect: true
+    people:
+      person1:
+        age: {2025: 30}
+      person2:
+        age: {2025: 3}
+        is_tax_unit_dependent: {2025: true}
+        childcare_provider_type_group: {2025: FDC_GFDC}
+        childcare_hours_per_day: {2025: 8}
+    tax_units:
+      tax_unit1: {members: &id274 [person1, person2]}
+    spm_units:
+      spm_unit1: {members: *id274}
+    households:
+      household1:
+        members: *id274
+        state_code: {2025: IL}
+        county_str: {2025: COOK_COUNTY_IL}
+  output:
+    il_ccap_max_daily_rate:
+      2025-06: [0, 44.82]
+      2025-07: [0, 47.51]
