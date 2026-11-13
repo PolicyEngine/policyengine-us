@@ -100,3 +100,54 @@
     # the long-term care premiums.
     oh_medical_care_insurance_premiums: 0
     oh_long_term_care_insurance_premiums: 500
+
+# R.C. 5747.01(A)(10)(a)-(c), (O), and IRC 152(b)(1).
+# https://codes.ohio.gov/ohio-revised-code/section-5747.01
+# https://uscode.house.gov/us/usc/t26/s152/
+# 2025 IT 1040 Unreimbursed Medical Care Expenses Worksheet, page 41.
+
+- name: Claimable spouse retains both filers' unsubsidized and long-term care premiums
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        health_insurance_premiums: 100
+        long_term_health_insurance_premiums: 10
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+        is_medicare_eligible: false
+        employer_contribution_to_health_insurance_premiums_category: NONE
+      spouse:
+        age: 33
+        health_insurance_premiums: 200
+        long_term_health_insurance_premiums: 20
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: false
+        is_medicare_eligible: false
+        employer_contribution_to_health_insurance_premiums_category: NONE
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1000
+        long_term_health_insurance_premiums: 100
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+        is_medicare_eligible: false
+        employer_contribution_to_health_insurance_premiums_category: NONE
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        adjusted_gross_income: 0
+    marital_units:
+      couple:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: OH
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: [100, 200, 0]
+    oh_long_term_care_insurance_premiums: [10, 20, 0]
+    oh_unreimbursed_medical_care_expense_deduction_person: [110, 220, 0]
+    oh_unreimbursed_medical_care_expense_deduction: 330
