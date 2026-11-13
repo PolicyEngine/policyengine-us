@@ -1,0 +1,13 @@
+description: Florida uses this indicator to apply source-verified household-size parent and caretaker income standards under Medicaid.
+# The fixed dollar standard dates to January 2014. The model route starts in
+# 2017, the first calendar year verified by this historical correction.
+values:
+  0000-01-01: false
+  2017-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Florida Medicaid parent dollar income standards in effect
+  reference:
+    - title: Florida DCF ESS Policy Manual Appendix A-7, January 2014 MNIL amounts
+      href: https://ffic.myflfamilies.com/manual/essfiles/30446.pdf

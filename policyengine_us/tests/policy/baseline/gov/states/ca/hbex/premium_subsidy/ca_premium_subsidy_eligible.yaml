@@ -29,8 +29,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 9_900
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -51,8 +51,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 10_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -72,8 +72,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -94,8 +94,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 16_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -116,8 +116,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 16_600
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -285,8 +285,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -310,8 +310,8 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -334,8 +334,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -358,8 +358,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2024: 10_000
+        aca_fpg:
+          2025: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -380,8 +380,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2027: 10_000
+        aca_fpg:
+          2028: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -402,8 +402,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2026: 10_000
+        aca_fpg:
+          2027: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -429,8 +429,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 0
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -456,8 +456,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: false
         # Nor does it take up the federal credit, so it files no return to claim it.
         takes_up_aca_if_eligible: false
@@ -481,8 +481,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -512,8 +512,8 @@
         members: [person1, person2]
         filing_status: SEPARATE
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -539,8 +539,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -564,8 +564,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 19_900
-        tax_unit_fpg:
-          2026: 10_000
+        aca_fpg:
+          2027: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -587,8 +587,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2026: 10_000
+        aca_fpg:
+          2027: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -610,8 +610,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_050
-        tax_unit_fpg:
-          2026: 10_000
+        aca_fpg:
+          2027: 10_000
         tax_unit_is_filer: true
     households:
       household:
@@ -633,8 +633,8 @@
       tax_unit:
         members: [person1]
         aca_magi: 19_950
-        tax_unit_fpg:
-          2026: 10_000
+        aca_fpg:
+          2027: 10_000
         tax_unit_is_filer: true
     households:
       household:
