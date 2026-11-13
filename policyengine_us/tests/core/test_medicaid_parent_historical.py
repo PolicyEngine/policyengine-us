@@ -9,7 +9,7 @@ its simulation cache. The Makefile collects this file in the existing core group
 from math import ceil
 
 import numpy as np
-from hypothesis import example, given, settings, strategies as st
+from hypothesis import HealthCheck, example, given, settings, strategies as st
 
 from policyengine_us import Simulation
 from policyengine_us.model_api import StateCode
@@ -133,7 +133,12 @@ def expected_effective_limit(year, state, size, group):
     return monthly_limit * 12 / guideline
 
 
-@settings(max_examples=16, deadline=None, derandomize=True)
+@settings(
+    max_examples=16,
+    deadline=None,
+    derandomize=True,
+    suppress_health_check=[HealthCheck.too_slow],
+)
 @example(year=2020, size=17, gap=0.0001)
 @example(year=2018, size=21, gap=0.0001)
 @given(
