@@ -1,0 +1,148 @@
+# October dates identify FFY schedules under the annual model convention.
+# Use only through last_published_household_size; larger households retain
+# the existing generic calculation. These rows do not impose a size cap.
+description: New York uses these published historical overall monthly income limits by HEAP household
+  size.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: New York HEAP historical overall monthly income limit
+  reference:
+  - title: FY2017 HEAP Desk Guide
+    href: https://otda.ny.gov/policy/directives/2016/LCM/16-LCM-16-Attachment-1.pdf#page=1
+  - title: FY2018 HEAP Desk Guide
+    href: https://otda.ny.gov/policy/directives/2017/LCM/17-LCM-14-Attachment-2.pdf#page=1
+  - title: FY2019 HEAP Desk Guide
+    href: https://otda.ny.gov/policy/directives/2018/LCM/18-LCM-20-Attachment-4.pdf#page=1
+  - title: FY2020 HEAP Desk Guide
+    href: https://otda.ny.gov/policy/directives/2019/LCM/19-LCM-10-Attachment-4.pdf#page=1
+  - title: FY2021 HEAP Desk Guide
+    href: https://otda.ny.gov/policy/directives/2020/LCM/20-LCM-11-Attachment-4.pdf#page=1
+  - title: FY2022 HEAP Desk Guide
+    href: https://liheapch.acf.gov/docs/NY_BenefitMatrix_2022.pdf#page=1
+  - title: FY2023 HEAP Desk Guide
+    href: https://otda.ny.gov/policy/directives/2022/LCM/22-LCM-12-Attachment-4.pdf#page=1
+brackets:
+- threshold:
+    2016-10-01: 1
+  amount:
+    2016-10-01: 2300
+    2017-10-01: 2318
+    2018-10-01: 2391
+    2019-10-01: 2494
+    2020-10-01: 2610
+    2021-10-01: 2729
+    2022-10-01: 2852
+- threshold:
+    2016-10-01: 2
+  amount:
+    2016-10-01: 3007
+    2017-10-01: 3031
+    2018-10-01: 3127
+    2019-10-01: 3262
+    2020-10-01: 3413
+    2021-10-01: 3569
+    2022-10-01: 3730
+- threshold:
+    2016-10-01: 3
+  amount:
+    2016-10-01: 3715
+    2017-10-01: 3744
+    2018-10-01: 3863
+    2019-10-01: 4030
+    2020-10-01: 4216
+    2021-10-01: 4409
+    2022-10-01: 4608
+- threshold:
+    2016-10-01: 4
+  amount:
+    2016-10-01: 4423
+    2017-10-01: 4457
+    2018-10-01: 4598
+    2019-10-01: 4797
+    2020-10-01: 5019
+    2021-10-01: 5249
+    2022-10-01: 5485
+- threshold:
+    2016-10-01: 5
+  amount:
+    2016-10-01: 5130
+    2017-10-01: 5170
+    2018-10-01: 5334
+    2019-10-01: 5565
+    2020-10-01: 5822
+    2021-10-01: 6088
+    2022-10-01: 6363
+- threshold:
+    2016-10-01: 6
+  amount:
+    2016-10-01: 5838
+    2017-10-01: 5883
+    2018-10-01: 6070
+    2019-10-01: 6332
+    2020-10-01: 6625
+    2021-10-01: 6928
+    2022-10-01: 7241
+- threshold:
+    2016-10-01: 7
+  amount:
+    2016-10-01: 5971
+    2017-10-01: 6017
+    2018-10-01: 6208
+    2019-10-01: 6476
+    2020-10-01: 6775
+    2021-10-01: 7086
+    2022-10-01: 7405
+- threshold:
+    2016-10-01: 8
+  amount:
+    2016-10-01: 6103
+    2017-10-01: 6150
+    2018-10-01: 6346
+    2019-10-01: 6620
+    2020-10-01: 6926
+    2021-10-01: 7243
+    2022-10-01: 7570
+- threshold:
+    2016-10-01: 9
+  amount:
+    2016-10-01: 6236
+    2017-10-01: 6284
+    2018-10-01: 6483
+    2019-10-01: 6764
+    2020-10-01: 7077
+    2021-10-01: 7401
+    2022-10-01: 7734
+- threshold:
+    2016-10-01: 10
+  amount:
+    2016-10-01: 6369
+    2017-10-01: 6418
+    2018-10-01: 6621
+    2019-10-01: 6908
+    2020-10-01: 7227
+    2021-10-01: 7558
+    2022-10-01: 7899
+- threshold:
+    2016-10-01: 11
+  amount:
+    2016-10-01: 6671
+    2017-10-01: 6733
+    2018-10-01: 6918
+    2019-10-01: 7086
+    2020-10-01: 7378
+    2021-10-01: 7715
+    2022-10-01: 8064
+- threshold:
+    2016-10-01: 12
+  amount:
+    2020-10-01: 7755
+    2021-10-01: 7873
+    2022-10-01: 8228
+- threshold:
+    2016-10-01: 13
+  amount:
+    2021-10-01: 8420
+    2022-10-01: 8778

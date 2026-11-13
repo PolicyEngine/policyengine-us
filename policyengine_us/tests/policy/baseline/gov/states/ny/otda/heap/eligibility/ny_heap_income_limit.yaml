@@ -58,3 +58,65 @@
   output:
     # 2023-2024 Tier II maximums 3,035; 5,838; 9,532, each x 12.
     ny_heap_income_limit: [36_420, 70_056, 114_384]
+
+# First N values in each case are the original desk-guide monthly limits x12.
+# The final N+1 value is a compatibility control of the preexisting generic
+# calculation, NOT verified historical legal coverage. No size is denied solely
+# because the published table ends. The FY2016 case is likewise compatibility.
+# Exact source rows and temporal bounds are documented in the parameter files.
+- name: Case 5, FY2017 all published income-limit rows and the first generic fallback size.
+  period: 2017
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  output:
+    ny_heap_income_limit: [27600, 36084, 44580, 53076, 61560, 70056, 71652, 73236, 74832, 76428, 80052, 86460]
+- name: Case 6, FY2018 all published income-limit rows and the first generic fallback size.
+  period: 2018
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  output:
+    ny_heap_income_limit: [27816, 36372, 44928, 53484, 62040, 70596, 72204, 73800, 75408, 77016, 80796, 87060]
+- name: Case 7, FY2019 all published income-limit rows and the first generic fallback size.
+  period: 2019
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  output:
+    ny_heap_income_limit: [28692, 37524, 46356, 55176, 64008, 72840, 74496, 76152, 77796, 79452, 83016, 89484]
+- name: Case 8, FY2020 all published income-limit rows and the first generic fallback size.
+  period: 2020
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  output:
+    ny_heap_income_limit: [29928, 39144, 48360, 57564, 66780, 75984, 77712, 79440, 81168, 82896, 85032, 91656]
+- name: Case 9, FY2021 all published income-limit rows and the first generic fallback size.
+  period: 2021
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+  output:
+    ny_heap_income_limit: [31320, 40956, 50592, 60228, 69864, 79500, 81300, 83112, 84924, 86724, 88536, 93060, 99780]
+- name: Case 10, FY2022 all published income-limit rows and the first generic fallback size.
+  period: 2022
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  output:
+    ny_heap_income_limit: [32748, 42828, 52908, 62988, 73056, 83136, 85032, 86916, 88812, 90696, 92580, 94476, 101040, 107844]
+- name: Case 11, FY2023 all published income-limit rows and the first generic fallback size.
+  period: 2023
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  output:
+    ny_heap_income_limit: [34224, 44760, 55296, 65820, 76356, 86892, 88860, 90840, 92808, 94788, 96768, 98736, 105336, 112416]
+- name: Case 12, pre-FY2017 generic income-limit behavior is preserved without certifying its law.
+  period: 2016
+  input:
+    state_code: NY
+    ny_heap_household_size: 1
+  output:
+    ny_heap_income_limit: 26928
