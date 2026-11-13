@@ -23,7 +23,11 @@ class aca_ptc_coverage_family_premium(Variable):
         "no enrollee is. Each month's share is applied to that month's "
         "premium before summing, including for bronze plans. A supplied annual "
         "selected premium is distributed in proportion to the monthly "
-        "selected-plan premium proxies, or evenly if those are unavailable."
+        "selected-plan premium proxies, or evenly if those are unavailable. "
+        "A supplied premium for a tax unit in which the model finds no "
+        "enrollee, with enrollment not supplied, is the tax family's, as it "
+        "was before enrollment was modeled; a tax unit with no tax family "
+        "gets none of it."
     )
 
     def formula(tax_unit, period, parameters):
@@ -32,6 +36,16 @@ class aca_ptc_coverage_family_premium(Variable):
         enrolled = person("is_aca_marketplace_enrollee", period)
         member = person("is_aca_tax_family_member", period)
         any_enrollee_covered = tax_unit.any(enrolled & member)
+        # A premium supplied without enrollment: the supplied premium shows
+        # that someone enrolled, so when the model finds no enrollee it is
+        # the tax family's.
+        sim = tax_unit.simulation
+        premium_without_enrollment = has_input_for_period(
+            sim, "selected_marketplace_plan_premium_proxy", period
+        ) and not has_input_for_period(sim, "is_aca_marketplace_enrollee", period)
+        no_enrollee_found = (
+            premium_without_enrollment & ~tax_unit.any(enrolled) & tax_unit.any(member)
+        )
         every_enrollee_covered = ~tax_unit.any(enrolled & ~member)
         months = period.get_subperiods(MONTH)
         monthly_premiums = [
@@ -65,5 +79,5 @@ class aca_ptc_coverage_family_premium(Variable):
         return where(
             any_enrollee_covered,
             premium * where(every_enrollee_covered, 1, allocated_share),
-            0,
+            where(no_enrollee_found, premium, 0),
         )

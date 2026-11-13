@@ -160,3 +160,28 @@
   output:
     aca_ptc: 6000
     used_aca_ptc: 4500
+
+- name: A supplied pays_aca_premium of true marks an enrollee, so the credit is used.
+  # Everyone who pays an age-rated premium is an enrollee. 23,475 is 150% of
+  # the 2025 guideline for one (15,650), with a 4.19% contribution:
+  # 6,000 - 0.0419 * 23,475 = 5,016.40.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 30
+        pays_aca_premium: true
+        slcsp_age_curve_multiplier: 1
+    tax_units:
+      tax_unit:
+        members: [person]
+        aca_magi: 23_475
+    households:
+      household:
+        members: [person]
+        state_code: NM
+        slcsp_age_0: 6_000
+  output:
+    is_aca_marketplace_enrollee: true
+    used_aca_ptc: 5_016.4

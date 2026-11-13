@@ -16,7 +16,8 @@ class is_aca_marketplace_enrollee(Variable):
         "coverage-gap conditions of pays_aca_premium, without its premium "
         "condition. A child beyond the three oldest is enrolled but pays no "
         "age-rated premium (45 CFR 147.102(c)(1)); pays_aca_premium is this "
-        "variable restricted to those who pay one."
+        "variable restricted to those who pay one. So a supplied "
+        "pays_aca_premium of true also marks an enrollee."
     )
 
     def formula(person, period, parameters):
@@ -53,4 +54,10 @@ class is_aca_marketplace_enrollee(Variable):
             & ~below_fpl_exception
         )
 
-        return is_status_eligible & is_coverage_eligible & ~in_coverage_gap
+        enrolled = is_status_eligible & is_coverage_eligible & ~in_coverage_gap
+        # Everyone who pays an age-rated premium is an enrollee, so a supplied
+        # pays_aca_premium of true marks one. The formula of pays_aca_premium
+        # reads this variable, so only a supplied value is read.
+        if has_input_for_period(person.simulation, "pays_aca_premium", period):
+            enrolled = enrolled | person("pays_aca_premium", period)
+        return enrolled

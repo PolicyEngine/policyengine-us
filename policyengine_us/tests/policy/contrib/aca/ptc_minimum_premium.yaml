@@ -251,3 +251,51 @@
     # 6,000 / (6,000 + 6,000), so 6,000, and the credit fits under 6,000 - 60.
     aca_ptc_coverage_family_premium: 6_000
     used_aca_ptc: 5_016.4
+
+- name: A claimable spouse's premium stays out of the cap when the minimum binds
+  # The household above with no required contribution. The credit is capped
+  # at the coverage family's enrolled premium less the minimum:
+  # 6,000 - 60 = 5,940. The whole policy's premium (12,000) would give 6,000.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        aca_required_contribution_percentage: 0
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6_000
+    aca_ptc_coverage_family_premium: 6_000
+    aca_ptc: 5_940
+    used_aca_ptc: 5_940

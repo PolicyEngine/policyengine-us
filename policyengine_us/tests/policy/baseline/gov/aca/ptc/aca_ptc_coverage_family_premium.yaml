@@ -555,3 +555,13 @@
         state_code: TX
   output:
     aca_ptc_coverage_family_premium: 0
+
+- name: A supplied premium for a tax unit with no enrollee found is the tax family's.
+  # The default adult is Medicaid-eligible, so the model finds no enrollee.
+  # Enrollment isn't supplied, so the supplied premium is the tax family's.
+  period: 2026
+  input:
+    selected_marketplace_plan_premium_proxy: 5_000
+  output:
+    is_aca_marketplace_enrollee: false
+    aca_ptc_coverage_family_premium: 5_000
