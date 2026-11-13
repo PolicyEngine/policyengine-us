@@ -37,7 +37,7 @@ class mt_liheap_categorical_eligibility(Variable):
         # Monthly booleans are read month by month, never with an annual ADD,
         # so no summed value is cached under the annual key.
         # SNAP: the unit receives SNAP and every member is in the SNAP unit.
-        receives_snap = spm_unit("snap", period, options=[ADD]) > 0
+        receives_snap = spm_unit("snap", period) > 0
         in_snap_unit = np.any(
             [~person("is_snap_excluded_member", month) for month in months],
             axis=0,

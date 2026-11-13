@@ -33,7 +33,7 @@ class oh_liheap_countable_income(Variable):
         income = 0
         for sources in [p.sources.earned, p.sources.unearned]:
             for source in sources:
-                income = income + max_(person(source, period, options=[ADD]), 0)
+                income = income + max_(person(source, period), 0)
         # Guidelines E-2.2 (page 7) count the income of members 18 or older and
         # a minor's SS/SSDI paid to an adult payee; a child's SSI and other
         # income are not counted. The FY2026 plan (page 6) excludes only

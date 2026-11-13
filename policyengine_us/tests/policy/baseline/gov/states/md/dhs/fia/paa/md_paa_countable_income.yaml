@@ -45,3 +45,46 @@
     # $2,500 monthly SSDI - $20 general exclusion.
     ssi_countable_income: 0
     md_paa_countable_income: 2_480
+
+- name: Case 4, a spouse's facility stay from July counts by December's status for the whole year, as an annual approximation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        ssi_unearned_income: 12_000
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 6_000
+        ssi_lives_in_medical_treatment_facility:
+          2025-01: false
+          2025-07: true
+        ssi_medicaid_pays_majority_of_care:
+          2025-01: false
+          2025-07: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # person2 is in a Medicaid-funded facility from July through December,
+    # so the couple computation applies through June and not from July.
+    ssi_couple_computation_applies:
+      2025-06: [true, true]
+      2025-07: [false, false]
+    # This annual formula applies December's status, separate, to the whole
+    # year, so each spouse counts their own income in all twelve months,
+    # including January to June, when SSI combines the couple's income:
+    # (1,000 - 20) x 12 = 11,760 and (500 - 20) x 12 = 5,760.
+    # Both spouses are aged, so neither is an ineligible spouse and no
+    # income is deemed.
+    # Summing the monthly ssi_marital_unearned_income instead would combine
+    # 1,500 a month through June: 15,000 - 240 = 14,760 and
+    # 12,000 - 240 = 11,760.
+    md_paa_countable_income: [11_760, 5_760]

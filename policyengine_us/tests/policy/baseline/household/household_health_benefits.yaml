@@ -12,7 +12,7 @@
     household_health_benefits: 0
     household_benefits: 0
 
-- name: Case 2, flag on includes annual canonical ACA PTC and Medicaid value.
+- name: Case 2, flag on includes the Medicaid value; the ACA PTC counts as a refundable tax credit instead.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -21,8 +21,8 @@
     medicaid_cost: 500
     snap: 0
   output:
-    household_health_benefits: 1_500
-    household_benefits: 1_500
+    household_health_benefits: 500
+    household_benefits: 500
 
 - name: Case 3, flag on includes annual MSP and CHIP values.
   period: 2026
@@ -35,8 +35,8 @@
     chip: 300
     snap: 0
   output:
-    household_health_benefits: 4_234.8
-    household_benefits: 4_234.8
+    household_health_benefits: 3_234.8
+    household_benefits: 3_234.8
 
 - name: Case 4, legacy wrappers do not double count canonical health values.
   period: 2026
@@ -52,8 +52,8 @@
     msp_cost: 2_434.8
     snap: 0
   output:
-    household_health_benefits: 4_234.8
-    household_benefits: 4_234.8
+    household_health_benefits: 3_234.8
+    household_benefits: 3_234.8
 
 - name: Case 5, flag on includes forced Maryland Premium Assistance value.
   # md_premium_assistance is registered in the household_health_benefits list

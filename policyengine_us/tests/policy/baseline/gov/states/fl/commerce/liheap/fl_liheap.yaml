@@ -979,3 +979,96 @@
     fl_liheap_income_limit: [103_148, 103_148, 103_148]
     fl_liheap_eligible: [true, true, false]
     fl_liheap: [200, 200, 0]
+
+# A home without heating that pays its own electricity bill for cooling
+# receives the same fuel-neutral Home Energy matrix award (R. 73C-26.022(2)(a);
+# manual 700.01C, page 23). Wages of 29_120 are full time at the 14.00 Florida
+# minimum wage; electricity of 1_873 a year is EIA's 2024 Florida average
+# residential bill of 156.09 a month.
+- name: Case 29, a cooling-only single parent with a young child receives the band two base and the child addition.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        employment_income: 29_120
+      person2:
+        age: 7
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_873
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_liheap_eligible: true
+    # Size 3 bands: 25,972 < 29,120 <= 36,360 -> band 2 base 300, plus 150 for
+    # the child aged 3
+    fl_liheap: 450
+
+- name: Case 30, a home without heating and without cooling costs receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_820
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 1_873
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_eligible: false
+    fl_liheap: 0
+
+# A subsidized household with gas heat included in the rent pays its own
+# electricity bill for cooling, so it is responsible for part of its home
+# heating and cooling costs (manual 700.01 E, page 23) and receives the same
+# award with no deduction. Wages of 14_820 are part time at the Florida minimum
+# wage; electricity of 1_873 a year is EIA's 2024 Florida average residential
+# bill of 156.09 a month.
+- name: Case 31, a subsidized household with heat in the rent that pays for cooling receives the band one base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 14_820
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        gas_expense: 0
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_873
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_eligible: true
+    # Size 1 band one: 14,820 <= 50% x 32,155 -> base 350
+    fl_liheap: 350
