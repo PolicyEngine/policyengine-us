@@ -387,24 +387,32 @@ def set_hsa_c_cpi_u_index(parameters: ParameterNode, end_year: int) -> None:
 
 
 def set_medical_care_c_cpi_u_index(parameters: ParameterNode, end_year: int) -> None:
-    """Fill ``gov.irs.indexing.medical_care_c_cpi_u``, the 213(d)(10)(B) index.
+    """Build the medical index for projecting long-term care premium limits.
 
     26 U.S.C. 213(d)(10)(B)(ii) compares the medical care component of the
     C-CPI-U for August of the year before the tax year with that component of
     the CPI for August 1996, "multiplied by the amount determined under
-    section 1(f)(3)(B)", the all-items ratio of the two indexes for 2016.
-    That ratio would leave the two medical care components on different
-    scales, so the index here uses the components' own ratio for August
-    2016. With it, each 1997 amount plus its increase rounded to the nearest
-    $10 gives all five 2027 limits in Rev. Proc. 2026-35, section 3.29.
+    section 1(f)(3)(B)". That default conversion uses the all-items indexes
+    averaged over the 12 months ending August 2016. The Secretary, in
+    consultation with the Secretary of Health and Human Services, must
+    prescribe an adjustment the Secretary determines more appropriate. The
+    available sources do not identify a prescribed replacement method.
+
+    The model retains the stated annual IRS limits. For unpublished
+    limits, it chooses the medical components' August-2016 ratio as a
+    splice convention, joining their levels at that overlap. Each 1997
+    amount plus its increase rounded to the nearest $10 then gives all five
+    2027 limits in Rev. Proc. 2026-35, section 3.29. This consistency does
+    not identify the agency's exact method.
     Earlier published limits depart from this formula (see
-    ``tests/core/test_base_mode_uprating.py``). For tax year Y: through
-    August 2016, the CPI-U medical care component for August of Y - 1 times
-    that ratio; from August 2017 to the last published August, the C-CPI-U
-    component; after that, the last published August grown with CBO's
-    calendar-year CPI-U medical care component
-    (``gov.bls.cpi.cpi_u_medical_care``), since neither CBO nor CMS projects
-    the chained component.
+    ``tests/core/test_base_mode_uprating.py``).
+
+    For tax year Y, the index takes August of Y - 1 and scales CPI-U medical
+    values through August 2016 by that ratio. From August 2017, it reads
+    C-CPI-U medical values through the last published August. After that,
+    it grows the last observed level with CBO's calendar-year CPI-U medical
+    care growth (``gov.bls.cpi.cpi_u_medical_care``). That annual unchained
+    growth proxies future chained August growth.
     """
     index = parameters.gov.irs.indexing.medical_care_c_cpi_u
     cpi = parameters.gov.bls.cpi

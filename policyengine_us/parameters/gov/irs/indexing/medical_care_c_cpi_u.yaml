@@ -10,6 +10,12 @@ values:
   # (tests/core/test_base_mode_uprating.py lists them). After the last
   # published August, the index grows with CBO's calendar-year CPI-U
   # medical care component.
+  # For unpublished limits, the model chooses this August-2016 medical
+  # splice as a projection convention. The statutory default conversion
+  # uses all-items indexes averaged over the 12 months ending August 2016.
+  # The 2027 match supports consistency with the IRS table; the available
+  # sources do not identify this splice as the prescribed agency method.
+  # CBO's annual unchained growth proxies future chained August growth.
   1997-01-01: 1
 metadata:
   unit: /1

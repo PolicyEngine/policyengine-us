@@ -170,13 +170,16 @@ metadata:
   # component of the CPI (as defined in section 1(f)(4)) for August of
   # 1996, multiplied by the amount determined under section 1(f)(3)(B)."
   # That amount, the C-CPI-U for 2016 over the CPI for 2016, is an all-items
-  # ratio. The index (gov.irs.indexing.medical_care_c_cpi_u) uses the two
-  # medical care components' ratio for August 2016 in its place, which
-  # reproduces all five 2027 limits in Rev. Proc. 2026-35, section 3.29. The index's 1997
-  # value covers August 1996. After the last published August (2026), the
+  # ratio of averages over the 12 months ending August 2016. The model
+  # retains the stated annual IRS limits. For unpublished limits, the index
+  # (gov.irs.indexing.medical_care_c_cpi_u) chooses the medical components'
+  # August-2016 ratio as a projection convention. It reproduces all five
+  # 2027 limits in Rev. Proc. 2026-35, section 3.29; that consistency does
+  # not identify the prescribed agency method. The index's 1997 value
+  # covers August 1996. After the last published August (2026), the
   # index grows the chained component at CBO's projected rate for the
-  # unchained CPI-U medical care component, by calendar year, since neither
-  # CBO nor CMS projects the chained one. From August 2016 to August 2026
+  # unchained CPI-U medical care component, by calendar year. That annual
+  # growth proxies future chained August growth. From August 2016 to August 2026
   # the unchained component grew about 0.28 percentage points a year faster
   # than the chained one (2.39% against 2.10%, cpi_u_medical_care_nsa_august
   # and c_cpi_u_medical_care_august). If that gap persists, the projected

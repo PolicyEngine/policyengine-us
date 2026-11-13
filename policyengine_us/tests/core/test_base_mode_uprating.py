@@ -666,9 +666,12 @@ def test_earned_income_addition_before_tcja_follows_the_cpi_u():
     assert addition("1997-01-01") is None
 
 
-# 213(d)(10)(B): the medical care index, with the components' August 2016
-# ratio for the 1(f)(3)(B) amount, reproduces every 2027 limit in Rev. Proc.
+# The model's medical August-2016 splice, a projection convention,
+# reproduces every 2027 limit in Rev. Proc.
 # 2026-35 section 3.29; earlier printed limits depart by $5 to $30.
+# Section 1(f)(3)(B)'s default uses all-items averages over the 12 months
+# ending August 2016.
+# This back-test compares IRS amounts with the chosen model projection.
 LTC_BASES = (200, 375, 750, 2_000, 2_500)
 # The $375 limits the IRS printed before 2027 end in 0, where the $375 plus
 # an increase rounded to $10 ends in 5.
@@ -711,7 +714,7 @@ LTC_DEPARTURES = {
 
 
 @pytest.mark.parametrize("bracket, base", list(enumerate(LTC_BASES)))
-def test_printed_long_term_care_limits_against_the_statutory_formula(bracket, base):
+def test_printed_long_term_care_limits_against_the_model_projection(bracket, base):
     index = PARAMETERS.gov.irs.indexing.medical_care_c_cpi_u
     amount = LTC.brackets[bracket].amount
     found = {}
