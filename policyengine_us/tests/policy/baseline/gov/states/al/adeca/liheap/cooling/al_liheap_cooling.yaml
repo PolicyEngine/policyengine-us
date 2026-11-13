@@ -176,9 +176,11 @@
   output:
     al_liheap_cooling: 540
 
-# Case 1's worker with the heating fuel left unspecified. The standing LIHEAP rule pays
-# nothing when heating_type is UNSPECIFIED.
-- name: Case 10, an unspecified heating fuel pays no cooling.
+# Case 1's worker with the heating fuel left unspecified. Regular Cooling pays the Electric
+# column whatever the heating fuel, and plan item 3.2 adds no cooling requirement, so band 1
+# pays $440 + $100 = $540.
+# Was false and $0, now true and $540: cooling eligibility no longer requires a reported heating fuel.
+- name: Case 10, an unspecified heating fuel still receives the cooling payment.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -189,8 +191,8 @@
     has_cooling_expense: true
     hud_utility_allowance: 0
   output:
-    al_liheap_cooling_eligible: false
-    al_liheap_cooling: 0
+    al_liheap_cooling_eligible: true
+    al_liheap_cooling: 540
 
 # FY2025 plan: cooling runs May 1 to September 30, 2025, pays $320 to $520, and adds the
 # $100 IIJA supplement. The chart effective February 17, 2025 uses the 2025 guidelines:
@@ -211,3 +213,22 @@
   output:
     al_liheap_cooling_income_limit: 23_472
     al_liheap_cooling: 510
+
+# 21 hours a week at the $7.25 federal minimum wage (Alabama has none): 21 x 7.25 x 52 =
+# $7,917 a year, $659.75 a month. On the cooling limit, band 1 runs to
+# floor(1,995 / 3 + 0.5) = $665, so Electric $440 + $100 = $540. On the heating limit of
+# $1,956, band 1 ends at floor(1,956 / 3 + 0.5) = $652, so the heating band is 2, which
+# would pay $410 + $100 = $510.
+- name: Case 12, the cooling payment reads its band from the cooling limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 45
+    employment_income_before_lsr: 7_917
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_income_band: 2
+    al_liheap_cooling: 540

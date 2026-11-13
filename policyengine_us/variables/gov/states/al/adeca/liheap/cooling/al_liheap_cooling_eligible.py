@@ -25,15 +25,15 @@ class al_liheap_cooling_eligible(Variable):
         subsidized = spm_unit("receives_housing_assistance", period) | (
             spm_unit.household("is_in_public_housing", period)
         )
+        # Heating's rent route reads heat_expense_included_in_rent instead, so a
+        # renter with energy costs in the rent also sets tenant_pays_utilities
+        # to false for this route.
         utilities_in_rent = ~spm_unit.household("tenant_pays_utilities", period) & (
             add(spm_unit, period, ["rent"]) > 0
         )
         responsible = spm_unit("has_cooling_expense", period) | (
             utilities_in_rent & ~subsidized
         )
-        # The heating fuel must be reported: UNSPECIFIED pays nothing, while
-        # NONE and every known fuel qualify, since cooling pays the Electric
-        # column whatever the heating fuel.
-        heating_type = spm_unit("heating_type", period)
-        fuel_reported = heating_type != heating_type.possible_values.UNSPECIFIED
-        return (size > 0) & (income <= limit) & responsible & fuel_reported
+        # Cooling pays the Electric column whatever the heating fuel, so
+        # heating_type, including UNSPECIFIED, does not affect eligibility.
+        return (size > 0) & (income <= limit) & responsible

@@ -26,15 +26,15 @@ class al_liheap_cooling(Variable):
     reference = (
         # PDF pages 9, 21-23
         "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=9",
-        # PDF pages 12-13
+        # PDF pages 12-13: section 3.5 adopts the 2026 guidelines upon release.
         "https://liheapch.acf.gov/docs/2026/state-plans/AL_Plan_2026.pdf#page=12",
         # PDF pages 4, 12-13: the FY2025 cooling season, IIJA supplement and
         # $320 to $520 range.
         "https://liheapch.acf.gov/docs/2025/state-plans/AL_Plan_2025.pdf#page=4",
         # The chart effective February 17, 2025, on the 2025 guidelines.
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/AL_BenefitMatrix_Cooling_2026.pdf",
-        # Section 3.5: the 2026 guideline limit and band arithmetic of the chart
-        # effective May 15, 2026.
+        # Section 3.5: the PY2027 chart, from October 1, 2026, shows the limit
+        # and band arithmetic on the 2026 guidelines.
         "https://liheapch.acf.gov/docs/2027/state-plans/AL_Plan_2027.pdf#page=12",
     )
 

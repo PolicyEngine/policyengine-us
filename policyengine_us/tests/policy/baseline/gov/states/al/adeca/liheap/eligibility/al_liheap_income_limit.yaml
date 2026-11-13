@@ -30,3 +30,21 @@
     al_liheap_household_size: [1, 2]
   output:
     al_liheap_income_limit: [22_596, 30_660]
+
+# ADECA's PY 2025 chart and Summarized Eligibility Requirements effective October 1, 2024 to February 16, 2025, on
+# the 2024 guidelines ($15,060 plus $5,380 per additional person), print 5,918, 6,590, 7,263, 7,935, 8,608, 9,280,
+# 9,953, 10,625 and 11,298 a month for sizes 7-15. At odd sizes 150% a month ends in $0.50 and rounds up, so the
+# printed limit is $6 a year above 150% of the guideline: size 9 prints 7,263 x 12 = 87,156 against 58,100 x 1.5 =
+# 87,150. From size 8, 150% of the guideline exceeds HHS's FY2025 60% state median income amount (57,273 for four,
+# times the size factor, rounded down: 79,036 at size 8 against 1.5 x 52,720 = 79,080, and 80,754 at size 9), so the
+# odd sizes 9, 11, 13 and 15 stop at 87,150, 103,290, 119,430 and 135,570. At size 7 the 60% amount (57,273 x 1.35 = 77,318) is the higher maximum, so the printed 71,016 stays.
+# Even sizes print whole dollars. Historical estimate; 2025 is not a verified year.
+- name: Case 3, the 2025 limits at sizes 9, 11, 13 and 15 stop at the federal maximum.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL, AL, AL, AL, AL, AL, AL, AL]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    al_liheap_household_size: [7, 8, 9, 10, 11, 12, 13, 14, 15]
+  output:
+    al_liheap_income_limit: [71_016, 79_080, 87_150, 95_220, 103_290, 111_360, 119_430, 127_500, 135_570]

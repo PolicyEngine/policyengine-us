@@ -1,7 +1,9 @@
 description: Alabama uses federal poverty guidelines from this many years before the benefit year for regular cooling assistance under the Low Income Home Energy Assistance Program.
 # The May-September cooling season runs on the chart ADECA updates to the
-# calendar year's guidelines (May 15, 2026 for summer 2026). The model applies
-# that chart to the whole season, including May 1-14 applications.
+# calendar year's guidelines once they are released. The May 15, 2026 effective
+# date of the summer 2026 chart is reported from an attachment to the draft
+# FY2027 plan that ADECA later removed; no live copy was found. The model applies
+# the updated chart to the whole season, including applications before the update.
 values:
   2025-10-01: 0
 metadata:

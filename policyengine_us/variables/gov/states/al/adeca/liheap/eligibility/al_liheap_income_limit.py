@@ -36,7 +36,7 @@ class al_liheap_income_limit(Variable):
     defined_for = StateCode.AL
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
-        # FY2026 federal amounts
+        # FY2026 federal amounts, PDF pages 1, 4
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1",
         "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=57",
         "https://liheapch.acf.gov/docs/2026/state-plans/AL_Plan_2026.pdf#page=9",
