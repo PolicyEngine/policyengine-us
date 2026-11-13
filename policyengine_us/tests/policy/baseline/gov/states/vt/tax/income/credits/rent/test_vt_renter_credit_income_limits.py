@@ -3,9 +3,11 @@
 32 V.S.A. § 6061(19)-(20) define the full and partial credit limits from HUD's
 Section 8 income limits: the extremely low-income limit, and 1.3 times the very
 low-income limit. Franklin and Grand Isle use the state average instead. PE
-transcribes the department's published tables, and PE also bundles HUD's limits
-(gov/hud/income_limits) for FY2024 onward, so the two must agree for every year
-both cover. The department rounds to the nearest $10, half up; for Franklin and
+transcribes the department's published tables. The 1.3 multiplier applies from
+tax year 2024 (2024 Act 144, section 5); earlier partial-credit tables use a
+different rule. Compare that multiplier only from 2024, and compare full-credit
+limits for every year both tables cover. The department rounds to the nearest
+$10, half up; for Franklin and
 Grand Isle it averages across Vermont's twelve HUD areas and rounds that average
 to $10 before applying the multiplier. Transcription slips in the 2024 and 2025
 tables (including the TY2025 booklet's $88,880 for Washington County, seven
@@ -59,6 +61,8 @@ PARTIAL = _table("fifty_percent")
 FULL = _table("thirty_percent")
 TABLE_YEARS = sorted({year for year, _, _ in PARTIAL})
 HUD_YEARS = sorted(set(TABLE_YEARS) & set(income_limits["year"].unique().tolist()))
+# https://tax.vermont.gov/sites/tax/files/documents/2024-Legislative-Highlights.pdf
+PARTIAL_CREDIT_YEARS = [year for year in HUD_YEARS if year >= 2024]
 
 
 def _round_to_ten(amount):
@@ -96,10 +100,10 @@ def test_hud_comparison_covers_2024_onward():
     # The published tables start in 2021; pe-us copies each parameter's first
     # value back to 2015 (tools/parameters.py backdate_parameters).
     assert set(range(2021, 2026)) <= set(TABLE_YEARS)
-    assert HUD_YEARS[:2] == [2024, 2025]
+    assert PARTIAL_CREDIT_YEARS[:2] == [2024, 2025]
 
 
-@pytest.mark.parametrize("year", HUD_YEARS)
+@pytest.mark.parametrize("year", PARTIAL_CREDIT_YEARS)
 @pytest.mark.parametrize("county", sorted(COUNTY_FIPS))
 @pytest.mark.parametrize("size", SIZES)
 def test_partial_credit_limit_is_1_3_times_hud_very_low_income_limit(
