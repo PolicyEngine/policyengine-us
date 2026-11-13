@@ -6,8 +6,10 @@ class az_adoption_expense_subtraction(Variable):
     entity = TaxUnit
     label = "Arizona adoption expense subtraction"
     unit = USD
-    documentation = "https://www.azleg.gov/ars/43/01022.htm"
-    reference = "A.R.S. 43-1022 - Subtractions from Arizona Gross Income"
+    reference = dict(
+        title="A.R.S. 43-1022 - Subtractions from Arizona Gross Income",
+        href="https://www.azleg.gov/ars/43/01022.htm",
+    )
     definition_period = YEAR
     defined_for = StateCode.AZ
 

@@ -1,0 +1,22 @@
+- name: Ohio deducts the disability benefits included in federal AGI.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 50
+        disability_benefits: 10_000
+        tax_exempt_disability_benefits: 4_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: OH
+  output:
+    # 10,000 - 4,000 = 6,000.
+    oh_deductions: 6_000
+    adjusted_gross_income_person: 6_000
+    # 6,000 federal AGI - 6,000 deduction = 0. Deducting the full 10,000
+    # would take Ohio AGI below zero.
+    oh_agi_person: 0

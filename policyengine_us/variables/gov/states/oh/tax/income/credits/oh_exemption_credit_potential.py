@@ -15,11 +15,12 @@ class oh_exemption_credit_potential(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.credits.exemption
 
-        agi = tax_unit("oh_agi", period)
+        # Modified adjusted gross income less exemptions (R.C. 5747.022).
+        modified_agi = tax_unit("oh_modified_agi", period)
         personal_exemptions = tax_unit("oh_personal_exemptions", period)
         # Per tax form, amount can be negative
-        modified_agi = agi - personal_exemptions
-        amount_per_exemption = p.amount.calc(modified_agi, right=True)
+        modified_agi_less_exemptions = modified_agi - personal_exemptions
+        amount_per_exemption = p.amount.calc(modified_agi_less_exemptions, right=True)
 
         exemptions = tax_unit("exemptions_count", period)
 

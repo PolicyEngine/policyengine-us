@@ -1,0 +1,234 @@
+# HEAP Manual, Chapter 8 D.10 and D.11 (PDF page 37): a household is
+# categorically income eligible when a household member is an active recipient
+# of recurring TA, SNAP or Code A SSI; D.4(a) (page 36) lists who is not a
+# household member. https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
+# FY2026 State Plan item 1.4a (page 5): one member's receipt qualifies the
+# whole household.
+# https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=5
+# 18 NYCRR 393.4(c)(1)(iii): SSI "as a couple or individual living alone (SSI
+# Living Arrangement Code A)".
+# https://www.law.cornell.edu/regulations/new-york/18-NYCRR-393.4
+
+- name: Case 1, SNAP receipt confers categorical eligibility and no benefit receipt does not.
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    state_code: [NY, NY]
+    # $200 a month of SNAP for the first single adult; none for the second.
+    snap: [2_400, 0]
+    tanf: [0, 0]
+    ssi: [0, 0]
+  output:
+    # D.10(c) (page 37): the SNAP recipient's household qualifies; the other
+    # household is income tested under D.9 (page 37).
+    ny_heap_categorically_eligible: [true, false]
+
+- name: Case 2, a single SSI recipient in the federal own-household arrangement is Code A.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    state_code: NY
+    snap: 0
+    tanf: 0
+    ssi: 1_200
+    ssi_federal_living_arrangement:
+      2026-01: OWN_HOUSEHOLD
+  output:
+    # State Plan 1.4a (page 5) and D.10(c) (page 37): Code A SSI receipt
+    # qualifies. 18 NYCRR 393.4(c)(1)(iii) and the glossary (page 110) define
+    # Code A as an individual or couple living alone in the federal
+    # own-household arrangement; a recipient living alone satisfies both.
+    ny_heap_categorically_eligible: true
+
+- name: Case 3, a TANF entitlement that is not taken up does not confer categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        ssi: 0
+      person2:
+        age: 4
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        # Two-person New York City grant with no other income: $252 basic
+        # allowance + $22.50 home energy + $17 supplemental home energy + $283
+        # shelter = $574.50 a month (18 NYCRR 352.1 to 352.3).
+        ny_tanf: 6_894
+        takes_up_tanf_if_eligible: false
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # D.10(c) and D.11(a) (page 37) require active receipt of recurring TA; an
+    # unclaimed entitlement is not receipt.
+    ny_heap_categorically_eligible: false
+
+- name: Case 4, an excluded foster member or a nonqualified SSI recipient does not confer categorical eligibility.
+  period: 2026
+  input:
+    state_code: [NY, NY]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    age: [40, 40]
+    ssi: [1_200, 1_200]
+    snap: [0, 0]
+    tanf: [0, 0]
+    is_citizen_or_legal_immigrant: [true, false]
+    is_in_foster_care:
+      2026-01: [true, false]
+    ssi_federal_living_arrangement:
+      2026-01: [OWN_HOUSEHOLD, OWN_HOUSEHOLD]
+  output:
+    # D.4(a)(3) and (7) (page 36): a foster member and a nonqualified
+    # noncitizen are not household members, and D.11(b) (page 37) requires the
+    # benefit recipient to be a HEAP household member.
+    ny_heap_categorically_eligible: [false, false]
+
+- name: Case 5, TANF receipt confers categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        ssi: 0
+      person2:
+        age: 4
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        # Two-person New York City grant with no other income: $252 basic
+        # allowance + $22.50 home energy + $17 supplemental home energy + $283
+        # shelter = $574.50 a month (18 NYCRR 352.1 to 352.3).
+        tanf: 6_894
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # D.10(c) (page 37) and State Plan 1.4a (page 5): receipt of federally
+    # funded Public Assistance by one member qualifies the household.
+    ny_heap_categorically_eligible: true
+
+- name: Case 6, a TANF entitlement that is taken up confers categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        ssi: 0
+      person2:
+        age: 4
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        # Same two-person New York City grant as Case 3, taken up.
+        ny_tanf: 6_894
+        takes_up_tanf_if_eligible: true
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # D.10(c) (page 37): the family is an active recipient of recurring TA.
+    ny_heap_categorically_eligible: true
+
+- name: Case 7, an SSI recipient living with her daughter's family is not Code A, so the household is income tested.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 72
+        # Federal SSI of $994 a month.
+        ssi: 11_928
+        ssi_federal_living_arrangement:
+          2026-01: OWN_HOUSEHOLD
+      person2:
+        age: 45
+        # Full-time wages of $4,000 a month.
+        employment_income: 48_000
+        ssi: 0
+      person3:
+        age: 47
+        # Full-time wages of $3,000 a month.
+        employment_income: 36_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_500
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # 393.4(c)(1)(iii) and the glossary (page 110): Code A means living alone,
+    # and this recipient lives with two other adults.
+    ny_heap_categorically_eligible: false
+    # 48,000 + 36,000 wages (D.12(a)(1), page 37) + 11,928 SSI (D.12(a)(7),
+    # page 38) = 95,928, which is 7,994 a month.
+    ny_heap_countable_income: 95_928
+    # Three-person Tier II maximum 5,611 x 12 (2025-2026 HEAP Monthly Income
+    # Eligibility Guidelines); 7,994 a month exceeds it.
+    ny_heap_income_limit: 67_332
+    ny_heap_eligible: false
+    ny_heap: 0
+
+- name: Case 8, an SSI couple living alone is Code A.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        # The couple's federal SSI rate of $1,491 a month, split between them.
+        ssi: 8_946
+        ssi_federal_living_arrangement:
+          2026-01: OWN_HOUSEHOLD
+      person2:
+        age: 66
+        ssi: 8_946
+        ssi_federal_living_arrangement:
+          2026-01: OWN_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_500
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # 393.4(c)(1)(iii): SSI "as a couple ... living alone" qualifies.
+    ny_heap_categorically_eligible: true
+
+- name: Case 9, an SSI recipient living alone in another person's household is not in the federal Code A arrangement.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    state_code: NY
+    snap: 0
+    tanf: 0
+    ssi: 1_200
+    ssi_federal_living_arrangement:
+      2026-01: ANOTHER_PERSONS_HOUSEHOLD
+  output:
+    # The glossary (page 110) requires Code A for both state and federal SSI;
+    # a recipient in the federal another-person's-household arrangement is
+    # not federal Code A.
+    ny_heap_categorically_eligible: false

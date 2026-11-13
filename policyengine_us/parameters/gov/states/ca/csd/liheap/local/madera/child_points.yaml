@@ -1,0 +1,26 @@
+description: California assigns these Madera priority points based on the youngest household member under the Low Income Home Energy Assistance Program.
+# Each category applies once: 10 points for any child under 6 plus 5 for
+# any child under 3. The scale combines the two overlapping categories.
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 15
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 10
+  - threshold:
+      2025-10-01: 6
+    amount:
+      2025-10-01: 0
+
+metadata:
+  unit: /1
+  period: year
+  label: California LIHEAP Madera child priority points
+  type: single_amount
+  threshold_unit: year
+  reference:
+    - title: CAP Madera FY2026 LIHEAP Local Plan
+      href: https://maderacap.org/wp-content/uploads/2025/10/Agenda-and-Packet-for-October-9-2025-Updated.pdf#page=191

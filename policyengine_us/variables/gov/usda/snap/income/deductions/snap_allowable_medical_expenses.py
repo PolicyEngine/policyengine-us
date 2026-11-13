@@ -10,6 +10,7 @@ class snap_allowable_medical_expenses(Variable):
     reference = [
         "https://www.law.cornell.edu/uscode/text/7/2014#e_5",
         "https://www.law.cornell.edu/cfr/text/7/273.9#d_3",
+        "https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(3)(iv)",
     ]
     documentation = (
         "Medical expenses allowable for SNAP's excess medical expense "
@@ -21,10 +22,13 @@ class snap_allowable_medical_expenses(Variable):
         "insurance premiums, Medicare premiums, cost sharing, medical "
         "supplies, transportation, and related services. Current modeling "
         "uses health insurance premiums and other medical expenses, excluding "
-        "general over-the-counter health expenses."
+        "general over-the-counter health expenses. Employee-paid premiums "
+        "include both pretax payroll deductions and the disjoint non-pretax "
+        "premium amounts."
     )
 
     adds = [
         "medical_expense_health_insurance_premiums",
+        "pre_tax_health_insurance_premiums",
         "other_medical_expenses",
     ]

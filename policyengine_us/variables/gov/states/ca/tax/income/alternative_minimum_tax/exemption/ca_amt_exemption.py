@@ -23,8 +23,7 @@ class ca_amt_exemption(Variable):
         # Line 4
         reduced_amti = max_(amti - lower_exemption_threshold, 0)
         # Line 5
-        p_irs = parameters(period).gov.irs.income.amt.exemption
-        reduced_amti_rate = reduced_amti * p_irs.phase_out.rate
+        reduced_amti_rate = reduced_amti * p.phase_out_rate
         # Line 6
         adult_exemption = max_(exemption_max_amount - reduced_amti_rate, 0)
         # Eligible children receive an increased exemption amount.
@@ -33,10 +32,12 @@ class ca_amt_exemption(Variable):
         eligible_child = person("is_qualifying_child_dependent", period)
         is_head = person("is_tax_unit_head", period)
         head_is_eligible_child = tax_unit.any(eligible_child & is_head)
-        # Line 7
-        exemption_amount_child = p_irs.child.amount
-        # Line 8
-        earned_income = tax_unit("head_earned", period)
+        # Line 7: California's own amount, not the federal IRC 59(j) one.
+        exemption_amount_child = p.child.amount
+        # Line 8: "wages, tips, and other payments received for personal
+        # services performed", which in California include payroll HSA
+        # contributions.
+        earned_income = tax_unit("ca_head_earned", period)
         # Line 9
         total_reduced_exemption_amount = exemption_amount_child + earned_income
         # Line 10

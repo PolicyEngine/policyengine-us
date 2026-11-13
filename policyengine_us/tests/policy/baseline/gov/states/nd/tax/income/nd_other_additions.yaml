@@ -1,0 +1,14 @@
+- name: Case 1, default nd_other_additions is zero
+  period: 2024
+  input:
+    state_code: ND
+  output:
+    nd_other_additions: 0.0
+
+- name: Case 2, nd_other_additions flows into nd_additions
+  period: 2024
+  input:
+    state_code: ND
+    nd_other_additions: 1_200
+  output:
+    nd_additions: 1_200

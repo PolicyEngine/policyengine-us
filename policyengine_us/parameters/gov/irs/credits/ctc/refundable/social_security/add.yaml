@@ -1,17 +1,19 @@
 description: The IRS defines social security taxes under the Child Tax Credit to include the following variables.
 values:
   2018-01-01:
-    # Person:
+    # Person (summed over the head and spouse only):
     - employee_social_security_tax
     - employee_medicare_tax
+    - self_employment_tax_ald_person
+    # Tax Unit (describes the head's and spouse's own return):
     - unreported_payroll_tax
-    # Tax Unit:
-    - self_employment_tax_ald
     - additional_medicare_tax
 metadata:
   unit: list
   period: year
-  label: Child Tax Credit added social security taxes 
+  label: Child Tax Credit added social security taxes
   reference:
     - title: 26 U.S. Code § 24(d)(2)(A)
       href: https://www.law.cornell.edu/uscode/text/26/24#d_2_A
+    - title: 2024 Schedule 8812 (Form 1040), Part II-B, lines 21 to 23
+      href: https://www.irs.gov/pub/irs-prior/f1040s8--2024.pdf#page=2

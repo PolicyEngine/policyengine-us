@@ -1,0 +1,13 @@
+description: Ohio allows the qualifying capital gain deduction if this is true.
+values:
+  2021-01-01: false
+  2026-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Ohio qualifying capital gain deduction in effect
+  reference:
+    - title: R.C. 5747.79(B)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.79
+    - title: R.C. 5747.01(A)(34)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.01

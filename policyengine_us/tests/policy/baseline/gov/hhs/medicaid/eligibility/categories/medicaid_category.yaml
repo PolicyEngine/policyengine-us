@@ -161,3 +161,106 @@
     is_optional_senior_or_disabled_for_medicaid: [true, true]
     medicaid_category: [SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
     is_medicaid_eligible: [true, true]
+
+# 2026: an aged person with $900 a month of Social Security receives SSI of
+# $994 - ($900 - $20) = $114 a month.
+- name: Case 13, aged Alabaman who receives SSI is an SSI recipient.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    social_security_retirement: 10_800
+  output:
+    ssi: 1_368
+    medicaid_category: SSI_RECIPIENT
+    is_medicaid_eligible: true
+
+# Maryland covers aged, blind, or disabled people who do not receive SSI as
+# medically needy, not as categorically needy. Countable income of $10,560 a
+# year less $7,200 of other medical expenses (and any modeled Medicare Part B
+# premium) is at most $3,360, under the medically needy limit of $350 a month
+# ($4,200 a year).
+- name: Case 14, aged Marylander who does not take up SSI spends down to medically needy coverage.
+  period: 2026
+  input:
+    age: 70
+    state_code: MD
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+    other_medical_expenses: 7_200
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medically_needy_for_medicaid: true
+    medicaid_category: MEDICALLY_NEEDY
+    is_medicaid_eligible: true
+
+# 20 CFR 416.1163(d)(1): with nothing to deem, the applicant is tested alone.
+# 17,040 - 240 = 16,800 is above West Virginia's 12 x 994 = 11,928.
+- name: Case 15, West Virginia senior with a spouse who has no income is above the one-person limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 17_040
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    medicaid_category: [NONE, ADULT]
+    is_medicaid_eligible: [false, true]
+
+# AHCCCS MA611 tests the couple: 16,800 is within 21,640 and above the one-person 15,960.
+- name: Case 16, Arizona senior with a spouse who has no income is within the couple limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 17_040
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    medicaid_category: [SENIOR_OR_DISABLED, ADULT]
+    is_medicaid_eligible: [true, true]
+
+# 210-RICR-40-05-1 1.11.2: a group of two whether or not the spouse applies.
+# 16,800 is within 21,640 and above the one-person 15,960.
+- name: Case 17, Rhode Island senior with a spouse who has no income is within the couple limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 17_040
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    medicaid_category: [SENIOR_OR_DISABLED, ADULT]
+    is_medicaid_eligible: [true, true]

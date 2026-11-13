@@ -25,3 +25,27 @@
     adjusted_gross_income_person: 0
   output:
     il_fpp_income_level: 0
+
+- name: Only the applicant's own deductions lower the applicant's income.
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 30
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
+  output:
+    # Before: [27_000, 17_000].
+    adjusted_gross_income_person: [24_000, 20_000]
+    il_fpp_income_level: [1.1742, 0.9785]

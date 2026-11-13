@@ -45,7 +45,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 0
@@ -58,7 +58,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 1_340
@@ -98,7 +98,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 1_692
@@ -111,7 +111,7 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 2_115
@@ -141,7 +141,849 @@
     tax_unit_size: 2
     rent_is_shared_with_another_tax_unit: false
     housing_assistance: 0
-    rent: 0
+    rent: 12_000
     state_code: VT
   output:
     vt_renter_credit: 1_692
+
+- name: "2025 single filer who can be claimed as a dependent: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions"
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 1000
+        rent: 12000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # 32 V.S.A. 6066(c)(2): the claimant may not be a person claimed as a
+    # dependent by any taxpayer.
+    vt_renter_credit: 0
+
+- name: "2025 joint return with one claimable spouse: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # The unclaimed spouse is the claimant. 6066(b)(2) sizes fair market
+    # rent by the number of personal exemptions: one. Income $1,000 is
+    # below the full-credit limit: round($1,476 x 12 x 10%) = $1,771.
+    vt_renter_credit: 1771
+
+- name: "2025 joint return with one claimable spouse: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    vt_renter_credit: 1771
+
+- name: "2025 joint return with both spouses claimable: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    vt_renter_credit: 0
+
+- name: "2025 joint return with neither spouse claimable: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # Two exemptions: round($1,936 x 12 x 10%) = $2,323.
+    vt_renter_credit: 2323
+
+- name: 2025 single renter who can be claimed but is not claimed keeps the Vermont renter credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 1000
+        rent: 12000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # 6066(c)(2) bars a claimant "claimed as a dependent", an actual claim.
+    # A filer who can be claimed has no personal exemption; the fair market
+    # rent uses the zero-bedroom HUD schedule under 6066(b)(2):
+    # round($1,380 x 12 x 10%) = $1,656.
+    vt_renter_credit: 1656
+
+# Franklin and Grand Isle use the state-average fair market rent (32 V.S.A.
+# 6061(7)(C)). Expected values are the department's Renter Credit Website
+# Calculators (2022, 2023, 2025), recalculated in LibreOffice for each household:
+# 12 months rented, not shared, not subsidized.
+- name: Franklin, 4 people, 2022, full credit at the state-average fair market rent
+  period: 2022
+  input:
+    vt_renter_credit_income: 5_000
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 4
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # 10% x 12 x 1,477.91 = 1,773.49; the whole-dollar 1,478 gave 1,774.
+    vt_renter_credit: 1_773
+
+- name: Grand Isle, 3 people, 2023, full credit at the state-average fair market rent
+  period: 2023
+  input:
+    vt_renter_credit_income: 5_000
+    county: GRAND_ISLE_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # 10% x 12 x 1,457.83 = 1,749.40; the whole-dollar 1,458 gave 1,750.
+    vt_renter_credit: 1_749
+
+- name: Franklin, 1 person, 2025, full credit at the state-average fair market rent
+  period: 2025
+  input:
+    vt_renter_credit_income: 5_000
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # 10% x 12 x 1,057.75 = 1,269.30; the whole-dollar 1,058 gave 1,270.
+    vt_renter_credit: 1_269
+
+- name: Grand Isle, 3 people, 2025, full credit at the state-average fair market rent
+  period: 2025
+  input:
+    vt_renter_credit_income: 5_000
+    county: GRAND_ISLE_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # 10% x 12 x 1,687.17 = 2,024.60; the whole-dollar 1,688 gave 2,026.
+    vt_renter_credit: 2_025
+
+- name: Franklin, 6 people, 2025, full credit with the credit amount rounded half up
+  period: 2025
+  input:
+    vt_renter_credit_income: 5_000
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 6
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # 10% x 12 x 1,828.75 = 2,194.50 exactly, which the department rounds up.
+    vt_renter_credit: 2_195
+
+- name: Franklin, 1 person, 2025, partial credit from the whole-dollar credit amount
+  period: 2025
+  input:
+    vt_renter_credit_income: 31_090
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # (49,340 - 31,090) / (49,340 - 22,790) x 1,269 = 872.29.
+    vt_renter_credit: 872
+
+- name: Grand Isle, 3 people, 2025, partial credit from the whole-dollar credit amount
+  period: 2025
+  input:
+    vt_renter_credit_income: 39_980
+    county: GRAND_ISLE_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # (63,410 - 39,980) / (63,410 - 29,280) x 2,025 = 1,390.15.
+    vt_renter_credit: 1_390
+
+- name: Grand Isle, 3 people, 2023, partial credit from the whole-dollar credit amount
+  period: 2023
+  input:
+    vt_renter_credit_income: 30_740
+    county: GRAND_ISLE_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # (42,350 - 30,740) / (42,350 - 25,640) x 1,749 = 1,215.19.
+    vt_renter_credit: 1_215
+
+- name: Franklin, 5 people, 2022, partial credit from the whole-dollar credit amount
+  period: 2022
+  input:
+    vt_renter_credit_income: 37_560
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 5
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # (47,990 - 37,560) / (47,990 - 32,660) x 1,773 = 1,206.29.
+    vt_renter_credit: 1_206
+
+- name: Addison, 1 person, 2025, partial credit from the whole-dollar credit amount
+  period: 2025
+  input:
+    vt_renter_credit_income: 33_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # 10% x 12 x 1,103 = 1,323.60, which the department rounds to 1,324 before
+    # the phase-out: (52,850 - 33,000) / (52,850 - 24,400) x 1,324 = 923.78.
+    # Applying the phase-out to the unrounded 1,323.60 gave 923.
+    vt_renter_credit: 924
+
+# The 2025 department calculator's Calculator!G17 uses ROUND(..., 0).
+# Exact 50-cent ties round up for these full-year, unshared, unsubsidized claims:
+# https://tax.vermont.gov/sites/tax/files/documents/2025%20Renter%20Credit%20Website%20Calculator.xlsx
+- name: Franklin, 1 person, 2025, final partial-credit tie rounds half up
+  period: 2025
+  input:
+    vt_renter_credit_income: 36_065
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # (49,340 - 36,065) / (49,340 - 22,790) x 1,269 = 634.50.
+    vt_renter_credit: 635
+
+- name: Lamoille, 1 person, 2025, final partial-credit tie rounds half up
+  period: 2025
+  input:
+    vt_renter_credit_income: 34_495
+    county: LAMOILLE_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # (47,190 - 34,495) / (47,190 - 21,800) x 1,169 = 584.50.
+    vt_renter_credit: 585
+
+- name: Addison, 1 person, 2027, full-credit base tie rounds half up
+  period: 2027
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # 1,103 x 12 x the temporary 12.5% rate = 1,654.50.
+    vt_renter_credit: 1_655
+
+# The 2022 calculator's Calculator!G16 rounds this non-midpoint tie up:
+# https://tax.vermont.gov/sites/tax/files/documents/2022%20Renter%20Credit%20Website%20Calculator_1.xlsx
+- name: Caledonia, 1 person, 2022, final tie preserves precision during phase-out
+  period: 2022
+  input:
+    vt_renter_credit_income: 23_500
+    county: CALEDONIA_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # 924 x (30,000 - 23,500) / (30,000 - 18,000) = 500.50.
+    vt_renter_credit: 501
+
+# Income limit corrections. Each case puts income where the corrected limits
+# and PE's earlier values give different credits. Base credit = ROUND(fair market
+# rent x 12 x 10%, 0), before the income phase-out; final credits round half up.
+# The 2023-2025 expectations match the department's Renter Credit Website
+# Calculator for the same household.
+- name: Washington, 7 people, 2025, midpoint of the corrected income limits
+  period: 2025
+  input:
+    vt_renter_credit_income: 68_820
+    county: WASHINGTON_COUNTY_VT
+    tax_unit_size: 7
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # Partial limit 88,990 = 1.3 x HUD FY2025 very low-income limit 68,450,
+    # rounded to $10 (the booklet prints 88,880). Full limit 48,650.
+    # Base: ROUND(1,977 x 12 x 0.1, 0) = ROUND(2,372.4, 0) = 2,372.
+    # (88,990 - 68,820) / (88,990 - 48,650) = 0.5; 0.5 x 2,372 = 1,186.
+    vt_renter_credit: 1_186
+
+- name: Washington, 7 people, 2025, income between the booklet and corrected limits
+  period: 2025
+  input:
+    vt_renter_credit_income: 88_950
+    county: WASHINGTON_COUNTY_VT
+    tax_unit_size: 7
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # Above the booklet's 88,880 but below 88,990.
+    # Base: ROUND(1,977 x 12 x 0.1, 0) = 2,372.
+    # (88,990 - 88,950) / 40,340 x 2,372 = 2.352... -> 2.
+    vt_renter_credit: 2
+
+- name: Chittenden, 8 people, 2024, income above the corrected partial limit
+  period: 2024
+  input:
+    vt_renter_credit_income: 102_400
+    county: CHITTENDEN_COUNTY_VT
+    tax_unit_size: 8
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # Partial limit 102,050 = 1.3 x HUD FY2024 limit 78,500 (PE had 102,850).
+    vt_renter_credit: 0
+
+- name: Washington, 3 people, 2024, income above the corrected partial limit
+  period: 2024
+  input:
+    vt_renter_credit_income: 61_800
+    county: WASHINGTON_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # Partial limit 61,690 = 1.3 x HUD FY2024 limit 47,450 (PE had 61,960).
+    vt_renter_credit: 0
+
+- name: Caledonia, 4 people, 2024, income below the corrected full limit
+  period: 2024
+  input:
+    vt_renter_credit_income: 30_600
+    county: CALEDONIA_COUNTY_VT
+    tax_unit_size: 4
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # Full limit 31,200 = HUD FY2024 extremely low-income limit (PE had 30,000).
+    # Full credit: ROUND(1,657 x 12 x 0.1, 0) = ROUND(1,988.4, 0) = 1,988.
+    vt_renter_credit: 1_988
+
+- name: Franklin, 7 people, 2023, midpoint of the corrected income limits
+  period: 2023
+  input:
+    vt_renter_credit_income: 51_870
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 7
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # Partial limit 58,320 (PE had Lamoille's 56,250). Full limit 45,420.
+    # Base: ROUND(1,586.94 x 12 x 0.1, 0) = ROUND(1,904.328, 0) = 1,904.
+    # (58,320 - 51,870) / (58,320 - 45,420) = 0.5; 0.5 x 1,904 = 952.
+    vt_renter_credit: 952
+
+- name: Lamoille, 7 people, 2023, midpoint of the corrected income limits
+  period: 2023
+  input:
+    vt_renter_credit_income: 50_835
+    county: LAMOILLE_COUNTY_VT
+    tax_unit_size: 7
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # Partial limit 56,250 (PE had Franklin's 58,320). Full limit 45,420.
+    # Base: ROUND(1,556 x 12 x 0.1, 0) = ROUND(1,867.2, 0) = 1,867.
+    # (56,250 - 50,835) / (56,250 - 45,420) = 0.5; 0.5 x 1,867 = 933.5 -> 934.
+    vt_renter_credit: 934
+
+- name: Windsor, 2 people, 2021, midpoint of the corrected income limits
+  period: 2021
+  input:
+    vt_renter_credit_income: 25_250
+    county: WINDSOR_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # Partial limit 31,550 = HUD FY2021 limit (PE had 31,350). Full limit 18,950.
+    # Base: ROUND(1,007 x 12 x 0.1, 0) = ROUND(1,208.4, 0) = 1,208.
+    # (31,550 - 25,250) / (31,550 - 18,950) = 0.5; 0.5 x 1,208 = 604.
+    vt_renter_credit: 604
+
+- name: Chittenden, 5 people, 2021, income below the corrected full limit
+  period: 2021
+  input:
+    vt_renter_credit_income: 31_045
+    county: CHITTENDEN_COUNTY_VT
+    tax_unit_size: 5
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 12_000
+    state_code: VT
+  output:
+    # Full limit 31,050 = HUD FY2021 extremely low-income limit (PE had 31,040).
+    # Full credit: ROUND(2,083 x 12 x 0.1, 0) = ROUND(2,499.6, 0) = 2,500.
+    vt_renter_credit: 2_500
+
+- name: 2021 zero-exemption renter uses HUD zero-bedroom rents in all Vermont counties
+  period: 2021
+  input:
+    state_code:
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+    county:
+      - ADDISON_COUNTY_VT
+      - BENNINGTON_COUNTY_VT
+      - CALEDONIA_COUNTY_VT
+      - CHITTENDEN_COUNTY_VT
+      - ESSEX_COUNTY_VT
+      - FRANKLIN_COUNTY_VT
+      - GRAND_ISLE_COUNTY_VT
+      - LAMOILLE_COUNTY_VT
+      - ORANGE_COUNTY_VT
+      - ORLEANS_COUNTY_VT
+      - RUTLAND_COUNTY_VT
+      - WASHINGTON_COUNTY_VT
+      - WINDHAM_COUNTY_VT
+      - WINDSOR_COUNTY_VT
+    tax_unit_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    exemptions_count: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    vt_renter_credit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000]
+    rent_is_shared_with_another_tax_unit: [false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    housing_assistance: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    rent: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+  output:
+    # Each HUD monthly 0BR amount x 12 x 10%, rounded half up.
+    # Franklin and Grand Isle use the average of Vermont's 12 HUD areas.
+    vt_renter_credit:
+      - 901  # ADDISON_COUNTY_VT
+      - 852  # BENNINGTON_COUNTY_VT
+      - 850  # CALEDONIA_COUNTY_VT
+      - 1309  # CHITTENDEN_COUNTY_VT
+      - 672  # ESSEX_COUNTY_VT
+      - 883  # FRANKLIN_COUNTY_VT
+      - 883  # GRAND_ISLE_COUNTY_VT
+      - 946  # LAMOILLE_COUNTY_VT
+      - 888  # ORANGE_COUNTY_VT
+      - 710  # ORLEANS_COUNTY_VT
+      - 917  # RUTLAND_COUNTY_VT
+      - 860  # WASHINGTON_COUNTY_VT
+      - 836  # WINDHAM_COUNTY_VT
+      - 858  # WINDSOR_COUNTY_VT
+
+- name: 2022 zero-exemption renter uses HUD zero-bedroom rents in all Vermont counties
+  period: 2022
+  input:
+    state_code:
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+    county:
+      - ADDISON_COUNTY_VT
+      - BENNINGTON_COUNTY_VT
+      - CALEDONIA_COUNTY_VT
+      - CHITTENDEN_COUNTY_VT
+      - ESSEX_COUNTY_VT
+      - FRANKLIN_COUNTY_VT
+      - GRAND_ISLE_COUNTY_VT
+      - LAMOILLE_COUNTY_VT
+      - ORANGE_COUNTY_VT
+      - ORLEANS_COUNTY_VT
+      - RUTLAND_COUNTY_VT
+      - WASHINGTON_COUNTY_VT
+      - WINDHAM_COUNTY_VT
+      - WINDSOR_COUNTY_VT
+    tax_unit_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    exemptions_count: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    vt_renter_credit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000]
+    rent_is_shared_with_another_tax_unit: [false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    housing_assistance: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    rent: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+  output:
+    # Each HUD monthly 0BR amount x 12 x 10%, rounded half up.
+    # Franklin and Grand Isle use the average of Vermont's 12 HUD areas.
+    vt_renter_credit:
+      - 935  # ADDISON_COUNTY_VT
+      - 916  # BENNINGTON_COUNTY_VT
+      - 889  # CALEDONIA_COUNTY_VT
+      - 1240  # CHITTENDEN_COUNTY_VT
+      - 702  # ESSEX_COUNTY_VT
+      - 919  # FRANKLIN_COUNTY_VT
+      - 919  # GRAND_ISLE_COUNTY_VT
+      - 961  # LAMOILLE_COUNTY_VT
+      - 944  # ORANGE_COUNTY_VT
+      - 766  # ORLEANS_COUNTY_VT
+      - 977  # RUTLAND_COUNTY_VT
+      - 912  # WASHINGTON_COUNTY_VT
+      - 881  # WINDHAM_COUNTY_VT
+      - 908  # WINDSOR_COUNTY_VT
+
+- name: 2023 zero-exemption renter uses HUD zero-bedroom rents in all Vermont counties
+  period: 2023
+  input:
+    state_code:
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+    county:
+      - ADDISON_COUNTY_VT
+      - BENNINGTON_COUNTY_VT
+      - CALEDONIA_COUNTY_VT
+      - CHITTENDEN_COUNTY_VT
+      - ESSEX_COUNTY_VT
+      - FRANKLIN_COUNTY_VT
+      - GRAND_ISLE_COUNTY_VT
+      - LAMOILLE_COUNTY_VT
+      - ORANGE_COUNTY_VT
+      - ORLEANS_COUNTY_VT
+      - RUTLAND_COUNTY_VT
+      - WASHINGTON_COUNTY_VT
+      - WINDHAM_COUNTY_VT
+      - WINDSOR_COUNTY_VT
+    tax_unit_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    exemptions_count: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    vt_renter_credit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000]
+    rent_is_shared_with_another_tax_unit: [false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    housing_assistance: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    rent: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+  output:
+    # Each HUD monthly 0BR amount x 12 x 10%, rounded half up.
+    # Franklin and Grand Isle use the average of Vermont's 12 HUD areas.
+    vt_renter_credit:
+      - 1010  # ADDISON_COUNTY_VT
+      - 1019  # BENNINGTON_COUNTY_VT
+      - 972  # CALEDONIA_COUNTY_VT
+      - 1367  # CHITTENDEN_COUNTY_VT
+      - 876  # ESSEX_COUNTY_VT
+      - 1019  # FRANKLIN_COUNTY_VT
+      - 1019  # GRAND_ISLE_COUNTY_VT
+      - 1049  # LAMOILLE_COUNTY_VT
+      - 1022  # ORANGE_COUNTY_VT
+      - 847  # ORLEANS_COUNTY_VT
+      - 1085  # RUTLAND_COUNTY_VT
+      - 1007  # WASHINGTON_COUNTY_VT
+      - 964  # WINDHAM_COUNTY_VT
+      - 1009  # WINDSOR_COUNTY_VT
+
+- name: 2024 zero-exemption renter uses HUD zero-bedroom rents in all Vermont counties
+  period: 2024
+  input:
+    state_code:
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+    county:
+      - ADDISON_COUNTY_VT
+      - BENNINGTON_COUNTY_VT
+      - CALEDONIA_COUNTY_VT
+      - CHITTENDEN_COUNTY_VT
+      - ESSEX_COUNTY_VT
+      - FRANKLIN_COUNTY_VT
+      - GRAND_ISLE_COUNTY_VT
+      - LAMOILLE_COUNTY_VT
+      - ORANGE_COUNTY_VT
+      - ORLEANS_COUNTY_VT
+      - RUTLAND_COUNTY_VT
+      - WASHINGTON_COUNTY_VT
+      - WINDHAM_COUNTY_VT
+      - WINDSOR_COUNTY_VT
+    tax_unit_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    exemptions_count: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    vt_renter_credit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000]
+    rent_is_shared_with_another_tax_unit: [false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    housing_assistance: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    rent: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+  output:
+    # Each HUD monthly 0BR amount x 12 x 10%, rounded half up.
+    # Franklin and Grand Isle use the average of Vermont's 12 HUD areas.
+    vt_renter_credit:
+      - 1220  # ADDISON_COUNTY_VT
+      - 1123  # BENNINGTON_COUNTY_VT
+      - 1079  # CALEDONIA_COUNTY_VT
+      - 1609  # CHITTENDEN_COUNTY_VT
+      - 974  # ESSEX_COUNTY_VT
+      - 1172  # FRANKLIN_COUNTY_VT
+      - 1172  # GRAND_ISLE_COUNTY_VT
+      - 1096  # LAMOILLE_COUNTY_VT
+      - 1171  # ORANGE_COUNTY_VT
+      - 997  # ORLEANS_COUNTY_VT
+      - 1189  # RUTLAND_COUNTY_VT
+      - 1182  # WASHINGTON_COUNTY_VT
+      - 1171  # WINDHAM_COUNTY_VT
+      - 1247  # WINDSOR_COUNTY_VT
+
+- name: 2025 zero-exemption renter uses HUD zero-bedroom rents in all Vermont counties
+  period: 2025
+  input:
+    state_code:
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+      - VT
+    county:
+      - ADDISON_COUNTY_VT
+      - BENNINGTON_COUNTY_VT
+      - CALEDONIA_COUNTY_VT
+      - CHITTENDEN_COUNTY_VT
+      - ESSEX_COUNTY_VT
+      - FRANKLIN_COUNTY_VT
+      - GRAND_ISLE_COUNTY_VT
+      - LAMOILLE_COUNTY_VT
+      - ORANGE_COUNTY_VT
+      - ORLEANS_COUNTY_VT
+      - RUTLAND_COUNTY_VT
+      - WASHINGTON_COUNTY_VT
+      - WINDHAM_COUNTY_VT
+      - WINDSOR_COUNTY_VT
+    tax_unit_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    exemptions_count: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    vt_renter_credit_income: [5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000, 5_000]
+    rent_is_shared_with_another_tax_unit: [false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    housing_assistance: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    rent: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+  output:
+    # Each HUD monthly 0BR amount x 12 x 10%, rounded half up.
+    # Franklin and Grand Isle use the average of Vermont's 12 HUD areas.
+    vt_renter_credit:
+      - 1315  # ADDISON_COUNTY_VT
+      - 1123  # BENNINGTON_COUNTY_VT
+      - 1086  # CALEDONIA_COUNTY_VT
+      - 1656  # CHITTENDEN_COUNTY_VT
+      - 988  # ESSEX_COUNTY_VT
+      - 1209  # FRANKLIN_COUNTY_VT
+      - 1209  # GRAND_ISLE_COUNTY_VT
+      - 1060  # LAMOILLE_COUNTY_VT
+      - 1216  # ORANGE_COUNTY_VT
+      - 1014  # ORLEANS_COUNTY_VT
+      - 1190  # RUTLAND_COUNTY_VT
+      - 1290  # WASHINGTON_COUNTY_VT
+      - 1224  # WINDHAM_COUNTY_VT
+      - 1349  # WINDSOR_COUNTY_VT
+
+- name: 2025 Vermont renter income limits count both resident spouses when one spouse is claimed
+  period: 2025
+  input:
+    people:
+      unclaimed_spouse:
+        age: 30
+        rent: 6_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      claimed_spouse:
+        age: 30
+        rent: 6_000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [unclaimed_spouse, claimed_spouse]
+        filing_status: JOINT
+        vt_renter_credit_income: 62_000
+    households:
+      household:
+        members: [unclaimed_spouse, claimed_spouse]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    exemptions_count: 1
+    tax_unit_size: 2
+    # Resident-family income limits use two people; the fair market rent
+    # uses one personal exemption. The alternative of one-person income
+    # limits would deny the credit at this income.
+    vt_renter_credit: 270

@@ -1,0 +1,42 @@
+description: The Centers for Medicare and Medicaid Services (CMS) sets, and the Medicare Trustees project, this Medicare Part A inpatient hospital deductible per benefit period.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicare Part A inpatient hospital deductible
+  reference:
+  # Table V.E1, "HI Cost-Sharing and Premium Amounts", "Inpatient hospital
+  # deductible" column (file page 212): historical amounts through 2026 and
+  # intermediate estimates for 2027-2035. Report transmitted 2026-06-09,
+  # retrieved 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8.
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.E1
+    href: https://www.cms.gov/oact/tr/2026#page=212
+  - title: 2026 Medicare Parts A & B Premiums and Deductibles
+    href: https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles
+values:
+  # Historical.
+  2015-01-01: 1_260
+  2016-01-01: 1_288
+  2017-01-01: 1_316
+  2018-01-01: 1_340
+  2019-01-01: 1_364
+  2020-01-01: 1_408
+  2021-01-01: 1_484
+  2022-01-01: 1_556
+  2023-01-01: 1_600
+  2024-01-01: 1_632
+  2025-01-01: 1_676
+  2026-01-01: 1_736
+  # Trustees' intermediate estimates.
+  2027-01-01: 1_788
+  2028-01-01: 1_844
+  2029-01-01: 1_900
+  2030-01-01: 1_960
+  2031-01-01: 2_028
+  2032-01-01: 2_092
+  2033-01-01: 2_160
+  2034-01-01: 2_228
+  2035-01-01: 2_296
+  # 2036 to 2100 grow at the 2034-2035 rate (2,296 / 2,228, 3.1% a year) and
+  # later years hold the 2100 value; see set_all_uprating_parameters in
+  # uprating_extensions.py.

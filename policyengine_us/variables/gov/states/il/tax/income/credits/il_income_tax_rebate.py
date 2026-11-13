@@ -5,6 +5,13 @@ class il_income_tax_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Illinois income tax rebate"
+    documentation = (
+        "One-time Illinois income tax rebate enacted and paid in 2022, determined "
+        "from the 2021 return. PolicyEngine attributes it to eligibility tax year "
+        "2021 through il_refundable_credits. Its standalone formula can calculate an "
+        "amount in later years; inclusion in the dated credit total determines "
+        "whether it affects income tax and household net income."
+    )
     defined_for = "il_income_tax_rebate_eligible"
     unit = USD
     definition_period = YEAR
@@ -13,11 +20,14 @@ class il_income_tax_rebate(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.il.tax.income.credits.income_tax_rebate
         federal_agi = tax_unit("adjusted_gross_income", period)
+        # Section 212.1(a) sets only an upper AGI limit, so a negative AGI
+        # receives the full base amount; the scales start at zero.
+        scale_agi = max_(federal_agi, 0)
         joint = tax_unit("tax_unit_is_joint", period)
         base_amount = where(
             joint,
-            p.amount.joint.calc(federal_agi),
-            p.amount.other.calc(federal_agi),
+            p.amount.joint.calc(scale_agi),
+            p.amount.other.calc(scale_agi),
         )
         dependent_count = tax_unit("tax_unit_dependents", period)
         capped_dependents = min_(dependent_count, p.max_dependents)

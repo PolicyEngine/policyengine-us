@@ -14,4 +14,6 @@ class mi_withheld_income_tax(Variable):
         p = parameters(period).gov.states.mi.tax.income
         # The MI standard deduction only applys for elderly
         # Wo do not apply deductions here
-        return p.rate * agi
+        # A spouse's AGI can be negative, as with a business loss; withholding
+        # is never negative.
+        return p.rate * max_(agi, 0)

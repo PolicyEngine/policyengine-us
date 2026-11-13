@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    has_parent_ids,
+)
 
 
 class mo_tanf_is_assistance_unit_member(Variable):
@@ -7,6 +10,7 @@ class mo_tanf_is_assistance_unit_member(Variable):
     label = "Missouri TANF assistance unit member"
     definition_period = MONTH
     reference = (
+        "https://my.mo.gov/cms_fsd?id=kb_article_view&sys_kb_id=98e1ef0c1b543650ba12657ae54bcbd1",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-05/",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-10/",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-35/",
@@ -41,19 +45,20 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # 13 CSR 40-2.300(5)(C) admits only natural or adoptive parents,
         # and a stepparent's needs are not taken into account per
         # 2.310(8)(B)1.D.(II); the tax-unit structure cannot distinguish
-        # a stepparent from a parent, so a spouse who is not the child's
-        # parent is counted here.
+        # a stepparent from a parent when child parent ids are unknown.
+        # Shared parent ids also include stepparents and cannot distinguish
+        # parent type. When those ids name a stepparent, use the documented
+        # annual parent-flag override for children with known links. This
+        # does not implement the required stepparent income deeming.
         # The caretaker test looks for any dependent child in the home, not
         # only a payable one. Per DSS Manual 0210.005.05, "when the only
         # child in the EU receives SSI, explore Temporary Assistance (TA)
         # eligibility for the payee and/or second parent" — the SSI child
         # is excluded from the unit's needs but still establishes the case
         # for the caretaker.
+        has_dependent_child = person.tax_unit.any(dependent_child)
         caretaker = (
-            head_or_spouse
-            & ~is_dependent
-            & ~is_ssi_recipient
-            & person.tax_unit.any(dependent_child)
+            head_or_spouse & ~is_dependent & ~is_ssi_recipient & has_dependent_child
         )
         # A parent is a mandatory member (DSS Manual 0210.005.05). A
         # non-parent caretaker relative or legal guardian is an optional
@@ -61,7 +66,40 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # and otherwise included per mo_tanf_non_parent_caretaker_included
         # (13 CSR 40-2.300(5)(D); DSS Manual 0210.005.15 and 0210.005.35).
         non_parent = person("mo_tanf_is_non_parent_caretaker", period.this_year)
-        parent_caretaker = caretaker & ~non_parent
+        parent = person("mo_tanf_is_parent_of_dependent_child", period.this_year)
+        unknown_child = dependent_child & ~has_parent_ids(person, period.this_year)
+        # Known parent ids take precedence over the legacy head/spouse proxy.
+        # Preserve that proxy when a child's two parent ids are unknown.
+        presumed_parent = parent | person.tax_unit.any(unknown_child)
+        parent_caretaker = caretaker & ~non_parent & presumed_parent
+        # Membership as a parent does not depend on who claims whom for
+        # taxes. 13 CSR 40-2.300(5)(C) and the Combined IM Policy Manual
+        # 4.2.2 (formerly DSS Manual 0210.005.05) make the "Biological or
+        # adoptive parents of one or more of the eligible children"
+        # mandatory members, so a parent claimed as someone else's tax
+        # dependent, such as a 20-year-old mother claimed by her own mother,
+        # is a member too. These are the same people
+        # mo_tanf_non_parent_caretaker treats as a parent in the home, less
+        # those on SSI. The formulas group children within tax units; the
+        # boolean parent input cannot attach a child in another tax unit.
+        # The parent's own tax unit must therefore have a dependent child,
+        # so even an explicit true excludes a real parent filing separately
+        # when their own tax unit has none. Mandatory membership for that
+        # parent under 13 CSR 40-2.300(5)(C) remains an unmodeled limitation.
+        # A parent who is a dependent child is a member as an eligible child
+        # instead, with their own parent as the caretaker. For a minor
+        # parent (under 18, including the month of turning 18), the
+        # manual's minor parent provision (4.2.4; formerly 0210.005.30) lets
+        # that three-generation family file as one assistance group. For an
+        # 18-year-old parent in secondary school, Max's d1049 approves
+        # interpretation (i): her, her baby and her own parent form one unit.
+        other_parent = (
+            parent
+            & ~non_parent
+            & ~dependent_child
+            & ~is_ssi_recipient
+            & has_dependent_child
+        )
         npcr = person("mo_tanf_non_parent_caretaker", period)
         npcr_included = person.spm_unit("mo_tanf_non_parent_caretaker_included", period)
-        return eligible_child | parent_caretaker | (npcr & npcr_included)
+        return eligible_child | parent_caretaker | other_parent | (npcr & npcr_included)

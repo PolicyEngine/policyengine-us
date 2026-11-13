@@ -1,0 +1,385 @@
+# Form D-400 Schedule A line 5: "Compare Line 3 with Line 4 and enter the
+# smaller amount." Line 3 is home mortgage interest plus real estate property
+# taxes; line 4 is the $20,000 limitation, shared by spouses filing separately
+# (G.S. 105-153.5(a)(2)b). Spouses filing separately are two tax units linked
+# by an explicit marital unit.
+
+- name: A single filer's deduction is capped at $20,000
+  period: 2024
+  input:
+    filing_status: SINGLE
+    nc_mortgage_and_property_tax_before_limitation: 25_000
+    state_code: NC
+  output:
+    nc_mortgage_and_property_tax_deduction: 20_000
+
+- name: Spouses filing separately who each paid $15,000 of mortgage interest deduct $10,000 each
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+        home_mortgage_interest: 15_000
+      spouse2:
+        age: 45
+        home_mortgage_interest: 15_000
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # $30,000 combined; each paid half of the $20,000 the spouses may claim.
+    nc_mortgage_and_property_tax_before_limitation: [15_000, 15_000]
+    nc_mortgage_and_property_tax_deduction: [10_000, 10_000]
+
+- name: Spouses filing separately with unequal payments deduct their prorated shares of $20,000
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+        home_mortgage_interest: 18_000
+      spouse2:
+        age: 45
+        home_mortgage_interest: 2_000
+        real_estate_taxes: 4_000
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # $18,000 and $6,000 paid, $24,000 combined: 75% and 25% of $20,000.
+    nc_mortgage_and_property_tax_before_limitation: [18_000, 6_000]
+    nc_mortgage_and_property_tax_deduction: [15_000, 5_000]
+
+- name: Spouses filing separately below $20,000 combined each deduct what they paid
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+        home_mortgage_interest: 8_000
+      spouse2:
+        age: 45
+        home_mortgage_interest: 7_000
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    nc_mortgage_and_property_tax_deduction: [8_000, 7_000]
+
+- name: Joint obligations paid from a joint account are prorated by income
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+        home_mortgage_interest: 15_000
+      spouse2:
+        age: 45
+        home_mortgage_interest: 15_000
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: true
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 120_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # Line 4 is 75% and 25% of $20,000: $15,000 and $5,000. Line 5 is the
+    # smaller of line 3 ($15,000 each) and line 4.
+    nc_mortgage_and_property_tax_limitation: [15_000, 5_000]
+    nc_mortgage_and_property_tax_deduction: [15_000, 5_000]
+
+- name: A joint-account income share above a spouse's own amount leaves line 5 at line 3
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+        home_mortgage_interest: 15_000
+      spouse2:
+        age: 45
+        home_mortgage_interest: 15_000
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: true
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 90_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # Line 4 is 90% and 10% of $20,000: $18,000 and $2,000. Line 5 takes the
+    # smaller of each spouse's line 3 ($15,000) and line 4.
+    nc_mortgage_and_property_tax_limitation: [18_000, 2_000]
+    nc_mortgage_and_property_tax_deduction: [15_000, 2_000]
+
+- name: Spouses in NC and VA paying $15,000 and $15,000 from a joint account share the cap
+  period: 2024
+  input:
+    people:
+      nc_spouse:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 15_000
+      va_spouse:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 15_000
+    marital_units:
+      couple:
+        members: [nc_spouse, va_spouse]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: true
+    tax_units:
+      nc_tax_unit:
+        members: [nc_spouse]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+      va_tax_unit:
+        members: [va_spouse]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+    households:
+      nc_household:
+        members: [nc_spouse]
+        state_code: NC
+      va_household:
+        members: [va_spouse]
+        state_code: VA
+  output:
+    # $15,000 + $15,000 = $30,000 exceeds $20,000. Equal incomes give
+    # $20,000 x $50,000 / $100,000 = $10,000; line 5 is
+    # min($15,000, $10,000) = $10,000 for the NC spouse.
+    # The VA spouse's line 3 counts in the allocation; NC lines 4 and 5
+    # remain zero for their own return.
+    nc_mortgage_and_property_tax_before_limitation: [15_000, 15_000]
+    nc_mortgage_and_property_tax_limitation: [10_000, 0]
+    nc_mortgage_and_property_tax_deduction: [10_000, 0]
+
+- name: Spouses in NC and VA paying $25,000 and $15,000 from a joint account share the cap
+  period: 2024
+  input:
+    people:
+      nc_spouse:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 25_000
+      va_spouse:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 15_000
+    marital_units:
+      couple:
+        members: [nc_spouse, va_spouse]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: true
+    tax_units:
+      nc_tax_unit:
+        members: [nc_spouse]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+      va_tax_unit:
+        members: [va_spouse]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+    households:
+      nc_household:
+        members: [nc_spouse]
+        state_code: NC
+      va_household:
+        members: [va_spouse]
+        state_code: VA
+  output:
+    # $25,000 + $15,000 = $40,000 exceeds $20,000. Equal incomes give
+    # $20,000 x $50,000 / $100,000 = $10,000; line 5 is
+    # min($25,000, $10,000) = $10,000 for the NC spouse.
+    # The VA spouse's line 3 counts in the allocation; NC lines 4 and 5
+    # remain zero for their own return.
+    nc_mortgage_and_property_tax_before_limitation: [25_000, 15_000]
+    nc_mortgage_and_property_tax_limitation: [10_000, 0]
+    nc_mortgage_and_property_tax_deduction: [10_000, 0]
+
+- name: Spouses in NC and VA paying $15,000 and $15,000 from separate accounts share the cap
+  period: 2024
+  input:
+    people:
+      nc_spouse:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 15_000
+      va_spouse:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 15_000
+    marital_units:
+      couple:
+        members: [nc_spouse, va_spouse]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: false
+    tax_units:
+      nc_tax_unit:
+        members: [nc_spouse]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+      va_tax_unit:
+        members: [va_spouse]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+    households:
+      nc_household:
+        members: [nc_spouse]
+        state_code: NC
+      va_household:
+        members: [va_spouse]
+        state_code: VA
+  output:
+    # $15,000 + $15,000 = $30,000 exceeds $20,000. The NC paid share is
+    # $15,000 / $30,000, so $20,000 x 15/30 = $10,000; line 5 is
+    # min($15,000, $10,000) = $10,000 for the NC spouse.
+    # The VA spouse's line 3 counts in the allocation; NC lines 4 and 5
+    # remain zero for their own return.
+    nc_mortgage_and_property_tax_before_limitation: [15_000, 15_000]
+    nc_mortgage_and_property_tax_limitation: [10_000, 0]
+    nc_mortgage_and_property_tax_deduction: [10_000, 0]
+
+- name: Spouses in NC and VA paying $25,000 and $15,000 from separate accounts share the cap
+  period: 2024
+  input:
+    people:
+      nc_spouse:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 25_000
+      va_spouse:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 15_000
+    marital_units:
+      couple:
+        members: [nc_spouse, va_spouse]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: false
+    tax_units:
+      nc_tax_unit:
+        members: [nc_spouse]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+      va_tax_unit:
+        members: [va_spouse]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+    households:
+      nc_household:
+        members: [nc_spouse]
+        state_code: NC
+      va_household:
+        members: [va_spouse]
+        state_code: VA
+  output:
+    # $25,000 + $15,000 = $40,000 exceeds $20,000. The NC paid share is
+    # $25,000 / $40,000, so $20,000 x 25/40 = $12,500; line 5 is
+    # min($25,000, $12,500) = $12,500 for the NC spouse.
+    # The VA spouse's line 3 counts in the allocation; NC lines 4 and 5
+    # remain zero for their own return.
+    nc_mortgage_and_property_tax_before_limitation: [25_000, 15_000]
+    nc_mortgage_and_property_tax_limitation: [12_500, 0]
+    nc_mortgage_and_property_tax_deduction: [12_500, 0]
+
+- name: Only federally allowed interest enters the $20,000 limitation
+  period: 2025
+  input:
+    state_code: NC
+    filing_status: SINGLE
+    home_mortgage_interest: 15_000
+    real_estate_taxes: 5_000
+    first_home_mortgage_balance: 1_500_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Line 1 = $15,000 x $750,000 / $1,500,000 = $7,500 (section 163(h));
+    # line 3 = $7,500 + $5,000 = $12,500, under the $20,000 limitation.
+    # Before the fix line 3 was $20,000.
+    nc_mortgage_and_property_tax_deduction: 12_500
+
+- name: Spouses filing separately share the limitation using federally allowed interest
+  period: 2025
+  input:
+    people:
+      spouse1:
+        age: 45
+        employment_income: 100_000
+        home_mortgage_interest: 30_000
+      spouse2:
+        age: 45
+        employment_income: 100_000
+        home_mortgage_interest: 10_000
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 1_200_000
+        first_home_mortgage_origination_year: 2020
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # Spouse 1: $30,000 x $375,000 / $1,200,000 = $9,375. Spouse 2 reports
+    # no balance, so all $10,000 counts. Together $19,375 is under $20,000,
+    # so neither is prorated. Before the fix the $40,000 total was prorated
+    # to $15,000 and $5,000.
+    nc_mortgage_and_property_tax_before_limitation: [9_375, 10_000]
+    nc_mortgage_and_property_tax_deduction: [9_375, 10_000]

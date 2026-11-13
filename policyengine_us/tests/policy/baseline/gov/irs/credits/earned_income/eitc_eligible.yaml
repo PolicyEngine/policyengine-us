@@ -37,3 +37,204 @@
     filing_status: JOINT
   output:
     eitc_eligible: true
+
+# 26 U.S.C. 32(c)(1)(C): "The term 'eligible individual' does not include any
+# individual who claims the benefits of section 911 (relating to citizens or
+# residents living abroad) for the taxable year."
+- name: Section 911 claimant is not eligible.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion: 1
+  output:
+    eitc_eligible: false
+
+- name: Without a section 911 exclusion the same filer is eligible.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion: 0
+  output:
+    eitc_eligible: true
+
+- name: Section 911 claimant is not eligible in 2021 either.
+  period: 2021
+  input:
+    # Unlike the CTC bar, section 32(c)(1)(C) has no 2021 exception.
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: SINGLE
+    foreign_earned_income_exclusion: 30_000
+  output:
+    eitc_eligible: false
+
+# Section 32(c)(1)(C) also denies the EITC for the housing exclusion under
+# section 911(a)(2), including leaf elections with zero derived aggregates.
+- name: A housing-only leaf election is ineligible when deductions cancel both aggregates.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    eitc_eligible: false
+
+- name: A housing-only election is ineligible with an explicit zero stacking override.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion: 0
+  output:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_earned_income_exclusion: 0
+    eitc_eligible: false
+
+- name: An earned-income leaf election is ineligible when deductions cancel both aggregates.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion_amount: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    eitc_eligible: false
+
+- name: A positive section 911 MAGI amount is ineligible with zero stacking.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    eitc_eligible: false
+
+# Former 26 U.S.C. 32(c)(1)(F), through 2020: "No credit shall be allowed
+# under this section to any eligible individual who has one or more qualifying
+# children if no qualifying child of such individual is taken into account
+# under subsection (b) by reason of paragraph (3)(D)." The 2018-2020 Form 1040
+# instructions send such a filer to the credit without a qualifying child; the
+# model follows the statute. ARPA section 9622 struck the bar from 2021.
+- name: 2020 filer whose only qualifying child lacks an SSN gets no EITC
+  period: 2020
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_child_count: 0
+    eitc_eligible: false
+    # The instructions' route would give the childless credit:
+    # min(7.65% x $6,000, $538) = $459.
+    eitc: 0
+
+- name: 2021 the same filer can claim the credit without a qualifying child
+  period: 2021
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      child:
+        age: 5
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_child_count: 0
+    eitc_eligible: true
+
+- name: 2020 filer with one child with an SSN and one without keeps the credit
+  period: 2020
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+      child1:
+        age: 5
+        ssn_card_type: CITIZEN
+      child2:
+        age: 3
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    eitc_child_count: 1
+    eitc_eligible: true
+
+- name: 2020 filer with no qualifying child at all keeps the childless credit
+  # Control for former section 32(c)(1)(F): the bar needs at least one
+  # qualifying child, so a genuinely childless filer is unaffected.
+  # min(7.65% x $6,000, $538) = $459.
+  period: 2020
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    eitc_child_count: 0
+    eitc_eligible: true
+    eitc: 459

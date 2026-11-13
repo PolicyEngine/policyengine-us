@@ -1,6 +1,6 @@
 # Schedule P (540) Part I, line 19 / line 21.
 # https://www.ftb.ca.gov/forms/2024/2024-540-p.pdf#page=1
-# AMTI = regular taxable income (line 15) + total adjustments/preferences
+# AMTI = signed taxable income (line 15) + total adjustments/preferences
 # (line 14) - restored itemized deductions limitation (line 18).
 # Disallowed itemized deductions (property taxes, medical) are added back
 # once via ca_amti_adjustments; the full pre-limitation itemized deductions
@@ -62,3 +62,28 @@
     ca_itemized_deductions: 0
   output:
     ca_pre_exemption_amti: 80_000
+
+
+- name: Standard deduction above income cancels against its AMT add-back
+  period: 2025
+  input:
+    state_code: CA
+    ca_agi: 1_000
+    ca_standard_deduction: 5_706
+    ca_itemized_deductions_pre_limitation: 0
+    ca_itemized_deductions: 0
+  output:
+    ca_taxable_income: 0
+    ca_pre_exemption_amti: 1_000
+
+- name: Negative income stays signed after the standard deduction AMT add-back
+  period: 2025
+  input:
+    state_code: CA
+    ca_agi: -1_000
+    ca_standard_deduction: 5_706
+    ca_itemized_deductions_pre_limitation: 0
+    ca_itemized_deductions: 0
+  output:
+    ca_taxable_income: 0
+    ca_pre_exemption_amti: -1_000
