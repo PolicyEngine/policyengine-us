@@ -149,3 +149,174 @@
         state_code: VT
   output:
     vt_veteran_tax_credit: 0
+
+- name: Veteran tax credit, 2025, negative AGI, line 9 is 0, pays $250
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: -1_000
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: Veteran tax credit, 2025, $24,999 AGI, line 9 is 0, pays $250
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 24_999
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: Veteran tax credit, 2025, $25,000 AGI, line 9 is 0, pays $250
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_000
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: Veteran tax credit, 2025, $25,001 AGI, floor(1 / 100) = 0, pays $250 - 0 x $5 = $250
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_001
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: Veteran tax credit, 2025, $25,099 AGI, floor(99 / 100) = 0, pays $250 - 0 x $5 = $250
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_099
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: Veteran tax credit, 2025, $25,100 AGI, floor(100 / 100) = 1, pays $250 - 1 x $5 = $245
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_100
+  output:
+    vt_veteran_tax_credit: 245
+
+- name: Veteran tax credit, 2025, $25,101 AGI, floor(101 / 100) = 1, pays $250 - 1 x $5 = $245
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_101
+  output:
+    vt_veteran_tax_credit: 245
+
+- name: Veteran tax credit, 2025, $25,199 AGI, floor(199 / 100) = 1, pays $250 - 1 x $5 = $245
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_199
+  output:
+    vt_veteran_tax_credit: 245
+
+- name: Veteran tax credit, 2025, $25,200 AGI, floor(200 / 100) = 2, pays $250 - 2 x $5 = $240
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_200
+  output:
+    vt_veteran_tax_credit: 240
+
+- name: Veteran tax credit, 2025, $27,550 AGI, floor(2,550 / 100) = 25, pays $250 - 25 x $5 = $125
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 27_550
+  output:
+    vt_veteran_tax_credit: 125
+
+- name: Veteran tax credit, 2025, $29,899 AGI, floor(4,899 / 100) = 48, pays $250 - 48 x $5 = $10
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 29_899
+  output:
+    vt_veteran_tax_credit: 10
+
+- name: Veteran tax credit, 2025, $29,900 AGI, floor(4,900 / 100) = 49, pays $250 - 49 x $5 = $5
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 29_900
+  output:
+    vt_veteran_tax_credit: 5
+
+- name: Veteran tax credit, 2025, $29,901 AGI, floor(4,901 / 100) = 49, pays $250 - 49 x $5 = $5
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 29_901
+  output:
+    vt_veteran_tax_credit: 5
+
+- name: Veteran tax credit, 2025, $29,999 AGI, floor(4,999 / 100) = 49, pays $250 - 49 x $5 = $5
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 29_999
+  output:
+    vt_veteran_tax_credit: 5
+
+- name: Veteran tax credit, 2025, $30,000 AGI, at the $30,000 cutoff, pays $0
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 30_000
+  output:
+    vt_veteran_tax_credit: 0
+
+- name: Veteran tax credit, 2025, $30,001 AGI, above the $30,000 cutoff, pays $0
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 30_001
+  output:
+    vt_veteran_tax_credit: 0
+
+- name: Veteran tax credit, 2025, $30,100 AGI, above the $30,000 cutoff, pays $0
+  period: 2025
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 30_100
+  output:
+    vt_veteran_tax_credit: 0
+
+- name: Veteran tax credit, 2026, $25,099 AGI, floor(99 / 100) = 0, pays $250 - 0 x $5 = $250
+  period: 2026
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 25_099
+  output:
+    vt_veteran_tax_credit: 250
+
+- name: Veteran tax credit, 2026, $29,999 AGI, floor(4,999 / 100) = 49, pays $250 - 49 x $5 = $5
+  period: 2026
+  input:
+    state_code: VT
+    is_veteran: true
+    adjusted_gross_income: 29_999
+  output:
+    vt_veteran_tax_credit: 5

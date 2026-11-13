@@ -8,7 +8,9 @@ class vt_veteran_tax_credit(Variable):
     definition_period = YEAR
     unit = USD
     reference = [
-        "https://vtdigger.org/2025/06/25/gov-phil-scott-signs-13-5-million-tax-credit-package-benefiting-low-income-workers-families-retirees-and-veterans/"
+        "https://legislature.vermont.gov/statutes/section/32/151/05830g",
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2025.pdf#page=2",
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-Instr-2025.pdf#page=5",
     ]
     defined_for = StateCode.VT
     documentation = "Vermont veteran tax credit providing $250 refundable credit for low-income veterans as part of S.51 (2025) tax relief package."
@@ -38,8 +40,9 @@ class vt_veteran_tax_credit(Variable):
 
         # Calculate partial credit amount based on parameterized reduction structure
         excess_income = agi - p.full_credit_threshold
-        # Number of income increments (rounded up)
-        income_increments = np.ceil(excess_income / p.income_increment)
+        # Filers count whole increments and drop any partial one
+        # (2025 Schedule IN-112, Part II, line 10).
+        income_increments = np.floor(excess_income / p.income_increment)
         # Reduction per increment
         reduction_amount = income_increments * p.reduction_per_increment
         # Calculate partial credit (minimum of 0)
