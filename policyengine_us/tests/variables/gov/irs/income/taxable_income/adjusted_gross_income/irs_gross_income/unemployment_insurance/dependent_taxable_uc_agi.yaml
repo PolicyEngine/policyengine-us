@@ -168,9 +168,9 @@
     taxable_unemployment_compensation: [0, 6_000, 4_000]
 
 - name: Case 6, a dependent's net repayment does not increase their exclusion AGI.
-  # The 2020 exclusion worksheet omits unemployment compensation from
-  # line 6. The helper counts no positive compensation for a repayment,
-  # so removing compensation leaves the student's 12,000 of wages.
+  # Taxpayers leave unemployment compensation out when they calculate
+  # line 6 for the 2020 exclusion. The helper counts no positive compensation
+  # for a repayment, leaving the student's 12,000 of wages.
   period: 2020
   input:
     people:
