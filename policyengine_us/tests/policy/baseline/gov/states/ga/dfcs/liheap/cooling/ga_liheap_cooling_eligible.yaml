@@ -1,0 +1,160 @@
+# Georgia regular cooling eligibility: the heating program's income and household tests
+# (PAMMS chapter 100, page 4; cooling FAQ, page 1) with the household's own cooling cost, or
+# unsubsidized rent that includes all utilities (heating's direct payment route), as the
+# energy burden. Wages are Georgia BLS OEWS May 2025 medians: cashiers $29,070 (series
+# OEUS130000000000041201113) and fast food and counter workers $26,920 (series
+# OEUS130000000000035302313).
+
+# FY2026: a cashier and a fast food worker earn 29_070 + 26_920 = 55_990, above the
+# 45_179 size-two limit (and the 110% poverty floor), so no cooling benefit is paid.
+- name: Case 1, income above the limit prevents cooling eligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 29_070
+      person2:
+        age: 33
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 26_920
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_liheap_income: 55_990
+    ga_liheap_income_limit: 45_179
+    ga_liheap_income_eligible: false
+    ga_liheap_cooling_eligible: false
+    ga_liheap_cooling: 0
+
+# FY2026: a one-person cashier with gas heat and a gas bill receives the Level II gas
+# heating amount, 560, but reports no cooling cost, so the cooling benefit is 0.
+- name: Case 2, a heating recipient without cooling costs receives no cooling benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 29_070
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_eligible: true
+    ga_liheap: 560
+    ga_liheap_cooling_eligible: false
+    ga_liheap_cooling: 0
+
+# With no income both households pass the income test, so only the qualified member
+# requirement separates them: an undocumented adult alone has Georgia household size 0
+# (manual 1100.4, page 51).
+- name: Case 3, a household with no qualified member is not eligible.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, UNDOCUMENTED]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true]
+    pre_subsidy_electricity_expense: [1_800, 1_800]
+  output:
+    ga_liheap_household_size: [1, 0]
+    ga_liheap_cooling_eligible: [true, false]
+
+# Case 2's cashier (29_070, within the 34_549 limit) reports a cooling cost but no fuel. The
+# matrix prints one cooling amount for every fuel, so the fuel does not matter: 29_070 is
+# above the 13_589 Level I cutoff, so cooling pays the Level II amount, 400.
+- name: Case 4, an unspecified heating fuel receives the cooling benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 29_070
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: UNSPECIFIED
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_income_eligible: true
+    # Was false and 0, now true and 400: cooling eligibility no longer adds a heating fuel
+    # condition.
+    ga_liheap_cooling_eligible: true
+    ga_liheap_cooling: 400
+
+# Heating's Case 14 renter: one adult with 12_000 of wages and unsubsidized rent that
+# includes all utilities, with no separate bill and no reported cooling cost. Rent is the
+# HUD FY2026 one-bedroom Fair Market Rent for Dougherty County, 1_006 x 12 = 12_072. The
+# manual's energy burden table pays this renter directly, and section 1300.2 pays costs
+# "included in their rent and designated as a separate cost", which the rental agreement
+# is assumed to do. 12_000 is at or below the 13_589 size-one Level I cutoff, so cooling
+# pays 500 beside the 500 heating minimum, and the national total is 1_000.
+- name: Case 5, rent that includes all utilities qualifies without a separate cooling cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 12_000
+        rent: 12_072
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        has_cooling_expense: false
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        tenant_pays_utilities: false
+        is_in_public_housing: false
+  output:
+    ga_liheap_income: 12_000
+    ga_liheap_eligible: true
+    ga_liheap: 500
+    ga_liheap_cooling_eligible: true
+    ga_liheap_cooling: 500
+    liheap: 1_000

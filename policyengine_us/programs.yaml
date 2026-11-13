@@ -1101,7 +1101,15 @@ programs:
         variable: ga_liheap
         parameter_prefix: gov.states.ga.dfcs.liheap
         verified_years: "2025-2026"
-        notes: FY2025-FY2026 regular heating only, with the published fuel matrix and the bundled-utility rental payment. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2025-FY2026 regular heating, with the published fuel matrix and the bundled-utility rental payment. Regular cooling is the separate Georgia LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
+      - state: GA
+        status: partial
+        name: Georgia LIHEAP cooling
+        full_name: Georgia Low Income Home Energy Assistance Program regular cooling assistance
+        variable: ga_liheap_cooling
+        parameter_prefix: gov.states.ga.dfcs.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular cooling benefit of $500 (Level I) or $400 (Level II), with the heating income test. Crisis cooling and air-conditioner purchase are out of scope.
       - state: HI
         status: partial
         name: Hawaii LIHEAP subsidized dwelling benefit
