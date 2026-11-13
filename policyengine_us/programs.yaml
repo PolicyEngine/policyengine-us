@@ -1154,7 +1154,14 @@ programs:
         variable: de_liheap
         parameter_prefix: gov.states.de.dhss.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Summer cooling eligibility is the separate Delaware LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
+      - state: DE
+        status: partial
+        name: Delaware LIHEAP cooling
+        full_name: Delaware Summer Cooling Assistance Program electric benefit
+        variable: de_liheap_cooling_eligible
+        parameter_prefix: gov.states.de.dhss.liheap.cooling
+        notes: Eligibility only for the flat summer electric benefit, for LIHEAP households that buy their heating or pass the income test with a cooling cost, with a member 60 or older, under 6 or disabled; no amount is modeled because the state divides available funds equally. The State may extend it to every applicant (as HHS data show for FY2023-FY2024; FY2025 served 88 households) and no 2026 decision was found; the breathing-condition route, air conditioners, crisis and weatherization are out of scope.
       - state: MA
         status: complete
         name: Massachusetts LIHEAP

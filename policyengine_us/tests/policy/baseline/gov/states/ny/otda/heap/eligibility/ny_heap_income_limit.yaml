@@ -70,7 +70,10 @@
     state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
     ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   output:
-    ny_heap_income_limit: [27600, 36084, 44580, 53076, 61560, 70056, 71652, 73236, 74832, 76428, 80052, 86460]
+    # The size-12 compatibility fallback uses exact 2016 HHS FPG:
+    # 40,890 + 4 * 4,160 = 57,530; floor(1.5 * 57,530 / 12) * 12 = 86,292.
+    # This is the generic fallback, not an additional published NY table row.
+    ny_heap_income_limit: [27600, 36084, 44580, 53076, 61560, 70056, 71652, 73236, 74832, 76428, 80052, 86292]
 - name: Case 6, FY2018 all published income-limit rows and the first generic fallback size.
   period: 2018
   input:

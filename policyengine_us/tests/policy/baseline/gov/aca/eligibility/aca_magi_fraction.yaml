@@ -40,3 +40,306 @@
         state_code: TX
   output:
     aca_magi_fraction: 2.54
+
+# IRS 2017 Form 8962 instructions, line 4 and Tables 1-1 to 1-3 use 2016.
+# https://www.irs.gov/pub/irs-prior/i8962--2017.pdf#page=6
+# Stable memberships and residence isolate the guideline table from PRs 10413/10860.
+# Real wages supply MAGI. No eligibility or income-fraction inputs are supplied.
+- name: A stable Texas family of three at the 2016 guideline has the correct 2017 ACA income
+    floor.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2016: 40
+          2017: 41
+        employment_income:
+          2016: 20160
+          2017: 20160
+        immigration_status:
+          2016: CITIZEN
+          2017: CITIZEN
+        has_tin:
+          2016: true
+          2017: true
+      spouse:
+        age:
+          2016: 39
+          2017: 40
+        immigration_status:
+          2016: CITIZEN
+          2017: CITIZEN
+        has_tin:
+          2016: true
+          2017: true
+      child:
+        age:
+          2016: 9
+          2017: 10
+        is_tax_unit_dependent:
+          2016: true
+          2017: true
+        immigration_status:
+          2016: CITIZEN
+          2017: CITIZEN
+    tax_units:
+      tax_unit:
+        members:
+        - parent
+        - spouse
+        - child
+    marital_units:
+      couple:
+        members:
+        - parent
+        - spouse
+      child:
+        members:
+        - child
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - spouse
+        - child
+    households:
+      household:
+        members:
+        - parent
+        - spouse
+        - child
+        state_code:
+          2016: TX
+          2017: TX
+  output:
+    tax_unit_size:
+      2016: 3
+      2017: 3
+    tax_unit_fpg:
+      2016: 20160
+      2017: 20420
+    aca_magi: 20160
+    aca_magi_fraction: 1
+    people:
+      parent:
+        is_medicaid_eligible: false
+        medicaid_enrolled: false
+        pays_aca_premium: true
+        is_aca_ptc_eligible: true
+      spouse:
+        is_medicaid_eligible: false
+        medicaid_enrolled: false
+        pays_aca_premium: true
+        is_aca_ptc_eligible: true
+- name: A stable Texas family of three one dollar below the 2016 guideline has the correct
+    2017 ACA income floor.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2016: 40
+          2017: 41
+        employment_income:
+          2016: 20159
+          2017: 20159
+        immigration_status:
+          2016: CITIZEN
+          2017: CITIZEN
+        has_tin:
+          2016: true
+          2017: true
+      spouse:
+        age:
+          2016: 39
+          2017: 40
+        immigration_status:
+          2016: CITIZEN
+          2017: CITIZEN
+        has_tin:
+          2016: true
+          2017: true
+      child:
+        age:
+          2016: 9
+          2017: 10
+        is_tax_unit_dependent:
+          2016: true
+          2017: true
+        immigration_status:
+          2016: CITIZEN
+          2017: CITIZEN
+    tax_units:
+      tax_unit:
+        members:
+        - parent
+        - spouse
+        - child
+    marital_units:
+      couple:
+        members:
+        - parent
+        - spouse
+      child:
+        members:
+        - child
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - spouse
+        - child
+    households:
+      household:
+        members:
+        - parent
+        - spouse
+        - child
+        state_code:
+          2016: TX
+          2017: TX
+  output:
+    tax_unit_size:
+      2016: 3
+      2017: 3
+    tax_unit_fpg:
+      2016: 20160
+      2017: 20420
+    aca_magi: 20159
+    aca_magi_fraction: 0.99
+    people:
+      parent:
+        is_medicaid_eligible: false
+        medicaid_enrolled: false
+        pays_aca_premium: false
+        is_aca_ptc_eligible: false
+      spouse:
+        is_medicaid_eligible: false
+        medicaid_enrolled: false
+        pays_aca_premium: false
+        is_aca_ptc_eligible: false
+
+- name: 2025 joint return with one claimable spouse measures income against the one-person line (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 22,590 / 15,060 = 1.50
+    aca_magi_fraction: 1.5
+
+- name: 2025 joint return with one claimable spouse measures income against the one-person line (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_magi_fraction: 1.5
+
+- name: 2025 joint return with neither spouse claimable measures income against the two-person line
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 22,590 / 20,440 = 1.105, truncated to 1.10 (Form 8962 Worksheet 2)
+    aca_magi_fraction: 1.1
+
+- name: 2025 single filer who can be claimed keeps the one-person line
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    aca_magi_fraction: 1.5

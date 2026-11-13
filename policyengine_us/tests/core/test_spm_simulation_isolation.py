@@ -255,6 +255,7 @@ def test_traced_simulations_record_their_own_parameter_accesses(period):
         "gov.abolitions.spm_unit_size",
         "gov.hhs.fpg.additional_person",
         "gov.hhs.fpg.first_person",
+        "gov.hhs.fpg_table.in_effect",
     }
     assert set(first_accesses) == expected
     assert set(parameter_accesses(second.tracer)) == expected

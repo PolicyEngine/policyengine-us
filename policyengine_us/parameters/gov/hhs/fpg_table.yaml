@@ -1,0 +1,98 @@
+description: HHS publishes these nonuniform annual poverty guidelines for 2016.
+metadata:
+  propagate_metadata_to_children: true
+  reference:
+    - title: 'Annual Update of the HHS Poverty Guidelines, 81 FR 4036-4037 #page 1-2'
+      href: https://www.govinfo.gov/content/pkg/FR-2016-01-25/pdf/2016-01450.pdf#page=1
+in_effect:
+  description: The model uses the literal HHS household-size table for this guideline year.
+  # The annual model identifies each guideline year from January 1. The
+  # notice took effect January 25, 2016, unless a program chose another date.
+  # These bounds select the table override, not legal adoption or repeal.
+  values:
+    0000-01-01: false
+    2016-01-01: true
+    2017-01-01: false
+  metadata:
+    unit: bool
+    period: year
+    label: HHS literal poverty guideline table in effect
+min_household_size:
+  description: HHS starts its published poverty guideline table at this household size.
+  values:
+    2016-01-01: 1
+  metadata:
+    unit: person
+    period: year
+    label: HHS poverty guideline minimum listed household size
+max_household_size:
+  description: HHS lists poverty guidelines through this household size before applying its additional-person amount.
+  values:
+    2016-01-01: 8
+  metadata:
+    unit: person
+    period: year
+    label: HHS poverty guideline maximum listed household size
+amount:
+  description: HHS sets the annual poverty guideline at this amount for each geography and listed household size.
+  metadata:
+    unit: currency-USD
+    period: year
+    label: HHS literal annual poverty guideline
+    breakdown:
+      - [CONTIGUOUS_US, AK, HI]
+      - range(1, 9)
+    breakdown_label:
+      - Guideline geography
+      - Household size
+  CONTIGUOUS_US:
+    1:
+      2016-01-01: 11_880
+    2:
+      2016-01-01: 16_020
+    3:
+      2016-01-01: 20_160
+    4:
+      2016-01-01: 24_300
+    5:
+      2016-01-01: 28_440
+    6:
+      2016-01-01: 32_580
+    7:
+      2016-01-01: 36_730
+    8:
+      2016-01-01: 40_890
+  AK:
+    1:
+      2016-01-01: 14_840
+    2:
+      2016-01-01: 20_020
+    3:
+      2016-01-01: 25_200
+    4:
+      2016-01-01: 30_380
+    5:
+      2016-01-01: 35_560
+    6:
+      2016-01-01: 40_740
+    7:
+      2016-01-01: 45_920
+    8:
+      2016-01-01: 51_120
+  HI:
+    1:
+      2016-01-01: 13_670
+    2:
+      2016-01-01: 18_430
+    3:
+      2016-01-01: 23_190
+    4:
+      2016-01-01: 27_950
+    5:
+      2016-01-01: 32_710
+    6:
+      2016-01-01: 37_470
+    7:
+      2016-01-01: 42_230
+    8:
+      2016-01-01: 47_010
