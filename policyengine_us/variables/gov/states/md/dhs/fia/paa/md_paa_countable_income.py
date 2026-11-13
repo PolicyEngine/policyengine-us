@@ -26,12 +26,9 @@ class md_paa_countable_income(Variable):
         # exclusions, but it must count income for every PAA eligibility
         # pathway. Using ssi_countable_income would zero out SSDI-only
         # recipients unless an input also marks them as SSI-disabled.
-        # NOTE: this annual formula applies one couple status to the whole
-        # year (both_eligible below), so it combines the spouses' annual
-        # income by that same status. ssi_marital_earned_income and
-        # ssi_marital_unearned_income are monthly and follow each month's
-        # status; their annual totals would not match it in a year with a
-        # part-year facility stay.
+        # _ssi_couple_income and both_eligible read the same month's couple
+        # status, so a month in which one spouse stays in a medical facility
+        # counts each spouse's own income (20 CFR 416.414(b)(3)).
         earned = _ssi_couple_income(person, period, "ssi_earned_income")
         student_exclusion = person(
             "ssi_blind_or_disabled_working_student_exclusion", period
@@ -49,7 +46,7 @@ class md_paa_countable_income(Variable):
             period,
         )
 
-        both_eligible = person("ssi_couple_computation_applies", period.this_year)
+        both_eligible = person("ssi_couple_computation_applies", period)
         # COMAR 07.03.07.07 counts the individual's own income and has no
         # spousal deeming, so people who fail SSI's citizen or
         # qualified-noncitizen test count their own income alone, including
