@@ -1,18 +1,11 @@
-# 2022 Form 2 instructions, Itemized Deductions Schedule, line 15 (PDF pp. 35-36):
-# "You may deduct a casualty and theft loss from a federally declared disaster
-# (other than net qualified disaster losses). If you have a casualty and/or
-# theft loss, complete federal Form 4684 to figure the amount of the Montana
-# loss that you can enter on this line. To determine your casualty and/or theft
-# loss, use your Montana Adjusted Gross Income in place of the Federal Adjusted
-# Gross Income." and "Deductions for all other casualty and theft losses are
-# suspended until tax years beginning after December 31, 2025."
-# Form 4684 reduces each casualty by $100 (2022 Form 4684 line 11) and allows the
-# rest above 10% of adjusted gross income (line 17). IRS Publication 547 (2022,
-# PDF p. 10): "If you and your spouse file a joint return, you are treated as one
-# individual in applying the $100 rule." The model has no input that
-# distinguishes federally declared disaster losses; like the federal deduction,
-# it allows no personal casualty loss from 2018 unless
-# gov.irs.deductions.itemized.casualty.active is switched on, as these tests do.
+# Montana Form 2 instructions (2022), line 15, PDF pages 35-36:
+# Taxpayers calculate casualty losses using Montana AGI on Form 4684.
+# Spouses filing separately calculate their own losses (also PDF page 11).
+# Form 4684 lines 11-12 and 17-18 apply the $100 reduction and 10% AGI floor.
+# Publication 547 (2022), PDF page 10, assigns separately owned losses to the
+# owner and applies one reduction per casualty event.
+# The model lacks a disaster-specific input and retains the federal casualty
+# activation flag. These examples enable that flag to exercise the calculation.
 
 - name: A joint return deducts the couple's loss once, above 10% of Montana AGI
   period: 2022
@@ -203,3 +196,48 @@
         state_code: MT
   output:
     mt_casualty_loss_deduction_joint: 0
+
+- name: In 2023, A joint return deducts the couple's loss once, above 10% of Montana AGI
+  period: 2023
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_agi_joint: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 100,000
+    mt_casualty_loss_deduction_joint: 19_900
+
+
+- name: The spouse owns the entire casualty loss
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      head:
+        age: 40
+        employment_income: 90_000
+      spouse:
+        age: 40
+        employment_income: 20_000
+        casualty_loss: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_joint: 900

@@ -105,6 +105,7 @@ def grid():
     # Zero the other itemized deductions so the aggregators show the casualty
     # loss alone; the grid has no medical, care, charitable or interest items.
     for person in people.values():
+        person["mt_misc_deductions"] = every_year(0)
         person["mt_salt_deduction"] = every_year(0)
         person["mt_federal_income_tax_deduction_indiv"] = every_year(0)
     for unit in tax_units.values():

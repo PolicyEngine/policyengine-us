@@ -9,13 +9,16 @@ class mt_casualty_loss_deduction_indiv(Variable):
     )
     unit = USD
     definition_period = YEAR
+    documentation = """
+    PolicyEngine treats each spouse's reported loss amount as one casualty and applies one per-casualty reduction to that spouse's loss.
+    Taxpayers apply separate reductions to distinct events, which the
+    available inputs cannot represent. The model has no input identifying
+    disaster losses and retains the federal casualty activation flag.
+    """
     reference = (
         # MCA § 15-30-2131(1)(a) (2021)
         "https://mca.legmt.gov/bills/2022/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html",
-        # 2022 Form 2 instructions, Itemized Deductions Schedule, line 15
-        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=35",
-        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=36",
-        # 2022 Form 2 instructions, allocation of deductions when filing separately
+        # PDF pages 11, 35-36
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=11",
         # 2022 Form 4684, lines 10-12 and 17; IRS Publication 547, $100 Rule
         "https://www.irs.gov/pub/irs-prior/f4684--2022.pdf#page=1",
