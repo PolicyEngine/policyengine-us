@@ -706,3 +706,110 @@
   output:
     # min(172 * $6.80, $10,800 / 12) = min($1,169.60, $900) = $900.
     sd_cca: 900
+
+- name: Case 25, The model rounds a half monthly hour up.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # 15 * 4.3 = 64.5, rounded up to 65 monthly hours; rounding half to
+    # even would give 64. 65 * $3.80 = $247.00.
+    sd_cca: 247
+
+- name: Case 26, The model keeps a whole number of monthly hours at 50 weekly hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 50
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # 50 * 4.3 = 215 monthly hours exactly. 215 * $3.80 = $817.00.
+    # Expenses $24,000 / 12 = $2,000 exceed the ceiling; co-payment = $0.
+    sd_cca: 817
+
+- name: Case 27, The model keeps a whole number of monthly hours at 90 weekly hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 90
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # 90 * 4.3 = 387 monthly hours exactly. 387 * $3.80 = $1,470.60.
+    sd_cca: 1_470.6
+
+- name: Case 28, The model keeps a whole number of monthly hours at 100 weekly hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 100
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # 100 * 4.3 = 430 monthly hours exactly. 430 * $3.80 = $1,634.00,
+    # under the $2,000 monthly expenses.
+    sd_cca: 1_634

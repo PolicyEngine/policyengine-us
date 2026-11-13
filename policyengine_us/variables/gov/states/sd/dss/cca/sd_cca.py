@@ -37,7 +37,9 @@ class sd_cca(Variable):
             # of 45 weekly hours becoming 194 monthly hours. DSS imposes no
             # general monthly cap on ordinary CCA authorized hours.
             hours = max_(person("childcare_hours_per_week", period.this_year), 0)
-            monthly_hours = np.ceil(hours * p.hourly.weeks_per_month)
+            # Multiply in float64. In float32, 50 * 4.3 gives 215.0000153,
+            # and rounding up would add an hour to DSS's 215.
+            monthly_hours = np.ceil(hours.astype(np.float64) * p.hourly.weeks_per_month)
             max_reimbursement = spm_unit.sum(
                 hourly_rate * monthly_hours * is_eligible_child
             )

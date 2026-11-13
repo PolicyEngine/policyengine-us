@@ -1,8 +1,10 @@
-"""Check hourly CCA bounds, monotonicity, and weekly compatibility.
+"""Check hourly CCA bounds, monotonicity, hour conversion, and weekly compatibility.
 
 Hypothesis changes hours and billed expenses in independent simulations. YAML
-cases pin the county tables and rate modifiers. The weekly check evaluates the
-main-branch benefit formula with independently aggregated per-child rates.
+cases pin the county tables and rate modifiers. The conversion check compares
+every quarter hour from 0 to 100 weekly hours with integer arithmetic. The
+weekly check evaluates the main-branch benefit formula with independently
+aggregated per-child rates.
 """
 
 import numpy as np
@@ -169,6 +171,26 @@ def test_hourly_bounds_monotonicity_and_positive_payment(month, units):
     assert sim.calculate("sd_cca_eligible", month)[-1]
     assert sim.calculate("sd_cca_copay", month)[-1] == 0
     assert base[-1] > 0
+
+
+def test_monthly_hours_round_exact_products_up():
+    # DSS multiplies weekly need by 4.3 and rounds up, so q quarter hours a
+    # week give ceil(43q / 40) = (43q + 39) // 40 monthly hours. Multiples of
+    # 10 weekly hours give whole products, such as 50 * 4.3 = 215, and
+    # odd multiples of 5 give half hours, such as 15 * 4.3 = 64.5 -> 65.
+    # The Minnehaha family-care rate for children under 3 is $3.80, and
+    # $24,000 / 12 = $2,000 of monthly expenses exceeds 430 * $3.80.
+    quarters = range(401)
+    family = _positive_case()
+    child = family["children"][0]
+    units = [
+        {**family, "children": [{**child, "hours": quarter / 4}]}
+        for quarter in quarters
+    ]
+    sim, benefit = _run(units, "2025-01")
+    assert (sim.calculate("sd_cca_copay", "2025-01") == 0).all()
+    monthly_hours = np.array([(43 * quarter + 39) // 40 for quarter in quarters])
+    np.testing.assert_allclose(benefit, monthly_hours * 3.80, atol=TOLERANCE, rtol=0)
 
 
 @settings(**SETTINGS)
