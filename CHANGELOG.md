@@ -1,3 +1,10 @@
+## [2.119.1] - 2026-11-13
+
+### Fixed
+
+- Apply the SNAP emergency-allotment minimum from April 2021 instead of March 2020.
+
+
 ## [2.119.0] - 2026-11-13
 
 ### Added

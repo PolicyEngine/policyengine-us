@@ -1,12 +1,17 @@
 description: States provide SNAP emergency allotments of at least this amount.
 
 values:
-  2020-01-01: 95
+  2020-03-01: 0
+  2021-04-01: 95
 
 metadata:
   period: month
   unit: currency-USD
   label: SNAP emergency allotment minimum
   reference:
+    - title: USDA Increases Emergency SNAP Benefits for 25 million Americans (April 1, 2021)
+      href: https://usda.azureedge.us/about-usda/news/press-releases/2021/04/01/usda-increases-emergency-snap-benefits-25-million-americans-ensures-covid-19-relief-reaches-those
+    - title: Washington WSR 22-06-084, WAC 388-437-0005(1)-(2)
+      href: https://lawfilesext.leg.wa.gov/Law/WSR/2022/06/22-06-084.htm
     - title: "USDA: Supplemental Nutrition Assistance Program (SNAP) - Emergency Allotments"
       href: https://web.archive.org/web/20220519071036/https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-covid-emergency-allotments-phase-3-guidance.pdf#page=3
