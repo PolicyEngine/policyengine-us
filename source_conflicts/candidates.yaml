@@ -3749,8 +3749,8 @@ candidates:
   readings:
     statute: Preserve the remaining spouse's per-person credit and any restored dependent's amount.
     other: Read the zero-credit instruction as barring the entire joint return.
-  example: For 2025, the remaining spouse receives $155 versus $0; a restored dependent child brings the statutory
-    amount to $310.
+  example: For 2025, an unclaimed spouse receives $155 when the other spouse is actually claimed, versus $0
+    under a whole-return exclusion.
   pe_us:
     follows: statute
     code:
@@ -3759,9 +3759,10 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10050
   state: ruled
   note: Section 63-3024A grants amounts per taxpayer, spouse and dependent. The remaining unclaimed spouse keeps
-    $155 and a restored dependent adds $155. Form 40 line 12(c) has no joint-return exception, but its zero-credit
-    direction cannot override the per-person grant. The separate claimable-unclaimed-filer item records the
-    individual eligibility question from 2023; the earlier regulation remains a separate open question.
+    $155. Form 40 line 12(c) has no joint-return exception, but its zero-credit direction cannot override the
+    per-person grant. If neither adult is actually claimed and the filing exception restores their child, the
+    three-person household receives $465. The separate items record individual eligibility from 2023 and the
+    earlier regulation.
 - id: us-id:liheap-heat-in-rent-fy2026
   program: liheap
   years:
