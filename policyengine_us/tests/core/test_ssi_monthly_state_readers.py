@@ -201,3 +201,47 @@ def test_constant_ism_keeps_the_annual_exclusion_result(
     else:
         assert np.all(payment >= min(balance, 1))
         np.testing.assert_allclose(payment, max(balance, 1), atol=0.011)
+
+
+def _maryland_reference_countable(monthly_earned, monthly_unearned):
+    # COMAR 07.03.07.08(A) disregards $20 of unearned income, then $65 and
+    # one-half of the remaining earned income, in any month. PAA Manual 900
+    # applies the part of the $20 that unearned income under $20 leaves
+    # unused to earnings.
+    # https://regs.maryland.gov/us/md/exec/comar/07.03.07.08
+    general = min(20, monthly_unearned)
+    return monthly_unearned - general + max(monthly_earned - 65 - (20 - general), 0) / 2
+
+
+@settings(max_examples=5, deadline=None, database=None, derandomize=True)
+@given(
+    ism=st.integers(0, 19),
+    extra=st.integers(1, 19),
+    annual_earned=st.integers(0, 2_400),
+)
+def test_state_readers_keep_a_small_ism_exclusion_in_its_month(
+    ism, extra, annual_earned
+):
+    # With ISM under $20 and no other unearned income, the unused part of
+    # the $20 exclusion reduces that month's earnings and no other month's.
+    profiles = {"constant": [ism] * 12, "changed": [ism] * 11 + [ism + extra]}
+    situation, rows = _situation(profiles, annual_earned, 0)
+    simulation = Simulation(tax_benefit_system=system, situation=situation)
+    countable = _monthly(simulation, "md_paa_countable_income")
+    supplement = _monthly(simulation, "ca_state_supplement_person")
+
+    for name, profile in profiles.items():
+        expected = [
+            _maryland_reference_countable(annual_earned / 12, monthly_ism)
+            for monthly_ism in profile
+        ]
+        for citizenship in ("CITIZEN", "LEGAL_PERMANENT_RESIDENT"):
+            np.testing.assert_allclose(
+                countable[:, rows[name, "MD", citizenship]], expected, atol=0.01
+            )
+
+    constant = rows["constant", "CA", "CITIZEN"]
+    changed = rows["changed", "CA", "CITIZEN"]
+    np.testing.assert_allclose(
+        supplement[:11, constant], supplement[:11, changed], atol=0.01
+    )

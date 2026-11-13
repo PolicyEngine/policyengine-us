@@ -97,7 +97,7 @@
       2025-07: [1_447.50, 480]
       2025: [14_527.50, 8_722.50]
 
-- name: Maryland counts January food support in January PAA income.
+- name: Maryland counts January's SSI in-kind support in January PAA income.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -123,7 +123,7 @@
     # PAA = 1,173 + 98 - 314.333333 - 628.666667 = 328.
     md_paa: 328
 
-- name: Maryland counts September food support in November PAA income.
+- name: Maryland counts November's SSI in-kind support in November PAA income.
   period: 2024-11
   absolute_error_margin: 0.01
   input:
@@ -148,7 +148,7 @@
     # PAA = 1,173 + 102 - 943 = 332 after the July PNA increase.
     md_paa: 332
 
-- name: Maryland excludes food support from December PAA income.
+- name: Maryland counts no SSI in-kind support in December 2024 PAA income.
   period: 2024-12
   absolute_error_margin: 0.01
   input:

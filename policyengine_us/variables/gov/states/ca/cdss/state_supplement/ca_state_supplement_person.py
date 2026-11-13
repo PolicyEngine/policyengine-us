@@ -4,7 +4,7 @@ from policyengine_us.variables.gov.ssa.ssi._ssi_state_supplement import (
     ssi_state_supplement,
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
-    _apply_ssi_exclusions,
+    _apply_ssi_exclusions_monthly,
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_couple_total,
@@ -89,13 +89,12 @@ class ca_state_supplement_person(Variable):
         )
         # NOTE: in-kind support uses the couple's presumed maximum value here,
         # because SSI still treats the pair as a couple.
+        ism = person("ssi_in_kind_support_and_maintenance", period)
         unearned = (
-            person("ssi_unearned_income", period.this_year)
-            + person("ssi_in_kind_support_and_maintenance", period) * MONTHS_IN_YEAR
+            person("ssi_unearned_income", period.this_year) / MONTHS_IN_YEAR + ism
         )
-        # _apply_ssi_exclusions takes and returns annual amounts.
-        own_countable_income = (
-            _apply_ssi_exclusions(earned, unearned, parameters, period) / MONTHS_IN_YEAR
+        own_countable_income = _apply_ssi_exclusions_monthly(
+            earned / MONTHS_IN_YEAR, unearned, parameters, period
         )
         ssi_countable_income = person("ssi_countable_income", period)
         couple_income = _ssi_couple_total(
