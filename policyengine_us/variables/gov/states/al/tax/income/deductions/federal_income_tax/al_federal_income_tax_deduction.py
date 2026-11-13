@@ -1,6 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.period_branch import drop_recomputed_values
 from policyengine_us.tools.pinned_tbs import (
     CREDIT_DEPENDENT_VARIABLES,
+    IRC_2020_RECOMPUTED_VARIABLES,
     get_2020_irc_tbs,
 )
 
@@ -12,8 +14,12 @@ class al_federal_income_tax_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        # Alabama Administrative Code r. 810-3-15-.20(1)(d)2.
+        "https://www.revenue.alabama.gov/wp-content/uploads/2021/12/810-3-15-.20.pdf#page=2",
         # 2021 Alabama Form 40 booklet, Federal Income Tax Deduction Worksheet
         "https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=20",
+        # Act 2022-37 (HB 231), section 1.
+        "https://alison.legislature.state.al.us/files/pdf/SearchableInstruments/2022RS/PrintFiles/HB231-Enr.pdf#page=2",
         "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40abk.pdf#page=20",
     )
     defined_for = StateCode.AL
@@ -26,8 +32,11 @@ class al_federal_income_tax_deduction(Variable):
         # tax) of the worksheet.
         federal_tax = tax_unit("income_tax_before_refundable_credits", period)
 
-        # Part I (worksheet lines 1-6): subtract the actual refundable federal
-        # credits (EITC, refundable CTC/ACTC, American Opportunity Credit).
+        # The regulation subtracts all federal payment credits, including net
+        # PTC and section 1341 relief. Non-refundable credits already reduced
+        # federal_tax, so the AOC entry includes only its refundable portion.
+        # The regulation's current text (amended 2010) governs every modeled
+        # year, so the same list applies from 2015.
         part_i = max_(federal_tax - add(tax_unit, period, p.credits), 0)
 
         # Part II (Act 2022-37) applies only to tax year 2021, the one year the
@@ -57,12 +66,19 @@ class al_federal_income_tax_deduction(Variable):
         simulation = tax_unit.simulation
         branch = get_branch_for_period(simulation, "al_2020_irc", period)
         branch.tax_benefit_system = get_2020_irc_tbs(simulation.tax_benefit_system)
-        for variable in branch.tax_benefit_system.variables:
-            if any(
-                key in variable
-                for key in ("ctc", "cdcc", "eitc", *CREDIT_DEPENDENT_VARIABLES)
-            ):
-                branch.delete_arrays(variable)
+        # Recalculate the credits' formula variables under the 2020 IRC, a
+        # supplied current-law value included; keep plain inputs such as
+        # takes_up_eitc.
+        drop_recomputed_values(
+            branch,
+            [
+                "ctc",
+                "cdcc",
+                "eitc",
+                *CREDIT_DEPENDENT_VARIABLES,
+                *IRC_2020_RECOMPUTED_VARIABLES,
+            ],
+        )
         recomputed_ctc = branch.tax_unit("ctc", period)
         recomputed_refundable_ctc = branch.tax_unit("refundable_ctc", period)
         # Under the 2020 IRC the CDCC is non-refundable (limited by tax), so the
@@ -71,12 +87,17 @@ class al_federal_income_tax_deduction(Variable):
         recomputed_cdcc = branch.tax_unit("cdcc", period)
         recomputed_eitc = branch.tax_unit("eitc", period)
 
-        # Worksheet line 11 (2021 Form 1040 line 29) is the REFUNDABLE portion of
-        # the American Opportunity Credit (Form 8863 line 8). The non-refundable
-        # portion already reduced `federal_tax`, so subtracting the total would
-        # double-count it.
-        refundable_american_opportunity_credit = tax_unit(
-            "refundable_american_opportunity_credit", period
+        # Only EITC and refundable CTC are replaced with 2020-rule amounts.
+        # All other payment credits, including refundable AOC, remain actual
+        # current-year amounts in both alternatives.
+        other_payment_credits = add(
+            tax_unit,
+            period,
+            [
+                credit
+                for credit in p.credits
+                if credit not in ("eitc", "refundable_ctc")
+            ],
         )
 
         # `federal_tax` (Part I line 3) includes the net investment income tax,
@@ -103,7 +124,7 @@ class al_federal_income_tax_deduction(Variable):
             + niit
             - recomputed_eitc
             - recomputed_refundable_ctc
-            - refundable_american_opportunity_credit,
+            - other_payment_credits,
             0,
         )
 

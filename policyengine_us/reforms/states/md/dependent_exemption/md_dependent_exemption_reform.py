@@ -14,7 +14,12 @@ def create_md_dependent_exemption() -> Reform:
             p = parameters(period).gov.contrib.states.md.dependent_exemption
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)), unless
+            # the would-be claimant meets the filing exception (Publication 501).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             if p.age_limit.in_effect:
                 eligible = is_dependent & (age < p.age_limit.threshold)
             else:
@@ -97,7 +102,12 @@ def create_md_dependent_exemption() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)), unless
+            # the would-be claimant meets the filing exception (Publication 501).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             total_dependents = tax_unit.sum(is_dependent)
             eligible = tax_unit("md_eligible_dependents_count", period)
             return max_(0, total_dependents - eligible)

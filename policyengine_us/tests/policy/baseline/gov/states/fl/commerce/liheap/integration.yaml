@@ -1,0 +1,249 @@
+# Florida LIHEAP end-to-end integration tests, FY2026 (period 2026).
+# Expected values come from the FFY2026 payment matrix: maximum income values
+# 32,155 / 42,049 / 51,943 / 61,837 for sizes 1-4 with their printed band tops;
+# bases 350, 300, 250 and 200; additions of 100 for a member 60 or older, 100
+# for a disabled member and 150 for a child 5 or younger:
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf
+# FY2026 plan sections 1.4-1.6 and 1.9 set categorical receipt and counted
+# income; the statewide application and portal FAQ exclude all minors' income;
+# manual 700.01C (page 23) pays from the matrix, not the actual bill.
+# Inputs: the Florida minimum wage is $14 an hour from September 30, 2025
+# (Fla. Const. art. X, section 24(c),
+# https://www.flsenate.gov/Laws/Constitution#A10S24); full time is 2,080 hours,
+# 29,120 a year. SSA's January 2026 amounts: the $994 SSI federal benefit rate
+# (https://www.ssa.gov/oact/cola/SSIamts.html) and $1,919 for an aged widow(er)
+# alone (https://www.ssa.gov/news/en/cola/factsheets/2026.html). Electric bills
+# use EIA's 2024 Florida average monthly residential bill, $156.09 (Table 5A,
+# https://www.eia.gov/electricity/sales_revenue_price/xls/table_5A.xlsx):
+# 1,873 a year. No household takes up SNAP or Temporary Cash Assistance.
+
+# A single parent aged 31 works full time at the minimum wage (29,120) with
+# children aged 7 and 3 and heats with electricity billed in her name.
+- name: Case 1, a single parent working full time at the minimum wage with a young child receives the band two base and the child addition.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 31
+        employment_income: 29_120
+      person2:
+        age: 7
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_873
+        snap: 0
+        fl_tca: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    heating_expense: 1_873
+    # A positive primary-fuel bill paid outside rent.
+    has_heating_expense: true
+    # Three citizens.
+    fl_liheap_household_size: 3
+    # The parent's wages; the children have no income.
+    fl_liheap_countable_income: 29_120
+    # Matrix, size 3: floor(61,837 x 0.84) = 51,943.
+    fl_liheap_income_limit: 51_943
+    fl_liheap_categorically_eligible: false
+    fl_liheap_eligible: true
+    # Size 3 bands: 25,972 < 29,120 <= 36,360, so the band 2 base of 300, plus
+    # 150 for the child aged 3.
+    fl_liheap: 450
+
+# A widow aged 74 lives alone on Social Security survivor benefits of 1,919 a
+# month: 23,028 a year. That is above the SSI federal benefit rate, so she
+# receives no SSI.
+- name: Case 2, a widow living alone on Social Security survivor benefits receives the band three base and the elderly addition.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 74
+        social_security_survivors: 23_028
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_873
+        snap: 0
+        fl_tca: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    heating_expense: 1_873
+    has_heating_expense: true
+    fl_liheap_household_size: 1
+    # Gross Social Security counts (FY2026 plan section 1.9).
+    fl_liheap_countable_income: 23_028
+    # Matrix, size 1.
+    fl_liheap_income_limit: 32_155
+    fl_liheap_categorically_eligible: false
+    fl_liheap_eligible: true
+    # Size 1 bands: 22,509 < 23,028 <= 27,332, so the band 3 base of 250, plus
+    # 100 for a member aged 60 or older.
+    fl_liheap: 350
+
+# An adult aged 45 with a disability lives alone on SSI at the 2026 federal
+# benefit rate, 994 a month: 11,928 a year.
+- name: Case 3, a disabled SSI recipient is categorically eligible and receives the band one base and the disability addition.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_873
+        snap: 0
+        fl_tca: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    heating_expense: 1_873
+    has_heating_expense: true
+    fl_liheap_household_size: 1
+    # SSI counts as unearned income (FY2026 plan section 1.9).
+    fl_liheap_countable_income: 11_928
+    fl_liheap_income_limit: 32_155
+    # SSI receipt waives the income test (FY2026 plan sections 1.4-1.6).
+    fl_liheap_categorically_eligible: true
+    fl_liheap_eligible: true
+    # 11,928 <= 16,078, so the band 1 base of 350, plus 100 for a disabled
+    # member.
+    fl_liheap: 450
+
+# Two parents aged 38 and 36 earn the minimum wage, one full time (29,120) and
+# one 20 hours a week (14 x 20 x 52 = 14,560), with children aged 10 and 8.
+- name: Case 4, a two-earner family of four receives the band three base with no additions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 29_120
+      person2:
+        age: 36
+        employment_income: 14_560
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_873
+        snap: 0
+        fl_tca: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+  output:
+    heating_expense: 1_873
+    has_heating_expense: true
+    fl_liheap_household_size: 4
+    # 29,120 + 14,560 = 43,680.
+    fl_liheap_countable_income: 43_680
+    # Matrix, size 4: the four-person amount, 61,837.
+    fl_liheap_income_limit: 61_837
+    fl_liheap_categorically_eligible: false
+    fl_liheap_eligible: true
+    # Size 4 bands: 43,286 < 43,680 <= 52,561, so the band 3 base of 250. No
+    # member is 60 or older, disabled or 5 or younger.
+    fl_liheap: 250
+
+# A parent aged 42 works full time at the minimum wage (29,120). Her son aged
+# 16 works 10 hours a week at the minimum wage (14 x 10 x 52 = 7,280); the
+# current application and portal FAQ exclude all minors' income.
+- name: Case 5, a teenager's wages are excluded, so a parent and teenager stay in band two.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 29_120
+      person2:
+        age: 16
+        employment_income: 7_280
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_873
+        snap: 0
+        fl_tca: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    heating_expense: 1_873
+    has_heating_expense: true
+    fl_liheap_household_size: 2
+    # Only the parent's wages count: 29,120, not 36,400.
+    fl_liheap_countable_income: 29_120
+    # Matrix, size 2: floor(61,837 x 0.68) = 42,049.
+    fl_liheap_income_limit: 42_049
+    fl_liheap_categorically_eligible: false
+    fl_liheap_eligible: true
+    # Size 2 bands: 21,025 < 29,120 <= 29,434, so the band 2 base of 300.
+    # Counting the son's wages (36,400 > 35,742) would give band 4 (200).
+    fl_liheap: 300
+
+# Two adults aged 35 and 33 both work full time at the minimum wage:
+# 2 x 29,120 = 58,240.
+- name: Case 6, a two-earner couple above the size two limit is ineligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 29_120
+      person2:
+        age: 33
+        employment_income: 29_120
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_873
+        snap: 0
+        fl_tca: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    heating_expense: 1_873
+    has_heating_expense: true
+    fl_liheap_household_size: 2
+    fl_liheap_countable_income: 58_240
+    fl_liheap_income_limit: 42_049
+    fl_liheap_categorically_eligible: false
+    # 58,240 > 42,049, and it is not below the 110% floor,
+    # 1.1 x (15,650 + 5,500) = 23,265.
+    fl_liheap_eligible: false
+    fl_liheap: 0

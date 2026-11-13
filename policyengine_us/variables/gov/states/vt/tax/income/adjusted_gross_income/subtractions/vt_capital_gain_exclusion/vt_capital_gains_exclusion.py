@@ -14,9 +14,13 @@ class vt_capital_gains_exclusion(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # Get adjusted net capital gains (used for flat exclusion)
+        # Get adjusted net capital gains (used for flat exclusion). Like the
+        # federal amount, the qualified dividends taken out of it are the head
+        # and spouse's; a tax unit dependent's are on the dependent's own return.
         adjusted_net_capital_gain = tax_unit("adjusted_net_capital_gain", period)
-        qualified_dividend_income = add(tax_unit, period, ["qualified_dividend_income"])
+        qualified_dividend_income = tax_unit_non_dep_add(
+            tax_unit, period, ["qualified_dividend_income"]
+        )
         reduced_adjusted_net_capital_gain = max_(
             adjusted_net_capital_gain - qualified_dividend_income, 0
         )

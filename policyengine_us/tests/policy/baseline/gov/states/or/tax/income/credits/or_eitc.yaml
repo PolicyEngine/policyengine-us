@@ -153,3 +153,136 @@
     eitc: 0
   output:
     or_eitc: 0
+
+# ORS 315.266: the 12 percent rate needs "a dependent under the age of three". A
+# return on which a filer can be claimed as a dependent has no dependents (IRC
+# 152(b)(1)), so it gets 9 percent of its federal credit.
+- name: 2025 claimable filer with a child under 3 gets the 9% match
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 9
+
+- name: 2025 joint return with one claimable spouse and a child under 3 gets the 9% match (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        eitc: 100
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_eitc: 9
+
+- name: 2025 joint return with one claimable spouse and a child under 3 gets the 9% match (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        eitc: 100
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: OR
+  output:
+    or_eitc: 9
+
+- name: 2025 claimable filer within the filing exception with a child under 3 gets the 12% match
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 12
+
+- name: 2025 filer who cannot be claimed with a child under 3 gets the 12% match
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 12

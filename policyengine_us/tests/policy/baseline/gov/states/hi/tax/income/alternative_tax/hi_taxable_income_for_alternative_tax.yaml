@@ -37,3 +37,28 @@
     hi_capital_gain_for_alternative_tax: 50_000
   output:
     hi_taxable_income_for_alternative_tax: 48_000
+
+- name: A dependent's long-term loss does not reduce the head's worksheet line 4
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+        hi_taxable_income: 200_000
+    households:
+      household:
+        members: [head, child]
+        state_code: HI
+  output:
+    # Line 4 = 10,000 (the head's) and line 7 = 10,000, so line 8 = 10,000:
+    # 200,000 - 10,000, above the capped taxable income.
+    hi_taxable_income_for_alternative_tax: 190_000

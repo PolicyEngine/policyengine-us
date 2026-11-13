@@ -226,3 +226,39 @@
     ma_part_c_agi: 4_000
     # 5% x 53,600 + 8.5% x 3,000 + 5% x 4,000 = 2,680 + 255 + 200.
     ma_income_tax_before_credits: 3_135
+
+- name: Foreign-earned leaves preserve Part B earnings with offsetting capital gains
+  period: 2025
+  input:
+    people:
+      head1:
+        age: 40
+        short_term_capital_gains: 5_000
+        long_term_capital_gains: -2_000
+      head2:
+        age: 40
+        short_term_capital_gains: 5_000
+        long_term_capital_gains: -2_000
+    tax_units:
+      tax_unit1:
+        members: [head1]
+        foreign_earned_income_exclusion_amount: 0
+      tax_unit2:
+        members: [head2]
+        foreign_earned_income_exclusion_amount: 7_500
+    households:
+      household1:
+        members: [head1]
+        state_code: MA
+      household2:
+        members: [head2]
+        state_code: MA
+  output:
+    # The federal gross-income starting point includes net capital gains.
+    irs_gross_income: [3_000, 3_000]
+    ma_foreign_earned_income_exclusion_addback: [0, 7_500]
+    ma_gross_income: [3_000, 10_500]
+    # c.62 s.2(b)(2), (c)(2)(b), and (d)(1)(M): capital losses offset
+    # capital gains on Schedules B/D; they cannot reduce Part B earnings.
+    ma_part_b_gross_income: [0, 7_500]
+    ma_part_a_agi: [3_000, 3_000]

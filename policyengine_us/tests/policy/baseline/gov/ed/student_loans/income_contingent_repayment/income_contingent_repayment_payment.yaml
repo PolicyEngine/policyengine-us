@@ -1,0 +1,296 @@
+# Monthly payment under 34 CFR 685.209(b)(4)(iii), (f)(4), (g)(2): the lesser of
+#   (A) the 12-year fixed payment on the balance x the income percentage factor
+#       from the 2026 notice (91 FR 34815), and
+#   (B) 20% x max(AGI - poverty guideline, 0) / 12,
+# rounded to the cent; then a payment above 0 and at most 5 dollars becomes
+# 5 dollars.
+# 12-year payment at 6 percent: balance x 0.005 / (1 - 1.005 ^ -144), or
+# balance x 0.0097585: 15,000 -> 146.38; 20,000 -> 195.17; 30,000 -> 292.76;
+# 5,000 -> 48.79; 60,000 -> 585.51.
+# 2026 guideline in the 48 states: 15,960 + 5,680 per additional person.
+# Outputs are for October 2026, when the 2026 notice applies.
+
+- name: Case 1, notice Example 1, the factor payment is lower.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 15_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 35_104
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # (A) 146.38 x 71.89% (single row at 35,104) = 105.23.
+    # (B) 20% x (35,104 - 15,960) / 12 = 319.07.
+    income_contingent_repayment_payment:
+      2026-10: 105.23
+
+- name: Case 2, notice Example 3, 20 percent of discretionary income is lower.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 60_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 41_769
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # (A) 585.51 x 80.33% (single row at 41,769) = 470.34.
+    # (B) 20% x (41,769 - 15,960) / 12 = 430.15.
+    income_contingent_repayment_payment:
+      2026-10: 430.15
+
+- name: Case 3, an income between two rows interpolates the factor.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Factor, as in the notice's interpolation example: rows 41,769 (80.33%)
+    # and 52,462 (88.77%); (50,000 - 41,769) / 10,693 = 0.769756;
+    # 80.33 + 8.44 x 0.769756 = 86.8267 -> 86.83%.
+    # (A) 195.17 x 86.83% = 169.47.
+    # (B) 20% x (50,000 - 15,960) / 12 = 567.33.
+    income_contingent_repayment_payment:
+      2026-10: 169.47
+
+- name: Case 4, joint filers use combined income and their own balances, without proration.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 38
+        federal_student_loan_balance: 5_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Married table rows 52,462 (87.61%) and 65,797 (100%);
+    # (60,000 - 52,462) / 13,335 = 0.565279; 87.61 + 12.39 x 0.565279 =
+    # 94.6138 -> 94.61%.
+    # (A) 292.76 x 94.61% = 276.98 and 48.79 x 94.61% = 46.16.
+    # (B) 20% x (60,000 - 21,640) / 12 = 639.33 for each spouse.
+    income_contingent_repayment_payment:
+      2026-10: [276.98, 46.16]
+
+- name: Case 5, income exactly at the poverty guideline pays nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 15_960
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # (B) 20% x 0 = 0, the lesser amount; the 5 dollar minimum applies only
+    # above 0 (685.209(g)(2)).
+    income_contingent_repayment_payment:
+      2026-10: 0
+
+- name: Case 6, a payment above 0 and at most 5 dollars becomes 5 dollars.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 16_100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # (A) 292.76 x 56.29% = 164.79 (rows 13,717 at 55% and 18,873 at 57.79%).
+    # (B) 20% x 140 / 12 = 2.33 -> 5.
+    income_contingent_repayment_payment:
+      2026-10: 5
+
+- name: Case 7, a calculated payment of exactly 5 dollars stays 5 dollars.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 16_260
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Factor: rows 13,717 (55%) and 18,873 (57.79%); 2,543 / 5,156 = 0.493212;
+    # 55 + 2.79 x 0.493212 = 56.3761 -> 56.38%.
+    # (A) 292.76 x 56.38% = 165.06.
+    # (B) 20% x (16,260 - 15,960) / 12 = 20% x 300 / 12 = 5.00, at most 5 -> 5.
+    income_contingent_repayment_payment:
+      2026-10: 5
+
+- name: Case 8, a calculated payment just above 5 dollars is unchanged.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 16_260.60
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Factor: 2,543.60 / 5,156 = 0.493328; 55 + 2.79 x 0.493328 = 56.3764 ->
+    # 56.38%. (A) 292.76 x 56.38% = 165.06.
+    # (B) 20% x (16,260.60 - 15,960) / 12 = 20% x 300.60 / 12 = 5.01, above 5.
+    income_contingent_repayment_payment:
+      2026-10: 5.01
+
+- name: Case 9, a positive calculated payment that rounds to 0 dollars stays 0.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 15_960.01
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Factor: 2,243.01 / 5,156 = 0.435029; 55 + 2.79 x 0.435029 = 56.2137 ->
+    # 56.21%. (A) 292.76 x 56.21% = 164.56.
+    # (B) 20% x (15,960.01 - 15,960) / 12 = 20% x 0.01 / 12 = 0.000167, which
+    # rounds to 0.00 before the minimum, so it is not raised to 5. This is a
+    # modeling choice: 685.209(g)(2) raises any payment above 0 and at most 5.
+    income_contingent_repayment_payment:
+      2026-10: 0
+
+- name: Case 10, a borrower with a loan made on or after July 1, 2026 can't use the plan.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 15_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 35_104
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 105.23 as in Case 1 without the loan; 0 under 34 CFR 685.209(c)(5)(i)(C),
+    # (d)(5) and 20 U.S.C. 1087e(d)(6)-(7).
+    income_contingent_repayment_payment:
+      2026-10: 0
+
+- name: Case 11, a tax dependent with loans owes nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    income_contingent_repayment_payment:
+      2026-10: [0, 0]

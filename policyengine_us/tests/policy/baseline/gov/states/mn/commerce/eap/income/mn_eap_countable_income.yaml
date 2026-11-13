@@ -1,0 +1,379 @@
+# Countable income is gross cash receipts under the FFY26 EAP Policy Manual,
+# Chapter 3 Income Inclusions and Exclusions table. Annual inputs stand for
+# twelve times the one-month eligibility amount.
+
+# Wages $23,733 ($11.41 x 2,080 hours) + self-employment loss floored at $0
+# (a loss on one source is not subtracted from another) + undocumented spouse's
+# wages $18,000 (not in the household size, but income counts in full)
+# = $41,733.
+- name: Case 1, a self-employment loss does not offset wages and an ineligible non-citizen's wages count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        employment_income: 23_733
+        self_employment_income: -4_000
+      person2:
+        age: 34
+        immigration_status: UNDOCUMENTED
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_eap_household_size: 1
+    mn_eap_countable_income: 41_733
+
+# Parent's wages $31,200 count. The 19-year-old high school student's $6,000
+# wages and $1,200 unemployment insurance are excluded (age 19 and below in
+# K-12). The 20-year-old in a GED program is over the age limit, so the
+# $6,000 + $1,200 count: $31,200 + $7,200 = $38,400.
+- name: Case 2, a student aged 19 has earnings and unemployment excluded and a student aged 20 does not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 31_200
+      person2:
+        age: 19
+        is_in_k12_school: true
+        employment_income: 6_000
+        unemployment_compensation: 1_200
+      person3:
+        age: 20
+        is_in_k12_school: true
+        employment_income: 6_000
+        unemployment_compensation: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 38_400
+
+# Social Security counts net of the Medicare premium deducted from it, and the
+# pension is netted in the same term once: $21,600 + $6,000 - $2,434.80 (2026
+# Part B premium $202.90 x 12) = $25,165.20. The working spouse aged 66 pays
+# the premium but has no Social Security or pension, so the premium does not
+# reduce the $18,000 wages. Total $43,165.20.
+- name: Case 3, Social Security and pension count net of the Medicare premium without reducing wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 21_600
+        pension_income: 6_000
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+      person2:
+        age: 66
+        employment_income: 18_000
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 43_165.2
+
+# Retirement payments count at age 59 1/2 or older; early withdrawals do not.
+# The $6,000 IRA withdrawal at age 59 is excluded and the $6,000 at exactly
+# age 59 1/2 counts: $6,000.
+- name: Case 4, an IRA withdrawal counts at exactly age 59 1/2 and not at age 59.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 59
+        taxable_ira_distributions: 6_000
+      person2:
+        age: 59.5
+        taxable_ira_distributions: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 6_000
+
+# Dividends and interest count when the one-month equivalent is $50 or more.
+# Unit 1: $400 interest + $200 ordinary dividends = $600 a year ($50 a month)
+# counts: $20,000 + $600 = $20,600. Unit 2: $399 + $200 = $599 ($49.92 a
+# month) does not: $20,000.
+- name: Case 5, household interest and dividends count at exactly 50 dollars a month and not below.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 20_000
+        interest_income: 400
+      person2:
+        age: 63
+        ordinary_dividend_income: 200
+      person3:
+        age: 64
+        employment_income: 20_000
+        interest_income: 399
+      person4:
+        age: 63
+        ordinary_dividend_income: 200
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+      spm_unit2:
+        members: [person3, person4]
+        heating_type: NATURAL_GAS
+        tanf: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MN
+      household2:
+        members: [person3, person4]
+        state_code: MN
+  output:
+    mn_eap_countable_income: [20_600, 20_000]
+
+# Cash gifts count when they total $100 or more in the eligibility period
+# ($99 or less does not). Unit 1: $1,200 a year ($100 a month) counts:
+# $20,000 + $1,200 = $21,200. Unit 2: $1,199 ($99.92 a month) does not:
+# $20,000.
+- name: Case 6, cash gifts count at exactly 100 dollars a month and not below.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 29
+        employment_income: 20_000
+        financial_assistance: 1_200
+      person2:
+        age: 29
+        employment_income: 20_000
+        financial_assistance: 1_199
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+  output:
+    mn_eap_countable_income: [21_200, 20_000]
+
+# Veteran's benefits and SSI count: $14,400 ($1,200 a month) + $11,928 (2026
+# federal SSI rate $994 x 12) = $26,328.
+- name: Case 7, veterans benefits and SSI count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        veterans_benefits: 14_400
+      person2:
+        age: 50
+        is_disabled: true
+        ssi: 11_928
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 26_328
+
+# MFIP cash assistance counts (Assistance Payments); child support received
+# does not: $7,800.
+- name: Case 8, MFIP cash assistance counts and child support does not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 27
+        child_support_received: 3_600
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 7_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 7_800
+
+# Minnesota Paid Leave, paid from 2026-01-01, is wage replacement cash and
+# counts in FFY2026 under the FFY26 definition of income as gross cash
+# receipts (the FFY27 Income Inclusions and Exclusions table states "MPL
+# payments are countable income"). $30,000 wages + $9,000 paid leave =
+# $39,000, above the FFY26 size 1 limit of $3,119 x 12 = $37,428, so the
+# household is ineligible although it has a known heating type and $2,000 of
+# energy bills ($30,000 of wages alone would be under the limit).
+- name: Case 9, Minnesota Paid Leave benefits count in FFY2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 39
+        employment_income: 30_000
+        pfml_benefits: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 39_000
+    mn_eap_eligible: false
+
+# Railroad retirement and a PERA pension count net of the Medicare premiums,
+# subtracted once from the combined Social Security, railroad and pension
+# amount. Unit 1: $38,000 railroad annuity - $2,434.80 Part B ($202.90 x 12;
+# Part A is premium-free with the default 40 quarters) = $35,565.20, under the
+# FFY26 size 1 limit of $37,428 (the gross $38,000 would be over it).
+# Percentile 35,565.20 / 37,428 = 0.9502, past the 0.896 slope end, so the
+# share is 0.108: 0.108 x ($1,000 gas + $1,000 electricity) = $216. Unit 2:
+# $30,000 PERA pension - $2,434.80 Part B - $3,732 Part A (2026 reduced
+# premium $311 x 12) = $23,833.20; 23,833.20 / 37,428 = 0.6367746; share
+# 0.439 - 0.331 x 0.6367746 / 0.896 = 0.2037630; 0.2037630 x $2,000 =
+# $407.53 -> $408.
+- name: Case 10, railroad retirement and a pension count net of Medicare Part A and Part B premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        railroad_benefits: 38_000
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+      person2:
+        age: 70
+        taxable_public_pension_income: 30_000
+        medicare_part_b_premium: 2_434.8
+        medicare_part_a_premium: 3_732
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+        tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_000
+        tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+      household2:
+        members: [person2]
+        state_code: MN
+  output:
+    mn_eap_countable_income: [35_565.2, 23_833.2]
+    mn_eap_eligible: [true, true]
+    mn_eap: [216, 408]
+
+# Each earned and unearned list source gets a distinct amount, so dropping any
+# entry lowers the total. Earned: $1,000 self-employment + $2,000 SSTB
+# self-employment + $3,000 partnership + $4,000 farm operations + $5,000 farm
+# rent + $6,000 rental = $21,000. Unearned: $7,000 military retirement +
+# $8,000 workers' compensation + $9,000 employment disability + $10,000
+# alimony + $11,000 strike benefits + $12,000 trust income + $13,000 survivor
+# benefits = $70,000. Total $21,000 + $70,000 = $91,000.
+- name: Case 11, every earned and unearned list source counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        self_employment_income_before_lsr: 1_000
+        sstb_self_employment_income_before_lsr: 2_000
+        partnership_income: 3_000
+        farm_operations_income: 4_000
+        farm_rent_income: 5_000
+        rental_income: 6_000
+      person2:
+        age: 44
+        military_retirement_pay: 7_000
+        workers_compensation: 8_000
+        disability_benefits: 9_000
+        alimony_income: 10_000
+        strike_benefits: 11_000
+        estate_income: 12_000
+        survivor_benefits: 13_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_eap_countable_income: 91_000

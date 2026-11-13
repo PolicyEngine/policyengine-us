@@ -1,0 +1,40 @@
+description: Maryland provides this annual regular heating payment for natural gas by benefit level under the Maryland Energy Assistance Program.
+1:
+  2024-07-01: 301
+  2025-07-01: 550
+  2026-07-01: 700
+2:
+  2024-07-01: 241
+  2025-07-01: 475
+  2026-07-01: 665
+3:
+  2024-07-01: 210
+  2025-07-01: 400
+  2026-07-01: 630
+4:
+  2024-07-01: 181
+  2025-07-01: 360
+  2026-07-01: 560
+5:
+  2024-07-01: 150
+  2025-07-01: 300
+  2026-07-01: 455
+6:
+  2024-07-01: 102
+  2025-07-01: 225
+  2026-07-01: 315
+7:
+  2024-07-01: 25
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maryland MEAP gas heating payments
+  breakdown:
+  - range(1, 8)
+  reference:
+  - title: FY2025 MEAP Benefit Matrix
+    href: https://liheapch.acf.gov/docs/2025/benefits-matricies/MD_BenefitMatrix_2025.pdf
+  - title: FY26 MEAP Benefit Matrix
+    href: https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf
+  - title: FY27 MEAP Benefit Matrices, statewide table, PDF page 1
+    href: https://dhs.maryland.gov/documents/OHEP/FY27-MEAP-Benefit-Matrices.pdf#page=1

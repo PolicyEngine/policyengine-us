@@ -6,6 +6,8 @@ from functools import lru_cache
 import numpy as np
 import pandas as pd
 import pytest
+from hypothesis import given, settings
+from hypothesis import strategies as st
 from policyengine_core.parameters.operations.get_parameter import get_parameter
 from policyengine_core.reforms import Reform
 
@@ -15,6 +17,9 @@ from policyengine_us.data.economic_assumptions import (
     MICRODATA_UPRATING_OVERRIDES,
     _resolve_uprating_parameter,
     extend_single_year_dataset,
+)
+from policyengine_us.parameters.uprating_extensions import (
+    round_social_security_amount,
 )
 from policyengine_us.reforms.ssa import apply_trustees_2025_economic_assumptions
 from policyengine_us.system import system
@@ -28,6 +33,7 @@ from policyengine_us.tools.per_capita_uprating import (
     PER_CAPITA_SUFFIX,
     POPULATION_PATH,
     _add_per_capita_parameter,
+    _is_unclassified_calibration_path,
     add_per_capita_uprating,
     is_national_total_path,
     per_capita_path,
@@ -36,6 +42,9 @@ from policyengine_us.tools.per_capita_uprating import (
 SOI_EMPLOYMENT = "calibration.gov.irs.soi.employment_income"
 CBO_AGI = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
 CMS_MOOP = "calibration.gov.hhs.cms.moop_per_capita"
+CMS_ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
+CMS_DIRECT_PURCHASE = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
+CMS_PART_B = "calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee"
 CPI_U = "gov.bls.cpi.cpi_u"
 YEARS = (2025, 2030, 2035)
 BASE_YEAR = 2024
@@ -57,6 +66,9 @@ def _growth(path, year, parameters=None):
         (CBO_AGI, True),
         ("calibration.gov.cbo.unemployment_compensation", True),
         (CMS_MOOP, False),
+        (CMS_ESI, False),
+        (CMS_DIRECT_PURCHASE, False),
+        (CMS_PART_B, False),
         (CPI_U, False),
         (POPULATION_PATH, False),
         (per_capita_path(SOI_EMPLOYMENT), False),
@@ -88,6 +100,9 @@ def test_no_variable_uprates_by_a_national_total():
         ("charitable_cash_donations", per_capita_path(CBO_AGI)),
         ("miscellaneous_income", per_capita_path(CBO_AGI)),
         ("other_medical_expenses", CMS_MOOP),
+        ("employer_sponsored_insurance_premiums", CMS_ESI),
+        ("health_insurance_premiums", CMS_DIRECT_PURCHASE),
+        ("medicare_part_b_premiums_reported", CMS_PART_B),
         ("child_support_expense", CPI_U),
         ("household_weight", POPULATION_PATH),
     ],
@@ -195,6 +210,49 @@ def test_extended_dataset_totals_track_national_totals(year):
     assert later.person["age"].tolist() == base.person["age"].tolist()
 
 
+def test_extension_grows_philadelphia_taxable_wages_with_wages():
+    """When a dataset sets a resident's Philadelphia taxable wages to their
+    wages floored at zero, extension keeps that relation in every later year,
+    because both inputs follow the employment income series."""
+    dataset = _tiny_dataset()
+    person = dataset.person
+    person["employment_income_before_lsr"] = [50_000.0, -2_000.0, 120_000.0, 0.0]
+    person["pa_philadelphia_wage_tax_taxable_wages"] = person[
+        "employment_income_before_lsr"
+    ].clip(lower=0)
+    extended = extend_single_year_dataset(dataset, end_year=2035, system=system)
+    for year in range(BASE_YEAR + 1, 2036):
+        later = extended.datasets[year].person
+        wages = later["employment_income_before_lsr"].clip(lower=0).tolist()
+        taxable_wages = later["pa_philadelphia_wage_tax_taxable_wages"].tolist()
+        assert taxable_wages == pytest.approx(wages, rel=1e-12), year
+
+
+@settings(max_examples=10, deadline=None)
+@given(
+    st.lists(
+        st.floats(min_value=-1e7, max_value=1e7, allow_nan=False, allow_infinity=False),
+        min_size=4,
+        max_size=4,
+    )
+)
+def test_extension_keeps_philadelphia_taxable_wages_at_floored_wages(wages):
+    """For any wages, taxable wages set to wages floored at zero keep that
+    relation in every extended year."""
+    dataset = _tiny_dataset()
+    person = dataset.person
+    person["employment_income_before_lsr"] = wages
+    person["pa_philadelphia_wage_tax_taxable_wages"] = person[
+        "employment_income_before_lsr"
+    ].clip(lower=0)
+    extended = extend_single_year_dataset(dataset, end_year=2036, system=system)
+    for year in range(BASE_YEAR + 1, 2037):
+        later = extended.datasets[year].person
+        floored = later["employment_income_before_lsr"].clip(lower=0).tolist()
+        taxable = later["pa_philadelphia_wage_tax_taxable_wages"].tolist()
+        assert taxable == pytest.approx(floored, rel=1e-12), year
+
+
 def test_simulation_uprating_tracks_national_totals():
     simulation = Simulation(
         situation={
@@ -294,6 +352,48 @@ def test_trustees_long_run_holds_after_the_population_series_ends():
         / _value(POPULATION_PATH, 2060, parameters),
         rel=1e-12,
     )
+
+
+def _wage_indexed_amounts(parameters):
+    social_security = parameters.gov.ssa.social_security
+    bend_points = social_security.pia.formula_factors.brackets
+    return {
+        "wage_base": social_security.wage_base,
+        "quarters_of_coverage_threshold": social_security.quarters_of_coverage_threshold,
+        "exempt_amount_under_fra": social_security.earnings_test.exempt_amount_under_fra,
+        "exempt_amount_year_of_fra": social_security.earnings_test.exempt_amount_year_of_fra,
+        "bend_point_1": bend_points[1].threshold,
+        "bend_point_2": bend_points[2].threshold,
+        "sga_non_blind": parameters.gov.ssa.sga.non_blind,
+        "sga_blind": parameters.gov.ssa.sga.blind,
+    }
+
+
+def test_trustees_wage_indexed_amounts_follow_the_trustees_nawi():
+    """The scenario re-derives the wage base and the other wage-indexed
+    amounts from its own cap and NAWI (#10452). The Trustees NAWI first
+    differs from CBO's in 2034, which sets the 2036 amounts, so earlier years
+    match the baseline."""
+    parameters = _trustees_parameters()
+    cap = parameters.gov.irs.payroll.social_security.cap
+    trustees = _wage_indexed_amounts(parameters)
+    baseline = _wage_indexed_amounts(system.parameters)
+    for year in range(2027, 2101):
+        assert trustees["wage_base"](f"{year}-01-01") == cap(f"{year}-01-01")
+    for name, parameter in trustees.items():
+        for year in range(2027, 2036):
+            assert parameter(f"{year}-01-01") == baseline[name](f"{year}-01-01"), (
+                name,
+                year,
+            )
+    nawi = parameters.gov.ssa.nawi
+    for year in (2036, 2040, 2100):
+        assert trustees["bend_point_1"](f"{year}-01-01") == (
+            round_social_security_amount(
+                180 * nawi(f"{year - 2}-01-01") / nawi("1977-01-01"), 1
+            )
+        )
+    assert trustees["wage_base"]("2036-01-01") != baseline["wage_base"]("2036-01-01")
 
 
 def test_smi_threshold_keeps_pace_with_default_incomes():
@@ -398,6 +498,34 @@ class _StubSystem:
 def test_unclassified_calibration_path_is_rejected():
     with pytest.raises(ValueError, match="national-total family"):
         add_per_capita_uprating(_StubSystem("calibration.gov.aca.spending.state.AL"))
+
+
+@pytest.mark.parametrize("path", [CMS_MOOP, CMS_ESI, CMS_DIRECT_PURCHASE, CMS_PART_B])
+def test_per_person_rates_are_classified(path):
+    """CMS per-capita and per-enrollee series are per-person rates: neither
+    national totals to divide nor unclassified paths to reject."""
+    assert not is_national_total_path(path)
+    assert not _is_unclassified_calibration_path(path)
+
+
+@pytest.mark.parametrize(
+    "path, national_total",
+    [
+        # A marker in an ancestor segment does not make a total a rate.
+        ("calibration.gov.cbo.per_enrollee_estimates.spending_total", True),
+        ("calibration.gov.irs.soi.per_capita_tables.wages", True),
+        ("calibration.gov.hhs.per_enrollee_estimates.spending_total", False),
+        # In the last segment it does, wherever it falls in the name.
+        ("calibration.gov.cbo.spending_per_enrollee", False),
+        ("calibration.gov.hhs.medicare.per_capita_cost", False),
+    ],
+)
+def test_only_the_last_segment_marks_a_per_person_rate(path, national_total):
+    assert is_national_total_path(path) is national_total
+    # Outside the national-total families, an ancestor marker leaves the path
+    # unclassified, so the build rejects it instead of guessing.
+    if path.startswith("calibration.gov.hhs.per_enrollee_estimates"):
+        assert _is_unclassified_calibration_path(path)
 
 
 def test_existing_per_capita_series_is_never_overwritten():

@@ -73,3 +73,13 @@
     state_code: KY
   output:
     ky_pension_income_exclusion: 20_000
+
+- name: Military retirement pay and survivor benefits qualify for KY pension exclusion
+  period: 2024
+  input:
+    state_code: KY
+    military_retirement_pay: 15_000
+    military_retirement_pay_survivors: 10_000
+    ky_pension_income_exclusion_exemption_eligible: false
+  output:
+    ky_pension_income_exclusion: 25_000

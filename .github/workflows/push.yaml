@@ -10,6 +10,8 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
+    # Oct 6-8: 29 runs, max 0.4 min.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python
@@ -19,12 +21,14 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Check committed registry lock
         run: python .github/release_lock.py --committed
   ReleaseLockTests:
     name: Release lock guard tests
     runs-on: ubuntu-latest
+    # Oct 6-8: 104 successful runs, max 1.4 min; one hung run failed at 45 min.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python
@@ -34,7 +38,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Test guard without importing the country model
         env:
           RELEASE_LOCK_REAL_UV: "1"
@@ -42,6 +46,8 @@ jobs:
   Lint:
     needs: ReleaseLock
     runs-on: ubuntu-latest
+    # Oct 6-8: 28 runs, max 0.7 min.
+    timeout-minutes: 10
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -50,9 +56,11 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Install dependencies
         run: uv sync --locked --extra dev
+      - name: Test system certificate trust guard
+        run: uv run --no-sync python -m unittest discover -s .github/tests -p test_system_ca.py -v
       - name: Check formatting
         run: uv run --no-sync ruff format --check .
   versioning:
@@ -62,30 +70,63 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && !(github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
+    # Oct 6-8: successful runs max 4.5 min, any run max 12 min.
+    timeout-minutes: 20
     steps:
+      # When several PRs merge before this job gets a runner, only the newest
+      # merge can push a version bump: the others would commit on a stale
+      # parent and fail on push. The newest merge's job consumes every pending
+      # changelog fragment (towncrier builds all of changelog.d), so an older
+      # job has nothing left to do. It skips only when GitHub's compare API
+      # says main is strictly ahead of this commit (status "ahead": this
+      # commit is an ancestor of main and main has more). Any other answer
+      # (identical, behind, diverged) or a failed lookup runs versioning as
+      # before, so a stale read can never suppress the newest merge's bump.
+      - name: Skip if main already contains this commit and more
+        id: head
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! status=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${GITHUB_SHA}...main" --jq .status); then
+            echo "::warning::Could not compare this commit with main; running versioning anyway."
+            status=unknown
+          fi
+          if [ "$status" = "ahead" ]; then
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Versioning superseded::main already contains ${GITHUB_SHA} and newer commits. The versioning job for main's newest merge bumps the version once with every pending changelog fragment, including this commit's. If that job fails, re-run it."
+          else
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Generate GitHub App token
+        if: steps.head.outputs.current == 'true'
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - uses: actions/checkout@v6
+        if: steps.head.outputs.current == 'true'
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
       - name: Install uv
+        if: steps.head.outputs.current == 'true'
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Set up Python
+        if: steps.head.outputs.current == 'true'
         uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Check committed registry lock before bump
+        if: steps.head.outputs.current == 'true'
         run: python .github/release_lock.py --committed
       - name: Bump version once
+        if: steps.head.outputs.current == 'true'
         run: python .github/bump_version.py
       - name: Build changelog with isolated registry tooling
+        if: steps.head.outputs.current == 'true'
         run: |
           python - <<'PYTHON'
           import os
@@ -113,8 +154,10 @@ jobs:
           )
           PYTHON
       - name: Refresh and check release version in registry lock
+        if: steps.head.outputs.current == 'true'
         run: python .github/release_lock.py --refresh
       - name: Update changelog
+        if: steps.head.outputs.current == 'true'
         uses: EndBug/add-and-commit@v10
         with:
           add: "pyproject.toml uv.lock CHANGELOG.md changelog.d"
@@ -134,12 +177,17 @@ jobs:
     env:
       PYTHONUNBUFFERED: 1
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+      # Two batch subprocesses per runner while its memory allows (see
+      # test_batched.py): 32% fewer runner-minutes, same cases, no shutdowns.
+      POLICYENGINE_BATCH_WORKERS: 2
     strategy:
       fail-fast: false
       matrix:
         include:
-          # One state per subprocess; retain four runners and one worker each.
-          # The former NY/OH/OK process peaked at 15.1 GB (run 36930199045).
+          # One state per batch subprocess, over four runners. The job's
+          # POLICYENGINE_BATCH_WORKERS overrides --workers 1, and runner memory
+          # decides whether two run at once. The former NY/OH/OK process peaked
+          # at 15.1 GB (run 36930199045).
           - group: states-shard-1
             cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 1/4
           - group: states-shard-2
@@ -165,6 +213,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -172,7 +223,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -196,6 +247,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -203,7 +257,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -214,7 +268,8 @@ jobs:
       - name: Run Household API Partners YAML tests
         run: uv run --no-sync make test-yaml-no-structural-other-partners
   Contrib:
-    needs: ReleaseLock
+    # Waits for Baseline and skips if it fails, as in pr.yaml.
+    needs: [ReleaseLock, Baseline]
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -224,6 +279,9 @@ jobs:
     env:
       PYTHONUNBUFFERED: 1
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+      # Two batch subprocesses per runner while its memory allows (see
+      # test_batched.py): 32% fewer runner-minutes, same cases, no shutdowns.
+      POLICYENGINE_BATCH_WORKERS: 2
     strategy:
       fail-fast: false
       matrix:
@@ -249,6 +307,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -256,7 +317,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -269,20 +330,25 @@ jobs:
       - name: Run Contrib Python tests
         if: ${{ matrix.group == 'other-shard-1' }}
         run: uv run --no-sync make test-policy-contrib-python
-  Rest:
+  RestPlan:
     needs: ReleaseLock
-    name: Full Suite - Rest (Python + variables)
+    name: Plan Rest Python shards
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 10
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    env:
-      PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -290,7 +356,74 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
+      - name: Install dependencies
+        run: uv sync --locked --extra dev
+      # A successful release run on main has every shard's JUnit and GNU time
+      # reports; a failed one can lack a lost runner's, which would skew the
+      # estimates. Without any, the plan counts each file the same.
+      - name: Download recent Rest Python timings
+        id: timings
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          runs=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow push.yaml \
+            --branch main --status success --limit 40 \
+            --json databaseId,displayTitle \
+            --jq '.[] | select(.displayTitle == "Update PolicyEngine US") | .databaseId') || runs=""
+          for run in $(echo "$runs" | head -n 3); do
+            if gh run download "$run" --repo "$GITHUB_REPOSITORY" \
+              --dir "rest-timings/$run" \
+              --pattern 'rest-python-test-timings-*' \
+              --pattern rest-variables-test-timings; then
+              echo "source=release run $run" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            rm -rf "rest-timings/$run"
+          done
+          echo "::warning::No Rest Python timing reports found; the plan counts every file the same."
+      - name: Plan shards
+        id: plan
+        env:
+          TIMINGS_SOURCE: ${{ steps.timings.outputs.source }}
+        run: uv run --no-sync python policyengine_us/tests/rest_python_shards.py plan --timings rest-timings --source "$TIMINGS_SOURCE" --github-output "$GITHUB_OUTPUT" --summary "$GITHUB_STEP_SUMMARY"
+  RestPython:
+    needs: [RestPlan]
+    name: Full Suite - Rest (Python shard ${{ matrix.shard }})
+    runs-on: ubuntu-latest
+    # Plans aim at 25 minutes a shard (26-30 from the October 2026 reports);
+    # one made without reports can run longer.
+    timeout-minutes: 90
+    if: |
+      (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.RestPlan.outputs.matrix) }}
+    env:
+      PYTHONUNBUFFERED: 1
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+      MKL_NUM_THREADS: 4
+      VECLIB_MAXIMUM_THREADS: 4
+      NUMEXPR_NUM_THREADS: 4
+      OMP_WAIT_POLICY: PASSIVE
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -298,30 +431,59 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      # Each Rest group runs in a separate process to release its heap.
-      # SPM simulation/API contracts run in the Microsimulation job instead.
+      # Each planned process runs files of one group, one process at a time.
+      # SPM simulation/API contracts stay in the Microsimulation job.
       - name: Run remaining Python tests
-        # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
-        run: uv run --no-sync make test-other-python-rest REST_REPORT_DIR=.
-      - name: Run tests/variables YAML tests
-        # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
-        env:
-          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
-      - name: Upload Rest timing and memory reports
+          REST_PYTHON_PROCESSES: ${{ matrix.processes }}
+        run: uv run --no-sync python policyengine_us/tests/rest_python_shards.py run --report-dir .
+      - name: Upload Rest Python timing and memory reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rest-test-timings
+          name: rest-python-test-timings-shard-${{ matrix.shard }}
           path: |
             rest-python-*.xml
-            rest-variables.xml
             rest-python-*-resources.txt
+      - name: Run tests/variables YAML tests
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' && matrix.variables }}
+        env:
+          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
+      - name: Upload Rest variables timing and memory reports
+        if: ${{ always() && matrix.variables }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-variables-test-timings
+          path: |
+            rest-variables.xml
             rest-variables-resources.txt
+  Rest:
+    needs: [RestPlan, RestPython]
+    # Runs after a failed plan or shard, but not when the plan was skipped (a
+    # failed release lock) or the run is cancelled. always() kept this runner
+    # alive after cancellation.
+    if: |
+      !cancelled()
+      && (needs.RestPlan.result != 'skipped')
+      && (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
+    name: Check Rest Python shards
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check all Rest jobs succeeded
+        shell: bash
+        env:
+          PLAN_RESULT: ${{ needs.RestPlan.result }}
+          PYTHON_RESULT: ${{ needs.RestPython.result }}
+        run: |
+          if [[ "$PLAN_RESULT" != "success" || "$PYTHON_RESULT" != "success" ]]; then
+            echo "::error::Rest jobs did not all succeed: plan=$PLAN_RESULT, shards=$PYTHON_RESULT"
+            exit 1
+          fi
   Microsimulation:
     needs: ReleaseLock
     name: Full Suite - Microsimulation
@@ -336,6 +498,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
+      - name: Fetch Social Security differential reference
+        run: git fetch --no-tags --depth=1 origin 8986e05cab65d56435a23df1910e2d35f2c5f5bf
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -343,7 +510,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Resolve latest compatible PolicyEngine Core
         run: uv lock --upgrade-package policyengine-core
       - name: Install dependencies
@@ -360,7 +527,7 @@ jobs:
         run: /usr/bin/time -v -o simulation-spm-resources.txt uv run --no-sync make test-other-python-spm
       - name: Run microsimulation tests
         # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.system-ca.outcome == 'success' }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-microsimulation.xml -p no:unraisableexception -p no:threadexception"
         run: /usr/bin/time -v -o simulation-microsimulation-resources.txt uv run --no-sync make test-microsimulation
@@ -374,13 +541,24 @@ jobs:
             simulation-*-resources.txt
   Publish:
     runs-on: ubuntu-24.04
+    # Oct 6-8: 25 runs, max 1.3 min.
+    timeout-minutes: 20
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    needs: [ReleaseLock, ReleaseLockTests, Baseline, HouseholdAPIPartners, Contrib, Rest, Microsimulation]
+    needs: [ReleaseLock, ReleaseLockTests, Baseline, HouseholdAPIPartners, Contrib, RestPlan, RestPython, Rest, Microsimulation]
+    # PyPI trusted publishing: PyPI accepts uploads only from this workflow in
+    # the pypi environment, which is limited to main. No stored PyPI token.
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+      - name: Update system certificate authorities
+        id: system-ca
+        uses: ./.github/actions/setup-system-ca
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -388,7 +566,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          version: "0.12.13"
+          version: "0.13.4"
       - name: Check committed registry lock before publication
         run: python .github/release_lock.py --committed
       - name: Install package
@@ -400,6 +578,4 @@ jobs:
       - name: Publish a Python distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.PYPI }}
           skip-existing: true

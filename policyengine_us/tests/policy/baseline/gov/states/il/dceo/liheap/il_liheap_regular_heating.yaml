@@ -1,0 +1,67 @@
+# 2026 poverty guidelines (contiguous US): 15,960 for one person plus 5,680
+# for each additional person. Amounts are the FY2026 benefit matrix values.
+# Wages are 40 hours a week at the 15 Illinois minimum wage: 15 * 40 * 52 = 31,200.
+
+- name: Case 1, the regular heating payment leaves out the crisis amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income_before_lsr: 31_200
+      person2:
+        age: 9
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        # 90 a month for gas heat.
+        gas_expense: 1_080
+        il_liheap_eligible_for_crisis_assistance: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+  output:
+    # Guideline for three: 15,960 + 2 * 5,680 = 27,320.
+    # 31,200 / 27,320 = 114%: income bracket 3 (101-150%).
+    # Natural gas amount, bracket 3, three people: 546.
+    # min(546, gas 1,080) = 546.
+    il_liheap_base_payment: 546
+    # 546 + crisis 1,500 = 2,046.
+    il_liheap: 2_046
+    il_liheap_regular_heating: 546
+
+- name: Case 2, a heat-in-rent renter whose rent is below the threshold gets no regular heating payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 26
+        employment_income_before_lsr: 31_200
+        # 700 a month with heat included.
+        pre_subsidy_rent: 8_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # 31,200 is within 200% of the one-person guideline (31,920).
+    il_liheap_income_eligible: true
+    # Rent of at most 8,400 does not exceed 30% of income (9,360).
+    il_liheap_eligible: false
+    # 31,200 / 15,960 = 195%: bracket 4; the cash amount for one person is 310,
+    # but the unit is ineligible, so the regular heating payment is zero.
+    il_liheap_base_payment: 310
+    il_liheap_regular_heating: 0
+    # The national total sums the regular heating payment, not the base.
+    liheap: 0

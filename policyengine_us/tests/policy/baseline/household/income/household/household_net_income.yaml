@@ -131,3 +131,157 @@
     household_health_costs: 0
   output:
     household_net_income: 29_000
+
+- name: Household net income of a Wisconsin retiree reflects the retirement income exclusion.
+  # 2025 Wisconsin Form 1 instructions, Standard Deduction Table (page 35)
+  # and Tax Table (page 38), with exemptions of $700 + $250:
+  #   with credits, line 7 = $41,250; standard deduction $10,956; taxable
+  #   income $29,344; tax $1,159.
+  #   with the Schedule SB Line 16 exclusion of $24,000, line 7 = $17,250;
+  #   standard deduction $13,560; taxable income $2,740; tax $96.
+  # https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=35
+  # Federal income tax is set to zero to isolate the state tax:
+  # $41,250 - $96 = $41,154.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_private_pension_income: 41_250
+    tax_units:
+      tax_unit:
+        members: [person1]
+        income_tax_before_refundable_credits: 0
+        income_tax_refundable_credits: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    household_net_income: 41_154
+
+- name: An Alaskan's dividend and energy relief reach both net incomes.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    spm_units:
+      spm_unit:
+        members: [adult]
+        spm_unit_taxes: 0
+        spm_unit_spm_expenses: 0
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+        household_tax_before_refundable_credits: 0
+        household_refundable_tax_credits: 0
+        household_health_costs: 0
+        household_health_benefits: 0
+  output:
+    spm_unit_net_income: 500_000 + 1_000 + 200
+    household_net_income: 500_000 + 1_000 + 200
+
+- name: Household net income counts the premium tax credit as a refundable tax credit.
+  period: 2026
+  input:
+    household_market_income: 30_000
+    household_benefits: 0
+    income_tax_refundable_credits_in_force: 0
+    household_refundable_state_tax_credits: 0
+    household_refundable_local_tax_credits: 0
+    used_aca_ptc: 4_000
+    household_tax_before_refundable_credits: 2_000
+    household_health_costs: 0
+  output:
+    household_tax: 2_000 - 4_000
+    household_net_income: 30_000 + 4_000 - 2_000
+
+# With health benefits counted, health costs subtract the whole Marketplace
+# premium, so a credit that is $1,000 larger raises net income by $1,000, not
+# $2,000 (once as a refundable credit and again through a smaller net premium).
+- name: With health benefits counted, a $1,000 premium tax credit against a $5,000 premium.
+  period: 2026
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    household_market_income: 30_000
+    household_benefits: 0
+    income_tax_refundable_credits_in_force: 0
+    household_refundable_state_tax_credits: 0
+    household_refundable_local_tax_credits: 0
+    household_tax_before_refundable_credits: 2_000
+    chip_premium: 0
+    selected_marketplace_plan_premium_proxy: 5_000
+    aca_ptc: 1_000
+  output:
+    premium_tax_credit_in_force: 1_000
+    household_health_costs: 5_000
+    household_net_income: 30_000 + 1_000 - 2_000 - 5_000
+
+- name: With health benefits counted, a $2,000 premium tax credit against the same premium.
+  period: 2026
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    household_market_income: 30_000
+    household_benefits: 0
+    income_tax_refundable_credits_in_force: 0
+    household_refundable_state_tax_credits: 0
+    household_refundable_local_tax_credits: 0
+    household_tax_before_refundable_credits: 2_000
+    chip_premium: 0
+    selected_marketplace_plan_premium_proxy: 5_000
+    aca_ptc: 2_000
+  output:
+    premium_tax_credit_in_force: 2_000
+    household_health_costs: 5_000
+    household_net_income: 30_000 + 2_000 - 2_000 - 5_000
+
+# A single Texas adult aged 40 in 2025 (the 2017 cliffs analysis household,
+# PolicyEngine/us-cliffs-2017 scripts/ptc_household.py), with health benefits
+# counted. A $1,000 raise cuts the premium tax credit by $94, and net income
+# rises by $709.50 with or without health benefits counted (31,840.09 to
+# 32,549.59 without): the cut counts once.
+- name: With health benefits counted, a Texas adult earning $30,000 in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    premium_tax_credit_in_force: 5_606.58
+    household_health_costs: 6_194.58
+    household_net_income: 25_645.50
+
+- name: With health benefits counted, the same adult earning $31,000.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        employment_income: 31_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    premium_tax_credit_in_force: 5_512.58
+    household_health_costs: 6_194.58
+    household_net_income: 25_645.50 + 709.50

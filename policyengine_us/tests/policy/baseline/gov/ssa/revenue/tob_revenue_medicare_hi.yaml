@@ -14,6 +14,10 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [person1]
@@ -32,6 +36,10 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [person1]
@@ -50,16 +58,20 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [person1]
   output:
-    # Taxable SS <= 50% of gross, all goes to OASDI
+    # Current and pre-1993 law both include $2,500, so HI receives zero.
     tob_revenue_medicare_hi: 0
 
 - name: High income single - branching allocation
   period: 2024
-  absolute_error_margin: 100
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -70,11 +82,16 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [person1]
   output:
-    # Using branching: HI gets marginal tax on portion above 50% of gross
+    # Pre-1993 inclusion = min($15,000, 50% * ($65,000 - $25,000)) = $15,000.
+    # Tax with current SS is $8,022; tax with pre-1993 SS is $5,712.
     tax_unit_taxable_social_security: 25_500
     tob_revenue_total: 4_240
     tob_revenue_oasdi: 1_930
@@ -82,7 +99,7 @@
 
 - name: Very high income - branching allocation
   period: 2024
-  absolute_error_margin: 100
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -93,15 +110,20 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [person1]
   output:
-    # Higher marginal rates affect the split
+    # Taxable income without SS = $100,000 - $16,550 = $83,450.
+    # Tax without / old-law / current-law SS = $13,412 / $16,712 / $19,190.50.
     tax_unit_taxable_social_security: 25_500
-    tob_revenue_total: 5_778
+    tob_revenue_total: 5_778.50
     tob_revenue_oasdi: 3_300
-    tob_revenue_medicare_hi: 2_478
+    tob_revenue_medicare_hi: 2_478.50
 
 - name: Zero taxable SS - zero revenue
   period: 2024
@@ -115,6 +137,10 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        takes_up_tanf_if_eligible: false
     households:
       household:
         members: [person1]
