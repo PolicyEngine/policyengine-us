@@ -119,3 +119,47 @@
   output:
     # Both adults (40 and 18) count: (24_000 + 12_000) / 12 = 3_000.
     fl_sr_countable_income: 3_000
+
+- name: Gross employment income of 30,000 without separately reported tips.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        tip_income: 0
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: FL
+  output:
+    # Gross wages include tips: 30_000 / 12 = 2_500 in both cases.
+    fl_sr_countable_income: 2_500
+
+- name: Gross employment income of 30,000 with tips already included in employment income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        tip_income: 10_000
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: FL
+  output:
+    # Gross wages include tips: 30_000 / 12 = 2_500 in both cases.
+    fl_sr_countable_income: 2_500
