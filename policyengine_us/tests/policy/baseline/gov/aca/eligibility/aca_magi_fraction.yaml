@@ -41,6 +41,194 @@
   output:
     aca_magi_fraction: 2.54
 
+- name: Coverage in 2026 in Alaska uses Alaska's 2025 guideline.
+  # 30,000 / 19,550 = 1.5345, floored to 1.53. The contiguous states'
+  # guideline (15,650) would give 1.91.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    aca_magi_fraction: 1.53
+
+- name: Coverage in 2026 in Hawaii uses Hawaii's 2025 guideline.
+  # 30,000 / 17,990 = 1.6676, floored to 1.66. The contiguous states'
+  # guideline (15,650) would give 1.91.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    aca_magi_fraction: 1.66
+
+- name: Coverage in 2026 for an Alaska family of three uses Alaska's per-person increment.
+  # 19,550 + 2 x 6,880 = 33,310; 50,000 / 33,310 = 1.5011, floored to 1.50.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 10
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        aca_magi: 50_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: AK
+  output:
+    aca_magi_fraction: 1.5
+
+- name: A household that moves from Alaska in 2025 to Texas in 2026 uses Texas's guideline for 2026 coverage.
+  # The state of residence in the coverage year decides the guideline, not
+  # the state in the guideline year. 30,000 / 15,650 = 1.9169, floored to
+  # 1.91. Alaska's 2025 guideline (19,550) would give 1.53.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: AK
+          2026: TX
+  output:
+    aca_magi_fraction: 1.91
+
+- name: Family size is the coverage year's.
+  # aca_tax_family_size is 3 for 2026 only; 2025 counts the one listed
+  # member. Alaska's 2025 guideline for three: 19,550 + 2 x 6,880 = 33,310.
+  # 50,000 / 33,310 = 1.5011, floored to 1.50. The 2025 size of one would
+  # give 50,000 / 19,550 = 2.55.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 50_000
+        aca_tax_family_size:
+          2026: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    aca_magi_fraction: 1.5
+
+- name: Coverage in 2025 in Alaska uses Alaska's 2024 guideline.
+  # 30,000 / 18,810 = 1.5949, floored to 1.59.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    aca_magi_fraction: 1.59
+
+- name: Households in Alaska and Texas in one simulation each use their own state's guideline.
+  # 30,000 / 19,550 = 1.53 and 30,000 / 15,650 = 1.91.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        aca_magi: 30_000
+      tax_unit2:
+        members: [person2]
+        aca_magi: 30_000
+    households:
+      household1:
+        members: [person1]
+        state_code: AK
+      household2:
+        members: [person2]
+        state_code: TX
+  output:
+    aca_magi_fraction: [1.53, 1.91]
+
+- name: Income exactly on a whole percentage of the guideline is not floored one point low.
+  # 100 x 36,621 / 15,650 = 234 exactly, so Worksheet 2 gives 234. Dividing
+  # first, in the 32-bit arithmetic aca_magi and aca_fpg are stored in, gives
+  # 36,621 / 15,650 x 100 just under 234, which floors to 2.33.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 36_621
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 2.34
+
+- name: Negative ACA MAGI gives a fraction of 0.
+  # MAGI is floored at 0 before dividing (Form 8962 line 3 enters -0- for a
+  # negative total). From PR 10413's cases.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: -5_000
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    aca_magi_fraction: 0
+
 - name: 2025 joint return with one claimable spouse measures income against the one-person line (the claimable spouse is the head)
   period: 2025
   input:

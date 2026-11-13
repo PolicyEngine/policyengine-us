@@ -856,3 +856,191 @@
   output:
     is_medicare_eligible: false
     is_aca_ptc_eligible: true
+
+- name: 2026 Alaska single adult at $70,000 is under 400% of Alaska's guideline
+  # 70,000 / 19,550 (Alaska's 2025 guideline for one) = 3.58, inside the
+  # 1.00 to 4.00 range. The contiguous states' guideline (15,650) would give
+  # 4.47, above it.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 70_000
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    aca_magi_fraction: 3.58
+    is_aca_ptc_eligible: true
+
+- name: 2026 Alaska single adult just under Alaska's guideline is below the 100% floor
+  # 19,549 / 19,550 = 0.99995, floored to 0.99, below the 1.00 floor; the
+  # below-poverty exception ends in 2026. The contiguous states' guideline
+  # (15,650) would give 1.24.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 19_549
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    aca_magi_fraction: 0.99
+    is_aca_ptc_eligible: false
+
+- name: 2026 Alaska single adult just under 400% of Alaska's guideline is eligible
+  # 78,199 / 19,550 = 3.99995, floored to 3.99, inside the 1.00 to 4.00
+  # range. The contiguous states' guideline (15,650) would give 4.99.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 78_199
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    aca_magi_fraction: 3.99
+    is_aca_ptc_eligible: true
+
+- name: 2024 Puerto Rico single adult pays no Marketplace premium and is not eligible
+  # HHS defines no guideline for Puerto Rico, and no Exchange operates there
+  # (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)), so the adult isn't a
+  # Marketplace enrollee and pays_aca_premium is false. Without the
+  # no-Exchange test, the infinite fraction (the
+  # placeholder guideline is 0) is outside the coverage gap and
+  # pays_aca_premium would be true. On main, with the state supplied for 2024
+  # only, the 2023 guideline year fell back to the default state's guideline
+  # (30,000 / 14,580, floored to 2.05), so the household was eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  output:
+    is_aca_marketplace_enrollee: false
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+- name: 2026 Puerto Rico single adult with no income has a required contribution of 0
+  # The guideline is 0, so the fraction is infinite rather than 0 / 0. An
+  # infinite fraction falls in the top bracket, above the 400% limit, and
+  # 2026 has no income eligibility there, so the percentage is capped out
+  # to 0. Plain division would give NaN here, and a fraction of 0 would give
+  # the 2026 initial rate of 0.021.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  output:
+    aca_required_contribution_percentage: 0
+    is_aca_marketplace_enrollee: false
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+- name: 2026 Guam single adult pays no Marketplace premium and is not eligible
+  # Guam has no Exchange (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)). Without
+  # the Guam comparison in is_aca_marketplace_enrollee, the premium would be
+  # charged:
+  # the infinite fraction is outside the coverage gap.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: GU
+  output:
+    is_aca_marketplace_enrollee: false
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+- name: 2026 Virgin Islands single adult pays no Marketplace premium and is not eligible
+  # The Virgin Islands have no Exchange (26 U.S.C. 36B(c)(2)(A); 42 U.S.C.
+  # 18024(d)). Without the Virgin Islands comparison in
+  # is_aca_marketplace_enrollee, the premium would be charged: the infinite fraction is outside the coverage
+  # gap.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: VI
+  output:
+    is_aca_marketplace_enrollee: false
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
