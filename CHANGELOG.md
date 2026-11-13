@@ -1,3 +1,39 @@
+## [2.120.1] - 2026-11-13
+
+### Fixed
+
+- Apply Illinois's 200% poverty-level income limit for ordinary new CCAP applicants from October 2019 through June 2022.
+
+
+## [2.120.0] - 2026-11-13
+
+### Added
+
+- Add Delaware LIHEAP summer cooling electric benefit eligibility.
+
+
+## [2.119.4] - 2026-11-13
+
+### Fixed
+
+- Deem income to a disabled child from a disabled parent whose own income, resources or noncitizen status rule out SSI, as 20 CFR 416.1160(d) defines an ineligible parent; limit deeming to the parents that parent ids name and their spouses; and subtract the couple rate for a parent living with a spouse, so nothing reaches the child while that spouse stays eligible (20 CFR 416.1165(d)(3), 416.1166(e)(1)). In California, New Jersey and Vermont, where the Social Security Administration pays a state supplement to a parent at home, test the parent against the federal rate plus that supplement and include it in the parents' allowance.
+  A parent's spouse who files in another tax unit has their income counted with the parent's, and the pooled income is divided among both units' eligible children.
+
+
+## [2.119.3] - 2026-11-13
+
+### Changed
+
+- Let the Medicare Savings Program guideline test's facility stay run through December now that SSI combines a couple's income by each month's facility status, assert SSI countable income again in the New York medically needy part-year case, add earned income to the part-year couple cases for Maryland PAA and the Medicaid optional senior or disabled pathway, and date the Texas Medicare Savings Program deeming-allowance source conflict candidate from 2025.
+
+
+## [2.119.2] - 2026-11-13
+
+### Fixed
+
+- Add FY2017 California and New York SNAP utility allowances and apply the historical small-allotment increase before its March 2017 repeal.
+
+
 ## [2.119.1] - 2026-11-13
 
 ### Fixed

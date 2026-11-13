@@ -31,6 +31,30 @@ class medicaid_parent_income_limit(Variable):
                 person("fl_medicaid_parent_income_limit", period),
                 national_limit,
             )
+        tx_parent = parameters(period).gov.states.tx.hhs.medicaid.parent
+        if tx_parent.in_effect:
+            # This bounded route verifies the one-parent column only where an
+            # identified adult parent is the household's sole adult and sole
+            # identified parent. Multiple-adult, two-parent and unidentified
+            # households keep their existing ratio; their classification is
+            # not inferred from tax filing or the parent NFC proxy.
+            age = person("age", period)
+            is_parent = person("is_parent", period)
+            minimum_adult_age = tx_parent.verified_subset_minimum_adult_age
+            only_adult = person.household.sum(age >= minimum_adult_age) == 1
+            only_parent = person.household.sum(is_parent) == 1
+            tx_one_parent = (
+                (state_code == StateCode.TX)
+                & (age >= minimum_adult_age)
+                & is_parent
+                & only_adult
+                & only_parent
+            )
+            national_limit = where(
+                tx_one_parent,
+                person("tx_medicaid_parent_income_limit", period),
+                national_limit,
+            )
         return where(
             state_code == StateCode.MO,
             person("mo_mhf_parent_income_limit", period),
