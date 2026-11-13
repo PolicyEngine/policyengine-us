@@ -33,7 +33,11 @@ def create_ut_dependent_exemption_reform() -> Reform:
                 return p.personal_exemption * total_dependents
             person = tax_unit.members
             age = person("age", period)
-            dependent = person("is_tax_unit_dependent", period)
+            # Count the baseline's qualifying dependents (59-10-1018(1)(c)):
+            # those for whom the claimant is allowed an IRC 24 credit, which
+            # a return on which a filer can be claimed as a dependent has none
+            # of (IRC 152(b)(1)) outside the claimant filing exception.
+            dependent = person("ut_qualifying_dependent", period)
             # Dependents under the age threshold (all dependents when the
             # age limit is off) take the contrib amount; older dependents
             # keep the baseline (uprated) personal-exemption amount.

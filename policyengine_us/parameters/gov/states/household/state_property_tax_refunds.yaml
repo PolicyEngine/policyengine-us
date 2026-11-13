@@ -1,0 +1,58 @@
+description: States pay these property tax and rent refunds in cash, outside the income tax return.
+values:
+  # Each refund appears from the year it enters state_property_tax_credits,
+  # so this list stays inside that one in every year. The empty first block
+  # shares that list's first date; without it, PE-US would copy the 2021
+  # block back to 2015, its first modeled year.
+  # The other members of state_property_tax_credits either sit in a state's
+  # income tax credit lists, which reach net income through state income tax,
+  # or reduce the property tax bill, which no net income total subtracts.
+  1977-01-01: []
+  2021-01-01:
+    # Vermont pays the renter credit on its own claim, Form RCC-146. Schedule
+    # IN-112 carries only other refundable credits to Form IN-111.
+    - vt_renter_credit
+  2022-01-01:
+    # Montana's Department of Revenue pays the rebate on its own claim.
+    - mt_property_tax_rebate
+    - vt_renter_credit
+  2024-01-01:
+    # Minnesota pays the homestead credit refund on Form M1PR, its own return.
+    - mn_homestead_credit_refund
+    - mt_property_tax_rebate
+    # North Dakota's Tax Commissioner pays the renter's refund on SFN 24777.
+    - nd_renters_refund
+    - vt_renter_credit
+  2025-01-01:
+    - mn_homestead_credit_refund
+    - mt_property_tax_rebate
+    - nd_renters_refund
+    # Pennsylvania's Department of Revenue pays the rebate on Form PA-1000.
+    - pa_property_tax_or_rent_rebate
+    # Utah's Tax Commission pays the renter's credit, the cash part of
+    # ut_homeowner_renter_relief; counties apply the homeowner's credit to
+    # the property tax bill.
+    - ut_renters_credit
+    - vt_renter_credit
+
+metadata:
+  unit: list
+  period: year
+  label: State property tax and rent refunds paid outside the income tax
+  reference:
+    - title: N.D.C.C. 57-02-08.1(2)(b) and (d), renter's refund paid by the tax commissioner
+      href: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+    - title: Minn. Stat. 290A.07, subd. 1, claims paid by the commissioner from the general fund
+      href: https://www.revisor.mn.gov/statutes/cite/290A.07
+    - title: 2025 Form M1PR instructions, refund check or direct deposit
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-06/m1pr-inst-25.pdf#page=5
+    - title: Montana Department of Revenue, income tax and property tax rebate report, May 2024
+      href: https://archive.legmt.gov/content/Committees/Interim/2023-2024/Revenue/Meetings/May-2024/5.1-DOR-rebate-report.pdf#page=13
+    - title: 2025 Montana Session Laws, Chapter 767 (SB 542), sec. 3(5) and (9)
+      href: https://archive.legmt.gov/content/Sessions/69th/Contractor_index/CH0767.pdf#page=3
+    - title: 2025 Form PA-1000 booklet, Line 20, rebate deposited or mailed by the Department of Revenue
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/ptrr/documents/2025_pa-1000_inst.pdf#page=11
+    - title: Utah Code 59-2a-203 and 59-2a-205(5), renter's credit paid by the commission from the General Fund
+      href: https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=11
+    - title: 2024 Vermont income tax booklet, Schedule IN-112 Part II and Form RCC-146 instructions
+      href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2024.pdf#page=24

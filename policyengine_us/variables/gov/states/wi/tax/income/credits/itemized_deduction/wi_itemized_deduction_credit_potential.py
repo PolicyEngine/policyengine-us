@@ -18,6 +18,9 @@ class wi_itemized_deduction_credit_potential(Variable):
         # be used in computing the itemized deduction credit.
         # PDF pages 4, 6, 9-10
         "https://www.revenue.wi.gov/DOR%20Publications/pb600.pdf#page=4",
+        # Wis. Stat. 71.07(5)(a)
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71.pdf#page=39",
+        "https://www.revenue.wi.gov/TaxForms2025/2025-Form1.pdf#page=4",
     )
     defined_for = StateCode.WI
 
@@ -27,6 +30,10 @@ class wi_itemized_deduction_credit_potential(Variable):
         # charitable allowance for non-itemizers. Wagering losses are not
         # among the components: Wisconsin allows no deduction or credit for
         # gambling losses.
+        # Wis. Stat. 71.07(5)(a)6 excludes repayments only when used for the
+        # separate Wisconsin claim of right credit, which is not modeled.
+        # Section 1341 deductions are not miscellaneous deductions under
+        # IRC 67(b)(9), so paragraph 7 does not exclude them either.
         wi_itmded = add(
             tax_unit,
             period,
@@ -35,6 +42,7 @@ class wi_itemized_deduction_credit_potential(Variable):
                 "interest_deduction",
                 "wi_itemized_deduction_credit_charitable_deduction",
                 "casualty_loss_deduction",
+                "claim_of_right_deduction",
             ],
         )
         # Exclude mortgage insurance premiums included in federal interest.

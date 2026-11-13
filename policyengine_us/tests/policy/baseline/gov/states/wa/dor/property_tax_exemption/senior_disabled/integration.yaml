@@ -2,7 +2,8 @@
 # Property Tax Exemption (RCW 84.36.379-389; WAC 458-16A-100..150).
 #
 # Eligibility: someone who is the tax-unit head (or spouse in a joint return)
-# satisfies the age threshold (62 pre-2020, 61 from 2020) OR is_disabled;
+# satisfies the age threshold (62 pre-2020, 61 from 2020), retired from regular
+# gainful employment by reason of disability, or the disabled veteran pathway;
 # the tax unit owns an occupied residence (real_estate_taxes > 0);
 # combined disposable income (annual) <= Tier 3 threshold for the household's county.
 #
@@ -61,13 +62,14 @@
     wa_pte_tier: 1
     wa_senior_disabled_property_tax_exemption: 5_184
 
-- name: Case 2, eligible disabled person under age threshold qualifies for Tier 1.
+- name: Case 2, person under age threshold retired by reason of disability qualifies for Tier 1.
   period: 2024
   input:
     people:
       person1:
         age: 45
         is_disabled: true
+        wa_pte_retired_due_to_disability: true
         real_estate_taxes: 4_800
         assessed_property_value: 500_000
     tax_units:

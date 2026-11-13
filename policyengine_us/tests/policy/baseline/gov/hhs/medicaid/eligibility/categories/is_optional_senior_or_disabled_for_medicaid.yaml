@@ -391,3 +391,411 @@
     is_medicaid_immigration_status_eligible: [false, false]
     is_optional_senior_or_disabled_income_eligible: [false, false]
     is_optional_senior_or_disabled_for_medicaid: [true, true]
+
+# Missouri has no medically needy program, so 42 CFR 435.121(e)(4) requires a
+# spend down to its MHABD standard. Countable income is 16,800 - 240 = 16,560.
+# The aged standard is 12 x 1,131 = 13,572, so 2,988 of expenses reach it.
+- name: Case 21, Missouri aged person not on SSI spends down exactly to the standard.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 2_988
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: false
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+
+- name: Case 22, Missouri aged person not on SSI stays a dollar above the standard after expenses.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 2_987
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+
+# Countable income is 18,000 - 240 = 17,760, and 14,760 after expenses. That is
+# above the aged standard of 13,572 and within the blind standard of 15,960.
+- name: Case 23, Missouri blind person spends down to the higher blind standard.
+  period: 2026
+  input:
+    age: 70
+    is_blind: true
+    social_security_retirement: 18_000
+    other_medical_expenses: 3_000
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+
+# Combined countable income is 24,000 - 240 = 23,760. The couple standard is
+# 12 x 1,533 = 18,396, so one spouse's 5,364 of expenses reach it.
+- name: Case 24, Missouri couple spends down together to the couple standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 12_000
+        other_medical_expenses: 5_364
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        social_security_retirement: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+
+# The 2026 resource limit is 6,068.80, the July 2025 value.
+- name: Case 25, Missouri spend down does not waive the resource limit.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 5_000
+    bank_account_assets: 6_100
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# Illinois is a 209(b) state with a medically needy program, so under
+# 42 CFR 435.121(e)(5) this person spends down through that program.
+- name: Case 26, Illinois person not on SSI spends down through medically needy.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 20_000
+    other_medical_expenses: 10_000
+    state_code: IL
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: MEDICALLY_NEEDY
+
+- name: Case 27, Colorado has no medically needy program but is not a 209(b) state.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 5_000
+    state_code: CO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+
+# MHABD 0805.020.15 deems the parent's income to the child: (70,000 / 12 - 20
+# - 65) / 2 x 12 = 34,490, less the parent's allowance of 994 x 12 = 11,928,
+# is 22,562. The child's budget takes off the 20 exemption and rounds down:
+# 22,562 / 12 - 20 = 1,860.17, so 1,860 a month or 22,320 a year. The same
+# section counts the parent's incurred medical expenses toward the child's
+# spend down: 22,320 - 10,000 = 12,320, within the standard.
+- name: Case 28, Missouri blind child spends down on the parent's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+        other_medical_expenses: 10_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [0, 22_320]
+    medicaid_parental_medical_expense_share: [0, 10_000]
+    is_optional_senior_or_disabled_for_medicaid: [false, true]
+    medicaid_category: [NONE, SENIOR_OR_DISABLED]
+
+# Without expenses, 22,320 is above the 15,960 blind standard.
+- name: Case 29, Missouri blind child with no medical expenses in the family stays above the standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+
+# Two disabled children divide the deemed income equally (MHABD 0805.020.15):
+# (100,000 / 12 - 85) / 2 x 12 = 49,490, less 11,928, is 37,562, or 18,781
+# each. Each child's budget is 18,781 / 12 - 20 = 1,545.08, so 1,545 a month or
+# 18,540 a year. SSI countable income of 18,781 - 240 = 18,541 is above the
+# 11,928 SSI rate, so neither child receives SSI. Each child must spend down
+# 18,540 - 13,572 = 4,968, which is exactly half of the parent's 9,936.
+- name: Case 30, two Missouri disabled children each reach the standard on half of the parent's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        employment_income_before_lsr: 100_000
+        other_medical_expenses: 9_936
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    ssi: [0, 0, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [0, 18_540, 18_540]
+    medicaid_parental_medical_expense_share: [0, 4_968, 4_968]
+    is_optional_senior_or_disabled_for_medicaid: [false, true, true]
+    medicaid_category: [NONE, SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
+
+# Half of 9,934 is 4,967, which leaves each child at 13,573, a dollar above the
+# 13,572 standard. Deducting the whole 9,934 from each child would pass.
+- name: Case 31, two Missouri disabled children stay a dollar above the standard on half of the parent's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        employment_income_before_lsr: 100_000
+        other_medical_expenses: 9_934
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    medicaid_parental_medical_expense_share: [0, 4_967, 4_967]
+    is_optional_senior_or_disabled_for_medicaid: [false, false, false]
+    medicaid_category: [NONE, NONE, NONE]
+
+# The child passes the income test: 22,320 - 10,000 = 12,320. MHABD 0805.020.10
+# adds the entire 100,000 to the child's resources, above the 6,068.80 limit.
+- name: Case 32, Missouri blind child with a parent's savings above the limit is ineligible after spending down.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+        bank_account_assets: 100_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+        other_medical_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [true, true]
+    is_optional_senior_or_disabled_asset_eligible: [false, false]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+
+# Missouri covers a nonblind disabled child (MHABD 0805.020.00). 22,320 - 9,000
+# = 13,320 is within the 13,572 standard.
+- name: Case 33, Missouri nonblind disabled child spends down on the child's own medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+        other_medical_expenses: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: [false, true]
+    medicaid_category: [NONE, SENIOR_OR_DISABLED]
+
+# Countable income is 24,000 - 240 = 23,760, and 23,760 - 13,572 = 10,188.
+- name: Case 34, Missouri disabled adult under 65 spends down exactly to the standard.
+  period: 2026
+  input:
+    age: 50
+    meets_ssi_disability_criteria: true
+    social_security_disability: 24_000
+    other_medical_expenses: 10_188
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+
+- name: Case 35, Missouri disabled adult under 65 stays a dollar above the standard after expenses.
+  period: 2026
+  input:
+    age: 50
+    meets_ssi_disability_criteria: true
+    social_security_disability: 24_000
+    other_medical_expenses: 10_187
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+
+# The couple's income is the aged spouse's 24,000 - 240 = 23,760. The other
+# spouse's 5,364 of expenses bring it to 18,396, exactly 12 x 1,533. The
+# 60-year-old is not aged, blind or disabled, so stays outside the group.
+- name: Case 36, Missouri couple with one aged spouse spends down on the other spouse's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 24_000
+      person2:
+        age: 60
+        is_tax_unit_spouse: true
+        other_medical_expenses: 5_364
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_income_limit: [18_396, 18_396]
+    is_optional_senior_or_disabled_for_medicaid: [true, false]
+
+# The household of Case 28 with 7,000 of the parent's medical expenses:
+# 22,320 - 7,000 = 15,320. Appendix K lists one standard for a child under 18 who is
+# "permanently and totally disabled, or blind": 12 x 1,131 = 13,572, so the child is
+# not eligible. Appendix J's blind standard of 12 x 1,330 = 15,960 applies from age 18
+# (candidate us-mo:mhdc-blind-child-income-standard).
+- name: Case 37, Missouri blind child is tested against the standard for disabled children.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+        other_medical_expenses: 7_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [0, 22_320]
+    medicaid_parental_medical_expense_share: [0, 7_000]
+    medicaid_optional_senior_or_disabled_income_limit: [13_572, 13_572]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]

@@ -102,3 +102,34 @@
     # 110% x (15,960 + 5,680 x 19) = 136,268 for 20 people, above the 134,937
     # PY2027 60% SMI limit.
     or_liheap_eligible: [true, false]
+
+- name: Case 6, a household with no heating cost qualifies on an electric bill when it pays for cooling.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR]
+    heating_type: [NONE, NONE, NONE, UNSPECIFIED, NONE, NONE, WOOD]
+    # The wood-heated home gathers its own wood, so it has no heating cost.
+    has_heating_expense: [false, false, false, false, false, false, false]
+    has_cooling_expense: [true, false, true, true, true, true, true]
+    # About $125 a month for electricity.
+    pre_subsidy_electricity_expense: [1_500, 1_500, 0, 1_500, 1_500, 1_500, 1_500]
+    receives_housing_assistance: [false, false, false, false, true, false, false]
+    # About 30 hours a week at the Portland-metro minimum wage, as in Case 1;
+    # the sixth household is one dollar above the size 1 limit of $38,384,
+    # HHS's FY2026 60% state median income amount (page 77 prints $38,385).
+    or_liheap_countable_income: [26_000, 26_000, 26_000, 26_000, 26_000, 38_385, 26_000]
+  output:
+    # "Eligible" households are "responsible for their home heating or cooling
+    # expenses" (page 90), and the matrices pay electric cooling from their
+    # COOLING column (pages 78-81):
+    #   1. no heating, pays for cooling on an electric bill: eligible;
+    #   2. no cooling cost: no energy burden to demonstrate, ineligible;
+    #   3. no electric bill: ineligible;
+    #   4. UNSPECIFIED fuel: ineligible;
+    #   5. subsidized housing paying its own electric bill: "pays a vendor
+    #      directly for utility costs" is an energy burden (page 93), eligible;
+    #   6. income above the limit: ineligible;
+    #   7. wood heat with no heating cost, pays for cooling on an electric
+    #      bill: the benefit goes to the energy type it is applied to
+    #      (page 67), eligible.
+    or_liheap_eligible: [true, false, false, false, true, false, true]

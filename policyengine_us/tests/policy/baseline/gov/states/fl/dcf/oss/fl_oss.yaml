@@ -17,7 +17,7 @@
         # Annual: $167 * 12 = $2,004.
         uncapped_ssi: 2_004
         # Annual countable income = $800 * 12 = $9,600.
-        ssi_countable_income: 9_600
+        ssi_countable_income: {2025: 9_600}
     households:
       household:
         members: [person1]
@@ -43,7 +43,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 2_004
-        ssi_countable_income: 9_600
+        ssi_countable_income: {2025: 9_600}
     households:
       household:
         members: [person1]
@@ -73,7 +73,7 @@
         # $1,200/month countable income = $14,400/year.
         # Total needs Redesign (I) = $13,816.80/year.
         # $14,400 > $13,816.80, so benefit = 0.
-        ssi_countable_income: 14_400
+        ssi_countable_income: {2025: 14_400}
     households:
       household:
         members: [person1]
@@ -93,7 +93,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 11_604
-        ssi_countable_income: 0
+        ssi_countable_income: {2025: 0}
     households:
       household:
         members: [person1]
@@ -126,7 +126,7 @@
         # $13,200 > $12,544.80 so Group 2 check fails.
         # Also uncapped_ssi < 0 so not Group 1.
         # Person is INELIGIBLE (income above income standard for Group 2).
-        ssi_countable_income: 13_200
+        ssi_countable_income: {2025: 13_200}
     households:
       household:
         members: [person1]
@@ -151,7 +151,7 @@
         # $1,000/month = $12,000/year.
         # Income standard (Redesign, I) = $1,045.40/month = $12,544.80/year.
         # $12,000 < $12,544.80 → Group 2 eligible.
-        ssi_countable_income: 12_000
+        ssi_countable_income: {2025: 12_000}
     households:
       household:
         members: [person1]
@@ -177,7 +177,7 @@
         is_ssi_eligible: true
         ssi_claim_is_joint: false
         uncapped_ssi: 60_000_000
-        ssi_countable_income: -60_000_000
+        ssi_countable_income: {2025: -60_000_000}
     households:
       household:
         members: [person1]
@@ -200,7 +200,7 @@
         ssi_claim_is_joint: false
         uncapped_ssi: 1  # > 0 -> Group 1 (receives SSI)
         # $1,050/month countable income = $12,600/year.
-        ssi_countable_income: 12_600
+        ssi_countable_income: {2025: 12_600}
     households:
       household:
         members: [person1]

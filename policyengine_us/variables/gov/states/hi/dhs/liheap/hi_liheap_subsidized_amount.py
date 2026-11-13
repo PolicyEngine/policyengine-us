@@ -4,11 +4,12 @@ from policyengine_us.model_api import *
 class hi_liheap_subsidized_amount(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Hawaii LIHEAP flat heating benefit for subsidized dwellings"
+    label = "Hawaii LIHEAP flat heating or cooling benefit for subsidized dwellings"
     definition_period = YEAR
     unit = USD
     defined_for = "hi_liheap_eligible"
     reference = (
+        # PDF pages 10,13
         "https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=10",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/HI_BenefitMatrix_2026.pdf#page=2",
     )
