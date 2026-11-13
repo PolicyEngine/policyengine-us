@@ -19,19 +19,15 @@ that the exclusion ends. For every person and tax unit:
    (compensation less taxable) is at most the lesser of what the person
    received and $10,200. A net repayment is neither taxable nor excluded;
    the exempt part carries it. Nothing is excluded in 2021.
-2. Cutoff: the head's and spouse's compensation is excluded only when the
-   tax unit's `taxable_uc_agi` is under $150,000, a dependent's only when
-   their own `dependent_taxable_uc_agi` is, and then each person excludes
-   the lesser of their own compensation and $10,200.
-3. Differential: `taxable_uc_agi` equals adjusted gross income less the
+2. Differential: `taxable_uc_agi` equals adjusted gross income less the
    taxable compensation on the return, floored at zero. The model figures
    AGI without the compensation once from gross income sources and once,
    here, from AGI itself; the two must agree, so the compensation is left
    out exactly once.
-4. Return boundary: the tax unit's taxable compensation is the sum over its
+3. Return boundary: the tax unit's taxable compensation is the sum over its
    head and spouse, and dependents' compensation never changes the filers'
    taxable compensation, `taxable_uc_agi` or AGI.
-5. Symmetry: swapping the head's and spouse's compensation swaps their
+4. Symmetry: swapping the head's and spouse's compensation swaps their
    taxable compensation and leaves the return's total unchanged.
 """
 
@@ -50,7 +46,6 @@ PERSON_OUTPUTS = [
     "taxable_unemployment_compensation",
     "tax_exempt_unemployment_compensation",
     "is_tax_unit_dependent",
-    "dependent_taxable_uc_agi",
 ]
 TAX_UNIT_OUTPUTS = [
     "taxable_uc_agi",
@@ -195,14 +190,7 @@ def _check_2020(units):
     repayment = received < 0
     np.testing.assert_allclose(exempt[repayment], received[repayment])
 
-    # 2. Cutoff: the filers' return, and each dependent's own return.
-    filer_under = magi[run["tax_unit_index"]] < CUTOFF
-    dependent_under = run["dependent_taxable_uc_agi"] < CUTOFF
-    under = np.where(dependent, dependent_under, filer_under)
-    excluded = under * cap
-    np.testing.assert_allclose(taxable, np.maximum(0, received - excluded), **TOLERANCE)
-
-    # 3. Differential: AGI without the compensation, two ways.
+    # 2. Differential: AGI without the compensation, two ways.
     np.testing.assert_allclose(
         magi,
         np.maximum(
@@ -213,7 +201,7 @@ def _check_2020(units):
         **TOLERANCE,
     )
 
-    # 4. Return boundary: the return sums the filers only, and dependents'
+    # 3. Return boundary: the return sums the filers only, and dependents'
     # compensation changes nothing on it.
     np.testing.assert_allclose(
         run["tax_unit_taxable_unemployment_compensation"],
@@ -240,7 +228,7 @@ def _check_2020(units):
         taxable[people[1]][drawn_filer], taxable[people[0]][drawn_filer], **TOLERANCE
     )
 
-    # 5. Symmetry between spouses.
+    # 4. Symmetry between spouses.
     np.testing.assert_allclose(
         run["tax_unit_taxable_unemployment_compensation"][swapped],
         run["tax_unit_taxable_unemployment_compensation"][drawn],

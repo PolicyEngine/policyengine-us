@@ -166,3 +166,38 @@
     dependent_taxable_ss_magi: [0, 17_900, 15_900]
     dependent_taxable_uc_agi: [0, 11_900, 11_900]
     taxable_unemployment_compensation: [0, 6_000, 4_000]
+
+- name: Case 6, a dependent's net repayment does not increase their exclusion AGI.
+  # The 2020 exclusion worksheet omits unemployment compensation from
+  # line 6. The helper counts no positive compensation for a repayment,
+  # so removing compensation leaves the student's 12,000 of wages.
+  period: 2020
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        employment_income: 12_000
+        unemployment_compensation: -500
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    marital_units:
+      parent:
+        members: [parent]
+      student:
+        members: [student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_taxable_uc_agi: [0, 12_000]
+    taxable_unemployment_compensation: [0, 0]
+    tax_exempt_unemployment_compensation: [0, -500]

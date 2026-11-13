@@ -230,3 +230,37 @@
   output:
     dependent_taxable_ss_magi: [0, 88_000]
     dependent_taxable_social_security: [0, 17_000]
+
+- name: A dependent's business income increases their own deductible business loss
+  # IRC 461(l)(3)(A) and the 2025 Form 461 instructions: deductible loss
+  # equals min(500,000, 100,000 + 313,000) = 413,000. Modified AGI equals
+  # 400,000 + 100,000 - 413,000 = 87,000.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        dividend_income: 400_000
+        rental_income: 100_000
+        estate_income: -500_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    marital_units:
+      parent:
+        members: [parent]
+      student:
+        members: [student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_taxable_ss_magi: [0, 87_000]
