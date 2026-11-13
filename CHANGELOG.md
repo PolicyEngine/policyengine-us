@@ -1,3 +1,10 @@
+## [2.119.3] - 2026-11-13
+
+### Changed
+
+- Let the Medicare Savings Program guideline test's facility stay run through December now that SSI combines a couple's income by each month's facility status, assert SSI countable income again in the New York medically needy part-year case, add earned income to the part-year couple cases for Maryland PAA and the Medicaid optional senior or disabled pathway, and date the Texas Medicare Savings Program deeming-allowance source conflict candidate from 2025.
+
+
 ## [2.119.2] - 2026-11-13
 
 ### Fixed
