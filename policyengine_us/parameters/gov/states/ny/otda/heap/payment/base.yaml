@@ -1,0 +1,39 @@
+description: New York provides this base annual direct heating payment by primary heating fuel under the Home Energy Assistance Program.
+ELECTRICITY:
+  2023-10-01: 400
+NATURAL_GAS:
+  2023-10-01: 400
+FUEL_OIL:
+  2023-10-01: 900
+KEROSENE:
+  2023-10-01: 900
+PROPANE:
+  2023-10-01: 900
+WOOD:
+  2023-10-01: 635
+COAL:
+  2023-10-01: 635
+# The matrix's "other fuels" row covers fuels outside the named utility and
+# delivered-fuel groups; the model places solar there.
+OTHER:
+  2023-10-01: 635
+SOLAR:
+  2023-10-01: 635
+# No matrix row: an unknown fuel pays nothing. See #9754 for the default fuel.
+UNSPECIFIED:
+  2023-10-01: 0
+NONE:
+  2023-10-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York HEAP direct heating base payment
+  breakdown:
+  - heating_type
+  reference:
+  - title: 2023-2024 HEAP Direct Heating Regular Base Benefit Levels
+    href: https://liheapch.acf.gov/docs/2024/benefits-matricies/NY_BenefitMatrix_2024.pdf#page=1
+  - title: 2024-2025 HEAP Direct Heating Regular Base Benefit Levels
+    href: https://liheapch.acf.gov/docs/2025/benefits-matricies/NY_BenefitMatrix_2025.docx
+  - title: 2025-2026 HEAP Direct Heating Regular Base Benefit Levels
+    href: https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx

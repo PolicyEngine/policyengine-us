@@ -19,7 +19,8 @@ def create_medicare_and_investment_tax_increase() -> Reform:
                 "payroll_tax_gross_wages",
                 "taxable_self_employment_income",
             ]
-            wages_plus_se = add(tax_unit, period, ELEMENTS)
+            # As in the baseline, only the head's and spouse's earnings.
+            wages_plus_se = tax_unit_non_dep_add(tax_unit, period, ELEMENTS)
             exclusion = amc.exclusion[tax_unit("filing_status", period)]
             base = max_(0, wages_plus_se - exclusion)
             base_tax = amc.rate * base

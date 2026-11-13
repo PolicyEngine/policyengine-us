@@ -6,21 +6,25 @@ class va_eitc(Variable):
     entity = TaxUnit
     label = "Virginia Earned Income Tax Credit"
     unit = USD
-    documentation = "Refundable or non-refundable Virginia EITC"
+    documentation = (
+        "The Virginia EITC the tax unit's income tax applies: the refundable "
+        "credit if it is claimed, otherwise the non-refundable credit after "
+        "its tax liability limit. Spouses filing separately split the "
+        "Virginia EIC by their shares of the earned income used for the "
+        "federal EITC, and only one of them may claim the Credit for "
+        "Low-Income Individuals, so the credit for a tax unit holding both "
+        "spouses is the sum of their shares."
+    )
     definition_period = YEAR
-    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32"
+    reference = (
+        "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32",
+        "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2025-760-instructions.pdf#page=31",
+        "https://law.lis.virginia.gov/vacode/title58.1/chapter3/section58.1-339.8/",
+    )
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
         refundable_eitc = tax_unit("va_refundable_eitc", period)
         non_refundable_eitc = tax_unit("va_non_refundable_eitc", period)
         claims_refundable = tax_unit("va_claims_refundable_eitc", period)
-        amount = where(claims_refundable, refundable_eitc, non_refundable_eitc)
-        filing_status = tax_unit("filing_status", period)
-        # In the case of separated individuals, the EITC amount is prorated
-        is_separate = filing_status == filing_status.possible_values.SEPARATE
-        person = tax_unit.members
-        eitc_person = person("va_eitc_person", period)
-        is_head = person("is_tax_unit_head", period)
-        head_eitc = tax_unit.sum(eitc_person * is_head)
-        return where(is_separate, head_eitc, amount)
+        return where(claims_refundable, refundable_eitc, non_refundable_eitc)

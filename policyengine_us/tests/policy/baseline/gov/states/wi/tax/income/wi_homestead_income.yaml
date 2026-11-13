@@ -1,4 +1,4 @@
-- name: wi_homestead_income unit test 1
+- name: Case 1, no dependents.
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -8,7 +8,7 @@
   output:
     wi_homestead_income: 900
 
-- name: wi_homestead_income unit test 2
+- name: Case 2, one dependent exemption.
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -17,3 +17,727 @@
     state_code: WI
   output:
     wi_homestead_income: 400  # = 900 - 500
+
+- name: Case 3, net capital loss is added back (Schedule H line 11j, Schedule 4 line 3).
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 84
+        social_security_retirement: 11_033
+        short_term_capital_gains: -7_594
+        long_term_capital_gains: -624
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Federal AGI is the $3,000 allowed capital loss (no social security is taxable).
+    # Household income = -3,000 + 11,033 nontaxable social security + 3,000 add-back.
+    adjusted_gross_income: -3_000
+    wi_homestead_disqualified_losses: 3_000
+    wi_homestead_income: 11_033
+
+- name: Case 4, Schedule F, SSTB, Form 4835, Form 4797 and partnership losses are added back.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        farm_operations_income: -1_000
+        sstb_self_employment_income: -2_000
+        farm_rent_income: -3_000
+        partnership_income: -5_000
+        s_corp_income: 5_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        other_net_gain: -4_000
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Income (Schedule H line 7): -1,000 Schedule F - 2,000 Schedule C
+    # - 3,000 Form 4835 - 4,000 Form 4797 + (-5,000 + 5,000) Schedule E
+    # partnership and S corporation = -10,000.
+    # Schedule 4: line 2 2,000 + Form 4835 3,000 + line 5 5,000 + line 6 0
+    # + line 9 4,000 + line 10 1,000 = 15,000 (line 13, to line 11j).
+    # Household income = -10,000 + 15,000 = 5,000, the S corporation gain.
+    adjusted_gross_income: -10_000
+    wi_homestead_disqualified_losses: 15_000
+    wi_homestead_income: 5_000
+
+- name: Case 5, SSTB sole proprietorship gain and non-SSTB sole proprietorship loss.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        self_employment_income: -5_000
+        sstb_self_employment_income: 5_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    # Two Schedule C businesses (2023 instructions, page 16, Example 1):
+    # Schedule 1 line 3 = 5,000 - 5,000 = 0, and Schedule 4 line 2 adds back
+    # the 5,000 loss without netting. Household income = 0 + 5,000 = 5,000.
+    # loss_ald deducts each category's loss on its own, so AGI is 0 and the
+    # add-back is the 5,000 non-SSTB loss.
+    wi_homestead_income: 5_000
+
+# Hold TANF at zero to isolate the $500 dependent deduction on wage income.
+
+- name: "2025 single filer who can be claimed as a dependent: no Wisconsin homestead $500 dependent deduction"
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 62
+        employment_income: 10000
+        real_estate_taxes: 1000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [filer, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: WI
+  output:
+    # The $500 deduction is for a dependent under IRC 152, and a claimant
+    # who can be claimed has none (IRC 152(b)(1)). The claimant, 62 or
+    # older, stays eligible: ($1,000 - ($10,000 - $8,060) x 8.785%) x 80%.
+    wi_homestead_income: 10000
+    wi_homestead_credit: 663.6568
+
+- name: "2025 joint return with one claimable spouse: no Wisconsin homestead $500 dependent deduction (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WI
+  output:
+    # Either spouse being claimable leaves the joint return no dependents.
+    wi_homestead_income: 10000
+    wi_homestead_credit: 663.6568
+
+- name: "2025 joint return with one claimable spouse: no Wisconsin homestead $500 dependent deduction (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person_b, person_a, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: WI
+  output:
+    wi_homestead_income: 10000
+    wi_homestead_credit: 663.6568
+
+- name: "2025 joint return with both spouses claimable: no Wisconsin homestead $500 dependent deduction"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WI
+  output:
+    wi_homestead_income: 10000
+    wi_homestead_credit: 663.6568
+
+- name: "2025 joint return with neither spouse claimable (control): Wisconsin homestead $500 dependent deduction"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WI
+  output:
+    # $10,000 - $500 = $9,500; ($1,000 - $1,440 x 8.785%) x 80% = $698.7968.
+    wi_homestead_income: 9500
+    wi_homestead_credit: 698.7968
+
+# $10,000 income less the restored $500 dependent deduction.
+
+- name: 2025 claimant filing exception preserves the Wisconsin homestead dependent deduction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 10000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: WI
+    spm_units:
+      spm_unit:
+        members: [filer, child]
+        tanf: 0
+  output:
+    wi_homestead_income: 9500
+# A household is the claimant and the claimant's spouse (Wis. Stat. 71.52(4);
+# 2024 Schedule H instructions, page 8), and the instructions say to leave out
+# children's social security and SSI (page 13), so a dependent's income is not
+# household income. The $500 deduction for each dependent still applies.
+
+- name: Case 6, a dependent grandchild's survivor benefits are not household income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 18_000
+        taxable_pension_income: 6_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        social_security_survivors: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # No social security is taxable: 6,000 + 9,000 is under the 25,000 base.
+    adjusted_gross_income: 6_000
+    # Schedule H: 6,000 pension + 18,000 social security - 500 for one
+    # dependent = 23,500. The grandchild's 12,000 is left out.
+    wi_homestead_income: 23_500
+
+- name: Case 7, a dependent's SSI and 2020 excluded unemployment compensation are not household income.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        social_security_retirement: 15_000
+        taxable_pension_income: 5_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 8_000
+        ssi: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The child's 8,000 is under the 10,200 exclusion on the child's own
+    # federal return.
+    tax_exempt_unemployment_compensation: [0, 8_000]
+    # 5,000 pension + 15,000 social security - 500 = 19,500.
+    wi_homestead_income: 19_500
+
+- name: Case 8, a dependent's capital loss is not added back to household income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 12_000
+        taxable_pension_income: 6_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        long_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # No W-2 payments, which would count too (Tax 14.03(4)(b)3.b).
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The child's loss is on the child's own return, so AGI stays 6,000 and
+    # Schedule 4 line 3 adds nothing back: 6,000 + 12,000 - 500 = 17,500.
+    adjusted_gross_income: 6_000
+    wi_homestead_disqualified_losses: 0
+    wi_homestead_income: 17_500
+
+- name: Case 9, a dependent's capital gain does not shrink the claimant's loss add-back.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 12_000
+        taxable_pension_income: 6_000
+        long_term_capital_gains: -3_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # No W-2 payments, which would count too (Tax 14.03(4)(b)3.b).
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # AGI = 6,000 - 3,000 claimant's allowed loss = 3,000; the 3,000 loss is
+    # added back: 3,000 + 3,000 + 12,000 - 500 = 17,500.
+    adjusted_gross_income: 3_000
+    wi_homestead_disqualified_losses: 3_000
+    wi_homestead_income: 17_500
+
+# Married claimants include both spouses' incomes (2024 Schedule H, page 1).
+
+- name: Case 10, the spouse's Social Security and SSI are household income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        taxable_pension_income: 6_000
+        social_security_retirement: 6_000
+        ssi: 0
+      person2:
+        age: 64
+        is_tax_unit_spouse: true
+        social_security_retirement: 4_000
+        ssi: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # No Social Security is taxable: 6,000 + 5,000 is below the joint
+    # 32,000 base. The spouse's SSI brings the regular state supplement,
+    # 83.78 * 12 = 1,005.36. Household income =
+    # 6,000 + 10,000 + 1,000 + 1,005.36 = 18,005.36.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 18_005.36
+
+- name: Case 11, spouses' household income is unchanged when their roles are swapped.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_spouse: true
+        taxable_pension_income: 6_000
+        social_security_retirement: 6_000
+        ssi: 0
+      person2:
+        age: 64
+        is_tax_unit_head: true
+        social_security_retirement: 4_000
+        ssi: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Same as Case 10, including the head's 1,005.36 state supplement.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 18_005.36
+
+# Negative Social Security represents required repayments of nontaxable
+# benefits included in household income on a prior homestead claim.
+# Wis. Stat. 71.52(6):
+# https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52/6
+# 2024 Schedule H instructions, page 12, Repaid amounts:
+# https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleH-inst.pdf#page=12
+# Net benefits are supplied as social_security: the component inputs
+# (social_security_retirement and the like) are reported benefit amounts,
+# which must be nonnegative.
+
+- name: Case 12, qualifying Social Security repayments reduce a single claimant's household income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        taxable_pension_income: 6_000
+        social_security: -1_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # The repayment is not taxable income: 6,000 - 1,000 = 5,000.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 5_000
+
+- name: Case 13, spouses' qualifying Social Security repayments can produce negative net benefits.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        taxable_pension_income: 6_000
+        social_security: 1_000
+        ssi: 0
+      person2:
+        age: 64
+        is_tax_unit_spouse: true
+        social_security: -2_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Combine spouses before applying the repayment: 6,000 + 1,000 - 2,000.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 5_000
+
+- name: Case 14, qualifying repayments are counted once when spouses' net benefits remain positive.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        taxable_pension_income: 6_000
+        social_security: -1_000
+        ssi: 0
+      person2:
+        age: 64
+        is_tax_unit_spouse: true
+        social_security: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The combined 3,000 of benefits is nontaxable: 6,000 - 1,000 + 4,000.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 9_000
+
+- name: Case 15, spouses' qualifying repayment treatment is unchanged when their roles are swapped.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_spouse: true
+        taxable_pension_income: 6_000
+        social_security: -1_000
+        ssi: 0
+      person2:
+        age: 64
+        is_tax_unit_head: true
+        social_security: 4_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 9_000
+
+- name: Case 16, a dependent's Social Security does not offset the claimant's qualifying repayment.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        taxable_pension_income: 6_000
+        social_security: -1_000
+        ssi: 0
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        social_security: 3_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Leave out the child's benefits: 6,000 - 1,000 - 500 = 4,500.
+    adjusted_gross_income: 6_000
+    wi_homestead_income: 4_500
+
+- name: Case 17, the claimant's state supplement and SSI-E count as household income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    age: 70
+    wi_ssi_e_certified: true
+    takes_up_snap_if_eligible: false
+  output:
+    # 994 * 12 = 11,928.
+    ssi: 11_928
+    # Regular 1,072.40 + SSI-E 1,228.68 = 2,301.08.
+    wi_ssp: 2_301.08
+    # 11,928 + 2,301.08 = 14,229.08.
+    wi_homestead_income: 14_229.08
+
+- name: Case 18, a dependent child's own state supplement is not household income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 20_000
+        ssi: 0
+        wi_ssp: 0
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        ssi: 6_000
+        wi_ssp: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    adjusted_gross_income: 20_000
+    # Leave out the child's SSI and supplement: 20,000 - 500 = 19,500.
+    wi_homestead_income: 19_500
+
+- name: Case 19, a parent's Caretaker Supplement counts as household income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        ssi: 9_000
+        wi_ssp_regular: 0
+        wi_ssi_e: 0
+        wi_cts: 3_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 0
+        wi_ssp_regular: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_ssp: [3_000, 1_000]
+    # 9,000 SSI + 3,000 Caretaker Supplement - 500 dependent exemption. The
+    # child's own 1,000 supplement stays out of household income.
+    wi_homestead_income: 11_500

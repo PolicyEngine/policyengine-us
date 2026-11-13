@@ -1,3 +1,6 @@
+# School-meal daily subsidy is the combined breakfast/lunch valuation per
+# enrolled child. Calendar 2026 uses published SY 2025-26 rates: $4.60 + $2.46;
+# see edge_cases/federal/nutrition/school_meals/federal.yaml for sources.
 # Signature-fidelity fix (2026-07-04): state_code added on each household per
 # analytics (every MFB state-output request sends the state_code enum);
 # employment_income / self_employment_income / capital_gains converted to the
@@ -187,14 +190,14 @@
         medicaid: 5424.72
         medicaid_category: 1
         ssi: 0.0
-        wic: 723.73
+        wic: 726.21
         wic_category: 4
     spm_units:
       spm_unit:
         lifeline: 111.0
         nc_scca_maximum_payment: 16932.0
         nc_tanf: 1564.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
         snap: 12015.0
 - name: signature_49 (5 reqs, +9 dupes)
@@ -368,14 +371,14 @@
         medicaid: 5424.72
         medicaid_category: 1
         ssi: 0.0
-        wic: 723.73
+        wic: 726.21
         wic_category: 4
     spm_units:
       spm_unit:
         lifeline: 111.0
         nc_scca_maximum_payment: 16932.0
         nc_tanf: 1564.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
 - name: signature_94 (3 reqs, +5 dupes)
   period: 2026
@@ -552,14 +555,14 @@
         medicaid: 5424.72
         medicaid_category: 1
         ssi: 0.0
-        wic: 723.73
+        wic: 726.21
         wic_category: 4
     spm_units:
       spm_unit:
         lifeline: 111.0
         nc_scca_maximum_payment: 16932.0
         nc_tanf: 1564.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
         snap: 12015.0
 - name: signature_140 (1 reqs)
@@ -733,14 +736,14 @@
         is_optional_senior_or_disabled_for_medicaid: false
         medicaid: 5424.72
         medicaid_category: 1
-        wic: 723.73
+        wic: 726.21
         wic_category: 4
     spm_units:
       spm_unit:
         lifeline: 111.0
         nc_scca_maximum_payment: 16932.0
         nc_tanf: 1564.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
 - name: signature_172 (1 reqs, +1 dupes)
   period: 2026
@@ -917,13 +920,13 @@
         medicaid: 5424.72
         medicaid_category: 1
         ssi: 0.0
-        wic: 723.73
+        wic: 726.21
         wic_category: 4
     spm_units:
       spm_unit:
         lifeline: 111.0
         nc_scca_maximum_payment: 16932.0
         nc_tanf: 1564.0
-        school_meal_daily_subsidy: 7.15
+        school_meal_daily_subsidy: 7.06
         school_meal_tier: 0
         snap: 12015.0

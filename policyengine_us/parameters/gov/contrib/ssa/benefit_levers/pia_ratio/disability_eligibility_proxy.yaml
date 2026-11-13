@@ -1,0 +1,7 @@
+description: "Explicit missing-onset sensitivity: pre_reform uses an eligibility benchmark before the earliest active reform path, bounded by supported years; current_year treats the record as newly entitled in the scoring year. Supplied entitlement and worker computation years take precedence. Both remain labelled proxies."
+values:
+  1983-01-01: [pre_reform]
+metadata:
+  unit: str
+  label: Social Security disability PIA-ratio eligibility proxy
+  economy: false

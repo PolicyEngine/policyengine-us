@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    has_parent_ids,
+)
 
 
 class mo_tanf_non_parent_caretaker(Variable):
@@ -32,8 +35,10 @@ class mo_tanf_non_parent_caretaker(Variable):
         # the home", and DSS Manual 0210.005.10 excludes "A legal guardian
         # or NPCR if a biological or adoptive parent is in the home." Two
         # signals mark a parent in the home:
-        # - a caretaker not marked as a non-parent, including one who
-        #   receives SSI (excluded from the unit, but still in the home);
+        # - a caretaker not marked as a non-parent, presumed to be a parent
+        #   only for unknown child parent ids, or identified by the parent
+        #   flag, including one who receives SSI (excluded from the unit,
+        #   but still in the home);
         # - any other member of the tax unit marked as a parent of a
         #   dependent child, such as an adult daughter claimed as the
         #   grandparent's dependent. A parent who is a cash-eligible child
@@ -45,11 +50,15 @@ class mo_tanf_non_parent_caretaker(Variable):
         # separate return is not seen.
         is_ssi_recipient = (person("ssi", period) > 0) | person("receives_ssi", period)
         cash_eligible_child = dependent_child & ~is_ssi_recipient
-        other_parent = (
-            person("mo_tanf_is_parent_of_dependent_child", period.this_year)
-            & ~cash_eligible_child
+        parent = person("mo_tanf_is_parent_of_dependent_child", period.this_year)
+        other_parent = parent & ~cash_eligible_child
+        unknown_child = dependent_child & ~has_parent_ids(person, period.this_year)
+        # A known child's ids override the presumed parenthood of an
+        # unmarked head/spouse; retain the proxy only for unknown links.
+        parent_caretaker = caretaker & (parent | person.tax_unit.any(unknown_child))
+        parent_in_home = person.tax_unit.any(
+            (parent_caretaker | other_parent) & ~non_parent
         )
-        parent_in_home = person.tax_unit.any((caretaker | other_parent) & ~non_parent)
         # DSS Manual 0210.005.35: an NPCR who receives SSI, SSI-SP or SP
         # cannot have their needs and income included. SP receipt is not
         # observable (see mo_tanf_is_assistance_unit_member).

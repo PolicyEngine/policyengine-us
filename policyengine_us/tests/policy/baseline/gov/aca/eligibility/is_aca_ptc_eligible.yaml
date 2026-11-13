@@ -495,3 +495,20 @@
     has_qualifying_non_marketplace_health_coverage_at_interview: [true]
     pays_aca_premium: [false]
     is_aca_ptc_eligible: [false]
+
+# 42 U.S.C. 1395o(a)(2): a permanent resident of two years without Part A can't enroll
+# in Medicare at 70, so Medicare doesn't block the credit. The five-year bar in
+# 8 U.S.C. 1613(a) also rules out Medicaid.
+# $30,000 / 2025 individual FPL of $15,650 = 1.91, inside the 1.00 to 4.00 income range.
+- name: Permanent resident barred from Medicare at age 70 qualifies for ACA PTC
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    medicare_quarters_of_coverage: 0
+    taxable_private_pension_income: 30_000
+    state_code: TX
+  output:
+    is_medicare_eligible: false
+    is_aca_ptc_eligible: true

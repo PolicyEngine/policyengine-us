@@ -680,7 +680,8 @@
 # =====================================================
 # Alaska good-faith exemption window - 7 U.S.C. 2015(o)(7)
 # 2025-11-01 through 2026-10-31.
-# HR1 is in effect for Alaska from 2025-11-01, so during the window the
+# HR1 is in effect for Alaska from 2025-07-04 (P.L. 119-21 sec. 10102; the model
+# samples month starts, so August 2025 is the first affected month), so during the window the
 # post-HR1 exception set (including the new Alaska Native/Indian exception)
 # applies PLUS the temporarily-retained pre-HR1 categories: ages 56-64,
 # households with children aged 14-17 (see meets_snap_work_requirements.yaml),
@@ -883,7 +884,12 @@
   output:
     meets_snap_abawd_work_requirements: true
 
-- name: Case 57, Anchorage age 57 exempt before AK adoption (pre-HR1 55+ still applies).
+- name: Case 57, Anchorage age 57 is subject in October 2025 (HR1's age limit applies from 2025-07-04).
+  # Section 10102 extended the time limit to adults through age 64 from
+  # enactment, and Anchorage is not a waived area, so a 57-year-old working
+  # one hour a week does not meet the requirement. Alaska's announced
+  # 2025-11-01 date had no good-faith exemption behind it; its retained
+  # 56-64 age exemption starts with the window on 2025-11-01.
   period: 2025-10
   absolute_error_margin: 0.1
   input:
@@ -898,7 +904,7 @@
     county_fips:
       2025: "02020"
   output:
-    meets_snap_abawd_work_requirements: true
+    meets_snap_abawd_work_requirements: false
 
 - name: Case 58, non-Anchorage waived borough healthy adult exempt via the area waiver during the window.
   period: 2026-01
@@ -923,5 +929,21 @@
     age: 40
     is_disabled: false
     state_code: TX
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 60, Hawaii age 57 is subject in September 2025 under the federal effective date.
+  # Hawaii's area waiver ended June 30, 2025. The amended age exception
+  # applies before the state's announced November implementation date.
+  period: 2025-09
+  input:
+    age:
+      2025: 57
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: HI
   output:
     meets_snap_abawd_work_requirements: false

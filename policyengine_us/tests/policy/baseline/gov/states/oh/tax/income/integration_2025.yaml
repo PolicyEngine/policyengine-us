@@ -266,9 +266,15 @@
         members: [person1, person2]
         state_code: OH
   output:
-    oh_taxable_income: 35_038.3
-    oh_income_tax_before_non_refundable_credits: 579.18
+    # Unreimbursed medical care worksheet: line 3 is each spouse's Medicare
+    # Part B premium, 2 * 2,434.80 = 4,869.60; federal AGI is 40,000 +
+    # 23,850 taxable Social Security = 63,850, so line 7 is 4,788.75 and
+    # line 8 is 80.85, deducted once for the return.
+    # Ohio AGI = 63,850 - 23,850 - 80.85 = 39,919.15; less 2 * 2,400 exemptions.
+    oh_taxable_income: 35_119.15
+    # 332.00 + 2.75% * (35,119.15 - 26,050).
+    oh_income_tax_before_non_refundable_credits: 581.40
     oh_retirement_credit_potential: 200
     oh_retirement_credit: 200
     oh_non_refundable_credits: 250
-    state_income_tax: 329.18
+    state_income_tax: 331.40

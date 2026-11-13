@@ -3,6 +3,8 @@ values:
   2022-07-01: 130_000
   2024-01-01: .inf
   2026-01-01: 130_000
+  # Annual calculations read parameters on January 1, so the July 1, 2027 value first applies in 2028.
+  2027-07-01: 21_000
 
 metadata:
   unit: currency-USD
@@ -15,3 +17,7 @@ metadata:
       href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/Documents/Eligibility-and-Enrollment-Plan-Asset-Test-Changes-for-Non-MAGI-MC.pdf
     - title: Medi-Cal Program Changes 2026-2028 | Department of Health Care Services
       href: https://www.dhcs.ca.gov/medi-cal/help/medi-cal-changes/
+    - title: California Senate Bill 164 (Statutes of 2026, Chapter 27), Section 69 - Welfare and Institutions Code 14005.62(a), operative July 1, 2027
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB164
+    - title: California Welfare and Institutions Code 14007.9(a)(1)(C)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.9.&lawCode=WIC

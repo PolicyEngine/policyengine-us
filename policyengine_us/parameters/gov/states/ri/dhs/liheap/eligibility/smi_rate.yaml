@@ -1,0 +1,16 @@
+description: Rhode Island limits annual income to this share of state median income under the Low Income Home Energy Assistance Program.
+# Floor the four-person share before size adjustment, then floor the result.
+# This ordering reconciles all 14 published annual limits; the source does
+# not expressly prescribe the rounding order.
+values:
+  2025-10-01: 0.6
+
+metadata:
+  unit: /1
+  period: year
+  label: Rhode Island LIHEAP state median income rate
+  reference:
+    - title: Rhode Island FY2026 State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=8
+    - title: Rhode Island FY2026 Income Eligibility Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf

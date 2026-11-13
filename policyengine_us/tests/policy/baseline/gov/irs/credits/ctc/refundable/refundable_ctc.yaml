@@ -81,3 +81,517 @@
     ctc_limiting_tax_liability: 4_000
   output:
     refundable_ctc: 0
+
+# Section 24(d)(3): no refundable CTC for a filer who elects to exclude any
+# amount from gross income under section 911 (2025 Schedule 8812
+# instructions, Part II-A: "If you file Form 2555, you cannot claim the
+# additional child tax credit.").
+- name: Section 911 exclusion denies the refundable credit
+  period: 2025
+  input:
+    ctc_refundable_maximum: 3_400
+    ctc: 4_400
+    ctc_phase_out: 0
+    ctc_phase_in: 10_000
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion: 1
+  output:
+    # Without the exclusion: min(3,400, min(4,400, 0 + 10,000) - 0) = 3,400.
+    refundable_ctc: 0
+
+- name: Section 911 exclusion denies the refundable credit from social security taxes
+  period: 2025
+  input:
+    # Three children and no earnings over the threshold: the phase-in amount
+    # is social security taxes less the EITC (section 24(d)(1)(B)(ii)), which
+    # section 24(d)(3) also switches off.
+    ctc_qualifying_children: 3
+    ctc_phase_in_relevant_earnings: 0
+    ctc_social_security_tax: 4_000
+    eitc: 0
+    ctc_refundable_maximum: 5_100
+    ctc: 6_600
+    ctc_phase_out: 0
+    ctc_limiting_tax_liability: 1_000
+    foreign_earned_income_exclusion: 30_000
+  output:
+    ctc_phase_in: 4_000
+    refundable_ctc: 0
+
+- name: No section 911 exclusion keeps the refundable credit from social security taxes
+  period: 2025
+  input:
+    ctc_qualifying_children: 3
+    ctc_phase_in_relevant_earnings: 0
+    ctc_social_security_tax: 4_000
+    eitc: 0
+    ctc_refundable_maximum: 5_100
+    ctc: 6_600
+    ctc_phase_out: 0
+    ctc_limiting_tax_liability: 1_000
+    foreign_earned_income_exclusion: 0
+  output:
+    ctc_phase_in: 4_000
+    # min(5,100, min(6,600, 1,000 + 4,000) - min(6,600, 1,000)) = 4,000.
+    refundable_ctc: 4_000
+
+- name: Section 911 exclusion bar can be switched off
+  period: 2025
+  input:
+    gov.irs.credits.ctc.refundable.foreign_earned_income_exclusion_bar_applies: false
+    ctc_refundable_maximum: 5_100
+    ctc: 6_600
+    ctc_phase_out: 0
+    ctc_phase_in: 4_000
+    ctc_limiting_tax_liability: 1_000
+    foreign_earned_income_exclusion: 30_000
+  output:
+    refundable_ctc: 4_000
+
+- name: Section 911 exclusion did not deny the refundable credit before 2015
+  period: 2014
+  input:
+    # Public Law 114-27, section 807, applies to taxable years beginning
+    # after December 31, 2014.
+    ctc_refundable_maximum: 2_000
+    ctc: 2_000
+    ctc_phase_out: 0
+    ctc_phase_in: 1_500
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion: 30_000
+  output:
+    refundable_ctc: 1_500
+
+- name: Section 911 exclusion denies the refundable credit from 2015
+  period: 2015
+  input:
+    ctc_refundable_maximum: 2_000
+    ctc: 2_000
+    ctc_phase_out: 0
+    ctc_phase_in: 1_500
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion: 30_000
+  output:
+    refundable_ctc: 0
+
+- name: In 2021, the fully refundable credit ignores the section 911 exclusion
+  period: 2021
+  input:
+    # Section 24(i)(1)(A): subsection (d), including the section 911 bar,
+    # does not apply to a filer whose principal place of abode was in the
+    # United States for more than half of 2021 (Schedule 8812 Part I-B,
+    # which has no Form 2555 condition). The model assumes that test is met.
+    ctc_refundable_maximum: 6_000
+    ctc: 6_000
+    ctc_phase_out: 0
+    ctc_phase_in: 0
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion: 30_000
+  output:
+    refundable_ctc: 6_000
+
+- name: Housing-only leaf election denies an otherwise positive refundable credit with zero aggregates
+  period: 2025
+  input:
+    ctc_refundable_maximum: 3_400
+    ctc: 4_400
+    ctc_phase_out: 0
+    ctc_phase_in: 10_000
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    # Without the section 911 bar, the same phase-in gives a $3,400 refund.
+    refundable_ctc: 0
+
+# Sources: 2021 IRC 24(i)(1)(B), 24(i)(4)(C)-(D), and Schedule 8812
+# PDF pages 57-58
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title26/pdf/USCODE-2021-title26-subtitleA.pdf#page=57
+# https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf#page=1
+- name: ARPA phaseout cannot make other-dependent credit refundable in 2021
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 170_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 170_000
+    # min(50 * ceil((170,000 - 112,500) / 1,000), 1,600, 4,375).
+    ctc_arpa_phase_out: 1_600
+    ctc_phase_out: 0
+    # Schedule 8812 lines 5 + 7 = (3,600 - 1,600) + 500.
+    ctc: 2_500
+    # Lines 14a = 500; 14b = 2,500 - 500 = 2,000.
+    refundable_ctc: 2_000
+    # Before the section 26(a) tax limit (not binding in this household).
+    non_refundable_ctc: 500
+    ctc_value: 2_500
+
+- name: Other-dependent credit remains nonrefundable after the child portion phases out in 2021
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 240_001
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: TX
+  output:
+    ctc_arpa_phase_out: 1_600
+    # 50 * ceil((240,001 - 200,000) / 1,000) = 2,050.
+    ctc_phase_out: 2_050
+    ctc: 450
+    # max(3,600 - 1,600 - 2,050, 0) = 0.
+    refundable_ctc: 0
+    non_refundable_ctc: 450
+    ctc_value: 450
+
+# This interaction proves the split affects total federal tax, not only labels.
+# 2021 IRC 25D(c), Form 5695 lines 6b/14/15 and its Credit Limit Worksheet:
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title26/pdf/USCODE-2021-title26-subtitleA.pdf#page=81
+# https://www.irs.gov/pub/irs-prior/f5695--2021.pdf#page=1
+# https://www.irs.gov/pub/irs-prior/i5695--2021.pdf#page=4
+- name: Nonrefundable ODC reduces solar credit capacity before the 2021 child refund
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 170_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+        solar_electric_property_expenditures: 150_000
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: TX
+  output:
+    income_tax_before_credits: 28_857
+    residential_clean_energy_credit_potential: 39_000
+    # 28,857 - 500 ODC; refundable child credit is in a different subpart.
+    residential_clean_energy_credit_credit_limit: 28_357
+    residential_clean_energy_credit: 28_357
+    refundable_ctc: 2_000
+    non_refundable_ctc: 500
+    ctc_value: 2_500
+    income_tax: -2_000
+
+- name: A filer claiming only the foreign housing deduction gets the refundable credit
+  # Section 24(d)(3) bars only an election to exclude an amount under section
+  # 911; the section 911(c)(4)(A) housing deduction is not an exclusion.
+  # Phase-in: 15% x ($12,500 - $2,500) = $1,500, below the $1,700 refundable
+  # maximum and the $2,200 credit, with no tax to absorb the credit.
+  period: 2025
+  input:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 0
+    foreign_housing_deduction: 1_000
+    ctc: 2_200
+    ctc_refundable_maximum: 1_700
+    ctc_phase_in: 1_500
+    ctc_limiting_tax_liability: 0
+  output:
+    refundable_ctc: 1_500
+
+- name: A filer claiming only the housing deduction completes Worksheet B with a residential clean energy credit
+  # Not barred by section 24(d)(3), so Credit Limit Worksheet B applies and
+  # the residential clean energy credit uses the liability first.
+  # Worksheet A line 5: max(0, 2,000 - 1,500) = 500.
+  # Increase in the credit: min(4,400, 500 + 3,000) - min(4,400, 500) = 3,000.
+  # Refundable: min(3,400 maximum, 3,000) = 3,000. Under the Schedule 8812
+  # instructions, which bar every Form 2555 filer, it would be 0.
+  period: 2025
+  input:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 0
+    foreign_housing_deduction: 1_000
+    ctc_qualifying_children: 2
+    ctc: 4_400
+    ctc_refundable_maximum: 3_400
+    ctc_phase_in: 3_000
+    ctc_tax_liability_after_preceding_credits: 2_000
+    residential_clean_energy_credit: 1_500
+  output:
+    refundable_ctc_barred_by_section_911_exclusion: false
+    ctc_credit_limit_worksheet_b_applies: true
+    ctc_limiting_tax_liability: 500
+    refundable_ctc: 3_000
+
+- name: 2021 ARPA threshold boundary, head of household at exactly $112,500 has no first reduction
+  # 24(i)(4)(A): $50 for each $1,000 (or fraction) above $112,500; none at it.
+  # ctc = 3,600 + 500 ODC = 4,100; line 14b = 3,600; line 14a = 500.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 112_500
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child_1, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 112_500
+    ctc_arpa_phase_out: 0
+    ctc_phase_out: 0
+    ctc: 4_100
+    refundable_ctc: 3_600
+    non_refundable_ctc: 500
+
+- name: 2021 ARPA threshold boundary, head of household at $112,501 moves the split by $50
+  # F = 50 x ceil(1 / 1,000) = 50, under the caps of 1,600 (3,600 - 2,000)
+  # and 4,375 (5% x (200,000 - 112,500)). ctc = 4,100 - 50 = 4,050.
+  # Line 14b = 3,600 - 50 = 3,550; line 14a = 500 (the old code gave 3,600 / 450).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 112_501
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child_1, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 112_501
+    ctc_arpa_phase_out: 50
+    ctc_phase_out: 0
+    ctc: 4_050
+    refundable_ctc: 3_550
+    non_refundable_ctc: 500
+
+- name: 2021 ARPA threshold boundary, single filer at $75,001 moves the split by $50
+  # Filing status supplied: the $75,000 threshold of 24(i)(4)(B)(iii).
+  # F = 50 (caps 1,600 and 5% x (200,000 - 75,000) = 6,250).
+  # ctc = 4,050; line 14b = 3,550; line 14a = 500 (old code: 3,600 / 450).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 75_001
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, other_dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, child_1, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 75_001
+    ctc_arpa_phase_out: 50
+    ctc_phase_out: 0
+    ctc: 4_050
+    refundable_ctc: 3_550
+    non_refundable_ctc: 500
+
+- name: 2021 ARPA threshold boundary, joint return at $150,001 with an other dependent
+  # Child amounts 3,600 + 3,000 = 6,600; base 4,000; enhancement 2,600; ODC 500.
+  # F = 50 (caps 2,600 and 5% x (400,000 - 150,000) = 12,500); P = 0.
+  # ctc = 7,100 - 50 = 7,050; line 14b = 6,600 - 50 = 6,550; line 14a = 500
+  # (old code: 6,600 / 450).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 150_001
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 0
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 10
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 150_001
+    ctc_arpa_phase_out: 50
+    ctc_phase_out: 0
+    ctc: 7_050
+    refundable_ctc: 6_550
+    non_refundable_ctc: 500
+
+- name: 2021 joint return just over $400,000 has both phaseouts and keeps the ODC nonrefundable
+  # F = min(50 x ceil(250,001 / 1,000) = 12,550, 2,600, 12,500) = 2,600.
+  # 24(b) after (i)(4)(D): P = 50 x ceil(1 / 1,000) = 50.
+  # ctc = 7,100 - 2,600 - 50 = 4,450; line 14b = 6,600 - 2,650 = 3,950;
+  # line 14a = 500 (old code: 4,450 / 0).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 400_001
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 0
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 10
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 400_001
+    ctc_arpa_phase_out: 2_600
+    ctc_phase_out: 50
+    ctc: 4_450
+    refundable_ctc: 3_950
+    non_refundable_ctc: 500
+
+- name: 2021 joint return at $480,001 phases out the child amounts and leaves part of the ODC
+  # F = 2,600; P = 50 x ceil(80,001 / 1,000) = 4,050.
+  # Line 12 = 7,100 - 2,600 - 4,050 = 450; 6,600 - 6,650 < 0, so line 14b = 0
+  # and line 14a = min(500, 450) = 450.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 480_001
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 0
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 10
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 480_001
+    ctc_arpa_phase_out: 2_600
+    ctc_phase_out: 4_050
+    ctc: 450
+    refundable_ctc: 0
+    non_refundable_ctc: 450

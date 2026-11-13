@@ -1,0 +1,32 @@
+description: Montana counts these sources as miscellaneous deductions. 
+# The child and dependent care expense deduction is also a miscellaneous
+# deduction (Form 2 Itemized Deductions Schedule, line 14). It is added
+# separately because its income limit uses the return's own Montana AGI, which
+# differs between a joint return and separate columns (Form 2441-M line 3).
+values:
+  2021-01-01:
+    # Form 2 itemized deductions line 18 follows federal Schedule A line 16.
+    - mt_claim_of_right_deduction
+  # From 2024 mt_taxable_income_joint starts from federal taxable income,
+  # which already reflects the full federal deduction.
+  2024-01-01: []
+
+metadata:
+  unit: list
+  label: Montana miscellaneous deductions
+  period: year
+  reference:
+    - title: 2023 Montana Form 2 instructions, itemized deductions line 18
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=39
+    - title: 2024 Montana Form 2 instructions, line 2 and Worksheet A
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
+    - title: Montana Individual Income Tax Return (Form 2) 2024
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=8
+    - title: Montana Individual Income Tax Return (Form 2) 2022
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
+    - title: Montana Individual Income Tax Return (Form 2) 2021
+      href: https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
+    - title: Montana Tax From Instructions 2021
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=35
+    - title: MT Code § 15-30-2131 (2022) (1)(a)&(c)
+      href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2131/

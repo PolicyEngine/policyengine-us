@@ -1,6 +1,6 @@
 """Verify clean policy source and record a locally built release wheel.
 
-The PR matrix can prepare either candidate using the actual release bump helper.
+The PR workflow prepares both candidates using the actual release bump helper.
 Both candidates and Publish record a receipt after the same make command.
 This script never resolves dependencies or publishes.
 """

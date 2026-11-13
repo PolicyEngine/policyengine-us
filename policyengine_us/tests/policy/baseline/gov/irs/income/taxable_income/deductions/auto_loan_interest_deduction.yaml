@@ -36,3 +36,145 @@
   output:
     auto_loan_interest_deduction: 0
     taxable_income_deductions: 0
+
+- name: Income excluded under section 933 counts toward the phase-out
+  period: 2025
+  input:
+    adjusted_gross_income: 95_000
+    puerto_rico_income: 10_000
+    filing_status: SINGLE
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # 26 U.S.C. 163(h)(4)(C)(ii)(II): modified AGI 105,000; five $1,000
+    # steps over 100,000 at $200 each.
+    auto_loan_interest_deduction: 4_000
+
+# 26 U.S.C. 163(h)(4)(C)(ii)(I): $200 for each $1,000 (or portion thereof) of
+# modified AGI over $100,000 ($200,000 on a joint return). Schedule 1-A
+# (2025), line 26: "$100,000 ($200,000 if married filing jointly)". A
+# surviving spouse does not file a joint return, so the $100,000 amount
+# applies; line 28 rounds a partial $1,000 up to a whole one.
+- name: Surviving spouse at the $100,000 threshold keeps the full deduction
+  period: 2025
+  input:
+    adjusted_gross_income: 100_000
+    filing_status: SURVIVING_SPOUSE
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    auto_loan_interest_deduction: 5_000
+
+- name: Surviving spouse one dollar over $100,000 loses one $200 step
+  period: 2025
+  input:
+    adjusted_gross_income: 100_001
+    filing_status: SURVIVING_SPOUSE
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # A $1 excess is a portion of $1,000, so one step.
+    auto_loan_interest_deduction: 4_800
+
+- name: Surviving spouse $1,000 over $100,000 loses one $200 step
+  period: 2025
+  input:
+    adjusted_gross_income: 101_000
+    filing_status: SURVIVING_SPOUSE
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    auto_loan_interest_deduction: 4_800
+
+- name: Surviving spouse $1,001 over $100,000 loses two $200 steps
+  period: 2025
+  input:
+    adjusted_gross_income: 101_001
+    filing_status: SURVIVING_SPOUSE
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    auto_loan_interest_deduction: 4_600
+
+- name: Surviving spouse at $150,000 is fully phased out
+  period: 2025
+  input:
+    adjusted_gross_income: 150_000
+    filing_status: SURVIVING_SPOUSE
+    qualified_passenger_vehicle_loan_interest: 12_000
+  output:
+    # Capped at $10,000, less 50 steps of $200.
+    auto_loan_interest_deduction: 0
+
+- name: Surviving spouse reduction past the interest stops at zero
+  period: 2025
+  input:
+    adjusted_gross_income: 160_000
+    filing_status: SURVIVING_SPOUSE
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # 60 steps of $200 is $12,000, more than the $5,000 of interest.
+    auto_loan_interest_deduction: 0
+
+- name: Single filer one dollar over $100,000 loses one $200 step
+  period: 2025
+  input:
+    adjusted_gross_income: 100_001
+    filing_status: SINGLE
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    auto_loan_interest_deduction: 4_800
+
+# 26 CFR 1.163-16(h)(3), Example 2 (T.D. 10054): a single filer with $7,000
+# of interest and modified AGI of $124,200 is $24,200 over, which "is then
+# rounded up to 25" steps, so the $7,000 is reduced by $5,000.
+- name: Regulation example 2, single filer
+  period: 2025
+  input:
+    adjusted_gross_income: 124_200
+    filing_status: SINGLE
+    qualified_passenger_vehicle_loan_interest: 7_000
+  output:
+    auto_loan_interest_deduction: 2_000
+
+- name: Regulation example 2 facts for a surviving spouse
+  period: 2025
+  input:
+    adjusted_gross_income: 124_200
+    filing_status: SURVIVING_SPOUSE
+    qualified_passenger_vehicle_loan_interest: 7_000
+  output:
+    # The same $100,000 threshold applies.
+    auto_loan_interest_deduction: 2_000
+
+- name: Head of household one dollar over $100,000 loses one $200 step
+  period: 2025
+  input:
+    adjusted_gross_income: 100_001
+    filing_status: HEAD_OF_HOUSEHOLD
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    auto_loan_interest_deduction: 4_800
+
+- name: Married filing separately may claim, from the $100,000 threshold
+  period: 2025
+  input:
+    adjusted_gross_income: 100_001
+    filing_status: SEPARATE
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # Section 163(h)(4) has no joint-return requirement.
+    auto_loan_interest_deduction: 4_800
+
+- name: Joint return at the $200,000 threshold keeps the full deduction
+  period: 2025
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: JOINT
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    auto_loan_interest_deduction: 5_000
+
+- name: Joint return one dollar over $200,000 loses one $200 step
+  period: 2025
+  input:
+    adjusted_gross_income: 200_001
+    filing_status: JOINT
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    auto_loan_interest_deduction: 4_800

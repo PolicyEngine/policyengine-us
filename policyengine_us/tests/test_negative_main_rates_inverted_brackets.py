@@ -11,14 +11,16 @@ shipped exactly this shape for SEPARATE filers (bracket 5 top $541,550
 above bracket 6 top $305,875), worth a flat −$82,486 per
 married-filing-separately filer under TCJA-expiration counterfactuals.
 
-Three code sites run the schedule and all must clamp together:
-`income_tax_main_rates`, the AMT regular-tax worksheet
-(`regular_tax_before_credits`, taken when the unit has qualified
-dividends or long-term gains), and the `additional_tax_bracket` contrib
-reform's copies of both. Clamping only the first diverges the AMT
-comparator from the corrected main-rates tax and manufactures phantom
-AMT for any affected filer with $1 of preferential income. They now
-share one loop, `tax_at_main_rates`, which carries the clamp.
+Every code site that runs the schedule must clamp: `income_tax_main_rates`,
+`tax_on_taxable_income_at_main_rates` (the tax on all taxable income,
+which caps the regular tax under section 1(h)(1)), and the
+`additional_tax_bracket` contrib reform's copies of both. The AMT used to
+compare against a second worksheet copy of the schedule, and clamping only
+`income_tax_main_rates` then manufactured phantom AMT for any affected
+filer with $1 of preferential income; Form 6251 line 10 is now
+`regular_tax_before_credits`, the main-rates tax plus the capital gains
+tax. The sites share one loop, `tax_at_main_rates`, which carries the
+clamp.
 
 Note the fixture detail that makes these tests real: situation values
 must be period-keyed (`{"2026": ...}`). An undated `filing_status`
@@ -86,6 +88,7 @@ def test_zero_income_filer_owes_zero_under_inverted_brackets(inverted_bracket_sy
         tax_benefit_system=inverted_bracket_system, situation=separate_filer(0)
     )
     assert sim.calculate("income_tax_main_rates", 2026)[0] == 0
+    assert sim.calculate("tax_on_taxable_income_at_main_rates", 2026)[0] == 0
 
 
 def test_low_income_filer_unaffected_by_inversion_above_their_income(
@@ -130,11 +133,11 @@ def test_main_rates_never_negative_across_incomes(inverted_bracket_system):
 def test_amt_comparator_stays_consistent_with_preferential_income(
     inverted_bracket_system,
 ):
-    # One dollar of qualified dividends routes the AMT regular-tax
-    # comparison through the duplicate worksheet schedule. If that copy
-    # is not clamped identically, the corrected main-rates tax minus a
-    # still-corrupted comparator manufactures tens of thousands of
-    # dollars of phantom AMT.
+    # One dollar of qualified dividends brings in the capital gains tax
+    # and its section 1(h)(1) cap at the tax on all taxable income. If
+    # either schedule were not clamped identically, Form 6251 line 10
+    # would diverge from the corrected main-rates tax and manufacture tens
+    # of thousands of dollars of phantom AMT.
     sim = Simulation(
         tax_benefit_system=inverted_bracket_system,
         situation=separate_filer(300_000, qualified_dividends=1),
@@ -142,9 +145,11 @@ def test_amt_comparator_stays_consistent_with_preferential_income(
     amt = sim.calculate("alternative_minimum_tax", 2026)[0]
     main = sim.calculate("income_tax_main_rates", 2026)[0]
     before_credits = sim.calculate("income_tax_before_credits", 2026)[0]
+    regular = sim.calculate("regular_tax_before_credits", 2026)[0]
     assert amt == 0
     assert main > 0
     assert abs(before_credits - main) < 2  # only the $1 dividend's tax
+    assert before_credits == pytest.approx(regular)
 
 
 def test_mixed_statuses_only_the_separate_row_responds(inverted_bracket_system):

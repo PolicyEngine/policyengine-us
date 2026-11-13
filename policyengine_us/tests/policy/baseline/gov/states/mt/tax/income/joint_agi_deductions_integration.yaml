@@ -1,0 +1,406 @@
+# Return-level deduction propagation, with nonmedical deductions and credits zero.
+# Sources: 2022 Form 2 p. 1 (exemptions), p. 7 (deductions), p. 8 (tax table):
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=8
+# The marginal tax schedule retains main's cent precision (offset 602.50);
+# the printed 2022 tax table rounds its offset to 603. This PR preserves it.
+# 2024 instructions p. 15, Worksheet A (adjusted federal deductions):
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
+# 2024 ordinary tax rates, instructions p. 22 (printed p. 14):
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=22
+# 2024 joint federal standard deduction, IRS instructions p. 6:
+# https://www.irs.gov/pub/irs-prior/i1040gi--2024.pdf#page=6
+# 2024 federal Schedule A p. 1, lines 1-4 (7.5% medical floor):
+# https://www.irs.gov/pub/irs-prior/f1040sa--2024.pdf#page=1
+# 2024 Form 2 p. 2 (ordinary income and capital-gain threshold/rates):
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=2
+
+- name: 2022 pooled medical deduction at separate tax selection boundary 2812
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 90_000
+        other_medical_expenses: 29_980
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+        # Controlled alternative tax isolates the filing selection boundary.
+        # This is not a derived separate-return household tax expectation.
+        mt_income_tax_indiv: 2812
+      spouse:
+        age: 40
+        adjusted_gross_income_person: -10_000
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+        mt_income_tax_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 80_000
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_agi_joint: 80_000
+    # 29,980 - 7.5% * (90,000 - 10,000) = 23,980.
+    # The old unpooled floor gave 23,230 and joint tax 2,863.625.
+    mt_medical_expense_deduction_joint: [23_980, 0]
+    mt_itemized_deductions_joint: [23_980, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [23_980, 0]
+    # max(joint 23,980, separate 29,980 - 7.5% * 90,000) = 23,980.
+    state_itemized_deductions: 23_980
+    # 20% * 80,000 = 16,000, capped at the joint maximum 10,180.
+    state_standard_deduction: 10_180
+    # 80,000 - 23,980 - 2 * 2,710 exemptions = 50,600.
+    mt_taxable_income_joint: [50_600, 0]
+    # 734 + 6.75% * (50,600 - 19,800) = 2,813.
+    mt_regular_income_tax_joint: 2_813
+    mt_income_tax_joint: 2_813
+    # Separate filing requires strictly lower tax; ties retain joint filing.
+    mt_files_separately: true
+    mt_income_tax: 2812
+
+- name: 2022 pooled medical deduction at separate tax selection boundary 2813
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 90_000
+        other_medical_expenses: 29_980
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+        # Controlled alternative tax isolates the filing selection boundary.
+        # This is not a derived separate-return household tax expectation.
+        mt_income_tax_indiv: 2813
+      spouse:
+        age: 40
+        adjusted_gross_income_person: -10_000
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+        mt_income_tax_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 80_000
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_agi_joint: 80_000
+    # 29,980 - 7.5% * (90,000 - 10,000) = 23,980.
+    # The old unpooled floor gave 23,230 and joint tax 2,863.625.
+    mt_medical_expense_deduction_joint: [23_980, 0]
+    mt_itemized_deductions_joint: [23_980, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [23_980, 0]
+    # max(joint 23,980, separate 29,980 - 7.5% * 90,000) = 23,980.
+    state_itemized_deductions: 23_980
+    # 20% * 80,000 = 16,000, capped at the joint maximum 10,180.
+    state_standard_deduction: 10_180
+    # 80,000 - 23,980 - 2 * 2,710 exemptions = 50,600.
+    mt_taxable_income_joint: [50_600, 0]
+    # 734 + 6.75% * (50,600 - 19,800) = 2,813.
+    mt_regular_income_tax_joint: 2_813
+    mt_income_tax_joint: 2_813
+    # Separate filing requires strictly lower tax; ties retain joint filing.
+    mt_files_separately: false
+    mt_income_tax: 2813
+
+- name: 2022 pooled medical deduction at separate tax selection boundary 2814
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 90_000
+        other_medical_expenses: 29_980
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+        # Controlled alternative tax isolates the filing selection boundary.
+        # This is not a derived separate-return household tax expectation.
+        mt_income_tax_indiv: 2814
+      spouse:
+        age: 40
+        adjusted_gross_income_person: -10_000
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+        mt_income_tax_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 80_000
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_agi_joint: 80_000
+    # 29,980 - 7.5% * (90,000 - 10,000) = 23,980.
+    # The old unpooled floor gave 23,230 and joint tax 2,863.625.
+    mt_medical_expense_deduction_joint: [23_980, 0]
+    mt_itemized_deductions_joint: [23_980, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [23_980, 0]
+    # max(joint 23,980, separate 29,980 - 7.5% * 90,000) = 23,980.
+    state_itemized_deductions: 23_980
+    # 20% * 80,000 = 16,000, capped at the joint maximum 10,180.
+    state_standard_deduction: 10_180
+    # 80,000 - 23,980 - 2 * 2,710 exemptions = 50,600.
+    mt_taxable_income_joint: [50_600, 0]
+    # 734 + 6.75% * (50,600 - 19,800) = 2,813.
+    mt_regular_income_tax_joint: 2_813
+    mt_income_tax_joint: 2_813
+    # Separate filing requires strictly lower tax; ties retain joint filing.
+    mt_files_separately: false
+    mt_income_tax: 2813
+
+- name: 2022 pooled standard deduction propagates to state deductions and final tax
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+      spouse:
+        age: 40
+        self_employment_income: -10_000
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    adjusted_gross_income: 40_000
+    mt_agi_joint: 40_000
+    # 20% * (50,000 - 10,000) = 8,000, within [4,520, 10,180].
+    mt_standard_deduction_joint: [8_000, 0]
+    # max(joint 8,000, separate 5,090 + 2,260) = 8,000.
+    state_standard_deduction: 8_000
+    state_itemized_deductions: 0
+    # 40,000 - 8,000 - 2 * 2,710 = 26,580.
+    mt_taxable_income_joint: [26_580, 0]
+    # 734 + 6.75% * (26,580 - 19,800) = 1,191.65.
+    mt_income_tax_joint: 1_191.65
+    mt_files_separately: false
+    mt_income_tax: 1_191.65
+
+- name: 2024 medical floor propagates through capital gains with wages 70100 and expenses 35000
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 70100
+        long_term_capital_gains: 20_000
+        other_medical_expenses: 35000
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+      spouse:
+        age: 40
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    adjusted_gross_income: 90100
+    # 35000 - 7.5% * 90100 = 28242.5 (federal AGI).
+    medical_expense_deduction: 28242.5
+    mt_medical_expense_deduction_joint: [28242.5, 0]
+    mt_itemized_deductions_joint: [28242.5, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [28242.5, 0]
+    state_itemized_deductions: 28242.5
+    state_standard_deduction: 29_200
+    # 90100 - max(28242.5, 29,200) = 60900; no exemptions from 2024.
+    mt_taxable_income_joint: [60900, 0]
+    # Ordinary income = 60900 - 20,000 = 40900;
+    # remaining lower-rate room = max(41,000 - 40900, 0) = 100.
+    mt_capital_gains_tax_applicable_threshold_joint: 100
+    # 3% * min(100, 20,000) + 4.1% * (20,000 - min(100, 20,000)).
+    mt_capital_gains_tax_joint: 818.9
+    # 4.7% * min(40900, 41,000) + 5.9% * max(40900 - 41,000, 0).
+    mt_regular_income_tax_joint: 1922.3
+    # 1922.3 + 818.9 = 2741.2.
+    mt_income_tax_joint: 2741.2
+    mt_files_separately: false
+    mt_income_tax: 2741.2
+
+- name: 2024 medical floor propagates through capital gains with wages 70200 and expenses 35000
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 70200
+        long_term_capital_gains: 20_000
+        other_medical_expenses: 35000
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+      spouse:
+        age: 40
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    adjusted_gross_income: 90200
+    # 35000 - 7.5% * 90200 = 28235 (federal AGI).
+    medical_expense_deduction: 28235
+    mt_medical_expense_deduction_joint: [28235, 0]
+    mt_itemized_deductions_joint: [28235, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [28235, 0]
+    state_itemized_deductions: 28235
+    state_standard_deduction: 29_200
+    # 90200 - max(28235, 29,200) = 61000; no exemptions from 2024.
+    mt_taxable_income_joint: [61000, 0]
+    # Ordinary income = 61000 - 20,000 = 41000;
+    # remaining lower-rate room = max(41,000 - 41000, 0) = 0.
+    mt_capital_gains_tax_applicable_threshold_joint: 0
+    # 3% * min(0, 20,000) + 4.1% * (20,000 - min(0, 20,000)).
+    mt_capital_gains_tax_joint: 820
+    # 4.7% * min(41000, 41,000) + 5.9% * max(41000 - 41,000, 0).
+    mt_regular_income_tax_joint: 1927
+    # 1927 + 820 = 2747.
+    mt_income_tax_joint: 2747
+    mt_files_separately: false
+    mt_income_tax: 2747
+
+- name: 2024 medical floor propagates through capital gains with wages 70300 and expenses 35000
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 70300
+        long_term_capital_gains: 20_000
+        other_medical_expenses: 35000
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+      spouse:
+        age: 40
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    adjusted_gross_income: 90300
+    # 35000 - 7.5% * 90300 = 28227.5 (federal AGI).
+    medical_expense_deduction: 28227.5
+    mt_medical_expense_deduction_joint: [28227.5, 0]
+    mt_itemized_deductions_joint: [28227.5, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [28227.5, 0]
+    state_itemized_deductions: 28227.5
+    state_standard_deduction: 29_200
+    # 90300 - max(28227.5, 29,200) = 61100; no exemptions from 2024.
+    mt_taxable_income_joint: [61100, 0]
+    # Ordinary income = 61100 - 20,000 = 41100;
+    # remaining lower-rate room = max(41,000 - 41100, 0) = 0.
+    mt_capital_gains_tax_applicable_threshold_joint: 0
+    # 3% * min(0, 20,000) + 4.1% * (20,000 - min(0, 20,000)).
+    mt_capital_gains_tax_joint: 820
+    # 4.7% * min(41100, 41,000) + 5.9% * max(41100 - 41,000, 0).
+    mt_regular_income_tax_joint: 1932.9
+    # 1932.9 + 820 = 2752.9.
+    mt_income_tax_joint: 2752.9
+    mt_files_separately: false
+    mt_income_tax: 2752.9
+
+- name: 2024 medical floor propagates through capital gains with wages 60000 and expenses 40000
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60000
+        long_term_capital_gains: 20_000
+        other_medical_expenses: 40000
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+      spouse:
+        age: 40
+        mt_withheld_income_tax: 0
+        mt_non_refundable_credits: 0
+        mt_refundable_credits: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    adjusted_gross_income: 80000
+    # 40000 - 7.5% * 80000 = 34000 (federal AGI).
+    medical_expense_deduction: 34000
+    mt_medical_expense_deduction_joint: [34000, 0]
+    mt_itemized_deductions_joint: [34000, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [34000, 0]
+    state_itemized_deductions: 34000
+    state_standard_deduction: 29_200
+    # 80000 - max(34000, 29,200) = 46000; no exemptions from 2024.
+    mt_taxable_income_joint: [46000, 0]
+    # Ordinary income = 46000 - 20,000 = 26000;
+    # remaining lower-rate room = max(41,000 - 26000, 0) = 15000.
+    mt_capital_gains_tax_applicable_threshold_joint: 15000
+    # 3% * min(15000, 20,000) + 4.1% * (20,000 - min(15000, 20,000)).
+    mt_capital_gains_tax_joint: 655
+    # 4.7% * min(26000, 41,000) + 5.9% * max(26000 - 41,000, 0).
+    mt_regular_income_tax_joint: 1222
+    # 1222 + 655 = 1877.
+    mt_income_tax_joint: 1877
+    mt_files_separately: false
+    mt_income_tax: 1877

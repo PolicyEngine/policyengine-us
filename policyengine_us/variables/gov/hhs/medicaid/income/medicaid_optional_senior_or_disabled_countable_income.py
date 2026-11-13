@@ -2,6 +2,11 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_senior_or_disabled_exclusions import (
     _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_income,
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 
 
 class medicaid_optional_senior_or_disabled_countable_income(Variable):
@@ -12,15 +17,32 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
+        "https://www.law.cornell.edu/cfr/text/42/435.601",
         "https://www.kff.org/medicaid/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey/",
         # Missouri MHABD budgeting order and rounding
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-25/",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-40/",
+        # California ABD FPL disregard and Part B and health insurance premium
+        # deductions
+        "https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/c00-57.pdf#page=3",
+        "https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-24.pdf#page=3",
+        "https://www.dhcs.ca.gov/services/medi-cal/eligibility/letters/Documents/20-18.pdf#page=2",
+        "https://www.law.cornell.edu/regulations/california/22-CCR-50555.2",
+        "https://www.law.cornell.edu/uscode/text/42/1395r#i",
+        "https://www.law.cornell.edu/cfr/text/20/416.1163",
     )
 
     def formula(person, period, parameters):
-        pre_reduction_earned_income = person("ssi_marital_earned_income", period)
+        # NOTE: this annual formula applies one couple status to the whole
+        # year (couple_computation below), so it combines the spouses' annual
+        # income by that same status. ssi_marital_earned_income and
+        # ssi_marital_unearned_income are monthly and follow each month's
+        # status; their annual totals would not match it in a year with a
+        # part-year facility stay.
+        pre_reduction_earned_income = _ssi_couple_income(
+            person, period, "ssi_earned_income"
+        )
         blind_disabled_working_student_income = person(
             "ssi_blind_or_disabled_working_student_exclusion", period
         )
@@ -29,25 +51,24 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             0,
         )
 
-        total_unearned_income = add(
-            person,
-            period,
-            [
-                "ssi_marital_unearned_income",
+        total_unearned_income = (
+            _ssi_couple_income(person, period, "ssi_unearned_income")
+            + person(
                 "medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent",
-                "ssi_in_kind_support_and_maintenance",
-            ],
+                period,
+            )
+            + person("ssi_in_kind_support_and_maintenance", period)
         )
 
         couple_computation = person("ssi_couple_computation_applies", period)
         state = person.household("state_code_str", period)
         p = parameters(
             period
-        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.disregard
+        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income
         income_disregard = where(
             couple_computation,
-            p.couple[state],
-            p.individual[state],
+            p.disregard.couple[state],
+            p.disregard.individual[state],
         )
         personal_countable = _apply_medicaid_optional_senior_or_disabled_exclusions(
             earned_income,
@@ -58,20 +79,91 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             period,
         )
 
+        # 22 CCR 50555.2 deducts person-paid premiums, Part B only when the
+        # person pays it. From 12/2020 (ACWDL 20-18, 20-24) CA disregards Part B
+        # "regardless of how the premium is paid": swap the person-paid Part B
+        # in the shared aggregate for the individual's full Part B premium, the
+        # base premium plus any IRMAA (42 USC 1395r(i)), whoever pays it.
+        # Only a Part B enrollee (medicare_part_b_enrolled) has a Part B
+        # premium to disregard.
+        # NOTE: ACWDL 20-24 Example 5 also deducts a non-applicant spouse's
+        # premiums. Spousal income here follows SSI deeming (20 CFR 416.1163),
+        # so that premium is not modeled, nor is MC 176's maintenance need
+        # deduction for the spouse (lines 19 and 21; issue 10543).
+        # Premiums are counted before the Medicaid Part B buy-in, which starts
+        # only once Medicaid finds the person eligible (42 USC 1395v(d)(2)(C)).
+        part_b_enrolled = person("medicare_part_b_enrolled", period)
+        paid_premiums = person("medicaid_eligibility_health_insurance_premiums", period)
+        paid_part_b = (
+            person("medicare_part_b_premium_before_buy_in", period) * part_b_enrolled
+        )
+        full_part_b = person("gross_medicare_part_b_premium", period) * part_b_enrolled
+        disregards_part_b = p.disregards_medicare_part_b_premium[state].astype(bool)
+        own_premiums = where(
+            disregards_part_b,
+            max_(paid_premiums - paid_part_b, 0) + full_part_b,
+            paid_premiums,
+        )
+        # 22 CCR 50555.2(a) deducts premiums paid by and purchased for any
+        # person in the family. A couple's budget takes both spouses'
+        # premiums and, when the couple head their tax unit, those of its
+        # unmarried tax dependents, whatever marital unit those dependents
+        # are in: a child never shares a couple's marital unit. Spouses who
+        # file separately each take the dependents of both tax units, so the
+        # two halves of the budget agree. Another couple's dependent and an
+        # unrelated adult in another tax unit stay out, as do the other
+        # dependents of a tax unit the couple belong to as dependents.
+        spouse = _ssi_spouse_index(person, period)
+        safe_spouse = np.maximum(spouse, 0)
+        unmarried_dependent = person("is_tax_unit_dependent", period) & (spouse < 0)
+        dependents_premiums = where(
+            person("is_tax_unit_head_or_spouse", period),
+            person.tax_unit.sum(where(unmarried_dependent, own_premiums, 0)),
+            0,
+        )
+        tax_unit_id = person.tax_unit.reference_entity.members_entity_id
+        spouse_in_another_tax_unit = (spouse >= 0) & (
+            tax_unit_id[safe_spouse] != tax_unit_id
+        )
+        family_dependents_premiums = dependents_premiums + where(
+            spouse_in_another_tax_unit, dependents_premiums[safe_spouse], 0
+        )
+        premiums = where(
+            couple_computation,
+            _ssi_couple_total(person, period, own_premiums)
+            + family_dependents_premiums,
+            own_premiums,
+        )
+        deducts_premiums = p.deducts_health_insurance_premiums[state].astype(bool)
+        # MC 176 (ACWDL 00-57) lines 16-17 subtract the additional disregard
+        # and the premiums from income after the SSI exclusions.
+        additional_disregard = (
+            where(
+                couple_computation,
+                p.additional_disregard.couple[state],
+                p.additional_disregard.individual[state],
+            )
+            * MONTHS_IN_YEAR
+        )
+        deductions = where(deducts_premiums, premiums, 0) + additional_disregard
+
         spousal_deemed = person(
             "medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse",
             period,
         )
-        is_eligible_individual = person("is_ssi_eligible_individual", period)
-        is_eligible_spouse = person("is_ssi_eligible_spouse", period)
-        is_eligible = is_eligible_individual | is_eligible_spouse
+        # SSI methodology (42 CFR 435.601) counts the applicant's own income
+        # whether or not they meet SSI's noncitizen rules. People who are not
+        # aged, blind, or disabled have no countable income here; a spouse's
+        # income is deemed to the applicant instead.
+        is_aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
 
-        return where(
-            ~is_eligible,
-            0,
-            where(
-                couple_computation,
-                personal_countable / 2,
-                personal_countable + spousal_deemed,
-            ),
+        # ACWDL 20-24 Examples 2 and 5 combine the non-applicant spouse's
+        # income with the applicant's income before the deductions, as
+        # 20 CFR 416.1163(d)(2) does, so subtract the deductions from the
+        # combined income and floor the result.
+        countable = where(
+            couple_computation,
+            max_(personal_countable - deductions, 0) / 2,
+            max_(personal_countable + spousal_deemed - deductions, 0),
         )
+        return where(is_aged_blind_disabled, countable, 0)
