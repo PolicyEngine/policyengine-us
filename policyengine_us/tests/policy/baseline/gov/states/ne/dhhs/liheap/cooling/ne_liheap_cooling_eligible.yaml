@@ -1,8 +1,9 @@
 # Source: 476 NAC 2-003 Cooling Assistance and Nebraska FY2026 LIHEAP plan section 3.3.
 # https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%202%20(06-26-2022).pdf/1747#page=2
-# A household must qualify for LIHEAP, pay a cooling cost, and include a member who is a child
-# under 6 receiving Aid to Dependent Children or a member age 70 or older. The medical-statement
-# and prior-air-conditioner routes have no existing inputs.
+# A household must qualify for LIHEAP, pay a cooling cost or rent unsubsidized housing with
+# utilities in the rent, and include a member who is a child under 6 receiving Aid to Dependent
+# Children or a member age 70 or older. The medical-statement and prior-air-conditioner routes
+# have no existing inputs.
 
 # Retirees with $1,200 a month of Social Security ($14,400 a year), under the $23,475
 # one-person limit. Age 69 has no qualifying member; age 70 does.
@@ -150,5 +151,44 @@
         state_code: NE
   output:
     ne_liheap_household_size: 1
+    ne_liheap_income_eligible: true
+    ne_liheap_cooling_eligible: false
+
+# A mother receiving ADC of about $5,920 a year (Case 2's two-person grant) lives with a citizen
+# child aged 8 and an undocumented child aged 4, who is outside the grant. 476 NAC 2-002.02
+# excludes the 4-year-old from the household (size 2, limit 1.5 x 21,150 = 31,725), so no child
+# under 6 can qualify it, and the child aged 8 is too old.
+- name: Case 6, an excluded noncitizen child under 6 cannot qualify an ADC household.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+      person2:
+        age: 8
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+      person3:
+        age: 4
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 5_920
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_liheap_household_size: 2
     ne_liheap_income_eligible: true
     ne_liheap_cooling_eligible: false
