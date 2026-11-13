@@ -1214,7 +1214,15 @@ programs:
         variable: ky_liheap
         parameter_prefix: gov.states.ky.dcbs.liheap
         verified_years: "2025-2026"
-        notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
+        notes: FY2025-FY2026 regular heating only, from the published benefit workbooks; the cooling subsidy is the separate Kentucky LIHEAP cooling entry. Crisis assistance is out of scope.
+      - state: KY
+        status: partial
+        name: Kentucky LIHEAP cooling
+        full_name: Kentucky Low Income Home Energy Assistance Program cooling subsidy
+        variable: ky_liheap_cooling
+        parameter_prefix: gov.states.ky.dcbs.liheap
+        verified_years: "2026"
+        notes: FY2026 one-time electric cooling subsidy from the heating point schedule with electric fuel points, including electricity paid through rent, under a current-year poverty guideline income limit, paid once a year although FY2026 ran spring and summer rounds. Air conditioners and crisis assistance are out of scope.
       - state: LA
         status: partial
         name: Louisiana LIHEAP

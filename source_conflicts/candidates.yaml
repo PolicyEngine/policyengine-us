@@ -4521,24 +4521,36 @@ candidates:
     the workbooks' reversed income points?
   sources:
   - kind: regulation
-    citation: 921 KAR 4:116 Section 4(1)(c)
+    citation: 921 KAR 4:116 Sections 4(1)(c) and 4(3)(c)2
     url: https://apps.legislature.ky.gov/law/kar/titles/921/004/116/
+  - kind: plan
+    citation: Kentucky FY2026 LIHEAP State Plan, item 3.4
+    url: https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=10
   - kind: calculator
-    citation: Kentucky FY2026 benefit workbook, rev benefit income range worksheet, cells E52-E55; FY2025 subsidy
-      benefits worksheet, cells E45-E48
+    citation: Kentucky FY2026 benefit workbook, rev benefit income range worksheet, cells E52-E55 (heating) and
+      K52-K55 (cooling); FY2025 subsidy benefits worksheet, cells E45-E48
     url: https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx
   readings:
-    statute: The lowest-income household receives the highest benefit.
-    other: Subsidized income points rise as 1, 2, 3 and 4 with income.
+    statute: The lowest-income household receives the highest benefit (Section 4(1)(c)), and for cooling plan item
+      3.4 says "The highest benefits are awarded to the lowest income household size". Section 4(3)(c)2's cooling
+      ceilings rise with income for subsidized housing ($100 up to 100% of poverty, $200 from 101% to 150%) and fall
+      for nonsubsidized housing ($400, then $300).
+    other: Subsidized income points rise as 1, 2, 3 and 4 with income, for heating and for cooling (cooling of $41,
+      $45, $51 and $56 for one person).
+  example: A one-person subsidized household in the lowest income band gets $41 of cooling under the workbook
+    (points 1 plus 1 plus 6 = 8, ceil(134 x 0.3)); under the regulation's ordering, with 4 income points, it would
+    get ceil(184 x 0.3) = $56.
   pe_us:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/states/ky/dcbs/liheap/payment/income_points/subsidized.yaml
     - policyengine_us/variables/gov/states/ky/dcbs/liheap/ky_liheap.py
-    prs: []
+    - policyengine_us/variables/gov/states/ky/dcbs/liheap/cooling/ky_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10752
   state: unreviewed
-  note: PE-US follows the workbooks; verify actual agency payments and reconcile FY2025-FY2026 ordering with the
-    regulation.
+  note: PE-US follows the workbooks for heating and cooling; verify actual agency payments and reconcile the
+    FY2025-FY2026 ordering with the regulation.
 - id: us-la:blind-deaf-disabled-additional-exemption
   program: income-tax
   years:
