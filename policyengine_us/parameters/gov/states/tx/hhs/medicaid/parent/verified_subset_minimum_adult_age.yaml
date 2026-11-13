@@ -1,0 +1,14 @@
+description: Texas Medicaid uses this age to restrict the source-verified one-adult, one-parent model route to an adult subset.
+# This is a model scope convention, not a legal minimum age for parents.
+# Younger parents keep their existing route; they are not declared ineligible.
+values:
+  2017-01-01: 19
+metadata:
+  unit: year
+  period: year
+  label: Texas Medicaid verified one-parent subset minimum adult age
+  reference:
+    - title: Texas Works Handbook C-131.2, one-parent dollar schedule
+      href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/c-130-medical-programs
+    - title: Texas Works Handbook A-240, household composition and family relationships
+      href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-240-medical-programs
