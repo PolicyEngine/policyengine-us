@@ -587,11 +587,13 @@
     aca_magi_fraction: 3.99
     is_aca_ptc_eligible: true
 
-- name: 2024 Puerto Rico single adult is not eligible
+- name: 2024 Puerto Rico single adult pays no Marketplace premium and is not eligible
   # HHS defines no guideline for Puerto Rico, and no Exchange operates there
-  # (26 U.S.C. 36B(c)(2)(A)). The placeholder guideline is 0, so the
-  # fraction is infinite; 2024 has no 400% limit, so the finite-fraction
-  # check is what makes the result false.
+  # (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)). The placeholder guideline
+  # is 0, so the fraction is infinite and pays_aca_premium is false. Without
+  # the no-Exchange test, the infinite fraction is outside the coverage gap
+  # and pays_aca_premium would be true. The 2023 guideline lookup raised
+  # ParameterNotFoundError before the placeholders were backdated to 1992.
   period: 2024
   input:
     people:
@@ -610,4 +612,33 @@
         members: [person1]
         state_code: PR
   output:
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+- name: 2026 Puerto Rico single adult with no income has a required contribution of 0
+  # The guideline is 0, so the fraction is infinite rather than 0 / 0. An
+  # infinite fraction falls in the top bracket, above the 400% limit, and
+  # 2026 has no income eligibility there, so the percentage is capped out
+  # to 0. Plain division would give NaN here, and a fraction of 0 would give
+  # the 2026 initial rate of 0.021.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  output:
+    aca_required_contribution_percentage: 0
+    pays_aca_premium: false
     is_aca_ptc_eligible: false

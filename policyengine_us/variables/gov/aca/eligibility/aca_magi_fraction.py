@@ -32,7 +32,7 @@ class aca_magi_fraction(Variable):
         if guideline_period.start.year < FIRST_MODELED_YEAR:
             guideline_period = period
         # Only the guideline lags. Family size is the coverage year's (26 CFR
-        # 1.36B-1(d)(1)), and so is the state: Form 8962 Line 4 uses the
+        # 1.36B-1(d)), and so is the state: Form 8962 Line 4 uses the
         # guideline for "your state of residence" in the coverage year, so
         # Alaska and Hawaii households use their own guidelines. 1.36B-1(h)
         # applies the higher guideline when the residence moves into or out of
@@ -44,8 +44,10 @@ class aca_magi_fraction(Variable):
         guideline = fpg(size, state_group, guideline_period, parameters)
         # HHS defines no guideline for Puerto Rico, Guam or the Virgin
         # Islands, whose placeholder is 0, and no Exchange operates there
-        # (26 U.S.C. 36B(c)(2)(A)). Their fraction is infinite, above every
-        # income limit that reads it.
+        # (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)). Their fraction is
+        # infinite rather than 0 / 0: pays_aca_premium reads it as no
+        # Exchange, the eligibility scale's out-of-range cell is false, and
+        # the required contribution percentage is capped out to 0.
         has_guideline = guideline > 0
         fraction = magi / where(has_guideline, guideline, 1)
         return where(has_guideline, np.floor(100 * fraction) / 100, np.inf)

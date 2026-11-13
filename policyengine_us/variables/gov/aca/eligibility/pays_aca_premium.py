@@ -12,13 +12,20 @@ class pays_aca_premium(Variable):
         # The premium tax credit's income floor, and the below-poverty
         # exception for lawfully present immigrants.
         "https://www.law.cornell.edu/uscode/text/26/36B#c_1",
+        # The credit's plans are those enrolled in through an Exchange
+        # established by a State (36B(c)(2)(A)); "State" means the 50 States
+        # and the District of Columbia (42 U.S.C. 18024(d)).
+        "https://www.law.cornell.edu/uscode/text/26/36B#c_2_A",
+        "https://www.law.cornell.edu/uscode/text/42/18024#d",
     )
     documentation = (
         "Whether a person is enrolled in a Marketplace plan and charged an "
         "age-rated premium for it. This is an enrollment test, not a pure "
         "status test: alongside the TIN, immigration-status, other-minimum-"
         "essential-coverage and age-based premium conditions, it excludes the "
-        "Medicaid coverage gap, so it carries an income component. "
+        "Medicaid coverage gap, so it carries an income component, and it "
+        "excludes Puerto Rico, Guam and the Virgin Islands, which have no "
+        "Exchange. "
         "45 CFR 155.305(a) sets no income minimum for enrolling, so a person "
         "in the gap may buy a plan at full price; the model assumes none "
         "does, because the unsubsidized benchmark premium exceeds their "
@@ -64,9 +71,18 @@ class pays_aca_premium(Variable):
             & ~below_fpl_exception
         )
 
+        # Puerto Rico, Guam and the Virgin Islands have no Exchange: 36B(c)(2)(A)
+        # counts plans enrolled in through an Exchange established by a State,
+        # and 42 U.S.C. 18024(d) defines a State as the 50 States and the
+        # District of Columbia. HHS publishes no poverty guideline for them
+        # either, so aca_magi_fraction is infinite there, and nobody in them
+        # is charged a Marketplace premium.
+        has_exchange = np.isfinite(magi_frac)
+
         return (
             is_status_eligible
             & is_coverage_eligible
             & pays_age_based_premium
             & ~in_coverage_gap
+            & has_exchange
         )
