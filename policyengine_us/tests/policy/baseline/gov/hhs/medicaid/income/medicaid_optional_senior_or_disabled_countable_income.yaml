@@ -1239,6 +1239,43 @@
   output:
     medicaid_optional_senior_or_disabled_countable_income: 9_906.79
 
+# The same worker raising a grandchild, with child care costing 200 a month before
+# any subsidy and 120 hours worked a month. 89 Ill. Adm. Code 113.125(b), which
+# 120.370(a) applies, exempts up to 160 a month for one child at 100 or more hours,
+# so 160 more comes off each month: 9,906.79 - 160 x 12 = 7,986.79. The exemption
+# reads the cost before subsidies, so a child care subsidy would not lower it.
+- name: Illinois takes the child care exemption from the cost before any subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandparent:
+        age: 70
+        is_tax_unit_head: true
+        employment_income: 12_000
+        monthly_hours_worked: 1_440
+      grandchild:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, grandchild]
+        spm_unit_pre_subsidy_childcare_expenses: 2_400
+    marital_units:
+      grandparent:
+        members: [grandparent]
+      grandchild:
+        members: [grandchild]
+    households:
+      household:
+        members: [grandparent, grandchild]
+        state_code: IL
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [7_986.79, 0]
+
 # 120.330(a) counts all unearned income not specified as exempt, and 120.335 does
 # not exempt pensions: 1,340 - 25 = 1,315 a month, within the 1,330 limit.
 - name: Illinois counts a pension less its 25-dollar exemption.

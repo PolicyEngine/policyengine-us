@@ -7,6 +7,9 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spo
     _ssi_couple_total,
     _ssi_spouse_index,
 )
+from policyengine_us.variables.gov.states.il.dhs.aabd.income.expense._child_care_exemption import (
+    il_aabd_child_care_exemption,
+)
 
 
 class medicaid_optional_senior_or_disabled_countable_income(Variable):
@@ -132,10 +135,33 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             )
             / MONTHS_IN_YEAR
         )
-        # 120.370(a) exempts employment expenses.
-        il_expenses = (
-            add(person, period, ["il_aabd_expense_exemption_person"]) / MONTHS_IN_YEAR
+        # 120.370(a) exempts employment expenses. Child care is figured from
+        # costs before subsidies: childcare_expenses nets out child care
+        # subsidies, Pennsylvania's subsidy reads medical premiums, and those
+        # read the Medicare Part B premium and through it Medicaid's buy-in,
+        # so reading it here would make this variable depend on itself.
+        # NOTE: a family with a child care subsidy also has the subsidized
+        # part exempted.
+        il_other_expenses = add(
+            person,
+            period,
+            [
+                source
+                for source in il_aabd.exemption.sources
+                if source != "il_aabd_child_care_expense_exemption"
+            ],
         )
+        il_monthly_child_care_costs = (
+            person.spm_unit.sum(person("pre_subsidy_childcare_expenses", period))
+            / MONTHS_IN_YEAR
+        )
+        il_child_care = sum(
+            il_aabd_child_care_exemption(
+                person, month, parameters, il_monthly_child_care_costs
+            )
+            for month in period.get_subperiods(MONTH)
+        )
+        il_expenses = (il_other_expenses + il_child_care) / MONTHS_IN_YEAR
         # 120.362(b) exempts "the first $20.00 of gross earned income and one-half
         # of the next $60.00" or, for blind people, "The first $85.00 of the gross
         # earned income and one-half of the amount in excess of $85.00".
