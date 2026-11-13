@@ -77,3 +77,884 @@
   output:
     # max($7,104 - $8,000, 0) = $0
     co_tanf: 0
+
+# Historical grant schedule: original 9 CCR 2503-6, effective September 1, 2018,
+# section 3.606.2.F/P and 3.606.3.A, PDF pages 57 and 60-61:
+# https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=7731
+# These families derive demographics, income eligibility and cash from wages.
+
+- name: Case 8, 2019 applicant wages of 0 use the published September 2018 grant.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    co_tanf_countable_gross_earned_income: 0
+    co_tanf_countable_earned_income_need: 0
+    co_tanf_need_standard: 5_052
+    co_tanf_income_eligible: true
+    co_tanf_eligible: true
+    # Monthly grant $508; subtract 33% of wages only if income-eligible.
+    # Equality at $6,132 preserves the existing route only. Applicant/reporting
+    # paragraph contexts are a separate source question, not certified here.
+    co_tanf: 6_096
+
+- name: Case 9, 2019 applicant wages of 6000 use the published September 2018 grant.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 6_000
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    co_tanf_countable_gross_earned_income: 6_000
+    co_tanf_countable_earned_income_need: 4_920
+    co_tanf_need_standard: 5_052
+    co_tanf_income_eligible: true
+    co_tanf_eligible: true
+    # Monthly grant $508; subtract 33% of wages only if income-eligible.
+    # Equality at $6,132 preserves the existing route only. Applicant/reporting
+    # paragraph contexts are a separate source question, not certified here.
+    co_tanf: 4_116
+
+- name: Case 10, 2019 applicant wages of 6132 use the published September 2018 grant.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 6_132
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    co_tanf_countable_gross_earned_income: 6_132
+    co_tanf_countable_earned_income_need: 5_052
+    co_tanf_need_standard: 5_052
+    co_tanf_income_eligible: false
+    co_tanf_eligible: false
+    # Monthly grant $508; subtract 33% of wages only if income-eligible.
+    # Equality at $6,132 preserves the existing route only. Applicant/reporting
+    # paragraph contexts are a separate source question, not certified here.
+    co_tanf: 0
+
+# Consecutive January snapshots retain the existing YEAR model convention.
+# 2017/2018 and 2024-2026 are compatibility controls; this tranche does not
+# certify every earlier/modern table cell or prorate mid-year cash payments.
+
+- name: Case 11, 2017 cash from actual ages and annual wages.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 462 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [5_544, 3_564, 0]
+
+- name: Case 12, 2018 cash from actual ages and annual wages.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 462 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [5_544, 3_564, 0]
+
+- name: Case 13, 2019 cash from actual ages and annual wages.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 508 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [6_096, 4_116, 0]
+
+- name: Case 14, 2020 cash from actual ages and annual wages.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 508 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [6_096, 4_116, 0]
+
+- name: Case 15, 2021 cash from actual ages and annual wages.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 508 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [6_096, 4_116, 0]
+
+- name: Case 16, 2022 cash from actual ages and annual wages.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 508 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [6_096, 4_116, 0]
+
+- name: Case 17, 2023 cash from actual ages and annual wages.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 559 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [6_708, 4_728, 0]
+
+- name: Case 18, 2024 cash from actual ages and annual wages.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 559 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [6_708, 4_728, 0]
+
+- name: Case 19, 2025 cash from actual ages and annual wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 592 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [7_104, 5_124, 0]
+
+- name: Case 20, 2026 cash from actual ages and annual wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 35
+        employment_income: 6_000
+      person5:
+        age: 8
+      person6:
+        age: 5
+      person7:
+        age: 35
+        employment_income: 6_133
+      person8:
+        age: 8
+      person9:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+      spm_unit2:
+        members: [person4, person5, person6]
+        is_tanf_enrolled: false
+      spm_unit3:
+        members: [person7, person8, person9]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5, person6]
+      tax_unit3:
+        members: [person7, person8, person9]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+      household2:
+        members: [person4, person5, person6]
+        state_code: CO
+      household3:
+        members: [person7, person8, person9]
+        state_code: CO
+  output:
+    co_tanf_countable_earned_income_need: [0, 4_920, 5_053]
+    co_tanf_countable_gross_unearned_income: [0, 0, 0]
+    co_tanf_need_standard: [5_052, 5_052, 5_052]
+    co_tanf_income_eligible: [true, true, false]
+    co_tanf_eligible: [true, true, false]
+    # Annual grant 620 x12; wage case subtracts $1,980; above-need case0.
+    co_tanf: [7_440, 5_460, 0]
+
+# Isolated schedule components: explicit counts and eligibility select printed
+# chart cells, not independently derived legal assistance-unit eligibility.
+# Noncalendar YEAR starts probe schedule dates; outputs are annualized snapshots,
+# not payments over the following twelve calendar months.
+
+- name: Case 21, August 2018 annualized schedule snapshot preserves the earlier grant.
+  period: year:2018-08
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 2
+  output:
+    co_tanf_grant_standard: 5_544
+
+- name: Case 22, September 2018 annualized schedule snapshot starts the new grant.
+  period: year:2018-09
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 2
+  output:
+    co_tanf_grant_standard: 6_096
+
+- name: Case 23, 2022-03 annualized schedule snapshot excludes the premature increase.
+  period: year:2022-03
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 2
+  output:
+    co_tanf_grant_standard: 6_096
+
+- name: Case 24, 2022-06 annualized schedule snapshot excludes the premature increase.
+  period: year:2022-06
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 2
+  output:
+    co_tanf_grant_standard: 6_096
+
+- name: Case 25, July 2022 annualized schedule snapshot starts the statutory increase.
+  period: year:2022-07
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 2
+  output:
+    co_tanf_grant_standard: 6_708
+
+- name: Case 26, 2019 all 33 published grant cells and three first additional-child cells.
+  period: 2019
+  input:
+    co_tanf_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    spm_unit_count_adults: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+    co_tanf_count_children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  output:
+    co_tanf_grant_standard: [0, 1692, 3552, 5328, 7116, 8532, 9852, 10980, 12048, 13140, 14340, 15228, 3672, 4800, 6096, 7404, 8784, 10128, 11184, 12264, 13356, 14412, 15468, 16356, 5172, 6372, 7740, 9120, 10392, 11424, 12504, 13620, 14664, 15708, 16776, 17664]
+
+- name: Case 27, 2023 all 33 published grant cells and three first additional-child cells.
+  period: 2023
+  input:
+    co_tanf_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    spm_unit_count_adults: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+    co_tanf_count_children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  output:
+    co_tanf_grant_standard: [0, 1872, 3912, 5868, 7836, 9396, 10848, 12084, 13260, 14460, 15780, 16764, 4044, 5280, 6708, 8148, 9672, 11148, 12312, 13500, 14700, 15864, 17016, 18000, 5700, 7020, 8520, 10032, 11436, 12576, 13764, 14988, 16140, 17280, 18456, 19440]
+
+- name: Case 28, 2019 negative-earnings cap cash from actual ages and annual wages.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+        self_employment_income: -60_000
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    # Negative earnings cannot raise final cash above the published grant.
+    co_tanf: 6_096
+
+- name: Case 29, 2019 other-state exclusion cash from actual ages and annual wages.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    co_tanf_eligible: false
+    co_tanf: 0
+
+- name: Case 30, 2019 childless demographic exclusion cash from actual ages and annual wages.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 20
+      person3:
+        age: 21
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    co_tanf_eligible: false
+    co_tanf: 0
