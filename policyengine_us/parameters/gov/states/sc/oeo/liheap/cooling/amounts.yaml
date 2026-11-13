@@ -1,6 +1,8 @@
 description: South Carolina provides these base and supplemental regular cooling amounts under the Low Income Home Energy Assistance Program.
 # The cooling season (May 1 to September 30) pays no fuel supplement. The FY2027
-# plan keeps the child, disabled and veteran supplements at 50.
+# plan keeps the child, disabled and veteran supplements at 50. Its items 3.3,
+# 3.5 and 3.6 give a 300 base; only the item 3.3 "Other" row prints 200. The
+# 2026 Benefit Matrix covers FY2026 only, so the FY2027 values rest on the plan.
 base:
   2025-10-01: 200
   2026-10-01: 300

@@ -10541,7 +10541,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Is South Carolina's high energy burden supplement paid when energy costs equal 20% of income, as the FY2026
     plan reads, or only when the current bill is higher than 20% of income, as the 2024 guide and the matrix read?
@@ -10568,11 +10568,15 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/cooling/sc_liheap_cooling.py
     - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/burden_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
+    - https://github.com/PolicyEngine/policyengine-us/pull/10754
   state: unreviewed
-  note: PE-US follows the plan's inclusive test, with annual bills against annual income.
+  note: PE-US follows the plan's inclusive test, with annual bills against annual income. The cooling award (PR 10754)
+    applies the same annual test, so winter fuel bills count toward the cooling-season burden; the guides' current-month
+    test would count only the summer bill.
 
 - id: us-sc:liheap-income-floor-vs-smi-limit
   program: liheap
@@ -10608,7 +10612,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Is South Carolina's $175 low-income tier 30% of the full size-adjusted state median income, or 30% of the 60%
     income limit that OEO's guides call the SMI?
@@ -10637,9 +10641,11 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/cooling/sc_liheap_cooling.py
     - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/low_income_limit_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
+    - https://github.com/PolicyEngine/policyengine-us/pull/10754
   state: ruled
   note: 'Ruled 2026-11-03: use 30% of the 60% limit. The plan''s words allow either base, and OEO''s own texts define
     the SMI it means here, so the agency breaks the tie. The 2024 guide and the matrix use 70% of the same limit, a tier
@@ -10692,7 +10698,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Do South Carolina's itemized supplements look only at eligible members, with the award prorated, and are
     state-placed foster children left out of the household, as the 2024 guide provides where the FY2026 plan is silent?
@@ -10713,10 +10719,12 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/cooling/sc_liheap_cooling.py
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_household_size.py
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
+    - https://github.com/PolicyEngine/policyengine-us/pull/10754
   state: ruled
   note: 'Ruled 2026-11-02: follow the 2024 guide. The veteran supplement also looks only at eligible members, although
     the guide''s list does not name veterans, and the prorated award keeps its cents.'

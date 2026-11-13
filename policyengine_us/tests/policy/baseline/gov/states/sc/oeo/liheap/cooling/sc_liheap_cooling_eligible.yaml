@@ -1,12 +1,11 @@
 # Sources: South Carolina FY2026 and FY2027 LIHEAP plans, items 1.1 and 3.1;
 # OEO 2024 Administrative Guide, Section 3A (an obligation to pay a home energy
 # bill; Direct Assistance may pay home heating or cooling costs).
-# Cooling eligibility is regular LIHEAP eligibility plus cooling costs and a
-# specified heating type. FY2026 income limit for one person: 31,993 (60% of
-# SMI). Wages are hourly pay times hours; electric bills of 1,800 are 150 a
-# month.
+# Cooling eligibility is regular LIHEAP eligibility plus cooling costs. FY2026
+# income limit for one person: 31,993 (60% of SMI). Wages are hourly pay times
+# hours; electric bills of 1,800 are 150 a month.
 
-- name: Case 1, no cooling costs, an unspecified heating fuel with heat in rent or income over the limit pays no cooling award.
+- name: Case 1, no cooling costs or income over the limit pays no cooling award; heat in the rent with an unspecified fuel is paid.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -51,11 +50,14 @@
   output:
     # Household 1 has no cooling costs but keeps its 200 heating base.
     # Household 2 qualifies for heating through heat in the rent (base 200),
-    # but heating_type is a required input, so an unspecified fuel receives
-    # no cooling award.
+    # and the cooling gate adds no heating-fuel condition, so it also receives
+    # the 200 cooling base (20_800 > 9_597.90; 1_800 < 4_160).
     # Household 3: 32_240 > 31_993 and above 110% of the 2025 guideline
     # (15_650 * 1.1 = 17_215).
     sc_liheap_eligible: [true, true, false]
-    sc_liheap_cooling_eligible: [false, false, false]
-    sc_liheap_cooling: [0, 0, 0]
+    # Was [false, false, false], now [false, true, false]: the cooling gate no
+    # longer excludes an unspecified heating fuel.
+    sc_liheap_cooling_eligible: [false, true, false]
+    # Was [0, 0, 0], now [0, 200, 0]: the same change.
+    sc_liheap_cooling: [0, 200, 0]
     sc_liheap: [200, 200, 0]
