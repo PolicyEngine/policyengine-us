@@ -1,3 +1,10 @@
+## [2.119.0] - 2026-11-13
+
+### Added
+
+- Add source-backed 2017 Medicaid MAGI income-limit histories for New York parents, children, infants, and pregnant people.
+
+
 ## [2.118.11] - 2026-11-13
 
 ### Fixed
