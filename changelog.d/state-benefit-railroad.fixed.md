@@ -1,0 +1,1 @@
+Count Railroad Retirement Act benefits as income in the state and county benefit programs whose rules name them, count pensions, retirement benefits or federal benefits, or count all income they do not exclude.

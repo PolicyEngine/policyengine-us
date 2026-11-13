@@ -121,3 +121,13 @@
   output:
     # SNAP is excluded per Policy Manual 2.1.15
     sc_ccap_countable_income: 20_000
+
+- name: Case 7, railroad retirement benefits count as unearned income.
+  # The Child Care Scholarship Policy Manual counts "Railroad retirement insurance benefits".
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    railroad_benefits: 12_000
+  output:
+    sc_ccap_countable_income: 1_000

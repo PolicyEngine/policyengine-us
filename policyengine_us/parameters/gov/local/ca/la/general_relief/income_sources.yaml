@@ -12,6 +12,11 @@ values:
     - sstb_self_employment_income
     - ssi
     - social_security
+    # GR policy 44-101 deducts "all net income to the General Relief (GR)
+    # household" from the grant, and its current income takes in "the cash
+    # (including loans), food, housing, and other items that are received by
+    # and available to the GR household", so railroad benefits count.
+    - railroad_benefits
     - tanf
 metadata:
   unit: list
@@ -20,3 +25,5 @@ metadata:
   reference:
     - title: ABP 392 General Relief Information Sheet Form rev 07-2021
       href: https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing 
+    - title: DPSS ePolicy, General Relief 44-101, Income
+      href: https://my.dpss.lacounty.gov/public/en/home/epolicy/program/gr/income/income.html

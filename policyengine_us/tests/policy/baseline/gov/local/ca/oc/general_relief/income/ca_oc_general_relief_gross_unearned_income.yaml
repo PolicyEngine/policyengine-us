@@ -1,0 +1,10 @@
+- name: Case 1, railroad retirement benefits count as income.
+  # GR manual section 70.1 considers all income, including pensions and retirement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    in_oc: true
+    railroad_benefits: 12_000
+  output:
+    ca_oc_general_relief_gross_unearned_income: 1_000

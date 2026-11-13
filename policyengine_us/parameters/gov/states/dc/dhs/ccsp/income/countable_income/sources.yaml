@@ -8,6 +8,10 @@ values:
     - interest_income 
     - rental_income
     - pension_income
+    # Manual 2.5.2 counts railroad retirement. 2.5.3 exempts permanent disability
+    # payments, but railroad_benefits doesn't separate disability annuities, so
+    # the whole amount counts.
+    - railroad_benefits
     - veterans_benefits
     - military_retirement_income
     - alimony_income

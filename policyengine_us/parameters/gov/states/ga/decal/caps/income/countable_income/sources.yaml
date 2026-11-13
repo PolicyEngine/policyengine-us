@@ -13,6 +13,10 @@ values:
     - dividend_income
     - pension_income
     - social_security_retirement
+    # Section 8.4.1 counts retirement and pension income. Section 8.4.2 excludes
+    # only disability and survivors benefits from the Social Security
+    # Administration, and the Railroad Retirement Board pays these benefits.
+    - railroad_benefits
     - military_basic_pay
     # The following are counted per CAPS Policy Manual §8.4 but have
     # no matching variables:

@@ -161,3 +161,13 @@
     # The retirement benefit exceeds the federal SSI benefit rate, so ssi is 0.
     # Monthly: (9,600 + 2,400 + 3,600 + 18,000) / 12 = 33,600 / 12 = 2,800
     pa_ccw_countable_income: 2_800
+
+- name: Case 8, railroad retirement benefits count as income.
+  # 55 Pa. Code chapter 3042, Appendix A, Part I(F) counts railroad retirement, disability or survivors' benefits.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    railroad_benefits: 12_000
+  output:
+    pa_ccw_countable_income: 1_000

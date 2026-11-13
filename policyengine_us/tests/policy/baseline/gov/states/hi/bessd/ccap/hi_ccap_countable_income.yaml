@@ -372,3 +372,13 @@
     # Hawaii counts public assistance in the source list's first month.
     hi_ccap_tanf_income: 100
     hi_ccap_countable_income: 1_100
+
+- name: Case 17, railroad retirement benefits count as income.
+  # HAR 17-798.3-10(b)(2)(A) counts railroad retirement insurance checks from the U.S. government.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    railroad_benefits: 12_000
+  output:
+    hi_ccap_countable_income: 1_000

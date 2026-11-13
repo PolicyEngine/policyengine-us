@@ -61,3 +61,14 @@
   output:
     # 1,200 + 600 + 1,800
     la_general_relief_gross_income: 3_600
+
+- name: Case 3, railroad retirement benefits count as income.
+  # ABP 392 defines net income as any income after deductions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    in_la: true
+    railroad_benefits: 12_000
+  output:
+    la_general_relief_gross_income: 12_000

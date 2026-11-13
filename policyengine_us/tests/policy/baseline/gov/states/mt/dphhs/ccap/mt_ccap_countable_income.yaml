@@ -146,3 +146,13 @@
         state_code: MT
   output:
     mt_ccap_countable_income: 1_500  # (12,000 + 6,000) / 12
+
+- name: Case 8, railroad retirement benefits count as income.
+  # The Child Care 2-6 Income Evaluation Table marks Railroad Retirement as pension or retirement income, countable.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    railroad_benefits: 12_000
+  output:
+    mt_ccap_countable_income: 1_000

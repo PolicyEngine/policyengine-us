@@ -10,6 +10,7 @@ values:
     - farm_operations_income
     # Unearned income (countable per MS 306).
     - social_security  # MS 306.34 RSDI umbrella (Retirement, Survivors, Disability)
+    - railroad_benefits
     - disability_benefits  # MS 306.9 Disability Insurance Benefits (employer/private disability; distinct from RSDI 306.34 and workers' comp 306.49)
     - total_unemployment_compensation  # MS 306.45
     - workers_compensation  # MS 306.49

@@ -119,3 +119,13 @@
   output:
     # $2,400 + $3,600 + $1,200 (not enrolled, so child support counted) = $7,200
     co_tanf_countable_gross_unearned_income: 7_200
+
+- name: Case 9, railroad retirement benefits count as unearned income.
+  # 9 CCR 2503-6 section 3.605.3 counts "Railroad retirement payments".
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    railroad_benefits: 12_000
+  output:
+    co_tanf_countable_gross_unearned_income: 12_000

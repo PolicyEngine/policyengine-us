@@ -82,3 +82,29 @@
     # Pension 12,000/year = 1,000/month, rental 6,000/year = 500/month, and
     # workers compensation 4,800/year = 400/month: 1,000 + 500 + 400 = 1,900.
     or_erdc_countable_income: 1_900
+
+- name: Case 4, railroad retirement benefits count as unearned income.
+  # OAR 414-175-0035(52)(c)(A) counts monthly retirement benefits as unearned
+  # income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        railroad_benefits: 12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # 12,000 / 12 = 1,000
+    or_erdc_countable_income: 1_000

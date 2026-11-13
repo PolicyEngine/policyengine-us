@@ -7,6 +7,9 @@ values:
     # Part I.E; social_security adds the retirement, disability,
     # survivors and dependents benefits.
     - social_security
+    # Part I.F counts railroad retirement, disability and survivors' benefits
+    # before deductions of health insurance premiums.
+    - railroad_benefits
     - ssi
     - pension_income
     - military_retirement_income
@@ -18,9 +21,9 @@ values:
     - dividend_income
     - interest_income
     - rental_income
-    # Not modeled: railroad retirement (F), state blind pension (G),
-    # public assistance/retirement (H), royalties (Q), lump sums >$100 (R),
-    # lottery >$100 (S), room/board net income (U)
+    # Not modeled: state blind pension (G), public assistance/retirement (H),
+    # royalties (Q), lump sums >$100 (R), lottery >$100 (S), room/board net
+    # income (U)
 
 metadata:
   unit: list

@@ -121,3 +121,13 @@
     # disregard + 500 unearned = 2_300.
     wy_ccap_gross_income: 2_500
     wy_ccap_countable_income: 2_300
+
+- name: Case 6, railroad retirement benefits count as income.
+  # Child care rules, chapter 1, Appendix B, list RR retirement as unearned and nonexempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    railroad_benefits: 12_000
+  output:
+    wy_ccap_gross_income: 1_000

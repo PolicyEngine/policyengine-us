@@ -163,3 +163,13 @@
     # recipients is counted (State Plan Financial Rules 3 and 4).
     # 1_200 + 600 = 1_800
     nc_tanf_countable_gross_unearned_income: 1_800
+
+- name: Case 9, railroad retirement benefits count as unearned income.
+  # WF-114 lists "Railroad Retirement" as countable unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    railroad_benefits: 12_000
+  output:
+    nc_tanf_countable_gross_unearned_income: 12_000
