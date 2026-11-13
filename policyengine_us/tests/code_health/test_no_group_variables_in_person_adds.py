@@ -110,10 +110,7 @@ ALLOWED = {
 
 # (person variable, attribute, group variable): each member gets the whole
 # group amount. Each was confirmed as a bug on 2026-10-06.
-KNOWN_VIOLATIONS = {
-    # PolicyEngine/policyengine-us#9888.
-    ("mt_misc_deductions", "adds", "casualty_loss_deduction"),
-}
+KNOWN_VIOLATIONS = set()
 
 
 def listed_names(variable, attribute: str, parameters) -> dict[str, list[str]]:
