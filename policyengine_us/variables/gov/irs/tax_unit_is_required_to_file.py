@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.filing_requirement import (
+    section_6012_gross_income_thresholds,
+)
 from policyengine_us.tools.section_911 import section_911_gross_exclusion
 
 
@@ -69,53 +72,22 @@ class tax_unit_is_required_to_file(Variable):
             0 if p.income.exemption.suspended else p.income.exemption.amount
         )
         filing_status = tax_unit("filing_status", period)
-        separate = filing_status == filing_status.possible_values.SEPARATE
         head_can_be_claimed = tax_unit("head_is_dependent_elsewhere", period)
         spouse_can_be_claimed = tax_unit("spouse_is_dependent_elsewhere", period)
 
-        # Section 6012(f), for 2018 to 2025: no return is required when gross
-        # income does not exceed the standard deduction, which includes the
-        # additional standard deduction for age and for blindness. A married
-        # individual filing separately must file with any gross income.
-        threshold = where(
-            separate,
-            exemption_amount,
-            tax_unit("standard_deduction", period) + exemption_amount,
+        # Section 6012(f), for 2018 to 2025: gross income over the standard
+        # deduction requires a return, and any gross income does on a
+        # separate return. Section 6012(a)(1)(A) and (B), from 2026 (and
+        # before 2018): gross income of at least the exemption amount for
+        # each spouse plus the basic standard deduction and the additions for
+        # age requires one. section_6012_gross_income_thresholds sets out
+        # both thresholds; the Idaho military retirement employment test
+        # applies the same ones.
+        standard_deduction_threshold, basic_threshold = (
+            section_6012_gross_income_thresholds(tax_unit, period, parameters)
         )
-        income_over_standard_deduction = gross_income > threshold
-
-        # Section 6012(a)(1)(A) and (B), from 2026 (and before 2018): no return
-        # is required when gross income is less than the exemption amount for
-        # each spouse plus the basic standard deduction, raised by one
-        # additional standard deduction for each spouse aged 65 or older
-        # (section 63(f)(1)). Blindness does not raise it, and gross income
-        # equal to it requires a return. The WFTCA contributed reform's bonus
-        # guaranteed deduction is an increase to the basic standard deduction
-        # (zero unless that reform is on).
-        #
-        # A married individual filing separately has no exception. With an
-        # exemption amount of zero, (A) reaches even an individual with no
-        # gross income, since no gross income is "less than" zero.
-        # For a filer who can be claimed as a dependent, basic_standard_deduction
-        # is already the section 63(c)(5) limited amount.
-        aged_count = tax_unit("aged_head", period).astype(int) + tax_unit(
-            "aged_spouse", period
-        ).astype(int)
-        basic_threshold = (
-            exemption_amount * tax_unit("head_spouse_count", period)
-            + tax_unit("basic_standard_deduction", period)
-            + tax_unit("bonus_guaranteed_deduction", period)
-            + aged_count * p.deductions.standard.aged_or_blind.amount[filing_status]
-        )
-        # Section 6012(a)(1)(C)(ii): the (A) exception does not apply "to any
-        # individual ... for whom the standard deduction is zero under section
-        # 63(c)(6)". separate_filer_itemizes is PE-US's only 63(c)(6) path, so
-        # the threshold falls to the exemption amount, without the age
-        # addition, whatever the filing status.
-        no_exception = separate | tax_unit("separate_filer_itemizes", period)
-        income_at_least_basic_threshold = gross_income >= where(
-            no_exception, exemption_amount, basic_threshold
-        )
+        income_over_standard_deduction = gross_income > standard_deduction_threshold
+        income_at_least_basic_threshold = gross_income >= basic_threshold
 
         # Section 6012(a)(1)(A)(iv), the joint-return exception, "shall not
         # apply if for the taxable year ... any other taxpayer is entitled to

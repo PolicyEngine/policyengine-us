@@ -1,10 +1,9 @@
-description: Idaho counts the following income sources under the retirement benefits deduction.
+description: Idaho counts these income sources, other than military retirement benefits, under the retirement benefits deduction for recipients who meet its age test.
 values:
+  # Idaho Code 63-3022A(1)(a). Military retirement benefits
+  # (id_eligible_military_retirement_income) have their own eligibility
+  # test, in id_retirement_benefits_deduction_military_eligible_person.
   2021-01-01:
-    - public_pension_income
-    - id_eligible_military_retirement_income
-
-  2025-01-01:
     - public_pension_income
 metadata:
   unit: list

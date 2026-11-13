@@ -1,0 +1,109 @@
+# Idaho Code 63-3022A(1)(b). Before 2025, military retirement benefits had
+# the age test of 63-3022A(1)(a): age 65, or age 62 and disabled. From 2025:
+# disabled at any age, age 62 by the end of the year, or the employment test.
+
+- name: 2024 a 64-year-old does not qualify.
+  period: 2024
+  input:
+    state_code: ID
+    age: 64
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: false
+
+- name: 2024 a 65-year-old qualifies.
+  period: 2024
+  input:
+    state_code: ID
+    age: 65
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+
+- name: 2024 a disabled 62-year-old qualifies.
+  period: 2024
+  input:
+    state_code: ID
+    age: 62
+    is_disabled: true
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+
+- name: 2024 a disabled 61-year-old does not qualify.
+  period: 2024
+  input:
+    state_code: ID
+    age: 61
+    is_disabled: true
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: false
+
+- name: 2024 a working 45-year-old does not qualify.
+  period: 2024
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 100_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: false
+
+- name: 2025 a 62-year-old qualifies.
+  period: 2025
+  input:
+    state_code: ID
+    age: 62
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+
+- name: 2025 a 61-year-old without a job or disability does not qualify.
+  period: 2025
+  input:
+    state_code: ID
+    age: 61
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: false
+
+- name: 2025 a disabled 40-year-old qualifies.
+  period: 2025
+  input:
+    state_code: ID
+    age: 40
+    is_disabled: true
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+
+- name: 2025 a 45-year-old whose wages require a federal return qualifies.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 60_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: true
+
+- name: 2025 a 45-year-old whose wages do not require a federal return does not qualify.
+  period: 2025
+  input:
+    state_code: ID
+    age: 45
+    employment_income: 10_000
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: false
+
+- name: 2025 a dependent does not qualify, whatever the age.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, parent]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction_military_eligible_person: [false, false]
