@@ -21,11 +21,5 @@ class dc_ptc_has_eligible_claimant(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.dc.tax.income.credits.ptc
         person = tax_unit.members
-        filer = person("is_tax_unit_head_or_spouse", period)
-        # The federal filing exception permits claiming one's own dependents;
-        # it does not remove dependent status under section 152.
-        dependent = person("claimable_as_dependent_on_another_return", period)
-        old_enough = person("age", period) >= p.dependent_claimant_min_age
-        return tax_unit.any(filer & (~dependent | old_enough))
+        return tax_unit.any(person("dc_ptc_eligible_claimant", period))

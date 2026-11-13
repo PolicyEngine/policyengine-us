@@ -231,3 +231,54 @@
     # The filer remains a dependent under section 47-1801.04(13): 0.
     dc_ptc_has_eligible_claimant: false
     dc_ptc: 0
+
+- name: DC property tax reform cannot use a non-filer child's rent
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      child:
+        age: 10
+        rent: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    dc_ptc_eligible_claimant: [false, false]
+    dc_ptc_has_eligible_claimant: false
+    dc_ptc: 0
+
+- name: DC property tax reform keeps the dependent claimant bar during phase-out
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    gov.contrib.states.dc.property_tax.phase_out.applies: true
+    people:
+      head:
+        age: 30
+        employment_income: 70_000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: DC
+  output:
+    # max(1,400 - (70,000 - 65,600) * 10%, 0) = 960 before section (k).
+    dc_ptc_has_eligible_claimant: false
+    dc_ptc: 0

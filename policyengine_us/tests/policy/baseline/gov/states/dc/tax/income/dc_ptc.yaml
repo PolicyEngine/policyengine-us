@@ -582,3 +582,157 @@
     # Age 70: max(1,000 * 20% - 40,000 * 3%, 0) = 0.
     # The couple chooses the eligible claimant with the larger credit: 800.
     dc_ptc: 800
+
+- name: 2025 Schedule H uses the full property tax bill for co-owners
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        real_estate_taxes: 1_500
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 10_000
+        real_estate_taxes: 1_500
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    adjusted_gross_income: 20_000
+    # Section 47-1806.06(e)(1): min(1,425, 3,000 - 20,000 * 3%).
+    dc_ptc: 1_425
+
+- name: 2025 Schedule H bars a claimable sole owner under 65
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 10_000
+        real_estate_taxes: 3_000
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # Section (k) bars the owner; the head owns no home and pays no rent.
+    dc_ptc: 0
+
+- name: 2025 Schedule H permits a claimable sole owner aged 65
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 65
+        employment_income: 10_000
+        real_estate_taxes: 3_000
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # The owner meets section (k)'s age exception; min(1,425, 3,000 - 600).
+    dc_ptc: 1_425
+
+- name: 2025 Schedule H cannot use a non-filer child's rent
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      child:
+        age: 10
+        rent: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    # Section (b)(4) permits one filer; section (k) bars this head.
+    dc_ptc_eligible_claimant: [false, false]
+    dc_ptc_has_eligible_claimant: false
+    dc_ptc: 0
+
+- name: 2025 Schedule H gives 800 when one spouse pays all the rent
+  period: 2025
+  input:
+    people:
+      head:
+        age: 69
+        employment_income: 20_000
+        rent: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 67
+        employment_income: 20_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # One claimant pays 12,000: 12,000 * 20% - 40,000 * 4% = 800.
+    dc_ptc: 800
+
+- name: 2025 Schedule H excludes a non-filer child's property tax from the filing unit's bill
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        real_estate_taxes: 1_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        real_estate_taxes: 2_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    # The filer's bill gives min(1,425, 1,000 - 20,000 * 3%) = 400.
+    dc_ptc: 400
