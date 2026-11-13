@@ -1,0 +1,1 @@
+Restore New York HEAP regular heating benefit schedules for FY2017–FY2023, including the December 2022 base-benefit increase, and preserve the inclusive Tier I income boundary when floating-point multiplication reaches an exact monthly dollar.
