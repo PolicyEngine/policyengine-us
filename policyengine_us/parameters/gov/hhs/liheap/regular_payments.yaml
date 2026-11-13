@@ -1,0 +1,64 @@
+description: States provide these regular payments under the Low Income Home Energy Assistance Program.
+values:
+  2023-01-01:
+    - ak_hap  # Alaska Heating Assistance Program
+    - al_liheap  # Alabama LIHEAP
+    - ar_liheap  # Arkansas LIHEAP
+    - az_liheap  # Arizona LIHEAP
+    # California's three components are exclusive by eligibility, so their sum is its single regular payment.
+    - ca_liheap_utility_heating  # California HEAP utility heating
+    - ca_liheap_covered_liquid_heating  # California WPO propane and fuel oil heating
+    - ca_liheap_wood_heating  # California WPO wood heating
+    - co_leap  # Colorado LEAP
+    - ct_ceap  # Connecticut CEAP
+    - dc_liheap_payment  # DC LIHEAP
+    - de_liheap  # Delaware LIHEAP
+    - fl_liheap  # Florida LIHEAP
+    - ga_liheap  # Georgia LIHEAP
+    - hi_liheap_subsidized_amount  # Hawaii LIHEAP subsidized dwelling benefit
+    - ia_liheap  # Iowa LIHEAP
+    - id_liheap  # Idaho LIHEAP
+    - il_liheap_regular_heating  # Illinois LIHEAP, without crisis assistance
+    - in_eap  # Indiana EAP
+    - ks_liheap  # Kansas LIEAP
+    - ky_liheap  # Kentucky LIHEAP
+    - la_liheap  # Louisiana LIHEAP
+    - ma_liheap  # Massachusetts LIHEAP
+    - md_meap  # Maryland MEAP
+    - me_heap  # Maine HEAP
+    - mn_eap  # Minnesota EAP
+    - mo_liheap  # Missouri LIHEAP
+    - ms_liheap  # Mississippi LIHEAP
+    - mt_liheap  # Montana LIHEAP
+    - nc_lieap  # North Carolina LIEAP
+    - nd_liheap  # North Dakota LIHEAP
+    - ne_liheap  # Nebraska LIHEAP
+    - nh_fap  # New Hampshire FAP
+    - nj_liheap  # New Jersey LIHEAP
+    - nm_liheap  # New Mexico LIHEAP
+    - nv_liheap  # Nevada LIHEAP
+    - ny_heap  # New York HEAP
+    - oh_liheap  # Ohio HEAP
+    - ok_liheap  # Oklahoma LIHEAP
+    - or_liheap  # Oregon LIHEAP
+    - pa_liheap  # Pennsylvania LIHEAP
+    - ri_liheap  # Rhode Island LIHEAP
+    - sc_liheap  # South Carolina LIHEAP
+    - sd_liheap  # South Dakota LIEAP
+    - tn_liheap  # Tennessee LIHEAP
+    - tx_ceap  # Texas CEAP
+    - ut_heat  # Utah HEAT
+    - va_eap  # Virginia EAP
+    - vt_liheap  # Vermont Seasonal Fuel Assistance
+    - wa_liheap  # Washington LIHEAP
+    - wi_wheap  # Wisconsin WHEAP
+    - wv_lieap  # West Virginia LIEAP
+    - wy_lieap  # Wyoming LIEAP
+
+metadata:
+  unit: list
+  period: year
+  label: LIHEAP regular state payments
+  reference:
+    - title: 42 U.S.C. 8624(b)(1)(A)
+      href: https://www.law.cornell.edu/uscode/text/42/8624#b_1_A

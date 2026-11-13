@@ -1,0 +1,11 @@
+description: Colorado charges this share of gross countable income as part of the parent fee under the Child Care Assistance Program.
+values:
+  2021-07-01: 0.01
+  # Section 3.124(Q) replaces this flat share with marginal rates alone.
+  2028-08-01: 0
+metadata:
+  unit: /1
+  label: Colorado Child Care Assistance Program parent fee rate on gross income
+  reference:
+    - title: "8 CCR 1403-1 Section 3.124(P) and (Q), Parent fees (effective 2026-08-14) #page 83-84"
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=83

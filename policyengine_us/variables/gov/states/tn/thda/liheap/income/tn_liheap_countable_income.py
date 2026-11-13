@@ -32,7 +32,7 @@ class tn_liheap_countable_income(Variable):
             earned = earned + max_(person(source, period), 0)
         unearned = 0
         for source in p.sources.unearned:
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            unearned = unearned + max_(person(source, period), 0)
         # Section 2.13 counts net income from Social Security, pensions
         # (including military retirement pay) and VA benefits excluding
         # Medicare premiums, and FY2026 plan Section 1.9 counts benefits

@@ -90,16 +90,19 @@
     co_ccap_smi: 7_863.07
     co_ccap_smi_eligible: true
     co_ccap_eligible: true
-    # Base fee: 0.01 * 1,803.33 + 0.14 * (2,500 - 1,803.33)
-    # = 18.03 + 97.53 = 115.57
-    co_ccap_base_parent_fee: 115.57
-    # Add-on: (1 eligible child - 1) * 15 = 0
+    # The fee uses the guideline 3.111(H)(2) lists through September 2026:
+    # (15,650 + 5,500) / 12 = 1,762.50.
+    co_ccap_fpg: 1_762.50
+    # Base fee: 0.01 * 2,500 + 0.14 * (2,500 - 1,762.50) = 25 + 103.25 = 128.25,
+    # which drops its cents to 128.
+    co_ccap_base_parent_fee: 128
+    # Add-on: (1 child in care - 1) * 15 = 0
     co_ccap_add_on_parent_fee: 0
-    # 8 hours/day => hours rate 1; facility rating 0 => no discount (1).
-    # 115.57 * 1 * 1 = 115.57
-    co_ccap_parent_fee: 115.57
-    # Expenses 12,000 / 12 = 1,000 - 115.57 = 884.43
-    co_ccap_subsidy: 884.43
+    # 8 hours a day is full-time care, and a facility rating of 0 gives no
+    # discount.
+    co_ccap_parent_fee: 128
+    # Expenses 12,000 / 12 = 1,000 - 128 = 872
+    co_ccap_subsidy: 872
 
 - name: Case 6, without court supervision the same teenager receives nothing.
   period: 2026-01

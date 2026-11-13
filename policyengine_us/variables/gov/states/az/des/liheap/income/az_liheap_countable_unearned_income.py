@@ -31,11 +31,11 @@ class az_liheap_countable_unearned_income(Variable):
         # Gross Income is "The total Household income for all Household
         # members before taxes and other deductions" (page 4), and a loss is
         # not income, so each source is floored at zero and a rental loss
-        # cannot offset another source. ADD sums the MONTH-defined ssi over
-        # the year.
+        # cannot offset another source. Reading the MONTH-defined ssi over the
+        # year sums its months.
         unearned = 0
         for source in p.sources.unearned:
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            unearned = unearned + max_(person(source, period), 0)
         # Section VI.A.6.e.ii.B counts "gambling profits" (page 9), so
         # gambling losses offset winnings but not other income. Plan Section
         # 1.9 leaves one-time lump sums such as "winnings from lotteries"

@@ -8,6 +8,6 @@ class ctc_arpa_addition(Variable):
     unit = USD
     definition_period = YEAR
     # Defined on Line 5 worksheet of 2021 Instructions for Schedule 8812.
-    reference = "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4"
+    reference = "https://www.irs.gov/pub/irs-prior/i1040s8--2021.pdf#page=4"
     adds = ["ctc_arpa_max_addition"]
     subtracts = ["ctc_arpa_phase_out"]
