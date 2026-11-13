@@ -1357,7 +1357,15 @@ programs:
         variable: sc_liheap
         parameter_prefix: gov.states.sc.oeo.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating base amount with demographic, fuel, low-income and high-burden supplements. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2026 regular heating base amount with demographic, fuel, low-income and high-burden supplements; the cooling-season award is the separate South Carolina LIHEAP cooling entry. Crisis, weatherization and equipment assistance are out of scope.
+      - state: SC
+        status: partial
+        name: South Carolina LIHEAP cooling
+        full_name: South Carolina Low Income Home Energy Assistance Program cooling-season Direct Assistance
+        variable: sc_liheap_cooling
+        parameter_prefix: gov.states.sc.oeo.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 cooling-season nonemergency award, the base plus demographic, low-income and energy-burden supplements with no fuel supplement, up to the cooling maximum, paid alongside the heating award in FY2026. Local frequency limits, local funding decisions, crisis and equipment assistance are out of scope.
       - state: SD
         status: partial
         name: South Dakota LIEAP
