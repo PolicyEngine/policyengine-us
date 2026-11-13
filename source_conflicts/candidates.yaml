@@ -15074,7 +15074,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/income_limit.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
   state: ruled
   note: PolicyEngine applies Utah's amended regulation and adds the federal five-point disregard. CMS
     approved the state plan on March 10, 2017, effective July 1, 2017. Annual calculations retain the
@@ -15118,7 +15119,8 @@ candidates:
     - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/additional.yaml
     - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/main.yaml
     - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/additional.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
   state: ruled
   note: 'PolicyEngine adopts the dated DMAS manual schedules for the 2018-2020 correction in issue 10793.
     Annual calculations use the schedule effective on January 1. The regulation remains a conflicting
