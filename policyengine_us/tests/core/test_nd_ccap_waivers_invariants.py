@@ -111,6 +111,8 @@ def test_nd_ccap_waivers_preserve_bounds_and_default_behavior(
     simulation.set_input("state_code", year, ["ND"] * CASE_COUNT)
     simulation.set_input("age", year, [30, 3] * CASE_COUNT)
     simulation.set_input("is_disabled", year, [False] * (2 * CASE_COUNT))
+    # Every child attends care, so a child's SSI can trigger the exception.
+    simulation.set_input("childcare_hours_per_week", year, [0, 40] * CASE_COUNT)
     simulation.set_input("hhs_smi", year, [monthly_smi * 12] * CASE_COUNT)
     simulation.set_input("nd_ccap_countable_income", period, [income] * CASE_COUNT)
     # Isolate the co-payment calculation from the other eligibility tests.
@@ -197,15 +199,20 @@ def test_nd_ccap_waivers_preserve_bounds_and_default_behavior(
     else:
         assert copay[11] == copay[10]
 
-    # Preserve main's calculation unless a TANF child receives SSI from October 2026.
+    # Preserve main's calculation, except that SSI can end the TANF waiver:
+    # a caretaker's SSI (unit 2) before October 2026, and a child's SSI
+    # (unit 1) from then on.
     expected = np.where(
         (income_to_smi[:3] <= p.copay.waiver_smi_threshold) | tanf,
         0,
         unwaived[:3],
     )
-    if period >= "2026-10" and tanf:
-        expected[1] = (
-            0 if income_to_smi[1] <= p.copay.waiver_smi_threshold else unwaived[1]
+    ssi_exception = 1 if period >= "2026-10" else 2
+    if tanf:
+        expected[ssi_exception] = (
+            0
+            if income_to_smi[ssi_exception] <= p.copay.waiver_smi_threshold
+            else unwaived[ssi_exception]
         )
     np.testing.assert_allclose(copay[:3], expected, atol=0.01)
 
@@ -215,3 +222,12 @@ def test_nd_ccap_waivers_preserve_bounds_and_default_behavior(
         income_eligible[:3], countable_income[:3] <= smi[:3] * rate
     )
     assert np.all(income_eligible[4:6])
+
+    # Units 4, 5 and 9 have a Workforce Benefit caretaker and no other modeled
+    # activity. North Dakota waives the second caretaker's activity test
+    # through December 2025 (ML 3819) and restores it in January 2026.
+    activity = simulation.calculate("nd_ccap_activity_eligible", period)
+    if period < "2026-01":
+        assert np.all(activity[[4, 5, 9]])
+    else:
+        np.testing.assert_array_equal(activity[[4, 5, 9]], activity[[0, 0, 0]])

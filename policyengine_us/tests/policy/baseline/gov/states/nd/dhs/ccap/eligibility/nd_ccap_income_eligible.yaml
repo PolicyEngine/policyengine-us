@@ -336,6 +336,11 @@
         nd_ccap_countable_income: 20000
         is_tanf_enrolled: false
         is_nd_ccap_enrolled: false
+    tax_units:
+      workforce:
+        members: [workforce_parent, workforce_child]
+      ordinary:
+        members: [ordinary_parent, ordinary_child]
     households:
       workforce:
         members: [workforce_parent, workforce_child]

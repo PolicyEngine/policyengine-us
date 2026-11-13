@@ -60,3 +60,31 @@
           2024: ND
   output:
     nd_ccap_workforce_benefit_eligible: true
+
+# North Dakota requires a caretaker in qualifying child care employment
+# (400-28-20-40). A 16-year-old sibling's job leaves the family ineligible.
+- name: North Dakota withholds the Workforce Benefit when only a non-caretaker qualifies
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age:
+          2025: 30
+        nd_ccap_workforce_benefit_eligible_parent: false
+      teen:
+        age:
+          2025: 16
+        nd_ccap_workforce_benefit_eligible_parent: true
+      child:
+        age:
+          2025: 3
+    spm_units:
+      family:
+        members: [parent, teen, child]
+    households:
+      household:
+        members: [parent, teen, child]
+        state_code:
+          2025: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: false

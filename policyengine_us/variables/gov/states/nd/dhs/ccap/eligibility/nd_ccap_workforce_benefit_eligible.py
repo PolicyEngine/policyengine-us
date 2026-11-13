@@ -10,6 +10,10 @@ class nd_ccap_workforce_benefit_eligible(Variable):
     reference = "https://www.nd.gov/dhs/policymanuals/40028/Content/400_28_20_40.htm"
 
     def formula_2024_06_01(spm_unit, period, parameters):
-        return spm_unit.any(
-            spm_unit.members("nd_ccap_workforce_benefit_eligible_parent", period)
-        )
+        # North Dakota requires at least one caretaker in qualifying child care
+        # employment (400-28-20-40); the model treats the tax unit head and
+        # spouse as the caretakers, as the activity test does.
+        person = spm_unit.members
+        caretaker = person("is_tax_unit_head_or_spouse", period.this_year)
+        qualifies = person("nd_ccap_workforce_benefit_eligible_parent", period)
+        return spm_unit.any(caretaker & qualifies)
