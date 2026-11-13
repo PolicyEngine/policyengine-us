@@ -13,9 +13,10 @@ class aca_tax_family_size(Variable):
     )
     documentation = (
         "Form 8962 line 1: the number of people in the premium tax credit "
-        "tax family. It equals the tax unit size unless a head or spouse can "
-        "be claimed as a dependent on another return, and is 0 when every "
-        "head and spouse can be (no applicable taxpayer). The shared "
+        "tax family. It equals the tax unit size unless a filer "
+        "(is_aca_filer: a head or spouse, including one inferred to complete "
+        "the roles) can be claimed as a dependent on another return, and is "
+        "0 when every filer can be (no applicable taxpayer). The shared "
         "tax_unit_size is unchanged."
     )
 

@@ -19,25 +19,8 @@ class slcsp_age_curve_amount_person_uncapped(Variable):
     )
 
     def formula(person, period, parameters):
-        simulation = person.simulation
         name = "slcsp_age_curve_amount_person"
-        if hasattr(simulation, "_get_set_input_periods"):
-            supplied = period in simulation._get_set_input_periods(name)
-        else:
-            # Older Core releases expose the constructor inputs and later
-            # set_input provenance separately.
-            branches = (
-                simulation._get_visible_branch_names()
-                if hasattr(simulation, "_get_visible_branch_names")
-                else {getattr(simulation, "branch_name", "default"), "default"}
-            )
-            supplied = name in simulation.input_variables or any(
-                variable == name and branch in branches and set_period == period
-                for variable, branch, set_period in (
-                    getattr(simulation, "_user_input_keys", None) or ()
-                )
-            )
-        if supplied:
+        if has_input_for_period(person.simulation, name, period):
             return person(name, period)
         amount = person("slcsp_age_curve_amount_person", period)
         pays_premium = person("pays_aca_premium", period.this_year)

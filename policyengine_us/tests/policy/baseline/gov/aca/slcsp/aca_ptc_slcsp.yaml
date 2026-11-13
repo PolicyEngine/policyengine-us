@@ -451,7 +451,7 @@
     slcsp: 4713.8
     aca_ptc_slcsp: 4483.7
 
-- name: r3 2025 TX older children with other coverage leave a child-premium slot for the enrolled youngest child
+- name: 2025 TX older children with other coverage leave a child-premium slot for the enrolled youngest child
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -513,7 +513,7 @@
     slcsp: 3967.40
     aca_ptc_slcsp: 2483.70
 
-- name: r3 supplied age-curve premiums remain inputs to a mixed coverage-family benchmark
+- name: Supplied age-curve premiums remain inputs to a mixed coverage-family benchmark
   period: 2025
   input:
     people:
@@ -544,7 +544,7 @@
     slcsp: 12_000
     aca_ptc_slcsp: 6000
 
-- name: r3 a supplied age-curve premium is preserved for an enrolled nonpayer
+- name: A supplied age-curve premium is preserved for an enrolled nonpayer
   period: 2025
   input:
     people:
@@ -575,7 +575,7 @@
     slcsp: 12_000
     aca_ptc_slcsp: 6000
 
-- name: r3 a supplied zero age-curve premium is preserved for an enrolled nonpayer
+- name: A supplied zero age-curve premium is preserved for an enrolled nonpayer
   period: 2025
   input:
     people:
@@ -669,7 +669,7 @@
     is_aca_marketplace_enrollee: [true, true, true, true, true]
     slcsp: 4713.8
     aca_ptc_slcsp: 4483.7
-- name: r4 NY supplied family-tier child classification applies to an enrolled nonpayer
+- name: NY supplied family-tier child classification applies to an enrolled nonpayer
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -744,7 +744,7 @@
     aca_ptc_slcsp_family_tier_multiplier: 2.85
     aca_ptc_slcsp: 1425
 
-- name: r4 NY supplied family-tier child classification applies only in its supplied month
+- name: NY supplied family-tier child classification applies only in its supplied month
   period: 2025
   absolute_error_margin: 0.01
   input:

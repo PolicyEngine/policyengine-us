@@ -20,6 +20,8 @@ class ca_premium_subsidy(Variable):
         # the annual appropriation cap, and advance-payment mechanics are not
         # modeled. Take-up gating is applied downstream via
         # assigned_ca_premium_subsidy (parallel to assigned_aca_ptc).
+        # PDF pages 1-2; (d)(5), the applicable second lowest cost silver
+        # plan, is on page 2.
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=1",
         # GC Title 25 Section 100805 authorizes the subsidy; Section 100810
         # sets the applicable percentage and eligibility.

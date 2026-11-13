@@ -500,7 +500,7 @@
 
 # Ages alone cannot distinguish equally old filers from dependents;
 # the explicit-role cases document how callers resolve that ambiguity.
-- name: Minor joint filers ages 17 and 16, order ['a', 'b']
+- name: Minor joint filers aged 17 and 16, the claimable one listed first
   period: 2025
   input:
     people:
@@ -511,19 +511,16 @@
         age: 16
     tax_units:
       tax_unit:
-        members: &id001
-        - a
-        - b
+        members: [a, b]
         filing_status: JOINT
     households:
       household:
-        members: *id001
+        members: [a, b]
         state_code: TX
   output:
-    is_aca_tax_family_member:
-    - false
-    - true
-- name: Minor joint filers ages 17 and 17, order ['a', 'b']
+    is_aca_tax_family_member: [false, true]
+
+- name: Minor joint filers both aged 17, the claimable one listed first
   period: 2025
   input:
     people:
@@ -534,19 +531,16 @@
         age: 17
     tax_units:
       tax_unit:
-        members: &id002
-        - a
-        - b
+        members: [a, b]
         filing_status: JOINT
     households:
       household:
-        members: *id002
+        members: [a, b]
         state_code: TX
   output:
-    is_aca_tax_family_member:
-    - false
-    - true
-- name: Minor joint filers ages 17 and 17, order ['b', 'a']
+    is_aca_tax_family_member: [false, true]
+
+- name: Minor joint filers both aged 17, the claimable one listed second
   period: 2025
   input:
     people:
@@ -557,20 +551,16 @@
         claimable_as_dependent_on_another_return: true
     tax_units:
       tax_unit:
-        members: &id003
-        - b
-        - a
+        members: [b, a]
         filing_status: JOINT
     households:
       household:
-        members: *id003
+        members: [b, a]
         state_code: TX
   output:
-    is_aca_tax_family_member:
-    - true
-    - false
-- name: Equal-age minor filers and dependent with explicit roles, order
-    ['a', 'b', 'dependent']
+    is_aca_tax_family_member: [true, false]
+
+- name: Equal-age minor filers and a dependent with explicit roles, the claimable head listed first
   period: 2025
   input:
     people:
@@ -589,22 +579,16 @@
         is_tax_unit_spouse: false
     tax_units:
       tax_unit:
-        members: &id004
-        - a
-        - b
-        - dependent
+        members: [a, b, dependent]
         filing_status: JOINT
     households:
       household:
-        members: *id004
+        members: [a, b, dependent]
         state_code: TX
   output:
-    is_aca_tax_family_member:
-    - false
-    - true
-    - false
-- name: Equal-age minor filers and dependent with explicit roles, order
-    ['b', 'a', 'dependent']
+    is_aca_tax_family_member: [false, true, false]
+
+- name: Equal-age minor filers and a dependent with explicit roles, the claimable head listed second
   period: 2025
   input:
     people:
@@ -623,20 +607,15 @@
         is_tax_unit_spouse: false
     tax_units:
       tax_unit:
-        members: &id005
-        - b
-        - a
-        - dependent
+        members: [b, a, dependent]
         filing_status: JOINT
     households:
       household:
-        members: *id005
+        members: [b, a, dependent]
         state_code: TX
   output:
-    is_aca_tax_family_member:
-    - true
-    - false
-    - false
+    is_aca_tax_family_member: [true, false, false]
+
 - name: Minor joint filer inference respects supplied dependency hints
   period: 2025
   input:
@@ -653,17 +632,41 @@
         is_tax_unit_dependent: false
     tax_units:
       tax_unit:
-        members: &id006
-        - dependent
-        - a
-        - b
+        members: [dependent, a, b]
         filing_status: JOINT
     households:
       household:
-        members: *id006
+        members: [dependent, a, b]
         state_code: TX
   output:
-    is_aca_tax_family_member:
-    - false
-    - false
-    - true
+    is_aca_tax_family_member: [false, false, true]
+
+- name: When every member is a supplied dependent, the oldest is still the inferred filer
+  # Neither member is an adult, so no head is inferred and is_aca_filer fills
+  # the role. It leaves supplied dependents out of that choice only when
+  # some member is not one. Here both are, so the 17-year-old is the filer
+  # and the infant is the return's dependent: a tax family of 1 + 1 = 2.
+  # Leaving supplied dependents out regardless would give no filer, no
+  # applicable taxpayer and a tax family of 0.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 17
+        is_tax_unit_dependent: true
+      infant:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, infant]
+        state_code: TX
+  output:
+    is_tax_unit_head: [false, false]
+    is_aca_filer: [true, false]
+    is_aca_tax_family_member: [true, true]
+    aca_tax_family_size: 2

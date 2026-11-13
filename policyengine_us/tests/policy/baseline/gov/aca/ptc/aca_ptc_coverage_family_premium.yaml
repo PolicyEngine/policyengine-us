@@ -338,7 +338,7 @@
   output:
     aca_ptc_coverage_family_premium: 0
 
-- name: r3 NY changing monthly family tiers allocate each month's silver premium
+- name: NY changing monthly family tiers allocate each month's silver premium
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -424,7 +424,7 @@
     # 6 * 748.125 * 892.5 / (892.5 + 500) + 6 * 750 * 1000 / (1000 + 500).
     aca_ptc_coverage_family_premium: 5876.99
 
-- name: r3 monthly bronze allocation preserves a supplied annual selected premium
+- name: Monthly bronze allocation preserves a supplied annual selected premium
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -522,7 +522,7 @@
     selected_marketplace_plan_premium_proxy: 12_000
     aca_ptc_coverage_family_premium: 7794.14
 
-- name: r3 no Marketplace enrollees receive none of a supplied annual premium
+- name: No Marketplace enrollees receive none of a supplied annual premium
   period: 2025
   input:
     people:
@@ -687,3 +687,50 @@
     aca_ptc_coverage_family_premium: 6_000
     used_aca_ptc: 1_000
     marketplace_net_premium: 5_000
+
+- name: A supplied annual premium with no monthly price pattern is spread evenly over the months
+  # The bronze policy above with a supplied 7,000 premium and no lowest-cost
+  # bronze price, so every monthly selected-premium proxy is 0 and each month
+  # takes 7,000 / 12 of the premium. Each month the coverage family's share
+  # is 500 / (500 + 500), so 12 * (7,000 / 12) * 0.5 = 3,500. With a zero
+  # fallback weight in place of the even split, each month would take none
+  # of the premium and the result would be 0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_category: BRONZE
+        selected_marketplace_plan_premium_proxy: 7_000
+        lcbp: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    selected_marketplace_plan_premium_proxy: 7_000
+    aca_ptc_coverage_family_premium: 3_500

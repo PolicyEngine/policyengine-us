@@ -11,8 +11,11 @@ class ca_premium_subsidy_applicable_percentage(Variable):
     reference = (
         # California applicable percentage of household income toward the
         # benchmark second lowest cost silver plan, bracket-interpolated
-        # linearly within each federal poverty line band.
+        # linearly within each federal poverty line band: the (d)(4) table on
+        # PDF page 2 of each Design, and (d)(10) family size on PDF page 3.
+        # PDF pages 2-3
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2",
+        # PDF pages 2-3
         "https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2",
         "https://hbex.coveredca.com/toolkit/webinars-briefings/downloads/OE27_Enroller_Kickoff.pdf#page=40",
         "https://www.ftb.ca.gov/forms/2020/2020-3849-instructions.pdf#page=6",

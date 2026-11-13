@@ -19,16 +19,23 @@ class is_aca_tax_family_member(Variable):
         "premium tax credit (Form 8962 line 1, tax family size). 26 CFR "
         "1.36B-1(d)(2) defines the family as the taxpayer, both spouses on a "
         "joint return, 'except for individuals who qualify as a dependent of "
-        "another taxpayer', plus the dependents the taxpayer claims. A head or "
-        "spouse who can be claimed on another return "
+        "another taxpayer', plus the dependents the taxpayer claims. A filer "
+        "(is_aca_filer: a head or spouse, including one inferred to complete "
+        "the roles) who can be claimed on another return "
         "(claimable_as_dependent_on_another_return, whether or not claimed) "
         "is not a member; on a joint return the other spouse still is. Such a "
         "return claims no dependents (IRC 152(b)(1)) unless the would-be "
         "claimant meets the refund-only filing exception (Publication 501, "
         "Dependent Taxpayer Test). No credit is allowed to someone another "
-        "taxpayer can claim (IRC 36B(c)(1)(D)), so a return whose every head "
-        "and spouse can be claimed has no applicable taxpayer and no family "
-        "for the credit. is_aca_filer completes an absent or partial set "
+        "taxpayer can claim (IRC 36B(c)(1)(D)), so a return whose every filer "
+        "can be claimed has no applicable taxpayer and no family for the "
+        "credit. Another taxpayer can claim a married person who files a "
+        "joint return only if the couple files it 'only to claim a refund of "
+        "income tax withheld or estimated tax paid' (Publication 501, Joint "
+        "Return Test); its Example 3 holds that a joint return filed to claim "
+        "the American opportunity credit is not one. The model takes "
+        "claimable_as_dependent_on_another_return as given and does not test "
+        "this. is_aca_filer completes an absent or partial set "
         "of head/spouse roles to identify one filer, or two on a joint "
         "return, using age and supplied dependency hints without an adult-age "
         "cutoff. Explicit roles are "
@@ -41,7 +48,11 @@ class is_aca_tax_family_member(Variable):
         filer = person("is_aca_filer", period)
         claimable = person("claimable_as_dependent_on_another_return", period)
         applicable_taxpayer = person.tax_unit.any(filer & ~claimable)
-        exception = person("dependent_claimant_filing_exception", period)
-        claims_dependents = ~person.tax_unit.any(filer & claimable & ~exception)
+        # Claimable elsewhere, and the would-be claimant does not meet the
+        # refund-only filing exception.
+        dependent_elsewhere = person(
+            "is_dependent_elsewhere_without_filing_exception", period
+        )
+        claims_dependents = ~person.tax_unit.any(filer & dependent_elsewhere)
         dependent_member = applicable_taxpayer & claims_dependents
         return where(filer, ~claimable, dependent_member)

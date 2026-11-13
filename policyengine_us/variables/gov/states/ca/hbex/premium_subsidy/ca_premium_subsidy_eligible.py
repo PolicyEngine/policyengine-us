@@ -8,11 +8,15 @@ class ca_premium_subsidy_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.CA
     reference = (
-        # 2026 Program Design (Final): eligibility bands and the applicable
-        # return filer definition at Program Design (d)(7).
-        # PDF pages 1-2
-        "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=1",
-        # Final 2027 Program Design, (d)(7): "at or below 200 percent".
+        # 2026 Program Design (Final): (c)(2) and the eligibility band in the
+        # applicable return filer definition at (d)(7) are on PDF page 2;
+        # (d)(7)(B), (d)(10) (family size) and (d)(11) (federal poverty level)
+        # are on PDF page 3.
+        # PDF pages 2-3
+        "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2",
+        # Final 2027 Program Design: (d)(7), "at or below 200 percent", on PDF
+        # page 2; (d)(7)(B), (d)(10) and (d)(11) on PDF page 3.
+        # PDF pages 2-3
         "https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2",
         # FTB 3849 Table 1-2 (predecessor program): exact percentage decides
         # the band edge; the truncated percentage only drives the rate lookup.

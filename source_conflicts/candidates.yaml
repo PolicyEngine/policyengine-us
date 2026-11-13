@@ -2070,24 +2070,35 @@ candidates:
     enrollee?
   sources:
   - kind: statute
-    citation: C.R.S. 10-16-1205(1)(b)(II)
-    url: null
+    citation: C.R.S. 10-16-1205(1)(b)(II) (2024), PDF page 1002
+    url: https://content.leg.colorado.gov/sites/default/files/images/olls/crs2024-title-10.pdf#page=1002
   - kind: regulation
-    citation: Colorado Reg 4-2-78 §4C
-    url: null
+    citation: Colorado Amended Regulation 4-2-78 (3 CCR 702-4) §4C, effective November 30, 2025, PDF page 2
+    url: https://drive.google.com/file/d/1GkpvQTauvS4hr97_CSfkSEQCnoYjqrJI/view#page=2
   readings:
-    statute: A claimable spouse who does not receive the premium tax credit is excluded.
-    other: A claimable spouse remains in the eligible-enrollee count and subsidy cap.
+    statute: 'The enterprise uses its money "To provide payments to carriers to increase the affordability of health
+      insurance on the individual market for Coloradans who receive the premium tax credit", so a claimable spouse,
+      who receives no credit, is excluded.'
+    other: 'An "Eligible enrollee" is "an individual enrolled in a Qualified Health Plan, whose household income is
+      no greater than 400% of the Federal Poverty Level", so a claimable spouse remains in the eligible-enrollee count
+      and subsidy cap.'
   example: A joint couple aged 30 with one claimable spouse and 2026 MAGI of $23,475 receives $960 under the statute
     versus $1,308 under the regulation.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/co/doi/premium_assistance/co_premium_assistance.py
+    - policyengine_us/variables/gov/aca/eligibility/is_aca_ptc_eligible_before_premium.py
+    - policyengine_us/variables/gov/aca/slspc/aca_ptc_slcsp.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10041
   state: ruled
-  note: 'Ruled in October 2026 to follow the statute; verify the applicable regulation version. Code not yet on
-    main: co premium assistance formula, aca_ptc_slcsp.'
+  note: 'Ruled in October 2026 to follow the statute. The code is in PR 10041, not yet on main.
+    co_premium_assistance.py counts the members eligible for the federal credit, which requires tax-family
+    membership (is_aca_ptc_eligible_before_premium.py), and caps the subsidy at the coverage family''s benchmark
+    (aca_ptc_slcsp.py) less the federal credit. The regulation text is the amended version linked from the Division
+    of Insurance''s adoption notice of September 29, 2025, effective November 30, 2025; its Section 2 sets standards
+    for "including payments to carriers pursuant to" 10-16-1205(1)(b)(II).'
 - id: us-ct:abd-spouse-income-hearing-decision
   program: medicaid
   years:
@@ -13970,6 +13981,48 @@ candidates:
     zero and kept apart from the passive basket, so these royalties count although Worksheet 1 line 8 reads only Schedule
     E line 23b. Where rental real estate goes is a separate reading (us:eitc-rental-real-estate-basket). Register the
     entry and add the marker once #10297 is on main.
+- id: us:exchange-tax-filer-claimable-spouse
+  program: premium-tax-credit
+  years:
+    from: 2014
+    type: tax
+  question: When another taxpayer can claim one spouse on a joint return, is the other spouse eligible for advance
+    payments of the premium tax credit, as for the annual credit, or is the couple not an Exchange "tax filer", so
+    that neither spouse is?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 36B(c)(1)(D)
+    url: https://www.law.cornell.edu/uscode/text/26/36B#c_1_D
+  - kind: regulation
+    citation: 26 CFR 1.36B-1(d)(2)
+    url: https://www.ecfr.gov/current/title-26/section-1.36B-1
+  - kind: regulation
+    citation: 45 CFR 155.300(a), "Tax filer"
+    url: https://www.ecfr.gov/current/title-45/section-155.300
+  readings:
+    statute: '"No credit shall be allowed under this section to any individual with respect to whom a deduction under
+      section 151 is allowable to another taxpayer", and the family is "the taxpayer, including both spouses in the
+      case of a joint return, except for individuals who qualify as a dependent of another taxpayer under section
+      152", so only the claimable spouse leaves the family and the other spouse stays eligible.'
+    other: 'A tax filer is "an individual, or a married couple, who indicates that he, she or they expects" "That no
+      other taxpayer will be able to claim him, her or them as a tax dependent for the benefit year". Read as either
+      spouse, a couple with one claimable spouse is not a tax filer, and the Exchange finds neither spouse eligible
+      for advance payments.'
+  example: A 2026 joint couple aged 30 with one claimable spouse, MAGI of $23,475 and a $500 monthly benchmark for
+    each spouse has a $5,016.40 credit for the other spouse. Under the couple reading none of it is paid in advance,
+    and a state program that requires advance-payment eligibility pays nothing.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/aca/eligibility/is_aca_tax_family_member.py
+    - policyengine_us/variables/gov/aca/eligibility/is_aca_ptc_eligible_before_premium.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10041
+  state: unreviewed
+  note: 'PE-US applies the per-spouse rule of 26 CFR 1.36B-1(d)(2) and Form 8962 line 1 to both the annual credit and
+    advance-payment eligibility, so the state premium programs that require advance-payment eligibility follow it
+    too. 45 CFR 155.305(f)(1)(ii) refers to "a member of the tax filer''s family within the meaning of 26 CFR
+    1.36B-1(d)". Reading 3 of the PR 10041 description; not yet put to the project lead. The code is not yet on main.'
 - id: us:filing-chart-a-blindness-and-equality
   program: income-tax
   years:

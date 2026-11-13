@@ -57,6 +57,11 @@ class aca_ptc_coverage_family_premium(Variable):
             premium_without_enrollment & ~tax_unit.any(enrolled) & tax_unit.any(member)
         )
         every_enrollee_covered = ~tax_unit.any(enrolled & ~member)
+        if every_enrollee_covered.all():
+            # No tax unit has an enrollee outside its tax family, so no
+            # premium is allocated and the monthly benchmarks below are not
+            # needed (as in aca_magi).
+            return where(any_enrollee_covered | no_enrollee_found, premium, 0)
         monthly_premiums = [
             tax_unit("monthly_selected_marketplace_plan_premium_proxy", month)
             for month in months
