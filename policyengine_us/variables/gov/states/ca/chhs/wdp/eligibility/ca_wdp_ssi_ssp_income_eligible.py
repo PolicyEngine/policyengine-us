@@ -40,8 +40,8 @@ class ca_wdp_ssi_ssp_income_eligible(Variable):
             period.first_month
         ).gov.states.ca.cdss.state_supplement.payment_standard
         fbr = parameters(period.first_month).gov.ssa.ssi.amount
-        uses_couple_standard = person("ssi_claim_is_joint", period) | person(
-            "is_ssi_spousal_deeming_applies", period
+        uses_couple_standard = person("ssi_claim_is_joint", period) | (
+            ca_wdp_annual_spousal_deeming_applies(person, period, parameters)
         )
         monthly_standard = where(
             uses_couple_standard,
