@@ -283,19 +283,20 @@
     medicaid_parent_income_limit: 0.151
   absolute_error_margin: 0.0001
 
-- name: Case 18, Mississippi parent limit is 0.219 FPL in 2026 ($498/month for three).
+- name: Case 18, Mississippi size-3 published combined parent limit in 2026.
   period: 2026
   input:
     people:
       person1:
         age: 30
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: MS
   output:
-    medicaid_parent_income_limit: 0.219
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.218740849
+  absolute_error_margin: 0.0000001
 
 - name: Case 19, Florida parent limit is 0.264 FPL in 2026 ($600/month for three).
   period: 2026
@@ -449,34 +450,36 @@
   absolute_error_margin: 0.0001
 
 # $492 x 12 = $5,904 (disregard included); $5,904 / $25,820 = 0.229.
-- name: Case 29, Mississippi parent limit is 0.229 FPL in 2024 ($492 per month for three).
+- name: Case 29, Mississippi size-3 published combined parent limit in 2024.
   period: 2024
   input:
     people:
       person1:
         age: 30
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: MS
   output:
-    medicaid_parent_income_limit: 0.229
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.228659954
+  absolute_error_margin: 0.0000001
 
 # $495 x 12 = $5,940 (disregard included); $5,940 / $26,650 = 0.223.
-- name: Case 30, Mississippi parent limit is 0.223 FPL in 2025 ($495 per month for three).
+- name: Case 30, Mississippi size-3 published combined parent limit in 2025.
   period: 2025
   input:
     people:
       person1:
         age: 30
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: MS
   output:
-    medicaid_parent_income_limit: 0.223
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.222889306
+  absolute_error_margin: 0.0000001
 
 # $873 x 12 = $10,476; $10,476 / $25,820 = 0.4057 + 0.05 = 0.456.
 - name: Case 31, Wyoming parent limit is 0.456 FPL in 2024 ($873 per month plus the disregard).
@@ -547,3 +550,748 @@
   output:
     medicaid_parent_income_limit: 1.38
   absolute_error_margin: 0.0001
+
+# Appendix A-3 COE-075 combined Limit+5% column, physical pages1–10.
+# https://medicaid.ms.gov/wp-content/uploads/2026/03/Appendix-A-3-MAGI-Income-Limits.-2014-to-present.pdf
+# Each March1table is explicit; YEAR comparisons use that year's table.
+# Table components use explicit MAGI sizes, not eligibility households.
+# Above20/before2017 controls preserve behavior, not legal certification.
+- name: Mississippi literal COE-075 combined dollar-table components at sizes 1 through 20 for each annual
+    comparison period 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      component1:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+      component2:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+      component3:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 3
+          2018: 3
+          2019: 3
+          2020: 3
+          2021: 3
+          2022: 3
+          2023: 3
+          2024: 3
+          2025: 3
+          2026: 3
+      component4:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 4
+          2018: 4
+          2019: 4
+          2020: 4
+          2021: 4
+          2022: 4
+          2023: 4
+          2024: 4
+          2025: 4
+          2026: 4
+      component5:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 5
+          2018: 5
+          2019: 5
+          2020: 5
+          2021: 5
+          2022: 5
+          2023: 5
+          2024: 5
+          2025: 5
+          2026: 5
+      component6:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 6
+          2018: 6
+          2019: 6
+          2020: 6
+          2021: 6
+          2022: 6
+          2023: 6
+          2024: 6
+          2025: 6
+          2026: 6
+      component7:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 7
+          2018: 7
+          2019: 7
+          2020: 7
+          2021: 7
+          2022: 7
+          2023: 7
+          2024: 7
+          2025: 7
+          2026: 7
+      component8:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+      component9:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 9
+          2018: 9
+          2019: 9
+          2020: 9
+          2021: 9
+          2022: 9
+          2023: 9
+          2024: 9
+          2025: 9
+          2026: 9
+      component10:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 10
+          2018: 10
+          2019: 10
+          2020: 10
+          2021: 10
+          2022: 10
+          2023: 10
+          2024: 10
+          2025: 10
+          2026: 10
+      component11:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 11
+          2018: 11
+          2019: 11
+          2020: 11
+          2021: 11
+          2022: 11
+          2023: 11
+          2024: 11
+          2025: 11
+          2026: 11
+      component12:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 12
+          2018: 12
+          2019: 12
+          2020: 12
+          2021: 12
+          2022: 12
+          2023: 12
+          2024: 12
+          2025: 12
+          2026: 12
+      component13:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 13
+          2018: 13
+          2019: 13
+          2020: 13
+          2021: 13
+          2022: 13
+          2023: 13
+          2024: 13
+          2025: 13
+          2026: 13
+      component14:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 14
+          2018: 14
+          2019: 14
+          2020: 14
+          2021: 14
+          2022: 14
+          2023: 14
+          2024: 14
+          2025: 14
+          2026: 14
+      component15:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 15
+          2018: 15
+          2019: 15
+          2020: 15
+          2021: 15
+          2022: 15
+          2023: 15
+          2024: 15
+          2025: 15
+          2026: 15
+      component16:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 16
+          2018: 16
+          2019: 16
+          2020: 16
+          2021: 16
+          2022: 16
+          2023: 16
+          2024: 16
+          2025: 16
+          2026: 16
+      component17:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 17
+          2018: 17
+          2019: 17
+          2020: 17
+          2021: 17
+          2022: 17
+          2023: 17
+          2024: 17
+          2025: 17
+          2026: 17
+      component18:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 18
+          2018: 18
+          2019: 18
+          2020: 18
+          2021: 18
+          2022: 18
+          2023: 18
+          2024: 18
+          2025: 18
+          2026: 18
+      component19:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 19
+          2018: 19
+          2019: 19
+          2020: 19
+          2021: 19
+          2022: 19
+          2023: 19
+          2024: 19
+          2025: 19
+          2026: 19
+      component20:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 20
+          2018: 20
+          2019: 20
+          2020: 20
+          2021: 20
+          2022: 20
+          2023: 20
+          2024: 20
+          2025: 20
+          2026: 20
+    households:
+      household:
+        members:
+        - component1
+        - component2
+        - component3
+        - component4
+        - component5
+        - component6
+        - component7
+        - component8
+        - component9
+        - component10
+        - component11
+        - component12
+        - component13
+        - component14
+        - component15
+        - component16
+        - component17
+        - component18
+        - component19
+        - component20
+        state_code:
+          2017: MS
+          2018: MS
+          2019: MS
+          2020: MS
+          2021: MS
+          2022: MS
+          2023: MS
+          2024: MS
+          2025: MS
+          2026: MS
+  output:
+    medicaid_parent_income_limit:
+      2017:
+      - 0.275621891
+      - 0.27635468
+      - 0.275612145
+      - 0.275609756
+      - 0.275608061
+      - 0.275242718
+      - 0.275282714
+      - 0.275024201
+      - 0.275076923
+      - 0.274879227
+      - 0.274712217
+      - 0.274776017
+      - 0.27463838
+      - 0.274698795
+      - 0.274582035
+      - 0.274638844
+      - 0.274537624
+      - 0.274446583
+      - 0.274501718
+      - 0.274420638
+      2018:
+      - 0.274794069
+      - 0.273390036
+      - 0.2719923
+      - 0.271075697
+      - 0.270836166
+      - 0.270302312
+      - 0.269889648
+      - 0.269561114
+      - 0.269293362
+      - 0.269070953
+      - 0.268883267
+      - 0.268722762
+      - 0.268583932
+      - 0.268462665
+      - 0.268355825
+      - 0.268260983
+      - 0.268176224
+      - 0.268100023
+      - 0.268031146
+      - 0.267968584
+      2019:
+      - 0.268054444
+      - 0.267534004
+      - 0.266104079
+      - 0.265165049
+      - 0.265296652
+      - 0.264700781
+      - 0.264547552
+      - 0.264149206
+      - 0.263824451
+      - 0.263784197
+      - 0.263538543
+      - 0.263524791
+      - 0.263329773
+      - 0.263330951
+      - 0.263170633
+      - 0.263028303
+      - 0.263045307
+      - 0.262923656
+      - 0.262944052
+      - 0.262838188
+      2020:
+      - 0.263322884
+      - 0.263109049
+      - 0.262430939
+      - 0.261526718
+      - 0.26166884
+      - 0.261433447
+      - 0.260948537
+      - 0.260834089
+      - 0.260740741
+      - 0.260437076
+      - 0.260389159
+      - 0.260348162
+      - 0.260132291
+      - 0.260112676
+      - 0.26009539
+      - 0.259929965
+      - 0.259924207
+      - 0.259919028
+      - 0.259785867
+      - 0.259787495
+      2021:
+      - 0.261801242
+      - 0.261079219
+      - 0.26010929
+      - 0.259018868
+      - 0.259020619
+      - 0.258684654
+      - 0.258424726
+      - 0.258217644
+      - 0.25804878
+      - 0.257908448
+      - 0.257789979
+      - 0.257688634
+      - 0.25760095
+      - 0.257524339
+      - 0.257456829
+      - 0.257248703
+      - 0.257202993
+      - 0.257161892
+      - 0.257124736
+      - 0.257090982
+      2022:
+      - 0.250772627
+      - 0.250354997
+      - 0.250108554
+      - 0.249945946
+      - 0.249830613
+      - 0.249744555
+      - 0.249677881
+      - 0.24936736
+      - 0.249347614
+      - 0.249331193
+      - 0.249119921
+      - 0.249122271
+      - 0.249124306
+      - 0.248965977
+      - 0.24897703
+      - 0.248986847
+      - 0.248860958
+      - 0.248875626
+      - 0.248888889
+      - 0.248784739
+      2023:
+      - 0.237037037
+      - 0.236105477
+      - 0.235559131
+      - 0.2348
+      - 0.234604439
+      - 0.234458788
+      - 0.234081902
+      - 0.234018987
+      - 0.233752244
+      - 0.233727811
+      - 0.233525311
+      - 0.233352081
+      - 0.233359559
+      - 0.233218673
+      - 0.233233187
+      - 0.233115183
+      - 0.233009709
+      - 0.233032562
+      - 0.232941176
+      - 0.232965075
+      2024:
+      - 0.231075697
+      - 0.229549902
+      - 0.228659954
+      - 0.227692308
+      - 0.227337343
+      - 0.227073403
+      - 0.22661597
+      - 0.226479514
+      - 0.22616179
+      - 0.226086957
+      - 0.22584955
+      - 0.225646552
+      - 0.225621703
+      - 0.225458824
+      - 0.225448108
+      - 0.225313283
+      - 0.225192802
+      - 0.225197146
+      - 0.225093834
+      - 0.225102319
+      2025:
+      - 0.223897764
+      - 0.223546099
+      - 0.222889306
+      - 0.222457232
+      - 0.22247012
+      - 0.222201622
+      - 0.221993834
+      - 0.221828255
+      - 0.22169321
+      - 0.221580967
+      - 0.221316348
+      - 0.221247538
+      - 0.221187998
+      - 0.221135972
+      - 0.221090124
+      - 0.221049414
+      - 0.221013025
+      - 0.220980302
+      - 0.22095072
+      - 0.220923845
+      2026:
+      - 0.221052632
+      - 0.219593346
+      - 0.218740849
+      - 0.218181818
+      - 0.21778697
+      - 0.217493237
+      - 0.217266187
+      - 0.216870065
+      - 0.216742671
+      - 0.216636852
+      - 0.216382628
+      - 0.216318205
+      - 0.216262482
+      - 0.216080178
+      - 0.216045245
+      - 0.216014235
+      - 0.215874204
+      - 0.215854959
+      - 0.215837563
+      - 0.215724895
+  absolute_error_margin: 1.0e-07
+- name: Mississippi size-21 household preserves the legacy national ratio beyond the verified source chart.
+  period: 2026
+  input:
+    medicaid_household_size: 21
+    state_code: MS
+  output:
+    medicaid_parent_income_limit: 0.219
+  absolute_error_margin: 1.0e-07
+- name: Mississippi parent limit preserves the legacy national route before the verified 2017 model scope.
+  period: 2016
+  input:
+    medicaid_household_size: 3
+    state_code: MS
+  output:
+    medicaid_parent_income_limit: 0.28
+  absolute_error_margin: 1.0e-07
+
+# Preserve the canonical route beyond the verified combined-dollar source window.
+# This is not a claim that the legacy ratio certifies actual 2027 law.
+- name: Mississippi size-2 household preserves the national ratio after the verified 2017-2026 window.
+  period: 2027
+  input:
+    medicaid_household_size: 2
+    state_code: MS
+  output:
+    medicaid_parent_income_limit: 0.219
+  absolute_error_margin: 0.0000001
