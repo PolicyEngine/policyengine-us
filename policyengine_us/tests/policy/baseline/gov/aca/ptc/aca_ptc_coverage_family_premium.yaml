@@ -565,3 +565,125 @@
   output:
     is_aca_marketplace_enrollee: false
     aca_ptc_coverage_family_premium: 5_000
+
+- name: A supplied premium with enrollment supplied as false gives the tax family none of it.
+  # Enrollment is supplied, so the supplied-premium rule doesn't apply.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_marketplace_enrollee: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        selected_marketplace_plan_premium_proxy: 5_000
+        aca_ptc: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_ptc_coverage_family_premium: 0
+    used_aca_ptc: 0
+
+- name: A supplied premium whose only enrollee is outside the tax family gives the tax family none of it.
+  # The head can be claimed elsewhere and is the only enrollee; the spouse has
+  # an employer offer. The model finds an enrollee, so the supplied-premium
+  # rule doesn't apply, and no enrollee is in the tax family.
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: true
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 30_000
+        selected_marketplace_plan_premium_proxy: 5_000
+        aca_ptc: 1_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    is_aca_marketplace_enrollee: [true, false]
+    is_aca_tax_family_member: [false, true]
+    aca_ptc_coverage_family_premium: 0
+    used_aca_ptc: 0
+    marketplace_net_premium: 5_000
+
+- name: A supplied premium for a tax unit with no tax family gives none of it.
+  # A single filer who can be claimed elsewhere has no tax family.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        selected_marketplace_plan_premium_proxy: 5_000
+        aca_ptc: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_aca_tax_family_member: false
+    aca_ptc_coverage_family_premium: 0
+    used_aca_ptc: 0
+
+- name: A premium supplied by month for a tax unit with no enrollee found is the tax family's.
+  # The default adult is Medicaid-eligible, so the model finds no enrollee.
+  # 12 x 500 = 6,000 of premium; the credit of 1,000 is used in full.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_ptc: 1_000
+        monthly_selected_marketplace_plan_premium_proxy:
+          2026-01: 500
+          2026-02: 500
+          2026-03: 500
+          2026-04: 500
+          2026-05: 500
+          2026-06: 500
+          2026-07: 500
+          2026-08: 500
+          2026-09: 500
+          2026-10: 500
+          2026-11: 500
+          2026-12: 500
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    is_aca_marketplace_enrollee: false
+    selected_marketplace_plan_premium_proxy: 6_000
+    aca_ptc_coverage_family_premium: 6_000
+    used_aca_ptc: 1_000
+    marketplace_net_premium: 5_000
