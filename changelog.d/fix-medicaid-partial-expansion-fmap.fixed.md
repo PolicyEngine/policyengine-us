@@ -1,0 +1,1 @@
+Medicaid federal share now gives the ACA expansion FMAP only to adult-group enrollees in states whose adult limit reaches 138% FPL and with income at or below it; partial-expansion adults (e.g. Wisconsin, Georgia Pathways-style reforms) and adults above 138% FPL get the regular FMAP. Added FY2027 regular FMAPs.

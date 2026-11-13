@@ -1,0 +1,19 @@
+description: The federal government pays the Medicaid expansion FMAP for adult-group enrollees with income at or below this multiple of the federal poverty guideline.
+metadata:
+  unit: /1
+  period: year
+  label: Medicaid expansion FMAP income limit
+  reference:
+  - title: 42 U.S.C. § 1396a(a)(10)(A)(i)(VIII) — adult group with income not exceeding 133 percent of the poverty line
+    href: https://www.law.cornell.edu/uscode/text/42/1396a#a_10_A_i_VIII
+  - title: 42 U.S.C. § 1396a(e)(14)(I) — 5 percentage point income disregard
+    href: https://www.law.cornell.edu/uscode/text/42/1396a#e_14_I
+  - title: 42 U.S.C. § 1396d(y)(1) — expansion FMAP for newly eligible individuals described in subclause (VIII)
+    href: https://www.law.cornell.edu/uscode/text/42/1396d#y_1
+  - title: 42 CFR § 435.218 — optional group for adults with income above 133 percent FPL (section 1902(a)(10)(A)(ii)(XX))
+    href: https://www.ecfr.gov/current/title-42/section-435.218
+values:
+  # 133 percent of the poverty line plus the 5 percentage point MAGI
+  # disregard, in the same units as
+  # gov.hhs.medicaid.eligibility.categories.adult.income_limit.
+  2014-01-01: 1.38
