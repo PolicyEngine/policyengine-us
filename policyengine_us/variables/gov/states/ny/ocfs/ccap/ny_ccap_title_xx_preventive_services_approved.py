@@ -14,11 +14,14 @@ class ny_ccap_title_xx_preventive_services_approved(Variable):
         "care under Title XX during the month. The district must fund the "
         "service, include eligible families in its plan and apply applicable "
         "need, priority and financial conditions. Authorization also records "
-        "satisfaction of the child's age, provider and any required OCFS "
-        "approval conditions under 18 NYCRR 415.1 and 415.2(b). The completed "
-        "authorization covers all applicable state and federal eligibility "
-        "conditions for this child, provider and month. Set this input to "
-        "false when authorization ends, including a school-year continuation."
+        "satisfaction of the provider and any required OCFS approval "
+        "conditions under 18 NYCRR 415.1 and 415.2(b). PolicyEngine applies "
+        "the 415.1(b) age test separately; the completed authorization covers "
+        "every other applicable state and federal eligibility condition for "
+        "this child, provider and month. For a child who turned 13 during "
+        "the school year, authorization records that the school-year "
+        "continuation still runs. Set this input to false when authorization "
+        "ends, including at the end of that continuation."
     )
     reference = (
         "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf",

@@ -16,10 +16,14 @@ class ny_ccap_eligible_child(Variable):
         "alone waives the family share and leaves the block grant tests "
         "unchanged. A child also qualifies through Title XX when the district "
         "authorizes preventive child care after applying its funding, plan, "
-        "need, priority, financial, age and provider conditions."
+        "need, priority, financial and provider conditions. PolicyEngine "
+        "applies the 18 NYCRR 415.1(b) age test on that route, with its "
+        "special-needs and court-supervision extensions. A child who turns 13 "
+        "during a school year may continue through the end of that school year."
     )
     reference = (
-        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=15",
+        # PDF pages 2, 15, 17
+        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=2",
         "https://ocfs.ny.gov/main/policies/external/2023/adm/23-OCFS-ADM-18.pdf#page=9",
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.2",
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.1",
@@ -56,4 +60,15 @@ class ny_ccap_eligible_child(Variable):
         title_xx_approved = person(
             "ny_ccap_title_xx_preventive_services_approved", period
         )
-        return block_grant_eligible | (preventive_services & title_xx_approved)
+        # 18 NYCRR 415.1(b)(1) and 415.2(d)(4)(ii) let a Title XX or
+        # preventive child who turns 13 during a school year continue through
+        # the end of that school year, before the child turns 14. The
+        # authorization input records whether that continuation still runs.
+        p = parameters(period).gov.states.ny.ocfs.ccap.eligibility.age_limit
+        age = person("age", period.this_year)
+        school_year_continuation_age = (age >= p.base) & (age < p.base + 1)
+        title_xx_age_eligible = age_eligible | school_year_continuation_age
+        title_xx_eligible = (
+            preventive_services & title_xx_approved & title_xx_age_eligible
+        )
+        return block_grant_eligible | title_xx_eligible

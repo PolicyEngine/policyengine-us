@@ -13,7 +13,12 @@ class ny_ccap_family_share_exempt(Variable):
         "and child-only child care services units from the income-based "
         "family share under 18 NYCRR 415.3(e)(1). Public assistance includes "
         "Family Assistance, Safety Net Assistance and veteran assistance. "
-        "PolicyEngine separately computes a zero share for income at or "
+        "OCFS ties the foster care, protective and preventive exceptions to "
+        "the child that receives the assistance. PolicyEngine computes one "
+        "family share per unit and waives all of it when any member "
+        "qualifies, so the family also pays no share for a sibling in "
+        "ordinary care. PolicyEngine separately computes a zero share for "
+        "income at or "
         "below the state income standard under 415.3(e)(3)."
     )
     reference = (

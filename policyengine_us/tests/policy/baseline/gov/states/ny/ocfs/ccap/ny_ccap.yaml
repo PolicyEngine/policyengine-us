@@ -924,6 +924,169 @@
     ny_ccap: 600
   absolute_error_margin: 0.01
 
+# 18 NYCRR 415.1(b)(1) and 415.2(d)(4)(ii) close Title XX care at 13, apart from
+# the school-year continuation, which ends before the child turns 14. Income of
+# $96,000 / 12 = $8,000 a month exceeds 85% x $60,000 / 12 = $4,250, so the block
+# grant route fails too. Preventive care still waives the share: $0 share, $0 benefit.
+- name: District approval does not open the Title XX route to a fourteen-year-old without special needs.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 14
+        is_disabled: false
+        is_under_court_supervision: false
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_age_eligible: [false, false]
+    ny_ccap_activity_eligible: false
+    ny_ccap_income_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+# 18 NYCRR 415.1(b)(2) extends the age limit to 18 for a child with special needs,
+# so an approved preventive 15-year-old keeps the Title XX route.
+# min($10,800 / 12 = $900, $600 rate) = $600, less a $0 share = $600.
+- name: District approval opens the Title XX route to a fifteen-year-old with special needs.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 15
+        is_disabled: true
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_age_eligible: [false, true]
+    ny_ccap_activity_eligible: false
+    ny_ccap_income_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+# The Title XX route needs preventive care and district approval for the same child.
+# One child receives preventive care without approval, and the other has approval
+# without preventive care, so neither qualifies. Preventive care still waives the
+# share: $0 share, and no eligible child leaves a $0 benefit.
+- name: Preventive care for one child and Title XX approval for another qualify neither child.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      preventive_child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+      approved_child:
+        age: 6
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, preventive_child, approved_child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 21_600
+    households:
+      household:
+        members: [caretaker, preventive_child, approved_child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_income_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
 - name: Title XX approval without preventive child care does not open the preventive route.
   period: 2025-01
   input:

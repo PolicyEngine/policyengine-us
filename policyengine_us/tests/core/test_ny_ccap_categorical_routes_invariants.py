@@ -12,6 +12,7 @@ from policyengine_us.system import system as tax_benefit_system
 
 
 YEARS = [2024, 2025, 2026]
+TITLE_XX_CHILD_AGES = (0, 4, 12, 13, 14, 15, 17)
 TOLERANCE = 0.001
 SPM_MONTH_INPUTS = (
     "ny_safety_net_assistance_received",
@@ -88,7 +89,9 @@ def _situation(cases, year):
         for person_index, name in enumerate(members):
             child = person_index == 2
             person = {
-                "age": {year: 4 if child else 35 + person_index},
+                "age": {
+                    year: family.get("child_age", 4) if child else 35 + person_index
+                },
                 "is_tax_unit_head_or_spouse": {
                     year: False if child else family["caretakers"][person_index]
                 },
@@ -298,41 +301,49 @@ def test_public_assistance_needs_work_or_required_activity(system, year, unit):
 @PROPERTY_SETTINGS
 @given(st.sampled_from(YEARS), families())
 def test_title_xx_approval_serves_only_the_preventive_child(system, year, unit):
-    blocked = deepcopy(unit)
-    blocked.update(
-        hours=(0, 0),
-        students=(False, False),
-        tanf=False,
-        fallback=False,
-        homeless=False,
-        protective=(False, False, False),
-        foster=False,
-        age_eligible=False,
-        asset_eligible=False,
-        immigration_eligible=False,
-        income_eligible=False,
-        in_care=True,
-        expenses=max(unit["expenses"], 1),
-        market_rate=max(unit["market_rate"], 1),
-    )
+    # 18 NYCRR 415.1(b) and 415.2(d)(4)(ii): the Title XX route keeps the age
+    # test. A child under 13 passes it, and so does an older child under the
+    # special-needs or court-supervision extensions, drawn here through
+    # unit["age_eligible"]. A 13-year-old may finish the school year in which
+    # the child turned 13, which ends before the child turns 14.
+    flag_pairs = ((False, False), (True, False), (False, True), (True, True))
     cases = []
-    for preventive, approved in (
-        (False, False),
-        (True, False),
-        (False, True),
-        (True, True),
-    ):
-        flags = dict.fromkeys(NEW_INPUTS, False)
-        flags["ny_ccap_receives_preventive_services"] = preventive
-        flags["ny_ccap_title_xx_preventive_services_approved"] = approved
-        cases.append((blocked, flags))
+    expected_eligible = []
+    expected_exempt = []
+    for child_age in TITLE_XX_CHILD_AGES:
+        age_eligible = child_age < 13 or unit["age_eligible"]
+        blocked = deepcopy(unit)
+        blocked.update(
+            child_age=child_age,
+            hours=(0, 0),
+            students=(False, False),
+            tanf=False,
+            fallback=False,
+            homeless=False,
+            protective=(False, False, False),
+            foster=False,
+            age_eligible=age_eligible,
+            asset_eligible=False,
+            immigration_eligible=False,
+            income_eligible=False,
+            in_care=True,
+            expenses=max(unit["expenses"], 1),
+            market_rate=max(unit["market_rate"], 1),
+        )
+        title_xx_age_eligible = age_eligible or child_age == 13
+        for preventive, approved in flag_pairs:
+            flags = dict.fromkeys(NEW_INPUTS, False)
+            flags["ny_ccap_receives_preventive_services"] = preventive
+            flags["ny_ccap_title_xx_preventive_services_approved"] = approved
+            cases.append((blocked, flags))
+            expected_eligible.append(preventive and approved and title_xx_age_eligible)
+            expected_exempt.append(preventive)
     outputs = _calculate(system, cases, year)
-    np.testing.assert_array_equal(
-        outputs["ny_ccap_eligible_child"], [False, False, False, True]
-    )
+    np.testing.assert_array_equal(outputs["ny_ccap_eligible_child"], expected_eligible)
     assert not outputs["eligible_people"][:, :2].any()
     np.testing.assert_array_equal(
-        outputs["ny_ccap_family_share_exempt"], [False, True, False, True]
+        outputs["ny_ccap_family_share_exempt"], expected_exempt
     )
-    np.testing.assert_array_equal(outputs["ny_ccap"][:3], 0)
-    assert outputs["ny_ccap"][3] > 0
+    eligible = np.array(expected_eligible)
+    np.testing.assert_array_equal(outputs["ny_ccap"][~eligible], 0)
+    assert (outputs["ny_ccap"][eligible] > 0).all()
