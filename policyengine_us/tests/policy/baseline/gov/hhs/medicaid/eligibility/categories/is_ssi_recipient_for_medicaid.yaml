@@ -49,7 +49,7 @@
   output:
     is_ssi_recipient_for_medicaid: true
 
-- name: Case 7, SSI recipient child in Missouri remains excluded from 209(b).
+- name: Case 7, SSI recipient child in Missouri qualifies through 209(b).
   period: 2026
   input:
     ssi: 12_000
@@ -59,7 +59,7 @@
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_asset_eligible: true
   output:
-    is_ssi_recipient_for_medicaid: false
+    is_ssi_recipient_for_medicaid: true
 
 - name: Case 5, SSI recipient in Oklahoma qualifies through SSI criteria.
   period: 2026

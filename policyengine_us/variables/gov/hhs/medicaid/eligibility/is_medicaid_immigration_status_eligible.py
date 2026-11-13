@@ -17,24 +17,10 @@ class is_medicaid_immigration_status_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicaid.eligibility
         immigration_status = person("immigration_status", period)
-        immigration_status_str = immigration_status.decode_to_str()
-
-        eligible_immigration_status = np.isin(
-            immigration_status_str, p.eligible_immigration_statuses
-        )
-        citizen = immigration_status == immigration_status.possible_values.CITIZEN
-        bar_exempt_status = np.isin(
-            immigration_status_str, p.bar_exempt_immigration_statuses
-        )
-        years_since_entry = person("years_since_us_entry", period.this_year)
-        past_five_year_bar = years_since_entry >= p.five_year_bar_years
-        federally_eligible_status = citizen | (
-            eligible_immigration_status & (bar_exempt_status | past_five_year_bar)
-        )
-        # 42 USC 1396b(v)(4) lets states cover lawfully residing children and
-        # pregnant individuals without the qualified-alien limit or five-year bar.
-        lawfully_residing_option_eligible = person(
-            "is_medicaid_lawfully_residing_option_eligible", period
+        # The federal test: citizens, qualified noncitizens exempt from or past the
+        # five-year bar, and the lawfully residing option in 42 USC 1396b(v)(4).
+        federally_eligible = person(
+            "is_federal_medicaid_immigration_status_eligible", period
         )
 
         # Special handling for undocumented immigrants in states that cover them
@@ -50,8 +36,7 @@ class is_medicaid_immigration_status_eligible(Variable):
         )
 
         return (
-            federally_eligible_status
-            | lawfully_residing_option_eligible
+            federally_eligible
             | undocumented_eligible
             | ca_eligible_regardless_of_immigration_status
         )

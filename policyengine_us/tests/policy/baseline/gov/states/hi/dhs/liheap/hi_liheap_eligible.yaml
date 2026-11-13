@@ -89,22 +89,72 @@
     hi_liheap_household_size: [1, 0, 0]
     hi_liheap_eligible: [true, false, false]
 
-- name: Case 4, heating assistance needs gas paid by bill or through rent.
+- name: Case 4, the credit needs a gas or electric bill, or gas or electric heat through rent.
   period: 2026
   # Any home's gas bill and gas in rent qualify, whatever heats the home (rows 1, 3, 7, 8).
   # A separate gas bill still qualifies when electric heat is in the rent (row 10).
-  # A home with no gas bill does not: the electric bill is the cooling credit and bottled
-  # gas shows no utility account. Electricity in rent is not gas, and UNSPECIFIED pays nothing.
+  # An electric bill qualifies the electric account, which pays as cooling (row 4).
+  # Electric heat in the rent qualifies like gas in the rent (row 9). Bottled gas
+  # shows no utility account, and UNSPECIFIED pays nothing. Heat in the rent
+  # qualifies only gas or electric heat, so propane or an unspecified fuel with
+  # heat in the rent and no bill gets nothing (rows 11 and 12).
   input:
-    state_code: [HI, HI, HI, HI, HI, HI, HI, HI, HI, HI]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, ELECTRICITY, PROPANE, UNSPECIFIED, NONE, ELECTRICITY, ELECTRICITY, ELECTRICITY]
-    gas_expense: [900, 0, 0, 0, 0, 900, 900, 900, 0, 900]
-    pre_subsidy_electricity_expense: [0, 0, 0, 900, 0, 0, 0, 0, 0, 0]
-    bottled_gas_expense: [0, 0, 0, 0, 900, 0, 0, 0, 0, 0]
-    heat_expense_included_in_rent: [false, false, true, false, false, false, false, false, true, true]
-    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    hi_liheap_countable_income: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000]
+    state_code: [HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, ELECTRICITY, PROPANE, UNSPECIFIED, NONE, ELECTRICITY, ELECTRICITY, ELECTRICITY, PROPANE, UNSPECIFIED]
+    gas_expense: [900, 0, 0, 0, 0, 900, 900, 900, 0, 900, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 900, 0, 0, 0, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 900, 0, 0, 0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [false, false, true, false, false, false, false, false, true, true, true, true]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    hi_liheap_countable_income: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000]
   output:
-    hi_liheap_eligible: [true, false, true, false, false, false, true, true, false, true]
+    # Was false, now true for row 4: a household may have its electric account
+    # credited (2.12; application Q17). Was false, now true for row 9: the Energy
+    # Credit offsets "rent or applicant's share of the electric/gas cost when rent
+    # includes electric/gas".
+    hi_liheap_eligible: [true, false, true, true, false, false, true, true, true, true, false, false]
+
+- name: Case 5, the electric account qualifies for the cooling credit on its electric bill.
+  period: 2026
+  # Draft 1.4 pays electricity as cooling, and 2.12 lets a household have one
+  # utility credited, gas or electric, with the same eligibility (plan 3.1-3.3,
+  # page 12). The electric bill is 2_016: HCEOC cites EIA's 2019 average Hawaii
+  # electric bill of $168 a month, and 168 x 12 = 2_016. The electric credit goes
+  # to a home with no heating, electric heat or propane heat (rows 1-3), with or
+  # without a cooling cost (row 4), since Hawaii asks none. It needs the electric
+  # bill (row 5). UNSPECIFIED pays nothing (row 6).
+  input:
+    state_code: [HI, HI, HI, HI, HI, HI]
+    heating_type: [NONE, ELECTRICITY, PROPANE, NONE, NONE, UNSPECIFIED]
+    has_cooling_expense: [true, true, true, false, true, true]
+    pre_subsidy_electricity_expense: [2_016, 2_016, 2_016, 2_016, 0, 2_016]
+    bottled_gas_expense: [0, 0, 900, 0, 0, 0]
+    gas_expense: [0, 0, 0, 0, 0, 0]
+    ssi: [0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0]
+    hi_liheap_countable_income: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000]
+  output:
+    hi_liheap_eligible: [true, true, true, true, false, false]
+
+- name: Case 6, utilities included in the rent qualify any known fuel without a bill.
+  period: 2026
+  # Draft 2.1 and 4.2 accept "the household's prorated share of the utility bill
+  # if rent includes utilities", and application Q23
+  # asks whether rent includes "electric/gas service". A home with no heating whose
+  # utilities are in the rent qualifies with no bill of its own (row 1). An
+  # unspecified fuel still pays nothing (row 2).
+  input:
+    state_code: [HI, HI]
+    heating_type: [NONE, UNSPECIFIED]
+    tenant_pays_utilities: [false, false]
+    gas_expense: [0, 0]
+    pre_subsidy_electricity_expense: [0, 0]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+    hi_liheap_countable_income: [20_000, 20_000]
+  output:
+    hi_liheap_eligible: [true, false]

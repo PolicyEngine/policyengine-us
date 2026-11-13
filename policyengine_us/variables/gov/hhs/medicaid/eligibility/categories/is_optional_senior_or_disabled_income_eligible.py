@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    spouses_sum,
+)
 
 
 class is_optional_senior_or_disabled_income_eligible(Variable):
@@ -29,8 +32,13 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
             "medicaid_optional_senior_or_disabled_countable_income", period
         )
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
-        # the individual or the married couple, not the tax filing unit.
-        income = person.marital_unit.sum(personal_income)
+        # the individual or the married couple, not the tax filing unit. A
+        # default marital unit of more than two people adds only the spouse.
+        income = where(
+            person("medicaid_optional_senior_or_disabled_uses_couple_standard", period),
+            spouses_sum(person, period, personal_income),
+            personal_income,
+        )
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )

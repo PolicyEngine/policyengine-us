@@ -2,7 +2,10 @@ description: The government counts these sources as household health out-of-pock
 values:
   2022-01-01:
     - chip_premium
-    - marketplace_net_premium
+    # The whole premium: household net income counts the premium tax credit
+    # that pays part of it as a refundable credit, so the net premium would
+    # count the credit twice.
+    - selected_marketplace_plan_premium_proxy
 
 metadata:
   unit: list
