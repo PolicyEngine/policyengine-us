@@ -272,6 +272,56 @@ def test_legacy_annual_override_replaces_cached_monthly_budgets():
     )
 
 
+def test_legacy_annual_override_replaces_cached_ineligible_parent_test():
+    # YAML supplies its inputs before any calculation, so it cannot show that
+    # a branch drops a parent test the simulation calculated earlier.
+    people = {
+        "parent": {
+            "age": {YEAR: 45},
+            "is_tax_unit_head": {YEAR: True},
+            "own_children_in_household": {YEAR: 1},
+            "meets_ssi_disability_criteria": {YEAR: True},
+        },
+        "spouse": {
+            "age": {YEAR: 45},
+            "is_tax_unit_spouse": {YEAR: True},
+            "own_children_in_household": {YEAR: 1},
+            "employment_income": {YEAR: 12_000},
+        },
+        "child": {
+            "age": {YEAR: 10},
+            "is_tax_unit_dependent": {YEAR: True},
+            "meets_ssi_disability_criteria": {YEAR: True},
+        },
+    }
+    everyone = {"members": list(people)}
+    situation = {
+        "people": people,
+        "tax_units": {"tax_unit": everyone},
+        "families": {"family": everyone},
+        "spm_units": {"spm_unit": everyone},
+        "households": {"household": {**everyone, "state_code": {YEAR: "OH"}}},
+        "marital_units": {
+            "parents": {"members": ["parent", "spouse"]},
+            "child": {"members": ["child"]},
+        },
+    }
+    simulation = Simulation(situation=situation, tax_benefit_system=system)
+    flag = "is_ssi_ineligible_parent"
+    # The spouse's wages deem ($12,000 - $240 - $780) / 2 = $5,490, within the
+    # couple rate of $1,491 * 12 = $17,892, so the disabled parent passes.
+    np.testing.assert_array_equal(
+        simulation.calculate(flag, YEAR), [False, True, False]
+    )
+    # A supplied $18,000 exceeds $17,892 and fails the parent on the branch.
+    branch = simulation.get_branch("annual_deemed_override_for_parent_test")
+    branch.set_input("ssi_income_deemed_from_ineligible_spouse", YEAR, [18_000, 0, 0])
+    np.testing.assert_array_equal(branch.calculate(flag, YEAR), [True, True, False])
+    np.testing.assert_array_equal(
+        simulation.calculate(flag, YEAR), [False, True, False]
+    )
+
+
 def test_annual_input_adapter_honors_dated_legacy_abolition():
     # Exercise the input adapter without constructing another policy system.
     # Core checks abolition at the requested month before period conversion.
