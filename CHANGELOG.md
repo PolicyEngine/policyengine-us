@@ -1,3 +1,17 @@
+## [2.118.9] - 2026-11-13
+
+### Fixed
+
+- Set California's 2026 income tax brackets, standard deductions, exemption credits and renter's credit income limits to the Franchise Tax Board's published amounts, and add the June 2026 California CPI.
+
+
+## [2.118.8] - 2026-11-13
+
+### Fixed
+
+- Restore New York Medicaid eligibility for qualifying 19- and 20-year-olds who live with a parent.
+
+
 ## [2.118.7] - 2026-11-12
 
 ### Changed
