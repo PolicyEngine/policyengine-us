@@ -18,9 +18,9 @@
   output:
     sc_tanf_income_eligible: false
     # FPG for a benefit group of 2 (2025-01) = 1703.33/month
-    # need_standard = 1703.33 * 0.5 = 851.67
-    # gross_income_limit = 851.67 * 1.85 = 1575.58
-    # gross_income 2,000 > 1,575.58 -> not eligible
+    # need_standard = floor(1703.33 * 0.5 = 851.67) = 851
+    # gross_income_limit = 851 * 1.85 = 1,574.35
+    # gross_income 2,000 > 1,574.35 -> not eligible
 
 - name: Case 3, pass gross income test but higher than need standard.
   period: 2025-01
@@ -31,10 +31,10 @@
     sc_tanf_benefit_group_size: 2
   output:
     sc_tanf_income_eligible: false
-    # need_standard = 851.67
-    # gross_income_limit = 1,575.58
-    # gross 1,200 < 1,575.58 -> passes gross test
-    # countable 900 >= 851.67 -> fails countable test
+    # need_standard = 851
+    # gross_income_limit = 1,574.35
+    # gross 1,200 < 1,574.35 -> passes gross test
+    # countable 900 >= 851 -> fails countable test
 
 - name: Case 4, pass both income tests.
   period: 2025-01
@@ -45,5 +45,5 @@
     sc_tanf_benefit_group_size: 2
   output:
     sc_tanf_income_eligible: true
-    # gross 1,000 < 1,575.58 -> passes gross test
-    # countable 800 < 851.67 -> passes countable test
+    # gross 1,000 < 1,574.35 -> passes gross test
+    # countable 800 < 851 -> passes countable test

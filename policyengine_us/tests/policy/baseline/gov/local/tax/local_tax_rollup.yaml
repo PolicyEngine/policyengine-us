@@ -91,6 +91,7 @@
 
 - name: Indiana county tax flows from earnings to household and SPM totals
   period: 2021
+  absolute_error_margin: 0.01
   input:
     state_code: IN
     county_str: BOONE_COUNTY_IN
@@ -101,8 +102,10 @@
     local_income_tax: 735
     local_income_tax_before_refundable_credits: 735
     local_tax: 735
-    household_tax: 9_037.7
-    household_net_income: 40_962.3
+    # The 2021 premium tax credit lowers household tax, not the SPM's taxes.
+    premium_tax_credit_in_force: 1_275.24
+    household_tax: 9_037.7 - 1_275.24
+    household_net_income: 40_962.3 + 1_275.24
     spm_unit_local_tax: 735
     spm_unit_taxes: 9_037.7
     spm_unit_net_income: 36_824.8

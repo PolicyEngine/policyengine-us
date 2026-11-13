@@ -24,34 +24,13 @@ class mt_itemized_deductions_indiv(Variable):
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.mt.tax.income.deductions.itemized
-        # Since we only compute the federal charitable deduction at the tax unit level,
-        # we will split the value between each spouse
-        charitable_deduction = (
-            person.tax_unit("charitable_deduction", period) * p.spouse_allocation_rate
-        )
+        # The medical deduction is kept apart because the split of a
+        # dependent's medical bills is chosen by comparing the couple's tax
+        # with every other itemized deduction held fixed
+        # (mt_dependent_medical_expense_head_share).
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        # The interest deduction is the sum of mortagage and investment interest expenses
-        investment_interest = person("investment_interest_expense", period)
-        # Montana allows the mortgage interest federal law allows, so interest
-        # on acquisition debt above the IRC 163(h)(3) caps is not deductible
-        # (MCA 15-30-2131(1)(a); Form 2 instructions, itemized line 9).
-        mortgage_interest = person("deductible_mortgage_interest", period)
-        # Apply the federal phase-out first, then allocate the allowed
-        # premiums according to each spouse's payments on both residences.
-        mortgage_insurance = person(
-            "deductible_mortgage_insurance_premiums_indiv", period
+        medical = person("mt_medical_expense_deduction_indiv", period)
+        return (
+            person("mt_non_medical_itemized_deductions_indiv", period)
+            + head_or_spouse * medical
         )
-        interest_ded = investment_interest + mortgage_interest + mortgage_insurance
-        other_deductions = add(
-            person,
-            period,
-            [
-                "mt_misc_deductions",
-                "mt_child_dependent_care_expense_deduction",
-                "mt_medical_expense_deduction_indiv",
-                "mt_salt_deduction",
-                "mt_federal_income_tax_deduction_indiv",
-            ],
-        )
-        return head_or_spouse * (interest_ded + charitable_deduction + other_deductions)

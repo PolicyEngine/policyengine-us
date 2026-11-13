@@ -3,6 +3,12 @@ metadata:
   unit: currency-USD
   period: year
   label: Medicare Part A deductible
+  # After the last announced year, the deductible follows the Medicare
+  # Trustees' projected deductible (calibration.gov.hhs.cms.medicare_part_a_deductible),
+  # rounded to the nearest multiple of $4 with a midpoint rounded up, as 42
+  # U.S.C. 1395e(b)(1) requires. extend_medicare_part_a_deductible in
+  # uprating_extensions.py projects it, because core's uprating rounding
+  # sends a midpoint to the even multiple.
   reference:
     - title: 42 U.S.C. § 1395e(b)(1)
       href: https://www.law.cornell.edu/uscode/text/42/1395e#b_1

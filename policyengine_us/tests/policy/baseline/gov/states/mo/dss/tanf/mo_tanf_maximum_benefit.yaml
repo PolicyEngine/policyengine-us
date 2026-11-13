@@ -1,47 +1,119 @@
-- name: Family of 1 maximum benefit
+- name: Family of 1 receives the printed maximum grant
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_standard_of_need: 393
+    mo_tanf_assistance_unit_size: 1
   output:
-    mo_tanf_maximum_benefit: 135.687
+    mo_tanf_maximum_benefit: 136
 
-- name: Family of 2 maximum benefit
+- name: Family of 2 receives the printed maximum grant
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_standard_of_need: 678
+    mo_tanf_assistance_unit_size: 2
   output:
-    mo_tanf_maximum_benefit: 234.086
+    mo_tanf_maximum_benefit: 234
 
-- name: Family of 3 maximum benefit
+- name: Family of 3 receives the printed maximum grant
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
   output:
-    mo_tanf_maximum_benefit: 292.09
+    mo_tanf_maximum_benefit: 292
 
-- name: Family of 4 maximum benefit
+- name: Family of 4 receives the printed maximum grant
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_standard_of_need: 990
+    mo_tanf_assistance_unit_size: 4
   output:
-    mo_tanf_maximum_benefit: 341.807
+    mo_tanf_maximum_benefit: 342
 
-- name: Family of 5 maximum benefit
+- name: Family of 5 receives the printed maximum grant
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_standard_of_need: 1_123
+    mo_tanf_assistance_unit_size: 5
   output:
-    mo_tanf_maximum_benefit: 387.727
+    mo_tanf_maximum_benefit: 388
 
-- name: Family of 6 maximum benefit
+- name: Family of 6 receives the printed maximum grant
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_standard_of_need: 1_247
+    mo_tanf_assistance_unit_size: 6
   output:
-    mo_tanf_maximum_benefit: 430.539
+    mo_tanf_maximum_benefit: 431
+
+- name: Family of 7 receives the printed maximum grant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_assistance_unit_size: 7
+  output:
+    mo_tanf_maximum_benefit: 474
+
+- name: Family of 8 receives the printed maximum grant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_assistance_unit_size: 8
+  output:
+    mo_tanf_maximum_benefit: 514
+
+- name: Family of 9 receives the printed maximum grant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_assistance_unit_size: 9
+  output:
+    mo_tanf_maximum_benefit: 554
+
+- name: Family of 10 receives the printed maximum grant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_assistance_unit_size: 10
+  output:
+    mo_tanf_maximum_benefit: 595
+
+- name: Family of 11 receives the printed maximum grant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_assistance_unit_size: 11
+  output:
+    mo_tanf_maximum_benefit: 635
+
+- name: Family of 12 receives the printed maximum grant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_assistance_unit_size: 12
+  output:
+    mo_tanf_maximum_benefit: 675
+
+- name: Family of 13 receives the printed maximum grant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_assistance_unit_size: 13
+  output:
+    mo_tanf_maximum_benefit: 715
+
+- name: Family of 16 receives the printed maximum grant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_assistance_unit_size: 16
+  output:
+    mo_tanf_maximum_benefit: 835
+
+- name: Family of 22 receives the printed maximum grant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_assistance_unit_size: 22
+  output:
+    mo_tanf_maximum_benefit: 1075
