@@ -78,3 +78,119 @@
     ny_heap_categorically_eligible: [false, false]
   output:
     ny_heap_tier_one: [true, false]
+
+# Supplied HEAP sizes isolate this threshold component; wages compute countable
+# income and no categorical-eligibility result is supplied. For each size the
+# original table maximum qualifies and one more monthly dollar does not. The
+# final N+1 household keeps the generic calculation beyond published rows; its
+# wages are just above the last printed Tier I row, below the larger-size line.
+# The FY2016 case protects existing behavior only, not verified historical law.
+- name: Case 6, FY2017 every published Tier I maximum is inclusive with generic fallback above the table.
+  period: 2017
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    employment_income: [15444, 20832, 26208, 31596, 36972, 42360, 47748, 53160, 58560, 63972, 69384, 15456, 20844, 26220,
+      31608, 36984, 42372, 47760, 53172, 58572, 63984, 69396, 69396]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap_tier_one: [true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false,
+      false, false, false, false, false, false, true]
+- name: Case 7, FY2018 every published Tier I maximum is inclusive with generic fallback above the table.
+  period: 2018
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    employment_income: [15684, 21108, 26544, 31980, 37416, 42852, 48288, 53712, 59148, 64584, 70020, 15696, 21120, 26556,
+      31992, 37428, 42864, 48300, 53724, 59160, 64596, 70032, 70032]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap_tier_one: [true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false,
+      false, false, false, false, false, false, true]
+- name: Case 8, FY2019 every published Tier I maximum is inclusive with generic fallback above the table.
+  period: 2019
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    employment_income: [15780, 21396, 27012, 32628, 38244, 43860, 49476, 55092, 60708, 66324, 71940, 15792, 21408, 27024,
+      32640, 38256, 43872, 49488, 55104, 60720, 66336, 71952, 71952]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap_tier_one: [true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false,
+      false, false, false, false, false, false, true]
+- name: Case 9, FY2020 every published Tier I maximum is inclusive with generic fallback above the table.
+  period: 2020
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    employment_income: [16236, 21984, 27732, 33480, 39216, 44964, 50712, 56460, 62208, 67956, 73692, 16248, 21996, 27744,
+      33492, 39228, 44976, 50724, 56472, 62220, 67968, 73704, 73704]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap_tier_one: [true, true, true, true, true, true, true, true, true, true, true, false, false, false, false, false,
+      false, false, false, false, false, false, true]
+- name: Case 10, FY2021 every published Tier I maximum is inclusive with generic fallback above the table.
+  period: 2021
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    employment_income: [16584, 22416, 28236, 34056, 39888, 45708, 51528, 57360, 63180, 69000, 74832, 80652, 16596, 22428,
+      28248, 34068, 39900, 45720, 51540, 57372, 63192, 69012, 74844, 80664, 80664]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap_tier_one: [true, true, true, true, true, true, true, true, true, true, true, true, false, false, false, false,
+      false, false, false, false, false, false, false, false, true]
+- name: Case 11, FY2022 every published Tier I maximum is inclusive with generic fallback above the table.
+  period: 2022
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    employment_income: [16740, 22644, 28548, 34452, 40356, 46260, 52152, 58056, 63960, 69864, 75768, 81672, 87564, 16752,
+      22656, 28560, 34464, 40368, 46272, 52164, 58068, 63972, 69876, 75780, 81684, 87576, 87576]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap_tier_one: [true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false,
+      false, false, false, false, false, false, false, false, false, false, true]
+- name: Case 12, FY2023 every published Tier I maximum is inclusive with generic fallback above the table.
+  period: 2023
+  input:
+    state_code: [NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY, NY]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    ny_heap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    employment_income: [17664, 23796, 29928, 36072, 42204, 48336, 54480, 60612, 66744, 72888, 79020, 85152, 91296, 17676,
+      23808, 29940, 36084, 42216, 48348, 54492, 60624, 66756, 72900, 79032, 85164, 91308, 91308]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ny_heap_tier_one: [true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false,
+      false, false, false, false, false, false, false, false, false, false, true]
+- name: Case 13, pre-FY2017 generic Tier I behavior is preserved without certifying its law.
+  period: 2016
+  input:
+    state_code: [NY, NY]
+    age: [40, 40]
+    employment_income: [15300, 15312]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+  output:
+    ny_heap_tier_one: [true, false]
