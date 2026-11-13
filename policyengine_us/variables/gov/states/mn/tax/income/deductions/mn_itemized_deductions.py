@@ -38,7 +38,10 @@ class mn_itemized_deductions(Variable):
             itm_deds_less_salt = itm_deds_less_salt - add(
                 tax_unit, period, disallowed_interest
             )
-        capped_property_taxes = tax_unit("capped_property_taxes", period)
+        property_taxes = tax_unit("mn_property_tax_deduction", period)
+        charity_adjustment = tax_unit("mn_charitable_deduction", period) - tax_unit(
+            "charitable_deduction", period
+        )
         # Schedule M1SA line 19 takes Minnesota's own casualty and theft loss
         # (Schedule M1CAT) in place of the federal one, which is limited to
         # declared disasters from 2018.
@@ -48,7 +51,8 @@ class mn_itemized_deductions(Variable):
             itm_deds_less_salt
             - federal_casualty_loss
             + mn_casualty_loss
-            + capped_property_taxes
+            + property_taxes
+            + charity_adjustment
         )
         # ... calculate itemized deductions offset
         p = parameters(period).gov.states.mn.tax.income.deductions.itemized
