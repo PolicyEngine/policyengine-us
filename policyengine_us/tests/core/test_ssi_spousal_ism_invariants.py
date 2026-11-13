@@ -290,6 +290,7 @@ def test_annual_input_adapter_honors_dated_legacy_abolition():
     holder = SimpleNamespace(
         variable=SimpleNamespace(is_neutralized=False, definition_period="year"),
         get_known_branch_periods=lambda: [],
+        _record_store=lambda period, sequence_number: None,
     )
     simulation = SimpleNamespace(
         tax_benefit_system=SimpleNamespace(parameters=Parameters()),

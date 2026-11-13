@@ -1,5 +1,7 @@
 """Read legacy annual inputs without averaging calculated monthly budgets."""
 
+from policyengine_core.data_storage.store_history import next_sequence_number
+
 from policyengine_us.model_api import has_input_for_period
 
 
@@ -12,12 +14,9 @@ def annual_input(person, period, name):
     """
     simulation = person.simulation
     holder = simulation.get_holder(name)
-    # Core 3.33+ records dependencies by store order. Older supported Core
-    # versions rely on callers clearing branch caches with get_override_branch.
-    if hasattr(holder, "_record_store"):
-        from policyengine_core.data_storage.store_history import next_sequence_number
-
-        holder._record_store(period.this_year, next_sequence_number())
+    # Core records dependencies by store order. It has no public method for
+    # this record, so the adapter calls the holder's private one.
+    holder._record_store(period.this_year, next_sequence_number())
 
     # Monthly readers retain dated abolition switches on the annual name.
     if simulation.tax_benefit_system.parameters(period).gov.abolitions[name]:
