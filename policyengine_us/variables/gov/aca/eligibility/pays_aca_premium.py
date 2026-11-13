@@ -74,10 +74,15 @@ class pays_aca_premium(Variable):
         # Puerto Rico, Guam and the Virgin Islands have no Exchange: 36B(c)(2)(A)
         # counts plans enrolled in through an Exchange established by a State,
         # and 42 U.S.C. 18024(d) defines a State as the 50 States and the
-        # District of Columbia. HHS publishes no poverty guideline for them
-        # either, so aca_magi_fraction is infinite there, and nobody in them
-        # is charged a Marketplace premium.
-        has_exchange = np.isfinite(magi_frac)
+        # District of Columbia. So nobody in them is charged a Marketplace
+        # premium.
+        state_group = person.household("state_group", period)
+        groups = state_group.possible_values
+        has_exchange = (
+            (state_group != groups.GU)
+            & (state_group != groups.PR)
+            & (state_group != groups.VI)
+        )
 
         return (
             is_status_eligible

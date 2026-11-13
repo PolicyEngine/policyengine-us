@@ -48,17 +48,12 @@ first_person:
   # Add placeholders for Guam, Puerto Rico, and the Virgin Islands.
   # Poverty guidelines do not apply to these areas, but we include them for
   # completeness and to avoid errors arising from uprating and breakdown
-  # metadata fields. The 1992 entry lets every guideline year resolve; the
-  # 2024 entry stays the last value, so uprating starts where its index is
-  # defined.
+  # metadata fields.
   GU:
-    1992-01-01: 0
     2024-01-01: 0
   PR:
-    1992-01-01: 0
     2024-01-01: 0
   VI:
-    1992-01-01: 0
     2024-01-01: 0
 additional_person:
   # Calculated by subtracting a two-person household's line from a one-person's.
@@ -110,13 +105,10 @@ additional_person:
     2026-01-01: 6_530
   # Add placeholders for Guam, Puerto Rico, and the Virgin Islands.
   GU:
-    1992-01-01: 0
     2024-01-01: 0
   PR:
-    1992-01-01: 0
     2024-01-01: 0
   VI:
-    1992-01-01: 0
     2024-01-01: 0
 
 metadata:

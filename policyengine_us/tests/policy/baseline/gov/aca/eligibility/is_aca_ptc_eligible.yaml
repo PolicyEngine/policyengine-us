@@ -589,11 +589,12 @@
 
 - name: 2024 Puerto Rico single adult pays no Marketplace premium and is not eligible
   # HHS defines no guideline for Puerto Rico, and no Exchange operates there
-  # (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)). The placeholder guideline
-  # is 0, so the fraction is infinite and pays_aca_premium is false. Without
-  # the no-Exchange test, the infinite fraction is outside the coverage gap
-  # and pays_aca_premium would be true. The 2023 guideline lookup raised
-  # ParameterNotFoundError before the placeholders were backdated to 1992.
+  # (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)), so pays_aca_premium is
+  # false. Without the no-Exchange test, the infinite fraction (the
+  # placeholder guideline is 0) is outside the coverage gap and
+  # pays_aca_premium would be true. On main, with the state supplied for 2024
+  # only, the 2023 guideline year fell back to the default state's guideline
+  # (30,000 / 14,580, floored to 2.05), so the household was eligible.
   period: 2024
   input:
     people:

@@ -45,9 +45,13 @@ class aca_magi_fraction(Variable):
         # HHS defines no guideline for Puerto Rico, Guam or the Virgin
         # Islands, whose placeholder is 0, and no Exchange operates there
         # (26 U.S.C. 36B(c)(2)(A); 42 U.S.C. 18024(d)). Their fraction is
-        # infinite rather than 0 / 0: pays_aca_premium reads it as no
-        # Exchange, the eligibility scale's out-of-range cell is false, and
-        # the required contribution percentage is capped out to 0.
+        # infinite rather than 0 / 0 (NaN at $0 of income): the eligibility
+        # scale's out-of-range cell is false, and the required contribution
+        # percentage is capped out to 0. pays_aca_premium excludes them by
+        # state group.
         has_guideline = guideline > 0
-        fraction = magi / where(has_guideline, guideline, 1)
-        return where(has_guideline, np.floor(100 * fraction) / 100, np.inf)
+        # Multiply before dividing, so income exactly on a whole percentage
+        # (100 x 35,369 / 15,650 = 226) isn't floored one point low by a
+        # quotient that isn't exactly representable.
+        percent = 100 * magi / where(has_guideline, guideline, 1)
+        return where(has_guideline, np.floor(percent) / 100, np.inf)
