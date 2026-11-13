@@ -458,7 +458,12 @@
     # The 5,500 excess is 200 + 5,000 for spouse 1 (short-term and the net
     # long-term loss) and 300 for spouse 2. The regulation's allocation:
     # "Spouse 1 (5,200/5,500 x 3,000) and Spouse 2 (300/5,500 x 3,000)",
-    # 2,836.36 and 163.64. Its table rounds them to 2,850 and 150.
+    # 2,836.36 and 163.64. The department prints 2,850 and 150 in its table;
+    # those amounts do not match its stated fractions.
+    # The department printed spouse 2's positive 3,000 long-term gain in the
+    # 2018 proposed amendment; later PDFs print the opposite sign despite
+    # retaining the same total and excess-loss calculation:
+    # https://www.sos.mo.gov/CMSImages/AdRules/moreg/2018/v43n22Nov15/v43n22a.pdf#page=69
     # Spouse 2's long-term gain nets against spouse 1's losses and is in
     # neither column.
     adjusted_gross_income: 12_000

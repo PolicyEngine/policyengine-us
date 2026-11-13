@@ -19,13 +19,8 @@ values:
   # Through 2023 a spouse's column on the combined return could be negative:
   # the 2023 instructions' Line 7 note covers "one spouse has negative income".
   2019-01-01: false
-  # The 2024 instructions are the first to say "If the amount you would
-  # otherwise report as your federal adjusted gross income would be a negative
-  # number, enter $0 on Line 1", without saying how a combined return applies
-  # it. The 2025 instructions apply the same 12 CSR 10-2.710(1) to combined
-  # returns: both spouses enter $0 when joint federal AGI is negative, and when
-  # it is positive the spouse with a negative separate amount enters $0 and the
-  # other spouse enters the whole joint amount. That reading also keeps the 2024
-  # worksheet's rule that the two columns add up to joint federal AGI, so it is
-  # applied from 2024.
+  # Apply the 2025 combined-return method from 2024, when the department
+  # amended 12 CSR 10-2.710(1). The department does not specify the combined
+  # allocation in its 2024 instructions. Giving the positive spouse the joint
+  # amount preserves the joint total after the negative spouse enters zero.
   2024-01-01: true

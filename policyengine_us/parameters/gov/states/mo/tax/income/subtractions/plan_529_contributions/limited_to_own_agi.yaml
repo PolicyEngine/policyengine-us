@@ -13,10 +13,9 @@ values:
   # The 2019 version of 12 CSR 10-2.010 covers only capital losses, and RSMo
   # 166.435 sets no limit beyond the dollar cap.
   2019-01-01: false
-  # The version effective February 29, 2024 gives a spouse with $1,000 of
-  # federal AGI and a $5,000 MOST contribution a Missouri AGI of zero "because
-  # the MOST subtraction is limited to the spouse's Missouri adjusted gross
-  # income". It governs the 2024 and 2025 returns.
+  # In the February 2024 example, the spouse enters zero after subtracting
+  # MOST contributions. Map that example to tax years 2024-2025. The
+  # department gives no explicit tax-year transition in either amendment.
   2024-01-01: true
-  # The version effective April 30, 2026 gives the same spouse -$4,000.
+  # Map the April 2026 example, where the spouse enters -$4,000, to 2026.
   2026-01-01: false

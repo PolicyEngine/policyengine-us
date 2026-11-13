@@ -260,3 +260,71 @@
     # page 6). Spouse 1's Line 5 is 0 - 1,000 = -1,000.
     mo_federal_adjusted_gross_income: [0, 91_000]
     mo_adjusted_gross_income: [-1_000, 91_000]
+
+- name: Missouri additions increase Line 5 and the income available for MOST
+  period: 2025
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 1_000
+        mo_other_additions: 4_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 1_000
+        mo_other_additions: 4_000
+        investment_in_529_plan_indv: 5_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Each spouse adds 4,000 to federal AGI of 1,000 before subtractions.
+    # The primary keeps 5,000; the secondary subtracts 5,000 for MOST.
+    mo_federal_adjusted_gross_income: [1_000, 1_000]
+    mo_additions: [4_000, 4_000]
+    mo_adjusted_gross_income: [5_000, 0]
+
+- name: Filers divide taxable basic income equally and give dependents no share
+  period: 2025
+  input:
+    gov.contrib.ubi_center.basic_income.taxable: true
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 20_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary, child]
+        basic_income: 4_000
+    marital_units:
+      parents:
+        members: [primary, secondary]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [primary, secondary, child]
+        state_code: MO
+  output:
+    # Each filer adds half of 4,000. The child's earnings stay off this return.
+    adjusted_gross_income: 64_000
+    mo_federal_adjusted_gross_income: [42_000, 22_000, 0]
+    mo_adjusted_gross_income: [42_000, 22_000, 0]
