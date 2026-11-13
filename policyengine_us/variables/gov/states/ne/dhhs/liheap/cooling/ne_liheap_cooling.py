@@ -1,0 +1,44 @@
+from policyengine_us.model_api import *
+
+
+class ne_liheap_cooling(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    unit = USD
+    label = "Nebraska LIHEAP regular cooling assistance"
+    documentation = (
+        "Verified for FY2026 and FY2027 (the June-August cooling seasons); the "
+        "FY2027 Guidance Document prints the FY2026 table again. FY2027 rests on "
+        "the October 1, 2026 print, which FY2027 plan section 3.5 makes subject to "
+        "update closer to the cooling season based on funding. Earlier years "
+        "use model parameter backfilling and are unverified historical "
+        "estimates. Later years carry the table forward until a new one is "
+        "added."
+    )
+    defined_for = "ne_liheap_cooling_eligible"
+    reference = (
+        "https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=3",
+        "https://dhhs.ne.gov/Guidance%20Docs/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document.pdf#page=4",
+        # 476 NAC 3-001 and 3-003.01, PDF pages 1-2
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%203%20(12-26-2020).pdf/1748#page=1",
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%201%20(12-26-2020).pdf/1746#page=1",
+        "https://dhhs.ne.gov/Pages/Energy-Assistance.aspx",
+        # FY2027 plan section 3.5
+        "https://liheapch.acf.gov/docs/2027/state-plans/NE_Plan_2027.pdf#page=12",
+    )
+
+    def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.ne.dhhs.liheap.cooling
+        income_ratio = spm_unit("ne_liheap_payment_fpg_ratio", period)
+        dwelling = spm_unit("ne_liheap_dwelling_type", period)
+        multifamily = dwelling == dwelling.possible_values.MULTI_FAMILY
+        # The cooling season runs June 1 through August 31 (476 NAC 1-004.04),
+        # and DHHS pays "one time per cooling season" (Energy Assistance page).
+        # The FY2026 table has no fuel column. No FY2026 cooling supplement has
+        # been verified.
+        return where(
+            multifamily,
+            p.multifamily.calc(income_ratio, right=True),
+            p.single_family.calc(income_ratio, right=True),
+        )

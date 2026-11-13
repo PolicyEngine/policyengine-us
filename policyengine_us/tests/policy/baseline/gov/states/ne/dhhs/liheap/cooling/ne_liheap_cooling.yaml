@@ -1,0 +1,337 @@
+# Source: Nebraska FY2026 LIHEAP Guidance, Cooling Payment Computation (page 3).
+# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=3
+# Tiers by payment income as a share of the 2025 guideline: at or below 70% / 100% / 130% /
+# 150%. Single-family $700 / $595 / $525 / $478; multi-family $385 / $335 / $300 / $273.
+# One-person tier tops: $10,955 / $15,650 / $20,345 / $23,475.
+
+- name: Case 1, single-family cooling payments at each closed tier boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NE, NE, NE, NE, NE, NE, NE, NE, NE]
+    ne_liheap_cooling_eligible: [true, true, true, true, true, true, true, true, true]
+    ne_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ne_liheap_gross_income: [-100, 0, 10_955, 10_955.01, 15_650, 15_650.01, 20_345, 20_345.01,
+      23_475]
+    ne_liheap_earned_income: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    has_cooling_expense: [true, true, true, true, true, true, true, true, true]
+  output:
+    ne_liheap_cooling: [700, 700, 700, 595, 595, 525, 525, 478, 478]
+
+- name: Case 2, multi-family cooling payments at each closed tier boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NE, NE, NE, NE, NE, NE, NE, NE]
+    ne_liheap_cooling_eligible: [true, true, true, true, true, true, true, true]
+    ne_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1]
+    ne_liheap_gross_income: [0, 10_955, 10_955.01, 15_650, 15_650.01, 20_345, 20_345.01, 23_475]
+    ne_liheap_earned_income: [0, 0, 0, 0, 0, 0, 0, 0]
+    ne_liheap_dwelling_type: [MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY,
+      MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS]
+    has_cooling_expense: [true, true, true, true, true, true, true, true]
+  output:
+    ne_liheap_cooling: [385, 385, 335, 335, 300, 300, 273, 273]
+
+# A 72-year-old in a house with $1,200 a month of Social Security ($14,400 a year) and a
+# $900 gas heating bill. 14,400 / 15,650 = 0.920, tier 2: cooling $595 (single-family) and,
+# separately, heating $550 (natural gas column). The national LIHEAP total is $550 + $595.
+- name: Case 3, a retiree receives both the heating and the cooling payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NE
+    age: 72
+    social_security_retirement: 14_400
+    ssi: 0
+    ne_aabd: 0
+    general_assistance: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    has_cooling_expense: true
+  output:
+    ne_liheap_cooling_eligible: true
+    ne_liheap: 550
+    ne_liheap_cooling: 595
+    liheap: 1_145
+
+# A mother receiving ADC of about $5,920 a year with her 3-year-old in an apartment.
+# 5,920 / 21,150 = 0.280, tier 1: multi-family $385.
+- name: Case 4, an ADC household in an apartment receives the multi-family payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+      person2:
+        age: 3
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 5_920
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        ne_liheap_dwelling_type: MULTI_FAMILY
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_liheap_cooling_eligible: true
+    ne_liheap_cooling: 385
+
+# Case 3's retiree with no heating, then with the heating fuel left unspecified, and no
+# heating bill. The cooling table has no fuel column, so both homes receive $595. Heating pays
+# nothing in both.
+- name: Case 5, a home without heating and a home with an unspecified heating fuel are both paid.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NE, NE]
+    age: [72, 72]
+    social_security_retirement: [14_400, 14_400]
+    ssi: [0, 0]
+    ne_aabd: [0, 0]
+    general_assistance: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NONE, UNSPECIFIED]
+    has_cooling_expense: [true, true]
+  output:
+    ne_liheap: [0, 0]
+    # Was [true, false] and [595, 0], now [true, true] and [595, 595]: the cooling payment
+    # adds no heating-fuel condition of its own.
+    ne_liheap_cooling_eligible: [true, true]
+    ne_liheap_cooling: [595, 595]
+
+# A 75-year-old with $2,000 a month of Social Security ($24,000 a year) exceeds the $23,475
+# one-person limit.
+- name: Case 6, income above 150% of the guideline pays nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NE
+    age: 75
+    social_security_retirement: 24_000
+    ssi: 0
+    ne_aabd: 0
+    general_assistance: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    has_cooling_expense: true
+  output:
+    ne_liheap_income_eligible: false
+    ne_liheap_cooling: 0
+
+- name: Case 7, a household without a cooling cost receives no cooling payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NE
+    age: 72
+    social_security_retirement: 14_400
+    ssi: 0
+    ne_aabd: 0
+    general_assistance: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    has_cooling_expense: false
+  output:
+    ne_liheap_cooling: 0
+
+# The Guidance Document effective October 1, 2026 (page 4) prints the FY2026 amounts
+# on the 2026 guideline of $15,960 for one person: 14,400 / 15,960 = 0.902, tier 2: $595.
+# The limit is 1.5 x 15,960 = $23,940.
+- name: Case 8, the FY2027 cooling table repeats the FY2026 amounts.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: NE
+    age: 72
+    social_security_retirement: 14_400
+    ssi: 0
+    ne_aabd: 0
+    general_assistance: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    has_cooling_expense: true
+  output:
+    ne_liheap_cooling: 595
+
+# A 45-year-old earning $15 an hour for 20 hours a week ($15,600) lives with a 72-year-old
+# parent receiving $1,100 a month of Social Security ($13,200). Gross $28,800 is under the
+# $31,725 two-person limit. Payment income 28,800 - 0.2 x 15,600 = 25,680; 25,680 / 21,150 =
+# 1.214, tier 3: $525. Without the disregard 28,800 / 21,150 = 1.362 would be tier 4 ($478).
+- name: Case 9, the earned income disregard raises the cooling payment tier.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 15_600
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+      person2:
+        age: 72
+        social_security_retirement: 13_200
+        ssi: 0
+        ne_aabd: 0
+        general_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_liheap_cooling: 525
+
+# A 72-year-old with $1,200 a month of Social Security ($14,400 a year) rents an apartment with
+# heat in the rent and an unknown heating fuel. She pays her own electric bill for a window air
+# conditioner and gets no housing assistance. 14,400 / 15,650 = 0.920, tier 2: multi-family
+# heating $300 (as in integration Case 7) and multi-family cooling $335.
+- name: Case 10, an apartment renter with heat in the rent and an unspecified fuel is paid cooling.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NE
+    age: 72
+    social_security_retirement: 14_400
+    ssi: 0
+    ne_aabd: 0
+    general_assistance: 0
+    tanf: 0
+    ne_liheap_dwelling_type: MULTI_FAMILY
+    heat_expense_included_in_rent: true
+    heating_type: UNSPECIFIED
+    has_cooling_expense: true
+    receives_housing_assistance: false
+  output:
+    ne_liheap: 300
+    ne_liheap_cooling_eligible: true
+    ne_liheap_cooling: 335
+
+# The same retiree rents an apartment in Douglas County (Omaha) with all utilities in the rent,
+# reports no separate cooling cost and gets no housing assistance. Her rent is the FY2026 HUD Fair
+# Market Rent for a one-bedroom unit, $1,148 a month (x12 = 13,776). Plan section 3.3 requires a
+# renter with utilities in rent to be responsible for a portion of the cooling utilities, read as
+# heating reads the same sentence for heat in rent (ne_liheap_eligible Case 9). Tier 2:
+# multi-family heating $300 and cooling $335.
+- name: Case 11, an unsubsidized renter with utilities in the rent is paid cooling.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NE
+    age: 72
+    social_security_retirement: 14_400
+    ssi: 0
+    ne_aabd: 0
+    general_assistance: 0
+    tanf: 0
+    ne_liheap_dwelling_type: MULTI_FAMILY
+    tenant_pays_utilities: false
+    rent: 13_776
+    heat_expense_included_in_rent: true
+    heating_type: ELECTRICITY
+    has_cooling_expense: false
+    receives_housing_assistance: false
+  output:
+    ne_liheap: 300
+    ne_liheap_cooling_eligible: true
+    ne_liheap_cooling: 335
+
+# Case 11's renter with all utilities in the rent and no separate cooling cost, first with housing
+# assistance and then in public housing. Each pays a subsidized rent of about 30% of her income,
+# $360 a month (x12 = 4,320). A subsidized household must pay a portion of the cooling utilities
+# itself, so neither is paid cooling; with no heating bill, neither is paid heating (as in
+# ne_liheap_eligible Cases 6 and 7).
+- name: Case 12, a subsidized renter with utilities in the rent and no cooling cost is not paid.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NE, NE]
+    age: [72, 72]
+    social_security_retirement: [14_400, 14_400]
+    ssi: [0, 0]
+    ne_aabd: [0, 0]
+    general_assistance: [0, 0]
+    tanf: [0, 0]
+    ne_liheap_dwelling_type: [MULTI_FAMILY, MULTI_FAMILY]
+    tenant_pays_utilities: [false, false]
+    rent: [4_320, 4_320]
+    heat_expense_included_in_rent: [true, true]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [false, false]
+    receives_housing_assistance: [true, false]
+    is_in_public_housing: [false, true]
+  output:
+    ne_liheap: [0, 0]
+    ne_liheap_cooling_eligible: [false, false]
+    ne_liheap_cooling: [0, 0]
+
+# The same retiree lives rent-free in a relative's apartment, and the relative pays the
+# utilities. With no rent she pays no portion of the cooling utilities, so she is not paid
+# cooling.
+- name: Case 13, utilities paid by someone else with no rent do not qualify the household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NE
+    age: 72
+    social_security_retirement: 14_400
+    ssi: 0
+    ne_aabd: 0
+    general_assistance: 0
+    tanf: 0
+    ne_liheap_dwelling_type: MULTI_FAMILY
+    tenant_pays_utilities: false
+    rent: 0
+    heat_expense_included_in_rent: false
+    heating_type: ELECTRICITY
+    has_cooling_expense: false
+    receives_housing_assistance: false
+  output:
+    ne_liheap_cooling_eligible: false
+    ne_liheap_cooling: 0
+
+# Case 11's retiree pays the same rent, but she pays her own utilities apart from the rent and
+# reports no cooling cost. With the utilities outside the rent and no cooling cost, she is not
+# paid cooling.
+- name: Case 14, a renter who pays her own utilities and reports no cooling cost is not paid.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NE
+    age: 72
+    social_security_retirement: 14_400
+    ssi: 0
+    ne_aabd: 0
+    general_assistance: 0
+    tanf: 0
+    ne_liheap_dwelling_type: MULTI_FAMILY
+    tenant_pays_utilities: true
+    rent: 13_776
+    heat_expense_included_in_rent: false
+    heating_type: ELECTRICITY
+    has_cooling_expense: false
+    receives_housing_assistance: false
+  output:
+    ne_liheap_cooling_eligible: false
+    ne_liheap_cooling: 0

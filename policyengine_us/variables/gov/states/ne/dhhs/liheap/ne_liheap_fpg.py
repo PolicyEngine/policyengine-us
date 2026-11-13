@@ -15,7 +15,8 @@ class ne_liheap_fpg(Variable):
         p = parameters(period).gov.states.ne.dhhs.liheap
         size = spm_unit("ne_liheap_household_size", period)
         state_group = spm_unit.household("state_group_str", period)
-        # The annual period represents the heating season ending in that year.
+        # The annual period represents the federal fiscal year ending in that
+        # year, with its heating season and its June-August cooling season.
         # Household composition is current; only the federal guideline is lagged.
         amount = fpg(
             max_(size, 1), state_group, period, parameters, year_lag=p.fpg_year_lag

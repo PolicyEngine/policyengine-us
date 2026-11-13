@@ -1,0 +1,56 @@
+# Source: Nebraska FY2026 LIHEAP Guidance, heating and cooling payment computation (pages 2-3).
+# Payment income is gross countable income less 20% of gross countable earned income, divided
+# by the guideline for the household size capped at six. FY2026 uses the 2025 guidelines
+# ($15,650 plus $5,500 per additional person).
+
+# 17,000 - 0.2 x 17,000 = 13,600; 13,600 / 15,650 = 0.86901.
+- name: Case 1, the earned income disregard applies before the ratio.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    state_code: NE
+    heating_type: NATURAL_GAS
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 17_000
+    ne_liheap_earned_income: 17_000
+  output:
+    ne_liheap_payment_fpg_ratio: 0.86901
+
+# Seven people use the six-person guideline: 15,650 + 5 x 5,500 = 43,150;
+# 31,000 / 43,150 = 0.71842.
+- name: Case 2, households above six people use the six-person guideline.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    state_code: NE
+    heating_type: NATURAL_GAS
+    ne_liheap_household_size: 7
+    ne_liheap_gross_income: 31_000
+    ne_liheap_earned_income: 0
+  output:
+    ne_liheap_payment_fpg_ratio: 0.71842
+
+- name: Case 3, negative income floors the ratio at zero.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    state_code: NE
+    heating_type: NATURAL_GAS
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: -100
+    ne_liheap_earned_income: 0
+  output:
+    ne_liheap_payment_fpg_ratio: 0
+
+# FY2027 keeps the one-year lag: the 2026 guideline is $15,960, so 15,960 / 15,960 = 1.
+- name: Case 4, FY2027 uses the 2026 guidelines.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    state_code: NE
+    heating_type: NATURAL_GAS
+    ne_liheap_household_size: 1
+    ne_liheap_gross_income: 15_960
+    ne_liheap_earned_income: 0
+  output:
+    ne_liheap_payment_fpg_ratio: 1
