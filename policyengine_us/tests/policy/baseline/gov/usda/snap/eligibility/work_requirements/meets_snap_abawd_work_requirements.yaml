@@ -149,10 +149,10 @@
   output:
     meets_snap_abawd_work_requirements: [true, true]
 
-# --- 273.24(c)(6): Homeless (pre-HR1 only) ---
+# --- FRA2023: Homeless (September2023 until HR1 adoption) ---
 
 - name: Case 11, pre-HR1 homeless person exempt.
-  period: 2022
+  period: 2024
   input:
     age: 30
     weekly_hours_worked_before_lsr: 1
@@ -161,10 +161,10 @@
   output:
     meets_snap_abawd_work_requirements: true
 
-# --- 273.24(c)(7): Veteran (pre-HR1 only) ---
+# --- FRA2023: Veteran (September2023 until HR1 adoption) ---
 
 - name: Case 12, pre-HR1 veteran exempt.
-  period: 2022
+  period: 2024
   input:
     age: 30
     weekly_hours_worked_before_lsr: 1

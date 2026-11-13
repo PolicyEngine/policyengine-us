@@ -15046,3 +15046,37 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+
+- id: us:snap-abawd-upper-age-wording
+  program: snap
+  years:
+    from: 2017
+    to: 2025
+    type: program
+    note: Examined 2017 statutory snapshot and FRA pre-HR1 phases from September 2023 through the applicable 2025 HR1 transition; not a claim that every intervening source or state adoption date was audited.
+  question: Does the ABAWD upper-age exception begin at the numbered birthday under USDA regulations, or after the stated age under the statute's wording and consistent-usage canon?
+  sources:
+  - kind: statute
+    citation: 7 USC 2015(o)(3)(A), 2017 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2017-title7/html/USCODE-2017-title7-chap51-sec2015.htm
+  - kind: regulation
+    citation: 7 CFR 273.24(c)(1), 2017 edition
+    url: https://www.govinfo.gov/content/pkg/CFR-2017-title7-vol4/pdf/CFR-2017-title7-vol4-sec273-24.pdf
+  - kind: statute
+    citation: Public Law 118-5 section 311(a)(1) and (b), 137 Stat. 36-37
+    url: https://www.govinfo.gov/content/pkg/PLAW-118publ5/pdf/PLAW-118publ5.pdf#page=28
+  - kind: rulemaking
+    citation: 89 FR 102334, age-based exception discussion and amendment to 7 CFR 273.24(c)(1), effective January 16, 2025
+    url: https://www.govinfo.gov/content/pkg/FR-2024-12-17/html/2024-29072.htm
+  readings:
+    statute: The 2017 provision says over 50; FRA substitutes over 51, over 53, and over 55 by fiscal year. Reading age in completed years and applying the same meaning to over within section 2015 gives exemption at 51, 52, 54, and 56 respectively. The precise handling of fractional age needs an explicit age-unit interpretation, not an unstated birthday convention.
+    other: USDA regulations exempt at 50 or older before FRA and describe the FRA phases as 51, 53, and 55 or older, treating the numbered birthday as sufficient.
+  example: In June 2025 an otherwise nonexempt person with completed age 55 is exempt under the existing agency boundary, while the completed-years statutory reading would keep that person subject through age 55.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/usda/snap/work_requirements/abawd/age_threshold/exempted.yaml
+    - policyengine_us/variables/gov/usda/snap/eligibility/work_requirements/is_snap_abawd_exempt.py
+    prs: []
+  state: open
+  note: The model's inherited dated parameters use the agency boundaries. The formula actually freezes the June 2025 pre-HR1 age scale, so it also has a separate historical future-lookup defect; this candidate does not endorse that defect or assert that earlier outputs implement the correct contemporary agency boundary. The separate FRA new-exemption gate repair leaves age logic unchanged. Follows describes existing behavior, not approval to retain it after adjudication. No age ruling or statute-first exception has been adopted. USDA OIG Audit 27601-0002-31, September 29, 2016, finding 2 and recommendation 3, identified the same inconsistent use of over; FNS defended its longstanding interpretation and agreed only to review it. Add a PR URL after one exists. Add reading-specific tests and missing public captures before any later global implementation pin; do not preserve known wrong historical outputs as tests.

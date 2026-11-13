@@ -22,6 +22,8 @@ class is_snap_abawd_exempt(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.24",
         "https://www.law.cornell.edu/uscode/text/7/2015#o",
+        # PDF pages 28-29: categories and September 2023 application date.
+        "https://www.congress.gov/118/plaws/publ5/PLAW-118publ5.pdf#page=28",
         "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=11",
     )
 
@@ -64,7 +66,7 @@ class is_snap_abawd_exempt(Variable):
             | is_discretionary_exempt
             | in_waived_area
         )
-        # Pre-HR1 exemptions: homeless, veteran, former foster youth.
+        # FRA categories apply from September 2023, until HR1 adoption.
         is_homeless = person.household("is_homeless", period)
         is_veteran = person("is_veteran", period)
         # 7 CFR 273.24(c)(9): aged 24 or younger and in foster care under
@@ -75,7 +77,10 @@ class is_snap_abawd_exempt(Variable):
             age <= p_pre.age_threshold.former_foster_care
         )
         post_hr1_exempt = exempt_base | is_indian_exempt
-        pre_hr1_exempt = exempt_base | is_homeless | is_veteran | former_foster_youth
+        fra_exempt = p.fra_exemptions_apply & (
+            is_homeless | is_veteran | former_foster_youth
+        )
+        pre_hr1_exempt = exempt_base | fra_exempt
         # Good-faith-effort exemption window — 7 U.S.C. 2015(o)(7). A
         # noncontiguous State that has adopted HR1 may temporarily retain a
         # specified set of pre-HR1 exceptions on top of the post-HR1 set.
