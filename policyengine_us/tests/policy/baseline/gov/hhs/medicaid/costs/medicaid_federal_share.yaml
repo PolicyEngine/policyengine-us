@@ -39,9 +39,10 @@
   output:
     medicaid_federal_share: 0.7000
 
-- name: Expansion adult in Texas receives 90% expansion FMAP (not state FMAP)
+- name: Texas adult under a full-expansion reform (138% FPL limit) receives the 90% expansion FMAP, not the state FMAP
   period: 2026
   input:
+    gov.hhs.medicaid.eligibility.categories.adult.income_limit.TX: 1.38
     state_code: TX
     is_medicaid_eligible: true
     takes_up_medicaid_if_eligible: true
@@ -49,7 +50,10 @@
   output:
     medicaid_federal_share: 0.9000
 
-- name: Expansion adult in Mississippi receives 90%, not MS regular FMAP
+# Mississippi does not cover the adult group (limit of -inf), so an enrollee
+# placed in the adult category is not in a subclause (VIII) group the state
+# covers and receives Mississippi's regular FY2026 FMAP (76.90%).
+- name: Adult-category enrollee in Mississippi, which does not cover the adult group, receives the MS regular FMAP
   period: 2026
   input:
     state_code: MS
@@ -57,7 +61,7 @@
     takes_up_medicaid_if_eligible: true
     medicaid_category: ADULT
   output:
-    medicaid_federal_share: 0.9000
+    medicaid_federal_share: 0.7690
 
 - name: Parent in non-expansion state Florida uses FL FY2026 FMAP (57.22%)
   period: 2026
@@ -282,3 +286,142 @@
     medicaid_category: [ADULT, ADULT, PREGNANT, SSI_RECIPIENT]
     medicaid_enrolled: [true, true, true, true]
     medicaid_federal_share: [0.9, 0.9, 0.5501, 0.5501]
+
+# The expansion FMAP of 42 U.S.C. 1396d(y) covers only the adult group of
+# 42 U.S.C. 1396a(a)(10)(A)(i)(VIII), whose limit is 133% FPL plus the 5
+# percentage point disregard (1.38). A reform that sets Texas's adult limit to
+# 100% FPL is a partial expansion, which CMS matches at the regular FMAP:
+# 58.54% for Texas in FY2027 (90 FR 54698). The 2027 cases set
+# medicaid_work_requirement_eligible so the adult meets the community
+# engagement requirement that starts in 2027 and enrolls.
+- name: Texas adult under a 100% FPL adult-limit reform receives the Texas regular FY2027 FMAP.
+  period: 2027
+  input:
+    gov.hhs.medicaid.eligibility.categories.adult.income_limit.TX: 1.00
+    state_code: TX
+    age: 30
+    medicaid_household_size: 1
+    medicaid_income_level: 0.8
+    medicaid_work_requirement_eligible: true
+    takes_up_medicaid_if_eligible: true
+  output:
+    medicaid_category: ADULT
+    medicaid_enrolled: true
+    medicaid_federal_share: 0.5854
+
+- name: New York expansion adult at 120% FPL receives the 90% expansion FMAP.
+  period: 2027
+  input:
+    state_code: NY
+    age: 30
+    medicaid_household_size: 1
+    medicaid_income_level: 1.2
+    medicaid_work_requirement_eligible: true
+    takes_up_medicaid_if_eligible: true
+  output:
+    medicaid_category: ADULT
+    medicaid_enrolled: true
+    medicaid_federal_share: 0.9
+
+# Wisconsin covers childless adults to 100% FPL through its BadgerCare
+# section 1115 demonstration, not the subclause (VIII) group, so they receive
+# Wisconsin's regular FY2026 FMAP (60.68%).
+- name: Wisconsin childless adult at 90% FPL receives the Wisconsin regular FMAP.
+  period: 2026
+  input:
+    state_code: WI
+    age: 30
+    medicaid_household_size: 1
+    medicaid_income_level: 0.9
+    takes_up_medicaid_if_eligible: true
+  output:
+    medicaid_category: ADULT
+    medicaid_enrolled: true
+    medicaid_federal_share: 0.6068
+
+- name: Wisconsin childless adult receives the Wisconsin regular FY2027 FMAP.
+  period: 2027
+  input:
+    state_code: WI
+    age: 30
+    medicaid_household_size: 1
+    medicaid_income_level: 0.9
+    medicaid_work_requirement_eligible: true
+    takes_up_medicaid_if_eligible: true
+  output:
+    medicaid_category: ADULT
+    medicaid_enrolled: true
+    medicaid_federal_share: 0.6123
+
+# The expansion FMAP test uses the same monthly whole-dollar income test as
+# adult-group eligibility, so an adult exactly at New York's 138% FPL limit
+# stays in the expansion group.
+- name: New York adult at exactly 138% FPL keeps the expansion FMAP.
+  period: 2026
+  input:
+    state_code: NY
+    age: 30
+    medicaid_household_size: 1
+    medicaid_income_level: 1.38
+    takes_up_medicaid_if_eligible: true
+  output:
+    medicaid_category: ADULT
+    medicaid_enrolled: true
+    medicaid_federal_share: 0.9
+
+# Adults above 138% FPL in a state with a higher adult limit fall in the
+# optional group of 42 U.S.C. 1396a(a)(10)(A)(ii)(XX), not subclause (VIII),
+# and receive the regular FMAP. Under a reform raising Texas's adult limit to
+# 200% FPL, an adult at 120% FPL gets the expansion FMAP and an adult at 150%
+# FPL gets Texas's FY2027 FMAP.
+- name: Under a 200% FPL Texas adult limit, adults above 138% FPL receive the regular FMAP.
+  period: 2027
+  input:
+    gov.hhs.medicaid.eligibility.categories.adult.income_limit.TX: 2.00
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 1
+        medicaid_income_level: 1.2
+        medicaid_work_requirement_eligible: true
+        takes_up_medicaid_if_eligible: true
+      person2:
+        age: 30
+        medicaid_household_size: 1
+        medicaid_income_level: 1.5
+        medicaid_work_requirement_eligible: true
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    medicaid_category: [ADULT, ADULT]
+    medicaid_enrolled: [true, true]
+    medicaid_federal_share: [0.9, 0.5854]
+
+# Before 2026 the District of Columbia covered adults to 215% FPL. Adults to
+# 138% FPL are in the subclause (VIII) group at the expansion FMAP; adults
+# above it receive DC's regular 70% FMAP.
+- name: District of Columbia adults above 138% FPL receive the regular FMAP in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 1
+        medicaid_income_level: 1.2
+        takes_up_medicaid_if_eligible: true
+      person2:
+        age: 30
+        medicaid_household_size: 1
+        medicaid_income_level: 2.0
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    medicaid_category: [ADULT, ADULT]
+    medicaid_enrolled: [true, true]
+    medicaid_federal_share: [0.9, 0.7]
