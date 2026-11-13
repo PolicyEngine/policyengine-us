@@ -1,3 +1,13 @@
+## [2.121.3] - 2026-11-13
+
+### Fixed
+
+- Correct Florida Medicaid parent and caretaker income limits by household size from 2017 using the fixed dollar schedule and one MAGI disregard.
+- Use published FY2017–2023 HUD Section 8 income limits for historical annual calculations.
+- Restore New York HEAP regular heating benefit schedules for FY2017–FY2023, including the December 2022 base-benefit increase, and preserve the inclusive Tier I income boundary when floating-point multiplication reaches an exact monthly dollar.
+- Subtract Medicare Part D premiums from `medicare_cost`, whose CMS spending per enrollee includes Part D: the average Part D premium per Medicare enrollee from the 2026 Medicare Trustees Report, plus the person's own Part D income-related monthly adjustment amount.
+
+
 ## [2.121.2] - 2026-11-13
 
 ### Fixed
