@@ -4,7 +4,9 @@ import numpy as np
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
-from policyengine_us import Simulation
+from policyengine_core.simulations import SimulationBuilder
+from policyengine_us.spm import share_spm_policy
+from policyengine_us.system import system
 
 
 YEAR = 2026
@@ -53,6 +55,13 @@ SETTINGS = dict(
 )
 
 
+CANONICAL_INPUTS = {
+    "employment_income": "employment_income_before_lsr",
+    "self_employment_income": "self_employment_income_before_lsr",
+    "sstb_self_employment_income": "sstb_self_employment_income_before_lsr",
+}
+
+
 def _simulation(units):
     people = {}
     groups = {
@@ -68,7 +77,10 @@ def _simulation(units):
             name = f"person_{unit_index}_{person_index}"
             members.append(name)
             values = {"age": 35, "ssi": 0, **inputs}
-            people[name] = {source: {YEAR: value} for source, value in values.items()}
+            people[name] = {
+                CANONICAL_INPUTS.get(source, source): {YEAR: value}
+                for source, value in values.items()
+            }
             groups["marital_units"][name] = {"members": [name]}
         for entity in ("families", "tax_units"):
             groups[entity][str(unit_index)] = {"members": members}
@@ -80,7 +92,13 @@ def _simulation(units):
             "members": members,
             "state_code": {YEAR: "TN"},
         }
-    return Simulation(situation={"people": people, **groups})
+    builder = SimulationBuilder()
+    builder.set_default_period(str(YEAR))
+    simulation = builder.build_from_dict(
+        share_spm_policy(system), {"people": people, **groups}
+    )
+    simulation.default_calculation_period = YEAR
+    return simulation
 
 
 def _income(units, variable="school_meal_countable_income"):

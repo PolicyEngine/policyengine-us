@@ -12,6 +12,8 @@
   input:
     state_code: TX
     tx_dta_csfp_countable_income: 13_100
+    # Keep school meal income below the limit to check the separate measure.
+    school_meal_countable_income: 0
     spm_unit_fpg: 10_000
   output:
     tx_dta_csfp_income_eligible: false

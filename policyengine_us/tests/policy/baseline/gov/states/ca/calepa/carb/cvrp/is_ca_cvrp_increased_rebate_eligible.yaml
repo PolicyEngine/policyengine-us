@@ -11,6 +11,8 @@
   period: 2022
   input:
     ca_cvrp_countable_income: 40_100
+    # Keep school meal income below the limit to check the separate measure.
+    school_meal_countable_income: 0
     spm_unit_fpg: 10_000
     medicaid_enrolled: false
   output:
