@@ -452,9 +452,9 @@ def test_dependents_retirement_income_never_reduces_state_income_tax(year):
     assert (unit_has_dependent_income & filer_social_security).any()
     assert (unit_has_dependent_income & filer_aged_73).any()
     assert (unit_has_dependent_income & elderly_dependent).any()
-    # Utah's military retirement credit is open only when the retirement
-    # credit is not claimed, which needs Social Security worth more than the
-    # age-gated retirement credit.
+    # Utah's military retirement credit is open only when the filer does not
+    # claim the retirement credit: when that credit is worth nothing, or less
+    # than the Social Security and military retirement credits together.
     dependent_military_pay = np.tile(
         [any(d["income"]["military_retirement_pay"] > 0 for d in u["dependents"])
          for u in units],

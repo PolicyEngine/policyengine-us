@@ -1,0 +1,63 @@
+- name: UT military retirement credit maximum - 4.5% of military retirement pay in 2025
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_military_retirement_credit_max: 1_350
+
+- name: UT military retirement credit maximum - survivor benefits count as military retirement pay
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_military_retirement_credit_max: 450
+
+- name: UT military retirement credit maximum - none before the credit took effect in 2021
+  period: 2020
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_military_retirement_credit_max: 0
+
+- name: UT military retirement credit maximum - follows the 4.45% income tax rate in 2026
+  period: 2026
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_military_retirement_credit_max: 1_335
