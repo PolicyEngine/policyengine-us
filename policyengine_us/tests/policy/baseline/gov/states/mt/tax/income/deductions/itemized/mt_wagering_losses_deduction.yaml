@@ -11,7 +11,7 @@
     mt_wagering_losses_deduction: 20_000
     mt_misc_deductions: 20_000
 
-- name: From 2026 Montana carries 90% of the losses.
+- name: From 2026 Montana carries 90% of the losses through federal deductions.
   absolute_error_margin: 0.01
   period: 2026
   input:
@@ -22,7 +22,8 @@
     state_code: MT
   output:
     mt_wagering_losses_deduction: 18_000
-    mt_misc_deductions: 18_000
+    # From 2024 Montana uses the federal deduction instead of the legacy list.
+    mt_misc_deductions: 0
 
 - name: The Montana spouse who reports the winnings claims the losses.
   absolute_error_margin: 0.01

@@ -27,13 +27,8 @@ class mt_federal_deductions(Variable):
         itemizes = tax_unit("tax_unit_itemizes", period)
         # Use the full allowed federal amount after federal limitations,
         # including any claim of right deduction, and the federal election.
-        # The federal model adds wagering losses separately from its general
-        # itemized aggregate; they are also part of the allowed itemized amount.
-        itemized = add(
-            tax_unit,
-            period,
-            ["itemized_taxable_income_deductions", "wagering_losses_deduction"],
-        )
+        # The federal itemized aggregate includes wagering losses once.
+        itemized = tax_unit("itemized_taxable_income_deductions", period)
         standard = tax_unit("standard_deduction", period)
         non_itemizer_charity = tax_unit(
             "charitable_deduction_for_non_itemizers", period
