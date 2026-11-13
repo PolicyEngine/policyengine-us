@@ -7,7 +7,7 @@ class fl_liheap(Variable):
     entity = SPMUnit
     definition_period = YEAR
     unit = USD
-    label = "Florida LIHEAP regular heating assistance"
+    label = "Florida LIHEAP regular home energy assistance"
     defined_for = StateCode.FL
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf",
