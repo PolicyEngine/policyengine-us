@@ -9,7 +9,7 @@ class ny_casualty_loss_deduction(Variable):
     definition_period = YEAR
     reference = (
         "https://www.nysenate.gov/legislation/laws/TAX/615",
-        # 2020 IT-196 worksheet uses recomputed federal AGI.
+        # Filers use recomputed federal AGI on the 2020 IT-196 worksheet.
         "https://www.tax.ny.gov/pdf/2020/inc/it196i_2020.pdf#page=4",
         # 2025 Form IT-196 instructions, line 20 and the Casualty and theft
         # worksheet, Section A
