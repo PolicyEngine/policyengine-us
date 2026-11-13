@@ -1,11 +1,20 @@
 description: New York provides this regular payment to Tier II households with heat included in unsubsidized rent under the Home Energy Assistance Program.
 values:
+  2016-10-01: 30
+  2020-10-01: 40
+  2021-10-01: 45
   2023-10-01: 45
 metadata:
   unit: currency-USD
   period: year
   label: New York HEAP Tier II heat-included payment
   reference:
+  - title: FY2017 accepted LIHEAP State Plan, Attachment 1, regular benefit matrix, PDF page 54
+    href: https://liheapch.acf.gov/docs/NY_Plan_2017.pdf#page=54
+  - title: 2020-2021 HEAP regular benefit matrix
+    href: https://liheapch.acf.gov/docs/NY_BenefitsMatrix_2021.pdf#page=1
+  - title: 2021-2022 HEAP Desk Guide, regular benefits, PDF page 2
+    href: https://otda.ny.gov/policy/directives/2021/LCM/21-LCM-18-Attachment-4.pdf#page=2
   - title: 2023-2024 HEAP Heat Included Regular Benefit Levels
     href: https://liheapch.acf.gov/docs/2024/benefits-matricies/NY_BenefitMatrix_2024.pdf#page=1
   - title: 2024-2025 HEAP Heat Included Regular Benefit Levels
