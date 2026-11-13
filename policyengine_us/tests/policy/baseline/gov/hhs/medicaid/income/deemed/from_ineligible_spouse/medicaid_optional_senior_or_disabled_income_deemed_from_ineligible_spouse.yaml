@@ -242,3 +242,72 @@
     # Couple: (500 - 20) x 12 + (40,000 - 65 x 12) / 2 = 25,370.
     # Alone: (500 - 20) x 12 = 5,760. Deemed: 25,370 - 5,760 = 19,610.
     medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [19_610, 0]
+
+# 42 USC 1396r-5(b)(1): "no income of the community spouse shall be deemed available to
+# the institutionalized spouse". The spouse's 8,000 is above SSI's 12 x 497 = 5,964 and
+# stays out: 15,000 - 240 = 14,760, against the one-person 15,960.
+- name: Case 6, a facility resident has no spouse income deemed above SSI's threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 15_000
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 60
+        taxable_interest_income: 8_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    is_ssi_spousal_deeming_applies: [true, false]
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [0, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [14_760, 0]
+    medicaid_optional_senior_or_disabled_income_limit: [15_960, 15_960]
+    medicaid_category: [SENIOR_OR_DISABLED, ADULT]
+
+# AHCCCS MA611 A budgets the customer and spouse together and, in step 4, subtracts a
+# child allocation "for each of the customer's children and the customer's spouse's
+# children living in the home". The child's allocation is 12 x 497 = 5,964, so the
+# spouse's 6,000 of interest leaves 36: 16,000 + 36 - 240 = 15,796, within the
+# two-person 21,640. With no allocation, 16,000 + 6,000 - 240 = 21,760 would be above it.
+- name: Case 7, Arizona subtracts a child allocation from spouse income budgeted together.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 16_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 6_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 10
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      child_marital_unit:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    ssi_ineligible_child_allocation: [0, 0, 5_964]
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [36, 0, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [15_796, 0, 0]
+    medicaid_optional_senior_or_disabled_income_limit: [21_640, 21_640, 15_960]
+    is_optional_senior_or_disabled_income_eligible: [true, true, true]

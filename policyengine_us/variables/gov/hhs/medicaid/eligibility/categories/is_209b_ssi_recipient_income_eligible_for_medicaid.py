@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_budget_total,
-    _ssi_couple_total,
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    couple_budget_total,
+    spouses_split_by_facility,
 )
 
 
@@ -40,15 +40,36 @@ class is_209b_ssi_recipient_income_eligible_for_medicaid(Variable):
         )
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
         # the individual or the married couple, not the tax filing unit.
-        budget = personal_income - medical_expenses - parental_expense_share
-        income_after_spenddown = where(
-            person("ssi_couple_computation_applies", period),
-            _ssi_couple_budget_total(person, period, budget),
-            _ssi_couple_total(person, period, budget),
+        # 42 CFR 435.831(d) also deducts a spouse's expenses when the spouse's
+        # income is not counted, unless a facility splits the couple. A
+        # couple's totals leave out an unrelated member of a default marital
+        # unit.
+        uses_couple_standard = person(
+            "medicaid_optional_senior_or_disabled_uses_couple_standard", period
+        )
+        income = where(
+            uses_couple_standard,
+            couple_budget_total(person, period, personal_income),
+            personal_income,
+        )
+        expenses = where(
+            spouses_split_by_facility(person, period),
+            medical_expenses,
+            couple_budget_total(person, period, medical_expenses),
+        )
+        income_after_spenddown = (
+            income
+            - expenses
+            - where(
+                uses_couple_standard,
+                couple_budget_total(person, period, parental_expense_share),
+                parental_expense_share,
+            )
         )
 
         # The limit is per person (Missouri's blind standard can differ
-        # within a couple) while the income is the couple's combined total.
+        # within a couple). The income is the couple's combined total only
+        # under the couple standard.
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )

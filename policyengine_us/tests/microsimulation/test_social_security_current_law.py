@@ -132,6 +132,11 @@ def extraction_situation():
     for plural in ("households", "tax_units", "spm_units", "families", "marital_units"):
         result[plural] = {"group": {"members": ["retiree"]}}
     result["households"]["group"]["state_code"] = {2024: "TX"}
+    # state_code has a formula, so a 2024 input alone leaves later years on
+    # the default state (CA), where unrelated California tax changes reach
+    # household_net_income. state_fips has none and carries forward, keeping
+    # the household in Texas without a second input period.
+    result["households"]["group"]["state_fips"] = {2024: 48}
     return result
 
 

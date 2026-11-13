@@ -47,6 +47,33 @@
     household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 2_200
 
+- name: Abolishing federal income tax drops the premium tax credit from refundable credits
+  # The premium tax credit is a federal refundable credit (26 U.S.C. 36B), so
+  # with the federal income tax abolished it leaves household refundable tax
+  # credits like the others.
+  period: 2022
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    income_tax_refundable_credits: 800
+    used_aca_ptc: 1_000
+    hi_refundable_credits: 600
+  output:
+    federal_income_tax_in_force: false
+    premium_tax_credit_in_force: 0
+    household_refundable_tax_credits: 600
+
+- name: The premium tax credit counts in refundable credits when not abolished
+  period: 2022
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: false
+    income_tax_refundable_credits: 800
+    used_aca_ptc: 1_000
+    hi_refundable_credits: 600
+  output:
+    federal_income_tax_in_force: true
+    premium_tax_credit_in_force: 1_000
+    household_refundable_tax_credits: 2_400  # 800 + 1,000 + 600
+
 - name: Abolishing federal income tax preserves Montgomery County refundable EITC
   period: 2024
   input:

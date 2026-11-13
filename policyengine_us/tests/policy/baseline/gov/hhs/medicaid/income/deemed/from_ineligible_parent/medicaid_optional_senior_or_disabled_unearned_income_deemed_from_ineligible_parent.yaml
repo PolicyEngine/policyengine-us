@@ -129,3 +129,272 @@
     # the parents' living allowance (1,491 x 12 = 17,892, the couple SSI
     # federal benefit rate) -> 19,098, split equally -> 9,549 each.
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [9_549, 9_549, 0, 0]
+
+# Parent ids name only the mother, and the stepfather is her spouse. SSI counts a
+# parent's spouse under 20 CFR 416.1160(d): (168,000 - 240 - 780) / 2 - 1,491 x 12
+# = 65,598. Missouri deems the mother's wages alone (DSS MHABD Manual
+# § 0805.020.15), and the allowance is for one parent (step 8):
+# (48,000 - 240 - 780) / 2 - 994 x 12 = 11,562.
+- name: Case 4, Missouri leaves out a stepparent when parent ids name only the natural parent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        person_id: 1
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        person_id: 2
+        is_tax_unit_head: true
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        person_id: 3
+        is_tax_unit_spouse: true
+        employment_income_before_lsr: 120_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    is_ssi_ineligible_parent: [false, true, true]
+    ssi_unearned_income_deemed_from_ineligible_parent: [65_598, 0, 0]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [11_562, 0, 0]
+
+# A disabled parent with no income stays eligible for SSI: 15,000 - 240 = 14,760 is
+# within the couple rate of 1,491 x 12 = 17,892, so 20 CFR 416.1166(e)(1) deems
+# nothing to the child. Missouri's allowance is for the parents whose income was
+# used in deeming (DSS MHABD Manual § 0805.020.15 step 8), here the one natural
+# parent with the pension: 14,760 - 994 x 12 = 2,832. Not modeled: the section's
+# exception, "Do not deem parental income if the parent or spouse of the parent is
+# receiving Title XIX under a MA non-spenddown case", would give 0 if this parent
+# holds such a case.
+- name: Case 5, Missouri allows one parent's living allowance when the other parent stays eligible for SSI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        taxable_pension_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    is_ssi_ineligible_parent: [false, false, true]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [2_832, 0, 0]
+
+# Case 4 plus the stepfather's own child, whom parent ids name. That child does not
+# make him a parent of the disabled child, so Missouri still deems the mother's
+# wages alone (DSS MHABD Manual § 0805.020.15). Step 1 allocates (1,491 - 994) x 12
+# = 5,964 to the minor child not applying, and step 8 allows for one parent:
+# (48,000 - 5,964 - 240 - 780) / 2 - 994 x 12 = 8,580. SSI pools both parents' wages
+# under 20 CFR 416.1160(d): (168,000 - 5,964 - 240 - 780) / 2 - 1,491 x 12 = 62,616.
+- name: Case 6, Missouri leaves out a stepparent whose own child parent ids name.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        person_id: 1
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        person_id: 2
+        is_tax_unit_head: true
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        person_id: 3
+        is_tax_unit_spouse: true
+        employment_income_before_lsr: 120_000
+      person4:
+        age: 12
+        person_id: 4
+        parent_1_id: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+      marital_unit3:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    is_ssi_ineligible_parent: [false, true, true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [62_616, 0, 0, 0]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [8_580, 0, 0, 0]
+
+# Married parents in separate tax units, with parent ids naming the mother. As for
+# SSI, the father's wages join the mother's: Ohio applies the SSI exclusions with its
+# 20 disregard, so (78,000 - 240 - 780) / 2 = 38,490, less the couple rate of 17,892,
+# deems 20,598.
+- name: Case 7, Ohio pools the wages of a parent's spouse who files in another tax unit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        person_id: 1
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        person_id: 2
+        is_tax_unit_head: true
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        person_id: 3
+        is_tax_unit_head: true
+        employment_income_before_lsr: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [20_598, 0, 0]
+
+# Married parents in separate tax units, with parent ids naming both. Missouri deems
+# both natural parents' wages, (78,000 - 240 - 780) / 2 = 38,490, and the allowance is
+# the SSI maximum for the two parents whose income was used (DSS MHABD Manual
+# § 0805.020.15 step 8): 38,490 - 1,491 x 12 = 20,598, as SSI deems.
+- name: Case 8, Missouri allows for both parents when one files in another tax unit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        person_id: 1
+        parent_1_id: 2
+        parent_2_id: 3
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        person_id: 2
+        is_tax_unit_head: true
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        person_id: 3
+        is_tax_unit_head: true
+        employment_income_before_lsr: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    ssi_unearned_income_deemed_from_ineligible_parent: [20_598, 0, 0]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [20_598, 0, 0]
+
+# Case 4 with the stepfather filing in his own tax unit. SSI still pools his wages as
+# the mother's spouse (20 CFR 416.1160(d)): 65,598. Missouri deems the mother's wages
+# alone and allows for one parent (DSS MHABD Manual § 0805.020.15):
+# (48,000 - 240 - 780) / 2 - 994 x 12 = 11,562.
+- name: Case 9, Missouri leaves out a stepparent who files in another tax unit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        person_id: 1
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        person_id: 2
+        is_tax_unit_head: true
+        employment_income_before_lsr: 48_000
+      person3:
+        age: 38
+        person_id: 3
+        is_tax_unit_head: true
+        employment_income_before_lsr: 120_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    is_ssi_ineligible_parent: [false, true, true]
+    ssi_unearned_income_deemed_from_ineligible_parent: [65_598, 0, 0]
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [11_562, 0, 0]
+
