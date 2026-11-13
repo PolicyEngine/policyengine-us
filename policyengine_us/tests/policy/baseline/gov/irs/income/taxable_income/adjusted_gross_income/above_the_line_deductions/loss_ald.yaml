@@ -312,5 +312,8 @@
         members: [person1]
         state_code: TX
   output:
-    # Inflation projection, not an IRS-published 2030 threshold.
-    loss_ald: 280_000
+    # Inflation projection, not an IRS-published 2030 threshold. The 2027
+    # threshold from Rev. Proc. 2026-35 grows with gov.irs.uprating:
+    # $264,000 x 194.502345 / 182.500667 = $281,361.27, rounded to the
+    # nearest $1,000.
+    loss_ald: 281_000
