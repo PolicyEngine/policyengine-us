@@ -7122,6 +7122,130 @@ candidates:
     Montana AGI (Itemized Deductions Schedule line 1b), and from 2024 the federal floor on federal AGI applies (mt_medical_expense_deduction_joint.py,
     itemized/state_specific_deduction_applies.yaml); the joint standard deduction also uses pooled Montana AGI (mt_standard_deduction_joint.py).
     Verify the incorporated federal provision against the form''s AGI choice.'
+- id: us-mt:military-retirement-and-survivor-exemptions-same-return
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Can one Montana return take both the working military retiree subtraction and the military survivor benefit subtraction,
+    or only the one whose box the filer marks on Form WMRE?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2120(3)(n), (8)(a) and (9)
+    url: https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+  - kind: regulation
+    citation: ARM 42.15.1510(1) and (2)
+    url: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.15.1510
+  - kind: form
+    citation: 2025 Form WMRE, taxpayer boxes and Part I, PDF page 1
+    url: https://revenue.mt.gov/files/Forms/Montana-Working-Military-Retirement-and-Survivor-Benefit-Exemption.pdf#page=1
+  - kind: instructions
+    citation: 2025 Form WMRE instructions, Taxpayer Information, PDF page 3
+    url: https://revenue.mt.gov/files/Forms/Montana-Working-Military-Retirement-and-Survivor-Benefit-Exemption.pdf#page=3
+  readings:
+    statute: (3)(n)(i) and (3)(n)(ii) are two subtractions joined by "and", each "subject to subsection (9)", and (8)(a) caps
+      only "the subtraction in subsection (3)(n)(i)". No provision makes a filer choose between them, so a return with an
+      eligible retiree's pay and an eligible survivor's benefits takes both. ARM 42.15.1510(1) and (2) state the two exclusions
+      separately.
+    other: The form says "Mark the appropriate box" (Military Retiree, or Beneficiary Receiving Military Survivor Benefits)
+      and "complete either Part II or Part III, as appropriate". Its instructions say "If you mark the Military Retiree box,
+      complete Parts I and II. If you mark the Beneficiary Receiving Military Survivor Benefits box, complete Parts I and
+      III" and "If filing jointly and both spouses qualify for the exemption, complete only one form", which gives a return
+      one of the two amounts.
+  example: In 2026 a head with $20,000 of military retired pay and $5,000 of business income, whose spouse has $10,000 of
+    survivor benefits, subtracts min(0.5 × 20,000, 5,000) + 0.5 × 10,000 = $10,000 under the statute. One form with one box
+    gives $5,000, from either Part II or Part III.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mt/tax/income/subtractions/military_retirement/mt_military_retirement_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10713
+  state: ruled
+  note: PE-US adds the two amounts on the return (mt_military_retirement_exemption.py). The cases "Retirement pay and survivor
+    benefits on one return each get their exemption" and "A retiree who is also a survivor takes both exemptions beside an
+    ineligible spouse" in mt_military_retirement_exemption.yaml pin the reading. Neither the form nor its instructions addresses
+    a return that holds both retired pay and survivor benefits.
+- id: us-mt:military-retirement-exemption-business-loss-floor
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does a net loss from a business, a partnership or S corporation, or a farm reduce the Montana source wage income
+    that limits the working military retiree subtraction, or does each source count as at least zero?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2120(8)(a)(i) and (8)(b)
+    url: https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+  - kind: form
+    citation: 2025 Form WMRE, Part II, lines 2 to 6, PDF page 1
+    url: https://revenue.mt.gov/files/Forms/Montana-Working-Military-Retirement-and-Survivor-Benefit-Exemption.pdf#page=1
+  readings:
+    statute: (8)(a)(i) caps the subtraction at "the amount of Montana source wage income on the return", which (8)(b) defines
+      as wages and other compensation, "net income from a trade, business, profession, or occupation" and "net income from
+      farming activities". It does not say whether a net loss in one of these reduces the others.
+    other: Form WMRE lines 3, 4 and 5 each say "If zero or less, enter 0", and line 6 adds lines 2 through 5, so a loss in
+      one source reduces no other source. Line 3 takes Form 1040 Schedule 1 line 3, which nets every sole proprietorship on
+      the return before the floor applies.
+  example: A 2026 retiree with $30,000 of military retired pay, $6,000 of wages and a $4,000 business loss subtracts min(0.5
+    × 30,000, 6,000) = $6,000 under the form. Netting the loss against the wages would give $2,000.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/mt/tax/income/subtractions/military_retirement/mt_military_retirement_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10713
+  state: ruled
+  note: PE-US sums each of the four sources over the head and spouse and floors each sum at zero (mt_military_retirement_exemption.py).
+    The cases "A business loss does not reduce wages in the earned income limit" and "A loss in one sole proprietorship offsets
+    income from another before the floor" in mt_military_retirement_exemption.yaml pin the reading.
+- id: us-mt:military-retirement-exemption-schedule-e-income
+  program: income-tax
+  years:
+    from: 2024
+    type: tax
+  question: Does the Montana source wage income that limits the working military retiree subtraction count all of Form 1040
+    Schedule 1 line 5 (rents, royalties, estates and trusts as well as partnerships and S corporations), or only net income
+    from a trade, business, profession or occupation?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2120(8)(b)
+    url: https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+  - kind: regulation
+    citation: ARM 42.15.1501(2)
+    url: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.15.1501
+  - kind: form
+    citation: 2025 Form WMRE, Part II, line 4, PDF page 1
+    url: https://revenue.mt.gov/files/Forms/Montana-Working-Military-Retirement-and-Survivor-Benefit-Exemption.pdf#page=1
+  - kind: instructions
+    citation: 2025 Form WMRE instructions, line 4, PDF page 3
+    url: https://revenue.mt.gov/files/Forms/Montana-Working-Military-Retirement-and-Survivor-Benefit-Exemption.pdf#page=3
+  readings:
+    statute: (8)(b) counts "wages, salary, tips, and other compensation for services performed in the state", "net income
+      from a trade, business, profession, or occupation carried on in the state" and "net income from farming activities carried
+      on in the state". ARM 42.15.1501(2) adds that the term "does not include income from any passive activity as that term
+      is defined in 26 USC 469(c)", and 469(c)(2) includes any rental activity. Rents, royalties and estate or trust income
+      are none of the three, so they stay out. The form's own line 4 label is "Montana source partnership and S corporation
+      income".
+    other: The line 4 instruction says "Residents actively engaged in a business as an owner of a partnership or S corporation,
+      enter the amount from Form 1040, Schedule 1, line 5". That line also carries rental real estate, royalties, estates,
+      trusts and Form 4835 farm rent, so all of it would count.
+  example: A 2026 retiree with $30,000 of military retired pay, $20,000 of rents, $10,000 of Form 4835 farm rent and $10,000
+    of estate income, and no other earnings, subtracts $0 under the statute and min(0.5 × 30,000, 40,000) = $15,000 if all
+    of Schedule 1 line 5 counts.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/subtractions/military_retirement/earned_income_sources.yaml
+    - policyengine_us/variables/gov/states/mt/tax/income/subtractions/military_retirement/mt_military_retirement_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10713
+  state: ruled
+  note: The source list holds wages, all Schedule C income, partnership and S corporation income and Schedule F income (earned_income_sources.yaml);
+    rental_income, farm_rent_income and estate_income stay out. The case "Rents, royalties, farm rent and estate income are
+    not earned income" in mt_military_retirement_exemption.yaml pins the reading. PE-US has no input for material participation,
+    so it counts all Schedule C, partnership, S corporation and Schedule F income, including any that ARM 42.15.1501(2) would
+    leave out as passive.
 - id: us-nc:lieap-gross-versus-net-income
   program: liheap
   years:

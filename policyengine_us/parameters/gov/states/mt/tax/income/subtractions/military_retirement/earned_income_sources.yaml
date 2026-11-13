@@ -1,0 +1,24 @@
+description: Montana counts these income sources as the Montana source wage income that limits the working military retirement exemption.
+values:
+  2024-01-01:
+    # 15-30-2120(8)(b)(i); Form WMRE line 2: wages on Form 1040 line 1z.
+    - irs_employment_income
+    # (8)(b)(ii); line 3: Schedule 1 line 3, which nets all Schedule C
+    # income, including a specified service trade or business.
+    - total_self_employment_income
+    # (8)(b)(ii); line 4: partnership and S corporation income.
+    - partnership_s_corp_income
+    # (8)(b)(iii); line 5: net farming income, which PolicyEngine holds as
+    # Schedule F income.
+    - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: Montana working military retirement exemption earned income sources
+  reference:
+    - title: MCA 15-30-2120(8)(b)
+      href: https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+    - title: ARM 42.15.1501(2)
+      href: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-42.15.1501
+    - title: "2025 Montana Form WMRE, Part II, lines 2 to 5 and their instructions #page 1,3"
+      href: https://revenue.mt.gov/files/Forms/Montana-Working-Military-Retirement-and-Survivor-Benefit-Exemption.pdf#page=1

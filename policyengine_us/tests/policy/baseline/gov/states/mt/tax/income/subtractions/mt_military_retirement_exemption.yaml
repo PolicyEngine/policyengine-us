@@ -1,0 +1,447 @@
+# MCA 15-30-2120(3)(n), (8) and (9); 2025 Montana Form WMRE.
+
+- name: A working retiree exempts half the military retirement pay
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        military_retirement_pay: 30_000
+        employment_income: 60_000
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    # Form WMRE line 8: the lesser of 60,000 and 0.5 * 30,000.
+    mt_military_retirement_exemption: [15_000, 0]
+    mt_subtractions: [15_000, 0]
+
+- name: Montana earned income limits the retirement exemption
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        military_retirement_pay: 30_000
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: 8_000
+
+- name: A retiree with no Montana earned income gets no retirement exemption
+  period: 2026
+  input:
+    people:
+      head:
+        age: 67
+        military_retirement_pay: 45_000
+        social_security_retirement: 30_000
+        taxable_interest_income: 5_000
+      spouse:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: [0, 0]
+
+- name: A survivor exempts half the survivor benefits with no earned income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        military_retirement_pay_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: 5_000
+
+- name: Retirement pay and survivor benefits on one return each get their exemption
+  period: 2026
+  input:
+    people:
+      head:
+        age: 60
+        military_retirement_pay: 20_000
+        self_employment_income: 5_000
+      spouse:
+        age: 58
+        military_retirement_pay_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    # min(0.5 * 20,000, 5,000) + 0.5 * 10,000
+    mt_military_retirement_exemption: [10_000, 0]
+
+- name: The spouse's military pay counts against the return's wages
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 60_000
+      spouse:
+        age: 48
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: [15_000, 0]
+
+- name: A business loss does not reduce wages in the earned income limit
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        military_retirement_pay: 30_000
+        employment_income: 6_000
+        self_employment_income: -4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # Form WMRE line 3 enters a business loss as 0.
+    mt_military_retirement_exemption: 6_000
+
+- name: A dependent's military pay does not count on the filer's return
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 40_000
+      dependent:
+        age: 45
+        is_tax_unit_dependent: true
+        military_retirement_pay: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: [0, 0]
+
+- name: A filer who fails the residency or timing conditions gets no exemption
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        military_retirement_pay: 30_000
+        employment_income: 60_000
+        mt_military_retirement_exemption_eligible: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: 0
+
+- name: Montana has no military retirement exemption before 2024
+  period: 2023
+  input:
+    people:
+      head:
+        age: 45
+        military_retirement_pay: 30_000
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: 0
+    mt_subtractions: 0
+
+- name: The exemption joins Montana's subtractions in tax year 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        military_retirement_pay: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # The lesser of 50,000 and 0.5 * 30,000.
+    mt_military_retirement_exemption: 15_000
+    mt_subtractions: 15_000
+
+- name: Income from a specified service business counts as earned income
+  period: 2026
+  input:
+    people:
+      head:
+        age: 55
+        military_retirement_pay: 30_000
+        sstb_self_employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # 15-30-2120(8)(b)(ii) counts a profession; Form WMRE line 3 takes all
+    # of Schedule 1 line 3. The lesser of 40,000 and 0.5 * 30,000.
+    mt_military_retirement_exemption: 15_000
+
+- name: A loss in one sole proprietorship offsets income from another before the floor
+  period: 2026
+  input:
+    people:
+      head:
+        age: 55
+        military_retirement_pay: 30_000
+        self_employment_income: 10_000
+        sstb_self_employment_income: -4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # Form WMRE line 3 is Schedule 1 line 3: 10,000 - 4,000 = 6,000.
+    mt_military_retirement_exemption: 6_000
+
+- name: Partnership and S corporation income counts as earned income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        military_retirement_pay: 30_000
+        partnership_income: 5_000
+        s_corp_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # Form WMRE line 4: the lesser of 9,000 and 0.5 * 30,000.
+    mt_military_retirement_exemption: 9_000
+
+- name: Schedule F farm income counts as earned income
+  period: 2026
+  input:
+    people:
+      head:
+        age: 55
+        military_retirement_pay: 30_000
+        farm_operations_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # 15-30-2120(8)(b)(iii); Form WMRE line 5. The lesser of 40,000 and
+    # 0.5 * 30,000.
+    mt_military_retirement_exemption: 15_000
+
+- name: The Schedule J income averaging input is not earned income
+  period: 2026
+  input:
+    people:
+      head:
+        age: 55
+        military_retirement_pay: 30_000
+        farm_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # farm_income is the Schedule J input, which is not in adjusted gross
+    # income; farm_operations_income holds Schedule F net income.
+    mt_military_retirement_exemption: 0
+
+- name: Rents, royalties, farm rent and estate income are not earned income
+  period: 2026
+  input:
+    people:
+      head:
+        age: 60
+        military_retirement_pay: 30_000
+        rental_income: 20_000
+        farm_rent_income: 10_000
+        estate_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # 15-30-2120(8)(b)(ii) counts net income from a trade, business,
+    # profession or occupation. These amounts share Schedule 1 line 5 with
+    # partnership and S corporation income, and none of them is that.
+    mt_military_retirement_exemption: 0
+
+- name: A dependent's wages do not count on the filer's return
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        military_retirement_pay: 30_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: [0, 0]
+
+- name: A survivor who fails the residency or timing conditions gets no exemption
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        military_retirement_pay_survivors: 10_000
+        mt_military_retirement_exemption_eligible: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    mt_military_retirement_exemption: 0
+
+- name: A retiree who is also a survivor takes both exemptions beside an ineligible spouse
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        military_retirement_pay: 24_000
+        military_retirement_pay_survivors: 8_000
+      spouse:
+        age: 60
+        employment_income: 50_000
+        military_retirement_pay: 10_000
+        mt_military_retirement_exemption_eligible: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    # The spouse's wages are on the return, and the spouse's own pay does
+    # not qualify: min(0.5 * 24,000, 50,000) + 0.5 * 8,000.
+    mt_military_retirement_exemption: [16_000, 0]
+
+- name: ARM 42.15.1510(3)(a), a retiree working a full-time job
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        military_retirement_pay: 40_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # The rule's example excludes 20,000, the lesser of 50,000 and
+    # 0.5 * 40,000.
+    mt_military_retirement_exemption: 20_000
+
+- name: ARM 42.15.1510(3)(b), a retiree with seasonal self-employment income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        military_retirement_pay: 40_000
+        self_employment_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # The rule's example limits the exclusion to the 18,000 of Schedule C
+    # income.
+    mt_military_retirement_exemption: 18_000
