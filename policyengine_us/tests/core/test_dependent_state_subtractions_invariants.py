@@ -32,8 +32,8 @@ section 179 add-backs, uniformed services retirement and educator expenses):
    dependent's income can rightly end a filer's exclusion (the model tests
    tax-unit AGI for now).
 2. A dependent's dc_income_subtractions and de_subtractions are zero, and
-   their oh_deductions are their shares of the filer's 529 and medical
-   deductions.
+   their oh_deductions retain only their shares of the filer's medical
+   deduction.
 3. Per-return amounts are counted once over the tax unit:
    - the Ohio unreimbursed medical deduction is the members' medical expenses
      over 7.5% of federal AGI;
@@ -66,12 +66,12 @@ OWN_ITEMS = [
     "oh_section_179_expense_add_back",
     "oh_uniformed_services_retirement_income_deduction",
     "oh_educator_expense_deduction_person",
+    "investment_in_529_plan_indv",
+    "count_529_contribution_beneficiaries",
 ]
 # The filer's amounts, recorded on whoever they were for.
 FILER_ITEMS = [
     "other_medical_expenses",
-    "investment_in_529_plan_indv",
-    "count_529_contribution_beneficiaries",
 ]
 SAME_AS_WITHOUT_DEPENDENT_ITEMS = {
     "DC": [
@@ -85,6 +85,7 @@ SAME_AS_WITHOUT_DEPENDENT_ITEMS = {
         "oh_agi",
         "oh_taxable_income",
         "oh_income_tax_before_non_refundable_credits",
+        "oh_529_plan_deduction",
     ],
 }
 UNIT_OUTPUTS = sorted(
@@ -283,16 +284,37 @@ def check(units):
     assert np.all(people["de_subtractions"][dependent & in_de] == 0)
     np.testing.assert_allclose(
         people["oh_deductions"][dependent & in_oh],
-        (
-            people["oh_529_plan_deduction_person"]
-            + people["oh_unreimbursed_medical_care_expense_deduction_person"]
-        )[dependent & in_oh],
+        people["oh_unreimbursed_medical_care_expense_deduction_person"][
+            dependent & in_oh
+        ],
         atol=TOLERANCE,
     )
 
     # 3. Per-return amounts counted once.
     agi = unit_results["adjusted_gross_income"][:n]
     is_oh = states == "OH"
+    filer = ~dependent
+    contributions = unit_sum(
+        person_inputs(units, "investment_in_529_plan_indv") * filer, index, n
+    )
+    beneficiaries = unit_sum(
+        person_inputs(units, "count_529_contribution_beneficiaries") * filer,
+        index,
+        n,
+    )
+    cap = p.states.oh.tax.income.deductions.plan_529_contributions.cap
+    expected_529 = np.minimum(contributions, cap * beneficiaries)
+    np.testing.assert_allclose(
+        unit_results["oh_529_plan_deduction"][:n][is_oh],
+        expected_529[is_oh],
+        atol=TOLERANCE,
+    )
+    np.testing.assert_allclose(
+        unit_sum(people["oh_529_plan_deduction_person"], index, n)[is_oh],
+        expected_529[is_oh],
+        atol=TOLERANCE,
+    )
+    assert np.all(people["oh_529_plan_deduction_person"][dependent & in_oh] == 0)
     medical = unit_sum(person_inputs(units, "other_medical_expenses"), index, n)
     oh_rate = p.states.oh.tax.income.deductions.unreimbursed_medical_care_expenses.rate
     expected_medical = np.maximum(0, medical - oh_rate * agi)
@@ -311,7 +333,6 @@ def check(units):
 
     is_dc = states == "DC"
     d2440 = p.irs.income.disability_income_exclusion
-    filer = ~dependent
     capped = filer * np.minimum(
         person_inputs(units, "total_disability_payments"), d2440.cap
     )
@@ -378,6 +399,26 @@ def test_reported_examples():
     )
     units.append(
         {
+            "state": "OH",
+            "filers": [
+                {
+                    **filer,
+                    "investment_in_529_plan_indv": 6_000.0,
+                    "count_529_contribution_beneficiaries": 1,
+                }
+            ],
+            "dependents": [
+                {
+                    **zero,
+                    "age": 10,
+                    "investment_in_529_plan_indv": 5_000.0,
+                    "count_529_contribution_beneficiaries": 1,
+                }
+            ],
+        }
+    )
+    units.append(
+        {
             "state": "DC",
             "filers": [
                 {
@@ -400,6 +441,7 @@ def test_reported_examples():
     assert unit_results["dc_taxable_income_joint"][0] == 37_500
     # Ohio: 9,000 of medical expenses over 7.5% of 60,000, once.
     assert unit_results["oh_unreimbursed_medical_care_expense_deduction"][3] == 4_500
+    assert unit_results["oh_529_plan_deduction"][4] == 4_000
     # D-2440: line 4 is 5,200 + 3,000 (the child's payments are on the
     # child's return), and line 9 is zero, as federal AGI of 8,000 is under
     # $15,000. Line 10 is 8,200 for the return, shared 5,200 and 3,000.

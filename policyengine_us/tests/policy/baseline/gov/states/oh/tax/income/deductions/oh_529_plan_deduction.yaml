@@ -7,6 +7,25 @@
   output:
     oh_529_plan_deduction: 4_000
 
+- name: A dependent contributor cannot increase the filers' contribution or cap
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        investment_in_529_plan_indv: 6_000
+        count_529_contribution_beneficiaries: 1
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        investment_in_529_plan_indv: 5_000
+        count_529_contribution_beneficiaries: 1
+    household:
+      state_code: OH
+  output:
+    # The filer contributed 6,000 for one beneficiary: min(6,000, 4,000).
+    oh_529_plan_deduction: 4_000
+
 - name: Two beneficiaries increases the cap
   period: 2021
   input:

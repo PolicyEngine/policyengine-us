@@ -42,7 +42,7 @@ def without_dependent_income(unit):
     }
 
 
-def build_situation(units):
+def build_situation(units, year=YEAR):
     people, tax_units, marital_units, households = {}, {}, {}, {}
     for index, unit in enumerate(units):
         members = []
@@ -51,11 +51,11 @@ def build_situation(units):
             name = f"person_{index}_{member_index}"
             is_filer = member_index < filer_count
             people[name] = {
-                "age": {YEAR: 40 if is_filer else 10},
-                "is_tax_unit_head": {YEAR: member_index == 0},
-                "is_tax_unit_spouse": {YEAR: is_filer and member_index == 1},
-                "is_tax_unit_dependent": {YEAR: not is_filer},
-                **{variable: {YEAR: value} for variable, value in inputs.items()},
+                "age": {year: 40 if is_filer else 10},
+                "is_tax_unit_head": {year: member_index == 0},
+                "is_tax_unit_spouse": {year: is_filer and member_index == 1},
+                "is_tax_unit_dependent": {year: not is_filer},
+                **{variable: {year: value} for variable, value in inputs.items()},
             }
             members.append(name)
             if not is_filer:
@@ -64,7 +64,7 @@ def build_situation(units):
         marital_units[f"filers_{index}"] = {"members": members[:filer_count]}
         households[f"household_{index}"] = {
             "members": members,
-            "state_code": {YEAR: "MA"},
+            "state_code": {year: "MA"},
         }
     return {
         "people": people,
@@ -74,13 +74,13 @@ def build_situation(units):
     }
 
 
-def check_twins(units):
+def check_twins(units, year=YEAR, outputs=INVARIANT_OUTPUTS):
     twins = [without_dependent_income(unit) for unit in units]
-    simulation = Simulation(situation=build_situation(units + twins))
+    simulation = Simulation(situation=build_situation(units + twins, year))
     unit_count = len(units)
     results = {}
-    for variable in INVARIANT_OUTPUTS:
-        values = np.asarray(simulation.calculate(variable, YEAR))
+    for variable in outputs:
+        values = np.asarray(simulation.calculate(variable, year))
         np.testing.assert_allclose(
             values[:unit_count],
             values[unit_count:],
@@ -199,3 +199,53 @@ def tax_unit_inputs(draw):
 @given(st.lists(tax_unit_inputs(), min_size=4, max_size=8))
 def test_ma_tax_and_capital_income_ignore_dependents_own_amounts(units):
     check_twins(units)
+
+
+@settings(max_examples=3, deadline=None, derandomize=True)
+@given(
+    st.lists(
+        st.tuples(
+            st.integers(5_000, 20_000),
+            st.integers(1_000, 10_000),
+            st.integers(5_000, 100_000),
+            st.integers(0, 100_000),
+        ),
+        min_size=4,
+        max_size=8,
+    )
+)
+def test_2021_unemployment_worksheet_ignores_dependent_income(amounts):
+    units = [
+        {
+            "filers": [
+                {
+                    "employment_income": wages,
+                    "unemployment_compensation": unemployment,
+                }
+            ],
+            "dependents": [
+                {
+                    "tax_exempt_interest_income": interest,
+                    "social_security_survivors": social_security,
+                }
+            ],
+        }
+        for wages, unemployment, interest, social_security in amounts
+    ]
+    zero_income_twins = [
+        {
+            **unit,
+            "dependents": [
+                {
+                    "tax_exempt_interest_income": 0,
+                    "social_security_survivors": 0,
+                }
+            ],
+        }
+        for unit in units
+    ]
+    simulation = Simulation(situation=build_situation(units + zero_income_twins, 2021))
+    values = simulation.calculate("ma_qualified_unemployment_deduction", 2021)
+    # Filer income stays below 34,480 and unemployment stays below 10,200.
+    expected = [unemployment for _, unemployment, _, _ in amounts]
+    np.testing.assert_allclose(values, expected + expected, rtol=0, atol=0.01)
