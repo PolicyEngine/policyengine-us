@@ -302,7 +302,7 @@
         members: [primary, secondary]
         state_code: MO
   output:
-    # The 2023 IRA contribution limit at age 40 caps the deduction at 6,500.
+    # In 2023, the 40-year-old primary spouse deducts 6,500 of the 7,000 contribution.
     # Primary: 40,000 - 6,500 - 2,500 - 300 = 30,700. Secondary: 8,000.
     traditional_ira_deduction: [6_500, 0]
     adjusted_gross_income: 38_700
