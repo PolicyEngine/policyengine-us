@@ -81,3 +81,364 @@
     spm_unit_size: 4
   output:
     hud_income_level: VERY_LOW
+- name: Los Angeles FY2017 new renter one cent above the published low-income limit.
+  period: 2017
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 72_100.01
+      parent2:
+        age: 38
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+  output:
+    # HUD Section8-FY17, Los Angeles County, published l80_4 = $72,100.
+    # The annual FY-label convention does not reproduce April 14 adoption.
+    # This published high-cost low-income limit exceeds the $64,300 AMI;
+    # just above it also exceeds the unchanged four-person moderate limit.
+    hud_low_income_limit: 72_100
+    spm_unit_size: 4
+    hud_income_level: ABOVE_MODERATE
+    is_eligible_for_housing_assistance: false
+
+
+# Original fiscal-year data, using the existing annual FY-label convention.
+# Each situation holds ages constant; no eligibility output is injected.
+# LA published low-income limits exceed AMI, so one cent above also exceeds
+# the unchanged four-person moderate threshold. The standalone FY2017
+# boundary above preserves the initial source-derived RED example.
+- name: Los Angeles new renter at each FY2017 through FY2026 low-income ceiling.
+  period: 2017
+  input:
+    people:
+      parent1:
+        age:
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+        employment_income: &id002
+          2017: 72100
+          2018: 77500
+          2019: 83500
+          2020: 90100
+          2021: 94600
+          2022: 95300
+          2023: 100900
+          2024: 110950
+          2025: 121150
+          2026: 133250
+      parent2:
+        age:
+          2017: 38
+          2018: 38
+          2019: 38
+          2020: 38
+          2021: 38
+          2022: 38
+          2023: 38
+          2024: 38
+          2025: 38
+          2026: 38
+      child1:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+      child2:
+        age:
+          2017: 6
+          2018: 6
+          2019: 6
+          2020: 6
+          2021: 6
+          2022: 6
+          2023: 6
+          2024: 6
+          2025: 6
+          2026: 6
+    spm_units:
+      spm_unit:
+        members: &id001
+        - parent1
+        - parent2
+        - child1
+        - child2
+        spm_unit_tenure_type:
+          2017: RENTER
+          2018: RENTER
+          2019: RENTER
+          2020: RENTER
+          2021: RENTER
+          2022: RENTER
+          2023: RENTER
+          2024: RENTER
+          2025: RENTER
+          2026: RENTER
+        receives_housing_assistance:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+    households:
+      household:
+        members: *id001
+        state_code:
+          2017: CA
+          2018: CA
+          2019: CA
+          2020: CA
+          2021: CA
+          2022: CA
+          2023: CA
+          2024: CA
+          2025: CA
+          2026: CA
+        county_fips:
+          2017: '06037'
+          2018: '06037'
+          2019: '06037'
+          2020: '06037'
+          2021: '06037'
+          2022: '06037'
+          2023: '06037'
+          2024: '06037'
+          2025: '06037'
+          2026: '06037'
+  output:
+    spm_unit_size:
+      2017: 4
+      2018: 4
+      2019: 4
+      2020: 4
+      2021: 4
+      2022: 4
+      2023: 4
+      2024: 4
+      2025: 4
+      2026: 4
+    hud_low_income_limit:
+      2017: 72100
+      2018: 77500
+      2019: 83500
+      2020: 90100
+      2021: 94600
+      2022: 95300
+      2023: 100900
+      2024: 110950
+      2025: 121150
+      2026: 133250
+    hud_annual_income: *id002
+    hud_income_level:
+      2017: LOW
+      2018: LOW
+      2019: LOW
+      2020: LOW
+      2021: LOW
+      2022: LOW
+      2023: LOW
+      2024: LOW
+      2025: LOW
+      2026: LOW
+    is_eligible_for_housing_assistance:
+      2017: true
+      2018: true
+      2019: true
+      2020: true
+      2021: true
+      2022: true
+      2023: true
+      2024: true
+      2025: true
+      2026: true
+- name: Los Angeles new renter one cent above each FY2018 through FY2026 low-income ceiling.
+  period: 2018
+  input:
+    people:
+      parent1:
+        age:
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+        employment_income:
+          2018: 77500.01
+          2019: 83500.01
+          2020: 90100.01
+          2021: 94600.01
+          2022: 95300.01
+          2023: 100900.01
+          2024: 110950.01
+          2025: 121150.01
+          2026: 133250.01
+      parent2:
+        age:
+          2018: 38
+          2019: 38
+          2020: 38
+          2021: 38
+          2022: 38
+          2023: 38
+          2024: 38
+          2025: 38
+          2026: 38
+      child1:
+        age:
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+      child2:
+        age:
+          2018: 6
+          2019: 6
+          2020: 6
+          2021: 6
+          2022: 6
+          2023: 6
+          2024: 6
+          2025: 6
+          2026: 6
+    spm_units:
+      spm_unit:
+        members: &id003
+        - parent1
+        - parent2
+        - child1
+        - child2
+        spm_unit_tenure_type:
+          2018: RENTER
+          2019: RENTER
+          2020: RENTER
+          2021: RENTER
+          2022: RENTER
+          2023: RENTER
+          2024: RENTER
+          2025: RENTER
+          2026: RENTER
+        receives_housing_assistance:
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+    households:
+      household:
+        members: *id003
+        state_code:
+          2018: CA
+          2019: CA
+          2020: CA
+          2021: CA
+          2022: CA
+          2023: CA
+          2024: CA
+          2025: CA
+          2026: CA
+        county_fips:
+          2018: '06037'
+          2019: '06037'
+          2020: '06037'
+          2021: '06037'
+          2022: '06037'
+          2023: '06037'
+          2024: '06037'
+          2025: '06037'
+          2026: '06037'
+  output:
+    spm_unit_size:
+      2018: 4
+      2019: 4
+      2020: 4
+      2021: 4
+      2022: 4
+      2023: 4
+      2024: 4
+      2025: 4
+      2026: 4
+    hud_low_income_limit:
+      2018: 77500
+      2019: 83500
+      2020: 90100
+      2021: 94600
+      2022: 95300
+      2023: 100900
+      2024: 110950
+      2025: 121150
+      2026: 133250
+    hud_income_level:
+      2018: ABOVE_MODERATE
+      2019: ABOVE_MODERATE
+      2020: ABOVE_MODERATE
+      2021: ABOVE_MODERATE
+      2022: ABOVE_MODERATE
+      2023: ABOVE_MODERATE
+      2024: ABOVE_MODERATE
+      2025: ABOVE_MODERATE
+      2026: ABOVE_MODERATE
+    is_eligible_for_housing_assistance:
+      2018: false
+      2019: false
+      2020: false
+      2021: false
+      2022: false
+      2023: false
+      2024: false
+      2025: false
+      2026: false
+    housing_assistance:
+      2018: 0
+      2019: 0
+      2020: 0
+      2021: 0
+      2022: 0
+      2023: 0
+      2024: 0
+      2025: 0
+      2026: 0
