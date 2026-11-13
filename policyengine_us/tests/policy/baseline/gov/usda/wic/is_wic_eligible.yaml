@@ -50,3 +50,239 @@
   output:
     # Adult: not eligible, infant: eligible, age 6: not eligible
     is_wic_eligible: [false, true, false]
+
+# USDA 2016/2017 WIC income notice, 81 FR 14826-14829, PDF pages 1-2.
+# https://www.govinfo.gov/content/pkg/FR-2016-03-18/pdf/2016-06222.pdf#page=2
+# Texas DSHS CS:12.0, effective July 1, 2016, annual size-three ceiling 37,296.
+# https://med.uth.edu/wic/wp-content/uploads/sites/48/2016/10/WIC-Income-Guidelines.pdf
+# Medicaid take-up is declined, so enrollment cannot grant adjunctive eligibility.
+# Nutritional risk retains its existing assumed-assessment default. The older
+# child and adult supply real family size but are outside WIC demographics.
+- name: Texas child one dollar above the 2016 guideline annual ceiling is ineligible in January 2017.
+  period: 2017-01
+  input:
+    people:
+      parent:
+        age: {2017: 35}
+        employment_income: {2017: 37_297}
+        takes_up_medicaid_if_eligible: {2017: false}
+      child:
+        age: {2017: 3}
+        is_tax_unit_dependent: {2017: true}
+        takes_up_medicaid_if_eligible: {2017: false}
+      older_child:
+        age: {2017: 8}
+        is_tax_unit_dependent: {2017: true}
+        takes_up_medicaid_if_eligible: {2017: false}
+    tax_units:
+      tax_unit:
+        members: [parent, child, older_child]
+    spm_units:
+      spm_unit:
+        members: [parent, child, older_child]
+    families:
+      family:
+        members: [parent, child, older_child]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+      older_child:
+        members: [older_child]
+    households:
+      household:
+        members: [parent, child, older_child]
+        state_code: {2017: TX}
+  output:
+    is_wic_eligible: [false, false, false]
+    wic: [0, 0, 0]
+    meets_wic_income_test: false
+    wic_countable_income:
+      2017: 37_297
+    wic_income_limit: 37_296
+    wic_category: [NONE, CHILD, NONE]
+    meets_wic_categorical_eligibility: [false, false, false]
+    medicaid_enrolled: [false, false, false]
+    snap: 0
+    tanf: 0
+    receives_snap: false
+    receives_tanf: false
+
+- name: Texas child at the 2016 guideline annual ceiling meets direct income eligibility in January 2017.
+  period: 2017-01
+  input:
+    people:
+      parent:
+        age:
+          2017: 35
+        employment_income:
+          2017: 37296
+        takes_up_medicaid_if_eligible:
+          2017: false
+      child:
+        age:
+          2017: 3
+        is_tax_unit_dependent:
+          2017: true
+        takes_up_medicaid_if_eligible:
+          2017: false
+      older_child:
+        age:
+          2017: 8
+        is_tax_unit_dependent:
+          2017: true
+        takes_up_medicaid_if_eligible:
+          2017: false
+    tax_units:
+      tax_unit:
+        members:
+        - parent
+        - child
+        - older_child
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child
+        - older_child
+    families:
+      family:
+        members:
+        - parent
+        - child
+        - older_child
+    marital_units:
+      parent:
+        members:
+        - parent
+      child:
+        members:
+        - child
+      older_child:
+        members:
+        - older_child
+    households:
+      household:
+        members:
+        - parent
+        - child
+        - older_child
+        state_code:
+          2017: TX
+  output:
+    is_wic_eligible:
+    - false
+    - true
+    - false
+    meets_wic_income_test: true
+    wic_countable_income:
+      2017: 37296
+    wic_income_limit: 37296
+    wic_category:
+    - NONE
+    - CHILD
+    - NONE
+    meets_wic_categorical_eligibility:
+    - false
+    - false
+    - false
+    medicaid_enrolled:
+    - false
+    - false
+    - false
+    snap: 0
+    tanf: 0
+    receives_snap: false
+    receives_tanf: false
+- name: Texas child one cent above the 2016 guideline annual ceiling is ineligible in January 2017.
+  period: 2017-01
+  input:
+    people:
+      parent:
+        age:
+          2017: 35
+        employment_income:
+          2017: 37296.01
+        takes_up_medicaid_if_eligible:
+          2017: false
+      child:
+        age:
+          2017: 3
+        is_tax_unit_dependent:
+          2017: true
+        takes_up_medicaid_if_eligible:
+          2017: false
+      older_child:
+        age:
+          2017: 8
+        is_tax_unit_dependent:
+          2017: true
+        takes_up_medicaid_if_eligible:
+          2017: false
+    tax_units:
+      tax_unit:
+        members:
+        - parent
+        - child
+        - older_child
+    spm_units:
+      spm_unit:
+        members:
+        - parent
+        - child
+        - older_child
+    families:
+      family:
+        members:
+        - parent
+        - child
+        - older_child
+    marital_units:
+      parent:
+        members:
+        - parent
+      child:
+        members:
+        - child
+      older_child:
+        members:
+        - older_child
+    households:
+      household:
+        members:
+        - parent
+        - child
+        - older_child
+        state_code:
+          2017: TX
+  output:
+    is_wic_eligible:
+    - false
+    - false
+    - false
+    wic:
+    - 0
+    - 0
+    - 0
+    meets_wic_income_test: false
+    wic_countable_income:
+      2017: 37296.01
+    wic_income_limit: 37296
+    wic_category:
+    - NONE
+    - CHILD
+    - NONE
+    meets_wic_categorical_eligibility:
+    - false
+    - false
+    - false
+    medicaid_enrolled:
+    - false
+    - false
+    - false
+    snap: 0
+    tanf: 0
+    receives_snap: false
+    receives_tanf: false
+  absolute_error_margin: 0.005
