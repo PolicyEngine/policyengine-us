@@ -5,7 +5,6 @@ description: Montana counts these sources as miscellaneous deductions.
 # differs between a joint return and separate columns (Form 2441-M line 3).
 values:
   2021-01-01:
-    - casualty_loss_deduction
     # Form 2 itemized deductions line 18 follows federal Schedule A line 16.
     - mt_claim_of_right_deduction
   # From 2024 mt_taxable_income_joint starts from federal taxable income,

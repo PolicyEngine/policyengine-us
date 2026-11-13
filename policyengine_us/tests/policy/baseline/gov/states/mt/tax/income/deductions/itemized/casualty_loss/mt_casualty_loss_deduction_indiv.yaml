@@ -1,0 +1,229 @@
+# Montana Form 2 instructions (2022), line 15, PDF pages 35-36:
+# Taxpayers calculate casualty losses using Montana AGI on Form 4684.
+# Spouses filing separately calculate their own losses (also PDF page 11).
+# Form 4684 lines 11-12 and 17-18 apply the $100 reduction and 10% AGI floor.
+# Publication 547 (2022), PDF page 10, assigns separately owned losses to the
+# owner and applies one reduction per casualty event.
+# The model lacks a disaster-specific input and retains the federal casualty
+# activation flag. Cases from 2021 onward enable that flag when testing
+# the calculation. Earlier cases use the ordinary-loss baseline.
+
+- name: Only the spouse who had the loss deducts it, above 10% of their own Montana AGI
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 60,000; the spouse has no loss.
+    mt_casualty_loss_deduction_indiv: [23_900, 0]
+
+- name: Each spouse's loss is floored at 10% of that spouse's Montana AGI
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        casualty_loss: 5_000
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 6,000 and (5,000 - 100) - 4,000: each spouse reduces
+    # their own loss by $100.
+    mt_casualty_loss_deduction_indiv: [23_900, 900]
+
+- name: A dependent's loss stays off the parents' columns, like the dependent's income
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        casualty_loss: 30_000
+      person2:
+        age: 40
+        employment_income: 40_000
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+        employment_income: 5_000
+        casualty_loss: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # The dependent's wages are not in the head's Montana AGI (60,000), and the
+    # dependent's loss belongs on the dependent's own return:
+    # (30,000 - 100) - 10% x 60,000 for the head.
+    mt_casualty_loss_deduction_indiv: [23_900, 0, 0]
+
+- name: Spouses filing separately on one form in 2024 have no Montana casualty line
+  period: 2024
+  input:
+    # Allowing filing status 2a in 2024 (as a reform would) reaches the
+    # separate path; the discontinued schedule still gives no deduction.
+    gov.states.mt.tax.income.married_filing_separately_on_same_return_allowed: true
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_indiv: [0, 0]
+
+- name: No loss is deductible while the federal casualty deduction is suspended
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_indiv: [0, 0]
+
+- name: In 2023, Only the spouse who had the loss deducts it, above 10% of their own Montana AGI
+  period: 2023
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 60,000; the spouse has no loss.
+    mt_casualty_loss_deduction_indiv: [23_900, 0]
+
+
+- name: The spouse owns the entire casualty loss
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      head:
+        age: 40
+        employment_income: 90_000
+      spouse:
+        age: 40
+        employment_income: 20_000
+        casualty_loss: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_casualty_loss_deduction_indiv: [0, 9_900]
+
+# In 2015 and 2017, Montana taxpayers use Montana AGI on Form 4684.
+# Spouses filing separately calculate their own ordinary losses.
+# Schedule III line 20 appears on PDF page 30; owner allocation appears on page 27.
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2015_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
+
+- name: Each spouse deducts only their own ordinary casualty loss in 2015
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 60,000; the spouse has no loss.
+    mt_casualty_loss_deduction_indiv: [23_900, 0]
+
+- name: Each spouse deducts only their own ordinary casualty loss in 2017
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        casualty_loss: 30_000
+        mt_agi_indiv: 60_000
+      person2:
+        age: 40
+        mt_agi_indiv: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 60,000; the spouse has no loss.
+    mt_casualty_loss_deduction_indiv: [23_900, 0]
