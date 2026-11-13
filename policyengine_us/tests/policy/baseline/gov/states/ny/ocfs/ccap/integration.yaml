@@ -95,12 +95,12 @@
     ny_ccap_county_group: GROUP_4
     ny_ccap_age_group: SCHOOL_AGE
     ny_ccap_duration_of_care: PART_DAY
-    # Market rate: $28/part-day * 3 days/week * 52 / 12.
-    ny_ccap_market_rate: 28 * 3 * 52 / 12
+    # ACS FS-023: $30/part-day * 3 days/week * 52 / 12 = $390.
+    ny_ccap_market_rate: 30 * 3 * 52 / 12
     ny_ccap_family_share: 52 / 12
-    ny_ccap: (28 * 3 * 52 - 52) / 12
-    ny_child_care_subsidies: (28 * 3 * 52 - 52) / 12
-    child_care_subsidies: (28 * 3 * 52 - 52) / 12
+    ny_ccap: (30 * 3 * 52 - 52) / 12
+    ny_child_care_subsidies: (30 * 3 * 52 - 52) / 12
+    child_care_subsidies: (30 * 3 * 52 - 52) / 12
   absolute_error_margin: 0.01
 
 # The activity test is the sole cause of ineligibility here: hhs_smi is set

@@ -1,0 +1,23 @@
+description: New York districts pay this fraction of the day care center market rate to legally exempt group child care programs meeting both the enhanced health requirement and the enhanced training requirement.
+# New York City publishes enhanced rates in FS-023. Outside New York City,
+# use the standard group rates because no district enhancement was confirmed.
+# A zero fraction preserves the standard rate rather than creating an enhancement.
+GROUP_1:
+  2024-10-01: 0
+GROUP_2:
+  2024-10-01: 0
+GROUP_3:
+  2024-10-01: 0
+GROUP_4:
+  2024-10-01: 0.87
+
+metadata:
+  unit: /1
+  label: New York CCAP legally exempt group health and training enhanced rate fraction
+  breakdown:
+    - ny_ccap_county_group
+  reference:
+    - title: 24-OCFS-LCM-22
+      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=9
+    - title: NYC ACS FS-023, revised October 2024
+      href: https://www.nyc.gov/assets/acs/pdf/earlycare/2024/FS023.pdf#page=2
