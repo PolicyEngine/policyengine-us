@@ -5,7 +5,7 @@ A return on which the filer, or on a joint return either spouse, can be claimed
 as a dependent outside the filing exception has no dependents (IRC 152(b)(1)).
 DC's property tax credit needs a claimant who was not a dependent or is 65 or
 older; Georgia's low income credit and 2023 surplus refund need one filer who
-qualifies; Idaho's food tax credit leaves out each filer who can be claimed.
+qualifies; Idaho's food tax credit leaves out each filer someone claims.
 
 For couples drawn by Hypothesis and a seeded population in these states,
 claimability, actual claims and the filing exception vary independently,
@@ -17,9 +17,10 @@ subject to an actual claim requiring claimability and excluding the exception:
    and no filing exception, never raises the outputs in MONOTONE (amounts not
    capped by a tax liability that the claim can raise).
 3. Identities: a return with a claimable filer outside the filing exception has
-   no DC keep child care affordable credit or child tax credit and its Idaho
-   food tax credit is at most one filer's amount; a return on which every
-   filer can be claimed has no Georgia low income credit.
+   no DC keep child care affordable credit, DC child tax credit or Georgia
+   child tax credit. Its Idaho food tax credit covers only unclaimed filers;
+   a return on which every filer can be claimed has no Georgia low income
+   credit.
 
 Hypothesis batches check 1 and 3; the seeded population checks 1, 2 and 3.
 """
@@ -91,22 +92,29 @@ def _identities(sim, year):
         )
         > 0
     )
-    for name in ("dc_kccatc", "dc_ctc"):
+    for name in ("dc_kccatc", "dc_ctc", "ga_ctc_potential"):
         assert not _calc(sim, name, year)[blocked_filer].any(), (
             f"{name} in {year} is positive on a return with a claimable filer "
             "outside the filing exception"
         )
     # The expired aggregate amount must not make the child predicate vacuous.
     blocked_people = sim.populations["tax_unit"].project(blocked_filer)
-    assert not _calc(sim, "dc_ctc_eligible_child", year)[blocked_people].any()
+    for name in ("dc_ctc_eligible_child", "ga_ctc_eligible_child"):
+        assert not _calc(sim, name, year)[blocked_people].any()
     # Georgia's low income credit needs one filer who cannot be claimed.
     every_filer = _calc(sim, "every_filer_is_dependent_elsewhere", year) > 0
     assert not _calc(sim, "ga_low_income_credit_potential", year)[every_filer].any()
-    # Outside the filing exception, at most the independent filer keeps a
-    # food tax credit; no dependent child qualifies.
+    # Outside the filing exception, only unclaimed filers keep their food
+    # tax credits; no dependent child qualifies.
     one_filer = _one_filer_food_amount(sim, year)
+    unclaimed_filers = sim.populations["tax_unit"].sum(
+        (_calc(sim, "is_tax_unit_head_or_spouse", year) > 0)
+        & ~(_calc(sim, "claimed_as_dependent_on_another_return", year) > 0)
+    )
     grocery = _calc(sim, "id_grocery_credit", year)
-    assert (grocery[blocked_filer] <= one_filer + 0.01).all()
+    assert (
+        grocery[blocked_filer] <= one_filer * unclaimed_filers[blocked_filer] + 0.01
+    ).all()
 
 
 def _one_filer_food_amount(sim, year):
@@ -140,17 +148,19 @@ def _with_independent_claim_inputs(units):
 @pytest.mark.parametrize(
     "year,state,expected",
     [
-        (2025, "ID", {"id_grocery_credit": 310}),
+        (2025, "ID", {"id_grocery_credit": 465}),
         (2026, "DC", {"dc_kccatc": 1_000, "dc_ctc": 0}),
+        (2026, "GA", {"ga_ctc_potential": 250}),
     ],
 )
-def test_dc_id_filing_exception_restores_children_under_both_labels(
+def test_dc_ga_id_filing_exception_restores_children_under_both_labels(
     year, state, expected
 ):
     # The claimable adult keeps the exception and the independent spouse and
-    # child keep their eligibility when either adult is labelled head. Idaho still
-    # excludes the claimable adult's own $155 food tax credit. DC has no
-    # 2026 child tax credit after the temporary revival expires.
+    # child keep their eligibility when either adult is labelled head. Idaho
+    # credits both unclaimed adults and the child. DC has no
+    # 2026 child tax credit after the temporary revival expires. Georgia
+    # credits the child under IRC 24(c)(2) when the filing exception applies.
     units = [
         {
             "state": state,
