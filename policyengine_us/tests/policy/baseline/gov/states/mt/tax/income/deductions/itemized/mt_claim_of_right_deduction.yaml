@@ -162,14 +162,15 @@
     deductible_mortgage_interest: 0
     mt_medical_expense_deduction_joint: 0
     mt_salt_deduction: 0
-    casualty_loss_deduction: 400
+    mt_casualty_loss_deduction_joint: 400
     mt_child_dependent_care_expense_deduction_joint: 0
     mt_federal_income_tax_deduction_unit: 0
     mt_federal_income_tax_deduction_for_federal_itemization: 0
   output:
     # 2,000 + 1,000 + 300 - 2% * 40,000 = 2,500; federal misc is unused.
     mt_misc_deductions_subject_to_floor_joint: 2_500
-    mt_misc_deductions: 400
+    mt_misc_deductions: 0
+    mt_casualty_loss_deduction_joint: 400
     mt_itemized_deductions_joint: 12_900
     mt_itemized_deductions_for_federal_itemization_joint: 12_900
 

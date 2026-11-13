@@ -335,3 +335,143 @@
   output:
     de_itemized_deductions_unit: 0
     de_itemized_deductions_indv: [0, 0]
+
+- name: A dependent's casualty loss does not redirect the head's deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 60_000
+        casualty_loss: 20_000
+      spouse:
+        age: 40
+        adjusted_gross_income_person: 40_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        casualty_loss: 30_000
+    tax_units:
+      couple:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DE
+  output:
+    # Re-enable the federal deduction to exercise Delaware's allocation.
+    # The head claims 20,000 - 100 - 10% * 100,000 = 9,900.
+    casualty_loss_deduction: 9_900
+    de_itemized_deductions_unit: 9_900
+    de_itemized_deductions_indv: [9_900, 0, 0]
+
+- name: A dependent's casualty loss does not redirect the spouse's deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 60_000
+      spouse:
+        age: 40
+        adjusted_gross_income_person: 40_000
+        casualty_loss: 20_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        casualty_loss: 30_000
+    tax_units:
+      couple:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DE
+  output:
+    # The spouse claims 20,000 - 100 - 10% * 100,000 = 9,900.
+    casualty_loss_deduction: 9_900
+    de_itemized_deductions_unit: 9_900
+    de_itemized_deductions_indv: [0, 9_900, 0]
+
+- name: Spouses cannot claim a dependent's casualty loss
+  period: 2025
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      head:
+        age: 40
+        adjusted_gross_income_person: 60_000
+      spouse:
+        age: 40
+        adjusted_gross_income_person: 40_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        casualty_loss: 30_000
+    tax_units:
+      couple:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DE
+  output:
+    casualty_loss_deduction: 0
+    de_itemized_deductions_unit: 0
+    de_itemized_deductions_indv: [0, 0, 0]
+
+- name: Spouses retain their casualty shares when a dependent adds a loss
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      head_without_dependent:
+        age: 40
+        adjusted_gross_income_person: 60_000
+        casualty_loss: 20_000
+      spouse_without_dependent:
+        age: 40
+        adjusted_gross_income_person: 40_000
+        casualty_loss: 10_000
+      head_with_dependent:
+        age: 40
+        adjusted_gross_income_person: 60_000
+        casualty_loss: 20_000
+      spouse_with_dependent:
+        age: 40
+        adjusted_gross_income_person: 40_000
+        casualty_loss: 10_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+        casualty_loss: 30_000
+    tax_units:
+      without_dependent:
+        members: [head_without_dependent, spouse_without_dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+      with_dependent:
+        members: [head_with_dependent, spouse_with_dependent, dependent]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [head_without_dependent, spouse_without_dependent, head_with_dependent, spouse_with_dependent, dependent]
+        state_code: DE
+  output:
+    # Each couple claims 30,000 - 100 - 10% * 100,000 = 19,900.
+    # Allocate 2/3 to the head and 1/3 to the spouse in both couples.
+    casualty_loss_deduction: [19_900, 19_900]
+    de_itemized_deductions_unit: [19_900, 19_900]
+    de_itemized_deductions_indv: [13_266.6667, 6_633.3333, 13_266.6667, 6_633.3333, 0]

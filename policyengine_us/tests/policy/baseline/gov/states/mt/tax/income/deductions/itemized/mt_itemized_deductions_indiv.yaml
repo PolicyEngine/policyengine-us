@@ -5,7 +5,7 @@
      investment_interest_expense: 265
      mt_salt_deduction: 5_000
      mt_medical_expense_deduction_indiv: 1_000
-     casualty_loss_deduction: 400
+     mt_casualty_loss_deduction_indiv: 400
      mt_child_dependent_care_expense_deduction: 123
      mt_federal_income_tax_deduction_indiv: 2_000
      state_code: MT
@@ -19,7 +19,7 @@
      investment_interest_expense: 1_234
      mt_salt_deduction: 10_000
      mt_medical_expense_deduction_indiv: 3_000 
-     casualty_loss_deduction: 0
+     mt_casualty_loss_deduction_indiv: 0
      mt_child_dependent_care_expense_deduction: 0
      mt_federal_income_tax_deduction_indiv: 2_000
      state_code: MT
@@ -33,7 +33,7 @@
      deductible_mortgage_interest: 34
      mt_salt_deduction: 1_035
      mt_medical_expense_deduction_indiv: 3_000
-     casualty_loss_deduction: 745
+     mt_casualty_loss_deduction_indiv: 745
      mt_child_dependent_care_expense_deduction: 1_004
      mt_federal_income_tax_deduction_indiv: 2_000
      state_code: MT
@@ -185,3 +185,31 @@
     # AGI the first $1,000 phase-out increment reduces $2,000 by 10%.
     deductible_mortgage_insurance_premiums: 1_800
     mt_itemized_deductions_indiv: [540, 1_260]
+
+- name: Only the spouse who had the casualty loss deducts it when filing separately
+  period: 2022
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        casualty_loss: 30_000
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+      person2:
+        age: 40
+        employment_income: 40_000
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # (30,000 - 100) - 10% x 60,000 Montana AGI in the head's column; none for
+    # the spouse.
+    mt_itemized_deductions_indiv: [23_900, 0]

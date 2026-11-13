@@ -1,3 +1,16 @@
+# 2022 Form N-11 instructions, Casualty and Theft Losses (PDF p. 18): a loss is
+# deductible only to the extent "The amount of EACH separate casualty or theft
+# loss is more than $100, and ... The total amount of ALL losses during the
+# year (reduced by the $100 limit) is more than 10% of your adjusted gross
+# income." Worksheet A-5 (PDF p. 32): line 19 is the 2017 federal Form 4684,
+# line 16 (after the $100 on line 11); line 21 is 10% of Hawaii AGI, "If zero
+# or less, enter zero"; line 22 is line 19 minus line 21, not below zero.
+# HRS 235-2.4(l)(1): "a $100 limitation per casualty". A joint return is one
+# individual for the $100 rule (26 U.S.C. 165(h)(4)(B)). The model records one
+# loss amount per person, so a return's losses are treated as one casualty.
+# Act 35, SLH 2026, limits personal casualty losses to declared disasters from
+# 2026; the model has no input that distinguishes them.
+
 - name: base test
   period: 2022
   input:
@@ -15,7 +28,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_casualty_loss_deduction: 100
+    filing_status: JOINT
+    # (100 + 100 - 100) - 10% x 1,000 = 100 - 100
+    hi_casualty_loss_deduction: 0
 
 - name: larger AGI
   period: 2022
@@ -34,8 +49,10 @@
         members: [person1, person2]
         state_code: HI
   output:
+    filing_status: JOINT
+    # (100 + 100 - 100) - 10% x 2,000 = 100 - 200, below zero
     hi_casualty_loss_deduction: 0
-  
+
 - name: larger loss
   period: 2022
   input:
@@ -53,7 +70,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_casualty_loss_deduction: 200
+    filing_status: JOINT
+    # (200 + 100 - 100) - 10% x 1,000 = 200 - 100
+    hi_casualty_loss_deduction: 100
 
 - name: AGI exceed loss
   period: 2022
@@ -72,4 +91,129 @@
         members: [person1, person2]
         state_code: HI
   output:
+    filing_status: JOINT
+    # (100 + 100 - 100) - 10% x 3,000 = 100 - 300, below zero
+    hi_casualty_loss_deduction: 0
+
+- name: Case 5, a loss of exactly $100 is fully absorbed by the $100 reduction.
+  period: 2025
+  input:
+    casualty_loss: 100
+    hi_agi: 0
+    state_code: HI
+  output:
+    # max(100 - 100, 0) - 10% x 0
+    hi_casualty_loss_deduction: 0
+
+- name: Case 6, a loss of $101 leaves $1 after the $100 reduction.
+  period: 2025
+  input:
+    casualty_loss: 101
+    hi_agi: 0
+    state_code: HI
+  output:
+    # max(101 - 100, 0) - 10% x 0
+    hi_casualty_loss_deduction: 1
+
+- name: Case 7, a loss under $100 is not deductible.
+  period: 2025
+  input:
+    casualty_loss: 60
+    hi_agi: 0
+    state_code: HI
+  output:
+    hi_casualty_loss_deduction: 0
+
+- name: Case 8, the 10 percent floor applies after the $100 reduction.
+  period: 2025
+  input:
+    casualty_loss: 5_000
+    hi_agi: 20_000
+    state_code: HI
+  output:
+    # Worksheet A-5: line 19 = 5,000 - 100 = 4,900; line 21 = 10% x 20,000
+    # = 2,000; line 22 = 4,900 - 2,000.
+    hi_casualty_loss_deduction: 2_900
+    # Hawaii allows the loss though the federal deduction is suspended.
+    casualty_loss_deduction: 0
+
+- name: Case 9, a joint return reduces the spouses' pooled losses by $100 once.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        casualty_loss: 600
+      person2:
+        age: 40
+        casualty_loss: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        hi_agi: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # (600 + 400 - 100) - 10% x 3,000 = 900 - 300
+    hi_casualty_loss_deduction: 600
+
+- name: Case 10, a dependent's loss is left to the dependent's own return.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        casualty_loss: 1_000
+      person2:
+        age: 10
+        casualty_loss: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        hi_agi: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    is_tax_unit_dependent: [false, true]
+    # The child's 2,000 is not the parent's loss.
+    # (1,000 - 100) - 10% x 5,000 = 900 - 500
+    hi_casualty_loss_deduction: 400
+
+- name: Case 11, a negative Hawaii AGI gives no floor.
+  period: 2025
+  input:
+    casualty_loss: 300
+    hi_agi: -1_000
+    state_code: HI
+  output:
+    # Line 21: 10% x -1,000 is less than zero, so zero. 300 - 100 - 0
+    hi_casualty_loss_deduction: 200
+
+- name: Case 12, from 2026 Hawaii allows only declared-disaster losses.
+  period: 2026
+  input:
+    casualty_loss: 5_000
+    hi_agi: 20_000
+    state_code: HI
+  output:
+    # Act 35, SLH 2026, makes 26 U.S.C. 165(h)(5) operative for Hawaii.
+    hi_casualty_loss_deduction: 0
+
+- name: Case 13, a reform that restores the federal deduction does not reach Hawaii.
+  period: 2026
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    casualty_loss: 5_000
+    hi_agi: 20_000
+    adjusted_gross_income: 20_000
+    state_code: HI
+  output:
+    # Hawaii conforms to the Code as of December 31, 2025 and keeps the
+    # 165(h)(5) limit from 2026; the federal deduction follows the reform.
+    # (5,000 - 100) - 10% x 20,000 = 4,900 - 2,000
+    casualty_loss_deduction: 2_900
     hi_casualty_loss_deduction: 0

@@ -2,9 +2,8 @@ from policyengine_us.model_api import *
 
 
 # The person-level expenses each itemized deduction is built from. A deduction
-# is allocated to the spouse who paid the expense; amounts paid by dependents,
-# and any deduction not listed here, cannot be specifically allocated to a
-# spouse and are prorated by income.
+# goes to the spouse who paid the expense. Prorate any included dependent
+# expenses and deductions absent from this mapping by income.
 EXPENSE_SOURCES = {
     "de_capped_real_estate_tax": ["real_estate_taxes"],
     "charitable_deduction": ["total_charitable_donations"],
@@ -88,6 +87,9 @@ class de_itemized_deductions_indv(Variable):
                 ) * _share(filer_premium_expense, total_premium_expense)
                 amount = max_(amount - premiums, 0)
             expense = add(person, period, expense_sources)
+            if deduction == "casualty_loss_deduction":
+                # Count only filers' losses, as in the federal deduction.
+                expense = head_or_spouse * expense
             total_expense = person.tax_unit.sum(expense)
             allocated += amount * _share(head_or_spouse * expense, total_expense)
         # Prorate what could not be specifically allocated.
