@@ -683,3 +683,12 @@
     - 0.261169458
     - 0.26111869
     - 0.261150512
+
+# GIS 17 MA/005 attachments 3-4: parent/caretaker relatives use 138% FPL.
+- name: Case 35, New York parent income limit starts in 2017.
+  period: 2017
+  input:
+    state_code: NY
+  output:
+    medicaid_parent_income_limit: 1.38
+  absolute_error_margin: 0.0001
