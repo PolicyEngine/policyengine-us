@@ -53,7 +53,7 @@ SETTINGS = dict(
 )
 
 
-def _income(units, variable="school_meal_countable_income"):
+def _simulation(units):
     people = {}
     groups = {
         "families": {},
@@ -80,7 +80,11 @@ def _income(units, variable="school_meal_countable_income"):
             "members": members,
             "state_code": {YEAR: "TN"},
         }
-    simulation = Simulation(situation={"people": people, **groups})
+    return Simulation(situation={"people": people, **groups})
+
+
+def _income(units, variable="school_meal_countable_income"):
+    simulation = _simulation(units)
     return np.asarray(simulation.calculate(variable, YEAR), dtype=float)
 
 
@@ -194,10 +198,11 @@ def test_ancillary_income_measures_keep_the_original_source_sum(people, tanf):
         )
         + tanf
     )
+    simulation = _simulation([{"people": people, "tanf": tanf}])
     for variable in (
         "csfp_countable_income",
         "tx_dta_csfp_countable_income",
         "ca_cvrp_countable_income",
     ):
-        actual = _income([{"people": people, "tanf": tanf}], variable)
+        actual = np.asarray(simulation.calculate(variable, YEAR), dtype=float)
         np.testing.assert_allclose(actual, [expected], atol=0.01)

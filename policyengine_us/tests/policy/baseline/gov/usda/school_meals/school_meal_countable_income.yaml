@@ -56,6 +56,7 @@
   output:
     school_meal_countable_income: 10_000
 
+# Supply pre-response earnings to match US Simulation input normalization.
 # 36,000 of wages count; 28,132 < 36,000 < 40,034.
 - name: A Tennessee parent earns 36,000 and the child receives reduced-price meals.
   period: 2026
@@ -63,9 +64,20 @@
     people:
       parent:
         age: 35
-        employment_income: 36_000
+        employment_income_before_lsr: 36_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -85,10 +97,21 @@
     people:
       parent:
         age: 35
-        employment_income: 36_000
+        employment_income_before_lsr: 36_000
         educational_assistance: 7_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -108,9 +131,20 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
+        employment_income_before_lsr: 45_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -130,10 +164,21 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
-        self_employment_income: -20_000
+        employment_income_before_lsr: 45_000
+        self_employment_income_before_lsr: -20_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -153,10 +198,21 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
-        sstb_self_employment_income: -20_000
+        employment_income_before_lsr: 45_000
+        sstb_self_employment_income_before_lsr: -20_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -176,10 +232,21 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
+        employment_income_before_lsr: 45_000
         rental_income: -20_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -202,6 +269,17 @@
         alimony_income: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -221,9 +299,20 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -243,10 +332,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         child_support_received: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -266,10 +366,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         alimony_income: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -289,10 +400,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         workers_compensation: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -312,10 +434,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         disability_benefits: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -335,10 +468,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         military_retirement_pay: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -358,10 +502,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         military_retirement_pay_survivors: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -381,10 +536,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         farm_operations_income: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -404,10 +570,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         farm_rent_income: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -427,10 +604,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         estate_income: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -450,10 +638,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         partnership_income: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -473,10 +672,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         s_corp_income: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -496,10 +706,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         military_retirement_income: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -519,10 +740,21 @@
     people:
       parent:
         age: 35
-        employment_income: 30_000
+        employment_income_before_lsr: 30_000
         partnership_s_corp_income: 60_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -542,10 +774,21 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
+        employment_income_before_lsr: 45_000
         estate_income: -20_000
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -565,9 +808,9 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
-        self_employment_income: -1
-        sstb_self_employment_income: -1
+        employment_income_before_lsr: 45_000
+        self_employment_income_before_lsr: -1
+        sstb_self_employment_income_before_lsr: -1
         rental_income: -1
         farm_operations_income: -1
         farm_rent_income: -1
@@ -575,6 +818,17 @@
         estate_income: -1
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -592,9 +846,9 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
-        self_employment_income: 0
-        sstb_self_employment_income: 0
+        employment_income_before_lsr: 45_000
+        self_employment_income_before_lsr: 0
+        sstb_self_employment_income_before_lsr: 0
         rental_income: 0
         farm_operations_income: 0
         farm_rent_income: 0
@@ -602,6 +856,17 @@
         estate_income: 0
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -619,9 +884,9 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
-        self_employment_income: 1
-        sstb_self_employment_income: 1
+        employment_income_before_lsr: 45_000
+        self_employment_income_before_lsr: 1
+        sstb_self_employment_income_before_lsr: 1
         rental_income: 1
         farm_operations_income: 1
         farm_rent_income: 1
@@ -629,6 +894,17 @@
         estate_income: 1
       child:
         age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -646,9 +922,9 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
-        self_employment_income: -100
-        sstb_self_employment_income: -100
+        employment_income_before_lsr: 45_000
+        self_employment_income_before_lsr: -100
+        sstb_self_employment_income_before_lsr: -100
         rental_income: -100
         farm_operations_income: -100
         farm_rent_income: -100
@@ -658,13 +934,26 @@
         age: 10
       other_adult:
         age: 40
-        self_employment_income: 40
-        sstb_self_employment_income: 40
+        self_employment_income_before_lsr: 40
+        sstb_self_employment_income_before_lsr: 40
         rental_income: 40
         farm_operations_income: 40
         farm_rent_income: 40
         partnership_s_corp_income: 40
         estate_income: 40
+    families:
+      family:
+        members: [parent, child, other_adult]
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_adult]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+      other_adult_unit:
+        members: [other_adult]
     spm_units:
       spm_unit:
         members: [parent, child, other_adult]
@@ -683,9 +972,9 @@
     people:
       parent:
         age: 35
-        employment_income: 45_000
-        self_employment_income: -100
-        sstb_self_employment_income: 40
+        employment_income_before_lsr: 45_000
+        self_employment_income_before_lsr: -100
+        sstb_self_employment_income_before_lsr: 40
         rental_income: -100
         farm_operations_income: 40
         farm_rent_income: -100
@@ -695,13 +984,26 @@
         age: 10
       other_adult:
         age: 40
-        self_employment_income: 40
-        sstb_self_employment_income: -100
+        self_employment_income_before_lsr: 40
+        sstb_self_employment_income_before_lsr: -100
         rental_income: 40
         farm_operations_income: -100
         farm_rent_income: 40
         partnership_s_corp_income: -100
         estate_income: 40
+    families:
+      family:
+        members: [parent, child, other_adult]
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_adult]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+      other_adult_unit:
+        members: [other_adult]
     spm_units:
       spm_unit:
         members: [parent, child, other_adult]
@@ -722,7 +1024,7 @@
     people:
       parent:
         age: 45
-        employment_income: 38_114
+        employment_income_before_lsr: 38_114
       adult_child:
         age: 19
         is_ssi_disabled: true

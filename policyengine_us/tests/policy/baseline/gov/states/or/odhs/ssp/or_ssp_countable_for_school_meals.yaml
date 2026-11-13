@@ -70,3 +70,20 @@
     or_ssp: 100
   output:
     or_ssp_countable_for_school_meals: 0
+
+- name: School meal income uses Oregon's exclusions through the annual income sum.
+  period: 2026
+  input:
+    age: [35, 35, 35, 35]
+    state_code: [OR, OR, OR, OR]
+    ssi: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    or_ssp_category:
+      - INITIAL_ROOM_BOARD
+      - ROOM_BOARD_ABSENCE
+      - ROOM_BOARD_INCAPACITY
+      - IN_HOME
+    or_ssp: [1_200, 1_200, 1_200, 1_200]
+  output:
+    # Annual payments are 12 * $100; only recurring in-home cash counts.
+    school_meal_countable_income: [0, 0, 0, 1_200]
