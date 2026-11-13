@@ -1,32 +1,500 @@
-- name: Case 1, itemzied deduction higher than standard deduction. 
+# Among filers who may itemize for New York, a filer with college tuition
+# expenses itemizes only when that lowers New York State plus New York City
+# income tax; a filer without them takes the larger deduction.
+#
+# Hand values. 2021 single brackets: 4% to $8,500 ($340), 4.5% to $11,700
+# ($144), 5.25% to $13,900 ($115.50), 5.9% to $21,400 ($442.50), then 5.97%;
+# tax at $21,400 is $1,042. From 2023 the 5.9% bracket is 5.5% and runs to
+# $80,650; tax at $13,900 is $599.50. A single filer with $50,000 or $40,000
+# of wages gets no New York household credit or EITC.
+
+- name: Case 1, a federal itemizer itemizes for New York when its itemized deduction is larger.
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     tax_unit_itemizes: true
-    ny_standard_deduction: 200
-    ny_itemized_deductions: 300
+    employment_income: 50_000
+    ny_standard_deduction: 8_000
+    ny_itemized_deductions: 10_000
     state_code: NY
   output:
+    # Itemize: taxable income 50,000 - 10,000 = 40,000;
+    #   tax 1,042 + 5.97% x (40,000 - 21,400) = 1,042 + 1,110.42 = 2,152.42.
+    # Standard: taxable income 42,000;
+    #   tax 1,042 + 5.97% x 20,600 = 2,271.82.
     ny_itemizes: true
+    ny_deductions: 10_000
+    ny_income_tax: 2_152.42
 
-- name: Case 2, itemzied deduction less than standard deduction. 
+- name: Case 2, a federal itemizer takes the New York standard deduction when its itemized deduction is smaller.
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     tax_unit_itemizes: true
-    ny_standard_deduction: 300
-    ny_itemized_deductions: 100
+    employment_income: 50_000
+    ny_standard_deduction: 8_000
+    ny_itemized_deductions: 6_000
     state_code: NY
   output:
+    # Itemize: taxable income 44,000; tax 1,042 + 5.97% x 22,600 = 2,391.22.
+    # Standard: taxable income 42,000; tax 2,271.82, the lower.
     ny_itemizes: false
+    ny_deductions: 8_000
+    ny_income_tax: 2_271.82
 
-- name: Case 3, not itemzies. 
+- name: Case 3, not itemizing federally does not stop New York itemizing from 2018.
   period: 2021
+  absolute_error_margin: 0.01
+  input:
+    tax_unit_itemizes: false
+    employment_income: 50_000
+    ny_standard_deduction: 8_000
+    ny_itemized_deductions: 10_000
+    state_code: NY
+  output:
+    # 2018 Form IT-196 instructions, New for 2018 (p. 1): "you can choose to
+    # itemize your deductions for New York State income tax purposes whether
+    # or not you itemized your deductions on your federal income tax return."
+    # https://www.tax.ny.gov/pdf/2018/inc/it196i_2018.pdf#page=1
+    # Itemizing gives 2,152.42 and the standard deduction 2,271.82, as in
+    # Case 1.
+    ny_itemizes: true
+    ny_deductions: 10_000
+    ny_income_tax: 2_152.42
+
+# N.Y. Tax Law 615(a) before 2018; 2017 IT-201 instructions, line 34: "If you
+# took the standard deduction on your federal return ... you must take the New
+# York standard deduction."
+# The 2017 cases check the election and deductions. The model's 2017 New York
+# tax uses its earliest rate schedule (2021); with positive rates the larger
+# deduction gives the lower tax under any schedule.
+- name: Case 4, 2017 federal standard deduction filer takes the New York standard deduction.
+  period: 2017
   absolute_error_margin: 0
   input:
     tax_unit_itemizes: false
-    ny_standard_deduction: 300
-    ny_itemized_deductions: 500
+    employment_income: 50_000
+    ny_standard_deduction: 8_000
+    ny_itemized_deductions: 10_000
     state_code: NY
   output:
+    # Itemizing would give taxable income 40,000 rather than 42,000 and so
+    # less tax, but the federal standard deduction rules it out.
     ny_itemizes: false
+    ny_deductions: 8_000
+    ny_taxable_income: 42_000
+
+- name: Case 5, 2017 federal itemizer takes the larger New York itemized deduction.
+  period: 2017
+  absolute_error_margin: 0
+  input:
+    tax_unit_itemizes: true
+    employment_income: 50_000
+    ny_standard_deduction: 8_000
+    ny_itemized_deductions: 10_000
+    state_code: NY
+  output:
+    # Taxable income 40,000 itemizing against 42,000 with the standard
+    # deduction, so itemizing gives less tax.
+    ny_itemizes: true
+    ny_deductions: 10_000
+    ny_taxable_income: 40_000
+
+- name: Case 6, a federal standard deduction filer keeps the standard deduction and the college tuition credit when that costs less.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        qualified_tuition_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Federal: the $14,600 standard deduction exceeds any itemized deduction.
+    # The New York itemized deduction is the $10,000 college tuition
+    # deduction (100% of $10,000); the standard deduction is $8,000.
+    # Itemize: taxable income 30,000; tax 599.50 + 5.5% x (30,000 - 13,900)
+    #   = 599.50 + 885.50 = 1,485, with no tuition credit.
+    # Standard: taxable income 32,000; tax 599.50 + 5.5% x 18,100 = 1,595,
+    #   less the credit 100% x 200 + 4% x (10,000 - 5,000) = 400: 1,195.
+    # 1,195 < 1,485, so the standard deduction and the credit.
+    ny_itemizes: false
+    ny_deductions: 8_000
+    ny_college_tuition_credit: 400
+    ny_income_tax: 1_195
+
+- name: Case 7, a New York City resident itemizes because the city tax saved outweighs the State credit given up.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        qualified_tuition_expenses: 10_000
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    # New York itemized deduction: 10,000 tuition + 4,000 property tax
+    # = 14,000; standard 8,000.
+    # State. Itemize: taxable income 36,000; tax 599.50 + 5.5% x 22,100
+    #   = 1,815, no credit. Standard: taxable income 42,000; tax
+    #   599.50 + 5.5% x 28,100 = 2,145, less the 400 credit = 1,745.
+    #   State tax alone favours the standard deduction, by 70.
+    # City (single: 3.078% to 12,000, 3.762% to 25,000, 3.819% to 50,000;
+    #   school tax credit 63 fixed plus 0.171% of the first 12,000 and
+    #   0.228% above).
+    #   Itemize: 369.36 + 489.06 + 3.819% x 11,000 = 1,278.51, less
+    #     63 + 20.52 + 0.228% x 24,000 = 138.24: 1,140.27.
+    #   Standard: 369.36 + 489.06 + 3.819% x 17,000 = 1,507.65, less
+    #     63 + 20.52 + 0.228% x 30,000 = 151.92: 1,355.73.
+    # Total: itemize 1,815 + 1,140.27 = 2,955.27; standard 1,745 + 1,355.73
+    #   = 3,100.73. Itemizing saves 145.46.
+    ny_itemizes: true
+    ny_deductions: 14_000
+    ny_college_tuition_credit: 0
+    ny_income_tax: 1_815
+    nyc_taxable_income: 36_000
+    nyc_income_tax: 1_140.27
+
+- name: Case 8, a tie in New York tax takes the standard deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # The New York itemized deduction (8,000 property tax) equals the
+    # standard deduction, so taxable income is 32,000 either way and the tax
+    # is 599.50 + 5.5% x 18,100 = 1,595 under both choices.
+    ny_itemized_deductions: 8_000
+    ny_itemizes: false
+    ny_deductions: 8_000
+    ny_income_tax: 1_595
+
+- name: Case 9, a 2017 New York City resident whose federal choice is calculated, not given.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Federal SALT adds New York City tax, which follows this election, so
+    # the federal choice must come from a branch (else CycleError).
+    # New York itemized 4,000 < standard 8,000: taxable income 42,000.
+    # City: 369.36 + 489.06 + 3.819% x 17,000 = 1,507.65, less
+    #   63 + 20.52 + 0.228% x 30,000 = 151.92: 1,355.73.
+    ny_itemizes: false
+    ny_deductions: 8_000
+    nyc_income_tax: 1_355.73
+
+# Cases 10 to 15 pin each part of the tax the election compares: tax before
+# refundable credits (the non-refundable household credit is capped at tax
+# before credits), less the college tuition credit, the New York EITC where
+# the election moves the household credit allowed, the City school tax credit
+# and the City income tax elimination credit.
+# 2024 single brackets as above. Federal EITC 2024: no child, 7.65% phase-out
+# from $10,330 ($17,250 joint) of a $632 maximum; one child, $4,213 maximum.
+# New York EITC: 30% of the federal credit, less the household credit allowed.
+- name: Case 10, a tie in tax with college tuition expenses takes the standard deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 16_000
+        qualified_tuition_expenses: 5_000
+        deductible_mortgage_interest: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # Itemized 8,000 interest + 5,000 tuition = 13,000; standard 8,000.
+    # Household credit (single, AGI 16,000): 45 either way.
+    # EITC: federal 632 - 7.65% x (16,000 - 10,330) = 198.245;
+    #   New York 30% x 198.245 - 45 = 14.4735 either way.
+    # Itemize: taxable income 3,000; 4% = 120, less 45 = 75; less the EITC:
+    #   60.5265.
+    # Standard: taxable income 8,000; 4% = 320, less 45 = 275; less the
+    #   tuition credit (100% of the first 200) and the EITC: 60.5265. A tie.
+    ny_itemizes: false
+    ny_deductions: 8_000
+    ny_college_tuition_credit: 200
+    ny_income_tax: 60.53
+
+- name: Case 11, the household credit is capped at tax, so tax before refundable credits is compared.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        qualified_tuition_expenses: 2_000
+        deductible_mortgage_interest: 20_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Joint. Itemized 20,000 + 2,000 = 22,000; standard 16,050.
+    # EITC: federal 632 - 7.65% x (20,000 - 17,250) = 421.625; New York
+    #   30% = 126.4875, less the household credit allowed.
+    # Standard: taxable income 3,950; 4% = 158; household credit 75 (joint,
+    #   AGI 20,000), so 83; less the tuition credit 200 and the EITC
+    #   126.4875 - 75 = 51.4875: -168.4875.
+    # Itemize: taxable income 0, so no tax and no household credit allowed;
+    #   EITC 126.4875: -126.4875. The standard deduction costs 42 less.
+    # Tax before credits (158) in place of 83 would make the standard
+    #   deduction -93.4875 and pick itemizing.
+    ny_itemizes: false
+    ny_deductions: 16_050
+    ny_household_credit: 75
+    ny_eitc: 51.49
+    ny_income_tax: -168.49
+
+- name: Case 12, the New York EITC follows the household credit allowed, which itemizing removes.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_000
+        qualified_tuition_expenses: 2_000
+        deductible_mortgage_interest: 16_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+      child_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Head of household with one child. Itemized 16,000 + 2,000 = 18,000;
+    # standard 11,200; dependent exemption 1,000.
+    # EITC: New York 30% x 4,213 = 1,263.90, less the household credit
+    #   allowed. Empire State child credit 330 either way.
+    # Standard: taxable income 5,800; 4% = 232; household credit 75, so
+    #   157; less the tuition credit 200, the EITC 1,263.90 - 75 = 1,188.90
+    #   and 330: -1,561.90.
+    # Itemize: taxable income 0, so no household credit allowed; EITC
+    #   1,263.90; less 330: -1,593.90. Itemizing costs 32 less.
+    # Without the EITC the comparison would find the standard deduction 43
+    #   cheaper (157 - 200 against 0).
+    ny_itemizes: true
+    ny_deductions: 18_000
+    ny_eitc: 1_263.90
+    ny_income_tax: -1_593.90
+
+- name: Case 13, a New York City resident keeps the standard deduction once the school tax credit is counted.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        qualified_tuition_expenses: 2_000
+        real_estate_taxes: 8_175
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Itemized 8,175 + 2,000 = 10,175; standard 8,000.
+    # State. Itemize: taxable income 39,825; 599.50 + 5.5% x 25,925
+    #   = 2,025.375. Standard: taxable income 42,000; 2,145, less the
+    #   tuition credit 200 = 1,945.
+    # City (as in Case 7). Itemize: 369.36 + 489.06 + 3.819% x 14,825
+    #   = 1,424.58675, less the school tax credit 63 + 20.52 + 0.228% x
+    #   27,825 = 146.961: 1,277.62575. Standard: 1,507.65 - 151.92
+    #   = 1,355.73.
+    # Total: itemize 3,303.00; standard 3,300.73, which is 2.27 less.
+    # Without the school tax credit: itemize 3,449.96 against 3,452.65.
+    ny_itemizes: false
+    ny_deductions: 8_000
+    ny_income_tax: 1_945
+    nyc_income_tax: 1_355.73
+
+- name: Case 14, the City income tax elimination credit leaves a 2025 New York City family no City saving from itemizing.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        qualified_tuition_expenses: 10_000
+        deductible_mortgage_interest: 7_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+      child_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        in_nyc: true
+  output:
+    # Head of household with one child. Itemized 7,000 + 10,000 = 17,000;
+    # standard 11,200; dependent exemption 1,000. The New York EITC
+    # (954.5991), the Empire State child credit (330), the household credit
+    # (25) and the City EITC (489.7995) are the same either way.
+    # State (4% to 12,800, 4.5% to 17,650, 5.25% to 20,900). Standard:
+    #   taxable income 17,800; 512 + 218.25 + 7.875 = 738.125, less 25 and
+    #   the tuition credit 200 + 4% x 5,000 = 400: 313.125. Itemize: taxable
+    #   income 12,000; 480 - 25 = 455.
+    # City (head of household: 3.078% to 14,400, then 3.762%). Standard:
+    #   443.232 + 3.762% x 3,400 = 571.14; school tax credit 63 + 0.171% x
+    #   14,400 + 0.228% x 3,400 = 95.376. Itemize: 3.078% x 12,000 = 369.36;
+    #   school tax credit 63 + 20.52 = 83.52.
+    # Elimination credit (federal AGI 30,000, under the 31,503 threshold for
+    #   one dependent): City tax after the City EITC. Standard: 571.14 -
+    #   489.7995 = 81.3405. Itemize: 369.36 < 489.7995, so 0.
+    # City tax: standard 571.14 - 489.7995 - 95.376 - 81.3405 = -95.376;
+    #   itemize 369.36 - 489.7995 - 83.52 = -203.9595.
+    # State tax: standard 313.125 - 954.5991 - 330 = -971.4741; itemize
+    #   455 - 954.5991 - 330 = -829.5991.
+    # Total: standard -1,066.85; itemize -1,033.56. The standard deduction
+    #   costs 33.29 less; without the elimination credit itemizing would
+    #   look 48.05 cheaper.
+    ny_itemizes: false
+    ny_college_tuition_credit: 400
+    nyc_income_tax_elimination_credit: 81.34
+    ny_income_tax: -971.47
+    nyc_income_tax: -95.38
+
+- name: Case 15, without tuition expenses the larger itemized deduction is taken, even beside a filer whose choice needs the taxes.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        qualified_tuition_expenses: 10_000
+      person2:
+        age: 30
+        employment_income: 5_000
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: NY
+      household2:
+        members: [person2]
+        state_code: NY
+  output:
+    # The first filer is Case 6: the standard deduction and the credit.
+    # The second has no tuition expenses, so itemizing gives up no credit:
+    # itemized 10,000 > standard 8,000, and taxable income is 0 either way,
+    # so the larger deduction is taken although the tax ties.
+    ny_itemizes: [false, true]
+    ny_deductions: [8_000, 10_000]
+
+# Case 16 pins the 2017 federal condition where the election itself moves the
+# federal choice. A separate filer takes no federal tuition deduction.
+- name: Case 16, a 2017 separate filer keeps the New York standard deduction when New York itemizing would leave its federal deductions below the federal standard deduction.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_000
+        real_estate_taxes: 5_500
+        qualified_tuition_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+        in_nyc: true
+  output:
+    # If New York itemized (15,500 > 8,000), its taxable income would fall to
+    # 6,500 and its tax to 4% x 6,500 = 260, and the federal deduction for
+    # state and local taxes would read 6,226.35, below the 6,350 standard
+    # deduction for a separate filer. That return doesn't itemize federally,
+    # so under 615(a) as of 2017 this filer can't elect New York itemizing.
+    # New York: taxable income 22,000 - 8,000 = 14,000; 340 + 144 + 115.50 +
+    #   5.9% x 100 = 605.40, less the 4% x 10,000 = 400 tuition credit: 205.40.
+    # City: 3.078% x 12,000 + 3.762% x 2,000 - 5 household credit = 439.60,
+    #   less 63 + 0.171% x 12,000 + 0.228% x 2,000 = 88.08: 351.52.
+    ny_itemizes: false
+    ny_deductions: 8_000
+    ny_income_tax: 205.40
+    nyc_income_tax: 351.52
