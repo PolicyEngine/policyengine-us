@@ -1,8 +1,8 @@
 """Invariants for Vermont's veteran tax credit, 32 V.S.A. § 5830g.
 
-Under subsection (c), Vermont pays $250 when federal adjusted gross income
-(AGI) is $25,000 or less, "$250.00 less $5.00 per $100.00" of AGI above
-$25,000 while AGI stays below $30,000, and nothing from $30,000. On the 2025
+Under subsection (c), Vermont pays $250 on federal adjusted gross income (AGI)
+of $25,000 or less, "$250.00 less $5.00 per $100.00" of AGI above $25,000
+while AGI stays below $30,000, and nothing from $30,000. On the 2025
 Schedule IN-112 (Part II, lines 8-12), filers count whole hundreds: line 10
 has them divide the excess by 100, "rounding down to the nearest whole number".
 
@@ -113,7 +113,7 @@ def tax_units(draw):
 
 
 def _situation(units):
-    # One simulation holds every year: each input is keyed by all of YEARS.
+    # One simulation holds every year, so every_year keys each input by all of YEARS.
     def every_year(value):
         return {year: value for year in YEARS}
 
