@@ -148,3 +148,26 @@
     # full-time unit a day gives 21.67 units.
     # twenty_attending_days: reported days too, 20 units.
     co_ccap_child_in_part_time_care: [false, false, false]
+
+- name: Case 3, exactly 13 units a month is full time, though single precision stores the days a hair short.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+      thirteen_units:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        # 60 / 11 days a week, as single precision stores it.
+        childcare_days_per_week: 5.4545455
+    spm_units:
+      spm_unit:
+        members: [parent, thirteen_units]
+    households:
+      household:
+        members: [parent, thirteen_units]
+        state_code: CO
+  output:
+    # 0.55 x 60 / 11 x 52 / 12 = 13 units, not fewer than 13.
+    co_ccap_child_in_part_time_care: [false, false]

@@ -1,0 +1,97 @@
+# 8 CCR 1403-1 3.128(T): a provider may not charge a CCCAP family more than the
+# daily reimbursement rate, so the provider absorbs each eligible child's
+# charges above the county rate. Without a county, a household reads Adams
+# County; without a provider type, rating or schedule, a center at Tier 1 &
+# Tier 2, full time, five days a week. An infant there gets $76.71 a day x
+# 260 / 12 = $1,662.05 a month from October 2025, through 2026.
+
+- name: Case 1, the provider absorbs the charges above the county rate for an eligible child, not a teenager's.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      infant:
+        age: 0
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 24_000
+      teenager:
+        age: 15
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, infant, teenager]
+        co_ccap_parent_fee: 100
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, infant, teenager]
+        state_code: CO
+  output:
+    # $2,000 - $1,662.05; the 15-year-old falls outside 3.132(D).
+    co_ccap_charges_above_rate: 337.95
+    co_ccap_reimbursement: 1_662.05
+    co_ccap_subsidy: 1_562.05
+
+- name: Case 2, over a year the family pays the parent fee and the teenager's charges.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      infant:
+        age: 0
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 24_000
+      teenager:
+        age: 15
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, infant, teenager]
+        co_ccap_parent_fee: 1_200
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, infant, teenager]
+        state_code: CO
+  output:
+    # 12 x $1,562.05 = $18,744.60 paid and 12 x $337.95 = $4,055.40 absorbed.
+    co_ccap_subsidy: 18_744.60
+    child_care_charges_providers_absorb: 4_055.40
+    # $36,000 - $18,744.60 - $4,055.40 = $13,200: the $1,200 fee and the
+    # teenager's $12,000.
+    childcare_expenses: 13_200
+
+- name: Case 3, a parent fee above the reimbursement leaves the family the reimbursement.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      infant:
+        age: 0
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [parent, infant]
+        co_ccap_parent_fee: 24_000
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, infant]
+        state_code: CO
+  output:
+    # The fee stops at the $1,662.05 reimbursement (3.124(L)), so the county
+    # pays nothing, and the provider absorbs the $337.95 above the rate.
+    co_ccap_subsidy: 0
+    co_ccap_capped_parent_fee: 19_944.60
+    child_care_charges_providers_absorb: 4_055.40
+    # $24,000 - $4,055.40 = 12 x $1,662.05.
+    childcare_expenses: 19_944.60

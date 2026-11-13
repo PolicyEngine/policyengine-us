@@ -1,0 +1,152 @@
+# 8 CCR 1403-1 3.125(FFF): the county pays the lesser of the provider's charge
+# and the county rate for the care. Without a county, a household reads Adams
+# County, the first county on Colorado's list; without a provider type or a
+# rating, a center at Tier 1 & Tier 2.
+
+- name: Case 1, the county rate caps an infant's $2,000 charge in an Adams County center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        co_ccap_parent_fee: 100
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # $76.71 a day x 260 / 12 = $1,662.05, less the $100 fee.
+    co_ccap_reimbursement: 1_662.05
+    co_ccap_capped_parent_fee: 100
+    co_ccap_subsidy: 1_562.05
+
+- name: Case 2, a charge below the county rate passes through.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        co_ccap_parent_fee: 100
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_ccap_reimbursement: 1_000
+    co_ccap_subsidy: 900
+
+- name: Case 3, the parent fee stops at the reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        co_ccap_parent_fee: 2_000
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # 3.124(L): the fee never exceeds the CCCAP reimbursement.
+    co_ccap_reimbursement: 1_662.05
+    co_ccap_capped_parent_fee: 1_662.05
+    co_ccap_subsidy: 0
+
+- name: Case 4, each child's charge meets that child's own county rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      infant:
+        age: 0
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 24_000
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        co_ccap_parent_fee: 300
+        co_ccap_eligible: true
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code: CO
+  output:
+    # The infant's $2,000 meets the $1,662.05 cap; the 4-year-old's $500
+    # falls below the $958.53 cap ($44.24 x 260 / 12). The infant's unused
+    # rate doesn't carry over to the other child.
+    co_ccap_maximum_monthly_payment: [0, 1_662.05, 958.53]
+    co_ccap_reimbursement: 2_162.05
+    co_ccap_subsidy: 1_862.05
+
+- name: Case 5, a Boulder County school-age child in part-time care three days a week in January 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2025: 30
+      child:
+        age:
+          2025: 8
+        is_tax_unit_dependent:
+          2025: true
+        after_school_expenses:
+          2025: 4_800
+        childcare_hours_per_day:
+          2025: 4
+        childcare_days_per_week:
+          2025: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        co_ccap_parent_fee:
+          2025-01: 0
+        co_ccap_eligible:
+          2025-01: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2025: CO
+        county:
+          2025: BOULDER_COUNTY_CO
+  output:
+    # Boulder, CENTER, School Age, Tier 1 & Tier 2 from October 2024: $40.30
+    # x 0.55 = $22.165, so $22.17 a day; 3 x 52 / 12 = 13 days; $288.21
+    # against the $400 charge.
+    co_ccap_reimbursement: 288.21
+    co_ccap_subsidy: 288.21

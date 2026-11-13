@@ -1,0 +1,1 @@
+Pay Colorado's Child Care Assistance Program only for eligible children: those under 13, and those under 19 who can't care for themselves or who are under court supervision. It had paid every SPM unit member's child care and after-school charges, a teenager's among them.

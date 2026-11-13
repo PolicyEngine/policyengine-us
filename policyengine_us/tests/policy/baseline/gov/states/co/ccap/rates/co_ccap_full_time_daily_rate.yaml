@@ -1,0 +1,201 @@
+# Licensed rates come from CDEC's State-Established Daily Licensed Provider
+# Reimbursement Rates effective October 1, 2024 and October 1, 2025.
+# Qualified exempt rates come from each county's rate plan (Provider Type
+# Exempt, Regular rate type).
+
+- name: Case 1, an Adams County center pays $76.71 a day for an infant from October 2025.
+  period: 2026-01
+  input:
+    people:
+      child:
+        age: 0
+    households:
+      household:
+        members: [child]
+        state_code: CO
+        county: ADAMS_COUNTY_CO
+  output:
+    # Adams, CENTER, 0-18 months, Tier 1 & Tier 2 (an unrated provider).
+    co_ccap_full_time_daily_rate: 76.71
+
+- name: Case 2, the same infant drew $73.90 a day from October 2024.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age:
+          2025: 0
+    households:
+      household:
+        members: [child]
+        state_code:
+          2025: CO
+        county:
+          2025: ADAMS_COUNTY_CO
+  output:
+    co_ccap_full_time_daily_rate: 73.9
+
+- name: Case 3, a month before October 2024 reads the October 2024 table.
+  period: 2023-06
+  input:
+    people:
+      child:
+        age:
+          2023: 0
+    households:
+      household:
+        members: [child]
+        state_code:
+          2023: CO
+        county:
+          2023: ADAMS_COUNTY_CO
+  output:
+    co_ccap_full_time_daily_rate: 73.9
+
+- name: Case 4, a Denver family child care home at Colorado Shines level 3 pays $73.88 for a 1-year-old.
+  period: 2026-01
+  input:
+    people:
+      child:
+        age: 1
+        childcare_provider_type_group: FDC_GFDC
+        co_quality_rating_of_child_care_facility: 3
+    households:
+      household:
+        members: [child]
+        state_code: CO
+        county: DENVER_COUNTY_CO
+  output:
+    co_ccap_provider_type: LICENSED_HOME
+    co_ccap_quality_tier: TIER_3
+    # Denver, HOME, 0-24 months, Tier 3.
+    co_ccap_full_time_daily_rate: 73.88
+
+- name: Case 5, an El Paso County center at level 5 pays the school-age rate for a 7-year-old.
+  period: 2026-01
+  input:
+    people:
+      child:
+        age: 7
+        co_quality_rating_of_child_care_facility: 5
+    households:
+      household:
+        members: [child]
+        state_code: CO
+        county: EL_PASO_COUNTY_CO
+  output:
+    co_ccap_center_age_band: SCHOOL_AGE
+    # El Paso, CENTER, School Age, Tier 4 & Tier 5.
+    co_ccap_full_time_daily_rate: 51.41
+
+- name: Case 6, a household whose county falls outside Colorado's list reads Denver's rates.
+  period: 2026-01
+  input:
+    people:
+      child:
+        age: 0
+    households:
+      household:
+        members: [child]
+        state_code: CO
+        county: UNKNOWN
+  output:
+    # Denver, CENTER, 0-18 months, Tier 1 & Tier 2.
+    co_ccap_full_time_daily_rate: 75.92
+
+- name: Case 7, Weld County paid qualified exempt providers $42.15 a day for a child under 5 in January 2025.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age:
+          2025: 4
+        childcare_provider_type_group:
+          2025: LE_STD
+    households:
+      household:
+        members: [child]
+        state_code:
+          2025: CO
+        county:
+          2025: WELD_COUNTY_CO
+  output:
+    co_ccap_provider_type: QUALIFIED_EXEMPT
+    # Weld County Rate Plan 10.1.2024: Regular <5 Years, FT 42.15.
+    co_ccap_full_time_daily_rate: 42.15
+
+- name: Case 8, Weld's February 2025 plan cut that rate to $28.10.
+  period: 2025-03
+  input:
+    people:
+      child:
+        age:
+          2025: 4
+        childcare_provider_type_group:
+          2025: LE_STD
+    households:
+      household:
+        members: [child]
+        state_code:
+          2025: CO
+        county:
+          2025: WELD_COUNTY_CO
+  output:
+    # Weld County Rate Plan 2.1.2025: Regular <5 Years, FT 28.10.
+    co_ccap_full_time_daily_rate: 28.1
+
+- name: Case 9, Weld's October 2025 plan pays $14.60 for a child of 5.
+  period: 2026-01
+  input:
+    people:
+      child:
+        age: 5
+        childcare_provider_type_group: LE_ENH
+    households:
+      household:
+        members: [child]
+        state_code: CO
+        county: WELD_COUNTY_CO
+  output:
+    co_ccap_qualified_exempt_age_band: AGE_5_AND_OVER
+    # Weld County Rate Plan 10.1.2025: Regular >5 Years, FT 14.60.
+    co_ccap_full_time_daily_rate: 14.6
+
+- name: Case 10, Logan County raised its rate for a qualified exempt child under 5 to $30 in June 2026.
+  period: 2026-06
+  input:
+    people:
+      child:
+        age:
+          2026: 2
+        childcare_provider_type_group:
+          2026: LE_GC
+    households:
+      household:
+        members: [child]
+        state_code:
+          2026: CO
+        county:
+          2026: LOGAN_COUNTY_CO
+  output:
+    # Logan County Rate Plan 6.1.2026: Regular <5 Years, FT 30.00 (24.00 before).
+    co_ccap_full_time_daily_rate: 30
+
+- name: Case 11, Logan's rate in May 2026.
+  period: 2026-05
+  input:
+    people:
+      child:
+        age:
+          2026: 2
+        childcare_provider_type_group:
+          2026: LE_GC
+    households:
+      household:
+        members: [child]
+        state_code:
+          2026: CO
+        county:
+          2026: LOGAN_COUNTY_CO
+  output:
+    co_ccap_full_time_daily_rate: 24

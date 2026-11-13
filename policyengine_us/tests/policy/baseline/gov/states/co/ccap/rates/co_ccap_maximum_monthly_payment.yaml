@@ -1,0 +1,116 @@
+- name: Case 1, without a schedule an Adams County center infant's care reads a full-time weekday month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+        county: ADAMS_COUNTY_CO
+  output:
+    # $76.71 a day x 5 days x 52 weeks / 12 months = $1,662.05.
+    co_ccap_maximum_monthly_payment: [0, 1_662.05]
+
+- name: Case 2, a Denver family child care home at level 3 pays part time for four hours a day.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: FDC_GFDC
+        co_quality_rating_of_child_care_facility: 3
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+        county: DENVER_COUNTY_CO
+  output:
+    # $73.88 x 0.55 = $40.634, so $40.63 a day; x 260 / 12 = $880.32.
+    people:
+      child:
+        co_ccap_daily_rate: 40.63
+        co_ccap_maximum_monthly_payment: 880.32
+
+- name: Case 3, a Weld County qualified exempt provider's 13-hour days three days a week in January 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2025: 30
+      child:
+        age:
+          2025: 4
+        is_tax_unit_dependent:
+          2025: true
+        childcare_provider_type_group:
+          2025: LE_STD
+        childcare_hours_per_day:
+          2025: 13
+        childcare_days_per_week:
+          2025: 3
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2025: CO
+        county:
+          2025: WELD_COUNTY_CO
+  output:
+    # $42.15 x 1.55 = $65.3325, so $65.33 a day (full time plus part time);
+    # 3 days x 52 / 12 = 13 days; 13 x $65.33 = $849.29.
+    people:
+      child:
+        co_ccap_daily_rate: 65.33
+        co_ccap_care_days_per_month: 13
+        co_ccap_maximum_monthly_payment: 849.29
+
+- name: Case 4, an El Paso County center at level 5 pays two full-time units for an 18-hour day.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 7
+        is_tax_unit_dependent: true
+        co_quality_rating_of_child_care_facility: 5
+        childcare_hours_per_day: 18
+        childcare_attending_days_per_month: 10
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+        county: EL_PASO_COUNTY_CO
+  output:
+    # School Age, Tier 4 & Tier 5: $51.41 x 2 = $102.82 a day for 10 days.
+    co_ccap_maximum_monthly_payment: [0, 1_028.2]
+
+- name: Case 5, a child whose care CCCAP doesn't pay has no county rate.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      teen:
+        age: 15
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [parent, teen]
+        state_code: CO
+  output:
+    co_ccap_maximum_monthly_payment: [0, 0]
