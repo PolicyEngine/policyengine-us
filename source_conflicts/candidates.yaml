@@ -12097,6 +12097,50 @@ candidates:
     a filer can be claimed, not whether one is, and either claimable spouse bars a joint return (va_refundable_eitc_if_claimed.py,
     va_non_refundable_eitc_if_claimed.py, va_low_income_tax_credit_eligible.py). Ruled in October 2026 to use claimability;
     verify the guidance and distinguish this wording conflict from mixed-spouse allocation.'
+- id: us-va:eap-cooling-subsidized-heat-in-rent
+  program: liheap
+  years:
+    from: 2023
+    to: 2027
+    type: federal-fiscal
+  question: Can a Virginia subsidized household whose heat is included in its rent, and which pays a separate cooling
+    cost, receive the Cooling Assistance electric bill payment, although 22VAC40-680-63(B)(1) applies all of the fuel
+    assistance criteria of 22VAC40-680-20, whose 20(B)(3)(a) makes such households ineligible?
+  sources:
+  - kind: regulation
+    citation: 22VAC40-680-63(B)(1)
+    url: https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section63/
+  - kind: regulation
+    citation: 22VAC40-680-20(B)(3)(a)
+    url: https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section20/
+  - kind: manual
+    citation: Virginia Energy Assistance Manual, Volume IX, Chapter J.3.a and J.3.f, PDF pages 120-121
+    url: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=120
+  - kind: plan
+    citation: Virginia FY2026 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=11
+  readings:
+    statute: No statute is supplied; 63(B)(1) requires a cooling household to "Meet all of the fuel assistance criteria
+      as set forth in 22VAC40-680-20", and 20(B)(3)(a) makes "Subsidized households whose total heating costs are
+      included in their rent" ineligible.
+    other: Manual J.3.a applies "All the criteria in Chapter B sections 6-8", which leave out the B.5.c.2 household-type
+      exclusions, and J.3.f says a household "may or may not be eligible for Cooling Assistance depending on their
+      living arrangement", limiting codes B and F to equipment and homeless households to a security deposit. Plan 3.3
+      restates the exclusion in cooling terms, "Subsidized households whose total cooling costs are included in their
+      rent are not eligible for cooling assistance."
+  example: One person aged 62 in public housing with $18,000 of Social Security, natural gas heat included in the rent,
+    a separate cooling cost and a $1,800 electric bill receives $365 in 2026 under the manual and plan, and $0 under
+    63(B)(1) and 20(B)(3)(a).
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/va/dss/eap/cooling/va_eap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10760
+  state: ruled
+  note: 'Ruled 2026-11-13 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10760#issuecomment-6863979262. Follow manual J.3.a and plan 3.3,
+    the current filing (22VAC40-680-63 dates from 2003): PE-US excludes a subsidized household only when its cooling is
+    in the rent, and va_eap_cooling_eligible.yaml Case 14 pins the reading.'
 - id: us-va:snap-child-support-exclusion
   program: snap
   years:

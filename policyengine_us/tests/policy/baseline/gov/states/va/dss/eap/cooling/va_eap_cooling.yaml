@@ -1,0 +1,200 @@
+# Virginia EAP cooling assistance electric bill payment: the electric bill up
+# to the year's statewide maximum (Complete EAP Manual J.6, J.7.g, J.8). The
+# maximum is $600 for 2023 (VDSS release) and $365 for 2025 (press reports),
+# carried forward to 2026 and 2027. Unless noted, the household is one
+# retiree aged 62 with $18,000 of Social Security, countable income
+# 18,000 - 600 = 17,400, under every year's one-person cooling limit, and a
+# $150 a month ($1,800 a year) electric bill, about the EIA 2024 Virginia
+# average residential bill of $148.77 a month (Electric Sales, Revenue, and
+# Average Price, Table 5A).
+
+- name: Case 1, an eligible retiree receives the 2025 maximum carried into 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # min(1,800, 365) = 365.
+    va_eap_cooling_eligible: true
+    va_eap_cooling: 365
+
+- name: Case 2, an eligible retiree receives the 2025 maximum.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 17,400 <= 23,472 (2025 guideline); min(1,800, 365) = 365.
+    va_eap_cooling: 365
+
+- name: Case 3, the 2025 maximum carries forward to 2027.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_eap_cooling: 365
+
+- name: Case 4, the 2023 maximum applies in 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 17,400 <= 21,864 (floor(14,580 x 1.5 / 12) = 1,822 x 12);
+    # min(1,800, 600) = 600.
+    va_eap_cooling: 600
+
+- name: Case 5, a bill below the maximum is paid in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 240
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # min(240, 365) = 240.
+    va_eap_cooling: 240
+
+- name: Case 6, income over the cooling limit receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # 30,000 - 600 = 29,400 > 23,940.
+    va_eap_cooling: 0
+
+- name: Case 7, a household without a separate cooling cost receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 62
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_eap_cooling: 0
+
+# The Fairfax County retiree of the heating integration tests (Social Security
+# 11,736, countable 11,736 - 600 = 11,136, gas heat, 103 points x 4.531665 =
+# 466.76) also has a cooling cost and the $1,800 electric bill. Cooling pays
+# min(1,800, 365) = 365. The national LIHEAP total is 466.76 + 365 = 831.76.
+- name: Case 8, a retiree receives both the heating and the cooling payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        social_security_retirement: 11_736
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [head]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    va_eap: 466.76
+    va_eap_cooling: 365
+    liheap: 831.76

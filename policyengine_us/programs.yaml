@@ -1395,7 +1395,15 @@ programs:
         variable: va_eap
         parameter_prefix: gov.states.va.dss.eap
         verified_years: "2026"
-        notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Crisis, cooling and weatherization assistance are out of scope.
+        notes: FFY2026 Fuel Assistance only, using the latest published (FFY2025) value per point and placeholder fuel-type and energy-burden points until VDSS publishes its survey. Cooling assistance is the separate Virginia EAP cooling entry; crisis and weatherization assistance are out of scope.
+      - state: VA
+        status: partial
+        name: Virginia EAP cooling
+        full_name: Virginia Energy Assistance Program Cooling Assistance electric bill payment
+        variable: va_eap_cooling
+        parameter_prefix: gov.states.va.dss.eap.cooling
+        verified_years: "2025"
+        notes: Cooling Assistance electric bill payment up to the statewide maximum, $365 for 2025 from press reports and carried forward to 2026 and 2027. Cooling equipment, security deposits, crisis and weatherization assistance are out of scope.
       - state: VT
         status: partial
         name: Vermont Seasonal Fuel Assistance
