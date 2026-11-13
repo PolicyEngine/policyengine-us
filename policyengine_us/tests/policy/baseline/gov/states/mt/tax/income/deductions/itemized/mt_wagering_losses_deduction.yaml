@@ -21,6 +21,8 @@
     gambling_losses: 20_000
     state_code: MT
   output:
+    # min(0.9 x 20,000, 30,000) = 18,000.
+    wagering_losses_deduction: 18_000
     mt_wagering_losses_deduction: 18_000
     # From 2024 Montana uses the federal deduction instead of the legacy list.
     mt_misc_deductions: 0
