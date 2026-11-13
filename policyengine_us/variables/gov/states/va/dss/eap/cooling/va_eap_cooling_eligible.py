@@ -21,10 +21,7 @@ class va_eap_cooling_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Manual J.3.a applies the Chapter B.6-8 income and citizenship
-        # criteria; no heating fuel is required. heating_type is a required
-        # input: NONE and every known fuel qualify, UNSPECIFIED does not.
-        heating_type = spm_unit("heating_type", period)
-        heating_type_reported = heating_type != heating_type.possible_values.UNSPECIFIED
+        # criteria; no heating fuel is required.
         has_eligible_member = spm_unit("va_eap_household_size", period) > 0
         limit = spm_unit("va_eap_cooling_income_limit", period)
         income_eligible = va_eap_income_test(spm_unit, period, limit)
@@ -35,6 +32,12 @@ class va_eap_cooling_eligible(Variable):
         # Manual J.3.f.1: households without a regular cooling expense
         # (living arrangements B and F) receive equipment only. Plan 3.3:
         # subsidized households whose cooling is in rent are not eligible.
+        # Renters whose cooling is in an unsubsidized rent (living
+        # arrangement E) have no separate cooling expense here and are not
+        # modeled. A subsidized household whose heat is in its rent but which
+        # pays a separate cooling cost is eligible, following manual J.3.a
+        # (Chapter B sections 6-8 only) and plan 3.3; candidate
+        # us-va:eap-cooling-subsidized-heat-in-rent.
         has_cooling_expense = spm_unit("has_cooling_expense", period)
         # Manual J.7.g: the application is denied "If the current balance is
         # zero". The annual electricity bill stands in for the balance owed.
@@ -43,8 +46,7 @@ class va_eap_cooling_eligible(Variable):
         # only a security deposit.
         homeless = spm_unit.household("is_homeless", period)
         return (
-            heating_type_reported
-            & has_eligible_member
+            has_eligible_member
             & income_eligible
             & vulnerable
             & has_cooling_expense

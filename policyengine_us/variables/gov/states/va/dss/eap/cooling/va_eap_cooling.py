@@ -7,6 +7,12 @@ class va_eap_cooling(Variable):
     definition_period = YEAR
     unit = USD
     label = "Virginia EAP cooling assistance electric bill payment"
+    documentation = (
+        "The electric bill up to the statewide maximum for the year. The annual "
+        "electricity expense stands in for the balance owed on the electric "
+        "account during the June to August application window. The first-come "
+        "funding pool and the application window are not modeled."
+    )
     reference = (
         # PDF pages 123, 127-129
         "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=123",
