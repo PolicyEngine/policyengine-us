@@ -142,7 +142,7 @@
     # 32,000 is above the FFY2026 size-one limit of 30,618 (60% SMI).
     la_liheap_cooling: 0
 
-- name: Case 6, an unspecified heating fuel receives no cooling benefit.
+- name: Case 6, an unspecified heating fuel receives the cooling benefit.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -161,5 +161,39 @@
         members: [person1]
         state_code: LA
   output:
-    # Otherwise identical to Case 1, which pays 350 with heating_type NONE.
-    la_liheap_cooling: 0
+    # Was 0, now 350: the cooling test no longer adds a heating-fuel
+    # condition, since no Louisiana cooling rule names a heating fuel.
+    # 1,740 / 15,080 = 0.1154 -> band 2, size 1, as in Case 1.
+    la_liheap_cooling: 350
+
+- name: Case 7, a renter with utilities and heat included in the rent and an unspecified heating fuel receives both benefits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 15_080
+        # FY2026 HUD Fair Market Rent for a one-bedroom unit in East Baton
+        # Rouge Parish, 1,064 a month (x12 = 12,768).
+        rent: 12_768
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # The tenant does not know the building's heating fuel.
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+        tenant_pays_utilities: false
+  output:
+    # No separate bill, so the energy cost is 0 and the burden 0 / 15,080
+    # falls in the 9.9% and less band, 200 for size 1. Heating accepts the
+    # unspecified fuel because heat is included in the rent; cooling counts
+    # the energy costs included in the rent (Section 3.6 E.1).
+    la_liheap: 200
+    la_liheap_cooling: 200

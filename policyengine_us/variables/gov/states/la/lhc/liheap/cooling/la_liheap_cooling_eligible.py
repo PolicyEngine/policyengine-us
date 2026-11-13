@@ -17,16 +17,15 @@ class la_liheap_cooling_eligible(Variable):
     def formula(spm_unit, period, parameters):
         size = spm_unit("la_liheap_household_size", period)
         income_eligible = spm_unit("la_liheap_income_eligible", period)
-        # Vulnerability: responsibility for a cooling bill, or energy costs
-        # included in the rent (Section 3.6 E.1; plan section 3.3).
+        # Vulnerability: responsibility for heating and cooling costs, or energy
+        # costs included in the rent (Section 3.6 E; plan section 3.3).
+        # Requiring has_cooling_expense from a household that pays its own
+        # bills is a PolicyEngine convention of the cooling programs; no
+        # Louisiana text asks for a cost separate from the energy bill.
         utilities_in_rent = ~spm_unit.household("tenant_pays_utilities", period) & (
             add(spm_unit, period, ["rent"]) > 0
         )
         responsible = spm_unit("has_cooling_expense", period) | utilities_in_rent
-        # A home with no heating or any known heating fuel qualifies; an
-        # unspecified fuel is paid $0, as in every LIHEAP program (#9754).
-        heating_type = spm_unit("heating_type", period)
-        fuel_known = heating_type != heating_type.possible_values.UNSPECIFIED
         # As for heating, a subsidized household needs a positive total energy
         # cost: a cooling utility allowance greater than the bill makes it
         # ineligible (Section 4.1 C.1), and an allowance equal to the bill
@@ -37,10 +36,6 @@ class la_liheap_cooling_eligible(Variable):
         energy_cost_eligible = ~subsidized | (
             spm_unit("la_liheap_energy_cost", period) > 0
         )
-        return (
-            (size > 0)
-            & income_eligible
-            & responsible
-            & fuel_known
-            & energy_cost_eligible
-        )
+        # The cooling requirements name no heating fuel (Section 3.6), so
+        # heating_type, including UNSPECIFIED, does not affect eligibility.
+        return (size > 0) & income_eligible & responsible & energy_cost_eligible

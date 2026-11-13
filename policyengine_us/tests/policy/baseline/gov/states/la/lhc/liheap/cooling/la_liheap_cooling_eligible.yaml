@@ -70,8 +70,86 @@
     receives_housing_assistance: [false, true]
   output:
     # Section 3.6 E.1 counts energy costs included in the rent. With no separate
-    # bill the energy cost is 0, so the subsidized renter has no energy burden
-    # (Section 4.1 C.1), and the unsubsidized renter's burden 0 / 15,080 falls in
-    # the 9.9% and less band, 200 for size 1.
+    # bill the energy cost is 0. Reading Section 3.6 E.1's example of
+    # "Subsidized housing tenants who are responsible for and have incurred
+    # excess energy charges" as the heating test does, the subsidized renter has
+    # no excess energy charge and is not eligible. The unsubsidized renter's
+    # burden 0 / 15,080 falls in the 9.9% and less band, 200 for size 1.
     la_liheap_cooling_eligible: [true, false]
     la_liheap_cooling: [200, 0]
+
+- name: Case 5, a household of only undocumented members that passes the income test is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    immigration_status: [UNDOCUMENTED]
+    # 20 hours a week at the federal 7.25 minimum wage.
+    employment_income_before_lsr: [7_540]
+    heating_type: [ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_740]
+    has_cooling_expense: [true]
+  output:
+    # Household size 0 makes the 60% SMI limit 0, but 7,540 is below the 110%
+    # poverty floor of 1.1 x (15,650 - 5,500) = 11,165, so only the household
+    # size test fails: "A household with only ineligible aliens does not
+    # qualify for LIHEAP assistance."
+    la_liheap_income_eligible: [true]
+    la_liheap_cooling_eligible: [false]
+
+- name: Case 6, a household that pays no rent and does not pay its own utilities is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    employment_income_before_lsr: [15_080]
+    heating_type: [ELECTRICITY]
+    has_cooling_expense: [false]
+    pre_subsidy_electricity_expense: [0]
+    # Lives rent-free in a relative's home, and the relative pays the utilities.
+    tenant_pays_utilities: [false]
+    rent: [0]
+    receives_housing_assistance: [false]
+  output:
+    # No cooling bill and no rent that includes energy costs, so the
+    # responsibility test fails.
+    la_liheap_cooling_eligible: [false]
+
+- name: Case 7, a public housing tenant whose utility allowance exceeds the bill is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    employment_income_before_lsr: [15_080]
+    # Only public housing marks the household as subsidized.
+    receives_housing_assistance: [false]
+    is_in_public_housing: [true]
+    heating_type: [ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_500]
+    # Utility allowance of 150 a month.
+    hud_utility_allowance: [1_800]
+    has_cooling_expense: [true]
+  output:
+    # Under 60, so the energy cost 1,500 - 1,800 = -300 is not positive. The
+    # income and responsibility tests pass, so only the subsidized energy cost
+    # test fails (Section 4.1 C.1).
+    la_liheap_cooling_eligible: [false]
+
+- name: Case 8, a renter who pays the utilities separately and has no cooling cost is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    employment_income_before_lsr: [15_080]
+    heating_type: [ELECTRICITY]
+    has_cooling_expense: [false]
+    pre_subsidy_electricity_expense: [0]
+    # FY2026 HUD Fair Market Rent for a one-bedroom unit in East Baton Rouge
+    # Parish, 1,064 a month (x12 = 12,768), with utilities billed separately.
+    tenant_pays_utilities: [true]
+    rent: [12_768]
+    receives_housing_assistance: [false]
+  output:
+    # The rent does not include energy costs and there is no cooling cost, so
+    # the responsibility test fails; the household is not subsidized.
+    la_liheap_cooling_eligible: [false]
