@@ -87,6 +87,7 @@ def get_average_for_12_months_ending_august(
     cpi: Parameter,
     year: int,
     projection: Parameter,
+    splice_on_growth: bool = True,
 ) -> float:
     """Average a monthly price index over the 12 months ending August 31.
 
@@ -98,10 +99,9 @@ def get_average_for_12_months_ending_august(
     release, then (for the seasonally adjusted and chained series) CBO's
     calendar-year averages at February instants; a monthly refresh that
     reaches a February replaces that instant's projection with the observed
-    value. Windows with no observed month read ``projection``, CBO's
-    projection of this 12-month average keyed by the tax year it indexes
-    (``year + 1``); a calendar-year average would run about four months of
-    inflation high.
+    value. ``projection`` holds CBO's projection of this 12-month average,
+    keyed by the tax year it indexes (``year + 1``); a calendar-year average
+    would run about four months of inflation high.
 
     Windows with observed months average them, and complete any month
     without an observation with the latest value published before it. Those
@@ -113,6 +113,16 @@ def get_average_for_12_months_ending_august(
       appropriations, takes September 2025's);
     - each month after the last observation takes the last observation, so
       the unobserved tail of the latest window is held flat.
+
+    Windows with no observed month splice ``projection`` onto the
+    observations by growth. The base is the last window that holds an
+    observed month, averaged as above. Each later window multiplies that
+    base by the ratio of its own projection to the base window's
+    projection, so the index grows from year to year at the rate CBO
+    projects, whatever level CBO's vintage gave the base window.
+    ``projection`` must hold a value for the tax year the base window
+    indexes. With ``splice_on_growth=False`` a window with no observed month
+    takes its projection as a level.
 
     The levels averaged are those in the parameter file, one vintage per
     month. Where BLS revises a series after first publication (the C-CPI-U
@@ -129,7 +139,21 @@ def get_average_for_12_months_ending_august(
     )
     window_start = instant(f"{year - 1}-09-01")
     if window_start > last_observation:
-        return projection(f"{year + 1}-01-01")
+        projected = projection(f"{year + 1}-01-01")
+        if not splice_on_growth:
+            return projected
+        # Windows start in September, so the last window with an observed
+        # month ends in the August on or after the last observation.
+        base_year = last_observation.year + int(last_observation.month >= 9)
+        projected_base = projection(f"{base_year + 1}-01-01")
+        if projected_base is None:
+            raise ValueError(
+                f"{projection.name} holds no value for tax year "
+                f"{base_year + 1}, which the last window with an observed "
+                "month indexes; later windows grow from that value."
+            )
+        base = get_average_for_12_months_ending_august(cpi, base_year, projection)
+        return base * projected / projected_base
     window_months = [
         window_start.offset(month, MONTH) for month in range(MONTHS_IN_YEAR)
     ]
@@ -509,13 +533,12 @@ def get_projected_cpi_u_for_month(cpi: Parameter, month: Instant) -> float:
 
     The model's CPI-U series holds BLS monthly observations, then CBO's
     calendar-year averages as projection points at February instants (see
-    ``get_average_for_12_months_ending_august`` and #9608; the "# YYYY
-    value" comments in cpi_u.yaml label the tax year a point feeds, not its
-    calendar year). A calendar-year average sits halfway between June and
-    July of its year. So an unobserved month is interpolated geometrically,
-    by month, between the last observation and the next projection point
-    placed there, or between two such points; past the last point the index
-    holds flat.
+    ``get_average_for_12_months_ending_august`` and #9608; the comments in
+    cpi_u.yaml name each point's calendar year). A calendar-year average
+    sits halfway between June and July of its year. So an unobserved month
+    is interpolated geometrically, by month, between the last observation
+    and the next projection point placed there, or between two such points;
+    past the last point the index holds flat.
 
     As in ``get_average_for_12_months_ending_august``, only non-February
     instants identify the end of the observed series, and no branch reads
@@ -570,10 +593,17 @@ def extend_nsa_cpi_u_projections(parameters: ParameterNode) -> None:
 
 
 def get_vt_cpi(parameters: ParameterNode, tax_year: int) -> float:
-    """Vermont's unchained NSA CPI-U average under 32 V.S.A. 5811 and 5822."""
+    """Vermont's unchained NSA CPI-U average under 32 V.S.A. 5811 and 5822.
+
+    A window with no observed month takes CBO's projected level of the
+    national CPI-U average for that window.
+    """
     cpi = parameters.gov.bls.cpi
     return get_average_for_12_months_ending_august(
-        cpi.cpi_u_nsa, tax_year - 1, cpi.tax_year_projection.cpi_u
+        cpi.cpi_u_nsa,
+        tax_year - 1,
+        cpi.tax_year_projection.cpi_u,
+        splice_on_growth=False,
     )
 
 

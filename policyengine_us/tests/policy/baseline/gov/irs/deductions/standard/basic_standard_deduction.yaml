@@ -41,6 +41,28 @@
   output:
     basic_standard_deduction: 16_600
 
+- name: 2028 single filer standard deduction grows from the 2027 amount at CBO's projected rate
+  # No month of the 12 ending August 2027 has a BLS observation, so the
+  # index for 2028 is the 2027 index times CBO's projected growth in that
+  # 12-month average (tax_year_projection/c_cpi_u.yaml):
+  # 185.881 / 181.654 = 1.023270.
+  # $16,600 x 1.023270 = $16,986.27, rounded down to $50: $16,950.
+  # Reading CBO's 185.881 as a level against the observed 182.501 gives
+  # $16,907.47 and $16,900.
+  period: 2028
+  input:
+    filing_status: SINGLE
+  output:
+    basic_standard_deduction: 16_950
+
+- name: 2028 joint standard deduction grows from the 2027 amount at CBO's projected rate
+  # $33,200 x 185.881 / 181.654 = $33,972.55, rounded down to $50: $33,950.
+  period: 2028
+  input:
+    filing_status: JOINT
+  output:
+    basic_standard_deduction: 33_950
+
 - name: 2023 dependent filer with $3,000 of wages gets $400 plus earned income
   # Rev. Proc. 2022-38 sec. 3.15(2): greater of $1,250 or $400 plus earned
   # income; max($1,250, $400 + $3,000) = $3,400, below the $13,850 basic
@@ -128,11 +150,13 @@
 
 - name: 2032 dependent filer with $3,000 of wages gets $550 plus earned income
   # Same 63(c)(4)(B)(ii) adjustment. The 12 months ending August 2031 have
-  # no observed month, so the window reads CBO's projection of that average
-  # (tax_year_projection/c_cpi_u.yaml, 2032): 201.335.
-  # Increase = $250 x (201.335 / 90.886 - 1) = $303.81, rounded down to
-  # $300, so $550. Floor: $500 x 201.335 / 63.813 = $1,577.53, so $1,550.
-  # max($1,550, $550 + $3,000) = $3,550, below the $18,300 cap.
+  # no observed month, so the last observed average (182.501, for the 12
+  # months ending August 2026) grows at CBO's projected rate for that
+  # average (tax_year_projection/c_cpi_u.yaml, 2027 to 2032):
+  # 182.501 x 201.335 / 181.654 = 202.273.
+  # Increase = $250 x (202.273 / 90.886 - 1) = $306.40, rounded down to
+  # $300, so $550. Floor: $500 x 202.273 / 63.813 = $1,584.89, so $1,550.
+  # max($1,550, $550 + $3,000) = $3,550, below the $18,350 cap.
   period: 2032
   input:
     people:
@@ -156,10 +180,11 @@
   # C-CPI-U for the 12 months ending August 2041: uprating_extensions.py
   # extends CBO's tax-year projection (tax_year_projection/c_cpi_u.yaml)
   # past 2036 at its 2035-2036 growth rate,
-  # 217.68 x (217.68 / 213.471)^6 = 244.735.
+  # 217.68 x (217.68 / 213.471)^6 = 244.735, and applies its growth since
+  # 2027 to the last observed average: 182.501 x 244.735 / 181.654 = 245.876.
   # 1(f)(3)(A)(ii) and (B): CPI-U Sep 1986-Aug 1987 average 111.983 x
   # 135.993 / 238.649 = 63.813.
-  # Increase = $500 x (244.735 / 63.813 - 1) = $1,417.59, rounded down to
+  # Increase = $500 x (245.876 / 63.813 - 1) = $1,426.53, rounded down to
   # $1,400, so $1,900.
   period: 2042
   input:
@@ -177,13 +202,15 @@
   output:
     basic_standard_deduction: 1_900
 
-- name: 2040 dependent floor uses the tax-year chained CPI projection
+- name: 2040 dependent floor grows from the last observed average at CBO's tax-year rates
   # 26 U.S.C. 63(c)(4)(B)(i), 63(c)(5)(A), and 1(f)(7)(A): increase the
-  # $500 statutory base using the 1987 denominator 63.81317101684901 and
-  # round the increase down to $50. Extending CBO's tax-year index gives
-  # 217.68 x (217.68 / 213.471)^4 = 235.362411812; the unrounded total
-  # is $1,844.1523, so the floor is $1,800. The calendar-year projection
-  # instead gives $1,854.0658 and an incorrect $1,850 floor.
+  # $500 statutory base using the 1987 denominator 63.81317101684902 and
+  # round the increase down to $50. Extending CBO's tax-year projection
+  # gives 217.68 x (217.68 / 213.471)^4 = 235.362411812, and its growth
+  # since 2027 takes the last observed average to
+  # 182.500666667 x 235.362411812 / 181.654 = 236.459407; the unrounded
+  # total is $1,852.7477, so the floor is $1,850. CBO's projected level
+  # alone gives $1,844.1523 and a $1,800 floor.
   period: 2040
   input:
     people:
@@ -198,11 +225,11 @@
       household:
         members: [head]
   output:
-    basic_standard_deduction: 1_800
+    basic_standard_deduction: 1_850
 
 - name: 2042 dependent filer with $3,000 of wages gets $650 plus earned income
-  # Same 2041 C-CPI-U of 244.735 and 1997 denominator of 90.886.
-  # Increase = $250 x (244.735 / 90.886 - 1) = $423.20, rounded down to
+  # Same 2041 C-CPI-U of 245.876 and 1997 denominator of 90.886.
+  # Increase = $250 x (245.876 / 90.886 - 1) = $426.33, rounded down to
   # $400, so $650. max($1,900, $650 + $3,000) = $3,650.
   period: 2042
   input:

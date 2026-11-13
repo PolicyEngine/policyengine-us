@@ -1,7 +1,9 @@
 description: The Congressional Budget Office projects this average of the Chained Consumer Price Index for All Urban Consumers over the 12 months ending the August before each tax year, the index that adjusts federal tax parameters for that year.
 values:
   # Keyed by tax year: the 2028 value averages September 2026 through
-  # August 2027. Windows with BLS observations use c_cpi_u.yaml instead.
+  # August 2027. A window with a BLS observation averages c_cpi_u.yaml. Each
+  # later window multiplies the last such average by the growth of these
+  # values since that window.
   2027-01-01: 181.654
   2028-01-01: 185.881
   2029-01-01: 189.775

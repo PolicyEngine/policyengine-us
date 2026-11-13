@@ -230,8 +230,13 @@ def _base_series():
 
 
 def _tax_year_projection():
-    """Window averages keyed by tax year, unlike February calendar averages."""
-    return {"2027-01-01": 344, "2028-01-01": 358}
+    """Window averages keyed by tax year, unlike February calendar averages.
+
+    The projection puts the last observed window (tax year 2026) at 162,
+    half its observed 324, so growth and level readings give different
+    answers: 324 x 172 / 162 = 344 and 324 x 179 / 162 = 358.
+    """
+    return {"2026-01-01": 162, "2027-01-01": 172, "2028-01-01": 179}
 
 
 def test_cola_fully_observed_window_averages_monthly_data():
@@ -243,13 +248,16 @@ def test_cola_fully_observed_window_averages_monthly_data():
     assert _nyc_cola_on_series(_base_series(), 2025) == 0
 
 
-def test_cola_unobserved_window_uses_tax_year_projection():
+def test_cola_unobserved_window_grows_at_the_tax_year_projection_rate():
     # The tax year 2027 window (September 2025 - August 2026) has no observed
-    # month, so its tax-year projection (344) applies. The February 2026
-    # calendar-year projection is deliberately different (339); averaging
-    # the raw instants would give (5 * 330 + 7 * 339) / 12 = 335.25.
+    # month, so the 2025 index (324) grows at the tax-year projection's
+    # rate: 324 x 172 / 162 = 344. The February 2026 calendar-year
+    # projection is deliberately different (339); averaging the raw instants
+    # would give (5 * 330 + 7 * 339) / 12 = 335.25, and reading the
+    # projection as a level would give 172.
     assert _nyc_cola_on_series(_base_series(), 2027) == pytest.approx(44 / 300)
-    # Tax year 2028 reads its own projection (358), not February 2027 (351).
+    # Tax year 2028 applies its own projected growth, 324 x 179 / 162 = 358,
+    # not February 2027 (351).
     assert _nyc_cola_on_series(_base_series(), 2028) == pytest.approx(58 / 300)
 
 
@@ -265,10 +273,12 @@ def test_cola_partial_window_carries_last_observation_flat():
         {"2025-09-01": 330, "2025-10-01": 332, "2025-11-01": 334, "2025-12-01": 336}
     )
     assert _nyc_cola_on_series(values, 2027) == pytest.approx(35 / 300)
-    # The completed tax year 2026 window and later unobserved windows are
-    # unaffected.
+    # The completed tax year 2026 window is unaffected.
     assert _nyc_cola_on_series(values, 2026) == pytest.approx(24 / 300)
-    assert _nyc_cola_on_series(values, 2028) == pytest.approx(58 / 300)
+    # The tax year 2027 window is now the last with an observed month, so
+    # tax year 2028 grows from its 335 at the projection's 2027-2028 rate:
+    # 335 x 179 / 172 = 348.63.
+    assert _nyc_cola_on_series(values, 2028) == pytest.approx(335 * 179 / 172 / 300 - 1)
 
 
 def test_cola_partial_window_treats_an_observed_february_as_an_observation():
@@ -291,9 +301,9 @@ def test_cola_floors_at_zero_when_the_index_falls_below_2024():
     values = _base_series()
     _monthly(values, 2024, 9, 2025, 8, 297)
     assert _nyc_cola_on_series(values, 2026) == 0
-    # A tax-year projection below the 2024 index also floors at zero,
-    # even though the calendar-year projection remains above it.
-    projections = {**_tax_year_projection(), "2027-01-01": 288}
+    # A projected fall also floors at zero, even though the calendar-year
+    # projection remains above the 2024 index: 297 x 160 / 162 = 293.33.
+    projections = {**_tax_year_projection(), "2027-01-01": 160}
     assert _nyc_cola_on_series(values, 2027, projections) == 0
     # An index exactly equal to the 2024 index gives zero too.
     _monthly(values, 2024, 9, 2025, 8, 300)
@@ -314,18 +324,26 @@ CPI_LEVELS = st.floats(min_value=50, max_value=1_000)
     base_window=st.lists(CPI_LEVELS, min_size=12, max_size=12),
     window_2025=st.lists(CPI_LEVELS, min_size=12, max_size=12),
     calendar_projections=st.lists(CPI_LEVELS, min_size=2, max_size=2),
-    tax_year_projections=st.lists(CPI_LEVELS, min_size=2, max_size=2),
+    tax_year_projections=st.lists(CPI_LEVELS, min_size=3, max_size=3),
     scale=st.floats(min_value=0.01, max_value=100),
+    projection_scale=st.floats(min_value=0.01, max_value=100),
 )
 def test_cola_invariants(
-    base_window, window_2025, calendar_projections, tax_year_projections, scale
+    base_window,
+    window_2025,
+    calendar_projections,
+    tax_year_projections,
+    scale,
+    projection_scale,
 ):
     """Invariants for any CPI-U series observed through August 2025.
 
-    1. The adjustment is the plain ratio of twelve-month averages (or of the
-       tax-year projection to the 2024 average) less one, floored at zero.
+    1. The adjustment is the plain ratio of twelve-month averages less one,
+       floored at zero. A window with no observed month takes the 2025
+       average times the tax-year projection's growth since tax year 2026.
     2. It is never negative.
-    3. It is unit-free: rescaling the whole series leaves it unchanged.
+    3. It is unit-free: rescaling the whole series leaves it unchanged, and
+       so does rescaling the tax-year projection alone.
     """
     values = {}
     for (year, month), level in zip(
@@ -333,26 +351,38 @@ def test_cola_invariants(
     ):
         values[f"{year}-{month:02d}-01"] = level
     values["2026-02-01"], values["2027-02-01"] = calendar_projections
-    projection_values = dict(zip(("2027-01-01", "2028-01-01"), tax_year_projections))
+    projection_values = dict(
+        zip(("2026-01-01", "2027-01-01", "2028-01-01"), tax_year_projections)
+    )
     index_2024 = sum(base_window) / 12
+    index_2025 = sum(window_2025) / 12
+    projected_2026, projected_2027, projected_2028 = tax_year_projections
     expected = {
-        2026: max(sum(window_2025) / 12 / index_2024 - 1, 0),
-        2027: max(tax_year_projections[0] / index_2024 - 1, 0),
-        2028: max(tax_year_projections[1] / index_2024 - 1, 0),
+        2026: max(index_2025 / index_2024 - 1, 0),
+        2027: max(index_2025 * projected_2027 / projected_2026 / index_2024 - 1, 0),
+        2028: max(index_2025 * projected_2028 / projected_2026 / index_2024 - 1, 0),
     }
     parameters = _parameters_for_series(values, projection_values)
     scaled_parameters = _parameters_for_series(
         {instant: level * scale for instant, level in values.items()},
         {instant: level * scale for instant, level in projection_values.items()},
     )
+    rescaled_projection_parameters = _parameters_for_series(
+        values,
+        {
+            instant: level * projection_scale
+            for instant, level in projection_values.items()
+        },
+    )
     for tax_year, expected_cola in expected.items():
         cola = get_nyc_income_tax_elimination_credit_cola(parameters, tax_year)
         assert cola >= 0
         assert cola == pytest.approx(expected_cola, rel=1e-9, abs=1e-12)
-        scaled_cola = get_nyc_income_tax_elimination_credit_cola(
-            scaled_parameters, tax_year
-        )
-        assert scaled_cola == pytest.approx(cola, rel=1e-9, abs=1e-12)
+        for other_parameters in (scaled_parameters, rescaled_projection_parameters):
+            other_cola = get_nyc_income_tax_elimination_credit_cola(
+                other_parameters, tax_year
+            )
+            assert other_cola == pytest.approx(cola, rel=1e-9, abs=1e-12)
 
 
 # Projection on the live parameters: every year from the statutory base.
@@ -437,7 +467,17 @@ def _rising_then_falling_series():
 
 
 def _rising_then_falling_projections():
-    return {"2027-01-01": 360, "2028-01-01": 270, "2029-01-01": 315}
+    """Half the level of the indices they produce from the 2025 index (330).
+
+    Tax year 2026 sits at 165, so 2027 gives 330 x 180 / 165 = 360, 2028
+    gives 330 x 135 / 165 = 270 and 2029 gives 330 x 157.5 / 165 = 315.
+    """
+    return {
+        "2026-01-01": 165,
+        "2027-01-01": 180,
+        "2028-01-01": 135,
+        "2029-01-01": 157.5,
+    }
 
 
 def test_extension_recomputes_each_year_from_the_statutory_amounts():

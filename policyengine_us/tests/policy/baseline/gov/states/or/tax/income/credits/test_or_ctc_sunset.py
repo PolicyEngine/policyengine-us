@@ -156,10 +156,13 @@ def _base_series():
 
 
 # CBO's projections of the 12 months ending the August before each tax
-# year. They differ from the calendar-year points above, so each assertion
-# shows which series a window read.
+# year. They put the last observed window (tax year 2026) at 165.5, half its
+# observed 331, so growth and level readings give different answers:
+# 331 x 172 / 165.5 = 344 and 331 x 179 / 165.5 = 358. Those differ from the
+# calendar-year points above, so each assertion shows which series a window
+# read.
 def _tax_year_projection():
-    return {"2027-01-01": 344, "2028-01-01": 358}
+    return {"2026-01-01": 165.5, "2027-01-01": 172, "2028-01-01": 179}
 
 
 def test_cola_fully_observed_window_averages_monthly_data():
@@ -168,11 +171,14 @@ def test_cola_fully_observed_window_averages_monthly_data():
     assert _cola_on_series(_base_series(), 2026) == pytest.approx(31 / 300)
 
 
-def test_cola_unobserved_window_uses_tax_year_projection():
-    # Tax year 2027 has no observed months, so CBO's projection of that
-    # window (344) applies, not the February 2026 calendar-year point (347):
-    # COLA = 344 / 300 - 1.
+def test_cola_unobserved_window_grows_at_the_tax_year_projection_rate():
+    # Tax year 2027 has no observed months, so the last observed window (331)
+    # grows at CBO's projected rate for that window: 331 x 172 / 165.5 = 344.
+    # The February 2026 calendar-year point (347) plays no part, and reading
+    # the projection as a level would give 172: COLA = 344 / 300 - 1.
     assert _cola_on_series(_base_series(), 2027) == pytest.approx(44 / 300)
+    # Tax year 2028 applies its own projected growth: 331 x 179 / 165.5 = 358.
+    assert _cola_on_series(_base_series(), 2028) == pytest.approx(58 / 300)
 
 
 def test_cola_partial_window_ignores_overwritten_february_projection():
@@ -189,9 +195,10 @@ def test_cola_partial_window_ignores_overwritten_february_projection():
     _monthly(values, 2025, 9, 2026, 1, 330)
     _monthly(values, 2026, 2, 2026, 6, 342)
     assert _cola_on_series(values, 2027) == pytest.approx(37 / 300)
-    # Later, fully unobserved windows still read their own tax-year
-    # projection: tax year 2028 uses 358.
-    assert _cola_on_series(values, 2028) == pytest.approx(58 / 300)
+    # The tax year 2027 window is now the last with an observed month, so
+    # tax year 2028 grows from its 337 at the projection's 2027-2028 rate:
+    # 337 x 179 / 172 = 350.72.
+    assert _cola_on_series(values, 2028) == pytest.approx(337 * 179 / 172 / 300 - 1)
 
 
 def test_cola_observations_ending_on_a_february_stay_conservative():
