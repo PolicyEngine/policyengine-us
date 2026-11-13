@@ -152,7 +152,9 @@ def infer_missing_marital_units(situation, default_period=None, system=None):
     role or is_married inputs that change between periods) leave everyone in
     that tax unit and household in their own unit. Calculated values are
     never read: step 4 reads the same inputs and parameters the role
-    formulas read, so the units it builds agree with the inferred tax roles.
+    formulas read, including the defaults Core fills in for everyone once
+    anyone supplies a variable for a year, so the units it builds agree with
+    the inferred tax roles.
     Core calls this hook on a private copy before building populations;
     malformed input is left to its validation.
     """
@@ -190,6 +192,7 @@ def _infer_units(situation, people, default_period, system):
         groups.setdefault((tax_units[name], households[name]), []).append(name)
         tax_unit_members.setdefault(tax_units[name], []).append(name)
 
+    filled_years = _situation_input_years(people, default_period)
     units = {name: {"members": [name]} for name in people}
     for (tax_unit, _), members in groups.items():
         try:
@@ -201,6 +204,7 @@ def _infer_units(situation, people, default_period, system):
                 families,
                 default_period,
                 system,
+                filled_years,
             )
         except _Ambiguous:
             pair = None
@@ -212,7 +216,14 @@ def _infer_units(situation, people, default_period, system):
 
 
 def _group_pair(
-    members, unit_members, people, situation, families, default_period, system
+    members,
+    unit_members,
+    people,
+    situation,
+    families,
+    default_period,
+    system,
+    filled_years,
 ):
     """The couple, if any, among the members of one tax unit and household."""
     heads = _true_role_inputs(members, people, "is_tax_unit_head", default_period)
@@ -244,6 +255,7 @@ def _group_pair(
         people,
         default_period,
         system,
+        filled_years,
         head=next(iter(heads), None),
         spouse=next(iter(spouses), None),
     )
@@ -382,6 +394,19 @@ def _fallback_years(members, people, default_period):
     return sorted(years)
 
 
+def _situation_input_years(people, default_period):
+    """For each fallback input, the years anyone in the situation supplies it."""
+    return {
+        variable: {
+            start.year
+            for person in people.values()
+            for start, _ in _dated_values(person, variable, default_period)
+            if start is not None
+        }
+        for variable in _FALLBACK_INPUTS
+    }
+
+
 def _value_in_year(person, variable, year, default_period, default, carries):
     """The input value the year's calculation reads.
 
@@ -404,7 +429,9 @@ def _value_in_year(person, variable, year, default_period, default, carries):
     return value
 
 
-def _tax_fallback_pair(members, people, default_period, system, head, spouse):
+def _tax_fallback_pair(
+    members, people, default_period, system, filled_years, head, spouse
+):
     """The couple is_tax_unit_head and is_tax_unit_spouse infer from age order.
 
     A pairing that changes between years can't be one static membership, so
@@ -416,7 +443,7 @@ def _tax_fallback_pair(members, people, default_period, system, head, spouse):
         return None
     pairs = {
         _fallback_pair_in_year(
-            members, people, year, default_period, system, head, spouse
+            members, people, year, default_period, system, filled_years, head, spouse
         )
         for year in years
     }
@@ -428,8 +455,18 @@ def _oldest(names, ages):
     return max(names, key=lambda name: ages[name]) if names else None
 
 
-def _fallback_pair_in_year(members, people, year, default_period, system, head, spouse):
+def _fallback_pair_in_year(
+    members, people, year, default_period, system, filled_years, head, spouse
+):
     def value(name, variable, default=False):
+        own = _dated_values(people[name], variable, default_period)
+        if year in filled_years[variable] and not any(
+            start is None or start.year == year for start, _ in own
+        ):
+            # Once anyone in the situation supplies a variable for the year,
+            # Core fills it for everyone else with its default, and its
+            # formula doesn't run.
+            return system.get_variable(variable).default_value
         carries = not system.get_variable(variable).formulas
         return _value_in_year(
             people[name], variable, year, default_period, default, carries

@@ -36,8 +36,11 @@ applies, and gives everyone else their own unit:
 The fourth step reads the same inputs and parameters as the role formulas, so
 the units it builds agree with the inferred tax roles: a couple sent without
 marriage information is a couple for SSI and Medicaid as well as for tax, and
-a parent's adult child who meets the age test is neither. The fourth step
-checks the years the inputs are dated for, so a payload dated for a year other
+a parent's adult child who meets the age test is neither. When anyone in a
+situation supplies a role, student or age input for a year, Core gives everyone
+else that variable's default for the year instead of running its formula, and
+the fourth step reads the same defaults. The fourth step checks the years the
+inputs are dated for, so a payload dated for a year other
 than the simulation's default input year pairs the same couple. Under a reform,
 it uses the reform's dependent age limits.
 
@@ -57,6 +60,9 @@ Known limitations, which callers avoid by supplying `marital_units`:
 - A married couple who file separately, in two tax units, get their own units
   even when their family's `is_married` input is true, because each step works
   within one tax unit.
+- A lone true `is_tax_unit_spouse` input on the oldest adult makes that person
+  both head and spouse in the role formulas, as on main; the fourth step pairs
+  them with the next adult.
 
 These rules apply to Python household simulations and entity-form YAML tests,
 including tests with reforms or inline parameters. Variable-only tests keep

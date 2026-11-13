@@ -389,3 +389,43 @@ def test_the_adult_age_matches_is_child():
     assert sim.calculate("is_child", 2024).tolist() == [
         age < marital_units._ADULT_AGE for age in (17, 18)
     ]
+
+
+@pytest.mark.parametrize("variable", ["is_tax_unit_spouse", "is_tax_unit_head"])
+def test_a_role_input_on_anyone_fills_false_for_the_rest(variable):
+    # Core fills the role for everyone once a grandchild supplies it, so the
+    # roles have no couple, and neither do the marital units.
+    people = {
+        "husband": {"age": {"2026": 70}},
+        "wife": {"age": {"2026": 68}},
+        "grandchild": {"age": {"2026": 10}, variable: {"2026": False}},
+    }
+    sim = Simulation(situation={"people": people})
+    assert len(set(sim.marital_unit.members_entity_id.tolist())) == 3
+
+
+def test_a_student_input_on_anyone_fills_false_for_the_rest():
+    # Another person's is_full_time_student input gives the college student
+    # the default false, so the role formulas pair them with their parent.
+    people = {
+        "parent": {"age": 45},
+        "student": {"age": 22, "is_full_time_college_student": True},
+        "child": {"age": 10, "is_full_time_student": False},
+    }
+    assert _fallback_pairs(people) == [["parent", "student"]]
+
+
+def test_a_reform_to_the_age_limit_changes_the_couple():
+    from policyengine_core.reforms import Reform
+
+    people = {"parent": {"age": {"2026": 45}}, "child": {"age": {"2026": 25}}}
+    reform = Reform.from_dict(
+        {"gov.irs.dependent.ineligible_age.non_student": {"2026-01-01.2100-12-31": 30}},
+        country_id="us",
+    )
+    baseline = Simulation(situation={"people": deepcopy(people)})
+    reformed = Simulation(situation={"people": deepcopy(people)}, reform=reform)
+    # A 25-year-old fails the baseline age test (under 19) and passes the
+    # reformed one (under 30), so only the baseline pairs them.
+    assert len(set(baseline.marital_unit.members_entity_id.tolist())) == 1
+    assert len(set(reformed.marital_unit.members_entity_id.tolist())) == 2
