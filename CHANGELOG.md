@@ -1,3 +1,10 @@
+## [2.121.1] - 2026-11-13
+
+### Changed
+
+- Disabled Hypothesis's explain phase for the owners' draw simulation properties while preserving shrinking.
+
+
 ## [2.121.0] - 2026-11-13
 
 ### Added
