@@ -592,7 +592,8 @@
     mt_additions: 0
     mt_subtractions: 0
     tax_unit_itemizes: true
-    itemized_taxable_income_deductions: 16_000
+    # The allowed federal aggregate includes the 4,000 of wagering losses.
+    itemized_taxable_income_deductions: 20_000
     wagering_losses_deduction: 4_000
     standard_deduction: 14_600
     salt_deduction: 6_000
