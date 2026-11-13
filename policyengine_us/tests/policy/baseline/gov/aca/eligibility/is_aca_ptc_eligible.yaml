@@ -512,3 +512,28 @@
   output:
     is_medicare_eligible: false
     is_aca_ptc_eligible: true
+
+- name: 2026 Alaska single adult at $70,000 is under 400% of Alaska's guideline
+  # 70,000 / 19,550 (Alaska's 2025 guideline for one) = 3.58, inside the
+  # 1.00 to 4.00 range. The contiguous states' guideline (15,650) would give
+  # 4.47, above it.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 70_000
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    aca_magi_fraction: 3.58
+    is_aca_ptc_eligible: true
