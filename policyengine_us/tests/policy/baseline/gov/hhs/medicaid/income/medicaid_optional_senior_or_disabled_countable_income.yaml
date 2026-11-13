@@ -877,7 +877,7 @@
     # (36,000 + 24,000 - 240 - 12,000) / 2, as on main.
     medicaid_optional_senior_or_disabled_countable_income: [23_880, 23_880, 0]
 
-- name: California leaves a dependent child in their own marital unit out of a couple budget.
+- name: California deducts a dependent child's premiums when the child has their own marital unit.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -910,9 +910,10 @@
         members: [head, spouse, child]
         state_code: CA
   output:
-    # (36,000 + 24,000 - 240) / 2 = 29,880 each, as on main: the child's
-    # explicit marital unit holds no spouse in the couple computation.
-    medicaid_optional_senior_or_disabled_countable_income: [29_880, 29_880, 0]
+    # (36,000 + 24,000 - 240 - 12,000) / 2 = 23,880 each: 22 CCR 50555.2(a)
+    # deducts the couple's dependent child's premiums, and a child never
+    # shares the couple's marital unit.
+    medicaid_optional_senior_or_disabled_countable_income: [23_880, 23_880, 0]
 
 - name: An unrelated adult with no tax role does not make a California couple eligible through their premiums.
   period: 2026
@@ -1141,3 +1142,86 @@
     # 1,500 a month through June: 15,000 - 240 = 14,760 and
     # 12,000 - 240 = 11,760.
     medicaid_optional_senior_or_disabled_countable_income: [11_760, 5_760]
+
+- name: A California couple who are tax dependents do not take the filer's other dependents' premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      son:
+        age: 45
+        is_tax_unit_head: true
+        employment_income_before_lsr: 60_000
+        medicare_enrolled: false
+      grandchild:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 12_000
+        medicare_enrolled: false
+      grandfather:
+        age: 70
+        is_tax_unit_dependent: true
+        pension_income: 12_000
+        medicare_enrolled: false
+      grandmother:
+        age: 68
+        is_tax_unit_dependent: true
+        pension_income: 6_000
+        medicare_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [son, grandchild, grandfather, grandmother]
+    marital_units:
+      son:
+        members: [son]
+      grandchild:
+        members: [grandchild]
+      couple:
+        members: [grandfather, grandmother]
+    households:
+      household:
+        members: [son, grandchild, grandfather, grandmother]
+        state_code: CA
+  output:
+    # (12,000 + 6,000 - 240) / 2 = 8,880 each. The grandchild is the son's
+    # dependent, not the couple's, so their premiums stay out.
+    medicaid_optional_senior_or_disabled_countable_income: [0, 0, 8_880, 8_880]
+
+- name: California spouses who file separately share their dependent's premiums in one couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first_spouse:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 36_000
+        medicare_enrolled: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 12_000
+        medicare_enrolled: false
+      second_spouse:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 24_000
+        medicare_enrolled: false
+    tax_units:
+      first:
+        members: [first_spouse, child]
+      second:
+        members: [second_spouse]
+    marital_units:
+      couple:
+        members: [first_spouse, second_spouse]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [first_spouse, child, second_spouse]
+        state_code: CA
+  output:
+    # (36,000 + 24,000 - 240 - 12,000) / 2 = 23,880 each: the second spouse's
+    # half also deducts the child claimed in the first spouse's tax unit.
+    medicaid_optional_senior_or_disabled_countable_income: [23_880, 0, 23_880]

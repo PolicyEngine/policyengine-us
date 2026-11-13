@@ -484,3 +484,68 @@
     is_medicaid_immigration_status_eligible: true
     is_optional_senior_or_disabled_for_medicaid: false
     is_medicaid_eligible: false
+
+# GIS 17 MA/005 attachments 3-4: $2,085/month is the size-two 154%
+# child ceiling, already including the five-point MAGI disregard.
+- name: Case 38, New York child at the published 2017 Medicaid ceiling keeps Medicaid.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_020
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_category: [NONE, YOUNG_CHILD]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+    is_chip_eligible_child: [false, false]
+    chip_enrolled: [false, false]
+
+- name: Case 39, New York child one dollar above the 2017 Medicaid ceiling receives CHIP.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_032
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+    is_chip_eligible_child: [false, true]
+    chip_enrolled: [false, true]
+
+# 42 USC 1396b(v): an undocumented applicant fails the federal immigration
+# gate even when financially eligible. State-funded coverage is separate.
+- name: Case 40, New York undocumented pregnant applicant fails the federal immigration gate.
+  period: 2017
+  input:
+    state_code: NY
+    age: 30
+    is_pregnant: true
+    immigration_status: UNDOCUMENTED
+    employment_income: 36_216
+  output:
+    medicaid_household_size: 2
+    medicaid_category: PREGNANT
+    is_federal_medicaid_immigration_status_eligible: false
