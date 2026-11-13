@@ -1,0 +1,13 @@
+description: Texas uses this indicator to apply the source-verified one-adult, one-parent Medicaid dollar-standard route.
+# The dollar standard dates to October 2015. The bounded model route starts in
+# 2017, the first annual period verified by this historical correction.
+values:
+  0000-01-01: false
+  2017-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Texas Medicaid one-parent dollar-standard route in effect
+  reference:
+    - title: Texas Works Handbook C-131.2, Revision 15-4 effective October 1, 2015
+      href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/c-130-medical-programs

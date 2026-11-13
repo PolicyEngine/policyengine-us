@@ -1,3 +1,147 @@
+## [2.120.2] - 2026-11-13
+
+### Fixed
+
+- Add official Illinois CCAP provider reimbursement schedules from July 2021 through June 2025 while preserving the historical payment gate.
+- Correct Texas Medicaid parent income limits by household size from 2017 for identified parents in one-adult, one-parent households, retaining the existing annual FPG and rounding conventions.
+
+
+## [2.120.1] - 2026-11-13
+
+### Fixed
+
+- Apply Illinois's 200% poverty-level income limit for ordinary new CCAP applicants from October 2019 through June 2022.
+
+
+## [2.120.0] - 2026-11-13
+
+### Added
+
+- Add Delaware LIHEAP summer cooling electric benefit eligibility.
+
+
+## [2.119.4] - 2026-11-13
+
+### Fixed
+
+- Deem income to a disabled child from a disabled parent whose own income, resources or noncitizen status rule out SSI, as 20 CFR 416.1160(d) defines an ineligible parent; limit deeming to the parents that parent ids name and their spouses; and subtract the couple rate for a parent living with a spouse, so nothing reaches the child while that spouse stays eligible (20 CFR 416.1165(d)(3), 416.1166(e)(1)). In California, New Jersey and Vermont, where the Social Security Administration pays a state supplement to a parent at home, test the parent against the federal rate plus that supplement and include it in the parents' allowance.
+  A parent's spouse who files in another tax unit has their income counted with the parent's, and the pooled income is divided among both units' eligible children.
+
+
+## [2.119.3] - 2026-11-13
+
+### Changed
+
+- Let the Medicare Savings Program guideline test's facility stay run through December now that SSI combines a couple's income by each month's facility status, assert SSI countable income again in the New York medically needy part-year case, add earned income to the part-year couple cases for Maryland PAA and the Medicaid optional senior or disabled pathway, and date the Texas Medicare Savings Program deeming-allowance source conflict candidate from 2025.
+
+
+## [2.119.2] - 2026-11-13
+
+### Fixed
+
+- Add FY2017 California and New York SNAP utility allowances and apply the historical small-allotment increase before its March 2017 repeal.
+
+
+## [2.119.1] - 2026-11-13
+
+### Fixed
+
+- Apply the SNAP emergency-allotment minimum from April 2021 instead of March 2020.
+
+
+## [2.119.0] - 2026-11-13
+
+### Added
+
+- Add source-backed 2017 Medicaid MAGI income-limit histories for New York parents, children, infants, and pregnant people.
+
+
+## [2.118.11] - 2026-11-13
+
+### Fixed
+
+- Start the California Young Child Tax Credit in tax year 2019 and record its 2019 and 2020 amounts and eligibility rules.
+
+
+## [2.118.10] - 2026-11-13
+
+### Fixed
+
+- California's aged, blind and disabled FPL program deducts a couple's unmarried tax dependents' health insurance premiums whatever their marital unit, including when the spouses file separately.
+
+
+## [2.118.9] - 2026-11-13
+
+### Fixed
+
+- Set California's 2026 income tax brackets, standard deductions, exemption credits and renter's credit income limits to the Franchise Tax Board's published amounts, and add the June 2026 California CPI.
+
+
+## [2.118.8] - 2026-11-13
+
+### Fixed
+
+- Restore New York Medicaid eligibility for qualifying 19- and 20-year-olds who live with a parent.
+
+
+## [2.118.7] - 2026-11-12
+
+### Changed
+
+- Count the federal premium tax credit in household net income and household tax as a refundable tax credit (household_refundable_tax_credits), whether or not health benefits count in net income, so changes to it reach net income and the budget. income_tax and SPM resources are unchanged.
+
+### Fixed
+
+- Corrected CPI-U observations to the unadjusted BLS series through October 2026 and recalculated indexed test expectations.
+
+
+## [2.118.6] - 2026-11-12
+
+### Fixed
+
+- DC LIHEAP Regular benefit now pays households with no heating cost that pay for cooling, from the Electric row capped at their electricity bill. DC LIHEAP income limits now use HHS's 60% state median income amounts, rounded down by household size, as DOEE publishes them.
+
+
+## [2.118.5] - 2026-11-12
+
+### Fixed
+
+- Apply each state's own rule for a Medicaid applicant whose spouse is not aged, blind or disabled, in the aged, blind and disabled pathway, the 209(b) route and medically needy: SSI's deeming rule by default, or budgeting the couple together, which keeps SSI's allocations for ineligible children except in Missouri, or keeping the couple limit without deeming. Test spouses split by a facility separately, with no spouse income counted.
+
+
+## [2.118.4] - 2026-11-12
+
+### Fixed
+
+- Combine an SSI couple's income by each month's facility status, so a part-year medical facility stay no longer changes SSI in the other months of the year.
+
+
+## [2.118.3] - 2026-11-12
+
+### Fixed
+
+- Apply immigration tests to Medicare (42 U.S.C. 1395o(a)(2), 42 U.S.C. 1395mmm and 8 U.S.C. 1611(b)(3)) and to Medicare Savings Programs (42 U.S.C. 1396b(v), 8 U.S.C. 1611(a) and 1613(a)), so undocumented people no longer get either and, from 2027, only citizens, permanent residents and Cuban and Haitian entrants can get Medicare. Medicare Savings Programs use the federal Medicaid immigration test, so state-funded Medicaid coverage does not open them.
+
+
+## [2.118.2] - 2026-11-12
+
+### Changed
+
+- Require source-derived partner test values, boundary checks, preserved failing evidence and independent automated review at the current head. Reserve human review for specific expertise questions, remove routine notification gates and load applicable development skills directly.
+
+### Fixed
+
+- Pay Hawaii's LIHEAP Energy Credit on the electric (cooling) account to any eligible household with an electric bill or with utilities or electric heat included in its rent, including the subsidized-dwelling flat amount.
+- Apply SSI's spouse deeming rules to Medicare Savings Program countable income and the poverty guideline when only one spouse is on Medicare, including a spouse who is aged, blind or disabled: a spouse who is not eligible for SSI has income deemed above the rate difference, after allocations for ineligible children, and deeming cannot give a better tier than the person's own income does (20 CFR 416.1163). Test spouses as a couple only when both are on Medicare.
+
+
+## [2.118.1] - 2026-11-12
+
+### Fixed
+
+- Give the Social Security state test backend's stand-in system the situation preprocessing hook that policyengine-core's builder calls.
+
+
 ## [2.118.0] - 2026-11-12
 
 ### Added

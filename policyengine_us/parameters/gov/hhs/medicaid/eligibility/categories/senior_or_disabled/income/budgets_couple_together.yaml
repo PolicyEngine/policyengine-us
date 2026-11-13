@@ -1,0 +1,163 @@
+description: States count a spouse's income and test a married couple living together against the couple standard, whether or not SSI deeming would apply, under the Medicaid pathway for aged, blind, or disabled people, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid senior or disabled couple budgeted together
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 CFR 435.601 - Application of financial eligibility methodologies
+      href: https://www.law.cornell.edu/cfr/text/42/435.601
+    - title: 42 USC 1396a(r)(2) - Less restrictive income and resource methodologies
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#r_2
+    - title: 20 CFR 416.1163 - How we deem income to you from your ineligible spouse
+      href: https://www.law.cornell.edu/cfr/text/20/416.1163
+    - title: 7 AAC 40.240 - Income and resources of spouses (Alaska)
+      href: https://www.law.cornell.edu/regulations/alaska/7-AAC-40.240
+    - title: AHCCCS Eligibility Policy Manual MA611 A - How to calculate income eligibility for SSI-MAO (Arizona)
+      href: https://epm.azahcccs.gov/epmplus/Policy/Chapter_600_Income_Eligibility/611_How_to_Calculate_Income_Eligibility_for_SSIMAO/611A.htm
+    - title: 10 CCR 2505-10 8.100.5 and 8.100.7.C.2 (Colorado)
+      href: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+    - title: Connecticut Uniform Policy Manual 5020.75
+      href: https://portal.ct.gov/-/media/Departments-and-Agencies/DSS/UPMs/UPM5---Treatment-of-Income-Income-Eligibility/5020_75.doc
+    - title: Connecticut Uniform Policy Manual 5515.05
+      href: https://portal.ct.gov/-/media/Departments-and-Agencies/DSS/UPMs/UPM5---Treatment-of-Income-Income-Eligibility/5515_05.doc
+    - title: HAR 17-1724.1-16(1) (Hawaii)
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2016/12/HAR-17-1724.1-INCOME-FOR-MAGI-EXCEPTED-Final-10-31-16-1.pdf#page=5
+    - title: Illinois Policy Manual PM 15-06-02-c
+      href: https://www.dhs.state.il.us/page.aspx?item=16512
+    - title: 405 IAC 2-3-4 (Indiana)
+      href: https://www.law.cornell.edu/regulations/indiana/405-IAC-2-3-4
+    - title: 130 CMR 520.002(A)(1) (Massachusetts)
+      href: https://web.archive.org/web/20260711022327id_/https://www.mass.gov/doc/130-cmr-520000-masshealth-financial-eligibility-0/download#page=2
+    - title: 130 CMR 519.005(A)(1) (Massachusetts)
+      href: https://www.law.cornell.edu/regulations/massachusetts/130-CMR-519-005
+    - title: Michigan BEM 211 - Fiscal and asset group for SSI-related groups
+      href: https://dhhs.michigan.gov/olmweb/ex/BP/Public/BEM/211.pdf#page=8
+    - title: Minnesota Eligibility Policy Manual 2.3.3.3.2.1.1 - Income deeming
+      href: https://hcopub.dhs.state.mn.us/epm/2_3_3_3_2_1_1.htm
+    - title: Missouri MHABD Manual 0805.015.05 - Persons whose income and needs are considered
+      href: https://dssmanuals.mo.gov/medical-assistance-for-the-aged-blind-and-disabled/0805-015-05/
+    - title: N.D. Admin. Code 75-02-02.1-34 (North Dakota)
+      href: https://ndlegis.gov/information/acdata/pdf/75-02-02.1.pdf#page=70
+    - title: 477 NAC 24-001 (Nebraska)
+      href: https://www.law.cornell.edu/regulations/nebraska/477-Neb-Admin-Code-ch-24-SS-001
+    - title: N.H. Code Admin. R. He-W 854.02
+      href: https://www.law.cornell.edu/regulations/new-hampshire/N-H-Admin-Code-SS-He-W-854.02
+    - title: N.H. Code Admin. R. He-W 858.03
+      href: https://www.law.cornell.edu/regulations/new-hampshire/N-H-Admin-Code-SS-He-W-858.03
+    - title: OAC 317:35-7-40 - Qualified Medicare Beneficiary Plus (Oklahoma)
+      href: https://aem-prod.oklahoma.gov/ohca/policies-and-rules/xpolicy/medical-assistance-for-adults-and-children-eligibility/medical-services/determination-of-eligibility-for-medical-services/eligibility-as-qualified-medicare-beneficiary-plus.html
+    - title: South Carolina MPPM 303.06.01
+      href: https://img1.scdhhs.gov/mppm/SCMPPM/Section_300.docx
+    - title: "Vermont Health Benefits Eligibility and Enrollment Rule, Part 5, 29.04 and 29.14 #page 14,52"
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-5-Financial-Methodologies.pdf#page=14
+    - title: Wisconsin Medicaid Eligibility Handbook 15.1
+      href: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm
+AK:
+  2015-01-01: true
+AL:
+  2015-01-01: false
+AR:
+  2015-01-01: false
+AZ:
+  2015-01-01: true
+CA:
+  2015-01-01: false
+CO:
+  2015-01-01: true
+CT:
+  2015-01-01: true
+DC:
+  2015-01-01: false
+DE:
+  2015-01-01: false
+FL:
+  2015-01-01: false
+GA:
+  2015-01-01: false
+HI:
+  2015-01-01: true
+IA:
+  2015-01-01: false
+# IDAPA 16.03.05 sections 761-766 allow a community property method in some cases;
+# the model has no input for separate or community income.
+ID:
+  2015-01-01: false
+IL:
+  2015-01-01: true
+IN:
+  2015-01-01: true
+KS:
+  2015-01-01: false
+KY:
+  2015-01-01: false
+LA:
+  2015-01-01: false
+MA:
+  2015-01-01: true
+MD:
+  2015-01-01: false
+ME:
+  2015-01-01: false
+MI:
+  2015-01-01: true
+MN:
+  2015-01-01: true
+MO:
+  2015-01-01: true
+MS:
+  2015-01-01: false
+MT:
+  2015-01-01: false
+NC:
+  2015-01-01: false
+ND:
+  2015-01-01: true
+NE:
+  2015-01-01: true
+NH:
+  2015-01-01: true
+NJ:
+  2015-01-01: false
+NM:
+  2015-01-01: false
+NV:
+  2015-01-01: false
+NY:
+  2015-01-01: false
+OH:
+  2015-01-01: false
+# OAC 317:35-7-40(1) tests the applicant's own income against the individual
+# standard and the income of both spouses against the couple standard. SSI's rule
+# is the closer method; the two-part test is not modeled.
+OK:
+  2015-01-01: false
+OR:
+  2015-01-01: false
+PA:
+  2015-01-01: false
+RI:
+  2015-01-01: false
+SC:
+  2015-01-01: true
+SD:
+  2015-01-01: false
+TN:
+  2015-01-01: false
+TX:
+  2015-01-01: false
+UT:
+  2015-01-01: false
+VA:
+  2015-01-01: false
+VT:
+  2015-01-01: true
+WA:
+  2015-01-01: false
+WI:
+  2015-01-01: true
+WV:
+  2015-01-01: false
+WY:
+  2015-01-01: false

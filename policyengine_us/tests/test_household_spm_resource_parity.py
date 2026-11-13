@@ -449,8 +449,10 @@ def test_net_incomes_reconcile_for_one_person(state, earnings):
 
     spm_unit_net_income subtracts work, medical and child support costs, and it
     leaves out health benefits. household_net_income subtracts health costs and
-    counts the benefits and bill discounts listed in HOUSEHOLD_ONLY. Take those
-    away and the two totals agree.
+    counts the benefits and bill discounts listed in HOUSEHOLD_ONLY, and the
+    premium tax credit as a refundable tax credit; the SPM counts the credit
+    through lower medical out-of-pocket spending, which spm_side adds back.
+    Take those away and the two totals agree.
     """
     year = 2026
     # Rent makes New Jersey's relief positive, so that payment is under test too.
@@ -470,6 +472,7 @@ def test_net_incomes_reconcile_for_one_person(state, earnings):
         - value("commodity_supplemental_food_program")
         - value("household_head_start_benefits")
         - value("housing_assistance")
+        - value("premium_tax_credit_in_force")
     )
     spm_side = (
         value("spm_unit_net_income")

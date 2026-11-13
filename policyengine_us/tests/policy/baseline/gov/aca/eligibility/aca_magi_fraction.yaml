@@ -1,0 +1,42 @@
+# ACA MAGI as a fraction of the poverty guideline, floored to two decimals.
+# 26 U.S.C. 36B(d)(3)(B) measures income against the guideline for the year
+# before the coverage year. The model's guidelines start in 2015.
+
+- name: Coverage in 2016 uses the 2015 guideline.
+  # 30,000 / 11,770 = 2.5488, floored to 2.54. The 2016 guideline (11,880)
+  # would give 2.52.
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 2.54
+
+- name: Coverage in 2015, the first modeled year, uses the coverage year's guideline.
+  # The year before is not modeled, so the 2015 guideline stands in for the
+  # 2014 guideline the statute calls for: 30,000 / 11,770 = 2.5488, floored
+  # to 2.54.
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 2.54
