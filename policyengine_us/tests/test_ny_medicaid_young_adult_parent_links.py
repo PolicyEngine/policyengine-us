@@ -1,6 +1,6 @@
 """Generated grouping invariants for NY's parent-linked young-adult category.
 
-NY DOH 13 OHIP/ADM-03 IV.A.1(g) requires ages 19/20 and living with a parent.
+NY DOH 13 OHIP/ADM-03 III.B.1(g) requires ages 19/20 and living with a parent.
 Source-derived income/age examples and all 2017–2026 dollar boundaries live in
 is_young_adult_for_medicaid.yaml. These six generated batches instead check
 Core grouping behavior: scalar/vector agreement, member-order invariance,
