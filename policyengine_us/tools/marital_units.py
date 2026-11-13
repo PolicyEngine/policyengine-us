@@ -156,15 +156,17 @@ def infer_missing_marital_units(situation, default_period=None, system=None):
 
     Only married people file separately (26 USC 1(d)), so two people who
     each file the only separate returns in their household (``filing_status``
-    input SEPARATE) are then paired, unless either is separated or a family
-    says they aren't married. A marital unit is a married, co-habiting
-    couple, so filers in different households stay apart.
+    input SEPARATE) are then paired, unless either is separated, a family
+    says they aren't married, or either is already in a couple. A marital
+    unit is a married, co-habiting couple, so filers in different households
+    stay apart.
 
     Everyone else receives their own unit, without claiming that their
     marital status is known. Inputs that can't settle one static couple
     (several heads or spouses, a dependent also marked head or spouse, or
-    role, is_married or filing_status inputs that change between periods)
-    leave everyone in that tax unit and household in their own unit.
+    role or is_married inputs that change between periods) leave everyone in
+    that tax unit and household in their own unit. A filing_status input
+    that changes between periods counts as no status.
     Calculated values are never read: step 4 reads the same inputs and
     parameters the role formulas read, including the defaults Core fills in
     for everyone once anyone supplies a variable for a year, so the units it
@@ -242,17 +244,19 @@ def _join(units, pair):
 
 
 def _filing_status(situation, tax_unit):
-    """A supplied tax unit's filing_status input, if one status in every period."""
+    """A supplied tax unit's filing_status input, if one status in every period.
+
+    A status that changes between periods counts as no status. A change from
+    JOINT to SEPARATE doesn't say a couple split, so it leaves the steps that
+    don't read the status to settle the couple.
+    """
     if tax_unit is None or tax_unit[0] != "supplied":
         return None
     values = situation["tax_units"][tax_unit[1]].get("filing_status")
     if not isinstance(values, dict):
         values = {None: values}
     statuses = {_enum_name(value) for value in values.values() if value is not None}
-    if len(statuses) > 1:
-        # Membership can't change between periods.
-        raise _Ambiguous
-    return statuses.pop() if statuses else None
+    return statuses.pop() if len(statuses) == 1 else None
 
 
 def _separate_filer_pairs(
@@ -267,10 +271,7 @@ def _separate_filer_pairs(
     """
     filers = {}
     for tax_unit in {value for value in tax_units.values() if value is not None}:
-        try:
-            if _filing_status(situation, tax_unit) != "SEPARATE":
-                continue
-        except _Ambiguous:
+        if _filing_status(situation, tax_unit) != "SEPARATE":
             continue
         members = [name for name in people if tax_units[name] == tax_unit]
         heads = list(

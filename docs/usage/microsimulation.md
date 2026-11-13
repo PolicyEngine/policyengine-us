@@ -38,9 +38,14 @@ applies, and gives everyone else their own unit:
 Only married people file separately
 ([26 USC 1(d)](https://www.law.cornell.edu/uscode/text/26/1#d)), so when a
 household holds exactly two tax units whose `filing_status` input is
-`SEPARATE`, their two filers are then paired, unless either is separated or a
-family they share has a false `is_married` input. A marital unit is a married,
-co-habiting couple, so separate filers in different households stay apart.
+`SEPARATE`, their two filers are then paired, unless either is separated, a
+family they share has a false `is_married` input, or either is already in a
+couple from the steps above. A unit's filer is its one true `is_tax_unit_head`
+input, or else its only adult who isn't input as a dependent; a `SEPARATE` unit
+with no such filer still counts toward the two, so it blocks the pairing. A
+marital unit is a married, co-habiting couple, so separate filers in different
+households stay apart. A `filing_status` input that changes between periods
+counts as no status.
 
 The fourth step reads the same inputs and parameters as the role formulas, so
 the units it builds agree with the inferred tax roles in the years the inputs
@@ -56,9 +61,9 @@ it uses the reform's dependent age limits.
 
 Membership can't change between periods. Inputs that can't settle one static
 couple give everyone in that tax unit and household their own unit: two head
-or two spouse inputs, a dependent also marked head or spouse, role,
-`is_married` or `filing_status` inputs that change between periods, or a
-fourth-step couple that differs between years.
+or two spouse inputs, a dependent also marked head or spouse, role or
+`is_married` inputs that change between periods, or a fourth-step couple that
+differs between years.
 
 Known limitations, which callers avoid by supplying `marital_units`:
 
@@ -70,6 +75,13 @@ Known limitations, which callers avoid by supplying `marital_units`:
 - Spouses in two tax units are paired only as the two separate filers of one
   household. A family's true `is_married` input doesn't pair them, and neither
   do separate returns when the household holds more than two.
+- The separate-filer pairing reads no age or relationship, so a parent and an
+  adult child who each file separately from an absent spouse, beside a third
+  tax unit, become a couple.
+- `JOINT` and `SEPARATE` inputs say who is married, but `SINGLE`,
+  `HEAD_OF_HOUSEHOLD` and `SURVIVING_SPOUSE` inputs don't say who isn't: two
+  adults in one tax unit with any of them can still be paired by the fourth
+  step, as on main.
 - A lone true `is_tax_unit_spouse` input on the oldest adult makes that person
   both head and spouse in the role formulas, as on main; the fourth step pairs
   them with the next adult.

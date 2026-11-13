@@ -386,8 +386,6 @@ def test_a_false_spouse_input_leaves_the_roles_without_a_couple():
         (None, []),
         # Only a married couple files jointly (26 USC 6013(a)).
         ("JOINT", [["head", "spouse"]]),
-        # Membership can't change between periods.
-        ({"2024": "JOINT", "2025": "SINGLE"}, []),
     ],
 )
 def test_a_joint_return_pairs_a_spouse_the_age_test_would_not(filing_status, pairs):
@@ -419,6 +417,140 @@ def test_the_two_separate_filers_of_a_household_pair(households, pairs):
         name: {"members": [name], "filing_status": "SEPARATE"} for name in names
     }
     assert _fallback_pairs(people, tax_units=tax_units, households=households) == pairs
+
+
+@pytest.mark.parametrize(
+    "roles, status",
+    [
+        # Explicit roles settle the couple whatever the status says.
+        (
+            {
+                "husband": {"is_tax_unit_head": True},
+                "wife": {"is_tax_unit_spouse": True},
+            },
+            {"2025": "JOINT", "2026": "SEPARATE"},
+        ),
+        # Without roles, step 4 pairs them as it would with no status.
+        ({}, {"2025": "SINGLE", "2026": "HEAD_OF_HOUSEHOLD"}),
+    ],
+)
+def test_a_changing_filing_status_counts_as_no_status(roles, status):
+    people = {
+        "husband": {"age": 70, **roles.get("husband", {})},
+        "wife": {"age": 68, **roles.get("wife", {})},
+    }
+    tax_units = {"tax_unit": {"members": list(people), "filing_status": status}}
+    assert _fallback_pairs(people, tax_units=tax_units) == [["husband", "wife"]]
+
+
+def _separate_return_pairs(tax_units, people, **groups):
+    # Every tax unit files separately, all in one household.
+    situation = {
+        "people": people,
+        "tax_units": {
+            name: {"members": members, "filing_status": "SEPARATE"}
+            for name, members in tax_units.items()
+        },
+        "households": {"home": {"members": list(people)}},
+        **groups,
+    }
+    units = infer_missing_marital_units(situation, "2024", system)["marital_units"]
+    return sorted(
+        sorted(unit["members"]) for unit in units.values() if len(unit["members"]) > 1
+    )
+
+
+@pytest.mark.parametrize(
+    "tax_units, people, groups, pairs",
+    [
+        # A separated filer pairs no one.
+        (
+            {"one": ["first"], "two": ["second"]},
+            {"first": {"age": 45}, "second": {"age": 45, "is_separated": True}},
+            {},
+            [],
+        ),
+        # Nor does a family that says the two aren't married.
+        (
+            {"one": ["first"], "two": ["second"]},
+            {"first": {"age": 45}, "second": {"age": 45}},
+            {
+                "families": {
+                    "family": {"members": ["first", "second"], "is_married": False}
+                }
+            },
+            [],
+        ),
+        # A separate return with no clear filer (two adults, neither a head
+        # input nor a dependent) still counts, so three returns pair no one.
+        (
+            {"one": ["first"], "two": ["second"], "three": ["third", "fourth"]},
+            {
+                "first": {"age": 45},
+                "second": {"age": 45},
+                "third": {"age": 45},
+                "fourth": {"age": 45, "is_tax_unit_spouse": False},
+            },
+            {},
+            [],
+        ),
+        # A true is_tax_unit_head input names the filer of a two-adult unit.
+        (
+            {"one": ["first", "roommate"], "two": ["second"]},
+            {
+                "first": {"age": 45, "is_tax_unit_head": True},
+                "roommate": {"age": 30, "is_tax_unit_spouse": False},
+                "second": {"age": 45},
+            },
+            {},
+            [["first", "second"]],
+        ),
+        # An adult input as a dependent isn't the filer.
+        (
+            {"one": ["first", "parent"], "two": ["second"]},
+            {
+                "first": {"age": 45},
+                "parent": {"age": 70, "is_tax_unit_dependent": True},
+                "second": {"age": 45},
+            },
+            {},
+            [["first", "second"]],
+        ),
+        # Nor is a person input as a child, whatever their age.
+        (
+            {"one": ["first", "kid"], "two": ["second"]},
+            {
+                "first": {"age": 45},
+                "kid": {"age": 30, "is_child": True},
+                "second": {"age": 45},
+            },
+            {},
+            [["first", "second"]],
+        ),
+        # A filer already in a couple from the earlier steps stays in it.
+        (
+            {"one": ["first", "partner"], "two": ["second"]},
+            {
+                "first": {"age": 45, "is_tax_unit_head": True},
+                "partner": {"age": 43, "is_tax_unit_spouse": True},
+                "second": {"age": 45},
+            },
+            {},
+            [["first", "partner"]],
+        ),
+    ],
+)
+def test_the_separate_filer_rules(tax_units, people, groups, pairs):
+    assert _separate_return_pairs(tax_units, people, **groups) == pairs
+
+
+def test_a_married_family_skips_a_person_input_as_a_child():
+    # The role formulas take adults from is_child, so a 21-year-old input as
+    # a child doesn't make the married family ambiguous.
+    situation = _married_family(
+        adult_child={"age": {"2024": 21}, "is_child": {"2024": True}}
+    )
+    assert _pairs(situation) == [["first", "second"]]
 
 
 def test_the_adult_age_matches_is_child():
