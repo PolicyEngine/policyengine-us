@@ -170,3 +170,14 @@
         # 263.50 + 994 - 13 = 1,244.50, above the 1,008 standard: no grant.
         nh_ssp_countable_income: 1_244.5
         nh_ssp: 0
+
+- name: New Hampshire applies its secondary-student allocation limit after April 2012
+  period: 2012-05
+  input:
+    state_code: NH
+    age: 19
+    is_ssi_ineligible_child: true
+    is_full_time_student: true
+    is_in_secondary_school: true
+  output:
+    nh_ssp_ineligible_child: true

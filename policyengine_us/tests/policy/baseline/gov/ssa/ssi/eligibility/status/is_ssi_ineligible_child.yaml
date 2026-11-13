@@ -138,7 +138,6 @@
 
 - name: Review r2 a 21-year-old student was not an ineligible child before June 2008
   # POMS SI 01310.115 A.3: before June 16, 2008 the deeming age limit was 21.
-  # The general SSI child definition keeps its separate student age limit.
   period: 1986
   absolute_error_margin: 0.01
   input:
