@@ -174,6 +174,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py": 1,
     "policyengine_us/variables/gov/states/mo/dese/ccs/eligibility/mo_ccs_income_eligible.py": 1,
     "policyengine_us/variables/gov/states/nd/tax/income/subtractions/nd_stillborn_subtraction.py": 1,
+    "policyengine_us/variables/gov/states/nj/tax/income/credits/eitc/nj_childless_eitc_age_eligible.py": 1,
     "policyengine_us/variables/gov/states/nm/tax/income/exemptions/nm_medical_expense_exemption.py": 1,
     "policyengine_us/variables/gov/states/ny/tax/income/credits/ny_household_credit_potential.py": 2,
     "policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible.py": 1,

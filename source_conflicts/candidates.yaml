@@ -7758,6 +7758,39 @@ candidates:
     wait, and the NOTE records AAM 305.13''s contrary rule (nh_ssp_eligible.py, immigration/permanent_resident_qualifying_quarters.yaml).
     The quarters come from snap_alien_qualifying_quarters, which defaults to 0. The manual may rest on 8 U.S.C.
     1624, which lets a State restrict general cash public assistance; whether the adult categories are that is unsettled.'
+- id: us-nj:childless-eitc-listed-as-dependent
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Can a childless New Jersey filer outside the federal EITC ages claim the NJEITC when another return lists
+    the filer as a dependent but the filer meets the federal dependency test?
+  sources:
+  - kind: statute
+    citation: N.J.S.A. 54A:4-7a.(4), as amended by P.L.2021, c.130
+    url: https://pub.njleg.state.nj.us/Bills/2020/PL21/130_.HTM
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(1)(A)(ii)(III)
+    url: https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii
+  - kind: instructions
+    citation: 2025 Form NJ-1040 instructions, line 58
+    url: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=44
+  readings:
+    statute: The filer must meet every federal EITC qualification except the minimum or maximum age. The federal
+      test bars a filer for whom another taxpayer may deduct an exemption, and neither provision asks whether
+      another return lists the filer.
+    other: The filer must also not be listed as a dependent on another tax return.
+  example: In 2025, a single childless filer aged 20 with $5,000 of wages, listed by a claimant who files only for a
+    refund, gets $259.60 under the statute and $0 under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/credits/eitc/nj_childless_eitc_age_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10043
+  state: ruled
+  note: PE-US applies the federal dependency test with Publication 596's claimant filing exception and no listing
+    test. The 2021 to 2024 instructions carry the same sentence (line 57 in 2021, line 58 from 2022).
 - id: us-nj:claim-of-right-same-category-offset
   program: income-tax
   years:

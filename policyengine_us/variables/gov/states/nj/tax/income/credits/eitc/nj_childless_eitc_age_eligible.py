@@ -52,12 +52,9 @@ class nj_childless_eitc_age_eligible(Variable):
         dependent_elsewhere = tax_unit(
             "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
-        # The NJ-1040 line 58 worksheet also requires "You are not listed as a
-        # dependent on another tax return", an actual claim.
-        filer = person("is_tax_unit_head_or_spouse", period)
-        listed_elsewhere = tax_unit.any(
-            filer & person("claimed_as_dependent_on_another_return", period)
-        )
+        # The NJ-1040 line 58 instructions say "You are not listed as a
+        # dependent on another tax return"; section 1a(4) states no listing
+        # condition, so this formula applies the federal test alone.
 
         return (
             marital_eligible
@@ -67,5 +64,4 @@ class nj_childless_eitc_age_eligible(Variable):
             & tax_unit("nj_eitc_income_eligible", period)
             & ~claims_section_911
             & ~dependent_elsewhere
-            & ~listed_elsewhere
         )

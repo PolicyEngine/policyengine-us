@@ -162,8 +162,7 @@
   output:
     # P.L.2021 c.130 keeps every federal qualification except age, including
     # IRC 32(c)(1)(A)(ii)(III): not a dependent of another taxpayer (either
-    # spouse on a joint return). The worksheet also requires that "You are not
-    # listed as a dependent on another tax return."
+    # spouse on a joint return).
     nj_childless_eitc_age_eligible: false
     nj_eitc: 0
 
@@ -530,8 +529,8 @@
         members: [person_a]
         state_code: NJ
   output:
-    # Publication 596's exception lets the filer meet the federal test, and
-    # the filer is not listed as a dependent on another return: 40% of $649.
+    # Publication 596's exception lets the filer meet the federal test: 40% of
+    # $649.
     nj_childless_eitc_age_eligible: true
     nj_eitc: 259.6
 
@@ -566,7 +565,7 @@
         members: [person_a, person_b]
         state_code: NJ
   output:
-    # Neither spouse is barred or listed as a dependent: 40% of $649.
+    # The federal test bars neither spouse: 40% of $649.
     nj_childless_eitc_age_eligible: true
     nj_eitc: 259.6
 
@@ -626,10 +625,11 @@
         members: [person_a]
         state_code: NJ
   output:
-    # The NJ-1040 line 58 worksheet requires "You are not listed as a
-    # dependent on another tax return", whatever the federal exception.
-    nj_childless_eitc_age_eligible: false
-    nj_eitc: 0
+    # N.J.S.A. 54A:4-7(a)(4) requires the federal qualifications except age
+    # and states no listing condition. Publication 596's exception lets this
+    # filer meet the federal dependency test: 40% of $649.
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.6
 
 - name: Married separated head of household without a qualifying child gets no NJ age fallback
   # The filer is married under IRC 7703(a) (7703(b) gives only HoH status),
