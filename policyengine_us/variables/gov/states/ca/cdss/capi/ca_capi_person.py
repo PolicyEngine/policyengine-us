@@ -50,7 +50,7 @@ class ca_capi_person(Variable):
             / MONTHS_IN_YEAR
         )
         countable_income = where(
-            separated, own_alone, person("ssi_countable_income_monthly", period)
+            separated, own_alone, person("ca_capi_countable_income", period)
         )
         payment_standard = person("ca_capi_payment_standard", period)
         deemed_income = person(

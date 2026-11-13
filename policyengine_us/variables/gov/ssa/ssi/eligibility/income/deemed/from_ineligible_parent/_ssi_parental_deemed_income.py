@@ -9,24 +9,29 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_inelig
 )
 
 
-def ssi_parental_deemed_income(person, period, parameters, allocations=None):
+def ssi_parental_deemed_income(
+    person, period, parameters, allocations=None, recipients=None
+):
     """Income deemed to each eligible child from ineligible parents in a month.
 
     20 CFR 416.1165. `allocations` gives each person's ineligible-child
     allocation; it defaults to SSI's. A state supplement whose own rules
     define an ineligible child more narrowly passes its own allocations, so
     its parental budget follows its rules while SSI's stays unchanged.
+    `recipients` can replace the SSI recipient set for a state program.
     """
-    immigration_status = person("immigration_status", period)
-    is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
-    # 416.1165(e)(2) divides only among SSI-eligible children. Income
-    # and resource eligibility depend on this calculation, so use the
-    # status conditions shared with the ineligible-child classification.
-    eligible_child = (
-        person("is_ssi_aged_blind_disabled", period)
-        & person("is_child", period)
-        & (is_citizen | person("is_ssi_qualified_noncitizen", period))
-    )
+    if recipients is None:
+        immigration_status = person("immigration_status", period)
+        is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
+        # 416.1165(e)(2) divides only among SSI-eligible children. Income
+        # and resource eligibility depend on this calculation, so use the
+        # status conditions shared with the ineligible-child classification.
+        recipients = (
+            person("is_ssi_aged_blind_disabled", period)
+            & person("is_child", period)
+            & (is_citizen | person("is_ssi_qualified_noncitizen", period))
+        )
+    eligible_child = recipients
     ineligible_parent = person("is_ssi_ineligible_parent", period)
     tax_unit = person.tax_unit
 
