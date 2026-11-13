@@ -1,3 +1,11 @@
+## [2.120.2] - 2026-11-13
+
+### Fixed
+
+- Add official Illinois CCAP provider reimbursement schedules from July 2021 through June 2025 while preserving the historical payment gate.
+- Correct Texas Medicaid parent income limits by household size from 2017 for identified parents in one-adult, one-parent households, retaining the existing annual FPG and rounding conventions.
+
+
 ## [2.120.1] - 2026-11-13
 
 ### Fixed
