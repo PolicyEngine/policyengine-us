@@ -9,13 +9,18 @@ class ny_ccap_differential(Variable):
     defined_for = StateCode.NY
     documentation = (
         "Adds the child's nontraditional-hours, homelessness and eligible "
-        "provider accreditation differentials, subject to the district's "
-        "combined limit under 24-OCFS-LCM-22. The default limit assumes no "
-        "OCFS waiver. Confirmed district rates replace state defaults."
+        "provider accreditation differentials, subject to the combined limit. "
+        "From April 1, 2025, Social Services Law 410-x(10) raises the "
+        "nontraditional-hours and licensed or registered homelessness minimum "
+        "from 5% to 10%; an elected accreditation differential keeps its 5% "
+        "minimum. The default limit assumes no OCFS waiver. Confirmed district "
+        "rates replace state defaults."
     )
     reference = (
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.9",
+        # PDF pages 9-10
         "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=9",
+        "https://www.nysenate.gov/legislation/laws/SOS/410-X",
     )
 
     def formula(person, period, parameters):
@@ -35,10 +40,13 @@ class ny_ccap_differential(Variable):
             monroe, p.monroe_legally_exempt_homelessness, p.legally_exempt_homelessness
         )
         # Optional accreditation pays zero until a district adopts it, then
-        # the same minimum and maximum as the mandatory differentials apply.
+        # its own minimum and the shared individual maximum apply.
         accreditation_rate = where(
             accreditation_rate > 0,
-            min_(max_(accreditation_rate, p.minimum), p.maximum_individual),
+            min_(
+                max_(accreditation_rate, p.accreditation_minimum),
+                p.maximum_individual,
+            ),
             0,
         )
         homelessness_rate = where(

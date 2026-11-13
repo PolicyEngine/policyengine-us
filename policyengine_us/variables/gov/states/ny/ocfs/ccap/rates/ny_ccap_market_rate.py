@@ -23,10 +23,7 @@ class ny_ccap_market_rate(Variable):
 
     def formula(person, period, parameters):
         regular = person("ny_ccap_regular_market_rate", period)
-        disabled = person("is_disabled", period.this_year)
-        additional_care = person("ny_ccap_special_needs_care", period.this_year)
-        expenses = person("ny_ccap_childcare_expenses", period)
-        qualifies = disabled & additional_care & (expenses > regular)
+        qualifies = person("ny_ccap_special_needs_rate_eligible", period)
         multiplier = parameters(
             period
         ).gov.states.ny.ocfs.ccap.rates.special_needs_multiplier

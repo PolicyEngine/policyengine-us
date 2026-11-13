@@ -1,7 +1,6 @@
 description: New York districts pay this default optional differential to legally exempt providers caring for children experiencing homelessness.
-# Use the October 2024 state minimum or optional zero where no district
-# percentage has been confirmed. Separate parameters hold confirmed local rates.
-# This implementation follows 24-OCFS-LCM-22; later amendments need an update.
+# Pay nothing until a district elects this optional differential. Separate
+# parameters hold confirmed local rates.
 values:
   2024-10-01: 0
 metadata:
@@ -9,6 +8,6 @@ metadata:
   label: New York CCAP legally exempt homelessness differential
   reference:
     - title: 24-OCFS-LCM-22, differential payment rates
-      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=9
+      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=10
     - title: 18 NYCRR 415.9
       href: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.9

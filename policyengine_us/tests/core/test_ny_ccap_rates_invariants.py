@@ -225,6 +225,15 @@ def _simulate(households, parameters):
                         "person_id": name,
                         "expense": expense,
                         "regular": regular,
+                        "special_needs_inputs": disabled
+                        and variant in FLAGS["ny_ccap_special_needs_care"],
+                        "center_table": _table_rate(
+                            parameters,
+                            unit["group"],
+                            "DCC_SACC",
+                            case["age"],
+                            case["schedule"],
+                        ),
                         "legacy": _table_rate(
                             parameters,
                             unit["group"],
@@ -312,6 +321,7 @@ def test_ny_ccap_rate_and_payment_invariants(generated):
     expenses = calc("ny_ccap_childcare_expenses")
     payment = calc("ny_ccap_payment_rate")
     center = calc("ny_ccap_day_care_center_rate")
+    special_needs = calc("ny_ccap_special_needs_rate_eligible").astype(bool)
     differential = calc("ny_ccap_differential")
     benefit = calc("ny_ccap")
     default_indices = [
@@ -350,20 +360,26 @@ def test_ny_ccap_rate_and_payment_invariants(generated):
         )
         for case in row["children"]:
             i = case["person_index"]
+            # The special-needs rate needs disability, the parent's showing
+            # and expenses above the regular rate.
+            assert special_needs[i] == (
+                case["special_needs_inputs"] and expenses[i] > regular[i]
+            ), f"special-needs eligibility: {context}"
             if case["provider"] == "LE_GC":
+                # A qualifying child's center rate rises to the special-needs rate.
+                np.testing.assert_allclose(
+                    center[i],
+                    case["center_table"] * (1.15 if special_needs[i] else 1),
+                    err_msg=f"group payment cap rate: {context}",
+                    **TOLERANCE,
+                )
                 assert payment[i] <= center[i] + 0.01, f"group payment cap: {context}"
-                if (
-                    row["variant"] == "all"
-                    and row["group"] == "GROUP_4"
-                    and regular[i] > 0
-                    and expenses[i] >= center[i]
-                ):
-                    np.testing.assert_allclose(
-                        payment[i],
-                        center[i],
-                        err_msg=f"NYC group cap binds: {context}",
-                        **TOLERANCE,
-                    )
+                np.testing.assert_allclose(
+                    payment[i],
+                    min(min(expenses[i], market[i]) * (1 + differential[i]), center[i]),
+                    err_msg=f"group payment: {context}",
+                    **TOLERANCE,
+                )
             if row["variant"] == "default":
                 if row["group"] == "GROUP_4" and case["provider"] == "LE_ENH":
                     # ACS's 75% informal rate intentionally exceeds main's 70%.

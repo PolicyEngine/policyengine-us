@@ -1,3 +1,11 @@
+# Each set of parameter overrides builds a separate tax-benefit system, so
+# the cases below share two sets, each listed in the same order every time:
+# - a district that configures nontraditional and homelessness rates of 0,
+#   a 2% exempt homelessness rate, a 1% accreditation rate and an OCFS
+#   waiver to 40%;
+# - a district that configures 30% for every differential.
+# Every other case uses the default parameters.
+
 # 24-OCFS-LCM-22 applies each differential to min(expenses, market rate).
 # $800 * 1.05 = $840, so the district can pay more than the $800 charge.
 - name: Nontraditional hours raise payment above a charge below the market rate.
@@ -60,67 +68,6 @@
     ny_ccap_payment_rate: 1_000
   absolute_error_margin: 0.01
 
-# A district that elects a 5% accreditation differential pays $1,000 * 1.05.
-- name: Accreditation raises payment when the district elects the differential.
-  period: 2025-01
-  input:
-    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.05
-    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.05
-    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.02
-    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.05
-    state_code: NY
-    ny_ccap_county_group: GROUP_1
-    childcare_provider_type_group: DCC_SACC
-    ny_ccap_childcare_expenses: 1_200
-    ny_ccap_market_rate: 1_000
-    ny_ccap_accredited_provider: true
-  output:
-    ny_ccap_differential: 0.05
-    ny_ccap_payment_rate: 1_050
-  absolute_error_margin: 0.01
-
-# The district adds three 5% differentials: $1,000 * (1 + .05 * 3) = $1,150.
-- name: A licensed provider receives all three differentials together.
-  period: 2025-01
-  input:
-    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.05
-    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.05
-    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.02
-    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.05
-    state_code: NY
-    ny_ccap_county_group: GROUP_1
-    childcare_provider_type_group: DCC_SACC
-    ny_ccap_childcare_expenses: 1_200
-    ny_ccap_market_rate: 1_000
-    ny_ccap_nontraditional_hours: true
-    ny_ccap_accredited_provider: true
-    is_homeless: true
-  output:
-    ny_ccap_differential: 0.15
-    ny_ccap_payment_rate: 1_150
-  absolute_error_margin: 0.01
-
-# min(.15 + .15 + .15, .25) = .25; $1,000 * 1.25 = $1,250.
-- name: The total differential stops at twenty-five percent without a waiver.
-  period: 2025-01
-  input:
-    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.15
-    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.15
-    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.15
-    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.15
-    state_code: NY
-    ny_ccap_county_group: GROUP_1
-    childcare_provider_type_group: FDC_GFDC
-    ny_ccap_childcare_expenses: 2_000
-    ny_ccap_market_rate: 1_000
-    ny_ccap_nontraditional_hours: true
-    ny_ccap_accredited_provider: true
-    is_homeless: true
-  output:
-    ny_ccap_differential: 0.25
-    ny_ccap_payment_rate: 1_250
-  absolute_error_margin: 0.01
-
 # The state default pays no optional homelessness differential to exempt care.
 - name: Homelessness leaves standard exempt informal care unchanged by default.
   period: 2025-01
@@ -152,70 +99,85 @@
     ny_ccap_payment_rate: 1_050
   absolute_error_margin: 0.01
 
-# The district may elect an exempt-provider homelessness rate below 5%.
-# $1,000 * 1.02 = $1,020.
-- name: Exempt care receives an optional homelessness rate without a minimum.
-  period: 2025-01
+# Social Services Law 410-x(10) requires at least 10% from April 1, 2025.
+# March keeps the 5% minimum: $1,000 * 1.05 = $1,050.
+- name: March 2025 keeps the five-percent nontraditional-hours minimum.
+  period: 2025-03
   input:
-    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.05
-    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.05
-    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.02
-    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.05
-    state_code: NY
-    ny_ccap_county_group: GROUP_1
-    childcare_provider_type_group: LE_STD
+    state_code: {2025: NY}
+    ny_ccap_county_group: {2025: GROUP_1}
+    childcare_provider_type_group: {2025: DCC_SACC}
     ny_ccap_childcare_expenses: 1_200
     ny_ccap_market_rate: 1_000
-    is_homeless: true
+    ny_ccap_nontraditional_hours: {2025: true}
   output:
-    ny_ccap_differential: 0.02
-    ny_ccap_payment_rate: 1_020
+    ny_ccap_differential: 0.05
+    ny_ccap_payment_rate: 1_050
   absolute_error_margin: 0.01
 
-# Exempt providers never receive the accreditation differential.
-- name: Accreditation cannot raise payment for exempt informal care.
-  period: 2025-01
+# April pays the 10% statutory minimum: $1,000 * 1.10 = $1,100.
+- name: April 2025 raises the nontraditional-hours minimum to ten percent.
+  period: 2025-04
   input:
-    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.15
-    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.15
-    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.15
-    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.15
-    state_code: NY
-    ny_ccap_county_group: GROUP_1
-    childcare_provider_type_group: LE_STD
+    state_code: {2025: NY}
+    ny_ccap_county_group: {2025: GROUP_1}
+    childcare_provider_type_group: {2025: DCC_SACC}
     ny_ccap_childcare_expenses: 1_200
     ny_ccap_market_rate: 1_000
-    ny_ccap_accredited_provider: true
+    ny_ccap_nontraditional_hours: {2025: true}
   output:
-    ny_ccap_differential: 0
-    ny_ccap_payment_rate: 1_000
+    ny_ccap_differential: 0.10
+    ny_ccap_payment_rate: 1_100
   absolute_error_margin: 0.01
 
-# NYC's enhanced group rate pays $382 weekly for both requirements.
-# min($3,000, $382 * 52 / 12) * 1.25 exceeds $439 * 52 / 12,
-# so the district pays the center rate, $1,902.33 monthly.
-- name: Exempt group payment stops at the center rate after differentials.
-  period: 2025-01
+# In June 2025, 410-x(10)(b) gives an exempt provider at least 10% for
+# nontraditional hours, and 410-x(10)(a) gives licensed or registered
+# providers at least 10% for homelessness: $1,000 * 1.10 = $1,100.
+# Exempt homelessness care stays optional, at 0% by default.
+- name: From April 2025 the mandatory differentials pay at least ten percent.
+  period: 2025-06
   input:
-    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.15
-    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.15
-    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.15
-    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.15
-    state_code: NY
-    ny_ccap_county_group: GROUP_4
-    childcare_provider_type_group: LE_GC
-    ny_ccap_age_group: PRESCHOOLER
-    ny_ccap_duration_of_care: WEEKLY
-    ny_ccap_childcare_expenses: 3_000
-    ny_ccap_nontraditional_hours: true
-    ny_ccap_enhanced_health: true
-    ny_ccap_enhanced_training: true
-    is_homeless: true
+    people:
+      exempt_nontraditional:
+        childcare_provider_type_group: {2025: LE_STD}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+        ny_ccap_nontraditional_hours: {2025: true}
+      center_homeless:
+        childcare_provider_type_group: {2025: DCC_SACC}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+      family_homeless:
+        childcare_provider_type_group: {2025: FDC_GFDC}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+      exempt_homeless:
+        childcare_provider_type_group: {2025: LE_STD}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+    households:
+      exempt_nontraditional:
+        members: [exempt_nontraditional]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+      center_homeless:
+        members: [center_homeless]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+        is_homeless: {2025: true}
+      family_homeless:
+        members: [family_homeless]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+        is_homeless: {2025: true}
+      exempt_homeless:
+        members: [exempt_homeless]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+        is_homeless: {2025: true}
   output:
-    ny_ccap_market_rate: 382 * 52 / 12
-    ny_ccap_differential: 0.25
-    ny_ccap_day_care_center_rate: 439 * 52 / 12
-    ny_ccap_payment_rate: 439 * 52 / 12
+    ny_ccap_differential: [0.10, 0.10, 0.10, 0]
+    ny_ccap_payment_rate: [1_100, 1_100, 1_100, 1_000]
   absolute_error_margin: 0.01
 
 # For a qualifying child, $1,000 * 1.15 = $1,150 becomes the market rate.
@@ -253,6 +215,35 @@
   output:
     ny_ccap_market_rate: 1_150
     ny_ccap_payment_rate: 1_155
+  absolute_error_margin: 0.01
+
+# NYC pays $382 weekly for a group program meeting both enhancements and
+# $439 for a center. LCM-22 makes the special-needs rate the market rate for a
+# qualifying child, so both rise by 15%: $382 * 1.15 = $439.30 and $439 * 1.15 = $504.85.
+# NYC's 15% nontraditional differential gives $439.30 * 1.15 = $505.195,
+# above the $504.85 center rate, so the district pays $504.85 * 52 / 12
+# = $2,187.68 monthly.
+- name: A special-needs child's exempt group payment stops at the special-needs center rate.
+  period: 2025-01
+  input:
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_childcare_expenses: 3_000
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+    is_disabled: true
+    ny_ccap_special_needs_care: true
+    ny_ccap_nontraditional_hours: true
+  output:
+    ny_ccap_regular_market_rate: 382 * 52 / 12
+    ny_ccap_special_needs_rate_eligible: true
+    ny_ccap_market_rate: 382 * 1.15 * 52 / 12
+    ny_ccap_differential: 0.15
+    ny_ccap_day_care_center_rate: 439 * 1.15 * 52 / 12
+    ny_ccap_payment_rate: 439 * 1.15 * 52 / 12
   absolute_error_margin: 0.01
 
 # Annual expenses of $12,000 give $1,000 monthly. After the 5% differential
@@ -387,29 +378,114 @@
     ny_ccap_payment_rate: 1_050
   absolute_error_margin: 0.01
 
-# A district must pay at least 5% for nontraditional hours even if its
-# configured percentage falls below the minimum: $1,000 * 1.05 = $1,050.
-- name: The nontraditional-hours differential enforces the five-percent minimum.
+# Monroe's plan took effect November 18, 2024, so November 2024 still uses
+# the state defaults. A Monroe center charges $340 weekly for a preschooler,
+# $340 * 52 / 12 = $1,473.33 monthly. Homelessness and nontraditional hours
+# pay 5% each, and accreditation pays nothing yet: $1,473.33 * 1.10 =
+# $1,620.67. Exempt care for a homeless child pays nothing yet: $185 * 52 / 12
+# = $801.67.
+- name: Monroe County pays state defaults in November 2024.
+  period: 2024-11
+  input:
+    people:
+      center:
+        childcare_provider_type_group: {2024: DCC_SACC}
+        ny_ccap_age_group: {2024: PRESCHOOLER}
+        ny_ccap_duration_of_care: {2024: WEEKLY}
+        ny_ccap_childcare_expenses: 3_000
+        ny_ccap_nontraditional_hours: {2024: true}
+        ny_ccap_accredited_provider: {2024: true}
+      exempt:
+        childcare_provider_type_group: {2024: LE_STD}
+        ny_ccap_age_group: {2024: PRESCHOOLER}
+        ny_ccap_duration_of_care: {2024: WEEKLY}
+        ny_ccap_childcare_expenses: 3_000
+    households:
+      center:
+        members: [center]
+        state_code: {2024: NY}
+        county_str: {2024: MONROE_COUNTY_NY}
+        is_homeless: {2024: true}
+      exempt:
+        members: [exempt]
+        state_code: {2024: NY}
+        county_str: {2024: MONROE_COUNTY_NY}
+        is_homeless: {2024: true}
+  output:
+    ny_ccap_market_rate: [1_473.33, 801.67]
+    ny_ccap_differential: [0.10, 0]
+    ny_ccap_payment_rate: [1_620.67, 801.67]
+  absolute_error_margin: 0.01
+
+# From December 2024, Monroe adds its 10% accreditation differential:
+# 5% + 5% + 10% = 20%, and $1,473.33 * 1.20 = $1,768.
+- name: Monroe County adds its accreditation differential from December 2024.
+  period: 2024-12
+  input:
+    state_code: {2024: NY}
+    county_str: {2024: MONROE_COUNTY_NY}
+    childcare_provider_type_group: {2024: DCC_SACC}
+    ny_ccap_age_group: {2024: PRESCHOOLER}
+    ny_ccap_duration_of_care: {2024: WEEKLY}
+    ny_ccap_childcare_expenses: 3_000
+    ny_ccap_nontraditional_hours: {2024: true}
+    ny_ccap_accredited_provider: {2024: true}
+    is_homeless: {2024: true}
+  output:
+    ny_ccap_differential: 0.20
+    ny_ccap_payment_rate: 340 * 52 / 12 * 1.20
+  absolute_error_margin: 0.01
+
+# In June 2025, the 10% statutory minimum applies to homelessness and
+# nontraditional hours: 10% + 10% + 10% = 30%, above the 25% limit.
+# $1,473.33 * 1.25 = $1,841.67.
+- name: Monroe County's combined differential stops at twenty-five percent in June 2025.
+  period: 2025-06
+  input:
+    state_code: {2025: NY}
+    county_str: {2025: MONROE_COUNTY_NY}
+    childcare_provider_type_group: {2025: DCC_SACC}
+    ny_ccap_age_group: {2025: PRESCHOOLER}
+    ny_ccap_duration_of_care: {2025: WEEKLY}
+    ny_ccap_childcare_expenses: 3_000
+    ny_ccap_nontraditional_hours: {2025: true}
+    ny_ccap_accredited_provider: {2025: true}
+    is_homeless: {2025: true}
+  output:
+    ny_ccap_differential: 0.25
+    ny_ccap_payment_rate: 340 * 52 / 12 * 1.25
+  absolute_error_margin: 0.01
+
+# OCFS raised the combined limit to 35% from December 24, 2025, so the full
+# 30% applies in January 2026: $1,473.33 * 1.30 = $1,915.33.
+- name: Monroe County pays the full thirty percent under the 2026 limit.
+  period: 2026-01
+  input:
+    state_code: NY
+    county_str: MONROE_COUNTY_NY
+    childcare_provider_type_group: DCC_SACC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_childcare_expenses: 3_000
+    ny_ccap_nontraditional_hours: true
+    ny_ccap_accredited_provider: true
+    is_homeless: true
+  output:
+    ny_ccap_differential: 0.30
+    ny_ccap_payment_rate: 340 * 52 / 12 * 1.30
+  absolute_error_margin: 0.01
+
+# District with low configured rates and a 40% waiver.
+# An elected 1% accreditation rate rises to the 5% accreditation minimum:
+# max(.01, .05) = .05; $1,000 * 1.05 = $1,050.
+- name: An elected accreditation differential rises to the five-percent minimum.
   period: 2025-01
   input:
     gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0
-    state_code: NY
-    ny_ccap_county_group: GROUP_1
-    childcare_provider_type_group: DCC_SACC
-    ny_ccap_childcare_expenses: 1_200
-    ny_ccap_market_rate: 1_000
-    ny_ccap_nontraditional_hours: true
-  output:
-    ny_ccap_differential: 0.05
-    ny_ccap_payment_rate: 1_050
-  absolute_error_margin: 0.01
-
-# A district that elects an accreditation differential must pay at least 5%.
-# max(.01, .05) = .05; $1,000 * 1.05 = $1,050.
-- name: An elected accreditation differential enforces the five-percent minimum.
-  period: 2025-01
-  input:
+    gov.states.ny.ocfs.ccap.differentials.homelessness: 0
+    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.02
     gov.states.ny.ocfs.ccap.differentials.accreditation: 0.01
+    gov.states.ny.ocfs.ccap.differentials.maximum: 0.40
     state_code: NY
     ny_ccap_county_group: GROUP_1
     childcare_provider_type_group: DCC_SACC
@@ -421,13 +497,165 @@
     ny_ccap_payment_rate: 1_050
   absolute_error_margin: 0.01
 
-# Each configured 30% differential stops at 15%; their sum stops at 25%.
-# min(.15 + .15 + .15, .25) = .25; $1,000 * 1.25 = $1,250.
-- name: Individual and total maxima limit excessive configured differentials.
+# District with low configured rates and a 40% waiver, January 2025.
+# Configured 0% rates rise to the 5% minimum for nontraditional hours and
+# licensed homelessness; the 1% accreditation rate rises to 5%.
+# All three: .05 + .05 + .05 = .15; $1,000 * 1.15 = $1,150.
+# Exempt homelessness has no minimum, so 2% applies: $1,000 * 1.02 = $1,020.
+- name: Configured rates below the 2024 minimums rise to five percent.
+  period: 2025-01
+  input:
+    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0
+    gov.states.ny.ocfs.ccap.differentials.homelessness: 0
+    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.02
+    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.01
+    gov.states.ny.ocfs.ccap.differentials.maximum: 0.40
+    people:
+      nontraditional:
+        childcare_provider_type_group: DCC_SACC
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+        ny_ccap_nontraditional_hours: true
+      homeless:
+        childcare_provider_type_group: DCC_SACC
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+      all_three:
+        childcare_provider_type_group: DCC_SACC
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+        ny_ccap_nontraditional_hours: true
+        ny_ccap_accredited_provider: true
+      exempt_homeless:
+        childcare_provider_type_group: LE_STD
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+    households:
+      nontraditional:
+        members: [nontraditional]
+        state_code: NY
+        ny_ccap_county_group: GROUP_1
+      homeless:
+        members: [homeless]
+        state_code: NY
+        ny_ccap_county_group: GROUP_1
+        is_homeless: true
+      all_three:
+        members: [all_three]
+        state_code: NY
+        ny_ccap_county_group: GROUP_1
+        is_homeless: true
+      exempt_homeless:
+        members: [exempt_homeless]
+        state_code: NY
+        ny_ccap_county_group: GROUP_1
+        is_homeless: true
+  output:
+    ny_ccap_differential: [0.05, 0.05, 0.15, 0.02]
+    ny_ccap_payment_rate: [1_050, 1_050, 1_150, 1_020]
+  absolute_error_margin: 0.01
+
+# District with low configured rates and a 40% waiver, June 2025.
+# Nontraditional hours and licensed homelessness rise to the 10% minimum,
+# while accreditation keeps its 5% minimum.
+# All three: .10 + .10 + .05 = .25; $1,000 * 1.25 = $1,250.
+- name: Configured rates below the 2025 minimums rise to ten percent, except accreditation.
+  period: 2025-06
+  input:
+    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0
+    gov.states.ny.ocfs.ccap.differentials.homelessness: 0
+    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.02
+    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.01
+    gov.states.ny.ocfs.ccap.differentials.maximum: 0.40
+    people:
+      nontraditional:
+        childcare_provider_type_group: {2025: DCC_SACC}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+        ny_ccap_nontraditional_hours: {2025: true}
+      homeless:
+        childcare_provider_type_group: {2025: DCC_SACC}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+      accredited:
+        childcare_provider_type_group: {2025: DCC_SACC}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+        ny_ccap_accredited_provider: {2025: true}
+      all_three:
+        childcare_provider_type_group: {2025: DCC_SACC}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+        ny_ccap_nontraditional_hours: {2025: true}
+        ny_ccap_accredited_provider: {2025: true}
+      exempt_homeless:
+        childcare_provider_type_group: {2025: LE_STD}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+    households:
+      nontraditional:
+        members: [nontraditional]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+      homeless:
+        members: [homeless]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+        is_homeless: {2025: true}
+      accredited:
+        members: [accredited]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+      all_three:
+        members: [all_three]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+        is_homeless: {2025: true}
+      exempt_homeless:
+        members: [exempt_homeless]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+        is_homeless: {2025: true}
+  output:
+    ny_ccap_differential: [0.10, 0.10, 0.05, 0.25, 0.02]
+    ny_ccap_payment_rate: [1_100, 1_100, 1_050, 1_250, 1_020]
+  absolute_error_margin: 0.01
+
+# District with low configured rates and a 40% waiver, June 2025.
+# In Monroe, nontraditional hours and homelessness rise to 10% each and
+# accreditation pays Monroe's 10%: .10 + .10 + .10 = .30, within the waived
+# limit, so $1,000 * 1.30 = $1,300. Without the waiver it stops at 25%.
+- name: An OCFS waiver lets the district pay combined differentials above twenty-five percent.
+  period: 2025-06
+  input:
+    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0
+    gov.states.ny.ocfs.ccap.differentials.homelessness: 0
+    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.02
+    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.01
+    gov.states.ny.ocfs.ccap.differentials.maximum: 0.40
+    state_code: {2025: NY}
+    county_str: {2025: MONROE_COUNTY_NY}
+    childcare_provider_type_group: {2025: DCC_SACC}
+    ny_ccap_childcare_expenses: 1_200
+    ny_ccap_market_rate: 1_000
+    ny_ccap_nontraditional_hours: {2025: true}
+    ny_ccap_accredited_provider: {2025: true}
+    is_homeless: {2025: true}
+  output:
+    ny_ccap_differential: 0.30
+    ny_ccap_payment_rate: 1_300
+  absolute_error_margin: 0.01
+
+# District that configures 30% for every differential, January 2025.
+# Each differential stops at 15%. Exempt providers never receive the
+# accreditation differential. All three: min(.15 + .15 + .15, .25) = .25,
+# so a registered family provider receives $1,000 * 1.25 = $1,250.
+- name: Individual and combined maxima limit excessive configured differentials.
   period: 2025-01
   input:
     gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.30
     gov.states.ny.ocfs.ccap.differentials.homelessness: 0.30
+    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.30
     gov.states.ny.ocfs.ccap.differentials.accreditation: 0.30
     people:
       nontraditional:
@@ -444,9 +672,18 @@
         ny_ccap_childcare_expenses: 1_200
         ny_ccap_market_rate: 1_000
         ny_ccap_accredited_provider: true
-      all_three:
-        childcare_provider_type_group: DCC_SACC
+      exempt_homeless:
+        childcare_provider_type_group: LE_STD
         ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+      exempt_accredited:
+        childcare_provider_type_group: LE_STD
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+        ny_ccap_accredited_provider: true
+      all_three:
+        childcare_provider_type_group: FDC_GFDC
+        ny_ccap_childcare_expenses: 2_000
         ny_ccap_market_rate: 1_000
         ny_ccap_nontraditional_hours: true
         ny_ccap_accredited_provider: true
@@ -464,25 +701,57 @@
         members: [accredited]
         state_code: NY
         ny_ccap_county_group: GROUP_1
+      exempt_homeless:
+        members: [exempt_homeless]
+        state_code: NY
+        ny_ccap_county_group: GROUP_1
+        is_homeless: true
+      exempt_accredited:
+        members: [exempt_accredited]
+        state_code: NY
+        ny_ccap_county_group: GROUP_1
       all_three:
         members: [all_three]
         state_code: NY
         ny_ccap_county_group: GROUP_1
         is_homeless: true
   output:
-    ny_ccap_differential: [0.15, 0.15, 0.15, 0.25]
-    ny_ccap_payment_rate: [1_150, 1_150, 1_150, 1_250]
+    ny_ccap_differential: [0.15, 0.15, 0.15, 0.15, 0, 0.25]
+    ny_ccap_payment_rate: [1_150, 1_150, 1_150, 1_150, 1_000, 1_250]
   absolute_error_margin: 0.01
 
-# An OCFS waiver can raise the district's combined limit. With a 35% waived
-# limit, min(.15 + .15 + .15, .35) = .35 and $1,000 * 1.35 = $1,350.
-- name: An OCFS waiver allows the district to raise the combined limit.
-  period: 2025-01
+# District that configures 30% for every differential, December 2025.
+# The 35% limit took effect December 24, 2025; the monthly model first
+# reads it in January 2026. min(.45, .25) = .25; $1,000 * 1.25 = $1,250.
+- name: December 2025 keeps the twenty-five percent combined limit.
+  period: 2025-12
   input:
-    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.15
-    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.15
-    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.15
-    gov.states.ny.ocfs.ccap.differentials.maximum: 0.35
+    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.30
+    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.30
+    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.30
+    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.30
+    state_code: {2025: NY}
+    ny_ccap_county_group: {2025: GROUP_1}
+    childcare_provider_type_group: {2025: FDC_GFDC}
+    ny_ccap_childcare_expenses: 2_000
+    ny_ccap_market_rate: 1_000
+    ny_ccap_nontraditional_hours: {2025: true}
+    ny_ccap_accredited_provider: {2025: true}
+    is_homeless: {2025: true}
+  output:
+    ny_ccap_differential: 0.25
+    ny_ccap_payment_rate: 1_250
+  absolute_error_margin: 0.01
+
+# District that configures 30% for every differential, January 2026.
+# min(.15 + .15 + .15, .35) = .35; $1,000 * 1.35 = $1,350.
+- name: From January 2026 the combined differential stops at thirty-five percent.
+  period: 2026-01
+  input:
+    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.30
+    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.30
+    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.30
+    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.30
     state_code: NY
     ny_ccap_county_group: GROUP_1
     childcare_provider_type_group: FDC_GFDC
@@ -494,4 +763,33 @@
   output:
     ny_ccap_differential: 0.35
     ny_ccap_payment_rate: 1_350
+  absolute_error_margin: 0.01
+
+# District that configures 30% for every differential, January 2025.
+# NYC's enhanced group rate pays $382 weekly for both requirements. NYC's
+# 15% nontraditional rate plus the exempt homelessness rate, capped at 15%,
+# give min(.15 + .15, .25) = .25. min($3,000, $382 * 52 / 12) * 1.25
+# exceeds $439 * 52 / 12, so the district pays the center rate, $1,902.33.
+- name: Exempt group payment stops at the center rate after differentials.
+  period: 2025-01
+  input:
+    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0.30
+    gov.states.ny.ocfs.ccap.differentials.homelessness: 0.30
+    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.30
+    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.30
+    state_code: NY
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_childcare_expenses: 3_000
+    ny_ccap_nontraditional_hours: true
+    ny_ccap_enhanced_health: true
+    ny_ccap_enhanced_training: true
+    is_homeless: true
+  output:
+    ny_ccap_market_rate: 382 * 52 / 12
+    ny_ccap_differential: 0.25
+    ny_ccap_day_care_center_rate: 439 * 52 / 12
+    ny_ccap_payment_rate: 439 * 52 / 12
   absolute_error_margin: 0.01

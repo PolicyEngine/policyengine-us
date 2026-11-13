@@ -12,7 +12,8 @@ class ny_ccap_payment_rate(Variable):
         "Applies the combined differential to the lesser of the child's "
         "expenses and applicable market rate. Under 24-OCFS-LCM-22, the "
         "result can exceed the provider's charge. Legally exempt group "
-        "payments cannot exceed the corresponding day care center rate."
+        "payments cannot exceed the day care center rate that applies to "
+        "the child, including the special-needs rate."
     )
     reference = (
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.9",
