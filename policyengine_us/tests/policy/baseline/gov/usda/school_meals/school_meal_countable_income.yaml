@@ -55,3 +55,1209 @@
     general_assistance: 0
   output:
     school_meal_countable_income: 10_000
+
+# 36,000 of wages count; 28,132 < 36,000 < 40,034.
+- name: A Tennessee parent earns 36,000 and the child receives reduced-price meals.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 36_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: REDUCED
+
+# 36,000 wages + 0 excluded educational assistance = 36,000.
+- name: A Tennessee parent receives educational aid and the child keeps reduced-price meals.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000
+        educational_assistance: 7_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 36_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: REDUCED
+
+# 45,000 of wages exceed the two-person reduced-price limit of 40,034.
+- name: A Tennessee parent earns 45,000 and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 45,000 wages + max(-20,000 self_employment_income, 0) = 45,000.
+- name: A Tennessee parent reports a self_employment_income loss and the child keeps the paid tier.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+        self_employment_income: -20_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 45,000 wages + max(-20,000 sstb_self_employment_income, 0) = 45,000.
+- name: A Tennessee parent reports a sstb_self_employment_income loss and the child keeps the paid tier.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+        sstb_self_employment_income: -20_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 45,000 wages + max(-20,000 rental_income, 0) = 45,000.
+- name: A Tennessee parent reports a rental_income loss and the child keeps the paid tier.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+        rental_income: -20_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 0 wages + 60,000 alimony = 60,000, above the 40,034 limit.
+- name: A Tennessee parent receives 60,000 of alimony and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        alimony_income: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 60_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 28,132 < 30,000 of wages < 40,034.
+- name: A Tennessee parent earns 30,000 and the child receives reduced-price meals.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 30_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: REDUCED
+
+# 30,000 wages + 60,000 child_support_received = 90,000.
+- name: A Tennessee parent receives child_support_received and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        child_support_received: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 alimony_income = 90,000.
+- name: A Tennessee parent receives alimony_income and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        alimony_income: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 workers_compensation = 90,000.
+- name: A Tennessee parent receives workers_compensation and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        workers_compensation: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 disability_benefits = 90,000.
+- name: A Tennessee parent receives disability_benefits and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        disability_benefits: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 military_retirement_pay = 90,000.
+- name: A Tennessee parent receives military_retirement_pay and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        military_retirement_pay: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 military_retirement_pay_survivors = 90,000.
+- name: A Tennessee parent receives military_retirement_pay_survivors and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        military_retirement_pay_survivors: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 farm_operations_income = 90,000.
+- name: A Tennessee parent receives farm_operations_income and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        farm_operations_income: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 farm_rent_income = 90,000.
+- name: A Tennessee parent receives farm_rent_income and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        farm_rent_income: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 estate_income = 90,000.
+- name: A Tennessee parent receives estate_income and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        estate_income: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 partnership_income = 90,000.
+- name: A Tennessee parent receives partnership_income and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        partnership_income: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 s_corp_income = 90,000.
+- name: A Tennessee parent receives s_corp_income and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        s_corp_income: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 aggregate military_retirement_income = 90,000.
+- name: A Tennessee parent enters military_retirement_income directly and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        military_retirement_income: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 30,000 wages + 60,000 aggregate partnership_s_corp_income = 90,000.
+- name: A Tennessee parent enters partnership_s_corp_income directly and the child pays full price.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+        partnership_s_corp_income: 60_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 90_000
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# 45,000 wages + 6 * max(-1, 0) = 45,000.
+- name: A parent reports -1 in each business source and schools floor each source.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+        self_employment_income: -1
+        sstb_self_employment_income: -1
+        rental_income: -1
+        farm_operations_income: -1
+        farm_rent_income: -1
+        partnership_s_corp_income: -1
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_000
+
+# 45,000 wages + 6 * max(0, 0) = 45,000.
+- name: A parent reports 0 in each business source and schools floor each source.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+        self_employment_income: 0
+        sstb_self_employment_income: 0
+        rental_income: 0
+        farm_operations_income: 0
+        farm_rent_income: 0
+        partnership_s_corp_income: 0
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_000
+
+# 45,000 wages + 6 * max(1, 0) = 45,006.
+- name: A parent reports 1 in each business source and schools floor each source.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+        self_employment_income: 1
+        sstb_self_employment_income: 1
+        rental_income: 1
+        farm_operations_income: 1
+        farm_rent_income: 1
+        partnership_s_corp_income: 1
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_006
+
+# 45,000 wages + 6 * (max(-100, 0) + max(40, 0)) = 45,240.
+- name: A parent has losses and another adult has gains in the same business sources.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+        self_employment_income: -100
+        sstb_self_employment_income: -100
+        rental_income: -100
+        farm_operations_income: -100
+        farm_rent_income: -100
+        partnership_s_corp_income: -100
+      child:
+        age: 10
+      other_adult:
+        age: 40
+        self_employment_income: 40
+        sstb_self_employment_income: 40
+        rental_income: 40
+        farm_operations_income: 40
+        farm_rent_income: 40
+        partnership_s_corp_income: 40
+    spm_units:
+      spm_unit:
+        members: [parent, child, other_adult]
+    households:
+      household:
+        members: [parent, child, other_adult]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_240
+
+# Each adult contributes 3 * 40; 45,000 wages + 2 * 3 * 40 = 45,240.
+- name: Two adults have gains and losses in different business sources.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_000
+        self_employment_income: -100
+        sstb_self_employment_income: 40
+        rental_income: -100
+        farm_operations_income: 40
+        farm_rent_income: -100
+        partnership_s_corp_income: 40
+      child:
+        age: 10
+      other_adult:
+        age: 40
+        self_employment_income: 40
+        sstb_self_employment_income: -100
+        rental_income: 40
+        farm_operations_income: -100
+        farm_rent_income: 40
+        partnership_s_corp_income: -100
+    spm_units:
+      spm_unit:
+        members: [parent, child, other_adult]
+    households:
+      household:
+        members: [parent, child, other_adult]
+        state_code: TN
+  output:
+    school_meal_countable_income: 45_240
+
+# Federal SSI = 12 * 994 = 11,928.
+# Wisconsin SSP = 4 * 83.78 + 8 * 92.16 = 1,072.40.
+# 38,114 wages + 11,928 SSI + 1,072.40 SSP = 51,114.40 > 50,542.
+- name: A Wisconsin parent lives with an adult SSI recipient and a younger child who pays full price.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 38_114
+      adult_child:
+        age: 19
+        is_ssi_disabled: true
+      child:
+        age: 10
+    families:
+      family:
+        members: [parent, adult_child, child]
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child, child]
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      adult_child_unit:
+        members: [adult_child]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, adult_child, child]
+        state_code: WI
+  output:
+    ssi: [0, 11_928, 0]
+    wi_ssp: [0, 1_072.4, 0]
+    spm_unit_fpg: 27_320
+    school_meal_countable_income: 51_114.4
+    meets_school_meal_categorical_eligibility: false
+    school_meal_tier: PAID
+
+# Each household receives 100 annually from one modeled supplement.
+# Six SPM-unit supplements count once across their two-person households.
+- name: Recipients count each state SSI supplement once in school meal income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      ak_ssp_recipient:
+        age: 35
+        ssi: 0
+        ak_ssp: 100
+      al_ssp_recipient:
+        age: 35
+        ssi: 0
+        al_ssp: 100
+      ca_state_supplement_recipient:
+        age: 35
+        ssi: 0
+      ca_state_supplement_other:
+        age: 35
+        ssi: 0
+      co_oap_recipient:
+        age: 35
+        ssi: 0
+        co_oap: 100
+      co_state_supplement_recipient:
+        age: 35
+        ssi: 0
+        co_state_supplement: 100
+      ct_ssp_recipient:
+        age: 35
+        ssi: 0
+      ct_ssp_other:
+        age: 35
+        ssi: 0
+      dc_ossp_recipient:
+        age: 35
+        ssi: 0
+        dc_ossp: 100
+      de_ssp_recipient:
+        age: 35
+        ssi: 0
+        de_ssp: 100
+      fl_oss_recipient:
+        age: 35
+        ssi: 0
+        fl_oss: 100
+      ga_ssp_recipient:
+        age: 35
+        ssi: 0
+      ga_ssp_other:
+        age: 35
+        ssi: 0
+      hi_oss_recipient:
+        age: 35
+        ssi: 0
+        hi_oss: 100
+      ia_ssa_recipient:
+        age: 35
+        ssi: 0
+        ia_ssa: 100
+      id_aabd_recipient:
+        age: 35
+        ssi: 0
+        id_aabd: 100
+      il_aabd_recipient:
+        age: 35
+        ssi: 0
+      il_aabd_other:
+        age: 35
+        ssi: 0
+      in_ssp_recipient:
+        age: 35
+        ssi: 0
+        in_ssp: 100
+      ks_sspp_recipient:
+        age: 35
+        ssi: 0
+        ks_sspp: 100
+      ky_ssp_recipient:
+        age: 35
+        ssi: 0
+        ky_ssp: 100
+      la_oss_recipient:
+        age: 35
+        ssi: 0
+        la_oss: 100
+      ma_state_supplement_recipient:
+        age: 35
+        ssi: 0
+        ma_state_supplement: 100
+      md_paa_recipient:
+        age: 35
+        ssi: 0
+        md_paa: 100
+      me_ssp_recipient:
+        age: 35
+        ssi: 0
+        me_ssp: 100
+      mi_ssp_recipient:
+        age: 35
+        ssi: 0
+      mi_ssp_other:
+        age: 35
+        ssi: 0
+      mn_msa_recipient:
+        age: 35
+        ssi: 0
+      mn_msa_other:
+        age: 35
+        ssi: 0
+      mo_ssp_recipient:
+        age: 35
+        ssi: 0
+        mo_ssp: 100
+      mt_ssp_recipient:
+        age: 35
+        ssi: 0
+        mt_ssp: 100
+      nc_sa_recipient:
+        age: 35
+        ssi: 0
+        nc_sa: 100
+      ne_aabd_recipient:
+        age: 35
+        ssi: 0
+        ne_aabd: 100
+      nh_ssp_recipient:
+        age: 35
+        ssi: 0
+        nh_ssp: 100
+      nj_ssp_recipient:
+        age: 35
+        ssi: 0
+        nj_ssp: 100
+      nm_ssi_state_supplement_recipient:
+        age: 35
+        ssi: 0
+        nm_ssi_state_supplement: 100
+      nv_oss_recipient:
+        age: 35
+        ssi: 0
+        nv_oss: 100
+      ny_ssp_recipient:
+        age: 35
+        ssi: 0
+        ny_ssp: 100
+      oh_rss_recipient:
+        age: 35
+        ssi: 0
+        oh_rss: 100
+      ok_ssp_recipient:
+        age: 35
+        ssi: 0
+        ok_ssp: 100
+      or_ssp_recipient:
+        age: 35
+        ssi: 0
+        or_ssp: 100
+        or_ssp_category: IN_HOME
+      pa_ssp_recipient:
+        age: 35
+        ssi: 0
+        pa_ssp: 100
+      ri_ssp_recipient:
+        age: 35
+        ssi: 0
+        ri_ssp: 100
+      sc_ssi_state_supplement_recipient:
+        age: 35
+        ssi: 0
+        sc_ssi_state_supplement: 100
+      sd_ssp_recipient:
+        age: 35
+        ssi: 0
+        sd_ssp: 100
+      tx_ssi_state_supplement_recipient:
+        age: 35
+        ssi: 0
+        tx_ssi_state_supplement: 100
+      ut_ssp_recipient:
+        age: 35
+        ssi: 0
+        ut_ssp: 100
+      va_ag_recipient:
+        age: 35
+        ssi: 0
+        va_ag: 100
+      vt_aabd_recipient:
+        age: 35
+        ssi: 0
+        vt_aabd: 100
+      wa_ssp_recipient:
+        age: 35
+        ssi: 0
+        wa_ssp: 100
+      wi_ssp_recipient:
+        age: 35
+        ssi: 0
+        wi_ssp: 100
+      wy_ssp_recipient:
+        age: 35
+        ssi: 0
+        wy_ssp: 100
+    spm_units:
+      ak_ssp_unit:
+        members: [ak_ssp_recipient]
+        tanf: 0
+      al_ssp_unit:
+        members: [al_ssp_recipient]
+        tanf: 0
+      ca_state_supplement_unit:
+        members: [ca_state_supplement_recipient, ca_state_supplement_other]
+        tanf: 0
+        ca_state_supplement: 100
+      co_oap_unit:
+        members: [co_oap_recipient]
+        tanf: 0
+      co_state_supplement_unit:
+        members: [co_state_supplement_recipient]
+        tanf: 0
+      ct_ssp_unit:
+        members: [ct_ssp_recipient, ct_ssp_other]
+        tanf: 0
+        ct_ssp: 100
+      dc_ossp_unit:
+        members: [dc_ossp_recipient]
+        tanf: 0
+      de_ssp_unit:
+        members: [de_ssp_recipient]
+        tanf: 0
+      fl_oss_unit:
+        members: [fl_oss_recipient]
+        tanf: 0
+      ga_ssp_unit:
+        members: [ga_ssp_recipient, ga_ssp_other]
+        tanf: 0
+        ga_ssp: 100
+      hi_oss_unit:
+        members: [hi_oss_recipient]
+        tanf: 0
+      ia_ssa_unit:
+        members: [ia_ssa_recipient]
+        tanf: 0
+      id_aabd_unit:
+        members: [id_aabd_recipient]
+        tanf: 0
+      il_aabd_unit:
+        members: [il_aabd_recipient, il_aabd_other]
+        tanf: 0
+        il_aabd: 100
+      in_ssp_unit:
+        members: [in_ssp_recipient]
+        tanf: 0
+      ks_sspp_unit:
+        members: [ks_sspp_recipient]
+        tanf: 0
+      ky_ssp_unit:
+        members: [ky_ssp_recipient]
+        tanf: 0
+      la_oss_unit:
+        members: [la_oss_recipient]
+        tanf: 0
+      ma_state_supplement_unit:
+        members: [ma_state_supplement_recipient]
+        tanf: 0
+      md_paa_unit:
+        members: [md_paa_recipient]
+        tanf: 0
+      me_ssp_unit:
+        members: [me_ssp_recipient]
+        tanf: 0
+      mi_ssp_unit:
+        members: [mi_ssp_recipient, mi_ssp_other]
+        tanf: 0
+        mi_ssp: 100
+      mn_msa_unit:
+        members: [mn_msa_recipient, mn_msa_other]
+        tanf: 0
+        mn_msa: 100
+      mo_ssp_unit:
+        members: [mo_ssp_recipient]
+        tanf: 0
+      mt_ssp_unit:
+        members: [mt_ssp_recipient]
+        tanf: 0
+      nc_sa_unit:
+        members: [nc_sa_recipient]
+        tanf: 0
+      ne_aabd_unit:
+        members: [ne_aabd_recipient]
+        tanf: 0
+      nh_ssp_unit:
+        members: [nh_ssp_recipient]
+        tanf: 0
+      nj_ssp_unit:
+        members: [nj_ssp_recipient]
+        tanf: 0
+      nm_ssi_state_supplement_unit:
+        members: [nm_ssi_state_supplement_recipient]
+        tanf: 0
+      nv_oss_unit:
+        members: [nv_oss_recipient]
+        tanf: 0
+      ny_ssp_unit:
+        members: [ny_ssp_recipient]
+        tanf: 0
+      oh_rss_unit:
+        members: [oh_rss_recipient]
+        tanf: 0
+      ok_ssp_unit:
+        members: [ok_ssp_recipient]
+        tanf: 0
+      or_ssp_unit:
+        members: [or_ssp_recipient]
+        tanf: 0
+      pa_ssp_unit:
+        members: [pa_ssp_recipient]
+        tanf: 0
+      ri_ssp_unit:
+        members: [ri_ssp_recipient]
+        tanf: 0
+      sc_ssi_state_supplement_unit:
+        members: [sc_ssi_state_supplement_recipient]
+        tanf: 0
+      sd_ssp_unit:
+        members: [sd_ssp_recipient]
+        tanf: 0
+      tx_ssi_state_supplement_unit:
+        members: [tx_ssi_state_supplement_recipient]
+        tanf: 0
+      ut_ssp_unit:
+        members: [ut_ssp_recipient]
+        tanf: 0
+      va_ag_unit:
+        members: [va_ag_recipient]
+        tanf: 0
+      vt_aabd_unit:
+        members: [vt_aabd_recipient]
+        tanf: 0
+      wa_ssp_unit:
+        members: [wa_ssp_recipient]
+        tanf: 0
+      wi_ssp_unit:
+        members: [wi_ssp_recipient]
+        tanf: 0
+      wy_ssp_unit:
+        members: [wy_ssp_recipient]
+        tanf: 0
+    households:
+      ak_ssp_household:
+        members: [ak_ssp_recipient]
+        state_code: AK
+      al_ssp_household:
+        members: [al_ssp_recipient]
+        state_code: AL
+      ca_state_supplement_household:
+        members: [ca_state_supplement_recipient, ca_state_supplement_other]
+        state_code: CA
+      co_oap_household:
+        members: [co_oap_recipient]
+        state_code: CO
+      co_state_supplement_household:
+        members: [co_state_supplement_recipient]
+        state_code: CO
+      ct_ssp_household:
+        members: [ct_ssp_recipient, ct_ssp_other]
+        state_code: CT
+      dc_ossp_household:
+        members: [dc_ossp_recipient]
+        state_code: DC
+      de_ssp_household:
+        members: [de_ssp_recipient]
+        state_code: DE
+      fl_oss_household:
+        members: [fl_oss_recipient]
+        state_code: FL
+      ga_ssp_household:
+        members: [ga_ssp_recipient, ga_ssp_other]
+        state_code: GA
+      hi_oss_household:
+        members: [hi_oss_recipient]
+        state_code: HI
+      ia_ssa_household:
+        members: [ia_ssa_recipient]
+        state_code: IA
+      id_aabd_household:
+        members: [id_aabd_recipient]
+        state_code: ID
+      il_aabd_household:
+        members: [il_aabd_recipient, il_aabd_other]
+        state_code: IL
+      in_ssp_household:
+        members: [in_ssp_recipient]
+        state_code: IN
+      ks_sspp_household:
+        members: [ks_sspp_recipient]
+        state_code: KS
+      ky_ssp_household:
+        members: [ky_ssp_recipient]
+        state_code: KY
+      la_oss_household:
+        members: [la_oss_recipient]
+        state_code: LA
+      ma_state_supplement_household:
+        members: [ma_state_supplement_recipient]
+        state_code: MA
+      md_paa_household:
+        members: [md_paa_recipient]
+        state_code: MD
+      me_ssp_household:
+        members: [me_ssp_recipient]
+        state_code: ME
+      mi_ssp_household:
+        members: [mi_ssp_recipient, mi_ssp_other]
+        state_code: MI
+      mn_msa_household:
+        members: [mn_msa_recipient, mn_msa_other]
+        state_code: MN
+      mo_ssp_household:
+        members: [mo_ssp_recipient]
+        state_code: MO
+      mt_ssp_household:
+        members: [mt_ssp_recipient]
+        state_code: MT
+      nc_sa_household:
+        members: [nc_sa_recipient]
+        state_code: NC
+      ne_aabd_household:
+        members: [ne_aabd_recipient]
+        state_code: NE
+      nh_ssp_household:
+        members: [nh_ssp_recipient]
+        state_code: NH
+      nj_ssp_household:
+        members: [nj_ssp_recipient]
+        state_code: NJ
+      nm_ssi_state_supplement_household:
+        members: [nm_ssi_state_supplement_recipient]
+        state_code: NM
+      nv_oss_household:
+        members: [nv_oss_recipient]
+        state_code: NV
+      ny_ssp_household:
+        members: [ny_ssp_recipient]
+        state_code: NY
+      oh_rss_household:
+        members: [oh_rss_recipient]
+        state_code: OH
+      ok_ssp_household:
+        members: [ok_ssp_recipient]
+        state_code: OK
+      or_ssp_household:
+        members: [or_ssp_recipient]
+        state_code: OR
+      pa_ssp_household:
+        members: [pa_ssp_recipient]
+        state_code: PA
+      ri_ssp_household:
+        members: [ri_ssp_recipient]
+        state_code: RI
+      sc_ssi_state_supplement_household:
+        members: [sc_ssi_state_supplement_recipient]
+        state_code: SC
+      sd_ssp_household:
+        members: [sd_ssp_recipient]
+        state_code: SD
+      tx_ssi_state_supplement_household:
+        members: [tx_ssi_state_supplement_recipient]
+        state_code: TX
+      ut_ssp_household:
+        members: [ut_ssp_recipient]
+        state_code: UT
+      va_ag_household:
+        members: [va_ag_recipient]
+        state_code: VA
+      vt_aabd_household:
+        members: [vt_aabd_recipient]
+        state_code: VT
+      wa_ssp_household:
+        members: [wa_ssp_recipient]
+        state_code: WA
+      wi_ssp_household:
+        members: [wi_ssp_recipient]
+        state_code: WI
+      wy_ssp_household:
+        members: [wy_ssp_recipient]
+        state_code: WY
+  output:
+    school_meal_countable_income:
+      - 100  # ak_ssp
+      - 100  # al_ssp
+      - 100  # ca_state_supplement
+      - 100  # co_oap
+      - 100  # co_state_supplement
+      - 100  # ct_ssp
+      - 100  # dc_ossp
+      - 100  # de_ssp
+      - 100  # fl_oss
+      - 100  # ga_ssp
+      - 100  # hi_oss
+      - 100  # ia_ssa
+      - 100  # id_aabd
+      - 100  # il_aabd
+      - 100  # in_ssp
+      - 100  # ks_sspp
+      - 100  # ky_ssp
+      - 100  # la_oss
+      - 100  # ma_state_supplement
+      - 100  # md_paa
+      - 100  # me_ssp
+      - 100  # mi_ssp
+      - 100  # mn_msa
+      - 100  # mo_ssp
+      - 100  # mt_ssp
+      - 100  # nc_sa
+      - 100  # ne_aabd
+      - 100  # nh_ssp
+      - 100  # nj_ssp
+      - 100  # nm_ssi_state_supplement
+      - 100  # nv_oss
+      - 100  # ny_ssp
+      - 100  # oh_rss
+      - 100  # ok_ssp
+      - 100  # or_ssp
+      - 100  # pa_ssp
+      - 100  # ri_ssp
+      - 100  # sc_ssi_state_supplement
+      - 100  # sd_ssp
+      - 100  # tx_ssi_state_supplement
+      - 100  # ut_ssp
+      - 100  # va_ag
+      - 100  # vt_aabd
+      - 100  # wa_ssp
+      - 100  # wi_ssp
+      - 100  # wy_ssp

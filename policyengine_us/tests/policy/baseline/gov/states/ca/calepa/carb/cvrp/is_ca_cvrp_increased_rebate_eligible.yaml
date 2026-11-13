@@ -1,7 +1,8 @@
 - name: Threshold is 400% of FPL.
   period: 2022
   input:
-    school_meal_fpg_ratio: 4
+    ca_cvrp_countable_income: 40_000
+    spm_unit_fpg: 10_000
     medicaid_enrolled: false
   output:
     is_ca_cvrp_increased_rebate_eligible: true
@@ -9,7 +10,8 @@
 - name: Threshold is 400% of FPL.
   period: 2022
   input:
-    school_meal_fpg_ratio: 4.01
+    ca_cvrp_countable_income: 40_100
+    spm_unit_fpg: 10_000
     medicaid_enrolled: false
   output:
     is_ca_cvrp_increased_rebate_eligible: false
@@ -17,7 +19,8 @@
 - name: Can also qualify via SSI.
   period: 2022
   input:
-    school_meal_fpg_ratio: 4.01
+    ca_cvrp_countable_income: 40_100
+    spm_unit_fpg: 10_000
     medicaid_enrolled: false
     ssi: 1
   output:
@@ -26,7 +29,8 @@
 - name: Reported SSI receipt with a zero modeled payment also qualifies above the income threshold.
   period: 2022
   input:
-    school_meal_fpg_ratio: 4.01
+    ca_cvrp_countable_income: 40_100
+    spm_unit_fpg: 10_000
     medicaid_enrolled: false
     ssi: 0
     receives_ssi: true

@@ -1,0 +1,72 @@
+- name: Oregon counts recurring supplemental cash assistance for school meals.
+  period: 2026-01
+  input:
+    state_code:
+      2026: OR
+    or_ssp_category:
+      - IN_HOME
+      - COMMUNITY_CARE
+      - DISABILITY_INTERIM
+      - SSI_RESTORATION
+      - VA_RESTORATION
+      - NATURALIZATION
+      - SUSPENDED_SSI
+      - SPOUSAL_DIVERSION
+      - NONE
+    or_ssp: [100, 100, 100, 100, 100, 100, 100, 100, 100]
+  output:
+    # Each recipient has $100 of recurring cash: $100 - $0 excluded = $100.
+    # NONE retains the recurring nursing-facility allowance in or_ssp.
+    or_ssp_countable_for_school_meals: [100, 100, 100, 100, 100, 100, 100, 100, 100]
+
+- name: Oregon excludes initial room and board from school meal income.
+  period: 2026-01
+  input:
+    state_code:
+      2026: OR
+    or_ssp_category: INITIAL_ROOM_BOARD
+    or_ssp: 100
+  output:
+    # The entire $100 pays an initial placement: $100 - $100 = $0.
+    or_ssp_countable_for_school_meals: 0
+
+- name: Oregon excludes facility payments during absence from school meal income.
+  period: 2026-01
+  input:
+    state_code:
+      2026: OR
+    or_ssp_category: ROOM_BOARD_ABSENCE
+    or_ssp: 100
+  output:
+    # The entire $100 pays the facility: $100 - $100 = $0.
+    or_ssp_countable_for_school_meals: 0
+
+- name: Oregon excludes incapacity placement payments from school meal income.
+  period: 2026-01
+  input:
+    state_code:
+      2026: OR
+    or_ssp_category: ROOM_BOARD_INCAPACITY
+    or_ssp: 100
+  output:
+    # The entire $100 secures a placement: $100 - $100 = $0.
+    or_ssp_countable_for_school_meals: 0
+
+- name: Oregon counts no supplement when no payment applies.
+  period: 2026-01
+  input:
+    state_code:
+      2026: OR
+  output:
+    # No approved special need or facility allowance gives $0 cash income.
+    or_ssp_countable_for_school_meals: 0
+
+- name: Oregon's school meal income measure applies only in Oregon.
+  period: 2026-01
+  input:
+    state_code:
+      2026: WA
+    or_ssp_category: IN_HOME
+    or_ssp: 100
+  output:
+    or_ssp_countable_for_school_meals: 0

@@ -11,9 +11,9 @@ class is_ca_cvrp_increased_rebate_eligible(Variable):
     defined_for = StateCode.CA
 
     def formula(person, period, parameters):
-        # Use school meal FPG ratio.
         spm_unit = person.spm_unit
-        fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
+        income = spm_unit("ca_cvrp_countable_income", period)
+        fpg_ratio = income / spm_unit("spm_unit_fpg", period)
         p = parameters(period).gov.states.ca.calepa.carb.cvrp.increased_rebate
         income_eligible = fpg_ratio <= p.fpl_limit
         categorically_eligible = add(spm_unit, period, p.categorical_eligibility) > 0

@@ -1,0 +1,97 @@
+- name: The independent income approximations include educational assistance.
+  period: 2026
+  input:
+    age: 35
+    state_code: TN
+    employment_income: 36_000
+    educational_assistance: 7_000
+  output:
+    # Preserve the existing approximation: 36,000 + 7,000 = 43,000.
+    csfp_countable_income: 43_000
+    tx_dta_csfp_countable_income: 43_000
+    ca_cvrp_countable_income: 43_000
+
+- name: The independent income approximations retain self-employment losses.
+  period: 2026
+  input:
+    age: 35
+    state_code: TN
+    employment_income: 45_000
+    self_employment_income: -20_000
+  output:
+    # Preserve the existing approximation: 45,000 - 20,000 = 25,000.
+    csfp_countable_income: 25_000
+    tx_dta_csfp_countable_income: 25_000
+    ca_cvrp_countable_income: 25_000
+
+- name: The independent income approximations retain SSTB losses.
+  period: 2026
+  input:
+    age: 35
+    state_code: TN
+    employment_income: 45_000
+    sstb_self_employment_income: -20_000
+  output:
+    # Preserve the existing approximation: 45,000 - 20,000 = 25,000.
+    csfp_countable_income: 25_000
+    tx_dta_csfp_countable_income: 25_000
+    ca_cvrp_countable_income: 25_000
+
+- name: The independent income approximations retain rental losses.
+  period: 2026
+  input:
+    age: 35
+    state_code: TN
+    employment_income: 45_000
+    rental_income: -20_000
+  output:
+    # Preserve the existing approximation: 45,000 - 20,000 = 25,000.
+    csfp_countable_income: 25_000
+    tx_dta_csfp_countable_income: 25_000
+    ca_cvrp_countable_income: 25_000
+
+- name: The independent income approximations retain their existing alimony omission.
+  period: 2026
+  input:
+    age: 35
+    state_code: TN
+    employment_income: 30_000
+    alimony_income: 60_000
+  output:
+    # Preserve the existing approximation: only 30,000 wages enter the sum.
+    csfp_countable_income: 30_000
+    tx_dta_csfp_countable_income: 30_000
+    ca_cvrp_countable_income: 30_000
+
+- name: The independent income approximations retain their existing state supplement omission.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 38_114
+      adult_child:
+        age: 19
+        is_ssi_disabled: true
+      child:
+        age: 10
+    marital_units:
+      parent_unit:
+        members: [parent]
+      adult_child_unit:
+        members: [adult_child]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child, child]
+    households:
+      household:
+        members: [parent, adult_child, child]
+        state_code: WI
+  output:
+    # Preserve the existing approximation: 38,114 wages + 11,928 federal SSI.
+    csfp_countable_income: 50_042
+    tx_dta_csfp_countable_income: 50_042
+    ca_cvrp_countable_income: 50_042

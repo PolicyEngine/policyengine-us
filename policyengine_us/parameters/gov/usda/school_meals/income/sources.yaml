@@ -3,8 +3,6 @@ description: Income sources that count as income for school meal subsidies.
 values:
   2009-01-01:
     - employment_income
-    - self_employment_income
-    - sstb_self_employment_income
     - dividend_income
     - interest_income
     - gi_cash_assistance
@@ -21,15 +19,20 @@ values:
     - veterans_benefits
     - total_unemployment_compensation
     - strike_benefits
-    - rental_income
     - retirement_distributions
-    - educational_assistance
+    - alimony_income
+    - workers_compensation
+    - disability_benefits
+    - military_retirement_income
+    - estate_income
 
 metadata:
   reference:
     - title: Code of Federal Regulations, 7 CFR 245.6(a)(5)(ii)
-      href: https://www.law.cornell.edu/cfr/text/7/245.6#a_5_ii
-    - title: Code of Federal Regulations, 7 CFR 273.9(b)
-      href: https://www.law.cornell.edu/cfr/text/7/273.9#b
-    - title: Code of Federal Regulations, 7 CFR 247.9(d)(1)
-      href: https://www.ecfr.gov/current/title-7/part-247/section-247.9#p-247.9(d)(1)
+      href: https://www.ecfr.gov/current/title-7/section-245.6#p-245.6(a)(5)(ii)
+    - title: "USDA Eligibility Manual for School Meals #page 27,31-32"
+      href: https://opi.mt.gov/Portals/182/Page%20Files/School%20Nutrition/Meal%20Eligibility/Forms%20and%20Policy/2017eligibilitymanual.pdf#page=27
+    - title: USDA Child Nutrition Programs income eligibility guidelines, 91 FR 17932
+      href: https://www.govinfo.gov/content/pkg/FR-2026-04-09/html/2026-06842.htm
+    - title: 20 U.S.C. 1087uu, Disregard of student aid in other programs
+      href: https://uscode.house.gov/us/usc/t20/s1087uu/
