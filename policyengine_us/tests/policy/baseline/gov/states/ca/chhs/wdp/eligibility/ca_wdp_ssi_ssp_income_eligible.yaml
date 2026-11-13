@@ -1,0 +1,48 @@
+- name: WDP annual screen preserves its annual approximation when December deeming differs
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 50
+        person_id: 1
+        is_tax_unit_head: true
+        is_ssi_disabled: true
+        ssi_unearned_income: 16_000
+      spouse:
+        age: 48
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      student:
+        age: 16
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 1_000 * 12
+    tax_units:
+      family:
+        members: [claimant, spouse, student]
+    marital_units:
+      parents:
+        members: [claimant, spouse]
+      student_unit:
+        members: [student]
+    households:
+      home:
+        members: [claimant, spouse, student]
+        state_code: CA
+  output:
+    people:
+      claimant:
+        # The annual stock value reflects December, when the student's
+        # exclusion is exhausted and SSI deeming applies. WDP's existing
+        # annual approximation instead compares the $2,500 annual spouse
+        # remainder with the annual differential, $5,964.
+        is_ssi_spousal_deeming_applies: true
+        # $16,000 - $240 = $15,760 exceeds the single SSI/SSP standard,
+        # $1,233.94 * 12 = $14,807.28. December's flag must not select
+        # the couple standard for this whole-year approximation.
+        ca_wdp_ssi_ssp_income_eligible: false

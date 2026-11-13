@@ -22,6 +22,26 @@
   output:
     co_oap_in_kind_support_and_maintenance: 150
 
+- name: Matching SSI ISM follows each month's amount rather than the annual average.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ssi: 0
+    receives_ssi: true
+    ssi_in_kind_support_and_maintenance_monthly:
+      2026-01: 300
+      2026-02: 120
+    ssi_couple_computation_applies: true
+  output:
+    # Other months have no ISM, so the annual total is 300 + 120 = 420.
+    ssi_in_kind_support_and_maintenance: 420
+    # The recipient's share is January's 300 / 2 = 150 and February's
+    # 120 / 2 = 60. Averaging the year would give 420 / 12 / 2 = 17.50.
+    co_oap_in_kind_support_and_maintenance:
+      2026-01: 150
+      2026-02: 60
+
+
 - name: An SSI recipient in another person's household is charged SSA's one-third reduction.
   # 3.520.79(B)(6), 3.520.71(E): the matching ISM is what SSA counts, one-third
   # of the $994 benefit rate (20 CFR 416.1131(a)), for a client who receives
@@ -39,6 +59,7 @@
     # 3.533(A)(2)(c): less the $20 unearned income disregard.
     co_oap_own_countable_income: 311.33
 
+
 - name: A spouse outside Colorado is charged the same matching ISM.
   # co_oap_deemed_income reads this variable for a client's spouse, who may
   # live elsewhere (3.534(C)).
@@ -51,6 +72,7 @@
     state_code: NV
   output:
     co_oap_in_kind_support_and_maintenance: 331.33
+
 
 - name: A client without SSI who receives shelter from others is counted Colorado's maximum.
   # 3.520.79(C)(3): a client paying no shelter costs is counted the maximum

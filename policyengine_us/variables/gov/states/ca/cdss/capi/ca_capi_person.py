@@ -50,10 +50,12 @@ class ca_capi_person(Variable):
             / MONTHS_IN_YEAR
         )
         countable_income = where(
-            separated, own_alone, person("ssi_countable_income", period)
+            separated, own_alone, person("ca_capi_countable_income", period)
         )
         payment_standard = person("ca_capi_payment_standard", period)
-        deemed_income = person("ssi_income_deemed_from_ineligible_spouse", period)
+        deemed_income = person(
+            "ssi_income_deemed_from_ineligible_spouse_monthly", period
+        )
         own_income = max_(countable_income - deemed_income, 0)
         # Deeming needs an ineligible spouse living in the same household
         # (20 CFR 416.1160(a)(1)), so a Title XIX facility resident counts
@@ -120,7 +122,7 @@ class ca_capi_person(Variable):
         p = parameters(period).gov.states.ca.cdss.capi.payment_standard_offset
         deemed_benefit = max_(federal + supplement - p.single, 0)
         deeming = (
-            (person("is_ssi_spousal_deeming_applies", period.this_year) & ~joint)
+            (person("is_ssi_spousal_deeming_applies_monthly", period) & ~joint)
             | unpaid_spouse
         ) & ~medical_facility
         return select(

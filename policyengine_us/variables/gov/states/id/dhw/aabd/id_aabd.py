@@ -32,6 +32,6 @@ class id_aabd(Variable):
 
         # AABD cash = basic allowance - countable income, capped at max
         # (Section 514). Idaho mirrors SSI disregards (Sections 540-546).
-        countable_income = person("ssi_countable_income", period)
+        countable_income = person("ssi_countable_income_monthly", period)
         financial_need = max_(0, per_person_allowance - countable_income)
         return min_(financial_need, per_person_max)

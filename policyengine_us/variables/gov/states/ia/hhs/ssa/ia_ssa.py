@@ -138,7 +138,7 @@ class ia_ssa(Variable):
         # Medicaid-paid stay, which SSI separates).
         spouse_income = (
             joint
-            | person("is_ssi_spousal_deeming_applies", period.this_year)
+            | person("is_ssi_spousal_deeming_applies_monthly", period)
             | person("ia_ssa_smme_spousal_deeming_applies", period)
             | ia_ssa_smme_spouse_is_sga_applicant(person, period)
         )

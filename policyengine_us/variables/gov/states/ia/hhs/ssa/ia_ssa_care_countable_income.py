@@ -82,7 +82,7 @@ class ia_ssa_care_countable_income(Variable):
         deemed = where(
             home,
             person("ia_ssa_income_deemed_from_parents", period),
-            person("ssi_unearned_income_deemed_from_ineligible_parent", period),
+            person("ssi_unearned_income_deemed_from_ineligible_parent_monthly", period),
         )
         unearned = unearned + ~adult * deemed
         # NOTE: 6-B pp.60-61 treats spouses "as individuals beginning the month

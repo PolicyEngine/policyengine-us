@@ -34,6 +34,7 @@ class medicaid_optional_senior_or_disabled_uses_couple_standard(Variable):
         return uses_couple_standard(
             person,
             period,
+            parameters,
             p.budgets_couple_together[state].astype(bool),
             p.couple_limit_without_deeming[state].astype(bool),
         )

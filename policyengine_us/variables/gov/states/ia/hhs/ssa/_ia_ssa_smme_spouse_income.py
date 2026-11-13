@@ -59,7 +59,7 @@ def ia_ssa_smme_spouse_income(person, period):
     )
     spouse_unearned = ia_ssa_spouse_value(person, period, unearned)
     allocations = (
-        add(person.tax_unit, period, ["ssi_ineligible_child_allocation"])
+        add(person.tax_unit, period, ["ssi_ineligible_child_allocation_monthly"])
         * ~not_ineligible
     )
     unearned_left = max_(spouse_unearned - allocations, 0)

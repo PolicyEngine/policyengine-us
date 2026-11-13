@@ -1,0 +1,1 @@
+Scoped SSI child allocations to co-resident children, preserved monthly income budgets and annual inputs, restored CAPI parental deeming, excluded blind or disabled children from Oklahoma allocations, and retained stricter Medicaid child definitions only in 209(b) states.

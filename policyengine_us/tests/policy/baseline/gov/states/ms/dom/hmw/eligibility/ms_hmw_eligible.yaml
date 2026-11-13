@@ -41,6 +41,8 @@
 # ($29,214), so neither spouse qualifies, as with explicit marital units.
 - name: Case 4, a blind couple living with an unrelated adult is tested as a couple.
   period: 2026
+  # Allow one cent of error when summing monthly float32 income.
+  absolute_error_margin: 0.01
   input:
     people:
       head:

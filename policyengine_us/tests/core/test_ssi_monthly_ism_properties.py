@@ -20,17 +20,17 @@ from hypothesis import strategies as st
 from policyengine_core.periods import period as make_period
 from policyengine_us import Simulation
 from policyengine_us.system import system
-from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ism.ssi_in_kind_support_and_maintenance import (
-    ssi_in_kind_support_and_maintenance,
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ism.ssi_in_kind_support_and_maintenance_monthly import (
+    ssi_in_kind_support_and_maintenance_monthly,
 )
-from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ism.ssi_pmv_amount import (
-    ssi_pmv_amount,
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ism.ssi_pmv_amount_monthly import (
+    ssi_pmv_amount_monthly,
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ism.ssi_pmv_applies import (
     ssi_pmv_applies,
 )
-from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ssi_countable_income import (
-    ssi_countable_income,
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.ssi_countable_income_monthly import (
+    ssi_countable_income_monthly,
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
     SSIFederalLivingArrangement,
@@ -283,9 +283,9 @@ def results():
             values = {
                 name: sim.calculate(name, period)
                 for name in (
-                    "ssi_countable_income",
-                    "ssi_in_kind_support_and_maintenance",
-                    "ssi_pmv_amount",
+                    "ssi_countable_income_monthly",
+                    "ssi_in_kind_support_and_maintenance_monthly",
+                    "ssi_pmv_amount_monthly",
                     "ssi",
                     "is_ssi_eligible_individual",
                 )
@@ -299,7 +299,10 @@ def results():
     out["independent_2026"] = _independent_reference_values(sim, reference_rows)
     out["actual_2026"] = _supplement_values(sim, reference_rows)
     out["reference_rows"] = reference_rows
-    for name in ("ssi_countable_income", "ssi_resources_deemed_from_ineligible_parent"):
+    for name in (
+        "ssi_countable_income_monthly",
+        "ssi_resources_deemed_from_ineligible_parent",
+    ):
         out[name] = sim.calculate(name, "2026-01")
     return out, food_only, no_income
 
@@ -317,19 +320,24 @@ def _months(out, year, name, months=range(1, 13)):
 @pytest.mark.parametrize("year", [2023, 2025])
 def test_months_match_when_nothing_changes_within_the_year(results, year):
     out, _, _ = results
-    for name in ("ssi_countable_income", "ssi_in_kind_support_and_maintenance"):
+    for name in (
+        "ssi_countable_income_monthly",
+        "ssi_in_kind_support_and_maintenance_monthly",
+    ):
         values = _months(out, year, name)
         _assert_constant(values)
     for name in ("ssi", *(SUPPLEMENTS[state] for state in STATES)):
         values = _months(out, year, name)
         _assert_constant(values)
     np.testing.assert_allclose(
-        out[year][:N], 12 * _months(out, year, "ssi_countable_income")[0], rtol=1e-6
+        out[year][:N],
+        12 * _months(out, year, "ssi_countable_income_monthly")[0],
+        rtol=1e-6,
     )
     # ISM is capped by the PMV, a monthly amount (one-third of the federal
     # benefit rate plus $20, well under $600), not an annual one.
-    ism = _months(out, year, "ssi_in_kind_support_and_maintenance")
-    pmv = _months(out, year, "ssi_pmv_amount")
+    ism = _months(out, year, "ssi_in_kind_support_and_maintenance_monthly")
+    pmv = _months(out, year, "ssi_pmv_amount_monthly")
     assert np.all(ism <= pmv + 1e-6)
     assert np.all(pmv < 600)
 
@@ -339,7 +347,7 @@ def test_2024_food_income_changes_payments_from_december(results):
     before = range(1, 12)
     after = [12]
     for name in (
-        "ssi_countable_income",
+        "ssi_countable_income_monthly",
         "ssi",
         *(SUPPLEMENTS[state] for state in STATES),
     ):
@@ -350,7 +358,7 @@ def test_2024_food_income_changes_payments_from_december(results):
         late = _months(out, 2024, name, after)[:, food_only]
         _assert_constant(early)
         _assert_constant(late)
-    late_ism = _months(out, 2024, "ssi_in_kind_support_and_maintenance", after)
+    late_ism = _months(out, 2024, "ssi_in_kind_support_and_maintenance_monthly", after)
     assert not late_ism[:, food_only].any()
     ssi_nov = _months(out, 2024, "ssi", [11])[0]
     ssi_dec = _months(out, 2024, "ssi", [12])[0]
@@ -364,7 +372,7 @@ def test_continuing_food_support_counts_eleven_income_months(results):
     assert checked.any()
     # January-November payments use income months before the September 30
     # exclusion. ISM = 11 * (943 / 3 + 20) = 3,677.666667 annually.
-    ism = _months(out, 2024, "ssi_in_kind_support_and_maintenance")[:, checked]
+    ism = _months(out, 2024, "ssi_in_kind_support_and_maintenance_monthly")[:, checked]
     np.testing.assert_allclose(ism.sum(axis=0), 11 * (943 / 3 + 20), atol=1e-3)
     np.testing.assert_allclose(ism[:11], 943 / 3 + 20, atol=1e-4)
     np.testing.assert_array_equal(ism[11], 0)
@@ -402,7 +410,9 @@ def test_reference_households_share_parental_resources_and_couple_income(results
         rows = out["reference_rows"][state]["people"]
         # The couple receives $14,400 / 12 = $1,200 monthly unearned
         # income. After the $20 exclusion, each spouse counts $590.
-        np.testing.assert_allclose(out["ssi_countable_income"][rows], [590, 590])
+        np.testing.assert_allclose(
+            out["ssi_countable_income_monthly"][rows], [590, 590]
+        )
 
 
 @pytest.mark.parametrize(
@@ -501,7 +511,7 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
     zero = np.zeros(3)
     values = {
         "ssi_couple_computation_applies": np.array([False, True, False]),
-        "is_ssi_spousal_deeming_applies": np.array([False, False, True]),
+        "is_ssi_spousal_deeming_applies_monthly": np.array([False, False, True]),
         "ssi_federal_living_arrangement": SSIFederalLivingArrangement.OWN_HOUSEHOLD,
         "ssi_receives_food_from_others": np.ones(3, dtype=bool),
         "ssi_receives_outside_shelter_support": zero.astype(bool),
@@ -513,14 +523,25 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
         "ssi_marital_unearned_income": zero,
         "ssi_earned_income": zero,
         "ssi_unearned_income": zero,
-        "ssi_unearned_income_deemed_from_ineligible_parent": zero,
-        "ssi_income_deemed_from_ineligible_spouse": zero,
+        "ssi_unearned_income_deemed_from_ineligible_parent_monthly": zero,
+        "ssi_income_deemed_from_ineligible_spouse_monthly": zero,
         "is_ssi_aged_blind_disabled": np.ones(3, dtype=bool),
         "is_child": zero.astype(bool),
     }
 
     def person(name, period):
         return values[name]
+
+    # Direct formula calls supply monthly values and no annual overrides.
+    # Keep the normal annual-input check with an empty input receipt store.
+    person.simulation = SimpleNamespace(
+        get_holder=lambda name: SimpleNamespace(
+            variable=system.variables[name],
+            get_known_branch_periods=lambda: (),
+        ),
+        tax_benefit_system=system,
+        _get_visible_branch_names=lambda: ("default",),
+    )
 
     def parameters(period):
         instant = getattr(period, "start", period)
@@ -535,9 +556,12 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
 
     formulas = (
         ("ssi_pmv_applies", ssi_pmv_applies),
-        ("ssi_pmv_amount", ssi_pmv_amount),
-        ("ssi_in_kind_support_and_maintenance", ssi_in_kind_support_and_maintenance),
-        ("ssi_countable_income", ssi_countable_income),
+        ("ssi_pmv_amount_monthly", ssi_pmv_amount_monthly),
+        (
+            "ssi_in_kind_support_and_maintenance_monthly",
+            ssi_in_kind_support_and_maintenance_monthly,
+        ),
+        ("ssi_countable_income_monthly", ssi_countable_income_monthly),
         ("ssi_amount_if_eligible", ssi_amount_if_eligible),
         (
             "uncapped_ssi_without_spousal_deeming",
@@ -553,14 +577,14 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
     # Spousal deeming uses half that PMV: 245.833333. January and February
     # retain the payment month's rate while reading the prior year's food dates.
     np.testing.assert_allclose(
-        values["ssi_pmv_amount"],
+        values["ssi_pmv_amount_monthly"],
         [943 / 3 + 20, 1_415 / 3 + 20, (1_415 / 3 + 20) / 2],
     )
     # Through November each spouse counts (491.666667 - 20) / 2 =
     # 235.833333, then receives 1,415 / 2 - 235.833333 = 471.666667.
     # December excludes food, so each spouse receives 1,415 / 2 = 707.50.
     countable = 0 if month == 12 else 1_415 / 6
-    assert values["ssi_countable_income"][1] == pytest.approx(countable)
+    assert values["ssi_countable_income_monthly"][1] == pytest.approx(countable)
     assert values["ssi_amount_if_eligible"][1] == pytest.approx(1_415 / 2)
     assert values["ssi_if_takes_up"][1] == pytest.approx(1_415 / 2 - countable)
     # Under deeming, 416.1163(e)(2) limits the payment to the individual rate
@@ -586,10 +610,9 @@ def test_annual_countable_income_input_reaches_each_month():
             "households": {"h": {"members": ["p"], "state_code": {"2025": "FL"}}},
         }
     )
-    for month in range(1, 13):
-        assert sim.calculate("ssi_countable_income", f"2025-{month:02d}")[
-            0
-        ] == pytest.approx(500)
+    for name in ("ssi_countable_income", "ssi_countable_income_monthly"):
+        for month in range(1, 13):
+            assert sim.calculate(name, f"2025-{month:02d}")[0] == pytest.approx(500)
 
 
 @pytest.mark.parametrize("year", YEARS)
@@ -598,8 +621,8 @@ def test_month_countable_income_is_that_months_ism_without_other_income(results,
     # is (20 CFR 416.1124, as _apply_ssi_exclusions_monthly applies it). With
     # no other income, each month's countable income is its ISM less $20.
     out, _, no_income = results
-    ism = _months(out, year, "ssi_in_kind_support_and_maintenance")
-    countable = _months(out, year, "ssi_countable_income")
+    ism = _months(out, year, "ssi_in_kind_support_and_maintenance_monthly")
+    countable = _months(out, year, "ssi_countable_income_monthly")
     # Countable income is computed only for an eligible individual or spouse;
     # these units are single people.
     eligible = _months(out, year, "is_ssi_eligible_individual").astype(bool)

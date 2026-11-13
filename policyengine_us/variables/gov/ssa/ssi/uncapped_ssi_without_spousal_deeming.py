@@ -38,8 +38,8 @@ class uncapped_ssi_without_spousal_deeming(Variable):
         )
         # Countable income adds income deemed from an ineligible spouse to the
         # person's own countable income; remove it.
-        own_countable_income = person("ssi_countable_income", period) - person(
-            "ssi_income_deemed_from_ineligible_spouse", period
+        own_countable_income = person("ssi_countable_income_monthly", period) - person(
+            "ssi_income_deemed_from_ineligible_spouse_monthly", period
         )
         # SSA applies the regular individual PMV to this individual
         # computation (POMS SI 01320.150 B.1.b and SI 01320.400 C.2).
@@ -50,7 +50,7 @@ class uncapped_ssi_without_spousal_deeming(Variable):
         # dates food under 416.420(a), and the month's shelter value, as
         # ssi_countable_income does. Core divides YEAR-defined income by 12.
         pmv_applies = person("ssi_pmv_applies", period)
-        deeming_applies = person("is_ssi_spousal_deeming_applies", period.this_year)
+        deeming_applies = person("is_ssi_spousal_deeming_applies_monthly", period)
         individual_pmv = (
             p.amount.individual * p.income.ism.pmv_fbr_fraction
             + p.income.exclusions.general
@@ -66,7 +66,9 @@ class uncapped_ssi_without_spousal_deeming(Variable):
         )
         unearned = (
             person("ssi_unearned_income", period)
-            + person("ssi_unearned_income_deemed_from_ineligible_parent", period)
+            + person(
+                "ssi_unearned_income_deemed_from_ineligible_parent_monthly", period
+            )
             + individual_ism
         )
         individual_countable = _apply_ssi_exclusions_monthly(

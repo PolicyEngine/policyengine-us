@@ -91,7 +91,7 @@ class ny_ssp(Variable):
         # October 1, 2014, and the model follows the regulation: countable
         # income includes the deemed income (398-2.1(g)), measured against the
         # individual's own FBR.
-        deeming = person("is_ssi_spousal_deeming_applies", period.this_year)
+        deeming = person("is_ssi_spousal_deeming_applies_monthly", period)
         federal_la = person("ssi_federal_living_arrangement", period)
         # 20 CFR 416.1131(a): one-third of the FBR counts as income in another
         # person's household.
@@ -100,7 +100,7 @@ class ny_ssp(Variable):
             1 - fbr.one_third_reduction_rate,
             1,
         )
-        countable = person("ssi_countable_income", period)
+        countable = person("ssi_countable_income_monthly", period)
         regulatory = max_(individual - max_(countable - own_fbr, 0), 0)
         eligible = person("is_ssi_eligible", period) & person(
             "takes_up_ssi_if_eligible", period.this_year
@@ -122,7 +122,7 @@ class ny_ssp(Variable):
         # hospitals and pay $25 in residential health care facilities. The
         # model follows the statute and regulation.
         personal_needs_eligible = (person("ssi", period) > 0) & (
-            person("ssi_countable_income", period) == 0
+            person("ssi_countable_income_monthly", period) == 0
         )
         personal_needs = select(
             [

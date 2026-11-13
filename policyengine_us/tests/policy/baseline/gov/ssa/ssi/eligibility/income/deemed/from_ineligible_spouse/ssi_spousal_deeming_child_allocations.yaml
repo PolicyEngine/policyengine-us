@@ -1,0 +1,637 @@
+# 20 CFR 416.1163(b): before deeming an ineligible spouse's income, SSI
+# deducts an allocation for each ineligible child: 'your natural child or
+# adopted child, or the natural or adopted child of your spouse ... who lives
+# in the same household with you, and is not eligible for SSI benefits'
+# (416.1160(d)). The allocation is the couple rate less the individual rate
+# (416.1163(b)(1)): $168 a month in 1986 ($504 - $336) and $497 a month in
+# 2026 ($1,491 - $994). Allocations come out of unearned income first, then
+# earned income (416.1163(b)(3)). Deeming applies when the spouse's remaining
+# income is more than that difference (416.1163(d)).
+
+- name: 416.1163(g) Example 1, the Todds, with parent ids
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    people:
+      mr_todd:
+        age: 70
+        person_id: 1
+        is_tax_unit_head: true
+      mrs_todd:
+        age: 60
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 252 * 12
+      mike:
+        age: 10
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [mr_todd, mrs_todd, mike]
+    marital_units:
+      todds:
+        members: [mr_todd, mrs_todd]
+      mike_alone:
+        members: [mike]
+    households:
+      household:
+        members: [mr_todd, mrs_todd, mike]
+        state_code: TX
+  output:
+    is_ssi_ineligible_child: [false, false, true]
+    ssi_ineligible_child_allocation: [0, 0, 2_016] # $168 * 12
+    # Mike is the child of both spouses, so each sees the same allocation.
+    ssi_spousal_deeming_child_allocations: [2_016, 2_016, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [1_008, 0, 0] # ($252 - $168) * 12
+    # '$84 remaining income is not more than $168': nothing is deemed.
+    is_ssi_spousal_deeming_applies: [false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0, 0]
+
+- name: 416.1163(g) Example 2, the Joneses, with parent ids
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    people:
+      mr_jones:
+        age: 50
+        is_ssi_disabled: true
+        person_id: 1
+        is_tax_unit_head: true
+      mrs_jones:
+        age: 48
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_earned_income: 401 * 12
+        ssi_unearned_income: 252 * 12
+      christine:
+        age: 8
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [mr_jones, mrs_jones, christine]
+    marital_units:
+      joneses:
+        members: [mr_jones, mrs_jones]
+      christine_alone:
+        members: [christine]
+    households:
+      household:
+        members: [mr_jones, mrs_jones, christine]
+        state_code: TX
+  output:
+    ssi_spousal_deeming_child_allocations: [2_016, 2_016, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [1_008, 0, 0] # $84 * 12
+    ssi_earned_income_deemed_from_ineligible_spouse: [4_812, 0, 0] # $401 * 12
+    # '$84 unearned plus $401 earned is more than $168'.
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    # $64 unearned after the $20 exclusion plus $168 earned after $65 and
+    # half: $232 a month.
+    ssi_income_deemed_from_ineligible_spouse: [2_784, 0, 0]
+    ssi: [3_264, 0, 0] # ($504 - $232) * 12
+
+- name: Example 1 when Mike receives public income-maintenance payments
+  # 416.1163(b): 'We do not allocate for ineligible children who are
+  # receiving public income-maintenance payments.' All of Mrs. Todd's $252
+  # remains, which is more than $168, so it is deemed.
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    people:
+      mr_todd:
+        age: 70
+        person_id: 1
+        is_tax_unit_head: true
+      mrs_todd:
+        age: 60
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 252 * 12
+      mike:
+        age: 10
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+        ssi_receives_public_income_maintenance: true
+    tax_units:
+      tax_unit:
+        members: [mr_todd, mrs_todd, mike]
+    marital_units:
+      todds:
+        members: [mr_todd, mrs_todd]
+      mike_alone:
+        members: [mike]
+    households:
+      household:
+        members: [mr_todd, mrs_todd, mike]
+        state_code: TX
+  output:
+    is_ssi_ineligible_child: [false, false, true]
+    ssi_ineligible_child_allocation: [0, 0, 0]
+    ssi_spousal_deeming_child_allocations: [0, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [3_024, 0, 0] # $252 * 12
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [2_784, 0, 0] # ($252 - $20) * 12
+    ssi: [3_264, 0, 0] # ($504 - $232) * 12
+
+- name: A grandchild in the claimant's tax unit is not the claimant's child
+  # The grandchild's id names their father, the claimants' son, who files
+  # alone. The grandparents claim the grandchild, but the grandchild is
+  # neither spouse's child, so no allocation is made.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      grandmother:
+        age: 70
+        person_id: 1
+        is_tax_unit_head: true
+      grandfather:
+        age: 62
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      father:
+        age: 35
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_head: true
+      grandchild:
+        age: 8
+        person_id: 4
+        parent_1_id: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      grandparents:
+        members: [grandmother, grandfather, grandchild]
+      father_alone:
+        members: [father]
+    marital_units:
+      grandparents:
+        members: [grandmother, grandfather]
+      father_alone:
+        members: [father]
+      grandchild_alone:
+        members: [grandchild]
+    households:
+      household:
+        members: [grandmother, grandfather, father, grandchild]
+        state_code: TX
+  output:
+    is_ssi_ineligible_child: [false, false, false, true]
+    # The father's own total holds his child's allocation; he has no spouse,
+    # so nothing is deemed with it.
+    ssi_spousal_deeming_child_allocations: [0, 0, 5_964, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [7_200, 0, 0, 0]
+    # $600 is more than $497.
+    is_ssi_spousal_deeming_applies: [true, false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [6_960, 0, 0, 0] # ($600 - $20) * 12
+    ssi: [10_932, 0, 0, 0] # ($1,491 - $580) * 12
+
+- name: Without parent ids the tax-unit proxy still allocates for a grandchild
+  # The same household with no parent ids. The parent-link contract keeps
+  # the tax-unit grouping when no member has ids, and a grandchild there
+  # cannot be told apart from a child. Supplying ids, as above, avoids this.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      grandmother:
+        age: 70
+        is_tax_unit_head: true
+      grandfather:
+        age: 62
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      father:
+        age: 35
+        is_tax_unit_head: true
+      grandchild:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      grandparents:
+        members: [grandmother, grandfather, grandchild]
+      father_alone:
+        members: [father]
+    marital_units:
+      grandparents:
+        members: [grandmother, grandfather]
+      father_alone:
+        members: [father]
+      grandchild_alone:
+        members: [grandchild]
+    households:
+      household:
+        members: [grandmother, grandfather, father, grandchild]
+        state_code: TX
+  output:
+    ssi_spousal_deeming_child_allocations: [5_964, 5_964, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [1_236, 0, 0, 0] # ($600 - $497) * 12
+    is_ssi_spousal_deeming_applies: [false, false, false, false]
+    ssi: [11_928, 0, 0, 0] # $994 * 12
+
+- name: The spouse's child from another relationship, claimed by their other parent
+  # The stepson lives with his father and his father's wife, the claimant.
+  # His mother lives elsewhere and claims him. He is 'the natural or adopted
+  # child of your spouse ... who lives in the same household with you'.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_disabled: true
+        person_id: 1
+        is_tax_unit_head: true
+      husband:
+        age: 42
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      stepson:
+        age: 12
+        person_id: 3
+        parent_1_id: 2
+        parent_2_id: 4
+        is_tax_unit_dependent: true
+      mother:
+        age: 38
+        person_id: 4
+        is_tax_unit_head: true
+    tax_units:
+      couple:
+        members: [claimant, husband]
+      mother:
+        members: [mother, stepson]
+    marital_units:
+      couple:
+        members: [claimant, husband]
+      stepson_alone:
+        members: [stepson]
+      mother_alone:
+        members: [mother]
+    households:
+      home:
+        members: [claimant, husband, stepson]
+        state_code: TX
+      elsewhere:
+        members: [mother]
+        state_code: TX
+  output:
+    is_ssi_ineligible_child: [false, false, true, false]
+    # The mother does not live with her son, so her total is zero.
+    ssi_spousal_deeming_child_allocations: [5_964, 5_964, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [1_236, 0, 0, 0] # ($600 - $497) * 12
+    # $103 is not more than $497.
+    is_ssi_spousal_deeming_applies: [false, false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0, 0, 0]
+    ssi: [11_928, 0, 0, 0] # $994 * 12
+
+- name: The claimants' own child, claimed in another tax unit, still counts
+  # Their daughter lives with them but her grandmother claims her. Tax
+  # filing does not change whose child she is or where she lives.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      claimant:
+        age: 45
+        is_ssi_disabled: true
+        person_id: 1
+        parent_1_id: 4
+        is_tax_unit_head: true
+      husband:
+        age: 47
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      daughter:
+        age: 15
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+      grandmother:
+        age: 64
+        person_id: 4
+        is_tax_unit_head: true
+    tax_units:
+      couple:
+        members: [claimant, husband]
+      grandmother:
+        members: [grandmother, daughter]
+    marital_units:
+      couple:
+        members: [claimant, husband]
+      daughter_alone:
+        members: [daughter]
+      grandmother_alone:
+        members: [grandmother]
+    households:
+      household:
+        members: [claimant, husband, daughter, grandmother]
+        state_code: TX
+  output:
+    ssi_spousal_deeming_child_allocations: [5_964, 5_964, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [1_236, 0, 0, 0]
+    is_ssi_spousal_deeming_applies: [false, false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0, 0, 0]
+    ssi: [11_928, 0, 0, 0]
+
+- name: A 19-year-old student who files her own return counts, and her wages do not reduce it
+  # 416.1856: a student under 22 regularly attending school is a child.
+  # 416.1161(c) excludes a student child's earned income up to the
+  # 416.1112(c)(3) amounts ($2,410 a month in 2026), so her $300 a month of
+  # wages leaves the full allocation.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      claimant:
+        age: 50
+        is_ssi_disabled: true
+        person_id: 1
+        is_tax_unit_head: true
+      husband:
+        age: 52
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      daughter:
+        age: 19
+        is_full_time_college_student: true
+        employment_income: 300 * 12
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_head: true
+    tax_units:
+      couple:
+        members: [claimant, husband]
+      daughter:
+        members: [daughter]
+    marital_units:
+      couple:
+        members: [claimant, husband]
+      daughter_alone:
+        members: [daughter]
+    households:
+      household:
+        members: [claimant, husband, daughter]
+        state_code: TX
+  output:
+    is_ssi_ineligible_child: [false, false, true]
+    ssi_ineligible_child_allocation: [0, 0, 5_964]
+    ssi_spousal_deeming_child_allocations: [5_964, 5_964, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [1_236, 0, 0]
+    is_ssi_spousal_deeming_applies: [false, false, false]
+    ssi: [11_928, 0, 0]
+
+- name: A child in the tax unit who lives in another household does not count
+  # No member has parent ids, so the tax-unit proxy applies, but only to
+  # children who live with the claimant: 'who lives in the same household
+  # with you'.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_head: true
+      wife:
+        age: 60
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      son:
+        age: 16
+        is_tax_unit_dependent: true
+      aunt:
+        age: 40
+        is_tax_unit_head: true
+    tax_units:
+      family:
+        members: [claimant, wife, son]
+      aunt:
+        members: [aunt]
+    marital_units:
+      couple:
+        members: [claimant, wife]
+      son_alone:
+        members: [son]
+      aunt_alone:
+        members: [aunt]
+    households:
+      home:
+        members: [claimant, wife]
+        state_code: TX
+      away:
+        members: [son, aunt]
+        state_code: TX
+  output:
+    is_ssi_ineligible_child: [false, false, true, false]
+    ssi_spousal_deeming_child_allocations: [0, 0, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [7_200, 0, 0, 0]
+    is_ssi_spousal_deeming_applies: [true, false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [6_960, 0, 0, 0] # ($600 - $20) * 12
+    ssi: [10_932, 0, 0, 0] # ($1,491 - $580) * 12
+
+- name: With parent links, a child without ids is presumed only for an unlinked parent
+  # The first child's ids name both spouses. The second has none. Neither
+  # spouse has a child that no id names (own_children_in_household is not
+  # supplied), so the parent-link contract does not presume the second
+  # child is theirs.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      claimant:
+        age: 70
+        person_id: 1
+        is_tax_unit_head: true
+      husband:
+        age: 62
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      linked_child:
+        age: 10
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+      child_without_ids:
+        age: 8
+        person_id: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [claimant, husband, linked_child, child_without_ids]
+    marital_units:
+      couple:
+        members: [claimant, husband]
+      linked_child_alone:
+        members: [linked_child]
+      child_without_ids_alone:
+        members: [child_without_ids]
+    households:
+      household:
+        members: [claimant, husband, linked_child, child_without_ids]
+        state_code: TX
+  output:
+    ssi_spousal_deeming_child_allocations: [5_964, 5_964, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [1_236, 0, 0, 0]
+
+- name: With parent links, a child without ids counts for an unlinked parent
+  # The claimant reports two children in the household but ids name only
+  # one, so the claimant is an unlinked parent and the second child, in the
+  # claimant's tax unit, is presumed to be theirs.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      claimant:
+        age: 70
+        person_id: 1
+        own_children_in_household: 2
+        is_tax_unit_head: true
+      husband:
+        age: 62
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 600 * 12
+      linked_child:
+        age: 10
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+      child_without_ids:
+        age: 8
+        person_id: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [claimant, husband, linked_child, child_without_ids]
+    marital_units:
+      couple:
+        members: [claimant, husband]
+      linked_child_alone:
+        members: [linked_child]
+      child_without_ids_alone:
+        members: [child_without_ids]
+    households:
+      household:
+        members: [claimant, husband, linked_child, child_without_ids]
+        state_code: TX
+  output:
+    ssi_spousal_deeming_child_allocations: [11_928, 11_928, 0, 0]
+    # The $11,928 of allocations exceed the husband's $7,200.
+    ssi_unearned_income_deemed_from_ineligible_spouse: [0, 0, 0, 0]
+    is_ssi_spousal_deeming_applies: [false, false, false, false]
+
+- name: Allocations beyond unearned income come out of earned income
+  # 416.1163(b)(3). Two children: $994 a month of allocations against $200
+  # of unearned income leaves $794 to take from $1,500 of earnings: $706.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_disabled: true
+        person_id: 1
+        is_tax_unit_head: true
+      husband:
+        age: 41
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 200 * 12
+        ssi_earned_income: 1_500 * 12
+      first_child:
+        age: 9
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+      second_child:
+        age: 6
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [claimant, husband, first_child, second_child]
+    marital_units:
+      couple:
+        members: [claimant, husband]
+      first_child_alone:
+        members: [first_child]
+      second_child_alone:
+        members: [second_child]
+    households:
+      household:
+        members: [claimant, husband, first_child, second_child]
+        state_code: TX
+  output:
+    ssi_spousal_deeming_child_allocations: [11_928, 11_928, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_spouse: [0, 0, 0, 0]
+    ssi_earned_income_deemed_from_ineligible_spouse: [8_472, 0, 0, 0] # $706 * 12
+    # $706 is more than $497.
+    is_ssi_spousal_deeming_applies: [true, false, false, false]
+    # $706 less the $20 general and $65 earned exclusions, halved: $310.50.
+    ssi_income_deemed_from_ineligible_spouse: [3_726, 0, 0, 0]
+
+- name: POMS SI 01320.400 D.2, Jack, August 2024
+  # $472 allocation ($1,415 - $943). The spouse's $662 of unearned income
+  # less $472 leaves $190; with $715 of earnings that is more than $472.
+  # Countable: $190 - $20 = $170 unearned, ($715 - $65) / 2 = $325 earned,
+  # $495 in all. The same income is used in every month of the year.
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      jack:
+        age: 50
+        is_ssi_disabled: true
+        person_id: 1
+        is_tax_unit_head: true
+      spouse:
+        age: 48
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_earned_income: 715 * 12
+        ssi_unearned_income: 662 * 12
+      child:
+        age: 9
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [jack, spouse, child]
+    marital_units:
+      couple:
+        members: [jack, spouse]
+      child_alone:
+        members: [child]
+    households:
+      household:
+        members: [jack, spouse, child]
+        state_code: TX
+  output:
+    ssi_spousal_deeming_child_allocations: [5_664, 5_664, 0] # $472 * 12
+    ssi_unearned_income_deemed_from_ineligible_spouse: [2_280, 0, 0] # $190 * 12
+    ssi_earned_income_deemed_from_ineligible_spouse: [8_580, 0, 0] # $715 * 12
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [5_940, 0, 0] # $495 * 12
+    ssi: [11_040, 0, 0] # ($1,415 - $495) * 12

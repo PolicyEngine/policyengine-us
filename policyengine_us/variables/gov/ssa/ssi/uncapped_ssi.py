@@ -16,7 +16,7 @@ class uncapped_ssi(Variable):
 
     def formula(person, period, parameters):
         amount = person("ssi_amount_if_eligible", period)
-        countable_income = person("ssi_countable_income", period)
+        countable_income = person("ssi_countable_income_monthly", period)
         uncapped = amount - countable_income
         # 20 CFR 416.1163(e)(2): 'Your SSI benefit under the deeming rules
         # cannot be higher than it would be if deeming did not apply.
@@ -27,5 +27,5 @@ class uncapped_ssi(Variable):
         # zero floor keeps this consistent with the payment for programs
         # that read the shortfall below zero.
         without_deeming = person("uncapped_ssi_without_spousal_deeming", period)
-        deeming_applies = person("is_ssi_spousal_deeming_applies", period.this_year)
+        deeming_applies = person("is_ssi_spousal_deeming_applies_monthly", period)
         return where(deeming_applies, min_(uncapped, without_deeming), uncapped)

@@ -893,3 +893,91 @@
         state_code: CA
   output:
     ca_capi_person: [0, 464.89, 0]
+
+- name: A CAPI child counts income deemed from an ineligible parent
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        ssi_unearned_income: 24_000
+      child:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      family:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      home:
+        members: [parent, child]
+        state_code: CA
+  output:
+    people:
+      child:
+        ca_capi_eligible_person: true
+        # SSI excludes the child from its recipient pool.
+        ssi_unearned_income_deemed_from_ineligible_parent_monthly: 0
+        # CAPI: 2,000 - 20 - 994 = 986 deemed; 986 - 20 = 966 countable.
+        # The child receives 1,091.27 - 966 = 125.27.
+        ca_capi_person: 125.27
+
+- name: A CAPI child shares parental income with an SSI recipient
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        ssi_unearned_income: 24_000
+      ssi_child:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: CITIZEN
+      capi_child:
+        age: 12
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      family:
+        members: [parent, ssi_child, capi_child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      ssi_child_unit:
+        members: [ssi_child]
+      capi_child_unit:
+        members: [capi_child]
+    households:
+      home:
+        members: [parent, ssi_child, capi_child]
+        state_code: CA
+  output:
+    people:
+      ssi_child:
+        # SSI allocates 497 for its ineligible sibling: 2,000 - 497 - 20 - 994.
+        ssi_unearned_income_deemed_from_ineligible_parent_monthly: 489
+        ssi: 525
+      capi_child:
+        # CAPI divides 2,000 - 20 - 994 among its two recipients.
+        # It pays 1,091.27 - (986 / 2 - 20) = 618.27.
+        ca_capi_person: 618.27

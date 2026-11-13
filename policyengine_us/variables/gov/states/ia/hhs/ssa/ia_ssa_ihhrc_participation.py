@@ -55,7 +55,7 @@ class ia_ssa_ihhrc_participation(Variable):
         # (ia_ssa.yaml Case 50).
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         dependents = head_or_spouse * person.tax_unit.sum(
-            person("ssi_ineligible_child_allocation", period)
+            person("ssi_ineligible_child_allocation_monthly", period)
         )
         participation = max_(income - maintenance - dependents - deductions, 0)
         # No client participation is required in a first partial month.

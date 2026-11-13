@@ -1,0 +1,188 @@
+- name: A 19-year-old college sibling keeps the SSI allocation but gets no NH allocation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        employment_income: 31_200
+      child:
+        age: 9
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_blind: true
+      student:
+        age: 19
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+        employment_income: 24_000
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+      student_unit:
+        members: [student]
+    tax_units:
+      family_tax_unit:
+        members: [parent, child, student]
+    families:
+      family:
+        members: [parent, child, student]
+    households:
+      home:
+        members: [parent, child, student]
+        state_code: NH
+  output:
+    people:
+      child:
+        # Student earnings are 24,000 / 12 = 2,000 per month. The 9,730
+        # annual student exclusion is exhausted in May: sibling allocations
+        # are 497 Jan-Apr, 497 - (2,000 - 1,730) = 227 May, and 0 Jun-Dec.
+        # January parental deeming: (2,600 - 497 - 85) / 2 - 994 = 15.
+        ssi_unearned_income_deemed_from_ineligible_parent_monthly: 15
+        # May deeming is (2,600 - 227 - 85) / 2 - 994 = 150; Jun-Dec is
+        # (2,600 - 85) / 2 - 994 = 263.50. Annual deeming is therefore
+        # 4 * 15 + 150 + 7 * 263.50 = 2,054.50; its monthly average is 171.21.
+        ssi_unearned_income_deemed_from_ineligible_parent:
+          2026: 2_054.5
+        # January's 15 is below the federal 20 general exclusion: full SSI.
+        ssi: 994
+        # He-W 652.03(h)(1) allows an older sibling only "under the age of 20
+        # if a full-time student in a secondary school", so this 19-year-old
+        # college student gets no NH allocation. NH deeming:
+        # (2,600 - 85) / 2 - 994 = 263.50.
+        nh_ssp_unearned_income_deemed_from_ineligible_parent: 263.5
+        # NH counts 263.50 + 994 SSI - 13 standard disregard = 1,244.50.
+        nh_ssp_countable_income: 1_244.5
+        # One-person standard: 994 + 27 - 13 = 1,008, below 1,244.50: no grant.
+        nh_ssp: 0
+
+- name: A 19-year-old full-time secondary school sibling keeps the NH allocation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        employment_income: 31_200
+      child:
+        age: 9
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_blind: true
+      student:
+        age: 19
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_in_secondary_school: true
+        employment_income: 24_000
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+      student_unit:
+        members: [student]
+    tax_units:
+      family_tax_unit:
+        members: [parent, child, student]
+    families:
+      family:
+        members: [parent, child, student]
+    households:
+      home:
+        members: [parent, child, student]
+        state_code: NH
+  output:
+    people:
+      child:
+        # Federal and NH allocations agree: January's 2,000 of student
+        # earnings are excluded (2,410 monthly limit), so the allocation is
+        # 497 and deeming is (2,600 - 497 - 85) / 2 - 994 = 15.
+        ssi_unearned_income_deemed_from_ineligible_parent_monthly: 15
+        nh_ssp_unearned_income_deemed_from_ineligible_parent: 15
+        ssi: 994
+        # 15 + 994 - 13 = 996; grant 1,008 - 996 = 12.
+        nh_ssp_countable_income: 996
+        nh_ssp: 12
+
+- name: A 20-year-old full-time secondary school sibling gets no NH allocation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        is_tax_unit_head: true
+        employment_income: 31_200
+      child:
+        age: 9
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_blind: true
+      student:
+        age: 20
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_in_secondary_school: true
+        employment_income: 24_000
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+      student_unit:
+        members: [student]
+    tax_units:
+      family_tax_unit:
+        members: [parent, child, student]
+    families:
+      family:
+        members: [parent, child, student]
+    households:
+      home:
+        members: [parent, child, student]
+        state_code: NH
+  output:
+    people:
+      child:
+        # SSI still allocates for a student under 22: deeming is 15 and SSI
+        # stays 994. NH allocates only under 20, so its deeming is
+        # (2,600 - 85) / 2 - 994 = 263.50.
+        ssi_unearned_income_deemed_from_ineligible_parent_monthly: 15
+        ssi: 994
+        nh_ssp_unearned_income_deemed_from_ineligible_parent: 263.5
+        # 263.50 + 994 - 13 = 1,244.50, above the 1,008 standard: no grant.
+        nh_ssp_countable_income: 1_244.5
+        nh_ssp: 0
+
+- name: New Hampshire applies its secondary-student allocation limit after April 2012
+  period: 2012-05
+  input:
+    state_code:
+      2012: NH
+    age:
+      2012: 19
+    is_ssi_ineligible_child:
+      2012-05: true
+    is_full_time_student:
+      2012: true
+    is_in_secondary_school:
+      2012: true
+  output:
+    nh_ssp_ineligible_child: true

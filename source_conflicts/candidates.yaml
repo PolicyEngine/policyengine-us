@@ -15046,3 +15046,35 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us:medicaid-parental-child-allocation-ssi-floor
+  program: medicaid
+  years:
+    from: 2015
+    type: calendar
+  question: May a non-209(b) state exclude a child from optional aged, blind or disabled Medicaid parental allocations when SSI includes the child?
+  sources:
+  - kind: statute
+    citation: 42 USC 1396a(r)(2)(A)-(B)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXIX-sec1396a.htm
+  - kind: regulation
+    citation: 42 CFR 435.601(d)(2)-(3)
+    url: https://www.ecfr.gov/current/title-42/section-435.601#p-435.601(d)(2)
+  - kind: manual
+    citation: New York Medicaid Reference Guide, Allocation, printed page 233
+    url: https://healthweb-back.health.ny.gov/health_care/medicaid/reference/mrg/income.pdf#page=136
+  - kind: manual
+    citation: Wisconsin Medicaid Eligibility Handbook 15.1.2
+    url: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm
+  readings:
+    statute: Non-209(b) states preserve SSI child allocations in optional aged, blind or disabled budgets when narrower child definitions would make their methodologies more restrictive than SSI.
+    other: State child definitions exclusively govern allocations, including New York's under-18 limit and Wisconsin's minor or dependent-18 limit and nonblind, nondisabled requirement.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/deemed/from_ineligible_parent/medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent_monthly.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/deeming/ineligible_child_age_limit.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/deeming/ineligible_child_requires_nonblind_nondisabled.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10146
+  state: unreviewed
+  note: Preserve existing Missouri and Virginia restrictions as 209(b) states; the hub must confirm the reading before landing. This replaces the prior application of narrower definitions in other states and removes Wisconsin's secondary-school proxy from this pathway. Historical 1972 state-plan authority for Missouri and Virginia has not been rechecked.

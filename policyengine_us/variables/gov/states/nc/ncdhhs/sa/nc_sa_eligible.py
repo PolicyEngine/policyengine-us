@@ -34,7 +34,7 @@ class nc_sa_eligible(Variable):
         # countable income, including deemed spousal income, so an applicant
         # denied SSI for spousal income qualifies (SA-5400 V).
         over_income_for_ssi = person("ssi_amount_if_eligible", period) <= person(
-            "ssi_countable_income", period
+            "ssi_countable_income_monthly", period
         )
         # An SSI recipient automatically meets the categorical, financial and
         # resource requirements (SA-3100 II.B; SA-3200 I.A). An applicant over
