@@ -12,6 +12,9 @@ class ok_count_exemptions(Variable):
         # 2025 Form 511 instructions, item F (Exemptions).
         # PDF pages 8-9
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=8",
+        # 68 O.S. 2358(E)(1)(a), as set out in SB 1452 (Laws 2024, c. 166).
+        "https://www.oklegislature.gov/cf_pdf/2023-24%20ENR/SB/SB1452%20ENR.PDF#page=19",
+        "https://www.law.cornell.edu/uscode/text/26/151#d_2",
         "https://www.law.cornell.edu/uscode/text/26/152#b_1",
     )
     defined_for = StateCode.OK
@@ -27,11 +30,14 @@ class ok_count_exemptions(Variable):
         fagi = tax_unit("adjusted_gross_income", period) - roth_conversions
         filing_status = tax_unit("filing_status", period)
         agi_eligible = fagi <= p.special_agi_limit[filing_status]
-        # Regular exemptions: "You may claim an exemption for yourself if you
-        # cannot be claimed as a dependent on another person's return", and
-        # for a joint spouse who "cannot be claimed as a dependent on another
-        # person's return" (Form 511 instructions, item F). The special (65 or
-        # older) and blind exemptions are separate boxes with no such bar.
+        # Regular exemptions: 68 O.S. 2358(E)(1)(a) allows $1,000 "in lieu of
+        # the personal exemptions allowed by the Internal Revenue Code", and
+        # IRC 151(d)(2) sets the exemption amount to zero for an individual
+        # whom another taxpayer can claim. Form 511 item F applies that rule:
+        # "You may claim an exemption for yourself if you cannot be claimed as
+        # a dependent on another person's return", and the same for a joint
+        # spouse. The special (65 or older) and blind exemptions are separate
+        # boxes with no such bar, as in 2358(E)(1)(b) and (c).
         # Each filer's own regular exemption follows that filer's own flag.
         claimable = person("claimable_as_dependent_on_another_return", period)
         head_claimable = tax_unit.any(person("is_tax_unit_head", period) & claimable)

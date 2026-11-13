@@ -10,8 +10,8 @@ class ok_stc(Variable):
     reference = (
         # 2025 Form 538-S (Sales Tax Relief Credit form)
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/538-S.pdf",
-        # 68 O.S. 5011 as codified in 2021, quoted in HB 1013XX (2023).
-        "https://oklegislature.gov/cf_pdf/2023-24%20INT/hB/HB1013XX%20INT.PDF#page=5",
+        # 68 O.S. 5011, as codified.
+        "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=93282",
         "https://www.law.cornell.edu/regulations/oklahoma/OAC-710-50-15-96",
     )
     defined_for = StateCode.OK
@@ -107,7 +107,8 @@ class ok_stc(Variable):
         # 68 O.S. 5011(D): $40 times "the number of allowable personal
         # exemptions", those the Oklahoma Income Tax Act allows other than the
         # 65-or-older and blind exemptions. Those are the federal personal
-        # exemptions (68 O.S. 2358(E)): one per filer who cannot be claimed as
-        # a dependent, plus the dependents when no filer can be claimed.
+        # exemptions (68 O.S. 2358(E)(1)(a) and IRC 151(d)(2)): one per filer
+        # who cannot be claimed as a dependent, plus the dependents when no
+        # filer can be claimed.
         qualified_exemptions = tax_unit("exemptions_count", period)
         return eligible * qualified_exemptions * p.amount

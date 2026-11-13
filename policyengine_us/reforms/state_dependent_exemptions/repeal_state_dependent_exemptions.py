@@ -137,7 +137,8 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             filing_status = tax_unit("filing_status", period)
             agi_eligible = fagi <= p.special_agi_limit[filing_status]
             # Regular exemptions as in the baseline: none for a filer who can
-            # be claimed as a dependent on another return.
+            # be claimed as a dependent on another return (68 O.S.
+            # 2358(E)(1)(a) and IRC 151(d)(2)).
             claimable = person("claimable_as_dependent_on_another_return", period)
             head_claimable = tax_unit.any(
                 person("is_tax_unit_head", period) & claimable
