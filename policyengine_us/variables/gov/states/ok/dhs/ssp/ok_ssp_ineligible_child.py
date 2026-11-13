@@ -19,8 +19,11 @@ class ok_ssp_ineligible_child(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ok.dhs.ssp
-        # OAC 340:15-1-2: "a child younger than 18 years of age who is not
-        # blind or disabled". is_ssi_ineligible_child already excludes
-        # children who are blind or disabled and so eligible for SSI.
+        # OAC 340:15-1-2 excludes blind and disabled children regardless
+        # of whether their immigration status permits SSI eligibility.
         younger = person("age", period.this_year) < p.ineligible_child_age_limit
-        return person("is_ssi_ineligible_child", period) & younger
+        return (
+            person("is_ssi_ineligible_child", period)
+            & younger
+            & ~person("is_ssi_aged_blind_disabled", period.this_year)
+        )
