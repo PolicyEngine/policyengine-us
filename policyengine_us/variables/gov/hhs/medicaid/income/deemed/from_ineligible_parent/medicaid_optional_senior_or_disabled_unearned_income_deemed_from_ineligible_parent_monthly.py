@@ -25,8 +25,9 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         "https://www.law.cornell.edu/cfr/text/20/416.1165",
         "https://www.law.cornell.edu/uscode/text/42/1396b#v",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/0805-020-15/",
-        "https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/1/1.1.htm#1.1.3.3",
-        "https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm#15.1.2",
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXIX-sec1396a.htm",
+        "https://www.ecfr.gov/current/title-42/section-435.601#p-435.601(d)(2)",
+        "https://www.dmas.virginia.gov/media/mghpujpo/m05-1-1-26.pdf#page=57",
     )
 
     def formula(person, period, parameters):
@@ -64,42 +65,16 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         )
 
         state = person.household("state_code_str", period)
-        # State allocation definitions can be narrower than SSI's adult
-        # student definition. Apply each sourced ceiling before deducting
-        # the shared allocation amount; other states retain their existing
-        # shared allocation behavior.
+        # Non-209(b) states retain SSI's allocation scope under
+        # 42 USC 1396a(r)(2) and 42 CFR 435.601(d)(2)-(3).
         age = person("age", period.this_year)
-        age_limits = parameters(
+        p = parameters(
             period
-        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.deeming.ineligible_child_age_limit
-        allocation_child = np.ones(person.count, dtype=bool)
-        for state_code in age_limits._children:
-            # State breakdown expansion fills omitted states with zero.
-            # Only a positive, sourced ceiling overrides the shared scope.
-            age_limit = age_limits[state_code]
-            if age_limit > 0:
-                allocation_child &= (state != state_code) | (age < age_limit)
-        # These states define allocation children as nonblind and
-        # nondisabled, independently of Medicaid immigration eligibility.
-        allocation_child &= ~(
-            np.isin(state, ("FL", "LA", "NY", "VA", "WI"))
-            & person("is_ssi_aged_blind_disabled", period)
+        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled.income.deeming
+        allocation_child = (age < p.ineligible_child_age_limit[state]) & (
+            ~p.ineligible_child_requires_nonblind_nondisabled[state]
+            | ~person("is_ssi_aged_blind_disabled", period)
         )
-        # MEH 1.1.3.3 and 15.1.2 define dependent 18-year-olds through
-        # full-time secondary school or equivalent-level training, not
-        # tax dependency. Enrollment proxies expected completion before
-        # 19: the model has no completion-date or remaining-credit input.
-        # At age 18, explicit K-12 enrollment is also secondary-school
-        # evidence; the age gate excludes younger pupils from this extension.
-        dependent_18_year_old = (
-            (age == 18)
-            & (
-                person("is_in_secondary_school", period.this_year)
-                | person("is_in_k12_school", period.this_year)
-            )
-            & person("is_full_time_student", period.this_year)
-        )
-        allocation_child &= (state != "WI") | (age < 18) | dependent_18_year_old
         allocations = (
             person("ssi_ineligible_child_allocation_monthly", period) * allocation_child
         )

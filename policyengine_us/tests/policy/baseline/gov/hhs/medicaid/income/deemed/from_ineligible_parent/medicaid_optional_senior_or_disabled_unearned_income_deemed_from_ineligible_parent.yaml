@@ -178,14 +178,12 @@
     # ($2,000 - $20 - $994) * 12 = $11,832, not $5,868.
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 11_832, 0]
 
-# Current state manual definitions constrain SSI's newly supported adult-student
-# allocations before the common deduction sequence. Each household has one
-# parent with $2,000 monthly unearned income and a disabled citizen claimant.
-# At the state's age ceiling there is no Medicaid child allocation:
-# ($2,000 - $20 - $994) * 12 = $11,832. California retains its existing
-# $230 general disregard, giving ($2,000 - $230 - $994) * 12 = $9,312.
-# SSI still gives each unmarried full-time student a $497 monthly allocation.
-- name: Review r3 state age ceilings exclude adult students from Medicaid parental allocations.
+# Non-209(b) states retain SSI's full-time-student allocations.
+# Missouri and Virginia retain their narrower age ceilings.
+# Each parent receives $2,000 per month in unearned income.
+# With an allocation: ($2,000 - $497 - $20 - $994) * 12 = $5,868.
+# Without one: ($2,000 - $20 - $994) * 12 = $11,832.
+- name: Non-209(b) Medicaid programs preserve SSI student allocations at former age ceilings.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -714,25 +712,25 @@
   output:
     people:
       ca_claimant:
-        # California's $20 disregard (#10364) and no allocation for the adult
-        # student: 24,000 - 20 * 12 - 11,928 parent allocation = 11,832.
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        # California deducts the $20 general exclusion and the student's allocation:
+        # 24,000 - 240 - 11,928 - 5,964 = 5,868.
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       ca_student:
         ssi_ineligible_child_allocation: 5964
       fl_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       fl_student:
         ssi_ineligible_child_allocation: 5964
       id_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       id_student:
         ssi_ineligible_child_allocation: 5964
       la_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       la_student:
         ssi_ineligible_child_allocation: 5964
       mi_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       mi_student:
         ssi_ineligible_child_allocation: 5964
       mo_claimant:
@@ -740,23 +738,23 @@
       mo_student:
         ssi_ineligible_child_allocation: 5964
       mt_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       mt_student:
         ssi_ineligible_child_allocation: 5964
       nc_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       nc_student:
         ssi_ineligible_child_allocation: 5964
       nj_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       nj_student:
         ssi_ineligible_child_allocation: 5964
       ny_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       ny_student:
         ssi_ineligible_child_allocation: 5964
       oh_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       oh_student:
         ssi_ineligible_child_allocation: 5964
       va_claimant:
@@ -764,23 +762,21 @@
       va_student:
         ssi_ineligible_child_allocation: 5964
       wi_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       wi_student:
         ssi_ineligible_child_allocation: 5964
       tx_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       tx_student:
         ssi_ineligible_child_allocation: 5964
 
-# Below-ceiling controls retain $497 monthly allocations: $11,832 - $5,964
-# = $5,868, or $9,312 - $5,964 = $3,348 in California. Wisconsin includes
-# full-time secondary students at 18 regardless of tax role; Texas includes students below 21.
-# The Wisconsin seniors each earn $9,000, excluded under MEH 15.5.8.
-# Secondary enrollment proxies expected completion before 19 (MEH 1.1.3.3).
-# The disabled siblings are immigration-ineligible for both programs, so
-# their Medicaid allocation must be excluded by the state's nonblind and
-# nondisabled definition, independently of the Medicaid recipient mask.
-- name: Review r3 state allocation definitions preserve eligible students and exclude disabled children.
+# Students below Missouri's ceiling and students in non-209(b) states
+# receive $497 monthly allocations: $11,832 - $5,964 = $5,868.
+# Their parents remain the income sources when students file separately.
+# The disabled siblings fail both programs' immigration tests.
+# Virginia excludes these siblings from child allocations; the other states
+# retain SSI's allocations under 42 USC 1396a(r)(2).
+- name: Medicaid preserves SSI allocations while Virginia excludes blind or disabled siblings.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1310,11 +1306,11 @@
       ga_ssi_scope_student:
         ssi_ineligible_child_allocation: 5964
       la_disabled_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       la_disabled_student:
         ssi_ineligible_child_allocation: 5964
       ny_disabled_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       ny_disabled_student:
         ssi_ineligible_child_allocation: 5964
       va_disabled_claimant:
@@ -1322,18 +1318,18 @@
       va_disabled_student:
         ssi_ineligible_child_allocation: 5964
       wi_disabled_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       wi_disabled_student:
         ssi_ineligible_child_allocation: 5964
       fl_disabled_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       fl_disabled_student:
         ssi_ineligible_child_allocation: 5964
 
-# MEH 1.1.3.3 and 15.1.2: at 18 the education condition, not tax
-# dependency, governs allocations. College alone does not qualify. Minors
-# need no school attendance. Secondary includes equivalent-level training.
-- name: Wisconsin allocation children require secondary attendance at 18 regardless of tax role.
+# Wisconsin retains SSI's full-time-student definition for this pathway.
+# Both college students receive allocations regardless of tax dependency.
+# The part-time adult student receives no SSI allocation; the minor does.
+- name: Wisconsin Medicaid allocates for SSI student children regardless of school level or tax role.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -1510,11 +1506,11 @@
   output:
     people:
       college_dependent_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       college_dependent_student:
         ssi_ineligible_child_allocation: 5964
       college_independent_claimant:
-        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 11832
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5868
       college_independent_student:
         ssi_ineligible_child_allocation: 5964
       part_time_secondary_claimant:
@@ -1634,3 +1630,33 @@
     ssi_ineligible_child_allocation: [0, 0, 5964]
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 5868, 0]
+
+- name: New York keeps the SSI allocation for an 18 year old student
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        ssi_unearned_income: 24_000
+      claimant:
+        age: 10
+        is_tax_unit_dependent: true
+        is_ssi_disabled: true
+      sibling:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      family:
+        members: [parent, claimant, sibling]
+    households:
+      home:
+        members: [parent, claimant, sibling]
+        state_code: NY
+  output:
+    people:
+      claimant:
+        ssi_unearned_income_deemed_from_ineligible_parent: 5_868
+        medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: 5_868

@@ -1,7 +1,5 @@
-description: States limit parental Medicaid income allocations to ineligible children below these ages. These overrides constrain the shared SSI allocation definition; states absent from this parameter retain the existing shared allocation behavior.
-# The dates mark the shared Medicaid income model's 2015 coverage baseline,
-# not an assertion that the states changed their allocation rules in 2015.
-# Sources were checked for the current rules in October 2026.
+description: Medicaid limits parental income allocations to ineligible children under this age in states that use more restrictive eligibility criteria than Supplemental Security Income.
+# Values apply from the shared Medicaid income model's coverage baseline.
 metadata:
   unit: year
   period: year
@@ -9,62 +7,130 @@ metadata:
   breakdown:
     - state_code
   reference:
-    - title: California Code of Regulations, title 22, section 50030 - Child
-      href: https://www.cdss.ca.gov/shd/res/pdf/50101.pdf
-    - title: Florida ESS Manual 2240.0606.03 - Dependent in Deeming
-      href: https://ffic.myflfamilies.com/manual/2200.pdf#page=40
-    - title: Florida ESS Manual 2640.0212.02 - Determine if Parent has Income to Deem
-      href: https://ffic.myflfamilies.com/manual/2600.pdf#page=61
-    - title: Idaho IDAPA 16.03.05.451.03 - Ineligible Child
-      href: https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=37
-    - title: Louisiana Medicaid Eligibility Manual I-1400 - Ineligible Child
-      href: https://ldh.la.gov/assets/medicaid/MedicaidEligibilityPolicy/I-1400.pdf#page=4
-    - title: Michigan BEM 540 - Allocation to Non-SSI-Related Children
-      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/540.pdf#page=2
+    - title: 42 USC 1396a(r)(2) - Income and resource methodologies
+      href: https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXIX-sec1396a.htm
+    - title: 42 CFR 435.601(d)(2)-(3) - Income and resource methodologies
+      href: https://www.ecfr.gov/current/title-42/section-435.601#p-435.601(d)(2)
     - title: Missouri DSS 0805.020.15 - Deeming Parental Income, step 1
       href: https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/0805-020-15/
-    - title: Montana Combined Medicaid Manual 603-1 - Ineligible Child Allocation
-      href: https://prod-dphhs.mt.gov/assets/hcsd/mamanual/CMA603.1.pdf
-    - title: North Carolina MA-2260 IV.A - Financial Eligibility Requirements
-      href: https://policies.ncdhhs.gov/wp-content/uploads/MA-2260-Financial-Elig-Requirements-PLA.pdf#page=4
-    - title: New Jersey Medicaid Only Manual 10:71-5.5 - Deeming of Income
-      href: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_71%20%20MEDICAID%20ONLY.PDF#page=247
-    - title: New York Medicaid Reference Guide - Allocation
-      href: https://www.health.ny.gov/health_care/medicaid/reference/mrg/income.pdf
-    - title: Ohio Administrative Code 5160:1-3-03.3(B)(2) and (8) - Medicaid deeming of income
-      href: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-03.3
-    - title: Texas MEPD G-2312 - Parent-to-Child Deeming, step 2
-      href: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/g-2300-special-income-noninstitutional-budgets
-    - title: Virginia Medicaid Manual M0530.002 B.1-B.2 - Nonblind Nondisabled Child
+    - title: Virginia Medicaid Manual M0530.002 B.2 - Nonblind Nondisabled Child
       href: https://www.dmas.virginia.gov/media/mghpujpo/m05-1-1-26.pdf#page=57
-    - title: Wisconsin Medicaid Eligibility Handbook 15.1.2 - Special Financial Tests
-      href: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm
 
+AL:
+  2015-01-01: .inf
+AK:
+  2015-01-01: .inf
+AZ:
+  2015-01-01: .inf
+AR:
+  2015-01-01: .inf
 CA:
-  2015-01-01: 21
+  2015-01-01: .inf
+CO:
+  2015-01-01: .inf
+CT:
+  2015-01-01: .inf
+DE:
+  2015-01-01: .inf
 FL:
-  2015-01-01: 21
+  2015-01-01: .inf
+GA:
+  2015-01-01: .inf
+HI:
+  2015-01-01: .inf
 ID:
-  2015-01-01: 21
+  2015-01-01: .inf
+IL:
+  2015-01-01: .inf
+IN:
+  2015-01-01: .inf
+IA:
+  2015-01-01: .inf
+KS:
+  2015-01-01: .inf
+KY:
+  2015-01-01: .inf
 LA:
-  2015-01-01: 21
+  2015-01-01: .inf
+ME:
+  2015-01-01: .inf
+MD:
+  2015-01-01: .inf
+MA:
+  2015-01-01: .inf
 MI:
-  2015-01-01: 18
+  2015-01-01: .inf
+MN:
+  2015-01-01: .inf
+MS:
+  2015-01-01: .inf
 MO:
   2015-01-01: 18
 MT:
-  2015-01-01: 21
-NC:
-  2015-01-01: 21
+  2015-01-01: .inf
+NE:
+  2015-01-01: .inf
+NV:
+  2015-01-01: .inf
+NH:
+  2015-01-01: .inf
 NJ:
-  2015-01-01: 18
+  2015-01-01: .inf
+NM:
+  2015-01-01: .inf
 NY:
-  2015-01-01: 18
+  2015-01-01: .inf
+NC:
+  2015-01-01: .inf
+ND:
+  2015-01-01: .inf
 OH:
-  2015-01-01: 18
+  2015-01-01: .inf
+OK:
+  2015-01-01: .inf
+OR:
+  2015-01-01: .inf
+PA:
+  2015-01-01: .inf
+RI:
+  2015-01-01: .inf
+SC:
+  2015-01-01: .inf
+SD:
+  2015-01-01: .inf
+TN:
+  2015-01-01: .inf
 TX:
-  2015-01-01: 21
+  2015-01-01: .inf
+UT:
+  2015-01-01: .inf
+VT:
+  2015-01-01: .inf
 VA:
   2015-01-01: 21
+WA:
+  2015-01-01: .inf
+WV:
+  2015-01-01: .inf
 WI:
-  2015-01-01: 19
+  2015-01-01: .inf
+WY:
+  2015-01-01: .inf
+DC:
+  2015-01-01: .inf
+GU:
+  2015-01-01: .inf
+MP:
+  2015-01-01: .inf
+PW:
+  2015-01-01: .inf
+PR:
+  2015-01-01: .inf
+VI:
+  2015-01-01: .inf
+AA:
+  2015-01-01: .inf
+AE:
+  2015-01-01: .inf
+AP:
+  2015-01-01: .inf
