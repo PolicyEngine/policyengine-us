@@ -1,0 +1,56 @@
+- name: Each person subtracts their own capped educator expenses.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        medicaid_irs_gross_income: 60_000
+        educator_expense: 500
+      person2:
+        is_tax_unit_spouse: true
+        medicaid_irs_gross_income: 40_000
+      person3:
+        is_tax_unit_dependent: true
+        medicaid_irs_gross_income: 5_000
+        educator_expense: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    # 26 USC 62(a)(2)(D): $300 per eligible educator for 2022 (Rev. Proc.
+    # 2021-45 sec. 3.13). The head deducts 300 of 500; the spouse has none
+    # to share; the dependent deducts 300 of 400 on their own return.
+    medicaid_adjusted_gross_income_person: [59_700, 40_000, 4_700]
+  absolute_error_margin: 0.01
+
+- name: A tax-unit educator deduction that differs from the own amounts is shared in proportion to them.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        medicaid_irs_gross_income: 60_000
+        educator_expense: 500
+      person2:
+        is_tax_unit_spouse: true
+        medicaid_irs_gross_income: 40_000
+        educator_expense: 200
+      person3:
+        is_tax_unit_dependent: true
+        medicaid_irs_gross_income: 5_000
+        educator_expense: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        # Supplied directly, as an input or a reform would set it.
+        educator_expense_ald: 250
+  output:
+    # Own capped amounts for 2022: head 300 of 500, spouse 200, dependent
+    # 300 of 400. The head's and spouse's 500 is scaled to the 250 deduction,
+    # so the head subtracts 150 and the spouse 100. The dependent keeps their
+    # own 300, which is on their own return.
+    educator_expense_ald_person: [300, 200, 300]
+    medicaid_adjusted_gross_income_person: [59_850, 39_900, 4_700]
+  absolute_error_margin: 0.01

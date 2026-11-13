@@ -8,6 +8,8 @@ metadata:
   reference:
     - title: SSA POMS SI 01715.010 Medicaid and the Supplemental Security Income Program
       href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010
+    - title: Missouri DSS MO HealthNet for the Aged, Blind and Disabled Manual 0805.020.00 MO HealthNet for Disabled Children (MHDC)
+      href: https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-020-00/
 
 AK:
   2024-01-01: false
@@ -58,7 +60,9 @@ MI:
 MN:
   2024-01-01: false
 MO:
-  2024-01-01: true
+  # MHABD 0805.020.00: "disabled children (under age 18) may receive MO
+  # HealthNet as spend down, non-spend down or vendor."
+  2024-01-01: false
 MS:
   2024-01-01: false
 MT:

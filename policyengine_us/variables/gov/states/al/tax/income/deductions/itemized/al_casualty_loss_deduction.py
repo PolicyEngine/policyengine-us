@@ -39,8 +39,7 @@ class al_casualty_loss_deduction(Variable):
         # like the federal deduction, no personal casualty loss is deductible
         # while gov.irs.deductions.itemized.casualty.active is false (from
         # 2018).
-        # Only the owner of the property claims the loss. A dependent's loss
-        # belongs on the dependent's own return.
+        # A dependent's own loss belongs on the dependent's return.
         loss = tax_unit_non_dep_add(tax_unit, period, ["casualty_loss"])
         # A joint return is one individual for the $100 rule. The model records
         # one loss amount per person, not separate casualty events, so the

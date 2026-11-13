@@ -17,9 +17,7 @@ class casualty_loss_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.itemized.casualty
-        # Only the owner of the property claims the loss. A dependent's loss
-        # belongs on the dependent's own return, as the dependent's income
-        # does: adjusted gross income leaves it out.
+        # A dependent's own loss belongs on the dependent's return.
         loss = tax_unit_non_dep_add(tax_unit, period, ["casualty_loss"])
         # 26 U.S.C. 165(h)(1) reduces each casualty by $100 (Form 4684
         # line 11). A joint return is one individual for the $100 rule

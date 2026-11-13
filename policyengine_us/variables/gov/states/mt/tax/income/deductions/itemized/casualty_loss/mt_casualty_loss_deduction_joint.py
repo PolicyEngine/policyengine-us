@@ -35,9 +35,7 @@ class mt_casualty_loss_deduction_joint(Variable):
         # one loss amount per person, not separate casualty events, so the
         # return's losses are treated as one casualty and the $100 reduction
         # (Form 4684 line 11) applies once.
-        # Only the owner of the property claims the loss. A dependent's loss
-        # belongs on the dependent's own return, as the dependent's income does:
-        # adjusted_gross_income_person, and so Montana AGI, leaves it out.
+        # A dependent's own loss belongs on the dependent's return.
         loss = tax_unit_non_dep_add(tax_unit, period, ["casualty_loss"])
         reduced_loss = max_(loss - p_casualty.per_casualty_reduction, 0)
         agi = tax_unit("mt_agi_joint", period)

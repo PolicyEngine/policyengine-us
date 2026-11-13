@@ -1,0 +1,281 @@
+# 2018 IA 104 Iowa Itemized Deductions Worksheet:
+# https://revenue.iowa.gov/media/2335/download?inline=#page=1
+# 2018 IA Schedule A line 26 sends filers with federal AGI over $160,000 to
+# the worksheet: https://revenue.iowa.gov/media/2298/download?inline=#page=1
+# Line 1 is Schedule A lines 1 to 25, line 2 the Iowa income tax on federal
+# Schedule A line 5a, line 4 medical, investment interest and casualty losses.
+
+- name: 2018 single filer at $150,000 is not limited
+  period: 2018
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 150_000
+    real_estate_taxes: 6_000
+    deductible_mortgage_interest: 9_000
+    charitable_deduction: 3_000
+    ia_withheld_income_tax: 0
+    state_code: IA
+  output:
+    # Schedule A line 26: federal AGI is not over $160,000, so add the lines.
+    ia_itemized_deductions_pre_limitation: 18_000
+    ia_itemized_deductions_reduction: 0
+    ia_itemized_deductions_unit: 18_000
+
+- name: 2018 separate filer at exactly $160,000 is not limited
+  period: 2018
+  input:
+    filing_status: SEPARATE
+    adjusted_gross_income: 160_000
+    real_estate_taxes: 6_000
+    deductible_mortgage_interest: 9_000
+    charitable_deduction: 3_000
+    ia_withheld_income_tax: 0
+    state_code: IA
+  output:
+    # IA 104 line 9: line 8 ($160,000) is not less than line 7 ($160,000).
+    ia_itemized_deductions_reduction: 0
+    ia_itemized_deductions_unit: 18_000
+
+- name: 2018 separate filer above $160,000 is limited
+  period: 2018
+  input:
+    filing_status: SEPARATE
+    adjusted_gross_income: 170_000
+    real_estate_taxes: 6_000
+    deductible_mortgage_interest: 9_000
+    charitable_deduction: 3_000
+    ia_withheld_income_tax: 0
+    state_code: IA
+  output:
+    # Lines 1, 3 and 5: 18,000; line 6: 0.8 * 18,000 = 14,400.
+    # Line 9: 170,000 - 160,000 = 10,000; line 10: 3% = 300; line 11: 300.
+    # Line 12: 18,000 - 300 = 17,700; line 2 is zero, so line 21 = 17,700.
+    ia_itemized_deductions_reduction: 300
+    ia_itemized_deductions_unit: 17_700
+
+- name: 2018 single filer above $160,000 but below $266,700 is not limited
+  period: 2018
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 170_000
+    real_estate_taxes: 6_000
+    deductible_mortgage_interest: 9_000
+    charitable_deduction: 3_000
+    ia_withheld_income_tax: 0
+    state_code: IA
+  output:
+    # IA 104 line 9: line 8 ($266,700 for single) is not less than line 7.
+    ia_itemized_deductions_reduction: 0
+    ia_itemized_deductions_unit: 18_000
+
+- name: 2018 head of household above $293,350 is limited
+  period: 2018
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 303_350
+    real_estate_taxes: 6_000
+    deductible_mortgage_interest: 9_000
+    charitable_deduction: 3_000
+    ia_withheld_income_tax: 0
+    state_code: IA
+  output:
+    # Line 9: 303,350 - 293,350 = 10,000; line 10: 300; line 6: 14,400.
+    # Line 11: 300; line 21: 18,000 - 300 = 17,700.
+    ia_itemized_deductions_reduction: 300
+    ia_itemized_deductions_unit: 17_700
+
+- name: 2018 surviving spouse above $320,000 is limited
+  period: 2018
+  input:
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income: 330_000
+    real_estate_taxes: 6_000
+    deductible_mortgage_interest: 9_000
+    charitable_deduction: 3_000
+    ia_withheld_income_tax: 0
+    state_code: IA
+  output:
+    # Line 9: 330,000 - 320,000 = 10,000; line 10: 300; line 6: 14,400.
+    # Line 11: 300; line 21: 18,000 - 300 = 17,700.
+    ia_itemized_deductions_reduction: 300
+    ia_itemized_deductions_unit: 17_700
+
+- name: 2018 joint filer shares the reduction with Iowa income tax
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 400_000
+    real_estate_taxes: 8_000
+    deductible_mortgage_interest: 14_000
+    charitable_deduction: 6_000
+    medical_expense_deduction: 4_000
+    ia_withheld_income_tax: 20_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: IA
+  output:
+    # Line 1: 8,000 + 14,000 + 6,000 + 4,000 = 32,000; line 2: 20,000;
+    # line 3: 52,000; line 4: 4,000 (medical); line 5: 48,000;
+    # line 6: 38,400; line 9: 400,000 - 320,000 = 80,000; line 10: 2,400;
+    # line 11: 2,400; line 12: 49,600; line 15: 49,600 - 4,000 = 45,600;
+    # line 17: 52,000 - 4,000 = 48,000; line 18: 95.0%;
+    # line 20: 20,000 * 95% = 19,000; line 21: 49,600 - 19,000 = 30,600.
+    ia_itemized_deductions_pre_limitation: 32_000
+    ia_itemized_deductions_reduction: 1_400
+    ia_itemized_deductions_unit: 30_600
+
+- name: 2018 line 18 rounds the Iowa income tax share to a tenth of a percent
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 400_000
+    real_estate_taxes: 8_000
+    deductible_mortgage_interest: 14_000
+    charitable_deduction: 4_000
+    medical_expense_deduction: 4_000
+    ia_withheld_income_tax: 20_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: IA
+  output:
+    # Line 1: 30,000; line 2: 20,000; line 3: 50,000; line 4: 4,000;
+    # line 5: 46,000; line 6: 36,800; line 10: 2,400; line 11: 2,400;
+    # line 12: 47,600; line 15: 43,600; line 17: 46,000;
+    # line 18: 94.78% enters as 94.8%; line 20: 18,960;
+    # line 21: 47,600 - 18,960 = 28,640. The exact share gives 28,643.48.
+    ia_itemized_deductions_pre_limitation: 30_000
+    ia_itemized_deductions_reduction: 1_360
+    ia_itemized_deductions_unit: 28_640
+
+- name: 2018 rounding on line 18 can raise line 21 above line 1
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 500_000
+    medical_expense_deduction: 12_000
+    investment_interest_expense: 8_000
+    ia_withheld_income_tax: 9_700
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: IA
+  output:
+    # Line 1: 20,000; line 3: 29,700; line 4: 20,000; line 5: 9,700;
+    # line 6: 7,760; line 10: 5,400; line 11: 5,400; line 12: 24,300;
+    # line 15: 4,300; line 17: 9,700; line 18: 44.33% enters as 44.3%;
+    # line 20: 4,297.10; line 21: 24,300 - 4,297.10 = 20,002.90.
+    ia_itemized_deductions_pre_limitation: 20_000
+    ia_itemized_deductions_reduction: -2.90
+    ia_itemized_deductions_unit: 20_002.90
+
+- name: 2018 line 18 rounds an exact half up
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 410_000
+    real_estate_taxes: 10_000
+    deductible_mortgage_interest: 10_000
+    ia_withheld_income_tax: 20_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: IA
+  output:
+    # Line 1: 20,000; line 2: 20,000; line 3: 40,000; line 4: 0; line 5: 40,000;
+    # line 6: 32,000; line 9: 90,000; line 10: 2,700; line 11: 2,700;
+    # line 12: 37,300; line 15: 37,300; line 17: 40,000;
+    # line 18: 93.25% enters as 93.3%; line 20: 18,660;
+    # line 21: 37,300 - 18,660 = 18,640.
+    ia_itemized_deductions_reduction: 1_360
+    ia_itemized_deductions_unit: 18_640
+
+- name: 2018 joint filer with sales tax on federal Schedule A has no Iowa income tax on line 2
+  period: 2018
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 400_000
+    real_estate_taxes: 8_000
+    deductible_mortgage_interest: 14_000
+    charitable_deduction: 6_000
+    medical_expense_deduction: 4_000
+    ia_withheld_income_tax: 20_000
+    state_sales_tax: 25_000
+    local_sales_tax: 0
+    state_code: IA
+  output:
+    # Federal line 5a holds the larger sales tax, so line 2 is zero.
+    # Line 3: 32,000; line 5: 28,000; line 6: 22,400; line 11: 2,400;
+    # line 12 = line 21: 32,000 - 2,400 = 29,600.
+    ia_itemized_deductions_reduction: 2_400
+    ia_itemized_deductions_unit: 29_600
+
+- name: 2018 cap of 80% of the limited deductions binds
+  period: 2018
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 1_000_000
+    real_estate_taxes: 4_000
+    deductible_mortgage_interest: 6_000
+    ia_withheld_income_tax: 0
+    state_code: IA
+  output:
+    # Line 5: 10,000; line 6: 8,000; line 9: 1,000,000 - 266,700 = 733,300;
+    # line 10: 21,999; line 11: 8,000; line 21: 10,000 - 8,000 = 2,000.
+    ia_itemized_deductions_reduction: 8_000
+    ia_itemized_deductions_unit: 2_000
+
+- name: 2018 Iowa income tax absorbs the reduction when only excluded deductions remain
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 500_000
+    medical_expense_deduction: 12_000
+    investment_interest_expense: 8_000
+    ia_withheld_income_tax: 10_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: IA
+  output:
+    # Line 1: 20,000; line 3: 30,000; line 4: 12,000 + 8,000 = 20,000;
+    # line 5: 10,000; line 6: 8,000; line 9: 180,000; line 10: 5,400;
+    # line 11: 5,400; line 12: 24,600; line 15: 4,600; line 17: 10,000;
+    # line 18: 46.0%; line 20: 4,600; line 21: 24,600 - 4,600 = 20,000.
+    ia_itemized_deductions_pre_limitation: 20_000
+    ia_itemized_deductions_reduction: 0
+    ia_itemized_deductions_unit: 20_000
+
+- name: 2018 limitation applies after the miscellaneous deduction
+  period: 2018
+  input:
+    filing_status: SEPARATE
+    adjusted_gross_income: 200_000
+    unreimbursed_business_employee_expenses: 10_000
+    real_estate_taxes: 6_000
+    deductible_mortgage_interest: 9_000
+    ia_withheld_income_tax: 0
+    state_code: IA
+  output:
+    # Schedule A line 24: 10,000 - 2% * 200,000 = 6,000; line 1: 21,000.
+    # Line 9: 40,000; line 10: 1,200; line 6: 16,800; line 11: 1,200.
+    # Line 21: 21,000 - 1,200 = 19,800.
+    ia_itemized_deductions_pre_limitation: 21_000
+    ia_itemized_deductions_reduction: 1_200
+    ia_itemized_deductions_unit: 19_800
+
+- name: 2019 Iowa follows the federal suspension of the limitation
+  period: 2019
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 1_000_000
+    real_estate_taxes: 4_000
+    deductible_mortgage_interest: 6_000
+    ia_withheld_income_tax: 0
+    state_code: IA
+  output:
+    # 2019 IA Schedule A line 21 adds the lines with no worksheet.
+    ia_itemized_deductions_reduction: 0
+    ia_itemized_deductions_unit: 10_000
+

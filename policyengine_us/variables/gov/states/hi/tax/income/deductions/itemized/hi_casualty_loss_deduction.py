@@ -33,8 +33,7 @@ class hi_casualty_loss_deduction(Variable):
         # line 16: each casualty less Hawaii's $100 (HRS 235-2.4(l)(1)).
         # Hawaii did not adopt the federal qualified-disaster rules, which
         # replace the $100 with $500 and waive the 10% floor.
-        # Only the owner of the property claims the loss. A dependent's loss
-        # belongs on the dependent's own return.
+        # A dependent's own loss belongs on the dependent's return.
         loss = tax_unit_non_dep_add(tax_unit, period, ["casualty_loss"])
         # A joint return is one individual for the $100 rule. The model records
         # one loss amount per person, not separate casualty events, so the

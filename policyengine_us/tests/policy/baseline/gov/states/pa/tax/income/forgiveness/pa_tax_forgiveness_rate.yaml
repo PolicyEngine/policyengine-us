@@ -84,3 +84,272 @@
         state_code: PA
   output:
     pa_tax_forgiveness_rate: 0.1
+
+- name: Separated head alone in a separate unit gets the unmarried base
+  # 72 P.S. 7304(d)(1): a separate filer who lives apart from the spouse is
+  # not considered married, so Eligibility Income Table 1 applies.
+  # Base $6,500; ($10,000 - $6,500) / $250 = 14 steps; 1 - 14 * 10% < 0.
+  # Tax before forgiveness: 3.07% * $10,000 = $307, none forgiven.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 37
+        employment_income: 10_000
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: PA
+  output:
+    filing_status: SEPARATE
+    pa_eligibility_income: 10_000
+    pa_tax_forgiveness_rate: 0
+    pa_income_tax_before_forgiveness: 307
+    pa_income_tax_after_forgiveness: 307
+
+- name: Separated head alone in a separate unit just above the unmarried base
+  # Base $6,500; ($7,000 - $6,500) / $250 = 2 steps; 1 - 2 * 10% = 80%.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 37
+        employment_income: 7_000
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: PA
+  output:
+    filing_status: SEPARATE
+    pa_tax_forgiveness_rate: 0.8
+
+- name: Married couple in one separate unit combines incomes on the married base
+  # Eligibility Income Table 2 ("Married Claimants, even if filing separately"):
+  # joint eligibility income $10,000 + $3,000 = $13,000, base $13,000, 0 steps.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+      spouse:
+        age: 38
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, spouse]
+        state_code: PA
+  output:
+    tax_unit_married: true
+    pa_eligibility_income: 13_000
+    pa_tax_forgiveness_rate: 1
+    pa_income_tax_after_forgiveness: 0
+
+- name: Joint filers keep the married base
+  # Base $13,000; ($14,000 - $13,000) / $250 = 4 steps; 1 - 4 * 10% = 60%.
+  # Tax before forgiveness: 3.07% * $14,000 = $429.80; after: 40% = $171.92.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 11_000
+      spouse:
+        age: 38
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: PA
+  output:
+    filing_status: JOINT
+    pa_eligibility_income: 14_000
+    pa_tax_forgiveness_rate: 0.6
+    pa_income_tax_before_forgiveness: 429.8
+    pa_income_tax_after_forgiveness: 171.92
+
+- name: Cohabiting married couple filing separately keeps the married base
+  # 72 P.S. 7304(d)(1)(ii): spouses who file separately but live together are
+  # still married, so Eligibility Income Table 2 applies to both returns.
+  # Joint eligibility income $10,000 + $0 = $10,000 <= $13,000 base: 100%.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+      spouse:
+        age: 38
+    tax_units:
+      head_unit:
+        members: [head]
+        filing_status: SEPARATE
+        cohabitating_spouses: true
+      spouse_unit:
+        members: [spouse]
+        filing_status: SEPARATE
+        cohabitating_spouses: true
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: PA
+  output:
+    eitc_spouses_lived_apart_last_six_months: [false, false]
+    pa_eligibility_income: [10_000, 0]
+    pa_tax_forgiveness_rate: [1, 1]
+    pa_income_tax_before_forgiveness: [307, 0]
+    pa_income_tax_after_forgiveness: [0, 0]
+
+- name: Cohabiting married couple filing separately combines incomes above the ceiling
+  # Joint eligibility income $10,000 + $9,000 = $19,000; base $13,000;
+  # ($19,000 - $13,000) / $250 = 24 steps; 1 - 24 * 10% < 0, so 0%
+  # (Table 2, 0 children, top column $15,250).
+  # Tax: 3.07% * $10,000 = $307 and 3.07% * $9,000 = $276.30, none forgiven.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+      spouse:
+        age: 38
+        employment_income: 9_000
+    tax_units:
+      head_unit:
+        members: [head]
+        filing_status: SEPARATE
+      spouse_unit:
+        members: [spouse]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: PA
+  output:
+    pa_tax_forgiveness_rate: [0, 0]
+    pa_income_tax_after_forgiveness: [307, 276.3]
+
+- name: Cohabiting married couple filing separately in the phase-down
+  # Joint eligibility income $10,000 + $3,500 = $13,500; base $13,000;
+  # ($13,500 - $13,000) / $250 = 2 steps; 1 - 2 * 10% = 80% on both returns
+  # (Table 2 $13,500 column).
+  # Head: 3.07% * $10,000 = $307; after 20% = $61.40.
+  # Spouse: 3.07% * $3,500 = $107.45; after 20% = $21.49.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+      spouse:
+        age: 38
+        employment_income: 3_500
+    tax_units:
+      head_unit:
+        members: [head]
+        filing_status: SEPARATE
+      spouse_unit:
+        members: [spouse]
+        filing_status: SEPARATE
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: PA
+  output:
+    pa_tax_forgiveness_rate: [0.8, 0.8]
+    pa_income_tax_after_forgiveness: [61.4, 21.49]
+
+- name: Separated spouses living apart each use the unmarried base on own income
+  # 72 P.S. 7304(d)(1)(i)-(ii): separate returns and living apart, so neither
+  # is considered married and each uses Table 1 on their own income.
+  # Head: ($7,000 - $6,500) / $250 = 2 steps; 80%.
+  # Spouse: $1,000 <= $6,500; 100%.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 7_000
+        is_separated: true
+      spouse:
+        age: 38
+        employment_income: 1_000
+        is_separated: true
+    tax_units:
+      head_unit:
+        members: [head]
+      spouse_unit:
+        members: [spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      head_household:
+        members: [head]
+        state_code: PA
+      spouse_household:
+        members: [spouse]
+        state_code: PA
+  output:
+    filing_status: [SEPARATE, SEPARATE]
+    eitc_spouses_lived_apart_last_six_months: [true, true]
+    pa_eligibility_income: [7_000, 1_000]
+    pa_tax_forgiveness_rate: [0.8, 1]
+
+- name: Separated spouses who did not live apart for six months stay married
+  # The 2025 PA-40 instructions count as married a claimant "Separated and
+  # lived apart, but for less than the last six months". Same couple as
+  # above, but the living-apart input is false: joint eligibility income
+  # $7,000 + $1,000 = $8,000 <= $13,000 base, so Table 2 gives 100%.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 7_000
+        is_separated: true
+      spouse:
+        age: 38
+        employment_income: 1_000
+        is_separated: true
+    tax_units:
+      head_unit:
+        members: [head]
+        eitc_spouses_lived_apart_last_six_months: false
+      spouse_unit:
+        members: [spouse]
+        eitc_spouses_lived_apart_last_six_months: false
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: PA
+  output:
+    filing_status: [SEPARATE, SEPARATE]
+    pa_tax_forgiveness_rate: [1, 1]

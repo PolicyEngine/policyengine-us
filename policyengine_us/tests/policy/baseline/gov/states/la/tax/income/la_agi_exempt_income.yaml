@@ -42,3 +42,139 @@
   output:
     la_agi_exempt_income: 19_500
  
+- name: A dependent child's public pension is not subtracted from the filer's income
+  # The child's pension is not in the tax unit's federal AGI, so Schedule E
+  # cannot subtract it; the child reports it on their own return.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: LA
+  output:
+    la_agi_exempt_income: 0
+    # Federal AGI is the head's 50,000 of wages.
+    la_agi: 50_000
+
+- name: A dependent child's military retirement pay is not subtracted from the filer's income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: LA
+  output:
+    la_agi_exempt_income: 0
+    la_agi: 50_000
+
+- name: Only the head's and spouse's retirement income is exempt when a dependent also has retirement income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        taxable_public_pension_income: 20_000
+        taxable_private_pension_income: 15_000
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+        military_retirement_pay: 5_000
+        taxable_private_pension_income: 3_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+        military_retirement_pay: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: LA
+  output:
+    # Head's private pension is capped at 12,000 (age 65 or older);
+    # the spouse's 3,000 is under the cap.
+    la_retirement_exemption_person: [12_000, 3_000, 0]
+    # 20,000 head public pension + 12,000 head 06E
+    # + 5,000 spouse military retirement + 3,000 spouse 06E.
+    # The child's 10,000 public pension and 2,000 military retirement pay are excluded.
+    la_agi_exempt_income: 40_000
+
+- name: A dependent aged 65 or older gets neither the public pension exemption nor the age-gated retirement exemption
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 40_000
+        is_tax_unit_head: true
+      parent:
+        age: 80
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+        taxable_private_pension_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parent_marital_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, parent]
+        state_code: LA
+  output:
+    # The parent's 8,000 private pension would be under the 12,000 cap,
+    # but the 06E exemption applies only to the taxpayer and spouse.
+    la_retirement_exemption_person: [0, 0]
+    la_agi_exempt_income: 0
+    la_agi: 40_000

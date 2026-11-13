@@ -23,3 +23,13 @@
     ctc_arpa_phase_out_threshold: 150_000
   output:
     ctc_arpa_uncapped_phase_out: 500 # Rounded up to $10k excess above $150k ARPA threshold * 5%.
+
+- name: The ARPA phase-out also counts income excluded under section 911.
+  period: 2021
+  input:
+    adjusted_gross_income: 150_000
+    foreign_earned_income_exclusion: 9_100
+    ctc_arpa_phase_out_threshold: 150_000
+  output:
+    # Schedule 8812 (2021) line 3: modified AGI 159,100; 9,100 rounds up to 10,000.
+    ctc_arpa_uncapped_phase_out: 500

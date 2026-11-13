@@ -246,3 +246,144 @@
         state_code: NM
   output:
     nm_low_income_comprehensive_tax_rebate: 583
+
+- name: 2025 single filer who can be claimed as a dependent gets no rebate
+  period: 2025
+  input:
+    people:
+      person:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        nm_modified_gross_income: 5_000
+    households:
+      household:
+        members: [person]
+        state_code: NM
+  output:
+    # NMSA 7-2-14(A): only a resident "who is not a dependent of another
+    # individual" may claim the rebate.
+    nm_low_income_comprehensive_tax_rebate: 0
+
+- name: 2025 single filer who cannot be claimed gets the one-exemption rebate
+  period: 2025
+  input:
+    people:
+      person:
+        age: 20
+    tax_units:
+      tax_unit:
+        members: [person]
+        nm_modified_gross_income: 5_000
+    households:
+      household:
+        members: [person]
+        state_code: NM
+  output:
+    # $1,000-$7,500 row, one exemption.
+    nm_low_income_comprehensive_tax_rebate: 252
+
+- name: 2025 single filer aged 65 or older who can be claimed as a dependent gets no rebate
+  period: 2025
+  input:
+    people:
+      person:
+        age: 70
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        nm_modified_gross_income: 5_000
+    households:
+      household:
+        members: [person]
+        state_code: NM
+  output:
+    # The age-65 exemptions do not make a dependent of another individual a
+    # claimant (NMSA 7-2-14(A)).
+    nm_low_income_comprehensive_tax_rebate: 0
+
+- name: 2025 joint return with one claimable spouse keeps the rebate with the couple's combined income (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        nm_modified_gross_income: 8500
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # One exemption; the $8,000-$9,000 row of the one-exemption table.
+    nm_low_income_comprehensive_tax_rebate: 212
+
+- name: 2025 joint return with one claimable spouse keeps the rebate with the couple's combined income (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        nm_modified_gross_income: 8500
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    nm_low_income_comprehensive_tax_rebate: 212
+
+- name: Military retired pay puts a couple, both 67, over the rebate's income limit.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        military_retirement_pay: 45_000
+        social_security_retirement: 15_000
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    # NMSA 1978 § 7-2-2(L)(9), (11): modified gross income counts military
+    # retired pay. 45,000 + 30,000 Social Security = 75,000.
+    nm_modified_gross_income: 75_000
+    # Two federal exemptions plus two for each spouse 65 or older.
+    nm_low_income_comprehensive_tax_rebate_exemptions: 6
+    # 75,000 is above the six-exemption table's $36,000 limit. Without the
+    # military retired pay, modified gross income would be 30,000 and the
+    # rebate 149.
+    nm_low_income_comprehensive_tax_rebate: 0

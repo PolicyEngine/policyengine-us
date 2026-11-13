@@ -1,0 +1,611 @@
+# Oklahoma LIHEAP regular heating cases.
+# Cases dated 2027 use the current Appendix C-1 need standards and Appendix C-7 earned income deduction.
+
+# Current OAC 340:20-1-11(a)(4); C-7 p. 1 and C-1 p. 4 IX-A. Annual 12,000 - 2,880 - 398 x 12 = 4,344 (monthly 362).
+# The eligible child receives no ineligible need allowance. No second deduction in net.
+- name: Case 1, one ineligible employed adult contributes after the earned and single adult need allowances.
+  period: 2027
+  input:
+    people:
+      adult:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 12000
+      child:
+        age: 10
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+    tax_units:
+      family:
+        members: [adult, child]
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: 4344
+    ok_liheap_household_size: 1
+    ok_liheap_gross_income: 4344
+    ok_liheap_net_income: 4344
+
+# Current OAC 340:20-1-11(a)(4), C-1 p. 4 IX-A size 3 need 645. Ineligible 19,200 - 2 x 2,880 - 645 x 12 = 5,700;
+# eligible 600 gives 6,300. An equal-age representative tie must not count 5,700 twice. Tax units approximate the
+# claimable-dependent group.
+- name: Case 2, equal age adults and their ineligible dependent contribute once as one represented group.
+  period: 2027
+  input:
+    people:
+      adult1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 12000
+      adult2:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 6000
+      ineligible_child:
+        age: 12
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 1200
+      eligible_child:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 600
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, ineligible_child, eligible_child]
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, ineligible_child, eligible_child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [adult1, adult2, ineligible_child, eligible_child]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: 5700
+    ok_liheap_gross_income: 6300
+    ok_liheap_net_income: 6300
+    ok_liheap_household_size: 1
+
+# Current OAC 340:20-1-11(a)(4), C-1 p. 4: group 1 = 12,000 - 2,880 - 4,776 = 4,344; group 2 = 9,000 - 4,776 = 4,224;
+# eligible adult 6,000 gives 14,568 gross. Deduct only the eligible worker's 2,880 later: 11,688 net.
+- name: Case 3, separate represented tax units each use their own ineligible need allowance.
+  period: 2027
+  input:
+    people:
+      adult1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 12000
+      child:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+      adult2:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        pension_income: 9000
+      eligible_adult:
+        age: 30
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 6000
+    tax_units:
+      family1:
+        members: [adult1, child]
+      family2:
+        members: [adult2]
+      family3:
+        members: [eligible_adult]
+    spm_units:
+      spm_unit:
+        members: [adult1, child, adult2, eligible_adult]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [adult1, child, adult2, eligible_adult]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: [4344, 4224, 0]
+    ok_liheap_gross_income: 14568
+    ok_liheap_net_income: 11688
+    ok_liheap_household_size: 2
+
+# C-1 p. 5 IX-B size 2 need 380. 6,000 - 380 x 12 = 1,440 from the child-only tax unit, not dropped because there is no
+# adult tax head. Eligible 6,000 gives 7,440 gross; minus the 2,880 eligible allowance gives 4,560 net.
+- name: Case 4, a child only tax unit uses the child need standard and still contributes once.
+  period: 2027
+  input:
+    people:
+      child1:
+        age: 15
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 3600
+      child2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 2400
+      adult:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 6000
+    tax_units:
+      children:
+        members: [child1, child2]
+      adult_unit:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [child1, child2, adult]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [child1, child2, adult]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: [1440, 0]
+    ok_liheap_gross_income: 7440
+    ok_liheap_net_income: 4560
+    ok_liheap_household_size: 1
+
+# C-1 p. 5 IX-B 9-or-more need 1,333. Ten ineligible children in one represented unit: 24,000 - 1,333 x 12 = 8,004.
+# The eligible adult is excluded from need. No inferred additional-child increment.
+- name: Case 5, the child only need standard uses its published nine or more ceiling.
+  period: 2027
+  input:
+    people:
+      child0:
+        age: 17
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 24000
+      child1:
+        age: 16
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 0
+      child2:
+        age: 15
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 0
+      child3:
+        age: 14
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 0
+      child4:
+        age: 13
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 0
+      child5:
+        age: 12
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 0
+      child6:
+        age: 11
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 0
+      child7:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 0
+      child8:
+        age: 9
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 0
+      child9:
+        age: 8
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 0
+      adult:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+    tax_units:
+      children:
+        members: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+      adult_unit:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9, adult]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [child0, child1, child2, child3, child4, child5, child6, child7, child8, child9, adult]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: [8004, 0]
+    ok_liheap_gross_income: 8004
+
+# Current OAC 340:20-1-11(a)(4): max(3,000 - 398 x 12, 0) = 0; a fully eligible tax unit has no deemed income or need
+# deduction. The eligible pension of 1,000 stays fully counted.
+- name: Case 6, zero ineligible members and income below need both produce zero contribution.
+  period: 2027
+  input:
+    people:
+      ineligible:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        pension_income: 3000
+      eligible:
+        age: 35
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        pension_income: 1000
+    tax_units:
+      unit1:
+        members: [ineligible]
+      unit2:
+        members: [eligible]
+    spm_units:
+      spm_unit:
+        members: [ineligible, eligible]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [ineligible, eligible]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: [0, 0]
+    ok_liheap_gross_income: 1000
+    ok_liheap_net_income: 1000
+
+# C-1 pp. 4-5 IX-A/B: child-only size 1 need 193 gives 3,600 - 2,316 = 1,284; adult size 1 need 398 gives
+# max(3,600 - 4,776, 0) = 0. is_adult (age 18) approximates the schedule's adult and child groups.
+- name: Case 7, a child only group uses child need until its member is an adult.
+  period: 2027
+  input:
+    people:
+      minor:
+        age: 17
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 3600
+      young_adult:
+        age: 18
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 3600
+      eligible:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+    tax_units:
+      minor_unit:
+        members: [minor]
+      adult_unit:
+        members: [young_adult]
+      eligible_unit:
+        members: [eligible]
+    spm_units:
+      spm_unit:
+        members: [minor, young_adult, eligible]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [minor, young_adult, eligible]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: [1284, 0, 0]
+    ok_liheap_gross_income: 1284
+
+# C-1 1/1/2025 Schedule IX-B children only, size 2 need 380: 3,600 + 2,400 survivor benefits - 380 x 12 = 1,440 deemed.
+# Gross 6,000 eligible wages + 1,440 = 7,440 (620/mo <= 1,632, the 2025 size 1 limit 19,584/yr).
+# Net 7,440 - 2,880 (C-7 10/1/2024 $240 x 12) = 4,560 -> 380/mo, band 1 -> natural gas 365.
+- name: Case 8, the 2025 child only need standard and earned deduction apply to a represented child only unit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 15
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 3_600
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        survivor_benefits: 2_400
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        employment_income: 6_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    ok_liheap_deemed_income: [1_440, 0]
+    ok_liheap_household_size: 1
+    ok_liheap_gross_income: 7_440
+    ok_liheap_income_limit: 19_584
+    ok_liheap_net_income: 4_560
+    ok_liheap_eligible: true
+    ok_liheap: 365

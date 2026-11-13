@@ -9,12 +9,16 @@
     in_nyc: true
     employment_income: 100_000
   output:
-    nyc_income_tax: 3_175.1702
-    local_tax: 3_175.1702
-    spm_unit_local_tax: 3_175.1702
+    # The NYC school tax credit rate reduction amount on city taxable income
+    # of 92,000 is $21 + 0.228% x 80,000 = 203.40 (Tax Law § 606(ggg)(4-b)(C)).
+    nyc_income_tax: 3_174.6902
+    local_tax: 3_174.6902
+    spm_unit_local_tax: 3_174.6902
     spm_unit_state_tax: 4_951.75
-    spm_unit_taxes: 29_649.12
-    spm_unit_net_income: 63_234.883
+    # Includes the 2024 New York Paid Family Leave contribution,
+    # min(0.373% * 100,000, 333.25) = 333.25.
+    spm_unit_taxes: 29_981.889
+    spm_unit_net_income: 62_902.109
 
 - name: NYC refundable tax credits reduce SPM taxes and increase SPM net income
   period: 2024
@@ -27,7 +31,9 @@
   output:
     local_tax: -400
     spm_unit_local_tax: -400
-    spm_unit_taxes: -345.4
+    # Includes the 2024 New York Paid Family Leave contribution,
+    # 0.373% * 10,000 = 37.30.
+    spm_unit_taxes: -308.1
 
 - name: Maryland county income tax flows into SPM taxes and reduces SPM net income
   period: 2021

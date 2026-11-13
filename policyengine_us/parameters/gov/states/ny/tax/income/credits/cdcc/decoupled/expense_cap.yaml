@@ -1,0 +1,33 @@
+description: New York caps qualifying expenses for the child and dependent care credit at this amount, based on the number of qualifying individuals.
+brackets:
+  - threshold:
+      2026-01-01: 1
+    amount:
+      2026-01-01: 3_000
+  - threshold:
+      2026-01-01: 2
+    amount:
+      2026-01-01: 6_000
+  - threshold:
+      2026-01-01: 3
+    amount:
+      2026-01-01: 7_500
+  - threshold:
+      2026-01-01: 4
+    amount:
+      2026-01-01: 8_500
+  - threshold:
+      2026-01-01: 5
+    amount:
+      2026-01-01: 9_000
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  label: New York expense-based child and dependent care credit expense cap
+  reference:
+    - title: N.Y. Tax Law 606(c-2)(2)(D)(iii)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: L.2026, ch. 59 (S.9009-C), Part A, sec. 2
+      href: https://www.nysenate.gov/legislation/bills/2025/S9009/amendment/C

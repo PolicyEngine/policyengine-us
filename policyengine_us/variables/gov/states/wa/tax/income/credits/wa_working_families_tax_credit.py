@@ -3,6 +3,7 @@ from policyengine_us.tools.state_eitc_helpers import (
     calculate_eitc_demographic_eligibility,
     eitc_filing_requirement_met,
     eitc_filing_status_eligible,
+    eitc_section_911_eligible,
 )
 
 
@@ -51,16 +52,11 @@ class wa_working_families_tax_credit(Variable):
         person = tax_unit.members
         has_tin = person("has_tin", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        # IRC 152(c)(3)(B) (part of the frozen 2022-06-09 federal EITC rules)
-        # waives the age test for a permanently and totally disabled
-        # dependent, matching the federal eitc_child_count.
-        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
-            "is_permanently_and_totally_disabled", period
-        )
-        child_count = tax_unit.sum(
-            (person("is_qualifying_child_dependent", period) | is_disabled_dependent)
-            & has_tin
-        )
+        # The IRC 152(c) qualifying-child definition, including the
+        # 152(c)(3)(B) disabled age waiver and the 152(c)(2) relationship test
+        # (both part of the frozen 2022-06-09 federal EITC rules), matching
+        # the federal eitc_child_count.
+        child_count = tax_unit.sum(person("is_eitc_qualifying_child", period) & has_tin)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
         federal_identification_eligible = tax_unit(
             "filer_meets_eitc_identification_requirements", period
@@ -84,7 +80,10 @@ class wa_working_families_tax_credit(Variable):
             tax_unit("eitc_relevant_investment_income", period)
             <= eitc.phase_out.max_investment_income
         )
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        # RCW 82.08.0206(2)(b): income is earned income under 26 U.S.C. 32,
+        # both spouses combined on a joint return, net of a self-employment
+        # loss.
+        earnings = tax_unit("eitc_earned_income", period)
         agi = tax_unit("adjusted_gross_income", period)
         higher_income = max_(earnings, agi)
         maximum_qualifying_income = tax_unit(
@@ -131,7 +130,9 @@ class wa_working_families_tax_credit(Variable):
             "wa_working_families_tax_credit_age_expansion_eligible", period
         )
 
-        eligible = eitc_eligible | state_only_eitc_eligible | age_expansion_eligible
+        eligible = (
+            eitc_eligible | state_only_eitc_eligible | age_expansion_eligible
+        ) & eitc_section_911_eligible(tax_unit, period)
 
         # Parameters are based on EITC-eligible children.
         # WFTC child count is the larger of the federally-counted children
@@ -152,15 +153,13 @@ class wa_working_families_tax_credit(Variable):
         # $0.24 for 3+), which equal this ratio. The $50 minimum (RCW
         # 82.08.0206(3)(c)) then floors any positive reduced amount.
         phase_out_rate = max_amount / phase_out_start_reduction
-        # Modeling choice: the reduction is measured against the greater of
-        # earned income or AGI, the same measure used for the
-        # maximum-qualifying-income ceiling above. RCW 82.08.0206(2)(b) defines
-        # "income" as earned income (26 U.S.C. Sec. 32), so using the greater
-        # of earned income and AGI is not the statutory base; it can
-        # over-reduce households whose AGI exceeds their earned income inside
-        # the band. Aligning the reduction base to earned income alone is a
-        # follow-up.
-        excess = max_(0, higher_income - phase_out_start)
+        # The reduction is measured on earned income: RCW 82.08.0206(3)(b)
+        # reduces the refund "per additional dollar of income", and (2)(b)
+        # defines "income" as earned income under 26 U.S.C. Sec. 32. WAC
+        # 458-20-285 Answer 10C: "The department calculates your WFTC refund
+        # based on your earned income". AGI still sets the eligibility
+        # ceiling above (Answer 4C).
+        excess = max_(0, earnings - phase_out_start)
         reduction = excess * phase_out_rate
         phased_out_amount = max_amount - reduction
         # RCW 82.08.0206(3)(b): the reduced refund is rounded to the nearest

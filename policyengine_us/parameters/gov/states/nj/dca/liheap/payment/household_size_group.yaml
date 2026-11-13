@@ -1,0 +1,29 @@
+description: New Jersey uses these household size group boundaries under the Low Income Home Energy Assistance Program.
+brackets:
+- threshold:
+    2025-10-01: 1
+  amount:
+    2025-10-01: 1
+- threshold:
+    2025-10-01: 5
+  amount:
+    2025-10-01: 2
+- threshold:
+    2025-10-01: 9
+  amount:
+    2025-10-01: 3
+- threshold:
+    2025-10-01: 13
+  amount:
+    2025-10-01: 4
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: /1
+  period: year
+  label: New Jersey LIHEAP household size group
+  reference:
+  - title: FY2026 Benefit Matrix
+    href: https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf
+  - title: FY2027 Benefit Matrix
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20Benefit%20Matrix.png

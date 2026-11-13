@@ -69,8 +69,8 @@ PERSON_DEDUCTIONS = [
     "alimony_expense_ald_person",
     "student_loan_interest_ald",
     "early_withdrawal_penalty",
-    "educator_expense",
-    "traditional_ira_contributions",
+    "educator_expense_ald_person",
+    "traditional_ira_deduction",
 ]
 # Person-level amounts that are the filer's wherever they are recorded.
 FILER_AMOUNTS = [
@@ -82,6 +82,7 @@ AGGREGATES = {
     "self_employed_health_insurance_ald": "self_employed_health_insurance_ald_person",
     "self_employed_pension_contribution_ald": "self_employed_pension_contribution_ald_person",
     "alimony_expense_ald": "alimony_expense_ald_person",
+    "educator_expense_ald": "educator_expense_ald_person",
 }
 TAX_UNIT_OUTPUTS = [
     "adjusted_gross_income",

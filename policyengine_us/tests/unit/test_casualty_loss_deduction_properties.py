@@ -9,7 +9,7 @@ losses are treated as one casualty. Four variables copy the computation:
 
 - the federal `casualty_loss_deduction`, on federal AGI, suspended from 2018
   (gov.irs.deductions.itemized.casualty.active);
-- New York's `ny_casualty_loss_deduction`, on federal AGI, under the 2017
+- New York's `ny_casualty_loss_deduction`, on recomputed federal AGI, under the 2017
   federal rules in every year (Form IT-196 line 20);
 - Alabama's `al_casualty_loss_deduction`, on Alabama AGI, following 165(h) as in
   effect from time to time, so suspended with the federal deduction;
@@ -105,6 +105,7 @@ def build_situation(units):
             tax_units[name] = {
                 "members": members,
                 "adjusted_gross_income": every_year(agi),
+                "ny_recomputed_federal_agi": every_year(agi),
                 "al_agi": every_year(agi),
                 "hi_agi": every_year(agi),
             }

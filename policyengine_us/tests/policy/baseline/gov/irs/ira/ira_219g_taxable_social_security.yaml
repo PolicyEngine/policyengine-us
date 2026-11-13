@@ -1,0 +1,42 @@
+# Taxable Social Security figured before the IRA deduction (Pub. 590-A
+# Appendix B, Worksheet 1). Its section 86 MAGI counts all unemployment
+# compensation, reported or modeled. The PA inputs below give pa_uc = 10,218
+# (see the PA UC integration tests).
+
+- name: Case 1, modeled state unemployment compensation raises taxable Social Security.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: PA
+    employment_income: 20_000
+    social_security_retirement: 20_000
+    pa_uc_highest_quarter_wages: 10_000
+    pa_uc_base_year_wages: 28_000
+    pa_uc_credit_weeks: 26
+    weeks_unemployed: 26
+    pa_uc_gross_weekly_earnings: 0
+  output:
+    # No reported UC, so total UC falls back to the modeled PA UC.
+    total_unemployment_compensation: 10_218
+    # MAGI = 20,000 + 10,218 = 30,218; combined income = 30,218 + 20,000 / 2
+    # = 40,218, above the 34,000 single adjusted base amount.
+    # Bracket = min(0.5 * (40,218 - 25,000) = 7,609, 0.5 * (34,000 - 25,000)
+    # = 4,500) = 4,500.
+    # Taxable = min(0.85 * (40,218 - 34,000) + 4,500 = 9,785.30,
+    # 0.85 * 20,000 = 17,000) = 9,785.30.
+    # Without UC, combined income of 30,000 would make only 2,500 taxable.
+    ira_219g_taxable_social_security: 9_785.3
+
+- name: Case 2, reported unemployment compensation raises taxable Social Security, as the control for modeled UC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: PA
+    employment_income: 20_000
+    social_security_retirement: 20_000
+    unemployment_compensation: 10_218
+  output:
+    total_unemployment_compensation: 10_218
+    ira_219g_taxable_social_security: 9_785.3

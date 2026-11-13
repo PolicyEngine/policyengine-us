@@ -17,7 +17,14 @@ def create_ut_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.ut.tax.income.credits.ctc
             person = tax_unit.members
-            ctc_eligible_child = person("ctc_qualifying_child", period)
+            # Same child test as the baseline ut_ctc_potential: any section
+            # 24 credit, including the credit for other dependents
+            # (IRC 24(h)(4)(C)), with a filer SSN or ITIN (IRC 24(e)(2)).
+            child = person("ctc_qualifying_child_ignoring_filer_identification", period)
+            filer_has_tin = person.tax_unit(
+                "filer_meets_ctc_identification_requirements", period
+            )
+            ctc_eligible_child = child & filer_has_tin
             age = person("age", period)
             ut_child_age_eligible = p.child_age_threshold.calc(age)
             return tax_unit.sum(ctc_eligible_child & ut_child_age_eligible)

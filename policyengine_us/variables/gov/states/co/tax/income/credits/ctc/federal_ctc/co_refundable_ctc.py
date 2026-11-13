@@ -15,6 +15,11 @@ class co_refundable_ctc(Variable):
         "https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2022.pdf#page=1",
         # Colorado Individual Income Tax Filing Guide - Instructions for Select Credits from the DR 0104CR - Line 1 Child Tax Credit
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=16",
+        # 1 CCR 201-2, Rule 39-22-129(1): the Colorado credit is a percentage
+        # of the allowed federal child tax credit.
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=1+CCR+201-2&ruleVersionId=10063#page=47",
+        # No refundable federal CTC for filers electing a section 911 exclusion.
+        "https://www.law.cornell.edu/uscode/text/26/24#d_3",
     )
     defined_for = StateCode.CO
 
@@ -46,4 +51,8 @@ class co_refundable_ctc(Variable):
             relevant_earnings,
             max_(relevant_earnings, social_security_excess),
         )  # Line 19
-        return min_(total_statutory_cap, tax_increase)  # Line 20
+        refundable_amount = min_(total_statutory_cap, tax_increase)  # Line 20
+        # Colorado matches the allowed federal credit, so the federal section
+        # 24(d)(3) bar on section 911 filers carries over.
+        barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
+        return where(barred, 0, refundable_amount)

@@ -7,7 +7,8 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 50_000
     tax_units:
@@ -28,11 +29,13 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 40_000
       person2:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 30_000
     tax_units:
@@ -54,7 +57,8 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 60_000
       person2:
@@ -81,7 +85,8 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
         employment_income: 50_000
     tax_units:
@@ -102,7 +107,8 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: true
+        is_fully_disabled_service_connected_veteran: true
+        is_permanently_disabled_veteran: true
         is_veteran: true
     tax_units:
       tax_unit:
@@ -124,8 +130,9 @@
   input:
     people:
       person1:
-        is_permanently_and_totally_disabled: false
         is_veteran: true
+        is_fully_disabled_service_connected_veteran: false
+        is_permanently_disabled_veteran: false
         employment_income: 50_000
     tax_units:
       tax_unit:
@@ -136,17 +143,19 @@
         state_code: KS
   output:
     # Base exemption for single: $9,160
-    # No disabled veteran exemption (not disabled)
+    # No disabled veteran exemption (neither VA rating flag is set)
     # Total exemptions: $9,160
     ks_exemptions: 9_160
 
-- name: Disabled but not veteran - no veteran exemption in 2025
+- name: Tax disability flag without a VA rating - no veteran exemption in 2025
   period: 2025
   input:
     people:
       person1:
         is_permanently_and_totally_disabled: true
-        is_veteran: false
+        is_veteran: true
+        is_fully_disabled_service_connected_veteran: false
+        is_permanently_disabled_veteran: false
         employment_income: 50_000
     tax_units:
       tax_unit:
@@ -157,6 +166,7 @@
         state_code: KS
   output:
     # Base exemption for single: $9,160
-    # No disabled veteran exemption (not a veteran)
+    # No disabled veteran exemption: neither VA rating flag is set, and the
+    # IRC 22(e)(3) flag is not read.
     # Total exemptions: $9,160
     ks_exemptions: 9_160

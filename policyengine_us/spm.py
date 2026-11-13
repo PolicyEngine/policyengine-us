@@ -13,6 +13,7 @@ from functools import lru_cache
 from inspect import ismethod, signature
 
 from policyengine_core import periods as periods_
+from policyengine_core.parameters import Parameter, ParameterScale
 from policyengine_core.simulations import Simulation as CoreSimulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from spm_calculator.errors import SPMInputError
@@ -82,6 +83,12 @@ REJECTED_DATASET_INPUTS = (
 DATASET_SOURCE_INPUTS = frozenset({"is_spm_independent_minor_role"})
 
 COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
+
+# Where a simulation keeps its behavioural-response measurements, by period
+# (``variables/gov/simulation/behavioral_response_measurements.py``). They are
+# cached formula output kept outside the holders, so the simulation's clone,
+# branch and invalidation paths below handle them explicitly.
+BEHAVIORAL_RESPONSE_CACHE_ATTR = "_behavioral_response_measurements"
 
 COUNTY_INPUT_FIX = (
     'send county_fips as a five-digit string (for example "06037"), or select '
@@ -633,17 +640,33 @@ def share_spm_policy(system):
     return policy
 
 
-def clone_spm_system(system, *, copy_receipts=True):
+class LentParameters:
+    """Stands in for a tree that core's system clone should not rebuild."""
+
+    def __init__(self, tree):
+        self.tree = tree
+
+    def clone(self):
+        return self.tree
+
+
+def clone_spm_system(system, *, copy_receipts=True, parameters=None):
     """Clone policy state without reconstructing partially defined reforms.
 
     Core's Variable.clone() calls the variable class with no baseline metadata,
     losing instance changes such as neutralization and inherited reform fields.
     Let core clone parameters/entities, then copy the actual variable state.
+
+    Pass ``parameters`` to give the clone that tree instead of a clone of
+    ``system``'s own.
     """
     policy = plain_policy_copy(system)
     policy.variables = {}
+    if parameters is not None:
+        policy.parameters = LentParameters(parameters)
     cloned = TaxBenefitSystem.clone(policy)
-    unmark_tree_shared(cloned.parameters)
+    if parameters is None:
+        unmark_tree_shared(cloned.parameters)
     # Core copies ``entities``, ``person_entity`` and ``group_entities``
     # separately, leaving two objects per group entity key; keep one, so a
     # rebind reaches every reader of that entity.
@@ -672,12 +695,85 @@ def clone_spm_system(system, *, copy_receipts=True):
     return cloned
 
 
+def copy_metadata(value):
+    """Copy the dictionaries in ``value``, the only part of it core writes to.
+
+    Its lists, and whatever they hold, stay shared. They are three quarters of
+    its memory.
+    """
+    if isinstance(value, dict):
+        return {key: copy_metadata(item) for key, item in value.items()}
+    return value
+
+
+def copy_parameter_nodes(node, parent=None):
+    """Copy a parameter tree, sharing only its dated entries and metadata lists.
+
+    Everything else matches a clone: each node, history, at-instant cache and
+    metadata dictionary outside those lists is the copy's own, so the copy builds
+    every view from its histories, and an update, interpolation or added child on
+    either tree leaves the other's numbers alone. Only a reform modifier assigns
+    an entry's value after core builds the entry, and it runs on a private tree
+    (see :class:`SharedParameterPolicy`). The 1.3 million entries are what a
+    clone spends most of its time rebuilding.
+    """
+    copied = object.__new__(type(node))
+    copied.__dict__.update(node.__dict__)
+    copied.metadata = copy_metadata(node.metadata)
+    if isinstance(node, Parameter):
+        copied.values_list = list(node.values_list)
+    elif isinstance(node, ParameterScale):
+        copied.brackets = [
+            copy_parameter_nodes(bracket, copied) for bracket in node.brackets
+        ]
+    else:
+        copied.children = {
+            name: copy_parameter_nodes(child, copied)
+            for name, child in node.children.items()
+        }
+        for name, child in copied.children.items():
+            setattr(copied, name, child)
+        copied._at_instant_cache = {}
+    # After the children, as in a clone, because each child sets an attribute of
+    # its own name: Medicaid's categories have a child named ``parent``.
+    copied.parent = parent
+    return copied
+
+
+def pin_spm_policy(system):
+    """Clone ``system`` for a pin to edit, rebuilding no dated values if it can.
+
+    A pin edits a few hundred of the tree's 143,000 nodes through
+    ``Parameter.update``, which never touches an entry it replaces. So the result
+    differs from a clone only in sharing what :func:`copy_parameter_nodes`
+    shares, which makes both trees count as shared: a reform of either system
+    takes a full clone before it writes. A system with no barrier cannot do that,
+    and marking a tree while a reform writes to it would detach the system from
+    that tree, so both of those get an ordinary clone. Assigning an entry's value
+    still reaches the other tree outside a reform method, as it reaches every
+    reader of any shared tree, and in a reform that builds this pin once its
+    barrier has fired.
+    """
+    if (
+        not isinstance(system, SharedParameterPolicy)
+        or system.detaching_shared_parameters
+    ):
+        return system.clone()
+    tree = mark_tree_shared(system.parameters)
+    return clone_spm_system(
+        system, parameters=mark_tree_shared(copy_parameter_nodes(tree))
+    )
+
+
 class SPMSimulationMixin:
     """Keep forecast selection and receipts private to each simulation."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Core switches the baseline system after cloning its populations.
+        baseline = self.branches.get("baseline")
+        if baseline is not None:
+            baseline._drop_holders_built_for_another_policy()
         self._rebind_holders()
         # Core sets ``trace`` before this simulation owns its policy state.
         self._isolate_parameter_tracing()
@@ -708,7 +804,16 @@ class SPMSimulationMixin:
             branch._isolate_parameter_tracing()
 
     def get_branch(self, name="branch", clone_system=False):
+        creating = name != self.branch_name and name not in self.branches
         branch = super().get_branch(name, clone_system)
+        if creating:
+            # A branch starts from what this simulation has calculated, its
+            # behavioural-response measurements included, but keeps its own
+            # copy (``clone`` emptied it): what either measures afterwards, the
+            # other does not see.
+            measurements = self.__dict__.get(BEHAVIORAL_RESPONSE_CACHE_ATTR)
+            if measurements is not None:
+                branch.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] = dict(measurements)
         # Core names the branch and hands it this simulation's tracer after
         # cloning, so re-prime the branch's root with what it ended up holding.
         branch._isolate_parameter_tracing()
@@ -737,6 +842,40 @@ class SPMSimulationMixin:
         ]
         for branch in self.branches.values():
             branch._rebind_holders()
+
+    def _drop_holders_built_for_another_policy(self):
+        """Drop holders whose storage this simulation's policy cannot use.
+
+        A reform's baseline arm is a branch of the reform, so its holders were
+        built for the reform's variables. Rebinding a holder to the baseline's
+        variable keeps the holder's population and storage. A holder in
+        another entity's population, or with storage for (or not for) an
+        ``ETERNITY`` variable, therefore cannot hold the baseline's
+        definition. Drop it with its recorded inputs, as core 3.32.21 and
+        later do in ``_bind_to_tax_benefit_system``; core 3.32.8 keeps it.
+
+        Only a baseline arm does this. ``apply_reform`` keeps a simulation's
+        own inputs, as core's does.
+        """
+        variables = self.tax_benefit_system.variables
+        dropped = set()
+        for population in self.populations.values():
+            for name, holder in list(population._holders.items()):
+                variable = variables.get(name)
+                if variable is not None and (
+                    variable.entity.key != population.entity.key
+                    or (variable.definition_period == periods_.ETERNITY)
+                    != holder._memory_storage.is_eternal
+                ):
+                    del population._holders[name]
+                    dropped.add(name)
+        if dropped:
+            self._user_input_keys = {
+                key for key in self._user_input_keys if key[0] not in dropped
+            }
+            self.input_variables = [
+                name for name in self.input_variables if name not in dropped
+            ]
 
     def apply_reform(self, reform):
         policy = self.tax_benefit_system
@@ -871,7 +1010,19 @@ class SPMSimulationMixin:
         cloned._rebind_holders()
         self._rebind_method_aliases(cloned)
         cloned._isolate_parameter_tracing()
+        # Core copies the instance dictionary by reference, which shared this
+        # simulation's measurements dictionary with the clone: a clone given
+        # other inputs reused them, and what it measured reached this
+        # simulation. A clone measures its own (``get_branch`` seeds a branch).
+        cloned.__dict__.pop(BEHAVIORAL_RESPONSE_CACHE_ATTR, None)
         return cloned
+
+    def _invalidate_all_caches(self):
+        # Core purges cached formula output here (``apply_reform``,
+        # ``subsample``); the measurements are formula output kept outside the
+        # holders.
+        self.__dict__.pop(BEHAVIORAL_RESPONSE_CACHE_ATTR, None)
+        super()._invalidate_all_caches()
 
     def _rebind_method_aliases(self, cloned):
         """Point copied bound-method aliases at the clone, not the original.
@@ -949,10 +1100,27 @@ class SPMSimulationMixin:
 
     def subsample(self, *args, **kwargs):
         result = super().subsample(*args, **kwargs)
-        # Core rebuilds the baseline arm from the subsampled population, then
-        # hands it the previous arm's policy and so its provider, which
-        # recorded the counties the previous arm read. Record what every
-        # simulation in the family reads now.
+        baseline = self.branches.get("baseline")
+        if baseline is not None:
+            # Core rebuilds the baseline arm by branching this simulation, so
+            # the new arm starts out as a copy of this one: its holders hold
+            # this simulation's variables, a reform's neutralized or replaced
+            # ones included, and its own ``baseline`` is the arm it replaces,
+            # on the population from before subsampling. Core then hands it
+            # the replaced arm's policy; before 3.32.21 it does not rebind the
+            # holders to that policy, and it never claims the policy for the
+            # new arm or primes the policy's private parameter-tracing root,
+            # which are this package's state. Give it what construction gives
+            # a baseline arm: no baseline of its own, so it computes no
+            # behavioural responses, holders bound to its own policy, and that
+            # policy's tracing primed for this arm.
+            baseline.baseline = None
+            baseline._drop_holders_built_for_another_policy()
+            baseline._rebind_holders()
+            baseline._isolate_parameter_tracing()
+        # Core hands the rebuilt baseline arm the previous arm's policy and so
+        # its provider, which recorded the counties the previous arm read.
+        # Record what every simulation in the family reads now.
         self._record_county_input_types()
         return result
 
@@ -970,6 +1138,25 @@ class SPMSimulationMixin:
                 "Use primitive inputs and retain observed outputs under report-only names."
             )
         result = super().set_input(variable_name, period, value)
+        # Core snapshots input_variables during construction, but later
+        # explicit inputs must also survive counterfactual branches. Keep
+        # only stored inputs; neutralized and expired writes are ignored.
+        input_variables = getattr(self, "input_variables", None)
+        if input_variables is not None and variable_name not in input_variables:
+            holder = self.get_holder(variable_name)
+            variable = holder.variable
+            input_period = periods_.period(period)
+            if (
+                not variable.is_neutralized
+                and (variable.end is None or input_period.start.date <= variable.end)
+                and any(
+                    branch_name == self.branch_name
+                    for branch_name, _ in holder.get_known_branch_periods()
+                )
+            ):
+                # Core shallow-copies metadata when branching. Assign a new
+                # list so this input cannot change another branch's registry.
+                self.input_variables = [*input_variables, variable_name]
         if variable_name == "county_fips":
             self._record_county_input_types(period)
         return result

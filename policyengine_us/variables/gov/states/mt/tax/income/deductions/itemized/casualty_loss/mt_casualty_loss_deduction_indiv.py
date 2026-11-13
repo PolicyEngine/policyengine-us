@@ -36,9 +36,7 @@ class mt_casualty_loss_deduction_indiv(Variable):
         # deduction, no personal casualty loss is deductible while
         # gov.irs.deductions.itemized.casualty.active is false (from 2018).
         p_casualty = parameters(period).gov.irs.deductions.itemized.casualty
-        # Only the owner of the property claims the loss. A dependent's loss
-        # belongs on the dependent's own return, as the dependent's income does:
-        # adjusted_gross_income_person, and so Montana AGI, leaves it out.
+        # A dependent's own loss belongs on the dependent's return.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         loss = head_or_spouse * person("casualty_loss", period)
         # Spouses filing separately each reduce their own loss by $100

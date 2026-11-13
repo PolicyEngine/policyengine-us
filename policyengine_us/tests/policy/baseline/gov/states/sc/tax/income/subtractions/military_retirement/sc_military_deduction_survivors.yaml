@@ -2,6 +2,101 @@
   period: 2022
   input:
     military_retirement_pay_survivors: 11_000
+    is_surviving_spouse: true
     state_code: SC
   output:
     sc_military_deduction_survivors: 11_000
+
+# Only the head's and spouse's survivor benefits are in the filer's federal
+# AGI; a dependent reports their own on their own return.
+- name: A dependent's survivor benefits are not deducted from the filer's income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        military_retirement_pay_survivors: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_military_deduction_survivors: [0, 0]
+    sc_military_deduction: 0
+
+- name: The surviving spouse head's benefits are deducted and the dependent's are not.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        military_retirement_pay_survivors: 9_000
+        is_surviving_spouse: true
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        military_retirement_pay_survivors: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_military_deduction_survivors: [9_000, 0]
+    sc_military_deduction: 9_000
+
+- name: South Carolina does not subtract a nonspouse survivor annuity on the survivor's own return.
+  period: 2024
+  input:
+    state_code: SC
+    age: 20
+    is_surviving_spouse: false
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    sc_military_deduction_survivors: 0
+    sc_military_deduction: 0
+
+- name: South Carolina's spouse condition also applies before the 2022 military deduction expansion.
+  period: 2021
+  input:
+    state_code: SC
+    age: 20
+    is_surviving_spouse: false
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    sc_military_deduction_survivors: 0
+
+- name: South Carolina keeps own retirement pay separate from a nonspouse survivor annuity.
+  period: 2025
+  input:
+    state_code: SC
+    age: 60
+    is_surviving_spouse: false
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    sc_military_deduction_indv: 20_000
+    sc_military_deduction_survivors: 0
+    sc_military_deduction: 20_000

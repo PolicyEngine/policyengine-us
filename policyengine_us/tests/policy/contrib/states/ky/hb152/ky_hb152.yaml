@@ -374,24 +374,24 @@
 
 - name: KY HB 152 - end-to-end high earner through ky_income_tax
   period: 2027
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
   input:
     gov.contrib.states.ky.hb152.in_effect: true
     people:
       person1:
         age: 45
-        ky_taxable_income_indiv: 300_000
-        ky_taxable_income_joint: 300_000
+        # The 0.5% charitable floor leaves $10,000 of itemized deductions:
+        # 11,550 - (310,000 x 0.005) = 10,000.
+        employment_income: 310_000
+        charitable_cash_donations: 11_550
       person2:
         age: 43
-        ky_taxable_income_indiv: 0
-        ky_taxable_income_joint: 0
+        employment_income: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        adjusted_gross_income: 300_000
     households:
       household:
         members: [person1, person2]
@@ -401,7 +401,12 @@
     ky_income_tax_before_non_refundable_credits_joint:
       - 18000
       - 0
+    ky_taxable_income_indiv: [300_000, 0]
+    ky_taxable_income_joint: [300_000, 0]
+    ky_income_tax_before_non_refundable_credits_unit: 18_000
     # High earner: family size credit rate is 0%, so no credit reduction
+    ky_family_size_tax_credit_rate_if_joint: 0
+    ky_family_size_tax_credit_rate_if_separate: 0
     # Verify reform flows through to final ky_income_tax
     ky_income_tax: 18000
 
@@ -427,3 +432,47 @@
   output:
     # HB 13 takes precedence: 200000 * 0.035 = 7000
     ky_income_tax_before_non_refundable_credits_indiv: 7000
+
+- name: KY HB 152 - negative spouse income retains path-specific family size credits
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb152.in_effect: true
+    # Pin the 2027 standard deduction so the arithmetic below doesn't move with CPI projections.
+    gov.states.ky.tax.income.deductions.standard: 3_443.77
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 40_000
+      person2:
+        age: 43
+        is_tax_unit_spouse: true
+        self_employment_income: -30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # KRS 141.066(4): only the separate path floors the spouse's loss.
+    ky_modified_agi_if_joint: 10_000
+    ky_modified_agi_if_separate: 40_000
+    ky_family_size_tax_credit_rate_if_joint: 1
+    ky_family_size_tax_credit_rate_if_separate: 0
+    # The 2027 standard deduction is pinned at $3,443.77 above. HB 152 Section 1:
+    # (40,000 - 3,443.77) x 4% = 1,462.25 on the separate path;
+    # (10,000 - 3,443.77) x 4% = 262.25 on the joint path.
+    ky_taxable_income_indiv: [36_556.23, 0]
+    ky_taxable_income_joint: [6_556.23, 0]
+    ky_income_tax_before_non_refundable_credits_indiv: [1_462.25, 0]
+    ky_income_tax_before_non_refundable_credits_joint: [262.25, 0]
+    ky_income_tax_before_refundable_credits_if_joint: 0
+    ky_income_tax_before_refundable_credits_if_separate: 1_462.25
+    ky_files_separately: false
+    ky_income_tax_before_refundable_credits: 0
+    ky_income_tax: 0

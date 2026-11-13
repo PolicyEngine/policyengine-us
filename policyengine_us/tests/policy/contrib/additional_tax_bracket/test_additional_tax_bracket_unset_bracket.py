@@ -45,13 +45,15 @@ Properties of the reform, run in simulations:
 - with its first seven brackets set to current law and the added bracket
   unset, it reproduces the baseline;
 - for any thresholds of brackets 7 and 8, finite or infinite, the reform's
-  ``income_tax_main_rates``, ``regular_tax_before_credits`` and
-  ``taxable_income_taxed_below_25_percent`` are finite, and its two taxes are
-  at least their values with the bracket removed when r8 >= r7. The
-  households have no 28 percent rate gain or unrecaptured section 1250 gain,
-  so the amount taxed below 25 percent does not change which of their income
-  is taxed at the regular rates (``dwks19`` and
-  ``capital_gains_excluded_from_taxable_income``).
+  ``income_tax_main_rates``, ``tax_on_taxable_income_at_main_rates``,
+  ``regular_tax_before_credits`` and ``taxable_income_taxed_below_25_percent``
+  are finite, and its three taxes are at least their values with the bracket
+  removed when r8 >= r7. The households have no 28 percent rate gain or
+  unrecaptured section 1250 gain, so the amount taxed below 25 percent does
+  not change which of their income is taxed at the regular rates (``dwks19``
+  and ``capital_gains_excluded_from_taxable_income``). The regular tax is
+  ``income_tax_main_rates`` plus ``capital_gains_tax``, which section 1(h)(1)
+  limits to ``tax_on_taxable_income_at_main_rates``, so it rises with both.
 
 No simulation here sets a foreign earned income exclusion, so the reform's
 subtraction of the tax on the excluded amount is covered only through the
@@ -89,8 +91,18 @@ STATUSES = [status.name for status in FilingStatus]
 N_BRACKETS = 8
 BRACKET = "gov.contrib.additional_tax_bracket.bracket"
 YEAR = 2026
-REFORM_TAXES = ["income_tax_main_rates", "regular_tax_before_credits"]
 # Every variable the reform replaces.
+REPLACED_VARIABLES = [
+    "income_tax_main_rates",
+    "tax_on_taxable_income_at_main_rates",
+    "taxable_income_taxed_below_25_percent",
+]
+# The reform's taxes: the two it replaces, and the regular tax built on them.
+REFORM_TAXES = [
+    "income_tax_main_rates",
+    "tax_on_taxable_income_at_main_rates",
+    "regular_tax_before_credits",
+]
 REFORM_VARIABLES = REFORM_TAXES + ["taxable_income_taxed_below_25_percent"]
 DOWNSTREAM_VARIABLES = REFORM_VARIABLES + ["income_tax_before_credits", "income_tax"]
 # Simulation variables are float32, about seven significant digits, so
@@ -385,8 +397,8 @@ def test_baseline_schedule_is_unchanged_in_every_year():
 # ---------------------------------------------------------------------------
 
 ORDINARY_INCOMES = [0, 30_000, 250_000, 700_000, 3_000_000]
-# (long-term capital gains, qualified dividends): none, and enough to take
-# the Schedule D Tax Worksheet path in regular_tax_before_credits.
+# (long-term capital gains, qualified dividends): none, and enough for a
+# capital gains tax in regular_tax_before_credits.
 PREFERENTIAL_INCOME = [(0, 0), (150_000, 20_000)]
 
 
@@ -427,7 +439,7 @@ def default_system_state():
     bracket = baseline_system.parameters(
         f"{YEAR}-01-01"
     ).gov.contrib.additional_tax_bracket.bracket
-    variables = [baseline_system.variables[name] for name in REFORM_VARIABLES]
+    variables = [baseline_system.variables[name] for name in REPLACED_VARIABLES]
     values = [float(bracket.rates[str(i)]) for i in range(1, N_BRACKETS + 1)] + [
         float(bracket.thresholds[str(i)][status])
         for i in range(1, N_BRACKETS + 1)
@@ -444,8 +456,8 @@ def calculate(variables, year, reforms=None):
     changes, or under the baseline when ``reforms`` is None.
 
     A reformed simulation runs on its own clone of the loaded default system.
-    This file also runs inside the contrib YAML batch, whose memory is
-    budgeted, so collect each simulation before building the next.
+    Collect each simulation before building the next to keep memory bounded
+    in the dedicated contrib Python step.
     """
     sim = Simulation(
         tax_benefit_system=baseline_system,
@@ -551,8 +563,8 @@ SHAPES_8 = {status: shape[1] for status, shape in THRESHOLD_SHAPES.items()}
 
 
 # Each example runs two simulations, each on its own clone of the default
-# system, and the file runs in two CI steps, so the generated examples are
-# few; the schedule properties above take 300 examples each.
+# system, so the generated examples are few; the schedule properties above
+# take 300 examples each.
 @hypothesis.settings(
     max_examples=3,
     deadline=None,

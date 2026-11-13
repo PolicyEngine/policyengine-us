@@ -9,7 +9,7 @@ class nj_other_retirement_income_exclusion(Variable):
     documentation = "New Jersey other retirement income exclusion"
     definition_period = YEAR
     reference = (
-        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21",
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=23",
         "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-15/",
     )
     defined_for = StateCode.NJ
@@ -32,8 +32,9 @@ class nj_other_retirement_income_exclusion(Variable):
         filing_status = tax_unit("filing_status", period)
         exclusion_cap = p.max_amount[filing_status]
 
-        # calculate maximum exclusion
-        total_income_person = age_eligible * person("nj_total_income", period)
+        # calculate maximum exclusion on the age-eligible filers' total
+        # income; a dependent's income goes on the dependent's own return
+        total_income_person = eligible_person * person("nj_total_income", period)
         total_income = tax_unit.sum(total_income_person)
         maximum_exclusion = min_(fraction * total_income, exclusion_cap)
 
@@ -41,8 +42,13 @@ class nj_other_retirement_income_exclusion(Variable):
         used = min_(pension_income * fraction, exclusion_cap)
         unused_exclusion = max_(0, maximum_exclusion - used)
 
-        # calculate earnings eligibility
-        earnings = add(tax_unit, period, ["earned_income"])
+        # calculate earnings eligibility on the filers' own earnings
+        # (Worksheet D lines 4-8), leaving out a dependent's. Line 4 is
+        # NJ-1040 line 15, wages net of any claim of right repayment of
+        # wages (N.J.S.A. 54A:5-2; TAM 2011-7).
+        earnings = tax_unit_non_dep_add(
+            tax_unit, period, ["earned_income"]
+        ) - tax_unit_non_dep_add(tax_unit, period, ["nj_claim_of_right_wage_offset"])
         limit = p.other_retirement_income.earned_income_threshold
         earnings_eligible = earnings <= limit
 
