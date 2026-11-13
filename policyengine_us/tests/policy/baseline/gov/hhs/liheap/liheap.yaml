@@ -1,0 +1,245 @@
+# The national total adds each state's regular LIHEAP payment listed in
+# gov.hhs.liheap.regular_payments. 2026 poverty guidelines (contiguous US):
+# 15,960 for one person plus 5,680 for each additional person.
+
+- name: Case 1, a Texas CEAP utility payment flows into the national total.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        # 12 an hour for 30 hours a week: 12 * 30 * 52 = 18,720.
+        employment_income_before_lsr: 18_720
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        # 165 a month for heating and air conditioning.
+        pre_subsidy_electricity_expense: 1_980
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 18,720 / 15,960 = 117% of the guideline, within 150%: eligible.
+    # Above 75%, so the 76-150% cap of 1,200 applies (10 TAC 6.309(e)(3)).
+    # min(1,200, electricity 1,980 + gas 0) = 1,200.
+    tx_ceap: 1_200
+    liheap: 1_200
+
+- name: Case 2, a Michigan household's Home Heating Credit is not in the total.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 41
+        # Part-time wages.
+        employment_income_before_lsr: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+        # 85 a month for gas heat.
+        gas_expense: 1_020
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # TY2025 MI-1040CR-7 standard credit: the one-exemption allowance of 604
+    # less 3.5% of 9,000 household resources (315) is 289, paid at 60%:
+    # 173.40. The alternate credit is 70% of (1,020 - 11% of 9,000) = 21.
+    # Michigan's regular heating help is this refundable credit, which the
+    # list leaves out, and Michigan has no regular cooling payment.
+    mi_home_heating_credit: 173.4
+    liheap: 0
+
+- name: Case 3, Illinois counts the regular heating payment but not the crisis amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 29
+        # 33 hours a week at the 15 Illinois minimum wage: 15 * 33 * 52 = 25,740.
+        employment_income_before_lsr: 25_740
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        # 150 a month in an all-electric apartment.
+        pre_subsidy_electricity_expense: 1_800
+        il_liheap_eligible_for_crisis_assistance: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Guideline for two: 15,960 + 5,680 = 21,640.
+    # 25,740 / 21,640 = 119%: income bracket 3 (101-150%).
+    # FY2026 all-electric amount, bracket 3, two people: 425.
+    # min(425, electricity 1,800) = 425.
+    il_liheap_base_payment: 425
+    il_liheap_crisis_assistance_amount: 1_500
+    # 425 + 1,500 = 1,925.
+    il_liheap: 1_925
+    il_liheap_regular_heating: 425
+    liheap: 425
+
+- name: Case 4, a California wood heating payment counts once, with no utility payment added.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        # 1,500 a month.
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        wood_expense: 850
+        ca_liheap_approved_wood_delivery_cost: 850
+        # 100 a month for electricity, which does not heat the home.
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county: FRESNO_COUNTY_CA
+  output:
+    # The approved wood quote of 850 is below the 1,000 ordinary maximum.
+    ca_liheap_wood_heating: 850
+    # A household with a wood or liquid-fuel payment gets no utility payment,
+    # so the electric bill adds nothing.
+    ca_liheap_utility_heating: 0
+    ca_liheap_covered_liquid_heating: 0
+    liheap: 850
+
+- name: Case 5, households in different states are each paid by their own state's program.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        # 12 an hour for 30 hours a week: 12 * 30 * 52 = 18,720.
+        employment_income_before_lsr: 18_720
+      person2:
+        age: 52
+        # 10 hours a week at DC's 17.95 minimum wage: 17.95 * 10 * 52 = 9,334.
+        employment_income_before_lsr: 9_334
+      person3:
+        age: 29
+        # 33 hours a week at the 15 Illinois minimum wage: 15 * 33 * 52 = 25,740.
+        employment_income_before_lsr: 25_740
+      person4:
+        age: 6
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3, person4]
+    families:
+      family1:
+        members: [person1]
+      family2:
+        members: [person2]
+      family3:
+        members: [person3, person4]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        # 165 a month for heating and air conditioning.
+        pre_subsidy_electricity_expense: 1_980
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        # 110 a month in an all-electric apartment.
+        pre_subsidy_electricity_expense: 1_320
+      spm_unit3:
+        members: [person3, person4]
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        # 150 a month in an all-electric apartment.
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+      household2:
+        members: [person2]
+        state_code: DC
+      household3:
+        members: [person3, person4]
+        state_code: IL
+  output:
+    # Each state's formula runs over all three households. A household has
+    # no income level or bracket outside its own state.
+    # Texas, as in Case 1: min(1,200, electricity 1,980) = 1,200.
+    tx_ceap: [1_200, 0, 0]
+    # DC: 9,334 falls in the second 5,000 income step (level 2). FY2026
+    # multi-family electricity amount, level 2, one person: 529.
+    # min(529, electricity 1,320) = 529.
+    dc_liheap_income_level: [0, 2, 0]
+    dc_liheap_payment: [0, 529, 0]
+    # Illinois, as in Case 3: bracket 3, all-electric, two people: 425.
+    # min(425, electricity 1,800) = 425.
+    il_liheap_income_bracket: [0, 0, 3]
+    il_liheap_regular_heating: [0, 0, 425]
+    # No household is paid by another state's program.
+    liheap: [1_200, 529, 425]
+
+# California's ordinary liquid-fuel payment applies in Madera County only. Base
+# benefit 411 for one person in burden group 4, plus 105 for the priority
+# category at exactly 20 points (ca_liheap_covered_liquid_heating.yaml Case 5).
+# A liquid-fuel payment rules out the utility payment the same year.
+- name: Case 6, a Madera County propane household's liquid-fuel payment counts once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        snap: 0
+        tanf: 0
+        ca_state_supplement: 0
+        bottled_gas_expense: 12
+        pre_subsidy_electricity_expense: 2_028
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county: MADERA_COUNTY_CA
+  output:
+    ca_liheap_covered_liquid_heating: 516
+    ca_liheap_utility_heating: 0
+    liheap: 516

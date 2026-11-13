@@ -69,3 +69,27 @@
     gross_medicare_part_b_premium: 3_000
   output:
     medicare_cost: 14_751  # $17,751 spending - $3,000 Part B premium
+
+- name: unit test 7 - undocumented person is not enrolled and has no cost
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    immigration_status: UNDOCUMENTED
+    pension_income: 10_000
+    state_code: TX
+  output:
+    medicare_cost: 0
+
+- name: unit test 8 - person with temporary protected status, premium-free Part A
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+    pension_income: 10_000
+    state_code: TX
+  output:
+    # $18,983 spending - $2,434.80 Part B premium ($202.90 * 12) (2026)
+    medicare_cost: 16_548.2

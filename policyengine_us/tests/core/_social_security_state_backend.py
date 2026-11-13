@@ -266,6 +266,12 @@ class Backend:
             data_modified = False
             auto_carry_over_input_variables = True
 
+            def preprocess_situation(self, situation, default_period=None):
+                # Core's build_from_entities calls this country hook before
+                # building a situation (policyengine-core PR 600); the
+                # fixture's one-person situation needs no groups filled in.
+                return situation
+
             def __init__(self):
                 self.cache_blacklist = list(cache_blacklist)
                 self.variables = {
