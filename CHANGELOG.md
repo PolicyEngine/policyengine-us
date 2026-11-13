@@ -1,3 +1,239 @@
+## [2.121.3] - 2026-11-13
+
+### Fixed
+
+- Correct Florida Medicaid parent and caretaker income limits by household size from 2017 using the fixed dollar schedule and one MAGI disregard.
+- Use published FY2017–2023 HUD Section 8 income limits for historical annual calculations.
+- Restore New York HEAP regular heating benefit schedules for FY2017–FY2023, including the December 2022 base-benefit increase, and preserve the inclusive Tier I income boundary when floating-point multiplication reaches an exact monthly dollar.
+- Subtract Medicare Part D premiums from `medicare_cost`, whose CMS spending per enrollee includes Part D: the average Part D premium per Medicare enrollee from the 2026 Medicare Trustees Report, plus the person's own Part D income-related monthly adjustment amount.
+
+
+## [2.121.2] - 2026-11-13
+
+### Fixed
+
+- Apply IRC 36B(c)(1)(D) to the premium tax credit: a filer who can be claimed as a dependent on another return is outside the tax family (26 CFR 1.36B-1(d)(2)), so the credit uses the tax family size for the poverty line and the coverage family's benchmark premium, on a joint return the other spouse keeps the credit, and the Washington, Massachusetts, Connecticut, Colorado, Maryland, California, New Mexico, Vermont and New Jersey premium programs follow their own rules for that person.
+
+  Preserve supplied benchmark premiums, NY dependent predicates and Medicaid MAGI; rank only enrolled children; test every insured member for shared-policy CSR eligibility; infer both minor joint filers; and allocate shared premiums by coverage month, with zero allocation for empty enrollment. A supplied pays_aca_premium of true marks a Marketplace enrollee, and a supplied annual or monthly premium for a tax unit in which the model finds no enrollee, with enrollment not supplied, is the tax family's, as before enrollment was modeled.
+
+  Count enrolled nonpayers in Washington Cascade Care Savings Group 2 before applying the household premium cap.
+
+  Complete partially inferred joint ACA filers without an adult age cutoff, and use the completed set for tax-family membership and MAGI additions.
+
+  Honor supplied ACA family-tier child predicates for nonpayers in their supplied month while retaining uncapped calculated classifications in other months.
+
+
+## [2.121.1] - 2026-11-13
+
+### Changed
+
+- Disabled Hypothesis's explain phase for the owners' draw simulation properties while preserving shrinking.
+
+
+## [2.121.0] - 2026-11-13
+
+### Added
+
+- Add HUD's revised annual Fair Market Rent snapshots for FY2017 through FY2024 under the existing annual lookup convention.
+
+
+## [2.120.2] - 2026-11-13
+
+### Fixed
+
+- Add official Illinois CCAP provider reimbursement schedules from July 2021 through June 2025 while preserving the historical payment gate.
+- Correct Texas Medicaid parent income limits by household size from 2017 for identified parents in one-adult, one-parent households, retaining the existing annual FPG and rounding conventions.
+
+
+## [2.120.1] - 2026-11-13
+
+### Fixed
+
+- Apply Illinois's 200% poverty-level income limit for ordinary new CCAP applicants from October 2019 through June 2022.
+
+
+## [2.120.0] - 2026-11-13
+
+### Added
+
+- Add Delaware LIHEAP summer cooling electric benefit eligibility.
+
+
+## [2.119.4] - 2026-11-13
+
+### Fixed
+
+- Deem income to a disabled child from a disabled parent whose own income, resources or noncitizen status rule out SSI, as 20 CFR 416.1160(d) defines an ineligible parent; limit deeming to the parents that parent ids name and their spouses; and subtract the couple rate for a parent living with a spouse, so nothing reaches the child while that spouse stays eligible (20 CFR 416.1165(d)(3), 416.1166(e)(1)). In California, New Jersey and Vermont, where the Social Security Administration pays a state supplement to a parent at home, test the parent against the federal rate plus that supplement and include it in the parents' allowance.
+  A parent's spouse who files in another tax unit has their income counted with the parent's, and the pooled income is divided among both units' eligible children.
+
+
+## [2.119.3] - 2026-11-13
+
+### Changed
+
+- Let the Medicare Savings Program guideline test's facility stay run through December now that SSI combines a couple's income by each month's facility status, assert SSI countable income again in the New York medically needy part-year case, add earned income to the part-year couple cases for Maryland PAA and the Medicaid optional senior or disabled pathway, and date the Texas Medicare Savings Program deeming-allowance source conflict candidate from 2025.
+
+
+## [2.119.2] - 2026-11-13
+
+### Fixed
+
+- Add FY2017 California and New York SNAP utility allowances and apply the historical small-allotment increase before its March 2017 repeal.
+
+
+## [2.119.1] - 2026-11-13
+
+### Fixed
+
+- Apply the SNAP emergency-allotment minimum from April 2021 instead of March 2020.
+
+
+## [2.119.0] - 2026-11-13
+
+### Added
+
+- Add source-backed 2017 Medicaid MAGI income-limit histories for New York parents, children, infants, and pregnant people.
+
+
+## [2.118.11] - 2026-11-13
+
+### Fixed
+
+- Start the California Young Child Tax Credit in tax year 2019 and record its 2019 and 2020 amounts and eligibility rules.
+
+
+## [2.118.10] - 2026-11-13
+
+### Fixed
+
+- California's aged, blind and disabled FPL program deducts a couple's unmarried tax dependents' health insurance premiums whatever their marital unit, including when the spouses file separately.
+
+
+## [2.118.9] - 2026-11-13
+
+### Fixed
+
+- Set California's 2026 income tax brackets, standard deductions, exemption credits and renter's credit income limits to the Franchise Tax Board's published amounts, and add the June 2026 California CPI.
+
+
+## [2.118.8] - 2026-11-13
+
+### Fixed
+
+- Restore New York Medicaid eligibility for qualifying 19- and 20-year-olds who live with a parent.
+
+
+## [2.118.7] - 2026-11-12
+
+### Changed
+
+- Count the federal premium tax credit in household net income and household tax as a refundable tax credit (household_refundable_tax_credits), whether or not health benefits count in net income, so changes to it reach net income and the budget. income_tax and SPM resources are unchanged.
+
+### Fixed
+
+- Corrected CPI-U observations to the unadjusted BLS series through October 2026 and recalculated indexed test expectations.
+
+
+## [2.118.6] - 2026-11-12
+
+### Fixed
+
+- DC LIHEAP Regular benefit now pays households with no heating cost that pay for cooling, from the Electric row capped at their electricity bill. DC LIHEAP income limits now use HHS's 60% state median income amounts, rounded down by household size, as DOEE publishes them.
+
+
+## [2.118.5] - 2026-11-12
+
+### Fixed
+
+- Apply each state's own rule for a Medicaid applicant whose spouse is not aged, blind or disabled, in the aged, blind and disabled pathway, the 209(b) route and medically needy: SSI's deeming rule by default, or budgeting the couple together, which keeps SSI's allocations for ineligible children except in Missouri, or keeping the couple limit without deeming. Test spouses split by a facility separately, with no spouse income counted.
+
+
+## [2.118.4] - 2026-11-12
+
+### Fixed
+
+- Combine an SSI couple's income by each month's facility status, so a part-year medical facility stay no longer changes SSI in the other months of the year.
+
+
+## [2.118.3] - 2026-11-12
+
+### Fixed
+
+- Apply immigration tests to Medicare (42 U.S.C. 1395o(a)(2), 42 U.S.C. 1395mmm and 8 U.S.C. 1611(b)(3)) and to Medicare Savings Programs (42 U.S.C. 1396b(v), 8 U.S.C. 1611(a) and 1613(a)), so undocumented people no longer get either and, from 2027, only citizens, permanent residents and Cuban and Haitian entrants can get Medicare. Medicare Savings Programs use the federal Medicaid immigration test, so state-funded Medicaid coverage does not open them.
+
+
+## [2.118.2] - 2026-11-12
+
+### Changed
+
+- Require source-derived partner test values, boundary checks, preserved failing evidence and independent automated review at the current head. Reserve human review for specific expertise questions, remove routine notification gates and load applicable development skills directly.
+
+### Fixed
+
+- Pay Hawaii's LIHEAP Energy Credit on the electric (cooling) account to any eligible household with an electric bill or with utilities or electric heat included in its rent, including the subsidized-dwelling flat amount.
+- Apply SSI's spouse deeming rules to Medicare Savings Program countable income and the poverty guideline when only one spouse is on Medicare, including a spouse who is aged, blind or disabled: a spouse who is not eligible for SSI has income deemed above the rate difference, after allocations for ineligible children, and deeming cannot give a better tier than the person's own income does (20 CFR 416.1163). Test spouses as a couple only when both are on Medicare.
+
+
+## [2.118.1] - 2026-11-12
+
+### Fixed
+
+- Give the Social Security state test backend's stand-in system the situation preprocessing hook that policyengine-core's builder calls.
+
+
+## [2.118.0] - 2026-11-12
+
+### Added
+
+- Add a national LIHEAP total that sums each state's regular payment, an Illinois regular heating payment without crisis assistance, a Michigan Home Heating Credit registry entry, and cooling notes for each state's LIHEAP registry entry.
+
+### Fixed
+
+- Fix state LIHEAP formulas that raised an error when calculated in a microsimulation.
+
+
+## [2.117.10] - 2026-11-12
+
+### Fixed
+
+- Florida LIHEAP Home Energy benefit now pays households that pay their own electricity bill for cooling, including homes without heating and subsidized tenants with heat in the rent.
+
+
+## [2.117.9] - 2026-11-12
+
+### Fixed
+
+- Pay Oregon's LIHEAP standard payment from the matrix cooling column to households with no heating cost, including homes without heating, that pay an electric bill for cooling. Stop Oregon's LIHEAP income limits at the federal maximum, the greater of HHS's 60% state median income amount and 150% of the poverty guideline.
+
+
+## [2.117.8] - 2026-11-12
+
+### Fixed
+
+- Pay California's regular HEAP utility benefit to households with no heating that pay a gas or electric bill.
+
+
+## [2.117.7] - 2026-11-12
+
+### Fixed
+
+- Let aged, blind and disabled people in Missouri who do not receive SSI deduct incurred medical expenses to reach the state's income standard, as 42 CFR 435.121(e)(4) requires in a section 209(b) state with no medically needy program. A child's 209(b) spend down now also counts the parents' medical expenses. In Missouri, a child's resource test now counts the parents' entire resources, and nonblind disabled children are covered. A blind Missouri child under 18 is tested against the income standard for disabled children.
+
+
+## [2.117.6] - 2026-11-12
+
+### Changed
+
+- Let anyone, agents included, update partner contract test values that a cited model change explains, with a table of every changed value, a boundary-case check, an independent review and an FYI to Ziming Hua; keep Ziming's approval for every other edit to the partner YAML files, value changes in cases a model change moves off their boundary, untraced values and partner-flagged cases.
+
+
+## [2.117.5] - 2026-11-12
+
+### Fixed
+
+- Nevada LIHEAP Fixed Annual Credit now pays households without heating, including cooling-only households, and no longer requires a heating bill, assuming every household has an active energy account.
+
+
 ## [2.117.4] - 2026-11-12
 
 ### Changed

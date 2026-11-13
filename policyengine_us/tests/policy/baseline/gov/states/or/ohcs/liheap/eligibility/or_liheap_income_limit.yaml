@@ -7,25 +7,36 @@
 # https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=57
 # PY2027, page 71:
 # https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=71
-- name: Case 1, published FY2026 annual income limits for the odd household sizes 1 to 11.
+# Each limit stops at the federal maximum of 42 U.S.C. 8624(b)(2)(B): the greater
+# of HHS's 60% state median income amount (60% of the four-person median, rounded
+# down, times the size factor, rounded down) and 150% of the prior year's poverty
+# guideline. HHS's FY2026 amounts for Oregon, sizes 1 to 6: $38,384, $50,194,
+# $62,005, $73,816, $85,626, $97,437:
+# https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=2
+- name: Case 1, FY2026 annual income limits for the odd household sizes 1 to 11 stop at the federal maximum.
   period: 2026
   input:
     state_code: [OR, OR, OR, OR, OR, OR]
     spm_unit_size: [1, 3, 5, 7, 9, 11]
   output:
-    # FY2026 page 77: size 1 $38,385, size 3 $62,006, size 5 $85,627, size 7
-    # $99,652, size 9 $104,081, size 11 $108,510.
-    or_liheap_income_limit: [38_385, 62_006, 85_627, 99_652, 104_081, 108_510]
+    # FY2026 page 77 prints size 1 $38,385, size 3 $62,006, size 5 $85,627,
+    # size 7 $99,652, size 9 $104,081, size 11 $108,510. HHS's amount is $1
+    # lower at each: 73,816 x 1.35 = 99,651 at size 7, x 1.41 = 104,080 at
+    # size 9 and x 1.47 = 108,509 at size 11.
+    or_liheap_income_limit: [38_384, 62_005, 85_626, 99_651, 104_080, 108_509]
 
-- name: Case 2, published PY2025 annual income limits for the odd household sizes 1 to 11.
+- name: Case 2, PY2025 annual income limits for the odd household sizes 1 to 11 stop at the federal maximum.
   period: 2025
   input:
     state_code: [OR, OR, OR, OR, OR, OR]
     spm_unit_size: [1, 3, 5, 7, 9, 11]
   output:
-    # PY2025 page 57: size 1 $36,811, size 3 $59,464, size 5 $82,117, size 7
-    # $95,567, size 9 $99,814, size 11 $104,062.
-    or_liheap_income_limit: [36_811, 59_464, 82_117, 95_567, 99_814, 104_062]
+    # PY2025 page 57 prints size 1 $36,811, size 3 $59,464, size 5 $82,117,
+    # size 7 $95,567, size 9 $99,814, size 11 $104,062. The FY2025 four-person
+    # median is $117,983; 60% rounded down is $70,789, and the size factors
+    # 0.52, 0.84, 1.16, 1.35, 1.41 and 1.47 give $36,810, $59,462, $82,115,
+    # $95,565, $99,812 and $104,059.
+    or_liheap_income_limit: [36_810, 59_462, 82_115, 95_565, 99_812, 104_059]
 
 - name: Case 3, published PY2027 annual income limits at the sizes whose 60 percent product is a whole dollar.
   period: 2027
@@ -36,15 +47,31 @@
     # PY2027 page 71: size 2 $52,734, size 3 $65,142, size 6 $102,366, size 8
     # $107,019, size 10 $111,672, size 12 $116,325. The FY2027 four-person
     # median is $129,250, so these products are exact dollars (129,250 x 0.68
-    # x 0.6 = 52,734) and a float32 ceiling would add $1 to each.
+    # x 0.6 = 52,734) and a float32 ceiling would add $1 to each. They equal
+    # the federal maximum, so none is lowered.
     or_liheap_income_limit: [52_734, 65_142, 102_366, 107_019, 111_672, 116_325]
 
-- name: Case 4, published FY2026 annual income limits for the even household sizes 2 to 12.
+- name: Case 4, FY2026 annual income limits for the even household sizes 2 to 12 stop at the federal maximum.
   period: 2026
   input:
     state_code: [OR, OR, OR, OR, OR, OR]
     spm_unit_size: [2, 4, 6, 8, 10, 12]
   output:
-    # FY2026 page 77: size 2 $50,196, size 4 $73,817, size 6 $97,438, size 8
-    # $101,867, size 10 $106,296, size 12 $110,725.
-    or_liheap_income_limit: [50_196, 73_817, 97_438, 101_867, 106_296, 110_725]
+    # FY2026 page 77 prints size 2 $50,196, size 4 $73,817, size 6 $97,438,
+    # size 8 $101,867, size 10 $106,296, size 12 $110,725. HHS's amount is $2
+    # lower at size 2 and $1 lower at sizes 4 to 10 (73,816 x 1.38 = 101,866;
+    # x 1.44 = 106,295). At size 12, 150% of the 2025 guideline (76,150 x 1.5 =
+    # 114,225) is the higher federal maximum, so the printed amount stays.
+    or_liheap_income_limit: [50_194, 73_816, 97_437, 101_866, 106_295, 110_725]
+
+- name: Case 5, PY2027 limits whose 60 percent product ends in 50 cents stop at the federal maximum.
+  period: 2027
+  input:
+    state_code: [OR, OR, OR]
+    spm_unit_size: [7, 9, 11]
+  output:
+    # The FY2027 four-person median is $129,250, and 60% of it is $77,550.
+    # Times the size factors 1.35, 1.41 and 1.47 that is $104,692.50,
+    # $109,345.50 and $113,998.50. Rounded up they would be $104,693,
+    # $109,346 and $113,999; HHS rounds down, so each limit is $1 lower.
+    or_liheap_income_limit: [104_692, 109_345, 113_998]

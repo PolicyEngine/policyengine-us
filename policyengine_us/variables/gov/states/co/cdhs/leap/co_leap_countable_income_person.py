@@ -28,7 +28,7 @@ class co_leap_countable_income_person(Variable):
         # monthly SSA and SSI amounts lose cents separately for each person.
         # Medicare premiums remain in gross SSA income under Colorado rules.
         social_security = np.floor(person("social_security", period) / MONTHS_IN_YEAR)
-        ssi = np.floor(person("ssi", period, options=[ADD]) / MONTHS_IN_YEAR)
+        ssi = np.floor(person("ssi", period) / MONTHS_IN_YEAR)
         income = earned + unearned + (social_security + ssi) * MONTHS_IN_YEAR
         foster = person("is_in_foster_care", period.first_month)
         # Known foster individuals are outside the LEAP household; income of

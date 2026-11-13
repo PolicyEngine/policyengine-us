@@ -339,8 +339,9 @@
   output:
     # PM 15-04-03-a: one applicant, so one $25. Deemed: unearned 600 - 25 = 575;
     # earned (2,500 - 65) / 2 = 1,217.50; 575 + 1,217.50 = 1,792.50.
-    # The spouse without Medicare: (2,500 - 25 - 65) / 2 = 1,205.
-    msp_countable_income: [1_792.5, 1_205]
+    # The spouse without Medicare has person1's $600 deemed the same way, since
+    # 600 is above the 497 rate difference.
+    msp_countable_income: [1_792.5, 1_792.5]
 
 - name: Case 16, Illinois caps a spouse's 25 dollar exemption at that spouse's income.
   period: 2026-01
@@ -454,5 +455,617 @@
     # SSI methodology deems the spouse's wages whether or not the person
     # meets SSI's noncitizen test: 20,000 > (1,450 - 967) x 12 = 5,796.
     # (1,000 - 20) + (1,666.67 - 65) / 2 = 980 + 800.83 = 1,780.83.
+    # person2 has person1's income deemed the same way: 12,000 > 5,796.
     is_ssi_spousal_deeming_applies: [true, false]
-    msp_countable_income: [1_780.83, 790.83]
+    msp_countable_income: [1_780.83, 1_780.83]
+
+- name: Case 21, income of a disabled spouse who is not on Medicare counts for the couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 12_000
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+        ssi_unearned_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # (1,000 + 1,500) - 20 = 2,480, above 135% of the two-person guideline:
+    # 1.35 x 1,803.33 = 2,434.50.
+    is_medicare_eligible: [true, false]
+    ssi_couple_computation_applies: [true, true]
+    msp_countable_income: [2_480, 2_480]
+    msp_category: [NONE, NONE]
+
+- name: Case 22, Illinois gives one exemption when only one spouse is on Medicare.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 12_000
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+        ssi_unearned_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # (1,000 + 1,500) - 25 = 2,475.
+    msp_countable_income: [2_475, 2_475]
+
+- name: Case 23, a disabled spouse living apart in a facility is not counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 12_000
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        ssi_unearned_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # 20 CFR 416.414(b)(3) computes the spouses separately: 1,000 - 20 = 980.
+    ssi_couple_computation_applies: [false, false]
+    msp_countable_income: [980, 1_480]
+
+- name: Case 24, allocations for ineligible children come off the spouse's income before deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 12_000
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+        ssi_unearned_income: 18_000
+      person3:
+        age: 12
+      person4:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      child1_marital_unit:
+        members: [person3]
+      child2_marital_unit:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    # 20 CFR 416.1163(b): two allocations of 1,491 - 994 = 497 total 994.
+    # person1: 1,500 - 994 = 506, above 497, so it is deemed (416.1163(d)(2)):
+    # 1,000 + 506 - 20 = 1,486, at or below the two-person 21,640 / 12 = 1,803.33.
+    # person2: 1,000 - 994 = 6, not above 497, so 1,500 - 20 = 1,480 alone.
+    msp_countable_income: [1_486, 1_480, 0, 0]
+    msp_fpg: [1_803.33, 1_330, 1_330, 1_330]
+    msp_category: [QMB, NONE, NONE, NONE]
+
+- name: Case 25, a disabled spouse's income at or below the rate difference is not deemed.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 20_400
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+        ssi_unearned_income: 5_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1163(d)(1): person2's 450 is not above 497, so person1 is tested
+    # alone: 1,700 - 20 = 1,680 against the one-person 15,960 / 12 = 1,330.
+    # 120% is 1,596 and 135% is 1,795.50, so QI.
+    # person2 has person1's 1,700 deemed: 450 + 1,700 - 20 = 2,130.
+    msp_countable_income: [1_680, 2_130]
+    msp_fpg: [1_330, 1_803.33]
+    msp_category: [QI, NONE]
+
+- name: Case 26, an eligible SSI couple with one spouse on Medicare is tested as two individuals.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 16_800
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1801(c): 1,400 - 20 = 1,380 is below the 1,491 couple rate, so each
+    # spouse is eligible for SSI: (1,491 - 1,380) / 2 = 55.50.
+    # Only person1 is on Medicare, so the two are not tested together (CMS memorandum
+    # of October 2, 1997), and neither is an ineligible spouse, so nothing is deemed
+    # either way (20 CFR 416.1160(d)). person1 alone: 1,380 against the one-person
+    # 1,330 is SLMB. Tested together on the two-person 1,803.33, it would be QMB.
+    uncapped_ssi: [55.50, 55.50]
+    msp_tests_as_couple: [false, false]
+    msp_countable_income: [1_380, 0]
+    msp_fpg: [1_330, 1_330]
+    msp_category: [SLMB, NONE]
+
+- name: Case 27, income at or below the rate difference is not deemed from a spouse who is not aged, blind or disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 20_160
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 5_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1163(d)(1): person2's 450 is not above 497, so person1 is tested
+    # alone: 1,680 - 20 = 1,660 against the one-person 1,330.
+    # 120% is 1,596 and 135% is 1,795.50, so QI. The two-person 1,803.33 would be QMB.
+    # person2 has person1's 1,680 deemed: 450 + 1,680 - 20 = 2,110.
+    msp_countable_income: [1_660, 2_110]
+    msp_fpg: [1_330, 1_803.33]
+    msp_category: [QI, NONE]
+
+- name: Case 28, an undocumented spouse's income counts whether or not that spouse can enroll in Medicare.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        ssi_unearned_income: 12_000
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        immigration_status: UNDOCUMENTED
+        ssi_unearned_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # With both on Medicare the incomes combine. With person2 off Medicare, each
+    # spouse's income is above 497 and is deemed (20 CFR 416.1163(d)(2)). Either way:
+    # 1,000 + 1,500 - 20 = 2,480, above 135% of the two-person guideline:
+    # 1.35 x 1,803.33 = 2,434.50.
+    msp_countable_income: [2_480, 2_480]
+    msp_fpg: [1_803.33, 1_803.33]
+    msp_category: [NONE, NONE]
+
+- name: Case 29, Illinois gives one 25 dollar exemption to a spouse on Medicare who has no income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+        ssi_unearned_income: 21_900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # PM 15-04-03-a: person2's 1,825 is above 497 and is deemed: 1,825 - 25 = 1,800,
+    # at or below the two-person 1,803.33, so QMB. The SSI 20 would leave 1,805: SLMB.
+    # person2 is tested alone, since person1 has no income: 1,825 - 25 = 1,800.
+    msp_countable_income: [1_800, 1_800]
+    msp_fpg: [1_803.33, 1_330]
+    msp_category: [QMB, NONE]
+
+- name: Case 30, a minor's wages are not counted as a spouse's when marital units are omitted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 20_400
+      person2:
+        age: 16
+        employment_income_before_lsr: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Omitted marital units put both people in one default unit, but a parent and the
+    # child they claim are not spouses, so each is tested alone.
+    # person1: 1,700 - 20 = 1,680 against the one-person 1,330.
+    # 120% is 1,596 and 135% is 1,795.50, and that Social Security income is too high
+    # for Texas Medicaid as a parent, so QI.
+    # person2: (10,000 / 12 - 20 - 65) / 2 = 374.17.
+    msp_countable_income: [1_680, 374.17]
+    msp_fpg: [1_330, 1_330]
+    msp_category: [QI, NONE]
+
+- name: Case 31, a spouse's income exactly at the rate difference is not deemed.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 20_160
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 5_964
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1163(d)(1): person2's 5,964 / 12 = 497 is not above 1,491 - 994 = 497,
+    # so person1 is tested alone: 1,680 - 20 = 1,660 against the one-person 1,330.
+    # 120% is 1,596 and 135% is 1,795.50, so QI.
+    # person2 has person1's 1,680 deemed: 497 + 1,680 - 20 = 2,157.
+    msp_countable_income: [1_660, 2_157]
+    msp_fpg: [1_330, 1_803.33]
+    msp_category: [QI, NONE]
+
+- name: Case 32, a spouse's income one dollar above the rate difference cannot raise the tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 20_160
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 5_976
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1163(d)(2): person2's 5,976 / 12 = 498 is above 497, so deeming gives
+    # 1,680 + 498 - 20 = 2,158 against the two-person 1,803.33: SLMB (120% is 2,164).
+    # 416.1163(e)(2): deeming cannot leave person1 better off than their own income.
+    # Alone, 1,680 - 20 = 1,660 against the one-person 1,330 is QI (120% is 1,596 and
+    # 135% is 1,795.50), the less generous tier, so person1 is tested alone, as in
+    # Case 31.
+    # person2 has person1's 1,680 deemed: 498 + 1,680 - 20 = 2,158.
+    msp_tests_as_couple: [false, true]
+    msp_countable_income: [1_660, 2_158]
+    msp_fpg: [1_330, 1_803.33]
+    msp_category: [QI, NONE]
+
+- name: Case 33, an Illinois applicant whose spouse is eligible for SSI and not on Medicare is tested alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 1_200
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+        ssi_unearned_income: 15_600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # 20 CFR 416.1801(c): 100 + 1,300 - 20 = 1,380 is below the 1,491 couple rate, so
+    # each spouse is eligible for SSI: (1,491 - 1,380) / 2 = 55.50.
+    # person2 is not on Medicare and is not an ineligible spouse (20 CFR 416.1160(d)),
+    # so person2's 1,300 is not deemed, though it is above 497: person1 has 100 - 25 =
+    # 75 against the one-person 1,330. Deemed, it would be 100 + 1,300 - 25 = 1,375
+    # against the two-person 1,803.33. person2 alone: 1,300 - 25 = 1,275.
+    uncapped_ssi: [55.50, 55.50]
+    msp_tests_as_couple: [false, false]
+    msp_countable_income: [75, 1_275]
+    msp_fpg: [1_330, 1_330]
+    msp_category: [QMB, NONE]
+
+- name: Case 34, a spouse's deemed wages cannot give a tier that the person's own income rules out.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 25_200
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        ssi_earned_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1163(e)(2). person1 alone: 2,100 - 20 = 2,080, above 135% of the
+    # one-person 1,330 (1,795.50), so no tier.
+    # person2's wages of 500 are above 497. Deemed, person1 would have
+    # 2,080 + (500 - 65) / 2 = 2,297.50 against the two-person 1,803.33, which is
+    # between 120% (2,164) and 135% (2,434.50): QI. The own-income test is the less
+    # generous one, so person1 is tested alone and gets no tier.
+    # person2 has person1's 2,100 deemed: 2,080 + (500 - 65) / 2 = 2,297.50.
+    msp_tests_as_couple: [false, true]
+    msp_countable_income: [2_080, 2_297.5]
+    msp_fpg: [1_330, 1_803.33]
+    msp_category: [NONE, NONE]
+
+- name: Case 35, a spouse's income at the rate difference is not deemed when deeming would be the stricter test.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 16_080
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 5_964
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1163(d)(1): person2's 5,964 / 12 = 497 is not above 497, so person1 is
+    # tested alone: 1,340 - 20 = 1,320, at or below the one-person 1,330, so QMB.
+    # Deemed, it would be 1,340 + 497 - 20 = 1,817 against the two-person 1,803.33: SLMB.
+    # Texas MEPD Appendix XXIX deems above 474 for QMB, so it would deem person2's 497,
+    # find 1,817 above its 1,804 couple limit and re-budget person1 to SLMB. The model
+    # uses SSI's 497; the open candidate us-tx:msp-spouse-deeming-allowance records it.
+    # person2 has person1's 1,340 deemed: 497 + 1,340 - 20 = 1,817.
+    msp_tests_as_couple: [false, true]
+    msp_countable_income: [1_320, 1_817]
+    msp_fpg: [1_330, 1_803.33]
+    msp_category: [QMB, NONE]
+
+- name: Case 36, a spouse's income one dollar above the rate difference is deemed when that is the stricter test.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 16_080
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 5_976
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1163(d)(2): person2's 5,976 / 12 = 498 is above 497, so it is deemed:
+    # 1,340 + 498 - 20 = 1,818, above the two-person 1,803.33 and below 120% (2,164),
+    # so SLMB. Alone, person1's 1,320 is QMB (Case 35), so the deemed test is the less
+    # generous one and applies (416.1163(e)(2)).
+    msp_tests_as_couple: [true, true]
+    msp_countable_income: [1_818, 1_818]
+    msp_fpg: [1_803.33, 1_803.33]
+    msp_category: [SLMB, NONE]
+
+- name: Case 37, allocations for ineligible children come off the spouse's wages after unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 7_200
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 3_600
+        ssi_earned_income: 24_000
+      person3:
+        age: 12
+      person4:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      child1_marital_unit:
+        members: [person3]
+      child2_marital_unit:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    # 20 CFR 416.1163(b)(3): two allocations of 497 total 994. They take person2's
+    # unearned 300 first and the balance of 694 from wages: 2,000 - 694 = 1,306, which
+    # is above 497 and is deemed to person1:
+    # (600 - 20) + (1,306 - 65) / 2 = 580 + 620.50 = 1,200.50, at or below the
+    # two-person 1,803.33, so QMB. With no allocation taken from wages it would be
+    # 580 + (2,000 - 65) / 2 = 1,547.50.
+    # person2: person1's 600 is less than the 994 of allocations, so nothing is deemed:
+    # (300 - 20) + (2,000 - 65) / 2 = 1,247.50 alone.
+    msp_tests_as_couple: [true, false, false, false]
+    msp_countable_income: [1_200.5, 1_247.5, 0, 0]
+    msp_fpg: [1_803.33, 1_330, 1_330, 1_330]
+    msp_category: [QMB, NONE, NONE, NONE]
+
+- name: Case 38, a spouse who is eligible for SSI and not on Medicare has no wages deemed.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        ssi_unearned_income: 3_600
+      person2:
+        age: 62
+        is_tax_unit_spouse: true
+        meets_ssi_disability_criteria: true
+        ssi_earned_income: 14_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 20 CFR 416.1801(c): (300 - 20) + (1,200 - 65) / 2 = 280 + 567.50 = 847.50 is
+    # below the 1,491 couple rate, so each spouse is eligible for SSI:
+    # (1,491 - 847.50) / 2 = 321.75.
+    # person2 is not on Medicare and is not an ineligible spouse (20 CFR 416.1160(d)),
+    # so person2's wages are not deemed, though 1,200 is above 497: person1 has
+    # 300 - 20 = 280 against the one-person 1,330, so QMB. Deemed, it would be
+    # 280 + (1,200 - 65) / 2 = 847.50 against the two-person 1,803.33.
+    # person2 alone has no unearned income, so the 20 comes off wages before the 65:
+    # (1,200 - 20 - 65) / 2 = 557.50.
+    uncapped_ssi: [321.75, 321.75]
+    msp_tests_as_couple: [false, false]
+    msp_countable_income: [280, 557.5]
+    msp_fpg: [1_330, 1_330]
+    msp_category: [QMB, NONE]
