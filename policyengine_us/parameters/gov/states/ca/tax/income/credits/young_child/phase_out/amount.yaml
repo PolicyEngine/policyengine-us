@@ -1,6 +1,6 @@
 description: California phases out its young child tax credit at this amount per increment.
 values:
-  2021-01-01: 20
+  2019-01-01: 20
   2022-01-01: 21.66
   2024-01-01: 21.67
   2025-01-01: 21.71
@@ -10,6 +10,10 @@ metadata:
   period: year
   label: California young child tax credit phase out amount
   reference:
+    - title: 2019 CalEITC Form 3514
+      href: https://www.ftb.ca.gov/forms/2019/2019-3514.pdf#page=3
+    - title: 2020 CalEITC Form 3514
+      href: https://www.ftb.ca.gov/forms/2020/2020-3514.pdf#page=3
   # "The credit is reduced by twenty dollars ($20) for each one hundred dollars ($100), or fraction thereof, 
   # by which the qualified taxpayer’s earned income, as defined in Section 17052, exceeds the "threshold amount."
   # For Tax Years Starting January 1, 2024 (Clause (ii)(III)):

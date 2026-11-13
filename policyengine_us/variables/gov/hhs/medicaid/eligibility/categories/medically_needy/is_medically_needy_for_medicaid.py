@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_budget_total,
-    _ssi_couple_total,
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    couple_budget_total,
+    spouses_split_by_facility,
 )
 
 
@@ -47,14 +47,34 @@ class is_medically_needy_for_medicaid(Variable):
         parental_expense_share = person(
             "medicaid_parental_medical_expense_share", period
         )
-        budget = personal_income - medical_expenses - parental_expense_share
-        # A couple's budget leaves out an unrelated member of a default marital
+        uses_couple_standard = person(
+            "medicaid_medically_needy_uses_couple_standard", period
+        )
+        # 42 CFR 435.831(d) also deducts a spouse's expenses when the spouse's
+        # income is not counted, unless a facility splits the couple. A
+        # couple's totals leave out an unrelated member of a default marital
         # unit, whose income ssi_countable_income also leaves out, and that
         # member's own budget leaves out the couple.
-        income = where(
-            person("ssi_couple_computation_applies", period),
-            _ssi_couple_budget_total(person, period, budget),
-            _ssi_couple_total(person, period, budget),
+        expenses = where(
+            spouses_split_by_facility(person, period),
+            medical_expenses,
+            couple_budget_total(person, period, medical_expenses),
+        )
+        unit_income = personal_income + person(
+            "medicaid_medically_needy_income_from_spouse", period
+        )
+        income = (
+            where(
+                uses_couple_standard,
+                couple_budget_total(person, period, unit_income),
+                unit_income,
+            )
+            - expenses
+            - where(
+                uses_couple_standard,
+                couple_budget_total(person, period, parental_expense_share),
+                parental_expense_share,
+            )
         )
         assets = marital_unit.sum(personal_assets)
         ma = parameters(period).gov.hhs.medicaid

@@ -1,20 +1,13 @@
 # PolicyEngine US - Development Guide
 
-## ⚠️ MANDATORY FIRST ACTION
+## Development skills
 
-At the START of each session, ask the user:
+Load the available PolicyEngine development skills that apply to the task without asking whether to load them:
 
-"Would you like to load PolicyEngine development skills for this session?"
-
-**Options to present:**
-1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
-2. "No, skip" - Proceed without loading skills
-
-**If Option 1 selected, load ALL of these** (from the `policyengine-claude` plugin):
 - /complete:policyengine-model-development (variable, parameter, period, and testing patterns)
 - /complete:policyengine-standards (code style, formatting, changelog, PR workflow)
 
-If these skills are unavailable (plugin not installed), skip loading and proceed.
+If these skills are unavailable, follow the repository guidance and report any gap that blocks the task.
 
 ---
 
@@ -178,39 +171,21 @@ changelog.d/medicaid-ce-exclusions.md
   - Focus on preserving the calculation PROCESS rather than just matching specific OUTCOMES
 
 ## Partner API contract tests
-The YAML files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests, not ordinary snapshots. Never rewrite an expected value there merely to make CI pass. When a model change makes one of these cases fail, treat the failure as a possible change to what partners see.
 
-This rule replaces the 2026-10-09 rule under which Ziming Hua approved every edit to this folder; Max Ghenis asked for the change on 2026-11-11. Ziming now approves only the changes listed under "Changes that need Ziming's approval".
+The YAML files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests. Never rewrite an expected value merely to make CI pass. Treat a model-caused failure as a possible change to what partners see.
 
-### Updating expected values
-Anyone, agents and subagents included, may update an expected value in this folder, and a comment in the case that derives it, when all five of these hold:
+Use one designated editor for each partner test file. The coordinator assigns files to agents or teammates; avoid conflicting parallel writes.
 
-1. **A cited model change explains every changed value.** The PR that changes the values also makes the model change, and it cites the law or source behind that change.
-2. **The PR body tables every changed value.** Give one row per changed value: file, case name, variable, old value, new value and cause. Build the table by computing every output variable of each affected case, never from the test log alone: the YAML test runner stops a case at its first failing variable, so the log hides the rest.
-3. **You check the boundary cases, failing or not.** Find the values the model change moves by loading the parameter tree at the PR's base and at its head for the cases' periods: a parameter can move through its uprating index or a parameter it derives from, and a formula change can move a threshold or flip a comparison, so the diff alone misses some. A threshold that a formula computes from a moved value, such as a share of the poverty guideline, moves too: compute it at the base and the head (for example, 1.33 times `spm_unit_fpg` for `nc_scca_school_age_income_just_below_133_pct_fpg (nc)`). Then find every case whose name or own comments put it at, just above or just below one of those values; a comment that cites the old value as where the case sits puts it at that value. When the value moves away, the case loses its purpose, even if it stays on the same side. A case whose name or comments put it only somewhere on one side (under the cap, mid-phase-out), or that only uses the value in a derivation without sitting at it, keeps its purpose while it stays on that side. A file's header comment doesn't count as a case's own.
-4. **An independent review recomputes the values.** The review that gates the merge comes from someone who neither made the model change nor edited the values: another person, or an agent that starts from the PR with a fresh context (a fresh subagent counts; a fork of the author's session doesn't). It recomputes each changed value from the law or source the PR cites, not by rerunning the PR's model. It may take inputs to the changed step that the change doesn't move, such as AGI, from the model at the base, but it derives the changed step itself, and each output's change, from the cited source. On the PR, it gives the value it computed and the source it used for each table row. It also confirms that every changed value in the folder's diff has a row with a stated cause, and that the diff changes nothing else in these files, apart from comments that derive the changed values, without Ziming's approval.
-5. **Ziming and the partner team get notice before the review.** Once the table is complete, the PR posts a comment that @-mentions Ziming Hua (hua7450, outside a code span, so GitHub notifies him) with the table as an FYI, and `.github/workflows/partner-api-impact-notice.yaml` posts the change to Slack. The merge needn't wait for Ziming's reply. If Ziming or the partner team replies that a partner depends on a changed case, that case moves under the next section and the PR waits for him. His CHANGES_REQUESTED review blocks the merge like any other.
+Before editing partner tests:
 
-### Changes that need Ziming's approval
-Ziming approves each of these, and a PR that contains one doesn't merge until he approves a head that contains it:
+- Identify the causal model change and derive every changed expected value from primary sources independently of the implementation.
+- Table every changed value in the PR: file, case, variable, old value, new value and source justification. Compute every output variable of each affected case; the test runner stops at the first failure and can hide other changed outputs. Explain the partner-facing impact and why the change is intentional.
+- Check affected boundary cases, failing or not. Compare parameter trees and formula-derived thresholds at the base and head for the cases' periods; uprating can move values outside the diff. Check each case whose name or own comments place it at, just above or just below a moved value. Preserve its stated purpose and justify any input or coverage change from the source. Check partner-flagged cases and any dependency a partner identified in the PR; resolve the compatibility question before merging.
+- Preserve the pre-change failing results as evidence. Do not delete, skip, rename or loosen a case merely to make CI pass.
 
-- any edit to a case other than an expected value or a comment in the case that derives it: its inputs, name, `period`, error margins or reforms, and any added or removed case or output variable;
-- a value change in a case whose purpose the model change defeats (condition 3). For example, PolicyEngine/policyengine-us#10810 adds California's June 2026 CPI, which uprates the 2026 CalEITC investment income limit from $4,923.10 to $4,976.61. That puts `ca_eitc_investment_income_above_limit_4924_ineligible (ca)` below the limit, so the filer turns eligible. It also leaves `ca_eitc_investment_income_at_limit_4923_eligible (ca)` $53.61 under the limit rather than at it, though the case stays eligible and its new credit amount looks unremarkable;
-- a changed value that the review can't trace to a cause;
-- a change to a case that a partner has said it depends on: one marked with a `# partner-flagged` comment line directly above its `- name:` line, which may name one or more partners after a colon, comma-separated (`# partner-flagged: Amplifi, MyFriendBen`), or one that Ziming or the partner team names on the PR. Search the file for `partner-flagged` before you edit it;
-- any other edit to these YAML files, including edits to a file's header comments and a value change that doesn't meet all five conditions, such as a value update in a later PR than the model change.
+Before merging, obtain independent automated review at the current head from a fresh reviewer who neither made the model change nor edited the expectations. The reviewer recomputes each changed value from the primary source, checks every changed output and confirms that the diff contains only the intended expectation, input, eligibility and coverage changes. Rerunning the changed model alone does not supply an independent expected value. Pass all required CI checks at the current head.
 
-A defeated case that still passes doesn't hold the PR, because the PR doesn't edit it. Leave its name and comments as they are, so they still show what it set out to test, and name it in the FYI comment with proposed inputs that put it back where its name or comments say; any change to the case then goes through Ziming. For example, #10810 sets the single renter's credit income limit at $55,830, so `ca_renter_credit_single_at_income_cap_55217 (ca)` still passes but no longer tests the cap.
-
-Ask Ziming before you edit a case you can see falls here, and make the edit only after he approves. A value the review can't trace, a value change that misses a condition, or a case someone flags on the PR waits for him from the moment it surfaces. Until he approves, don't merge, and don't delete, skip, rename or loosen a case to turn CI green; leave a failing case failing.
-
-For these cases, keep the three-question checklist and put it to Ziming on the PR that causes the change:
-
-1. Are you sure you want to edit this test file?
-2. Have you notified a team member about this change?
-3. Have you notified the API partner about this change?
-
-Request his review (`gh pr edit <number> --add-reviewer hua7450`) and post a comment (`gh pr comment <number> --body-file <file>`) that names each such case, its old and new expected values or inputs, and the model change and law behind it. If Ziming is the person you work with, show him the cases and ask him directly with the `AskUserQuestion` tool, then record his answer in a PR comment, which counts as his approval of those edits. A subagent or agent teammate that reaches one of these cases stops and reports back, and the top-level agent takes the checklist to Ziming.
+Request human review only for a specific material open question that requires that person's expertise, and name the question in the request. Resolve any source conflict, untraced value or partner compatibility question before merging. Do not request human review or notify a person to keep them informed or because they own the area.
 
 ## Code Coverage Exclusions
 Use `# pragma: no cover` **only** for code that cannot be tested in unit tests:
