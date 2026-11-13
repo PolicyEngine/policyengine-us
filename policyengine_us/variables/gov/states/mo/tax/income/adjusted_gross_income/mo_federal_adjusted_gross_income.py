@@ -27,17 +27,16 @@ class mo_federal_adjusted_gross_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        # PDF pages 6-7: Line 1 and its worksheet. "The combined income for
-        # you and your spouse must equal the total federal adjusted gross
-        # income you reported on your federal return."
+        # PDF pages 6-7: spouses divide their joint federal AGI between
+        # their Line 1 columns and preserve the combined total.
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=6",
-        # Line 1: "enter $0" for a negative federal adjusted gross income.
+        # Line 1: filers replace negative federal AGI with zero.
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=6",
         # Negative Federal Adjusted Gross Income, citing 12 CSR 10-2.710.
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=6",
-        # PDF pages 1-4: 12 CSR 10-2.010(2), capital losses go to "the
-        # spouse responsible", and (4), each spouse's federal AGI as if on a
-        # separate federal return (effective February 29, 2024).
+        # PDF pages 1-4: under 12 CSR 10-2.010(2), spouses allocate capital
+        # losses according to responsibility. Under (4), each spouse computes
+        # federal AGI as though filing separately (effective February 29, 2024).
         "https://dor.mo.gov/resources/official-final-rules/documents/12_CSR_10-2_010.pdf#page=1",
         # 12 CSR 10-2.010(5), effective April 30, 2026.
         "https://dor.mo.gov/resources/official-final-rules/documents/12_CSR_10-2_010_Income_Tax_of_Current_or_Former_Spouses.pdf#page=4",
@@ -66,10 +65,9 @@ class mo_federal_adjusted_gross_income(Variable):
             share[mask] = own[mask] / total[mask]
             return amount * share
 
-        # Federal adjustments to income (Line 1 worksheet, "Subtract: federal
-        # adjustments to income"), each in the column of the spouse it belongs
-        # to. 12 CSR 10-2.010(4), effective February 29, 2024, puts each
-        # spouse's column on a separate-return basis.
+        # Each spouse subtracts their own federal adjustments on the Line 1
+        # worksheet. Under 12 CSR 10-2.010(4), effective February 29, 2024,
+        # each spouse computes their column as though filing separately.
         p = parameters(period).gov.irs.ald
         adjustments = 0
         for deduction in p.deductions:
@@ -105,13 +103,12 @@ class mo_federal_adjusted_gross_income(Variable):
             0, person("non_sch_d_capital_gains", period)
         )
         own_capital_loss = person("capital_losses", period)
-        # 12 CSR 10-2.010(2): when the couple's capital losses exceed their
-        # gains, the excess deduction goes to "the spouse responsible for the
-        # excess", pro rata when both are. In Examples 1-3 the gains drop out
-        # of both columns, so the losses netted against them go to the
-        # spouse with the gains. Responsibility follows the short-term and
-        # long-term netting of Example 2. Otherwise each spouse's losses
-        # netted against gains are their own.
+        # Under 12 CSR 10-2.010(2), spouses allocate deductible capital losses
+        # according to responsibility for the excess, proportionally when
+        # both contribute. In Examples 1-3, neither spouse reports gains
+        # canceled by the other's losses. We assign those offsetting losses
+        # to the spouse with gains and follow Example 2's netting by
+        # character. Otherwise each spouse keeps their own losses.
         net_capital_loss = filer * own_capital_loss
         net_capital_gain = filer * own_capital_gain
         losses_exceed_gains = tax_unit.sum(net_capital_loss) > tax_unit.sum(

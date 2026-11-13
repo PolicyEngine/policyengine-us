@@ -14,9 +14,9 @@ class mo_adjusted_gross_income(Variable):
     definition_period = YEAR
     reference = (
         "https://dor.mo.gov/forms/MO-1040%20Fillable%20Calculating_2021.pdf",
-        # PDF pages 7, 22: the Line 7 note on a spouse with negative income;
-        # Line 5, "Subtract Line 4 from Line 3", and Line 6, "Add columns 5Y
-        # and 5S".
+        # PDF pages 7, 22: spouses can report negative Missouri AGI on
+        # Line 5 and add their two columns on Line 6. A spouse with negative
+        # income uses zero percent on Line 7.
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=7",
         # 12 CSR 10-2.010(4)(A)2 (effective February 29, 2024): a spouse's
         # Missouri AGI of -$4,000 after a subtraction.
@@ -32,9 +32,9 @@ class mo_adjusted_gross_income(Variable):
         subtractions = person("mo_agi_subtractions", period)
         p = parameters(period).gov.states.mo.tax.income.subtractions
         if p.plan_529_contributions.limited_to_own_agi:
-            # 12 CSR 10-2.010(4)(A)3 (effective February 29, 2024): "the MOST
-            # subtraction is limited to the spouse's Missouri adjusted gross
-            # income". It is taken after the other subtractions.
+            # Under 12 CSR 10-2.010(4)(A)3 (effective February 29, 2024), each
+            # spouse limits the MOST subtraction to their own Missouri AGI.
+            # We take MOST after other subtractions.
             most = person("mo_529_deduction", period)
             other_subtractions = max_(0, subtractions - most)
             allowed_most = min_(

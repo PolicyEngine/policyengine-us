@@ -3,15 +3,15 @@
 Form MO-1040 Line 1 splits a couple's joint federal AGI between their two
 columns with the Line 1 worksheet: each spouse's own income or loss, less
 their own federal adjustments, and the columns add up to joint federal AGI
-(2023 instructions, pages 6-7). 12 CSR 10-2.010(2) gives the deductible
-excess of capital losses to "the spouse responsible for the excess", pro rata
-when both are. From 2024 a negative amount is replaced by zero: when joint
-federal AGI is zero or less both columns are zero, and when it is positive a
-spouse with a negative separate amount enters zero and the other spouse the
-whole joint amount (2025 instructions, page 6; 12 CSR 10-2.710(1); 12 CSR
-10-2.010(5)). Each spouse adds Missouri additions and subtracts Missouri
-subtractions on Line 5 without a floor, adds the columns on Line 6, and gives a
-negative column 0%.
+(2023 instructions, pages 6-7). Under 12 CSR 10-2.010(2), spouses allocate
+deductible capital losses according to responsibility for the excess,
+proportionally when both contribute. From 2024, filers replace a negative
+amount with zero. If joint federal AGI is zero or less, both spouses enter
+zero. Otherwise, a spouse with a negative separate amount enters zero and
+the other spouse enters the whole joint amount (2025 instructions, page 6;
+12 CSR 10-2.710(1); 12 CSR 10-2.010(5)). Each spouse adds Missouri additions
+and subtracts Missouri subtractions on Line 5 without a floor. They add their
+columns on Line 6 and use zero percent for a negative column on Line 7.
 
 The YAML cases pin the published examples. This test checks what YAML cannot,
 for every drawn couple, and for each couple both ways round: as drawn and with

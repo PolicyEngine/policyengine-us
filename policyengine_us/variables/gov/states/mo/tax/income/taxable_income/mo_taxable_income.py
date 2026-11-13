@@ -52,12 +52,10 @@ class mo_taxable_income(Variable):
         # calculate taxable income for tax unit
         unit_taxinc = max_(0, unit_mo_agi - unit_mo_deductions)
 
-        # allocate tax unit taxable income by each individual's share of
-        # unit AGI (Line 7). The 2023 instructions (page 7) say: "If one
-        # spouse has negative income and the other spouse has positive
-        # income ... enter zero percent on Line 7Y and 100 percent on Line
-        # 7S." (use a mask rather than where to avoid a divide-by-zero
-        # warning with default share value being zero)
+        # Allocate taxable income using Line 7 shares. Under the 2023
+        # instructions (page 7), a spouse with negative income uses zero
+        # percent and the spouse with positive income uses 100 percent.
+        # Use a mask to avoid dividing by zero; default shares remain zero.
         positive_mo_agi = max_(0, mo_agi)
         unit_positive_mo_agi = tax_unit.sum(positive_mo_agi)
         ind_agi_share = np.zeros_like(unit_positive_mo_agi)

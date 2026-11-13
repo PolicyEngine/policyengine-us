@@ -46,8 +46,8 @@
     mo_qualified_health_insurance_premiums: 3_000
     state_code: MO
   output:
-    # Form MO-1040 Line 5, "Subtract Line 4 from Line 3", has no floor; the
-    # floor is on the joint subtotal, Line 26.
+    # Filers subtract Line 4 from Line 3 on Form MO-1040 Line 5 without
+    # flooring the result. They floor the joint subtotal on Line 26.
     mo_adjusted_gross_income: -1_000
 
 - name: Dependent's self-employment tax deduction neither reduces nor raises the parent's Missouri AGI
@@ -106,11 +106,9 @@
   output:
     # Spouse 2's federal AGI is 1,000 (5,000 of interest less a 4,000
     # business loss) and the U.S. obligation interest subtraction is 5,000.
-    # Regulation (effective February 29, 2024): "The combined Missouri
-    # adjusted gross income equals thirty-four thousand dollars ($34,000)
-    # (thirty-eight thousand dollars ($38,000) plus negative four thousand
-    # dollars (-$4,000))." (main floored spouse 2 at 0 and split the loss by
-    # gross income share: 34,465.12 and 0.)
+    # In the February 2024 example, spouse 2 reports Missouri AGI of -4,000.
+    # The couple adds 38,000 and -4,000 to report 34,000. Main floored spouse
+    # 2 at zero and split the loss by gross income share: 34,465.12 and 0.
     mo_adjusted_gross_income: [38_000, -4_000]
 
 - name: 12 CSR 10-2.010(4)(A)3, the MOST subtraction is limited to the spouse's Missouri AGI in 2024
@@ -138,9 +136,9 @@
         members: [spouse_1, spouse_2]
         state_code: MO
   output:
-    # Regulation (effective February 29, 2024): "thirty-eight thousand
-    # dollars ($38,000) plus zero ... because the MOST subtraction is limited
-    # to the spouse's Missouri adjusted gross income."
+    # In the February 2024 example, spouse 2 subtracts 1,000 of the 5,000
+    # MOST contribution and reports zero Missouri AGI. Together they report
+    # 38,000.
     mo_adjusted_gross_income: [38_000, 0]
 
 - name: The MOST limit also applies in 2025
@@ -195,8 +193,8 @@
         members: [spouse_1, spouse_2]
         state_code: MO
   output:
-    # Regulation (effective April 30, 2026): "thirty-eight thousand dollars
-    # ($38,000) plus negative four thousand dollars (-$4,000)".
+    # In the April 2026 example, spouse 2 subtracts the full 5,000 MOST
+    # contribution and reports -4,000. Together they report 34,000.
     mo_adjusted_gross_income: [38_000, -4_000]
 
 - name: Before 2024 the MOST subtraction is not limited

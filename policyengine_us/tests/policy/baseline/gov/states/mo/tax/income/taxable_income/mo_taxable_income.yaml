@@ -84,8 +84,8 @@
         members: [spouse_1, spouse_2]
         state_code: MO
   output:
-    # The 2023 instructions' example (page 7): "your income is -$15,000 and
-    # your spouse's income is $30,000 ... enter zero percent on Line 7Y and
-    # 100 percent on Line 7S." Line 6 adds the columns: 15,000. With no
-    # deductions Line 26 is 15,000, all of it spouse 2's.
+    # In the 2023 instructions' example (page 7), spouse 1 reports -15,000
+    # and spouse 2 reports 30,000. They use 0% and 100% on Line 7.
+    # They add their columns on Line 6 to get 15,000. Without deductions,
+    # spouse 2 reports all 15,000 as taxable income on Line 26.
     mo_taxable_income: [0, 15_000]

@@ -40,9 +40,8 @@
         members: [filer]
         state_code: MO
   output:
-    # 2024 instructions, Line 1: "If the amount you would otherwise report as
-    # your federal adjusted gross income would be a negative number, enter $0
-    # on Line 1."
+    # In the 2024 Line 1 instructions, the department directs filers to
+    # replace negative federal AGI with zero.
     adjusted_gross_income: -12_000
     mo_federal_adjusted_gross_income: 0
 
@@ -159,10 +158,10 @@
         members: [primary, secondary]
         state_code: MO
   output:
-    # The 2024 instructions say only "enter $0 on Line 1". Giving the
-    # secondary spouse the whole 90,000 keeps the worksheet's rule that the
-    # columns add up to joint federal AGI, as the 2025 instructions do under
-    # the same 12 CSR 10-2.710(1).
+    # The department requires zero for negative federal AGI in 2024.
+    # We assign the joint 90,000 to the secondary spouse and preserve the
+    # combined total, following the 2025 instructions under
+    # 12 CSR 10-2.710(1).
     mo_federal_adjusted_gross_income: [0, 90_000]
 
 - name: 2025 table row 2, joint federal AGI (50,000) = 200,000 + (250,000)
@@ -456,10 +455,10 @@
         state_code: MO
   output:
     # The 5,500 excess is 200 + 5,000 for spouse 1 (short-term and the net
-    # long-term loss) and 300 for spouse 2. The regulation's allocation:
-    # "Spouse 1 (5,200/5,500 x 3,000) and Spouse 2 (300/5,500 x 3,000)",
-    # 2,836.36 and 163.64. The department prints 2,850 and 150 in its table;
-    # those amounts do not match its stated fractions.
+    # long-term loss) and 300 for spouse 2. Deductible shares:
+    # 3,000 * 5,200 / 5,500 = 2,836.36 and
+    # 3,000 * 300 / 5,500 = 163.64. The department prints 2,850 and 150 in
+    # its table; those amounts do not match its stated fractions.
     # The department printed spouse 2's positive 3,000 long-term gain in the
     # 2018 proposed amendment; later PDFs print the opposite sign despite
     # retaining the same total and excess-loss calculation:
@@ -527,8 +526,8 @@
         members: [spouse_1, spouse_2]
         state_code: MO
   output:
-    # The worksheet's "Capital gain or loss" line by owner: 30,000 and
-    # 16,000.
+    # With a net capital gain, each spouse keeps their own gain:
+    # 30,000 and 16,000.
     adjusted_gross_income: 46_000
     mo_federal_adjusted_gross_income: [30_000, 16_000]
 
