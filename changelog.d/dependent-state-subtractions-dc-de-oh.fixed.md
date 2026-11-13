@@ -1,1 +1,1 @@
-Excluded dependents' own income and deductions from DC, Delaware and Ohio subtraction totals, including Ohio 529 contributions. Counted DC disability and Ohio medical deductions once per return. Excluded dependent income from Massachusetts gain, dividend and unemployment deduction calculations.
+Excluded dependents' own income and deductions from DC, Delaware and Ohio subtraction totals, including Ohio 529 contributions. Counted DC disability and Ohio medical deductions once per return. Excluded dependent income from Massachusetts gain and dividend calculations.

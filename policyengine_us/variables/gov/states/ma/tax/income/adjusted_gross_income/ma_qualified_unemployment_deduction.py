@@ -27,14 +27,13 @@ class ma_qualified_unemployment_deduction(Variable):
             + tax_unit("tax_unit_dependents", period)
         )
         limit = p.income_limit.base + (size - 1) * p.income_limit.additional_person
-        # Filers enter their Form 1040 lines 11, 2a, 6a and 6b on worksheet
-        # lines 5-7. Filers exclude dependents' own interest and benefits.
+        # Lines 5-9: federal AGI + tax-exempt interest + untaxed social security.
         untaxed_social_security = tax_unit(
-            "tax_unit_social_security_for_taxability", period
+            "tax_unit_social_security", period
         ) - tax_unit("tax_unit_taxable_social_security", period)
         household_income = (
             tax_unit("adjusted_gross_income", period)
-            + tax_unit_non_dep_add(tax_unit, period, ["tax_exempt_interest_income"])
+            + add(tax_unit, period, ["tax_exempt_interest_income"])
             + untaxed_social_security
         )
         # Lines 10-14: up to the cap for each of the filer and spouse.
