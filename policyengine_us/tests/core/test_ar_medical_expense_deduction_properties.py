@@ -175,9 +175,8 @@ def test_ar_medical_expense_deduction_is_monotone(year):
 @pytest.mark.parametrize("statuses", list(product(["SINGLE", "SEPARATE"], repeat=2)))
 @pytest.mark.parametrize("year", [2015, 2017])
 def test_ar_medical_expense_floor_in_two_person_simulations(year, statuses):
-    # With exactly two people and no marital units, the default marital unit
-    # looks like a couple. Only two separate filers are read as spouses of
-    # each other (intended: married people filing separately must both file
+    # With no marital units, only two separate filers in one household are
+    # paired as a couple (married people filing separately must both file
     # separately); anyone else keeps the ages on their own return.
     period = str(year)
     ages = list(product(HEAD_AGES, HEAD_AGES))
@@ -191,8 +190,7 @@ def test_ar_medical_expense_floor_in_two_person_simulations(year, statuses):
                 for i, (name, status) in enumerate(zip(people, statuses))
             },
             "households": {
-                f"h{i}": {"members": [name], "state_code": {period: "AR"}}
-                for i, name in enumerate(people)
+                "h": {"members": list(people), "state_code": {period: "AR"}}
             },
         }
         floor = Simulation(situation=situation).calculate(

@@ -274,6 +274,8 @@ def _fallback_pairs(people, **groups):
             },
             [],
         ),
+        # The role formulas take adults from is_child, which can be an input.
+        ({"parent": {"age": 45}, "child": {"age": 30, "is_child": True}}, []),
         # A separated member leaves the unit without a spouse.
         ({"first": {"age": 45}, "second": {"age": 40, "is_separated": True}}, []),
         # A pairing that changes between years pairs no one.
@@ -376,6 +378,47 @@ def test_integer_person_ids_pair():
 def test_a_false_spouse_input_leaves_the_roles_without_a_couple():
     people = {"first": {"age": 45}, "second": {"age": 43, "is_tax_unit_spouse": False}}
     assert _fallback_pairs(people) == []
+
+
+@pytest.mark.parametrize(
+    "filing_status, pairs",
+    [
+        (None, []),
+        # Only a married couple files jointly (26 USC 6013(a)).
+        ("JOINT", [["head", "spouse"]]),
+        # Membership can't change between periods.
+        ({"2024": "JOINT", "2025": "SINGLE"}, []),
+    ],
+)
+def test_a_joint_return_pairs_a_spouse_the_age_test_would_not(filing_status, pairs):
+    people = {
+        "head": {"age": 22},
+        "spouse": {"age": 20, "is_full_time_college_student": True},
+    }
+    tax_units = {"tax_unit": {"members": list(people)}}
+    if filing_status is not None:
+        tax_units["tax_unit"]["filing_status"] = filing_status
+    assert _fallback_pairs(people, tax_units=tax_units) == pairs
+
+
+@pytest.mark.parametrize(
+    "households, pairs",
+    [
+        # Only married people file separately (26 USC 1(d)).
+        ({"home": {"members": ["first", "second"]}}, [["first", "second"]]),
+        # Three separate filers don't say who is married to whom.
+        ({"home": {"members": ["first", "second", "third"]}}, []),
+        # A marital unit is a married, co-habiting couple.
+        ({"one": {"members": ["first"]}, "two": {"members": ["second"]}}, []),
+    ],
+)
+def test_the_two_separate_filers_of_a_household_pair(households, pairs):
+    names = [name for home in households.values() for name in home["members"]]
+    people = {name: {"age": 45} for name in names}
+    tax_units = {
+        name: {"members": [name], "filing_status": "SEPARATE"} for name in names
+    }
+    assert _fallback_pairs(people, tax_units=tax_units, households=households) == pairs
 
 
 def test_the_adult_age_matches_is_child():

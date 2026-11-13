@@ -50,6 +50,12 @@ def _periods_overlap(first, second):
 
 
 def _is_minor(person, default_period):
+    # The role formulas take adults from is_child, which a caller can supply.
+    supplied = person.get("is_child")
+    if supplied is not None:
+        if not isinstance(supplied, dict):
+            supplied = {default_period: supplied}
+        return any(_is_true(value) for value in supplied.values())
     values = person.get("age", {})
     if not isinstance(values, dict):
         values = {default_period: values}
@@ -144,19 +150,27 @@ def infer_missing_marital_units(situation, default_period=None, system=None):
        next-oldest adult who fails the qualifying child age test against
        them, with no couple when anyone in the unit is separated, a family
        says the two aren't married, or either has a false input for the role
-       step 4 gives them.
+       step 4 gives them. A tax unit whose ``filing_status`` input is JOINT
+       skips the age test, since only a married couple files jointly (26 USC
+       6013(a)).
+
+    Only married people file separately (26 USC 1(d)), so two people who
+    each file the only separate returns in their household (``filing_status``
+    input SEPARATE) are then paired, unless either is separated or a family
+    says they aren't married. A marital unit is a married, co-habiting
+    couple, so filers in different households stay apart.
 
     Everyone else receives their own unit, without claiming that their
     marital status is known. Inputs that can't settle one static couple
     (several heads or spouses, a dependent also marked head or spouse, or
-    role or is_married inputs that change between periods) leave everyone in
-    that tax unit and household in their own unit. Calculated values are
-    never read: step 4 reads the same inputs and parameters the role
-    formulas read, including the defaults Core fills in for everyone once
-    anyone supplies a variable for a year, so the units it builds agree with
-    the inferred tax roles in the years the inputs are dated for. A
-    calculation for another year, where the role formulas run again, can
-    give roles the units don't match.
+    role, is_married or filing_status inputs that change between periods)
+    leave everyone in that tax unit and household in their own unit.
+    Calculated values are never read: step 4 reads the same inputs and
+    parameters the role formulas read, including the defaults Core fills in
+    for everyone once anyone supplies a variable for a year, so the units it
+    builds agree with the inferred tax roles in the years the inputs are
+    dated for. A calculation for another year, where the role formulas run
+    again, can give roles the units don't match.
     Core calls this hook on a private copy before building populations;
     malformed input is left to its validation.
     """
@@ -207,14 +221,86 @@ def _infer_units(situation, people, default_period, system):
                 default_period,
                 system,
                 filled_years,
+                joint=_filing_status(situation, tax_unit) == "JOINT",
             )
         except _Ambiguous:
             pair = None
         if pair is not None:
-            first, second = pair
-            units[first]["members"].append(second)
-            del units[second]
+            _join(units, pair)
+    for pair in _separate_filer_pairs(
+        situation, people, tax_units, households, families, default_period
+    ):
+        if all(units.get(name, {}).get("members") == [name] for name in pair):
+            _join(units, pair)
     return units
+
+
+def _join(units, pair):
+    first, second = pair
+    units[first]["members"].append(second)
+    del units[second]
+
+
+def _filing_status(situation, tax_unit):
+    """A supplied tax unit's filing_status input, if one status in every period."""
+    if tax_unit is None or tax_unit[0] != "supplied":
+        return None
+    values = situation["tax_units"][tax_unit[1]].get("filing_status")
+    if not isinstance(values, dict):
+        values = {None: values}
+    statuses = {_enum_name(value) for value in values.values() if value is not None}
+    if len(statuses) > 1:
+        # Membership can't change between periods.
+        raise _Ambiguous
+    return statuses.pop() if statuses else None
+
+
+def _separate_filer_pairs(
+    situation, people, tax_units, households, families, default_period
+):
+    """The two separate filers of each household that has exactly two.
+
+    Each SEPARATE tax unit's filer is its one true is_tax_unit_head input, or
+    else its only adult who isn't input as a dependent. A unit with no clear
+    filer still counts toward its household's separate returns, so it blocks
+    a pairing there instead of letting two other filers pair.
+    """
+    filers = {}
+    for tax_unit in {value for value in tax_units.values() if value is not None}:
+        try:
+            if _filing_status(situation, tax_unit) != "SEPARATE":
+                continue
+        except _Ambiguous:
+            continue
+        members = [name for name in people if tax_units[name] == tax_unit]
+        heads = list(
+            _true_role_inputs(members, people, "is_tax_unit_head", default_period)
+        )
+        adults = [
+            name
+            for name in members
+            if not _is_minor(people[name], default_period)
+            and not _true_input_periods(
+                people[name], "is_tax_unit_dependent", default_period
+            )
+        ]
+        candidates = heads or adults
+        filer = candidates[0] if len(candidates) == 1 else None
+        homes = {households[name] for name in ([filer] if filer else members)}
+        for household in homes:
+            filers.setdefault(household, []).append(filer)
+    pairs = []
+    for names in filers.values():
+        if len(names) != 2 or None in names:
+            continue
+        pair = tuple(sorted(names, key=list(people).index))
+        if any(
+            _true_input_periods(people[name], "is_separated", default_period)
+            for name in pair
+        ) or _explicitly_unmarried(pair, situation, families):
+            continue
+        pairs.append(pair)
+    return pairs
 
 
 def _group_pair(
@@ -226,6 +312,7 @@ def _group_pair(
     default_period,
     system,
     filled_years,
+    joint=False,
 ):
     """The couple, if any, among the members of one tax unit and household."""
     heads = _true_role_inputs(members, people, "is_tax_unit_head", default_period)
@@ -260,6 +347,9 @@ def _group_pair(
         filled_years,
         head=next(iter(heads), None),
         spouse=next(iter(spouses), None),
+        # Only a married couple files jointly (26 USC 6013(a)), so a JOINT
+        # input pairs the head with the next adult whatever the age test says.
+        age_test=not joint,
     )
     # Only a couple who share this household share a marital unit.
     if pair is None or not set(pair) <= set(members):
@@ -297,7 +387,7 @@ def _explicit_role_pair(heads, spouses, people, default_period):
     return head, spouse
 
 
-def _role_name(value):
+def _enum_name(value):
     # Enum inputs arrive as names ("HEAD"), values ("Head") or members.
     return str(getattr(value, "name", value)).split(".")[-1].upper()
 
@@ -317,9 +407,9 @@ def _supplied_role_pair(members, people):
         if not isinstance(values, dict):
             values = {None: values}
         supplied = {
-            _role_name(value)
+            _enum_name(value)
             for value in values.values()
-            if value is not None and _role_name(value) != "UNSPECIFIED"
+            if value is not None and _enum_name(value) != "UNSPECIFIED"
         }
         if len(supplied) > 1:
             raise _Ambiguous
@@ -337,6 +427,7 @@ def _supplied_role_pair(members, people):
 # Inputs the role formulas read for the age-order fallback.
 _FALLBACK_INPUTS = (
     "age",
+    "is_child",
     "is_tax_unit_head",
     "is_tax_unit_spouse",
     "is_tax_unit_dependent",
@@ -432,7 +523,7 @@ def _value_in_year(person, variable, year, default_period, default, carries):
 
 
 def _tax_fallback_pair(
-    members, people, default_period, system, filled_years, head, spouse
+    members, people, default_period, system, filled_years, head, spouse, age_test
 ):
     """The couple is_tax_unit_head and is_tax_unit_spouse infer from age order.
 
@@ -445,7 +536,15 @@ def _tax_fallback_pair(
         return None
     pairs = {
         _fallback_pair_in_year(
-            members, people, year, default_period, system, filled_years, head, spouse
+            members,
+            people,
+            year,
+            default_period,
+            system,
+            filled_years,
+            head,
+            spouse,
+            age_test,
         )
         for year in years
     }
@@ -458,7 +557,7 @@ def _oldest(names, ages):
 
 
 def _fallback_pair_in_year(
-    members, people, year, default_period, system, filled_years, head, spouse
+    members, people, year, default_period, system, filled_years, head, spouse, age_test
 ):
     def value(name, variable, default=False):
         own = _dated_values(people[name], variable, default_period)
@@ -480,9 +579,18 @@ def _fallback_pair_in_year(
         if not isinstance(age, numbers.Number) or isinstance(age, bool):
             raise _LeaveToCore
         ages[name] = age
+
+    def is_adult(name):
+        # head_or_spouse_candidates reads is_child, whose formula is this age
+        # test unless a caller supplies it.
+        child = value(name, "is_child", None)
+        if child is None:
+            return ages[name] >= _ADULT_AGE
+        return not _is_true(child)
+
     # head_or_spouse_candidates: adults, skipping input dependents unless
     # every adult is one.
-    adults = [name for name in members if ages[name] >= _ADULT_AGE]
+    adults = [name for name in members if is_adult(name)]
     candidates = [
         name for name in adults if not _is_true(value(name, "is_tax_unit_dependent"))
     ] or adults
@@ -508,6 +616,8 @@ def _fallback_pair_in_year(
     limits = system.parameters(f"{year}-01-01").gov.irs.dependent.ineligible_age
 
     def meets_age_test(name):
+        if not age_test:
+            return False
         student = value(name, "is_full_time_student", None)
         if student is None:
             # is_full_time_student's formula: college or K-12 enrolment.
