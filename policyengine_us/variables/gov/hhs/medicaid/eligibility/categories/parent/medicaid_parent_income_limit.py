@@ -24,6 +24,20 @@ class medicaid_parent_income_limit(Variable):
                 person("va_medicaid_lifc_income_limit", period),
                 national_limit,
             )
+        tn_parent = parameters(period).gov.states.tn.tenncare.medicaid.parent
+        if tn_parent.in_effect:
+            national_limit = where(
+                state_code == StateCode.TN,
+                person("tn_medicaid_parent_income_limit", period),
+                national_limit,
+            )
+        ut_parent = parameters(period).gov.states.ut.dhhs.medicaid.parent
+        if ut_parent.in_effect:
+            national_limit = where(
+                state_code == StateCode.UT,
+                person("ut_medicaid_parent_income_limit", period),
+                national_limit,
+            )
         return where(
             state_code == StateCode.MO,
             person("mo_mhf_parent_income_limit", period),

@@ -538,3 +538,1490 @@
   output:
     medicaid_parent_income_limit: 1.38
   absolute_error_margin: 0.0001
+
+# $11,429.00 / $20,780 = 0.5500000000; parent limit: 0.55 + 0.05 = 0.60.
+- name: Utah parent earning 11,429.00 in 2018
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 11429
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: UT
+  output:
+    medicaid_income_level: [0.5500000000, 0.5500000000, 0.5500000000]
+    medicaid_parent_income_limit: [0.6000000000, 0.6000000000, 0.6000000000]
+    is_parent_for_medicaid: [true, false, false]
+    is_medicaid_eligible: [true, true, true]
+
+# $9,351.00 / $20,780 = 0.4500000000; parent limit: $577 x 12 / $20,780 + 0.05 = 0.3832050048.
+- name: Virginia Group II parent earning 9,351.00 in 2018
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 9351
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: VA
+        va_medicaid_lifc_locality_group: GROUP_II
+  output:
+    medicaid_income_level: [0.4500000000, 0.4500000000, 0.4500000000]
+    medicaid_parent_income_limit: [0.3832050048, 0.3832050048, 0.3832050048]
+    is_parent_for_medicaid: [false, false, false]
+    is_medicaid_eligible: [false, true, true]
+
+# $21,195.60 / $20,780 = 1.0200000000; parent limit: $1,611 x 12 / $20,780 + 0.05 = 0.9803176131.
+- name: Tennessee parent earning 21,195.60 in 2018
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 21195.6
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: TN
+  output:
+    medicaid_income_level: [1.0200000000, 1.0200000000, 1.0200000000]
+    medicaid_parent_income_limit: [0.9803176131, 0.9803176131, 0.9803176131]
+    is_parent_for_medicaid: [false, false, false]
+    is_medicaid_eligible: [false, true, true]
+
+# $11,429.00 / $21,330 = 0.5358180966; parent limit: 0.55 + 0.05 = 0.60.
+- name: Utah parent earning 11,429.00 in 2019
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 11429
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: UT
+  output:
+    medicaid_income_level: [0.5358180966, 0.5358180966, 0.5358180966]
+    medicaid_parent_income_limit: [0.6000000000, 0.6000000000, 0.6000000000]
+    is_parent_for_medicaid: [true, false, false]
+    is_medicaid_eligible: [true, true, true]
+
+# $9,351.00 / $21,330 = 0.4383966245; parent limit: $589 x 12 / $21,330 + 0.05 = 0.3813642757.
+- name: Virginia Group II parent earning 9,351.00 in 2019
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 9351
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: VA
+        va_medicaid_lifc_locality_group: GROUP_II
+  output:
+    medicaid_income_level: [0.4383966245, 0.4383966245, 0.4383966245]
+    medicaid_parent_income_limit: [0.3813642757, 0.3813642757, 0.3813642757]
+    is_parent_for_medicaid: [false, false, false]
+    is_medicaid_eligible: [false, true, true]
+
+# $21,195.60 / $21,330 = 0.9936990155; parent limit: $1,611 x 12 / $21,330 + 0.05 = 0.9563291139.
+- name: Tennessee parent earning 21,195.60 in 2019
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 21195.6
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: TN
+  output:
+    medicaid_income_level: [0.9936990155, 0.9936990155, 0.9936990155]
+    medicaid_parent_income_limit: [0.9563291139, 0.9563291139, 0.9563291139]
+    is_parent_for_medicaid: [false, false, false]
+    is_medicaid_eligible: [false, true, true]
+
+# $11,429.00 / $21,720 = 0.5261970534; parent limit: $678 x 12 / $21,720 + 0.05 = 0.4245856354.
+- name: Utah parent earning 11,429.00 in 2020
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 11429
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: UT
+  output:
+    medicaid_income_level: [0.5261970534, 0.5261970534, 0.5261970534]
+    medicaid_parent_income_limit: [0.4245856354, 0.4245856354, 0.4245856354]
+    is_parent_for_medicaid: [false, false, false]
+    is_medicaid_eligible: [false, true, true]
+
+# $9,351.00 / $21,720 = 0.4305248619; parent limit: $606 x 12 / $21,720 + 0.05 = 0.3848066298.
+- name: Virginia Group II parent earning 9,351.00 in 2020
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 9351
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: VA
+        va_medicaid_lifc_locality_group: GROUP_II
+  output:
+    medicaid_income_level: [0.4305248619, 0.4305248619, 0.4305248619]
+    medicaid_parent_income_limit: [0.3848066298, 0.3848066298, 0.3848066298]
+    is_parent_for_medicaid: [false, false, false]
+    is_medicaid_eligible: [false, true, true]
+
+# $21,195.60 / $21,720 = 0.9758563536; parent limit: $1,611 x 12 / $21,720 + 0.05 = 0.9400552486.
+- name: Tennessee parent earning 21,195.60 in 2020
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 21195.6
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: TN
+  output:
+    medicaid_income_level: [0.9758563536, 0.9758563536, 0.9758563536]
+    medicaid_parent_income_limit: [0.9400552486, 0.9400552486, 0.9400552486]
+    is_parent_for_medicaid: [false, false, false]
+    is_medicaid_eligible: [false, true, true]
+
+# Preserve the existing medicaid_income_eligible whole-dollar monthly ceiling.
+# Return the raw parent limit; compare financial eligibility at the effective limit.
+# Household size 3: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($20,780 x 0.6000000000 / 12, 2)) = ceil($1,039.00) = $1,039; $1,039 x 12 / $20,780 = 0.6000000000.
+# Compare income shares 0.00001 below and above the effective limit.
+# Also check income at Utah's raw 0.60 limit.
+- name: Utah parent financial eligibility around the 2018 effective limit
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      below:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.5999900000
+      at_raw_limit:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.6000000000
+      above:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.6000100000
+    households:
+      household:
+        members: [below, at_raw_limit, above]
+        state_code: UT
+  output:
+    medicaid_parent_income_limit: [0.6000000000, 0.6000000000, 0.6000000000]
+    is_parent_for_medicaid_fc: [true, true, false]
+
+# Household size 3: $577 x 12 / $20,780 + 0.05 = 0.3832050048.
+# Existing monthly ceiling: ceil(round($20,780 x 0.3832050048 / 12, 2)) = ceil($663.58) = $664; $664 x 12 / $20,780 = 0.3834456208.
+# Compare income shares 0.00001 below and above the effective limit.
+- name: Virginia Group II parent financial eligibility around the 2018 effective limit
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      below:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.3834356208
+      above:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.3834556208
+    households:
+      household:
+        members: [below, above]
+        state_code: VA
+        va_medicaid_lifc_locality_group: GROUP_II
+  output:
+    medicaid_parent_income_limit: [0.3832050048, 0.3832050048]
+    is_parent_for_medicaid_fc: [true, false]
+
+# Household size 3: $1,611 x 12 / $20,780 + 0.05 = 0.9803176131.
+# Existing monthly ceiling: ceil(round($20,780 x 0.9803176131 / 12, 2)) = ceil($1,697.58) = $1,698; $1,698 x 12 / $20,780 = 0.9805582291.
+# Compare income shares 0.00001 below and above the effective limit.
+- name: Tennessee parent financial eligibility around the 2018 effective limit
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      below:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.9805482291
+      above:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.9805682291
+    households:
+      household:
+        members: [below, above]
+        state_code: TN
+  output:
+    medicaid_parent_income_limit: [0.9803176131, 0.9803176131]
+    is_parent_for_medicaid_fc: [true, false]
+
+# Household size 3: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($21,330 x 0.6000000000 / 12, 2)) = ceil($1,066.50) = $1,067; $1,067 x 12 / $21,330 = 0.6002812940.
+# Compare income shares 0.00001 below and above the effective limit.
+# Also check income at Utah's raw 0.60 limit.
+- name: Utah parent financial eligibility around the 2019 effective limit
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      below:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.6002712940
+      at_raw_limit:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.6000000000
+      above:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.6002912940
+    households:
+      household:
+        members: [below, at_raw_limit, above]
+        state_code: UT
+  output:
+    medicaid_parent_income_limit: [0.6000000000, 0.6000000000, 0.6000000000]
+    is_parent_for_medicaid_fc: [true, true, false]
+
+# Household size 3: $589 x 12 / $21,330 + 0.05 = 0.3813642757.
+# Existing monthly ceiling: ceil(round($21,330 x 0.3813642757 / 12, 2)) = ceil($677.88) = $678; $678 x 12 / $21,330 = 0.3814345992.
+# Compare income shares 0.00001 below and above the effective limit.
+- name: Virginia Group II parent financial eligibility around the 2019 effective limit
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      below:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.3814245992
+      above:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.3814445992
+    households:
+      household:
+        members: [below, above]
+        state_code: VA
+        va_medicaid_lifc_locality_group: GROUP_II
+  output:
+    medicaid_parent_income_limit: [0.3813642757, 0.3813642757]
+    is_parent_for_medicaid_fc: [true, false]
+
+# Household size 3: $1,611 x 12 / $21,330 + 0.05 = 0.9563291139.
+# Existing monthly ceiling: ceil(round($21,330 x 0.9563291139 / 12, 2)) = ceil($1,699.88) = $1,700; $1,700 x 12 / $21,330 = 0.9563994374.
+# Compare income shares 0.00001 below and above the effective limit.
+- name: Tennessee parent financial eligibility around the 2019 effective limit
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      below:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.9563894374
+      above:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.9564094374
+    households:
+      household:
+        members: [below, above]
+        state_code: TN
+  output:
+    medicaid_parent_income_limit: [0.9563291139, 0.9563291139]
+    is_parent_for_medicaid_fc: [true, false]
+
+# Household size 3: $678 x 12 / $21,720 + 0.05 = 0.4245856354.
+# Existing monthly ceiling: ceil(round($21,720 x 0.4245856354 / 12, 2)) = ceil($768.50) = $769; $769 x 12 / $21,720 = 0.4248618785.
+# Compare income shares 0.00001 below and above the effective limit.
+- name: Utah parent financial eligibility around the 2020 effective limit
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      below:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.4248518785
+      above:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.4248718785
+    households:
+      household:
+        members: [below, above]
+        state_code: UT
+  output:
+    medicaid_parent_income_limit: [0.4245856354, 0.4245856354]
+    is_parent_for_medicaid_fc: [true, false]
+
+# Household size 3: $606 x 12 / $21,720 + 0.05 = 0.3848066298.
+# Existing monthly ceiling: ceil(round($21,720 x 0.3848066298 / 12, 2)) = ceil($696.50) = $697; $697 x 12 / $21,720 = 0.3850828729.
+# Compare income shares 0.00001 below and above the effective limit.
+- name: Virginia Group II parent financial eligibility around the 2020 effective limit
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      below:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.3850728729
+      above:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.3850928729
+    households:
+      household:
+        members: [below, above]
+        state_code: VA
+        va_medicaid_lifc_locality_group: GROUP_II
+  output:
+    medicaid_parent_income_limit: [0.3848066298, 0.3848066298]
+    is_parent_for_medicaid_fc: [true, false]
+
+# Household size 3: $1,611 x 12 / $21,720 + 0.05 = 0.9400552486.
+# Existing monthly ceiling: ceil(round($21,720 x 0.9400552486 / 12, 2)) = ceil($1,701.50) = $1,702; $1,702 x 12 / $21,720 = 0.9403314917.
+# Compare income shares 0.00001 below and above the effective limit.
+- name: Tennessee parent financial eligibility around the 2020 effective limit
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      below:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.9403214917
+      above:
+        medicaid_household_size: 3
+        medicaid_income_level: 0.9403414917
+    households:
+      household:
+        members: [below, above]
+        state_code: TN
+  output:
+    medicaid_parent_income_limit: [0.9400552486, 0.9400552486]
+    is_parent_for_medicaid_fc: [true, false]
+
+# Every historical schedule row: paired effective income boundaries.
+# Source: Tennessee SPA TN-14-0005, AFDC Income Standards, section H.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $1,018 x 12 / $12,140 + 0.05 = 1.0562602965.
+# Existing monthly ceiling: ceil(round($12,140 x 1.0562602965 / 12, 2)) = ceil($1,068.58) = $1,069; $1,069 x 12 / $12,140 = 1.0566721582.
+# Size 2: $1,329 x 12 / $16,460 + 0.05 = 1.0188942892.
+# Existing monthly ceiling: ceil(round($16,460 x 1.0188942892 / 12, 2)) = ceil($1,397.58) = $1,398; $1,398 x 12 / $16,460 = 1.0191980559.
+# Size 3: $1,611 x 12 / $20,780 + 0.05 = 0.9803176131.
+# Existing monthly ceiling: ceil(round($20,780 x 0.9803176131 / 12, 2)) = ceil($1,697.58) = $1,698; $1,698 x 12 / $20,780 = 0.9805582291.
+# Size 4: $1,867 x 12 / $25,100 + 0.05 = 0.9425896414.
+# Existing monthly ceiling: ceil(round($25,100 x 0.9425896414 / 12, 2)) = ceil($1,971.58) = $1,972; $1,972 x 12 / $25,100 = 0.9427888446.
+# Size 5: $2,102 x 12 / $29,420 + 0.05 = 0.9073759347.
+# Existing monthly ceiling: ceil(round($29,420 x 0.9073759347 / 12, 2)) = ceil($2,224.58) = $2,225; $2,225 x 12 / $29,420 = 0.9075458872.
+# Size 6: $2,320 x 12 / $33,740 + 0.05 = 0.8751333729.
+# Existing monthly ceiling: ceil(round($33,740 x 0.8751333729 / 12, 2)) = ceil($2,460.58) = $2,461; $2,461 x 12 / $33,740 = 0.8752815649.
+# Size 7: $2,524 x 12 / $38,060 + 0.05 = 0.8457961114.
+# Existing monthly ceiling: ceil(round($38,060 x 0.8457961114 / 12, 2)) = ceil($2,682.58) = $2,683; $2,683 x 12 / $38,060 = 0.8459274829.
+# Size 8: $2,718 x 12 / $42,380 + 0.05 = 0.8196083058.
+# Existing monthly ceiling: ceil(round($42,380 x 0.8196083058 / 12, 2)) = ceil($2,894.58) = $2,895; $2,895 x 12 / $42,380 = 0.8197262860.
+# Size 9: $2,903 x 12 / $46,700 + 0.05 = 0.7959528908.
+# Existing monthly ceiling: ceil(round($46,700 x 0.7959528908 / 12, 2)) = ceil($3,097.58) = $3,098; $3,098 x 12 / $46,700 = 0.7960599572.
+# Size 10: $3,084 x 12 / $51,020 + 0.05 = 0.7753626029.
+# Existing monthly ceiling: ceil(round($51,020 x 0.7753626029 / 12, 2)) = ceil($3,296.58) = $3,297; $3,297 x 12 / $51,020 = 0.7754606037.
+# Size 11: $3,259 x 12 / $55,340 + 0.05 = 0.7566859415.
+# Existing monthly ceiling: ceil(round($55,340 x 0.7566859415 / 12, 2)) = ceil($3,489.58) = $3,490; $3,490 x 12 / $55,340 = 0.7567762920.
+# Size 12: $3,431 x 12 / $59,660 + 0.05 = 0.7401106269.
+# Existing monthly ceiling: ceil(round($59,660 x 0.7401106269 / 12, 2)) = ceil($3,679.58) = $3,680; $3,680 x 12 / $59,660 = 0.7401944351.
+# Size 13: $3,601 x 12 / $63,980 + 0.05 = 0.7253985621.
+# Existing monthly ceiling: ceil(round($63,980 x 0.7253985621 / 12, 2)) = ceil($3,867.58) = $3,868; $3,868 x 12 / $63,980 = 0.7254767115.
+# Size 14: $3,770 x 12 / $68,300 + 0.05 = 0.7123718887.
+# Existing monthly ceiling: ceil(round($68,300 x 0.7123718887 / 12, 2)) = ceil($4,054.58) = $4,055; $4,055 x 12 / $68,300 = 0.7124450952.
+# Size 15: $3,935 x 12 / $72,620 + 0.05 = 0.7002340953.
+# Existing monthly ceiling: ceil(round($72,620 x 0.7002340953 / 12, 2)) = ceil($4,237.58) = $4,238; $4,238 x 12 / $72,620 = 0.7003029468.
+# Size 16: $4,098 x 12 / $76,940 + 0.05 = 0.6891473876.
+# Existing monthly ceiling: ceil(round($76,940 x 0.6891473876 / 12, 2)) = ceil($4,418.58) = $4,419; $4,419 x 12 / $76,940 = 0.6892123733.
+# Size 17: $4,257 x 12 / $81,260 + 0.05 = 0.6786487817.
+# Existing monthly ceiling: ceil(round($81,260 x 0.6786487817 / 12, 2)) = ceil($4,595.58) = $4,596; $4,596 x 12 / $81,260 = 0.6787103126.
+# Size 18: $4,411 x 12 / $85,580 + 0.05 = 0.6685089974.
+# Existing monthly ceiling: ceil(round($85,580 x 0.6685089974 / 12, 2)) = ceil($4,767.58) = $4,768; $4,768 x 12 / $85,580 = 0.6685674223.
+# Size 19: $4,557 x 12 / $89,900 + 0.05 = 0.6582758621.
+# Existing monthly ceiling: ceil(round($89,900 x 0.6582758621 / 12, 2)) = ceil($4,931.58) = $4,932; $4,932 x 12 / $89,900 = 0.6583314794.
+# Size 20: $4,693 x 12 / $94,220 + 0.05 = 0.6477074931.
+# Existing monthly ceiling: ceil(round($94,220 x 0.6477074931 / 12, 2)) = ceil($5,085.58) = $5,086; $5,086 x 12 / $94,220 = 0.6477605604.
+# Size 21: $4,693 x 12 / $98,540 + 0.05 = 0.6215039578.
+# Existing monthly ceiling: ceil(round($98,540 x 0.6215039578 / 12, 2)) = ceil($5,103.58) = $5,104; $5,104 x 12 / $98,540 = 0.6215546986.
+# Size 22: $4,693 x 12 / $102,860 + 0.05 = 0.5975014583.
+# Existing monthly ceiling: ceil(round($102,860 x 0.5975014583 / 12, 2)) = ceil($5,121.58) = $5,122; $5,122 x 12 / $102,860 = 0.5975500681.
+- name: Tennessee checks both sides of every effective household size limit in 2018
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN]
+    medicaid_income_level: [1.0566621582, 1.0566821582, 1.0191880559, 1.0192080559, 0.9805482291, 0.9805682291, 0.9427788446, 0.9427988446, 0.9075358872, 0.9075558872, 0.8752715649, 0.8752915649, 0.8459174829, 0.8459374829, 0.8197162860, 0.8197362860, 0.7960499572, 0.7960699572, 0.7754506037, 0.7754706037, 0.7567662920, 0.7567862920, 0.7401844351, 0.7402044351, 0.7254667115, 0.7254867115, 0.7124350952, 0.7124550952, 0.7002929468, 0.7003129468, 0.6892023733, 0.6892223733, 0.6787003126, 0.6787203126, 0.6685574223, 0.6685774223, 0.6583214794, 0.6583414794, 0.6477505604, 0.6477705604, 0.6215446986, 0.6215646986, 0.5975400681, 0.5975600681]
+  output:
+    medicaid_parent_income_limit: [1.0562602965, 1.0562602965, 1.0188942892, 1.0188942892, 0.9803176131, 0.9803176131, 0.9425896414, 0.9425896414, 0.9073759347, 0.9073759347, 0.8751333729, 0.8751333729, 0.8457961114, 0.8457961114, 0.8196083058, 0.8196083058, 0.7959528908, 0.7959528908, 0.7753626029, 0.7753626029, 0.7566859415, 0.7566859415, 0.7401106269, 0.7401106269, 0.7253985621, 0.7253985621, 0.7123718887, 0.7123718887, 0.7002340953, 0.7002340953, 0.6891473876, 0.6891473876, 0.6786487817, 0.6786487817, 0.6685089974, 0.6685089974, 0.6582758621, 0.6582758621, 0.6477074931, 0.6477074931, 0.6215039578, 0.6215039578, 0.5975014583, 0.5975014583]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: Utah DAR 41429 and DAR 43706, R414-303-4.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($12,140 x 0.6000000000 / 12, 2)) = ceil($607.00) = $607; $607 x 12 / $12,140 = 0.6000000000.
+# Size 2: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($16,460 x 0.6000000000 / 12, 2)) = ceil($823.00) = $823; $823 x 12 / $16,460 = 0.6000000000.
+# Size 3: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($20,780 x 0.6000000000 / 12, 2)) = ceil($1,039.00) = $1,039; $1,039 x 12 / $20,780 = 0.6000000000.
+# Size 4: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($25,100 x 0.6000000000 / 12, 2)) = ceil($1,255.00) = $1,255; $1,255 x 12 / $25,100 = 0.6000000000.
+# Size 5: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($29,420 x 0.6000000000 / 12, 2)) = ceil($1,471.00) = $1,471; $1,471 x 12 / $29,420 = 0.6000000000.
+# Size 6: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($33,740 x 0.6000000000 / 12, 2)) = ceil($1,687.00) = $1,687; $1,687 x 12 / $33,740 = 0.6000000000.
+# Size 7: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($38,060 x 0.6000000000 / 12, 2)) = ceil($1,903.00) = $1,903; $1,903 x 12 / $38,060 = 0.6000000000.
+# Size 8: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($42,380 x 0.6000000000 / 12, 2)) = ceil($2,119.00) = $2,119; $2,119 x 12 / $42,380 = 0.6000000000.
+# Size 9: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($46,700 x 0.6000000000 / 12, 2)) = ceil($2,335.00) = $2,335; $2,335 x 12 / $46,700 = 0.6000000000.
+# Size 10: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($51,020 x 0.6000000000 / 12, 2)) = ceil($2,551.00) = $2,551; $2,551 x 12 / $51,020 = 0.6000000000.
+# Size 11: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($55,340 x 0.6000000000 / 12, 2)) = ceil($2,767.00) = $2,767; $2,767 x 12 / $55,340 = 0.6000000000.
+# Size 12: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($59,660 x 0.6000000000 / 12, 2)) = ceil($2,983.00) = $2,983; $2,983 x 12 / $59,660 = 0.6000000000.
+# Size 13: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($63,980 x 0.6000000000 / 12, 2)) = ceil($3,199.00) = $3,199; $3,199 x 12 / $63,980 = 0.6000000000.
+# Size 14: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($68,300 x 0.6000000000 / 12, 2)) = ceil($3,415.00) = $3,415; $3,415 x 12 / $68,300 = 0.6000000000.
+# Size 15: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($72,620 x 0.6000000000 / 12, 2)) = ceil($3,631.00) = $3,631; $3,631 x 12 / $72,620 = 0.6000000000.
+# Size 16: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($76,940 x 0.6000000000 / 12, 2)) = ceil($3,847.00) = $3,847; $3,847 x 12 / $76,940 = 0.6000000000.
+# Size 17: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($81,260 x 0.6000000000 / 12, 2)) = ceil($4,063.00) = $4,063; $4,063 x 12 / $81,260 = 0.6000000000.
+# Size 18: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($85,580 x 0.6000000000 / 12, 2)) = ceil($4,279.00) = $4,279; $4,279 x 12 / $85,580 = 0.6000000000.
+# Size 19: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($89,900 x 0.6000000000 / 12, 2)) = ceil($4,495.00) = $4,495; $4,495 x 12 / $89,900 = 0.6000000000.
+# Size 20: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($94,220 x 0.6000000000 / 12, 2)) = ceil($4,711.00) = $4,711; $4,711 x 12 / $94,220 = 0.6000000000.
+# Size 21: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($98,540 x 0.6000000000 / 12, 2)) = ceil($4,927.00) = $4,927; $4,927 x 12 / $98,540 = 0.6000000000.
+# Size 22: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($102,860 x 0.6000000000 / 12, 2)) = ceil($5,143.00) = $5,143; $5,143 x 12 / $102,860 = 0.6000000000.
+- name: Utah checks both sides of every effective household size limit in 2018
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT]
+    medicaid_income_level: [0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000, 0.5999900000, 0.6000100000]
+  output:
+    medicaid_parent_income_limit: [0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: DMAS M04 Appendix 3, July 2017, July 2018 and July 2019.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $245 x 12 / $12,140 + 0.05 = 0.2921746293.
+# Existing monthly ceiling: ceil(round($12,140 x 0.2921746293 / 12, 2)) = ceil($295.58) = $296; $296 x 12 / $12,140 = 0.2925864909.
+# Size 2: $373 x 12 / $16,460 + 0.05 = 0.3219319563.
+# Existing monthly ceiling: ceil(round($16,460 x 0.3219319563 / 12, 2)) = ceil($441.58) = $442; $442 x 12 / $16,460 = 0.3222357230.
+# Size 3: $474 x 12 / $20,780 + 0.05 = 0.3237247353.
+# Existing monthly ceiling: ceil(round($20,780 x 0.3237247353 / 12, 2)) = ceil($560.58) = $561; $561 x 12 / $20,780 = 0.3239653513.
+# Size 4: $575 x 12 / $25,100 + 0.05 = 0.3249003984.
+# Existing monthly ceiling: ceil(round($25,100 x 0.3249003984 / 12, 2)) = ceil($679.58) = $680; $680 x 12 / $25,100 = 0.3250996016.
+# Size 5: $678 x 12 / $29,420 + 0.05 = 0.3265465670.
+# Existing monthly ceiling: ceil(round($29,420 x 0.3265465670 / 12, 2)) = ceil($800.58) = $801; $801 x 12 / $29,420 = 0.3267165194.
+# Size 6: $764 x 12 / $33,740 + 0.05 = 0.3217249555.
+# Existing monthly ceiling: ceil(round($33,740 x 0.3217249555 / 12, 2)) = ceil($904.58) = $905; $905 x 12 / $33,740 = 0.3218731476.
+# Size 7: $862 x 12 / $38,060 + 0.05 = 0.3217813978.
+# Existing monthly ceiling: ceil(round($38,060 x 0.3217813978 / 12, 2)) = ceil($1,020.58) = $1,021; $1,021 x 12 / $38,060 = 0.3219127693.
+# Size 8: $965 x 12 / $42,380 + 0.05 = 0.3232420953.
+# Existing monthly ceiling: ceil(round($42,380 x 0.3232420953 / 12, 2)) = ceil($1,141.58) = $1,142; $1,142 x 12 / $42,380 = 0.3233600755.
+# Size 9: $1,066 x 12 / $46,700 + 0.05 = 0.3239186296.
+# Existing monthly ceiling: ceil(round($46,700 x 0.3239186296 / 12, 2)) = ceil($1,260.58) = $1,261; $1,261 x 12 / $46,700 = 0.3240256959.
+# Size 10: $1,167 x 12 / $51,020 + 0.05 = 0.3244805958.
+# Existing monthly ceiling: ceil(round($51,020 x 0.3244805958 / 12, 2)) = ceil($1,379.58) = $1,380; $1,380 x 12 / $51,020 = 0.3245785966.
+# Size 11: $1,268 x 12 / $55,340 + 0.05 = 0.3249548247.
+# Existing monthly ceiling: ceil(round($55,340 x 0.3249548247 / 12, 2)) = ceil($1,498.58) = $1,499; $1,499 x 12 / $55,340 = 0.3250451753.
+# Size 12: $1,369 x 12 / $59,660 + 0.05 = 0.3253603755.
+# Existing monthly ceiling: ceil(round($59,660 x 0.3253603755 / 12, 2)) = ceil($1,617.58) = $1,618; $1,618 x 12 / $59,660 = 0.3254441837.
+# Size 13: $1,470 x 12 / $63,980 + 0.05 = 0.3257111597.
+# Existing monthly ceiling: ceil(round($63,980 x 0.3257111597 / 12, 2)) = ceil($1,736.58) = $1,737; $1,737 x 12 / $63,980 = 0.3257893092.
+# Size 14: $1,571 x 12 / $68,300 + 0.05 = 0.3260175695.
+# Existing monthly ceiling: ceil(round($68,300 x 0.3260175695 / 12, 2)) = ceil($1,855.58) = $1,856; $1,856 x 12 / $68,300 = 0.3260907760.
+# Size 15: $1,672 x 12 / $72,620 + 0.05 = 0.3262875241.
+# Existing monthly ceiling: ceil(round($72,620 x 0.3262875241 / 12, 2)) = ceil($1,974.58) = $1,975; $1,975 x 12 / $72,620 = 0.3263563757.
+# Size 16: $1,773 x 12 / $76,940 + 0.05 = 0.3265271640.
+# Existing monthly ceiling: ceil(round($76,940 x 0.3265271640 / 12, 2)) = ceil($2,093.58) = $2,094; $2,094 x 12 / $76,940 = 0.3265921497.
+# Size 17: $1,874 x 12 / $81,260 + 0.05 = 0.3267413241.
+# Existing monthly ceiling: ceil(round($81,260 x 0.3267413241 / 12, 2)) = ceil($2,212.58) = $2,213; $2,213 x 12 / $81,260 = 0.3268028550.
+# Size 18: $1,975 x 12 / $85,580 + 0.05 = 0.3269338631.
+# Existing monthly ceiling: ceil(round($85,580 x 0.3269338631 / 12, 2)) = ceil($2,331.58) = $2,332; $2,332 x 12 / $85,580 = 0.3269922879.
+# Size 19: $2,076 x 12 / $89,900 + 0.05 = 0.3271078977.
+# Existing monthly ceiling: ceil(round($89,900 x 0.3271078977 / 12, 2)) = ceil($2,450.58) = $2,451; $2,451 x 12 / $89,900 = 0.3271635150.
+# Size 20: $2,177 x 12 / $94,220 + 0.05 = 0.3272659733.
+# Existing monthly ceiling: ceil(round($94,220 x 0.3272659733 / 12, 2)) = ceil($2,569.58) = $2,570; $2,570 x 12 / $94,220 = 0.3273190405.
+# Size 21: $2,278 x 12 / $98,540 + 0.05 = 0.3274101888.
+# Existing monthly ceiling: ceil(round($98,540 x 0.3274101888 / 12, 2)) = ceil($2,688.58) = $2,689; $2,689 x 12 / $98,540 = 0.3274609296.
+# Size 22: $2,379 x 12 / $102,860 + 0.05 = 0.3275422905.
+# Existing monthly ceiling: ceil(round($102,860 x 0.3275422905 / 12, 2)) = ceil($2,807.58) = $2,808; $2,808 x 12 / $102,860 = 0.3275909003.
+- name: Virginia Group I checks both sides of every effective household size limit in 2018
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_medicaid_lifc_locality_group: [GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I]
+    medicaid_income_level: [0.2925764909, 0.2925964909, 0.3222257230, 0.3222457230, 0.3239553513, 0.3239753513, 0.3250896016, 0.3251096016, 0.3267065194, 0.3267265194, 0.3218631476, 0.3218831476, 0.3219027693, 0.3219227693, 0.3233500755, 0.3233700755, 0.3240156959, 0.3240356959, 0.3245685966, 0.3245885966, 0.3250351753, 0.3250551753, 0.3254341837, 0.3254541837, 0.3257793092, 0.3257993092, 0.3260807760, 0.3261007760, 0.3263463757, 0.3263663757, 0.3265821497, 0.3266021497, 0.3267928550, 0.3268128550, 0.3269822879, 0.3270022879, 0.3271535150, 0.3271735150, 0.3273090405, 0.3273290405, 0.3274509296, 0.3274709296, 0.3275809003, 0.3276009003]
+  output:
+    medicaid_parent_income_limit: [0.2921746293, 0.2921746293, 0.3219319563, 0.3219319563, 0.3237247353, 0.3237247353, 0.3249003984, 0.3249003984, 0.3265465670, 0.3265465670, 0.3217249555, 0.3217249555, 0.3217813978, 0.3217813978, 0.3232420953, 0.3232420953, 0.3239186296, 0.3239186296, 0.3244805958, 0.3244805958, 0.3249548247, 0.3249548247, 0.3253603755, 0.3253603755, 0.3257111597, 0.3257111597, 0.3260175695, 0.3260175695, 0.3262875241, 0.3262875241, 0.3265271640, 0.3265271640, 0.3267413241, 0.3267413241, 0.3269338631, 0.3269338631, 0.3271078977, 0.3271078977, 0.3272659733, 0.3272659733, 0.3274101888, 0.3274101888, 0.3275422905, 0.3275422905]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: DMAS M04 Appendix 3, July 2017, July 2018 and July 2019.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $320 x 12 / $12,140 + 0.05 = 0.3663097199.
+# Existing monthly ceiling: ceil(round($12,140 x 0.3663097199 / 12, 2)) = ceil($370.58) = $371; $371 x 12 / $12,140 = 0.3667215815.
+# Size 2: $459 x 12 / $16,460 + 0.05 = 0.3846294046.
+# Existing monthly ceiling: ceil(round($16,460 x 0.3846294046 / 12, 2)) = ceil($527.58) = $528; $528 x 12 / $16,460 = 0.3849331713.
+# Size 3: $577 x 12 / $20,780 + 0.05 = 0.3832050048.
+# Existing monthly ceiling: ceil(round($20,780 x 0.3832050048 / 12, 2)) = ceil($663.58) = $664; $664 x 12 / $20,780 = 0.3834456208.
+# Size 4: $690 x 12 / $25,100 + 0.05 = 0.3798804781.
+# Existing monthly ceiling: ceil(round($25,100 x 0.3798804781 / 12, 2)) = ceil($794.58) = $795; $795 x 12 / $25,100 = 0.3800796813.
+# Size 5: $811 x 12 / $29,420 + 0.05 = 0.3807953773.
+# Existing monthly ceiling: ceil(round($29,420 x 0.3807953773 / 12, 2)) = ceil($933.58) = $934; $934 x 12 / $29,420 = 0.3809653297.
+# Size 6: $914 x 12 / $33,740 + 0.05 = 0.3750740960.
+# Existing monthly ceiling: ceil(round($33,740 x 0.3750740960 / 12, 2)) = ceil($1,054.58) = $1,055; $1,055 x 12 / $33,740 = 0.3752222881.
+# Size 7: $1,024 x 12 / $38,060 + 0.05 = 0.3728586442.
+# Existing monthly ceiling: ceil(round($38,060 x 0.3728586442 / 12, 2)) = ceil($1,182.58) = $1,183; $1,183 x 12 / $38,060 = 0.3729900158.
+# Size 8: $1,143 x 12 / $42,380 + 0.05 = 0.3736432279.
+# Existing monthly ceiling: ceil(round($42,380 x 0.3736432279 / 12, 2)) = ceil($1,319.58) = $1,320; $1,320 x 12 / $42,380 = 0.3737612081.
+# Size 9: $1,257 x 12 / $46,700 + 0.05 = 0.3729978587.
+# Existing monthly ceiling: ceil(round($46,700 x 0.3729978587 / 12, 2)) = ceil($1,451.58) = $1,452; $1,452 x 12 / $46,700 = 0.3731049251.
+# Size 10: $1,371 x 12 / $51,020 + 0.05 = 0.3724617797.
+# Existing monthly ceiling: ceil(round($51,020 x 0.3724617797 / 12, 2)) = ceil($1,583.58) = $1,584; $1,584 x 12 / $51,020 = 0.3725597805.
+# Size 11: $1,485 x 12 / $55,340 + 0.05 = 0.3720093965.
+# Existing monthly ceiling: ceil(round($55,340 x 0.3720093965 / 12, 2)) = ceil($1,715.58) = $1,716; $1,716 x 12 / $55,340 = 0.3720997470.
+# Size 12: $1,599 x 12 / $59,660 + 0.05 = 0.3716225277.
+# Existing monthly ceiling: ceil(round($59,660 x 0.3716225277 / 12, 2)) = ceil($1,847.58) = $1,848; $1,848 x 12 / $59,660 = 0.3717063359.
+# Size 13: $1,713 x 12 / $63,980 + 0.05 = 0.3712879025.
+# Existing monthly ceiling: ceil(round($63,980 x 0.3712879025 / 12, 2)) = ceil($1,979.58) = $1,980; $1,980 x 12 / $63,980 = 0.3713660519.
+# Size 14: $1,827 x 12 / $68,300 + 0.05 = 0.3709956076.
+# Existing monthly ceiling: ceil(round($68,300 x 0.3709956076 / 12, 2)) = ceil($2,111.58) = $2,112; $2,112 x 12 / $68,300 = 0.3710688141.
+# Size 15: $1,941 x 12 / $72,620 + 0.05 = 0.3707380887.
+# Existing monthly ceiling: ceil(round($72,620 x 0.3707380887 / 12, 2)) = ceil($2,243.58) = $2,244; $2,244 x 12 / $72,620 = 0.3708069402.
+# Size 16: $2,055 x 12 / $76,940 + 0.05 = 0.3705094879.
+# Existing monthly ceiling: ceil(round($76,940 x 0.3705094879 / 12, 2)) = ceil($2,375.58) = $2,376; $2,376 x 12 / $76,940 = 0.3705744736.
+# Size 17: $2,169 x 12 / $81,260 + 0.05 = 0.3703051932.
+# Existing monthly ceiling: ceil(round($81,260 x 0.3703051932 / 12, 2)) = ceil($2,507.58) = $2,508; $2,508 x 12 / $81,260 = 0.3703667241.
+# Size 18: $2,283 x 12 / $85,580 + 0.05 = 0.3701215237.
+# Existing monthly ceiling: ceil(round($85,580 x 0.3701215237 / 12, 2)) = ceil($2,639.58) = $2,640; $2,640 x 12 / $85,580 = 0.3701799486.
+# Size 19: $2,397 x 12 / $89,900 + 0.05 = 0.3699555061.
+# Existing monthly ceiling: ceil(round($89,900 x 0.3699555061 / 12, 2)) = ceil($2,771.58) = $2,772; $2,772 x 12 / $89,900 = 0.3700111235.
+# Size 20: $2,511 x 12 / $94,220 + 0.05 = 0.3698047124.
+# Existing monthly ceiling: ceil(round($94,220 x 0.3698047124 / 12, 2)) = ceil($2,903.58) = $2,904; $2,904 x 12 / $94,220 = 0.3698577797.
+# Size 21: $2,625 x 12 / $98,540 + 0.05 = 0.3696671402.
+# Existing monthly ceiling: ceil(round($98,540 x 0.3696671402 / 12, 2)) = ceil($3,035.58) = $3,036; $3,036 x 12 / $98,540 = 0.3697178811.
+# Size 22: $2,739 x 12 / $102,860 + 0.05 = 0.3695411239.
+# Existing monthly ceiling: ceil(round($102,860 x 0.3695411239 / 12, 2)) = ceil($3,167.58) = $3,168; $3,168 x 12 / $102,860 = 0.3695897336.
+- name: Virginia Group II checks both sides of every effective household size limit in 2018
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_medicaid_lifc_locality_group: [GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II]
+    medicaid_income_level: [0.3667115815, 0.3667315815, 0.3849231713, 0.3849431713, 0.3834356208, 0.3834556208, 0.3800696813, 0.3800896813, 0.3809553297, 0.3809753297, 0.3752122881, 0.3752322881, 0.3729800158, 0.3730000158, 0.3737512081, 0.3737712081, 0.3730949251, 0.3731149251, 0.3725497805, 0.3725697805, 0.3720897470, 0.3721097470, 0.3716963359, 0.3717163359, 0.3713560519, 0.3713760519, 0.3710588141, 0.3710788141, 0.3707969402, 0.3708169402, 0.3705644736, 0.3705844736, 0.3703567241, 0.3703767241, 0.3701699486, 0.3701899486, 0.3700011235, 0.3700211235, 0.3698477797, 0.3698677797, 0.3697078811, 0.3697278811, 0.3695797336, 0.3695997336]
+  output:
+    medicaid_parent_income_limit: [0.3663097199, 0.3663097199, 0.3846294046, 0.3846294046, 0.3832050048, 0.3832050048, 0.3798804781, 0.3798804781, 0.3807953773, 0.3807953773, 0.3750740960, 0.3750740960, 0.3728586442, 0.3728586442, 0.3736432279, 0.3736432279, 0.3729978587, 0.3729978587, 0.3724617797, 0.3724617797, 0.3720093965, 0.3720093965, 0.3716225277, 0.3716225277, 0.3712879025, 0.3712879025, 0.3709956076, 0.3709956076, 0.3707380887, 0.3707380887, 0.3705094879, 0.3705094879, 0.3703051932, 0.3703051932, 0.3701215237, 0.3701215237, 0.3699555061, 0.3699555061, 0.3698047124, 0.3698047124, 0.3696671402, 0.3696671402, 0.3695411239, 0.3695411239]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: DMAS M04 Appendix 3, July 2017, July 2018 and July 2019.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $483 x 12 / $12,140 + 0.05 = 0.5274299835.
+# Existing monthly ceiling: ceil(round($12,140 x 0.5274299835 / 12, 2)) = ceil($533.58) = $534; $534 x 12 / $12,140 = 0.5278418451.
+# Size 2: $646 x 12 / $16,460 + 0.05 = 0.5209599028.
+# Existing monthly ceiling: ceil(round($16,460 x 0.5209599028 / 12, 2)) = ceil($714.58) = $715; $715 x 12 / $16,460 = 0.5212636695.
+# Size 3: $791 x 12 / $20,780 + 0.05 = 0.5067853705.
+# Existing monthly ceiling: ceil(round($20,780 x 0.5067853705 / 12, 2)) = ceil($877.58) = $878; $878 x 12 / $20,780 = 0.5070259865.
+# Size 4: $928 x 12 / $25,100 + 0.05 = 0.4936653386.
+# Existing monthly ceiling: ceil(round($25,100 x 0.4936653386 / 12, 2)) = ceil($1,032.58) = $1,033; $1,033 x 12 / $25,100 = 0.4938645418.
+# Size 5: $1,097 x 12 / $29,420 + 0.05 = 0.4974507138.
+# Existing monthly ceiling: ceil(round($29,420 x 0.4974507138 / 12, 2)) = ceil($1,219.58) = $1,220; $1,220 x 12 / $29,420 = 0.4976206662.
+# Size 6: $1,220 x 12 / $33,740 + 0.05 = 0.4839063426.
+# Existing monthly ceiling: ceil(round($33,740 x 0.4839063426 / 12, 2)) = ceil($1,360.58) = $1,361; $1,361 x 12 / $33,740 = 0.4840545347.
+# Size 7: $1,358 x 12 / $38,060 + 0.05 = 0.4781660536.
+# Existing monthly ceiling: ceil(round($38,060 x 0.4781660536 / 12, 2)) = ceil($1,516.58) = $1,517; $1,517 x 12 / $38,060 = 0.4782974251.
+# Size 8: $1,501 x 12 / $42,380 + 0.05 = 0.4750117980.
+# Existing monthly ceiling: ceil(round($42,380 x 0.4750117980 / 12, 2)) = ceil($1,677.58) = $1,678; $1,678 x 12 / $42,380 = 0.4751297782.
+# Size 9: $1,640 x 12 / $46,700 + 0.05 = 0.4714132762.
+# Existing monthly ceiling: ceil(round($46,700 x 0.4714132762 / 12, 2)) = ceil($1,834.58) = $1,835; $1,835 x 12 / $46,700 = 0.4715203426.
+# Size 10: $1,779 x 12 / $51,020 + 0.05 = 0.4684241474.
+# Existing monthly ceiling: ceil(round($51,020 x 0.4684241474 / 12, 2)) = ceil($1,991.58) = $1,992; $1,992 x 12 / $51,020 = 0.4685221482.
+# Size 11: $1,918 x 12 / $55,340 + 0.05 = 0.4659016986.
+# Existing monthly ceiling: ceil(round($55,340 x 0.4659016986 / 12, 2)) = ceil($2,148.58) = $2,149; $2,149 x 12 / $55,340 = 0.4659920492.
+# Size 12: $2,057 x 12 / $59,660 + 0.05 = 0.4637445525.
+# Existing monthly ceiling: ceil(round($59,660 x 0.4637445525 / 12, 2)) = ceil($2,305.58) = $2,306; $2,306 x 12 / $59,660 = 0.4638283607.
+# Size 13: $2,196 x 12 / $63,980 + 0.05 = 0.4618787121.
+# Existing monthly ceiling: ceil(round($63,980 x 0.4618787121 / 12, 2)) = ceil($2,462.58) = $2,463; $2,463 x 12 / $63,980 = 0.4619568615.
+# Size 14: $2,335 x 12 / $68,300 + 0.05 = 0.4602489019.
+# Existing monthly ceiling: ceil(round($68,300 x 0.4602489019 / 12, 2)) = ceil($2,619.58) = $2,620; $2,620 x 12 / $68,300 = 0.4603221083.
+# Size 15: $2,474 x 12 / $72,620 + 0.05 = 0.4588129992.
+# Existing monthly ceiling: ceil(round($72,620 x 0.4588129992 / 12, 2)) = ceil($2,776.58) = $2,777; $2,777 x 12 / $72,620 = 0.4588818507.
+# Size 16: $2,613 x 12 / $76,940 + 0.05 = 0.4575383416.
+# Existing monthly ceiling: ceil(round($76,940 x 0.4575383416 / 12, 2)) = ceil($2,933.58) = $2,934; $2,934 x 12 / $76,940 = 0.4576033273.
+# Size 17: $2,752 x 12 / $81,260 + 0.05 = 0.4563992124.
+# Existing monthly ceiling: ceil(round($81,260 x 0.4563992124 / 12, 2)) = ceil($3,090.58) = $3,091; $3,091 x 12 / $81,260 = 0.4564607433.
+# Size 18: $2,891 x 12 / $85,580 + 0.05 = 0.4553750876.
+# Existing monthly ceiling: ceil(round($85,580 x 0.4553750876 / 12, 2)) = ceil($3,247.58) = $3,248; $3,248 x 12 / $85,580 = 0.4554335125.
+# Size 19: $3,030 x 12 / $89,900 + 0.05 = 0.4544493882.
+# Existing monthly ceiling: ceil(round($89,900 x 0.4544493882 / 12, 2)) = ceil($3,404.58) = $3,405; $3,405 x 12 / $89,900 = 0.4545050056.
+# Size 20: $3,169 x 12 / $94,220 + 0.05 = 0.4536085757.
+# Existing monthly ceiling: ceil(round($94,220 x 0.4536085757 / 12, 2)) = ceil($3,561.58) = $3,562; $3,562 x 12 / $94,220 = 0.4536616430.
+# Size 21: $3,308 x 12 / $98,540 + 0.05 = 0.4528414857.
+# Existing monthly ceiling: ceil(round($98,540 x 0.4528414857 / 12, 2)) = ceil($3,718.58) = $3,719; $3,719 x 12 / $98,540 = 0.4528922265.
+# Size 22: $3,447 x 12 / $102,860 + 0.05 = 0.4521388295.
+# Existing monthly ceiling: ceil(round($102,860 x 0.4521388295 / 12, 2)) = ceil($3,875.58) = $3,876; $3,876 x 12 / $102,860 = 0.4521874392.
+- name: Virginia Group III checks both sides of every effective household size limit in 2018
+  period: 2018
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_medicaid_lifc_locality_group: [GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III]
+    medicaid_income_level: [0.5278318451, 0.5278518451, 0.5212536695, 0.5212736695, 0.5070159865, 0.5070359865, 0.4938545418, 0.4938745418, 0.4976106662, 0.4976306662, 0.4840445347, 0.4840645347, 0.4782874251, 0.4783074251, 0.4751197782, 0.4751397782, 0.4715103426, 0.4715303426, 0.4685121482, 0.4685321482, 0.4659820492, 0.4660020492, 0.4638183607, 0.4638383607, 0.4619468615, 0.4619668615, 0.4603121083, 0.4603321083, 0.4588718507, 0.4588918507, 0.4575933273, 0.4576133273, 0.4564507433, 0.4564707433, 0.4554235125, 0.4554435125, 0.4544950056, 0.4545150056, 0.4536516430, 0.4536716430, 0.4528822265, 0.4529022265, 0.4521774392, 0.4521974392]
+  output:
+    medicaid_parent_income_limit: [0.5274299835, 0.5274299835, 0.5209599028, 0.5209599028, 0.5067853705, 0.5067853705, 0.4936653386, 0.4936653386, 0.4974507138, 0.4974507138, 0.4839063426, 0.4839063426, 0.4781660536, 0.4781660536, 0.4750117980, 0.4750117980, 0.4714132762, 0.4714132762, 0.4684241474, 0.4684241474, 0.4659016986, 0.4659016986, 0.4637445525, 0.4637445525, 0.4618787121, 0.4618787121, 0.4602489019, 0.4602489019, 0.4588129992, 0.4588129992, 0.4575383416, 0.4575383416, 0.4563992124, 0.4563992124, 0.4553750876, 0.4553750876, 0.4544493882, 0.4544493882, 0.4536085757, 0.4536085757, 0.4528414857, 0.4528414857, 0.4521388295, 0.4521388295]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: Tennessee SPA TN-14-0005, AFDC Income Standards, section H.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $1,018 x 12 / $12,490 + 0.05 = 1.0280624500.
+# Existing monthly ceiling: ceil(round($12,490 x 1.0280624500 / 12, 2)) = ceil($1,070.04) = $1,071; $1,071 x 12 / $12,490 = 1.0289831865.
+# Size 2: $1,329 x 12 / $16,910 + 0.05 = 0.9931105855.
+# Existing monthly ceiling: ceil(round($16,910 x 0.9931105855 / 12, 2)) = ceil($1,399.46) = $1,400; $1,400 x 12 / $16,910 = 0.9934949734.
+# Size 3: $1,611 x 12 / $21,330 + 0.05 = 0.9563291139.
+# Existing monthly ceiling: ceil(round($21,330 x 0.9563291139 / 12, 2)) = ceil($1,699.88) = $1,700; $1,700 x 12 / $21,330 = 0.9563994374.
+# Size 4: $1,867 x 12 / $25,750 + 0.05 = 0.9200582524.
+# Existing monthly ceiling: ceil(round($25,750 x 0.9200582524 / 12, 2)) = ceil($1,974.29) = $1,975; $1,975 x 12 / $25,750 = 0.9203883495.
+# Size 5: $2,102 x 12 / $30,170 + 0.05 = 0.8860623136.
+# Existing monthly ceiling: ceil(round($30,170 x 0.8860623136 / 12, 2)) = ceil($2,227.71) = $2,228; $2,228 x 12 / $30,170 = 0.8861783228.
+# Size 6: $2,320 x 12 / $34,590 + 0.05 = 0.8548568951.
+# Existing monthly ceiling: ceil(round($34,590 x 0.8548568951 / 12, 2)) = ceil($2,464.13) = $2,465; $2,465 x 12 / $34,590 = 0.8551604510.
+# Size 7: $2,524 x 12 / $39,010 + 0.05 = 0.8264163035.
+# Existing monthly ceiling: ceil(round($39,010 x 0.8264163035 / 12, 2)) = ceil($2,686.54) = $2,687; $2,687 x 12 / $39,010 = 0.8265572930.
+# Size 8: $2,718 x 12 / $43,430 + 0.05 = 0.8010016118.
+# Existing monthly ceiling: ceil(round($43,430 x 0.8010016118 / 12, 2)) = ceil($2,898.96) = $2,899; $2,899 x 12 / $43,430 = 0.8010131246.
+# Size 9: $2,903 x 12 / $47,850 + 0.05 = 0.7780250784.
+# Existing monthly ceiling: ceil(round($47,850 x 0.7780250784 / 12, 2)) = ceil($3,102.38) = $3,103; $3,103 x 12 / $47,850 = 0.7781818182.
+# Size 10: $3,084 x 12 / $52,270 + 0.05 = 0.7580160704.
+# Existing monthly ceiling: ceil(round($52,270 x 0.7580160704 / 12, 2)) = ceil($3,301.79) = $3,302; $3,302 x 12 / $52,270 = 0.7580638990.
+# Size 11: $3,259 x 12 / $56,690 + 0.05 = 0.7398571177.
+# Existing monthly ceiling: ceil(round($56,690 x 0.7398571177 / 12, 2)) = ceil($3,495.21) = $3,496; $3,496 x 12 / $56,690 = 0.7400246957.
+# Size 12: $3,431 x 12 / $61,110 + 0.05 = 0.7237358861.
+# Existing monthly ceiling: ceil(round($61,110 x 0.7237358861 / 12, 2)) = ceil($3,685.63) = $3,686; $3,686 x 12 / $61,110 = 0.7238095238.
+# Size 13: $3,601 x 12 / $65,530 + 0.05 = 0.7094231650.
+# Existing monthly ceiling: ceil(round($65,530 x 0.7094231650 / 12, 2)) = ceil($3,874.04) = $3,875; $3,875 x 12 / $65,530 = 0.7095986571.
+# Size 14: $3,770 x 12 / $69,950 + 0.05 = 0.6967476769.
+# Existing monthly ceiling: ceil(round($69,950 x 0.6967476769 / 12, 2)) = ceil($4,061.46) = $4,062; $4,062 x 12 / $69,950 = 0.6968406004.
+# Size 15: $3,935 x 12 / $74,370 + 0.05 = 0.6849334409.
+# Existing monthly ceiling: ceil(round($74,370 x 0.6849334409 / 12, 2)) = ceil($4,244.88) = $4,245; $4,245 x 12 / $74,370 = 0.6849536103.
+# Size 16: $4,098 x 12 / $78,790 + 0.05 = 0.6741401193.
+# Existing monthly ceiling: ceil(round($78,790 x 0.6741401193 / 12, 2)) = ceil($4,426.29) = $4,427; $4,427 x 12 / $78,790 = 0.6742480010.
+# Size 17: $4,257 x 12 / $83,210 + 0.05 = 0.6639165966.
+# Existing monthly ceiling: ceil(round($83,210 x 0.6639165966 / 12, 2)) = ceil($4,603.71) = $4,604; $4,604 x 12 / $83,210 = 0.6639586588.
+# Size 18: $4,411 x 12 / $87,630 + 0.05 = 0.6540397124.
+# Existing monthly ceiling: ceil(round($87,630 x 0.6540397124 / 12, 2)) = ceil($4,776.13) = $4,777; $4,777 x 12 / $87,630 = 0.6541595344.
+# Size 19: $4,557 x 12 / $92,050 + 0.05 = 0.6440684411.
+# Existing monthly ceiling: ceil(round($92,050 x 0.6440684411 / 12, 2)) = ceil($4,940.54) = $4,941; $4,941 x 12 / $92,050 = 0.6441281912.
+# Size 20: $4,693 x 12 / $96,470 + 0.05 = 0.6337669742.
+# Existing monthly ceiling: ceil(round($96,470 x 0.6337669742 / 12, 2)) = ceil($5,094.96) = $5,095; $5,095 x 12 / $96,470 = 0.6337721571.
+# Size 21: $4,693 x 12 / $100,890 + 0.05 = 0.6081920904.
+# Existing monthly ceiling: ceil(round($100,890 x 0.6081920904 / 12, 2)) = ceil($5,113.38) = $5,114; $5,114 x 12 / $100,890 = 0.6082664288.
+# Size 22: $4,693 x 12 / $105,310 + 0.05 = 0.5847640300.
+# Existing monthly ceiling: ceil(round($105,310 x 0.5847640300 / 12, 2)) = ceil($5,131.79) = $5,132; $5,132 x 12 / $105,310 = 0.5847877694.
+- name: Tennessee checks both sides of every effective household size limit in 2019
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN]
+    medicaid_income_level: [1.0289731865, 1.0289931865, 0.9934849734, 0.9935049734, 0.9563894374, 0.9564094374, 0.9203783495, 0.9203983495, 0.8861683228, 0.8861883228, 0.8551504510, 0.8551704510, 0.8265472930, 0.8265672930, 0.8010031246, 0.8010231246, 0.7781718182, 0.7781918182, 0.7580538990, 0.7580738990, 0.7400146957, 0.7400346957, 0.7237995238, 0.7238195238, 0.7095886571, 0.7096086571, 0.6968306004, 0.6968506004, 0.6849436103, 0.6849636103, 0.6742380010, 0.6742580010, 0.6639486588, 0.6639686588, 0.6541495344, 0.6541695344, 0.6441181912, 0.6441381912, 0.6337621571, 0.6337821571, 0.6082564288, 0.6082764288, 0.5847777694, 0.5847977694]
+  output:
+    medicaid_parent_income_limit: [1.0280624500, 1.0280624500, 0.9931105855, 0.9931105855, 0.9563291139, 0.9563291139, 0.9200582524, 0.9200582524, 0.8860623136, 0.8860623136, 0.8548568951, 0.8548568951, 0.8264163035, 0.8264163035, 0.8010016118, 0.8010016118, 0.7780250784, 0.7780250784, 0.7580160704, 0.7580160704, 0.7398571177, 0.7398571177, 0.7237358861, 0.7237358861, 0.7094231650, 0.7094231650, 0.6967476769, 0.6967476769, 0.6849334409, 0.6849334409, 0.6741401193, 0.6741401193, 0.6639165966, 0.6639165966, 0.6540397124, 0.6540397124, 0.6440684411, 0.6440684411, 0.6337669742, 0.6337669742, 0.6081920904, 0.6081920904, 0.5847640300, 0.5847640300]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: Utah DAR 41429 and DAR 43706, R414-303-4.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($12,490 x 0.6000000000 / 12, 2)) = ceil($624.50) = $625; $625 x 12 / $12,490 = 0.6004803843.
+# Size 2: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($16,910 x 0.6000000000 / 12, 2)) = ceil($845.50) = $846; $846 x 12 / $16,910 = 0.6003548196.
+# Size 3: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($21,330 x 0.6000000000 / 12, 2)) = ceil($1,066.50) = $1,067; $1,067 x 12 / $21,330 = 0.6002812940.
+# Size 4: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($25,750 x 0.6000000000 / 12, 2)) = ceil($1,287.50) = $1,288; $1,288 x 12 / $25,750 = 0.6002330097.
+# Size 5: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($30,170 x 0.6000000000 / 12, 2)) = ceil($1,508.50) = $1,509; $1,509 x 12 / $30,170 = 0.6001988731.
+# Size 6: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($34,590 x 0.6000000000 / 12, 2)) = ceil($1,729.50) = $1,730; $1,730 x 12 / $34,590 = 0.6001734605.
+# Size 7: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($39,010 x 0.6000000000 / 12, 2)) = ceil($1,950.50) = $1,951; $1,951 x 12 / $39,010 = 0.6001538067.
+# Size 8: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($43,430 x 0.6000000000 / 12, 2)) = ceil($2,171.50) = $2,172; $2,172 x 12 / $43,430 = 0.6001381534.
+# Size 9: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($47,850 x 0.6000000000 / 12, 2)) = ceil($2,392.50) = $2,393; $2,393 x 12 / $47,850 = 0.6001253918.
+# Size 10: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($52,270 x 0.6000000000 / 12, 2)) = ceil($2,613.50) = $2,614; $2,614 x 12 / $52,270 = 0.6001147886.
+# Size 11: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($56,690 x 0.6000000000 / 12, 2)) = ceil($2,834.50) = $2,835; $2,835 x 12 / $56,690 = 0.6001058388.
+# Size 12: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($61,110 x 0.6000000000 / 12, 2)) = ceil($3,055.50) = $3,056; $3,056 x 12 / $61,110 = 0.6000981836.
+# Size 13: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($65,530 x 0.6000000000 / 12, 2)) = ceil($3,276.50) = $3,277; $3,277 x 12 / $65,530 = 0.6000915611.
+# Size 14: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($69,950 x 0.6000000000 / 12, 2)) = ceil($3,497.50) = $3,498; $3,498 x 12 / $69,950 = 0.6000857756.
+# Size 15: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($74,370 x 0.6000000000 / 12, 2)) = ceil($3,718.50) = $3,719; $3,719 x 12 / $74,370 = 0.6000806777.
+# Size 16: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($78,790 x 0.6000000000 / 12, 2)) = ceil($3,939.50) = $3,940; $3,940 x 12 / $78,790 = 0.6000761518.
+# Size 17: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($83,210 x 0.6000000000 / 12, 2)) = ceil($4,160.50) = $4,161; $4,161 x 12 / $83,210 = 0.6000721067.
+# Size 18: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($87,630 x 0.6000000000 / 12, 2)) = ceil($4,381.50) = $4,382; $4,382 x 12 / $87,630 = 0.6000684697.
+# Size 19: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($92,050 x 0.6000000000 / 12, 2)) = ceil($4,602.50) = $4,603; $4,603 x 12 / $92,050 = 0.6000651820.
+# Size 20: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($96,470 x 0.6000000000 / 12, 2)) = ceil($4,823.50) = $4,824; $4,824 x 12 / $96,470 = 0.6000621955.
+# Size 21: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($100,890 x 0.6000000000 / 12, 2)) = ceil($5,044.50) = $5,045; $5,045 x 12 / $100,890 = 0.6000594707.
+# Size 22: 0.55 + 0.05 = 0.60.
+# Existing monthly ceiling: ceil(round($105,310 x 0.6000000000 / 12, 2)) = ceil($5,265.50) = $5,266; $5,266 x 12 / $105,310 = 0.6000569746.
+- name: Utah checks both sides of every effective household size limit in 2019
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT]
+    medicaid_income_level: [0.6004703843, 0.6004903843, 0.6003448196, 0.6003648196, 0.6002712940, 0.6002912940, 0.6002230097, 0.6002430097, 0.6001888731, 0.6002088731, 0.6001634605, 0.6001834605, 0.6001438067, 0.6001638067, 0.6001281534, 0.6001481534, 0.6001153918, 0.6001353918, 0.6001047886, 0.6001247886, 0.6000958388, 0.6001158388, 0.6000881836, 0.6001081836, 0.6000815611, 0.6001015611, 0.6000757756, 0.6000957756, 0.6000706777, 0.6000906777, 0.6000661518, 0.6000861518, 0.6000621067, 0.6000821067, 0.6000584697, 0.6000784697, 0.6000551820, 0.6000751820, 0.6000521955, 0.6000721955, 0.6000494707, 0.6000694707, 0.6000469746, 0.6000669746]
+  output:
+    medicaid_parent_income_limit: [0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000, 0.6000000000]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: DMAS M04 Appendix 3, July 2017, July 2018 and July 2019.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $250 x 12 / $12,490 + 0.05 = 0.2901921537.
+# Existing monthly ceiling: ceil(round($12,490 x 0.2901921537 / 12, 2)) = ceil($302.04) = $303; $303 x 12 / $12,490 = 0.2911128903.
+# Size 2: $381 x 12 / $16,910 + 0.05 = 0.3203725606.
+# Existing monthly ceiling: ceil(round($16,910 x 0.3203725606 / 12, 2)) = ceil($451.46) = $452; $452 x 12 / $16,910 = 0.3207569486.
+# Size 3: $484 x 12 / $21,330 + 0.05 = 0.3222925457.
+# Existing monthly ceiling: ceil(round($21,330 x 0.3222925457 / 12, 2)) = ceil($572.88) = $573; $573 x 12 / $21,330 = 0.3223628692.
+# Size 4: $587 x 12 / $25,750 + 0.05 = 0.3235533981.
+# Existing monthly ceiling: ceil(round($25,750 x 0.3235533981 / 12, 2)) = ceil($694.29) = $695; $695 x 12 / $25,750 = 0.3238834951.
+# Size 5: $692 x 12 / $30,170 + 0.05 = 0.3252403049.
+# Existing monthly ceiling: ceil(round($30,170 x 0.3252403049 / 12, 2)) = ceil($817.71) = $818; $818 x 12 / $30,170 = 0.3253563142.
+# Size 6: $780 x 12 / $34,590 + 0.05 = 0.3205984389.
+# Existing monthly ceiling: ceil(round($34,590 x 0.3205984389 / 12, 2)) = ceil($924.12) = $925; $925 x 12 / $34,590 = 0.3209019948.
+# Size 7: $880 x 12 / $39,010 + 0.05 = 0.3206998206.
+# Existing monthly ceiling: ceil(round($39,010 x 0.3206998206 / 12, 2)) = ceil($1,042.54) = $1,043; $1,043 x 12 / $39,010 = 0.3208408100.
+# Size 8: $985 x 12 / $43,430 + 0.05 = 0.3221620999.
+# Existing monthly ceiling: ceil(round($43,430 x 0.3221620999 / 12, 2)) = ceil($1,165.96) = $1,166; $1,166 x 12 / $43,430 = 0.3221736127.
+# Size 9: $1,089 x 12 / $47,850 + 0.05 = 0.3231034483.
+# Existing monthly ceiling: ceil(round($47,850 x 0.3231034483 / 12, 2)) = ceil($1,288.38) = $1,289; $1,289 x 12 / $47,850 = 0.3232601881.
+# Size 10: $1,193 x 12 / $52,270 + 0.05 = 0.3238855940.
+# Existing monthly ceiling: ceil(round($52,270 x 0.3238855940 / 12, 2)) = ceil($1,410.79) = $1,411; $1,411 x 12 / $52,270 = 0.3239334226.
+# Size 11: $1,297 x 12 / $56,690 + 0.05 = 0.3245457753.
+# Existing monthly ceiling: ceil(round($56,690 x 0.3245457753 / 12, 2)) = ceil($1,533.21) = $1,534; $1,534 x 12 / $56,690 = 0.3247133533.
+# Size 12: $1,401 x 12 / $61,110 + 0.05 = 0.3251104566.
+# Existing monthly ceiling: ceil(round($61,110 x 0.3251104566 / 12, 2)) = ceil($1,655.62) = $1,656; $1,656 x 12 / $61,110 = 0.3251840943.
+# Size 13: $1,505 x 12 / $65,530 + 0.05 = 0.3255989623.
+# Existing monthly ceiling: ceil(round($65,530 x 0.3255989623 / 12, 2)) = ceil($1,778.04) = $1,779; $1,779 x 12 / $65,530 = 0.3257744544.
+# Size 14: $1,609 x 12 / $69,950 + 0.05 = 0.3260257327.
+# Existing monthly ceiling: ceil(round($69,950 x 0.3260257327 / 12, 2)) = ceil($1,900.46) = $1,901; $1,901 x 12 / $69,950 = 0.3261186562.
+# Size 15: $1,713 x 12 / $74,370 + 0.05 = 0.3264017749.
+# Existing monthly ceiling: ceil(round($74,370 x 0.3264017749 / 12, 2)) = ceil($2,022.88) = $2,023; $2,023 x 12 / $74,370 = 0.3264219443.
+# Size 16: $1,817 x 12 / $78,790 + 0.05 = 0.3267356263.
+# Existing monthly ceiling: ceil(round($78,790 x 0.3267356263 / 12, 2)) = ceil($2,145.29) = $2,146; $2,146 x 12 / $78,790 = 0.3268435081.
+# Size 17: $1,921 x 12 / $83,210 + 0.05 = 0.3270340103.
+# Existing monthly ceiling: ceil(round($83,210 x 0.3270340103 / 12, 2)) = ceil($2,267.71) = $2,268; $2,268 x 12 / $83,210 = 0.3270760726.
+# Size 18: $2,025 x 12 / $87,630 + 0.05 = 0.3273022937.
+# Existing monthly ceiling: ceil(round($87,630 x 0.3273022937 / 12, 2)) = ceil($2,390.12) = $2,391; $2,391 x 12 / $87,630 = 0.3274221157.
+# Size 19: $2,129 x 12 / $92,050 + 0.05 = 0.3275448126.
+# Existing monthly ceiling: ceil(round($92,050 x 0.3275448126 / 12, 2)) = ceil($2,512.54) = $2,513; $2,513 x 12 / $92,050 = 0.3276045627.
+# Size 20: $2,233 x 12 / $96,470 + 0.05 = 0.3277651083.
+# Existing monthly ceiling: ceil(round($96,470 x 0.3277651083 / 12, 2)) = ceil($2,634.96) = $2,635; $2,635 x 12 / $96,470 = 0.3277702913.
+# Size 21: $2,337 x 12 / $100,890 + 0.05 = 0.3279661017.
+# Existing monthly ceiling: ceil(round($100,890 x 0.3279661017 / 12, 2)) = ceil($2,757.38) = $2,758; $2,758 x 12 / $100,890 = 0.3280404401.
+# Size 22: $2,441 x 12 / $105,310 + 0.05 = 0.3281502232.
+# Existing monthly ceiling: ceil(round($105,310 x 0.3281502232 / 12, 2)) = ceil($2,879.79) = $2,880; $2,880 x 12 / $105,310 = 0.3281739626.
+- name: Virginia Group I checks both sides of every effective household size limit in 2019
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_medicaid_lifc_locality_group: [GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I]
+    medicaid_income_level: [0.2911028903, 0.2911228903, 0.3207469486, 0.3207669486, 0.3223528692, 0.3223728692, 0.3238734951, 0.3238934951, 0.3253463142, 0.3253663142, 0.3208919948, 0.3209119948, 0.3208308100, 0.3208508100, 0.3221636127, 0.3221836127, 0.3232501881, 0.3232701881, 0.3239234226, 0.3239434226, 0.3247033533, 0.3247233533, 0.3251740943, 0.3251940943, 0.3257644544, 0.3257844544, 0.3261086562, 0.3261286562, 0.3264119443, 0.3264319443, 0.3268335081, 0.3268535081, 0.3270660726, 0.3270860726, 0.3274121157, 0.3274321157, 0.3275945627, 0.3276145627, 0.3277602913, 0.3277802913, 0.3280304401, 0.3280504401, 0.3281639626, 0.3281839626]
+  output:
+    medicaid_parent_income_limit: [0.2901921537, 0.2901921537, 0.3203725606, 0.3203725606, 0.3222925457, 0.3222925457, 0.3235533981, 0.3235533981, 0.3252403049, 0.3252403049, 0.3205984389, 0.3205984389, 0.3206998206, 0.3206998206, 0.3221620999, 0.3221620999, 0.3231034483, 0.3231034483, 0.3238855940, 0.3238855940, 0.3245457753, 0.3245457753, 0.3251104566, 0.3251104566, 0.3255989623, 0.3255989623, 0.3260257327, 0.3260257327, 0.3264017749, 0.3264017749, 0.3267356263, 0.3267356263, 0.3270340103, 0.3270340103, 0.3273022937, 0.3273022937, 0.3275448126, 0.3275448126, 0.3277651083, 0.3277651083, 0.3279661017, 0.3279661017, 0.3281502232, 0.3281502232]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: DMAS M04 Appendix 3, July 2017, July 2018 and July 2019.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $327 x 12 / $12,490 + 0.05 = 0.3641713371.
+# Existing monthly ceiling: ceil(round($12,490 x 0.3641713371 / 12, 2)) = ceil($379.04) = $380; $380 x 12 / $12,490 = 0.3650920737.
+# Size 2: $469 x 12 / $16,910 + 0.05 = 0.3828208161.
+# Existing monthly ceiling: ceil(round($16,910 x 0.3828208161 / 12, 2)) = ceil($539.46) = $540; $540 x 12 / $16,910 = 0.3832052040.
+# Size 3: $589 x 12 / $21,330 + 0.05 = 0.3813642757.
+# Existing monthly ceiling: ceil(round($21,330 x 0.3813642757 / 12, 2)) = ceil($677.88) = $678; $678 x 12 / $21,330 = 0.3814345992.
+# Size 4: $704 x 12 / $25,750 + 0.05 = 0.3780776699.
+# Existing monthly ceiling: ceil(round($25,750 x 0.3780776699 / 12, 2)) = ceil($811.29) = $812; $812 x 12 / $25,750 = 0.3784077670.
+# Size 5: $828 x 12 / $30,170 + 0.05 = 0.3793337753.
+# Existing monthly ceiling: ceil(round($30,170 x 0.3793337753 / 12, 2)) = ceil($953.71) = $954; $954 x 12 / $30,170 = 0.3794497846.
+# Size 6: $933 x 12 / $34,590 + 0.05 = 0.3736773634.
+# Existing monthly ceiling: ceil(round($34,590 x 0.3736773634 / 12, 2)) = ceil($1,077.12) = $1,078; $1,078 x 12 / $34,590 = 0.3739809193.
+# Size 7: $1,045 x 12 / $39,010 + 0.05 = 0.3714560369.
+# Existing monthly ceiling: ceil(round($39,010 x 0.3714560369 / 12, 2)) = ceil($1,207.54) = $1,208; $1,208 x 12 / $39,010 = 0.3715970264.
+# Size 8: $1,166 x 12 / $43,430 + 0.05 = 0.3721736127.
+# Existing monthly ceiling: ceil(round($43,430 x 0.3721736127 / 12, 2)) = ceil($1,346.96) = $1,347; $1,347 x 12 / $43,430 = 0.3721851255.
+# Size 9: $1,283 x 12 / $47,850 + 0.05 = 0.3717554859.
+# Existing monthly ceiling: ceil(round($47,850 x 0.3717554859 / 12, 2)) = ceil($1,482.38) = $1,483; $1,483 x 12 / $47,850 = 0.3719122257.
+# Size 10: $1,400 x 12 / $52,270 + 0.05 = 0.3714080735.
+# Existing monthly ceiling: ceil(round($52,270 x 0.3714080735 / 12, 2)) = ceil($1,617.79) = $1,618; $1,618 x 12 / $52,270 = 0.3714559020.
+# Size 11: $1,517 x 12 / $56,690 + 0.05 = 0.3711148351.
+# Existing monthly ceiling: ceil(round($56,690 x 0.3711148351 / 12, 2)) = ceil($1,753.21) = $1,754; $1,754 x 12 / $56,690 = 0.3712824131.
+# Size 12: $1,634 x 12 / $61,110 + 0.05 = 0.3708640157.
+# Existing monthly ceiling: ceil(round($61,110 x 0.3708640157 / 12, 2)) = ceil($1,888.62) = $1,889; $1,889 x 12 / $61,110 = 0.3709376534.
+# Size 13: $1,751 x 12 / $65,530 + 0.05 = 0.3706470319.
+# Existing monthly ceiling: ceil(round($65,530 x 0.3706470319 / 12, 2)) = ceil($2,024.04) = $2,025; $2,025 x 12 / $65,530 = 0.3708225240.
+# Size 14: $1,868 x 12 / $69,950 + 0.05 = 0.3704574696.
+# Existing monthly ceiling: ceil(round($69,950 x 0.3704574696 / 12, 2)) = ceil($2,159.46) = $2,160; $2,160 x 12 / $69,950 = 0.3705503931.
+# Size 15: $1,985 x 12 / $74,370 + 0.05 = 0.3702904397.
+# Existing monthly ceiling: ceil(round($74,370 x 0.3702904397 / 12, 2)) = ceil($2,294.87) = $2,295; $2,295 x 12 / $74,370 = 0.3703106091.
+# Size 16: $2,102 x 12 / $78,790 + 0.05 = 0.3701421500.
+# Existing monthly ceiling: ceil(round($78,790 x 0.3701421500 / 12, 2)) = ceil($2,430.29) = $2,431; $2,431 x 12 / $78,790 = 0.3702500317.
+# Size 17: $2,219 x 12 / $83,210 + 0.05 = 0.3700096142.
+# Existing monthly ceiling: ceil(round($83,210 x 0.3700096142 / 12, 2)) = ceil($2,565.71) = $2,566; $2,566 x 12 / $83,210 = 0.3700516765.
+# Size 18: $2,336 x 12 / $87,630 + 0.05 = 0.3698904485.
+# Existing monthly ceiling: ceil(round($87,630 x 0.3698904485 / 12, 2)) = ceil($2,701.12) = $2,702; $2,702 x 12 / $87,630 = 0.3700102705.
+# Size 19: $2,453 x 12 / $92,050 + 0.05 = 0.3697827268.
+# Existing monthly ceiling: ceil(round($92,050 x 0.3697827268 / 12, 2)) = ceil($2,836.54) = $2,837; $2,837 x 12 / $92,050 = 0.3698424769.
+# Size 20: $2,570 x 12 / $96,470 + 0.05 = 0.3696848761.
+# Existing monthly ceiling: ceil(round($96,470 x 0.3696848761 / 12, 2)) = ceil($2,971.96) = $2,972; $2,972 x 12 / $96,470 = 0.3696900591.
+# Size 21: $2,687 x 12 / $100,890 + 0.05 = 0.3695955992.
+# Existing monthly ceiling: ceil(round($100,890 x 0.3695955992 / 12, 2)) = ceil($3,107.38) = $3,108; $3,108 x 12 / $100,890 = 0.3696699376.
+# Size 22: $2,804 x 12 / $105,310 + 0.05 = 0.3695138164.
+# Existing monthly ceiling: ceil(round($105,310 x 0.3695138164 / 12, 2)) = ceil($3,242.79) = $3,243; $3,243 x 12 / $105,310 = 0.3695375558.
+- name: Virginia Group II checks both sides of every effective household size limit in 2019
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_medicaid_lifc_locality_group: [GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II]
+    medicaid_income_level: [0.3650820737, 0.3651020737, 0.3831952040, 0.3832152040, 0.3814245992, 0.3814445992, 0.3783977670, 0.3784177670, 0.3794397846, 0.3794597846, 0.3739709193, 0.3739909193, 0.3715870264, 0.3716070264, 0.3721751255, 0.3721951255, 0.3719022257, 0.3719222257, 0.3714459020, 0.3714659020, 0.3712724131, 0.3712924131, 0.3709276534, 0.3709476534, 0.3708125240, 0.3708325240, 0.3705403931, 0.3705603931, 0.3703006091, 0.3703206091, 0.3702400317, 0.3702600317, 0.3700416765, 0.3700616765, 0.3700002705, 0.3700202705, 0.3698324769, 0.3698524769, 0.3696800591, 0.3697000591, 0.3696599376, 0.3696799376, 0.3695275558, 0.3695475558]
+  output:
+    medicaid_parent_income_limit: [0.3641713371, 0.3641713371, 0.3828208161, 0.3828208161, 0.3813642757, 0.3813642757, 0.3780776699, 0.3780776699, 0.3793337753, 0.3793337753, 0.3736773634, 0.3736773634, 0.3714560369, 0.3714560369, 0.3721736127, 0.3721736127, 0.3717554859, 0.3717554859, 0.3714080735, 0.3714080735, 0.3711148351, 0.3711148351, 0.3708640157, 0.3708640157, 0.3706470319, 0.3706470319, 0.3704574696, 0.3704574696, 0.3702904397, 0.3702904397, 0.3701421500, 0.3701421500, 0.3700096142, 0.3700096142, 0.3698904485, 0.3698904485, 0.3697827268, 0.3697827268, 0.3696848761, 0.3696848761, 0.3695955992, 0.3695955992, 0.3695138164, 0.3695138164]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: DMAS M04 Appendix 3, July 2017, July 2018 and July 2019.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $493 x 12 / $12,490 + 0.05 = 0.5236589271.
+# Existing monthly ceiling: ceil(round($12,490 x 0.5236589271 / 12, 2)) = ceil($545.04) = $546; $546 x 12 / $12,490 = 0.5245796637.
+# Size 2: $659 x 12 / $16,910 + 0.05 = 0.5176522768.
+# Existing monthly ceiling: ceil(round($16,910 x 0.5176522768 / 12, 2)) = ceil($729.46) = $730; $730 x 12 / $16,910 = 0.5180366647.
+# Size 3: $807 x 12 / $21,330 + 0.05 = 0.5040084388.
+# Existing monthly ceiling: ceil(round($21,330 x 0.5040084388 / 12, 2)) = ceil($895.88) = $896; $896 x 12 / $21,330 = 0.5040787623.
+# Size 4: $947 x 12 / $25,750 + 0.05 = 0.4913203883.
+# Existing monthly ceiling: ceil(round($25,750 x 0.4913203883 / 12, 2)) = ceil($1,054.29) = $1,055; $1,055 x 12 / $25,750 = 0.4916504854.
+# Size 5: $1,119 x 12 / $30,170 + 0.05 = 0.4950778919.
+# Existing monthly ceiling: ceil(round($30,170 x 0.4950778919 / 12, 2)) = ceil($1,244.71) = $1,245; $1,245 x 12 / $30,170 = 0.4951939012.
+# Size 6: $1,245 x 12 / $34,590 + 0.05 = 0.4819167389.
+# Existing monthly ceiling: ceil(round($34,590 x 0.4819167389 / 12, 2)) = ceil($1,389.12) = $1,390; $1,390 x 12 / $34,590 = 0.4822202949.
+# Size 7: $1,386 x 12 / $39,010 + 0.05 = 0.4763522174.
+# Existing monthly ceiling: ceil(round($39,010 x 0.4763522174 / 12, 2)) = ceil($1,548.54) = $1,549; $1,549 x 12 / $39,010 = 0.4764932069.
+# Size 8: $1,532 x 12 / $43,430 + 0.05 = 0.4733018651.
+# Existing monthly ceiling: ceil(round($43,430 x 0.4733018651 / 12, 2)) = ceil($1,712.96) = $1,713; $1,713 x 12 / $43,430 = 0.4733133778.
+# Size 9: $1,674 x 12 / $47,850 + 0.05 = 0.4698119122.
+# Existing monthly ceiling: ceil(round($47,850 x 0.4698119122 / 12, 2)) = ceil($1,873.38) = $1,874; $1,874 x 12 / $47,850 = 0.4699686520.
+# Size 10: $1,816 x 12 / $52,270 + 0.05 = 0.4669121867.
+# Existing monthly ceiling: ceil(round($52,270 x 0.4669121867 / 12, 2)) = ceil($2,033.79) = $2,034; $2,034 x 12 / $52,270 = 0.4669600153.
+# Size 11: $1,958 x 12 / $56,690 + 0.05 = 0.4644646322.
+# Existing monthly ceiling: ceil(round($56,690 x 0.4644646322 / 12, 2)) = ceil($2,194.21) = $2,195; $2,195 x 12 / $56,690 = 0.4646322103.
+# Size 12: $2,100 x 12 / $61,110 + 0.05 = 0.4623711340.
+# Existing monthly ceiling: ceil(round($61,110 x 0.4623711340 / 12, 2)) = ceil($2,354.62) = $2,355; $2,355 x 12 / $61,110 = 0.4624447717.
+# Size 13: $2,242 x 12 / $65,530 + 0.05 = 0.4605600488.
+# Existing monthly ceiling: ceil(round($65,530 x 0.4605600488 / 12, 2)) = ceil($2,515.04) = $2,516; $2,516 x 12 / $65,530 = 0.4607355410.
+# Size 14: $2,384 x 12 / $69,950 + 0.05 = 0.4589778413.
+# Existing monthly ceiling: ceil(round($69,950 x 0.4589778413 / 12, 2)) = ceil($2,675.46) = $2,676; $2,676 x 12 / $69,950 = 0.4590707648.
+# Size 15: $2,526 x 12 / $74,370 + 0.05 = 0.4575837031.
+# Existing monthly ceiling: ceil(round($74,370 x 0.4575837031 / 12, 2)) = ceil($2,835.88) = $2,836; $2,836 x 12 / $74,370 = 0.4576038725.
+# Size 16: $2,668 x 12 / $78,790 + 0.05 = 0.4563459830.
+# Existing monthly ceiling: ceil(round($78,790 x 0.4563459830 / 12, 2)) = ceil($2,996.29) = $2,997; $2,997 x 12 / $78,790 = 0.4564538647.
+# Size 17: $2,810 x 12 / $83,210 + 0.05 = 0.4552397548.
+# Existing monthly ceiling: ceil(round($83,210 x 0.4552397548 / 12, 2)) = ceil($3,156.71) = $3,157; $3,157 x 12 / $83,210 = 0.4552818171.
+# Size 18: $2,952 x 12 / $87,630 + 0.05 = 0.4542451215.
+# Existing monthly ceiling: ceil(round($87,630 x 0.4542451215 / 12, 2)) = ceil($3,317.12) = $3,318; $3,318 x 12 / $87,630 = 0.4543649435.
+# Size 19: $3,094 x 12 / $92,050 + 0.05 = 0.4533460076.
+# Existing monthly ceiling: ceil(round($92,050 x 0.4533460076 / 12, 2)) = ceil($3,477.54) = $3,478; $3,478 x 12 / $92,050 = 0.4534057577.
+# Size 20: $3,236 x 12 / $96,470 + 0.05 = 0.4525292837.
+# Existing monthly ceiling: ceil(round($96,470 x 0.4525292837 / 12, 2)) = ceil($3,637.96) = $3,638; $3,638 x 12 / $96,470 = 0.4525344667.
+# Size 21: $3,378 x 12 / $100,890 + 0.05 = 0.4517841213.
+# Existing monthly ceiling: ceil(round($100,890 x 0.4517841213 / 12, 2)) = ceil($3,798.38) = $3,799; $3,799 x 12 / $100,890 = 0.4518584597.
+# Size 22: $3,520 x 12 / $105,310 + 0.05 = 0.4511015098.
+# Existing monthly ceiling: ceil(round($105,310 x 0.4511015098 / 12, 2)) = ceil($3,958.79) = $3,959; $3,959 x 12 / $105,310 = 0.4511252493.
+- name: Virginia Group III checks both sides of every effective household size limit in 2019
+  period: 2019
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_medicaid_lifc_locality_group: [GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III]
+    medicaid_income_level: [0.5245696637, 0.5245896637, 0.5180266647, 0.5180466647, 0.5040687623, 0.5040887623, 0.4916404854, 0.4916604854, 0.4951839012, 0.4952039012, 0.4822102949, 0.4822302949, 0.4764832069, 0.4765032069, 0.4733033778, 0.4733233778, 0.4699586520, 0.4699786520, 0.4669500153, 0.4669700153, 0.4646222103, 0.4646422103, 0.4624347717, 0.4624547717, 0.4607255410, 0.4607455410, 0.4590607648, 0.4590807648, 0.4575938725, 0.4576138725, 0.4564438647, 0.4564638647, 0.4552718171, 0.4552918171, 0.4543549435, 0.4543749435, 0.4533957577, 0.4534157577, 0.4525244667, 0.4525444667, 0.4518484597, 0.4518684597, 0.4511152493, 0.4511352493]
+  output:
+    medicaid_parent_income_limit: [0.5236589271, 0.5236589271, 0.5176522768, 0.5176522768, 0.5040084388, 0.5040084388, 0.4913203883, 0.4913203883, 0.4950778919, 0.4950778919, 0.4819167389, 0.4819167389, 0.4763522174, 0.4763522174, 0.4733018651, 0.4733018651, 0.4698119122, 0.4698119122, 0.4669121867, 0.4669121867, 0.4644646322, 0.4644646322, 0.4623711340, 0.4623711340, 0.4605600488, 0.4605600488, 0.4589778413, 0.4589778413, 0.4575837031, 0.4575837031, 0.4563459830, 0.4563459830, 0.4552397548, 0.4552397548, 0.4542451215, 0.4542451215, 0.4533460076, 0.4533460076, 0.4525292837, 0.4525292837, 0.4517841213, 0.4517841213, 0.4511015098, 0.4511015098]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: Tennessee SPA TN-14-0005, AFDC Income Standards, section H.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $1,018 x 12 / $12,760 + 0.05 = 1.0073667712.
+# Existing monthly ceiling: ceil(round($12,760 x 1.0073667712 / 12, 2)) = ceil($1,071.17) = $1,072; $1,072 x 12 / $12,760 = 1.0081504702.
+# Size 2: $1,329 x 12 / $17,240 + 0.05 = 0.9750580046.
+# Existing monthly ceiling: ceil(round($17,240 x 0.9750580046 / 12, 2)) = ceil($1,400.83) = $1,401; $1,401 x 12 / $17,240 = 0.9751740139.
+# Size 3: $1,611 x 12 / $21,720 + 0.05 = 0.9400552486.
+# Existing monthly ceiling: ceil(round($21,720 x 0.9400552486 / 12, 2)) = ceil($1,701.50) = $1,702; $1,702 x 12 / $21,720 = 0.9403314917.
+# Size 4: $1,867 x 12 / $26,200 + 0.05 = 0.9051145038.
+# Existing monthly ceiling: ceil(round($26,200 x 0.9051145038 / 12, 2)) = ceil($1,976.17) = $1,977; $1,977 x 12 / $26,200 = 0.9054961832.
+# Size 5: $2,102 x 12 / $30,680 + 0.05 = 0.8721642764.
+# Existing monthly ceiling: ceil(round($30,680 x 0.8721642764 / 12, 2)) = ceil($2,229.83) = $2,230; $2,230 x 12 / $30,680 = 0.8722294654.
+# Size 6: $2,320 x 12 / $35,160 + 0.05 = 0.8418088737.
+# Existing monthly ceiling: ceil(round($35,160 x 0.8418088737 / 12, 2)) = ceil($2,466.50) = $2,467; $2,467 x 12 / $35,160 = 0.8419795222.
+# Size 7: $2,524 x 12 / $39,640 + 0.05 = 0.8140766902.
+# Existing monthly ceiling: ceil(round($39,640 x 0.8140766902 / 12, 2)) = ceil($2,689.17) = $2,690; $2,690 x 12 / $39,640 = 0.8143289606.
+# Size 8: $2,718 x 12 / $44,120 + 0.05 = 0.7892565730.
+# Existing monthly ceiling: ceil(round($44,120 x 0.7892565730 / 12, 2)) = ceil($2,901.83) = $2,902; $2,902 x 12 / $44,120 = 0.7893019039.
+# Size 9: $2,903 x 12 / $48,600 + 0.05 = 0.7667901235.
+# Existing monthly ceiling: ceil(round($48,600 x 0.7667901235 / 12, 2)) = ceil($3,105.50) = $3,106; $3,106 x 12 / $48,600 = 0.7669135802.
+# Size 10: $3,084 x 12 / $53,080 + 0.05 = 0.7472117558.
+# Existing monthly ceiling: ceil(round($53,080 x 0.7472117558 / 12, 2)) = ceil($3,305.17) = $3,306; $3,306 x 12 / $53,080 = 0.7474001507.
+# Size 11: $3,259 x 12 / $57,560 + 0.05 = 0.7294301598.
+# Existing monthly ceiling: ceil(round($57,560 x 0.7294301598 / 12, 2)) = ceil($3,498.83) = $3,499; $3,499 x 12 / $57,560 = 0.7294649062.
+# Size 12: $3,431 x 12 / $62,040 + 0.05 = 0.7136363636.
+# Existing monthly ceiling: ceil(round($62,040 x 0.7136363636 / 12, 2)) = ceil($3,689.50) = $3,690; $3,690 x 12 / $62,040 = 0.7137330754.
+# Size 13: $3,601 x 12 / $66,520 + 0.05 = 0.6996091401.
+# Existing monthly ceiling: ceil(round($66,520 x 0.6996091401 / 12, 2)) = ceil($3,878.17) = $3,879; $3,879 x 12 / $66,520 = 0.6997594708.
+# Size 14: $3,770 x 12 / $71,000 + 0.05 = 0.6871830986.
+# Existing monthly ceiling: ceil(round($71,000 x 0.6871830986 / 12, 2)) = ceil($4,065.83) = $4,066; $4,066 x 12 / $71,000 = 0.6872112676.
+# Size 15: $3,935 x 12 / $75,480 + 0.05 = 0.6755961844.
+# Existing monthly ceiling: ceil(round($75,480 x 0.6755961844 / 12, 2)) = ceil($4,249.50) = $4,250; $4,250 x 12 / $75,480 = 0.6756756757.
+# Size 16: $4,098 x 12 / $79,960 + 0.05 = 0.6650075038.
+# Existing monthly ceiling: ceil(round($79,960 x 0.6650075038 / 12, 2)) = ceil($4,431.17) = $4,432; $4,432 x 12 / $79,960 = 0.6651325663.
+# Size 17: $4,257 x 12 / $84,440 + 0.05 = 0.6549739460.
+# Existing monthly ceiling: ceil(round($84,440 x 0.6549739460 / 12, 2)) = ceil($4,608.83) = $4,609; $4,609 x 12 / $84,440 = 0.6549976315.
+# Size 18: $4,411 x 12 / $88,920 + 0.05 = 0.6452766532.
+# Existing monthly ceiling: ceil(round($88,920 x 0.6452766532 / 12, 2)) = ceil($4,781.50) = $4,782; $4,782 x 12 / $88,920 = 0.6453441296.
+# Size 19: $4,557 x 12 / $93,400 + 0.05 = 0.6354817987.
+# Existing monthly ceiling: ceil(round($93,400 x 0.6354817987 / 12, 2)) = ceil($4,946.17) = $4,947; $4,947 x 12 / $93,400 = 0.6355888651.
+# Size 20: $4,693 x 12 / $97,880 + 0.05 = 0.6253575807.
+# Existing monthly ceiling: ceil(round($97,880 x 0.6253575807 / 12, 2)) = ceil($5,100.83) = $5,101; $5,101 x 12 / $97,880 = 0.6253780139.
+# Size 21: $4,693 x 12 / $102,360 + 0.05 = 0.6001758499.
+# Existing monthly ceiling: ceil(round($102,360 x 0.6001758499 / 12, 2)) = ceil($5,119.50) = $5,120; $5,120 x 12 / $102,360 = 0.6002344666.
+# Size 22: $4,693 x 12 / $106,840 + 0.05 = 0.5771059528.
+# Existing monthly ceiling: ceil(round($106,840 x 0.5771059528 / 12, 2)) = ceil($5,138.17) = $5,139; $5,139 x 12 / $106,840 = 0.5771995507.
+- name: Tennessee checks both sides of every effective household size limit in 2020
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN, TN]
+    medicaid_income_level: [1.0081404702, 1.0081604702, 0.9751640139, 0.9751840139, 0.9403214917, 0.9403414917, 0.9054861832, 0.9055061832, 0.8722194654, 0.8722394654, 0.8419695222, 0.8419895222, 0.8143189606, 0.8143389606, 0.7892919039, 0.7893119039, 0.7669035802, 0.7669235802, 0.7473901507, 0.7474101507, 0.7294549062, 0.7294749062, 0.7137230754, 0.7137430754, 0.6997494708, 0.6997694708, 0.6872012676, 0.6872212676, 0.6756656757, 0.6756856757, 0.6651225663, 0.6651425663, 0.6549876315, 0.6550076315, 0.6453341296, 0.6453541296, 0.6355788651, 0.6355988651, 0.6253680139, 0.6253880139, 0.6002244666, 0.6002444666, 0.5771895507, 0.5772095507]
+  output:
+    medicaid_parent_income_limit: [1.0073667712, 1.0073667712, 0.9750580046, 0.9750580046, 0.9400552486, 0.9400552486, 0.9051145038, 0.9051145038, 0.8721642764, 0.8721642764, 0.8418088737, 0.8418088737, 0.8140766902, 0.8140766902, 0.7892565730, 0.7892565730, 0.7667901235, 0.7667901235, 0.7472117558, 0.7472117558, 0.7294301598, 0.7294301598, 0.7136363636, 0.7136363636, 0.6996091401, 0.6996091401, 0.6871830986, 0.6871830986, 0.6755961844, 0.6755961844, 0.6650075038, 0.6650075038, 0.6549739460, 0.6549739460, 0.6452766532, 0.6452766532, 0.6354817987, 0.6354817987, 0.6253575807, 0.6253575807, 0.6001758499, 0.6001758499, 0.5771059528, 0.5771059528]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: Utah DAR 41429 and DAR 43706, R414-303-4.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $438 x 12 / $12,760 + 0.05 = 0.4619122257.
+# Existing monthly ceiling: ceil(round($12,760 x 0.4619122257 / 12, 2)) = ceil($491.17) = $492; $492 x 12 / $12,760 = 0.4626959248.
+# Size 2: $544 x 12 / $17,240 + 0.05 = 0.4286542923.
+# Existing monthly ceiling: ceil(round($17,240 x 0.4286542923 / 12, 2)) = ceil($615.83) = $616; $616 x 12 / $17,240 = 0.4287703016.
+# Size 3: $678 x 12 / $21,720 + 0.05 = 0.4245856354.
+# Existing monthly ceiling: ceil(round($21,720 x 0.4245856354 / 12, 2)) = ceil($768.50) = $769; $769 x 12 / $21,720 = 0.4248618785.
+# Size 4: $797 x 12 / $26,200 + 0.05 = 0.4150381679.
+# Existing monthly ceiling: ceil(round($26,200 x 0.4150381679 / 12, 2)) = ceil($906.17) = $907; $907 x 12 / $26,200 = 0.4154198473.
+# Size 5: $912 x 12 / $30,680 + 0.05 = 0.4067144720.
+# Existing monthly ceiling: ceil(round($30,680 x 0.4067144720 / 12, 2)) = ceil($1,039.83) = $1,040; $1,040 x 12 / $30,680 = 0.4067796610.
+# Size 6: $1,012 x 12 / $35,160 + 0.05 = 0.3953924915.
+# Existing monthly ceiling: ceil(round($35,160 x 0.3953924915 / 12, 2)) = ceil($1,158.50) = $1,159; $1,159 x 12 / $35,160 = 0.3955631399.
+# Size 7: $1,072 x 12 / $39,640 + 0.05 = 0.3745206862.
+# Existing monthly ceiling: ceil(round($39,640 x 0.3745206862 / 12, 2)) = ceil($1,237.17) = $1,238; $1,238 x 12 / $39,640 = 0.3747729566.
+# Size 8: $1,132 x 12 / $44,120 + 0.05 = 0.3578875793.
+# Existing monthly ceiling: ceil(round($44,120 x 0.3578875793 / 12, 2)) = ceil($1,315.83) = $1,316; $1,316 x 12 / $44,120 = 0.3579329102.
+# Size 9: $1,196 x 12 / $48,600 + 0.05 = 0.3453086420.
+# Existing monthly ceiling: ceil(round($48,600 x 0.3453086420 / 12, 2)) = ceil($1,398.50) = $1,399; $1,399 x 12 / $48,600 = 0.3454320988.
+# Size 10: $1,257 x 12 / $53,080 + 0.05 = 0.3341748304.
+# Existing monthly ceiling: ceil(round($53,080 x 0.3341748304 / 12, 2)) = ceil($1,478.17) = $1,479; $1,479 x 12 / $53,080 = 0.3343632253.
+# Size 11: $1,320 x 12 / $57,560 + 0.05 = 0.3251911049.
+# Existing monthly ceiling: ceil(round($57,560 x 0.3251911049 / 12, 2)) = ceil($1,559.83) = $1,560; $1,560 x 12 / $57,560 = 0.3252258513.
+# Size 12: $1,382 x 12 / $62,040 + 0.05 = 0.3173114120.
+# Existing monthly ceiling: ceil(round($62,040 x 0.3173114120 / 12, 2)) = ceil($1,640.50) = $1,641; $1,641 x 12 / $62,040 = 0.3174081238.
+# Size 13: $1,443 x 12 / $66,520 + 0.05 = 0.3103126879.
+# Existing monthly ceiling: ceil(round($66,520 x 0.3103126879 / 12, 2)) = ceil($1,720.17) = $1,721; $1,721 x 12 / $66,520 = 0.3104630186.
+# Size 14: $1,505 x 12 / $71,000 + 0.05 = 0.3043661972.
+# Existing monthly ceiling: ceil(round($71,000 x 0.3043661972 / 12, 2)) = ceil($1,800.83) = $1,801; $1,801 x 12 / $71,000 = 0.3043943662.
+# Size 15: $1,569 x 12 / $75,480 + 0.05 = 0.2994435612.
+# Existing monthly ceiling: ceil(round($75,480 x 0.2994435612 / 12, 2)) = ceil($1,883.50) = $1,884; $1,884 x 12 / $75,480 = 0.2995230525.
+# Size 16: $1,630 x 12 / $79,960 + 0.05 = 0.2946223112.
+# Existing monthly ceiling: ceil(round($79,960 x 0.2946223112 / 12, 2)) = ceil($1,963.17) = $1,964; $1,964 x 12 / $79,960 = 0.2947473737.
+# Size 17: $1,692 x 12 / $84,440 + 0.05 = 0.2904547608.
+# Existing monthly ceiling: ceil(round($84,440 x 0.2904547608 / 12, 2)) = ceil($2,043.83) = $2,044; $2,044 x 12 / $84,440 = 0.2904784462.
+# Size 18: $1,754 x 12 / $88,920 + 0.05 = 0.2867071525.
+# Existing monthly ceiling: ceil(round($88,920 x 0.2867071525 / 12, 2)) = ceil($2,124.50) = $2,125; $2,125 x 12 / $88,920 = 0.2867746289.
+# Size 19: $1,816 x 12 / $93,400 + 0.05 = 0.2833190578.
+# Existing monthly ceiling: ceil(round($93,400 x 0.2833190578 / 12, 2)) = ceil($2,205.17) = $2,206; $2,206 x 12 / $93,400 = 0.2834261242.
+# Size 20: $1,878 x 12 / $97,880 + 0.05 = 0.2802411116.
+# Existing monthly ceiling: ceil(round($97,880 x 0.2802411116 / 12, 2)) = ceil($2,285.83) = $2,286; $2,286 x 12 / $97,880 = 0.2802615447.
+# Size 21: $1,940 x 12 / $102,360 + 0.05 = 0.2774325909.
+# Existing monthly ceiling: ceil(round($102,360 x 0.2774325909 / 12, 2)) = ceil($2,366.50) = $2,367; $2,367 x 12 / $102,360 = 0.2774912075.
+# Size 22: $2,002 x 12 / $106,840 + 0.05 = 0.2748596031.
+# Existing monthly ceiling: ceil(round($106,840 x 0.2748596031 / 12, 2)) = ceil($2,447.17) = $2,448; $2,448 x 12 / $106,840 = 0.2749532010.
+- name: Utah checks both sides of every effective household size limit in 2020
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT, UT]
+    medicaid_income_level: [0.4626859248, 0.4627059248, 0.4287603016, 0.4287803016, 0.4248518785, 0.4248718785, 0.4154098473, 0.4154298473, 0.4067696610, 0.4067896610, 0.3955531399, 0.3955731399, 0.3747629566, 0.3747829566, 0.3579229102, 0.3579429102, 0.3454220988, 0.3454420988, 0.3343532253, 0.3343732253, 0.3252158513, 0.3252358513, 0.3173981238, 0.3174181238, 0.3104530186, 0.3104730186, 0.3043843662, 0.3044043662, 0.2995130525, 0.2995330525, 0.2947373737, 0.2947573737, 0.2904684462, 0.2904884462, 0.2867646289, 0.2867846289, 0.2834161242, 0.2834361242, 0.2802515447, 0.2802715447, 0.2774812075, 0.2775012075, 0.2749432010, 0.2749632010]
+  output:
+    medicaid_parent_income_limit: [0.4619122257, 0.4619122257, 0.4286542923, 0.4286542923, 0.4245856354, 0.4245856354, 0.4150381679, 0.4150381679, 0.4067144720, 0.4067144720, 0.3953924915, 0.3953924915, 0.3745206862, 0.3745206862, 0.3578875793, 0.3578875793, 0.3453086420, 0.3453086420, 0.3341748304, 0.3341748304, 0.3251911049, 0.3251911049, 0.3173114120, 0.3173114120, 0.3103126879, 0.3103126879, 0.3043661972, 0.3043661972, 0.2994435612, 0.2994435612, 0.2946223112, 0.2946223112, 0.2904547608, 0.2904547608, 0.2867071525, 0.2867071525, 0.2833190578, 0.2833190578, 0.2802411116, 0.2802411116, 0.2774325909, 0.2774325909, 0.2748596031, 0.2748596031]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: DMAS M04 Appendix 3, July 2017, July 2018 and July 2019.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $257 x 12 / $12,760 + 0.05 = 0.2916927900.
+# Existing monthly ceiling: ceil(round($12,760 x 0.2916927900 / 12, 2)) = ceil($310.17) = $311; $311 x 12 / $12,760 = 0.2924764890.
+# Size 2: $392 x 12 / $17,240 + 0.05 = 0.3228538283.
+# Existing monthly ceiling: ceil(round($17,240 x 0.3228538283 / 12, 2)) = ceil($463.83) = $464; $464 x 12 / $17,240 = 0.3229698376.
+# Size 3: $498 x 12 / $21,720 + 0.05 = 0.3251381215.
+# Existing monthly ceiling: ceil(round($21,720 x 0.3251381215 / 12, 2)) = ceil($588.50) = $589; $589 x 12 / $21,720 = 0.3254143646.
+# Size 4: $604 x 12 / $26,200 + 0.05 = 0.3266412214.
+# Existing monthly ceiling: ceil(round($26,200 x 0.3266412214 / 12, 2)) = ceil($713.17) = $714; $714 x 12 / $26,200 = 0.3270229008.
+# Size 5: $712 x 12 / $30,680 + 0.05 = 0.3284876141.
+# Existing monthly ceiling: ceil(round($30,680 x 0.3284876141 / 12, 2)) = ceil($839.83) = $840; $840 x 12 / $30,680 = 0.3285528031.
+# Size 6: $802 x 12 / $35,160 + 0.05 = 0.3237201365.
+# Existing monthly ceiling: ceil(round($35,160 x 0.3237201365 / 12, 2)) = ceil($948.50) = $949; $949 x 12 / $35,160 = 0.3238907850.
+# Size 7: $905 x 12 / $39,640 + 0.05 = 0.3239656912.
+# Existing monthly ceiling: ceil(round($39,640 x 0.3239656912 / 12, 2)) = ceil($1,070.17) = $1,071; $1,071 x 12 / $39,640 = 0.3242179617.
+# Size 8: $1,013 x 12 / $44,120 + 0.05 = 0.3255213055.
+# Existing monthly ceiling: ceil(round($44,120 x 0.3255213055 / 12, 2)) = ceil($1,196.83) = $1,197; $1,197 x 12 / $44,120 = 0.3255666364.
+# Size 9: $1,120 x 12 / $48,600 + 0.05 = 0.3265432099.
+# Existing monthly ceiling: ceil(round($48,600 x 0.3265432099 / 12, 2)) = ceil($1,322.50) = $1,323; $1,323 x 12 / $48,600 = 0.3266666667.
+# Size 10: $1,227 x 12 / $53,080 + 0.05 = 0.3273926149.
+# Existing monthly ceiling: ceil(round($53,080 x 0.3273926149 / 12, 2)) = ceil($1,448.17) = $1,449; $1,449 x 12 / $53,080 = 0.3275810098.
+# Size 11: $1,334 x 12 / $57,560 + 0.05 = 0.3281097985.
+# Existing monthly ceiling: ceil(round($57,560 x 0.3281097985 / 12, 2)) = ceil($1,573.83) = $1,574; $1,574 x 12 / $57,560 = 0.3281445448.
+# Size 12: $1,441 x 12 / $62,040 + 0.05 = 0.3287234043.
+# Existing monthly ceiling: ceil(round($62,040 x 0.3287234043 / 12, 2)) = ceil($1,699.50) = $1,700; $1,700 x 12 / $62,040 = 0.3288201161.
+# Size 13: $1,548 x 12 / $66,520 + 0.05 = 0.3292543596.
+# Existing monthly ceiling: ceil(round($66,520 x 0.3292543596 / 12, 2)) = ceil($1,825.17) = $1,826; $1,826 x 12 / $66,520 = 0.3294046903.
+# Size 14: $1,655 x 12 / $71,000 + 0.05 = 0.3297183099.
+# Existing monthly ceiling: ceil(round($71,000 x 0.3297183099 / 12, 2)) = ceil($1,950.83) = $1,951; $1,951 x 12 / $71,000 = 0.3297464789.
+# Size 15: $1,762 x 12 / $75,480 + 0.05 = 0.3301271860.
+# Existing monthly ceiling: ceil(round($75,480 x 0.3301271860 / 12, 2)) = ceil($2,076.50) = $2,077; $2,077 x 12 / $75,480 = 0.3302066773.
+# Size 16: $1,869 x 12 / $79,960 + 0.05 = 0.3304902451.
+# Existing monthly ceiling: ceil(round($79,960 x 0.3304902451 / 12, 2)) = ceil($2,202.17) = $2,203; $2,203 x 12 / $79,960 = 0.3306153077.
+# Size 17: $1,976 x 12 / $84,440 + 0.05 = 0.3308147797.
+# Existing monthly ceiling: ceil(round($84,440 x 0.3308147797 / 12, 2)) = ceil($2,327.83) = $2,328; $2,328 x 12 / $84,440 = 0.3308384652.
+# Size 18: $2,083 x 12 / $88,920 + 0.05 = 0.3311066127.
+# Existing monthly ceiling: ceil(round($88,920 x 0.3311066127 / 12, 2)) = ceil($2,453.50) = $2,454; $2,454 x 12 / $88,920 = 0.3311740891.
+# Size 19: $2,190 x 12 / $93,400 + 0.05 = 0.3313704497.
+# Existing monthly ceiling: ceil(round($93,400 x 0.3313704497 / 12, 2)) = ceil($2,579.17) = $2,580; $2,580 x 12 / $93,400 = 0.3314775161.
+# Size 20: $2,297 x 12 / $97,880 + 0.05 = 0.3316101349.
+# Existing monthly ceiling: ceil(round($97,880 x 0.3316101349 / 12, 2)) = ceil($2,704.83) = $2,705; $2,705 x 12 / $97,880 = 0.3316305680.
+# Size 21: $2,404 x 12 / $102,360 + 0.05 = 0.3318288394.
+# Existing monthly ceiling: ceil(round($102,360 x 0.3318288394 / 12, 2)) = ceil($2,830.50) = $2,831; $2,831 x 12 / $102,360 = 0.3318874560.
+# Size 22: $2,511 x 12 / $106,840 + 0.05 = 0.3320292025.
+# Existing monthly ceiling: ceil(round($106,840 x 0.3320292025 / 12, 2)) = ceil($2,956.17) = $2,957; $2,957 x 12 / $106,840 = 0.3321228004.
+- name: Virginia Group I checks both sides of every effective household size limit in 2020
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_medicaid_lifc_locality_group: [GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I, GROUP_I]
+    medicaid_income_level: [0.2924664890, 0.2924864890, 0.3229598376, 0.3229798376, 0.3254043646, 0.3254243646, 0.3270129008, 0.3270329008, 0.3285428031, 0.3285628031, 0.3238807850, 0.3239007850, 0.3242079617, 0.3242279617, 0.3255566364, 0.3255766364, 0.3266566667, 0.3266766667, 0.3275710098, 0.3275910098, 0.3281345448, 0.3281545448, 0.3288101161, 0.3288301161, 0.3293946903, 0.3294146903, 0.3297364789, 0.3297564789, 0.3301966773, 0.3302166773, 0.3306053077, 0.3306253077, 0.3308284652, 0.3308484652, 0.3311640891, 0.3311840891, 0.3314675161, 0.3314875161, 0.3316205680, 0.3316405680, 0.3318774560, 0.3318974560, 0.3321128004, 0.3321328004]
+  output:
+    medicaid_parent_income_limit: [0.2916927900, 0.2916927900, 0.3228538283, 0.3228538283, 0.3251381215, 0.3251381215, 0.3266412214, 0.3266412214, 0.3284876141, 0.3284876141, 0.3237201365, 0.3237201365, 0.3239656912, 0.3239656912, 0.3255213055, 0.3255213055, 0.3265432099, 0.3265432099, 0.3273926149, 0.3273926149, 0.3281097985, 0.3281097985, 0.3287234043, 0.3287234043, 0.3292543596, 0.3292543596, 0.3297183099, 0.3297183099, 0.3301271860, 0.3301271860, 0.3304902451, 0.3304902451, 0.3308147797, 0.3308147797, 0.3311066127, 0.3311066127, 0.3313704497, 0.3313704497, 0.3316101349, 0.3316101349, 0.3318288394, 0.3318288394, 0.3320292025, 0.3320292025]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: DMAS M04 Appendix 3, July 2017, July 2018 and July 2019.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $337 x 12 / $12,760 + 0.05 = 0.3669278997.
+# Existing monthly ceiling: ceil(round($12,760 x 0.3669278997 / 12, 2)) = ceil($390.17) = $391; $391 x 12 / $12,760 = 0.3677115987.
+# Size 2: $483 x 12 / $17,240 + 0.05 = 0.3861948956.
+# Existing monthly ceiling: ceil(round($17,240 x 0.3861948956 / 12, 2)) = ceil($554.83) = $555; $555 x 12 / $17,240 = 0.3863109049.
+# Size 3: $606 x 12 / $21,720 + 0.05 = 0.3848066298.
+# Existing monthly ceiling: ceil(round($21,720 x 0.3848066298 / 12, 2)) = ceil($696.50) = $697; $697 x 12 / $21,720 = 0.3850828729.
+# Size 4: $724 x 12 / $26,200 + 0.05 = 0.3816030534.
+# Existing monthly ceiling: ceil(round($26,200 x 0.3816030534 / 12, 2)) = ceil($833.17) = $834; $834 x 12 / $26,200 = 0.3819847328.
+# Size 5: $852 x 12 / $30,680 + 0.05 = 0.3832464146.
+# Existing monthly ceiling: ceil(round($30,680 x 0.3832464146 / 12, 2)) = ceil($979.83) = $980; $980 x 12 / $30,680 = 0.3833116037.
+# Size 6: $960 x 12 / $35,160 + 0.05 = 0.3776450512.
+# Existing monthly ceiling: ceil(round($35,160 x 0.3776450512 / 12, 2)) = ceil($1,106.50) = $1,107; $1,107 x 12 / $35,160 = 0.3778156997.
+# Size 7: $1,075 x 12 / $39,640 + 0.05 = 0.3754288597.
+# Existing monthly ceiling: ceil(round($39,640 x 0.3754288597 / 12, 2)) = ceil($1,240.17) = $1,241; $1,241 x 12 / $39,640 = 0.3756811302.
+# Size 8: $1,199 x 12 / $44,120 + 0.05 = 0.3761106074.
+# Existing monthly ceiling: ceil(round($44,120 x 0.3761106074 / 12, 2)) = ceil($1,382.83) = $1,383; $1,383 x 12 / $44,120 = 0.3761559383.
+# Size 9: $1,320 x 12 / $48,600 + 0.05 = 0.3759259259.
+# Existing monthly ceiling: ceil(round($48,600 x 0.3759259259 / 12, 2)) = ceil($1,522.50) = $1,523; $1,523 x 12 / $48,600 = 0.3760493827.
+# Size 10: $1,441 x 12 / $53,080 + 0.05 = 0.3757724190.
+# Existing monthly ceiling: ceil(round($53,080 x 0.3757724190 / 12, 2)) = ceil($1,662.17) = $1,663; $1,663 x 12 / $53,080 = 0.3759608139.
+# Size 11: $1,562 x 12 / $57,560 + 0.05 = 0.3756428075.
+# Existing monthly ceiling: ceil(round($57,560 x 0.3756428075 / 12, 2)) = ceil($1,801.83) = $1,802; $1,802 x 12 / $57,560 = 0.3756775539.
+# Size 12: $1,683 x 12 / $62,040 + 0.05 = 0.3755319149.
+# Existing monthly ceiling: ceil(round($62,040 x 0.3755319149 / 12, 2)) = ceil($1,941.50) = $1,942; $1,942 x 12 / $62,040 = 0.3756286267.
+# Size 13: $1,804 x 12 / $66,520 + 0.05 = 0.3754359591.
+# Existing monthly ceiling: ceil(round($66,520 x 0.3754359591 / 12, 2)) = ceil($2,081.17) = $2,082; $2,082 x 12 / $66,520 = 0.3755862898.
+# Size 14: $1,925 x 12 / $71,000 + 0.05 = 0.3753521127.
+# Existing monthly ceiling: ceil(round($71,000 x 0.3753521127 / 12, 2)) = ceil($2,220.83) = $2,221; $2,221 x 12 / $71,000 = 0.3753802817.
+# Size 15: $2,046 x 12 / $75,480 + 0.05 = 0.3752782194.
+# Existing monthly ceiling: ceil(round($75,480 x 0.3752782194 / 12, 2)) = ceil($2,360.50) = $2,361; $2,361 x 12 / $75,480 = 0.3753577107.
+# Size 16: $2,167 x 12 / $79,960 + 0.05 = 0.3752126063.
+# Existing monthly ceiling: ceil(round($79,960 x 0.3752126063 / 12, 2)) = ceil($2,500.17) = $2,501; $2,501 x 12 / $79,960 = 0.3753376688.
+# Size 17: $2,288 x 12 / $84,440 + 0.05 = 0.3751539555.
+# Existing monthly ceiling: ceil(round($84,440 x 0.3751539555 / 12, 2)) = ceil($2,639.83) = $2,640; $2,640 x 12 / $84,440 = 0.3751776409.
+# Size 18: $2,409 x 12 / $88,920 + 0.05 = 0.3751012146.
+# Existing monthly ceiling: ceil(round($88,920 x 0.3751012146 / 12, 2)) = ceil($2,779.50) = $2,780; $2,780 x 12 / $88,920 = 0.3751686910.
+# Size 19: $2,530 x 12 / $93,400 + 0.05 = 0.3750535332.
+# Existing monthly ceiling: ceil(round($93,400 x 0.3750535332 / 12, 2)) = ceil($2,919.17) = $2,920; $2,920 x 12 / $93,400 = 0.3751605996.
+# Size 20: $2,651 x 12 / $97,880 + 0.05 = 0.3750102166.
+# Existing monthly ceiling: ceil(round($97,880 x 0.3750102166 / 12, 2)) = ceil($3,058.83) = $3,059; $3,059 x 12 / $97,880 = 0.3750306498.
+# Size 21: $2,772 x 12 / $102,360 + 0.05 = 0.3749706917.
+# Existing monthly ceiling: ceil(round($102,360 x 0.3749706917 / 12, 2)) = ceil($3,198.50) = $3,199; $3,199 x 12 / $102,360 = 0.3750293083.
+# Size 22: $2,893 x 12 / $106,840 + 0.05 = 0.3749344815.
+# Existing monthly ceiling: ceil(round($106,840 x 0.3749344815 / 12, 2)) = ceil($3,338.17) = $3,339; $3,339 x 12 / $106,840 = 0.3750280794.
+- name: Virginia Group II checks both sides of every effective household size limit in 2020
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_medicaid_lifc_locality_group: [GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II, GROUP_II]
+    medicaid_income_level: [0.3677015987, 0.3677215987, 0.3863009049, 0.3863209049, 0.3850728729, 0.3850928729, 0.3819747328, 0.3819947328, 0.3833016037, 0.3833216037, 0.3778056997, 0.3778256997, 0.3756711302, 0.3756911302, 0.3761459383, 0.3761659383, 0.3760393827, 0.3760593827, 0.3759508139, 0.3759708139, 0.3756675539, 0.3756875539, 0.3756186267, 0.3756386267, 0.3755762898, 0.3755962898, 0.3753702817, 0.3753902817, 0.3753477107, 0.3753677107, 0.3753276688, 0.3753476688, 0.3751676409, 0.3751876409, 0.3751586910, 0.3751786910, 0.3751505996, 0.3751705996, 0.3750206498, 0.3750406498, 0.3750193083, 0.3750393083, 0.3750180794, 0.3750380794]
+  output:
+    medicaid_parent_income_limit: [0.3669278997, 0.3669278997, 0.3861948956, 0.3861948956, 0.3848066298, 0.3848066298, 0.3816030534, 0.3816030534, 0.3832464146, 0.3832464146, 0.3776450512, 0.3776450512, 0.3754288597, 0.3754288597, 0.3761106074, 0.3761106074, 0.3759259259, 0.3759259259, 0.3757724190, 0.3757724190, 0.3756428075, 0.3756428075, 0.3755319149, 0.3755319149, 0.3754359591, 0.3754359591, 0.3753521127, 0.3753521127, 0.3752782194, 0.3752782194, 0.3752126063, 0.3752126063, 0.3751539555, 0.3751539555, 0.3751012146, 0.3751012146, 0.3750535332, 0.3750535332, 0.3750102166, 0.3750102166, 0.3749706917, 0.3749706917, 0.3749344815, 0.3749344815]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+# Source: DMAS M04 Appendix 3, July 2017, July 2018 and July 2019.
+# Annual formulas use the schedule in force on January 1.
+# Preserve the existing helper's cent stabilization and whole-dollar monthly ceiling.
+# Pair each size with income shares 0.00001 below and above its effective limit.
+# Size 1: $507 x 12 / $12,760 + 0.05 = 0.5268025078.
+# Existing monthly ceiling: ceil(round($12,760 x 0.5268025078 / 12, 2)) = ceil($560.17) = $561; $561 x 12 / $12,760 = 0.5275862069.
+# Size 2: $678 x 12 / $17,240 + 0.05 = 0.5219257541.
+# Existing monthly ceiling: ceil(round($17,240 x 0.5219257541 / 12, 2)) = ceil($749.83) = $750; $750 x 12 / $17,240 = 0.5220417633.
+# Size 3: $830 x 12 / $21,720 + 0.05 = 0.5085635359.
+# Existing monthly ceiling: ceil(round($21,720 x 0.5085635359 / 12, 2)) = ceil($920.50) = $921; $921 x 12 / $21,720 = 0.5088397790.
+# Size 4: $974 x 12 / $26,200 + 0.05 = 0.4961068702.
+# Existing monthly ceiling: ceil(round($26,200 x 0.4961068702 / 12, 2)) = ceil($1,083.17) = $1,084; $1,084 x 12 / $26,200 = 0.4964885496.
+# Size 5: $1,151 x 12 / $30,680 + 0.05 = 0.5001955671.
+# Existing monthly ceiling: ceil(round($30,680 x 0.5001955671 / 12, 2)) = ceil($1,278.83) = $1,279; $1,279 x 12 / $30,680 = 0.5002607562.
+# Size 6: $1,280 x 12 / $35,160 + 0.05 = 0.4868600683.
+# Existing monthly ceiling: ceil(round($35,160 x 0.4868600683 / 12, 2)) = ceil($1,426.50) = $1,427; $1,427 x 12 / $35,160 = 0.4870307167.
+# Size 7: $1,425 x 12 / $39,640 + 0.05 = 0.4813824420.
+# Existing monthly ceiling: ceil(round($39,640 x 0.4813824420 / 12, 2)) = ceil($1,590.17) = $1,591; $1,591 x 12 / $39,640 = 0.4816347124.
+# Size 8: $1,575 x 12 / $44,120 + 0.05 = 0.4783771532.
+# Existing monthly ceiling: ceil(round($44,120 x 0.4783771532 / 12, 2)) = ceil($1,758.83) = $1,759; $1,759 x 12 / $44,120 = 0.4784224841.
+# Size 9: $1,721 x 12 / $48,600 + 0.05 = 0.4749382716.
+# Existing monthly ceiling: ceil(round($48,600 x 0.4749382716 / 12, 2)) = ceil($1,923.50) = $1,924; $1,924 x 12 / $48,600 = 0.4750617284.
+# Size 10: $1,867 x 12 / $53,080 + 0.05 = 0.4720798794.
+# Existing monthly ceiling: ceil(round($53,080 x 0.4720798794 / 12, 2)) = ceil($2,088.17) = $2,089; $2,089 x 12 / $53,080 = 0.4722682743.
+# Size 11: $2,013 x 12 / $57,560 + 0.05 = 0.4696664350.
+# Existing monthly ceiling: ceil(round($57,560 x 0.4696664350 / 12, 2)) = ceil($2,252.83) = $2,253; $2,253 x 12 / $57,560 = 0.4697011814.
+# Size 12: $2,159 x 12 / $62,040 + 0.05 = 0.4676015474.
+# Existing monthly ceiling: ceil(round($62,040 x 0.4676015474 / 12, 2)) = ceil($2,417.50) = $2,418; $2,418 x 12 / $62,040 = 0.4676982592.
+# Size 13: $2,305 x 12 / $66,520 + 0.05 = 0.4658147925.
+# Existing monthly ceiling: ceil(round($66,520 x 0.4658147925 / 12, 2)) = ceil($2,582.17) = $2,583; $2,583 x 12 / $66,520 = 0.4659651233.
+# Size 14: $2,451 x 12 / $71,000 + 0.05 = 0.4642535211.
+# Existing monthly ceiling: ceil(round($71,000 x 0.4642535211 / 12, 2)) = ceil($2,746.83) = $2,747; $2,747 x 12 / $71,000 = 0.4642816901.
+# Size 15: $2,597 x 12 / $75,480 + 0.05 = 0.4628775835.
+# Existing monthly ceiling: ceil(round($75,480 x 0.4628775835 / 12, 2)) = ceil($2,911.50) = $2,912; $2,912 x 12 / $75,480 = 0.4629570747.
+# Size 16: $2,743 x 12 / $79,960 + 0.05 = 0.4616558279.
+# Existing monthly ceiling: ceil(round($79,960 x 0.4616558279 / 12, 2)) = ceil($3,076.17) = $3,077; $3,077 x 12 / $79,960 = 0.4617808904.
+# Size 17: $2,889 x 12 / $84,440 + 0.05 = 0.4605637139.
+# Existing monthly ceiling: ceil(round($84,440 x 0.4605637139 / 12, 2)) = ceil($3,240.83) = $3,241; $3,241 x 12 / $84,440 = 0.4605873993.
+# Size 18: $3,035 x 12 / $88,920 + 0.05 = 0.4595816464.
+# Existing monthly ceiling: ceil(round($88,920 x 0.4595816464 / 12, 2)) = ceil($3,405.50) = $3,406; $3,406 x 12 / $88,920 = 0.4596491228.
+# Size 19: $3,181 x 12 / $93,400 + 0.05 = 0.4586937901.
+# Existing monthly ceiling: ceil(round($93,400 x 0.4586937901 / 12, 2)) = ceil($3,570.17) = $3,571; $3,571 x 12 / $93,400 = 0.4588008565.
+# Size 20: $3,327 x 12 / $97,880 + 0.05 = 0.4578872088.
+# Existing monthly ceiling: ceil(round($97,880 x 0.4578872088 / 12, 2)) = ceil($3,734.83) = $3,735; $3,735 x 12 / $97,880 = 0.4579076420.
+# Size 21: $3,473 x 12 / $102,360 + 0.05 = 0.4571512309.
+# Existing monthly ceiling: ceil(round($102,360 x 0.4571512309 / 12, 2)) = ceil($3,899.50) = $3,900; $3,900 x 12 / $102,360 = 0.4572098476.
+# Size 22: $3,619 x 12 / $106,840 + 0.05 = 0.4564769749.
+# Existing monthly ceiling: ceil(round($106,840 x 0.4564769749 / 12, 2)) = ceil($4,064.17) = $4,065; $4,065 x 12 / $106,840 = 0.4565705728.
+- name: Virginia Group III checks both sides of every effective household size limit in 2020
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    medicaid_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22]
+    state_code: [VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA, VA]
+    va_medicaid_lifc_locality_group: [GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III, GROUP_III]
+    medicaid_income_level: [0.5275762069, 0.5275962069, 0.5220317633, 0.5220517633, 0.5088297790, 0.5088497790, 0.4964785496, 0.4964985496, 0.5002507562, 0.5002707562, 0.4870207167, 0.4870407167, 0.4816247124, 0.4816447124, 0.4784124841, 0.4784324841, 0.4750517284, 0.4750717284, 0.4722582743, 0.4722782743, 0.4696911814, 0.4697111814, 0.4676882592, 0.4677082592, 0.4659551233, 0.4659751233, 0.4642716901, 0.4642916901, 0.4629470747, 0.4629670747, 0.4617708904, 0.4617908904, 0.4605773993, 0.4605973993, 0.4596391228, 0.4596591228, 0.4587908565, 0.4588108565, 0.4578976420, 0.4579176420, 0.4571998476, 0.4572198476, 0.4565605728, 0.4565805728]
+  output:
+    medicaid_parent_income_limit: [0.5268025078, 0.5268025078, 0.5219257541, 0.5219257541, 0.5085635359, 0.5085635359, 0.4961068702, 0.4961068702, 0.5001955671, 0.5001955671, 0.4868600683, 0.4868600683, 0.4813824420, 0.4813824420, 0.4783771532, 0.4783771532, 0.4749382716, 0.4749382716, 0.4720798794, 0.4720798794, 0.4696664350, 0.4696664350, 0.4676015474, 0.4676015474, 0.4658147925, 0.4658147925, 0.4642535211, 0.4642535211, 0.4628775835, 0.4628775835, 0.4616558279, 0.4616558279, 0.4605637139, 0.4605637139, 0.4595816464, 0.4595816464, 0.4586937901, 0.4586937901, 0.4578872088, 0.4578872088, 0.4571512309, 0.4571512309, 0.4564769749, 0.4564769749]
+    is_parent_for_medicaid_fc: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]

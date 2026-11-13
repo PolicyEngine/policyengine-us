@@ -1,0 +1,11 @@
+description: PolicyEngine applies Tennessee household-size dollar standards in these historical parent Medicaid calculations.
+values:
+  2013-01-01: false
+  2018-01-01: true
+  2021-01-01: false
+metadata:
+  unit: bool
+  label: Tennessee historical Medicaid parent income schedule in effect
+  reference:
+    - title: Tennessee State Plan TN-14-0005-MM1, AFDC Income Standards, section H
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/TN/TN-14-0005.pdf#page=19

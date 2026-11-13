@@ -15046,3 +15046,84 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us-ut:medicaid-parent-standard-2018-cms-table
+  program: medicaid
+  years:
+    from: 2018
+    to: 2019
+    type: calendar
+  question: Does Utah use its 55% poverty-guideline parent standard or the 44% dollar-based standard CMS
+    reports in its April 2018 table?
+  sources:
+  - kind: plan
+    citation: Utah State Plan Amendment UT-16-0025-MM, S25, approved March 10, 2017, effective July 1,
+      2017
+    url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/UT/UT-16-0025.pdf#page=7
+  - kind: rulemaking
+    citation: Utah DAR File 41429, R414-303-4(3), proposed July 2017 amendment
+    url: https://rules.utah.gov/publicat/bulletin/2017/20170415/41429.htm
+  - kind: guidance
+    citation: CMS Medicaid and CHIP Eligibility Levels, April 2018, Utah Parent/Caretaker column
+    url: https://download.medicaid.gov/data/medicaid-and-chip-eligibility-levels.xy8t-auhk.csv
+  readings:
+    statute: Utah covers parents with countable income up to 55% of the poverty guideline under its CMS-approved
+      state plan and corresponding R414-303-4(3) amendment.
+    other: CMS reports a 44% parent standard and labels Utah's standard as a dollar amount in its April
+      2018 table.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: ruled
+  note: PolicyEngine applies Utah's amended regulation and adds the federal five-point disregard. CMS
+    approved the state plan on March 10, 2017, effective July 1, 2017. Annual calculations retain the
+    January 1 standard for 2019. The captures sit under source_conflicts/sources/us-ut/r414-303-4-2017-paragraph-3.txt
+    and source_conflicts/sources/us-ut/ut-16-0025-state-plan-p7.txt and source_conflicts/sources/us/cms-medicaid-eligibility-levels-2018-utah.txt.
+- id: us-va:medicaid-parent-lifc-manual-regulation-limits
+  program: medicaid
+  years:
+    from: 2018
+    to: 2020
+    type: calendar
+  question: Does Virginia apply its dated MAGI eligibility-manual LIFC schedules or the lower locality-group
+    amounts in 12VAC30-40-220?
+  sources:
+  - kind: regulation
+    citation: 12VAC30-40-220 A.1, locality-group income limits
+    url: https://law.lis.virginia.gov/admincode/title12/agency30/chapter40/section220/
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2017
+    url: https://www.dmas.virginia.gov/media/2249/transmittal-dmas-5-effective-07-1-2017.pdf#page=35
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2018
+    url: https://www.dmas.virginia.gov/media/2245/transmittal-dmas-9-effective-7-1-18-signed.pdf#page=34
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2019
+    url: https://www.dmas.virginia.gov/media/2258/tn-dmas-13-effective-7-1-2019.pdf#page=42
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2020
+    url: https://www.dmas.virginia.gov/media/2254/tn-dmas-17-effective-7-1-20.pdf#page=59
+  readings:
+    statute: No statute supplies these schedules here. The regulation sets monthly limits by household
+      size and locality group, with additions above eight people.
+    other: DMAS directs eligibility staff to use dated MAGI manual schedules, which set higher limits
+      and change each July.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/additional.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/additional.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/additional.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: ruled
+  note: 'PolicyEngine adopts the dated DMAS manual schedules for the 2018-2020 correction in issue 10793.
+    Annual calculations use the schedule effective on January 1. The regulation remains a conflicting
+    source; the agency manual does not establish a statutory override. The captures sit under source_conflicts/sources/us-va/:
+    12vac30-40-220-group-limits.txt and dmas-lifc-limits-2017-p35.txt, dmas-lifc-limits-2018-p34.txt,
+    dmas-lifc-limits-2019-p42.txt and dmas-lifc-limits-2020-p59.txt.'
