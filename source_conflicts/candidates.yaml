@@ -7572,8 +7572,7 @@ candidates:
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does the stillborn-child subtraction require federal dependent eligibility under the form when the statute
     allows it for each stillbirth?
@@ -7587,7 +7586,7 @@ candidates:
   readings:
     statute: A filer subtracts an allowance for each birth resulting in stillbirth without a dependency condition.
     other: The filer must have been eligible to claim the child federally.
-  example: A claimable filer receives $5,241 under the statutory reading versus $0 under the form.
+  example: In 2025, a claimable filer receives $5,241 under the statutory reading versus $0 under the form.
   pe_us:
     follows: statute
     code:
@@ -7596,6 +7595,7 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
   state: ruled
   note: PE-US counts tax_unit_stillborn_children without a dependency test, following section 57-38-30.3(2)(p).
+    The 2021 to 2024 schedules carry the same condition on page 2 (line 5 in 2021 and 2022, line 8 from 2023).
 - id: us-ne:claim-of-right-obsolete-revenue-ruling
   program: income-tax
   years:
@@ -9954,8 +9954,7 @@ candidates:
 - id: us-pa:tax-forgiveness-dependent-parent-exception
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Can a dependent child claim tax forgiveness when the claiming parent qualifies despite the statute's
     dependent exclusion?
@@ -9964,8 +9963,20 @@ candidates:
     citation: Tax Reform Code sections 301(c.2) and 304, PDF pages 112, 127-128
     url: https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/1971/0/0002..PDF#page=112
   - kind: form
-    citation: 2025 PA-40 Schedule SP, pp. 3-5
-    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=3
+    citation: 2021 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2022 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2022/2022_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2023 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2023/2023_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2024 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2024/2024_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2025 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=1
   readings:
     statute: A filer who can be claimed as a dependent cannot claim forgiveness, even without an actual claim or
       when a parent qualifies.
@@ -9980,13 +9991,13 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
   state: ruled
-  note: PE-US excludes a claimable head or spouse even if no one claims them and removes the parent-qualification
-    input.
+  note: PE-US excludes a claimable head or spouse even if no one claims them and has no parent-qualification input.
+    Each year's Schedule SP from 2021 to 2025 asks the same two eligibility questions on page 1 and prints the
+    same dependent-child note on page 3.
 - id: us-pa:tax-forgiveness-one-claimed-spouse-table
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Which tax-forgiveness table and allocation apply when one spouse can be claimed elsewhere and the other
     qualifies?
@@ -9995,8 +10006,20 @@ candidates:
     citation: Tax Reform Code sections 301(c.2) and 304, PDF pages 112, 127-128
     url: https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/1971/0/0002..PDF#page=112
   - kind: form
-    citation: 2025 PA-40 Schedule SP, pp. 3-5
-    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=3
+    citation: 2021 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2022 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2022/2022_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2023 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2023/2023_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2024 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2024/2024_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2025 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=1
   - kind: guidance
     citation: PA Personal Income Tax Guide, Tax Forgiveness
     url: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/tax-forgiveness
@@ -10005,7 +10028,7 @@ candidates:
       spouse allocates forgiveness.
     other: An eligible spouse claims forgiveness on their own tax, using both spouses' eligibility income and the
       married table under Schedule SP.
-  example: With $3,000 income per spouse, the eligible spouse receives $92.10 under Schedule SP.
+  example: In 2025, with $3,000 income per spouse, the eligible spouse receives $92.10 under Schedule SP.
   pe_us:
     follows: gap-fill
     code:
@@ -10016,7 +10039,11 @@ candidates:
   state: ruled
   note: PE-US excludes the claimable spouse and allocates forgiveness to the eligible spouse's own tax. Both
     spouses contribute eligibility income, and the eligible spouse uses the married table. The PIT guide excludes
-    dependent spouses as claimants.
+    dependent spouses as claimants. Each year's Schedule SP from 2021 to 2025 prints the same line 3c on page 1 and
+    the same separate-filing rule on page 5. PE-US also applies the married table to a joint tax unit whose
+    spouses lived apart for the last six months of the year, where section 304(d)(1) treats a claimant who files
+    a separate return and lives apart as unmarried. In 2025, with $8,000 for the eligible spouse and $1,000 for the
+    claimable spouse, PE-US forgives $245.60 and the unmarried table gives $98.24.
 - id: us-pr:eitc-minimum-age-gap-fill
   program: income-tax
   years:
