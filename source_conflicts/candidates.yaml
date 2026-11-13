@@ -669,12 +669,18 @@ candidates:
   - kind: guidance
     citation: ACF LIHEAP Clearinghouse 2025 Arkansas matrix
     url: https://liheapch.acf.gov/docs/2025/benefits-matricies/AR_BenefitMatrix_2025.pdf#page=1
+  - kind: plan
+    citation: Arkansas FY2025 LIHEAP State Plan, item 3.6, page 12
+    url: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=12
   readings:
     statute: No statute is supplied; AEO's FY2025 electric matrix uses $242, $288 and $344 at the lowest income
       band.
     other: The clearinghouse matrix uses $202, $240 and $287.
+    plan: Plan item 3.6 estimates FY2025 cooling benefits of $50 to $287; AEO's electric matrix, headed "20% OVER
+      BASE", pays the summer benefit at $60 to $344.
   example: Electric heating, household size 1-2 and income $0-$69 yields $242 under AEO's matrix versus $202 under
-    the clearinghouse matrix.
+    the clearinghouse matrix. In summer 2025, five people with no income receive $344 from AEO's matrix, above
+    plan item 3.6's $287 maximum.
   pe_us:
     follows: unknown
     code:
@@ -683,11 +689,15 @@ candidates:
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/natural_gas.yaml
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/other.yaml
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/propane.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/cooling/ar_liheap_cooling.py
     - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/payment/ar_liheap_matrix_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
+    - https://github.com/PolicyEngine/policyengine-us/pull/10744
   state: unreviewed
-  note: 'PE-US follows AEO''s matrix; verify the clearinghouse document''s effective year and possible mislabeling.'
+  note: 'PE-US follows AEO''s matrix for the winter and summer regular benefits; Wayback captures of AEO''s electric
+    matrix from 2024-12-06, 2025-06-15 and 2025-07-25 share one content digest, so it stayed posted through the summer
+    2025 season. Verify the clearinghouse document''s effective year and possible mislabeling.'
 - id: us-ar:liheap-gambling-and-capital-gains
   program: liheap
   years:
@@ -730,7 +740,7 @@ candidates:
     citation: 42 U.S.C. 8624(b)(2)(B)
     url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
   - kind: guidance
-    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Arkansas, page 1
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Arkansas, pages 1 and 4
     url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
   - kind: guidance
     citation: Arkansas FY2026 LIHEAP Income Eligibility Chart

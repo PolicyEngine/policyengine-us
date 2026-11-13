@@ -27,7 +27,7 @@ class ar_liheap_cooling(Variable):
         band = p.income_band.calc(max_(income, 0)).astype(int)
         size_group = p.household_size_group.calc(size).astype(int)
         # One fixed grant per summer from the Electricity matrix, the same for
-        # every known heating fuel or none, not capped at the bill. The planned
-        # FY2027 increase has no posted matrix, so later years carry the FY2026
-        # cells forward.
+        # every heating type, not capped at the bill. The planned FY2027
+        # increase has no posted matrix, so later years carry the FY2026 cells
+        # forward.
         return p.matrix.electricity[band][size_group]

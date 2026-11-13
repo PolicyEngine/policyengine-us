@@ -13,7 +13,11 @@ class ar_liheap_income_limit(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
         # FY2026 federal amounts
+        # PDF pages 1, 4
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1",
+        # FY2025 federal amounts
+        # PDF pages 1, 4
+        "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=1",
         "https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=9",
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf",
         "https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=8",

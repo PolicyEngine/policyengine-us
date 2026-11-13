@@ -101,7 +101,8 @@
     # Wages less 20% (plan item 1.8): 22,880 x 0.8 = 18,304; child support counts in full
     # (manual 4.7.1, p59): 20,704. MCI 1,725.33 rounds to 1,725 (p58): 20,700.
     ar_liheap_countable_income: 20_700
-    # FY2026 chart, size 3: 3,792 x 12.
+    # FY2026 chart, size 3: 3,792 x 12 = 45,504, stopped at HHS's 60% state median income
+    # amount, 45,501.
     ar_liheap_income_limit: 45_501
     ar_liheap_eligible: true
     # FY2026 natural gas row 1690-1749, column 3&4: 124.
@@ -247,7 +248,8 @@
     # Social Security net of Part B (manual 4.7.2, p59): 15,780 + 7,380 = 23,160;
     # interest over 200 a month (p162): 3,600 - 2,400 = 1,200; total 24,360, MCI 2,030.
     ar_liheap_countable_income: 24_360
-    # FY2025 chart, size 2: 2,944 x 12.
+    # FY2025 chart, size 2: 2,944 x 12 = 35,328, stopped at HHS's FY2025 60% state median
+    # income amount, 35,323.
     ar_liheap_income_limit: 35_323
     ar_liheap_eligible: true
     # FY2025 other (wood) row 2,010-2,129, column 1&2: 68.

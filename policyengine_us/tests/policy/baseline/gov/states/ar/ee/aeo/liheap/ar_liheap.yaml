@@ -120,7 +120,8 @@
   output:
     ar_liheap: [308, 0]
 
-# FY2025: wages 21000x0.8=16800, MCI 1400; size-one limit 2251 (x12=27012).
+# FY2025: wages 21000x0.8=16800, MCI 1400; size-one limit 27011 (chart 2251 x12=27012, stopped at
+# HHS's FY2025 60% state median income amount).
 # FFY2025 electric row 1390-1449 pays 91 for 1&2 (the FY2026 row pays 88).
 - name: Case 6, FY2025 electric grant for a one person household.
   period: 2025
@@ -187,6 +188,7 @@
     ar_liheap: 64
 
 # Boundary: FY2025 size 7 uses 150% FPG, 47340x1.5/12=5917.50 -> 5918 (x12=71016); 60% SMI would be 5844.
+# The federal maximum, 150% of the 2024 guideline (47340x1.5=71010), stops the limit at 71010.
 # Wages (50000+38500)x0.8=70800, MCI 5900, so eligible; FFY2025 electric 5140-Max pays 60 for 5&up.
 - name: Case 8, FY2025 seven person household between the SMI and FPG limits is paid.
   period: 2025
@@ -241,7 +243,7 @@
     ar_liheap: 60
 
 # FY2025 Medicare-net Social Security (plan 1.9 p6; manual 4.7.2 p59): 2025 Part B 185x12=2220;
-# 26400-2220=24180, MCI 2015; size-one limit 27012; FFY2025 gas 2010-2129 pays 73 for 1&2.
+# 26400-2220=24180, MCI 2015; size-one limit 27011; FFY2025 gas 2010-2129 pays 73 for 1&2.
 - name: Case 9, FY2025 Social Security net of the Part B premium sets the gas grant.
   period: 2025
   input:
