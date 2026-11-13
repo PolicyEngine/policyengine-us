@@ -47,3 +47,155 @@
     state_code: CA
   output:
     snap_emergency_allotment: 0
+
+- name: Case 6, Washington maximum-benefit household receives the minimum only from April 2021.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: {2017: 30, 2018: 30, 2019: 30, 2020: 30, 2021: 30, 2022: 30, 2023: 30, 2024: 30, 2025: 30, 2026: 30}
+        employment_income: {2017: 1_200, 2018: 1_200, 2019: 1_200, 2020: 1_200, 2021: 1_200, 2022: 1_200, 2023: 1_200, 2024: 1_200, 2025: 1_200, 2026: 1_200}
+      person2:
+        age: {2017: 8, 2018: 8, 2019: 8, 2020: 8, 2021: 8, 2022: 8, 2023: 8, 2024: 8, 2025: 8, 2026: 8}
+      person3:
+        age: {2017: 4, 2018: 4, 2019: 4, 2020: 4, 2021: 4, 2022: 4, 2023: 4, 2024: 4, 2025: 4, 2026: 4}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: {2017: 0, 2018: 0, 2019: 0, 2020: 0, 2021: 0, 2022: 0, 2023: 0, 2024: 0, 2025: 0, 2026: 0}
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: {2017: WA, 2018: WA, 2019: WA, 2020: WA, 2021: WA, 2022: WA, 2023: WA, 2024: WA, 2025: WA, 2026: WA}
+  output:
+    # USDA April 1, 2021 announcement and WAC 388-437-0005:
+    # before April 2021, a household already at the maximum gets no EA.
+    # From April 2021 the EA floor is $95, until federal authority ends.
+    # $100 earnings less the 20% deduction and standard deduction leaves
+    # zero net income, so normal SNAP equals the three-person maximum.
+    snap_gross_income:
+      2020-03: 100
+      2021-04: 100
+    snap_earned_income_deduction:
+      2020-03: 20
+    snap_standard_deduction:
+      2020-03: 167
+    snap_net_income:
+      2020-03: 0
+      2021-04: 0
+    snap_normal_allotment:
+      2020-02: 509
+      2020-03: 509
+      2021-03: 616
+      2021-04: 616
+      2023-02: 740
+      2023-03: 740
+    snap_emergency_allotment:
+      2017: 0
+      2018: 0
+      2019: 0
+      2020: 0
+      2021: 855  # April-December: 9 * $95.
+      2022: 1_140
+      2023: 190  # January-February: 2 * $95.
+      2024: 0
+      2025: 0
+      2026: 0
+      2020-02: 0
+      2020-03: 0
+      2021-03: 0
+      2021-04: 95
+      2023-02: 95
+      2023-03: 0
+    snap:
+      2017: 6_111
+      2018: 6_051
+      2019: 6_072
+      2020: 6_186
+      2021: 8_373  # Normal 7_518 + EA 855.
+      2022: 9_282  # Normal 8_142 + EA 1_140.
+      2023: 9_148  # Normal 8_958 + EA 190.
+      2024: 9_198
+      2025: 9_267
+      2026: 9_489
+      2020-02: 509
+      2020-03: 509
+      2021-03: 616
+      2021-04: 711
+      2023-02: 835
+      2023-03: 740
+
+- name: Case 7, Texas household with a gap above 95 dollars keeps the maximum before and after April 2021.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+      person2:
+        age: 8
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # With no separately paid utilities or rent, net = 1_000 - 200 - 167
+    # = 633; contribution ceil(633 * 0.3) = 190. Normal = 616 - 190.
+    # The $190 gap exceeds the later $95 floor, so EA stays at $190.
+    snap_gross_income:
+      2021-03: 1_000
+    snap_earned_income_deduction:
+      2021-03: 200
+    snap_standard_deduction:
+      2021-03: 167
+    snap_utility_allowance:
+      2021-03: 0
+    snap_net_income:
+      2021-03: 633
+    snap_expected_contribution:
+      2021-03: 190
+    snap_normal_allotment:
+      2021-03: 426
+      2021-04: 426
+    snap_emergency_allotment:
+      2021-03: 190
+      2021-04: 190
+    snap:
+      2021-03: 616
+      2021-04: 616
+
+- name: Case 8, income-ineligible Washington household receives no emergency allotment.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000
+      person2:
+        age: 8
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    is_snap_eligible:
+      2021-03: false
+      2021-04: false
+    snap_emergency_allotment:
+      2021-03: 0
+      2021-04: 0
+    snap:
+      2021-03: 0
+      2021-04: 0

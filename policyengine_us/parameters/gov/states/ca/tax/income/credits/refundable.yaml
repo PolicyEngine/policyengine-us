@@ -1,6 +1,8 @@
 description: California provides these refundable income tax credits.
 values:
-  2021-01-01:
+  2015-01-01:
+    - ca_eitc
+  2019-01-01:
     - ca_eitc
     - ca_yctc
   2022-01-01:
@@ -10,6 +12,10 @@ values:
     - ca_sf_wftc
 metadata:
   reference:
+    - title: California Earned Income Tax Credit Report, tax year 2018
+      href: https://www.ftb.ca.gov/about-ftb/data-reports-plans/california-earned-income-tax-credit-report-2018.pdf#page=3
+    - title: Instructions for 2019 CalEITC Form 3514, What's New
+      href: https://www.ftb.ca.gov/forms/2019/2019-3514-instructions.html
     - title: California Form 540
       href: "https://www.ftb.ca.gov/forms/Search/Home/Confirmation"
     # San Francisco working families tax credit

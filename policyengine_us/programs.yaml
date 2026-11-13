@@ -1108,7 +1108,7 @@ programs:
         full_name: Hawaii Low Income Home Energy Assistance Program subsidized dwelling benefit
         variable: hi_liheap_subsidized_amount
         parameter_prefix: gov.states.hi.dhs.liheap
-        notes: FY2026 eligibility, the subsidized-dwelling flat benefit and private-dwelling points; no private-dwelling dollar award because its statewide value per point was not located. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2026 eligibility, the subsidized-dwelling flat benefit and private-dwelling points for the Energy Credit on a gas (heating) or electric (cooling) account for any eligible household with that bill or with utilities in its rent; no private-dwelling dollar award because its statewide value per point was not located. Crisis, weatherization and equipment assistance are out of scope.
       - state: OH
         status: partial
         name: Ohio HEAP
@@ -1146,6 +1146,7 @@ programs:
         full_name: DC Low Income Home Energy Assistance Program
         variable: dc_liheap_payment
         parameter_prefix: gov.states.dc.doee.liheap
+        notes: One-time Regular benefit from the DOEE matrix; it also covers cooling-only households, paying the Electric row capped at the electricity bill.
       - state: DE
         status: partial
         name: Delaware LIHEAP
@@ -1153,7 +1154,14 @@ programs:
         variable: de_liheap
         parameter_prefix: gov.states.de.dhss.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Summer cooling eligibility is the separate Delaware LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
+      - state: DE
+        status: partial
+        name: Delaware LIHEAP cooling
+        full_name: Delaware Summer Cooling Assistance Program electric benefit
+        variable: de_liheap_cooling_eligible
+        parameter_prefix: gov.states.de.dhss.liheap.cooling
+        notes: Eligibility only for the flat summer electric benefit, for LIHEAP households that buy their heating or pass the income test with a cooling cost, with a member 60 or older, under 6 or disabled; no amount is modeled because the state divides available funds equally. The State may extend it to every applicant (as HHS data show for FY2023-FY2024; FY2025 served 88 households) and no 2026 decision was found; the breathing-condition route, air conditioners, crisis and weatherization are out of scope.
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
