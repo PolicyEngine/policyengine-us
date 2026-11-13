@@ -1,3 +1,35 @@
+## [2.118.7] - 2026-11-12
+
+### Changed
+
+- Count the federal premium tax credit in household net income and household tax as a refundable tax credit (household_refundable_tax_credits), whether or not health benefits count in net income, so changes to it reach net income and the budget. income_tax and SPM resources are unchanged.
+
+### Fixed
+
+- Corrected CPI-U observations to the unadjusted BLS series through October 2026 and recalculated indexed test expectations.
+
+
+## [2.118.6] - 2026-11-12
+
+### Fixed
+
+- DC LIHEAP Regular benefit now pays households with no heating cost that pay for cooling, from the Electric row capped at their electricity bill. DC LIHEAP income limits now use HHS's 60% state median income amounts, rounded down by household size, as DOEE publishes them.
+
+
+## [2.118.5] - 2026-11-12
+
+### Fixed
+
+- Apply each state's own rule for a Medicaid applicant whose spouse is not aged, blind or disabled, in the aged, blind and disabled pathway, the 209(b) route and medically needy: SSI's deeming rule by default, or budgeting the couple together, which keeps SSI's allocations for ineligible children except in Missouri, or keeping the couple limit without deeming. Test spouses split by a facility separately, with no spouse income counted.
+
+
+## [2.118.4] - 2026-11-12
+
+### Fixed
+
+- Combine an SSI couple's income by each month's facility status, so a part-year medical facility stay no longer changes SSI in the other months of the year.
+
+
 ## [2.118.3] - 2026-11-12
 
 ### Fixed

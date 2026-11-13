@@ -759,3 +759,42 @@
     # 2,100 - 20 - 405.80 = 1,674.20 a month, under 138% FPL (1,835.40).
     # With only the 202.90 base premium, 1,877.10 is over the limit.
     is_optional_senior_or_disabled_income_eligible: true
+
+# No marital units given, so the three adults form one default marital unit, and the
+# spouse test pairs only the head and spouse of the first tax unit. Arizona budgets
+# the couple together (AHCCCS MA611 A), so the applicant and spouse use the
+# two-person limit of 21,640 and the unpaired 67-year-old the one-person 15,960.
+# Countable income is 10,000 - 240 = 9,760 for the applicant, 0 for the spouse, who
+# is not aged, blind or disabled, and 20,000 - 240 = 19,760 for the 67-year-old. The
+# couple's 9,760 + 0 is within 21,640; adding the 67-year-old's 19,760 would give
+# 29,520, above it. The 67-year-old's 19,760 is above 15,960.
+- name: Arizona couple's income test leaves out an unrelated aged adult's income when marital units are omitted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+      person3:
+        is_tax_unit_head: true
+        age: 67
+        pension_income: 20_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true, false]
+    medicaid_optional_senior_or_disabled_income_limit: [21_640, 21_640, 15_960]
+    medicaid_optional_senior_or_disabled_countable_income: [9_760, 0, 19_760]
+    is_optional_senior_or_disabled_income_eligible: [true, true, false]
