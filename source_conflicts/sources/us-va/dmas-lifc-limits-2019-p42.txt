@@ -1,54 +1,37 @@
 https://www.dmas.virginia.gov/media/2258/tn-dmas-13-effective-7-1-2019.pdf#page=42
-Extracted PDF page 42 with pypdf.
+Citation: Virginia Medical Assistance Eligibility Manual, M04 Appendix 3, July 2019, PDF page 42
+Method: Converted the pypdf table extraction to CSV; retained the source's monthly amounts and any published annual amounts.
+Provenance: Table facts rendered as CSV; quoted text below.
 
-Manual Title Chapter Page Revision Date 
-Virginia Medical Assistance Eligibility M04 July 2019 
-Subchapter Subject Page ending with Page 
-M04 MODIFIED ADJUSTED GROSS INCOME (MAGI) Appendix 3   1 
- 
-LIFC INCOME LIMITS 
- 
-EFFECTIVE 7/1/19 
- 
- 
-Group I 
- 
-Household Size Income Limit 
-1 $257 
-2 392 
-3 498 
-4 604 
-5 712 
-6 802 
-7 905 
-8 1013 
-  
-Each additional person add 107 
- 
-Group II 
- 
-Household Size  
-1 $337 
-2 483 
-3 606 
-4 724 
-5 852 
-6 960 
-7 1075 
-8 1199 
-  
-Each additional person add 121 
- 
-Group III 
- 
-Household Size  
-1 $507 
-2 678 
-3 830 
-4 974 
-5 1151 
-6 1280 
-7 1425 
-8 1575 
-  
-Each additional person add 146
+effective_date,locality_group,household_size_or_increment,monthly_usd
+2019-07-01,I,1,257
+2019-07-01,I,2,392
+2019-07-01,I,3,498
+2019-07-01,I,4,604
+2019-07-01,I,5,712
+2019-07-01,I,6,802
+2019-07-01,I,7,905
+2019-07-01,I,8,1013
+2019-07-01,I,additional,107
+2019-07-01,II,1,337
+2019-07-01,II,2,483
+2019-07-01,II,3,606
+2019-07-01,II,4,724
+2019-07-01,II,5,852
+2019-07-01,II,6,960
+2019-07-01,II,7,1075
+2019-07-01,II,8,1199
+2019-07-01,II,additional,121
+2019-07-01,III,1,507
+2019-07-01,III,2,678
+2019-07-01,III,3,830
+2019-07-01,III,4,974
+2019-07-01,III,5,1151
+2019-07-01,III,6,1280
+2019-07-01,III,7,1425
+2019-07-01,III,8,1575
+2019-07-01,III,additional,146
+
+Quoted text:
+"LIFC INCOME LIMITS"
+"EFFECTIVE 7/1/19"

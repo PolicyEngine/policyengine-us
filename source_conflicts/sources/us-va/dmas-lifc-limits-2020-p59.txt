@@ -1,53 +1,37 @@
 https://www.dmas.virginia.gov/media/2254/tn-dmas-17-effective-7-1-20.pdf#page=59
-Extracted PDF page 59 with pypdf.
+Citation: Virginia Medical Assistance Eligibility Manual, M04 Appendix 3, July 2020, PDF page 59
+Method: Converted the pypdf table extraction to CSV; retained the source's monthly amounts and any published annual amounts.
+Provenance: Table facts rendered as CSV; quoted text below.
 
-Manual Title Chapter Page Revision Date 
-Virginia Medical Assistance Eligibility M04 July 2020 
-Subchapter Subject Page ending with Page 
-M04 MODIFIED ADJUSTED GROSS INCOME (MAGI) Appendix 3   1 
- 
-LIFC INCOME LIMITS 
- 
-EFFECTIVE 7/1/20 
- 
-Group I 
- 
-Household Size Monthly Amount Annual Amount 
-1 $262 $3,144 
-2 399 4,788 
-3 506 6,072 
-4 614 7,368 
-5 724 8,688 
-6 815 9,780 
-7 920 11,040 
-8 1,030 12,360 
-   
-Each additional person add 108 1,296 
- 
-Group II 
- 
-Household Size Monthly Amount Annual Amount 
-1 $343 $4,116 
-2 491 5,892 
-3 616 7,392 
-4 736 8,832 
-5 866 10,392 
-6 976 11,712 
-7 1,093 13,116 
-8 1,219 14,628 
-   
-Each additional person add 123 1,476 
- 
-Group III 
- 
-Household size Monthly Amount Annual Amount 
-1 $516 $6,192 
-2 689 8,268 
-3 844 10,128 
-4 990 11,880 
-5 1,170 14,040 
-6 1,301 15,612 
-7 1,448 17,376 
-8 1,601 19,212 
-   
-Each additional person add 149 1,788
+effective_date,locality_group,household_size_or_increment,monthly_usd,annual_usd
+2020-07-01,I,1,262,3144
+2020-07-01,I,2,399,4788
+2020-07-01,I,3,506,6072
+2020-07-01,I,4,614,7368
+2020-07-01,I,5,724,8688
+2020-07-01,I,6,815,9780
+2020-07-01,I,7,920,11040
+2020-07-01,I,8,1030,12360
+2020-07-01,I,additional,108,1296
+2020-07-01,II,1,343,4116
+2020-07-01,II,2,491,5892
+2020-07-01,II,3,616,7392
+2020-07-01,II,4,736,8832
+2020-07-01,II,5,866,10392
+2020-07-01,II,6,976,11712
+2020-07-01,II,7,1093,13116
+2020-07-01,II,8,1219,14628
+2020-07-01,II,additional,123,1476
+2020-07-01,III,1,516,6192
+2020-07-01,III,2,689,8268
+2020-07-01,III,3,844,10128
+2020-07-01,III,4,990,11880
+2020-07-01,III,5,1170,14040
+2020-07-01,III,6,1301,15612
+2020-07-01,III,7,1448,17376
+2020-07-01,III,8,1601,19212
+2020-07-01,III,additional,149,1788
+
+Quoted text:
+"LIFC INCOME LIMITS"
+"EFFECTIVE 7/1/20"

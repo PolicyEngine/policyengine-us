@@ -1,5 +1,21 @@
 https://download.medicaid.gov/data/medicaid-and-chip-eligibility-levels.xy8t-auhk.csv
-Extracted the CSV header and Utah row with Python csv.reader; retained every column.
+Citation: CMS Medicaid and CHIP Eligibility Levels, April 2018, Utah row
+Method: Renamed CSV columns; retained every eligibility cell and paraphrased the narrative note.
+Paraphrase: CMS identifies Utah's section 1115 demonstration for additional adults with low incomes. It describes eligibility restrictions, limits on residents' access, or enrollment caps.
+Provenance: Table facts rendered as CSV; quoted text below.
 
-State,Notes,Medicaid Ages 0-1,Medicaid Ages 1-5,Medicaid Ages 6-18,Separate CHIP,Pregnant Women Medicaid,Pregnant Women CHIP,Parent/Caretaker,Expansion to Adults,Separate CHIP Ages,Parent/Caretaker Income Standard
-Utah,"The state has a section 1115 demonstration that provides Medicaid coverage to some additional low-income adults. The demonstration includes limitations on eligibility and/or benefits, is not offered to all residents of the state, and/or includes an enrollment cap.",139%,139%,133%,200%,139%,N/A,44%,No,,Dollars
+field,source_value
+state,Utah
+children_medicaid_ages_0_1,139%
+children_medicaid_ages_1_5,139%
+children_medicaid_ages_6_18,133%
+separate_chip,200%
+pregnant_medicaid,139%
+pregnant_chip,N/A
+parent_caretaker,44%
+expansion_to_adults,No
+separate_chip_ages,
+parent_caretaker_income_standard,Dollars
+
+Quoted text:
+None.
