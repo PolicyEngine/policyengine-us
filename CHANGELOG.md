@@ -1,3 +1,10 @@
+## [2.119.2] - 2026-11-13
+
+### Fixed
+
+- Add FY2017 California and New York SNAP utility allowances and apply the historical small-allotment increase before its March 2017 repeal.
+
+
 ## [2.119.1] - 2026-11-13
 
 ### Fixed
