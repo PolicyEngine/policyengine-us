@@ -88,7 +88,7 @@
     ga_low_income_credit: 16
 
 
-- name: 2025 single filer who can be claimed as a dependent, low income credit only through a spouse who cannot be claimed, with no child units
+- name: 2025 Georgia denies the low income credit to a claimed single filer
   period: 2025
   input:
     people:
@@ -108,10 +108,8 @@
         members: [filer, child]
         state_code: GA
   output:
-    # O.C.G.A. 48-7A-3(a): each resident taxpayer who is not claimed
-    # or eligible to be claimed may claim it, and joint spouses are
-    # each deemed a unit; a return with a claimable filer has no
-    # dependents (IRC 152(b)(1)): 2 x 26 at federal AGI 5,000.
+    # O.C.G.A. 48-7A-3(a) excludes the claimed filer, so the
+    # filer receives no low income credit at federal AGI 5,000.
     ga_low_income_credit_potential: 0
 
 - name: 2025 joint return with one spouse who can be claimed as a dependent, low income credit only through a spouse who cannot be claimed, with no child units (the claimable spouse is the head)
@@ -247,6 +245,6 @@
         members: [filer]
         state_code: GA
   output:
-    # 48-7A-3(a): not claimed or otherwise eligible to be
-    # claimed.
+    # Georgia lawmakers extended the exclusion to claimable filers
+    # in 2010, including those nobody actually claims.
     ga_low_income_credit_potential: 0

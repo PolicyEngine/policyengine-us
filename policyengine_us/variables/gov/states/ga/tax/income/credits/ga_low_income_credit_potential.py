@@ -22,11 +22,11 @@ class ga_low_income_credit_potential(Variable):
     def formula(tax_unit, period, parameters):
         # Georgia lawmakers count both spouses under O.C.G.A. 48-7A-3(a)(1).
         # They set the amount per credit unit in subsection (b).
-        # Either eligible spouse can claim for both spouse units. IRC
-        # 152(b)(1) bars child units when either filer is a dependent outside
-        # the filing exception. The statutory claimed-or-otherwise-eligible
-        # disjunction remains open; the model keeps the claimed-or-claimable
-        # exclusion for the taxpayer's own eligibility.
+        # Either eligible spouse can claim for both spouse units. Filers
+        # who qualify as dependents outside the filing exception cannot
+        # count child units under IRC 152(b)(1). Lawmakers extended the exclusion
+        # to claimable filers in 2010. Read the conditions as one exclusion
+        # so the added clause reaches unclaimed but eligible dependents.
         size = tax_unit("tax_unit_size", period)
         dependents = tax_unit("tax_unit_dependents", period)
         filer_is_dependent = tax_unit(

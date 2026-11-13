@@ -20,11 +20,15 @@ class ga_ctc_eligible_child(Variable):
         age = person("age", period)
         # Georgia lawmakers adopted IRC 24(c) in O.C.G.A. 48-7-29.27, without
         # 24(a)'s dependent deduction condition or 24(h)(7)'s SSN requirement.
-        # We retain the reading that 24(c)(2) changes only the citizenship
-        # condition; a broader reading would import 152(b)(1)'s
-        # no-dependents condition.
+        # Under 24(c)(2), a child must remain a dependent after narrowing
+        # 152(b)(3)(A)'s citizenship condition. A dependent taxpayer has no
+        # dependents under 152(b)(1); apply the claimant filing exception
+        # before testing either filer.
         p_federal = parameters(period).gov.irs.credits.ctc
         ctc_eligible_child = person("is_tax_unit_dependent", period) & (
             age < p_federal.amount.base.thresholds[-1]
         )
-        return ctc_eligible_child & (age < p.age_threshold)
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        return ctc_eligible_child & (age < p.age_threshold) & ~filer_is_dependent
