@@ -1,11 +1,13 @@
 """Invariants for inferring the tax unit head and spouse.
 
 ``is_tax_unit_head`` picks the oldest adult and ``is_tax_unit_spouse`` the
-next oldest, skipping anyone input as a tax unit dependent unless every adult
-in the unit is one. These tests enumerate every tax unit of up to three people
-drawn from a small grid of ages and dependent inputs, and compare the model
-against reference implementations of that rule and of the rule before
-dependent inputs were honoured.
+next oldest who fails the qualifying child age test against the head (26 USC
+152(c)(3)), skipping anyone input as a tax unit dependent unless every adult
+in the unit is one. The situations omit marital units, so
+``tools/marital_units.py`` builds them by the same rules. These tests
+enumerate every tax unit of up to three people drawn from a small grid of ages
+and dependent inputs, and compare the model against reference implementations
+of that rule and of the rule before dependent inputs were honoured.
 """
 
 import itertools
@@ -19,6 +21,10 @@ YEAR = 2024
 # Covers children, the age-18 adult boundary, and ties between adults.
 AGES = (10, 18, 40, 70)
 MAX_UNIT_SIZE = 3
+# A non-student under 19 and younger than the head meets the qualifying child
+# age test (26 USC 152(c)(3)(A)(i)), so an 18-year-old is not the spouse of an
+# older head. The grid has no students or disabled people.
+QUALIFYING_CHILD_AGE_LIMIT = 19
 
 
 def _all_units(flag_values):
@@ -67,7 +73,15 @@ def _reference_roles(members, honour_dependent_input: bool):
             candidates = non_dependents
     ranked = sorted(candidates, key=lambda i: (-members[i][0], i))
     head = ranked[0] if ranked else None
-    spouse = ranked[1] if len(ranked) > 1 else None
+    spouses = [
+        i
+        for i in ranked[1:]
+        if not (
+            members[i][0] < QUALIFYING_CHILD_AGE_LIMIT
+            and members[i][0] < members[head][0]
+        )
+    ]
+    spouse = spouses[0] if spouses else None
     return head, spouse
 
 

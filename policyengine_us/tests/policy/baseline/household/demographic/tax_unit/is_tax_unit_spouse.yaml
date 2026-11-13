@@ -330,3 +330,26 @@
     is_tax_unit_spouse: [false, false]
     is_tax_unit_dependent: [false, true]
     filing_status: HEAD_OF_HOUSEHOLD
+
+- name: With marital units omitted, a parent's 18-year-old is a dependent rather than the spouse.
+  period: 2025
+  input:
+    people:
+      mother:
+        age: 45
+        employment_income_before_lsr: 20_000
+      son:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [mother, son]
+    households:
+      household:
+        members: [mother, son]
+        state_code: TX
+  output:
+    # The model gives each of them their own marital unit, since the son
+    # meets the qualifying child age test (26 USC 152(c)(3)(A)), so the
+    # mother files as head of household with her son as a dependent.
+    is_tax_unit_spouse: [false, false]
+    filing_status: HEAD_OF_HOUSEHOLD

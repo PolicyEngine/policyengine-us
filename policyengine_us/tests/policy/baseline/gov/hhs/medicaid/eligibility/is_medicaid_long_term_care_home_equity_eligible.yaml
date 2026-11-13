@@ -379,5 +379,8 @@
       household:
         members:
           [agricultural_at_limit, agricultural_above_limit, other_at_cap, other_above_cap]
+    # Four separate people, each in their own marital unit, so no one has a
+    # spouse living in the home.
+    marital_units: {}
   output:
     is_medicaid_long_term_care_home_equity_eligible: [true, false, true, false]

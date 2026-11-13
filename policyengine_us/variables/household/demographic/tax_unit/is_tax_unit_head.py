@@ -26,8 +26,9 @@ class is_tax_unit_head(Variable):
         # dependents (26 USC 152(b)(2)). So when two such adults share a
         # two-person marital unit within this tax unit, the older of the
         # couple heads it, even if another adult is older. When a situation
-        # omits marital units, Core puts everyone in one unit, so this changes
-        # nothing there: a two-person unit gives the same head.
+        # omits marital units, tools/marital_units.py pairs the head and
+        # spouse this fallback picks, so the couple's older member is that
+        # same head.
         # A separated member doesn't form such a couple: is_tax_unit_spouse
         # gives no one the spouse role in a unit with a separated member.
         # NOTE: the older adult then becomes the couple's dependent whatever

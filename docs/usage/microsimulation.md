@@ -2,6 +2,105 @@
 
 The `Microsimulation` class is the primary tool for population-level policy analysis in PolicyEngine US. It combines representative survey microdata with PolicyEngine's tax-benefit model to estimate how policies affect the entire US population.
 
+## Marital membership and tax roles
+
+Dataset `person_marital_unit_id` and `marital_unit_id` columns define marital
+membership. Loading the dataset and extending its years preserve those IDs.
+Microcosm builds these units from the survey's spouse pointers, and
+policyengine-us never rebuilds a dataset's units.
+
+A household situation's `marital_units` mapping also stands as supplied. An
+empty mapping gives each person their own unit. A married couple may share a
+marital unit while belonging to separate tax units.
+
+When an entity-form situation omits `marital_units`, the model pairs at most
+one couple in each tax unit and household, from the first of these that
+applies, and gives everyone else their own unit:
+
+1. an unambiguous pair of true `is_tax_unit_head` and `is_tax_unit_spouse`
+   inputs for overlapping periods, neither input as a dependent or separated;
+2. the head and spouse of a `tax_unit_role_input` supplied for every member;
+3. the two adults of a family whose `is_married` input is true, when exactly
+   two of its adults in the tax unit and household are neither input as
+   dependents nor separated;
+4. otherwise, the head and spouse that `is_tax_unit_head` and
+   `is_tax_unit_spouse` infer from age order: the oldest adult, and the
+   next-oldest adult who fails the qualifying child age test against them
+   (under 19, or under 24 if a full-time student, and younger than the head,
+   or permanently and totally disabled). No couple is formed when anyone in
+   the tax unit is separated, when the two live in different households, when
+   a family they share has a false `is_married` input, or when either has a
+   false `is_tax_unit_head` or `is_tax_unit_spouse` input for the role this
+   step gives them. A tax unit whose `filing_status` input is `JOINT` skips
+   the age test, because only a married couple files jointly
+   ([26 USC 6013(a)](https://www.law.cornell.edu/uscode/text/26/6013#a)).
+
+Only married people file separately
+([26 USC 1(d)](https://www.law.cornell.edu/uscode/text/26/1#d)), so when a
+household holds exactly two tax units whose `filing_status` input is
+`SEPARATE`, their two filers are then paired, unless either is separated, a
+family they share has a false `is_married` input, or either is already in a
+couple from the steps above. A unit's filer is its one true `is_tax_unit_head`
+input, or else its only adult who isn't input as a dependent; a `SEPARATE` unit
+with no such filer still counts toward the two, so it blocks the pairing. A
+marital unit is a married, co-habiting couple, so separate filers in different
+households stay apart. A `filing_status` input that changes between periods
+counts as no status.
+
+The fourth step reads the same inputs and parameters as the role formulas, so
+the units it builds agree with the inferred tax roles in the years the inputs
+are dated for: a couple sent without marriage information is a couple for SSI
+and Medicaid as well as for tax, and
+a parent's adult child who meets the age test is neither. When anyone in a
+situation supplies a role, student or age input for a year, Core gives everyone
+else that variable's default for the year instead of running its formula, and
+the fourth step reads the same defaults. The fourth step checks the years the
+inputs are dated for, so a payload dated for a year other
+than the simulation's default input year pairs the same couple. Under a reform,
+it uses the reform's dependent age limits.
+
+Membership can't change between periods. Inputs that can't settle one static
+couple give everyone in that tax unit and household their own unit: two head
+or two spouse inputs, a dependent also marked head or spouse in a unit with
+both a head and a spouse input, role or `is_married` inputs that change between
+periods, or a fourth-step couple that differs between years. With only a spouse
+input, on a person also input as a dependent, the fourth step pairs that person
+with the oldest other adult, and the role formulas give the same couple.
+
+Known limitations, which callers avoid by supplying `marital_units`:
+
+- Like the role fallback, the fourth step pairs an adult who fails the age test
+  with the head, such as a parent and their adult child or two unrelated adults
+  in one tax unit.
+- A tax unit with two couples pairs only the couple the role formulas pick;
+  the other two adults get their own units.
+- Spouses in two tax units are paired only as the two separate filers of one
+  household. A family's true `is_married` input doesn't pair them, and neither
+  do separate returns when the household holds more than two.
+- The separate-filer pairing reads no age or relationship, so a parent and an
+  adult child who each file separately from an absent spouse, beside a third
+  tax unit, become a couple.
+- A `filing_status` input dated for more than one year counts only when it is
+  the same in every year, so a status that is `JOINT` in the calculation year
+  and different in another year reads as no status.
+- `JOINT` and `SEPARATE` inputs say who is married, but `SINGLE`,
+  `HEAD_OF_HOUSEHOLD` and `SURVIVING_SPOUSE` inputs don't say who isn't: two
+  adults in one tax unit with any of them can still be paired by the fourth
+  step, as on main.
+- A lone true `is_tax_unit_spouse` input on the oldest adult makes that person
+  both head and spouse in the role formulas, as on main; the fourth step pairs
+  them with the next adult.
+- Marital units follow the years the inputs are dated for, while the role
+  formulas run again in any year without a role input. So a calculation for
+  another year can give roles the units don't match. For example, a
+  grandchild's undated `is_tax_unit_spouse: false` lands in the default input
+  year (2024), so the grandparents get their own units, while a 2026
+  calculation still makes them head and spouse.
+
+These rules apply to Python household simulations and entity-form YAML tests,
+including tests with reforms or inline parameters. Variable-only tests keep
+Core's own defaults.
+
 ## Getting started
 
 ```python
@@ -163,8 +262,9 @@ adult, except an adult who meets the qualifying child age test against the head
 than the head, or permanently and totally disabled at any age. That adult stays
 a dependent. No spouse is inferred when any member of the unit is separated,
 and a separated member doesn't count toward a couple. When a situation omits
-marital units, Core puts everyone in one marital unit, so plain age order
-applies. A minor living without a parent is left with no head.
+marital units, the model builds them by these same rules (see "Marital
+membership and tax roles" above), so they give the same roles. A minor living
+without a parent is left with no head.
 
 This rule has four known limitations. Supply `is_tax_unit_head`,
 `is_tax_unit_spouse` or `tax_unit_role_input` for these households:

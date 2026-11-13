@@ -1,0 +1,1 @@
+Build omitted household marital units from explicit couples, supplied tax roles, a married family or joint and separate filing statuses, and otherwise pair the head and spouse the tax-role fallback infers, instead of putting everyone in one marital unit.
