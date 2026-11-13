@@ -1,4 +1,6 @@
 description: Means-tested transfers included in CBO household income after transfers and taxes.
+# CBO also counts low-income subsidies for Medicare Part D and the
+# Affordable Care Act's cost-sharing subsidies, which the model does not value.
 values:
   0000-01-01:
     - medicaid
@@ -11,11 +13,81 @@ values:
     - reduced_price_school_meals
     - spm_unit_energy_subsidy
     - general_assistance
+    # CBO names child nutrition programs without listing them. WIC is section
+    # 17 of the Child Nutrition Act of 1966 (42 U.S.C. 1786, in the Child
+    # Nutrition chapter of Title 42), so this list counts it there.
+    - wic
+    # Medicaid pays Medicare premiums and cost sharing for Medicare
+    # Savings Program enrollees (42 U.S.C. 1396a(a)(10)(E)).
+    - msp_cost
+    # State supplements to Supplemental Security Income, and California's
+    # Cash Assistance Program for Immigrants (ca_capi), which pays aged, blind
+    # and disabled noncitizens whom SSI's immigration rules exclude.
+    - al_ssp
+    - ak_ssp
+    - ca_state_supplement
+    - ca_capi
+    - co_state_supplement
+    - ct_ssp
+    - de_ssp
+    - dc_ossp
+    - fl_oss
+    - ga_ssp
+    - hi_oss
+    - id_aabd
+    - in_ssp
+    - ia_ssa
+    - ks_sspp
+    - ky_ssp
+    - la_oss
+    - me_ssp
+    - md_paa
+    - ma_state_supplement
+    - mi_ssp
+    - mn_msa
+    - mo_ssp
+    - mt_ssp
+    - ne_aabd
+    - nv_oss
+    - nh_ssp
+    - nj_ssp
+    - nm_ssi_state_supplement
+    - ny_ssp
+    - nc_sa
+    - oh_rss
+    - ok_ssp
+    - or_ssp
+    - pa_ssp
+    - ri_ssp
+    - sc_ssi_state_supplement
+    - sd_ssp
+    - tx_ssi_state_supplement
+    - ut_ssp
+    - vt_aabd
+    - va_ag
+    - wa_ssp
+    - wi_ssp
+    - wy_ssp
+    # State and local cash assistance: Colorado Old Age Pension,
+    # Massachusetts Emergency Aid to the Elderly, Disabled and Children,
+    # and Washington State Family Assistance and Refugee Cash Assistance.
+    - co_oap
+    - ma_eaedc
+    - wa_sfa
+    - wa_rca
 
 metadata:
   unit: list
   period: year
   label: CBO means-tested transfers
   reference:
-    - title: Congressional Budget Office, Reconciling the Official Poverty Measure and CBO’s Distributional Analysis of Household Income, Including In-Kind Transfers
+    - title: Congressional Budget Office, The Distribution of Household Income in 2021, Appendix D (means-tested transfers)
+      href: https://www.cbo.gov/system/files/2024-09/60341-income.pdf#page=41
+    - title: Congressional Budget Office, The Distribution of Household Income, 2022 (other transfers)
+      href: https://www.cbo.gov/publication/61911
+    - title: Congressional Budget Office, Reconciling the Official Poverty Measure and CBO's Distributional Analysis of Household Income, Including In-Kind Transfers
       href: https://www.cbo.gov/publication/61157
+    - title: 42 U.S. Code § 1786 - Special supplemental nutrition program for women, infants, and children
+      href: https://www.law.cornell.edu/uscode/text/42/1786
+    - title: 42 U.S. Code § 1396a(a)(10)(E) - Medicare cost-sharing for qualified Medicare beneficiaries
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#a_10_E

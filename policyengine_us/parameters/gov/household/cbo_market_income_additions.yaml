@@ -1,12 +1,39 @@
 description: Additional components included in CBO household market income.
 values:
   0000-01-01:
+    # Labor income: employer-paid health insurance premiums and the
+    # employer's share of payroll taxes.
     - employer_sponsored_insurance_premiums
     - employer_social_security_tax
     - employer_medicare_tax
     - employer_federal_unemployment_tax
+    # Labor and capital income include the shares of corporate income taxes
+    # that workers and capital owners bear.
+    - cbo_corporate_income_tax
+    # Other income sources: income received in retirement for past services.
+    # The Current Population Survey records railroad retirement as retirement
+    # income. survivor_benefits is the survey's survivor income. Seven of the
+    # ten sources Appendix A lists for it are survivors' pensions, annuities,
+    # and payments from estates and trusts; two are workers' compensation and
+    # Black lung payments, which the model does not separate (Appendix A,
+    # source 8). The default data holds no survivor benefits.
+    - railroad_benefits
+    - survivor_benefits
+    # Other income sources: other nongovernmental sources of income, which
+    # CBO draws from the Current Population Survey. educational_assistance
+    # stays out: it holds Pell Grants and other government aid beside
+    # private scholarships, and the model does not split them.
+    - child_support_received
+    - financial_assistance
 
 metadata:
   unit: list
   period: year
   label: Modeled CBO market income additions
+  reference:
+    - title: Congressional Budget Office, The Distribution of Household Income in 2021, Appendix D (market income)
+      href: https://www.cbo.gov/system/files/2024-09/60341-income.pdf#page=41
+    - title: Congressional Budget Office, Working Paper 2017-09, Measuring Income (income that appears only in the Current Population Survey)
+      href: https://www.cbo.gov/system/files/115th-congress-2017-2018/workingpaper/53345-workingpaper.pdf#page=37
+    - title: IPUMS CPS, INCSS (railroad retirement payments counted as retirement income since 1980)
+      href: https://cps.ipums.org/cps-action/variables/INCSS

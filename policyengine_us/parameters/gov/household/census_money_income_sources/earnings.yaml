@@ -1,0 +1,23 @@
+description: The Census Bureau counts these sources as earnings, source 1 of 18 in money income.
+values:
+  0000-01-01:
+    # Money wage or salary income, before deductions such as pension
+    # contributions.
+    - employment_income
+    # Net income from nonfarm self-employment, including a business,
+    # professional enterprise or partnership.
+    - self_employment_income
+    - sstb_self_employment_income
+    - partnership_s_corp_income
+    # Net income from farm self-employment. Appendix A counts rent paid as
+    # a share of the crops in farm gross receipts; farm_rent_income holds
+    # the crop and livestock shares reported on Form 4835.
+    - farm_operations_income
+    - farm_rent_income
+metadata:
+  unit: list
+  period: year
+  label: Census money income earnings sources
+  reference:
+    - title: "Census Bureau, Current Population Reports P60-200, Appendix A, source 1 (earnings) #page 1-2"
+      href: https://www2.census.gov/programs-surveys/cps/methodology/Appendix%20A%20P60-200%20income%20measurement%20definition.pdf#page=1
