@@ -203,3 +203,14 @@
   output:
     # 9_000 - 0.075 * 50_000; Form AR3 Line 3B: "if either you or your spouse were age 65 or over"
     ar_medical_expense_deduction_indiv: [5_250, 0]
+
+- name: Arkansas separate medical deduction excludes self-employed premiums before its 10% floor
+  period: 2025
+  input:
+    state_code: AR
+    ar_agi_indiv: 30_000
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+  output:
+    ar_medical_expense_deduction_indiv: 2_500

@@ -62,8 +62,9 @@
     az_dependent_tax_credit: 125
     # Charitable add-on: min($1,500, $1,000 HOH cap) = $1,000
     az_increased_standard_deduction_for_charitable_contributions: 1_000
-    # Standard deduction: $23,625 base + $1,000 add-on = $24,625
-    az_standard_deduction: 24_625
+    # Standard deduction: $24,150 base (2026 head of household amount under
+    # A.R.S. 43-1041(H)) + $1,000 add-on = $25,150
+    az_standard_deduction: 25_150
     # Dependent care: cdcc_relevant_expenses = min($5,000, $3,000 §21 cap for
     # 1 QI, $80,000 earnings) = $3,000; subtraction = max($3,000 - $1,200, 0)
     # = $1,800
@@ -74,12 +75,12 @@
     az_subtractions: 2_800
     # AZ AGI = $80,000 - $2,800 = $77,200
     az_agi: 77_200
-    # Taxable income = $77,200 - $24,625 = $52,575
-    az_taxable_income: 52_575
-    # Tax before credits = $52,575 * 2.5% = $1,314.375
-    az_income_tax_before_non_refundable_credits: 1_314.375
-    # AZ income tax = $1,314.375 - $125 dependent credit = $1,189.375
-    az_income_tax: 1_189.375
+    # Taxable income = $77,200 - $25,150 = $52,050
+    az_taxable_income: 52_050
+    # Tax before credits = $52,050 * 2.5% = $1,301.25
+    az_income_tax_before_non_refundable_credits: 1_301.25
+    # AZ income tax = $1,301.25 - $125 dependent credit = $1,176.25
+    az_income_tax: 1_176.25
 
 # Confirms the pre-2026 regime is UNCHANGED for the identical household.
 # In 2025: dependent credit is $100, charitable add-on uses the 0.34 rate
@@ -124,3 +125,32 @@
     az_income_tax_before_non_refundable_credits: 1_396.625
     # AZ income tax = $1,396.625 - $100 dependent credit = $1,296.625
     az_income_tax: 1_296.625
+
+# PolicyBench reference audit 2026-10-05, scenario_018: a single wage earner
+# in tax year 2026. AZ AGI equals federal AGI (no Arizona additions or
+# subtractions apply). The standard deduction is $16,100 under A.R.S.
+# 43-1041(A)(1) and (H) (Rev. Proc. 2025-32 sec. 4.14(1)), not the
+# unindexed 2025 amount of $15,750.
+- name: AZ 2026 single filer uses the inflation-indexed standard deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 53
+        employment_income: 61_592
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_filing_status: SINGLE
+    az_agi: 61_592
+    az_standard_deduction: 16_100
+    # Taxable income = $61,592 - $16,100 = $45,492
+    az_taxable_income: 45_492
+    # Tax = $45,492 * 2.5% = $1,137.30
+    az_income_tax_before_non_refundable_credits: 1_137.30

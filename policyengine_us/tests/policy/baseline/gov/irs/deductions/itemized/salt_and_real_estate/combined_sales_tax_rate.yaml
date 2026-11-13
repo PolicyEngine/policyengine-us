@@ -1,0 +1,357 @@
+# Combined state and local general sales tax rates from the official state
+# rate files (policyengine_us/data/local_sales_tax/SOURCES.md). A rate that
+# changes during the year is averaged over the days it was in effect, as the
+# worksheet's line 3 instructions direct.
+
+- name: New York City, Publication 718
+  # "*New York City 8⅞ 8081" (Publication 718, effective March 1, 2025).
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+  output:
+    combined_sales_tax_rate: 0.08875
+
+- name: Yonkers, a Westchester County city with its own rate
+  # "*Yonkers (city) 8⅞ 6511"; "*Westchester – except 8⅜ 5581".
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36119"
+    place_fips: "84000"
+  output:
+    combined_sales_tax_rate: 0.08875
+
+- name: Westchester County outside the cities with their own rate
+  # A known census block outside every place: "*Westchester – except 8⅜".
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36119"
+    block_geoid: "361190001001000"
+  output:
+    combined_sales_tax_rate: 0.08375
+
+- name: Suffolk County, New York, before its March 1, 2025 increase
+  # Publication 718-A: Suffolk County 4¼% (with the 4% state rate and the ⅜%
+  # MCTD rate, 8⅝%) until its 4⅜% rate took effect on 1 Mar. 2025.
+  period: 2024
+  input:
+    state_code: NY
+    county_fips: "36103"
+  output:
+    combined_sales_tax_rate: 0.08625
+
+- name: Suffolk County, New York, 2025, day-weighted
+  # 8⅝% for January 1-February 28 (59 days), 8¾% for March 1-December 31
+  # (306 days): (59 x 8.625 + 306 x 8.75) / 365 = 8.72979%.
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: NY
+    county_fips: "36103"
+  output:
+    combined_sales_tax_rate: 0.0872979
+
+- name: Danville, Virginia, 2022, additional 1% local tax from July 1
+  # Virginia Tax, Sales and Use Tax Rates by Locality by Date: Danville
+  # (51590) 5.3% for January 1-June 30, 2022 (181 days); "An additional 1%
+  # Local Tax for Danville City went into effect on July 1, 2022": 6.3% for
+  # the other 184 days. (181 x 5.3 + 184 x 6.3) / 365 = 5.80411%.
+  period: 2022
+  absolute_error_margin: 0.000001
+  input:
+    state_code: VA
+    county_fips: "51590"
+  output:
+    combined_sales_tax_rate: 0.0580411
+
+- name: Williamsburg, Virginia, Historic Triangle rate
+  # Virginia Tax: Williamsburg (51830) General Sales 7%.
+  period: 2025
+  input:
+    state_code: VA
+    county_fips: "51830"
+  output:
+    combined_sales_tax_rate: 0.07
+
+- name: Clark County, Nevada, SST rate file
+  # NVR2025Q4NOV05: county 003 0.08375 from January 1, 2020.
+  period: 2025
+  input:
+    state_code: NV
+    county_fips: "32003"
+    place_fips: "40000"
+  output:
+    combined_sales_tax_rate: 0.08375
+
+- name: Nashville, Tennessee, 2025, transit surcharge from February 1
+  # TNR2026Q4AUG21: Davidson County 9.25% until January 31, 2025, then the
+  # 0.5% surcharge (codes 9195x) from February 1: 9.75% for 334 days.
+  # (31 x 9.25 + 334 x 9.75) / 365 = 9.70753%.
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: TN
+    county_fips: "47037"
+    place_fips: "52006"
+  output:
+    combined_sales_tax_rate: 0.0970753
+
+- name: Atlanta in DeKalb County, Georgia
+  # GAR2026Q4OCT01 and GAB2026Q4AUG20 code the DeKalb County part of Atlanta
+  # 05000, not the Census place code 04000: 4% state + 3% DeKalb County +
+  # 1.9% Atlanta = 8.9%, as in the Fulton County part.
+  period: 2024
+  input:
+    state_code: GA
+    county_fips: "13089"
+    place_fips: "04000"
+  output:
+    combined_sales_tax_rate: 0.089
+
+- name: East Middlebury, Vermont, 2022, the town's 1% local option tax
+  # VTR2026Q4AUG20 and VTB2026Q4AUG20: Middlebury's 1% local option tax
+  # (state code 00508 in 2022) applies town-wide; its 2022 records carry the
+  # Middlebury CDP code 44275, and the town's code, 44350, from 2023.
+  # East Middlebury CDP (21700) lies in the town: 6% + 1% = 7%.
+  period: 2022
+  input:
+    state_code: VT
+    county_fips: "50001"
+    place_fips: "21700"
+  output:
+    combined_sales_tax_rate: 0.07
+
+- name: California has no official locality rate file, so the heading rate
+  # The California table heading, 7.25%, includes the uniform local rate.
+  period: 2025
+  input:
+    state_code: CA
+    county_fips: "06037"
+    place_fips: "44000"
+  output:
+    combined_sales_tax_rate: 0.0725
+
+- name: Texas has no official locality rate file, so the heading rate
+  period: 2025
+  input:
+    state_code: TX
+  output:
+    combined_sales_tax_rate: 0.0625
+
+- name: Alaska has no state sales tax or official locality rate file
+  period: 2025
+  input:
+    state_code: AK
+    county_fips: "02020"
+  output:
+    combined_sales_tax_rate: 0
+
+- name: A county code outside the household's state is ignored
+  # A Texas household with a Seattle county code gets the Texas default.
+  period: 2025
+  input:
+    state_code: TX
+    county_fips: "53033"
+  output:
+    combined_sales_tax_rate: 0.0625
+
+- name: Rutland city, Vermont, before its local option sales tax
+  # Vermont Department of Taxes: Rutland City began its 1% tax in July 2023;
+  # Rutland Town's tax began in April 2009. They are separate municipalities.
+  period: 2022
+  input:
+    state_code: VT
+    county_fips: "50021"
+    place_fips: "61225"
+  output:
+    combined_sales_tax_rate: 0.06
+
+- name: Rutland city, Vermont, July 2023 local option sales tax, day-weighted
+  # 181 days at 6% and 184 days at 7%: (181 x 6 + 184 x 7) / 365.
+  period: 2023
+  absolute_error_margin: 0.00000001
+  input:
+    state_code: VT
+    county_fips: "50021"
+    place_fips: "61225"
+  output:
+    combined_sales_tax_rate: 0.0650410959
+
+- name: Rutland city, Vermont, full year of local option sales tax
+  period: 2024
+  input:
+    state_code: VT
+    county_fips: "50021"
+    place_fips: "61225"
+  output:
+    combined_sales_tax_rate: 0.07
+
+- name: Rutland town outside Census places contributes to its county remainder
+  # The 2022 taxed records map to Rutland town, not the city. The documented
+  # county-remainder average remains: 273 days at 6.2167%, then 92 at 6.2192%.
+  period: 2022
+  absolute_error_margin: 0.00000001
+  input:
+    state_code: VT
+    county_fips: "50021"
+    block_geoid: "500219627001000"
+  output:
+    combined_sales_tax_rate: 0.0621733014
+
+- name: New York City accepts a state-prefixed place GEOID
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "3651000"
+  output:
+    combined_sales_tax_rate: 0.08875
+
+- name: Atlanta in DeKalb accepts a short place code
+  period: 2024
+  input:
+    state_code: GA
+    county_fips: "13089"
+    place_fips: "4000"
+  output:
+    combined_sales_tax_rate: 0.089
+
+- name: DeWitt Arkansas accepts a short county code
+  # ARR2026Q4AUG28: state code 05 at 6.5%, county 001 at 1%, city 18790
+  # at 3.5% throughout 2025; total 6.5 + 1 + 3.5 = 11%. The Census county
+  # FIPS 05001 is supplied without its leading zero as 5001.
+  period: 2025
+  input:
+    state_code: AR
+    county_fips: "5001"
+    place_fips: "18790"
+  output:
+    combined_sales_tax_rate: 0.11
+
+- name: Geography inputs resolve consistently with explicit-input precedence
+  # NYC: 8.875%, Table A; Yonkers: 8.875%, Table B;
+  # Westchester outside its cities: 8.375%, Table B (NY Pub. 718).
+  # A block outranks an entered county enum; county FIPS outranks both.
+  # Savannah (GA 69000) has no own-rate CSV row: its Chatham County
+  # remainder is 7%, and Georgia's other-locality table is B. The Census
+  # place-to-county crosswalk must retain it despite rate pruning.
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person_county_enum:
+        age: 40
+      person_nyc_flag:
+        age: 40
+      person_yonkers_flag:
+        age: 40
+      person_place_only:
+        age: 40
+      person_block_only:
+        age: 40
+      person_block_over_enum:
+        age: 40
+      person_county_over_block:
+        age: 40
+      person_place_over_flag:
+        age: 40
+      person_no_location:
+        age: 40
+      person_pruned_place:
+        age: 40
+      person_invalid_counties:
+        age: 40
+      person_single_county_outside_coverage:
+        age: 40
+    households:
+      household_county_enum:
+        members: [person_county_enum]
+        state_code: NY
+        county: KINGS_COUNTY_NY
+      household_nyc_flag:
+        members: [person_nyc_flag]
+        state_code: NY
+        in_nyc: true
+      household_yonkers_flag:
+        members: [person_yonkers_flag]
+        state_code: NY
+        in_yonkers: true
+      household_place_only:
+        members: [person_place_only]
+        state_code: NY
+        place_fips: "51000"
+      household_block_only:
+        members: [person_block_only]
+        state_code: NY
+        block_geoid: "361190001001000"
+      household_block_over_enum:
+        members: [person_block_over_enum]
+        state_code: NY
+        block_geoid: "361190001001000"
+        county: KINGS_COUNTY_NY
+      household_county_over_block:
+        members: [person_county_over_block]
+        state_code: NY
+        county_fips: "36119"
+        block_geoid: "360470001001000"
+        county: KINGS_COUNTY_NY
+      household_place_over_flag:
+        members: [person_place_over_flag]
+        state_code: NY
+        place_fips: "51000"
+        in_yonkers: true
+      household_no_location:
+        members: [person_no_location]
+        state_code: NY
+      household_pruned_place:
+        members: [person_pruned_place]
+        state_code: GA
+        place_fips: "69000"
+      household_invalid_counties:
+        members: [person_invalid_counties]
+        state_code: NY
+        county_fips: "36999"
+        block_geoid: "369990001001000"
+        place_fips: "51000"
+      household_single_county_outside_coverage:
+        members: [person_single_county_outside_coverage]
+        state_code: LA
+        place_fips: "05000"
+  output:
+    combined_sales_tax_rate: [0.088750000000, 0.088750000000, 0.088750000000, 0.088750000000, 0.083750000000, 0.083750000000, 0.083750000000, 0.088750000000, 0.085411545063, 0.070000000000, 0.088750000000, 0.050000000000]
+    local_sales_tax_table: [A, A, B, A, B, B, B, A, D, B, A, B]
+
+- name: Out-of-state place GEOID is ignored before its state prefix is stripped
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: NY
+    place_fips: "0651000"
+  output:
+    combined_sales_tax_rate: 0.085411545063
+    local_sales_tax_table: D
+
+- name: Out-of-state county enum and block do not infer a New York locality
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: TX
+    county: KINGS_COUNTY_NY
+    block_geoid: "361190001001000"
+  output:
+    combined_sales_tax_rate: 0.062500000000
+    local_sales_tax_table: A
+
+- name: New York city flags do not locate a household in another state
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: TX
+    in_nyc: true
+    in_yonkers: true
+  output:
+    combined_sales_tax_rate: 0.062500000000
+    local_sales_tax_table: A

@@ -70,3 +70,110 @@
     has_tin: true
   output:
     is_eligible_for_lifetime_learning_credit: false
+
+
+- name: 2024 student claimed as a dependent elsewhere cannot claim the credit
+  period: 2024
+  input:
+    people:
+      student:
+        age: 30
+        attends_eligible_educational_institution_for_lifetime_learning_credit: true
+        has_lifetime_learning_credit_1098_t_or_exception: true
+        has_tin: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [student]
+    households:
+      household:
+        members: [student]
+        state_code: TX
+  output:
+    # IRC 25A(g)(3).
+    is_eligible_for_lifetime_learning_credit: false
+
+- name: 2024 joint return with one spouse claimed elsewhere cannot claim the credit for either spouse (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        attends_eligible_educational_institution_for_lifetime_learning_credit: true
+        has_lifetime_learning_credit_1098_t_or_exception: true
+        has_tin: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        attends_eligible_educational_institution_for_lifetime_learning_credit: true
+        has_lifetime_learning_credit_1098_t_or_exception: true
+        has_tin: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    is_eligible_for_lifetime_learning_credit: [false, false]
+
+- name: 2024 joint return with one spouse claimed elsewhere cannot claim the credit for either spouse (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        attends_eligible_educational_institution_for_lifetime_learning_credit: true
+        has_lifetime_learning_credit_1098_t_or_exception: true
+        has_tin: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        attends_eligible_educational_institution_for_lifetime_learning_credit: true
+        has_lifetime_learning_credit_1098_t_or_exception: true
+        has_tin: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    is_eligible_for_lifetime_learning_credit: [false, false]
+
+- name: 2024 joint return with neither spouse claimed keeps both students' eligibility
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        attends_eligible_educational_institution_for_lifetime_learning_credit: true
+        has_lifetime_learning_credit_1098_t_or_exception: true
+        has_tin: true
+      person_b:
+        age: 30
+        attends_eligible_educational_institution_for_lifetime_learning_credit: true
+        has_lifetime_learning_credit_1098_t_or_exception: true
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    is_eligible_for_lifetime_learning_credit: [true, true]

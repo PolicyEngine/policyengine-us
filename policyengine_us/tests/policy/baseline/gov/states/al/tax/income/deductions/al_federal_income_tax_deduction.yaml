@@ -77,7 +77,7 @@
   # no non-refundable add-backs.
   # Hand arithmetic:
   #   federal_tax = 100; niit = 200
-  #   Part I  = max(100 - eitc(200) - full_AOC(200) - refundable_ctc(0), 0) = 0
+  #   Part I  = max(100 - eitc(200) - refundable_AOC(80) - refundable_ctc(0), 0) = 0
   #   regular_tax_basis = 100 - 200 = -100
   #   line_6  = max(-100, 0) = 0                      <- floor before NIIT
   #   refundable_AOC = 0.4 * 200 = 80
@@ -112,14 +112,14 @@
   #
   # Hand arithmetic (all direct inputs):
   #   federal_tax = income_tax_before_refundable_credits = 5,000; NIIT = 0
-  #   Part I  = max(5,000 - eitc(0) - full_AOC(2,500) - refundable_ctc(0), 0)
-  #           = 2,500
+  #   Part I  = max(5,000 - eitc(0) - refundable_AOC(1,000) - refundable_ctc(0), 0)
+  #           = 4,000
   #   regular_tax_basis = 5,000 - 0 = 5,000
   #   line_6  = max(5,000 + 0 + 0 - 0 - 0, 0) = 5,000
   #   refundable_AOC = 0.4 * 2,500 = 1,000
   #   Part II = max(5,000 + NIIT(0) - eitc(0) - refundable_ctc(0)
   #                 - refundable_AOC(1,000), 0) = 4,000
-  #   deduction = max(Part I 2,500, Part II 4,000) = 4,000
+  #   deduction = max(Part I 4,000, Part II 4,000) = 4,000
   # Regression guard: the pre-fix code subtracted the full $2,500 AOC in Part II,
   # giving Part II = max(5,000 - 2,500, 0) = 2,500 and a deduction of 2,500.
   absolute_error_margin: 0.01
@@ -238,3 +238,214 @@
         state_code: AL
   output:
     al_federal_income_tax_deduction: 0
+
+- name: 2021 MFJ, two children, $9,000 employer dependent care benefits - the 2020-rule CDCC uses the $5,000 section 129 cap
+  # Act 2022-37 section 1; 2021 worksheet Part II line 4 enters the CDCC
+  # "based on 2020 Form 2441 Line 11". Line 21 of the 2020 form caps excluded
+  # benefits at $5,000; ARPA section 9632's $10,500 came after 2020-12-31.
+  # Actual 2021: AGI 100,000; taxable income 100,000 - 25,100 = 74,900;
+  #   tax 1,990 + 12% x 55,000 = 8,590. CTC 3,600 + 3,000 = 6,600, all
+  #   refundable. Exclusion min(9,000, 10,500, 40,000) = 9,000; limit
+  #   16,000 - 9,000 = 7,000; CDCC 50% x 7,000 = 3,500, refundable.
+  # Part I = 8,590 - 6,600 = 1,990.
+  # Part II, 2020 rules: exclusion min(9,000, 5,000) = 5,000; limit
+  #   6,000 - 5,000 = 1,000; rate 20%; CDCC 200. CTC 4,000, all
+  #   non-refundable (limit 8,590 - 200 = 8,390). Line 6 = 8,590 - 4,000 -
+  #   200 = 4,390.
+  # Deduction = max(1,990, 4,390) = 4,390. Recomputing with the $10,500 cap
+  # would give a CDCC of 0 and a deduction of 4,590.
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        # employment_income includes the $9,000 of dependent care benefits;
+        # box 1 wages are $60,000 ($69,000 - $9,000).
+        employment_income: 69_000
+        dependent_care_employer_benefits: 9_000
+      spouse:
+        age: 40
+        employment_income: 40_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_childcare_expenses: 20_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: AL
+  output:
+    dependent_care_assistance_exclusion: 9_000
+    cdcc: 3_500
+    al_federal_income_tax_deduction: 4_390
+
+- name: Alabama subtracts payment credits and only refundable AOC
+  # Ala. Admin. Code r. 810-3-15-.20(1)(d)2 requires all payment credits.
+  # Federal tax already reflects the nonrefundable $1,500 of the total AOC.
+  # max(5,000 - 1,000 refundable AOC - 1,500 claim credit - 1,000 net PTC, 0).
+  period: 2025
+  input:
+    state_code: AL
+    income_tax_before_refundable_credits: 5_000
+    eitc: 0
+    american_opportunity_credit: 2_500
+    refundable_american_opportunity_credit: 1_000
+    refundable_ctc: 0
+    claim_of_right_credit: 1_500
+    net_premium_tax_credit: 1_000
+    al_other_federal_payment_credits: 0
+  output:
+    al_federal_income_tax_deduction: 1_500
+
+- name: Alabama applies the regulation's full payment-credit list before 2021
+  # Ala. Admin. Code r. 810-3-15-.20(1)(d)2 (amended 2010) governs 2020 too.
+  # Federal tax already reflects the nonrefundable $1,500 of the total AOC.
+  # max(5,000 - 1,000 refundable AOC - 1,500 claim credit - 1,000 net PTC
+  #   - 750 other payment credits - 0 EITC - 0 refundable CTC, 0) = 750.
+  period: 2020
+  input:
+    state_code: AL
+    income_tax_before_refundable_credits: 5_000
+    eitc: 0
+    american_opportunity_credit: 2_500
+    refundable_american_opportunity_credit: 1_000
+    refundable_ctc: 0
+    claim_of_right_credit: 1_500
+    net_premium_tax_credit: 1_000
+    al_other_federal_payment_credits: 750
+  output:
+    al_federal_income_tax_deduction: 750
+
+- name: Alabama payment credits cannot make the deduction negative
+  period: 2025
+  input:
+    state_code: AL
+    income_tax_before_refundable_credits: 1_000
+    eitc: 0
+    refundable_american_opportunity_credit: 0
+    refundable_ctc: 0
+    claim_of_right_credit: 1_500
+    net_premium_tax_credit: 0
+    al_other_federal_payment_credits: 0
+  output:
+    al_federal_income_tax_deduction: 0
+
+- name: Alabama 2021 alternative subtracts claim credit and net PTC
+  # Childless $50,000 filer has no recomputed CTC, CDCC, or EITC.
+  # Both alternatives equal max(5,000 - 1,500 - 1,000, 0).
+  period: 2021
+  input:
+    state_code: AL
+    age: 40
+    employment_income: 50_000
+    income_tax_before_refundable_credits: 5_000
+    net_investment_income_tax: 0
+    ctc: 0
+    refundable_ctc: 0
+    cdcc: 0
+    eitc: 0
+    refundable_american_opportunity_credit: 0
+    claim_of_right_credit: 1_500
+    net_premium_tax_credit: 1_000
+    al_other_federal_payment_credits: 0
+  output:
+    al_federal_income_tax_deduction: 2_500
+
+- name: Alabama subtracts residual federal payment credits
+  # The residual input covers credits not otherwise named in the list.
+  period: 2025
+  input:
+    state_code: AL
+    income_tax_before_refundable_credits: 5_000
+    eitc: 0
+    refundable_american_opportunity_credit: 0
+    refundable_ctc: 0
+    claim_of_right_credit: 0
+    net_premium_tax_credit: 0
+    al_other_federal_payment_credits: 750
+  output:
+    al_federal_income_tax_deduction: 4_250
+
+- name: Alabama 2021 alternative floors the deduction after all payment credits
+  # The line-6 floor protects NIIT before payment credits are subtracted.
+  # Both alternatives must still subtract the residual credits and floor at 0.
+  period: 2021
+  input:
+    state_code: AL
+    age: 40
+    employment_income: 50_000
+    income_tax_before_refundable_credits: 0
+    net_investment_income_tax: 1_900
+    ctc: 0
+    refundable_ctc: 0
+    cdcc: 0
+    eitc: 0
+    refundable_american_opportunity_credit: 0
+    claim_of_right_credit: 500
+    net_premium_tax_credit: 500
+    al_other_federal_payment_credits: 1_000
+  output:
+    al_federal_income_tax_deduction: 0
+
+- name: 2021 head of household, one child - Part II recomputes the EITC only for a taker
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 41_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    # Federal tax: $41,000 - $18,800 standard deduction = $22,200 taxable;
+    # 10% x 14,200 + 12% x 8,000 = $2,380.
+    income_tax_before_refundable_credits: 2_380
+    # Part I: 2,380 - 3,600 refundable CTC - 185.50 EITC < 0, so 0.
+    # Part II (2020 IRC): 2,380 - 2,000 nonrefundable 2020 CTC = 380 (line 6);
+    # 2020 EITC 3,584 - 15.98% x (41,000 - 19,330) = 121.13; the 2020 CTC is
+    # all nonrefundable here, so 380 - 121.13 = 258.87.
+    al_federal_income_tax_deduction: 258.87
+
+- name: 2021 head of household, one child, no EITC take-up - Part II recomputes no EITC
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 41_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        takes_up_eitc: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    eitc: 0
+    # Part I: 2,380 - 3,600 refundable CTC < 0, so 0. Part II: line 6 is
+    # 380 and the 2020-rule EITC is zero for a filer who does not take it
+    # up, so 380.
+    al_federal_income_tax_deduction: 380

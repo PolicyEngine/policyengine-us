@@ -4,7 +4,8 @@ Separation under 26 U.S.C. 7703 concerns the filer's own marriage, so only
 the head's or the would-be spouse's `is_separated` can leave a tax unit
 without a spouse. The would-be spouse is the oldest head-or-spouse candidate
 other than the head; candidates are adults not input as dependents (every
-adult when all are). Core's `get_rank` puts equal ages in member order.
+adult when all are). These situations omit marital units, so head and
+spouse selection follows age order. Core breaks equal-age ties by member order.
 
 Hypothesis draws batches of tax units of one to five people, with tied ages,
 children, separated members and, in turn, no role inputs, input dependent
@@ -25,6 +26,7 @@ from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
+from policyengine_us.tests.core.test_tax_unit_role_input_properties import _age_rule
 
 YEAR = 2024
 ADULT_AGE = 18
@@ -63,31 +65,15 @@ def _seeded_units(n=300, seed=20261006):
     return units
 
 
-def _first_oldest(ages, eligible):
-    """Index of the oldest eligible member, the earlier one on a tie."""
-    order = [i for i in range(len(ages)) if eligible[i]]
-    return min(order, key=lambda i: (-ages[i], i)) if order else None
-
-
 def _reference(unit, mode):
-    """(head index, spouse index) under the rule in the module docstring."""
+    """Adapt the shared age-order reference to this test's input modes."""
     members = unit["members"]
-    ages = [m["age"] for m in members]
-    adult = [age >= ADULT_AGE for age in ages]
-    candidate = adult
-    if mode != "no_roles":
-        non_dependent = [a and not m["dependent"] for a, m in zip(adult, members)]
-        if any(non_dependent):
-            candidate = non_dependent
-    if mode == "head":
-        head = unit["head"]
-    else:
-        head = _first_oldest(ages, candidate)
-    would_be = _first_oldest(ages, [c and i != head for i, c in enumerate(candidate)])
-    separated = [m["separated"] for m in members]
-    if would_be is None or (head is not None and separated[head]):
-        return head, None
-    return head, None if separated[would_be] else would_be
+    return _age_rule(
+        [m["age"] for m in members],
+        [m["separated"] for m in members],
+        [m["dependent"] for m in members] if mode != "no_roles" else None,
+        unit["head"] if mode == "head" else None,
+    )
 
 
 def _twin(unit, mode):
@@ -107,7 +93,7 @@ def _twin(unit, mode):
 
 
 def _situation(units, mode):
-    people, tax_unit_groups, households, marital_units = {}, {}, {}, {}
+    people, tax_unit_groups, households = {}, {}, {}
     for u, unit in enumerate(units):
         names = []
         for i, member in enumerate(unit["members"]):
@@ -122,14 +108,12 @@ def _situation(units, mode):
                 person["is_tax_unit_head"] = {YEAR: i == unit["head"]}
             people[name] = person
             names.append(name)
-            marital_units[f"m{u}_{i}"] = {"members": [name]}
         tax_unit_groups[f"t{u}"] = {"members": names}
         households[f"h{u}"] = {"members": names, "state_code": {YEAR: "TX"}}
     return {
         "people": people,
         "tax_units": tax_unit_groups,
         "households": households,
-        "marital_units": marital_units,
     }
 
 

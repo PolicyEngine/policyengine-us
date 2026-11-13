@@ -1,0 +1,106 @@
+description: New Jersey provides this annual regular heating benefit to households in the electric panel, by county region, monthly income band and household size group, under the Low Income Home Energy Assistance Program.
+1:
+  1:
+    1:
+      2025-10-01: 529
+    2:
+      2025-10-01: 710
+    3:
+      2025-10-01: 846
+    4:
+      2025-10-01: 931
+  2:
+    1:
+      2025-10-01: 529
+    2:
+      2025-10-01: 710
+    3:
+      2025-10-01: 846
+    4:
+      2025-10-01: 931
+  3:
+    1:
+      2025-10-01: 442
+    2:
+      2025-10-01: 591
+    3:
+      2025-10-01: 705
+    4:
+      2025-10-01: 776
+  4:
+    1:
+      2025-10-01: 352
+    2:
+      2025-10-01: 473
+    3:
+      2025-10-01: 564
+    4:
+      2025-10-01: 620
+  5:
+    1:
+      2025-10-01: 265
+    2:
+      2025-10-01: 354
+    3:
+      2025-10-01: 424
+    4:
+      2025-10-01: 466
+2:
+  1:
+    1:
+      2025-10-01: 606
+    2:
+      2025-10-01: 821
+    3:
+      2025-10-01: 970
+    4:
+      2025-10-01: 1_067
+  2:
+    1:
+      2025-10-01: 606
+    2:
+      2025-10-01: 821
+    3:
+      2025-10-01: 970
+    4:
+      2025-10-01: 1_067
+  3:
+    1:
+      2025-10-01: 506
+    2:
+      2025-10-01: 675
+    3:
+      2025-10-01: 807
+    4:
+      2025-10-01: 888
+  4:
+    1:
+      2025-10-01: 404
+    2:
+      2025-10-01: 541
+    3:
+      2025-10-01: 646
+    4:
+      2025-10-01: 711
+  5:
+    1:
+      2025-10-01: 304
+    2:
+      2025-10-01: 406
+    3:
+      2025-10-01: 485
+    4:
+      2025-10-01: 534
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Jersey LIHEAP electric payment
+  breakdown:
+  - range(1, 3)
+  - range(1, 6)
+  - range(1, 5)
+  reference:
+  - title: FY2026 Benefit Matrix
+    href: https://nj.gov/dca/dhcr/offices/docs/FY2026%20Benefit%20Matrix.pdf
+  - title: FY2027 Benefit Matrix
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20Benefit%20Matrix.png

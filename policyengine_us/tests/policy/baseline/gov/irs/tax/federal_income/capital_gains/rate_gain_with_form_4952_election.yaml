@@ -1,0 +1,201 @@
+# 28-percent rate gain (here all collectibles gain, Schedule D line 18) with
+# and without a Form 4952 line 4g election, for a single filer aged 45 in
+# 2025. Line references are to the 2025 Schedule D Tax Worksheet
+# (Instructions for Schedule D, pages 15 and 16):
+#   line 9   line 7 (net capital gain) less line 8 (the part of the line 4g
+#            election that comes from the gain)
+#   line 11  Schedule D lines 18 and 19
+#   line 12  the smaller of line 9 or line 11
+#   line 13  line 10 less line 12
+#   line 18  line 1 less line 10
+#   line 19  the smaller of line 1 or $197,300, the top of the 24% bracket
+#   line 20  the smaller of line 14 or line 19
+#   line 21  the larger of line 18 or line 20, taxed at the regular rates
+#   line 42  line 1 less lines 21, 22, 30, 33 and 39, taxed at 28%
+#   line 47  the smaller of line 45 (the sum) or line 46 (the tax on line 1)
+# 26 U.S.C. 1(h)(1)(F) taxes at 28% only "the amount of taxable income in
+# excess of the sum of the amounts on which tax is determined under the
+# preceding subparagraphs", and the election removes the elected gain from
+# net capital gain (1(h)(2)), so the 28% amount is never more than line 9 or
+# taxable income. The standard deduction is $15,750. Tax on an amount
+# between $103,350 and $197,300 is 24% of it less $7,153; between $250,525
+# and $626,350, 35% of it less $30,452.75 (2025 Tax Computation Worksheet).
+
+- name: Collectibles gain with no taxable income bears no tax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 0
+        long_term_capital_gains: 10_000
+        long_term_capital_gains_on_collectibles: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 1 = 10,000 - 15,750, so zero. Lines 9 to 12 = 10,000; line 13 =
+    # 0; line 14 = 0; line 21 = 0; line 42 = 0. Line 47 = 0.
+    taxable_income: 0
+    capital_gains_tax: 0
+    income_tax_before_credits: 0
+
+- name: Collectibles gain above taxable income is not taxed at 28%
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 10_750
+        long_term_capital_gains: 10_000
+        long_term_capital_gains_on_collectibles: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 1 = 20,750 - 15,750 = 5,000. Lines 9 to 12 = 10,000; line 13 = 0;
+    # line 14 = 5,000; line 16 = 5,000, the same as line 1, so lines 23 to
+    # 43 are skipped. Line 21 = 5,000; line 44 = line 46 = 10% of 5,000 =
+    # 500 at the exact rates the model uses (the Tax Table row 5,000-5,050
+    # gives 503). Taxing all 10,000 at 28% would add 2,800.
+    taxable_income: 5_000
+    income_tax_main_rates: 500
+    capital_gains_tax: 0
+    income_tax_before_credits: 500
+
+- name: Half the collectibles gain elected as investment income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        long_term_capital_gains: 100_000
+        long_term_capital_gains_on_collectibles: 100_000
+        investment_income_elected_form_4952: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 1 = 184,250. Line 3 = 50,000; line 4 = 100,000; line 8 = 50,000;
+    # line 9 = 50,000; line 10 = 50,000. Line 11 = 100,000; line 12 =
+    # 50,000; line 13 = 0; line 14 = 184,250. Line 18 = 134,250; line 19 =
+    # 184,250; line 20 = 184,250; line 21 = 184,250, all of line 1, so line
+    # 42 = 0. Line 44 = line 46 = 24% of 184,250 less 7,153 = 37,067.
+    # Taxing line 18 at the regular rates (25,067) and 28% of the 50,000 left
+    # (14,000) would give 39,067, more than line 46.
+    taxable_income: 184_250
+    dwks09: 50_000
+    dwks10: 50_000
+    dwks19: 184_250
+    income_tax_main_rates: 37_067
+    capital_gains_tax: 0
+    income_tax_before_credits: 37_067
+
+- name: All the collectibles gain elected as investment income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        long_term_capital_gains: 100_000
+        long_term_capital_gains_on_collectibles: 100_000
+        investment_income_elected_form_4952: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 8 = 100,000; line 9 = 0; line 10 = 0; line 12 = 0; line 13 = 0.
+    # Line 18 = 184,250 = line 21; line 42 = 0. Line 47 = tax on 184,250.
+    taxable_income: 184_250
+    dwks10: 0
+    dwks19: 184_250
+    income_tax_main_rates: 37_067
+    capital_gains_tax: 0
+    income_tax_before_credits: 37_067
+
+- name: The same collectibles gain with no election
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        long_term_capital_gains: 100_000
+        long_term_capital_gains_on_collectibles: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Lines 9 to 12 = 100,000; line 13 = 0; line 14 = 184,250. Line 18 =
+    # 84,250, but line 19 = 184,250 and line 20 = 184,250, so line 21 =
+    # 184,250: the gain falls below the top of the 24% bracket and is taxed
+    # at the regular rates (1(h)(1)(A)(ii)). Line 47 = 37,067. Taxing 84,250
+    # at the regular rates (13,449) and all 100,000 at 28% would give 41,449.
+    taxable_income: 184_250
+    dwks19: 184_250
+    income_tax_main_rates: 37_067
+    capital_gains_tax: 0
+    income_tax_before_credits: 37_067
+
+- name: An election above the 24% bracket leaves 28% on line 9 only
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 300_000
+        long_term_capital_gains: 100_000
+        long_term_capital_gains_on_collectibles: 100_000
+        investment_income_elected_form_4952: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 1 = 384,250. Line 9 = 50,000; line 10 = 50,000; line 11 =
+    # 100,000; line 12 = 50,000; line 13 = 0; line 14 = 384,250. Line 18 =
+    # 334,250; line 19 = 197,300; line 20 = 197,300; line 21 = 334,250. Line
+    # 22 = 0; lines 30 and 33 = 0; Schedule D line 19 is zero, so lines 35
+    # to 40 are skipped. Line 41 = 334,250; line 42 = 50,000; line 43 =
+    # 14,000. Line 44 = 35% of 334,250 less 30,452.75 = 86,534.75. Line 45 =
+    # 100,534.75; line 46 = 104,034.75; line 47 = 100,534.75. The Form 6251
+    # tentative minimum tax, 28% of 311,900 less 4,782 = 82,550, is lower, so
+    # there is no AMT. Taxing all 100,000 at 28% would tax the elected 50,000
+    # twice: 114,534.75.
+    taxable_income: 384_250
+    dwks19: 334_250
+    income_tax_main_rates: 86_534.75
+    capital_gains_tax: 14_000
+    alternative_minimum_tax: 0
+    income_tax_before_credits: 100_534.75

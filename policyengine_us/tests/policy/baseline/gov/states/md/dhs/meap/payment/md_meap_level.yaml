@@ -1,0 +1,54 @@
+# Sources for the expected values in this file:
+# - FY26 MEAP Benefit Matrix (one page), column headings: Level 1 0-25% FPL, Level 2
+#   26-50% FPL, Level 3 51-100% FPL, Level 4 101-150% FPL, Level 5 151-200% FPL,
+#   Level 6 Subsidized/Sub metered, Level 7 Over 200% FPL:
+#   https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/FY26-MEAP-Benefit-Matrix-2-1-1.pdf
+# - OHEP Operations Manual (May 2025), page 63 (nominal benefit for categorically
+#   eligible households above 200% FPL):
+#   https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=63
+# - FY2026 LIHEAP State Plan, page 9 (lower benefit level in subsidized housing):
+#   https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=9
+# The $10,000 guideline is a round figure so that the incomes are exact percentages.
+
+- name: Case 1, income at each poverty band top and one dollar above it.
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD, MD, MD, MD, MD, MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    md_meap_fpg: [10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000]
+    md_meap_countable_income: [0, 2_500, 2_501, 5_000, 5_001, 10_000, 10_001, 15_000, 15_001, 20_000, 20_001]
+  output:
+    # Matrix columns by income as a share of the guideline: 0% and 25% are Level 1
+    # (0-25%); 25.01% and 50% are Level 2 (26-50%); 50.01% and 100% are Level 3
+    # (51-100%); 100.01% and 150% are Level 4 (101-150%); 150.01% and 200% are
+    # Level 5 (151-200%); 200.01% is Level 7 (Over 200%). Band tops are read as
+    # inclusive, matching the at-or-below income test.
+    md_meap_level: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 7]
+
+- name: Case 2, housing assistance uses Level 6 unless income is above 200 percent.
+  period: 2026
+  input:
+    state_code: [MD, MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    md_meap_fpg: [10_000, 10_000, 10_000]
+    md_meap_countable_income: [0, 20_000, 20_001]
+    receives_housing_assistance: [true, true, true]
+  output:
+    # Matrix: subsidized households are Level 6 (Subsidized/Sub metered) at 0% and at
+    # 200% of the guideline. At 200.01%, Level 7 (Over 200% FPL): the manual (page
+    # 63) pays categorically eligible households above 200% FPL a nominal benefit.
+    md_meap_level: [6, 6, 7]
+
+- name: Case 3, public housing uses Level 6 unless income is above 200 percent.
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    md_meap_fpg: [10_000, 10_000]
+    md_meap_countable_income: [8_000, 20_001]
+    is_in_public_housing: [true, true]
+  output:
+    # State Plan page 9: renters in subsidized housing receive a lower benefit level
+    # because a utility allowance is in their subsidy; matrix Level 6 at 80% of the
+    # guideline. At 200.01%, Level 7 (Over 200% FPL) as in Case 2.
+    md_meap_level: [6, 7]

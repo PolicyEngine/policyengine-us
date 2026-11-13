@@ -8,7 +8,7 @@ class nj_eligible_pension_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21",
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=22",
         "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-10/",
     )
     defined_for = StateCode.NJ
@@ -26,4 +26,11 @@ class nj_eligible_pension_income(Variable):
         role_eligible = is_head | is_spouse
 
         eligible = demographic_eligible & role_eligible
-        return eligible * add(person, period, p.sources)
+        # Line A is line 20a, which a claim of right repayment of pension
+        # income reduces (N.J.S.A. 54A:5-2; TAM 2011-7).
+        pension_income = max_(
+            add(person, period, p.sources)
+            - person("nj_claim_of_right_pension_offset", period),
+            0,
+        )
+        return eligible * pension_income

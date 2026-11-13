@@ -1,0 +1,155 @@
+# 26 U.S.C. 32(c)(1)(C): no EITC for an individual who claims the benefits of
+# section 911. These state credits are the federal credit with named rules
+# waived (age, SSN, separate filing), so the section 911 bar still applies:
+# Colorado (1 CCR 201-2, Rule 39-22-123.5(2)), DC (D.C. Code 47-1806.04(f)),
+# Illinois (35 ILCS 5/212(a), (b-5), (b-10), (b-15)), Indiana (IRC conformity,
+# IC 6-3-1-11) and Washington (WAC 458-20-285).
+#
+# Each household: single, 40, no children, $5,000 of included wages, a $30,000
+# section 911 exclusion, valid SSN, and no propensity to file otherwise. The
+# exclusion makes filing required (26 U.S.C. 6012(c)), which must not open
+# the state credit.
+
+- name: Section 911 claimant in CO gets no state EITC through the federal-style recomputation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+        would_file_if_eligible_for_refundable_credit: false
+        would_file_taxes_voluntarily: false
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    tax_unit_is_required_to_file: true
+    eitc: 0
+    co_eitc: 0
+
+- name: Section 911 claimant in DC gets no state EITC through the federal-style recomputation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+        would_file_if_eligible_for_refundable_credit: false
+        would_file_taxes_voluntarily: false
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    tax_unit_is_required_to_file: true
+    eitc: 0
+    dc_eitc_without_qualifying_child: 0
+
+- name: Section 911 claimant in IL gets no state EITC through the federal-style recomputation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+        would_file_if_eligible_for_refundable_credit: false
+        would_file_taxes_voluntarily: false
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    tax_unit_is_required_to_file: true
+    eitc: 0
+    il_eitc: 0
+
+- name: Section 911 claimant in WA gets no state EITC through the federal-style recomputation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+        would_file_if_eligible_for_refundable_credit: false
+        would_file_taxes_voluntarily: false
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    tax_unit_is_required_to_file: true
+    eitc: 0
+    wa_working_families_tax_credit: 0
+
+- name: Section 911 claimant in IN gets no state EITC through the federal-style recomputation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 30_000
+        would_file_if_eligible_for_refundable_credit: false
+        would_file_taxes_voluntarily: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    tax_unit_is_required_to_file: true
+    eitc: 0
+    in_eitc_eligible: false
+
+- name: Housing-only leaf claimant in DC gets no recomputed EITC with zero aggregates.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion_amount: 0
+        foreign_housing_exclusion: 5_000
+        foreign_earned_income_exclusion_allocable_deductions: 5_000
+        # Ensure a reason to file remains when the aggregates are zero, so
+        # the section 911 eligibility rule is what denies the state credit.
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: false
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    tax_unit_is_required_to_file: false
+    eitc: 0
+    dc_eitc_without_qualifying_child: 0

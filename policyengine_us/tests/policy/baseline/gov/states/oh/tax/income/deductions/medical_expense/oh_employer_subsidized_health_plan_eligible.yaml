@@ -1,0 +1,102 @@
+# R.C. 5747.01(A)(10)(a) bars the full premium deduction for "any taxpayer who
+# is eligible to participate in any subsidized health plan maintained by any
+# employer of the taxpayer or of the taxpayer's spouse". The 2025 worksheet
+# (p. 41) asks whether "you" were eligible for "an employer-paid health care
+# plan through your or your spouse's employer".
+
+- name: Head with employer coverage
+  period: 2025
+  input:
+    people:
+      head:
+        has_esi: true
+      spouse:
+        has_esi: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_employer_subsidized_health_plan_eligible: true
+
+- name: Spouse with employer coverage makes the return eligible
+  period: 2025
+  input:
+    people:
+      head:
+        has_esi: false
+      spouse:
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_employer_subsidized_health_plan_eligible: true
+
+- name: Offer of employer coverage the filer declined
+  period: 2025
+  input:
+    state_code: OH
+    offered_aca_disqualifying_esi: true
+  output:
+    oh_employer_subsidized_health_plan_eligible: true
+
+- name: Employer pays some of the filer's premiums
+  period: 2025
+  input:
+    state_code: OH
+    employer_contribution_to_health_insurance_premiums_category: SOME
+  output:
+    oh_employer_subsidized_health_plan_eligible: true
+
+- name: Employer pays all of the filer's premiums
+  period: 2025
+  input:
+    state_code: OH
+    employer_contribution_to_health_insurance_premiums_category: ALL
+  output:
+    oh_employer_subsidized_health_plan_eligible: true
+
+- name: Employer pays none of the premiums and no employer coverage
+  period: 2025
+  input:
+    state_code: OH
+    employer_contribution_to_health_insurance_premiums_category: NONE
+  output:
+    oh_employer_subsidized_health_plan_eligible: false
+
+- name: Employer contribution not applicable
+  period: 2025
+  input:
+    state_code: OH
+    employer_contribution_to_health_insurance_premiums_category: NA
+  output:
+    oh_employer_subsidized_health_plan_eligible: false
+
+- name: Only a dependent has employer coverage
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+      child:
+        age: 20
+        is_tax_unit_dependent: true
+        has_esi: true
+        employer_contribution_to_health_insurance_premiums_category: SOME
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: OH
+  output:
+    oh_employer_subsidized_health_plan_eligible: false

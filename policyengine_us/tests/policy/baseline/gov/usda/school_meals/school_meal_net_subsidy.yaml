@@ -3,6 +3,22 @@
   output:
     school_meal_net_subsidy: 0
 
+- name: Colorado adult-only household has a free tier but receives no school-meal benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 49
+    state_code: CO
+    school_meal_countable_income: 0
+  output:
+    is_in_k12_school: false
+    school_meal_tier: FREE
+    # Annual 2025 uses SY 2024-25 NSLP 4.43 + SBP 2.37.
+    school_meal_daily_subsidy: 6.80
+    school_meal_net_subsidy: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+
 - name: One child in contiguous US with free tier.
   period: 2022
   input:
@@ -38,3 +54,99 @@
     state_has_universal_free_school_meals: false
     school_meal_tier: PAID
     school_meal_net_subsidy: 0
+
+# Per-meal tiers: net subsidy = (daily subsidy - paid daily subsidy) * K-12
+# children * 180 school days, where the daily subsidy uses each meal's own
+# tier. One K-12 child and no categorical eligibility.
+
+# Calendar 2025 rates: breakfast (SBP) FREE 2.37, REDUCED 2.07,
+# PAID 0.39; lunch (NSLP) FREE 4.43, REDUCED 4.03, PAID 0.42.
+# TX at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   (6.40 - 0.81 paid) * 180 days = 1,006.20.
+- name: Net subsidy with free breakfast and reduced-price lunch in Texas in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    school_meal_fpg_ratio: 1.8
+    meets_school_meal_categorical_eligibility: false
+    is_in_k12_school: true
+  output:
+    school_meal_net_subsidy: 1_006.20
+
+# Calendar 2026 rates: breakfast (SBP) FREE 2.46, REDUCED 2.16,
+# PAID 0.40; lunch (NSLP) FREE 4.60, REDUCED 4.20, PAID 0.44.
+# UT at 180% of FPG: breakfast REDUCED, lunch FREE.
+#   (6.76 - 0.84 paid) * 180 days = 1,065.60.
+# NH at 180% of FPG: breakfast FREE, lunch REDUCED.
+#   (6.66 - 0.84 paid) * 180 days = 1,047.60.
+# AR at 300% of FPG: breakfast FREE, lunch PAID.
+#   (2.90 - 0.84 paid) * 180 days = 370.80.
+# FL at 180% of FPG: breakfast REDUCED, lunch REDUCED.
+#   (6.36 - 0.84 paid) * 180 days = 993.60.
+# TX at 180% of FPG: breakfast FREE, lunch FREE.
+#   (7.06 - 0.84 paid) * 180 days = 1,119.60.
+- name: Net subsidy follows each meal's tier in Utah, New Hampshire, Arkansas, Florida and Texas in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [UT, NH, AR, FL, TX]
+    school_meal_fpg_ratio: [1.8, 1.8, 3, 1.8, 1.8]
+    meets_school_meal_categorical_eligibility: [false, false, false, false, false]
+    is_in_k12_school: [true, true, true, true, true]
+  output:
+    school_meal_net_subsidy: [1_065.60, 1_047.60, 370.80, 993.60, 1_119.60]
+
+# Edge case: several children. The net subsidy and its per-meal split scale
+# with the number of K-12 children (ages 5 to 17). Utah 2026 at 180% of FPG
+# (reduced-price breakfast, free lunch), no categorical eligibility. Three
+# SPM units: an adult alone (0 children); an adult and a 10-year-old (1); an
+# adult with household members aged 4, 5, 11, 17 and 18 (3 children, since
+# ages 4 and 18 are outside K-12).
+# Calendar 2026 rates: breakfast (SBP) REDUCED 2.16, PAID 0.40; lunch (NSLP)
+# FREE 4.60, PAID 0.44. Per child:
+#   net (2.16 + 4.60 - 0.84) * 180 = 1,065.60;
+#   free lunch (4.60 - 0.44) * 180 = 748.80;
+#   reduced-price breakfast (2.16 - 0.40) * 180 = 316.80.
+- name: Net subsidy and its per-meal split scale with the number of K-12 children in Utah in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 35}
+      person2: {age: 35}
+      person3: {age: 10}
+      person4: {age: 35}
+      person5: {age: 4}
+      person6: {age: 5}
+      person7: {age: 11}
+      person8: {age: 17}
+      person9: {age: 18}
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        school_meal_fpg_ratio: 1.8
+        meets_school_meal_categorical_eligibility: false
+      spm_unit2:
+        members: [person2, person3]
+        school_meal_fpg_ratio: 1.8
+        meets_school_meal_categorical_eligibility: false
+      spm_unit3:
+        members: [person4, person5, person6, person7, person8, person9]
+        school_meal_fpg_ratio: 1.8
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household1:
+        members: [person1]
+        state_code: UT
+      household2:
+        members: [person2, person3]
+        state_code: UT
+      household3:
+        members: [person4, person5, person6, person7, person8, person9]
+        state_code: UT
+  output:
+    is_in_k12_school: [false, false, true, false, false, true, true, true, false]
+    school_meal_net_subsidy: [0, 1_065.60, 3_196.80]
+    free_school_meals: [0, 748.80, 2_246.40]
+    reduced_price_school_meals: [0, 316.80, 950.40]

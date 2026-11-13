@@ -1,0 +1,328 @@
+# Resource eligibility examples are hand computed from 20 CFR 416.1202(a)-(b)
+# and 416.1205: own plus deemed resources <= the applicable limit.
+# https://www.ecfr.gov/current/title-20/section-416.1202
+# https://www.ecfr.gov/current/title-20/section-416.1205
+# The parental allowance follows the same individual/couple resource limit parameters.
+
+# 20 CFR 416.1202(a), 416.1205: combined3001 exceeds couple limit3000.
+- name: Ineligible spouse holds all resources above the couple limit
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          2026: 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          2026: 3001
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+  output:
+    ssi_claim_is_joint: [false, false]
+    meets_ssi_resource_test: [false, false]
+
+# 20 CFR 416.1202(a), 416.1205: apply couple limit even when spouse has zero assets.
+- name: Ineligible spouse with no assets still permits the couple limit
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 2001
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    meets_ssi_resource_test: [true, true]
+
+# 20 CFR 416.1202(a), 416.1205: combined3000 equals couple limit and passes.
+- name: Spousal resources at the combined couple limit pass
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 1000
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 2000
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    meets_ssi_resource_test: [true, true]
+
+# 20 CFR 416.1202(a), 416.1205: combined3001 exceeds couple limit and fails.
+- name: Spousal resources one dollar above the combined couple limit fail
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 1000
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 2001
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    meets_ssi_resource_test: [false, false]
+
+# 20 CFR 416.1205: jointly eligible couple resources3000 pass.
+- name: Joint claim at the couple limit retains its existing result
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 1499
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 1501
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    ssi_claim_is_joint: [true, true]
+    meets_ssi_resource_test: [true, true]
+
+# 20 CFR 416.1205: jointly eligible couple resources3001 fail.
+- name: Joint claim above the couple limit retains its existing result
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 1500
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 1501
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    ssi_claim_is_joint: [true, true]
+    meets_ssi_resource_test: [false, false]
+
+# 20 CFR 416.1205(c): individual1999/2000 pass; individual2001 fails.
+- name: Unmarried adults without parents retain individual limit boundaries
+  period: 2026-01
+  input:
+    people:
+      p1999:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 1999
+      p2000:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 2000
+      p2001:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 2001
+    tax_units:
+      p1999:
+        members: [p1999]
+      p2000:
+        members: [p2000]
+      p2001:
+        members: [p2001]
+    marital_units:
+      p1999:
+        members: [p1999]
+      p2000:
+        members: [p2000]
+      p2001:
+        members: [p2001]
+    households:
+      p1999:
+        members: [p1999]
+      p2000:
+        members: [p2000]
+      p2001:
+        members: [p2001]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 0, 0]
+    meets_ssi_resource_test: [true, true, false]
+
+# 20 CFR 416.1202(b)(1) expressly cross-references416.1205, so reform increases allowances.
+- name: Reform raises spousal joint and parental allowances to 10000 and 20000
+  period: 2026-01
+  input:
+    people:
+      spousal_claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spousal_spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 3001
+      joint_claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 1500
+      joint_spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 1501
+      one_parent_parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 4001
+      one_parent_child:
+        age: 16
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+      two_parents_parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 2500
+      two_parents_second:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 2501
+      two_parents_child:
+        age: 16
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      spousal_family:
+        members: [spousal_claimant, spousal_spouse]
+      joint_family:
+        members: [joint_claimant, joint_spouse]
+      one_parent_family:
+        members: [one_parent_parent, one_parent_child]
+      two_parents_family:
+        members: [two_parents_parent, two_parents_second, two_parents_child]
+    marital_units:
+      spousal_family_couple_0:
+        members: [spousal_claimant, spousal_spouse]
+      joint_family_couple_0:
+        members: [joint_claimant, joint_spouse]
+      one_parent_family_parent:
+        members: [one_parent_parent]
+      one_parent_family_child:
+        members: [one_parent_child]
+      two_parents_family_couple_0:
+        members: [two_parents_parent, two_parents_second]
+      two_parents_family_child:
+        members: [two_parents_child]
+    households:
+      spousal_family:
+        members: [spousal_claimant, spousal_spouse]
+      joint_family:
+        members: [joint_claimant, joint_spouse]
+      one_parent_family:
+        members: [one_parent_parent, one_parent_child]
+      two_parents_family:
+        members: [two_parents_parent, two_parents_second, two_parents_child]
+    gov.ssa.ssi.eligibility.resources.limit.individual: 10000
+    gov.ssa.ssi.eligibility.resources.limit.couple: 20000
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ssi_resources_deemed_from_ineligible_spouse: [3001, 0, 0, 0, 0, 0, 0, 0, 0]
+    meets_ssi_resource_test: [true, true, true, true, true, true, true, true, true]
