@@ -1,3 +1,17 @@
+## [2.121.1] - 2026-11-13
+
+### Changed
+
+- Disabled Hypothesis's explain phase for the owners' draw simulation properties while preserving shrinking.
+
+
+## [2.121.0] - 2026-11-13
+
+### Added
+
+- Add HUD's revised annual Fair Market Rent snapshots for FY2017 through FY2024 under the existing annual lookup convention.
+
+
 ## [2.120.2] - 2026-11-13
 
 ### Fixed
