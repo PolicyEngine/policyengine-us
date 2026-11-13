@@ -6,7 +6,7 @@
     state_code: DC
   output:
     hhs_smi: 152_043
-    # income limit = 152_043 * 0.6 = 91,225.8
+    # income limit = 152_043 * 0.6 = 91,225.8, rounded down to 91,225
     dc_liheap_eligible: true
 
 - name: Case 2, household size of 4, ineligible.
@@ -28,12 +28,13 @@
     # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
     # of the poverty guideline. FY2024 uses the 2023 guidelines (LIHEAP IM
     # 2023-01): 14,580 + 5,140 x 35 = 194,480 for 36 people, and 110% is
-    # 213,928. The 60% SMI limit for 36 people is 212,669.78.
+    # 213,928. The 60% SMI limit for 36 people is 159,662 x 0.6 = 95,797
+    # (rounded down) x 2.22 = 212,669 (rounded down).
     # Household 1 is below the 60% SMI limit: eligible.
     # Household 2 is one cent below the floor: eligible.
     # Household 3 is exactly at the floor, which is not below 110%: not eligible.
     # Household 4 is above the floor: not eligible.
-    # Household 5 has 35 people, whose 209,795.87 limit exceeds the 208,274
+    # Household 5 has 35 people, whose 209,795 limit exceeds the 208,274
     # floor (110% of 189,340), so the limit still applies: not eligible.
     dc_liheap_eligible: [true, true, false, false, false]
 
@@ -56,5 +57,17 @@
     irs_gross_income: [212_244.99, 212_245]
   output:
     # 110% x (13,590 + 4,720 x 38) = 212,245 for 39 people, above the
-    # 210,731.60 FY2023 60% SMI limit.
+    # 210,729 FY2023 60% SMI limit (91,225 x 2.31, rounded down).
+    dc_liheap_eligible: [true, false]
+
+- name: Case 6, the income limit is HHS's 60% state median income amount, rounded down.
+  period: 2026
+  input:
+    state_code: [DC, DC]
+    spm_unit_size: [2, 2]
+    irs_gross_income: [80_869, 80_870]
+  output:
+    # FY2026: 198,211 x 0.6 = 118,926 (rounded down) x 0.68 = 80,869 (rounded
+    # down), DOEE's published two-person limit. The unrounded 80,870.09 would
+    # admit $80,870.
     dc_liheap_eligible: [true, false]

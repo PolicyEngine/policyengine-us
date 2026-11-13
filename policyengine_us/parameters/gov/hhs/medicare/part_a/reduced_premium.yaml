@@ -3,6 +3,10 @@ metadata:
   unit: currency-USD
   period: month
   label: Medicare Part A reduced premium
+  # After the last announced year, the premium is the projected full premium
+  # reduced by 45 percent, as 42 U.S.C. 1395i-2(d)(4) sets it, rounded to the
+  # nearest dollar with 50-cent amounts rounded up, as CMS publishes it; see
+  # extend_medicare_part_a_premiums in uprating_extensions.py.
   reference:
     - title: 42 U.S.C. § 1395i-2(d)
       href: https://www.law.cornell.edu/uscode/text/42/1395i-2#d

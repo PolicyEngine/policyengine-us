@@ -6,6 +6,8 @@ from functools import lru_cache
 import numpy as np
 import pandas as pd
 import pytest
+from hypothesis import given, settings
+from hypothesis import strategies as st
 from policyengine_core.parameters.operations.get_parameter import get_parameter
 from policyengine_core.reforms import Reform
 
@@ -206,6 +208,49 @@ def test_extended_dataset_totals_track_national_totals(year):
     )
     # Inputs without an uprating parameter carry over unchanged.
     assert later.person["age"].tolist() == base.person["age"].tolist()
+
+
+def test_extension_grows_philadelphia_taxable_wages_with_wages():
+    """When a dataset sets a resident's Philadelphia taxable wages to their
+    wages floored at zero, extension keeps that relation in every later year,
+    because both inputs follow the employment income series."""
+    dataset = _tiny_dataset()
+    person = dataset.person
+    person["employment_income_before_lsr"] = [50_000.0, -2_000.0, 120_000.0, 0.0]
+    person["pa_philadelphia_wage_tax_taxable_wages"] = person[
+        "employment_income_before_lsr"
+    ].clip(lower=0)
+    extended = extend_single_year_dataset(dataset, end_year=2035, system=system)
+    for year in range(BASE_YEAR + 1, 2036):
+        later = extended.datasets[year].person
+        wages = later["employment_income_before_lsr"].clip(lower=0).tolist()
+        taxable_wages = later["pa_philadelphia_wage_tax_taxable_wages"].tolist()
+        assert taxable_wages == pytest.approx(wages, rel=1e-12), year
+
+
+@settings(max_examples=10, deadline=None)
+@given(
+    st.lists(
+        st.floats(min_value=-1e7, max_value=1e7, allow_nan=False, allow_infinity=False),
+        min_size=4,
+        max_size=4,
+    )
+)
+def test_extension_keeps_philadelphia_taxable_wages_at_floored_wages(wages):
+    """For any wages, taxable wages set to wages floored at zero keep that
+    relation in every extended year."""
+    dataset = _tiny_dataset()
+    person = dataset.person
+    person["employment_income_before_lsr"] = wages
+    person["pa_philadelphia_wage_tax_taxable_wages"] = person[
+        "employment_income_before_lsr"
+    ].clip(lower=0)
+    extended = extend_single_year_dataset(dataset, end_year=2036, system=system)
+    for year in range(BASE_YEAR + 1, 2037):
+        later = extended.datasets[year].person
+        floored = later["employment_income_before_lsr"].clip(lower=0).tolist()
+        taxable = later["pa_philadelphia_wage_tax_taxable_wages"].tolist()
+        assert taxable == pytest.approx(floored, rel=1e-12), year
 
 
 def test_simulation_uprating_tracks_national_totals():

@@ -2,7 +2,7 @@ description: The Medicare Trustees' reported and projected Part D premium income
 metadata:
   unit: currency-USD
   period: year
-  label: Medicare Part D premiums per Part D enrollee
+  label: Medicare Part D premiums per Part D enrollee, counting retiree drug subsidy beneficiaries as enrollees
   reference:
   # Each value is (premium income - aggregate income-related premiums) /
   # Part D enrollment, from the 2026 Medicare Trustees Report (transmitted
@@ -30,7 +30,7 @@ metadata:
   # Medicare's low-income subsidy payments are expenditures of the Part D
   # account, not enrollee premiums (file page 114). So the average is below
   # the base beneficiary premium.
-  - title: "2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Tables III.D1, III.D3, V.B3, V.D1 and V.E4 #page 109,114,116-117,151,154,196,210,218-219"
+  - title: "2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Tables III.D1, III.D3, IV.B7, V.B3, V.D1 and V.E4 #page 109,114,116-117,151,153,154,196,210,218-219"
     href: https://www.cms.gov/oact/tr/2026#page=109
   - title: 42 U.S.C. § 1395w-113(c)(4) - Collection of monthly adjustment amount
     href: https://www.law.cornell.edu/uscode/text/42/1395w-113#c_4

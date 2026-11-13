@@ -845,6 +845,8 @@
 # joint return, so cdcc = 0 (deliberate filing-status-ineligibility pin).
 # The gate applies in cdcc_potential (pre-liability-cap), which is what
 # state credits consume, so both are pinned at 0.
+# The same facts deny the EITC: without six months apart or a separation
+# instrument, IRC 32(d) bars a married separate filer, so eitc = 0.
 - name: cdcc_separate_filer_ineligible (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -895,15 +897,15 @@
   output:
     tax_units:
       tax_unit:
-        eitc: 3_450.62
-        eitc_eligible: true
+        eitc: 0.0
+        eitc_eligible: false
         ctc: 2_200.0
         ctc_value: 2_200.0
         refundable_ctc: 780.0
         cdcc_potential: 0.0
         cdcc: 0.0
         adjusted_gross_income: 30_000.0
-        income_tax: -4_230.62
+        income_tax: -780.0
 # Same separate-filing parent, but living apart (is_separated) while
 # maintaining a home for the qualifying child: IRC 21(e)(4) treats them as
 # unmarried, restoring eligibility. AGI 30_000 -> first phase-out removes

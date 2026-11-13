@@ -191,3 +191,43 @@
     # countable income stays 0.
     ssi_countable_income: [25_370, 0]
     ssi: [0, 0]
+
+- name: A couple is paid as a couple through the month one spouse enters a Medicaid facility and as individuals from the first full month.
+  period: 2000
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_unearned_income: 4_800
+        ssi_lives_in_medical_treatment_facility:
+          2000-07: true
+        ssi_medicaid_pays_majority_of_care:
+          2000-07: true
+      person2:
+        age: 70
+        ssi_unearned_income: 2_400
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # POMS SI 02005.050 D.1: Allen (person1) has $400 a month of Social
+    # Security and Martha (person2) a $200 spouse's benefit. Allen enters a
+    # Title XIX facility on June 10, 2000 and stays.
+    # June, "the last month for which payment is computed for a couple":
+    # 400 + 200 - 20 = 580 of countable income against the 769 couple rate
+    # leaves 189, or 94.50 each.
+    # July, "computed as if Allen and Martha are individuals": Allen has
+    # 30 - 380, so no payment. Martha has 513 - 180 = 333. POMS shows 332
+    # from the 512 individual rate first set for 2000; SSA's rate table has
+    # 513 for 2000 after Public Law 106-554.
+    ssi_countable_income:
+      2000-06: [290, 290]
+      2000-07: [380, 180]
+    ssi:
+      2000-06: [94.5, 94.5]
+      2000-07: [0, 333]

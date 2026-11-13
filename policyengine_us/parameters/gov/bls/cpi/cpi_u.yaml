@@ -1,5 +1,8 @@
-description: The Bureau of Labor Statistics estimates this Consumer Price Index for All Urban Consumers.
+description: The Bureau of Labor Statistics publishes this Consumer Price Index for All Urban Consumers (U.S. city average, all items, not seasonally adjusted).
 values:
+  # BLS series CUUR0000SA0 (U.S. city average, all items, not seasonally
+  # adjusted, 1982-84=100), retrieved from BLS on 2026-11-12. Published to
+  # one decimal through 2006 and three decimals from 2007.
   1913-01-01: 9.8
   1913-02-01: 9.8
   1913-03-01: 9.8
@@ -1332,37 +1335,41 @@ values:
   2023-10-01: 307.671
   2023-11-01: 307.051
   2023-12-01: 306.746
-  2024-01-01: 309.794
-  2024-02-01: 311.022
-  2024-03-01: 312.107
-  2024-04-01: 313.016
-  2024-05-01: 313.140
-  2024-06-01: 313.131
-  2024-07-01: 313.566
-  2024-08-01: 314.131
-  2024-09-01: 314.851
-  2024-10-01: 315.564
-  2024-11-01: 316.449
-  2024-12-01: 317.603
-  2025-01-01: 319.086
-  2025-02-01: 319.775
-  2025-03-01: 319.615
-  2025-04-01: 320.321
-  2025-05-01: 320.580
-  2025-06-01: 321.500
-  2025-07-01: 322.132
-  2025-08-01: 323.364
-  2025-09-01: 324.245
+  2024-01-01: 308.417
+  2024-02-01: 310.326
+  2024-03-01: 312.332
+  2024-04-01: 313.548
+  2024-05-01: 314.069
+  2024-06-01: 314.175
+  2024-07-01: 314.540
+  2024-08-01: 314.796
+  2024-09-01: 315.301
+  2024-10-01: 315.664
+  2024-11-01: 315.493
+  2024-12-01: 315.605
+  2025-01-01: 317.671
+  2025-02-01: 319.082
+  2025-03-01: 319.799
+  2025-04-01: 320.795
+  2025-05-01: 321.465
+  2025-06-01: 322.561
+  2025-07-01: 323.048
+  2025-08-01: 323.976
+  2025-09-01: 324.800
   # October 2025 CPI was not published (BLS canceled the release); the
   # September value carries forward at October instants.
-  2025-11-01: 325.063
-  2025-12-01: 326.031
-  2026-01-01: 326.588
-  2026-02-01: 327.460
-  2026-03-01: 330.293
-  2026-04-01: 332.407
-  2026-05-01: 333.979
-  2026-06-01: 332.568
+  2025-11-01: 324.122
+  2025-12-01: 324.054
+  2026-01-01: 325.252
+  2026-02-01: 326.785
+  2026-03-01: 330.213
+  2026-04-01: 333.020
+  2026-05-01: 335.123
+  2026-06-01: 333.952
+  2026-07-01: 333.918
+  2026-08-01: 334.980
+  2026-09-01: 336.940
+  2026-10-01: 337.511
   # CBO projections from CBO Feb 2026 forecast for future periods.
   2027-02-01: 340.3 # 2028 value.
   2028-02-01: 348.3 # 2029 value.
@@ -1380,8 +1387,8 @@ metadata:
   label: CPI-U
   economy: false
   reference:
-    - title: BLS | CPI-U, U.S. city average, all items, seasonally adjusted (CUSR0000SA0), monthly values through June 2026
-      href: https://data.bls.gov/timeseries/CUSR0000SA0
+    - title: BLS | CPI-U, U.S. city average, all items, not seasonally adjusted (CUUR0000SA0), monthly values through October 2026
+      href: https://data.bls.gov/timeseries/CUUR0000SA0
     - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
       # Source: https://www.cbo.gov/data/budget-economic-data#10
       # Row: 158

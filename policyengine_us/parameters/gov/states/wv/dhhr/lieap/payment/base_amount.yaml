@@ -1,0 +1,16 @@
+# Across the two finite published grids, all 840 occupied cells equal
+# base_amount + amount_step * (household_size - 1 - zero_based_band).
+# This is exact transcription compression, not a legal extrapolation rule.
+# The finite table does not define payments for blank cells or sizes above 20.
+description: West Virginia sets this first-row one-person base payment under the Low Income Energy Assistance Program.
+values:
+  2025-10-01: 160
+metadata:
+  unit: currency-USD
+  period: year
+  label: West Virginia LIEAP first published base amount
+  reference:
+    - title: "West Virginia Income Maintenance Manual, Appendix A #page 1780-1781"
+      href: https://web.archive.org/web/20260302130424/https://bfa.wv.gov/media/39948/download?inline#page=1780
+    - title: "West Virginia Income Maintenance Manual, October 2026 edition, Appendix A #page 1775-1776"
+      href: https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=1775
