@@ -20,30 +20,51 @@ class id_grocery_credit(Variable):
         # PDF pages 13-14
         "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=13",
         "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        "https://files.dfm.idaho.gov/dfm-admin-website/rules/2022%20Archive/35/350101.pdf#page=125",
+        "https://adminrules.idaho.gov/rules/current/35/350101.pdf#page=107",
     )
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        qualified_months = person("id_grocery_credit_qualified_months", period)
-        p = parameters(period).gov.states.id.tax.income.credits.grocery.aged
-        if p.in_effect:
-            full_amount = add(
-                person,
-                period,
-                ["id_grocery_credit_base", "id_grocery_credit_aged"],
-            )
-        else:
-            full_amount = person("id_grocery_credit_base", period)
-        # A filer whom another taxpayer can claim gets no credit ("You can't
-        # claim this credit if someone else, such as a parent, can claim you
-        # as a dependent"); the other spouse on a joint return keeps theirs.
-        # A return on which the filer (or, if joint, either spouse) can be
-        # claimed has no dependents (IRC 152(b)(1)).
-        filer = person("is_tax_unit_head_or_spouse", period)
-        claimable = person("claimable_as_dependent_on_another_return", period)
-        filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        # Under former Rule 771.01.a, the commission required a permitted and
+        # claimed personal exemption. Retain the earlier treatment before 2023.
+        return _grocery_credit(
+            tax_unit,
+            period,
+            parameters,
+            "claimable_as_dependent_on_another_return",
         )
-        eligible = where(filer, ~claimable, ~filer_is_dependent)
-        credit_value = full_amount * (qualified_months / MONTHS_IN_YEAR) * eligible
-        return tax_unit.sum(credit_value)
+
+    def formula_2023_01_01(tax_unit, period, parameters):
+        # Idaho grants each taxpayer an amount under Code 63-3024A(1), (4)
+        # and prevents duplicate credits. Exclude an actually claimed filer;
+        # claimability alone does not remove that taxpayer's amount.
+        return _grocery_credit(
+            tax_unit,
+            period,
+            parameters,
+            "claimed_as_dependent_on_another_return",
+        )
+
+
+def _grocery_credit(tax_unit, period, parameters, filer_dependency_variable):
+    person = tax_unit.members
+    qualified_months = person("id_grocery_credit_qualified_months", period)
+    p = parameters(period).gov.states.id.tax.income.credits.grocery.aged
+    if p.in_effect:
+        full_amount = add(
+            person,
+            period,
+            ["id_grocery_credit_base", "id_grocery_credit_aged"],
+        )
+    else:
+        full_amount = person("id_grocery_credit_base", period)
+    # A claimable filer cannot claim dependents under IRC 152(b)(1), subject
+    # to the outside claimant's federal filing exception.
+    filer = person("is_tax_unit_head_or_spouse", period)
+    excluded_filer = person(filer_dependency_variable, period)
+    filer_is_dependent = person.tax_unit(
+        "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+    )
+    eligible = where(filer, ~excluded_filer, ~filer_is_dependent)
+    credit_value = full_amount * (qualified_months / MONTHS_IN_YEAR) * eligible
+    return tax_unit.sum(credit_value)
