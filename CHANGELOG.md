@@ -1,3 +1,10 @@
+## [2.120.0] - 2026-11-13
+
+### Added
+
+- Add Delaware LIHEAP summer cooling electric benefit eligibility.
+
+
 ## [2.119.4] - 2026-11-13
 
 ### Fixed
