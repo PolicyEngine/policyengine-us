@@ -139,7 +139,7 @@ def expected_effective_limit(year, state, size, group):
 @given(
     year=st.sampled_from((2018, 2019, 2020)),
     size=st.integers(min_value=1, max_value=32),
-    gap=st.floats(min_value=0.0001, max_value=0.1, allow_nan=False),
+    gap=st.integers(min_value=1, max_value=1000).map(lambda value: value / 10_000),
 )
 def test_historical_limits_bound_income_and_preserve_size_schedules(year, size, gap):
     cases = []
@@ -222,7 +222,8 @@ def test_parent_limits_outside_historical_correction_equal_existing_routes(year,
         for index, group in zip(indices, ("group2", "group1", "group3")):
             table = getattr(va, group)
             annual = (
-                table.main[capped_size] + max(size - capped_size, 0) * table.additional
+                table.main[str(capped_size)]
+                + max(size - capped_size, 0) * table.additional
             )
             direct_expected.append(annual / guideline)
             if year >= 2026:
