@@ -26,7 +26,9 @@
   output:
       meets_school_meal_categorical_eligibility: true
 
-- name: Homelessness and migrant status qualify the child separately.
+# Each child in a household without a fixed nighttime residence counts as a
+# homeless child (42 USC 11434a(2)(A)), so every child qualifies.
+- name: Household homelessness qualifies every child.
   period: 2022
   input:
       snap: 0
@@ -37,6 +39,33 @@
       is_runaway_child: false
       is_migratory_child: true
       is_head_start_eligible: false
+  output:
+      meets_school_meal_categorical_eligibility: true
+      is_school_meal_categorically_eligible: true
+
+- name: Migrant status qualifies the child separately.
+  period: 2022
+  input:
+      snap: 0
+      tanf: 0
+      fdpir: 0
+      was_in_foster_care: false
+      is_homeless: false
+      is_runaway_child: false
+      is_migratory_child: true
+      is_head_start_eligible: false
+  output:
+      meets_school_meal_categorical_eligibility: false
+      is_school_meal_categorically_eligible: true
+
+- name: A homeless child qualifies separately from a housed household.
+  period: 2022
+  input:
+      snap: 0
+      tanf: 0
+      fdpir: 0
+      is_homeless: false
+      is_homeless_child: true
   output:
       meets_school_meal_categorical_eligibility: false
       is_school_meal_categorically_eligible: true
@@ -92,7 +121,7 @@
       fdpir: [0, 1, 1, 0, 0, 0, 0, 0]
       is_homeless: [False, False, True, True, False, False, False, False]
   output:
-      meets_school_meal_categorical_eligibility: [True, True, True, False, False, False, False, False]
+      meets_school_meal_categorical_eligibility: [True, True, True, True, False, False, False, False]
       is_school_meal_categorically_eligible: [True, True, True, True, False, False, False, False]
 
 - name: Reported SNAP receipt qualifies even when the modeled allotment is zero.

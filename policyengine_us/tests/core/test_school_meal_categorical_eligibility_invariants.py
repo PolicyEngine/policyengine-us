@@ -23,7 +23,10 @@ CHILD_CATEGORIES = (
     "is_runaway_child",
     "is_migratory_child",
 )
-HOUSEHOLD_CATEGORIES = ("snap", "receives_snap", "tanf", "receives_tanf", "fdpir")
+SPM_UNIT_CATEGORIES = ("snap", "receives_snap", "tanf", "receives_tanf", "fdpir")
+# Each child in a household without a fixed nighttime residence counts as a
+# homeless child (42 USC 11434a(2)(A)), so the household qualifies them all.
+HOUSEHOLD_CATEGORIES = (*SPM_UNIT_CATEGORIES, "is_homeless")
 POVERTY_RATIOS = (1.0, 1.5, 3.0)
 STATES = (
     "AL",
@@ -186,7 +189,7 @@ def _situation(drawn_units):
                 "receives_snap": dict.fromkeys(MONTHS, False),
                 "receives_tanf": dict.fromkeys(MONTHS, False),
             }
-            if variant in HOUSEHOLD_CATEGORIES:
+            if variant in SPM_UNIT_CATEGORIES:
                 if variant.startswith("receives_"):
                     # Core reads December for monthly stock inputs in annual
                     # calculations. Report receipt throughout the year.
@@ -200,7 +203,7 @@ def _situation(drawn_units):
             groups["households"][prefix] = {
                 "members": members,
                 "state_code": {YEAR: unit["state"]},
-                "is_homeless": {YEAR: False},
+                "is_homeless": {YEAR: variant == "is_homeless"},
             }
             records.append(
                 {

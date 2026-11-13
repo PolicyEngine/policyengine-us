@@ -1,0 +1,31 @@
+description: USDA extends free school meals to a child who meets one of these conditions, without extending them to other children in the household.
+
+values:
+  # Clauses (iii) to (vi) predate this list's first date: Congress added
+  # clauses (iv) to (vi) in Pub. L. 108-265, section 107(a), effective
+  # July 1, 2004.
+  2009-09-01:
+    - is_enrolled_in_head_start # 42 U.S.C. 1758(b)(12)(A)(iii).
+    - is_homeless_child # 42 U.S.C. 1758(b)(12)(A)(iv).
+    - is_runaway_child # 42 U.S.C. 1758(b)(12)(A)(v).
+    - is_migratory_child # 42 U.S.C. 1758(b)(12)(A)(vi).
+  # Congress added clause (vii) for foster children in Pub. L. 111-296,
+  # section 102(b), effective October 1, 2010 under section 445.
+  2010-10-01:
+    - is_enrolled_in_head_start # 42 U.S.C. 1758(b)(12)(A)(iii).
+    - is_homeless_child # 42 U.S.C. 1758(b)(12)(A)(iv).
+    - is_runaway_child # 42 U.S.C. 1758(b)(12)(A)(v).
+    - is_migratory_child # 42 U.S.C. 1758(b)(12)(A)(vi).
+    - is_in_foster_care # 42 U.S.C. 1758(b)(12)(A)(vii).
+
+metadata:
+  unit: list
+  period: year
+  label: Free school meals child-specific categories
+  reference:
+    - title: 42 U.S.C. 1758(b)(12)(A) - Categorical eligibility for free meals
+      href: https://uscode.house.gov/us/usc/119-124/t42/s1758/#b-12-A
+    - title: 7 CFR § 245.6(b)(8) - Child-specific categorical eligibility
+      href: https://www.ecfr.gov/current/title-7/section-245.6#p-245.6(b)(8)
+    - title: "Pub. L. 111-296, sections 102(b) and 445 #page 5-6,84"
+      href: https://www.govinfo.gov/content/pkg/PLAW-111publ296/pdf/PLAW-111publ296.pdf#page=5

@@ -11,9 +11,11 @@ class is_homeless_child(Variable):
         "Whether a school liaison, shelter director or other authorized "
         "official has identified this child as homeless under the "
         "McKinney-Vento definition for school meal certification. This input "
-        "can identify one child when the whole household is not homeless."
+        "identifies one child when the whole household is not homeless; "
+        "is_homeless covers a household without a fixed nighttime residence."
     )
     reference = (
         "https://www.ecfr.gov/current/title-7/section-245.2",
-        "https://www.law.cornell.edu/uscode/text/42/1758#b_12_A_iv",
+        "https://uscode.house.gov/us/usc/119-124/t42/s1758/#b-12-A-iv",
+        "https://uscode.house.gov/us/usc/119-124/t42/s11434a/#2",
     )

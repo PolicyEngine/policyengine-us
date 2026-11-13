@@ -11,6 +11,6 @@ class is_enrolled_in_head_start(Variable):
         "Enrollment differs from modeled eligibility and hypothetical take-up."
     )
     reference = (
-        "https://www.law.cornell.edu/uscode/text/42/1758#b_12_A_iii",
-        "https://fns-prod.azureedge.us/sites/default/files/cn/SP40_CACFP11_SFSP13-2013os.pdf",
+        "https://uscode.house.gov/us/usc/119-124/t42/s1758/#b-12-A-iii",
+        "https://uscode.house.gov/us/usc/119-124/t42/s9840/#a-1-B",
     )

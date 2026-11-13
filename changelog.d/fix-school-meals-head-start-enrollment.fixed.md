@@ -1,1 +1,1 @@
-Limited Head Start, foster, homeless, migrant and runaway school-meal eligibility to each qualifying child, and required Head Start enrollment.
+Limited Head Start, foster care, migrant, runaway and child-level homeless school-meal eligibility to each qualifying child, and required Head Start enrollment. Counted current foster care from October 2010 in place of past foster care, and added an is_homeless_child input and a child_categorical_eligibility parameter list.

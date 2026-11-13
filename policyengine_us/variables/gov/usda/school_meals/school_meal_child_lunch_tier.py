@@ -24,5 +24,7 @@ class school_meal_child_lunch_tier(Variable):
 
     def formula(person, period, parameters):
         tier = person.spm_unit("school_meal_lunch_tier", period)
-        categorical = _school_meal_child_categorical_eligibility(person, period)
+        categorical = _school_meal_child_categorical_eligibility(
+            person, period, parameters
+        )
         return where(categorical, SchoolMealTier.FREE.index, tier)
