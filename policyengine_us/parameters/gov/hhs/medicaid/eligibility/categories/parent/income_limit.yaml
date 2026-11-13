@@ -67,6 +67,10 @@ metadata:
 # family-of-three fraction is too strict for a single parent with one child:
 # the published size-two standard works out about 0.8 points higher in Texas
 # ($196/month) and about 2.6 points higher in Wyoming ($737/month).
+    - title: Utah Medicaid State Plan Amendment UT-16-0025, approved March 2017
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/UT/UT-16-0025.pdf#page=7
+    - title: Utah R414-303-4, parent and caretaker relative income standard effective July 2017
+      href: https://rules.utah.gov/publicat/bulletin/2017/20170415/41429.htm
 AK:
   2018-01-01: 1.44
   2021-01-01: 1.36
@@ -259,6 +263,7 @@ SD:
   2018-01-01: 0.62
   2021-01-01: 0.57
 TN:
+  # The state dollar schedule overrides this entry in 2018-2020.
   2018-01-01: 1.06
   2021-01-01: 1.00
 TX:
@@ -273,9 +278,15 @@ TX:
   # $230/month + $113.85 disregard = $4,126/year (Texas Works Handbook C-131)
   2026-01-01: 0.151
 UT:
-  2018-01-01: 0.49
+  # Retain the existing backdated value before the 2018 correction.
+  2015-01-01: 0.49
+  # Source conflict: Utah set 55% FPL; CMS's 2018 table reports 44%.
+  # Add the five-point MAGI disregard to Utah's state standard.
+  2018-01-01: 0.60
+  # Utah's household-size dollar schedule overrides this entry in 2020.
   2021-01-01: 0.46
 VA:
+  # The state dollar schedule overrides this entry in 2018-2020.
   2018-01-01: 0.54
   2021-01-01: 0.54
 VT:

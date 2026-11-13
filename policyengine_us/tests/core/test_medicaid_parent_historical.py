@@ -174,11 +174,14 @@ def test_historical_limits_bound_income_and_preserve_size_schedules(year, size, 
 
 
 @settings(max_examples=12, deadline=None, derandomize=True)
+@example(year=2015, size=3)
+@example(year=2017, size=3)
 @example(year=2021, size=3)
+@example(year=2024, size=3)
 @example(year=2026, size=3)
 @example(year=2025, size=3)
 @given(
-    year=st.sampled_from((2018, 2019, 2020, 2021, 2024, 2025, 2026)),
+    year=st.sampled_from((2015, 2017, 2018, 2019, 2020, 2021, 2024, 2025, 2026)),
     size=st.integers(min_value=1, max_value=24),
 )
 def test_parent_limits_outside_historical_correction_equal_existing_routes(year, size):
@@ -187,30 +190,48 @@ def test_parent_limits_outside_historical_correction_equal_existing_routes(year,
         for state in StateCode
         if state.name not in ("GU", "MP", "PW", "PR", "VI", "AA", "AE", "AP")
     ]
-    if year <= 2020:
+    historical = 2018 <= year <= 2020
+    if historical:
         states = [state for state in states if state not in ("UT", "TN", "VA")]
     cases = [(state, size, "GROUP_II", 0) for state in states]
+    if not historical:
+        cases.extend(("VA", size, group, 0) for group in ("GROUP_I", "GROUP_III"))
     simulation = make_simulation(year, cases)
     parameters = simulation.tax_benefit_system.parameters(f"{year}-01-01")
     national = parameters.gov.hhs.medicaid.eligibility.categories.parent.income_limit
-    expected = np.array([national[state] for state in states])
+    expected = np.array([national[state] for state, _, _, _ in cases])
+    if year < 2018:
+        # Keep Utah's existing 0.49 input before the historical correction.
+        expected[states.index("UT")] = 0.49
     mo_limit = simulation.calculate("mo_mhf_parent_income_limit", year)
     for index, state in enumerate(states):
         if state == "MO":
             expected[index] = mo_limit[index]
-    if year >= 2026:
-        va = parameters.gov.states.va.dmas.medicaid.lifc.income_limit
+    if not historical:
+        # Read the unchanged July 2025 schedule independently of compatibility entries.
+        va = simulation.tax_benefit_system.parameters(
+            "2025-07-01"
+        ).gov.states.va.dmas.medicaid.lifc.income_limit
         capped_size = min(size, va.max_household_size)
-        annual = (
-            va.group2.main[capped_size]
-            + max(size - capped_size, 0) * va.group2.additional
-        )
-        group = simulation.calculate("state_group_str", year)[states.index("VA")]
         guideline = (
-            parameters.gov.hhs.fpg.first_person[group]
-            + (size - 1) * parameters.gov.hhs.fpg.additional_person[group]
+            parameters.gov.hhs.fpg.first_person["CONTIGUOUS_US"]
+            + (size - 1) * parameters.gov.hhs.fpg.additional_person["CONTIGUOUS_US"]
         )
-        expected[states.index("VA")] = annual / guideline
+        indices = (states.index("VA"), len(states), len(states) + 1)
+        direct_expected = []
+        for index, group in zip(indices, ("group2", "group1", "group3")):
+            table = getattr(va, group)
+            annual = (
+                table.main[capped_size] + max(size - capped_size, 0) * table.additional
+            )
+            direct_expected.append(annual / guideline)
+            if year >= 2026:
+                expected[index] = annual / guideline
+        np.testing.assert_allclose(
+            simulation.calculate("va_medicaid_lifc_income_limit", year)[list(indices)],
+            direct_expected,
+            rtol=1e-6,
+        )
     np.testing.assert_allclose(
         simulation.calculate("medicaid_parent_income_limit", year), expected, rtol=1e-6
     )

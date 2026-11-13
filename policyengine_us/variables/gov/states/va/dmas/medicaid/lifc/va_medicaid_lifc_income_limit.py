@@ -40,3 +40,12 @@ class va_medicaid_lifc_income_limit(Variable):
         )
         state_group = person.household("state_group_str", period)
         return income_limit / fpg(size, state_group, period, parameters)
+
+    def formula_2018(person, period, parameters):
+        income_limit = va_medicaid_lifc_income_limit.formula(person, period, parameters)
+        p = parameters(period).gov.hhs.medicaid.eligibility.categories.parent
+        return income_limit + p.fpl_disregard
+
+    def formula_2021(person, period, parameters):
+        # Retain the existing calculation outside the 2018-2020 correction.
+        return va_medicaid_lifc_income_limit.formula(person, period, parameters)

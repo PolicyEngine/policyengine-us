@@ -120,6 +120,13 @@ CONFLICT_COMMENT_RE = re.compile(
 # or raise its line here in the same PR, and the line goes when the marker lands
 # (CONTRIBUTING.md, "Source conflicts"). A lower count must be recorded here too.
 KNOWN_UNMARKED: dict[str, int] = {
+    "policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/income_limit.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/main.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/additional.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/main.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/additional.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/main.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/additional.yaml": 1,
     "policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_indiv.py": 1,
     "policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_joint.py": 1,
     "policyengine_us/variables/gov/states/ar/tax/income/low_income/ar_low_income_tax_joint.py": 1,

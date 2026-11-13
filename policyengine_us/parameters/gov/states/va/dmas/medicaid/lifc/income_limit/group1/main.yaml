@@ -1,19 +1,70 @@
 description: Virginia limits income to this amount under the Medicaid Low Income Families With Children program.
+# Source conflict: use DMAS's dated MAGI tables for 2017-2020.
+# DMAS staff apply these schedules; 12VAC30-40-220 lists lower amounts.
 1:
+  # Retain the existing backdated 2025 amounts outside 2018-2020.
+  2015-01-01: 3_948
+  2017-07-01: 2_940
+  2018-07-01: 3_000
+  2019-07-01: 3_084
+  2020-07-01: 3_144
+  2021-01-01: 3_948
   2025-07-01: 3_948
 2:
+  2015-01-01: 5_940
+  2017-07-01: 4_476
+  2018-07-01: 4_572
+  2019-07-01: 4_704
+  2020-07-01: 4_788
+  2021-01-01: 5_940
   2025-07-01: 5_940
 3:
+  2015-01-01: 7_584
+  2017-07-01: 5_688
+  2018-07-01: 5_808
+  2019-07-01: 5_976
+  2020-07-01: 6_072
+  2021-01-01: 7_584
   2025-07-01: 7_584
 4:
+  2015-01-01: 9_168
+  2017-07-01: 6_900
+  2018-07-01: 7_044
+  2019-07-01: 7_248
+  2020-07-01: 7_368
+  2021-01-01: 9_168
   2025-07-01: 9_168
 5:
+  2015-01-01: 10_752
+  2017-07-01: 8_136
+  2018-07-01: 8_304
+  2019-07-01: 8_544
+  2020-07-01: 8_688
+  2021-01-01: 10_752
   2025-07-01: 10_752
 6:
+  2015-01-01: 12_120
+  2017-07-01: 9_168
+  2018-07-01: 9_360
+  2019-07-01: 9_624
+  2020-07-01: 9_780
+  2021-01-01: 12_120
   2025-07-01: 12_120
 7:
+  2015-01-01: 13_704
+  2017-07-01: 10_344
+  2018-07-01: 10_560
+  2019-07-01: 10_860
+  2020-07-01: 11_040
+  2021-01-01: 13_704
   2025-07-01: 13_704
 8:
+  2015-01-01: 15_312
+  2017-07-01: 11_580
+  2018-07-01: 11_820
+  2019-07-01: 12_156
+  2020-07-01: 12_360
+  2021-01-01: 15_312
   2025-07-01: 15_312
 metadata:
   propagate_metadata_to_children: true
@@ -27,3 +78,13 @@ metadata:
   reference:
     - title: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3
       href: https://www.dmas.virginia.gov/media/0aynyhxk/m04-1-1-26a.pdf#page=51
+    - title: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3 (July 2017)
+      href: https://www.dmas.virginia.gov/media/2249/transmittal-dmas-5-effective-07-1-2017.pdf#page=35
+    - title: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3 (July 2018)
+      href: https://www.dmas.virginia.gov/media/2245/transmittal-dmas-9-effective-7-1-18-signed.pdf#page=34
+    - title: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3 (July 2019)
+      href: https://www.dmas.virginia.gov/media/2258/tn-dmas-13-effective-7-1-2019.pdf#page=42
+    - title: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3 (July 2020)
+      href: https://www.dmas.virginia.gov/media/2254/tn-dmas-17-effective-7-1-20.pdf#page=59
+    - title: 12VAC30-40-220, Income eligibility levels
+      href: https://law.lis.virginia.gov/admincode/title12/agency30/chapter40/section220/

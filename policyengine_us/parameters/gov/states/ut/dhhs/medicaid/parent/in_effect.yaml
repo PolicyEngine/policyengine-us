@@ -1,0 +1,11 @@
+description: PolicyEngine applies Utah household-size dollar standards in these historical parent Medicaid calculations.
+values:
+  2013-01-01: false
+  2020-01-01: true
+  2021-01-01: false
+metadata:
+  unit: bool
+  label: Utah historical Medicaid parent income schedule in effect
+  reference:
+    - title: Utah R414-303-4(3), emergency rule effective May 7, 2019
+      href: https://rules.utah.gov/publicat/bulletin/2019/20190601/43706.htm

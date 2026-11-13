@@ -1,0 +1,101 @@
+description: Tennessee limits Medicaid parent and caretaker relative income to this monthly dollar amount.
+metadata:
+  propagate_metadata_to_children: true
+  economy: false
+  household: false
+amount:
+  description: Tennessee limits Medicaid parent and caretaker relative income to this monthly dollar amount by household size.
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Tennessee Medicaid parent income limit
+    breakdown:
+      - range(1, 21)
+    breakdown_label:
+      - Household size
+    reference:
+      - title: Tennessee State Plan TN-14-0005-MM1, AFDC Income Standards, section H
+        href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/TN/TN-14-0005.pdf#page=19
+  1:
+    2013-01-01: 0
+    2018-01-01: 1018
+  2:
+    2013-01-01: 0
+    2018-01-01: 1329
+  3:
+    2013-01-01: 0
+    2018-01-01: 1611
+  4:
+    2013-01-01: 0
+    2018-01-01: 1867
+  5:
+    2013-01-01: 0
+    2018-01-01: 2102
+  6:
+    2013-01-01: 0
+    2018-01-01: 2320
+  7:
+    2013-01-01: 0
+    2018-01-01: 2524
+  8:
+    2013-01-01: 0
+    2018-01-01: 2718
+  9:
+    2013-01-01: 0
+    2018-01-01: 2903
+  10:
+    2013-01-01: 0
+    2018-01-01: 3084
+  11:
+    2013-01-01: 0
+    2018-01-01: 3259
+  12:
+    2013-01-01: 0
+    2018-01-01: 3431
+  13:
+    2013-01-01: 0
+    2018-01-01: 3601
+  14:
+    2013-01-01: 0
+    2018-01-01: 3770
+  15:
+    2013-01-01: 0
+    2018-01-01: 3935
+  16:
+    2013-01-01: 0
+    2018-01-01: 4098
+  17:
+    2013-01-01: 0
+    2018-01-01: 4257
+  18:
+    2013-01-01: 0
+    2018-01-01: 4411
+  19:
+    2013-01-01: 0
+    2018-01-01: 4557
+  20:
+    2013-01-01: 0
+    2018-01-01: 4693
+additional_person:
+  description: Tennessee adds no increment above the largest published household size for this parent and caretaker relative income limit.
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Tennessee Medicaid parent income limit additional person amount
+    reference:
+      - title: Tennessee State Plan TN-14-0005-MM1, AFDC Income Standards, section H
+        href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/TN/TN-14-0005.pdf#page=19
+  values:
+    2013-01-01: 0
+    2018-01-01: 0
+max_household_size:
+  description: Tennessee publishes the Medicaid parent and caretaker relative income table through this household size.
+  metadata:
+    unit: person
+    period: year
+    label: Tennessee Medicaid parent income limit maximum household size
+    reference:
+      - title: Tennessee State Plan TN-14-0005-MM1, AFDC Income Standards, section H
+        href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/TN/TN-14-0005.pdf#page=19
+  values:
+    2013-01-01: 20
