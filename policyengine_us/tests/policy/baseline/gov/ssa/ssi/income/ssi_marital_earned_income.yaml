@@ -62,7 +62,7 @@
   output:
     ssi_marital_earned_income: [10, 10]
 
-- name: Earned income is combined only in the months before one spouse enters a medical facility
+- name: Earned income is combined only in the months before one spouse's first full month in a medical facility
   period: 2026
   absolute_error_margin: 0.01
   input:

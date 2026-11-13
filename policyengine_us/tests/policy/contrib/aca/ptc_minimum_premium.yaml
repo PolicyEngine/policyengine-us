@@ -11,6 +11,7 @@
   input:
     gov.contrib.aca.minimum_premium.in_effect: true
     is_aca_ptc_eligible: true
+    is_aca_marketplace_enrollee: true
     slcsp: 6_000
     selected_marketplace_plan_premium_proxy: 6_000
     aca_magi: 20_000
@@ -27,6 +28,7 @@
   input:
     gov.contrib.aca.minimum_premium.in_effect: true
     is_aca_ptc_eligible: true
+    is_aca_marketplace_enrollee: true
     slcsp: 6_000
     selected_marketplace_plan_premium_proxy: 6_000
     aca_magi: 30_000
@@ -119,6 +121,7 @@
   input:
     gov.contrib.aca.minimum_premium.in_effect: true
     is_aca_ptc_eligible: true
+    is_aca_marketplace_enrollee: true
     slcsp: 40
     selected_marketplace_plan_premium_proxy: 40
     aca_magi: 20_000
@@ -134,6 +137,7 @@
   input:
     gov.contrib.aca.minimum_premium.in_effect: true
     is_aca_ptc_eligible: true
+    is_aca_marketplace_enrollee: true
     slcsp: 6_000
     selected_marketplace_plan_premium_proxy: 7_200
     aca_magi: 20_000
@@ -150,6 +154,7 @@
     gov.contrib.aca.minimum_premium.in_effect: true
     gov.contrib.aca.minimum_premium.amount: 25
     is_aca_ptc_eligible: true
+    is_aca_marketplace_enrollee: true
     slcsp: 6_000
     selected_marketplace_plan_premium_proxy: 6_000
     aca_magi: 20_000
@@ -166,6 +171,7 @@
   input:
     gov.contrib.aca.minimum_premium.in_effect: false
     is_aca_ptc_eligible: true
+    is_aca_marketplace_enrollee: true
     slcsp: 6_000
     selected_marketplace_plan_premium_proxy: 6_000
     aca_magi: 20_000
@@ -182,6 +188,7 @@
   input:
     gov.contrib.aca.minimum_premium.in_effect: true
     is_aca_ptc_eligible: true
+    is_aca_marketplace_enrollee: true
     slcsp: 6_000
     aca_magi: 20_000
     aca_required_contribution_percentage: 0
@@ -191,3 +198,154 @@
     aca_ptc: 5_940  # min(6,000, max(6,000, 3,000) - 60)
     used_aca_ptc: 2_940  # min(5,940, 3,000 - 60)
     marketplace_net_premium: 60  # 3,000 - 2,940
+
+- name: A claimable spouse's benchmark and premium stay out of the credit
+  # 26 U.S.C. 36B(c)(1)(D): the spouse who can be claimed on another return is
+  # outside the tax family, so the credit uses the other spouse's benchmark.
+  # 150% of the poverty guideline for one, 4.19% contribution:
+  # 6,000 - 0.0419 * 23,475 = 5,016.40, below the enrolled premium less the
+  # minimum (6,000 - 60), so the minimum does not bind.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        # Annual base: adults cost 6,000.
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6_000
+    aca_ptc_minimum_premium: 60
+    aca_ptc: 5_016.4
+    # The whole policy costs 12,000; the coverage family's share is
+    # 6,000 / (6,000 + 6,000), so 6,000, and the credit fits under 6,000 - 60.
+    aca_ptc_coverage_family_premium: 6_000
+    used_aca_ptc: 5_016.4
+
+- name: A claimable spouse's premium stays out of the cap when the minimum binds
+  # The household above with no required contribution. The credit is capped
+  # at the coverage family's enrolled premium less the minimum:
+  # 6,000 - 60 = 5,940. The whole policy's premium (12,000) would give 6,000.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        aca_required_contribution_percentage: 0
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6_000
+    aca_ptc_coverage_family_premium: 6_000
+    aca_ptc: 5_940
+    used_aca_ptc: 5_940
+
+- name: The used credit is capped at the coverage family's share of a cheaper plan less the minimum
+  # The household above on an 8,000 policy. The coverage family's share is
+  # 8,000 x 6,000 / 12,000 = 4,000. The credit stays at 5,940: its enrolled
+  # premium is the larger of the benchmark (6,000) and that share, less the
+  # 60 minimum. The used credit is capped at 4,000 - 60 = 3,940. With the
+  # whole policy's premium the cap would be 8,000 - 60 = 7,940, leaving the
+  # used credit at 5,940.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        aca_required_contribution_percentage: 0
+        selected_marketplace_plan_premium_proxy: 8_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        slcsp_age_0: 6000
+  output:
+    aca_ptc_coverage_family_premium: 4_000
+    aca_ptc: 5_940
+    used_aca_ptc: 3_940
