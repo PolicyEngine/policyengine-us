@@ -8,7 +8,7 @@
         members: [person1]
         filing_status: SINGLE
         ca_amti: 320_000
-        head_earned: 320_000
+        ca_head_earned: 320_000
     households:
       household:
         members: [person1]
@@ -27,7 +27,7 @@
         members: [person1, person2]
         filing_status: JOINT
         ca_amti: 900_000
-        head_earned: 700_000
+        ca_head_earned: 700_000
     households:
       household:
         members: [person1, person2]
@@ -45,7 +45,7 @@
         members: [person1]
         filing_status: SURVIVING_SPOUSE
         ca_amti: 390_351
-        head_earned: 320_000
+        ca_head_earned: 320_000
     households:
       household:
         members: [person1]
@@ -63,10 +63,134 @@
         members: [person1]
         filing_status: SINGLE
         ca_amti: 605_043
-        head_earned: 320_000
+        ca_head_earned: 320_000
     households:
       household:
         members: [person1]
         state_code: CA
   output:
     ca_amt_exemption: 0
+
+- name: Single filer, 2026, exemption phases out at 25% under R&TC 17062.1, not the federal 50%
+  # Schedule P (540) Exemption Worksheet with the 2025 amounts uprated by the June
+  # 2026 California CPI, 364.969 / 353.044 (the FTB has not published 2026 amounts):
+  # Line 1: 95,881.84. Line 3: 359,556.14. Line 4: 500,000 - 359,556.14 = 140,443.86.
+  # Line 5: 25% x 140,443.86 = 35,110.96. Line 6: 95,881.84 - 35,110.96 = 60,770.88.
+  # At the federal 2026 rate of 50%, line 6 would be 95,881.84 - 70,221.93 = 25,659.91.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 500_000
+        ca_head_earned: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_amt_exemption: 60_770.88
+
+- name: Joint filers, 2026, exemption phases out at 25%
+  # Line 1: 127,844.18. Line 3: 479,409.22. Line 4: 700,000 - 479,409.22 = 220,590.78.
+  # Line 5: 25% x 220,590.78 = 55,147.69. Line 6: 127,844.18 - 55,147.69 = 72,696.49.
+  # At 50%, line 6 would be 127,844.18 - 110,295.39 = 17,548.79.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ca_amti: 700_000
+        ca_head_earned: 700_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_amt_exemption: 72_696.49
+
+- name: Single filer, 2025, published amounts (control, unchanged)
+  # 2025 Schedule P (540) Exemption Worksheet:
+  # Line 1: 92,749. Line 3: 347,808. Line 4: 500,000 - 347,808 = 152,192.
+  # Line 5: 25% x 152,192 = 38,048. Line 6: 92,749 - 38,048 = 54,701.
+  period: 2025
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 500_000
+        ca_head_earned: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_amt_exemption: 54_701
+
+- name: Child exemption counts California wages, which leave out a 401(k) deferral
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_qualifying_child_dependent: true
+        employment_income: 10_000
+        traditional_401k_contributions_desired: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Worksheet line 8 counts wages "received for personal services
+    # performed". California excludes the 401(k) deferral, as the federal
+    # rules do: 10,000 - 1,000 = 9,000.
+    head_earned: 9_000
+    ca_head_earned: 9_000
+    # Adult exemption: AMTI below the 347,808 threshold, so 92,749.
+    # Child (2025 Schedule P (540) instructions, line 22, Exemption
+    # Worksheet lines 7-10): line 7 is California's 9,750, not the federal
+    # 9,550, so min(9,750 + 9,000, 92,749) = 18,750.
+    ca_amt_exemption: 18_750
+
+- name: Child exemption uses the California minimum, not the federal one
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_qualifying_child_dependent: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # Adult exemption: AMTI below the threshold, so 84,550.
+    # Child (2022 Schedule P (540) instructions, line 22, Exemption
+    # Worksheet lines 7-10): min(8,300 + 5,000, 84,550) = 13,300. The
+    # federal IRC 59(j) amount of 8,200 would give 13,200.
+    ca_amt_exemption: 13_300

@@ -14,13 +14,15 @@ class student_loan_interest_ald_magi(Variable):
         "222), and after application of sections 86, 135, 137, 219 and 469. "
         "Built from gross income sources rather than adjusted gross income, "
         "which includes this deduction. On a joint return each spouse "
-        "carries half of the tax unit's deductions and exclusions."
+        "carries half of the tax unit's deductions and exclusions. Joint "
+        "MAGI includes both spouses, including one claimed as a dependent "
+        "elsewhere who cannot take the deduction."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/221#b_2_C",
         "https://www.irs.gov/pub/irs-prior/p970--2024.pdf#page=36",
     )
-    defined_for = "student_loan_interest_ald_eligible"
+    defined_for = "is_tax_unit_head_or_spouse"
 
     def formula(person, period, parameters):
         p_irs = parameters(period).gov.irs
@@ -30,11 +32,11 @@ class student_loan_interest_ald_magi(Variable):
         if "taxable_unemployment_compensation" in gross_income_sources:
             # MAGI is determined without regard to section 85(c), so all
             # unemployment compensation counts, including any amount 85(c)
-            # excluded for 2020. Reading the untaxed amount also avoids a
-            # cycle: taxable unemployment compensation depends on AGI, which
-            # includes this deduction.
+            # excluded for 2020. Reading the total (reported or modeled)
+            # amount also avoids a cycle: taxable unemployment compensation
+            # depends on AGI, which includes this deduction.
             gross_income_sources.remove("taxable_unemployment_compensation")
-            gross_income_sources.append("unemployment_compensation")
+            gross_income_sources.append("total_unemployment_compensation")
         total_gross_income = 0
         for source in gross_income_sources:
             total_gross_income += not_dependent * max_(0, add(person, period, [source]))

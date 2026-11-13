@@ -6,10 +6,9 @@ class mo_adjusted_gross_income(Variable):
     entity = Person
     label = "Missouri adjusted gross income"
     documentation = (
-        "Each filer's Missouri adjusted gross income on Form MO-1040, Line 5: "
-        "their federal adjusted gross income less their Missouri "
-        "subtractions. A spouse's amount can be negative; Line 6 adds the two "
-        "columns."
+        "Each filer adds Missouri additions to federal adjusted gross income "
+        "and subtracts Missouri subtractions on Form MO-1040, Line 5. "
+        "Spouses can report negative amounts and add both columns on Line 6."
     )
     unit = USD
     definition_period = YEAR
@@ -28,7 +27,8 @@ class mo_adjusted_gross_income(Variable):
 
     def formula(person, period, parameters):
         federal_agi = person("mo_federal_adjusted_gross_income", period)
-        # Missouri additions (Line 2) are not modeled.
+        additions = person("mo_additions", period)
+        income_before_subtractions = federal_agi + additions
         subtractions = person("mo_agi_subtractions", period)
         p = parameters(period).gov.states.mo.tax.income.subtractions
         if p.plan_529_contributions.limited_to_own_agi:
@@ -37,8 +37,10 @@ class mo_adjusted_gross_income(Variable):
             # income". It is taken after the other subtractions.
             most = person("mo_529_deduction", period)
             other_subtractions = max_(0, subtractions - most)
-            allowed_most = min_(most, max_(0, federal_agi - other_subtractions))
+            allowed_most = min_(
+                most, max_(0, income_before_subtractions - other_subtractions)
+            )
             subtractions = other_subtractions + allowed_most
         # A tax unit dependent's Missouri AGI is on their own return.
         filer = ~person("is_tax_unit_dependent", period)
-        return filer * (federal_agi - subtractions)
+        return filer * (income_before_subtractions - subtractions)

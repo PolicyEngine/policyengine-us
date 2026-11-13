@@ -9,8 +9,8 @@ when both are. From 2024 a negative amount is replaced by zero: when joint
 federal AGI is zero or less both columns are zero, and when it is positive a
 spouse with a negative separate amount enters zero and the other spouse the
 whole joint amount (2025 instructions, page 6; 12 CSR 10-2.710(1); 12 CSR
-10-2.010(5)). Line 5 subtracts each spouse's Missouri subtractions without a
-floor, Line 6 adds the columns, and the Line 7 income percentage gives a
+10-2.010(5)). Each spouse adds Missouri additions and subtracts Missouri
+subtractions on Line 5 without a floor, adds the columns on Line 6, and gives a
 negative column 0%.
 
 The YAML cases pin the published examples. This test checks what YAML cannot,
@@ -28,7 +28,7 @@ regime. Each batch is one vectorized simulation.
 2. Differential: each filer's Line 1 equals an independent numpy statement of
    the worksheet built from the inputs, with the 12 CSR 10-2.010(2)
    capital-loss rule and, from 2024, the negative-AGI rule. Line 5 equals
-   Line 1 less the person's subtractions, with the MOST subtraction limited to
+   Line 1 plus additions less subtractions, with the MOST subtraction limited to
    what is left in 2024 and 2025 (12 CSR 10-2.010(4)(A)3 as effective
    February 29, 2024).
 3. Labels: exchanging the head and spouse labels changes no person's Line 1,
@@ -62,6 +62,7 @@ PERSON_INPUTS = [
     "health_savings_account_ald_person",
     "us_govt_interest_person",
     "investment_in_529_plan_indv",
+    "mo_additions",
 ]
 
 
@@ -91,6 +92,7 @@ def person_amounts(draw):
         "us_govt_interest_person": draw(maybe(money(1, 5_000))),
         # Up to $8,000 each, so a couple stays within the $16,000 cap.
         "investment_in_529_plan_indv": draw(maybe(money(1, 8_000))),
+        "mo_additions": draw(maybe(money(1, 5_000))),
     }
 
 
@@ -126,6 +128,7 @@ def _seeded_units(n=150):
             "health_savings_account_ald_person": some(1, 4_000, 0.2),
             "us_govt_interest_person": some(1, 5_000, 0.15),
             "investment_in_529_plan_indv": some(1, 8_000, 0.15),
+            "mo_additions": some(1, 5_000, 0.15),
         }
 
     return [
@@ -196,6 +199,8 @@ PERSON_OUTPUTS = [
     "mo_agi_subtractions",
     "mo_529_deduction",
     "self_employment_tax_ald_person",
+    "traditional_ira_deduction",
+    "educator_expense_ald_person",
     "is_tax_unit_dependent",
 ]
 
@@ -227,8 +232,8 @@ def _reference_line_1(person, n, floor_applies):
         + person["rental_income"]
         + person["us_govt_interest_person"]
         - person["self_employment_tax_ald_person"]
-        - person["traditional_ira_contributions"]
-        - person["educator_expense"]
+        - person["traditional_ira_deduction"]
+        - person["educator_expense_ald_person"]
         - person["early_withdrawal_penalty"]
         - person["alimony_expense"]
         - person["health_savings_account_ald_person"]
@@ -295,9 +300,12 @@ def _check(units, year):
     )
     most = person["mo_529_deduction"]
     other = person["mo_agi_subtractions"] - most
+    before_subtractions = line_1 + person["mo_additions"]
     if most_limited:
-        most = np.minimum(most, np.maximum(0, line_1 - other))
-    np.testing.assert_allclose(line_5, line_1 - other - most, atol=TOLERANCE)
+        most = np.minimum(most, np.maximum(0, before_subtractions - other))
+    np.testing.assert_allclose(
+        line_5, before_subtractions - other - most, atol=TOLERANCE
+    )
 
     # 3. Labels: the second half of the people and tax units is the first
     # half with the labels exchanged.

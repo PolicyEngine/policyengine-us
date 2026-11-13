@@ -36,6 +36,7 @@ class ky_income_tax_before_refundable_credits_if_joint(Variable):
         )
         # Joint: personal credits are pooled at the tax-unit level.
         personal_potential = add(tax_unit, period, ["ky_personal_tax_credits_joint"])
+        family_size_rate = tax_unit("ky_family_size_tax_credit_rate_if_joint", period)
         return ky_income_tax_after_non_refundable_credits_for_path(
-            tax_unit, period, base, personal_potential
+            tax_unit, period, base, personal_potential, family_size_rate
         )

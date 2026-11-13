@@ -1,0 +1,162 @@
+# A tax-unit dependent's income is not in the filer's federal AGI, and Kentucky
+# never reports a child's income on the parent's return; a child meeting the
+# filing requirements files their own (2025 Form 740 instructions, Filing
+# requirements). So Kentucky subtractions count only the head's and spouse's
+# amounts. 2025: rate 4%, standard deduction $3,270,
+# pension exclusion cap $31,110 per taxpayer, aged personal credit $40.
+
+- name: A dependent child's public pension is not subtracted from the head's Kentucky AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    families:
+      family:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: KY
+  output:
+    ky_subtractions: [0, 0]
+    ky_agi: [50_000, 0]
+    # 50,000 - 3,270 standard deduction.
+    ky_taxable_income_joint: [46_730, 0]
+    # 46,730 * 4%; no personal or family size credit applies.
+    ky_income_tax: 1_869.2
+
+- name: A dependent child's IRA and 401(k) distributions are not subtracted from the head's Kentucky AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_ira_distributions: 10_000
+        taxable_401k_distributions: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    families:
+      family:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: KY
+  output:
+    ky_subtractions: [0, 0]
+    ky_agi: [50_000, 0]
+    ky_income_tax: 1_869.2
+
+- name: Only the head's and spouse's retirement income is subtracted, each capped at $31,110.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 50_000
+        taxable_public_pension_income: 20_000
+      spouse:
+        age: 68
+        taxable_ira_distributions: 40_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    families:
+      family:
+        members: [head, spouse, child]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    # Head: 20,000 pension, under the cap. Spouse: 40,000 IRA capped at
+    # 31,110. Child: dependent, so none.
+    ky_subtractions: [20_000, 31_110, 0]
+    # Head: 70,000 - 20,000. Spouse: 40,000 - 31,110. Child: no federal AGI.
+    ky_agi: [50_000, 8_890, 0]
+    # Separate columns: (50,000 - 3,270) * 4% = 1,869.20 and
+    # (8,890 - 3,270) * 4% = 224.80, total 2,094.00, less the two $40 aged
+    # credits = 2,014.00. Joint: (58,890 - 3,270) * 4% - 80 = 2,144.80.
+    ky_files_separately: true
+    ky_income_tax: 2_014
+
+- name: A dependent's other subtraction items are not subtracted from the filer's Kentucky AGI either.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        us_govt_interest_person: 1_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        us_govt_interest_person: 1_000
+        salt_refund_income: 500
+        military_service_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    families:
+      family:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: KY
+  output:
+    ky_subtractions: [1_000, 0]

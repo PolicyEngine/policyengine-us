@@ -1,0 +1,368 @@
+# Service Delivery Guide (rev. January 1, 2024) pages 29-30 and Appendix E pages 81-86:
+# gross earned and unearned income, net self-employment, rental and gambling income,
+# Social Security net of the Medicare deduction, FITAP counted; child support,
+# capital gains, bank or retirement-account withdrawals and SNAP not counted.
+# Only income of members 18 and older counts (page 29), except Social Security and
+# SSI paid to minors (Appendix E page 85; FAQ A4).
+# Wages of 15,080 are full-time work at the federal 7.25 minimum wage (2,080 hours),
+# which Louisiana follows. Electricity of 1,740 is about the EIA 2024 Louisiana
+# average residential bill of 145 a month.
+
+- name: Case 1, gross wages and business income count while business and rental losses are floored at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_080
+        self_employment_income: 3_000
+        partnership_s_corp_income: -1_500
+        rental_income: -1_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 15,080 + 3,000 + max(-1,500, 0) + max(-1,800, 0) = 18,080
+    la_liheap_countable_income: 18_080
+
+- name: Case 2, a 17-year-old's wages are excluded and an 18-year-old's wages are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+      person2:
+        age: 18
+        is_in_k12_school: false
+        employment_income: 6_000
+      person3:
+        age: 17
+        is_in_k12_school: false
+        employment_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # 30,000 + 6,000; the 17-year-old's 4,000 is excluded (Appendix E page 82)
+    la_liheap_countable_income: 36_000
+
+- name: Case 3, an 18-year-old still enrolled in high school has wages excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+      person2:
+        age: 18
+        is_in_k12_school: true
+        employment_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # The 18-year-old student's 4,000 is excluded (Appendix E page 82)
+    la_liheap_countable_income: 30_000
+
+- name: Case 4, a minor's Social Security benefits are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 15_080
+      person2:
+        age: 10
+        # Child survivor benefit of 1,000 a month.
+        social_security: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # 15,080 + 12,000 (benefits paid to minors, Appendix E page 85)
+    la_liheap_countable_income: 27_080
+
+- name: Case 5, Social Security is counted net of the Medicare Part B premium and floors at zero for each person.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        ssi: 0
+        social_security: 24_000
+        # 2026 standard Part B premium of 202.90 a month.
+        medicare_part_b_premium: 2_434.80
+        pension_income: 6_000
+      person2:
+        age: 66
+        ssi: 0
+        social_security: 1_800
+        medicare_part_b_premium: 2_434.80
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # (24,000 - 2,434.80) + 6,000 + max(1,800 - 2,434.80, 0) = 21,565.20 + 6,000 + 0
+    la_liheap_countable_income: 27_565.20
+
+- name: Case 6, net gambling winnings count and one member's excess losses do not offset income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 20_000
+        gambling_winnings: 2_000
+        gambling_losses: 500
+      person2:
+        age: 48
+        gambling_winnings: 300
+        gambling_losses: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # 20,000 + max(2,000 - 500, 0) + max(300 - 1,000, 0) = 20,000 + 1,500 + 0
+    la_liheap_countable_income: 21_500
+
+- name: Case 7, child support, capital gains and retirement-account withdrawals are not counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_080
+        child_support_received: 4_800
+        long_term_capital_gains: 1_000
+        taxable_ira_distributions: 2_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Only the 15,080 wages count (Service Delivery Guide page 30 exclusions)
+    la_liheap_countable_income: 15_080
+
+- name: Case 8, FITAP cash assistance received by the household is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+      person3:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # FITAP three-person flat grant of 484 a month.
+        tanf: 5_808
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # 484 x 12 = 5,808
+    la_liheap_countable_income: 5_808
+
+- name: Case 9, an undocumented member's income counts in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_080
+      person2:
+        age: 42
+        immigration_status: UNDOCUMENTED
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # 15,080 + 20,000 (Service Delivery Guide page 34)
+    la_liheap_countable_income: 35_080
+
+- name: Case 10, SSI and regular contributions count as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        # 2026 federal SSI benefit rate of 994 a month.
+        ssi: 11_928
+        # Regular support of 100 a month from a relative.
+        financial_assistance: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 994 x 12 + 1,200 = 11,928 + 1,200
+    la_liheap_countable_income: 13_128
+
+- name: Case 11, a 16-year-old's interest and dividends are excluded while the minor's SSI is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 30_000
+      person2:
+        age: 16
+        is_disabled: true
+        # Child SSI of 500 a month.
+        ssi: 6_000
+        interest_income: 1_000
+        ordinary_dividend_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # 30,000 wages + 6,000 minor's SSI; the minor's 1,000 interest and 200 dividends are excluded
+    la_liheap_countable_income: 36_000
+
+- name: Case 12, SSTB, farm and partnership business income each count for an adult.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # Distinct amounts, so dropping any earned source changes the total.
+        sstb_self_employment_income: 4_000
+        farm_operations_income: 2_000
+        partnership_s_corp_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 4,000 + 2,000 + 1,000 = 7,000; no child, so FITAP is 0, and not aged,
+    # blind or disabled, so SSI is 0.
+    la_liheap_countable_income: 7_000
+
+- name: Case 13, every other unearned income source counts for an adult, including reported unemployment and a military survivor annuity.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        # Distinct amounts, so dropping any unearned source lowers the total
+        # by that source's own amount.
+        military_retirement_pay_survivors: 1_400
+        # Reported, so total_unemployment_compensation is 1,300.
+        unemployment_compensation: 1_300
+        railroad_benefits: 1_200
+        veterans_benefits: 1_100
+        disability_benefits: 1_000
+        survivor_benefits: 900
+        workers_compensation: 800
+        alimony_income: 700
+        rental_income: 600
+        strike_benefits: 500
+        farm_rent_income: 400
+        estate_income: 300
+        ordinary_dividend_income: 200
+        interest_income: 100
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_740
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 1,400 + 1,300 + 1,200 + 1,100 + 1,000 + 900 + 800 + 700 + 600 + 500
+    # + 400 + 300 + 200 + 100 = 10,500. A childless adult under 65 who is not
+    # disabled has no FITAP, SSI, Social Security or Part B premium.
+    la_liheap_countable_income: 10_500

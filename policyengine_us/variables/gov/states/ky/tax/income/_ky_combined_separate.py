@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 def ky_income_tax_after_non_refundable_credits_for_path(
-    tax_unit, period, base, personal_potential
+    tax_unit, period, base, personal_potential, family_size_rate
 ):
     """Kentucky income tax after the four ordered non-refundable credits, on a
     fixed filing path.
@@ -10,7 +10,11 @@ def ky_income_tax_after_non_refundable_credits_for_path(
     ``base`` is the Kentucky income tax before non-refundable credits on that
     path and ``personal_potential`` the personal tax credit available on it
     (each spouse's credit capped at their own column tax on the combined-separate
-    path; pooled across the tax unit on the joint path). Form 740 applies the
+    path; pooled across the tax unit on the joint path). ``family_size_rate`` is
+    the family size tax credit rate on that path: KRS 141.066(4) computes it from
+    joint modified gross income on a joint return, and from combined modified
+    gross income with each spouse's negative amount treated as zero when spouses
+    file separately on a combined return. Form 740 applies the
     credits in order -- personal, family size, tuition, dependent care -- each
     capped at the liability remaining after earlier credits. KRS 141.0205(2)(a)-(d)
     "Priority of application and use of tax credits" prescribes exactly this order
@@ -22,8 +26,9 @@ def ky_income_tax_after_non_refundable_credits_for_path(
     credit follow, these four (2)(a)-(d) credits; none of those are modeled, so
     (a)-(d) is the complete ordered set for the modeled credits.
 
-    This helper does not read ``ky_files_separately``, so the combined-separate
-    election can compare the two paths without a circular dependency.
+    This helper does not read ``ky_files_separately``, and neither do the
+    path rates its callers pass, so the combined-separate election can compare
+    the two paths without a circular dependency.
     """
     # NOTE: this helper hard-codes the personal -> family size -> tuition ->
     # dependent care (CDCC) order. The post-election chain
@@ -37,8 +42,7 @@ def ky_income_tax_after_non_refundable_credits_for_path(
     remaining = max_(base - applied_personal, 0)
     # 2. Family size tax credit: rate x (tax before credits less personal
     #    credits), matching ky_family_size_tax_credit_potential.
-    rate = tax_unit("ky_family_size_tax_credit_rate", period)
-    applied_family = min_(rate * remaining, remaining)
+    applied_family = min_(family_size_rate * remaining, remaining)
     remaining = max_(remaining - applied_family, 0)
     # 3. Tuition tax credit (path-neutral potential).
     tuition_potential = tax_unit("ky_tuition_tax_credit_potential", period)

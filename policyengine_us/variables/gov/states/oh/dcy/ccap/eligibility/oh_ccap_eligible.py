@@ -10,6 +10,7 @@ class oh_ccap_eligible(Variable):
     reference = (
         "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-01_20221211.pdf",
         "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-03_20220227.pdf",
+        "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/6/1/5180$6-1-03_20260801.pdf",
         "https://codes.ohio.gov/ohio-administrative-code/rule-5180:6-1-02",
         "https://dam.assets.ohio.gov/image/upload/childrenandyouth.ohio.gov/For%20Partners/Rules%20and%20Resources/2025/PL_21.pdf#page=2",
     )

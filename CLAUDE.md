@@ -1,20 +1,13 @@
 # PolicyEngine US - Development Guide
 
-## ⚠️ MANDATORY FIRST ACTION
+## Development skills
 
-At the START of each session, ask the user:
+Load the available PolicyEngine development skills that apply to the task without asking whether to load them:
 
-"Would you like to load PolicyEngine development skills for this session?"
-
-**Options to present:**
-1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
-2. "No, skip" - Proceed without loading skills
-
-**If Option 1 selected, load ALL of these** (from the `policyengine-claude` plugin):
 - /complete:policyengine-model-development (variable, parameter, period, and testing patterns)
 - /complete:policyengine-standards (code style, formatting, changelog, PR workflow)
 
-If these skills are unavailable (plugin not installed), skip loading and proceed.
+If these skills are unavailable, follow the repository guidance and report any gap that blocks the task.
 
 ---
 
@@ -145,6 +138,7 @@ changelog.d/medicaid-ce-exclusions.md
 - Follow the exact order of operations specified in regulations
 - Verify behavior at edge cases (income just below/above thresholds, exact boundary conditions)
 - Consider real-world examples to validate implementation, including official calculators
+- **Conflicting sources (ruled 2026-10-19, refined 2026-10-20).** Where a statute conflicts with a form, instructions, manual or stated agency practice, follow the statute; forms and instructions fill gaps where the statute is silent. A Treasury regulation binds until a court sets it aside, so the statute-first rule doesn't override it; one that flatly contradicts its statute goes to the project lead to decide case by case, and the ruling is recorded in the register. Where the text and the canons (CONTRIBUTING.md#source-conflicts) don't settle a reading, follow the administering agency's reading. Record every such choice in the shared source-conflict register (rulespec-us `known-source-conflicts.yaml`) and mark the deciding line `# Source conflict <jurisdiction>:<id>`; see CONTRIBUTING.md#source-conflicts. `policyengine_us/tests/code_health/test_source_conflicts.py` enforces it.
 
 ## Parameter and variable references
 - One `reference` entry per source document; URLs that differ only by `#page=` are one source. Do not split a multi-page table into per-page entries.
@@ -166,17 +160,6 @@ changelog.d/medicaid-ce-exclusions.md
   - Code that lives near dead code is not necessarily dead — verify each piece independently
   - Existing tests may bypass the code being removed (e.g. providing a variable as direct input rather than testing its derivation) — passing tests ≠ safe to delete
 
-- **PARTNER API CONTRACT TESTS ARE NOT ORDINARY SNAPSHOTS**
-  - Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests
-  - Do not rewrite these expected outputs merely to match changed model behavior or make CI pass
-  - If a model change causes partner tests to fail, treat that as a possible partner-facing API change
-  - Before editing files in this folder, flag the partner-facing risk to the user and use the `AskUserQuestion` tool to ask these three questions in a single call:
-    1. Are you sure you want to edit this test file?
-    2. Have you notified a team member about this change?
-    3. Have you notified the API partner about this change?
-  - Subagents and team members must not edit partner test files. If a subagent or team member finds that an edit is needed, it must stop and report back; the top-level agent runs the three-question gate with the user before any edit is made.
-  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to the user
-
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations
   - NEVER use period.start.year or other conditional checks to return hardcoded values for test cases
@@ -186,6 +169,23 @@ changelog.d/medicaid-ce-exclusions.md
   - Use period-appropriate parameter values
   - Document any special time-period specific logic in BOTH code comments and variable documentation
   - Focus on preserving the calculation PROCESS rather than just matching specific OUTCOMES
+
+## Partner API contract tests
+
+The YAML files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests. Never rewrite an expected value merely to make CI pass. Treat a model-caused failure as a possible change to what partners see.
+
+Use one designated editor for each partner test file. The coordinator assigns files to agents or teammates; avoid conflicting parallel writes.
+
+Before editing partner tests:
+
+- Identify the causal model change and derive every changed expected value from primary sources independently of the implementation.
+- Table every changed value in the PR: file, case, variable, old value, new value and source justification. Compute every output variable of each affected case; the test runner stops at the first failure and can hide other changed outputs. Explain the partner-facing impact and why the change is intentional.
+- Check affected boundary cases, failing or not. Compare parameter trees and formula-derived thresholds at the base and head for the cases' periods; uprating can move values outside the diff. Check each case whose name or own comments place it at, just above or just below a moved value. Preserve its stated purpose and justify any input or coverage change from the source. Check partner-flagged cases and any dependency a partner identified in the PR; resolve the compatibility question before merging.
+- Preserve the pre-change failing results as evidence. Do not delete, skip, rename or loosen a case merely to make CI pass.
+
+Before merging, obtain independent automated review at the current head from a fresh reviewer who neither made the model change nor edited the expectations. The reviewer recomputes each changed value from the primary source, checks every changed output and confirms that the diff contains only the intended expectation, input, eligibility and coverage changes. Rerunning the changed model alone does not supply an independent expected value. Pass all required CI checks at the current head.
+
+Request human review only for a specific material open question that requires that person's expertise, and name the question in the request. Resolve any source conflict, untraced value or partner compatibility question before merging. Do not request human review or notify a person to keep them informed or because they own the area.
 
 ## Code Coverage Exclusions
 Use `# pragma: no cover` **only** for code that cannot be tested in unit tests:

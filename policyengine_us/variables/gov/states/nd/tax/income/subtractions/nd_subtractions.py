@@ -17,6 +17,9 @@ class nd_subtractions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nd.tax.income.taxable_income.subtractions
-        total_subtractions = add(tax_unit, period, p.sources)
+        # Dependents' income is not in federal taxable income; they report it
+        # on their own return, so person-level subtractions count only the
+        # head and spouse.
+        total_subtractions = tax_unit_non_dep_add(tax_unit, period, p.sources)
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)

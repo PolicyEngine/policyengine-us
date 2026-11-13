@@ -302,10 +302,11 @@
         members: [primary, secondary]
         state_code: MO
   output:
-    # Primary: 40,000 - 7,000 - 2,500 - 300 = 30,200. Secondary: 8,000.
-    # (main split the 9,800 by gross income share: 31,833.33 and 6,366.67.)
-    adjusted_gross_income: 38_200
-    mo_federal_adjusted_gross_income: [30_200, 8_000]
+    # The 2023 IRA contribution limit at age 40 caps the deduction at 6,500.
+    # Primary: 40,000 - 6,500 - 2,500 - 300 = 30,700. Secondary: 8,000.
+    traditional_ira_deduction: [6_500, 0]
+    adjusted_gross_income: 38_700
+    mo_federal_adjusted_gross_income: [30_700, 8_000]
 
 - name: Alimony paid under a 2015 decree stays with the payer
   period: 2023

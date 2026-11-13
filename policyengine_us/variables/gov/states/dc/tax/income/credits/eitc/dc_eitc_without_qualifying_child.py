@@ -2,6 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_us.tools.state_eitc_helpers import (
     eitc_filing_requirement_met,
     eitc_filing_status_eligible,
+    eitc_section_911_eligible,
 )
 
 
@@ -41,6 +42,7 @@ class dc_eitc_without_qualifying_child(Variable):
             & tax_unit.any(age_eligible)
             & tax_unit("eitc_investment_income_eligible", period)
             & eitc_filing_status_eligible(tax_unit, period, parameters)
+            & eitc_section_911_eligible(tax_unit, period)
             & eitc_filing_requirement_met(tax_unit, period)
             & tax_unit("takes_up_eitc", period)
         )

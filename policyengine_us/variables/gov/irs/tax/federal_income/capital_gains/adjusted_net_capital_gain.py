@@ -30,9 +30,13 @@ class adjusted_net_capital_gain(Variable):
         # excludes dividends elected as investment income (§ 1(h)(11)(D)(i)).
         # net_capital_gain takes a Form 4952 election from the gain before
         # the dividends, so the dividends it still holds are the smaller of
-        # the two amounts.
+        # the two amounts. As in net_capital_gain, a tax unit dependent's
+        # dividends are on the dependent's own return.
         qualified_dividend_income = min_(
-            max_(0, add(tax_unit, period, ["qualified_dividend_income"])),
+            max_(
+                0,
+                tax_unit_non_dep_add(tax_unit, period, ["qualified_dividend_income"]),
+            ),
             net_capital_gain,
         )
         unrecaptured_s_1250_gain = tax_unit(
