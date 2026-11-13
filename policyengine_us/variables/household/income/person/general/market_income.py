@@ -36,6 +36,9 @@ class market_income(Variable):
             "illicit_income",
             "farm_operations_income",
             "miscellaneous_income",
+            # Gambling winnings before losses, as gross income counts them
+            # (Schedule 1 line 8b).
+            "gambling_winnings",
             "alimony_income",
             "strike_benefits",
             "retirement_distributions",

@@ -114,6 +114,9 @@ GROSS_INCOME_IN_RESOURCES = {
     "illicit_income": "illicit_income",
     "taxable_retirement_distributions": "retirement_distributions",
     "miscellaneous_income": "miscellaneous_income",
+    # Winnings before losses. Filers deduct losses only as an itemized
+    # deduction, and losing wagers stay out of resources like other spending.
+    "gambling_winnings": "gambling_winnings",
     "ak_permanent_fund_dividend": "ak_permanent_fund_dividend",
     "taxable_alimony_income": "alimony_income",
     "military_retirement_income": "military_retirement_income",
@@ -137,6 +140,7 @@ MARKET_SOURCES = [
     ("non_sch_d_capital_gains", "person", False),
     ("other_net_gain", "tax_unit", True),
     ("disability_benefits", "person", False),
+    ("gambling_winnings", "person", False),
 ]
 
 # Cash payments, with the state that pays each and a year it pays.

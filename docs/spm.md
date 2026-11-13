@@ -21,6 +21,11 @@ that counts its cash, and it fails when a new source has none. Market income
 keeps a source's losses where the source has them, such as partnership, farm
 rental and Form 4797 losses.
 
+Market income counts gambling winnings in full, as gross income does. Filers
+deduct gambling losses only as an itemized deduction, up to their winnings, and
+PolicyEngine leaves losing wagers out of resources, as it leaves out other
+spending.
+
 Three sources stay out of resources on purpose:
 
 - `debt_relief`: discharged debt brings the family no cash.

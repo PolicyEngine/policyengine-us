@@ -678,3 +678,16 @@
     nd_qdiv_subtraction: 400
     # 30,000 + 5,000 + 1,000, with no state-law subtraction.
     nd_renters_refund_income: 36_000
+
+- name: North Dakota counts gambling winnings in renter's refund income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 45
+    state_code: ND
+    employment_income: 20_000
+    gambling_winnings: 4_000
+  output:
+    # N.D.C.C. 57-02-08.1(5)(c) counts income from all sources, and federal
+    # law counts gambling winnings in gross income: 20,000 + 4,000.
+    nd_renters_refund_income: 24_000

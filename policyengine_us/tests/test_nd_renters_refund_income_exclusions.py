@@ -89,6 +89,7 @@ COUNTED_IN_FULL = {
     "illicit_income": "illicit_income",
     "farm_operations_income": "farm_operations_income",
     "miscellaneous_income": "miscellaneous_income",
+    "gambling_winnings": "gambling_winnings",
     "military_retirement_income": "military_retirement_income",
     "ak_permanent_fund_dividend": "ak_permanent_fund_dividend",
 }
@@ -377,6 +378,7 @@ def shared_sources(draw):
         "long_term_capital_gains": draw(amount),
         "rental_income": draw(amount),
         "miscellaneous_income": draw(amount),
+        "gambling_winnings": draw(amount),
         "military_retirement_pay": draw(amount),
     }
     # Leave out a random subset, so zero amounts and missing inputs both occur.
