@@ -3844,7 +3844,7 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10631
   state: ruled
-  note: "Follows the regulation: any coverage without a spenddown bars the program, including the ACA adult group, which 120.10(h) places under medical assistance. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10631"
+  note: "Follows the regulation: any coverage without a spenddown bars the program, including the ACA adult group, which 120.10(h) places under medical assistance. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10631#issuecomment-6855055391"
 - id: us-il:joint-childless-eitc-dependency-skip
   program: income-tax
   years:
@@ -3891,8 +3891,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/hhs/medicaid/income/medicaid_optional_senior_or_disabled_countable_income.py
-  state: open
-  note: "The regulation reads \"the first $20.00 of gross earned income\" and, for blind people, \"The first $85.00 of the gross earned income\"; the manual says \"Allow these deductions after deducting the $25 AABD income disregard and self-employment expenses.\" The count follows the regulation. The shared AABD variable still takes the exemption after expenses and the $25. For the project lead to confirm."
+  state: ruled
+  note: "The regulation reads \"the first $20.00 of gross earned income\" and, for blind people, \"The first $85.00 of the gross earned income\"; the manual says \"Allow these deductions after deducting the $25 AABD income disregard and self-employment expenses.\" The count follows the regulation: the exemption comes off gross earned income. The shared AABD variable still takes the exemption after expenses and the $25. Ruled by the project lead, 2026-11-13: https://github.com/PolicyEngine/policyengine-us/pull/10631#issuecomment-6855055391"
 - id: us-il:msp-exemption-applicant-without-income
   program: medicare-savings-programs
   years:
