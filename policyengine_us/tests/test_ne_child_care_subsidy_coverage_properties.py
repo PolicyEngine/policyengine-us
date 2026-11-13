@@ -20,8 +20,9 @@ approximates the payment from the bill and checks no provider.
    program covers. With no care schedule and no family fee, the rate matrix
    prices nothing, and the payment equals those bills.
 3. Before and after October 1, 2025, a lone child with a special need gets the
-   same payment at 18 as at 17. The model gives an 18-year-old no share of the
-   bill, so the child takes the part that no member received.
+   same payment at 18 as at 17, with school attendance and the other rate inputs
+   held fixed. The model gives an 18-year-old no share of the bill, so the child
+   takes the part that no member received.
 """
 
 import pytest
