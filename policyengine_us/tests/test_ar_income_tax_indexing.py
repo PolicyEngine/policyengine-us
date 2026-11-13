@@ -216,7 +216,7 @@ def test_ar_index_rounds_each_bound_from_the_preceding_rounded_bound():
 def test_ar_2026_tables_index_act_1_and_keep_bracket_adjustments_fixed():
     income = system.parameters.gov.states.ar.tax.income
     main = income.rates.main
-    # The model's CPI-U gives 3.06% for 2026, capped at 3%.
+    # The model's CPI-U gives 3.15% for 2026, capped at 3%.
     assert income.uprating("2026-01-01") == pytest.approx(1.03)
     # PolicyEngine selects 2026 for the first adjustment, following the
     # recorded reading and DFA's 2022-2024 cards.
@@ -260,12 +260,12 @@ def card_bounds(year):
 def test_ar_window_reproduces_dfa_cards(year, ar_2025_nsa_parameters):
     """Index all 49 distinguishing bounds to their next published card.
 
-    The repository's CPI-U is the not seasonally adjusted series before
-    2024, so its windows for 2018-2021 are the statute's: 2.4193%, 1.9000%,
-    1.4583% and 2.9977%. The window for tax year Y-1 (the rule Act 1459
-    struck) gives 1.9874%, 2.4193%, 1.9000% and 1.4583%, and misses most of
-    these bounds. The 2025 case uses the tiny NSA tree because the shared
-    CPI-U series uses seasonally adjusted observations from 2024.
+    The repository's CPI-U holds the not seasonally adjusted series, and the
+    statute's windows give 2.4193%, 1.9000%, 1.4583% and 2.9977% for
+    2018-2021. The window for tax year Y-1 (the rule Act 1459 struck) gives
+    1.9874%, 2.4193%, 1.9000% and 1.4583%, and misses most of these bounds.
+    The 2025 case reads the 24 BLS observations in the tiny NSA tree and
+    checks that the shared series gives the same two averages.
     """
     parameters = ar_2025_nsa_parameters if year == 2025 else system.parameters
     adjustment = get_ar_cost_of_living_adjustment(parameters, year)
@@ -281,6 +281,10 @@ def test_ar_window_reproduces_dfa_cards(year, ar_2025_nsa_parameters):
         # 319.205 / 310.955 = 1.026531170105, below the 1.03 cap.
         assert get_ar_cpi(parameters, 2024) == pytest.approx(310.955)
         assert get_ar_cpi(parameters, 2025) == pytest.approx(319.205)
+        for window in (2024, 2025):
+            assert get_ar_cpi(system.parameters, window) == pytest.approx(
+                get_ar_cpi(parameters, window)
+            )
         # DFA's 2025 Indexed Tax Brackets card:
         # https://www.dfa.arkansas.gov/wp-content/uploads/2025_TaxBrackets.pdf
         assert published == [5_600, 11_200, 16_000, 26_400, 94_700]
