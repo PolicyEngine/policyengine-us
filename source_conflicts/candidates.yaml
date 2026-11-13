@@ -368,6 +368,54 @@ candidates:
   note: 'PE-US follows the statute and current rule: estate_income counts signed in Alabama gross income, so a beneficiary''s
     loss passes through (gross_income_sources.yaml, read by al_agi.py). estate_income does not separate trusts from
     estates. Identify booklet editions repeating the obsolete restriction.'
+- id: us-al:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Can Alabama's whole-dollar monthly LIHEAP limits pay a household whose income exceeds both 150% of the
+    poverty guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Alabama, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
+  - kind: manual
+    citation: ADECA FY2026 LIHEAP Policy Manual, Appendix D Payment Assistance Chart, PDF page 57
+    url: https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=57
+  - kind: guidance
+    citation: ADECA Payment Assistance Chart effective February 17, 2025 (cooling)
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/AL_BenefitMatrix_Cooling_2026.pdf
+  - kind: guidance
+    citation: ADECA LIHEAP Summarized Eligibility Requirements, Effective October 1, 2024 - February 16, 2025, page 1
+    url: https://adeca.alabama.gov/wp-content/uploads/LIHEAP-Summarized-Eligibility-Requirements.pdf#page=1
+  - kind: guidance
+    citation: HHS LIHEAP IM 2024-02 Attachment 4, Mandatory Use in LIHEAP for FY25, Alabama, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=1
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The charts round 150% of the monthly guideline to the nearest dollar, which puts the limit $3 or $6 a year
+      above the federal maximum at the large household sizes where 150% of the guideline is the greater amount.
+  example: In FY2026, ten people with $97,728 of countable income ($8,144 a month) are within the printed heating limit
+    and would be paid, but exceed the $97,725 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/al/adeca/liheap/eligibility/al_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10756
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Heating FY2026, on
+    the 2025 guidelines: sizes 10, 12 and 14 are $3 lower ($97,728 and $97,725 at 10); size 8 keeps the printed $81,228
+    because HHS''s 60% amount, $81,723, is the higher maximum. Heating FY2025, on the 2024 guidelines of the October 1, 2024
+    to February 16, 2025 chart, with HHS''s FY2025 amounts (LIHEAP IM 2024-02 Attachment 4): sizes 9, 11, 13 and 15 are
+    $6 lower ($87,156 and $87,150 at 9). Summer 2025 cooling, on the 2025 guidelines, with the same FY2025 amounts: sizes
+    8, 10, 12 and 14 are $3 lower ($81,228 and $81,225 at 8). The summer 2026 chart, on the 2026 guidelines, prints whole-dollar
+    amounts equal to 150% of the guideline, so nothing is lowered. Verify each later chart.'
 - id: us-al:liheap-insurance-payments
   program: liheap
   years:

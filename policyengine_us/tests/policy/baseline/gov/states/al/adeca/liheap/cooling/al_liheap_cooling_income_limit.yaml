@@ -1,0 +1,33 @@
+# Source: ADECA PY 2026 Payment Assistance Chart effective May 15, 2026 (no live copy; the FY2027 plan,
+# section 3.5, page 12, prints the same arithmetic),
+# built on the 2026 guidelines of $15,960 plus $5,680 per additional person.
+
+# 150% a month: size 1 = 15,960 x 1.5 / 12 = 1,995; size 2 = 21,640 x 1.5 / 12 = 2,705;
+# size 3 = 3,415; size 4 = 4,125; size 5 = 4,835; size 15 = 95,480 x 1.5 / 12 = 11,935.
+# Each printed monthly limit times 12.
+- name: Case 1, summer 2026 cooling limits follow the May 15, 2026 chart.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL, AL, AL, AL, AL]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true, true, true, true, true]
+    al_liheap_household_size: [1, 2, 3, 4, 5, 15]
+  output:
+    al_liheap_cooling_income_limit: [23_940, 32_460, 40_980, 49_500, 58_020, 143_220]
+
+# Summer 2025 used the chart effective February 17, 2025, on the 2025 guidelines of $15,650 plus $5,500 per
+# additional person. Size 7: 48,650 x 1.5 / 12 = 6,081.25, printed as 6,081 (x 12 = 72,972). Size 8: 54,150 x 1.5 / 12
+# = 6,768.75, printed as 6,769 (x 12 = 81,228). 42 U.S.C. 8624(b)(2)(B) pays no household above the greater of 150%
+# of the guideline (81,225 at size 8) and the FY2025 60% state median income amount (57,273 for four x 1.38 =
+# 79,036), so the size 8 limit stops at 81,225.
+- name: Case 2, a summer 2025 limit that rounds above the federal maximum stops there.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true]
+    al_liheap_household_size: [7, 8]
+  output:
+    al_liheap_cooling_income_limit: [72_972, 81_225]

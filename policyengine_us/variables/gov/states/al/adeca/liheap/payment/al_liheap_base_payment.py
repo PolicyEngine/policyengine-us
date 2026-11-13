@@ -1,6 +1,21 @@
 from policyengine_us.model_api import *
 
 
+def al_liheap_chart_amount(spm_unit, period, parameters, base, band):
+    p = parameters(period).gov.states.al.adeca.liheap.payment
+    size = spm_unit("al_liheap_household_size", period)
+    additional_people = clip(size - 1, 0, p.maximum_payment_household_size - 1)
+    # Cross-state rows have band zero before defined_for masks the result;
+    # raise it to band 1 so the eager lookup stays within the breakdown.
+    lookup_band = max_(band, 1)
+    amount = (
+        base
+        - p.income_band_reduction[lookup_band]
+        + additional_people * p.additional_person_amount
+    )
+    return where(base > 0, amount, 0)
+
+
 class al_liheap_base_payment(Variable):
     value_type = float
     entity = SPMUnit
@@ -31,16 +46,7 @@ class al_liheap_base_payment(Variable):
             ],
             default=0,
         )
-        size = spm_unit("al_liheap_household_size", period)
-        additional_people = clip(size - 1, 0, p.maximum_payment_household_size - 1)
-        # Cross-state rows have band zero before defined_for masks the result;
-        # raise it to band 1 so the eager lookup stays within the breakdown.
-        band = max_(spm_unit("al_liheap_income_band", period), 1)
-        amount = (
-            base
-            - p.income_band_reduction[band]
-            + additional_people * p.additional_person_amount
-        )
+        band = spm_unit("al_liheap_income_band", period)
         # This compact representation reproduces Appendix D's entire matrix.
         # The manual's worked example on page 22 uses an older payment amount.
         # No published category was identified for fuel oil, solar, other, or
@@ -48,4 +54,4 @@ class al_liheap_base_payment(Variable):
         # zero leaves those estimates incomplete; it does not establish legal
         # ineligibility, including heat in rent. Issue 9754 tracks the
         # unspecified-fuel default.
-        return where(base > 0, amount, 0)
+        return al_liheap_chart_amount(spm_unit, period, parameters, base, band)

@@ -1,0 +1,17 @@
+description: Alabama uses federal poverty guidelines from this many years before the benefit year for regular cooling assistance under the Low Income Home Energy Assistance Program.
+# The May-September cooling season runs on the chart ADECA updates to the
+# calendar year's guidelines once they are released. The May 15, 2026 effective
+# date of the summer 2026 chart is reported from an attachment to the draft
+# FY2027 plan that ADECA later removed; no live copy was found. The model applies
+# the updated chart to the whole season, including applications before the update.
+values:
+  2025-10-01: 0
+metadata:
+  unit: year
+  period: year
+  label: Alabama LIHEAP cooling poverty guideline year lag
+  reference:
+    - title: "Alabama FY2026 LIHEAP State Plan, sections 1.1 and 3.5 (May-September cooling season; adopt the 2026 guidelines upon release) #page 4,12"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AL_Plan_2026.pdf#page=4
+    - title: Alabama FY2027 LIHEAP State Plan, section 3.5 (the 2026 guidelines set the $1,995 one-person limit and $665, $1,331 and $1,995 band tops; adopt the 2027 guidelines upon release)
+      href: https://liheapch.acf.gov/docs/2027/state-plans/AL_Plan_2027.pdf#page=12

@@ -1,0 +1,234 @@
+# Source: ADECA FY2026 LIHEAP Policy Manual (pages 9, 21-23), FY2026 plan sections 3.5-3.6
+# (pages 12-13), and the PY 2026 Payment Assistance Chart effective May 15, 2026 (no live copy;
+# the FY2027 plan, section 3.5, page 12, prints the same 2026-guideline limit and bands). Regular Cooling pays the chart's Electric column, minus one month of HUD
+# utility allowance, plus the $100 FY2026 IIJA supplement when the regular payment is positive.
+# 2026 monthly band tops (2026 guidelines): size 1 $665 / $1,331 / $1,995; size 4 $1,375 /
+# $2,751 / $4,125; size 5 $1,612 / $3,225 / $4,835.
+# Electric column: size 1 $440 / $410 / $320; size 4 and up $470 / $440 / $350.
+
+# Part-time minimum wage: 20 hours x $7.25 x 52 weeks = $7,540 a year, $628.33 a month,
+# band 1. Cooling: Electric $440 + $100 = $540. The gas heating column pays $480, and
+# heating adds its own $100 supplement: $580. The national LIHEAP total is $580 + $540.
+- name: Case 1, a gas-heated worker receives the Electric column cooling payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 45
+    employment_income_before_lsr: 7_540
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_base_payment: 480
+    al_liheap_cooling: 540
+    al_liheap: 580
+    liheap: 1_120
+
+# Retiree with $1,100 a month of Social Security ($13,200 a year), band 2 ($666 to $1,331).
+# SSI is zero: $1,100 - $20 = $1,080 exceeds the $994 federal benefit rate.
+# Cooling: $440 - $30 = $410 + $100 = $510.
+- name: Case 2, a one-person band 2 household receives $410 plus the supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 70
+    social_security_retirement: 13_200
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_cooling: 510
+
+# One earner at about $17.31 an hour full time: $36,000 a year, $3,000 a month, size 4 band 3
+# ($2,752 to $4,125). Cooling: $440 - $120 + 3 x $10 = $350 + $100 = $450.
+- name: Case 3, a four-person band 3 household receives $350 plus the supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 36_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_cooling: 450
+
+# Five people with $30,000 of wages: $2,500 a month. Size 5 band tops are
+# floor(4,835 / 3 + 0.5) = $1,612 and 2 x 1,612 + 1 = $3,225, so band 2. The payment uses
+# the four-person column: $440 - $30 + 3 x $10 = $440 + $100 = $540.
+- name: Case 4, a five-person household receives the four-person payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 30_000
+      person2:
+        age: 36
+      person3:
+        age: 12
+      person4:
+        age: 9
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_cooling: 540
+
+# Case 1's worker with HUD utility allowances of $50 and $440 a month ($600 and $5,280 a year).
+# $440 - $50 = $390 + $100 = $490. $440 - $440 = $0, so no supplement is added.
+- name: Case 5, the monthly HUD utility allowance reduces the cooling payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL]
+    age: [45, 45]
+    employment_income_before_lsr: [7_540, 7_540]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true]
+    hud_utility_allowance: [600, 5_280]
+  output:
+    al_liheap_cooling: [490, 0]
+
+# $15 an hour full time: $31,200 a year, $2,600 a month, above the $1,995 one-person limit.
+- name: Case 6, income above the cooling limit pays nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 30
+    employment_income_before_lsr: 31_200
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_cooling: 0
+
+- name: Case 7, a household without a cooling cost receives no cooling payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 45
+    employment_income_before_lsr: 7_540
+    heating_type: ELECTRICITY
+    has_cooling_expense: false
+    hud_utility_allowance: 0
+  output:
+    al_liheap_cooling: 0
+
+# FY2027 carries the chart amounts forward and ends the IIJA supplement on October 1, 2026.
+# $628.33 a month stays in band 1 under any 2027 guideline at least as high as 2026's $15,960
+# (band 1 top of $665 or more). Cooling: $440.
+- name: Case 8, the summer 2027 payment has no IIJA supplement.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 45
+    employment_income_before_lsr: 7_540
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_cooling: 440
+
+# Each income source is floored at zero, so a $20,000 business loss leaves countable income
+# at $0, band 1: $440 + $100 = $540, not more.
+- name: Case 9, a business loss does not raise the payment above the band 1 amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 45
+    self_employment_income: -20_000
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_cooling: 540
+
+# Case 1's worker with the heating fuel left unspecified. Regular Cooling pays the Electric
+# column whatever the heating fuel, and plan item 3.2 adds no cooling requirement, so band 1
+# pays $440 + $100 = $540.
+# Was false and $0, now true and $540: cooling eligibility no longer requires a reported heating fuel.
+- name: Case 10, an unspecified heating fuel still receives the cooling payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 45
+    employment_income_before_lsr: 7_540
+    heating_type: UNSPECIFIED
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_cooling_eligible: true
+    al_liheap_cooling: 540
+
+# FY2025 plan: cooling runs May 1 to September 30, 2025, pays $320 to $520, and adds the
+# $100 IIJA supplement. The chart effective February 17, 2025 uses the 2025 guidelines:
+# size 1 limit 15,650 x 1.5 / 12 = 1,956.25, printed $1,956 ($23,472 a year), band 2
+# $653 to $1,305, with the same Electric column. Case 2's retiree, $1,100 a month, is in
+# band 2 (SSI is zero: $1,100 - $20 = $1,080 exceeds the $967 federal benefit rate).
+# Cooling: $440 - $30 = $410 + $100 = $510.
+- name: Case 11, the summer 2025 payment uses the February 17, 2025 chart.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 70
+    social_security_retirement: 13_200
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_cooling_income_limit: 23_472
+    al_liheap_cooling: 510
+
+# 21 hours a week at the $7.25 federal minimum wage (Alabama has none): 21 x 7.25 x 52 =
+# $7,917 a year, $659.75 a month. On the cooling limit, band 1 runs to
+# floor(1,995 / 3 + 0.5) = $665, so Electric $440 + $100 = $540. On the heating limit of
+# $1,956, band 1 ends at floor(1,956 / 3 + 0.5) = $652, so the heating band is 2, which
+# would pay $410 + $100 = $510.
+- name: Case 12, the cooling payment reads its band from the cooling limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 45
+    employment_income_before_lsr: 7_917
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_income_band: 2
+    al_liheap_cooling: 540
