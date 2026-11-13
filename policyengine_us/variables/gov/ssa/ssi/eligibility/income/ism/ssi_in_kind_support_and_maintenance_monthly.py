@@ -20,8 +20,8 @@ class ssi_in_kind_support_and_maintenance_monthly(Variable):
         if supplied is not None:
             return supplied / MONTHS_IN_YEAR
 
-        # ISM is counted as unearned income for own-household recipients
-        # who receive shelter (or food, pre-10/2024) support.
+        # Own-household recipients count shelter support as unearned income.
+        # Under 416.420(a), ssi_pmv_applies dates food to the income month.
         # The PMV rule caps ISM at the presumed maximum value.
         # If the recipient provides an actual shelter value (rebuttal),
         # ISM is the lesser of the actual value and the PMV.

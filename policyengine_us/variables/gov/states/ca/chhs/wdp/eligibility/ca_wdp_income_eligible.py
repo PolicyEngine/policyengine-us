@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.ca.chhs.wdp.eligibility._ca_wdp_annual_spousal_deeming import (
     ca_wdp_annual_spousal_deeming_applies,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class ca_wdp_income_eligible(Variable):
@@ -22,7 +25,12 @@ class ca_wdp_income_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.chhs.wdp.eligibility.income
         personal_income = person("ca_wdp_countable_income", period)
-        spouse_income = person.marital_unit.sum(personal_income) - personal_income
+        # Only the identified co-resident spouse's income; an unrelated adult
+        # left in a default marital unit does not enter the budget.
+        spouse_income = (
+            _ssi_couple_total(person, period.this_year, personal_income)
+            - personal_income
+        )
         spousal_deeming_applies = ca_wdp_annual_spousal_deeming_applies(
             person, period, parameters
         )

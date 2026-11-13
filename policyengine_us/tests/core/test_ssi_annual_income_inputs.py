@@ -2,17 +2,19 @@
 
 Policy examples and monthly allocation caps are covered in YAML. These tests
 exercise Core's period conversion, supplied-input detection and branch caches,
-which require the Python API. One small Core system uses the production
-variable classes and the imported country's read-only parameters; it never
-constructs or copies another country model. This belongs to Rest/core.
+which require the Python API. Small Core systems reuse production variable
+classes and either share read-only country parameters or supply only
+abolition flags. They never construct or copy another country model.
+This belongs to Rest/core.
 """
 
 import numpy as np
 import pytest
+from policyengine_core.parameters import ParameterNode
 from policyengine_core.simulations import Simulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 
-from policyengine_us.entities import MaritalUnit, Person
+from policyengine_us.entities import Household, MaritalUnit, Person, TaxUnit
 from policyengine_us.system import system as country_system
 from policyengine_us.tools.period_branch import get_override_branch
 
@@ -35,10 +37,15 @@ ANNUAL_CURRENCY_VARIABLES = (
 ANNUAL_INPUT_VARIABLES = (*ANNUAL_CURRENCY_VARIABLES, "is_ssi_spousal_deeming_applies")
 
 
-@pytest.fixture(scope="module")
-def small_system():
-    result = TaxBenefitSystem(entities=[Person, MaritalUnit])
+def make_small_system(parameters):
+    result = TaxBenefitSystem(entities=[Person, MaritalUnit, TaxUnit, Household])
     names = (
+        "parent_1_id",
+        "parent_2_id",
+        "person_id",
+        "is_tax_unit_head_or_spouse",
+        "is_tax_unit_dependent",
+        "tax_unit_married",
         "is_ssi_eligible_individual",
         "is_ssi_ineligible_spouse",
         "ssi_earned_income",
@@ -48,8 +55,13 @@ def small_system():
         *(f"{name}_monthly" for name in ANNUAL_INPUT_VARIABLES),
     )
     result.add_variables(*(type(country_system.variables[name]) for name in names))
-    result.parameters = country_system.parameters
+    result.parameters = parameters
     return result
+
+
+@pytest.fixture(scope="module")
+def small_system():
+    return make_small_system(country_system.parameters)
 
 
 @pytest.mark.parametrize("input_period", [YEAR, MONTH])
@@ -90,22 +102,24 @@ def test_annual_input_overrides_reach_monthly_budgets(small_system, name, input_
     )
 
 
-def test_computed_annual_cache_does_not_replace_monthly_budgets(small_system):
-    name = "ssi_earned_income_deemed_from_ineligible_spouse"
-    allocations = {
-        f"2026-{month:02d}": 0 if month <= 6 else 200 for month in range(1, 13)
-    }
-    simulation = Simulation(
-        tax_benefit_system=small_system,
+def spouse_income_simulation(system, allocations):
+    return Simulation(
+        tax_benefit_system=system,
         situation={
             "people": {
                 "claimant": {
+                    "person_id": {YEAR: 1},
+                    "is_tax_unit_head_or_spouse": {YEAR: True},
+                    "is_tax_unit_dependent": {YEAR: False},
                     "is_ssi_ineligible_spouse": {YEAR: False},
                     "ssi_earned_income": {YEAR: 0},
                     "ssi_unearned_income": {YEAR: 0},
                     "ssi_spousal_deeming_child_allocations": allocations,
                 },
                 "spouse": {
+                    "person_id": {YEAR: 2},
+                    "is_tax_unit_head_or_spouse": {YEAR: True},
+                    "is_tax_unit_dependent": {YEAR: False},
                     "is_ssi_ineligible_spouse": {YEAR: True},
                     "ssi_earned_income": {YEAR: 12_000},
                     "ssi_unearned_income": {YEAR: 0},
@@ -115,8 +129,23 @@ def test_computed_annual_cache_does_not_replace_monthly_budgets(small_system):
                 },
             },
             "marital_units": {"couple": {"members": ["claimant", "spouse"]}},
+            "tax_units": {
+                "couple": {
+                    "members": ["claimant", "spouse"],
+                    "tax_unit_married": {YEAR: True},
+                }
+            },
+            "households": {"home": {"members": ["claimant", "spouse"]}},
         },
     )
+
+
+def test_computed_annual_cache_does_not_replace_monthly_budgets(small_system):
+    name = "ssi_earned_income_deemed_from_ineligible_spouse"
+    allocations = {
+        f"2026-{month:02d}": 0 if month <= 6 else 200 for month in range(1, 13)
+    }
+    simulation = spouse_income_simulation(small_system, allocations)
     # Six months of $1,000 and six of $800 are not $900 in every month.
     np.testing.assert_array_equal(simulation.calculate(name, YEAR), [10_800, 0])
     np.testing.assert_array_equal(
@@ -139,4 +168,32 @@ def test_computed_annual_cache_does_not_replace_monthly_budgets(small_system):
     )
     np.testing.assert_array_equal(
         simulation.calculate(f"{name}_monthly", MONTH), [1_000, 0]
+    )
+
+
+@pytest.mark.parametrize(
+    "mode, expected",
+    [("normal", 1_000), ("neutralized", 0), ("abolished", 0)],
+)
+def test_disabled_annual_interface_reaches_monthly_budget(mode, expected):
+    name = "ssi_earned_income_deemed_from_ineligible_spouse"
+    parameters = ParameterNode(
+        "",
+        data={
+            "gov": {
+                "abolitions": {name: {"values": {"2026-01-01": mode == "abolished"}}}
+            }
+        },
+    )
+    system = make_small_system(parameters)
+    if mode == "neutralized":
+        system.neutralize_variable(name)
+    simulation = spouse_income_simulation(system, {MONTH: 0})
+
+    # Raw spouse earnings would otherwise deem 1,000 in this month.
+    np.testing.assert_array_equal(
+        simulation.calculate("ssi_earned_income", MONTH), [0, 1_000]
+    )
+    np.testing.assert_array_equal(
+        simulation.calculate(f"{name}_monthly", MONTH), [expected, 0]
     )

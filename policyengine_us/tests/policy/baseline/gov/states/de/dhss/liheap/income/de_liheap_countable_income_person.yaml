@@ -1,0 +1,631 @@
+# Delaware FY2026 regular heating. Independent source-derived expectations.
+# Sources:
+# - https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=5
+# - https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=35
+
+# 1,000 + 500 + 2,000 + 3,000 + 4,000 + 5,000 + 6,000 + 7,000 = 28,500. Historical section 418 classifies property rent as earned.
+- name: Case 1, adult earned sources including rents count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        employment_income: 1_000
+        military_basic_pay: 500
+        self_employment_income: 2_000
+        sstb_self_employment_income: 3_000
+        farm_operations_income: 4_000
+        partnership_s_corp_income: 5_000
+        rental_income: 6_000
+        farm_rent_income: 7_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: 28_500
+
+# 100 + 200 + ... + 1,200 = 7,800; SSI is an annual total for a monthly variable.
+- name: Case 2, disjoint unearned income sources count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 300
+        is_full_time_college_student: false
+        rent: 0
+        unemployment_compensation: 100
+        social_security: 200
+        pension_income: 400
+        survivor_benefits: 500
+        general_assistance: 600
+        alimony_income: 700
+        child_support_received: 800
+        interest_income: 900
+        ordinary_dividend_income: 1_000
+        veterans_benefits: 1_100
+        workers_compensation: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: 7_800
+
+# A minor's earned 13,000 is excluded; 2,000 of child support plus 1,000 of Social Security
+# survivors counts.
+- name: Case 3, minor wages and rental income excluded but support and Social Security retained.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 17.99
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        employment_income: 10_000
+        rental_income: 1_800
+        farm_rent_income: 1_200
+        child_support_received: 2_000
+        social_security_survivors: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: [0, 3_000]
+
+# 10,000 + 1,800 + 1,200 earned plus 3,000 unearned = 16,000 at age 18.
+- name: Case 4, earned income counts at eighteen.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        employment_income: 10_000
+        rental_income: 1_800
+        farm_rent_income: 1_200
+        child_support_received: 2_000
+        social_security_survivors: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: 16_000
+
+# Historical section 429.2 exempts all 13,000 only when full-time college, dependent and age <22.
+- name: Case 5, dependent full time college student under twenty two excludes all income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 21.99
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: true
+        rent: 0
+        is_tax_unit_dependent: true
+        employment_income: 10_000
+        child_support_received: 2_000
+        social_security_survivors: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: [0, 0]
+
+# Historical section 429.2 exempts all 13,000 only when full-time college, dependent and age <22.
+- name: Case 6, dependent student at twenty two counts all income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 22
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: true
+        rent: 0
+        is_tax_unit_dependent: true
+        employment_income: 10_000
+        child_support_received: 2_000
+        social_security_survivors: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: [0, 13_000]
+
+# Historical section 429.2 exempts all 13,000 only when full-time college, dependent and age <22.
+- name: Case 7, nondependent college student counts income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 21
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: true
+        rent: 0
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+        child_support_received: 2_000
+        social_security_survivors: 1_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+      tax_unit2:
+        members: [person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: [0, 13_000]
+
+# Historical section 429.2 exempts all 13,000 only when full-time college, dependent and age <22.
+- name: Case 8, dependent who is not a full time college student counts income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+      person2:
+        age: 21
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        is_tax_unit_dependent: true
+        employment_income: 10_000
+        child_support_received: 2_000
+        social_security_survivors: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: [0, 13_000]
+
+# Twelve monthly SSI awards of 500 contribute 6,000 annual income.
+- name: Case 9, monthly SSI aggregates across the entire year.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        ssi:
+          2026-01: 500
+          2026-02: 500
+          2026-03: 500
+          2026-04: 500
+          2026-05: 500
+          2026-06: 500
+          2026-07: 500
+          2026-08: 500
+          2026-09: 500
+          2026-10: 500
+          2026-11: 500
+          2026-12: 500
+        is_full_time_college_student: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: 6_000
+
+# Pension components of 3,000 (including the classified survivor pension), Social Security
+# survivors of 1,000 and a distinct non-Social Security survivor benefit of 500 total 4,500.
+- name: Case 10, pension and Social Security survivor components are counted once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        tax_exempt_pension_income: 1_000
+        taxable_pension_income: 2_000
+        pension_survivors: 1_000
+        social_security_survivors: 1_000
+        survivor_benefits: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: 4_500
+
+# Manual 416.2 counts strike benefits, which plan 1.9 leaves unchecked; the manual
+# is followed. Annual gifts and lottery lump sums stay out. Wages 1,000 + strike 3,000.
+- name: Case 11, strike pay counts; cash gifts and lottery lump sums do not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        employment_income: 1_000
+        financial_assistance: 2_000
+        strike_benefits: 3_000
+        gambling_winnings: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: 4_000
+
+# Qualified 200 + nonqualified 300 = ordinary 500, counted once.
+- name: Case 12, dividend components are counted once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        rent: 0
+        qualified_dividend_income: 200
+        non_qualified_dividend_income: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        housing_assistance: 0
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: 500
+
+
+# Existing-aggregate UI control tests fallback without inventing a Delaware UI
+# formula. A supplied Part B amount can offset only this person's SSA, never
+# their separate pension when the premium exceeds SSA.
+- name: Case 13, UI receipts and Social Security premium attribution remain distinct.
+  period: 2026
+  input:
+    state_code: [DE, DE, DE]
+    age: [35, 35, 68]
+    ssi: [0, 0, 0]
+    de_tanf: [0, 0, 0]
+    unemployment_compensation: [0, 400, 0]
+    modeled_state_unemployment_compensation: [1_200, 1_200, 0]
+    social_security: [0, 0, 1_200]
+    taxable_pension_income: [0, 0, 1_000]
+    medicare_part_b_premium: [0, 0, 2_400]
+  output:
+    total_unemployment_compensation: [1_200, 400, 0]
+    de_liheap_countable_income_person: [1_200, 400, 1_000]
+
+# Manual 419.1 and 419.3: an adult's railroad retirement 6,000 and insurance
+# disability payments 2,400 count (8,400). Manual 418: a minor keeps only child
+# support 1,800, SSI 2,400, Social Security survivors 3,000 and railroad retirement
+# 1,500 (8,700); the minor's 500 of interest is excluded.
+- name: Case 14, railroad and disability payments count; a minor keeps only support and Social Security benefits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 0
+        is_full_time_college_student: false
+        railroad_benefits: 6_000
+        disability_benefits: 2_400
+      person2:
+        age: 16
+        immigration_status: CITIZEN
+        ssi:
+          '2026': 2_400
+        is_full_time_college_student: false
+        child_support_received: 1_800
+        social_security_survivors: 3_000
+        railroad_benefits: 1_500
+        taxable_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_wilmington_earned_income_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        de_tanf:
+          '2026': 0
+        spm_unit_paycheck_withholdings: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_countable_income_person: [8_400, 8_700]
+
+# Manual 416.2 counts trusts and 416.1 counts other taxable income: 2,000 + 1,000.
+# A minor's trust income stays out under manual 418.
+- name: Case 15, trust and other taxable income count for adults only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DE, DE]
+    age: [40, 16]
+    ssi: [0, 0]
+    de_tanf: [0, 0]
+    estate_income: [2_000, 2_000]
+    miscellaneous_income: [1_000, 0]
+  output:
+    de_liheap_countable_income_person: [3_000, 0]
+
+# Manual 419.1 lists railroad retirement among Social Security benefits, so Part B
+# nets against their sum: 41,000 - 2,434.80; 6,000 + 6,000 - 2,400. A premium above
+# 1,000 of railroad retirement cannot reduce the separate 1,000 pension.
+- name: Case 16, Part B nets against Social Security and railroad retirement together.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DE, DE, DE]
+    age: [70, 70, 70]
+    ssi: [0, 0, 0]
+    de_tanf: [0, 0, 0]
+    railroad_benefits: [41_000, 6_000, 1_000]
+    social_security: [0, 6_000, 0]
+    taxable_pension_income: [0, 0, 1_000]
+    medicare_part_b_premium: [2_434.80, 2_400, 2_400]
+  output:
+    de_liheap_countable_income_person: [38_565.20, 9_600, 1_000]

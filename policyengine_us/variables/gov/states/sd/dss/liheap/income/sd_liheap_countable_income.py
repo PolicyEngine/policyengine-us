@@ -34,8 +34,9 @@ class sd_liheap_countable_income(Variable):
             earned = earned + max_(person(source, period), 0)
         unearned = 0
         for source in p.sources.unearned:
-            # ADD sums monthly sources such as ssi over the year.
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            # Reading a monthly source such as ssi over the year sums its
+            # months.
+            unearned = unearned + max_(person(source, period), 0)
         # Rule 67:15:01:18(12) excludes "Deductions from social security benefit
         # payments for Medicare", and the manual (page 28) counts Social Security
         # less the Part B and Part D premiums. medicare_part_b_premium is zero for

@@ -41,5 +41,4 @@ class ssi_pmv_amount_monthly(Variable):
         pmv_monthly = (
             applicable_fbr * p.income.ism.pmv_fbr_fraction + p.income.exclusions.general
         )
-        pmv_monthly = where(deeming_applies, pmv_monthly / 2, pmv_monthly)
-        return pmv_monthly
+        return where(deeming_applies, pmv_monthly / 2, pmv_monthly)

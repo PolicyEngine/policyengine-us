@@ -2,6 +2,9 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._annual_input impo
     annual_input,
 )
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_spouse_index,
+)
 
 
 class ssi_unearned_income_deemed_from_ineligible_spouse_monthly(Variable):
@@ -24,11 +27,14 @@ class ssi_unearned_income_deemed_from_ineligible_spouse_monthly(Variable):
 
         # First, determine unearned income from the ineligible spouse.
         # This is (a) in the law.
-        ineligible_spouse = person("is_ssi_ineligible_spouse", period)
+        spouse = _ssi_spouse_index(person, period)
+        safe_spouse = np.maximum(spouse, 0)
+        has_ineligible_spouse = (spouse >= 0) & person(
+            "is_ssi_ineligible_spouse", period
+        )[safe_spouse]
         unearned_income = person("ssi_unearned_income", period)
-        ineligible_spousal_unearned_income = (
-            person.marital_unit.sum(ineligible_spouse * unearned_income)
-            - ineligible_spouse * unearned_income
+        ineligible_spousal_unearned_income = where(
+            has_ineligible_spouse, unearned_income[safe_spouse], 0
         )
 
         # Next, (b) determine and subtract allocations for ineligible children.

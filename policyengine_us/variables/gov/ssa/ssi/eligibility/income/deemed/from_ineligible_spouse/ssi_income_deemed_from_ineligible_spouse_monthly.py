@@ -16,7 +16,7 @@ class ssi_income_deemed_from_ineligible_spouse_monthly(Variable):
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
     documentation = """
-    Spousal deeming: 
+    Spousal deeming:
       1) If leftover spouse income <= (coupleFBR - indivFBR), then 0 is deemed.
       2) Otherwise, spouse's deemed = (couple combined countable) - (individual alone countable).
       Each month is calculated before annual amounts are summed.

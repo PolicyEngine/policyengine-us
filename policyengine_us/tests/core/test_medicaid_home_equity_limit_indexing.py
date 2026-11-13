@@ -79,6 +79,8 @@ def test_a_falling_index_is_not_an_increase(current, percentage):
 
 
 def test_published_limits_are_parameter_values():
+    for year, (minimum, _) in PUBLISHED_LIMITS.items():
+        assert HOME_EQUITY.minimum_limit(f"{year}-01-01") == minimum
     for year in (2025, 2026):
         assert HOME_EQUITY.limit(f"{year}-01-01") == PUBLISHED_LIMITS[year][1]
         assert (
@@ -87,15 +89,17 @@ def test_published_limits_are_parameter_values():
         )
 
 
-def test_agricultural_limit_is_projected_year_to_year_on_january_1():
+@pytest.mark.parametrize("name", ["minimum_limit", "agricultural_limit"])
+def test_indexed_limits_are_projected_year_to_year_on_january_1(name):
+    parameter = getattr(HOME_EQUITY, name)
     for year in range(2027, 2041):
-        current = HOME_EQUITY.agricultural_limit(f"{year}-01-01")
+        current = parameter(f"{year}-01-01")
         assert current == adjust_home_equity_limit_for_inflation(
-            HOME_EQUITY.agricultural_limit(f"{year - 1}-01-01"),
+            parameter(f"{year - 1}-01-01"),
             get_cms_cpi_u_percentage_increase(CPI, year),
         )
         for month in ["02", "07", "12"]:
-            assert HOME_EQUITY.agricultural_limit(f"{year}-{month}-01") == current
+            assert parameter(f"{year}-{month}-01") == current
 
 
 def test_non_agricultural_limit_is_the_indexed_maximum_until_the_2028_cap():
@@ -134,11 +138,17 @@ def test_chassis_screen_reads_each_years_agricultural_limit():
 
 
 @pytest.mark.parametrize("agricultural_published_through", [2026, 2027])
-def test_non_agricultural_fill_follows_its_own_coverage(
+@pytest.mark.parametrize("minimum_published_through", [2026, 2027])
+def test_each_limit_follows_its_own_published_coverage(
     agricultural_published_through,
+    minimum_published_through,
 ):
     # Publishing the 2027 agricultural limit before the non-agricultural one
     # must not leave the non-agricultural 2027 limit at its 2026 value.
+    minimum = {"2025-01-01": 730_000, "2026-01-01": 752_000}
+    if minimum_published_through == 2027:
+        # A separately published value takes precedence over the projection.
+        minimum["2027-01-01"] = 776_000
     agricultural = {"2025-01-01": 1_097_000, "2026-01-01": 1_130_000}
     if agricultural_published_through == 2027:
         agricultural["2027-01-01"] = 1_164_000
@@ -158,6 +168,7 @@ def test_non_agricultural_fill_follows_its_own_coverage(
                         "eligibility": {
                             "long_term_care": {
                                 "home_equity": {
+                                    "minimum_limit": {"values": minimum},
                                     "agricultural_limit": {"values": agricultural},
                                     "limit": {"values": non_agricultural},
                                 }
@@ -186,3 +197,8 @@ def test_non_agricultural_fill_follows_its_own_coverage(
     ) == adjust_home_equity_limit_for_inflation(
         home_equity.agricultural_limit("2027-01-01"), 3.0
     )
+    expected_minimum = 776_000 if minimum_published_through == 2027 else 775_000
+    assert home_equity.minimum_limit("2027-01-01") == expected_minimum
+    assert home_equity.minimum_limit(
+        "2028-01-01"
+    ) == adjust_home_equity_limit_for_inflation(expected_minimum, 3.0)
