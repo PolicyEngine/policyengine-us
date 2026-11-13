@@ -15089,7 +15089,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/mn/tax/income/amt/mn_amt_taxable_income.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10872
   state: ruled
   note: >-
     Follow the statute under CONTRIBUTING.md's statute-first principle. Preserve
