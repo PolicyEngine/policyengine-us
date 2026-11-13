@@ -28,6 +28,10 @@ values:
     # winnings before July 1, 2019. The model has a single gambling_winnings
     # input and does not separate them.
     - gambling_winnings # Line 20, other income (Form AR-OI)
+    # Gross income is "all income (before deductions) other than income
+    # specifically described as exempt"; gifts are exempt, strike
+    # benefits are not (2025 instructions, pages 9-11).
+    - taxable_strike_benefits # Line 20, other income (Form AR-OI)
     - ar_other_additions # Line 20
   # Act 141 of 2017 added unemployment compensation to gross income for tax
   # years beginning on or after January 1, 2018. Act 154 of 2021 then exempted
@@ -52,6 +56,7 @@ values:
     - farm_operations_income # Line 20, Schedule F
     - total_unemployment_compensation # Line 21
     - gambling_winnings # Line 22, other income (Form AR-OI)
+    - taxable_strike_benefits # Line 22, other income (Form AR-OI)
     - ar_other_additions # Line 22
   2020-01-01:
     - irs_employment_income # Line 8
@@ -72,6 +77,7 @@ values:
     - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
     - farm_operations_income # Line 20, Schedule F
     - gambling_winnings # Line 22, other income (Form AR-OI)
+    - taxable_strike_benefits # Line 22, other income (Form AR-OI)
     - ar_other_additions # Line 22
   2022-01-01:
     - irs_employment_income # Line 8
@@ -98,6 +104,7 @@ values:
     - farm_operations_income # Line 20, Schedule F
     - total_unemployment_compensation # Line 21
     - gambling_winnings # Line 22, other income (Form AR-OI)
+    - taxable_strike_benefits # Line 22, other income (Form AR-OI)
     - ar_other_additions # Line 22
 
 metadata:
@@ -113,6 +120,10 @@ metadata:
       href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=10
     - title: Arkansas 2017 Individual Income Tax Instructions (Act 141 of 2017 makes unemployment compensation taxable from tax year 2018)
       href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=5
+    # Page 9: "Gross income is all income (before deductions) other than
+    # income specifically described as exempt on pages 10 and 11."
+    - title: "Arkansas 2025 Individual Income Tax Forms and Instructions, gross income definition and exempt income #page 9-11"
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=9
     - title: Arkansas 2025 Individual Income Tax Forms and Instructions
       href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=13
     - title: Arkansas 2025 Individual Income Tax Forms and Instructions (gambling winnings are subject to tax, reported on Form AR-OI line 4 and carried to Line 22)

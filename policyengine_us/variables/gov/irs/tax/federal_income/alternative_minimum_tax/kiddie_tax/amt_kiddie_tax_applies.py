@@ -21,6 +21,12 @@ class amt_kiddie_tax_applies(Variable):
         "https://www.law.cornell.edu/uscode/text/26/1#g_2",
         "https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=10",
         "https://www.irs.gov/pub/irs-prior/p929--2021.pdf",
+        # Earned income for the support test, which the model applies
+        # through 2017: "wages, tips, and other payments received for
+        # personal services performed" (page 2). The instructions' sentence
+        # naming Form 1040 lines 7, 12 and 18 covers a child's trade or
+        # business in which capital is not an income-producing factor.
+        "https://www.irs.gov/pub/irs-prior/i8615--2017.pdf#page=2",
     ]
 
     def formula(tax_unit, period, parameters):
@@ -47,7 +53,16 @@ class amt_kiddie_tax_applies(Variable):
         # half of the child's support. Every living person has some support,
         # so zero means nobody reported it, and the model treats the test as
         # met.
-        earned_income = tax_unit.sum(person("adjusted_earnings", period) * is_head)
+        # Form 8615 instructions: "Earned income includes wages, tips, and
+        # other payments received for personal services performed." Strike
+        # benefits, which adjusted_earnings counts for the child and dependent
+        # care credit (Pub. 503), are not, so they come out here.
+        earned = max_(
+            person("adjusted_earnings", period)
+            - person("taxable_strike_benefits", period),
+            0,
+        )
+        earned_income = tax_unit.sum(earned * is_head)
         support = tax_unit.sum(person("care_and_support_costs", period) * is_head)
         support_reported = support > 0
         meets_support_test = ~support_reported | (

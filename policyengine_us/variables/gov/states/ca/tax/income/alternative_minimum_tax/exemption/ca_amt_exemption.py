@@ -8,7 +8,10 @@ class ca_amt_exemption(Variable):
     defined_for = StateCode.CA
     unit = USD
     definition_period = YEAR
-    reference = "https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html"
+    reference = (
+        "https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html",
+        "https://www.ftb.ca.gov/forms/2025/2025-540-p-instructions.html",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.amt.exemption
@@ -36,8 +39,14 @@ class ca_amt_exemption(Variable):
         exemption_amount_child = p.child.amount
         # Line 8: "wages, tips, and other payments received for personal
         # services performed", which in California include payroll HSA
-        # contributions.
-        earned_income = tax_unit("ca_head_earned", period)
+        # contributions. Strike benefits, which ca_head_earned counts for the
+        # dependent care credit (FTB 3506 line 4), are not payments for
+        # personal services, so they come out here (floored at zero, which
+        # gives the same result as leaving them out before the floor).
+        strike_benefits = tax_unit.sum(
+            person("taxable_strike_benefits", period) * is_head
+        )
+        earned_income = max_(tax_unit("ca_head_earned", period) - strike_benefits, 0)
         # Line 9
         total_reduced_exemption_amount = exemption_amount_child + earned_income
         # Line 10

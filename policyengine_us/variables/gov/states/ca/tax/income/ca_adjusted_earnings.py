@@ -11,8 +11,9 @@ class ca_adjusted_earnings(Variable):
     documentation = (
         "Earned income subject to California tax: California wages, which "
         "count the payroll HSA contributions that federal W-2 box 1 wages "
-        "leave out, plus self-employment earnings, less the deductible part "
-        "of self-employment tax, floored at zero."
+        "leave out, plus disability pay reported as wages, strike benefits "
+        "(FTB 3506 line 4) and self-employment earnings, less the deductible "
+        "part of self-employment tax, floored at zero."
     )
     unit = USD
     definition_period = YEAR

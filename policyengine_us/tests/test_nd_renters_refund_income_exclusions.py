@@ -5,8 +5,8 @@ counts income "from all sources", but excludes "any amount excluded from
 income by federal or state law with the exception of income from social
 security benefits". nd_renters_refund_income starts from market_income. That
 counts wages before payroll deductions, and the tax-exempt parts of interest,
-pensions, retirement distributions, disability benefits and alimony, so the
-variable subtracts nd_renters_refund_federally_excluded_income. The federal
+pensions, retirement distributions, disability benefits, alimony and strike
+benefits, so the variable subtracts nd_renters_refund_federally_excluded_income. The federal
 model also deducts four exclusions above the line, so market_income holds that
 income too, and the variable subtracts them as well (excluded_deductions).
 
@@ -37,12 +37,13 @@ Four invariants hold for every input.
    line. The statute's federal exclusions and the federal model agree on every
    shared source. For interest, pensions, retirement distributions, disability
    benefits and the deducted exclusions, the two sides read different inputs.
-   For wages and alimony both read the same federal variables, so the YAML
-   cases and invariant 4 test those against the law.
+   For wages, alimony and strike benefits both read the same federal
+   variables, so the YAML cases and invariant 4 test those against the law.
 4. Moving a dollar from the taxable form of a source to its excluded form
    lowers renter's refund income by that dollar, beside a loss elsewhere in
    income, as long as income stays above zero. So does marking a dollar of
-   income as one of the exclusions the model deducts above the line. A dollar
+   income as one of the exclusions the model deducts above the line, or a
+   dollar of strike benefits as a gift from the union. A dollar
    of social security raises it by a dollar, however much of the benefit
    federal law taxes.
 
@@ -112,13 +113,15 @@ PARTLY_EXCLUDED = {
         "taxable_alimony_income",
         "Pub. L. 115-97 section 11051: instruments executed after 2018",
     ),
+    "strike_benefits": (
+        "taxable_strike_benefits",
+        "IRC 102(a): the part a union paid as a gift (IRS Publication 525)",
+    ),
 }
 
 # Components that federal gross income leaves out although federal law does
 # not exclude them in general. North Dakota counts them.
 COUNTED_THOUGH_GROSS_INCOME_OMITS = {
-    "strike_benefits": "IRS Publication 525 counts strike benefits as income "
-    "unless the facts show the union meant them as gifts",
     "gi_cash_assistance": "a guaranteed income payment is a gift (IRC 102) or "
     "public assistance, which the statute counts, depending on the payer, and "
     "the input records neither",
@@ -199,6 +202,7 @@ SOURCE_INPUTS = {
     ),
     "disability_benefits": ("disability_benefits", "tax_exempt_disability_benefits"),
     "alimony_income": ("alimony_income", "divorce_year"),
+    "strike_benefits": ("strike_benefits", "tax_exempt_strike_benefits"),
 }
 assert set(SOURCE_INPUTS) == set(PARTLY_EXCLUDED)
 
@@ -333,6 +337,7 @@ def shared_sources(draw):
         for name in PAYROLL_DEDUCTIONS
     }
     disability = draw(amount)
+    strike = draw(amount)
     other_wages = draw(st.integers(min_value=0, max_value=150_000))
     taxable_interest = draw(amount)
     adoption = draw(st.integers(min_value=0, max_value=other_wages))
@@ -371,6 +376,8 @@ def shared_sources(draw):
         ),
         "alimony_income": draw(amount),
         "divorce_year": draw(st.sampled_from([2010, 2018, 2019, 2024])),
+        "strike_benefits": strike,
+        "tax_exempt_strike_benefits": draw(st.integers(min_value=0, max_value=strike)),
         "self_employment_income": draw(amount),
         "qualified_dividend_income": draw(amount),
         "non_qualified_dividend_income": draw(amount),
@@ -436,6 +443,9 @@ def any_sources(draw):
     inputs["capital_gains"] = draw(st.integers(min_value=-60_000, max_value=40_000))
     inputs["rental_income"] = draw(st.integers(min_value=-60_000, max_value=40_000))
     inputs["strike_benefits"] = draw(amount)
+    if draw(st.booleans()):
+        # A gift part larger than the benefits received.
+        inputs["tax_exempt_strike_benefits"] = inputs["strike_benefits"] + draw(amount)
     inputs["social_security_retirement"] = draw(amount)
     for name in draw(
         st.sets(
@@ -576,6 +586,9 @@ def test_a_dollar_moved_to_its_excluded_form_leaves_income(
         adoption = {**base, "qualified_adoption_assistance_expense": min(moved, wages)}
         puerto_rico = {**base, "puerto_rico_income": moved}
         american_samoa = {**base, "specified_possession_income": moved}
+        # A dollar of strike benefits the union paid as a gift (IRC 102(a)).
+        strike = {**base, "strike_benefits": taxable}
+        gift = {**strike, "tax_exempt_strike_benefits": moved}
         households += [
             base,
             shifted,
@@ -588,6 +601,8 @@ def test_a_dollar_moved_to_its_excluded_form_leaves_income(
             adoption,
             puerto_rico,
             american_samoa,
+            strike,
+            gift,
         ]
     (income,) = calculate(households, "nd_renters_refund_income")
     size = len(households) // len(SHIFTS)
@@ -604,6 +619,8 @@ def test_a_dollar_moved_to_its_excluded_form_leaves_income(
             adoption,
             puerto_rico,
             american_samoa,
+            strike,
+            gift,
         ) = income[size * group : size * group + size]
         assert base - shifted == pytest.approx(moved, abs=TOLERANCE)
         assert base - deferred == pytest.approx(deferral, abs=TOLERANCE)
@@ -613,6 +630,7 @@ def test_a_dollar_moved_to_its_excluded_form_leaves_income(
         assert base - adoption == pytest.approx(min(moved, wages), abs=TOLERANCE)
         assert base - puerto_rico == pytest.approx(moved, abs=TOLERANCE)
         assert base - american_samoa == pytest.approx(moved, abs=TOLERANCE)
+        assert strike - gift == pytest.approx(moved, abs=TOLERANCE)
 
 
 def test_alimony_leaves_income_only_under_a_post_2018_instrument():

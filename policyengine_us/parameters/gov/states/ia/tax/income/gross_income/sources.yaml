@@ -18,6 +18,10 @@ values:
     - farm_operations_income
     - taxable_unemployment_compensation
     - miscellaneous_income
+    # Line 14 takes "taxable income not reported on lines 1-13"; line 1 is
+    # W-2 income only. Strike benefits are federal Schedule 1 line 8 income
+    # in 2021 and Form 1040 line 1h income from 2022.
+    - taxable_strike_benefits
     - ia_other_additions
 
 metadata:
@@ -27,9 +31,11 @@ metadata:
   - title: 2021 IA1040 Iowa Income Tax Return, Lines 1-14
     href: https://revenue.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf#page=1
   # Line 10, rents, royalties, partnerships, estates, etc., is on page 19.
-  - title: "2021 IA1040 Income Tax Return instructions #page 12,19"
+  # Line 14, other income, is on pages 21-22.
+  - title: "2021 IA1040 Income Tax Return instructions #page 12,19,21-22"
     href: https://revenue.iowa.gov/media/2650/download?inline#page=12
   - title: 2022 IA1040 Iowa Income Tax Return, Lines 1-14
     href: https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf#page=1
-  - title: "2022 IA1040 Income Tax Return instructions #page 11,19"
+  # Line 14, other income, is on pages 20-21.
+  - title: "2022 IA1040 Income Tax Return instructions #page 11,19,20-21"
     href: https://revenue.iowa.gov/media/2721/download?inline#page=11

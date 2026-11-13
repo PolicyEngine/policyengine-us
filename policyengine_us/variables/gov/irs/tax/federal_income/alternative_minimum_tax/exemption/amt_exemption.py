@@ -49,18 +49,27 @@ class amt_exemption(Variable):
         # A reduced exemption amount is applied to kiddie tax filers
         kiddie_tax_applies = tax_unit("amt_kiddie_tax_applies", period)
         # IRC 59(j) uses earned income under IRC 911(d)(2): "amounts
-        # received as compensation for personal services". Traditional
-        # elective deferrals are not treated as made available to the
-        # employee (IRC 402(e)(3)). The 2017 Form 8615 instructions, for the
-        # same children and the same 911(d)(2) definition, generally take
-        # earned income from Form 1040 line 7 (taxable wages), so the cap
-        # uses adjusted_earnings, which leaves out pre-tax payroll deductions.
+        # received as compensation for personal services". IRC 402(e)(3)
+        # treats traditional elective deferrals as not made available to the
+        # employee. The 2017 Form 8615 instructions, for the same children
+        # and the same 911(d)(2) definition, count "wages, tips, and other
+        # payments received for personal services performed", and where they
+        # total Form 1040 lines (for a child whose trade or business uses no
+        # capital) they start from line 7, taxable wages. So the cap uses
+        # adjusted_earnings, which leaves out pre-tax payroll deductions.
         # IRC 59(j)(1)(A) counts the child's own earned income, and a covered
         # filer never files jointly, so the cap reads only the head's earnings.
+        # Strike benefits, which adjusted_earnings counts for the child and
+        # dependent care credit (Pub. 503), are not compensation for personal
+        # services actually rendered, so they come out here (floored at zero,
+        # which gives the same result as leaving them out before the floor).
         person = tax_unit.members
-        adj_earnings = tax_unit.sum(
-            person("adjusted_earnings", period) * person("is_tax_unit_head", period)
+        earned = max_(
+            person("adjusted_earnings", period)
+            - person("taxable_strike_benefits", period),
+            0,
         )
+        adj_earnings = tax_unit.sum(earned * person("is_tax_unit_head", period))
         child_amount = p.exemption.child.amount
 
         exemption_cap = where(

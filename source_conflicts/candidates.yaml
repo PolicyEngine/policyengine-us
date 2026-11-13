@@ -7424,8 +7424,9 @@ candidates:
       adoption assistance (IRC 137(a)); income of bona fide residents of Puerto Rico from sources there (IRC 933) and
       of American Samoa from sources there or from a business there (IRC 931(a), which reaches only a possession with
       an implementing agreement in effect, 26 CFR 1.931-1(c)(1), and which IRS Publication 570 applies only to
-      American Samoa); and alimony under a divorce or separation instrument executed after 2018, since Pub. L. 115-97
-      section 11051 repealed IRC 71 and 61(a)(8).
+      American Samoa); alimony under a divorce or separation instrument executed after 2018, since Pub. L. 115-97
+      section 11051 repealed IRC 71 and 61(a)(8); and gifts (IRC 102(a)), which take in the strike benefits a union
+      pays as a gift (IRS Publication 525).
     other: Item 10 lists pensions "including military pension and I.R.A.", salaries and wages, dividends and interest,
       and alimony as income. The application asks for income from salary and wages (line 5) and from interest (line
       6), and its instructions for lines 4 to 9 list most of the same sources. Neither leaves out the amounts federal
@@ -7441,6 +7442,7 @@ candidates:
     - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/market_income_components.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10697
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: ruled
   note: The statute names the exclusion, so it governs over the general lists, as in
     us-nd:renters-refund-insurance-proceeds. The definition also counts "other retirement benefits", but the exception
@@ -13810,7 +13812,7 @@ candidates:
 - id: us:dependent-deduction-worksheet-earned-income
   program: income-tax
   years:
-    from: 2024
+    from: 2010
     type: tax
   question: Where section 63(c)(5) leaves earned income undefined, should the dependent standard deduction use the
     Form 1040 worksheet's reported-income measure?
@@ -13835,13 +13837,17 @@ candidates:
     - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/basic_standard_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10272
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: unreviewed
   note: 'PE-US follows the worksheet: earned income is W-2 box 1 wages (after elective deferrals), earned disability
     benefits and Schedule 1 business and farm income, less the deductible part of self-employment tax, summed for
     the head and spouse and floored at zero; the Medicaid filing test and Oregon''s and Hawaii''s dependent deductions
     read the same measure (standard_deduction_worksheet_earned_income_person.py, standard_deduction_worksheet_earned_income.py,
     filing_requirement/dependent/earned_income_sources.yaml, basic_standard_deduction.py). Verify the line 15 subtraction
-    for partnership self-employment income, which the list leaves out.'
+    for partnership self-employment income, which the list leaves out. Strike or lockout benefits other than bona fide
+    gifts (Form 1040 line 1h, part of line 1z) joined the list from 2022 in PR 10727; us:strike-benefits-earned-income
+    records the earned income question. The list runs from 2010, when the worksheet already counted reported income
+    (Form 1040 lines 7, 12 and 18 minus line 27).'
 - id: us:education-benefits-joint-claimed-spouse
   program: income-tax
   years:
@@ -14821,6 +14827,133 @@ candidates:
     2025 CFR editions carry the same sentence at 685.208(b)(2), so the question runs from the model's first
     minimum_payment value in 2016. Issue
     10567 reports the double minimum.
+- id: us:strike-benefits-earned-income
+  program: income-tax
+  years:
+    from: 2010
+    type: tax
+  question: Are taxable strike and lockout benefits a union pays earned income for the earned income credit, the
+    child and dependent care credit, the dependent standard deduction and filing test, the kiddie tax and the AMT child
+    exemption?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(2)(A)(i)
+    url: https://www.law.cornell.edu/uscode/text/26/32#c_2_A_i
+  - kind: guidance
+    citation: Publication 596 (2025), page 8, Strike and lockout benefits
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=8
+  - kind: guidance
+    citation: Publication 503 (2025), page 4, Earned income
+    url: https://www.irs.gov/pub/irs-prior/p503--2025.pdf#page=4
+  - kind: instructions
+    citation: Form 1040 instructions (2022), line 1h, and (2021), Standard Deduction Worksheet for Dependents footnote
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2022.pdf
+  - kind: statute
+    citation: 26 U.S.C. 911(d)(2), as used by 26 U.S.C. 1(g)(2)(A)(ii)(II) and 59(j)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/26/911#d_2
+  - kind: instructions
+    citation: Form 8615 instructions (2017), page 2, Earned income
+    url: https://www.irs.gov/pub/irs-prior/i8615--2017.pdf#page=2
+  - kind: instructions
+    citation: Form 8615 instructions (2022), page 3, Alternate Worksheet for Form 8615, Line 1, line D
+    url: https://www.irs.gov/pub/irs-prior/i8615--2022.pdf#page=3
+  - kind: instructions
+    citation: 2025 Schedule P (540) instructions, line 22, Exemption Worksheet line 8
+    url: https://www.ftb.ca.gov/forms/2025/2025-540-p-instructions.html
+  readings:
+    statute: Section 32(c)(2)(A)(i) counts wages, salaries, tips and other employee compensation includible in gross
+      income; neither it nor Treas. Reg. 1.32-2(c)(2) names strike benefits, which a union rather than an employer pays.
+      Section 911(d)(2) counts amounts received as compensation for personal services actually rendered, which strike
+      benefits are not.
+    other: Publication 596 makes taxable strike and lockout benefits generally earned income, and Publication 503 says
+      earned income includes strike benefits. The dependent worksheet counts Form 1040 line 1z, which takes strike
+      benefits through line 1h from 2022; the earlier instructions name no line for them, Publication 17 discusses
+      them under other income, and the worksheet then counted wages (Form 1040 line 7 through 2017, line 1 from 2018)
+      and the business and farm income lines. Publication 501 describes earned income as compensation for personal
+      services performed, and the filing test reads the same list as the worksheet. The Form 8615 instructions define
+      earned income as wages, tips and other payments received for personal services performed. In 2017 their one
+      sentence naming Form 1040 lines (7, 12 and 18) covers a child's trade or business in which capital is not an
+      income-producing factor. From 2022 the Alternate Worksheet for line 1 adds that earned income is "Generally" Form
+      1040 line 1z and Schedule 1 lines 3 and 6, which would hold taxable strike benefits; the model applies the
+      support test only through 2017. California's Schedule P worksheet uses the same personal services words.
+  example: A 2025 head of household with one child and $20,000 of taxable strike benefits and no other income gets the
+    $4,328 maximum earned income credit; with the benefits outside earned income the credit is zero.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eitc_earned_income.py
+    - policyengine_us/variables/gov/irs/income/adjusted_earnings.py
+    - policyengine_us/parameters/gov/irs/income/filing_requirement/dependent/earned_income_sources.yaml
+    - policyengine_us/variables/gov/irs/tax/federal_income/alternative_minimum_tax/exemption/amt_exemption.py
+    - policyengine_us/variables/gov/irs/tax/federal_income/alternative_minimum_tax/kiddie_tax/amt_kiddie_tax_applies.py
+    - policyengine_us/variables/gov/states/ca/tax/income/alternative_minimum_tax/exemption/ca_amt_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
+  state: unreviewed
+  note: 'PE-US follows the publications and forms: taxable_strike_benefits (strike_benefits less the
+    tax_exempt_strike_benefits gift part) counts from 2010 in eitc_earned_income (the EITC, and the refundable CTC
+    through ctc_phase_in_relevant_earnings) and in earnings_before_zero_floor (adjusted_earnings: the child and
+    dependent care credit, section 129, and the state dependent care credits and deductions and EITC-based credits
+    that adopt these federal measures, California''s dependent care credit included), and from 2022, when line 1h puts
+    it in line 1z, in the dependent earned income sources (standard deduction worksheet and filing test). The kiddie tax
+    support test and the AMT child exemption cap, which the model applies through 2017, follow section 911(d)(2) and
+    the 2017 Form 8615 definition and leave it out of adjusted_earnings; California''s AMT child exemption leaves it out
+    of the head''s earned income the same way. Payroll taxes do not read it.'
+- id: us-pa:tax-forgiveness-strike-benefits
+  program: income-tax
+  years:
+    from: 2004
+    type: tax
+  question: Does 72 P.S. 7301(o.2)(vi) leave the strike benefits a union pays out of Pennsylvania Tax Forgiveness
+    eligibility income?
+  sources:
+  - kind: statute
+    citation: 72 P.S. 7301(o.2)(vi) and 7301(d)(vi)
+    url: https://www.palegis.us/statutes/unconsolidated/law-information/view-statute?txtType=HTM&SessYr=1971&ActNum=0002.&ChapterNum=003.&SectionNum=001.&SubsectionNum=0
+  - kind: regulation
+    citation: 61 Pa. Code 101.1, poverty income (i)(F), (ii) and (iii), applied by 61 Pa. Code 123.3
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.1.html
+  - kind: regulation
+    citation: 61 Pa. Code 101.6(c)(9)
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
+  - kind: instructions
+    citation: 2025 PA-40 instructions, Schedule SP Section III, lines 5 and 10
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40in.pdf#page=38
+  - kind: guidance
+    citation: Pennsylvania Personal Income Tax Guide, Tax Forgiveness, eligibility income and its exclusions
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_taxforgiveness.pdf#page=5
+  - kind: guidance
+    citation: Pennsylvania Personal Income Tax Guide, Gross Compensation, nontaxable benefits
+    url: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/gross-compensation.html#NontaxableBenefits
+  readings:
+    statute: Poverty income is all moneys or property "received of whatever nature and from whatever source derived",
+      not including (vi) "payments made by employers or labor unions for programs covering hospitalization, sickness,
+      disability or death, supplemental unemployment benefits, strike benefits, Social Security and retirement". The
+      words do not say whether they mean payments into such a program or the benefits a striker receives from it.
+    other: The poverty income regulation, 61 Pa. Code 101.1 (i)(F), restates (vi) as "payments made by employers to
+      labor unions for programs covering" those benefits; its (ii) counts "gifts of cash or property" and "other income
+      not specified as 'Income Not Included'", and its (iii) list of income not included leaves strike benefits out.
+      61 Pa. Code 101.6(c)(9) reads the same words in the compensation definition as payments to a strike benefit plan.
+      The Tax Forgiveness guide repeats the statute's words in its exclusions, and its inclusions count gifts, cash
+      from persons outside the household and employee payments to a cafeteria plan for strike benefits. The 2025
+      Schedule SP counts gifts (line 5) and payments received from persons outside the household (line 10), and its
+      list of income not to include leaves strike benefits out. Only the Gross Compensation guide's framing points
+      the other way. After quoting 7301(d)(vi) in its cafeteria plan section, it calls strike benefits nontaxable
+      "provided that the program does not discriminate".
+  example: A 2025 single filer with $5,000 of wages and $4,000 of strike benefits has eligibility income of $9,000 when
+    the benefits count and $5,000 when they do not.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/pa/tax/income/forgiveness/eligibility_income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
+  state: unreviewed
+  note: 'PE-US counts the whole union payment, gift part included, in eligibility income, following 61 Pa. Code 101.1,
+    the Tax Forgiveness guide and Schedule SP where the statute''s words leave the question open. PA taxable income
+    leaves strike benefits out under either reading: compensation is remuneration "received for services rendered"
+    (7301(d)), and the Gross Compensation guide lists strike benefits among income items never taxable as
+    compensation.'
 - id: us:student-loan-interest-joint-claimed-spouse
   program: income-tax
   years:

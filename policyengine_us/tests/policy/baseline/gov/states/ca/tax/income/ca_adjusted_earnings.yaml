@@ -38,3 +38,12 @@
     adjusted_earnings: 0
     # max(4,000 - 5,000, 0) = 0.
     ca_adjusted_earnings: 0
+
+- name: 2025, strike benefits are California earned income for the dependent care credit
+  # FTB 3506 (2025) line 4: "Earned income includes: ... Strike benefits."
+  period: 2025
+  input:
+    strike_benefits: 2_000
+    state_code: CA
+  output:
+    ca_adjusted_earnings: 2_000
