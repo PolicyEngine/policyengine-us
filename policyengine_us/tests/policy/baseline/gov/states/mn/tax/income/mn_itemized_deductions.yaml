@@ -250,3 +250,25 @@
     # reduction is 800 and the deduction 11,000 - 800. Were the interest in
     # the cap base, the cap would be 8,800 and the deduction 11,000 - 2,025.
     mn_itemized_deductions: 10_200
+
+- name: Minnesota exempts wagering losses from the 2023 high-income limitation.
+  period: 2023
+  input:
+    state_code: MN
+    filing_status: SINGLE
+    adjusted_gross_income: 2_000_000
+    gambling_winnings: 50_000
+    gambling_losses: 50_000
+    interest_deduction: 0
+    charitable_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    mn_casualty_loss_deduction: 0
+    capped_property_taxes: 0
+    misc_deduction: 0
+    claim_of_right_deduction: 0
+  output:
+    wagering_losses_deduction: 50_000
+    itemized_deductions_less_salt: 50_000
+    # Minn. Stat. 290.0122, subd. 2(d)(3) and 8: 50,000 - 80% * 0.
+    mn_itemized_deductions: 50_000
