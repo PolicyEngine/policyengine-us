@@ -1,0 +1,81 @@
+description: Texas uses this one-parent monthly income standard under Medicaid.
+metadata:
+  propagate_metadata_to_children: true
+amount:
+  description: Texas limits one-parent Medicaid income to this monthly dollar standard before the five-point MAGI disregard.
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Texas Medicaid one-parent monthly income standard
+    breakdown:
+      - range(1, 16)
+    breakdown_label:
+      - Household size
+    reference:
+      - title: Texas Works Handbook C-131.2, one-parent column, Revision 15-4 effective October 1, 2015
+        href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/c-130-medical-programs
+  1:
+    2015-10-01: 103
+  2:
+    2015-10-01: 196
+  3:
+    2015-10-01: 230
+  4:
+    2015-10-01: 277
+  5:
+    2015-10-01: 310
+  6:
+    2015-10-01: 356
+  7:
+    2015-10-01: 389
+  8:
+    2015-10-01: 441
+  9:
+    2015-10-01: 476
+  10:
+    2015-10-01: 527
+  11:
+    2015-10-01: 562
+  12:
+    2015-10-01: 613
+  13:
+    2015-10-01: 648
+  14:
+    2015-10-01: 700
+  15:
+    2015-10-01: 734
+additional_person:
+  description: Texas increases the one-parent Medicaid monthly standard by this amount for each person above the published table.
+  values:
+    2015-10-01: 52
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Texas Medicaid one-parent income standard additional person
+    reference:
+      - title: Texas Works Handbook C-131.2, one-parent additional member amount
+        href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/c-130-medical-programs
+max_household_size:
+  description: Texas publishes this maximum household size in the one-parent Medicaid monthly standard table.
+  values:
+    2015-10-01: 15
+  metadata:
+    unit: person
+    period: year
+    label: Texas Medicaid one-parent income standard maximum listed household size
+    reference:
+      - title: Texas Works Handbook C-131.2, family size column
+        href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/c-130-medical-programs
+fpl_disregard:
+  description: Texas applies this share of the federal poverty guideline as a conditional income disregard under Medicaid.
+  values:
+    2015-10-01: 0.05
+  metadata:
+    unit: /1
+    period: year
+    label: Texas Medicaid parent FPL disregard
+    reference:
+      - title: Texas Works Handbook A-1341, Medical Programs budget steps 4 and 5
+        href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-1340-income-limits
+      - title: 42 CFR 435.603(d)(4), five-point MAGI disregard effective January 1, 2014
+        href: https://www.law.cornell.edu/cfr/text/42/435.603#d_4
