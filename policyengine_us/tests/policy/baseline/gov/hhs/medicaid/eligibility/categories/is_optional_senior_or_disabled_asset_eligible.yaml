@@ -859,3 +859,434 @@
   output:
     # January 1, 2027 still reads the 195,000 couple limit; 31,000 first applies in 2028.
     is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+# MHABD 0805.020.10 adds the entire amount of a parent's available resources to
+# the child's. RSMo 208.010.2(7) allows resources "not to exceed" the limit, and
+# 2026 reads the July 2025 individual limit of 6,068.80.
+- name: Missouri child and one parent with resources together exactly at the individual limit, eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 6_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        is_blind: true
+        bank_account_assets: 68.80
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Child: 6,000 + 68.80 = 6,068.80.
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: Missouri child and one parent with resources together one cent over the individual limit, ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 6_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        is_blind: true
+        bank_account_assets: 68.81
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Child: 6,000 + 68.81 = 6,068.81. The parent's own 6,000 stays within the limit.
+    is_optional_senior_or_disabled_asset_eligible: [true, false]
+
+# Appendix K sets the limit for a child living with two parents at the couple
+# limit, which 2026 reads as the July 2025 value of 12,137.55.
+- name: Missouri child with two parents whose resources are exactly at the couple limit, eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 6_000
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        bank_account_assets: 6_137.55
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # 6,000 + 6,137.55 = 12,137.55, which the 6,068.80 individual limit would fail.
+    is_optional_senior_or_disabled_asset_eligible: [true, true, true]
+
+- name: Missouri child with two parents whose resources are one cent over the couple limit, ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 6_000
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        bank_account_assets: 6_137.56
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # 6,000 + 6,137.56 = 12,137.56. The parents' own test fails on the same total.
+    is_optional_senior_or_disabled_asset_eligible: [false, false, false]
+
+# MHABD 0805.020.05: a child married and living with their spouse does not live
+# with a parent, even with a parent in the same home, and only a child living
+# with a parent is deemed parental resources. The couple's own resources are 0.
+- name: Missouri married child in the same home as a parent with savings is not deemed the parent's resources
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 100_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_blind: true
+      person3:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # The parent's own 100,000 is above the 6,068.80 limit.
+    is_optional_senior_or_disabled_asset_eligible: [false, true, true]
+
+# MHABD 0805.020.05: a child in a nursing facility or ICF/IID, or in a hospital
+# or psychiatric treatment facility for more than 30 days, does not live with a parent.
+- name: Missouri child in a medical treatment facility is not deemed the parent's resources
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 100_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        is_blind: true
+        ssi_lives_in_medical_treatment_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_asset_eligible: [false, true]
+
+# MHABD 0805.020.05: a child in a state agency's custody and placed in foster
+# care does not live with a parent.
+- name: Missouri child in foster care is not deemed the parent's resources
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 100_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        is_blind: true
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_asset_eligible: [false, true]
+
+# Only Missouri's parameter is set, so this test reads an Illinois child's own
+# resources. The parent's own 100,000 is above the 17,500 Illinois limit.
+- name: Illinois child is not deemed the parent's resources under this test
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 100_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    is_optional_senior_or_disabled_asset_eligible: [false, true]
+
+# MHABD 0805.020.10 deems a parent's resources and leaves out resources owned
+# solely by a stepparent, and a stepparent is not a second parent. With no
+# children of their own, person2 is only the child's stepparent.
+- name: Missouri child living with a parent and a stepparent is tested against the one-parent limit, ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 8_000
+      person2:
+        age: 42
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # Child: 8,000 is above the 6,068.80 one-parent limit, though within the
+    # 12,137.55 limit for two parents. The couple's own 8,000 is within their limit.
+    is_optional_senior_or_disabled_asset_eligible: [true, true, false]
+
+- name: Missouri child is not deemed resources owned solely by a stepparent, eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+      person2:
+        age: 42
+        is_tax_unit_spouse: true
+        bank_account_assets: 20_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # Child: the parent's 0 is deemed and the stepparent's 20,000 is left out. The
+    # couple's own 20,000 is above the 12,137.55 couple limit.
+    is_optional_senior_or_disabled_asset_eligible: [false, false, true]
+
+# MHABD 0805.020.05: a child with no natural or adoptive parent in the home does
+# not live with a parent, so nothing is deemed. A minor parent is not their own
+# parent, so their 4,000 counts once, within the 6,068.80 limit; counted twice,
+# 8,000 would fail.
+- name: Missouri blind minor parent with no parent at home counts their own resources once, eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_blind: true
+        own_children_in_household: 1
+        bank_account_assets: 4_000
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+# A minor parent is not their own parent, so a 17-year-old living with their
+# parent has one parent, not two: 4,000 + the parent's 3,000 = 7,000 is above the
+# 6,068.80 one-parent limit, though within the 12,137.55 limit for two parents.
+- name: Missouri blind minor parent living with their own parent is tested against the one-parent limit, ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 3_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_blind: true
+        own_children_in_household: 1
+        bank_account_assets: 4_000
+      person3:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_asset_eligible: [true, false, true]
+
+# MHABD 0805.020.05: "When a disabled child reaches age 18 or moves from the
+# parent's home, stop deeming effective with the following month." A disabled
+# 19-year-old dependent is tested on their own resources, not the parent's 100,000.
+- name: Missouri disabled 19-year-old living with a parent is not deemed the parent's resources
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        bank_account_assets: 100_000
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # The parent's own 100,000 is above the 6,068.80 limit.
+    is_optional_senior_or_disabled_asset_eligible: [false, true]

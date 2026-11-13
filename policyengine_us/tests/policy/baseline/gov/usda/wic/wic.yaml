@@ -50,7 +50,7 @@
     takes_up_wic_if_eligible: true
   output:
     # 2018 package value less the uprated embedded $8 CVB, plus the FY 2024 $26 CVB.
-    wic: 33.65 * 309.794 / 247.867 - 8 * 309.794 / 247.867 + 26
+    wic: 33.65 * 308.417 / 247.867 - 8 * 308.417 / 247.867 + 26
 
 - name: A zero current cash-value benefit replaces the embedded cash-value benefit.
   period: 2024-01
@@ -60,7 +60,7 @@
     is_wic_eligible: true
     takes_up_wic_if_eligible: true
   output:
-    wic: 33.65 * 309.794 / 247.867 - 8 * 309.794 / 247.867
+    wic: 33.65 * 308.417 / 247.867 - 8 * 308.417 / 247.867
 
 - name: Multiple-fetus pregnancy package uses the package V-B cash-value benefit amount.
   period: 2024-01
@@ -70,7 +70,7 @@
     takes_up_wic_if_eligible: true
   output:
     # Food Package V-B uses the breastfeeding/partially breastfeeding CVB amount.
-    wic: 39.12 * 309.794 / 247.867 - 11 * 309.794 / 247.867 + 52
+    wic: 39.12 * 308.417 / 247.867 - 11 * 308.417 / 247.867 + 52
 
 - name: June 2026 child package value uses the observed CPI-U for the month.
   period: 2026-06
@@ -80,4 +80,5 @@
     is_wic_eligible: true
     takes_up_wic_if_eligible: true
   output:
-    wic: 60.42
+    # (33.65 - 8) * 333.952 / 247.867 + 26 = 60.5583.
+    wic: 60.56

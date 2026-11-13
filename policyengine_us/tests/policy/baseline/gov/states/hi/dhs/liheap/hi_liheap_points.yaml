@@ -1067,3 +1067,91 @@
         county: HONOLULU_COUNTY_HI
   output:
     hi_liheap_points: [5, 5, 5, 4]
+
+- name: Case 17, a 100% service-connected veteran adds the disabled-adult point.
+  period: 2026
+  # Same income as Case 16's person3 (5 points with the disabled point).
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        employment_income: 12_000
+        is_fully_disabled_service_connected_veteran: true
+      person2:
+        age: 40
+        ssi: 0
+        employment_income: 12_000
+        is_fully_disabled_service_connected_veteran: false
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: [5, 4]
+
+- name: Case 18, the VA 100% flag earns one disabled-adult point from age 18 and does not stack.
+  period: 2026
+  # Each unit has 4 points before vulnerability, as in Case 17.
+  # person1 (18, VA flag) reaches the adult minimum age: 5.
+  # person2 (40, VA flag and SSDI) still earns one vulnerability point: 5, not 6.
+  # person3 (17, VA flag) is under the adult minimum age: 4.
+  input:
+    people:
+      person1:
+        age: 18
+        ssi: 0
+        employment_income: 12_000
+        is_fully_disabled_service_connected_veteran: true
+      person2:
+        age: 40
+        ssi: 0
+        social_security_disability: 12_000
+        is_fully_disabled_service_connected_veteran: true
+      person3:
+        age: 17
+        ssi: 0
+        employment_income: 12_000
+        is_fully_disabled_service_connected_veteran: true
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+      spm_unit3:
+        members: [person3]
+        heating_type: NATURAL_GAS
+        hi_tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household2:
+        members: [person2]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+      household3:
+        members: [person3]
+        state_code: HI
+        county: HONOLULU_COUNTY_HI
+  output:
+    hi_liheap_points: [5, 5, 4]

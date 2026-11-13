@@ -16,15 +16,13 @@ class ct_ceap_categorically_eligible(Variable):
         # generic veterans_benefits does not establish VA eligibility.
         person = spm_unit.members
         member = person("ct_ceap_household_member", period)
-        ssi = spm_unit.sum(member * person("ssi", period, options=[ADD]))
+        ssi = spm_unit.sum(member * person("ssi", period))
         # Remove SSP attributable to members outside the household from the
         # household receipt, preserving a supplied household SSP total. The
         # floor stops a supplied total below the excluded members' SSP from
         # cancelling other receipt.
-        excluded_ssp = spm_unit.sum(
-            ~member * person("ct_ssp_person", period, options=[ADD])
-        )
-        ssp = max_(spm_unit("ct_ssp", period, options=[ADD]) - excluded_ssp, 0)
+        excluded_ssp = spm_unit.sum(~member * person("ct_ssp_person", period))
+        ssp = max_(spm_unit("ct_ssp", period) - excluded_ssp, 0)
         reported_ssi = spm_unit.any(
             member & (add(person, period, ["receives_ssi"]) > 0)
         )

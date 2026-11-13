@@ -27,3 +27,64 @@
     claim_of_right_deduction: 5_000
     ca_itemized_deductions_pre_limitation: 20_750
     ca_taxable_income: 44_950
+
+# 2026 married couples with no dependents, from FTB Tax News, October 2026,
+# 2026 Indexing: $11,800 standard deduction, Schedule Y, and $316 of personal
+# exemption credits for joint filers.
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/2026/10.html#article1
+
+- name: 2026 married couple with $70,000 of California AGI and no dependents
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 70_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CA
+  output:
+    ca_agi: 70_000
+    # 70,000 - 11,800
+    ca_taxable_income: 58_200
+    # 857.16 + 4% x (58,200 - 54,314)
+    ca_income_tax_before_credits: 1_012.60
+    ca_exemptions: 316
+    # 1,012.60 - 316
+    ca_income_tax: 696.60
+
+- name: 2026 married couple with $60,000 of California AGI and no dependents
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CA
+  output:
+    ca_agi: 60_000
+    # 60,000 - 11,800
+    ca_taxable_income: 48_200
+    # 229.12 + 2% x (48,200 - 22,912)
+    ca_income_tax_before_credits: 734.88
+    ca_exemptions: 316
+    # 734.88 - 316
+    ca_income_tax: 418.88
