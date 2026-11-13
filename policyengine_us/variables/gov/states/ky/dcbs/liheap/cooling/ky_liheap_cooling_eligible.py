@@ -29,7 +29,10 @@ class ky_liheap_cooling_eligible(Variable):
         # The household must be responsible for its home electric costs, with
         # the subsidy paid to its electric vendor, or pay them as an
         # undesignated portion of the rent, with the subsidy paid to the
-        # landlord (Section 4(3)(a)).
+        # landlord (Section 4(3)(a)). The fact sheet asks for the current
+        # electric bill and sets no air-conditioning test; requiring
+        # has_cooling_expense with the bill is a PolicyEngine convention for
+        # cooling costs, not a Kentucky condition.
         pays_electric_bill = spm_unit("has_cooling_expense", period) & (
             spm_unit("pre_subsidy_electricity_expense", period) > 0
         )
@@ -37,9 +40,5 @@ class ky_liheap_cooling_eligible(Variable):
             add(spm_unit, period, ["rent"]) > 0
         )
         responsible = pays_electric_bill | utilities_in_rent
-        # heating_type is a required input; an unspecified fuel pays nothing.
-        # Homes without heating (NONE) and every known fuel can qualify.
-        fuel = spm_unit("heating_type", period)
-        known_fuel = fuel != fuel.possible_values.UNSPECIFIED
         documented = ky_liheap_members_documented(spm_unit, period)
-        return income_eligible & responsible & known_fuel & documented
+        return income_eligible & responsible & documented

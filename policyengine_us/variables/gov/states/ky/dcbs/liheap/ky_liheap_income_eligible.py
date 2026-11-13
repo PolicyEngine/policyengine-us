@@ -24,12 +24,14 @@ def ky_liheap_meets_income_limit(spm_unit, period, parameters, year_lag):
         )
         - guideline
     )
-    # The fact sheet states "Add $688 for each additional family member"
-    # without a derivation. Rounding the additional-person guideline up at
-    # the income limit rate reproduces $688 for FY2026 and all eight
+    # The heating fact sheet states "Add $688 for each additional family
+    # member" without a derivation. Rounding the additional-person guideline
+    # up at the income limit rate reproduces $688 for FY2026 and all eight
     # published limits. The workbook's own table for sizes 9-14 rounds each
     # whole limit instead and differs by up to $3 (for example $8,144
-    # against $8,145 at size 10); the fact sheet is followed.
+    # against $8,145 at size 10); the fact sheet is followed. The summer
+    # cooling fact sheet's $710 for each added member is exact
+    # (5,680 * 1.5 / 12 = 710), so either rounding gives it.
     monthly_limit = np.ceil(guideline * p.income_limit / MONTHS_IN_YEAR)
     monthly_increment = np.ceil(additional_guideline * p.income_limit / MONTHS_IN_YEAR)
     income = spm_unit("ky_liheap_income", period) / MONTHS_IN_YEAR

@@ -32,7 +32,14 @@ class ky_liheap_cooling(Variable):
         # heating column in every row, so the electric fuel points apply
         # whatever fuel heats the home. The workbook prints the same income
         # ranges for both columns, on the guideline year heating uses; the
-        # cooling income limit alone uses the summer fact sheet's guideline.
+        # cooling income limit alone uses the summer fact sheet's guideline,
+        # so incomes above the printed ranges but within that limit take the
+        # top band. Subsidized households get heating's subsidized income
+        # points (candidate us-ky:liheap-subsidized-income-points).
+        # The model pays one subsidy a year. Section 4(3)(a) allows one per
+        # component period, and plan Section 1.1 offers cooling and summer
+        # components only "if additional money is received", so a second
+        # round in a year depends on funding.
         return ky_liheap_points_amount(
             spm_unit,
             period,

@@ -188,7 +188,7 @@
     # (1 point). 1 + 1 + 6 = 8 points; ceil(8 * 16.66 = 133.28) = 134.
     ky_liheap_cooling: 134
 
-- name: Case 6, a home without heating receives cooling and an unspecified fuel receives nothing.
+- name: Case 6, a home without heating and a home with an unspecified fuel both receive cooling.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -222,11 +222,11 @@
         state_code: KY
         is_in_public_housing: false
   output:
-    # Household 1: the cooling subsidy uses the electric points whatever the
-    # home heats with: 1 + 4 + 6 = 11 points = 184.
-    # Household 2: heating_type is a required input, so an unspecified fuel
-    # is not eligible.
-    ky_liheap_cooling_eligible: [true, false]
-    ky_liheap_cooling: [184, 0]
+    # The cooling subsidy uses the electric points whatever the home heats
+    # with: 1 + 4 + 6 = 11 points = 184.
+    # Was [true, false], now [true, true]: cooling has no heating-fuel condition.
+    ky_liheap_cooling_eligible: [true, true]
+    # Was [184, 0], now [184, 184]: cooling has no heating-fuel condition.
+    ky_liheap_cooling: [184, 184]
     # Neither home has a heating benefit.
     ky_liheap: [0, 0]

@@ -158,3 +158,57 @@
     # points = 184. Subsidized: 1 + 1 + 6 = 8 points = 134;
     # ceil(134 * 0.3 = 40.2) = 41.
     ky_liheap_cooling: [184, 41]
+
+- name: Case 5, a renter who pays utilities apart from the rent needs an electric bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 7_540
+        # The Jefferson County one-bedroom Fair Market Rent, as in Case 4.
+        rent: 12_564
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 720
+        pre_subsidy_electricity_expense: 0
+        has_cooling_expense: false
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        tenant_pays_utilities: true
+  output:
+    # The household pays rent, but its utilities are not in the rent, and it
+    # has no electric bill, so neither route applies.
+    ky_liheap_cooling_eligible: false
+    ky_liheap_cooling: 0
+
+- name: Case 6, a rent-free household whose utilities someone else pays is not eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 7_540
+        rent: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 0
+        has_cooling_expense: false
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        tenant_pays_utilities: false
+  output:
+    # The household does not pay its utilities, and with no rent it pays no
+    # utility costs through rent either.
+    ky_liheap_cooling_eligible: false
+    ky_liheap_cooling: 0
