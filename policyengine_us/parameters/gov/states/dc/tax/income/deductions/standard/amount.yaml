@@ -1,24 +1,38 @@
 description: The District of Columbia sets the basic standard deduction to this amount by filing status.
 
+# D.C. Code 47-1801.04(3A)(A)(ii) increases the 2025 amounts from 2026 by the
+# cost-of-living adjustment in 47-1801.04(11): the amount times the change in
+# the Washington-Baltimore CPI-U from the base year to the preceding calendar
+# year. (3A)(B) sets the base year to the later of 2025 and the year before the
+# new amount takes effect, so for 2026 the base year and the preceding
+# calendar year are both 2025, the adjustment is zero, and the 2025 amounts
+# apply. Later years apply gov.irs.uprating to the 2026 amounts as a stand-in
+# for the Washington-Baltimore CPI-U.
+
 SINGLE:
   values:
     2025-01-01: 15_000
+    2026-01-01: 15_000
 
 JOINT:
   values:
     2025-01-01: 30_000
+    2026-01-01: 30_000
 
 SEPARATE:
   values:
     2025-01-01: 15_000
+    2026-01-01: 15_000
 
 HEAD_OF_HOUSEHOLD:
   values:
     2025-01-01: 22_500
+    2026-01-01: 22_500
 
 SURVIVING_SPOUSE:
   values:
     2025-01-01: 30_000
+    2026-01-01: 30_000
 
 metadata:
   unit: currency-USD
@@ -28,10 +42,12 @@ metadata:
     - filing_status
   propagate_metadata_to_children: true
   reference:
-    - title: DC Code § 47-1801.04(3A) - Basic standard deduction
+    - title: DC Code § 47-1801.04(3A) and (11) - Basic standard deduction and cost-of-living adjustment
       href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1801.04
     - title: DC Act 26-214 - Income and Franchise Tax Conformity
       href: https://code.dccouncil.gov/us/dc/council/acts/26-214
+    - title: D.C. Act 26-416, Fiscal Year 2027 Budget Support Emergency Act of 2026, sec. 7112(b) (new D.C. Code 47-1801.04(3A))
+      href: https://code.dccouncil.gov/us/dc/council/acts/26-416
     - title: 2025 DC D-40 Booklet, Standard Deduction (p.13)
       href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=13
   uprating:

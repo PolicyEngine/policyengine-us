@@ -15,3 +15,294 @@
     state_code: DC
   output:
     dc_income_tax_before_credits: 900
+
+# Households in 2025 and 2026 under D.C. Act 26-416. DC's rates: 4% to
+# $10,000, $400 + 6% to $40,000, $2,200 + 6.5% to $60,000, $3,500 + 8.5% to
+# $250,000.
+
+- name: 2026 couple aged 67 and 65, $45,000 military retired pay and $30,000 Social Security, owes no DC tax.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+        military_retirement_pay: 45_000
+        social_security_retirement: 15_000
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # Federal AGI 45,000 + taxable Social Security 19,600
+    # (0.85 * (60,000 - 44,000) + 6,000) = 64,600; DC subtracts the 19,600.
+    dc_agi: [45_000, 0]
+    # Senior deduction: MAGI 64,600 < 150,000, so 2 * 6,000 = 12,000.
+    dc_additional_deductions: 12_000
+    # 30,000 basic + 2 * 1,650 for age + 12,000 = 45,300
+    dc_deduction_joint: 45_300
+    dc_taxable_income_joint: -300
+    dc_income_tax_before_credits: 0
+    dc_income_tax: 0
+
+- name: 2025 couple aged 67 and 65, $45,000 military retired pay and $30,000 Social Security, unchanged.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+        military_retirement_pay: 45_000
+        social_security_retirement: 15_000
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_agi: [45_000, 0]
+    # 47-1803.04(d)(9): no senior deduction before 2026.
+    dc_additional_deductions: 0
+    # 30,000 basic + 2 * 1,600 for age = 33,200
+    dc_deduction_joint: 33_200
+    dc_taxable_income_joint: 11_800
+    # 400 + 6% * 1,800
+    dc_income_tax_before_credits: 508
+    dc_income_tax: 508
+
+- name: 2026 single aged 70 with $40,000 of pension.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 15,000 basic + 2,050 for age + 6,000 senior = 23,050
+    dc_deduction_joint: 23_050
+    dc_taxable_income_joint: 16_950
+    # 400 + 6% * 6,950
+    dc_income_tax_before_credits: 817
+
+- name: 2026 single aged 70 with $100,000 of pension, in the senior deduction's phase-out.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 15,000 + 2,050 + (6,000 - 6% * 25,000 = 4,500) = 21,550
+    dc_deduction_joint: 21_550
+    dc_taxable_income_joint: 78_450
+    # 3,500 + 8.5% * 18,450
+    dc_income_tax_before_credits: 5_068.25
+
+- name: 2026 single aged 70 with $200,000 of pension, above the senior deduction's phase-out.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 15,000 + 2,050; the senior deduction is fully phased out.
+    dc_deduction_joint: 17_050
+    dc_taxable_income_joint: 182_950
+    # 3,500 + 8.5% * 122,950
+    dc_income_tax_before_credits: 13_950.75
+
+- name: 2026 tipped worker with $40,000 of wages including $10,000 of qualified tips.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        tip_income: 10_000
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 15,000 basic + 10,000 tips = 25,000
+    dc_deduction_joint: 25_000
+    dc_taxable_income_joint: 15_000
+    # 400 + 6% * 5,000
+    dc_income_tax_before_credits: 700
+
+- name: 2025 tipped worker with $40,000 of wages including $10,000 of qualified tips, no DC tip deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        tip_income: 10_000
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 47-1803.04(d)(6): 15,000 basic only.
+    dc_deduction_joint: 15_000
+    dc_taxable_income_joint: 25_000
+    # 400 + 6% * 15,000
+    dc_income_tax_before_credits: 1_300
+
+- name: 2026 couple aged 66 filing separately on the same DC return splits the senior deduction like other deductions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+        taxable_private_pension_income: 60_000
+      person2:
+        age: 66
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # Deduction: 30,000 + 2 * 1,650 + 2 * 6,000 = 45,300.
+    dc_deduction_joint: 45_300
+    # Jointly: taxable income 80,000 - 45,300 = 34,700, tax 400 + 6% * 24,700
+    # = 1,882. Separately, the deduction is allocated to minimize tax: 45,300
+    # to the head leaves 14,700 and 20,000, tax (400 + 6% * 4,700) +
+    # (400 + 6% * 10,000) = 682 + 1,000 = 1,682, less than 1,882.
+    dc_deduction_indiv: [45_300, 0]
+    dc_income_tax_before_credits_joint: 1_882
+    dc_income_tax_before_credits_indiv: 1_682
+    dc_files_separately: true
+    dc_income_tax_before_credits: 1_682
+
+- name: 2029 single aged 70 with $40,000 of pension, no senior deduction after 2028.
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_private_pension_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Fixed here so the case does not move with CPI projections.
+        dc_standard_deduction: 18_200
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_additional_deductions: 0
+    dc_deduction_joint: 18_200
+    dc_taxable_income_joint: 21_800
+    # 400 + 6% * 11,800
+    dc_income_tax_before_credits: 1_108
+
+- name: 2029 filer with $60,000 of wages and $5,000 of qualified vehicle loan interest, no car loan deduction.
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        qualified_passenger_vehicle_loan_interest_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Fixed here so the case does not move with CPI projections.
+        dc_standard_deduction: 16_050
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_additional_deductions: 0
+    dc_deduction_joint: 16_050
+    dc_taxable_income_joint: 43_950
+    # 2,200 + 6.5% * 3,950
+    dc_income_tax_before_credits: 2_456.75
+
+- name: 2026 filer with $90,000 of wages, $8,000 of overtime premium and $3,000 of qualified vehicle loan interest.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 90_000
+        fsla_overtime_premium: 8_000
+        qualified_passenger_vehicle_loan_interest_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # Federal overtime deduction 8,000 + car loan interest deduction 3,000
+    dc_additional_deductions: 11_000
+    # 15,000 basic standard deduction + 11,000
+    dc_deduction_joint: 26_000
+    dc_taxable_income_joint: 64_000
+    # 3,500 + 8.5% * 4,000
+    dc_income_tax_before_credits: 3_840

@@ -1,0 +1,37 @@
+description: The District of Columbia allows these federal deductions as additional deductions from gross income in computing net income.
+values:
+  # D.C. Code 47-1803.04(d)(6) to (9) deny all four for taxable years
+  # beginning before January 1, 2026.
+  2021-01-01: []
+  # D.C. Code 47-1803.04(e)(3) to (6) allow each "for taxable years beginning
+  # after December 31, 2025", to any individual, whether the filer takes the
+  # standard deduction or itemizes.
+  2026-01-01:
+    - tip_income_deduction
+    - overtime_income_deduction
+    - auto_loan_interest_deduction
+    - additional_senior_deduction
+  # (e)(5) and (e)(6) allow only the deduction "allowed under" IRC 163(h)(4)
+  # and 151(d)(5)(C), and those sections allow none for taxable years
+  # beginning after December 31, 2028. The federal variables carry no date gate of their own,
+  # so the list drops them here, as the federal lists do. The tips and
+  # overtime deductions stay listed: their in_effect parameters zero them
+  # from 2029.
+  2029-01-01:
+    - tip_income_deduction
+    - overtime_income_deduction
+metadata:
+  unit: list
+  period: year
+  label: DC additional deductions from federal Schedule 1-A
+  reference:
+    - title: D.C. Act 26-416, Fiscal Year 2027 Budget Support Emergency Act of 2026, sec. 7112(e) (new D.C. Code 47-1803.04(d) and (e))
+      href: https://code.dccouncil.gov/us/dc/council/acts/26-416
+    - title: "CFO fiscal impact statement, Fiscal Year 2027 Budget Support Act of 2026, Subtitle VII(I) #page 105-106"
+      href: https://app.cfo.dc.gov/services/fiscal_impact/pdf/spring09/FIS%20Fiscal%20Year%202027%20Budget%20Support%20Act%20of%202026.pdf#page=105
+    - title: 26 U.S.C. 151(d)(5)(C)(i), senior deduction for taxable years beginning before January 1, 2029
+      href: https://www.law.cornell.edu/uscode/text/26/151#d_5_C_i
+    - title: 26 U.S.C. 163(h)(4)(A), qualified passenger vehicle loan interest for taxable years beginning before January 1, 2029
+      href: https://www.law.cornell.edu/uscode/text/26/163#h_4_A
+    - title: 2025 DC D-40 Booklet, federal Schedule 1-A additional deductions not allowed for 2025
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=4

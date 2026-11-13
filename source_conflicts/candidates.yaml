@@ -2213,6 +2213,53 @@ candidates:
   state: ruled
   note: 'Ruled 2026-11-02 by the PR author in the pre-filing review of this PR, item CT-S3: keep the State Supplement out
     of countable income. Neither document names it, and plan 1.9 is the specific list.'
+- id: us-dc:additional-deductions-standard-deduction-filers
+  program: income-tax
+  years:
+    from: 2026
+    to: 2028
+    type: tax
+  question: Do the additional deductions in D.C. Code 47-1803.04(e), which from 2026 through 2028 include the federal
+    deductions for qualified tips, qualified overtime, personal car loan interest and the enhanced senior deduction,
+    reach a filer who takes the standard deduction, or only one who itemizes?
+  sources:
+  - kind: statute
+    citation: D.C. Code 47-1803.04(a)(1), (b) and (e), added by D.C. Act 26-416 sec. 7112(e) (permanent version D.C.
+      Law 26-189)
+    url: https://code.dccouncil.gov/us/dc/council/acts/26-416
+  - kind: instructions
+    citation: 2025 D-40 booklet, Schedule I Calculation B lines 8, 9 and 15, which subtract the (e)(1) teacher
+      deductions and the (e)(2) qualified opportunity fund deduction from federal AGI for every filer, PDF p.64
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=64
+  - kind: guidance
+    citation: CFO fiscal impact statement, Fiscal Year 2027 Budget Support Act of 2026, Subtitle VII(I), PDF pp.105-106
+    url: https://app.cfo.dc.gov/services/fiscal_impact/pdf/spring09/FIS%20Fiscal%20Year%202027%20Budget%20Support%20Act%20of%202026.pdf#page=105
+  readings:
+    statute: Subsection (e) allows its deductions "in computing net income of any individual", and (b) bars other
+      additions to the standard deduction only "except as otherwise provided in this chapter", so every filer takes
+      them, as on the federal return.
+    other: Subsection (a)(1) allows "either the standard deduction or itemized deductions (including the additional
+      deductions set forth in subsection (e) of this section, if applicable)", which, read alone, attaches them to
+      itemized deductions only.
+  example: A married couple aged 67 and 65 with $45,000 of military retired pay and $30,000 of Social Security in 2026
+    has DC AGI of $45,000 and a $33,300 standard deduction. With the two $6,000 senior deductions their DC tax is $0;
+    limited to itemizers, they get no senior deduction and owe $502.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/dc/tax/income/deductions/additional/sources.yaml
+    - policyengine_us/variables/gov/states/dc/tax/income/deductions/dc_additional_deductions.py
+    - policyengine_us/variables/gov/states/dc/tax/income/deductions/dc_deduction_joint.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10806
+  state: ruled
+  note: Both readings come from the statute. PolicyEngine-US takes (e)'s operative words, "any individual", with the
+    canon of one meaning per section. OTR's 2025 D-40 booklet, which quotes the new 47-1803.04(b), gives the (e)(1)
+    and (e)(2) deductions to every filer as Schedule I subtractions, and the fiscal impact statement describes the
+    four as letting "District taxpayers" take them, names no itemizer limit, and books no revenue for them against a
+    February baseline that "did not assume any decoupling from OBBBA provisions". PolicyEngine-US adds them to
+    dc_deduction_joint, so they lower DC taxable income but not DC AGI; OTR had not published 2026 forms showing the
+    line by November 2026.
 - id: us-dc:eitc-no-tin-child-schedule-before-2023
   program: income-tax
   years:
