@@ -287,3 +287,42 @@
   output:
     pa_total_taxable_income: 0
     pa_income_tax: 0
+
+- name: 2025 TAXSIM reform, joint return whose head can be claimed as a dependent, with a child
+  absolute_error_margin: 0.01
+  period: 2025
+  reforms: policyengine_us.reforms.taxsim
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 7_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 7_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: PA
+  output:
+    # IRC 152(b)(1) leaves the return with no dependents, so the limit is
+    # $13,000. TAXSIM's smooth rate is 1 - 0.1 * (15,000 - 13,000) / 250 = 0.2.
+    pa_tax_forgiveness_rate: 0.2
+    # 15,000 * 3.07% * 0.2 * the eligible spouse's half of the tax.
+    pa_tax_forgiveness_amount: 46.05

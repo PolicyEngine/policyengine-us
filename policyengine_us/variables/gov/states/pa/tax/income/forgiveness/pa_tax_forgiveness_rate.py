@@ -11,6 +11,8 @@ class pa_tax_forgiveness_rate(Variable):
         "https://www.palegis.us/statutes/unconsolidated/law-information/view-statute?txtType=PDF&SessYr=1971&SessInd=0&ActNum=0002.&chpt=003.&subchpt=000.&sctn=004.&subsctn=000.",  # 72 P.S. 7304(d)(1)
         "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40in.pdf#page=36",
         "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40in.pdf#page=39",
+        "https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/1971/0/0002..PDF#page=113",
+        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
     )
     defined_for = StateCode.PA
 
@@ -18,7 +20,18 @@ class pa_tax_forgiveness_rate(Variable):
         own_eligibility_income = tax_unit("pa_eligibility_income", period)
         person = tax_unit.members
         is_child_dependent = person("is_qualifying_child_dependent", period)
-        child_dependents = tax_unit.sum(is_child_dependent)
+        # A dependent child must be "the dependent of a claimant for purposes
+        # of section 151" (Tax Reform Code section 301(e.1)), and a return on
+        # which the filer (or, if joint, either spouse) can be claimed as a
+        # dependent has no dependents (IRC 152(b)(1)).
+        # Publication 501 excepts a return whose would-be claimant files only
+        # for a refund.
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        child_dependents = where(
+            filer_is_dependent, 0, tax_unit.sum(is_child_dependent)
+        )
         # 72 P.S. 7304(d)(1)(i)-(ii): a claimant who files a separate return
         # and lives apart from the spouse for all of the last six months of
         # the year (or under a written separation agreement) is not

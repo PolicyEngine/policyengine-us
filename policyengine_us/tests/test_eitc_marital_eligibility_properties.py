@@ -250,6 +250,7 @@ def nj_units(rows, marital_eligible):
     marital = np.asarray(marital_eligible, dtype=bool)
     eligible = other_federal.astype(bool) & marital
     zeros = np.zeros(len(rows))
+    no_one = np.zeros(len(rows), dtype=bool)
     values = {
         "filing_status": status.view(FilingStatuses),
         "eitc_marital_eligible": marital,
@@ -263,10 +264,14 @@ def nj_units(rows, marital_eligible):
         "foreign_earned_income_exclusion": zeros,
         "section_911_excluded_income": zeros,
         **{variable: zeros for variable in SECTION_911_LEAF_INPUTS},
+        # Each unit's only member files the return, and no other taxpayer can
+        # claim them, so the dependent-filer bar never applies.
+        "head_or_spouse_is_dependent_elsewhere_without_filing_exception": no_one,
     }
     person_values = {
         "age": age,
         "is_tax_unit_head_or_spouse": np.ones(len(rows), dtype=bool),
+        "is_tax_unit_dependent": no_one,
         "is_separated_under_decree": decree.astype(bool),
     }
     return Units(np.arange(len(rows)), person_values, values)
