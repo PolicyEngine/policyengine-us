@@ -1,0 +1,160 @@
+# Arkansas summer regular (cooling) benefit: FFY 2025 manual section 6.1 (p78) uses the
+# Electricity matrix "for both Winter and Summer Regular Assistance". Wages are full time
+# at the $11.00 Arkansas minimum wage: 11 x 40 x 52 = 22_880. The 20% earned disregard
+# gives 22_880 x 0.8 = 18_304; MCI 1_525.33 rounds to 1_525 (x12 = 18_300). The $1,800
+# electric bill shows that the household pays its own electric bill, which the summer grant
+# pays; the bill does not change the grant. TEA is pinned to 0, as in the heating tests.
+
+# FY2026: size three uses the 3&4 column; the size-three limit is 45_501, HHS's 60% state
+# median income amount, which is below the chart's 3_792 x 12 = 45_504.
+# Electric row 1510-1569 pays 114 for 3&4.
+- name: Case 1, a minimum wage parent with two children receives the 3 and 4 person summer grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 22_880
+      person2:
+        age: 9
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 3
+    ar_liheap_countable_income: 18_300
+    ar_liheap_income_limit: 45_501
+    ar_liheap_cooling_eligible: true
+    ar_liheap_cooling: 114
+
+# FY2026: zero income falls in the 0-69 row; size five uses the 5 & UP column, which pays
+# the 344 maximum (plan section 3.6, p13). The size-five limit is 5_236 x 12 = 62_832.
+- name: Case 2, a five person household with no income receives the maximum summer grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 12
+        immigration_status: CITIZEN
+        ssi: 0
+      person4:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+      person5:
+        age: 4
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: PROPANE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 2_400
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: AR
+  output:
+    ar_liheap_household_size: 5
+    ar_liheap_countable_income: 0
+    ar_liheap_income_limit: 62_832
+    ar_liheap_cooling: 344
+
+# Boundary: printed lower bounds are inclusive. MCI 69 (828 / 12) is the top of the 0-69
+# row, which pays 242 for 1&2; MCI 70 (840 / 12) starts the 70-129 row, which pays 233.
+- name: Case 3, the band top and the next band start set the one person summer grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR]
+    age: [30, 30]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true]
+    pre_subsidy_electricity_expense: [1_800, 1_800]
+    ar_liheap_countable_income: [828, 840]
+  output:
+    ar_liheap_cooling: [242, 233]
+
+# FY2025: MCI 1_525 (x12 = 18_300) is within the 27_011 size-one limit. The FFY 2025
+# electric row 1,510-1,569 pays 84 for 1&2 (the FY2026 row pays 77). With electric heat
+# the winter grant reads the same cell, so the household receives 84 in each season, and
+# the national LIHEAP total is 84 + 84 = 168.
+- name: Case 4, FY2025 summer grant for a one person household with electric heat.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 22_880
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 18_300
+    ar_liheap_income_limit: 27_011
+    ar_liheap_cooling_eligible: true
+    ar_liheap_cooling: 84
+    ar_liheap: 84
+    liheap: 168
+
+# The summer program pays electric benefits only (manual section 2.1, p29), so the heating
+# fuel does not matter: gas heat and no heat both receive the FY2026 1&2 cell for MCI
+# 1_525 (row 1510-1569), 77.
+- name: Case 5, the summer grant does not depend on the heating fuel.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR]
+    age: [45, 45]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    ar_tea: [0, 0]
+    employment_income_before_lsr: [22_880, 22_880]
+    heating_type: [NATURAL_GAS, NONE]
+    has_cooling_expense: [true, true]
+    pre_subsidy_electricity_expense: [1_800, 1_800]
+  output:
+    ar_liheap_countable_income: [18_300, 18_300]
+    ar_liheap_cooling_eligible: [true, true]
+    ar_liheap_cooling: [77, 77]

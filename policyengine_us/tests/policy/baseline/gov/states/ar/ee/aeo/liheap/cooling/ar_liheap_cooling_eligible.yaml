@@ -1,0 +1,175 @@
+# Arkansas summer regular (cooling) eligibility: FY2026 plan sections 3.1-3.3 (pp12-13)
+# and FFY 2025 manual section 2.1 (p29, "Only electric benefits are available during the
+# Summer Program").
+
+# Boundary: the FY2026 size-one limit is MCI 2_347 (x12 = 28_164) and is inclusive.
+# 28_164 is eligible and falls in the 2130-2347 row, which pays 60 for 1&2; 28_164.12 is
+# above the limit.
+- name: Case 1, the summer income limit is inclusive.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true]
+    pre_subsidy_electricity_expense: [1_800, 1_800]
+    ar_liheap_countable_income: [28_164, 28_164.12]
+  output:
+    ar_liheap_income_limit: [28_164, 28_164]
+    ar_liheap_cooling_eligible: [true, false]
+    ar_liheap_cooling: [60, 0]
+
+# A bill payer needs its own electric bill, since Arkansas's energy burden is a utility bill the
+# household receives and summer pays electric benefits only. It also needs a cooling cost: a
+# PolicyEngine convention with no Arkansas source, not part of Arkansas's energy-burden rule.
+# Full-time Arkansas minimum wage (11 x 40 x 52 = 22_880; x 0.8 = 18_304; MCI 1_525) puts each
+# household in the FY2026 1510-1569 row, 77 for 1&2. No cooling cost, or no electric bill,
+# gives no summer grant.
+- name: Case 2, a cooling cost and an electric bill are both required.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR]
+    age: [45, 45, 45]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    ssi: [0, 0, 0]
+    ar_tea: [0, 0, 0]
+    employment_income_before_lsr: [22_880, 22_880, 22_880]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    has_cooling_expense: [true, false, true]
+    pre_subsidy_electricity_expense: [1_800, 1_800, 0]
+  output:
+    ar_liheap_cooling_eligible: [true, false, false]
+    ar_liheap_cooling: [77, 0, 0]
+
+# With no income both households pass the income test (0 <= limit), so only the qualified
+# member requirement separates them: an undocumented adult alone has household size 0.
+- name: Case 3, a household with no qualified member is not eligible.
+  period: 2026
+  input:
+    state_code: [AR, AR]
+    age: [40, 40]
+    immigration_status: [CITIZEN, UNDOCUMENTED]
+    ssi: [0, 0]
+    ar_tea: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [true, true]
+    pre_subsidy_electricity_expense: [1_800, 1_800]
+  output:
+    ar_liheap_household_size: [1, 0]
+    ar_liheap_cooling_eligible: [true, false]
+
+# The summer grant does not depend on the heating fuel, so an unspecified fuel is paid like any
+# other. Case 2's worker (MCI 1_525) has a cooling cost and an electric bill but no stated fuel:
+# the FY2026 1510-1569 row pays 77 for 1&2.
+# Was false and 0, now true and 77: the separate cooling payment adds no heating-fuel condition.
+- name: Case 4, an unspecified heating fuel still receives the summer grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 22_880
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 18_300
+    ar_liheap_cooling_eligible: true
+    ar_liheap_cooling: 77
+
+# Plan item 3.3 makes unsubsidized renters with utilities included in the rent eligible.
+# Both renters pay the FY2026 HUD Fair Market Rent for a one-bedroom unit in Pulaski
+# County, $989 a month (x12 = 11_868), which includes utilities, and report no separate
+# cooling cost or electric bill. Case 2's worker (MCI 1_525) gets 77 when unsubsidized;
+# the rent route covers only unsubsidized households, so the subsidized renter gets 0.
+- name: Case 5, an unsubsidized renter with utilities in the rent receives the summer grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR]
+    age: [45, 45]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    ar_tea: [0, 0]
+    employment_income_before_lsr: [22_880, 22_880]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    has_cooling_expense: [false, false]
+    pre_subsidy_electricity_expense: [0, 0]
+    tenant_pays_utilities: [false, false]
+    rent: [11_868, 11_868]
+    receives_housing_assistance: [false, true]
+  output:
+    ar_liheap_cooling_eligible: [true, false]
+    ar_liheap_cooling: [77, 0]
+
+# Each household is Case 5's unsubsidized renter (MCI 1_525, no cooling cost and no electric
+# bill) with one condition of the utilities-in-rent route removed. The first pays its own
+# utilities on the same $989 Pulaski County Fair Market Rent (x12 = 11_868); the second does not
+# pay its own utilities but pays no rent; the third lives in public housing and pays 30% of its
+# monthly adjusted income as rent (24 CFR 5.628: 22_880 x 0.3 / 12 = 572; x12 = 6_864). None
+# receives the summer grant.
+- name: Case 6, the utilities in rent route needs utilities in the rent, positive rent and no public housing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR]
+    age: [45, 45, 45]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    ssi: [0, 0, 0]
+    ar_tea: [0, 0, 0]
+    employment_income_before_lsr: [22_880, 22_880, 22_880]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    has_cooling_expense: [false, false, false]
+    pre_subsidy_electricity_expense: [0, 0, 0]
+    tenant_pays_utilities: [true, false, false]
+    rent: [11_868, 0, 6_864]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, true]
+  output:
+    ar_liheap_cooling_eligible: [false, false, false]
+    ar_liheap_cooling: [0, 0, 0]
+
+# Manual section 4.8.2: a household in subsidized housing that receives a utility bill and is
+# not reimbursed may be eligible. Case 2's first worker (MCI 1_525, a cooling cost and an
+# electric bill) also receives housing assistance and still gets the FY2026 1510-1569 cell, 77
+# for 1&2: the subsidy exclusion applies only to the utilities-in-rent route.
+- name: Case 7, a subsidized household with its own electric bill receives the summer grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income_before_lsr: 22_880
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_800
+        receives_housing_assistance: true
+        ar_tea: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_liheap_cooling_eligible: true
+    ar_liheap_cooling: 77
