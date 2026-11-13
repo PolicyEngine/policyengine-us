@@ -315,19 +315,20 @@
     medicaid_parent_income_limit: 0.263543192
   absolute_error_margin: 0.0001
 
-- name: Case 20, Wyoming parent limit is 0.433 FPL in 2026 ($873/month plus the disregard).
+- name: Case 20, Wyoming size-three dollar standard with one MAGI disregard in 2026.
   period: 2026
   input:
     people:
       person1:
         age: 30
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: WY
   output:
-    medicaid_parent_income_limit: 0.433
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.433455344
+  absolute_error_margin: 0.0000001
 
 - name: Case 21, South Carolina parent limit is the published 0.67 FPL in 2025.
   period: 2025
@@ -495,34 +496,36 @@
   absolute_error_margin: 0.0000001
 
 # $873 x 12 = $10,476; $10,476 / $25,820 = 0.4057 + 0.05 = 0.456.
-- name: Case 31, Wyoming parent limit is 0.456 FPL in 2024 ($873 per month plus the disregard).
+- name: Case 31, Wyoming size-three dollar standard with one MAGI disregard in 2024.
   period: 2024
   input:
     people:
       person1:
         age: 30
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: WY
   output:
-    medicaid_parent_income_limit: 0.456
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.455731991
+  absolute_error_margin: 0.0000001
 
 # $10,476 / $26,650 = 0.3931 + 0.05 = 0.443.
-- name: Case 32, Wyoming parent limit is 0.443 FPL in 2025 ($873 per month plus the disregard).
+- name: Case 32, Wyoming size-three dollar standard with one MAGI disregard in 2025.
   period: 2025
   input:
     people:
       person1:
         age: 30
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: WY
   output:
-    medicaid_parent_income_limit: 0.443
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.443095685
+  absolute_error_margin: 0.0000001
 
 # Connecticut lowered HUSKY A parents and caretaker relatives from 160% to
 # 138% of the guidelines on October 1, 2024 (Public Act 24-81). The annual
@@ -1696,3 +1699,341 @@
     - 0.158687616
     - 0.151
   absolute_error_margin: 1.0e-07
+
+# Component sizes isolate financial standards, not legal parent composition.
+# Raw annual report tables: SFY2018 PDF p95 through SFY2025 PDF p103;
+# 42 CFR435.603(d)(4) adds five FPG points once. Exact external fractions
+# and the indexed2026original-access limitation are in the source record.
+- name: Case 46, Wyoming published size-one-through-four standards produce source ratios in
+    every 2017 through 2026 model year.
+  period: 2017
+  absolute_error_margin: 1.0e-07
+  input:
+    age:
+      2017:
+      - 40
+      - 40
+      - 40
+      - 40
+      2018:
+      - 40
+      - 40
+      - 40
+      - 40
+      2019:
+      - 40
+      - 40
+      - 40
+      - 40
+      2020:
+      - 40
+      - 40
+      - 40
+      - 40
+      2021:
+      - 40
+      - 40
+      - 40
+      - 40
+      2022:
+      - 40
+      - 40
+      - 40
+      - 40
+      2023:
+      - 40
+      - 40
+      - 40
+      - 40
+      2024:
+      - 40
+      - 40
+      - 40
+      - 40
+      2025:
+      - 40
+      - 40
+      - 40
+      - 40
+      2026:
+      - 40
+      - 40
+      - 40
+      - 40
+    state_code:
+      2017:
+      - WY
+      - WY
+      - WY
+      - WY
+      2018:
+      - WY
+      - WY
+      - WY
+      - WY
+      2019:
+      - WY
+      - WY
+      - WY
+      - WY
+      2020:
+      - WY
+      - WY
+      - WY
+      - WY
+      2021:
+      - WY
+      - WY
+      - WY
+      - WY
+      2022:
+      - WY
+      - WY
+      - WY
+      - WY
+      2023:
+      - WY
+      - WY
+      - WY
+      - WY
+      2024:
+      - WY
+      - WY
+      - WY
+      - WY
+      2025:
+      - WY
+      - WY
+      - WY
+      - WY
+      2026:
+      - WY
+      - WY
+      - WY
+      - WY
+    medicaid_household_size:
+      2017:
+      - 1
+      - 2
+      - 3
+      - 4
+      2018:
+      - 1
+      - 2
+      - 3
+      - 4
+      2019:
+      - 1
+      - 2
+      - 3
+      - 4
+      2020:
+      - 1
+      - 2
+      - 3
+      - 4
+      2021:
+      - 1
+      - 2
+      - 3
+      - 4
+      2022:
+      - 1
+      - 2
+      - 3
+      - 4
+      2023:
+      - 1
+      - 2
+      - 3
+      - 4
+      2024:
+      - 1
+      - 2
+      - 3
+      - 4
+      2025:
+      - 1
+      - 2
+      - 3
+      - 4
+      2026:
+      - 1
+      - 2
+      - 3
+      - 4
+  output:
+    medicaid_parent_income_limit:
+      2017:
+      - 0.576368159
+      - 0.594581281
+      - 0.563026445
+      - 0.537317073
+      2018:
+      - 0.572899506
+      - 0.587302552
+      - 0.554138595
+      - 0.527609562
+      2019:
+      - 0.558246597
+      - 0.57300414
+      - 0.541139241
+      - 0.515553398
+      2020:
+      - 0.547492163
+      - 0.562993039
+      - 0.532320442
+      - 0.507557252
+      2021:
+      - 0.542857143
+      - 0.557692308
+      - 0.52704918
+      - 0.502377358
+      2022:
+      - 0.517108168
+      - 0.533014746
+      - 0.504884933
+      - 0.482
+      2023:
+      - 0.485390947
+      - 0.498478702
+      - 0.471399839
+      - 0.4496
+      2024:
+      - 0.471513944
+      - 0.482681018
+      - 0.455731991
+      - 0.434230769
+      2025:
+      - 0.455623003
+      - 0.468156028
+      - 0.443095685
+      - 0.422877138
+      2026:
+      - 0.447744361
+      - 0.458687616
+      - 0.433455344
+      - 0.413272727
+- name: Case 47, Wyoming preserves legacy ratios outside verified household sizes and model
+    years.
+  period: 2016
+  absolute_error_margin: 1.0e-07
+  input:
+    age:
+      2016:
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      2017:
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      2026:
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+      2027:
+      - 40
+      - 40
+      - 40
+      - 40
+      - 40
+    state_code:
+      2016:
+      - WY
+      - WY
+      - WY
+      - WY
+      - WY
+      2017:
+      - WY
+      - WY
+      - WY
+      - WY
+      - WY
+      2026:
+      - WY
+      - WY
+      - WY
+      - WY
+      - WY
+      2027:
+      - WY
+      - WY
+      - WY
+      - WY
+      - WY
+    medicaid_household_size:
+      2016:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      2017:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      2026:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      2027:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+  output:
+    medicaid_parent_income_limit:
+      2016:
+      - 0.59
+      - 0.59
+      - 0.59
+      - 0.59
+      - 0.59
+      2017:
+      - 0.576368159
+      - 0.594581281
+      - 0.563026445
+      - 0.537317073
+      - 0.59
+      2026:
+      - 0.447744361
+      - 0.458687616
+      - 0.433455344
+      - 0.413272727
+      - 0.433
+      2027:
+      - 0.433
+      - 0.433
+      - 0.433
+      - 0.433
+      - 0.433
+- name: Case 48, the Wyoming dollar route preserves another state in a mixed component vector.
+  period: 2026
+  absolute_error_margin: 1.0e-07
+  input:
+    age:
+    - 40
+    - 40
+    state_code:
+    - WY
+    - CA
+    medicaid_household_size:
+    - 3
+    - 3
+  output:
+    medicaid_parent_income_limit:
+    - 0.433455344
+    - 1.14

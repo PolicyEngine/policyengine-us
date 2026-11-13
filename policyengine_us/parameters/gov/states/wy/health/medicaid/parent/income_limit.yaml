@@ -1,0 +1,64 @@
+description: Wyoming uses these Family Care income standards under Medicaid.
+metadata:
+  propagate_metadata_to_children: true
+amount:
+  description: Wyoming limits Family Care income to this monthly amount before the five-point MAGI disregard under Medicaid.
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Wyoming Medicaid Family Care monthly income standard
+    breakdown:
+      - range(1, 5)
+    breakdown_label:
+      - Household size
+    reference:
+      - title: Wyoming Medicaid SFY2018 Annual Report, CY2017 and CY2018 income standards
+        href: https://health.wyo.gov/wp-content/uploads/2019/01/SFY-2018-Wyoming-Medicaid-Annual-Report.pdf#page=95
+      - title: Wyoming Medicaid SFY2025 Annual Report, CY2025 income standards
+        href: https://health.wyo.gov/wp-content/uploads/2026/02/SFY-2025-Annual-Report.pdf#page=103
+      - title: Wyoming Medicaid Income Requirements, Family MAGI column
+        href: https://health.wyo.gov/healthcarefin/medicaid/programs-and-eligibility/medicaid-income-requirements/
+  # The first date is the model verification boundary, not enactment.
+  1:
+    2017-01-01: 529
+  2:
+    2017-01-01: 737
+  3:
+    2017-01-01: 873
+  4:
+    2017-01-01: 999
+min_household_size:
+  description: Wyoming publishes Family Care income standards from this household size under Medicaid.
+  values:
+    2017-01-01: 1
+  metadata:
+    unit: person
+    period: year
+    label: Wyoming Medicaid Family Care minimum verified household size
+    reference:
+      - title: Wyoming Medicaid SFY2018 Annual Report, CY2017 and CY2018 income standards
+        href: https://health.wyo.gov/wp-content/uploads/2019/01/SFY-2018-Wyoming-Medicaid-Annual-Report.pdf#page=95
+max_household_size:
+  description: Wyoming publishes Family Care income standards through this verified household size under Medicaid.
+  values:
+    2017-01-01: 4
+  metadata:
+    unit: person
+    period: year
+    label: Wyoming Medicaid Family Care maximum verified household size
+    reference:
+      - title: Wyoming Medicaid SFY2018 Annual Report, CY2017 and CY2018 income standards
+        href: https://health.wyo.gov/wp-content/uploads/2019/01/SFY-2018-Wyoming-Medicaid-Annual-Report.pdf#page=95
+fpl_disregard:
+  description: Wyoming applies this share of the federal poverty guideline as a conditional income disregard under Medicaid.
+  values:
+    2014-01-01: 0.05
+  metadata:
+    unit: /1
+    period: year
+    label: Wyoming Medicaid Family Care FPL disregard
+    reference:
+      - title: 42 CFR 435.603(d)(4), five-point MAGI disregard effective January 1, 2014
+        href: https://www.govinfo.gov/content/pkg/CFR-2017-title42-vol4/pdf/CFR-2017-title42-vol4-sec435-603.pdf#page=2
+      - title: Wyoming Eligibility Manual Table 1, application of the five-percent disregard
+        href: https://ecom.wyo.gov/tables/table1

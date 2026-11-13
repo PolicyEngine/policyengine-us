@@ -5866,3 +5866,1788 @@
           2024: false
           2025: false
           2026: false
+
+# Wyoming CY2017 Family Care base $737/month (SFY2018 report PDF p95).
+# 2017 HHS size-two FPG $16,240: $737 + 5% * $16,240 / 12 = $804.6667.
+# $804/month is safely inside; no eligibility/category input is supplied.
+# Annual-current-FPG/whole-dollar comparison convention remains unchanged.
+- name: Case 16, Wyoming size-two parent safely inside the 2017 published dollar standard.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9648
+        immigration_status: CITIZEN
+        has_tin: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    families:
+      family:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: WY
+  output:
+    medicaid_household_size:
+    - 2
+    - 2
+    medicaid_household_income:
+    - 9648
+    - 9648
+    is_parent_for_medicaid_nfc:
+    - true
+    - false
+    people:
+      person1:
+        is_parent_for_medicaid_fc: true
+    medicaid_category:
+    - PARENT
+    - OLDER_CHILD
+    is_medicaid_eligible:
+    - true
+    - true
+    medicaid_enrolled:
+    - true
+    - true
+
+# Source-safe whole-dollar wage points avoid the generic comparator cents gap.
+# New applicants; no financial/category/enrollment input is supplied.
+# Married-case nonfinancial denial is compatibility, not legal certification.
+- name: Case 17, Wyoming size-2 new applicant safely inside the source standard for every
+    2017 through 2026 year.
+  period: 2017
+  input:
+    people:
+      person1:
+        age:
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        employment_income:
+          2017: 9648
+          2018: 9660
+          2019: 9684
+          2020: 9696
+          2021: 9708
+          2022: 9756
+          2023: 9828
+          2024: 9864
+          2025: 9900
+          2026: 9924
+        own_children_in_household:
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+      person2:
+        age:
+          2017: 10
+          2018: 10
+          2019: 10
+          2020: 10
+          2021: 10
+          2022: 10
+          2023: 10
+          2024: 10
+          2025: 10
+          2026: 10
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &wyid001
+        - person1
+        - person2
+    families:
+      family:
+        members: *wyid001
+    spm_units:
+      spm_unit:
+        members: *wyid001
+    households:
+      household:
+        members: *wyid001
+        state_code:
+          2017: WY
+          2018: WY
+          2019: WY
+          2020: WY
+          2021: WY
+          2022: WY
+          2023: WY
+          2024: WY
+          2025: WY
+          2026: WY
+  output:
+    is_parent:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_household_size:
+      2017:
+      - 2
+      - 2
+      2018:
+      - 2
+      - 2
+      2019:
+      - 2
+      - 2
+      2020:
+      - 2
+      - 2
+      2021:
+      - 2
+      - 2
+      2022:
+      - 2
+      - 2
+      2023:
+      - 2
+      - 2
+      2024:
+      - 2
+      - 2
+      2025:
+      - 2
+      - 2
+      2026:
+      - 2
+      - 2
+    medicaid_household_income:
+      2017:
+      - 9648
+      - 9648
+      2018:
+      - 9660
+      - 9660
+      2019:
+      - 9684
+      - 9684
+      2020:
+      - 9696
+      - 9696
+      2021:
+      - 9708
+      - 9708
+      2022:
+      - 9756
+      - 9756
+      2023:
+      - 9828
+      - 9828
+      2024:
+      - 9864
+      - 9864
+      2025:
+      - 9900
+      - 9900
+      2026:
+      - 9924
+      - 9924
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_category:
+      2017: &wyid002
+      - PARENT
+      - OLDER_CHILD
+      2018: *wyid002
+      2019: *wyid002
+      2020: *wyid002
+      2021: *wyid002
+      2022: *wyid002
+      2023: *wyid002
+      2024: *wyid002
+      2025: *wyid002
+      2026: *wyid002
+    is_medicaid_eligible:
+      2017:
+      - true
+      - true
+      2018:
+      - true
+      - true
+      2019:
+      - true
+      - true
+      2020:
+      - true
+      - true
+      2021:
+      - true
+      - true
+      2022:
+      - true
+      - true
+      2023:
+      - true
+      - true
+      2024:
+      - true
+      - true
+      2025:
+      - true
+      - true
+      2026:
+      - true
+      - true
+    medicaid_enrolled:
+      2017:
+      - true
+      - true
+      2018:
+      - true
+      - true
+      2019:
+      - true
+      - true
+      2020:
+      - true
+      - true
+      2021:
+      - true
+      - true
+      2022:
+      - true
+      - true
+      2023:
+      - true
+      - true
+      2024:
+      - true
+      - true
+      2025:
+      - true
+      - true
+      2026:
+      - true
+      - true
+    people:
+      person1:
+        is_parent_for_medicaid_fc:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+- name: Case 18, Wyoming size-2 new applicant safely outside the source standard for every
+    2017 through 2026 year.
+  period: 2017
+  input:
+    people:
+      person1:
+        age:
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        employment_income:
+          2017: 9672
+          2018: 9684
+          2019: 9708
+          2020: 9720
+          2021: 9732
+          2022: 9780
+          2023: 9852
+          2024: 9888
+          2025: 9924
+          2026: 9948
+        own_children_in_household:
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+      person2:
+        age:
+          2017: 10
+          2018: 10
+          2019: 10
+          2020: 10
+          2021: 10
+          2022: 10
+          2023: 10
+          2024: 10
+          2025: 10
+          2026: 10
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &wyid003
+        - person1
+        - person2
+    families:
+      family:
+        members: *wyid003
+    spm_units:
+      spm_unit:
+        members: *wyid003
+    households:
+      household:
+        members: *wyid003
+        state_code:
+          2017: WY
+          2018: WY
+          2019: WY
+          2020: WY
+          2021: WY
+          2022: WY
+          2023: WY
+          2024: WY
+          2025: WY
+          2026: WY
+  output:
+    is_parent:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_household_size:
+      2017:
+      - 2
+      - 2
+      2018:
+      - 2
+      - 2
+      2019:
+      - 2
+      - 2
+      2020:
+      - 2
+      - 2
+      2021:
+      - 2
+      - 2
+      2022:
+      - 2
+      - 2
+      2023:
+      - 2
+      - 2
+      2024:
+      - 2
+      - 2
+      2025:
+      - 2
+      - 2
+      2026:
+      - 2
+      - 2
+    medicaid_household_income:
+      2017:
+      - 9672
+      - 9672
+      2018:
+      - 9684
+      - 9684
+      2019:
+      - 9708
+      - 9708
+      2020:
+      - 9720
+      - 9720
+      2021:
+      - 9732
+      - 9732
+      2022:
+      - 9780
+      - 9780
+      2023:
+      - 9852
+      - 9852
+      2024:
+      - 9888
+      - 9888
+      2025:
+      - 9924
+      - 9924
+      2026:
+      - 9948
+      - 9948
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_category:
+      2017: &wyid004
+      - NONE
+      - OLDER_CHILD
+      2018: *wyid004
+      2019: *wyid004
+      2020: *wyid004
+      2021: *wyid004
+      2022: *wyid004
+      2023: *wyid004
+      2024: *wyid004
+      2025: *wyid004
+      2026: *wyid004
+    is_medicaid_eligible:
+      2017:
+      - false
+      - true
+      2018:
+      - false
+      - true
+      2019:
+      - false
+      - true
+      2020:
+      - false
+      - true
+      2021:
+      - false
+      - true
+      2022:
+      - false
+      - true
+      2023:
+      - false
+      - true
+      2024:
+      - false
+      - true
+      2025:
+      - false
+      - true
+      2026:
+      - false
+      - true
+    medicaid_enrolled:
+      2017:
+      - false
+      - true
+      2018:
+      - false
+      - true
+      2019:
+      - false
+      - true
+      2020:
+      - false
+      - true
+      2021:
+      - false
+      - true
+      2022:
+      - false
+      - true
+      2023:
+      - false
+      - true
+      2024:
+      - false
+      - true
+      2025:
+      - false
+      - true
+      2026:
+      - false
+      - true
+    people:
+      person1:
+        is_parent_for_medicaid_fc:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+- name: Case 19, Wyoming size-3 new applicant safely inside the source standard for every
+    2017 through 2026 year.
+  period: 2017
+  input:
+    people:
+      person1:
+        age:
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        employment_income:
+          2017: 11496
+          2018: 11508
+          2019: 11532
+          2020: 11556
+          2021: 11568
+          2022: 11616
+          2023: 11712
+          2024: 11760
+          2025: 11808
+          2026: 11832
+        own_children_in_household:
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+      person2:
+        age:
+          2017: 10
+          2018: 10
+          2019: 10
+          2020: 10
+          2021: 10
+          2022: 10
+          2023: 10
+          2024: 10
+          2025: 10
+          2026: 10
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+      person3:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &wyid005
+        - person1
+        - person2
+        - person3
+    families:
+      family:
+        members: *wyid005
+    spm_units:
+      spm_unit:
+        members: *wyid005
+    households:
+      household:
+        members: *wyid005
+        state_code:
+          2017: WY
+          2018: WY
+          2019: WY
+          2020: WY
+          2021: WY
+          2022: WY
+          2023: WY
+          2024: WY
+          2025: WY
+          2026: WY
+  output:
+    is_parent:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    medicaid_household_size:
+      2017:
+      - 3
+      - 3
+      - 3
+      2018:
+      - 3
+      - 3
+      - 3
+      2019:
+      - 3
+      - 3
+      - 3
+      2020:
+      - 3
+      - 3
+      - 3
+      2021:
+      - 3
+      - 3
+      - 3
+      2022:
+      - 3
+      - 3
+      - 3
+      2023:
+      - 3
+      - 3
+      - 3
+      2024:
+      - 3
+      - 3
+      - 3
+      2025:
+      - 3
+      - 3
+      - 3
+      2026:
+      - 3
+      - 3
+      - 3
+    medicaid_household_income:
+      2017:
+      - 11496
+      - 11496
+      - 11496
+      2018:
+      - 11508
+      - 11508
+      - 11508
+      2019:
+      - 11532
+      - 11532
+      - 11532
+      2020:
+      - 11556
+      - 11556
+      - 11556
+      2021:
+      - 11568
+      - 11568
+      - 11568
+      2022:
+      - 11616
+      - 11616
+      - 11616
+      2023:
+      - 11712
+      - 11712
+      - 11712
+      2024:
+      - 11760
+      - 11760
+      - 11760
+      2025:
+      - 11808
+      - 11808
+      - 11808
+      2026:
+      - 11832
+      - 11832
+      - 11832
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    medicaid_category:
+      2017: &wyid006
+      - PARENT
+      - OLDER_CHILD
+      - OLDER_CHILD
+      2018: *wyid006
+      2019: *wyid006
+      2020: *wyid006
+      2021: *wyid006
+      2022: *wyid006
+      2023: *wyid006
+      2024: *wyid006
+      2025: *wyid006
+      2026: *wyid006
+    is_medicaid_eligible:
+      2017:
+      - true
+      - true
+      - true
+      2018:
+      - true
+      - true
+      - true
+      2019:
+      - true
+      - true
+      - true
+      2020:
+      - true
+      - true
+      - true
+      2021:
+      - true
+      - true
+      - true
+      2022:
+      - true
+      - true
+      - true
+      2023:
+      - true
+      - true
+      - true
+      2024:
+      - true
+      - true
+      - true
+      2025:
+      - true
+      - true
+      - true
+      2026:
+      - true
+      - true
+      - true
+    medicaid_enrolled:
+      2017:
+      - true
+      - true
+      - true
+      2018:
+      - true
+      - true
+      - true
+      2019:
+      - true
+      - true
+      - true
+      2020:
+      - true
+      - true
+      - true
+      2021:
+      - true
+      - true
+      - true
+      2022:
+      - true
+      - true
+      - true
+      2023:
+      - true
+      - true
+      - true
+      2024:
+      - true
+      - true
+      - true
+      2025:
+      - true
+      - true
+      - true
+      2026:
+      - true
+      - true
+      - true
+    people:
+      person1:
+        is_parent_for_medicaid_fc:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+- name: Case 20, Wyoming size-3 new applicant safely outside the source standard for every
+    2017 through 2026 year.
+  period: 2017
+  input:
+    people:
+      person1:
+        age:
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        employment_income:
+          2017: 11520
+          2018: 11532
+          2019: 11556
+          2020: 11580
+          2021: 11592
+          2022: 11640
+          2023: 11736
+          2024: 11784
+          2025: 11832
+          2026: 11856
+        own_children_in_household:
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+      person2:
+        age:
+          2017: 10
+          2018: 10
+          2019: 10
+          2020: 10
+          2021: 10
+          2022: 10
+          2023: 10
+          2024: 10
+          2025: 10
+          2026: 10
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+      person3:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+        immigration_status:
+          2017: CITIZEN
+          2018: CITIZEN
+          2019: CITIZEN
+          2020: CITIZEN
+          2021: CITIZEN
+          2022: CITIZEN
+          2023: CITIZEN
+          2024: CITIZEN
+          2025: CITIZEN
+          2026: CITIZEN
+        has_tin:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &wyid007
+        - person1
+        - person2
+        - person3
+    families:
+      family:
+        members: *wyid007
+    spm_units:
+      spm_unit:
+        members: *wyid007
+    households:
+      household:
+        members: *wyid007
+        state_code:
+          2017: WY
+          2018: WY
+          2019: WY
+          2020: WY
+          2021: WY
+          2022: WY
+          2023: WY
+          2024: WY
+          2025: WY
+          2026: WY
+  output:
+    is_parent:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    medicaid_household_size:
+      2017:
+      - 3
+      - 3
+      - 3
+      2018:
+      - 3
+      - 3
+      - 3
+      2019:
+      - 3
+      - 3
+      - 3
+      2020:
+      - 3
+      - 3
+      - 3
+      2021:
+      - 3
+      - 3
+      - 3
+      2022:
+      - 3
+      - 3
+      - 3
+      2023:
+      - 3
+      - 3
+      - 3
+      2024:
+      - 3
+      - 3
+      - 3
+      2025:
+      - 3
+      - 3
+      - 3
+      2026:
+      - 3
+      - 3
+      - 3
+    medicaid_household_income:
+      2017:
+      - 11520
+      - 11520
+      - 11520
+      2018:
+      - 11532
+      - 11532
+      - 11532
+      2019:
+      - 11556
+      - 11556
+      - 11556
+      2020:
+      - 11580
+      - 11580
+      - 11580
+      2021:
+      - 11592
+      - 11592
+      - 11592
+      2022:
+      - 11640
+      - 11640
+      - 11640
+      2023:
+      - 11736
+      - 11736
+      - 11736
+      2024:
+      - 11784
+      - 11784
+      - 11784
+      2025:
+      - 11832
+      - 11832
+      - 11832
+      2026:
+      - 11856
+      - 11856
+      - 11856
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    medicaid_category:
+      2017: &wyid008
+      - NONE
+      - OLDER_CHILD
+      - OLDER_CHILD
+      2018: *wyid008
+      2019: *wyid008
+      2020: *wyid008
+      2021: *wyid008
+      2022: *wyid008
+      2023: *wyid008
+      2024: *wyid008
+      2025: *wyid008
+      2026: *wyid008
+    is_medicaid_eligible:
+      2017:
+      - false
+      - true
+      - true
+      2018:
+      - false
+      - true
+      - true
+      2019:
+      - false
+      - true
+      - true
+      2020:
+      - false
+      - true
+      - true
+      2021:
+      - false
+      - true
+      - true
+      2022:
+      - false
+      - true
+      - true
+      2023:
+      - false
+      - true
+      - true
+      2024:
+      - false
+      - true
+      - true
+      2025:
+      - false
+      - true
+      - true
+      2026:
+      - false
+      - true
+      - true
+    medicaid_enrolled:
+      2017:
+      - false
+      - true
+      - true
+      2018:
+      - false
+      - true
+      - true
+      2019:
+      - false
+      - true
+      - true
+      2020:
+      - false
+      - true
+      - true
+      2021:
+      - false
+      - true
+      - true
+      2022:
+      - false
+      - true
+      - true
+      2023:
+      - false
+      - true
+      - true
+      2024:
+      - false
+      - true
+      - true
+      2025:
+      - false
+      - true
+      - true
+      2026:
+      - false
+      - true
+      - true
+    people:
+      person1:
+        is_parent_for_medicaid_fc:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+- name: Case 21, Wyoming married parents use the same financial column while retaining the
+    existing deprivation proxy.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 11496
+        own_children_in_household: 1
+        immigration_status: CITIZEN
+        has_tin: true
+      person2:
+        age: 38
+        own_children_in_household: 1
+        immigration_status: CITIZEN
+        has_tin: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        filing_status: JOINT
+    marital_units:
+      couple:
+        members:
+        - person1
+        - person2
+      child:
+        members:
+        - person3
+    families:
+      family:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: WY
+  output:
+    medicaid_household_size:
+    - 3
+    - 3
+    - 3
+    medicaid_household_income:
+    - 11496
+    - 11496
+    - 11496
+    is_parent_for_medicaid_nfc:
+    - false
+    - false
+    - false
+    medicaid_category:
+    - NONE
+    - NONE
+    - OLDER_CHILD
+    is_medicaid_eligible:
+    - false
+    - false
+    - true
+    medicaid_enrolled:
+    - false
+    - false
+    - true
+    people:
+      person1:
+        is_parent_for_medicaid_fc: true
+      person2:
+        is_parent_for_medicaid_fc: true
