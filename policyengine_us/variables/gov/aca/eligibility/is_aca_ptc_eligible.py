@@ -14,7 +14,13 @@ class is_aca_ptc_eligible(Variable):
         # determine income eligibility for ACA PTC
         p = parameters(period).gov.aca
         magi_frac = person.tax_unit("aca_magi_fraction", period)
-        standard_income_eligible = p.ptc_income_eligibility.calc(magi_frac)
+        # The fraction is infinite in Puerto Rico, Guam and the Virgin Islands,
+        # which have no poverty guideline and no Exchange (26 U.S.C.
+        # 36B(c)(2)(A)). Without this check the 2021-2025 rows of
+        # ptc_income_eligibility, which have no upper limit, would pass it.
+        standard_income_eligible = p.ptc_income_eligibility.calc(
+            magi_frac
+        ) & np.isfinite(magi_frac)
         below_fpl_exception = person.tax_unit(
             "aca_ptc_below_fpl_immigration_exception", period
         )

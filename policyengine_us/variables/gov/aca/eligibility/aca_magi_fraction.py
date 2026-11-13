@@ -8,26 +8,15 @@ class aca_magi_fraction(Variable):
     entity = TaxUnit
     label = "ACA-related modified AGI as fraction of prior-year FPL"
     documentation = (
-        "ACA-related MAGI as fraction of federal poverty line. The first "
-        "reference documents the use of the prior-year FPL; the second "
-        "documents the truncation of the fraction; the third sets the state "
-        "whose guideline applies: where the taxpayer lives during the "
-        "coverage year, so Alaska and Hawaii households use their own "
-        "guidelines."
+        "ACA-related MAGI as a fraction of the federal poverty line for the "
+        "year before the coverage year, for the family size and state of "
+        "residence in the coverage year, truncated to whole percentage points."
     )
     reference = (
-        dict(
-            title="2022 IRS Form 8962 (ACA PTC) instructions, Line 4",
-            href="https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=7",
-        ),
-        dict(
-            title="2022 IRS Form 8962 instructions, Line 5 Worksheet 2",
-            href="https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=8",
-        ),
-        dict(
-            title="26 CFR 1.36B-1(h)",
-            href="https://www.law.cornell.edu/cfr/text/26/1.36B-1#h",
-        ),
+        # PDF pages 8-9: Line 4 (state of residence, prior-year guideline,
+        # Alaska and Hawaii tables) and Worksheet 2 (truncation).
+        "https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=8",
+        "https://www.law.cornell.edu/cfr/text/26/1.36B-1#h",
     )
     definition_period = YEAR
 
@@ -42,13 +31,21 @@ class aca_magi_fraction(Variable):
         guideline_period = period.last_year
         if guideline_period.start.year < FIRST_MODELED_YEAR:
             guideline_period = period
-        # The state is where the taxpayer lives during the coverage year
-        # (26 CFR 1.36B-1(h)); only the guideline lags. A state supplied only
-        # for the coverage year would otherwise fall back to the default
-        # state in the guideline year, giving an Alaska or Hawaii household
-        # the contiguous states' guideline.
-        size = tax_unit("tax_unit_size", guideline_period)
+        # Only the guideline lags. Family size is the coverage year's (26 CFR
+        # 1.36B-1(d)(1)), and so is the state: Form 8962 Line 4 uses the
+        # guideline for "your state of residence" in the coverage year, so
+        # Alaska and Hawaii households use their own guidelines. 1.36B-1(h)
+        # applies the higher guideline when the residence moves into or out of
+        # Alaska or Hawaii during the year, or spouses live in different
+        # states; the model has one household state a year and uses the first
+        # member's household.
+        size = tax_unit("tax_unit_size", period)
         state_group = tax_unit.household("state_group_str", period)
-        year_lag = period.start.year - guideline_period.start.year
-        guideline = fpg(size, state_group, period, parameters, year_lag=year_lag)
-        return np.floor(100 * magi / guideline) / 100
+        guideline = fpg(size, state_group, guideline_period, parameters)
+        # HHS defines no guideline for Puerto Rico, Guam or the Virgin
+        # Islands, whose placeholder is 0, and no Exchange operates there
+        # (26 U.S.C. 36B(c)(2)(A)). Their fraction is infinite, above every
+        # income limit that reads it.
+        has_guideline = guideline > 0
+        fraction = magi / where(has_guideline, guideline, 1)
+        return where(has_guideline, np.floor(100 * fraction) / 100, np.inf)
