@@ -26,7 +26,9 @@ Invariants:
    published cells, rounded as stored.
 2. Conservation: premiums per Part D enrollee times Part D enrollment, plus
    aggregate IRMAA, returns Table III.D3's premium income in every year from
-   2015 to 2035, within the tables' rounding.
+   2015 to 2035, once footnote 6's December 31 credits move to the following
+   year. The result differs from the table's cash-basis cell by no more than
+   the largest such credit, $0.2 billion.
 3. Bounds: the share lies strictly between 0 and 1 and premiums are
    positive in every year from 2015 to 2200. The monthly premium per Part D
    enrollee is below the Trustees' average paid premium in 2025 and 2026,
@@ -39,8 +41,9 @@ Invariants:
    the Trustees' five-year enrollment points the share holds the earlier one.
 6. Consumer (Hypothesis): ``medicare_cost`` lies in [0,
    ``medicare_gross_cost``] for any year and premiums, and
-   ``medicare_gross_cost`` does not change with the premiums. The cases in
-   ``medicare_cost.yaml`` pin the formula's value.
+   ``medicare_gross_cost`` does not change with the person's Part A premium,
+   Part B premium or Part D IRMAA. The cases in ``medicare_cost.yaml`` pin
+   the formula's value.
 7. Accounting (Hypothesis): the person's Part D IRMAA lowers
    ``medicare_cost`` dollar for dollar until the zero floor, as it raises
    what the person pays; the enrollment share does not scale it.
@@ -153,11 +156,15 @@ def test_share_is_trustees_part_d_over_total_enrollment(year):
 @pytest.mark.parametrize("year", PROJECTED_YEARS)
 def test_premiums_and_irmaa_return_trustees_premium_income(year):
     """Conservation: the series, scaled back up by enrollment, plus IRMAA
-    gives the published premium income, within rounding of the cells."""
+    gives the published premium income with each December 31 credit moved to
+    the following year."""
     rebuilt = _premium(year) * PART_D_ENROLLMENT[year] * 1e3 / 1e9
     rebuilt += IRMAA_AGGREGATE[year]
-    # Each cell is rounded to $0.1 billion, the stored value to the cent.
+    # The stored value is rounded to the cent, which moves the total by less
+    # than $0.001 billion.
     assert rebuilt == pytest.approx(_accrual_premium_income(year), abs=1e-3)
+    # The cash-basis cell differs by the December 31 credits, $0.2 billion at
+    # most.
     assert abs(rebuilt - PREMIUM_INCOME[year]) <= 0.2 + 1e-3
 
 
@@ -231,27 +238,32 @@ def _enrollee(year, part_a, part_b, irmaa):
     }
 
 
+part_a_premiums = st.floats(0, 12_000, allow_nan=False)
 premiums = st.floats(0, 40_000, allow_nan=False)
 irmaas = st.floats(0, 12_000, allow_nan=False)
 
 
 @settings(max_examples=25, deadline=None)
-@given(years, st.floats(0, 12_000, allow_nan=False), premiums, irmaas, irmaas)
-def test_medicare_cost_bounds_and_irmaa_slope(year, part_a, part_b, irmaa, more_irmaa):
+@given(years, part_a_premiums, premiums, irmaas, irmaas, part_a_premiums, premiums)
+def test_medicare_cost_bounds_and_irmaa_slope(
+    year, part_a, part_b, irmaa, more_irmaa, other_part_a, other_part_b
+):
     low, high = sorted((irmaa, irmaa + more_irmaa))
     simulation = _simulation(
         year,
         {
             "low": _enrollee(year, part_a, part_b, low),
             "high": _enrollee(year, part_a, part_b, high),
+            "other": _enrollee(year, other_part_a, other_part_b, low),
         },
     )
     net = simulation.calculate("medicare_cost", year)
     gross = simulation.calculate("medicare_gross_cost", year)
     assert (net >= 0).all()
     assert (net <= gross).all()
-    # The gross cost subtracts no premium, so both people have the same one.
-    assert gross[0] == gross[1]
+    # The gross cost subtracts no premium, so three people with different
+    # Part A premiums, Part B premiums and IRMAA have the same one.
+    assert (gross == gross[0]).all()
     assert net[1] <= net[0]
     # Accounting: above the zero floor, more IRMAA lowers the value dollar for
     # dollar, so the enrollment share does not scale it. Float32 values near
