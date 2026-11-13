@@ -1012,3 +1012,157 @@
     ny_heap_eligible: [true, true]
     # $1,287 monthly receives 350 + 26; $1,288 receives the $350 base.
     ny_heap: [376, 350]
+
+# FY2017 desk guide: one-person monthly Tier II maximum is $2,300.
+# https://otda.ny.gov/policy/directives/2016/LCM/16-LCM-16-Attachment-1.pdf#page=1
+- name: Case 45, FY2017 published maximum income includes the final monthly dollar.
+  period: 2017
+  input:
+    state_code: [NY, NY]
+    age: [40, 40]
+    employment_income: [27_600, 27_612]
+    ssi: [0, 0]
+    snap: [0, 0]
+    tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_500, 1_500]
+  output:
+    # $2,300 monthly is included; $2,301 exceeds the published maximum.
+    # Both are above Tier I and age 40 adds no vulnerable supplement.
+    ny_heap: [350, 0]
+    ny_heap_income_limit: [27_600, 27_600]
+    ny_heap_countable_income: [27_600, 27_612]
+    ny_heap_categorically_eligible: [false, false]
+    ny_heap_tier_one: [false, false]
+    ny_heap_eligible: [true, false]
+
+# Original desk-guide income tables: historical_income_limits parameter references.
+# Four one-person citizen households at/above Tier I and at/above the overall
+# published monthly maximum. Annual wages are twelve constant monthly wages;
+# reported receipts are zero. Eligibility and countable income are calculated.
+- name: Case 46, FY2017 published Tier I and overall income boundaries from actual wages.
+  period: 2017
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id001 [15444, 15456, 27600, 27612]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [376, 350, 350, 0]
+    ny_heap_countable_income: *id001
+    ny_heap_income_limit: [27600, 27600, 27600, 27600]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 47, FY2018 published Tier I and overall income boundaries from actual wages.
+  period: 2018
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id002 [15684, 15696, 27816, 27828]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [376, 350, 350, 0]
+    ny_heap_countable_income: *id002
+    ny_heap_income_limit: [27816, 27816, 27816, 27816]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 48, FY2019 published Tier I and overall income boundaries from actual wages.
+  period: 2019
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id003 [15780, 15792, 28692, 28704]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [376, 350, 350, 0]
+    ny_heap_countable_income: *id003
+    ny_heap_income_limit: [28692, 28692, 28692, 28692]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 49, FY2020 published Tier I and overall income boundaries from actual wages.
+  period: 2020
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id004 [16236, 16248, 29928, 29940]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [376, 350, 350, 0]
+    ny_heap_countable_income: *id004
+    ny_heap_income_limit: [29928, 29928, 29928, 29928]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 50, FY2021 published Tier I and overall income boundaries from actual wages.
+  period: 2021
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id005 [16584, 16596, 31320, 31332]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [381, 350, 350, 0]
+    ny_heap_countable_income: *id005
+    ny_heap_income_limit: [31320, 31320, 31320, 31320]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 51, FY2022 published Tier I and overall income boundaries from actual wages.
+  period: 2022
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id006 [16740, 16752, 32748, 32760]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [391, 350, 350, 0]
+    ny_heap_countable_income: *id006
+    ny_heap_income_limit: [32748, 32748, 32748, 32748]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
+- name: Case 52, FY2023 published Tier I and overall income boundaries from actual wages.
+  period: 2023
+  input:
+    state_code: [NY, NY, NY, NY]
+    age: [40, 40, 40, 40]
+    employment_income: &id007 [17664, 17676, 34224, 34236]
+    ssi: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1500, 1500, 1500, 1500]
+  output:
+    ny_heap: [541, 500, 500, 0]
+    ny_heap_countable_income: *id007
+    ny_heap_income_limit: [34224, 34224, 34224, 34224]
+    ny_heap_tier_one: [true, false, false, false]
+    ny_heap_eligible: [true, true, true, false]
+    ny_heap_categorically_eligible: [false, false, false, false]
