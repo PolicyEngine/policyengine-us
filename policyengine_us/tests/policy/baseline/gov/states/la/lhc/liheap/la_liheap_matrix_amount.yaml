@@ -1,0 +1,23 @@
+# FFY2026 Heating and Cooling Benefit Matrix award, computed for every Louisiana unit
+# and paid by la_liheap and la_liheap_cooling to their eligible households. Wages of
+# 15,080 are full-time work at the federal 7.25 minimum wage; electricity of 1,740 is
+# 145 a month, near the EIA 2024 Louisiana average residential bill of 140.96 a month.
+
+- name: Case 1, the matrix amount does not depend on heating eligibility and a negative energy cost takes the lowest band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [LA, LA]
+    age: [40, 40]
+    employment_income_before_lsr: [15_080, 15_080]
+    heating_type: [NONE, ELECTRICITY]
+    receives_housing_assistance: [false, true]
+    pre_subsidy_electricity_expense: [1_740, 1_500]
+    hud_utility_allowance: [0, 1_800]
+  output:
+    # 1,740 / 15,080 = 0.1154 -> band 2, size 1: 350, though a home with no
+    # heating is not heating eligible. 1,500 - 1,800 = -300 energy cost,
+    # floored at 0 -> band 1, size 1: 200, though the subsidized household is
+    # ineligible.
+    la_liheap_matrix_amount: [350, 200]
+    la_liheap: [0, 0]

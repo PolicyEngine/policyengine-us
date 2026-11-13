@@ -1,7 +1,8 @@
-description: Louisiana limits heating assistance income to this share of state median income under the Low Income Home Energy Assistance Program.
+description: Louisiana limits regular heating and cooling assistance income to this share of state median income under the Low Income Home Energy Assistance Program.
 # The FFY2026 notice prints the resulting limits for household sizes 1-10.
-# No adopted FFY2027 plan is available; later years carry this rate forward
-# as unverified estimates.
+# The accepted FFY2027 plan repeats the 60% limit (pages 11-12), but no FFY2027
+# notice prints the limits, so later years carry this rate forward as
+# unverified estimates.
 values:
   2025-10-01: 0.6
 
@@ -10,7 +11,7 @@ metadata:
   period: year
   label: Louisiana LIHEAP state median income rate
   reference:
-    - title: Louisiana FY2026 LIHEAP State Plan, Section 2.1
+    - title: "Louisiana FY2026 LIHEAP State Plan, Sections 2.1 and 3.1 #page 9,11"
       href: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=9
     - title: Louisiana LIHEAP Service Delivery Guide, revised January 1, 2024, Section 3.6 C.1
       href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=29

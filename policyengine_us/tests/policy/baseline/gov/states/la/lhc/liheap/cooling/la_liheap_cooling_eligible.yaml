@@ -1,0 +1,155 @@
+# Service Delivery Guide effective April 1, 2026: the heating and cooling benefits
+# share their requirements (Section 3.6, page 33), responsibility covers "heating and
+# cooling costs" (Section 3.6 E, page 41), and a cooling utility allowance greater
+# than the bill makes a subsidized household ineligible unless a member is 60 or
+# older (Section 4.1 C, pages 46-47). Wages of 15,080 are full-time work at the
+# federal 7.25 minimum wage, under the FFY2026 size-one limit of 30,618; electricity
+# of 1,740 is 145 a month, near the EIA 2024 Louisiana average residential bill of
+# 140.96 a month.
+
+- name: Case 1, a home with no heating is cooling eligible like a home with a known heating fuel.
+  period: 2026
+  input:
+    state_code: [LA, LA]
+    age: [40, 40]
+    employment_income_before_lsr: [15_080, 15_080]
+    heating_type: [NONE, NATURAL_GAS]
+    gas_expense: [0, 900]
+    pre_subsidy_electricity_expense: [1_740, 1_740]
+    has_cooling_expense: [true, true]
+  output:
+    # Heating needs a heating fuel; cooling does not.
+    la_liheap_eligible: [false, true]
+    la_liheap_cooling_eligible: [true, true]
+
+- name: Case 2, a subsidized household is eligible only when its bill exceeds the utility allowance.
+  period: 2026
+  input:
+    state_code: [LA, LA, LA]
+    age: [40, 40, 40]
+    employment_income_before_lsr: [15_080, 15_080, 15_080]
+    receives_housing_assistance: [true, true, true]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_740, 1_500, 1_740]
+    # Section 8 utility allowances of 100, 150 and 145 a month.
+    hud_utility_allowance: [1_200, 1_800, 1_740]
+    has_cooling_expense: [true, true, true]
+  output:
+    # Energy cost 1,740 - 1,200 = 540, 1,500 - 1,800 = -300 and 1,740 - 1,740 = 0;
+    # an allowance equal to the bill leaves no energy burden.
+    la_liheap_cooling_eligible: [true, false, false]
+
+- name: Case 3, a household of only undocumented members is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    immigration_status: [UNDOCUMENTED]
+    employment_income_before_lsr: [15_080]
+    heating_type: [ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_740]
+    has_cooling_expense: [true]
+  output:
+    # No counted member, so household size is 0.
+    la_liheap_cooling_eligible: [false]
+
+- name: Case 4, a renter with energy costs included in the rent is cooling eligible unless subsidized.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [LA, LA]
+    age: [40, 40]
+    employment_income_before_lsr: [15_080, 15_080]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    has_cooling_expense: [false, false]
+    pre_subsidy_electricity_expense: [0, 0]
+    # Both pay the FY2026 HUD Fair Market Rent for a one-bedroom unit in East Baton
+    # Rouge Parish, 1,064 a month (x12 = 12,768), which includes utilities.
+    tenant_pays_utilities: [false, false]
+    rent: [12_768, 12_768]
+    receives_housing_assistance: [false, true]
+  output:
+    # Section 3.6 E.1 counts energy costs included in the rent. With no separate
+    # bill the energy cost is 0. Reading Section 3.6 E.1's example of
+    # "Subsidized housing tenants who are responsible for and have incurred
+    # excess energy charges" as the heating test does, the subsidized renter has
+    # no excess energy charge and is not eligible. The unsubsidized renter's
+    # burden 0 / 15,080 falls in the 9.9% and less band, 200 for size 1.
+    la_liheap_cooling_eligible: [true, false]
+    la_liheap_cooling: [200, 0]
+
+- name: Case 5, a household of only undocumented members that passes the income test is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    immigration_status: [UNDOCUMENTED]
+    # 20 hours a week at the federal 7.25 minimum wage.
+    employment_income_before_lsr: [7_540]
+    heating_type: [ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_740]
+    has_cooling_expense: [true]
+  output:
+    # Household size 0 makes the 60% SMI limit 0, but 7,540 is below the 110%
+    # poverty floor of 1.1 x (15,650 - 5,500) = 11,165, so only the household
+    # size test fails: "A household with only ineligible aliens does not
+    # qualify for LIHEAP assistance."
+    la_liheap_income_eligible: [true]
+    la_liheap_cooling_eligible: [false]
+
+- name: Case 6, a household that pays no rent and does not pay its own utilities is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    employment_income_before_lsr: [15_080]
+    heating_type: [ELECTRICITY]
+    has_cooling_expense: [false]
+    pre_subsidy_electricity_expense: [0]
+    # Lives rent-free in a relative's home, and the relative pays the utilities.
+    tenant_pays_utilities: [false]
+    rent: [0]
+    receives_housing_assistance: [false]
+  output:
+    # No cooling bill and no rent that includes energy costs, so the
+    # responsibility test fails.
+    la_liheap_cooling_eligible: [false]
+
+- name: Case 7, a public housing tenant whose utility allowance exceeds the bill is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    employment_income_before_lsr: [15_080]
+    # Only public housing marks the household as subsidized.
+    receives_housing_assistance: [false]
+    is_in_public_housing: [true]
+    heating_type: [ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_500]
+    # Utility allowance of 150 a month.
+    hud_utility_allowance: [1_800]
+    has_cooling_expense: [true]
+  output:
+    # Under 60, so the energy cost 1,500 - 1,800 = -300 is not positive. The
+    # income and responsibility tests pass, so only the subsidized energy cost
+    # test fails (Section 4.1 C.1).
+    la_liheap_cooling_eligible: [false]
+
+- name: Case 8, a renter who pays the utilities separately and has no cooling cost is ineligible.
+  period: 2026
+  input:
+    state_code: [LA]
+    age: [40]
+    employment_income_before_lsr: [15_080]
+    heating_type: [ELECTRICITY]
+    has_cooling_expense: [false]
+    pre_subsidy_electricity_expense: [0]
+    # FY2026 HUD Fair Market Rent for a one-bedroom unit in East Baton Rouge
+    # Parish, 1,064 a month (x12 = 12,768), with utilities billed separately.
+    tenant_pays_utilities: [true]
+    rent: [12_768]
+    receives_housing_assistance: [false]
+  output:
+    # The rent does not include energy costs and there is no cooling cost, so
+    # the responsibility test fails; the household is not subsidized.
+    la_liheap_cooling_eligible: [false]

@@ -4668,21 +4668,26 @@ candidates:
   - kind: manual
     citation: Louisiana LIHEAP Service Delivery Guide (revised January 1, 2024), Section 4.1 C, PDF page 40
     url: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=40
+  - kind: manual
+    citation: Louisiana LIHEAP Service Delivery Guide (effective April 1, 2026), Section 4.1 C.1, PDF page 46
+    url: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=46
   - kind: plan
-    citation: FY2026 LIHEAP State Plan §2.3, page 9
+    citation: FY2026 LIHEAP State Plan §§2.3 and 3.3, pages 9 and 11
     url: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=9
   readings:
     statute: No statute is supplied; the guide exempts applicants 60 or older.
-    other: Plan 2.3 exempts applicants over 60.
+    other: Plan items 2.3 (heating) and 3.3 (cooling) exempt applicants over 60.
   example: A subsidized 60-year-old with a $1,500 bill and $1,800 allowance has a total energy cost of $1,500 and is
     eligible under the guide; under the plan it is -$300 and ineligible.
   pe_us:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/la/lhc/liheap/la_liheap_energy_cost.py
+    - policyengine_us/variables/gov/states/la/lhc/liheap/cooling/la_liheap_cooling_eligible.py
     - policyengine_us/parameters/gov/states/la/lhc/liheap/elderly_age.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10429
+    - https://github.com/PolicyEngine/policyengine-us/pull/10750
   state: ruled
   note: 'Ruled 2026-10-06: follow the manual over the plan.'
 - id: us-la:school-readiness-incapable-child
