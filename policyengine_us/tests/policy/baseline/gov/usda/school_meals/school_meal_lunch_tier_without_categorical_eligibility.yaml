@@ -1,0 +1,12 @@
+# Texas pays only the reduced-price breakfast copay, so lunch at 160% of the
+# poverty guideline costs the reduced price before categorical eligibility
+# starts.
+- name: Lunch without categorical eligibility follows the income tier.
+  period: 2025
+  input:
+    state_code: [TX, GA, GA]
+    meets_school_meal_categorical_eligibility: [true, true, true]
+    school_meal_fpg_ratio: [1.6, 3, 1]
+  output:
+    school_meal_lunch_tier: [FREE, FREE, FREE]
+    school_meal_lunch_tier_without_categorical_eligibility: [REDUCED, PAID, FREE]

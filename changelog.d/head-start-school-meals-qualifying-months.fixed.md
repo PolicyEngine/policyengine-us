@@ -1,0 +1,1 @@
+Count Head Start, Early Head Start and school meal values from the first month a family qualifies through assistance the model measures by month, such as SNAP, rather than for the whole year once it qualifies in any month.

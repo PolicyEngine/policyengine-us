@@ -256,3 +256,21 @@
     is_in_k12_school: [true, true, true, true, true, true]
   output:
     free_school_meals: [621.00, 1_256.40, 621.00, 498.60, 1_008.00, 498.60]
+
+# Categorical eligibility from October, one K-12 child, 180 school days.
+# Calendar 2025 contiguous rates above the paid rate: breakfast FREE
+# 2.37 - 0.39 = 1.98; lunch FREE 4.43 - 0.42 = 4.01. Three months are free:
+# (1.98 + 4.01) * 3 / 12 * 180 = 269.55. At 160% of the poverty guideline the
+# other nine months cost the reduced price, which reduced_price_school_meals
+# counts.
+- name: Only the months from the start of categorical eligibility count as free.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA]
+    meets_school_meal_categorical_eligibility: [true, true]
+    school_meal_categorical_eligibility_months: [3, 3]
+    school_meal_fpg_ratio: [3, 1.6]
+    is_in_k12_school: [true, true]
+  output:
+    free_school_meals: [269.55, 269.55]
