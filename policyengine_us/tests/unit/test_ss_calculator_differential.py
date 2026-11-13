@@ -425,6 +425,16 @@ def _pia_reform():
 
 
 def _reported_situation(people):
+    # As _situation does, supply the legacy AIME. Its formula reads employment
+    # income for 45 earlier years, and a simulation built with a reform reads
+    # the labor supply elasticities in each of those years. The system
+    # backdates those parameters only to FIRST_MODELED_YEAR (2015), so the
+    # reference, always built with a reform, would stop at 2014 before any
+    # comparison. Only ss_pia reads ss_aime, so the reported-benefit
+    # expectations below do not depend on this amount.
+    people = {
+        name: {"ss_aime": {YEAR: 5_000}, **person} for name, person in people.items()
+    }
     situation = {"people": people}
     for entity in ("tax_units", "spm_units", "families", "marital_units", "households"):
         situation[entity] = {name: {"members": [name]} for name in people}
