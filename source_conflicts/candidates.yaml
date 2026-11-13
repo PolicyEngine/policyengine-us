@@ -2442,6 +2442,45 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-cooling-heating-bill
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does the Delaware Summer Cooling Assistance electric benefit need a purchased source of heating or cooling,
+    as the manual's SCAP chart provides (plan item 3.3 sets no different cooling policy for renters), or responsibility
+    for a heating bill, as manual section 415 provides?
+  sources:
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, SCAP eligibility chart (final, 2/24/2015), PDF page 100
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=100
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, item 3.3, PDF page 12
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=12
+  - kind: plan
+    citation: Delaware FY2027 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=11
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, section 415, PDF page 32
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=32
+  readings:
+    statute: No statute is supplied; the SCAP chart's LIHEAP eligibility is "Purchase Source of Heating or Cooling", and
+      plan 3.3 sets no different cooling policy for subsidized renters or renters with utilities in the rent.
+    other: Section 415 says "applicants must be responsible for paying a heating bill in order to receive assistance for
+      heating, crisis and cooling electric".
+  example: One person aged 70 in public housing with $14,000 of Social Security, heat in the rent and a cooling cost is
+    eligible under the chart and the plan, and ineligible under section 415.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/cooling/de_liheap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10762
+  state: ruled
+  note: 'Ruled 2026-11-12 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10762#issuecomment-6837369871. Follow the plan and the SCAP chart.
+    us-de:liheap-plan-income-checklist follows the manual over the plan''s checklist; here the manual itself is split
+    between section 415 and its own chart, and the plan sides with the chart.'
 - id: us-de:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2465,13 +2504,14 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
+    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10612
+    - https://github.com/PolicyEngine/policyengine-us/pull/10762
   state: unreviewed
-  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_income_eligible.py).
 - id: us-de:liheap-plan-income-checklist
   program: liheap
   years:
@@ -11661,32 +11701,43 @@ candidates:
 - id: us-tx:msp-spouse-deeming-allowance
   program: medicare-savings-programs
   years:
-    from: 2026
+    from: 2025
     type: calendar
   question: When Texas deems an ineligible spouse's income for the Medicare Savings Programs, is the deeming threshold,
     and each ineligible child's allocation, MEPD Appendix XXIX's program-specific living allowance ($474 for QMB, $568
-    for SLMB and $639 for QI-1 in 2026) or SSI's $497 difference between the couple and individual benefit rates?
+    for SLMB and $639 for QI-1 in 2026; $458, $550 and $619 in 2025) or SSI's difference between the couple and
+    individual benefit rates ($497 in 2026; $483 in 2025)?
   sources:
   - kind: statute
     citation: 42 U.S.C. 1396d(p)(1)(B)
     url: https://www.law.cornell.edu/uscode/text/42/1396d
+  - kind: statute
+    citation: 42 U.S.C. 1396a(r)(2)(A)
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#r_2
   - kind: regulation
     citation: 20 CFR 416.1163(b)(1) and (d)
     url: https://www.law.cornell.edu/cfr/text/20/416.1163
   - kind: manual
     citation: Texas MEPD Handbook, Appendix XXIX (Rev. 26-2)
     url: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxix-special-deeming-eligibility-test-spouse-spouse
+  - kind: manual
+    citation: Texas MEPD Handbook, Revision 25-2 (archived), Appendix XXIX
+    url: https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-25-2.pdf#page=488
   readings:
     statute: 'Section 1396d(p)(1)(B) measures income "as determined under section 1382a of this title for purposes of
       the supplemental security income program". 20 CFR 416.1163(b)(1) sets each ineligible child''s allocation at "the
       difference between the Federal benefit rate for an eligible couple and the Federal benefit rate for an eligible
       individual", and (d) deems nothing from a spouse whose income after allocations "is not more than" that
-      difference: $1,491 - $994 = $497 a month in 2026, the same for every program.'
+      difference: $1,491 - $994 = $497 a month in 2026 and $1,450 - $967 = $483 in 2025, the same for every program.
+      Section 1396a(r)(2)(A) says the methodology for individuals "under section 1396d(p) of this title may be less
+      restrictive, and shall be no more restrictive, than the methodology" of the supplemental security income program
+      for aged, blind or disabled groups.'
     other: 'Appendix XXIX (Rev. 26-2, information effective March 1, 2026) gives a "Program-Specific Living Allowance
       Allocation: Community MEPD $497,CAS $497, QMB $474,SLMB $568, QI-1 $639", deducts it for each ineligible child
       (step 3), deems nothing when the spouse''s remaining income "is no more than the program- specific living
       allowance" (step 4a), and tells the worker to "re-budget for SLMB or QI-1 if applicable" when an applicant who
-      passes the QMB pretest fails QMB in the deeming test (step 8).'
+      passes the QMB pretest fails QMB in the deeming test (step 8). Revision 25-2 (information effective March 1,
+      2025) has the same steps with 2025 amounts: "Community MEPD $483, CAS $483, QMB $458, SLMB $550, QI-1 $619".'
   example: A Texas applicant, 68, on Medicare with $1,340 a month and a spouse, 50, with $497 a month is QMB under the
     regulation, because $497 is not more than $497, so nothing is deemed and $1,320 is within the one-person $1,330.
     Under Appendix XXIX, $497 is above $474, so it is deemed for QMB, and $1,340 + $497 - $20 = $1,817 is above the
@@ -14727,6 +14778,79 @@ candidates:
     which counts any SSI receipt among the benefits in gov.usda.disabled_programs (is_snap_alien_waiting_period_exempt.py,
     is_usda_disabled.py, disabled_programs.yaml). The statute-first rule requires revising the any-SSI exemption
     if the narrower reading holds; first check the cross-referenced disability definition and the preamble''s scope.'
+- id: us:ssi-parent-allowance-state-supplement
+  program: ssi
+  years:
+    from: 2026
+    type: calendar
+  question: When a lone aged, blind or disabled parent, or two such parents on a joint claim, are ineligible because of
+    excess income, is the parents' allowance before deeming to a child the Federal benefit rate alone, or the Federal
+    benefit rate plus the federally administered State supplement?
+  sources:
+  - kind: regulation
+    citation: 20 CFR 416.1165(d)(3)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1165
+  - kind: regulation
+    citation: 20 CFR 416.1166
+    url: https://www.law.cornell.edu/cfr/text/20/416.1166
+  - kind: manual
+    citation: POMS SI 01320.630 B.1
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320630
+  readings:
+    statute: '416.1165(d)(3) subtracts "(i) The Federal benefit rate for the month for a couple if both parents live with
+      you; or (ii) The Federal benefit rate for the month for an individual if only one parent lives with you." The
+      section names a State supplement only in (e)(3), for the child''s own benefit. 416.1166 adds that "For the purpose
+      of this section, SSI benefits include any federally administered State supplement", which covers a parent with an
+      ineligible spouse.'
+    other: 'POMS SI 01320.630 B.1, for parents who filed for SSI and are ineligible because of excess income: "Only the
+      countable income in excess of what is required to reduce the parents'' FBR and any Federally-administered State
+      supplement to zero is available for deeming."'
+  example: In California in 2026, a lone disabled parent with a $60,000 pension and a disabled child deems 59,760 - 11,928
+    = $47,832 a year under the regulation and 59,760 - (11,928 + 239.94 x 12) = $44,952.72 under the POMS. In the model
+    the readings differ only in California, New Jersey and Vermont, whose federally administered supplements reach a
+    parent at home in every category; under the POMS reading, Nevada's and Iowa's supplements at home would also count
+    for some parents.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/ssi_ineligible_parent_allocation.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10630
+  state: ruled
+  note: "Follows the POMS, which avoids a jump in deemed income where a parent's income passes the federal rate plus the
+    supplement. Ruled by the project lead, 2026-11-12: https://github.com/PolicyEngine/policyengine-us/pull/10630#issuecomment-6840530008.
+    2026 is the year checked; the POMS text is TN 49 (10/2024)."
+- id: us:ssi-parental-child-allocation-order
+  program: ssi
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: For a parent ineligible because of excess income, does the ineligible-child allocation come off the parent's
+    income before the income exclusions and the parent allocation, or off the excess over the parent's benefit rate?
+  sources:
+  - kind: regulation
+    citation: 20 CFR 416.1165(b), (d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1165
+  - kind: manual
+    citation: POMS SI 01320.630 B.1-2
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320630
+  readings:
+    statute: 416.1165(b) says "We next deduct an allocation for each ineligible child in the household", and only then
+      does 416.1165(d) apply the $20, the $65 plus one-half and the benefit rate.
+    other: 'SI 01320.630 B.2 says "From the amount in excess of what is required to reduce the individual''s (parent)
+      or couple''s (both parents) payment to zero, subtract an allocation for each ineligible child."'
+  example: In 2026 an aged parent with $4,000 of monthly wages, a disabled child and a non-disabled child deems $8,580
+    a year under the regulation and $5,598 under the POMS order. The orders differ only when the allocation falls on
+    earned income.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_parent/ssi_unearned_income_deemed_from_ineligible_parent.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10630
+  state: ruled
+  note: "Keeps the regulation's order. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10630#issuecomment-6840530008"
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:

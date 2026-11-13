@@ -137,3 +137,44 @@
         state_code: MO
   output:
     medicaid_parental_medical_expense_share: [0, 0]
+
+# Missouri counts the expenses of the child's natural or adoptive parents only: "This
+# does not include a stepparent" (MHABD 0805.020.15). Parent ids name the mother, and
+# her husband is the child's stepparent. SSI treats him as an ineligible parent
+# (20 CFR 416.1160(d)), but only the mother's 1,000 reaches the child's spend down.
+- name: Case 5, Missouri leaves out a stepparent's medical expenses.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        person_id: 1
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 35
+        person_id: 2
+        is_tax_unit_head: true
+        other_medical_expenses: 1_000
+      person3:
+        age: 38
+        person_id: 3
+        is_tax_unit_spouse: true
+        other_medical_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person2, person3]
+      marital_unit2:
+        members: [person1]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    is_ssi_ineligible_parent: [false, true, true]
+    medicaid_parental_medical_expense_share: [1_000, 0, 0]
