@@ -1184,3 +1184,42 @@
     # (12,000 + 6,000 - 240) / 2 = 8,880 each. The grandchild is the son's
     # dependent, not the couple's, so their premiums stay out.
     medicaid_optional_senior_or_disabled_countable_income: [0, 0, 8_880, 8_880]
+
+- name: California spouses who file separately share their dependent's premiums in one couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first_spouse:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 36_000
+        medicare_enrolled: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 12_000
+        medicare_enrolled: false
+      second_spouse:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 24_000
+        medicare_enrolled: false
+    tax_units:
+      first:
+        members: [first_spouse, child]
+      second:
+        members: [second_spouse]
+    marital_units:
+      couple:
+        members: [first_spouse, second_spouse]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [first_spouse, child, second_spouse]
+        state_code: CA
+  output:
+    # (36,000 + 24,000 - 240 - 12,000) / 2 = 23,880 each: the second spouse's
+    # half also deducts the child claimed in the first spouse's tax unit.
+    medicaid_optional_senior_or_disabled_countable_income: [23_880, 0, 23_880]
