@@ -1,30 +1,27 @@
-"""Invariants for Montana's state and local tax deduction, 2021-2023.
+"""Check Montana's state and local tax deduction for 2021-2023.
 
-Form 2, Itemized Deductions Schedule, line 5 adds lines 5a (general sales
-taxes), 5b (local income taxes), 5c (real estate taxes) and 5d, and caps the
-total at $10,000, or $5,000 if married filing separately. A joint return has
-one column, so its cap applies once to the couple's combined taxes
-(mt_salt_deduction, on the head). Spouses filing separately on the same form
-(status 2a) each have their own column, capped at $5,000
-(mt_salt_deduction_indiv). From 2024 the schedule is gone and this change
-leaves the earlier per-person amounts as they were.
+A taxpayer elects general sales taxes or local income taxes under 26 USC
+164(b)(5)(A), then adds real estate taxes before applying the cap. A joint
+return deducts at most $10,000 once, through the head's mt_salt_deduction.
+Spouses filing separately on the same form each elect within their own
+return and deduct at most $5,000 through mt_salt_deduction_indiv.
+Spouses can deduct more in separate columns than jointly when they choose
+different tax categories. From 2024 we preserve the earlier per-person
+amounts after Montana discontinued the schedule.
 
-The YAML files hold the worked cases. This file checks what they cannot: many
-mixed tax units (single, head of household, separate, joint, joint with
-dependents, some with sales taxes or Kansas City and St. Louis earnings taxes)
-in one vectorized simulation, and how results move when inputs change. For
-every tax unit:
+We check mixed tax units in one vectorized simulation, including all filing
+statuses, dependents, sales taxes, city earnings taxes and residual local
+income taxes. For every tax unit:
 
-1. Differential: both variables equal an independent numpy calculation of
-   line 5, with the caps taken from the forms rather than from parameters.
-2. Bounds and order: each value lies between zero and its cap, and a couple's
-   two separate columns never deduct more than their joint return.
-3. Monotone: raising any member's real estate taxes never lowers the joint
-   return's or any column's deduction.
-4. Head swap: swapping which spouse is the head moves each column with its
-   spouse and leaves the joint return's deduction unchanged.
-5. From 2024 the per-person amounts equal min(real estate taxes, federal cap)
-   for the tax unit's filing status, as before this change.
+1. Each deduction matches an independent NumPy calculation, using the caps
+   from the forms and choosing the larger eligible tax category.
+2. Each return or column deducts between zero and its cap.
+3. Raising any member's real estate taxes never lowers the return's or any
+   column's deduction.
+4. Swapping which spouse is the head moves each column with its spouse and
+   leaves the joint return's deduction unchanged.
+5. From 2024 each person deducts min(real estate taxes, federal cap) for the
+   tax unit's filing status, as before this change.
 """
 
 import numpy as np
@@ -37,7 +34,12 @@ from policyengine_us import Simulation
 TOLERANCE = 0.01  # dollars
 
 # Form 2 (2021-2023), Itemized Deductions Schedule, line 5.
-FORM_CAP = {"SINGLE": 10_000, "HEAD_OF_HOUSEHOLD": 10_000, "JOINT": 10_000}
+FORM_CAP = {
+    "SINGLE": 10_000,
+    "HEAD_OF_HOUSEHOLD": 10_000,
+    "JOINT": 10_000,
+    "SURVIVING_SPOUSE": 10_000,
+}
 FORM_CAP["SEPARATE"] = 5_000
 SCHEDULE_YEARS = [2021, 2022, 2023]
 # Kansas City and St. Louis earnings tax rates: local income taxes with no
@@ -52,11 +54,14 @@ FEDERAL_CAP = {
 }
 FEDERAL_CAP[2024]["SEPARATE"] = 5_000
 FEDERAL_CAP[2026]["SEPARATE"] = 20_200
-KINDS = ["single", "hoh", "separate", "joint", "joint_dependents"]
+for caps in FEDERAL_CAP.values():
+    caps["SURVIVING_SPOUSE"] = caps["JOINT"]
+KINDS = ["single", "hoh", "separate", "surviving_spouse", "joint", "joint_dependents"]
 STATUS = {
     "single": "SINGLE",
     "hoh": "HEAD_OF_HOUSEHOLD",
     "separate": "SEPARATE",
+    "surviving_spouse": "SURVIVING_SPOUSE",
     "joint": "JOINT",
     "joint_dependents": "JOINT",
 }
@@ -87,7 +92,11 @@ def people(draw):
 @st.composite
 def tax_units(draw):
     kind = draw(st.sampled_from(KINDS))
-    n_dependents = draw(st.integers(1, 2)) if kind in ("hoh", "joint_dependents") else 0
+    n_dependents = (
+        draw(st.integers(1, 2))
+        if kind in ("hoh", "surviving_spouse", "joint_dependents")
+        else 0
+    )
     return {
         "kind": kind,
         "head": draw(people()),
@@ -95,6 +104,7 @@ def tax_units(draw):
         "dependents": [draw(people()) for _ in range(n_dependents)],
         "state_sales_tax": draw(sales),
         "local_sales_tax": draw(sales),
+        "other_local_income_tax": draw(sales),
     }
 
 
@@ -126,7 +136,9 @@ def _seeded_units(n=150):
     for _ in range(n):
         kind = str(rng.choice(KINDS))
         n_dependents = (
-            int(rng.integers(1, 3)) if kind in ("hoh", "joint_dependents") else 0
+            int(rng.integers(1, 3))
+            if kind in ("hoh", "surviving_spouse", "joint_dependents")
+            else 0
         )
         units.append(
             {
@@ -138,6 +150,9 @@ def _seeded_units(n=150):
                 if rng.random() < 0.3
                 else 0.0,
                 "local_sales_tax": float(rng.integers(0, 601))
+                if rng.random() < 0.3
+                else 0.0,
+                "other_local_income_tax": float(rng.integers(1, 3_001))
                 if rng.random() < 0.3
                 else 0.0,
             }
@@ -185,6 +200,22 @@ def _situation(units, year, *, raised=False, swapped=False):
             "state_sales_tax": unit["state_sales_tax"],
             "local_sales_tax": unit["local_sales_tax"],
         }
+        if unit["other_local_income_tax"]:
+            payers = [unit["head"], *unit["dependents"]]
+            if couple:
+                payers.append(unit["spouse"])
+            city_income_tax = sum(
+                KANSAS_CITY_RATE * payer["kansas_city_earnings"]
+                + max(
+                    0,
+                    ST_LOUIS_RATE * payer["st_louis_earnings"]
+                    - payer["st_louis_credit"],
+                )
+                for payer in payers
+            )
+            groups["tax_units"][f"tax_unit_{i}"]["local_income_tax"] = (
+                city_income_tax + unit["other_local_income_tax"]
+            )
         groups["households"][f"household_{i}"] = {
             "members": members,
             "state_code": "MT",
@@ -230,9 +261,8 @@ def _check_schedule_year(units, year):
     joint_cap = np.array([FORM_CAP[s] for s in status])
     column_cap = np.where(married, FORM_CAP["SEPARATE"], joint_cap)
 
-    # 1. Differential against numpy. Each person owes city tax on their own
-    # earnings there, less their own credits; a column takes its own
-    # spouse's tax.
+    # 1. Each taxpayer chooses the larger sales-tax or income-tax amount.
+    # Each spouse keeps their own city tax and half the residual local tax.
     city_tax = KANSAS_CITY_RATE * base[
         "mo_kansas_city_earnings_tax_taxable_earnings"
     ] + np.maximum(
@@ -240,28 +270,29 @@ def _check_schedule_year(units, year):
         ST_LOUIS_RATE * base["mo_st_louis_earnings_tax_taxable_earnings"]
         - base["mo_st_louis_earnings_tax_credit"],
     )
-    total = _unit_sum(base, base["real_estate_taxes"] + city_tax) + sales
+    other_local_tax = np.array([u["other_local_income_tax"] for u in units])
+    income_tax = _unit_sum(base, city_tax) + other_local_tax
+    total = _unit_sum(base, base["real_estate_taxes"]) + np.maximum(sales, income_tax)
     np.testing.assert_allclose(
         base["mt_salt_deduction"],
         head * np.minimum(total, joint_cap)[unit],
         atol=TOLERANCE,
     )
     share = np.where(married, 0.5, 1.0)[unit]
-    own = base["real_estate_taxes"] + share * sales[unit] + city_tax
+    own_income_tax = city_tax + share * other_local_tax[unit]
+    own = base["real_estate_taxes"] + np.maximum(share * sales[unit], own_income_tax)
     np.testing.assert_allclose(
         base["mt_salt_deduction_indiv"],
         filer * np.minimum(own, column_cap[unit]),
         atol=TOLERANCE,
     )
 
-    # 2. Bounds and order.
+    # 2. Each return or column stays within its cap.
     joint = _unit_sum(base, base["mt_salt_deduction"])
-    columns = _unit_sum(base, base["mt_salt_deduction_indiv"])
     assert (base["mt_salt_deduction"] >= 0).all()
     assert (base["mt_salt_deduction_indiv"] >= 0).all()
     assert (joint <= joint_cap + TOLERANCE).all()
     assert (base["mt_salt_deduction_indiv"] <= column_cap[unit] + TOLERANCE).all()
-    assert (columns[married] <= joint[married] + TOLERANCE).all()
 
     # 3. Monotone in real estate taxes.
     raised = _run(units, year, raised=True)

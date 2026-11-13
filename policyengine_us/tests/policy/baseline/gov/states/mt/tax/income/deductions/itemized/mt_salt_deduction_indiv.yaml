@@ -1,10 +1,5 @@
-# Form 2, Itemized Deductions Schedule, line 5 (2021-2023): "Add lines 5a
-# through 5d, enter the total here, but not more than $10,000 if your status
-# is single, head of household or married filing jointly; or $5,000 if you are
-# married filing separately." Spouses filing separately on the same form
-# (filing status 2a) allocate between columns A and B, "with each column
-# constituting its own return" (2023 instructions, PDF p. 12). So each
-# spouse's column is capped at $5,000.
+# Montana caps a joint return at $10,000 and each separate column at $5,000.
+# Taxpayers elect sales taxes or local income taxes under IRC 164(b)(5)(A).
 
 - name: Each spouse's column is capped at the married filing separately amount
   period: 2023
@@ -148,9 +143,8 @@
     # SB 399 ended filing separately on the same form after 2023.
     mt_salt_deduction_indiv: [0, 0]
 
-# Line 5b: "Deductions that are attributable to only one spouse must be
-# claimed by that spouse" (2023 instructions, PDF p. 13). A city earnings tax
-# belongs to the spouse who earned the taxed income.
+# Each spouse claims the city income tax on their own earnings
+# (2023 Form 2 instructions, PDF p. 13).
 
 - name: A city earnings tax goes in the column of the spouse who earned it
   period: 2023
@@ -264,3 +258,94 @@
     # Column A: min(4,000 + 1% x 100,000, 5,000) = 5,000.
     # Column B: 3.44% x 100,000 = 3,440.
     mt_salt_deduction_indiv: [5_000, 3_440]
+
+- name: Each column receives half the local income tax without a person allocation
+  period: 2023
+  input:
+    people:
+      head:
+        age: 45
+        real_estate_taxes: 4_500
+      spouse:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        local_income_tax: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Half of 2,000 gives each column 1,000. Only the head reaches 5,000.
+    mt_salt_deduction_indiv: [5_000, 1_000]
+
+- name: Each column keeps its city tax and half the remaining local income tax
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        real_estate_taxes: 1_000
+        mo_kansas_city_earnings_tax_taxable_earnings: 100_000
+      spouse:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        local_income_tax: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Kansas City tax: 1,000. Remaining tax: 3,000 - 1,000 = 2,000.
+    # Head: 1,000 property + 1,000 city + 1,000 remaining; spouse: 1,000.
+    mt_salt_deduction_indiv: [3_000, 1_000]
+
+- name: Spouses independently elect local income taxes and sales taxes
+  period: 2021
+  input:
+    people:
+      head:
+        age: 45
+        mo_kansas_city_earnings_tax_taxable_earnings: 200_000
+      spouse:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_sales_tax: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Head elects 2,000 city tax over 1,000 sales tax; spouse elects 1,000 sales.
+    mt_salt_deduction_indiv: [2_000, 1_000]
+    # A joint return elects between total sales and income taxes: max(2,000, 2,000).
+    mt_salt_deduction: [2_000, 0]
+
+- name: A column elects sales taxes before adding its own real estate taxes
+  period: 2023
+  input:
+    people:
+      head:
+        age: 45
+        real_estate_taxes: 1_000
+        mo_kansas_city_earnings_tax_taxable_earnings: 100_000
+      spouse:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_sales_tax: 4_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Head: 1,000 property + max(2,000 sales, 1,000 city) = 3,000.
+    # Spouse elects 2,000 sales; joint return: 1,000 + max(4,000, 1,000).
+    mt_salt_deduction_indiv: [3_000, 2_000]
+    mt_salt_deduction: [5_000, 0]

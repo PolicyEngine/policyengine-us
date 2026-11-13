@@ -15046,3 +15046,39 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+
+- id: us-mt:salt-sales-income-election
+  program: income-tax
+  years:
+    from: 2021
+    to: 2023
+    type: tax
+  question: Does a Montana taxpayer elect general sales taxes or local income taxes under the incorporated federal statute, or add both categories under Form 2 lines 5a and 5b?
+  sources:
+  - kind: statute
+    citation: Former MCA 15-30-2131(1)(a), MCA 2021
+    url: https://mca.legmt.gov/bills/2022/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
+  - kind: statute
+    citation: 26 USC 164(b)(5)(A), 2023 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2023-title26/html/USCODE-2023-title26-subtitleA-chap1-subchapB-partVI-sec164.htm
+  - kind: form
+    citation: 2021 Montana Form 2, Itemized Deductions Schedule lines 5a-5b and 5, PDF page 7
+    url: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
+  - kind: form
+    citation: 2022 Montana Form 2, Itemized Deductions Schedule lines 5a-5b and 5, PDF page 7
+    url: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
+  - kind: form
+    citation: 2023 Montana Form 2, Itemized Deductions Schedule lines 5a-5b and 5, PDF page 7
+    url: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
+  readings:
+    statute: A taxpayer elects either general sales taxes or local income taxes before adding real estate taxes and applying the return's cap. Montana excludes state income taxes, and each spouse filing on the same form elects within their own return.
+    other: A taxpayer adds general sales taxes on line 5a and local income taxes on line 5b to the other taxes on line 5 before applying the cap.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mt/tax/income/deductions/itemized/salt/mt_salt_deduction.py
+    - policyengine_us/variables/gov/states/mt/tax/income/deductions/itemized/salt/mt_salt_deduction_indiv.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10002
+  state: ruled
+  note: PolicyEngine applies the statute-first principle. It chooses the larger eligible category for a joint return and separately for each spouse's column, after allocating taxes between the spouses.
