@@ -6,14 +6,16 @@ metadata:
   threshold_unit: year
   label: ACA premium age curve factors - NY
   reference:
+  - title: New York DFS 2017 individual rate filing - Exhibit 25 Rating Tiers
+    href: https://myportal.dfs.ny.gov/documents/538523/10367891/Aetna%2BLife_IND_OFFX_AETN-130549431_Application.pdf/cb70f6f0-e73e-4d0a-a946-f5259ec21b55#page=77
   - title: CMS Market Rating Reforms State Specific Age Curve Variations
     href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating
 brackets:
 - threshold:
-    2018-01-01: 0
+    2014-01-01: 0
   amount:
-    2018-01-01: 0.412
+    2014-01-01: 0.412
 - threshold:
-    2018-01-01: 21
+    2014-01-01: 21
   amount:
-    2018-01-01: 1.0
+    2014-01-01: 1.0

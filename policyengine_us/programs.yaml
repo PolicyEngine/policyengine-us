@@ -429,7 +429,8 @@ programs:
     has_state_variation: true
     variable: aca_ptc
     parameter_prefix: gov.aca
-    verified_start_year: 2024
+    verified_start_year: 2014
+    notes: 2014 PTC calculations use supplied MAGI and coverage eligibility; 2014-2017 benchmark premiums use estimates from 2018 rating-area premiums.
 
   - id: tanf
     name: TANF

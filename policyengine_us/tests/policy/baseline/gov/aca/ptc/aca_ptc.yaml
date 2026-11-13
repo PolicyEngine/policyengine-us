@@ -10,9 +10,9 @@
   output:
     aca_ptc: 200  # 1200 - 0.04 * 25000 = 200
 
-- name: ACA PTC remains zero before available rating-area premium data
+- name: ACA PTC remains zero before coverage began in 2014
   absolute_error_margin: 0.01
-  period: 2017
+  period: 2013
   input:
     is_aca_ptc_eligible: true
     slcsp: 1_200
@@ -203,9 +203,9 @@
     is_aca_ptc_eligible: [true]
     aca_ptc: 200
 
-- name: ACA PTC remains zero in 2017 before available rating-area premium data
+- name: ACA PTC remains zero in 2013 before coverage began
   absolute_error_margin: 0.01
-  period: 2017
+  period: 2013
   input:
     is_aca_ptc_eligible: true
     slcsp: 1_200
@@ -421,3 +421,334 @@
     aca_magi_fraction: 2.50  # 54_100 / 21_640 (2026 guideline, two people)
     aca_required_contribution_percentage: 0.0866
     aca_ptc: 10_314.94  # 15_000 - 0.0866 * 54_100 = 15_000 - 4_685.06
+
+- name: ACA PTC uses the 2014 applicable percentage at 250 percent FPL.
+  absolute_error_margin: 0.01
+  period: 2014
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0805
+    aca_ptc_before_filing_gate: 9585.0000  # 12,000 - 30,000 * 0.0805 = 9585.0000.
+    aca_ptc: 9585.0000
+
+- name: ACA PTC uses the 2015 applicable percentage at 250 percent FPL.
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.081
+    aca_ptc_before_filing_gate: 9570.000  # 12,000 - 30,000 * 0.081 = 9570.000.
+    aca_ptc: 9570.000
+
+- name: ACA PTC uses the 2016 applicable percentage at 250 percent FPL.
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0818
+    aca_ptc_before_filing_gate: 9546.0000  # 12,000 - 30,000 * 0.0818 = 9546.0000.
+    aca_ptc: 9546.0000
+
+- name: ACA PTC uses the 2017 applicable percentage at 250 percent FPL.
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0821
+    aca_ptc_before_filing_gate: 9537.0000  # 12,000 - 30,000 * 0.0821 = 9537.0000.
+    aca_ptc: 9537.0000
+
+- name: ACA PTC interpolates the 2017 percentage at 140 percent FPL.
+  # Matches the ACABefore2018 reference implementation's 140 percent case.
+  # 0.0306 + (1.40 - 1.33) / (1.50 - 1.33) * (0.0408 - 0.0306) = 0.0348.
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 16_800
+    aca_magi_fraction: 1.40
+    tax_unit_is_filer: true
+  output:
+    aca_required_contribution_percentage: 0.0348
+    aca_ptc_before_filing_gate: 11_415.36  # 12,000 - 16,800 * 0.0348.
+    aca_ptc: 11_415.36
+
+- name: ACA PTC requires filing in 2017.
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: false
+    takes_up_aca_if_eligible: false
+  output:
+    aca_ptc_before_filing_gate: 9_537  # 12,000 - 30,000 * 0.0821.
+    aca_ptc: 0
+
+- name: ACA PTC floors at zero when the 2016 contribution exceeds the premium.
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 2_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_before_filing_gate: 0  # 2,000 - 30,000 * 0.0818 = -454.
+    aca_ptc: 0
+
+- name: An Alaska adult receives the 2014 credit using the prior guideline and estimated benchmark.
+  period: 2014
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 35875.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code:
+          2013: AK
+          2014: AK
+        slcsp_rating_area: 1
+  output:
+    # MAGI = 2.5 * 14350; benchmark = 424 * 273 / 481 * 1.6706 * 12.
+    # Credit = 4824.331589 - 35875.0 * 0.0805 = 1936.394089.
+    aca_magi_fraction: 2.5
+    slcsp: 4824.331589
+    is_aca_ptc_eligible: true
+    aca_ptc: 1936.394089
+
+- name: An Alaska adult receives the 2015 credit using the prior guideline and estimated benchmark.
+  period: 2015
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 36450.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code:
+          2014: AK
+          2015: AK
+        slcsp_rating_area: 1
+  output:
+    # MAGI = 2.5 * 14580; benchmark = 424 * 276 / 481 * 1.6706 * 12.
+    # Credit = 4877.346222 - 36450.0 * 0.081 = 1924.896222.
+    aca_magi_fraction: 2.5
+    slcsp: 4877.346222
+    is_aca_ptc_eligible: true
+    aca_ptc: 1924.896222
+
+- name: An Alaska adult receives the 2016 credit using the prior guideline and estimated benchmark.
+  period: 2016
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 36800.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code:
+          2015: AK
+          2016: AK
+        slcsp_rating_area: 1
+  output:
+    # MAGI = 2.5 * 14720; benchmark = 424 * 299 / 481 * 1.6706 * 12.
+    # Credit = 5283.791741 - 36800.0 * 0.0818 = 2273.551741.
+    aca_magi_fraction: 2.5
+    slcsp: 5283.791741
+    is_aca_ptc_eligible: true
+    aca_ptc: 2273.551741
+
+- name: An Alaska adult receives the 2017 credit using the prior guideline and estimated benchmark.
+  period: 2017
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 37100.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code:
+          2016: AK
+          2017: AK
+        slcsp_rating_area: 1
+  output:
+    # MAGI = 2.5 * 14840; benchmark = 424 * 359 / 481 * 1.6706 * 12.
+    # Credit = 6344.084398 - 37100.0 * 0.0821 = 3298.174398.
+    aca_magi_fraction: 2.5
+    slcsp: 6344.084398
+    is_aca_ptc_eligible: true
+    aca_ptc: 3298.174398
+
+- name: Income above 400 percent receives no credit in 2014.
+  period: 2014
+  input:
+    pays_aca_premium: true
+    aca_magi_fraction: 4.01
+    aca_magi: 60_000
+    aca_ptc_below_fpl_immigration_exception: false
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+    slcsp: 12_000
+  output:
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+
+- name: Income above 400 percent receives no credit in 2015.
+  period: 2015
+  input:
+    pays_aca_premium: true
+    aca_magi_fraction: 4.01
+    aca_magi: 60_000
+    aca_ptc_below_fpl_immigration_exception: false
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+    slcsp: 12_000
+  output:
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+
+- name: Income above 400 percent receives no credit in 2016.
+  period: 2016
+  input:
+    pays_aca_premium: true
+    aca_magi_fraction: 4.01
+    aca_magi: 60_000
+    aca_ptc_below_fpl_immigration_exception: false
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+    slcsp: 12_000
+  output:
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+
+- name: Income above 400 percent receives no credit in 2017.
+  period: 2017
+  input:
+    pays_aca_premium: true
+    aca_magi_fraction: 4.01
+    aca_magi: 60_000
+    aca_ptc_below_fpl_immigration_exception: false
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+    slcsp: 12_000
+  output:
+    is_aca_ptc_eligible: false
+    aca_ptc: 0
+
+- name: The 2014 credit cannot exceed the benchmark when supplied MAGI is negative
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    # Form 8962 line 3 uses zero when the combined MAGI is negative.
+    aca_ptc_before_filing_gate: 12_000
+    aca_ptc: 12_000
+
+- name: The 2015 credit cannot exceed the benchmark when supplied MAGI is negative
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    # Form 8962 line 3 uses zero when the combined MAGI is negative.
+    aca_ptc_before_filing_gate: 12_000
+    aca_ptc: 12_000
+
+- name: The 2016 credit cannot exceed the benchmark when supplied MAGI is negative
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    # Form 8962 line 3 uses zero when the combined MAGI is negative.
+    aca_ptc_before_filing_gate: 12_000
+    aca_ptc: 12_000
+
+- name: The 2017 credit cannot exceed the benchmark when supplied MAGI is negative
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    # Form 8962 line 3 uses zero when the combined MAGI is negative.
+    aca_ptc_before_filing_gate: 12_000
+    aca_ptc: 12_000

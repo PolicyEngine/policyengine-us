@@ -7,16 +7,29 @@ class aca_ptc_before_filing_gate(Variable):
     label = "ACA premium tax credit before the filing condition"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/36B#b"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/36B#b",
+        "https://www.irs.gov/pub/irs-prior/i8962--2014.pdf#page=5",
+        "https://www.irs.gov/pub/irs-prior/i8962--2015.pdf#page=7",
+        "https://www.irs.gov/pub/irs-prior/i8962--2016.pdf#page=6",
+        "https://www.irs.gov/pub/irs-prior/i8962--2017.pdf#page=6",
+    )
     documentation = (
         "The premium tax credit the tax unit could claim on a return: the "
         "benchmark premium less the required contribution. aca_ptc is this "
-        "amount for a tax unit that files a return claiming it."
+        "amount for a tax unit that files a return claiming it. For 2014 through "
+        "2017, the IRS instructs filers to enter zero when combined MAGI is negative."
     )
     defined_for = "is_aca_ptc_eligible"
 
     def formula(tax_unit, period, parameters):
         return 0
+
+    def formula_2014(tax_unit, period, parameters):
+        plan_cost = tax_unit("slcsp", period)
+        income = max_(0, tax_unit("aca_magi", period))
+        applicable_figure = tax_unit("aca_required_contribution_percentage", period)
+        return max_(0, plan_cost - income * applicable_figure)
 
     def formula_2018(tax_unit, period, parameters):
         plan_cost = tax_unit("slcsp", period)

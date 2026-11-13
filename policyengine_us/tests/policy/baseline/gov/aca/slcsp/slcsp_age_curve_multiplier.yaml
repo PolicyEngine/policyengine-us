@@ -36,3 +36,73 @@
         state_code: NY
   output:
     slcsp_age_curve_multiplier: 1
+
+- name: Children share the federal age curve before 2018.
+  period: 2017-12
+  absolute_error_margin: 0.000001
+  input:
+    monthly_age: [0, 14, 15, 20, 21, 40, 64]
+    state_code:
+      2017: [TX, TX, TX, TX, TX, TX, TX]
+  output:
+    # CMS 2013 child ratio / the 2018 base ratio = 0.635 / 0.765.
+    # Adult multipliers retain the model's 2018 normalization.
+    slcsp_age_curve_multiplier: [0.8300653595, 0.8300653595, 0.8300653595, 0.8300653595, 1.3072, 1.6706, 3.9216]
+
+- name: Federal age curves support the first marketplace year.
+  period: 2014-01
+  absolute_error_margin: 0.000001
+  input:
+    monthly_age: [20, 21, 40]
+    state_code: [TX, TX, TX]
+  output:
+    # 0.635 / 0.765 = 0.8300653595 for every child under 21.
+    slcsp_age_curve_multiplier: [0.8300653595, 1.3072, 1.6706]
+
+- name: Children move to the revised federal age curve in 2018.
+  period: 2018-01
+  input:
+    monthly_age: [0, 14, 15, 20, 21, 40, 64]
+    state_code: [TX, TX, TX, TX, TX, TX, TX]
+  output:
+    slcsp_age_curve_multiplier: [1, 1, 1.0889, 1.268, 1.3072, 1.6706, 3.9216]
+
+- name: New Jersey premiums follow its historical age curve.
+  period: 2017-12
+  absolute_error_margin: 0.000001
+  input:
+    monthly_age: [0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65]
+    state_code:
+      2017: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+  output:
+    # CMS NJ ratios * the model's age-40 multiplier / CMS NJ age-40 ratio.
+    # Children: 0.75 * 1.6706 / 1.393 = 0.8994615937.
+    # Ages 21-28: 1.25 * 1.6706 / 1.393 = 1.4991026561.
+    # Age 59+: 2.28 * 1.6706 / 1.393 = 2.7343632448.
+    slcsp_age_curve_multiplier: [0.8994615937, 0.8994615937, 1.4991026561, 1.4991026561, 1.4991026561, 1.4991026561, 1.4991026561, 1.4991026561, 1.4991026561, 1.4991026561, 1.5290847093, 1.5434760948, 1.5650631730, 1.5866502513, 1.5998423546, 1.6142337401, 1.6214294329, 1.6286251256, 1.6346215363, 1.6418172290, 1.6562086145, 1.6706000000, 1.6909877961, 1.7113755922, 1.7389590811, 1.7725389806, 1.8121152907, 1.8588872936, 1.9104564250, 1.9680219670, 2.0243882268, 2.0879501795, 2.1491135678, 2.2150740847, 2.2810346016, 2.3517922469, 2.4213506102, 2.4945068198, 2.5688623116, 2.6456163676, 2.7343632448, 2.7343632448, 2.7343632448, 2.7343632448, 2.7343632448, 2.7343632448, 2.7343632448]
+
+- name: New Jersey uses its historical curve in 2014.
+  period: 2014-01
+  absolute_error_margin: 0.000001
+  input:
+    monthly_age: [20, 21, 40]
+    state_code: [NJ, NJ, NJ]
+  output:
+    # CMS ratios [0.75, 1.25, 1.393] * 1.6706 / 1.393.
+    slcsp_age_curve_multiplier: [0.8994615937, 1.4991026561, 1.6706000000]
+
+- name: New Jersey moves to the federal age curve in 2018.
+  period: 2018-01
+  input:
+    monthly_age: [0, 20, 21, 40, 64]
+    state_code: [NJ, NJ, NJ, NJ, NJ]
+  output:
+    slcsp_age_curve_multiplier: [1, 1.268, 1.3072, 1.6706, 3.9216]
+
+- name: State age curves retain their historical adult factors.
+  period: 2014-01
+  input:
+    monthly_age: [40, 40, 40, 40, 40, 40, 40, 40, 40]
+    state_code: [AL, DC, MA, MN, MS, NY, OR, UT, VT]
+  output:
+    slcsp_age_curve_multiplier: [2.0126, 1.4908, 1.8549, 1.436, 2.0126, 1, 2.0126, 1.8651, 1]
