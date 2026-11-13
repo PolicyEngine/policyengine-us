@@ -1624,6 +1624,33 @@ candidates:
   note: 'PE-US follows the statute: the 2026 allowance is $1,153.31, from a $3,252.14 couple standard, twice the
     $1,626.07 individual rate (allowance/out_of_home_care.yaml), and the file''s comment lists the sources on each
     side. Verify the per-recipient calculation and document the inconsistent 2026 summary tables.'
+- id: us-co:abd-spouse-income-ssi-defined-group
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: "Does Colorado's SSI-related group count a non-applying spouse's income in every case, as its income rule says, or follow SSI's deeming threshold, because the group is defined by SSI eligibility?"
+  sources:
+  - kind: regulation
+    citation: 10 CCR 2505-10 8.100.7.C.2
+    url: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+  - kind: regulation
+    citation: 10 CCR 2505-10 8.100.6.C.1.b
+    url: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+  readings:
+    regulation: '10 CCR 2505-10 8.100.7.C.2: "The income and resources of both spouses are counted in determining
+      eligibility for either or both spouses", with exceptions for spouses in an institution or living apart.'
+    other: '8.100.6.C.1.b covers "persons who are eligible for financial assistance under SSI, but are not receiving
+      SSI", and SSI deems a spouse''s income only above the rate difference (20 CFR 416.1163(d)).'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: ruled
+  note: "Counts both spouses' income under the express rule. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-co:ccap-parent-fee-income-share
   program: child-care-assistance
   years:
@@ -2061,6 +2088,34 @@ candidates:
   state: ruled
   note: 'Ruled in October 2026 to follow the statute; verify the applicable regulation version. Code not yet on
     main: co premium assistance formula, aca_ptc_slcsp.'
+- id: us-ct:abd-spouse-income-hearing-decision
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: "Does Connecticut count a spouse's income as its Uniform Policy Manual says, or apply SSI's rule, as a 2023 hearing decision on a Medicare Savings Program case did?"
+  sources:
+  - kind: manual
+    citation: UPM 5020.75 and 5515.05
+    url: https://portal.ct.gov/-/media/Departments-and-Agencies/DSS/UPMs/UPM5---Treatment-of-Income-Income-Eligibility/5020_75.doc
+  - kind: agency-practice
+    citation: DSS hearing decision, Request 203652
+    url: https://portal.ct.gov/-/media/departments-and-agencies/dss/fair-hearings/other-medicaid-eligibility/other-medicaid-eligibility-2023/omel_2023_203652.pdf#page=6
+  readings:
+    manual: 'UPM 5020.75 A.1.a: "The Department deems income from: a. the spouse of an MAABD applicant or recipient if
+      he or she is considered to be living with the assistance unit member".'
+    other: 'The hearing decision on Request 203652 held: "The Department incorrectly utilized income-deeming techniques
+      more restrictive than methodologies applied in the SSI program."'
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: ruled
+  note: "Follows the manual: Connecticut is a 209(b) state. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-ct:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2387,6 +2442,45 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-cooling-heating-bill
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does the Delaware Summer Cooling Assistance electric benefit need a purchased source of heating or cooling,
+    as the manual's SCAP chart provides (plan item 3.3 sets no different cooling policy for renters), or responsibility
+    for a heating bill, as manual section 415 provides?
+  sources:
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, SCAP eligibility chart (final, 2/24/2015), PDF page 100
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=100
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, item 3.3, PDF page 12
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=12
+  - kind: plan
+    citation: Delaware FY2027 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=11
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, section 415, PDF page 32
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=32
+  readings:
+    statute: No statute is supplied; the SCAP chart's LIHEAP eligibility is "Purchase Source of Heating or Cooling", and
+      plan 3.3 sets no different cooling policy for subsidized renters or renters with utilities in the rent.
+    other: Section 415 says "applicants must be responsible for paying a heating bill in order to receive assistance for
+      heating, crisis and cooling electric".
+  example: One person aged 70 in public housing with $14,000 of Social Security, heat in the rent and a cooling cost is
+    eligible under the chart and the plan, and ineligible under section 415.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/cooling/de_liheap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10762
+  state: ruled
+  note: 'Ruled 2026-11-12 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10762#issuecomment-6837369871. Follow the plan and the SCAP chart.
+    us-de:liheap-plan-income-checklist follows the manual over the plan''s checklist; here the manual itself is split
+    between section 415 and its own chart, and the plan sides with the chart.'
 - id: us-de:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2410,13 +2504,14 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
+    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10612
+    - https://github.com/PolicyEngine/policyengine-us/pull/10762
   state: unreviewed
-  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_income_eligible.py).
 - id: us-de:liheap-plan-income-checklist
   program: liheap
   years:
@@ -2931,6 +3026,34 @@ candidates:
     rent shows through a heating bill or a direct electric bill, and the comment records that FY2026 plan item 2.3
     answers No to differing policies for subsidized renters (ga_liheap_eligible.py, eligibility/_ga_liheap_housing.py).
     Verify that the plan addresses the same circumstances.'
+- id: us-hi:abd-spouse-income-household-size
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: "Does Hawaii test a married couple living together on combined income against the two-person standard, because HAR 17-1724.1-16(1) makes spouses' income available to each other, or apply SSI's deeming threshold, because HAR 17-1719-11.1(a)(3) says only 'a household of applicable size'?"
+  sources:
+  - kind: regulation
+    citation: HAR 17-1724.1-16(1)
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2016/12/HAR-17-1724.1-INCOME-FOR-MAGI-EXCEPTED-Final-10-31-16-1.pdf#page=5
+  - kind: regulation
+    citation: HAR 17-1719-11.1(a)(3)
+    url: https://www.law.cornell.edu/regulations/hawaii/Haw-Code-R-SS-17-1719-11-1
+  readings:
+    regulation: 'HAR 17-1724.1-16(1): "The income of spouses living in the same residence shall be considered
+      available to each other."'
+    other: 'HAR 17-1719-11.1(a)(3) sets the standard at "one hundred per cent of the federal poverty level for a
+      household of applicable size" and does not say who is in the household.'
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: ruled
+  note: "Budgets the couple together, in the aged, blind and disabled pathway and in medically needy. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640"
 - id: us-hi:claim-of-right-credit-agi-addback
   program: income-tax
   years:
@@ -3151,12 +3274,13 @@ candidates:
     from: 2026
     to: 2026
     type: federal-fiscal
-  question: Is a Hawaii household whose gas is included in its rent eligible for LIHEAP, as the draft manual and application
-    provide, or ineligible, as the 2020 manual provides?
+  question: Is a Hawaii household whose gas or electricity is included in its rent eligible for LIHEAP, as the draft manual
+    and application provide, or ineligible, as the 2020 manual provides?
   sources:
   - kind: manual
-    citation: Hawaii draft FY2026 Policies and Procedures, sections 2.1 and 4.2, model plan packet PDF pages 58 and 65
-    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=58
+    citation: Hawaii draft FY2026 Policies and Procedures, Energy Credit definition and sections 2.1 and 4.2, model plan
+      packet PDF pages 55, 58 and 65
+    url: https://humanservices.hawaii.gov/wp-content/uploads/2025/07/Model-Plan-Packet-2026.pdf#page=55
   - kind: form
     citation: 2026 H-HEAP application, questions 23 and 24, PDF page 4
     url: https://humanservices.hawaii.gov/bessd/files/2026/06/2026-Application-Packet.pdf#page=4
@@ -3168,19 +3292,23 @@ candidates:
     url: https://liheapch.acf.gov/docs/2026/state-plans/HI_Plan_2026.pdf#page=9
   readings:
     statute: No statute is supplied; draft 2.1 accepts "the household's prorated share of the utility bill if rent includes
-      utilities", and application questions 23 and 24 ask for that share.
+      utilities", the draft's Energy Credit definition offsets "rent or applicant's share of the electric/gas cost when rent
+      includes electric/gas", and application questions 23 and 24 ask for that share.
     other: The 2020 manual lists "Households where all utilities are included in the rent" as ineligible, and plan 2.3
       answers No for differing policies for renters with utilities in the rent.
-  example: One person aged 70 in public housing with $18,000 of Social Security and gas in the rent receives $375 under the
-    draft manual and $0 under the 2020 manual.
+  example: One person aged 70 in public housing with $18,000 of Social Security and gas or electricity in the rent receives
+    $375 under the draft manual and $0 under the 2020 manual.
   pe_us:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/hi/dhs/liheap/hi_liheap_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10614
+    - https://github.com/PolicyEngine/policyengine-us/pull/10734
   state: ruled
-  note: 'Ruled 2026-11-02: follow the draft manual and application. The size of the share has no input.'
+  note: 'Ruled 2026-11-02: follow the draft manual and application. PR 10734 applies the same ruling to the electric account
+    it opens: utilities in the rent (tenant_pays_utilities false) qualify any known fuel, and gas or electric heat in the rent
+    qualifies. The size of the share has no input.'
 - id: us-hi:snap-abawd-implementation-date
   program: snap
   years:
@@ -3791,6 +3919,43 @@ candidates:
   state: ruled
   note: Ruled statute-first in October 2026; verify the incorporated dependency bar and annual questionnaire routing,
     including the 2026 draft.
+- id: us-il:msp-exemption-applicant-without-income
+  program: medicare-savings-programs
+  years:
+    from: 2026
+    type: calendar
+  question: Does an Illinois Medicare Savings Program applicant with no income of their own get the $25 exemption on
+    income counted from a spouse who is not applying?
+  sources:
+  - kind: manual
+    citation: IDHS Policy Manual PM 15-04-03-a
+    url: https://www.dhs.state.il.us/page.aspx?item=16387
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.335(a)(1)
+    url: https://www.ilga.gov/ftp/JCAR/AdminCode/089/089001200H03350R.html
+  - kind: manual
+    citation: IDHS Policy Manual PM 06-12-01-c
+    url: https://www.dhs.state.il.us/page.aspx?item=14179
+  readings:
+    statute: 'No statute is supplied; 120.335(a)(1) exempts "the first $25.00 of a client''s earned or unearned income
+      other than SSI income, or contributions from a spouse or other individual", and PM 06-12-01-c allows "no more
+      than one income exemption for their own income" and an exemption on a spouse''s income only if the spouse "is
+      an applicant or client in another MANG case".'
+    other: 'PM 15-04-03-a: "If the person applying for or receiving AABD Medical has no income other than SSI or
+      contributions, and another person included in the standard has income, deduct one $25 exemption even if the
+      other person receives benefits under one of the Family Health Plans."'
+  example: An Illinois applicant, 68, with no income and a disabled spouse, 62, with $1,825 a month counts $1,800 and
+    is QMB with one $25, and counts $1,805 and is SLMB with only the SSI $20.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10633
+  state: ruled
+  note: 'PE-US follows PM 15-04-03-a: one $25 applies when only one spouse is on Medicare, whether or not that spouse
+    has income of their own. Two spouses on Medicare keep one exemption each, capped at each spouse''s own income. Ruled
+    by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10633'
 - id: us-il:msp-income-exemption-contributions
   program: medicare-savings-programs
   years:
@@ -4615,6 +4780,39 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows the regulation from October 1, 2023; verify contemporaneous source versions.
+- id: us-ma:abd-couple-income-standard
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: "Does Massachusetts test a couple's income against the couple standard? 130 CMR 520.002(A)(1) says 'an income standard', and only 520.003(A)(2) names the couple limit, for assets."
+  sources:
+  - kind: regulation
+    citation: 130 CMR 520.002(A)(1)
+    url: https://web.archive.org/web/20260711022327id_/https://www.mass.gov/doc/130-cmr-520000-masshealth-financial-eligibility-0/download#page=2
+  - kind: regulation
+    citation: 130 CMR 520.003(A)(2)
+    url: https://web.archive.org/web/20260711022327id_/https://www.mass.gov/doc/130-cmr-520000-masshealth-financial-eligibility-0/download#page=3
+  - kind: regulation
+    citation: 130 CMR 519.005(A)(1)
+    url: https://www.law.cornell.edu/regulations/massachusetts/130-CMR-519-005
+  readings:
+    regulation: '130 CMR 520.002(A)(1): "the total countable-income amount and countable assets of the individual and
+      the spouse who are living together are compared to an income standard and asset limit".'
+    other: 'Only the asset rule names a couple limit: 130 CMR 520.003(A)(2) sets $3,000 "for a couple living together
+      in the community where there is financial responsibility according to 130 CMR 520.002(A)(1)". 130 CMR
+      519.005(A)(1) tests "the countable income amount ... of the individual or couple" against 100% of the federal
+      poverty level.'
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: ruled
+  note: "Uses the couple standard for income. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-ma:circuit-breaker-snap-income
   program: income-tax
   years:
@@ -5140,6 +5338,35 @@ candidates:
   note: 'PE-US follows COMAR: strike_benefits count, assumed not employee-funded, and the documentation records
     that manual Attachment B excludes funds without employee contributions (income/sources/unearned.yaml, md_meap_countable_income.py).
     Verify the conflicting manual provision and applicable versions.'
+- id: us-md:medically-needy-non-abd-spouse-unit
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: "Is a Maryland medically needy applicant with a spouse who is not aged, blind or disabled a unit of two, as the manual says, when COMAR 10.09.24.06 names only an aged, blind or disabled spouse as a unit member?"
+  sources:
+  - kind: regulation
+    citation: COMAR 10.09.24.06
+    url: https://www.law.cornell.edu/regulations/maryland/COMAR-10-09-24-06
+  - kind: manual
+    citation: Medical Assistance Manual Section 600
+    url: https://health.maryland.gov/mmcp/Medicaid%20Manual/Section%20600-%20The%20Assistance%20Unit.pdf#page=8
+  readings:
+    regulation: 'COMAR 10.09.24.06A-1(2): when "the person''s spouse is non-aged, blind, or disabled", "an individual
+      eligibility determination shall be conducted"; the couple "will be considered one unit" only when the spouse
+      "also applies as aged, blind, or disabled".'
+    other: 'Medical Assistance Manual Section 600: "A married ABD couple not living with related children, one or both
+      of who qualify as ABD, constitutes a two-person ABD unit. In determining the financial eligibility of the
+      unit, the income and resources of both spouses are considered."'
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: ruled
+  note: "Uses a unit of two: COMAR counts the income and does not name the standard. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-md:pension-exclusion-maximum
   program: income-tax
   years:
@@ -5626,6 +5853,47 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual and surrounding report editions; obtain contemporaneous BEM 556 for October 2022-September
     2023.
+- id: us-mn:abd-spouse-income-statute-vs-manual
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: "Does Minnesota test an aged, blind or disabled applicant whose spouse is not aged, blind or disabled under SSI's methodology, as Minn. Stat. 256B.056, subd. 1a(a)(1) requires, or deem the spouse's income whenever the spouses live together, as EPM 2.3.3.3.2.1.1 says?"
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 256B.056, subd. 1a(a)(1)
+    url: https://www.revisor.mn.gov/statutes/cite/256B.056
+  - kind: manual
+    citation: Minnesota Health Care Programs Eligibility Policy Manual 2.3.3.3.2.1.1
+    url: https://hcopub.dhs.state.mn.us/epm/2_3_3_3_2_1_1.htm
+  readings:
+    statute: 'Minn. Stat. 256B.056, subd. 1a(a)(1): "Unless specifically required by state law or rule or federal law
+      or regulation, the methodologies used in counting income and assets to determine eligibility for medical
+      assistance for persons whose eligibility category is based on blindness, disability, or age of 65 or more
+      years, the methodologies for the Supplemental Security Income program shall be used". SSI deems an ineligible
+      spouse''s income only above the rate difference and otherwise tests the applicant alone (20 CFR 416.1163(d)).'
+    other: 'EPM 2.3.3.3.2.1.1: "Except in the situations noted below, the income of a spouse is deemed to a person if
+      the spouses live together." The page says whose income is deemed; it gives no amount and no threshold.'
+  example: A Minnesota applicant, 70, has Social Security of $16,800 a year and a spouse, 50, with no income. Minnesota
+    deducts no $20 disregard (Minn. Stat. 256B.056, subd. 1b), so countable income is $16,800. Budgeted together, as
+    the manual reads and PE-US follows, it is within the two-person $21,640 in the aged, blind and disabled pathway.
+    Under SSI's methodology nothing is deemed, the applicant is tested alone, and $16,800 is above the one-person
+    $15,960.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: open
+  note: PE-US follows the manual (MN true in both settings) pending a ruling. The case has the shape of Nebraska's
+    ruled conflict (us-ne:medically-needy-unit-size), but the rulings of 2026-11-02 do not settle it. Montana's went
+    to the regulation over the manual, and Nebraska's to a specific regulation over a general SSI clause; here the
+    specific text is a manual and the SSI clause a statute. If the ruling follows the statute, set MN false in both
+    settings and re-expect Minnesota in Case 17 of medicaid_optional_senior_or_disabled_uses_couple_standard.yaml and
+    Case 6 of medicaid_medically_needy_uses_couple_standard.yaml.
 - id: us-mn:k12-subtraction-grade-cap-default
   program: income-tax
   years:
@@ -6470,6 +6738,35 @@ candidates:
   state: unreviewed
   note: PE-US follows the manual from October 1, 2025; verify the checklist's meaning and the manual's administrative-code
     status.
+- id: us-mt:abd-spouse-deeming-threshold
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: "Does Montana apply SSI's deeming threshold, as ARM 37.82.903(2) and 37.82.1107(1)(b) adopt, or consider both spouses' income, as manual CMA 603-1 says?"
+  sources:
+  - kind: regulation
+    citation: ARM 37.82.903(2)
+    url: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.82.903
+  - kind: manual
+    citation: CMA 603-1
+    url: https://dphhs.mt.gov/assets/hcsd/fmamanual/cma603.1.pdf#page=2
+  readings:
+    regulation: 'ARM 37.82.903(2): for aged, blind or disabled people not receiving SSI, "the SSI financial
+      requirements which are set forth in 20 CFR Part 416, Subparts J, K and L, will be used to determine whether an
+      individual or couple is eligible with respect to resources and with respect to income".'
+    other: 'CMA 603-1, Spouse to Spouse Deeming, ABD: "Both spouses'' income and resources are considered for spouses
+      who live together (as long as neither is applying for or enrolled in a HCBS Waiver program)."'
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: ruled
+  note: "Follows the regulation. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-mt:elderly-credit-homestead-costs
   program: income-tax
   years:
@@ -7402,6 +7699,35 @@ candidates:
     prs: []
   state: unreviewed
   note: Verify whether the still-listed ruling applies during these years despite its obsolete tax base.
+- id: us-ne:medically-needy-unit-size
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: "Does Nebraska's medically needy program size the unit under 477 NAC 24, counting both spouses, or follow the general SSI methodology clause in 477 NAC 25-002.03(B)?"
+  sources:
+  - kind: regulation
+    citation: 477 NAC 24-001.02B1
+    url: https://www.law.cornell.edu/regulations/nebraska/477-Neb-Admin-Code-ch-24-SS-001
+  - kind: regulation
+    citation: 477 NAC 25-002
+    url: https://www.law.cornell.edu/regulations/nebraska/477-Neb-Admin-Code-ch-25-SS-002
+  readings:
+    regulation: '477 NAC 24-001.02B1: "The income and resources of spouses living together in the same household
+      shall be considered available to each other. The resource standard for two shall be used to determine
+      eligibility whether one spouse or both are eligible." 477 NAC 25-002.04 sizes the medically needy unit
+      "according to 477 NAC 24".'
+    other: '477 NAC 25-002.03(B): "The treatment of income and resources for individuals who are aged, blind, or
+      disabled is based on the methodology of the Supplemental Security Income (SSI) program."'
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: ruled
+  note: "Follows the specific unit-size rule. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
 - id: us-nh:fanf-resource-limit-equality
   program: tanf
   years:
@@ -11410,6 +11736,68 @@ candidates:
     income list, whose comment records that Policy Manual Revision 24-2 still describes regular VA payments as countable
     (income/sources/unearned.yaml, tx_fpp_countable_unearned_income.py). Confirm overlapping manual versions and
     effective years.'
+- id: us-tx:msp-spouse-deeming-allowance
+  program: medicare-savings-programs
+  years:
+    from: 2025
+    type: calendar
+  question: When Texas deems an ineligible spouse's income for the Medicare Savings Programs, is the deeming threshold,
+    and each ineligible child's allocation, MEPD Appendix XXIX's program-specific living allowance ($474 for QMB, $568
+    for SLMB and $639 for QI-1 in 2026; $458, $550 and $619 in 2025) or SSI's difference between the couple and
+    individual benefit rates ($497 in 2026; $483 in 2025)?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396d(p)(1)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/1396d
+  - kind: statute
+    citation: 42 U.S.C. 1396a(r)(2)(A)
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#r_2
+  - kind: regulation
+    citation: 20 CFR 416.1163(b)(1) and (d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  - kind: manual
+    citation: Texas MEPD Handbook, Appendix XXIX (Rev. 26-2)
+    url: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxix-special-deeming-eligibility-test-spouse-spouse
+  - kind: manual
+    citation: Texas MEPD Handbook, Revision 25-2 (archived), Appendix XXIX
+    url: https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-25-2.pdf#page=488
+  readings:
+    statute: 'Section 1396d(p)(1)(B) measures income "as determined under section 1382a of this title for purposes of
+      the supplemental security income program". 20 CFR 416.1163(b)(1) sets each ineligible child''s allocation at "the
+      difference between the Federal benefit rate for an eligible couple and the Federal benefit rate for an eligible
+      individual", and (d) deems nothing from a spouse whose income after allocations "is not more than" that
+      difference: $1,491 - $994 = $497 a month in 2026 and $1,450 - $967 = $483 in 2025, the same for every program.
+      Section 1396a(r)(2)(A) says the methodology for individuals "under section 1396d(p) of this title may be less
+      restrictive, and shall be no more restrictive, than the methodology" of the supplemental security income program
+      for aged, blind or disabled groups.'
+    other: 'Appendix XXIX (Rev. 26-2, information effective March 1, 2026) gives a "Program-Specific Living Allowance
+      Allocation: Community MEPD $497,CAS $497, QMB $474,SLMB $568, QI-1 $639", deducts it for each ineligible child
+      (step 3), deems nothing when the spouse''s remaining income "is no more than the program- specific living
+      allowance" (step 4a), and tells the worker to "re-budget for SLMB or QI-1 if applicable" when an applicant who
+      passes the QMB pretest fails QMB in the deeming test (step 8). Revision 25-2 (information effective March 1,
+      2025) has the same steps with 2025 amounts: "Community MEPD $483, CAS $483, QMB $458, SLMB $550, QI-1 $619".'
+  example: A Texas applicant, 68, on Medicare with $1,340 a month and a spouse, 50, with $497 a month is QMB under the
+    regulation, because $497 is not more than $497, so nothing is deemed and $1,320 is within the one-person $1,330.
+    Under Appendix XXIX, $497 is above $474, so it is deemed for QMB, and $1,340 + $497 - $20 = $1,817 is above the
+    $1,804 couple limit. Re-budgeted for SLMB, $497 is not above $568, so nothing is deemed, and the applicant gets
+    SLMB.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_tests_as_couple.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/_msp_spouse_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10633
+  state: open
+  note: 'PE-US uses SSI''s $497 in every state, as the deeming threshold (msp_tests_as_couple) and as each ineligible
+    child''s allocation (ssi_ineligible_child_allocation, read in msp_spouse_income); msp_countable_income.yaml Case 35
+    is the household in the example. The Texas amounts are the gaps between its couple and individual limits for each
+    program ($1,804 - $1,330, $2,164 - $1,596, $2,435 - $1,796). For QMB the $474 deems more income than SSI''s $497
+    would; for SLMB and QI-1 the Texas amounts deem less. With no ineligible children, the tiers differ only when the
+    spouse has more than $474 and up to $497, the applicant''s own income is within the one-person QMB limit and the
+    deemed income is above the QMB couple limit. With ineligible children the allocations differ in both directions,
+    and Cases 24 and 37 keep their tiers either way. Following the handbook would need a Texas allowance parameter for
+    each program.'
 - id: us-tx:ssi-facility-supplement-amount-and-start
   program: ssi-state-supplement
   years:
@@ -13863,6 +14251,62 @@ candidates:
     payment covers only their own Direct and FFEL loans; (e)(2)(i) brings the spouse's loans in only for (g). A couple
     whose income-based amount exceeds both standard payments pays each standard payment times the balance share,
     so at equal balances and rates half their combined standard amount.
+- id: us:medicaid-abd-budgeting-together-stricter-than-ssi
+  program: medicaid
+  years:
+    from: 2015
+    type: program
+    note: program year as the program defines it
+  question: Outside the 209(b) states, may a state count a spouse's income below SSI's deeming threshold and test the
+    couple against the couple standard, as its own rule says, where that makes ineligible an aged, blind or disabled
+    applicant whom SSI's rule would test alone and find eligible?
+  sources:
+  - kind: regulation
+    citation: 42 CFR 435.601(b), (d)(2)(i) and (d)(3)
+    url: https://www.law.cornell.edu/cfr/text/42/435.601
+  - kind: regulation
+    citation: 42 CFR 435.602(a)(2)(i) and (b)
+    url: https://www.law.cornell.edu/cfr/text/42/435.602
+  - kind: regulation
+    citation: 20 CFR 416.1163(d)(1)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  - kind: manual
+    citation: AHCCCS Eligibility Policy Manual MA611 A, Calculation for Customer and Spouse
+    url: https://epm.azahcccs.gov/epmplus/Policy/Chapter_600_Income_Eligibility/611_How_to_Calculate_Income_Eligibility_for_SSIMAO/611A.htm
+  - kind: regulation
+    citation: 10 CCR 2505-10 8.100.7.C.2 (Colorado)
+    url: https://www.law.cornell.edu/regulations/colorado/10-CCR-2505-10-8.100_v2
+  readings:
+    regulation: '42 CFR 435.601(d)(2) lets a state''s methodologies be "less restrictive, but no more restrictive
+      (except in States using more restrictive requirements than SSI), than" the SSI methodologies for aged, blind and
+      disabled groups, and (d)(3) counts a methodology as no more restrictive only if "no individuals who are
+      otherwise eligible are by use of that methodology made ineligible for Medicaid". 42 CFR 435.602(b) allows
+      "More extensive requirements for relative responsibility" only in "States that apply eligibility requirements
+      more restrictive than those used under SSI". Under 20 CFR 416.1163(d)(1), a spouse''s income of not more than
+      the rate difference leaves "no income to deem".'
+    other: 'The state rules count the spouse''s income with no threshold. Arizona''s MA611 A has the worker "Total the
+      customer''s and spouse''s counted unearned income" and compare the result to the standard "for a couple".
+      Colorado''s 8.100.7.C.2 says "The income and resources of both spouses are counted in determining eligibility
+      for either or both spouses". 42 CFR 435.602(a)(2)(i) itself lets a state consider a spouse''s income as
+      available to an individual.'
+  example: An applicant, 70, has Social Security of $16,200 a year and a spouse, 50, has interest of $5,964, which is
+    exactly SSI's threshold. In Arizona the couple's $21,924 is above the two-person $21,640 and the applicant is not
+    eligible. Under SSI's rule the applicant is tested alone, and $15,960 is within the one-person $15,960.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/budgets_couple_together.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/medically_needy/limit/income/budgets_couple_together.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10640
+  state: ruled
+  note: 'PE-US follows each state''s own rule. The project lead''s general rule of 2026-11-02 says the model follows a
+    state''s rule where it differs from SSI''s deeming rule, and on 2026-11-10 the lead confirmed that it applies
+    outside the 209(b) states too: Alaska, Arizona, Colorado, Indiana, Massachusetts, Michigan, Nebraska, South
+    Carolina, Vermont and Wisconsin in the aged, blind and disabled pathway, and Arkansas, California, Kansas,
+    Massachusetts, Maryland, Michigan, Nebraska, Vermont and Wisconsin in medically needy. The stricter result arises
+    only in a narrow band, for example a spouse''s income between $473 and $497 a month against poverty-level
+    standards. Ruled by the project lead, 2026-11-10: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6812820779'
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:
@@ -13904,6 +14348,110 @@ candidates:
     share falls below the exact federal share. Settling the federal reading (rulespec-us#1413) and using it for
     Hawaii too would make that floor unnecessary. New York (ny_mortgage_interest_deduction) allows the larger of
     the three-place share and the exact ratio.'
+- id: us:msp-couple-standard-one-spouse-on-medicare
+  program: medicare-savings-programs
+  years:
+    from: 2026
+    type: calendar
+  question: When only one spouse is on Medicare and the two are an eligible SSI couple, do the Medicare Savings Programs
+    test the applicant with the spouse, on combined income against the two-person guideline, or alone against the
+    one-person guideline?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396d(p)(1)(B) and (p)(2)(A)
+    url: https://www.law.cornell.edu/uscode/text/42/1396d
+  - kind: regulation
+    citation: 20 CFR 416.1801(c)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1801
+  - kind: regulation
+    citation: 20 CFR 416.1160(d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1160
+  - kind: guidance
+    citation: HCFA Center for Medicaid and State Operations memorandum, October 2, 1997, Policy Governing Family Size
+      in Determining Eligibility for Qualified Medicare Beneficiaries and Specified Low Income Beneficiaries
+    url: https://www.medicaid.gov/sites/default/files/2019-12/medicaid-eligibilty-memo.pdf#page=2
+  - kind: manual
+    citation: Texas MEPD Handbook, Appendix IX
+    url: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-ix-medicare-savings-program-information
+  - kind: manual
+    citation: Texas MEPD Handbook, E-7200
+    url: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/e-7200-when-deeming-procedures-are-not-used
+  readings:
+    statute: 'Section 1396d(p)(1)(B) measures income "as determined under section 1382a of this title for purposes of
+      the supplemental security income program", and (p)(2)(A) sets the limit by the poverty line "applicable to a
+      family of the size involved". Neither says who is in the family. 20 CFR 416.1801(c) defines an eligible spouse
+      as a person "Who is eligible for SSI", so two spouses who are each eligible for SSI are a couple whether or not
+      both are on Medicare.'
+    other: 'The 1997 memorandum describes the federal default: "those eligible under the various SSI-related poverty
+      level groups were treated as individuals or, if both members of a couple were eligible, as a couple". Texas
+      Appendix IX: "Use the couple income range when both spouses are applying for the same program. Use the individual
+      income range to test eligibility for each spouse separately if both are not eligible." Texas E-7200 does not
+      deem income from a spouse who "is eligible for SSI".'
+  example: A Texas applicant, 68, on Medicare with $1,400 a month and a disabled spouse, 62, with no income and not on
+    Medicare are an eligible SSI couple. Tested together, $1,380 is within the two-person $1,803.33 and QMB; tested
+    alone, $1,380 is above the one-person $1,330 and SLMB.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/_msp_spouse_income.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_tests_as_couple.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10633
+  state: ruled
+  note: 'PE-US tests the applicant alone unless both spouses are on Medicare, following the 1997 memorandum and the
+    Texas handbook, and deems nothing from a spouse who is eligible for SSI, who is not an ineligible spouse under 20
+    CFR 416.1160(d) (msp_spouses_combine_income and msp_spouse_income; msp_countable_income.yaml Cases 26 and 33). The
+    ruled candidate us:msp-eligible-spouse-ssi-definition settles a different question: whether an aged, blind or
+    disabled spouse who is not eligible for SSI is an eligible spouse. Ruled by the project lead, 2026-11-10:
+    https://github.com/PolicyEngine/policyengine-us/pull/10633'
+- id: us:msp-eligible-spouse-ssi-definition
+  program: medicare-savings-programs
+  years:
+    from: 2026
+    type: calendar
+  question: Under SSI methodology for the Medicare Savings Programs, is a spouse who is aged, blind or disabled but not
+    eligible for SSI an eligible spouse, whose income is combined, or an ineligible spouse, whose income is deemed?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1382c(b) and (f)(1)
+    url: https://www.law.cornell.edu/uscode/text/42/1382c
+  - kind: regulation
+    citation: 20 CFR 416.1801(c)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1801
+  - kind: regulation
+    citation: 20 CFR 416.1160(d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1160
+  - kind: regulation
+    citation: 20 CFR 416.1163(b) and (d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1163
+  - kind: manual
+    citation: POMS SI 00501.154 A.1
+    url: https://secure.ssa.gov/poms.nsf/lnx/0500501154
+  readings:
+    statute: 'Section 1382c(b) defines an eligible spouse as "an aged, blind, or disabled individual" married to and
+      living with another such individual, and (f)(1) deems income from a spouse who "is not an eligible spouse".'
+    other: '416.1801(c) defines an eligible spouse as a person "Who is eligible for SSI"; 416.1160(d) defines an
+      ineligible spouse as someone who "is not eligible for SSI benefits"; POMS SI 00501.154 A.1 applies couple
+      computation rules if "each is eligible for benefits". 416.1163 then allocates to ineligible children and deems
+      only a remainder above the rate difference.'
+  example: A, on Medicare, has $1,000 a month and B, 62 and disabled, has $1,500, with two ineligible children. Under
+    deeming it is $1,000 + ($1,500 - 2 x $497) - $20 = $1,486 and QMB. When this was ruled, the statute's reading combined
+    the two, $2,480 and no tier; since the ruling of 2026-11-10 (us:msp-couple-standard-one-spouse-on-medicare) it would
+    leave A alone, $980 and QMB.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_tests_as_couple.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/_msp_spouse_income.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_countable_income.py
+    - policyengine_us/variables/gov/hhs/medicare/savings_programs/income/msp_fpg.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10633
+  state: ruled
+  note: 'PE-US follows the regulations for the Medicare Savings Programs: spouses are an eligible couple only if each
+    is eligible for SSI, and any other spouse is an ineligible spouse, with income deemed above the rate difference.
+    The SSI variables (is_ssi_ineligible_spouse, ssi_couple_computation_applies) still classify by aged, blind or
+    disabled status. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10633'
 - id: us:niit-excess-business-loss-addback
   program: income-tax
   years:
@@ -14268,6 +14816,79 @@ candidates:
     which counts any SSI receipt among the benefits in gov.usda.disabled_programs (is_snap_alien_waiting_period_exempt.py,
     is_usda_disabled.py, disabled_programs.yaml). The statute-first rule requires revising the any-SSI exemption
     if the narrower reading holds; first check the cross-referenced disability definition and the preamble''s scope.'
+- id: us:ssi-parent-allowance-state-supplement
+  program: ssi
+  years:
+    from: 2026
+    type: calendar
+  question: When a lone aged, blind or disabled parent, or two such parents on a joint claim, are ineligible because of
+    excess income, is the parents' allowance before deeming to a child the Federal benefit rate alone, or the Federal
+    benefit rate plus the federally administered State supplement?
+  sources:
+  - kind: regulation
+    citation: 20 CFR 416.1165(d)(3)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1165
+  - kind: regulation
+    citation: 20 CFR 416.1166
+    url: https://www.law.cornell.edu/cfr/text/20/416.1166
+  - kind: manual
+    citation: POMS SI 01320.630 B.1
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320630
+  readings:
+    statute: '416.1165(d)(3) subtracts "(i) The Federal benefit rate for the month for a couple if both parents live with
+      you; or (ii) The Federal benefit rate for the month for an individual if only one parent lives with you." The
+      section names a State supplement only in (e)(3), for the child''s own benefit. 416.1166 adds that "For the purpose
+      of this section, SSI benefits include any federally administered State supplement", which covers a parent with an
+      ineligible spouse.'
+    other: 'POMS SI 01320.630 B.1, for parents who filed for SSI and are ineligible because of excess income: "Only the
+      countable income in excess of what is required to reduce the parents'' FBR and any Federally-administered State
+      supplement to zero is available for deeming."'
+  example: In California in 2026, a lone disabled parent with a $60,000 pension and a disabled child deems 59,760 - 11,928
+    = $47,832 a year under the regulation and 59,760 - (11,928 + 239.94 x 12) = $44,952.72 under the POMS. In the model
+    the readings differ only in California, New Jersey and Vermont, whose federally administered supplements reach a
+    parent at home in every category; under the POMS reading, Nevada's and Iowa's supplements at home would also count
+    for some parents.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/ssi_ineligible_parent_allocation.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10630
+  state: ruled
+  note: "Follows the POMS, which avoids a jump in deemed income where a parent's income passes the federal rate plus the
+    supplement. Ruled by the project lead, 2026-11-12: https://github.com/PolicyEngine/policyengine-us/pull/10630#issuecomment-6840530008.
+    2026 is the year checked; the POMS text is TN 49 (10/2024)."
+- id: us:ssi-parental-child-allocation-order
+  program: ssi
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: For a parent ineligible because of excess income, does the ineligible-child allocation come off the parent's
+    income before the income exclusions and the parent allocation, or off the excess over the parent's benefit rate?
+  sources:
+  - kind: regulation
+    citation: 20 CFR 416.1165(b), (d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1165
+  - kind: manual
+    citation: POMS SI 01320.630 B.1-2
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320630
+  readings:
+    statute: 416.1165(b) says "We next deduct an allocation for each ineligible child in the household", and only then
+      does 416.1165(d) apply the $20, the $65 plus one-half and the benefit rate.
+    other: 'SI 01320.630 B.2 says "From the amount in excess of what is required to reduce the individual''s (parent)
+      or couple''s (both parents) payment to zero, subtract an allocation for each ineligible child."'
+  example: In 2026 an aged parent with $4,000 of monthly wages, a disabled child and a non-disabled child deems $8,580
+    a year under the regulation and $5,598 under the POMS order. The orders differ only when the allocation falls on
+    earned income.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_parent/ssi_unearned_income_deemed_from_ineligible_parent.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10630
+  state: ruled
+  note: "Keeps the regulation's order. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10630#issuecomment-6840530008"
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:

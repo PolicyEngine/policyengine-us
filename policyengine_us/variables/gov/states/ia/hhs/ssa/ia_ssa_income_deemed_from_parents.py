@@ -51,7 +51,7 @@ class ia_ssa_income_deemed_from_parents(Variable):
         # NOTE: As in resources deeming, the allowance follows the number of
         # co-resident deemors including a parent who receives SSI, so one SSI
         # parent with an ineligible parent gives the couple allowance. Federal
-        # ssi_ineligible_parent_allocation counts only ineligible parents; 6-B
+        # ssi_ineligible_parent_allocation does the same only for spouses; 6-B
         # and 441 IAC 177 are silent on this case.
         allowance = where(parent_count > 1, ssi.amount.couple, ssi.amount.individual)
         pool_count = int(np.max(pool, initial=-1)) + 1

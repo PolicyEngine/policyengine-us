@@ -6,16 +6,18 @@ class msp_fpg(Variable):
     entity = Person
     unit = USD
     label = "MSP Federal Poverty Guideline"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396d#p",
+        "https://www.law.cornell.edu/cfr/text/20/416.1163",
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
     )
     documentation = """
-    The Federal Poverty Guideline used for MSP eligibility is based on
+    The monthly Federal Poverty Guideline used for MSP eligibility is based on
     individual or couple status, not the full household/SPM unit size.
     Per 42 U.S.C. 1396d(p), MSP income limits are based on the federal
-    poverty line for a family of the size involved.
+    poverty line for a family of the size involved. The family is two people
+    when msp_tests_as_couple is true, and one otherwise.
 
     Note: Published Medicare.gov limits are $20/month higher than raw FPL
     because they include the $20 general income exclusion in the threshold.
@@ -29,12 +31,11 @@ class msp_fpg(Variable):
         # Note: These are raw FPL values. Published limits are $20 higher
         # because we apply the $20 exclusion to income (msp_countable_income)
         # rather than adding it to the threshold.
-        married = person.spm_unit("spm_unit_is_married", period.this_year)
+        tests_as_couple = person("msp_tests_as_couple", period)
         state_group = person.household("state_group_str", period)
         p = parameters(period).gov.hhs.fpg
         p1 = p.first_person[state_group]
         pn = p.additional_person[state_group]
-        # 1 person if single, 2 persons if married
         individual_fpg = p1
         couple_fpg = p1 + pn
-        return where(married, couple_fpg, individual_fpg)
+        return where(tests_as_couple, couple_fpg, individual_fpg) / MONTHS_IN_YEAR

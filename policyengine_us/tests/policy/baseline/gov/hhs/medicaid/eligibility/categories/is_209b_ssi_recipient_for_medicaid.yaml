@@ -256,8 +256,9 @@
         state_code: VA
   output:
     ssi: [196, 196, 0]
-    # The couple's budget is 17,500, above 12,768 (0.80 x 15,960). Deducting
-    # the third adult's 5,000 would leave 12,500, under it.
+    # The couple's budget is 17,500, above the couple limit of 17,312
+    # (0.80 x 21,640). Deducting the third adult's 5,000 would leave 12,500,
+    # under it.
     is_209b_ssi_recipient_for_medicaid: [false, false, false]
 
 - name: Case 20, Connecticut unrelated adult's spend-down budget leaves out a couple's medical expenses when marital units are omitted.
