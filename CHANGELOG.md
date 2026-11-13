@@ -1,3 +1,24 @@
+## [2.119.0] - 2026-11-13
+
+### Added
+
+- Add source-backed 2017 Medicaid MAGI income-limit histories for New York parents, children, infants, and pregnant people.
+
+
+## [2.118.11] - 2026-11-13
+
+### Fixed
+
+- Start the California Young Child Tax Credit in tax year 2019 and record its 2019 and 2020 amounts and eligibility rules.
+
+
+## [2.118.10] - 2026-11-13
+
+### Fixed
+
+- California's aged, blind and disabled FPL program deducts a couple's unmarried tax dependents' health insurance premiums whatever their marital unit, including when the spouses file separately.
+
+
 ## [2.118.9] - 2026-11-13
 
 ### Fixed
