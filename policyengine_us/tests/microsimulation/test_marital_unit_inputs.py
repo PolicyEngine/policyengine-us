@@ -429,3 +429,18 @@ def test_a_reform_to_the_age_limit_changes_the_couple():
     # reformed one (under 30), so only the baseline pairs them.
     assert len(set(baseline.marital_unit.members_entity_id.tolist())) == 1
     assert len(set(reformed.marital_unit.members_entity_id.tolist())) == 2
+
+
+def test_undated_role_inputs_set_units_for_the_default_input_year():
+    # A known limitation: the undated inputs land in 2024, where the
+    # grandchild's false spouse input leaves the roles without a couple, so
+    # the grandparents get their own units. In 2026, with no role input, the
+    # role formulas run again and pair them, which the units don't follow.
+    people = {
+        "husband": {"age": 70},
+        "wife": {"age": 68},
+        "grandchild": {"age": 10, "is_tax_unit_spouse": False},
+    }
+    sim = Simulation(situation={"people": people})
+    assert len(set(sim.marital_unit.members_entity_id.tolist())) == 3
+    assert sim.calculate("is_tax_unit_spouse", 2026).tolist() == [False, True, False]

@@ -34,8 +34,9 @@ applies, and gives everyone else their own unit:
    step gives them.
 
 The fourth step reads the same inputs and parameters as the role formulas, so
-the units it builds agree with the inferred tax roles: a couple sent without
-marriage information is a couple for SSI and Medicaid as well as for tax, and
+the units it builds agree with the inferred tax roles in the years the inputs
+are dated for: a couple sent without marriage information is a couple for SSI
+and Medicaid as well as for tax, and
 a parent's adult child who meets the age test is neither. When anyone in a
 situation supplies a role, student or age input for a year, Core gives everyone
 else that variable's default for the year instead of running its formula, and
@@ -63,6 +64,12 @@ Known limitations, which callers avoid by supplying `marital_units`:
 - A lone true `is_tax_unit_spouse` input on the oldest adult makes that person
   both head and spouse in the role formulas, as on main; the fourth step pairs
   them with the next adult.
+- Marital units follow the years the inputs are dated for, while the role
+  formulas run again in any year without a role input. So a calculation for
+  another year can give roles the units don't match. For example, a
+  grandchild's undated `is_tax_unit_spouse: false` lands in the default input
+  year (2024), so the grandparents get their own units, while a 2026
+  calculation still makes them head and spouse.
 
 These rules apply to Python household simulations and entity-form YAML tests,
 including tests with reforms or inline parameters. Variable-only tests keep

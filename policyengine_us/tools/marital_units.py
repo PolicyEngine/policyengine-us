@@ -154,7 +154,9 @@ def infer_missing_marital_units(situation, default_period=None, system=None):
     never read: step 4 reads the same inputs and parameters the role
     formulas read, including the defaults Core fills in for everyone once
     anyone supplies a variable for a year, so the units it builds agree with
-    the inferred tax roles.
+    the inferred tax roles in the years the inputs are dated for. A
+    calculation for another year, where the role formulas run again, can
+    give roles the units don't match.
     Core calls this hook on a private copy before building populations;
     malformed input is left to its validation.
     """
