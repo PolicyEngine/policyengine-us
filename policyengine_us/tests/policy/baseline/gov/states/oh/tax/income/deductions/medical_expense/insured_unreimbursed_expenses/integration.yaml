@@ -20,7 +20,9 @@
     other_medical_expenses: 600
     employer_contribution_to_health_insurance_premiums_category: "SOME"
   output:
-    oh_insured_unreimbursed_medical_care_expenses: 0
+    # Medicare eligible, so the premiums are on line 3 whatever the employer
+    # paid: 500 + 600 - 10,000 * 7.5% = 350.
+    oh_insured_unreimbursed_medical_care_expenses: 350
 
 - name: moop > agi * rate
   period: 2022
@@ -106,5 +108,7 @@
         members: [head, spouse]
         state_code: OH
   output:
-    oh_insured_unreimbursed_medical_care_expenses: 950 
+    # Both are Medicare eligible, so both spouses' premiums are on line 3:
+    # 300 + 500 + 200 + 300 - 2,000 * 7.5% = 1,150.
+    oh_insured_unreimbursed_medical_care_expenses: 1_150 
 

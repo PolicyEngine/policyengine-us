@@ -29,3 +29,15 @@
     is_aca_ptc_eligible: [false, true, true]
     tax_unit_medicaid_income_level: 3.37
     aca_magi_fraction: 3.48
+
+- name: Section 911 adds back Form 2555 lines 45 and 50, before disallowed deductions
+  period: 2025
+  input:
+    adjusted_gross_income: 40_000
+    section_911_excluded_income: 25_000
+    # The rate stacking amount after 10,000 of disallowed deductions.
+    foreign_earned_income_exclusion: 15_000
+  output:
+    # Form 8962 Worksheet 1-1 line 3 takes Form 2555 lines 45 and 50.
+    medicaid_magi: 65_000
+    aca_magi: 65_000

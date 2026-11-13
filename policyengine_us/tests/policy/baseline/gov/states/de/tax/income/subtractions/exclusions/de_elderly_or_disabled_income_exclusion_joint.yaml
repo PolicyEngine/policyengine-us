@@ -3,6 +3,7 @@
   input:
     filing_status: SEPARATE
     de_elderly_or_disabled_income_exclusion_eligible_person: true
+    state_code: DE
   output:
     de_elderly_or_disabled_income_exclusion_joint: 2_000
 
@@ -11,71 +12,176 @@
   input:
     filing_status: SEPARATE
     de_elderly_or_disabled_income_exclusion_eligible_person: false
+    state_code: DE
   output:
     de_elderly_or_disabled_income_exclusion_joint: 0
 
-- name: Joint filing status with two eligible people
+# Joint returns: 30 Del. C. § 1106(b)(2) and the PIT-RES line 11 worksheet
+# test the couple. Both spouses must be 60 or older or disabled, their combined
+# earned income under $5,000, and the joint line 10 $20,000 or less. Each
+# spouse's column gets half of the $4,000.
+
+- name: Joint return, both spouses 60 or older with no income.
   period: 2023
   input:
     people:
-      person1:
-        is_tax_unit_head: true
-        de_elderly_or_disabled_income_exclusion_eligible_person: true
-      person2:
-        is_tax_unit_spouse: true
-        de_elderly_or_disabled_income_exclusion_eligible_person: true
+      head:
+        age: 65
+      spouse:
+        age: 62
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [head, spouse]
         filing_status: JOINT
     households:
       household:
-        members: [person1, person2]
+        members: [head, spouse]
         state_code: DE
   output:
     de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000]
 
-- name: Joint filing status with one eligible person
+- name: Joint return, one spouse under 60 and not disabled.
   period: 2023
   input:
     people:
-      person1:
-        is_tax_unit_head: true
-        de_elderly_or_disabled_income_exclusion_eligible_person: true
-      person2:
-        is_tax_unit_spouse: true
-        de_elderly_or_disabled_income_exclusion_eligible_person: false
+      head:
+        age: 65
+      spouse:
+        age: 55
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [head, spouse]
         filing_status: JOINT
     households:
       household:
-        members: [person1, person2]
+        members: [head, spouse]
         state_code: DE
   output:
     de_elderly_or_disabled_income_exclusion_joint: [0, 0]
 
-- name: Joint filing status with two eligible people
+- name: Joint return, a disabled spouse under 60 qualifies with an older spouse.
   period: 2023
   input:
     people:
-      person1:
-        is_tax_unit_head: true
-        de_elderly_or_disabled_income_exclusion_eligible_person: true
-      person2:
-        is_tax_unit_spouse: true
-        de_elderly_or_disabled_income_exclusion_eligible_person: true
-      person3:
-        is_tax_unit_spouse: true
-        de_elderly_or_disabled_income_exclusion_eligible_person: false
+      head:
+        age: 50
+        is_disabled: true
+      spouse:
+        age: 61
     tax_units:
       tax_unit:
-        members: [person1, person2, person3]
+        members: [head, spouse]
         filing_status: JOINT
     households:
       household:
-        members: [person1, person2, person3]
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000]
+
+- name: Joint return, combined earned income under $5,000 qualifies one spouse's $4,000.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 66
+        # Above the $2,500 individual limit, below the $5,000 joint limit.
+        earned_income: 4_000
+        de_pre_exclusions_agi: 4_000
+      spouse:
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000]
+
+- name: Joint return, combined earned income of $5,000 does not qualify.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 66
+        earned_income: 2_500
+      spouse:
+        age: 64
+        earned_income: 2_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: [0, 0]
+
+- name: Joint return, line 10 of $20,000 qualifies though one spouse has $15,000.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 70
+        de_pre_exclusions_agi: 15_000
+      spouse:
+        age: 68
+        de_pre_exclusions_agi: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000]
+
+- name: Joint return, line 10 over $20,000 does not qualify.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 70
+        de_pre_exclusions_agi: 15_000
+      spouse:
+        age: 68
+        de_pre_exclusions_agi: 5_001
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: [0, 0]
+
+- name: Joint return, a dependent gets no exclusion.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 65
+      spouse:
+        age: 62
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
         state_code: DE
   output:
     de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000, 0]

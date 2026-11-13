@@ -1,0 +1,40 @@
+# California earned income: California wages (W-2 box 16), which keep
+# payroll HSA contributions (Schedule CA (540) line 1h), plus net earnings
+# from self-employment (FTB 3506 line 4), floored at zero once.
+- name: Payroll HSA contribution counts, a 401(k) deferral does not
+  period: 2025
+  input:
+    employment_income: 10_000
+    traditional_401k_contributions_desired: 1_000
+    health_savings_account_payroll_contributions: 1_000
+    state_code: CA
+  output:
+    # Federal: 10,000 - 1,000 - 1,000 = 8,000.
+    adjusted_earnings: 8_000
+    # California: 10,000 - 1,000 = 9,000.
+    ca_adjusted_earnings: 9_000
+
+- name: A self-employment loss offsets the California wages before the zero floor
+  period: 2025
+  input:
+    employment_income: 4_000
+    health_savings_account_payroll_contributions: 1_000
+    self_employment_income: -3_500
+    state_code: CA
+  output:
+    # Federal: max(3,000 - 3,500, 0) = 0.
+    adjusted_earnings: 0
+    # California: max(4,000 - 3,500, 0) = 500, not 0 + 1,000.
+    ca_adjusted_earnings: 500
+
+- name: A self-employment loss larger than the California wages leaves zero
+  period: 2025
+  input:
+    employment_income: 4_000
+    health_savings_account_payroll_contributions: 1_000
+    self_employment_income: -5_000
+    state_code: CA
+  output:
+    adjusted_earnings: 0
+    # max(4,000 - 5,000, 0) = 0.
+    ca_adjusted_earnings: 0

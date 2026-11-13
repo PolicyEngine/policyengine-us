@@ -1,0 +1,44 @@
+- name: Modeled benefits sum all four OASDI components and exclude SSI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      retiree:
+        age: 70
+        social_security_retirement: 12_000
+        social_security_survivors: 6_000
+        ssi: 2_000
+      dependent:
+        age: 16
+        social_security_dependents: 2_400
+      disabled_worker:
+        age: 50
+        social_security_disability: 3_600
+    tax_units:
+      tax_unit:
+        members: [retiree, dependent, disabled_worker]
+    spm_units:
+      spm_unit:
+        members: [retiree, dependent, disabled_worker]
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [retiree, dependent, disabled_worker]
+        state_code: TX
+  output:
+    social_security: [18_000, 2_400, 3_600]
+    # $18,000 + $2,400 + $3,600; the $2,000 of SSI is not an OASDI benefit.
+    oasdi_cost: 24_000
+
+- name: Modeled benefits follow enabled benefit levers
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.ssa.benefit_levers.across_the_board.start_year: 2027
+    gov.contrib.ssa.benefit_levers.across_the_board.rate: 0.08
+    social_security_retirement_reported: 12_000
+    social_security_survivors_reported: 6_000
+  output:
+    # 1.08 * ($12,000 + $6,000) = $19,440.
+    social_security: 19_440
+    oasdi_cost: 19_440

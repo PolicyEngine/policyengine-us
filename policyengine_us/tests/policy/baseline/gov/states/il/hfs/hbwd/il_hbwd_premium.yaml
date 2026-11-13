@@ -7,10 +7,10 @@
     il_hbwd_countable_earned_income: 2_000
     il_hbwd_countable_unearned_income: 0
   output:
-    il_hbwd_premium: 50
-    # Earned $2,000 → bracket 8 (2001-2250) → $50
-    # Unearned $0 → bracket 0 → $0
-    # Total: $50
+    il_hbwd_premium: 44
+    # Earned $2,000 → 1751-2000 band → $44
+    # Unearned $0 → 0-250 band → $0
+    # Total: $44
 
 - name: Case 2, premium with earned and unearned.
   period: 2024-01
@@ -21,10 +21,10 @@
     il_hbwd_countable_earned_income: 1_000
     il_hbwd_countable_unearned_income: 1_200
   output:
-    il_hbwd_premium: 100
-    # Earned $1,000 → bracket 4 (1001-1250) → $25
-    # Unearned $1,200 → bracket 4 (1001-1250) → $75
-    # Total: $25 + $75 = $100
+    il_hbwd_premium: 94
+    # Earned $1,000 → 751-1000 band → $19
+    # Unearned $1,200 → 1001-1250 band → $75
+    # Total: $19 + $75 = $94
 
 - name: Case 3, premium with higher income.
   period: 2024-01
@@ -35,27 +35,26 @@
     il_hbwd_countable_earned_income: 3_000
     il_hbwd_countable_unearned_income: 2_000
   output:
-    il_hbwd_premium: 225
-    # Earned $3,000 → bracket 12 (3001-3250) → $75
-    # Unearned $2,000 → bracket 8 (2001-2250) → $150
-    # Total: $75 + $150 = $225
+    il_hbwd_premium: 200
+    # Earned $3,000 → 2751-3000 band → $69
+    # Unearned $2,000 → 1751-2000 band → $131
+    # Total: $69 + $131 = $200
 
-- name: Case 4, premium capped at $500.
+- name: Case 4, income above $5,000 of each type pays the chart's highest premium.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
     state_code: IL
     il_hbwd_eligible: true
-    il_hbwd_countable_earned_income: 5_000
-    il_hbwd_countable_unearned_income: 5_000
+    il_hbwd_countable_earned_income: 5_001
+    il_hbwd_countable_unearned_income: 5_001
   output:
     il_hbwd_premium: 500
-    # Earned $5,000+ → bracket 20 → $125
-    # Unearned $5,000+ → bracket 20 → $375
-    # Uncapped: $500
-    # Capped: $500
+    # Earned above $5,000 → 5000+ band → $125
+    # Unearned above $5,000 → 5000+ band → $375
+    # Total: $500, the chart's highest premium
 
-- name: Case 5, no premium in first bracket.
+- name: Case 5, no premium in the 0-250 band.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -65,11 +64,11 @@
     il_hbwd_countable_unearned_income: 0
   output:
     il_hbwd_premium: 0
-    # Earned $200 → bracket 0 (0-250) → $0
-    # Unearned $0 → bracket 0 → $0
+    # Earned $200 → 0-250 band → $0
+    # Unearned $0 → 0-250 band → $0
     # Total: $0
 
-- name: Case 6, verify bracket boundary at $250.
+- name: Case 6, income of exactly $250 is in the 0-250 band.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -78,7 +77,226 @@
     il_hbwd_countable_earned_income: 250
     il_hbwd_countable_unearned_income: 250
   output:
-    il_hbwd_premium: 25
-    # Earned $250 → bracket 1 (251-500) → $6
-    # Unearned $250 → bracket 1 (251-500) → $19
-    # Total: $6 + $19 = $25
+    il_hbwd_premium: 0
+    # Earned $250 → 0-250 band → $0
+    # Unearned $250 → 0-250 band → $0
+    # Total: $0
+
+- name: Case 7, married couple both disabled, each premium uses only their own withholding.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        employment_income: 25_200  # $2,100/month
+      person2:
+        age: 40
+        is_disabled: true
+        employment_income: 25_200  # $2,100/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    il_hbwd_eligible: [true, true]
+    # Each: 2,100 - (92.19 own IL withholding + 130.20 Social Security tax)
+    #   - 25 (flat) - 50 (20 + 0.5 x 60) = 1,802.61
+    il_hbwd_countable_earned_income: [1_802.61, 1_802.61]
+    il_hbwd_countable_unearned_income: [0, 0]
+    il_hbwd_premium: [44, 44]
+    # Earned $1,802.61 → 1751-2000 band → $44
+    # Unearned $0 → 0-250 band → $0
+    # Deducting the couple's combined withholding would give 1,710.41 → $38
+
+- name: Case 8, income of exactly $5,000 is in the 4751-5000 band, not the 5000+ band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 5_000
+    il_hbwd_countable_unearned_income: 5_000
+  output:
+    il_hbwd_premium: 475
+    # Earned $5,000 → 4751-5000 band → $119
+    # Unearned $5,000 → 4751-5000 band → $356
+    # Total: $119 + $356 = $475
+
+- name: Case 9, earned income at each band start (251, 501, ..., 5,001) pays that band's premium.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 251, il_hbwd_countable_unearned_income: 0}
+      person2: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 501, il_hbwd_countable_unearned_income: 0}
+      person3: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 751, il_hbwd_countable_unearned_income: 0}
+      person4: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 1_001, il_hbwd_countable_unearned_income: 0}
+      person5: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 1_251, il_hbwd_countable_unearned_income: 0}
+      person6: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 1_501, il_hbwd_countable_unearned_income: 0}
+      person7: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 1_751, il_hbwd_countable_unearned_income: 0}
+      person8: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 2_001, il_hbwd_countable_unearned_income: 0}
+      person9: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 2_251, il_hbwd_countable_unearned_income: 0}
+      person10: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 2_501, il_hbwd_countable_unearned_income: 0}
+      person11: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 2_751, il_hbwd_countable_unearned_income: 0}
+      person12: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 3_001, il_hbwd_countable_unearned_income: 0}
+      person13: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 3_251, il_hbwd_countable_unearned_income: 0}
+      person14: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 3_501, il_hbwd_countable_unearned_income: 0}
+      person15: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 3_751, il_hbwd_countable_unearned_income: 0}
+      person16: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 4_001, il_hbwd_countable_unearned_income: 0}
+      person17: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 4_251, il_hbwd_countable_unearned_income: 0}
+      person18: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 4_501, il_hbwd_countable_unearned_income: 0}
+      person19: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 4_751, il_hbwd_countable_unearned_income: 0}
+      person20: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 5_001, il_hbwd_countable_unearned_income: 0}
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10,
+          person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        state_code: IL
+  output:
+    il_hbwd_premium: [6, 13, 19, 25, 31, 38, 44, 50, 56, 63, 69, 75, 81, 88, 94, 100, 106, 113, 119, 125]
+    # First column of the chart, bands 251-500 through 5000+.
+
+- name: Case 10, earned income one dollar below each band start (250, 500, ..., 5,000) pays the lower band's premium.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 250, il_hbwd_countable_unearned_income: 0}
+      person2: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 500, il_hbwd_countable_unearned_income: 0}
+      person3: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 750, il_hbwd_countable_unearned_income: 0}
+      person4: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 1_000, il_hbwd_countable_unearned_income: 0}
+      person5: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 1_250, il_hbwd_countable_unearned_income: 0}
+      person6: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 1_500, il_hbwd_countable_unearned_income: 0}
+      person7: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 1_750, il_hbwd_countable_unearned_income: 0}
+      person8: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 2_000, il_hbwd_countable_unearned_income: 0}
+      person9: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 2_250, il_hbwd_countable_unearned_income: 0}
+      person10: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 2_500, il_hbwd_countable_unearned_income: 0}
+      person11: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 2_750, il_hbwd_countable_unearned_income: 0}
+      person12: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 3_000, il_hbwd_countable_unearned_income: 0}
+      person13: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 3_250, il_hbwd_countable_unearned_income: 0}
+      person14: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 3_500, il_hbwd_countable_unearned_income: 0}
+      person15: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 3_750, il_hbwd_countable_unearned_income: 0}
+      person16: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 4_000, il_hbwd_countable_unearned_income: 0}
+      person17: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 4_250, il_hbwd_countable_unearned_income: 0}
+      person18: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 4_500, il_hbwd_countable_unearned_income: 0}
+      person19: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 4_750, il_hbwd_countable_unearned_income: 0}
+      person20: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 5_000, il_hbwd_countable_unearned_income: 0}
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10,
+          person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        state_code: IL
+  output:
+    il_hbwd_premium: [0, 6, 13, 19, 25, 31, 38, 44, 50, 56, 63, 69, 75, 81, 88, 94, 100, 106, 113, 119]
+    # First column of the chart, bands 0-250 through 4751-5000.
+
+- name: Case 11, unearned income at each band start (251, 501, ..., 5,001) pays that band's premium.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 251}
+      person2: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 501}
+      person3: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 751}
+      person4: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 1_001}
+      person5: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 1_251}
+      person6: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 1_501}
+      person7: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 1_751}
+      person8: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 2_001}
+      person9: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 2_251}
+      person10: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 2_501}
+      person11: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 2_751}
+      person12: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 3_001}
+      person13: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 3_251}
+      person14: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 3_501}
+      person15: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 3_751}
+      person16: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 4_001}
+      person17: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 4_251}
+      person18: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 4_501}
+      person19: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 4_751}
+      person20: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 5_001}
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10,
+          person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        state_code: IL
+  output:
+    il_hbwd_premium: [19, 38, 56, 75, 94, 113, 131, 150, 169, 188, 206, 225, 244, 263, 281, 300, 319, 338, 356, 375]
+    # First row of the chart, bands 251-500 through 5000+.
+
+- name: Case 12, unearned income one dollar below each band start (250, 500, ..., 5,000) pays the lower band's premium.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 250}
+      person2: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 500}
+      person3: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 750}
+      person4: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 1_000}
+      person5: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 1_250}
+      person6: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 1_500}
+      person7: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 1_750}
+      person8: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 2_000}
+      person9: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 2_250}
+      person10: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 2_500}
+      person11: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 2_750}
+      person12: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 3_000}
+      person13: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 3_250}
+      person14: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 3_500}
+      person15: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 3_750}
+      person16: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 4_000}
+      person17: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 4_250}
+      person18: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 4_500}
+      person19: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 4_750}
+      person20: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 5_000}
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10,
+          person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        state_code: IL
+  output:
+    il_hbwd_premium: [0, 19, 38, 56, 75, 94, 113, 131, 150, 169, 188, 206, 225, 244, 263, 281, 300, 319, 338, 356]
+    # First row of the chart, bands 0-250 through 4751-5000.
+
+- name: Case 13, income with cents stays in the band of its whole-dollar amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 250.99, il_hbwd_countable_unearned_income: 0}
+      person2: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 5_000.99, il_hbwd_countable_unearned_income: 0}
+      person3: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 250.99}
+      person4: {il_hbwd_eligible: true, il_hbwd_countable_earned_income: 0, il_hbwd_countable_unearned_income: 5_000.99}
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    il_hbwd_premium: [0, 119, 0, 356]
+    # $250.99 → 0-250 band; $5,000.99 → 4751-5000 band (IDHS PM 15-04-03 drops cents).
+
+- name: Case 14, HFS 3792 Example 1, $900 from work and $1,000 from Social Security.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    il_hbwd_eligible: true
+    il_hbwd_countable_earned_income: 900
+    il_hbwd_countable_unearned_income: 1_000
+  output:
+    il_hbwd_premium: 75
+    # HFS 3792 (R-03-13), Example 1: the monthly premium is $75.
+    # Earned $900 → 751-1000 band → $19
+    # Unearned $1,000 → 751-1000 band → $56
+    # Total: $19 + $56 = $75

@@ -315,3 +315,38 @@
     # + 13.00% * ($600,000 - $500,000)       [$13,000.00]
     # = $56,467.80 (statute: "Over $500,000: $43,468.00 plus 13.00%")
     hi_income_tax_before_non_refundable_credits: 56_467.80
+
+# Tax on Capital Gains Worksheet, 2022 Form N-11 Instructions, page 33, with
+# Schedule II (joint) on page 36: $6,427 plus 8.25% over $96,000.
+- name: Joint 2022, qualified dividends with a net capital loss get no alternative tax
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 173_786
+    filing_status: JOINT
+    long_term_capital_gains: 927
+    short_term_capital_gains: -4_105
+    qualified_dividend_income: 667
+    state_code: HI
+  output:
+    # Line 8 is a loss, so the worksheet stops and the regular tax applies:
+    # 6,427.20 + 8.25% * (173,786 - 96,000) = 12,844.55
+    hi_income_tax_before_non_refundable_credits: 12_844.55
+
+- name: Joint 2022, alternative tax excludes qualified dividends
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 173_786
+    filing_status: JOINT
+    long_term_capital_gains: 20_000
+    short_term_capital_gains: -10_000
+    qualified_dividend_income: 5_000
+    state_code: HI
+  output:
+    # Line 8 = min(20,000, 10,000) = 10,000
+    # Line 13 = max(173,786 - 10,000, 48,000) = 163,786
+    # Line 15 = 6,427.20 + 8.25% * (163,786 - 96,000) = 12,019.55
+    # Line 16 = 7.25% * 10,000 = 725
+    # Line 17 = 12,744.55, smaller than the regular tax of 12,844.55
+    hi_income_tax_before_non_refundable_credits: 12_744.55

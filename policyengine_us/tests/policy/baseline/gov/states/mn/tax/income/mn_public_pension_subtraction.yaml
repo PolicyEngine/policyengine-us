@@ -52,3 +52,161 @@
     adjusted_gross_income: 100_000
   output:
     mn_public_pension_subtraction: 27_080
+
+# Dependents' income is excluded from federal AGI (irs_gross_income), so their
+# pension payments are not "included in adjusted gross income" (Schedule
+# M1QPEN, line 1) and cannot be subtracted on the filer's return.
+- name: A dependent child's public pension does not count toward the head's subtraction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        taxable_public_pension_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MN
+  output:
+    adjusted_gross_income: 50_000
+    mn_public_pension_subtraction: 0
+
+# Head 6,000 + spouse 8,000 = 14,000, below the 2025 joint cap of 27,080.
+# AGI 40,000 + 14,000 = 54,000 is below the 2025 joint reduction start of
+# 108,320, so no reduction. The child's 10,000 does not count.
+- name: Only the head's and spouse's public pensions count when a dependent also has one.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 40_000
+        taxable_public_pension_income: 6_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 65
+        taxable_public_pension_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        taxable_public_pension_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MN
+  output:
+    adjusted_gross_income: 54_000
+    mn_public_pension_subtraction: 14_000
+
+# The head's 10,000 is below the 2025 head of household cap of 13,540. Adding
+# the child's 10,000 would wrongly push the total to the cap.
+# AGI 50,000 + 10,000 = 60,000 is below the reduction start of 84,490.
+- name: A dependent's public pension does not push the head's subtraction up to the cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        taxable_public_pension_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        taxable_public_pension_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MN
+  output:
+    adjusted_gross_income: 60_000
+    mn_public_pension_subtraction: 10_000
+
+# AGI 80,000 + 10,000 = 90,000 exceeds the 2025 head of household reduction
+# start of 84,490 by 5,510; ceil(5,510 / 2,000) = 3 increments, so the
+# subtraction is reduced by 3 * 10% = 30%: 10,000 * (1 - 0.3) = 7,000.
+# Only the head's 10,000 enters the reduction, not the child's.
+- name: The phase-out applies only to the head's public pension when a dependent also has one.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+        taxable_public_pension_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        taxable_public_pension_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MN
+  output:
+    adjusted_gross_income: 90_000
+    mn_public_pension_subtraction: 7_000

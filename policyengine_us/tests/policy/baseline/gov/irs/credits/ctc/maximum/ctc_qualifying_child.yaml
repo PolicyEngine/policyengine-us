@@ -56,3 +56,320 @@
         members: [adult, child, child2]
   output:
     ctc_qualifying_child: [False, True, False]
+
+- name: 2025 single filer who can be claimed as a dependent has no CTC-qualifying child
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # IRC 24(a), 152(b)(1); Publication 501, Dependent Taxpayer Test.
+    ctc_qualifying_child: [false, false]
+    ctc_maximum: 0
+
+- name: 2025 joint return with one claimable spouse has no CTC-qualifying child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # "If you are filing a joint return and your spouse can be claimed as a
+    # dependent by another taxpayer, you and your spouse can't claim any
+    # dependents on your joint return" (Publication 501).
+    ctc_qualifying_child: [false, false, false]
+    ctc_maximum: 0
+
+- name: 2025 joint return with one claimable spouse has no CTC-qualifying child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false, false]
+    ctc_maximum: 0
+
+- name: 2025 joint return with neither spouse claimable keeps the CTC-qualifying child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 20
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false, true]
+    ctc_maximum: 2_200
+
+# Publication 501, Dependent Taxpayer Test: a filer whose would-be claimant is not
+# required to file and files no return or only for a refund can claim dependents.
+- name: 2025 claimable single filer within the filing exception keeps the CTC-qualifying child
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, true]
+
+- name: 2025 joint return whose claimable spouse is within the filing exception keeps the CTC-qualifying child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false, true]
+
+- name: 2025 joint return whose claimable spouse is within the filing exception keeps the CTC-qualifying child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false, true]
+
+# IRC 24(h)(7)(A)(i): from 2025, no credit with respect to any qualifying child
+# unless the return includes the taxpayer's SSN (on a joint return, at least one
+# spouse's). The child is not counted, and gets the credit for other dependents
+# instead (IRC 24(h)(4)(C)). Issue #9403.
+- name: 2026 filer without an SSN has no CTC-qualifying child
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        ssn_card_type: NONE
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false]
+    ctc_qualifying_child_ignoring_filer_identification: [false, true]
+    ctc_qualifying_children: 0
+    ctc_child_individual_maximum: [0, 0]
+    ctc_adult_individual_maximum: [0, 500]
+
+- name: 2026 joint return where only one spouse has an SSN keeps the CTC-qualifying child
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        ssn_card_type: OTHER_NON_CITIZEN
+      spouse:
+        age: 35
+        ssn_card_type: CITIZEN
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false, true]
+    ctc_qualifying_children: 1
+
+- name: 2024 filer without an SSN keeps the CTC-qualifying child
+  # The filer SSN rule starts in 2025; before then the filer needs only a TIN.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        ssn_card_type: OTHER_NON_CITIZEN
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, true]
+    ctc_qualifying_children: 1
+
+- name: 2024 filer without any TIN has no CTC-qualifying child
+  # IRC 24(e)(2): no credit unless the taxpayer has an identification number.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        ssn_card_type: NONE
+        has_tin: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false]
+    ctc_qualifying_child_ignoring_filer_identification: [false, true]
+    ctc_qualifying_children: 0
+
+- name: 2025 filer with an ITIN gets the credit for other dependents and no Worksheet B
+  # 2025 Schedule 8812 instructions: Credit Limit Worksheet B applies only if
+  # "Line 4 of Schedule 8812 is more than zero".
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        ssn_card_type: OTHER_NON_CITIZEN
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ctc_qualifying_children: 0
+    ctc_adult_individual_maximum: [0, 500]
+    ctc_credit_limit_worksheet_b_applies: false

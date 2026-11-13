@@ -1,0 +1,142 @@
+description: States count a spouse's income and test a married couple living together against the couple limit, whether or not SSI deeming would apply, under the Medicaid medically needy program, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid medically needy couple budgeted together
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 CFR 435.601 - Application of financial eligibility methodologies
+      href: https://www.law.cornell.edu/cfr/text/42/435.601
+    - title: "Arkansas Medical Services Policy Manual O-531 #page 424-425"
+      href: https://humanservices.arkansas.gov/wp-content/uploads/MS-Policy-9.26-New.pdf#page=424
+    - title: 22 CCR 50373 (California)
+      href: https://www.law.cornell.edu/regulations/california/22-CCR-50373
+    - title: Connecticut Uniform Policy Manual 5020.75
+      href: https://portal.ct.gov/-/media/Departments-and-Agencies/DSS/UPMs/UPM5---Treatment-of-Income-Income-Eligibility/5020_75.doc
+    - title: HAR 17-1724.1-16(1) (Hawaii)
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2016/12/HAR-17-1724.1-INCOME-FOR-MAGI-EXCEPTED-Final-10-31-16-1.pdf#page=5
+    - title: Illinois Policy Manual PM 15-06-02-c
+      href: https://www.dhs.state.il.us/page.aspx?item=16512
+    - title: Kansas MKEESM 4312
+      href: https://khap.kdhe.ks.gov/KEESM/July_2026_Output/4000/4310-Assistance-Planning.htm
+    - title: 130 CMR 520.002(A)(1) (Massachusetts)
+      href: https://web.archive.org/web/20260711022327id_/https://www.mass.gov/doc/130-cmr-520000-masshealth-financial-eligibility-0/download#page=2
+    - title: "Maryland Medical Assistance Manual Section 600 #page 7-8"
+      href: https://health.maryland.gov/mmcp/Medicaid%20Manual/Section%20600-%20The%20Assistance%20Unit.pdf#page=7
+    - title: Michigan BEM 211 - Fiscal and asset group for SSI-related groups
+      href: https://dhhs.michigan.gov/olmweb/ex/BP/Public/BEM/211.pdf#page=8
+    - title: Minnesota Eligibility Policy Manual 2.3.3.3.2.1.1 - Income deeming
+      href: https://hcopub.dhs.state.mn.us/epm/2_3_3_3_2_1_1.htm
+    - title: N.D. Admin. Code 75-02-02.1-34 (North Dakota)
+      href: https://ndlegis.gov/information/acdata/pdf/75-02-02.1.pdf#page=70
+    - title: 477 NAC 25-002 (Nebraska)
+      href: https://www.law.cornell.edu/regulations/nebraska/477-Neb-Admin-Code-ch-25-SS-002
+    - title: N.H. Code Admin. R. He-W 858.04
+      href: https://www.law.cornell.edu/regulations/new-hampshire/N-H-Admin-Code-SS-He-W-858.04
+    - title: "Vermont Health Benefits Eligibility and Enrollment Rule, Part 5, 29.04 and 29.14 #page 14,52"
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/HBEE-Part-5-Financial-Methodologies.pdf#page=14
+    - title: Wisconsin Medicaid Eligibility Handbook 15.1
+      href: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm
+AK:
+  2015-01-01: false
+AL:
+  2015-01-01: false
+AR:
+  2015-01-01: true
+AZ:
+  2015-01-01: false
+CA:
+  2015-01-01: true
+CO:
+  2015-01-01: false
+CT:
+  2015-01-01: true
+DC:
+  2015-01-01: false
+DE:
+  2015-01-01: false
+FL:
+  2015-01-01: false
+GA:
+  2015-01-01: false
+HI:
+  2015-01-01: true
+IA:
+  2015-01-01: false
+ID:
+  2015-01-01: false
+IL:
+  2015-01-01: true
+IN:
+  2015-01-01: false
+KS:
+  2015-01-01: true
+KY:
+  2015-01-01: false
+LA:
+  2015-01-01: false
+MA:
+  2015-01-01: true
+MD:
+  2015-01-01: true
+ME:
+  2015-01-01: false
+MI:
+  2015-01-01: true
+MN:
+  2015-01-01: true
+MO:
+  2015-01-01: false
+MS:
+  2015-01-01: false
+MT:
+  2015-01-01: false
+NC:
+  2015-01-01: false
+ND:
+  2015-01-01: true
+NE:
+  2015-01-01: true
+NH:
+  2015-01-01: true
+NJ:
+  2015-01-01: false
+NM:
+  2015-01-01: false
+NV:
+  2015-01-01: false
+NY:
+  2015-01-01: false
+OH:
+  2015-01-01: false
+OK:
+  2015-01-01: false
+OR:
+  2015-01-01: false
+PA:
+  2015-01-01: false
+RI:
+  2015-01-01: false
+SC:
+  2015-01-01: false
+SD:
+  2015-01-01: false
+TN:
+  2015-01-01: false
+TX:
+  2015-01-01: false
+UT:
+  2015-01-01: false
+VA:
+  2015-01-01: false
+VT:
+  2015-01-01: true
+WA:
+  2015-01-01: false
+WI:
+  2015-01-01: true
+WV:
+  2015-01-01: false
+WY:
+  2015-01-01: false

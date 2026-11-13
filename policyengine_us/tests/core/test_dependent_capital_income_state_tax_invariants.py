@@ -40,11 +40,9 @@ Two restrictions keep effects that are outside this check out of the draws:
   stake. Vermont's is a share of the federal credit, whose investment income
   test (eitc_relevant_investment_income) is not changed here.
 - Vermont filers have at least $50,000 of their own long-term gain and no
-  short-term loss, and Vermont dependents have gains, not losses. Until
-  PolicyEngine/policyengine-us#9855 is merged, the $5,000 flat part of
-  vt_capital_gains_exclusion reads the federal adjusted net capital gain,
-  which on main still counts a dependent's gains and losses. With these
-  amounts the flat part is at its cap either way.
+  short-term loss, and Vermont dependents have gains, not losses. These
+  amounts keep the flat exclusion at its cap and isolate the state
+  adjustments tested here.
 
 Amounts are whole dollars of at most $400,000, so every sum is exact in single
 precision and twins are compared to the cent.

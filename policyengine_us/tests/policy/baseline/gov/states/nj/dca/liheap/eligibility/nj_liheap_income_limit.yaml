@@ -1,0 +1,36 @@
+# Sources for the expected values in this file:
+# - FFY 2026 fact sheet, page 2, "FY2026 Program Income Limit ... (60% State
+#   Median Income)":
+#   https://nj.gov/dca/dhcr/offices/docs/FY2026%20USFHEA%20Factsheet%20-%20English.pdf#page=2
+# - FFY 2027 fact sheet, page 2:
+#   https://nj.gov/dca/dhcr/offices/docs/FY2027%20USFHEA%20Factsheet%20-%20English.pdf#page=2
+# The income test is monthly (FY2026 LIHEAP Handbook section 2.3.A, page 7), so
+# each expected value is the published monthly limit times 12.
+
+# FY2026 monthly limits for sizes 1 to 12:
+#   4,167   5,449   6,732   8,014   9,296  10,578
+#  10,819  11,059  11,299  11,540  11,780  12,021
+# "Household members greater than 12 - Please add $241 for each additional
+# member for monthly income limit": size 13 = 12,262 and size 14 = 12,503.
+- name: Case 1, FY2026 published monthly limits for sizes 1 to 12 and the additional-member increment.
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    nj_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  output:
+    nj_liheap_income_limit: [50_004, 65_388, 80_784, 96_168, 111_552, 126_936, 129_828, 132_708, 135_588, 138_480, 141_360, 144_252, 147_144, 150_036]
+
+# FY2027 monthly limits for sizes 1 to 12:
+#   4,273   5,587   6,902   8,217   9,532  10,846
+#  11,093  11,339  11,586  11,832  12,079  12,325
+# "Household members greater than 12 - Please add $246 for each additional
+# member for monthly income limit": size 13 = 12,571 and size 14 = 12,817. The
+# increment is the difference between the size-12 and size-11 limits in both
+# years (12,021 - 11,780 = 241; 12,325 - 12,079 = 246).
+- name: Case 2, FY2027 published monthly limits for sizes 1 to 12 and the additional-member increment.
+  period: 2027
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ, NJ]
+    nj_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  output:
+    nj_liheap_income_limit: [51_276, 67_044, 82_824, 98_604, 114_384, 130_152, 133_116, 136_068, 139_032, 141_984, 144_948, 147_900, 150_852, 153_804]

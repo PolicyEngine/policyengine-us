@@ -10,10 +10,18 @@ class nc_military_retirement_deduction_eligible(Variable):
     reference = (
         "https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=18",
         "https://law.justia.com/codes/north-carolina/chapter-105/article-4/section-105-153-5/",
+        "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_105/GS_105-153.5.html",
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nc.tax.income.deductions.military_retirement
+        # G.S. 105-153.5(b)(5a)a.: a retired member who served the minimum
+        # years or was "Medically retired under 10 U.S.C. Chapter 61".
+        # NOTE: The model has no input for a chapter 61 disability retirement,
+        # so the VA permanent and total rating stands in. It misses a member on
+        # the temporary disability retired list (10 U.S.C. 1202).
         is_medically_retired = person("is_permanently_disabled_veteran", period)
         served_minimum_years = person("years_in_military", period) >= p.minimum_years
-        return is_medically_retired | served_minimum_years
+        # (5a)b.: the Survivor Benefit Plan beneficiary of such a member.
+        survivor = person("nc_military_retirement_survivor_eligible", period)
+        return is_medically_retired | served_minimum_years | survivor

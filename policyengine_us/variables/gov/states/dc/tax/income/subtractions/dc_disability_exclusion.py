@@ -11,6 +11,7 @@ class dc_disability_exclusion(Variable):
     reference = (
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-1803.02#(a)(2)(M)",
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-2440.pdf#page=1",
+        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D-2440_Form_012626.pdf#page=1",
     )
 
     def formula(person, period, parameters):

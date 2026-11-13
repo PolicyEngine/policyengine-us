@@ -1,0 +1,131 @@
+# 89 Ill. Adm. Code 113.125(a) exempts withholding taxes and Social Security
+# tax as expenses of the person's own employment, so each earner deducts only
+# the tax withheld from their own wages.
+# The model's Illinois withholding estimate is 4.95% of the person's own AGI
+# above the personal exemption; with wages as the only income, that is
+# 4.95% x max(wages - 2,775, 0) in 2024.
+# Social Security tax: 6.2% of wages.
+
+- name: Case 1, married couple with equal wages, each deducts only their own withholding.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+      person2:
+        age: 40
+        employment_income: 24_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # (24,000 - 2,775) x 0.0495 = 1,050.64 a year = 87.55 a month
+    il_withheld_income_tax: [87.55, 87.55]
+    # 2,000 x 0.062 = 124
+    employee_social_security_tax: [124, 124]
+    # 87.55 + 124 = 211.55, not the couple's combined 175.11 withholding + 124
+    il_aabd_expense_exemption_person: [211.55, 211.55]
+
+- name: Case 2, married couple with unequal wages.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+      person2:
+        age: 40
+        employment_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # person1: (36,000 - 2,775) x 0.0495 = 1,644.64 a year = 137.05 a month
+    # person2: (12,000 - 2,775) x 0.0495 = 456.64 a year = 38.05 a month
+    il_withheld_income_tax: [137.05, 38.05]
+    # 3,000 x 0.062 = 186; 1,000 x 0.062 = 62
+    employee_social_security_tax: [186, 62]
+    # 137.05 + 186 = 323.05; 38.05 + 62 = 100.05
+    il_aabd_expense_exemption_person: [323.05, 100.05]
+
+- name: Case 3, spouse with wages below the Illinois personal exemption has no withholding to deduct.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+      person2:
+        age: 40
+        employment_income: 2_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # person2: max(2,400 - 2,775, 0) x 0.0495 = 0
+    il_withheld_income_tax: [87.55, 0]
+    # 2,000 x 0.062 = 124; 200 x 0.062 = 12.40
+    employee_social_security_tax: [124, 12.4]
+    # person2 deducts only their own 12.40, not person1's 87.55 withholding
+    il_aabd_expense_exemption_person: [211.55, 12.4]
+
+- name: Case 4, a working adult dependent does not deduct the parent's withholding.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 80_000
+      person2:
+        age: 25
+        is_tax_unit_dependent: true
+        employment_income: 4_800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      person1_marital_unit:
+        members: [person1]
+      person2_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # person1: (80,000 - 2,775) x 0.0495 = 3,822.64 a year = 318.55 a month
+    # person2 is a tax unit dependent. The withholding estimate starts from
+    # adjusted_gross_income_person, which leaves a dependent's income to their
+    # own return, so the model estimates no Illinois withholding for them.
+    il_withheld_income_tax: [318.55, 0]
+    # 6,666.67 x 0.062 = 413.33; 400 x 0.062 = 24.80
+    employee_social_security_tax: [413.33, 24.8]
+    # person1: 318.553 + 413.333 = 731.886
+    # person2: their own 24.80 Social Security tax, not the parent's 318.55 withholding
+    il_aabd_expense_exemption_person: [731.89, 24.8]

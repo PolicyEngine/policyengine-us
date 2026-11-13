@@ -27,8 +27,9 @@ class dividend_income_reduced_by_investment_income(Variable):
     ]
 
     def formula(tax_unit, period, parameters):
-        # Line 2: qualified dividends (Form 1040 line 3a).
-        line_2 = add(tax_unit, period, ["qualified_dividend_income"])
+        # Line 2: qualified dividends (Form 1040 line 3a), the head and
+        # spouse's; a tax unit dependent's are on the dependent's own return.
+        line_2 = tax_unit_non_dep_add(tax_unit, period, ["qualified_dividend_income"])
         lines = schedule_d_tax_worksheet_form_4952_lines(tax_unit, period)
         # Line 5: line 3 minus line 4; if zero or less, zero. The part of the
         # election that net capital gain from investment property cannot

@@ -10,17 +10,21 @@ class wi_capital_gain_loss_subtraction(Variable):
     reference = (
         "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleWDf.pdf#page=2",
         "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleWDf.pdf#page=2",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/6/b/9",
+        "https://www.law.cornell.edu/uscode/text/26/852#b_3_B",
+        "https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleSB-Inst.pdf#page=2",
     )
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        # Schedule WD starts from the filer's federal Schedule D. A tax unit
-        # dependent's gains are on the dependent's own return, so only the
-        # head's and spouse's gains count.
         # calculate Schedule WD, Line 8
         stcg_net = tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
         # calculate Schedule WD, Line 17
-        ltcg_net = tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
+        # Capital gain distributions retain their long-term character when
+        # reported directly on Form 1040, without a federal Schedule D.
+        ltcg_net = tax_unit_non_dep_add(
+            tax_unit, period, ["long_term_capital_gains", "non_sch_d_capital_gains"]
+        )
         # calculate Schedule WD, Line 18
         totcg = max_(0, stcg_net + ltcg_net)
         # calculate Schedule WD, Line 20, the capital gain reduction

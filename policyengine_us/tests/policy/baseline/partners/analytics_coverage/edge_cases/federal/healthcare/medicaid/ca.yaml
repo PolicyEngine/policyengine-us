@@ -106,8 +106,8 @@
         msp_eligible: false
         # CA-only INFANT at age 1: 2.01 FPL < CA infant limit 2.66 with the
         # extended age < 2 range (in TX this age/income would be over the
-        # 1.49 young child limit). 9,236.48 x (child SLCSP index 312.00 /
-        # household avg 432.99) = 6,655.48.
+        # 1.49 young child limit). 9,236.48 x (child SLCSP index 275.00 /
+        # household avg 381.645) = 6,655.48.
         medicaid: 6_655.48
         is_medicaid_eligible: true
         medicaid_category: 0  # INFANT
@@ -115,8 +115,8 @@
         is_aca_ptc_eligible: false
     tax_units:
       tax_unit:
-        aca_ptc: 8_092.33
-        premium_tax_credit: 8_092.33
+        aca_ptc: 6_687.78
+        premium_tax_credit: 6_687.78
 - name: medicaid_ca_senior_high_asset_limit (ca)
   period: 2026
   absolute_error_margin: 0.1

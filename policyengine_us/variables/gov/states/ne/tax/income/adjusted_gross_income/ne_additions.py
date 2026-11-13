@@ -12,3 +12,5 @@ class ne_additions(Variable):
         "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf",
     )
     defined_for = StateCode.NE
+
+    adds = ["ne_other_additions"]

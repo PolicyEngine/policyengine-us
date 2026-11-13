@@ -1,0 +1,89 @@
+# 2024 IA 2440: each person's disability pay at most $100 a week ($5,200),
+# less federal AGI above $15,000; Schedule 1 line 19b, code h.
+
+- name: Exclusion reduced by federal AGI above $15,000.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 50
+        retired_on_total_disability: true
+        disability_benefits: 10_000
+        total_disability_payments: 10_000
+        taxable_interest_income: 7_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IA
+  output:
+    # Line 3: min(10,000, 5,200) = 5,200. Line 4c: 17,000 - 15,000 = 2,000.
+    ia_disability_income_exclusion: 3_200
+    ia_subtractions_consolidated: 3_200
+
+- name: A married person filing separately who lived with their spouse cannot take the exclusion.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 50
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SEPARATE
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [person]
+        state_code: IA
+  output:
+    ia_disability_income_exclusion: 0
+
+- name: No exclusion at age 65.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 65
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: IA
+  output:
+    ia_disability_income_exclusion: 0
+
+- name: A separated spouse filing as head of household who lived with their spouse cannot take the exclusion.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_separated: true
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [head, child]
+        state_code: IA
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    ia_disability_income_exclusion: 0

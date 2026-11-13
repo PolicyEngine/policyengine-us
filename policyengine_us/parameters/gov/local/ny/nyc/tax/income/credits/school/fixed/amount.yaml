@@ -3,16 +3,20 @@ metadata:
   unit: currency-USD
   label: NYC School Tax Credit Fixed Amount
   reference:
-    - title: Instructions for Form IT-201, 2022
+    - title: NY Tax Law § 606(ggg)(4-a)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: Instructions for Form IT-201, 2022, Line 69
       href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=25
-    - title: Instructions for Form IT-201, 2023
+    - title: Instructions for Form IT-201, 2023, Line 69
       href: https://www.tax.ny.gov/forms/html-instructions/2023/it/it201i-2023.htm#step-8
-    - title: Instructions for Form IT-201, 2024 Line 69
+    - title: Instructions for Form IT-201, 2024, Line 69
       href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=20
-    - title: 2025 Form IT-201-I Instructions
-      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=20
+    - title: Instructions for Form IT-201, 2025, Line 69
+      href: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20
   breakdown:
     - filing_status
+# IT-201-I Table 1 rounds the statutory $62.50 (§ 606(ggg)(4-a)(B)) to $63:
+# "The statutory credit amounts have been rounded."
 SINGLE:
   2022-01-01: 63
 SEPARATE:

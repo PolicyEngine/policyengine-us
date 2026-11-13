@@ -7,15 +7,15 @@ class ma_part_c_gross_income(Variable):
     label = "MA Part C gross income"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"  # (b)(3)
+    reference = (
+        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2",  # (b)(3)
+        "https://taxsim.nber.org/historical_state_tax_forms/MA/2023/dor-2023-inc-form1-instructions.pdf#page=27",
+    )
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        # Part B gross income starts from irs_gross_income, which leaves out
-        # tax unit dependents, whose interest, dividends and gains are on their
-        # own returns, so Parts A and C count only the head's and spouse's.
-        # Long-term capital gains
-        ltcg = tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
+        # Long-term amounts on Massachusetts Schedule D
+        ltcg = tax_unit("ma_long_term_capital_gains", period)
         # Short-term capital gains (can be negative)
         stcg = tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
         # Per MA Schedule B line 22, short-term losses offset long-term gains

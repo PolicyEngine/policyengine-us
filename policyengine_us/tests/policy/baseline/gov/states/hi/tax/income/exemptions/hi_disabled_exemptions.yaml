@@ -102,3 +102,125 @@
         state_fips: 15  # HI
   output:  
     hi_disabled_exemptions: 7_000
+
+
+- name: 2025 disabled filer who can be claimed as a dependent keeps the disability exemption
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 70
+        is_disabled: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: HI
+  output:
+    # HRS 235-54(c) has no dependency bar.
+    hi_disabled_exemptions: 7_000
+
+- name: 2025 claimable disabled spouse keeps the disability exemption and the other spouse their regular and age exemptions (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        is_disabled: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 68
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    # $7,000 + (1 + 1) x $1,144.
+    hi_disabled_exemptions: 9_288
+
+- name: 2025 claimable disabled spouse keeps the disability exemption and the other spouse their regular and age exemptions (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 68
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 70
+        is_disabled: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    hi_disabled_exemptions: 9_288
+
+- name: 2025 claimable nondisabled spouse adds nothing to the disabled spouse's exemption (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 68
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    # HRS 235-54(a) zeroes the claimable spouse's regular and age exemptions.
+    hi_disabled_exemptions: 7_000
+
+- name: 2025 claimable nondisabled spouse adds nothing to the disabled spouse's exemption (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 68
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    hi_disabled_exemptions: 7_000

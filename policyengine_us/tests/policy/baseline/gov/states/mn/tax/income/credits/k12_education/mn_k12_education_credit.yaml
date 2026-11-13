@@ -75,3 +75,35 @@
     mn_k12_qualifying_children: 0
   output:
     mn_k12_education_credit: 0
+
+# 2026 phase-out threshold of $77,550 from the Minnesota DOR Tax Year 2026
+# Inflation-Adjusted Amounts, 290.0674 Subd. 2 (page 3).
+- name: Minnesota K-12 Education Credit 2026 - single child with phase-out
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: MN
+    adjusted_gross_income: 80_000
+    k12_tuition_and_fees: 3_000
+    mn_k12_qualifying_children: 1
+  output:
+    # Excess income = 80,000 - 77,550 = 2,450
+    # Credit limit = 1,500 - 2,450 / 4 = 1,500 - 612.50 = 887.50
+    # Expense credit = 3,000 * 0.75 = 2,250
+    # Credit = min(2,250, 887.50) = 887.50
+    mn_k12_education_credit: 887.5
+
+- name: Minnesota K-12 Education Credit 2026 - two children above the 2025 income limit
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: MN
+    adjusted_gross_income: 83_000
+    k12_tuition_and_fees: 5_000
+    mn_k12_qualifying_children: 2
+  output:
+    # Income limit for one or two children = 77,550 + 6,000 = 83,550 > 83,000.
+    # Excess income = 83,000 - 77,550 = 5,450
+    # Credit limit = 2 * 1,500 - 5,450 * 2 / 4 = 3,000 - 2,725 = 275
+    # Expense credit = 5,000 * 0.75 = 3,750
+    mn_k12_education_credit: 275
