@@ -61,9 +61,11 @@ it uses the reform's dependent age limits.
 
 Membership can't change between periods. Inputs that can't settle one static
 couple give everyone in that tax unit and household their own unit: two head
-or two spouse inputs, a dependent also marked head or spouse, role or
-`is_married` inputs that change between periods, or a fourth-step couple that
-differs between years.
+or two spouse inputs, a dependent also marked head or spouse in a unit with
+both a head and a spouse input, role or `is_married` inputs that change between
+periods, or a fourth-step couple that differs between years. With only a spouse
+input, on a person also input as a dependent, the fourth step pairs that person
+with the oldest other adult, and the role formulas give the same couple.
 
 Known limitations, which callers avoid by supplying `marital_units`:
 
@@ -78,6 +80,9 @@ Known limitations, which callers avoid by supplying `marital_units`:
 - The separate-filer pairing reads no age or relationship, so a parent and an
   adult child who each file separately from an absent spouse, beside a third
   tax unit, become a couple.
+- A `filing_status` input dated for more than one year counts only when it is
+  the same in every year, so a status that is `JOINT` in the calculation year
+  and different in another year reads as no status.
 - `JOINT` and `SEPARATE` inputs say who is married, but `SINGLE`,
   `HEAD_OF_HOUSEHOLD` and `SURVIVING_SPOUSE` inputs don't say who isn't: two
   adults in one tax unit with any of them can still be paired by the fourth

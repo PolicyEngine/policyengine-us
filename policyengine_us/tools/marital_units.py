@@ -163,16 +163,16 @@ def infer_missing_marital_units(situation, default_period=None, system=None):
 
     Everyone else receives their own unit, without claiming that their
     marital status is known. Inputs that can't settle one static couple
-    (several heads or spouses, a dependent also marked head or spouse, or
-    role or is_married inputs that change between periods) leave everyone in
-    that tax unit and household in their own unit. A filing_status input
-    that changes between periods counts as no status.
+    (several heads or spouses, a dependent also marked head or spouse beside a
+    head and spouse pair, or role or is_married inputs that change between
+    periods) leave everyone in that tax unit and household in their own unit. A
+    filing_status input that changes between periods counts as no status.
     Calculated values are never read: step 4 reads the same inputs and
-    parameters the role formulas read, including the defaults Core fills in
-    for everyone once anyone supplies a variable for a year, so the units it
-    builds agree with the inferred tax roles in the years the inputs are
-    dated for. A calculation for another year, where the role formulas run
-    again, can give roles the units don't match.
+    parameters the role formulas read, including the defaults Core fills in for
+    everyone once anyone supplies a variable for a year, so the units it builds
+    agree with the inferred tax roles in the years the inputs are dated for. A
+    calculation for another year, where the role formulas run again, can give
+    roles the units don't match.
     Core calls this hook on a private copy before building populations;
     malformed input is left to its validation.
     """

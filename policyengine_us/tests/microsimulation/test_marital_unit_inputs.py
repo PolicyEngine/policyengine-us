@@ -386,6 +386,9 @@ def test_a_false_spouse_input_leaves_the_roles_without_a_couple():
         (None, []),
         # Only a married couple files jointly (26 USC 6013(a)).
         ("JOINT", [["head", "spouse"]]),
+        # A status that changes between periods counts as no status, so the
+        # age test applies, even when the last year's status is JOINT.
+        ({"2024": "SINGLE", "2025": "JOINT"}, []),
     ],
 )
 def test_a_joint_return_pairs_a_spouse_the_age_test_would_not(filing_status, pairs):
@@ -444,12 +447,17 @@ def test_a_changing_filing_status_counts_as_no_status(roles, status):
 
 
 def _separate_return_pairs(tax_units, people, **groups):
-    # Every tax unit files separately, all in one household.
+    # All in one household. Each tax unit files separately unless it gives
+    # (members, filing_status).
     situation = {
         "people": people,
         "tax_units": {
-            name: {"members": members, "filing_status": "SEPARATE"}
-            for name, members in tax_units.items()
+            name: (
+                {"members": unit[0], "filing_status": unit[1]}
+                if isinstance(unit, tuple)
+                else {"members": unit, "filing_status": "SEPARATE"}
+            )
+            for name, unit in tax_units.items()
         },
         "households": {"home": {"members": list(people)}},
         **groups,
@@ -463,6 +471,16 @@ def _separate_return_pairs(tax_units, people, **groups):
 @pytest.mark.parametrize(
     "tax_units, people, groups, pairs",
     [
+        # A separate status that changes between periods counts as no status.
+        (
+            {
+                "one": ["first"],
+                "two": (["second"], {"2024": "SEPARATE", "2025": "SINGLE"}),
+            },
+            {"first": {"age": 45}, "second": {"age": 45}},
+            {},
+            [],
+        ),
         # A separated filer pairs no one.
         (
             {"one": ["first"], "two": ["second"]},
