@@ -106,3 +106,68 @@
     # Base: $1,596 + (2 × $118) = $1,832
     # With COLA: $1,832 × 1.02 = $1,868.64
     oh_owf_payment_standard: 1_868.64
+
+- name: Case 14, January 2026 official payment table and additional persons.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+    state_code: [OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH, OH]
+  output:
+    # ODJFS ACT 297, effective January 1, 2026: literal sizes 1-15;
+    # each additional person adds $159: $2,157 + $159 and + $318.
+    oh_owf_payment_standard: [382, 521, 640, 790, 924, 1_028, 1_149, 1_275, 1_400, 1_527, 1_650, 1_777, 1_904, 2_027, 2_157, 2_316, 2_475]
+
+- name: Case 15, December 2025 compatibility before the new payment table.
+  period: 2025-12
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2025: [3, 15, 17]
+    state_code:
+      2025: [OH, OH, OH]
+  output:
+    # Existing base-and-multiplier preservation, not fresh historical certification.
+    oh_owf_payment_standard: [622.8834, 2097.3036, 2407.4312]
+
+- name: Case 16, 2017 payment components preserve the original base.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: [3, 15, 17]
+    state_code: [OH, OH, OH]
+  output:
+    # Existing base-and-multiplier preservation, not fresh historical certification.
+    oh_owf_payment_standard: [474, 1596, 1832]
+
+- name: Case 17, 2020 payment components preserve earlier COLA behavior.
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: [3, 15, 17]
+    state_code: [OH, OH, OH]
+  output:
+    # Existing base-and-multiplier preservation, not fresh historical certification.
+    oh_owf_payment_standard: [504.9522, 1700.2188, 1951.6296]
+
+- name: Case 18, 2026 annual payment-standard component sums twelve monthly amounts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    state_code: OH
+  output:
+    # ACT 297 applies $640 monthly from January: 12 x $640 = $7,680.
+    # This is the standard component, not certification of twelve benefit payments.
+    oh_owf_payment_standard: 7_680
+
+- name: Case 19, December 2026 retains the January payment schedule.
+  period: 2026-12
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2026: [3, 17]
+    state_code:
+      2026: [OH, OH]
+  output:
+    oh_owf_payment_standard: [640, 2_475]
