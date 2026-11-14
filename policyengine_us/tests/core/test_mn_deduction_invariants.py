@@ -1,13 +1,14 @@
 """Invariants of Minnesota's property tax and charitable deductions.
 
-Minn. Stat. 290.0122, subd. 3(a)(1), caps the deduction for real estate and
-personal property taxes at $10,000 for both together, or $5,000 for a married
-person filing separately, from tax year 2019. Subd. 4(a) allows charitable
-contributions over 1% of the contribution base from tax year 2026, where 26
-U.S.C. 170(b)(1)(I) allows those over 0.5%. Section 290.0132, subd. 7, gives a
-non-itemizer half of the allowable contributions over $500. Section 290.091,
-subd. 2(a)(2)(i), keeps the federal section 170 deduction in alternative
-minimum taxable income.
+The Minnesota Legislature caps the deduction for real estate and personal
+property taxes at $10,000 for both together, or $5,000 for a married person
+filing separately, from tax year 2019 (Minn. Stat. 290.0122, subd. 3(a)(1)).
+From tax year 2026 it allows charitable contributions over 1% of the
+contribution base (subd. 4(a)), where Congress allows those over 0.5% (26
+U.S.C. 170(b)(1)(I)). It gives a non-itemizer half of the allowable
+contributions over $500 (section 290.0132, subd. 7), and it keeps the federal
+section 170 deduction in alternative minimum taxable income (section 290.091,
+subd. 2(a)(2)(i)).
 
 The YAML files for these variables pin the amounts at each threshold. The
 checks below take their caps, floors and years from those statutes, and hold

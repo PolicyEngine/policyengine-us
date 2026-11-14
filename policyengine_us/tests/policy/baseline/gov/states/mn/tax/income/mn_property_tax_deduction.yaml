@@ -216,8 +216,8 @@
 
 # The filer deducts min(7,000 + 4,000, 10,000) = 10,000 in the first year of
 # section 290.0122. Real estate taxes alone fall below the cap. Income of
-# 50,000 lies below the 194,650 that subd. 2(b) set for 2019, so the
-# reduction is 3% of zero.
+# 50,000 lies below the 194,650 the Legislature set in subd. 2(b) for 2019,
+# so the reduction is 3% of zero.
 - name: A single filer combines real estate and personal property taxes in 2019
   absolute_error_margin: 0.02
   period: 2019

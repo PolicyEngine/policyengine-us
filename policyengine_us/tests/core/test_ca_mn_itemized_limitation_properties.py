@@ -9,10 +9,10 @@ Every tax unit in a grid of states, filing statuses, incomes and deductions
 shares one simulation per year. Each unit has twins that differ only in their
 investment interest, and one that differs only in having no income. With the
 deduction inputs set directly, income changes only the reduction and, in
-Minnesota from 2026, the charitable deduction: Minn. Stat. 290.0122, subd.
-4(a), allows contributions over 1% of the contribution base. The no-income
-twin therefore carries the total before the reduction and before that floor.
-For every unit:
+Minnesota from 2026, the charitable deduction: the Legislature allows
+contributions over 1% of the contribution base (Minn. Stat. 290.0122, subd.
+4(a)). The no-income twin therefore carries the total before the reduction
+and before that floor. For every unit:
 
 1. The deduction lies between 0 and its no-income total.
 2. The no-income total less the deduction does not change with investment
