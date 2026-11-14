@@ -874,33 +874,42 @@ def test_spm_and_dataset_suites_run_once_in_separate_steps_with_reports(workflow
 
 
 @pytest.mark.parametrize(
-    "group,file",
+    "group,files",
     [
         (
             "ss-calculator-engine",
-            "policyengine_us/tests/unit/test_ss_calculator_engine.py",
+            ["policyengine_us/tests/unit/test_ss_calculator_engine.py"],
         ),
         (
             "ss-calculator-differential",
-            "policyengine_us/tests/unit/test_ss_calculator_differential.py",
+            [
+                "policyengine_us/tests/unit/test_ss_calculator_differential.py",
+                "policyengine_us/tests/core/test_ss_calculator_reference_invariants.py",
+            ],
         ),
-        ("ss-history-engine", "policyengine_us/tests/unit/test_ss_history_engine.py"),
+        (
+            "ss-history-engine",
+            ["policyengine_us/tests/unit/test_ss_history_engine.py"],
+        ),
         (
             "ss-history-differential",
-            "policyengine_us/tests/unit/test_ss_history_differential.py",
+            ["policyengine_us/tests/unit/test_ss_history_differential.py"],
         ),
     ],
 )
 def test_calculator_api_files_run_once_in_separate_rest_processes(
-    groups, group_files, group, file
+    groups, group_files, group, files
 ):
-    assert group_files[group] == [file]
-    assert [owner for owner, files in group_files.items() if file in files] == [group]
+    assert group_files[group] == files
+    for file in files:
+        assert [
+            owner for owner, owned_files in group_files.items() if file in owned_files
+        ] == [group]
+        assert all(file not in command for command in dry_run("test-other-python-spm"))
     assert groups[group]["reports"] == [
         f"{REPORT_DIR}/rest-python-{group}.xml",
         f"{REPORT_DIR}/rest-python-{group}-resources.txt",
     ]
-    assert all(file not in command for command in dry_run("test-other-python-spm"))
 
 
 def test_groups_run_as_plain_pytest_without_a_report_dir(groups):
