@@ -273,3 +273,60 @@
     # 5% x (60,000 - 35,910) / 12 = 100.375; x 10,000 / 40,000 = 25.09
     # (685.209(g)(1)(ii)).
     save_plan_payment: 25.09
+
+- name: Case 13, a tax dependent pays on their own income and a family of one.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+        income_driven_repayment_dependent_adjusted_gross_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 5% x (40,000 - 2.25 x 15,960) / 12 = 17.04. The parent's return would
+    # give 5% x (90,000 - 2.25 x 21,640) / 12 = 172.13.
+    save_plan_payment: [0, 17.04]
+
+- name: Case 14, a tax dependent with income under 225 percent of the one-person guideline owes nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        federal_student_loan_balance: 15_000
+        income_driven_repayment_dependent_adjusted_gross_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 90_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 30,000 < 2.25 x 15,960 = 35,910.
+    save_plan_payment: [0, 0]

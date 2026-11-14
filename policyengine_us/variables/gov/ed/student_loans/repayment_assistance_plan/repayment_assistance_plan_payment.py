@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ed.student_loans.student_loan_borrower_income_helpers import (
+    dependent_borrower_repayment_assistance_plan_applicable_payment,
+)
 
 
 class repayment_assistance_plan_payment(Variable):
@@ -20,6 +23,13 @@ class repayment_assistance_plan_payment(Variable):
         "rule's preamble (91 FR 23838) copied the Income-Based Repayment "
         "plan's (g)(1)(i) proration 'to provide consistency with IBR' without "
         "discussing FFEL loans, so the code follows the text of (g)(3)(i). "
+        "A borrower whom another taxpayer claims as a dependent pays on their "
+        "own income (income_driven_repayment_dependent_adjusted_gross_income): "
+        "the base payment on that income divided by 12, with no dependent "
+        "reduction and no spousal proration, and at least the minimum "
+        "payment. The claiming taxpayer's income and loans do not enter, and "
+        "the dependent still counts toward the claiming taxpayer's dependent "
+        "reduction. "
         "Payments in a year stop once they add up to the "
         "borrower's opening Direct Loan balance; interest accrual is not "
         "modeled."
@@ -43,16 +53,30 @@ class repayment_assistance_plan_payment(Variable):
         # eligible Direct and FFEL loans (685.209(b)(5), (g)(3)(i)).
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         ffel_balance = person("federal_ffel_loan_balance", period.this_year)
-        eligible_balance = where(is_head_or_spouse, balance + ffel_balance, 0)
-        couple_balance = person.tax_unit.sum(eligible_balance)
+        eligible_balance = balance + ffel_balance
+        couple_balance = person.tax_unit.sum(
+            where(is_head_or_spouse, eligible_balance, 0)
+        )
+        # 685.209(e)(2)(i) adds only a spouse's loans, so a borrower claimed as
+        # a tax dependent owes their whole applicable payment.
+        proration_balance = where(is_head_or_spouse, couple_balance, eligible_balance)
         balance_share = np.divide(
             eligible_balance,
-            couple_balance,
+            proration_balance,
             out=np.zeros_like(eligible_balance),
-            where=couple_balance > 0,
+            where=proration_balance > 0,
         )
-        applicable_payment = person.tax_unit(
-            "repayment_assistance_plan_applicable_monthly_payment", period
+        # A head or spouse uses the tax unit's applicable payment. A borrower
+        # claimed as a tax dependent uses their own income, with no dependent
+        # reduction (20 U.S.C. 1087e(q)(4)(A); 685.209(e)(1)(i)).
+        applicable_payment = where(
+            is_head_or_spouse,
+            person.tax_unit(
+                "repayment_assistance_plan_applicable_monthly_payment", period
+            ),
+            dependent_borrower_repayment_assistance_plan_applicable_payment(
+                person, period, parameters
+            ),
         )
         monthly_payment = max_(applicable_payment * balance_share, p.minimum_payment)
         # Final payment: payments earlier in the year reduce the balance left
