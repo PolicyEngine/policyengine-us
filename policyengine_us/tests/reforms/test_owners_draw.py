@@ -19,7 +19,7 @@ import weakref
 import numpy as np
 import pytest
 from policyengine_core.parameters import Parameter, ParameterNode, ParameterScale
-from hypothesis import HealthCheck, example, given, settings
+from hypothesis import HealthCheck, Phase, example, given, settings
 from hypothesis import strategies as st
 from policyengine_core.periods import period
 from policyengine_core.reforms import Reform
@@ -1077,6 +1077,7 @@ def test_examples_keep_what_the_property_holds_until_teardown(collection_calls):
 SIMULATION_SETTINGS = {
     **SETTINGS,
     "max_examples": 2,
+    "phases": [phase for phase in Phase if phase is not Phase.explain],
     "suppress_health_check": [
         *SETTINGS["suppress_health_check"],
         HealthCheck.function_scoped_fixture,
