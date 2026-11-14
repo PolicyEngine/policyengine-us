@@ -22,14 +22,17 @@ metadata:
   unit: currency-USD
   period: year
   label: Dependent standard deduction floor
-  # Values after the CBO horizon are computed in
-  # parameters/uprating_extensions.py per 26 U.S.C. 63(c)(4)(B)(i): the
-  # statutory $500 increased by the 1(f)(3) cost-of-living adjustment with
-  # calendar year 1987 as the base year, each increase rounded down to the
-  # next lowest multiple of $50 under 1(f)(7)(A). Those values supersede
-  # this uprating rule, which describes the index and rounding.
   uprating:
-    parameter: gov.irs.uprating
+    # 26 U.S.C. 63(c)(4)(B)(i): the statutory $500 plus its 1(f)(3)
+    # cost-of-living increase with calendar year 1987 as the base year,
+    # rounded down to a multiple of $50 under 1(f)(7)(A). The index's 1988
+    # value covers calendar year 1987. Base mode adds values only after
+    # CBO's, above.
+    parameter: gov.irs.indexing.c_cpi_u
+    base:
+      period: 1988
+      value: 500
+      floor: true
     rounding:
       type: downwards
       interval: 50

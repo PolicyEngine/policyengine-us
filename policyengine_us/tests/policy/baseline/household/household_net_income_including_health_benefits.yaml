@@ -21,3 +21,12 @@
     healthcare_benefit_value: 2_000
   output:
     household_net_income_including_health_benefits: 4_000
+
+- name: The premium tax credit, in both net income and health benefits, counts once
+  period: 2026
+  input:
+    household_net_income: 3_000
+    healthcare_benefit_value: 1_500
+    premium_tax_credit_in_force: 1_000
+  output:
+    household_net_income_including_health_benefits: 3_000 + 1_500 - 1_000

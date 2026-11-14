@@ -310,3 +310,34 @@
         state_code: CA
   output:
     ca_standard_deduction: 1_450
+
+# FTB Tax News, October 2026, 2026 Indexing: $5,900 for single or separate
+# filers and $11,800 for joint, surviving spouse or head of household filers.
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/2026/10.html#article1
+
+- name: 2026 single filer gets FTB's $5,900 standard deduction
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SINGLE
+  output:
+    ca_standard_deduction: 5_900
+
+- name: 2026 joint filers get FTB's $11,800 standard deduction
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 40
+      person_b:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_standard_deduction: 11_800
