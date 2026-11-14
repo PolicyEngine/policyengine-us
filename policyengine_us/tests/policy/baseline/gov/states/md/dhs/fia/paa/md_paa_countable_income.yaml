@@ -54,6 +54,7 @@
       person1:
         age: 72
         is_tax_unit_head: true
+        ssi_earned_income: 12_000
         ssi_unearned_income: 12_000
       person2:
         age: 70
@@ -80,11 +81,14 @@
       2025-07: [false, false]
     # This annual formula applies December's status, separate, to the whole
     # year, so each spouse counts their own income in all twelve months,
-    # including January to June, when SSI combines the couple's income:
-    # (1,000 - 20) x 12 = 11,760 and (500 - 20) x 12 = 5,760.
+    # including January to June, when SSI combines the couple's income.
+    # person1: (1,000 - 20) + (1,000 - 65) / 2 = 980 + 467.50 = 1,447.50,
+    # x 12 = 17,370. person2: (500 - 20) x 12 = 5,760.
     # Both spouses are aged, so neither is an ineligible spouse and no
     # income is deemed.
-    # Summing the monthly ssi_marital_unearned_income instead would combine
-    # 1,500 a month through June: 15,000 - 240 = 14,760 and
-    # 12,000 - 240 = 11,760.
-    md_paa_countable_income: [11_760, 5_760]
+    # Summing the monthly ssi_marital_* variables instead would combine the
+    # couple's income through June. Unearned, 1,500 a month: person1
+    # 15,000 - 240 + 5,610 = 20,370 and person2 12,000 - 240 = 11,760.
+    # Earned, 1,000 a month: person2 gets 6,000 a year, so
+    # 5,760 + (500 - 65) / 2 x 12 = 8,370.
+    md_paa_countable_income: [17_370, 5_760]

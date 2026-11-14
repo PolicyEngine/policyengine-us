@@ -8,19 +8,26 @@ class ny_ccap_eligible_child(Variable):
     label = "Eligible child for the New York Child Care Assistance Program"
     defined_for = StateCode.NY
     documentation = (
-        "New York's eligibility test for CCAP. It keeps the federal asset "
-        "and immigration tests, applies New York's own age limit and income "
-        "limit, and adds the two categorical routes New York law requires: "
-        "foster care and open child protective or preventive services cases "
-        "are eligible without regard to income, and families experiencing "
-        "homelessness are served without further activity requirements while "
-        "remaining subject to the income test. The protective services route "
-        "is family-level and the foster care route is child-level, following "
-        "415.2(a)(2)(vi)(a)-(b)."
+        "New York applies its age and income tests alongside federal asset "
+        "and immigration tests for the Child Care Block Grant route. Foster "
+        "children and families with an open protective-services case bypass "
+        "the income test. Those families and families experiencing "
+        "homelessness bypass the activity test. Preventive-service receipt "
+        "alone waives the family share and leaves the block grant tests "
+        "unchanged. A child also qualifies through Title XX when the district "
+        "authorizes preventive child care after applying its funding, plan, "
+        "need, priority, financial and provider conditions. PolicyEngine "
+        "applies the 18 NYCRR 415.1(b) age test on that route, with its "
+        "special-needs and court-supervision extensions. A child who turns 13 "
+        "during a school year may continue through the end of that school year."
     )
     reference = (
-        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=15",
+        # PDF pages 2, 15, 17
+        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=2",
         "https://ocfs.ny.gov/main/policies/external/2023/adm/23-OCFS-ADM-18.pdf#page=9",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.2",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.1",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5",
     )
 
     def formula(person, period, parameters):
@@ -37,19 +44,31 @@ class ny_ccap_eligible_child(Variable):
         )
         in_foster_care = person("is_in_foster_care", period)
         homeless = spm_unit.household("is_homeless", period.this_year)
-        # 415.2(a)(2)(vi) waives the income test for foster care placements
-        # and open child protective or preventive services cases.
+        # New York waives income limits for foster and protective cases.
         categorically_eligible = in_foster_care | protective_services
-        # Reason for care mirrors the federal test, which already accepts
-        # protective services in place of the activity test, and adds the
-        # foster care and homelessness routes.
         reason_for_care_eligible = (
             meets_activity_test | protective_services | in_foster_care | homeless
         )
-        return (
+        block_grant_eligible = (
             age_eligible
             & asset_eligible
             & immigration_eligible
             & reason_for_care_eligible
             & (income_eligible | categorically_eligible)
         )
+        preventive_services = person("ny_ccap_receives_preventive_services", period)
+        title_xx_approved = person(
+            "ny_ccap_title_xx_preventive_services_approved", period
+        )
+        # 18 NYCRR 415.1(b)(1) and 415.2(d)(4)(ii) let a Title XX or
+        # preventive child who turns 13 during a school year continue through
+        # the end of that school year, before the child turns 14. The
+        # authorization input records whether that continuation still runs.
+        p = parameters(period).gov.states.ny.ocfs.ccap.eligibility.age_limit
+        age = person("age", period.this_year)
+        school_year_continuation_age = (age >= p.base) & (age < p.base + 1)
+        title_xx_age_eligible = age_eligible | school_year_continuation_age
+        title_xx_eligible = (
+            preventive_services & title_xx_approved & title_xx_age_eligible
+        )
+        return block_grant_eligible | title_xx_eligible
