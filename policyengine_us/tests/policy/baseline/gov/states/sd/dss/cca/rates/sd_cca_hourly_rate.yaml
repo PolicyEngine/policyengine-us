@@ -1,0 +1,516 @@
+# DSS published these maximum hourly rates effective July 1, 2024.
+# The family sheet computes $3.80 * 1.25 = $4.75 for a qualifying infant.
+# DSS caps ordinary approved special needs care at $6.80 per hour.
+# Each case establishes an approved activity; the formulas determine eligibility.
+# Unknown county strings use each provider and age band's lowest county rate.
+
+- name: DSS pays the Minnehaha family infant rate.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 3.8
+
+- name: DSS pays the Aurora family infant rate.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 3.15
+
+- name: DSS keeps children below age three in the first family band.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 2.99
+        sd_cca_provider_type: FAMILY_DAY_CARE
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 3.8
+
+- name: DSS moves three-year-olds to the second family band.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 3
+        sd_cca_provider_type: FAMILY_DAY_CARE
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 3.7
+
+- name: DSS pays the Minnehaha center infant rate.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: LICENSED_CENTER
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 6
+
+- name: DSS moves three-year-olds to the second center band.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 3
+        sd_cca_provider_type: LICENSED_CENTER
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 5.65
+
+- name: DSS keeps five-year-old students in the second hourly center band.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 5
+        sd_cca_provider_type: LICENSED_CENTER
+        is_in_k12_school: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 5.65
+
+- name: DSS moves six-year-olds to the third center band.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 6
+        sd_cca_provider_type: LICENSED_CENTER
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 4.6
+
+- name: DSS pays the Aurora center infant rate.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: LICENSED_CENTER
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 3.9
+
+- name: DSS pays informal providers the statewide hourly rate.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: INFORMAL
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 2.3
+
+- name: DSS pays Aurora school programs their separate hourly rate.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 8
+        sd_cca_provider_type: BEFORE_AFTER_SCHOOL
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 3.85
+
+- name: DSS pays Minnehaha school programs their separate hourly rate.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 8
+        sd_cca_provider_type: BEFORE_AFTER_SCHOOL
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 5
+
+- name: DSS raises an eligible family infant rate by 25 percent.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        sd_cca_specialized_infant_toddler_rate_eligible: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 4.75
+
+- name: DSS stops the specialized infant rate at age three.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 3
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        sd_cca_specialized_infant_toddler_rate_eligible: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 3.7
+
+- name: DSS limits the specialized infant rate to family providers.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: LICENSED_CENTER
+        sd_cca_specialized_infant_toddler_rate_eligible: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 6
+
+- name: DSS requires approval before paying the special needs ceiling.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        is_disabled: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 3.8
+
+- name: DSS pays the approved family special needs ceiling.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        sd_cca_special_needs_rate_approved: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 6.8
+
+- name: DSS pays the approved center special needs ceiling.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: LICENSED_CENTER
+        sd_cca_special_needs_rate_approved: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 6.8
+
+- name: DSS pays the approved school program special needs ceiling.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 8
+        sd_cca_provider_type: BEFORE_AFTER_SCHOOL
+        sd_cca_special_needs_rate_approved: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 6.8
+
+- name: DSS pays the approved informal special needs ceiling.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: INFORMAL
+        sd_cca_special_needs_rate_approved: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 6.8
+
+- name: DSS applies the special needs ceiling without stacking the infant increase.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        sd_cca_specialized_infant_toddler_rate_eligible: true
+        sd_cca_special_needs_rate_approved: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 6.8
+
+- name: The model uses the lowest county infant rate for UNKNOWN.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: UNKNOWN
+  output:
+    sd_cca_hourly_rate: 2.95
+
+- name: The model uses the lowest county infant rate for unrecognized strings.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: NOT_A_COUNTY
+  output:
+    sd_cca_hourly_rate: 2.95
+
+- name: The model uses Aurora when the household omits its county.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+  output:
+    sd_cca_hourly_rate: 3.15
+
+- name: DSS pays no hourly reimbursement for an ineligible adult.
+  period: 2025-01
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      child:
+        age: 30
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        sd_cca_special_needs_rate_approved: true
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_hourly_rate: 0

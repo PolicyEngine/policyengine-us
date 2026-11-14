@@ -335,3 +335,57 @@
     sd_cca_reason_for_care_eligible: true
     sd_cca_eligible_child: false
     sd_cca_weekly_rate: 0
+
+- name: DSS maps school programs to the licensed center category in the weekly era.
+  period: 2026-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age:
+          2026: 8
+        sd_cca_provider_type: BEFORE_AFTER_SCHOOL
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test:
+          2026: true
+    households:
+      household:
+        members: [child]
+        state_code:
+          2026: SD
+        county_str:
+          2026: MINNEHAHA_COUNTY_SD
+  output:
+    # The weekly sheet groups licensed centers and school age programs.
+    # The urban school age full-time ceiling equals $185 per week.
+    sd_cca_weekly_rate: 185
+
+- name: DSS pays the same weekly school age rate at a licensed center.
+  period: 2026-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age:
+          2026: 8
+        sd_cca_provider_type: LICENSED_CENTER
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      unit:
+        members: [child]
+        meets_ccdf_activity_test:
+          2026: true
+    households:
+      household:
+        members: [child]
+        state_code:
+          2026: SD
+        county_str:
+          2026: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 185

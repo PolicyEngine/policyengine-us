@@ -1,0 +1,14 @@
+description: South Dakota has a sourced hourly Child Care Assistance reimbursement schedule for periods when this indicator applies.
+
+# The model pays no hourly benefit before the earliest sourced schedule.
+values:
+  2015-01-01: false
+  2024-07-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: South Dakota CCA hourly reimbursement schedule available
+  reference:
+    - title: South Dakota family child care reimbursement rates, effective July 1, 2024
+      href: https://dss.sd.gov/docs/childcare/assistance/Reimbursement_Rates/Family_Child_Care.pdf
