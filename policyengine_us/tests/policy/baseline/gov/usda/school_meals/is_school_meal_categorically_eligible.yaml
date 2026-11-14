@@ -328,6 +328,55 @@
     school_meal_net_subsidy: 1119.6
     free_school_meals: 1119.6
     reduced_price_school_meals: 0
+# A foster placement covers March 2026 and no other month, and one month of
+# is_in_foster_care qualifies the child for the year.
+# Free value = (2.46 + 4.60 - 0.40 - 0.44) * 180 = 6.22 * 180 = 1,119.60.
+- name: One month of foster care before December qualifies the child for the year.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 10
+        is_in_foster_care:
+          2026-03: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_net_subsidy: 1119.6
+    free_school_meals: 1119.6
+    reduced_price_school_meals: 0
 - name: is_homeless_child qualifies only the child with that status.
   period: 2026
   absolute_error_margin: 0.01

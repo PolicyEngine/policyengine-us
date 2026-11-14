@@ -12,7 +12,17 @@ def _school_meal_child_categorical_eligibility(person, period, parameters):
     # is_in_foster_care stands in for that placement, and one month of it
     # qualifies the child for the year.
     p = parameters(period).gov.usda.school_meals
-    return add(person, period, p.child_categorical_eligibility, options=[ADD]) > 0
+    # Core returns December's value when a formula asks for a monthly
+    # true-or-false input over a year, so this loop reads each input in its
+    # own periods and counts every month.
+    qualifying_periods = 0
+    for variable in p.child_categorical_eligibility:
+        definition_period = person.entity.get_variable(
+            variable, check_existence=True
+        ).definition_period
+        for subperiod in period.get_subperiods(definition_period):
+            qualifying_periods = qualifying_periods + person(variable, subperiod)
+    return qualifying_periods > 0
 
 
 class is_school_meal_categorically_eligible(Variable):

@@ -5,14 +5,18 @@ We vary siblings, income tiers, enrollment, K-12 attendance and receipt months.
 The paired units hold their poverty ratios and poverty guidelines fixed
 when a child joins them. An explicit example covers every state and DC.
 With computed common tiers, household categories give every child free meals.
+The last test reads each child's own category from a six-person
+Microsimulation, which the YAML runner cannot build.
 """
 
 import numpy as np
+import pandas as pd
 import pytest
 from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 
-from policyengine_us import Simulation
+from policyengine_us import Microsimulation, Simulation
+from policyengine_us.data.dataset_schema import USSingleYearDataset
 
 YEAR = 2025
 MONTHS = tuple(f"{YEAR}-{month:02d}" for month in range(1, 13))
@@ -402,3 +406,80 @@ def test_explicit_common_meal_tier_inputs_preserve_individual_overrides(
                     f"variant={record['variant']} person={name}: "
                     f"tier={child_tiers[person_index[name]]}, expected={expected}"
                 )
+
+
+def _three_family_dataset():
+    """Three Alabama families, each with one parent and one ten-year-old.
+
+    Head Start enrolls the second family's child for the year. No family
+    receives SNAP, TANF or FDPIR, and each has income at 300% of the poverty
+    guideline, so a child without a category pays for meals.
+    """
+    family_ids = np.arange(1, 4)
+    person_ids = np.arange(1, 7)
+    family_of = np.repeat(family_ids, 2)
+    person = pd.DataFrame(
+        {
+            "person_id": person_ids,
+            "person_household_id": family_of,
+            "person_tax_unit_id": family_of,
+            "person_spm_unit_id": family_of,
+            "person_family_id": family_of,
+            "person_marital_unit_id": person_ids,
+            "age": np.tile([35.0, 10.0], 3),
+            "is_enrolled_in_head_start": [False, False, False, True, False, False],
+        }
+    )
+    spm_unit = pd.DataFrame(
+        {
+            "spm_unit_id": family_ids,
+            "snap": np.zeros(3),
+            "tanf": np.zeros(3),
+            "fdpir": np.zeros(3),
+            "school_meal_fpg_ratio": np.full(3, 3.0),
+        }
+    )
+    household = pd.DataFrame(
+        {
+            "household_id": family_ids,
+            "state_fips": np.full(3, 1),
+            "household_weight": np.ones(3),
+        }
+    )
+    return USSingleYearDataset(
+        person=person,
+        household=household,
+        tax_unit=pd.DataFrame({"tax_unit_id": family_ids}),
+        spm_unit=spm_unit,
+        family=pd.DataFrame({"family_id": family_ids}),
+        marital_unit=pd.DataFrame({"marital_unit_id": person_ids}),
+        time_period=YEAR,
+    )
+
+
+def test_child_categories_qualify_each_child_in_a_microsimulation():
+    """A Microsimulation gives each child the result a household simulation gives.
+
+    Core routes a formula's variable calls through Microsimulation's own
+    methods, and the cases above build household simulations. A foster
+    placement covers July and no other month for the third family's child,
+    and an annual read of the monthly input leaves July out.
+    """
+    simulation = Microsimulation(dataset=_three_family_dataset(), dataset_end_year=YEAR)
+    simulation.set_input(
+        "is_in_foster_care",
+        f"{YEAR}-07",
+        np.array([False, False, False, False, False, True]),
+    )
+    eligible = simulation.calculate("is_school_meal_categorically_eligible", YEAR)
+    assert np.asarray(eligible).tolist() == [False, False, False, True, False, True]
+    for meal in ("breakfast", "lunch"):
+        tiers = simulation.calculate(f"school_meal_child_{meal}_tier", YEAR)
+        assert np.asarray(tiers).tolist() == [
+            "PAID",
+            "PAID",
+            "PAID",
+            "FREE",
+            "PAID",
+            "FREE",
+        ], meal
