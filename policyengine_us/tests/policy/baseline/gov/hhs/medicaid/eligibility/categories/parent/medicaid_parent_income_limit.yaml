@@ -1119,6 +1119,9 @@
     is_medicaid_eligible: [true, true, true]
 
 # $9,351.00 / $21,330 = 0.4383966245; parent limit: $589 x 12 / $21,330 + 0.05 = 0.3813642757.
+# Virginia's adult group starts January 1, 2019 at 1.38: $21,330 x 1.38 / 12 = $2,452.95,
+# rounded up to $2,453 a month, or $29,436 a year. $9,351 <= $29,436, so the parent
+# qualifies through the adult group.
 - name: Virginia Group II parent earning 9,351.00 in 2019
   period: 2019
   absolute_error_margin: 0.000001
@@ -1159,7 +1162,8 @@
     medicaid_income_level: [0.4383966245, 0.4383966245, 0.4383966245]
     medicaid_parent_income_limit: [0.3813642757, 0.3813642757, 0.3813642757]
     is_parent_for_medicaid: [false, false, false]
-    is_medicaid_eligible: [false, true, true]
+    is_adult_for_medicaid: [true, false, false]
+    is_medicaid_eligible: [true, true, true]
 
 # $21,195.60 / $21,330 = 0.9936990155; parent limit: $1,611 x 12 / $21,330 + 0.05 = 0.9563291139.
 - name: Tennessee parent earning 21,195.60 in 2019
@@ -1204,6 +1208,9 @@
     is_medicaid_eligible: [false, true, true]
 
 # $11,429.00 / $21,720 = 0.5261970534; parent limit: $678 x 12 / $21,720 + 0.05 = 0.4245856354.
+# Utah's adult group reads 1.38 on January 1, 2020: $21,720 x 1.38 / 12 = $2,497.80,
+# rounded up to $2,498 a month, or $29,976 a year. At 1.00 the limit is $21,720 a year.
+# $11,429 falls below both, so the parent qualifies through the adult group.
 - name: Utah parent earning 11,429.00 in 2020
   period: 2020
   absolute_error_margin: 0.000001
@@ -1243,9 +1250,103 @@
     medicaid_income_level: [0.5261970534, 0.5261970534, 0.5261970534]
     medicaid_parent_income_limit: [0.4245856354, 0.4245856354, 0.4245856354]
     is_parent_for_medicaid: [false, false, false]
-    is_medicaid_eligible: [false, true, true]
+    is_adult_for_medicaid: [true, false, false]
+    is_medicaid_eligible: [true, true, true]
+
+# $9,500.00 / $21,720 = 0.4373848987. Parent limit 0.4245856354: $21,720 x 0.4245856354 / 12
+# = $768.50, rounded up to $769 a month, or $9,228 a year, so $9,500 fails the parent test.
+# Adult limit 1.38: $2,498 a month, or $29,976 a year, so $9,500 passes the adult test.
+- name: Utah parent earning 9,500.00 in 2020 qualifies through the adult group
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 9500
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: UT
+  output:
+    medicaid_income_level: [0.4373848987, 0.4373848987, 0.4373848987]
+    medicaid_parent_income_limit: [0.4245856354, 0.4245856354, 0.4245856354]
+    is_parent_for_medicaid: [false, false, false]
+    is_adult_for_medicaid: [true, false, false]
+    is_medicaid_eligible: [true, true, true]
+
+# $25,000.00 / $21,720 = 1.1510128913. The parent limit admits $9,228 a year.
+# At the 1.38 adult limit, $29,976 a year admits the parent; at 1.00, $21,720 a year would not.
+# This case pins Utah's January 1, 2020 adult limit (candidate
+# us-ut:medicaid-adult-expansion-limit-january-2020).
+- name: Utah parent earning 25,000.00 in 2020 qualifies only under the 1.38 adult limit
+  period: 2020
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25000
+        is_tax_unit_head: true
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    spm_units:
+      spm_unit:
+        members: [parent, child_1, child_2]
+    families:
+      family:
+        members: [parent, child_1, child_2]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_1_unit:
+        members: [child_1]
+      child_2_unit:
+        members: [child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: UT
+  output:
+    medicaid_income_level: [1.1510128913, 1.1510128913, 1.1510128913]
+    medicaid_parent_income_limit: [0.4245856354, 0.4245856354, 0.4245856354]
+    is_parent_for_medicaid: [false, false, false]
+    is_adult_for_medicaid: [true, false, false]
+    is_medicaid_eligible: [true, true, true]
 
 # $9,351.00 / $21,720 = 0.4305248619; parent limit: $606 x 12 / $21,720 + 0.05 = 0.3848066298.
+# Virginia's adult group: $21,720 x 1.38 / 12 = $2,497.80, rounded up to $2,498 a month,
+# or $29,976 a year. $9,351 <= $29,976, so the parent qualifies through the adult group.
 - name: Virginia Group II parent earning 9,351.00 in 2020
   period: 2020
   absolute_error_margin: 0.000001
@@ -1286,7 +1387,8 @@
     medicaid_income_level: [0.4305248619, 0.4305248619, 0.4305248619]
     medicaid_parent_income_limit: [0.3848066298, 0.3848066298, 0.3848066298]
     is_parent_for_medicaid: [false, false, false]
-    is_medicaid_eligible: [false, true, true]
+    is_adult_for_medicaid: [true, false, false]
+    is_medicaid_eligible: [true, true, true]
 
 # $21,195.60 / $21,720 = 0.9758563536; parent limit: $1,611 x 12 / $21,720 + 0.05 = 0.9400552486.
 - name: Tennessee parent earning 21,195.60 in 2020

@@ -15535,3 +15535,50 @@ candidates:
     source; the agency manual does not establish a statutory override. The captures sit under source_conflicts/sources/us-va/:
     12vac30-40-220-group-limits.txt and dmas-lifc-limits-2017-p35.txt, dmas-lifc-limits-2018-p34.txt,
     dmas-lifc-limits-2019-p42.txt and dmas-lifc-limits-2020-p59.txt.'
+- id: us-ut:medicaid-adult-expansion-limit-january-2020
+  program: medicaid
+  years:
+    from: 2020
+    to: 2020
+    type: calendar
+  question: On January 1, 2020, does Utah cover adult expansion applicants with income up to 133% of the poverty
+    guideline, as CMS's December 2019 demonstration approval and Utah Code 26-18-3.9(5)(b) provide, or up to 95%,
+    as R414-312-6(3) still read until DAR 52479 amended it?
+  sources:
+  - kind: statute
+    citation: Utah Code 26-18-3.9(5)(b), as amended by S.B. 96 (2019 General Session), enrolled copy, lines 232-241
+    url: https://le.utah.gov/~2019/bills/sbillenr/SB0096.pdf#page=9
+  - kind: regulation
+    citation: Utah Admin. Code R414-312-6(3), DAR File No. 43798, effective August 29, 2019
+    url: https://rules.utah.gov/publicat/bull_pdf/2019/b20190701.pdf#page=95
+  - kind: rulemaking
+    citation: Utah DAR File No. 52479, proposed amendment to R414-312-6(3), Utah State Bulletin, February 1, 2020
+    url: https://rules.utah.gov/wp-content/uploads/b20200201.pdf#page=103
+  - kind: policy
+    citation: CMS approval of the Utah Primary Care Network section 1115 demonstration (amendment approved December 16,
+      2020), expenditure authority 10, Adult Expansion Population
+    url: https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=7
+  readings:
+    statute: Section 26-18-3.9(5)(b) expands Medicaid to the whole optional adult expansion population on the earlier
+      of the day CMS approves a waiver with the terms in Subsection (5)(a)(ii) or July 1, 2020. CMS approved the
+      amendment raising the Adult Expansion Population limit to 133% of the guideline on December 23, 2019, and its
+      expenditure authority 10 covers adults to 133% as of January 1, 2020.
+    other: R414-312-6(3) limited Adult Expansion Medicaid to countable income at or below 95% of the guideline until
+      DAR 52479, which may take effect on March 9, 2020, raised it to 133%.
+  example: A Utah parent of children aged 5 and 8 earning $25,000 in 2020 has income at 1.151 of the $21,720
+    guideline. The 1.38 limit admits up to $29,976 a year, and the 1.00 limit up to $21,720.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/adult/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: open
+  note: 'Annual calculations read January 1, so the 2020 Utah adult limit takes 1.38 (133% plus the five-point
+    disregard). The other reading gives 1.00. The Utah 2020 Index of Changes lists rule changes effective January
+    2, 2019 through January 1, 2020, and shows only DAR 43708 and DAR 43798 for R414-312 (https://rules.utah.gov/wp-content/uploads/2020-Index-of-Changes.pdf#page=31).
+    CMS gives the December 23, 2019 approval date in STC 55 (https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=50).
+    The statute reading assumes that approval meets Subsection (5)(b)(i). The YAML case "Utah parent earning 25,000.00
+    in 2020 qualifies only under the 1.38 adult limit" pins the reading. The captures sit under source_conflicts/sources/us-ut/:
+    ut-sb96-2019-enrolled-26-18-3-9-p8-9.txt, ut-bulletin-2019-07-01-dar-43798-p95.txt, ut-bulletin-2020-02-01-dar-52479-p103.txt
+    and cms-ut-pcn-approval-2020-12-16-p7.txt.'
