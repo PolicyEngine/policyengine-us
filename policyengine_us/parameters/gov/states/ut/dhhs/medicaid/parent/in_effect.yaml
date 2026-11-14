@@ -1,4 +1,5 @@
-description: PolicyEngine applies Utah household-size dollar standards in these historical parent Medicaid calculations.
+description: Utah uses its household-size dollar standards for parent and caretaker relative Medicaid in these years.
+# PolicyEngine turns this route on for 2020 only; other years keep the national ratio.
 values:
   2013-01-01: false
   2020-01-01: true
@@ -9,3 +10,7 @@ metadata:
   reference:
     - title: Utah R414-303-4(3), emergency rule effective May 7, 2019
       href: https://rules.utah.gov/publicat/bulletin/2019/20190601/43706.htm
+    - title: Utah R414-303-4(3), DAR File No. 43796, permanent amendment effective August 29, 2019
+      href: https://rules.utah.gov/publicat/bulletin/2019/20190701/43796.htm
+    - title: Utah State Bulletin, September 15, 2019, notices of effective date for DAR File Nos. 43796 and 43798
+      href: https://rules.utah.gov/publicat/bulletin/2019/20190915/effect.htm
