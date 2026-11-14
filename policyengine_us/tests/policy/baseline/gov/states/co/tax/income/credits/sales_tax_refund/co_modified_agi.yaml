@@ -1,0 +1,68 @@
+# C.R.S. 39-22-2003(1.5)(b) adds to federal adjusted gross income the "Social
+# security benefits excluded from federal adjusted gross income for the tax
+# year", and subsection (3) measures the qualified individuals' own income.
+# DR 0104 line 35 is the filers' Form 1040 line 6a less line 6b (2025 Book 104,
+# page 13). A tax unit dependent's benefits are the dependent's own. Refund
+# amounts are from the 2025 DR 0104 line 38 table (Book 104, page 42): $19 for
+# single filers and $38 for joint filers with modified AGI of $52,000 or less,
+# $25 and $50 from $52,001 to $105,000.
+
+- name: A dependent child's Social Security stays out of the parent's modified AGI
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        social_security_survivors: 6_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    adjusted_gross_income: 50_000
+    filer_tax_exempt_social_security: 0
+    # 50_000, not 50_000 + 6_000 = 56_000.
+    co_modified_agi: 50_000
+    # $19, not the $25 that 56_000 would give.
+    co_sales_tax_refund: 19
+
+- name: Joint filers' own nontaxable Social Security counts, a dependent's does not
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 10_000
+        social_security_retirement: 30_000
+      spouse:
+        age: 68
+        social_security_retirement: 10_000
+      grandchild:
+        age: 16
+        is_tax_unit_dependent: true
+        social_security_survivors: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, grandchild]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, grandchild]
+        state_code: CO
+  output:
+    # Combined income of 10_000 + (30_000 + 10_000) / 2 = 30_000 is below the
+    # $32,000 joint base amount, so none of the couple's benefits is taxable.
+    adjusted_gross_income: 10_000
+    filer_tax_exempt_social_security: 40_000
+    # 10_000 + 40_000 = 50_000, not 59_000 with the grandchild's 9_000.
+    co_modified_agi: 50_000
+    # $38 for joint filers, not the $50 that 59_000 would give.
+    co_sales_tax_refund: 38

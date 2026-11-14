@@ -101,7 +101,7 @@ TABLE_INCOME_SOURCES = [
     "tax_exempt_interest_income",
     "veterans_benefits",
     "workers_compensation",
-    "tax_exempt_social_security",
+    "filer_tax_exempt_social_security",
     "tax_exempt_pension_income",
     "tax_exempt_retirement_distributions",
     "tanf",

@@ -1,8 +1,9 @@
-# Disposable income of cotenants who occupy the residence but file
-# outside this tax unit. Per RCW 84.36.383(2), combined disposable
-# income includes each cotenant's disposable income. Default is zero;
-# populate when the household has occupying co-owners filing separate
-# federal returns.
+# Disposable income of cotenants (residents with an ownership interest in
+# the residence, RCW 84.36.383(3)) other than the tax unit head and spouse:
+# co-owners who file their own federal returns, and a tax unit dependent
+# who owns part of the residence. Per RCW 84.36.383(2), combined
+# disposable income includes each cotenant's disposable income. Default is
+# zero.
 from policyengine_us.model_api import *
 
 

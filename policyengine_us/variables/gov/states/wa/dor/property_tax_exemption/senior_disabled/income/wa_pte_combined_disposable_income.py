@@ -20,19 +20,22 @@ class wa_pte_combined_disposable_income(Variable):
         p = parameters(
             period
         ).gov.states.wa.dor.property_tax_exemption.senior_disabled.income
-        # RCW 84.36.383(2) requires combining the claimant's, spouse's, and
-        # each occupying cotenant's disposable income. AGI (and the other
-        # tax-unit-level sources) already excludes dependents because
-        # irs_gross_income masks them out at the person level. Non-tax-unit
-        # cotenants come in through wa_pte_cotenant_disposable_income.
-        # Person-level income add-backs (pension, military pay, veterans
-        # benefits) and medical deductions are summed across all tax-unit
-        # members. The statute (RCW 84.36.383(2) and (7)) restricts these
-        # to amounts of the claimant and spouse/domestic partner only, but
-        # we don't filter dependents at the moment.
-        own_income = add(tax_unit, period, p.sources)
+        # RCW 84.36.383(2) combines the disposable income of the claimant,
+        # the spouse or domestic partner, and each cotenant occupying the
+        # residence. WAC 458-16A-120(2)(b) adds each item left out of AGI to
+        # the AGI of the person who received it, so a tax unit dependent's
+        # benefits, pensions, military pay and tax-exempt interest are the
+        # dependent's own. Person-level sources are summed over the head and
+        # spouse; AGI and filer_tax_exempt_social_security already describe
+        # their return. Other cotenants, including a tax unit dependent who
+        # owns part of the residence, come in through
+        # wa_pte_cotenant_disposable_income.
+        own_income = tax_unit_non_dep_add(tax_unit, period, p.sources)
         cotenant_income = tax_unit("wa_pte_cotenant_disposable_income", period)
         income = own_income + cotenant_income
+        # The deductions are amounts the claimant or spouse paid (RCW
+        # 84.36.383(2)). Expense inputs record whose expense it is, not who
+        # paid it, so they are summed over every tax unit member.
         itemized = add(tax_unit, period, p.deductions.sources)
         # ESSB 6162 (RCW 84.36.383(14)) lets the claimant elect the standard
         # deduction in place of the itemized medical basket. The per-claimant
