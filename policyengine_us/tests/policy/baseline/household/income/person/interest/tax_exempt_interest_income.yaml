@@ -1,0 +1,21 @@
+# tax_exempt_interest_income follows
+# calibration.gov.irs.soi.tax_exempt_interest_income_per_capita, the IRS SOI
+# total divided by population. An input dated in one year and read in a later
+# year is multiplied by the ratio of that index between the two years.
+
+- name: A 2016 input read in 2019 grows with SOI tax-exempt interest per capita, inside the filled years.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    tax_exempt_interest_income:
+      2016: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, tax-exempt interest, over
+    # calibration.gov.census.populations.total:
+    #   2016: 60,652,535,000 / 328,964,000 = 184.3744
+    #         (https://www.irs.gov/pub/irs-soi/16in14ar.xls)
+    #   2019: 61,575,197,000 / 335,329,000 = 183.6262
+    #         (https://www.irs.gov/pub/irs-soi/19in14ar.xls)
+    # 10,000 x 183.6262 / 184.3744 = 9,959.42. With the old values this came to
+    # 9,810.19.
+    tax_exempt_interest_income: 9_959.42

@@ -2195,15 +2195,15 @@
     meets_ssi_resource_test: [false, false]
 
 
-# SI 01330.200 B reallocates resources in the month a child becomes ineligible.
-# Parent excess: $6,000 - $2,000 = $4,000.
-# January and November: $700 + ($943 / 3 + $20) - $20 = $1,014.3333.
-# This exceeds $943, so one eligible child receives the full $4,000 share;
-# the income-ineligible sibling also receives $4,000 under 416.1202(b).
-# December: $700 - $20 = $680, so both divide $4,000 / 2 = $2,000.
-# The annual income average, (11 x $1,014.3333 + $680) / 12 = $986.4722,
-# would wrongly exclude the food-supported child from December's divisor.
-- name: Monthly food income changes the resource divisor only in December 2024
+# The parent is aged and over the $2,000 resource limit, so is not eligible for
+# SSI and is an ineligible parent (20 CFR 416.1160(d)). Food that such a parent
+# provides is not income to the child (20 CFR 416.1148(b)(1)), so the food
+# changes nothing in any month: $700 - $20 = $680, under $943.
+# Both children stay eligible and divide the parent's excess (SI 01330.200 B):
+# ($6,000 - $2,000) / 2 = $2,000 each, which meets the limit.
+# The inputs cannot say that food comes from outside the household. That food
+# would count through November 2024 and change the divisor in December.
+- name: Food for a child living with an ineligible parent does not change the resource divisor
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -2249,14 +2249,68 @@
         members: [parent, food_supported_child, sibling]
   output:
     ssi_countable_income:
-      2024-01: [0, 1_014.33, 0]
-      2024-11: [0, 1_014.33, 0]
+      2024-01: [0, 680, 0]
+      2024-11: [0, 680, 0]
       2024-12: [0, 680, 0]
     ssi_resources_deemed_from_ineligible_parent:
-      2024-01: [0, 4_000, 4_000]
-      2024-11: [0, 4_000, 4_000]
+      2024-01: [0, 2_000, 2_000]
+      2024-11: [0, 2_000, 2_000]
       2024-12: [0, 2_000, 2_000]
     meets_ssi_resource_test:
-      2024-01: [false, false, false]
-      2024-11: [false, false, false]
+      2024-01: [false, true, true]
+      2024-11: [false, true, true]
       2024-12: [false, true, true]
+
+# The parent, 70, has 6,000 of resources, over the 2,000 limit, so is an ineligible
+# parent and 6,000 - 2,000 = 4,000 is deemed (POMS SI 01330.200 B). The division reads
+# each month's countable income. In January the first child's 1,014.33 is above the
+# 943 federal rate, so only the sibling is in the division, and each child is deemed
+# 4,000. In December the first child's 680 is below it, and the two share: 2,000 each.
+- name: Each month's countable income decides which children share the deemed resources
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 70
+        is_parent: true
+        is_tax_unit_head: true
+        is_household_head: true
+        ssi_countable_resources: 6_000
+      first_child:
+        age: 12
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+        is_household_head: false
+        ssi_countable_income:
+          2024-01: 1_014.33
+          2024-12: 680
+        ssi_countable_resources: 0
+      sibling:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+        is_household_head: false
+        ssi_countable_resources: 0
+    tax_units:
+      family:
+        members: [parent, first_child, sibling]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [first_child]
+      sibling_unit:
+        members: [sibling]
+    spm_units:
+      family:
+        members: [parent, first_child, sibling]
+    households:
+      home:
+        members: [parent, first_child, sibling]
+  output:
+    ssi_resources_deemed_from_ineligible_parent:
+      2024-01: [0, 4_000, 4_000]
+      2024-12: [0, 2_000, 2_000]

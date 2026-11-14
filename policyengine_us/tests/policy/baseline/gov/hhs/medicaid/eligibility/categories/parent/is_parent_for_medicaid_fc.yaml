@@ -1,0 +1,3843 @@
+# Primary sources: Florida Appendix A7 (single page), adult/standard disregard columns
+# and notes, https://ffic.myflfamilies.com/manual/essfiles/30446.pdf; budget
+# steps 3-5, https://ffic.myflfamilies.com/manual/2600.pdf#page=37.
+# Independent HHS guideline series: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/prior-hhs-poverty-guidelines-federal-register-references
+# Size 2 fixed standard: $241 + $146 = $387; size 3: $303 + $183 = $486.
+# Add 5% of annual FPG / 12 once and round the resulting ceiling up.
+# These use the existing YEAR convention, not Florida's within-year April adoption.
+# Ages stay constant across independent annual examples. No incumbent pandemic
+# retention, financial eligibility, category, or enrollment flag is injected.
+- name: Florida size-2 parent at the inclusive annual-convention monthly ceiling in 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        employment_income:
+          2017: 5460
+          2018: 5472
+          2019: 5496
+          2020: 5508
+          2021: 5520
+          2022: 5568
+          2023: 5640
+          2024: 5676
+          2025: 5712
+          2026: 5736
+      child1:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &id001
+        - parent
+        - child1
+    families:
+      family:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    households:
+      household:
+        members: *id001
+        state_code:
+          2017: FL
+          2018: FL
+          2019: FL
+          2020: FL
+          2021: FL
+          2022: FL
+          2023: FL
+          2024: FL
+          2025: FL
+          2026: FL
+  output:
+    medicaid_household_size:
+      2017:
+      - 2
+      - 2
+      2018:
+      - 2
+      - 2
+      2019:
+      - 2
+      - 2
+      2020:
+      - 2
+      - 2
+      2021:
+      - 2
+      - 2
+      2022:
+      - 2
+      - 2
+      2023:
+      - 2
+      - 2
+      2024:
+      - 2
+      - 2
+      2025:
+      - 2
+      - 2
+      2026:
+      - 2
+      - 2
+    medicaid_household_income:
+      2017:
+      - 5460
+      - 5460
+      2018:
+      - 5472
+      - 5472
+      2019:
+      - 5496
+      - 5496
+      2020:
+      - 5508
+      - 5508
+      2021:
+      - 5520
+      - 5520
+      2022:
+      - 5568
+      - 5568
+      2023:
+      - 5640
+      - 5640
+      2024:
+      - 5676
+      - 5676
+      2025:
+      - 5712
+      - 5712
+      2026:
+      - 5736
+      - 5736
+    is_parent_for_medicaid_fc:
+      2017:
+      - true
+      - true
+      2018:
+      - true
+      - true
+      2019:
+      - true
+      - true
+      2020:
+      - true
+      - true
+      2021:
+      - true
+      - true
+      2022:
+      - true
+      - true
+      2023:
+      - true
+      - true
+      2024:
+      - true
+      - true
+      2025:
+      - true
+      - true
+      2026:
+      - true
+      - true
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    is_parent_for_medicaid:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_category:
+      2017: &id002
+      - PARENT
+      - OLDER_CHILD
+      2018: *id002
+      2019: *id002
+      2020: *id002
+      2021: *id002
+      2022: *id002
+      2023: *id002
+      2024: *id002
+      2025: *id002
+      2026: *id002
+    is_medicaid_eligible:
+      2017:
+      - true
+      - true
+      2018:
+      - true
+      - true
+      2019:
+      - true
+      - true
+      2020:
+      - true
+      - true
+      2021:
+      - true
+      - true
+      2022:
+      - true
+      - true
+      2023:
+      - true
+      - true
+      2024:
+      - true
+      - true
+      2025:
+      - true
+      - true
+      2026:
+      - true
+      - true
+    medicaid_enrolled:
+      2017:
+      - true
+      - true
+      2018:
+      - true
+      - true
+      2019:
+      - true
+      - true
+      2020:
+      - true
+      - true
+      2021:
+      - true
+      - true
+      2022:
+      - true
+      - true
+      2023:
+      - true
+      - true
+      2024:
+      - true
+      - true
+      2025:
+      - true
+      - true
+      2026:
+      - true
+      - true
+    is_chip_eligible:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+- name: Florida size-2 parent one dollar above the annual-convention monthly ceiling in 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        employment_income:
+          2017: 5472
+          2018: 5484
+          2019: 5508
+          2020: 5520
+          2021: 5532
+          2022: 5580
+          2023: 5652
+          2024: 5688
+          2025: 5724
+          2026: 5748
+      child1:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &id003
+        - parent
+        - child1
+    families:
+      family:
+        members: *id003
+    spm_units:
+      spm_unit:
+        members: *id003
+    households:
+      household:
+        members: *id003
+        state_code:
+          2017: FL
+          2018: FL
+          2019: FL
+          2020: FL
+          2021: FL
+          2022: FL
+          2023: FL
+          2024: FL
+          2025: FL
+          2026: FL
+  output:
+    medicaid_household_size:
+      2017:
+      - 2
+      - 2
+      2018:
+      - 2
+      - 2
+      2019:
+      - 2
+      - 2
+      2020:
+      - 2
+      - 2
+      2021:
+      - 2
+      - 2
+      2022:
+      - 2
+      - 2
+      2023:
+      - 2
+      - 2
+      2024:
+      - 2
+      - 2
+      2025:
+      - 2
+      - 2
+      2026:
+      - 2
+      - 2
+    medicaid_household_income:
+      2017:
+      - 5472
+      - 5472
+      2018:
+      - 5484
+      - 5484
+      2019:
+      - 5508
+      - 5508
+      2020:
+      - 5520
+      - 5520
+      2021:
+      - 5532
+      - 5532
+      2022:
+      - 5580
+      - 5580
+      2023:
+      - 5652
+      - 5652
+      2024:
+      - 5688
+      - 5688
+      2025:
+      - 5724
+      - 5724
+      2026:
+      - 5748
+      - 5748
+    is_parent_for_medicaid_fc:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    is_parent_for_medicaid:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+    medicaid_category:
+      2017: &id004
+      - NONE
+      - OLDER_CHILD
+      2018: *id004
+      2019: *id004
+      2020: *id004
+      2021: *id004
+      2022: *id004
+      2023: *id004
+      2024: *id004
+      2025: *id004
+      2026: *id004
+    is_medicaid_eligible:
+      2017:
+      - false
+      - true
+      2018:
+      - false
+      - true
+      2019:
+      - false
+      - true
+      2020:
+      - false
+      - true
+      2021:
+      - false
+      - true
+      2022:
+      - false
+      - true
+      2023:
+      - false
+      - true
+      2024:
+      - false
+      - true
+      2025:
+      - false
+      - true
+      2026:
+      - false
+      - true
+    medicaid_enrolled:
+      2017:
+      - false
+      - true
+      2018:
+      - false
+      - true
+      2019:
+      - false
+      - true
+      2020:
+      - false
+      - true
+      2021:
+      - false
+      - true
+      2022:
+      - false
+      - true
+      2023:
+      - false
+      - true
+      2024:
+      - false
+      - true
+      2025:
+      - false
+      - true
+      2026:
+      - false
+      - true
+    is_chip_eligible:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+- name: Florida size-3 parent at the inclusive annual-convention monthly ceiling in 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        employment_income:
+          2017: 6864
+          2018: 6876
+          2019: 6900
+          2020: 6924
+          2021: 6936
+          2022: 6984
+          2023: 7080
+          2024: 7128
+          2025: 7176
+          2026: 7200
+      child1:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+      child2:
+        age:
+          2017: 4
+          2018: 4
+          2019: 4
+          2020: 4
+          2021: 4
+          2022: 4
+          2023: 4
+          2024: 4
+          2025: 4
+          2026: 4
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &id005
+        - parent
+        - child1
+        - child2
+    families:
+      family:
+        members: *id005
+    spm_units:
+      spm_unit:
+        members: *id005
+    households:
+      household:
+        members: *id005
+        state_code:
+          2017: FL
+          2018: FL
+          2019: FL
+          2020: FL
+          2021: FL
+          2022: FL
+          2023: FL
+          2024: FL
+          2025: FL
+          2026: FL
+  output:
+    medicaid_household_size:
+      2017:
+      - 3
+      - 3
+      - 3
+      2018:
+      - 3
+      - 3
+      - 3
+      2019:
+      - 3
+      - 3
+      - 3
+      2020:
+      - 3
+      - 3
+      - 3
+      2021:
+      - 3
+      - 3
+      - 3
+      2022:
+      - 3
+      - 3
+      - 3
+      2023:
+      - 3
+      - 3
+      - 3
+      2024:
+      - 3
+      - 3
+      - 3
+      2025:
+      - 3
+      - 3
+      - 3
+      2026:
+      - 3
+      - 3
+      - 3
+    medicaid_household_income:
+      2017:
+      - 6864
+      - 6864
+      - 6864
+      2018:
+      - 6876
+      - 6876
+      - 6876
+      2019:
+      - 6900
+      - 6900
+      - 6900
+      2020:
+      - 6924
+      - 6924
+      - 6924
+      2021:
+      - 6936
+      - 6936
+      - 6936
+      2022:
+      - 6984
+      - 6984
+      - 6984
+      2023:
+      - 7080
+      - 7080
+      - 7080
+      2024:
+      - 7128
+      - 7128
+      - 7128
+      2025:
+      - 7176
+      - 7176
+      - 7176
+      2026:
+      - 7200
+      - 7200
+      - 7200
+    is_parent_for_medicaid_fc:
+      2017:
+      - true
+      - true
+      - true
+      2018:
+      - true
+      - true
+      - true
+      2019:
+      - true
+      - true
+      - true
+      2020:
+      - true
+      - true
+      - true
+      2021:
+      - true
+      - true
+      - true
+      2022:
+      - true
+      - true
+      - true
+      2023:
+      - true
+      - true
+      - true
+      2024:
+      - true
+      - true
+      - true
+      2025:
+      - true
+      - true
+      - true
+      2026:
+      - true
+      - true
+      - true
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    is_parent_for_medicaid:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    medicaid_category:
+      2017: &id006
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2018: *id006
+      2019: *id006
+      2020: *id006
+      2021: *id006
+      2022: *id006
+      2023: *id006
+      2024: *id006
+      2025: *id006
+      2026: *id006
+    is_medicaid_eligible:
+      2017:
+      - true
+      - true
+      - true
+      2018:
+      - true
+      - true
+      - true
+      2019:
+      - true
+      - true
+      - true
+      2020:
+      - true
+      - true
+      - true
+      2021:
+      - true
+      - true
+      - true
+      2022:
+      - true
+      - true
+      - true
+      2023:
+      - true
+      - true
+      - true
+      2024:
+      - true
+      - true
+      - true
+      2025:
+      - true
+      - true
+      - true
+      2026:
+      - true
+      - true
+      - true
+    medicaid_enrolled:
+      2017:
+      - true
+      - true
+      - true
+      2018:
+      - true
+      - true
+      - true
+      2019:
+      - true
+      - true
+      - true
+      2020:
+      - true
+      - true
+      - true
+      2021:
+      - true
+      - true
+      - true
+      2022:
+      - true
+      - true
+      - true
+      2023:
+      - true
+      - true
+      - true
+      2024:
+      - true
+      - true
+      - true
+      2025:
+      - true
+      - true
+      - true
+      2026:
+      - true
+      - true
+      - true
+    is_chip_eligible:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+- name: Florida size-3 parent one dollar above the annual-convention monthly ceiling in 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        employment_income:
+          2017: 6876
+          2018: 6888
+          2019: 6912
+          2020: 6936
+          2021: 6948
+          2022: 6996
+          2023: 7092
+          2024: 7140
+          2025: 7188
+          2026: 7212
+      child1:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+      child2:
+        age:
+          2017: 4
+          2018: 4
+          2019: 4
+          2020: 4
+          2021: 4
+          2022: 4
+          2023: 4
+          2024: 4
+          2025: 4
+          2026: 4
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &id007
+        - parent
+        - child1
+        - child2
+    families:
+      family:
+        members: *id007
+    spm_units:
+      spm_unit:
+        members: *id007
+    households:
+      household:
+        members: *id007
+        state_code:
+          2017: FL
+          2018: FL
+          2019: FL
+          2020: FL
+          2021: FL
+          2022: FL
+          2023: FL
+          2024: FL
+          2025: FL
+          2026: FL
+  output:
+    medicaid_household_size:
+      2017:
+      - 3
+      - 3
+      - 3
+      2018:
+      - 3
+      - 3
+      - 3
+      2019:
+      - 3
+      - 3
+      - 3
+      2020:
+      - 3
+      - 3
+      - 3
+      2021:
+      - 3
+      - 3
+      - 3
+      2022:
+      - 3
+      - 3
+      - 3
+      2023:
+      - 3
+      - 3
+      - 3
+      2024:
+      - 3
+      - 3
+      - 3
+      2025:
+      - 3
+      - 3
+      - 3
+      2026:
+      - 3
+      - 3
+      - 3
+    medicaid_household_income:
+      2017:
+      - 6876
+      - 6876
+      - 6876
+      2018:
+      - 6888
+      - 6888
+      - 6888
+      2019:
+      - 6912
+      - 6912
+      - 6912
+      2020:
+      - 6936
+      - 6936
+      - 6936
+      2021:
+      - 6948
+      - 6948
+      - 6948
+      2022:
+      - 6996
+      - 6996
+      - 6996
+      2023:
+      - 7092
+      - 7092
+      - 7092
+      2024:
+      - 7140
+      - 7140
+      - 7140
+      2025:
+      - 7188
+      - 7188
+      - 7188
+      2026:
+      - 7212
+      - 7212
+      - 7212
+    is_parent_for_medicaid_fc:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    is_parent_for_medicaid:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+    medicaid_category:
+      2017: &id008
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2018: *id008
+      2019: *id008
+      2020: *id008
+      2021: *id008
+      2022: *id008
+      2023: *id008
+      2024: *id008
+      2025: *id008
+      2026: *id008
+    is_medicaid_eligible:
+      2017:
+      - false
+      - true
+      - true
+      2018:
+      - false
+      - true
+      - true
+      2019:
+      - false
+      - true
+      - true
+      2020:
+      - false
+      - true
+      - true
+      2021:
+      - false
+      - true
+      - true
+      2022:
+      - false
+      - true
+      - true
+      2023:
+      - false
+      - true
+      - true
+      2024:
+      - false
+      - true
+      - true
+      2025:
+      - false
+      - true
+      - true
+      2026:
+      - false
+      - true
+      - true
+    medicaid_enrolled:
+      2017:
+      - false
+      - true
+      - true
+      2018:
+      - false
+      - true
+      - true
+      2019:
+      - false
+      - true
+      - true
+      2020:
+      - false
+      - true
+      - true
+      2021:
+      - false
+      - true
+      - true
+      2022:
+      - false
+      - true
+      - true
+      2023:
+      - false
+      - true
+      - true
+      2024:
+      - false
+      - true
+      - true
+      2025:
+      - false
+      - true
+      - true
+      2026:
+      - false
+      - true
+      - true
+    is_chip_eligible:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+- name: Florida size-2 parent one cent above the annual-convention monthly ceiling in 2026.
+  period: 2026
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        is_tax_unit_dependent:
+          2026: false
+        employment_income:
+          2026: 5736.12
+      child1:
+        age:
+          2026: 8
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &id009
+        - parent
+        - child1
+    families:
+      family:
+        members: *id009
+    spm_units:
+      spm_unit:
+        members: *id009
+    households:
+      household:
+        members: *id009
+        state_code:
+          2026: FL
+  output:
+    medicaid_household_size:
+      2026:
+      - 2
+      - 2
+    medicaid_household_income:
+      2026:
+      - 5736.12
+      - 5736.12
+    is_parent_for_medicaid_fc:
+      2026:
+      - false
+      - false
+    is_parent_for_medicaid_nfc:
+      2026:
+      - true
+      - false
+    is_parent_for_medicaid:
+      2026:
+      - false
+      - false
+    medicaid_category:
+      2026:
+      - NONE
+      - OLDER_CHILD
+    is_medicaid_eligible:
+      2026:
+      - false
+      - true
+    medicaid_enrolled:
+      2026:
+      - false
+      - true
+    is_chip_eligible:
+      2026:
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2026:
+      - false
+      - false
+- name: Florida size-3 parent one cent above the annual-convention monthly ceiling in 2026.
+  period: 2026
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        is_tax_unit_dependent:
+          2026: false
+        employment_income:
+          2026: 7200.12
+      child1:
+        age:
+          2026: 8
+        is_tax_unit_dependent:
+          2026: true
+      child2:
+        age:
+          2026: 4
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &id010
+        - parent
+        - child1
+        - child2
+    families:
+      family:
+        members: *id010
+    spm_units:
+      spm_unit:
+        members: *id010
+    households:
+      household:
+        members: *id010
+        state_code:
+          2026: FL
+  output:
+    medicaid_household_size:
+      2026:
+      - 3
+      - 3
+      - 3
+    medicaid_household_income:
+      2026:
+      - 7200.12
+      - 7200.12
+      - 7200.12
+    is_parent_for_medicaid_fc:
+      2026:
+      - false
+      - false
+      - false
+    is_parent_for_medicaid_nfc:
+      2026:
+      - true
+      - false
+      - false
+    is_parent_for_medicaid:
+      2026:
+      - false
+      - false
+      - false
+    medicaid_category:
+      2026:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+    is_medicaid_eligible:
+      2026:
+      - false
+      - true
+      - true
+    medicaid_enrolled:
+      2026:
+      - false
+      - true
+      - true
+    is_chip_eligible:
+      2026:
+      - false
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2026:
+      - false
+      - false
+      - false
+- name: California control preserves parent coverage at income above the Florida size-three ceiling.
+  period: 2026
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        is_tax_unit_dependent:
+          2026: false
+        employment_income:
+          2026: 7200.12
+      child1:
+        age:
+          2026: 8
+        is_tax_unit_dependent:
+          2026: true
+      child2:
+        age:
+          2026: 4
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: &id011
+        - parent
+        - child1
+        - child2
+    families:
+      family:
+        members: *id011
+    spm_units:
+      spm_unit:
+        members: *id011
+    households:
+      household:
+        members: *id011
+        state_code:
+          2026: CA
+  output:
+    medicaid_household_size:
+      2026:
+      - 3
+      - 3
+      - 3
+    medicaid_household_income:
+      2026:
+      - 7200.12
+      - 7200.12
+      - 7200.12
+    is_parent_for_medicaid_fc:
+      2026:
+      - true
+      - true
+      - true
+    is_parent_for_medicaid_nfc:
+      2026:
+      - true
+      - false
+      - false
+    is_parent_for_medicaid:
+      2026:
+      - true
+      - false
+      - false
+    medicaid_category:
+      2026:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+    is_medicaid_eligible:
+      2026:
+      - true
+      - true
+      - true
+    medicaid_enrolled:
+      2026:
+      - true
+      - true
+      - true
+    is_chip_eligible:
+      2026:
+      - false
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2026:
+      - false
+      - false
+      - false
+
+# Texas Works Handbook C-131.2, revision 15-4 effective October 1, 2015:
+# https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/c-130-medical-programs
+# One-parent base: size 2 $196/month, size 3 $230/month. Add five points
+# of the annual FPG once (A-1341); convert wages to months (A-1353).
+# HHS first/additional-person series:
+# https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/prior-hhs-poverty-guidelines-federal-register-references
+# Each safe inside income is floor(base + FPG/240); each safe outside income
+# is ceil(base + FPG/240) + $1. These avoid Texas's unresolved cents band.
+# The existing generic monthly ceiling remains an explicit model convention;
+# these tests do not certify exact-cent or March FPG adoption behavior.
+# Independent annual examples hold age/relationships constant and represent
+# new applicants, without injecting financial/category/enrollment flags.
+# Parent financial-criteria assertions address the adult applicant; the full
+# household assertions below separately check child eligibility and enrollment.
+- name: Texas one-adult identified-parent size-2 household safely inside the source-derived standard under
+    the annual FPG convention, 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        own_children_in_household:
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+        employment_income:
+          2017: 3156
+          2018: 3168
+          2019: 3192
+          2020: 3204
+          2021: 3216
+          2022: 3264
+          2023: 3336
+          2024: 3372
+          2025: 3408
+          2026: 3432
+      child1:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      unit:
+        members:
+        - parent
+        - child1
+    families:
+      family:
+        members:
+        - parent
+        - child1
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child1
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        state_code:
+          2017: TX
+          2018: TX
+          2019: TX
+          2020: TX
+          2021: TX
+          2022: TX
+          2023: TX
+          2024: TX
+          2025: TX
+          2026: TX
+  output:
+    is_parent:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_household_size:
+      2017:
+      - 2
+      - 2
+      2018:
+      - 2
+      - 2
+      2019:
+      - 2
+      - 2
+      2020:
+      - 2
+      - 2
+      2021:
+      - 2
+      - 2
+      2022:
+      - 2
+      - 2
+      2023:
+      - 2
+      - 2
+      2024:
+      - 2
+      - 2
+      2025:
+      - 2
+      - 2
+      2026:
+      - 2
+      - 2
+    medicaid_household_income:
+      2017:
+      - 3156
+      - 3156
+      2018:
+      - 3168
+      - 3168
+      2019:
+      - 3192
+      - 3192
+      2020:
+      - 3204
+      - 3204
+      2021:
+      - 3216
+      - 3216
+      2022:
+      - 3264
+      - 3264
+      2023:
+      - 3336
+      - 3336
+      2024:
+      - 3372
+      - 3372
+      2025:
+      - 3408
+      - 3408
+      2026:
+      - 3432
+      - 3432
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_category:
+      2017:
+      - PARENT
+      - OLDER_CHILD
+      2018:
+      - PARENT
+      - OLDER_CHILD
+      2019:
+      - PARENT
+      - OLDER_CHILD
+      2020:
+      - PARENT
+      - OLDER_CHILD
+      2021:
+      - PARENT
+      - OLDER_CHILD
+      2022:
+      - PARENT
+      - OLDER_CHILD
+      2023:
+      - PARENT
+      - OLDER_CHILD
+      2024:
+      - PARENT
+      - OLDER_CHILD
+      2025:
+      - PARENT
+      - OLDER_CHILD
+      2026:
+      - PARENT
+      - OLDER_CHILD
+    is_medicaid_eligible:
+      2017:
+      - true
+      - true
+      2018:
+      - true
+      - true
+      2019:
+      - true
+      - true
+      2020:
+      - true
+      - true
+      2021:
+      - true
+      - true
+      2022:
+      - true
+      - true
+      2023:
+      - true
+      - true
+      2024:
+      - true
+      - true
+      2025:
+      - true
+      - true
+      2026:
+      - true
+      - true
+    medicaid_enrolled:
+      2017:
+      - true
+      - true
+      2018:
+      - true
+      - true
+      2019:
+      - true
+      - true
+      2020:
+      - true
+      - true
+      2021:
+      - true
+      - true
+      2022:
+      - true
+      - true
+      2023:
+      - true
+      - true
+      2024:
+      - true
+      - true
+      2025:
+      - true
+      - true
+      2026:
+      - true
+      - true
+    is_chip_eligible:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+    people:
+      parent:
+        is_parent_for_medicaid_fc:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+- name: Texas one-adult identified-parent size-2 household safely outside the source-derived standard
+    under the annual FPG convention, 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        own_children_in_household:
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+        employment_income:
+          2017: 3180
+          2018: 3192
+          2019: 3216
+          2020: 3228
+          2021: 3240
+          2022: 3288
+          2023: 3360
+          2024: 3396
+          2025: 3432
+          2026: 3456
+      child1:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      unit:
+        members:
+        - parent
+        - child1
+    families:
+      family:
+        members:
+        - parent
+        - child1
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child1
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        state_code:
+          2017: TX
+          2018: TX
+          2019: TX
+          2020: TX
+          2021: TX
+          2022: TX
+          2023: TX
+          2024: TX
+          2025: TX
+          2026: TX
+  output:
+    is_parent:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_household_size:
+      2017:
+      - 2
+      - 2
+      2018:
+      - 2
+      - 2
+      2019:
+      - 2
+      - 2
+      2020:
+      - 2
+      - 2
+      2021:
+      - 2
+      - 2
+      2022:
+      - 2
+      - 2
+      2023:
+      - 2
+      - 2
+      2024:
+      - 2
+      - 2
+      2025:
+      - 2
+      - 2
+      2026:
+      - 2
+      - 2
+    medicaid_household_income:
+      2017:
+      - 3180
+      - 3180
+      2018:
+      - 3192
+      - 3192
+      2019:
+      - 3216
+      - 3216
+      2020:
+      - 3228
+      - 3228
+      2021:
+      - 3240
+      - 3240
+      2022:
+      - 3288
+      - 3288
+      2023:
+      - 3360
+      - 3360
+      2024:
+      - 3396
+      - 3396
+      2025:
+      - 3432
+      - 3432
+      2026:
+      - 3456
+      - 3456
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_category:
+      2017:
+      - NONE
+      - OLDER_CHILD
+      2018:
+      - NONE
+      - OLDER_CHILD
+      2019:
+      - NONE
+      - OLDER_CHILD
+      2020:
+      - NONE
+      - OLDER_CHILD
+      2021:
+      - NONE
+      - OLDER_CHILD
+      2022:
+      - NONE
+      - OLDER_CHILD
+      2023:
+      - NONE
+      - OLDER_CHILD
+      2024:
+      - NONE
+      - OLDER_CHILD
+      2025:
+      - NONE
+      - OLDER_CHILD
+      2026:
+      - NONE
+      - OLDER_CHILD
+    is_medicaid_eligible:
+      2017:
+      - false
+      - true
+      2018:
+      - false
+      - true
+      2019:
+      - false
+      - true
+      2020:
+      - false
+      - true
+      2021:
+      - false
+      - true
+      2022:
+      - false
+      - true
+      2023:
+      - false
+      - true
+      2024:
+      - false
+      - true
+      2025:
+      - false
+      - true
+      2026:
+      - false
+      - true
+    medicaid_enrolled:
+      2017:
+      - false
+      - true
+      2018:
+      - false
+      - true
+      2019:
+      - false
+      - true
+      2020:
+      - false
+      - true
+      2021:
+      - false
+      - true
+      2022:
+      - false
+      - true
+      2023:
+      - false
+      - true
+      2024:
+      - false
+      - true
+      2025:
+      - false
+      - true
+      2026:
+      - false
+      - true
+    is_chip_eligible:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+    people:
+      parent:
+        is_parent_for_medicaid_fc:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+- name: Texas one-adult identified-parent size-3 household safely inside the source-derived standard under
+    the annual FPG convention, 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        own_children_in_household:
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+        employment_income:
+          2017: 3780
+          2018: 3792
+          2019: 3816
+          2020: 3840
+          2021: 3852
+          2022: 3900
+          2023: 3996
+          2024: 4044
+          2025: 4092
+          2026: 4116
+      child1:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+      child2:
+        age:
+          2017: 4
+          2018: 4
+          2019: 4
+          2020: 4
+          2021: 4
+          2022: 4
+          2023: 4
+          2024: 4
+          2025: 4
+          2026: 4
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      unit:
+        members:
+        - parent
+        - child1
+        - child2
+    families:
+      family:
+        members:
+        - parent
+        - child1
+        - child2
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code:
+          2017: TX
+          2018: TX
+          2019: TX
+          2020: TX
+          2021: TX
+          2022: TX
+          2023: TX
+          2024: TX
+          2025: TX
+          2026: TX
+  output:
+    is_parent:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    medicaid_household_size:
+      2017:
+      - 3
+      - 3
+      - 3
+      2018:
+      - 3
+      - 3
+      - 3
+      2019:
+      - 3
+      - 3
+      - 3
+      2020:
+      - 3
+      - 3
+      - 3
+      2021:
+      - 3
+      - 3
+      - 3
+      2022:
+      - 3
+      - 3
+      - 3
+      2023:
+      - 3
+      - 3
+      - 3
+      2024:
+      - 3
+      - 3
+      - 3
+      2025:
+      - 3
+      - 3
+      - 3
+      2026:
+      - 3
+      - 3
+      - 3
+    medicaid_household_income:
+      2017:
+      - 3780
+      - 3780
+      - 3780
+      2018:
+      - 3792
+      - 3792
+      - 3792
+      2019:
+      - 3816
+      - 3816
+      - 3816
+      2020:
+      - 3840
+      - 3840
+      - 3840
+      2021:
+      - 3852
+      - 3852
+      - 3852
+      2022:
+      - 3900
+      - 3900
+      - 3900
+      2023:
+      - 3996
+      - 3996
+      - 3996
+      2024:
+      - 4044
+      - 4044
+      - 4044
+      2025:
+      - 4092
+      - 4092
+      - 4092
+      2026:
+      - 4116
+      - 4116
+      - 4116
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    medicaid_category:
+      2017:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2018:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2019:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2020:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2021:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2022:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2023:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2024:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2025:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2026:
+      - PARENT
+      - OLDER_CHILD
+      - YOUNG_CHILD
+    is_medicaid_eligible:
+      2017:
+      - true
+      - true
+      - true
+      2018:
+      - true
+      - true
+      - true
+      2019:
+      - true
+      - true
+      - true
+      2020:
+      - true
+      - true
+      - true
+      2021:
+      - true
+      - true
+      - true
+      2022:
+      - true
+      - true
+      - true
+      2023:
+      - true
+      - true
+      - true
+      2024:
+      - true
+      - true
+      - true
+      2025:
+      - true
+      - true
+      - true
+      2026:
+      - true
+      - true
+      - true
+    medicaid_enrolled:
+      2017:
+      - true
+      - true
+      - true
+      2018:
+      - true
+      - true
+      - true
+      2019:
+      - true
+      - true
+      - true
+      2020:
+      - true
+      - true
+      - true
+      2021:
+      - true
+      - true
+      - true
+      2022:
+      - true
+      - true
+      - true
+      2023:
+      - true
+      - true
+      - true
+      2024:
+      - true
+      - true
+      - true
+      2025:
+      - true
+      - true
+      - true
+      2026:
+      - true
+      - true
+      - true
+    is_chip_eligible:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+    people:
+      parent:
+        is_parent_for_medicaid_fc:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+- name: Texas one-adult identified-parent size-3 household safely outside the source-derived standard
+    under the annual FPG convention, 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      parent:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        is_tax_unit_dependent:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
+        own_children_in_household:
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+        employment_income:
+          2017: 3804
+          2018: 3816
+          2019: 3840
+          2020: 3864
+          2021: 3876
+          2022: 3924
+          2023: 4020
+          2024: 4068
+          2025: 4116
+          2026: 4140
+      child1:
+        age:
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+      child2:
+        age:
+          2017: 4
+          2018: 4
+          2019: 4
+          2020: 4
+          2021: 4
+          2022: 4
+          2023: 4
+          2024: 4
+          2025: 4
+          2026: 4
+        is_tax_unit_dependent:
+          2017: true
+          2018: true
+          2019: true
+          2020: true
+          2021: true
+          2022: true
+          2023: true
+          2024: true
+          2025: true
+          2026: true
+    tax_units:
+      unit:
+        members:
+        - parent
+        - child1
+        - child2
+    families:
+      family:
+        members:
+        - parent
+        - child1
+        - child2
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        state_code:
+          2017: TX
+          2018: TX
+          2019: TX
+          2020: TX
+          2021: TX
+          2022: TX
+          2023: TX
+          2024: TX
+          2025: TX
+          2026: TX
+  output:
+    is_parent:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    medicaid_household_size:
+      2017:
+      - 3
+      - 3
+      - 3
+      2018:
+      - 3
+      - 3
+      - 3
+      2019:
+      - 3
+      - 3
+      - 3
+      2020:
+      - 3
+      - 3
+      - 3
+      2021:
+      - 3
+      - 3
+      - 3
+      2022:
+      - 3
+      - 3
+      - 3
+      2023:
+      - 3
+      - 3
+      - 3
+      2024:
+      - 3
+      - 3
+      - 3
+      2025:
+      - 3
+      - 3
+      - 3
+      2026:
+      - 3
+      - 3
+      - 3
+    medicaid_household_income:
+      2017:
+      - 3804
+      - 3804
+      - 3804
+      2018:
+      - 3816
+      - 3816
+      - 3816
+      2019:
+      - 3840
+      - 3840
+      - 3840
+      2020:
+      - 3864
+      - 3864
+      - 3864
+      2021:
+      - 3876
+      - 3876
+      - 3876
+      2022:
+      - 3924
+      - 3924
+      - 3924
+      2023:
+      - 4020
+      - 4020
+      - 4020
+      2024:
+      - 4068
+      - 4068
+      - 4068
+      2025:
+      - 4116
+      - 4116
+      - 4116
+      2026:
+      - 4140
+      - 4140
+      - 4140
+    is_parent_for_medicaid_nfc:
+      2017:
+      - true
+      - false
+      - false
+      2018:
+      - true
+      - false
+      - false
+      2019:
+      - true
+      - false
+      - false
+      2020:
+      - true
+      - false
+      - false
+      2021:
+      - true
+      - false
+      - false
+      2022:
+      - true
+      - false
+      - false
+      2023:
+      - true
+      - false
+      - false
+      2024:
+      - true
+      - false
+      - false
+      2025:
+      - true
+      - false
+      - false
+      2026:
+      - true
+      - false
+      - false
+    medicaid_category:
+      2017:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2018:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2019:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2020:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2021:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2022:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2023:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2024:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2025:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+      2026:
+      - NONE
+      - OLDER_CHILD
+      - YOUNG_CHILD
+    is_medicaid_eligible:
+      2017:
+      - false
+      - true
+      - true
+      2018:
+      - false
+      - true
+      - true
+      2019:
+      - false
+      - true
+      - true
+      2020:
+      - false
+      - true
+      - true
+      2021:
+      - false
+      - true
+      - true
+      2022:
+      - false
+      - true
+      - true
+      2023:
+      - false
+      - true
+      - true
+      2024:
+      - false
+      - true
+      - true
+      2025:
+      - false
+      - true
+      - true
+      2026:
+      - false
+      - true
+      - true
+    medicaid_enrolled:
+      2017:
+      - false
+      - true
+      - true
+      2018:
+      - false
+      - true
+      - true
+      2019:
+      - false
+      - true
+      - true
+      2020:
+      - false
+      - true
+      - true
+      2021:
+      - false
+      - true
+      - true
+      2022:
+      - false
+      - true
+      - true
+      2023:
+      - false
+      - true
+      - true
+      2024:
+      - false
+      - true
+      - true
+      2025:
+      - false
+      - true
+      - true
+      2026:
+      - false
+      - true
+      - true
+    is_chip_eligible:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+    is_aca_ptc_eligible:
+      2017:
+      - false
+      - false
+      - false
+      2018:
+      - false
+      - false
+      - false
+      2019:
+      - false
+      - false
+      - false
+      2020:
+      - false
+      - false
+      - false
+      2021:
+      - false
+      - false
+      - false
+      2022:
+      - false
+      - false
+      - false
+      2023:
+      - false
+      - false
+      - false
+      2024:
+      - false
+      - false
+      - false
+      2025:
+      - false
+      - false
+      - false
+      2026:
+      - false
+      - false
+      - false
+    people:
+      parent:
+        is_parent_for_medicaid_fc:
+          2017: false
+          2018: false
+          2019: false
+          2020: false
+          2021: false
+          2022: false
+          2023: false
+          2024: false
+          2025: false
+          2026: false
