@@ -831,7 +831,8 @@
     ny_ccap: 0
   absolute_error_margin: 0.01
 
-# District approval records the applicable Title XX financial, age and provider conditions.
+# District approval records the applicable Title XX financial and provider conditions,
+# and the four-year-old passes the 18 NYCRR 415.1(b) age test.
 - name: A district-approved preventive child qualifies through Title XX.
   period: 2025-01
   input:

@@ -18,7 +18,7 @@ class ny_ccap_receives_preventive_services(Variable):
         "415.2(b)."
     )
     reference = (
-        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=19",
+        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=18",
         "https://dos.ny.gov/system/files/documents/2021/11/112421.pdf#page=15",
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.3",
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.2",
