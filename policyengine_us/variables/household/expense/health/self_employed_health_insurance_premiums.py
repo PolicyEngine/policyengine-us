@@ -7,13 +7,30 @@ class self_employed_health_insurance_premiums(Variable):
     label = "Self-employed health insurance premiums"
     unit = USD
     documentation = (
-        "Annual person-paid health insurance premiums for plans covering "
-        "individuals not covered by employer-sponsored health insurance. Excludes "
-        "pretax payroll deductions and employer-paid premiums; pretax payroll "
-        "payments belong only in pre_tax_health_insurance_premiums. The pretax "
-        "and non-pretax sets are disjoint. Defaults to the direct non-pretax "
-        "health_insurance_premiums input for self-employed people."
+        "Health insurance premiums that count toward the self-employed health "
+        "insurance deduction (Form 7206 line 1), from the person-paid, "
+        "non-pretax health_insurance_premiums input. Excludes pretax payroll "
+        "deductions and employer-paid premiums; pretax payroll payments belong "
+        "only in pre_tax_health_insurance_premiums. The pretax and non-pretax "
+        "sets are disjoint. Premiums are left out when "
+        "the person, or their spouse on a joint return, is eligible for a "
+        "subsidized employer plan (26 U.S.C. 162(l)(2)(B)). Premiums are "
+        "taken as supplied: for a Marketplace plan, 26 U.S.C. 280C(g) allows "
+        "no deduction for the part the premium tax credit pays, and the model "
+        "does not net the credit it calculates out of these premiums: the "
+        "credit depends on AGI, and so on this deduction (policyengine-us "
+        "#10124)."
     )
     definition_period = YEAR
     defined_for = "is_self_employed"
-    adds = ["health_insurance_premiums"]
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/162#l",
+        "https://www.irs.gov/pub/irs-prior/f7206--2025.pdf#page=1",  # Line 1
+    )
+
+    def formula(person, period, parameters):
+        premiums = person("health_insurance_premiums", period)
+        employer_plan_eligible = person(
+            "self_employed_health_insurance_employer_plan_eligible", period
+        )
+        return where(employer_plan_eligible, 0, premiums)

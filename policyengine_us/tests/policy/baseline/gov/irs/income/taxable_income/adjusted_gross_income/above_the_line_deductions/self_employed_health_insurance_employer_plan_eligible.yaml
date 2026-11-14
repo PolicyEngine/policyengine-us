@@ -1,0 +1,356 @@
+# 26 U.S.C. 162(l)(2)(B) and Form 7206 line 1: premiums for any month the
+# taxpayer is eligible for a subsidized plan of their own or their spouse's
+# employer don't count toward the self-employed health insurance deduction.
+# Profit of $50,000 keeps the earned income limit (Form 7206 line 13) above the
+# $6,000 of premiums, so the deduction equals the premiums that count.
+
+- name: No employer plan, so all premiums count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+  output:
+    self_employed_health_insurance_employer_plan_eligible: false
+    self_employed_health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald_person: 6_000
+
+- name: Enrolled in employer coverage, so no premiums count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+    has_esi: true
+  output:
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_ald_person: 0
+
+- name: Offered employer coverage without enrolling, so no premiums count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+    offered_aca_disqualifying_esi: true
+  output:
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_ald_person: 0
+
+- name: An employer pays part of the premiums, so no premiums count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+    employer_contribution_to_health_insurance_premiums_category: SOME
+  output:
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_ald_person: 0
+
+- name: The spouse's employer plan bars a joint filer's deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    self_employed_health_insurance_employer_plan_eligible: [true, true]
+    self_employed_health_insurance_premiums: [0, 0]
+    self_employed_health_insurance_ald: 0
+    # Half of SE tax: 50,000 x 0.9235 x 0.153 / 2 = 3,532.3875.
+    # AGI: 50,000 + 40,000 - 3,532.3875 = 86,467.6125.
+    adjusted_gross_income: 86_467.61
+
+- name: The spouse's employer plan also bars the deduction on a joint return without explicit marital units.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    self_employed_health_insurance_premiums: [0, 0]
+    self_employed_health_insurance_ald: 0
+
+- name: A housemate's employer plan does not bar a single filer's deduction.
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 45
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+      housemate:
+        age: 45
+        employment_income: 40_000
+        has_esi: true
+    tax_units:
+      filer_unit:
+        members: [filer]
+      housemate_unit:
+        members: [housemate]
+    households:
+      household:
+        members: [filer, housemate]
+        state_code: TX
+  output:
+    self_employed_health_insurance_employer_plan_eligible: [false, true]
+    self_employed_health_insurance_premiums: [6_000, 0]
+    self_employed_health_insurance_ald: [6_000, 0]
+
+- name: A dependent's ESI flag leaves the parents' employer-plan eligibility clear.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+      spouse:
+        age: 50
+      child:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 5_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # A dependent's ESI flag can describe a parent's employer plan, so it
+    # does not establish access through the dependent's own employer.
+    self_employed_health_insurance_employer_plan_eligible: [false, false, false]
+    self_employed_health_insurance_premiums: [6_000, 0, 0]
+    self_employed_health_insurance_ald: 6_000
+
+- name: A parent's employer plan does not bar a self-employed dependent's own deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+        has_esi: true
+      child:
+        age: 22
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    self_employed_health_insurance_employer_plan_eligible: [true, false]
+    self_employed_health_insurance_premiums: [0, 1_000]
+    # Half of the child's SE tax: 3,000 x 0.9235 x 0.153 / 2 = 211.94325.
+    # The earned income limit is 3,000 - 211.94325 = 2,788.05675.
+    # The child deducts min(1,000, 2,788.05675) = 1,000.
+    self_employed_health_insurance_ald_person: [0, 1_000]
+
+- name: A dependent's employer offer flag leaves premiums for their own policy deductible.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+        has_esi: true
+      child:
+        age: 22
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 1_000
+        offered_aca_disqualifying_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The parent's ESI flag counts; the dependent's offer or enrollment
+    # flag does not. The parent has no self-employed premiums: base = 0.
+    # Half of the child's SE tax: 3,000 x 0.9235 x 0.153 / 2 = 211.94325.
+    # Earned income limit: 3,000 - 211.94325 = 2,788.05675.
+    # The child's base is 1,000; min(1,000, 2,788.05675) = 1,000.
+    self_employed_health_insurance_employer_plan_eligible: [true, false]
+    self_employed_health_insurance_premiums: [0, 1_000]
+    self_employed_health_insurance_ald_person: [0, 1_000]
+
+- name: A dependent's ESI flag leaves premiums for their own policy deductible.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+        has_esi: true
+      child:
+        age: 22
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 1_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The parent's ESI flag counts; the dependent's offer or enrollment
+    # flag does not. The parent has no self-employed premiums: base = 0.
+    # Half of the child's SE tax: 3,000 x 0.9235 x 0.153 / 2 = 211.94325.
+    # Earned income limit: 3,000 - 211.94325 = 2,788.05675.
+    # The child's base is 1,000; min(1,000, 2,788.05675) = 1,000.
+    self_employed_health_insurance_employer_plan_eligible: [true, false]
+    self_employed_health_insurance_premiums: [0, 1_000]
+    self_employed_health_insurance_ald_person: [0, 1_000]
+
+- name: A dependent's own employer contribution bars their deduction without barring the parent.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+      child:
+        age: 22
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 1_000
+        employer_contribution_to_health_insurance_premiums_category: SOME
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The parent has no coverage flags and no self-employed premiums.
+    # SOME establishes the dependent's own employer contribution, so
+    # their 1,000 of premiums yield a base of 0 and a deduction of 0.
+    # Half of SE tax: 3,000 x 0.9235 x 0.153 / 2 = 211.94325.
+    # The earned income limit, 3,000 - 211.94325 = 2,788.05675,
+    # exceeds the base; min(0, 2,788.05675) = 0.
+    self_employed_health_insurance_employer_plan_eligible: [false, true]
+    self_employed_health_insurance_premiums: [0, 0]
+    self_employed_health_insurance_ald_person: [0, 0]
+
+- name: An employer pays all premiums for a plan, so the filer's own-policy premiums do not count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+    employer_contribution_to_health_insurance_premiums_category: ALL
+  output:
+    # ALL establishes employer support, so the filer excludes all 6,000.
+    # Half of SE tax: 50,000 x 0.9235 x 0.153 / 2 = 3,532.3875.
+    # The limit, 50,000 - 3,532.3875 = 46,467.6125, exceeds the base.
+    # The filer deducts min(0, 46,467.6125) = 0.
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_ald_person: 0
+
+- name: The spouse's medical plan bars medical premiums while long-term care premiums remain deductible.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+        long_term_health_insurance_premiums: 500
+      spouse:
+        age: 43
+        employment_income: 40_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The spouse's ESI bars both filers' medical premiums: line 1 = 0.
+    self_employed_health_insurance_employer_plan_eligible: [true, true]
+    self_employed_health_insurance_premiums: [0, 0]
+    # At age 45, the head's 2025 long-term care limit exceeds 500.
+    # Line 2 = 500; half of SE tax = 50,000 x 0.9235 x 0.153 / 2
+    # = 3,532.3875; earned income limit = 46,467.6125.
+    # The head deducts min(0 + 500, 46,467.6125) = 500.
+    self_employed_health_insurance_ald_person: [500, 0]
+    self_employed_health_insurance_ald: 500
+    # The head deducts 500 - min(0, 500) = 500 of long-term care premiums.
+    self_employed_health_insurance_ald_long_term_care_part: [500, 0]
+    # AGI = 50,000 + 40,000 - 3,532.3875 - 500 = 85,967.6125.
+    adjusted_gross_income: 85_967.61
+    # Schedule A retains 6,000 + 500 - 500 = 6,000 before its floor.
+    itemized_medical_expenses: 6_000
