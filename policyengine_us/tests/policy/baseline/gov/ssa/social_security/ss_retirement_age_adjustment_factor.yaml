@@ -86,3 +86,90 @@
     # 4 * 0.03 = 0.12
     # Factor: 1 + 0.12 = 1.12
     ss_retirement_age_adjustment_factor: 1.12
+
+- name: Born 1930 claiming at 70 gets 60 increment months at FRA 65
+  period: 2026
+  input:
+    age: 96  # Born 1930
+    ss_claiming_age: 70
+  output:
+    ss_full_retirement_age_months: 780  # 65 years
+    # POMS RS 00615.692E: 60 maximum increment months (age 65 to 70).
+    # POMS RS 00615.692D: 3/8 of 1 percent a month, 4.5 percent a year.
+    # 60 * 0.00375 = 0.225
+    ss_retirement_age_adjustment_factor: 1.225
+
+- name: Born 1916 claiming at 70 gets 60 increment months at 1 percent a year
+  period: 2026
+  input:
+    age: 110  # Born 1916
+    ss_claiming_age: 70
+  output:
+    # 60 months * 1/12 of 1 percent = 0.05
+    ss_retirement_age_adjustment_factor: 1.05
+
+- name: Born 1930 claiming past 70 gets no credit beyond age 70
+  period: 2026
+  input:
+    age: 96  # Born 1930
+    ss_claiming_age: 72
+  output:
+    ss_retirement_age_adjustment_factor: 1.225
+
+- name: Born 1940 has 54 maximum increment months
+  period: 2026
+  input:
+    age: 86  # Born 1940, FRA is 65 years 6 months (780 + 6 months)
+    ss_claiming_age: 70
+  output:
+    ss_full_retirement_age_months: 786
+    # 840 - 786 = 54 months at 7 percent a year (7/12 of 1 percent a month)
+    # 54 * 0.07 / 12 = 0.315
+    ss_retirement_age_adjustment_factor: 1.315
+
+- name: Born 1955 claiming at 71 stops at 70, 46 increment months at FRA 66 and 2 months
+  period: 2026
+  input:
+    age: 71  # Born 1955, FRA is 66 years 2 months
+    ss_claiming_age: 71
+  output:
+    ss_full_retirement_age_months: 794
+    # POMS RS 00615.692E: 46 maximum increment months.
+    # 46 * 0.08 / 12 = 0.30667
+    ss_retirement_age_adjustment_factor: 1.3067
+
+- name: Born 1955 with the default claiming age of 71 stops at 70
+  period: 2026
+  input:
+    age: 71
+  output:
+    ss_retirement_age_adjustment_factor: 1.3067
+
+- name: Born 1960 with the default claiming age of 71 gets 36 increment months
+  period: 2031
+  input:
+    age: 71  # Born 1960, FRA is 67
+  output:
+    ss_full_retirement_age_months: 804
+    # POMS RS 00615.692E: 36 maximum increment months.
+    # 36 * 0.08 / 12 = 0.24
+    ss_retirement_age_adjustment_factor: 1.24
+
+- name: Born 1911 claiming at 72 keeps credits to age 72 for months before 1984
+  period: 2026
+  input:
+    age: 115  # Born 1911, turned 72 in 1983
+    ss_claiming_age: 72
+  output:
+    # POMS RS 00615.692E: 84 maximum increment months (65 to 72).
+    # 84 * 0.01 / 12 = 0.07
+    ss_retirement_age_adjustment_factor: 1.07
+
+- name: Born 1913 credits run to the end of 1983, 72 increment months
+  period: 2026
+  input:
+    age: 113  # Born 1913, age 71 at the start of 1984
+    ss_claiming_age: 72
+  output:
+    # 852 months ceiling less 780 = 72 months; 72 * 0.01 / 12 = 0.06
+    ss_retirement_age_adjustment_factor: 1.06
