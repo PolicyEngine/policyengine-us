@@ -229,6 +229,39 @@ def test_a_childs_state_supplement_does_not_change_income_or_ccap(system, year, 
         )
 
 
+# OCFS began excluding children's SSI and state supplements on October 1,
+# 2023, so the months that count a child's payments are 12, 9 and 0.
+CHILD_PAYMENT_MONTHS = {2022: 12, 2023: 9, 2024: 0}
+
+
+@PROPERTY_SETTINGS
+@given(
+    st.sampled_from(sorted(CHILD_PAYMENT_MONTHS)),
+    st.lists(families(), min_size=2, max_size=6),
+)
+def test_a_childs_ssi_and_supplement_count_only_before_october_2023(
+    system, year, units
+):
+    cases = []
+    monthly_payments = []
+    for family in units:
+        minor_family = {**family, "child_age": min(family["child_age"], 17)}
+        supplement = family["low"] + family["increase"]
+        cases.append(({**minor_family, "child_ssi": 0}, {"family_assistance": 0}))
+        cases.append((minor_family, {"family_assistance": 0, "child_ssp": supplement}))
+        monthly_payments.append(minor_family["child_ssi"] + supplement)
+    simulation = Simulation(
+        tax_benefit_system=system, situation=_situation(cases, year)
+    )
+    income = np.asarray(simulation.calculate("ny_ccap_countable_income", year))
+    np.testing.assert_allclose(
+        income[1::2] - income[0::2],
+        CHILD_PAYMENT_MONTHS[year] * np.array(monthly_payments),
+        atol=TOLERANCE,
+        rtol=0,
+    )
+
+
 @PROPERTY_SETTINGS
 @given(st.sampled_from(YEARS), st.lists(families(), min_size=2, max_size=6))
 def test_reported_public_assistance_keeps_the_family_share_zero(system, year, units):
@@ -250,11 +283,36 @@ def test_reported_public_assistance_keeps_the_family_share_zero(system, year, un
 
 @PROPERTY_SETTINGS
 @given(st.sampled_from(YEARS), st.lists(families(), min_size=2, max_size=6))
+def test_counted_family_assistance_keeps_the_family_share_zero(system, year, units):
+    # Families report no enrollment, so only the grant they take up can
+    # waive the share under 415.3(e)(1).
+    cases = [
+        (
+            {**family, "enrolled": False},
+            {"family_assistance": family["low"] + family["increase"]},
+        )
+        for family in units
+    ]
+    simulation = Simulation(
+        tax_benefit_system=system, situation=_situation(cases, year)
+    )
+    month = f"{year}-10"
+    counted = np.asarray(simulation.calculate("ny_ccap_family_assistance", month))
+    share = np.asarray(simulation.calculate("ny_ccap_family_share", month))
+    takes_up = np.array([family["takeup"] for family, _ in cases])
+    grants = np.array([amounts["family_assistance"] for _, amounts in cases])
+    np.testing.assert_allclose(
+        counted, np.where(takes_up, grants, 0), atol=TOLERANCE, rtol=0
+    )
+    np.testing.assert_array_equal(share[counted > 0], 0)
+    assert (simulation.calculate("ny_ccap", month) >= 0).all()
+
+
+@PROPERTY_SETTINGS
+@given(st.sampled_from(YEARS), st.lists(families(), min_size=2, max_size=6))
 def test_safety_net_receipt_alone_keeps_the_family_share_zero(system, year, units):
     if "ny_safety_net_assistance_received" not in system.variables:
-        pytest.skip(
-            "Safety Net receipt and its waiver require the categorical routes build."
-        )
+        pytest.skip("The model has no Safety Net Assistance receipt input yet.")
     cases = [
         (
             {**family, "enrolled": False, "takeup": False},

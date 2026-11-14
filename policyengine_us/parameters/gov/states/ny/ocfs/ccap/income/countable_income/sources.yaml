@@ -18,13 +18,13 @@ values:
     # 404.5(b)(5)(iv) also counts railroad retirement checks from the
     # U.S. government, which PolicyEngine records separately.
     - railroad_benefits
-    # 404.5(b)(5)(vi): public assistance, including home relief.
-    - ny_safety_net_assistance
     # 404.5(b)(5)(v): dividends, interest, income from estates or trusts,
     # net rental income and royalties.
     - dividend_income
     - interest_income
     - rental_income
+    # 404.5(b)(5)(vi): public assistance, including home relief.
+    - ny_safety_net_assistance
     # 404.5(b)(5)(vii): pensions and annuities. PolicyEngine records military
     # retirement separately from pension_income.
     - pension_income
@@ -40,11 +40,13 @@ values:
     - veterans_benefits
     #
     # Counted separately in ny_ccap_countable_income:
-    # - ny_tanf, with TANF take-up and abolition controls. The New York
-    #   grant avoids other states' dependent care deductions in the federal
-    #   TANF aggregate, which reach CCAP through child care subsidies.
-    # - ssi and ny_ssp for adults under 404.5(b)(5)(vi). OCFS excludes both
-    #   payments for children in the unit under 404.5(b)(6)(xxi).
+    # - ny_ccap_family_assistance, the ny_tanf grant the family takes up.
+    #   The New York grant avoids other states' dependent care deductions in
+    #   the federal TANF aggregate, which reach CCAP through child care
+    #   subsidies.
+    # - ssi and ny_ssp under 404.5(b)(5)(vi). From October 1, 2023, OCFS
+    #   excludes both payments for children in the unit under
+    #   404.5(b)(6)(xxi); see child_ssi_exclusion_in_effect.
     #
     # Excluded sources, so simply not listed:
     # - capital_gains, excluded by 404.5(b)(6)(viii), and proceeds from the

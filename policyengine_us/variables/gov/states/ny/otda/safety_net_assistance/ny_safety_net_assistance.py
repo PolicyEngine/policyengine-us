@@ -18,4 +18,6 @@ class ny_safety_net_assistance(Variable):
         "Record a parent's or caretaker relative's receipt separately with "
         "ny_safety_net_assistance_received for CCAP categorical routes."
     )
-    reference = "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5"
+    reference = (
+        "https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10"
+    )

@@ -12,6 +12,9 @@
         members: [person1]
         meets_ccdf_activity_test: true
         ny_ccap_countable_income: 60_000
+        # The family does not take up Family Assistance in any month, so
+        # the grant's family share waiver does not apply.
+        takes_up_tanf_if_eligible: false
         spm_unit_fpg: 25_750
         # 85% of SMI is the limit from 2023-10-01; $68,000 > $60,000 income.
         hhs_smi: 80_000
@@ -84,6 +87,9 @@
         members: [person1]
         meets_ccdf_activity_test: true
         ny_ccap_countable_income: 25_751
+        # The family does not take up Family Assistance in any month, so
+        # the grant's family share waiver does not apply.
+        takes_up_tanf_if_eligible: false
         spm_unit_fpg: 25_750
         spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
@@ -151,7 +157,8 @@
     people:
       person1:
         age: 30
-        employment_income: 40_000
+        # TANF reads earnings before labor supply responses.
+        employment_income_before_lsr: 40_000
       person2:
         age: 1
         childcare_provider_type_group: DCC_SACC
@@ -168,6 +175,9 @@
         county_str: NASSAU_COUNTY_NY
         state_code: NY
   output:
+    # $40,000 of earnings exceeds New York's Family Assistance need standard
+    # for two, so the family receives no grant.
+    ny_ccap_family_assistance: 0
     ny_ccap_countable_income: 40_000 / 12
     spm_unit_fpg: 21_150 / 12
     # New York's $127,802 state median income for a family of four, adjusted
@@ -191,7 +201,8 @@
     people:
       person1:
         age: 30
-        employment_income: 40_000
+        # TANF reads earnings before labor supply responses.
+        employment_income_before_lsr: 40_000
       person2:
         age: 1
         childcare_provider_type_group: DCC_SACC
