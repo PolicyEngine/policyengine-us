@@ -215,3 +215,133 @@
   output:
     # min(7,500 property + max(1,000 sales, 2,000 income), 10,000) = 9,500.
     mt_salt_deduction: [9_500, 0]
+
+# Montana applies line 5 from 2018, when Congress capped these taxes at
+# $10,000 under 26 USC 164(b)(6). The department lists lines 5a-5d under
+# line 5 in its 2018, 2019 and 2020 Form 2 instructions.
+
+- name: A 2018 joint return caps the couple's combined real estate taxes once
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 5c: 8,000 + 8,000 = 16,000; line 5: min(16,000, 10,000) = 10,000.
+    mt_salt_deduction: [10_000, 0]
+
+- name: A 2019 joint return caps the couple's combined real estate taxes once
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 5c: 8,000 + 8,000 = 16,000; line 5: min(16,000, 10,000) = 10,000.
+    mt_salt_deduction: [10_000, 0]
+
+- name: A 2020 joint return caps the couple's combined real estate taxes once
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 5c: 8,000 + 8,000 = 16,000; line 5: min(16,000, 10,000) = 10,000.
+    mt_salt_deduction: [10_000, 0]
+
+- name: A 2020 joint return adds a spouse's city earnings tax before the cap
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 9_000
+      person2:
+        age: 45
+        mo_kansas_city_earnings_tax_taxable_earnings: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 5b: Kansas City earnings tax, 1% x 200,000 = 2,000; line 5c: 9,000.
+    # Line 5: min(9,000 + max(0 sales, 2,000 income), 10,000) = 10,000.
+    mt_salt_deduction: [10_000, 0]
+
+# Congress set no cap for 2017. A return deducts real estate taxes plus the
+# larger of sales taxes and local income taxes.
+
+- name: A 2017 joint return deducts the couple's real estate taxes with no cap
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 8,000 + 8,000 = 16,000. The cap starts in 2018.
+    mt_salt_deduction: [16_000, 0]
+
+- name: A 2017 single return elects sales taxes over local income taxes with no cap
+  period: 2017
+  input:
+    filing_status: SINGLE
+    state_code: MT
+    real_estate_taxes: 12_000
+    state_sales_tax: 1_500
+    local_income_tax: 1_000
+  output:
+    # 12,000 property + max(1,500 sales, 1,000 income) = 13,500, with no cap.
+    # Lines 8-10 of the 2017 Schedule III give 1,500 + 1,000 + 12,000 = 14,500
+    # when the federal return claimed sales taxes. They give 0 + 1,000 +
+    # 12,000 = 13,000 when it claimed state income taxes, because line 8
+    # then takes no sales taxes (candidate
+    # us-mt:salt-2017-sales-tax-federal-tie).
+    mt_salt_deduction: 13_500

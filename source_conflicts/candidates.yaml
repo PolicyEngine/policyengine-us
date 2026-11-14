@@ -15454,17 +15454,32 @@ candidates:
 - id: us-mt:salt-sales-income-election
   program: income-tax
   years:
-    from: 2021
+    from: 2018
     to: 2023
     type: tax
   question: Does a Montana taxpayer elect general sales taxes or local income taxes under the incorporated federal statute, or add both categories under Form 2 lines 5a and 5b?
   sources:
   - kind: statute
+    citation: Former MCA 15-30-2131(1)(a), MCA 2017
+    url: https://mca.legmt.gov/bills/2017/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
+  - kind: statute
+    citation: Former MCA 15-30-2131(1)(a), MCA 2019
+    url: https://mca.legmt.gov/bills/2019/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
+  - kind: statute
     citation: Former MCA 15-30-2131(1)(a), MCA 2021
     url: https://mca.legmt.gov/bills/2022/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
   - kind: statute
-    citation: 26 USC 164(b)(5)(A), 2023 edition
+    citation: 26 USC 164(b)(5)(A) and (b)(6)(B), 2023 edition
     url: https://www.govinfo.gov/content/pkg/USCODE-2023-title26/html/USCODE-2023-title26-subtitleA-chap1-subchapB-partVI-sec164.htm
+  - kind: instructions
+    citation: 2018 Montana Form 2 instructions, line 5 and lines 5a-5d (PDF pages 27-28) and filing separately (PDF page 10)
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2018_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=27
+  - kind: instructions
+    citation: 2019 Montana Form 2 instructions, line 5 and lines 5a-5d (PDF pages 32-33) and filing separately (PDF page 9)
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2019_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=32
+  - kind: instructions
+    citation: 2020 Montana Form 2 instructions, line 5 and lines 5a-5d (PDF pages 29-30) and filing separately (PDF page 8)
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2020_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=29
   - kind: form
     citation: 2021 Montana Form 2, Itemized Deductions Schedule lines 5a-5b and 5, PDF page 7
     url: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
@@ -15485,4 +15500,34 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10002
   state: ruled
-  note: PolicyEngine applies the statute-first principle. It chooses the larger eligible category for a joint return and separately for each spouse's column, after allocating taxes between the spouses.
+  note: PolicyEngine applies the statute-first principle. It chooses the larger eligible category for a joint return and separately for each spouse's column, after allocating taxes between the spouses. For 2018-2020 the cited instructions list lines 5a and 5b under line 5 and give no election. The 2017 return has its own entry, us-mt:salt-2017-sales-tax-federal-tie.
+- id: us-mt:salt-2017-sales-tax-federal-tie
+  program: income-tax
+  years:
+    from: 2017
+    to: 2017
+    type: tax
+  question: For 2017, does a Montana taxpayer deduct general sales taxes only when the federal return claimed them and add local income taxes on a separate line, or elect the larger of sales taxes and local income taxes under the incorporated federal statute?
+  sources:
+  - kind: statute
+    citation: Former MCA 15-30-2131(1)(a), MCA 2017
+    url: https://mca.legmt.gov/bills/2017/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
+  - kind: statute
+    citation: 26 USC 164(b)(5)(A), 2017 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2017-title26/html/USCODE-2017-title26-subtitleA-chap1-subchapB-partVI-sec164.htm
+  - kind: instructions
+    citation: 2017 Montana Form 2 instructions, Schedule III lines 8-10 (PDF page 29) and filing status 3a (PDF page 6)
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=29
+  readings:
+    statute: A taxpayer elects either general sales taxes or local income taxes, then adds real estate taxes. Montana excludes state income taxes, Congress set no cap for 2017, and each spouse filing on the same form elects within their own return.
+    other: A taxpayer enters on line 8 the sales taxes claimed on federal Schedule A, and none if the federal return deducted state income taxes. The taxpayer then adds local income taxes on line 9 and real estate taxes on line 10.
+  example: In 2017, a single filer with $12,000 of real estate taxes, $1,500 of general sales taxes and $1,000 of local income taxes deducts $13,500 under the election. Lines 8-10 give $14,500 if the federal return claimed sales taxes and $13,000 if it claimed state income taxes.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/mt/tax/income/deductions/itemized/salt/mt_salt_deduction.py
+    - policyengine_us/variables/gov/states/mt/tax/income/deductions/itemized/salt/mt_salt_deduction_indiv.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10002
+  state: open
+  note: PE-US applies the election for 2017 and does not model which taxes the federal return claimed (mt_salt_deduction.py, mt_salt_deduction_indiv.py). A ruling is needed on line 8's tie to the federal return and on adding line 9 to line 8.

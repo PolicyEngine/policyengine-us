@@ -8,12 +8,24 @@ class mt_salt_deduction_indiv(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Itemized Deductions Schedule, line 5, in each spouse's column when "
-        "a married couple files separately on the same form (filing status "
-        "2a). Each column is a separate return, capped at the married filing "
-        "separately amount."
+        "State and local taxes in each spouse's column when a married couple "
+        "files separately on the same form (filing status 2a from 2018, 3a "
+        "for 2017). Each column is a separate return. For 2018-2023 each "
+        "spouse deducts real estate taxes plus the larger of sales taxes and "
+        "local income taxes (Itemized Deductions Schedule line 5, with the "
+        "election in 26 USC 164(b)(5)(A)), up to the $5,000 cap for a "
+        "married person filing separately. For 2017 each spouse deducts the "
+        "same taxes with no cap, and 2015 and 2016 take the 2017 rules."
     )
     reference = (
+        # PDF pages 6, 29
+        "https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=6",
+        # PDF pages 10, 27-28
+        "https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2018_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=10",
+        # PDF pages 9, 32-33
+        "https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2019_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=9",
+        # PDF pages 8, 29-30
+        "https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2020_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=8",
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
@@ -26,8 +38,12 @@ class mt_salt_deduction_indiv(Variable):
         # PDF pages 3-4
         "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=3",
         "https://www.govinfo.gov/content/pkg/USCODE-2023-title26/html/USCODE-2023-title26-subtitleA-chap1-subchapB-partVI-sec164.htm",
+        "https://mca.legmt.gov/bills/2017/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html",
+        "https://mca.legmt.gov/bills/2019/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html",
         "https://mca.legmt.gov/bills/2022/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html",
-        # Former MCA 15-30-2131(1)(a)(ii) (2021). The cap is 26 USC 164(b)(6).
+        # Former MCA 15-30-2131(1)(a)(ii) (MCA 2017, 2019 and 2021). Congress
+        # capped the deduction for tax years after 2017 under 26 USC
+        # 164(b)(6).
     )
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 

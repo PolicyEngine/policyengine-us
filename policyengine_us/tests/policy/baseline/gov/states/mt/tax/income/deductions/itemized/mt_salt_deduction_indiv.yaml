@@ -349,3 +349,128 @@
     # Spouse elects 2,000 sales; joint return: 1,000 + max(4,000, 1,000).
     mt_salt_deduction_indiv: [3_000, 2_000]
     mt_salt_deduction: [5_000, 0]
+
+# Montana applies line 5 in each column from 2018, when Congress capped a
+# married person's separate return at $5,000 under 26 USC 164(b)(6)(B). The
+# department treats each column as a separate return in its 2018, 2019 and
+# 2020 Form 2 instructions.
+
+- name: Each 2018 column is capped at the married filing separately amount
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Column A: min(8,000, 5,000) = 5,000; column B: min(8,000, 5,000) = 5,000.
+    mt_salt_deduction_indiv: [5_000, 5_000]
+
+- name: Each 2019 column is capped at the married filing separately amount
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Column A: min(8,000, 5,000) = 5,000; column B: min(8,000, 5,000) = 5,000.
+    mt_salt_deduction_indiv: [5_000, 5_000]
+
+- name: Each 2020 column is capped at the married filing separately amount
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Column A: min(8,000, 5,000) = 5,000; column B: min(8,000, 5,000) = 5,000.
+    mt_salt_deduction_indiv: [5_000, 5_000]
+
+- name: A 2020 city earnings tax goes in the column of the spouse who earned it
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 9_000
+      person2:
+        age: 45
+        mo_kansas_city_earnings_tax_taxable_earnings: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Kansas City earnings tax: 1% x 200,000 = 2,000 on column B's earnings.
+    # Column A: min(9,000, 5,000) = 5,000; column B: 2,000.
+    mt_salt_deduction_indiv: [5_000, 2_000]
+
+# Congress set no cap for 2017.
+
+- name: Each 2017 column deducts its own real estate taxes with no cap
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 8_000
+      person2:
+        age: 45
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Column A: 8,000; column B: 8,000. The cap starts in 2018.
+    mt_salt_deduction_indiv: [8_000, 8_000]
+
+- name: A 2017 single filer's one column elects sales taxes with no cap
+  period: 2017
+  input:
+    filing_status: SINGLE
+    state_code: MT
+    real_estate_taxes: 12_000
+    state_sales_tax: 1_500
+    local_income_tax: 1_000
+  output:
+    # 12,000 property + max(1,500 sales, 1,000 income) = 13,500, with no cap.
+    mt_salt_deduction_indiv: 13_500
