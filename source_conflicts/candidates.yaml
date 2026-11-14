@@ -7764,6 +7764,65 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10697
   state: ruled
   note: The statute's text settles the case, so it governs over the guideline's general list.
+- id: us-nd:renters-refund-tanf
+  program: renter-credit
+  years:
+    from: 2025
+    type: tax
+  question: Does the renter's refund count TANF, when the statute counts public assistance benefits and the Tax
+    Commissioner's guideline lists TANF among items that are not income?
+  sources:
+  - kind: statute
+    citation: N.D.C.C. 57-02-08.1(5)(c)
+    url: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+  - kind: guidance
+    citation: Property Tax Credits for North Dakota Homeowners and Renters, item 11
+    url: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2
+  - kind: form
+    citation: SFN 24777 (10-2025), line 7
+    url: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=1
+  - kind: form
+    citation: SFN 24757 (10-2025), 2026 homestead credit application, list of income, p. 2
+    url: https://www.tax.nd.gov/sites/www/files/documents/property-tax/2026-homestead-credit-application.pdf#page=2
+  - kind: statute
+    citation: House Bill 1174 (2019), enrolled, sections 1 and 3
+    url: https://ndlegis.gov/assembly/66-2019/regular/documents/19-0115-05000.pdf#page=1
+  - kind: agency-practice
+    citation: Office of Tax Commissioner, fiscal note on House Bill 1174 (2019), on section 1
+    url: https://ndlegis.gov/files/resource/66-2019/library/hb1174.pdf#page=1
+  readings:
+    statute: Income includes "any county, state, or federal public assistance benefits" and leaves out "any amount
+      excluded from income by federal or state law with the exception of income from social security benefits". No
+      federal or North Dakota law excludes TANF from income. The IRS leaves need-based public assistance out of gross
+      income under its general welfare exclusion, which rests on IRS rulings, not a statute or regulation. Federal law
+      does exclude SNAP (7 U.S.C. 2017(b)) and LIHEAP (42 U.S.C. 8624(f)(1)) from income for any purpose under state
+      law, and the clause excepts only social security, so those two stay out.
+    other: Item 11 lists TANF among items that are not income, in the same list as food stamps and federal fuel
+      assistance.
+  example: A renter with $10,000 of wages and $3,600 of TANF has income of $13,600 under the statute and $10,000
+    under item 11.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10724
+  state: ruled
+  note: The statute names public assistance benefits as income, so it governs over item 11's general list, as in
+    us-nd:renters-refund-insurance-proceeds. Reading "excluded from income by federal or state law" to take in the
+    general welfare exclusion would leave the clause that counts public assistance almost nothing to count. N.D.C.C.
+    1-02-07 and 1-02-38(2) call for a reading that gives both clauses effect. The inclusion counts public assistance,
+    and the exclusion removes what a statute or regulation leaves out of income, including by repealing the provision
+    that counted it, as in us-nd:renters-refund-federally-excluded-income, but not what a doctrine with no statutory
+    basis, such as the general welfare exclusion, leaves out. The exception for social security says which excluded
+    amounts come back. The Legislative Assembly added it in House Bill 1174 (2019), the Act that created a state income
+    tax deduction for social security (section 3, now N.D.C.C. 57-38-30.3(2)(s)). In its fiscal note, the Tax
+    Commissioner's office wrote that section 1 of that Act keeps the full benefit in the homestead income test, so the
+    exception says nothing about benefits no statute excludes. The Tax Commissioner's own forms count SSI, which the IRS
+    also leaves out of gross income only under the general welfare exclusion. SFN 24777 line 7 asks for "S.S.I.", and
+    the 2026 homestead credit application lists "SSI benefits" as income. The May 2013 edition of the guideline counted
+    TANF as income under item 10, and Engrossed House Bill 1147 (2015) shows the public assistance words as existing
+    text; the June 2023 and July 2025 editions list TANF under item 11.
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:
