@@ -15317,3 +15317,55 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us-mn:amt-charitable-contribution-floor
+  program: income-tax
+  years:
+    from: 2026
+    type: tax
+  question: >-
+    Does a Minnesota itemizer subtract the federal section 170 charitable
+    deduction when computing alternative minimum taxable income, or the
+    Minnesota charitable amount that draft Schedule M1MT takes from M1SA?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.091, subd. 2(a)(2)(i)
+    url: https://www.revisor.mn.gov/statutes/cite/290.091#stat.290.091.2
+  - kind: statute
+    citation: Minn. Stat. 290.0122, subd. 4(a); Laws 2026, ch. 128, art. 1, sec. 4
+    url: https://www.revisor.mn.gov/statutes/cite/290.0122#stat.290.0122.4
+  - kind: statute
+    citation: Public Law 119-21, section 70425(a)(1) and (c)
+    url: https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm
+  - kind: form
+    citation: 2026 Schedule M1MT, line 11, final draft October 1, 2026
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-10/m1mt-26.pdf#page=1
+  - kind: form
+    citation: 2026 Schedule M1SA, lines 18-21, final draft November 4, 2026
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-11/m1sa-26.pdf#page=1
+  readings:
+    statute: >-
+      Preserve the federal section 170 charitable deduction in Minnesota
+      alternative minimum taxable income, including the federal 0.5% floor
+      from 2026. Section 290.091 does not substitute Minnesota's charitable
+      amount for that federal deduction.
+    other: >-
+      Subtract Minnesota's charitable amount from M1SA line 21, including
+      Minnesota's 1% floor from 2026, as draft M1MT line 11 directs.
+  example: >-
+    An itemizer with $100,000 of adjusted gross income and $4,000 of current-year
+    gifts deducts $3,500 federally and $3,000 in Minnesota. With no other
+    adjustments, the filer computes $96,500 of alternative minimum taxable
+    income under the statute and $97,000 under draft M1MT.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/amt/mn_amt_taxable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10872
+  state: ruled
+  note: >-
+    Follow the statute under CONTRIBUTING.md's statute-first principle. Preserve
+    the federal charitable_deduction in Minnesota AMT. Capture the relevant
+    statutory and draft-form text under source_conflicts/sources/us-mn before
+    registering the ruling after merge. The draft M1SA adds prior-year
+    carryovers after its floor; the example uses only current-year gifts.

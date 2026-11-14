@@ -1,0 +1,274 @@
+# Minn. Stat. 290.0122, subd. 3(a)(1).
+# https://www.revisor.mn.gov/statutes/cite/290.0122#stat.290.0122.3
+
+# The filer deducts min(6_000 + 3_999, 10_000) = 9_999.
+- name: A single filer pays 9_999 in combined property taxes in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 6_000
+    mn_personal_property_taxes: 3_999
+    itemized_deductions_less_salt: 0
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 9_999
+    mn_itemized_deductions: 9_999
+
+# The filer deducts min(6_000 + 4_000, 10_000) = 10_000.
+- name: A single filer pays 10_000 in combined property taxes in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 6_000
+    mn_personal_property_taxes: 4_000
+    itemized_deductions_less_salt: 0
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 10_000
+
+# The filer deducts min(6_000 + 4_001, 10_000) = 10_000.
+- name: A single filer pays 10_001 in combined property taxes in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 6_000
+    mn_personal_property_taxes: 4_001
+    itemized_deductions_less_salt: 0
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 10_000
+
+# The filer deducts min(3_000 + 1_999, 5_000) = 4_999.
+- name: A married separate filer pays 4_999 in combined property taxes in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 3_000
+    mn_personal_property_taxes: 1_999
+    itemized_deductions_less_salt: 0
+    filing_status: SEPARATE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 4_999
+    mn_itemized_deductions: 4_999
+
+# The filer deducts min(3_000 + 2_000, 5_000) = 5_000.
+- name: A married separate filer pays 5_000 in combined property taxes in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 3_000
+    mn_personal_property_taxes: 2_000
+    itemized_deductions_less_salt: 0
+    filing_status: SEPARATE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 5_000
+    mn_itemized_deductions: 5_000
+
+# The filer deducts min(3_000 + 2_001, 5_000) = 5_000.
+- name: A married separate filer pays 5_001 in combined property taxes in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 3_000
+    mn_personal_property_taxes: 2_001
+    itemized_deductions_less_salt: 0
+    filing_status: SEPARATE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 5_000
+    mn_itemized_deductions: 5_000
+
+# The filer deducts min(6_000 + 3_999, 10_000) = 9_999.
+- name: A single filer pays 9_999 in combined property taxes in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 6_000
+    mn_personal_property_taxes: 3_999
+    itemized_deductions_less_salt: 0
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 9_999
+    mn_itemized_deductions: 9_999
+
+# The filer deducts min(6_000 + 4_000, 10_000) = 10_000.
+- name: A single filer pays 10_000 in combined property taxes in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 6_000
+    mn_personal_property_taxes: 4_000
+    itemized_deductions_less_salt: 0
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 10_000
+
+# The filer deducts min(6_000 + 4_001, 10_000) = 10_000.
+- name: A single filer pays 10_001 in combined property taxes in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 6_000
+    mn_personal_property_taxes: 4_001
+    itemized_deductions_less_salt: 0
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 10_000
+
+# The filer deducts min(3_000 + 1_999, 5_000) = 4_999.
+- name: A married separate filer pays 4_999 in combined property taxes in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 3_000
+    mn_personal_property_taxes: 1_999
+    itemized_deductions_less_salt: 0
+    filing_status: SEPARATE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 4_999
+    mn_itemized_deductions: 4_999
+
+# The filer deducts min(3_000 + 2_000, 5_000) = 5_000.
+- name: A married separate filer pays 5_000 in combined property taxes in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 3_000
+    mn_personal_property_taxes: 2_000
+    itemized_deductions_less_salt: 0
+    filing_status: SEPARATE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 5_000
+    mn_itemized_deductions: 5_000
+
+# The filer deducts min(3_000 + 2_001, 5_000) = 5_000.
+- name: A married separate filer pays 5_001 in combined property taxes in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 3_000
+    mn_personal_property_taxes: 2_001
+    itemized_deductions_less_salt: 0
+    filing_status: SEPARATE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 5_000
+    mn_itemized_deductions: 5_000
+
+# The filer deducts min(7,000 + 5,000, 10,000) = 10,000.
+- name: A head of household deducts combined property taxes up to 10,000 in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 7_000
+    mn_personal_property_taxes: 5_000
+    itemized_deductions_less_salt: 0
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 10_000
+
+# The filer deducts min(7,000 + 5,000, 10,000) = 10,000.
+- name: A surviving spouse deducts combined property taxes up to 10,000 in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 7_000
+    mn_personal_property_taxes: 5_000
+    itemized_deductions_less_salt: 0
+    filing_status: SURVIVING_SPOUSE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 10_000
+
+# The filer retains the supplied capped_property_taxes amount of 1_234 for 2024.
+- name: A single filer retains the supplied property deduction in 2024
+  absolute_error_margin: 0.02
+  period: 2024
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 18_000
+    mn_personal_property_taxes: 4_000
+    capped_property_taxes: 1_234
+    itemized_deductions_less_salt: 0
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 1_234
+    mn_itemized_deductions: 1_234
+
+# The filer retains the supplied capped_property_taxes amount of 899 for 2024.
+- name: A married separate filer retains the supplied property deduction in 2024
+  absolute_error_margin: 0.02
+  period: 2024
+  input:
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 18_000
+    mn_personal_property_taxes: 4_000
+    capped_property_taxes: 899
+    itemized_deductions_less_salt: 0
+    filing_status: SEPARATE
+    state_code: MN
+  output:
+    mn_property_tax_deduction: 899
+    mn_itemized_deductions: 899
+
+# The spouses combine 4,000 + 3,000 of real estate taxes and 1,000 + 4,000
+# of personal property taxes, then deduct min(12,000, 10,000) = 10,000.
+- name: Joint filers combine property taxes paid by both spouses in 2026
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        real_estate_taxes: 4_000
+        mn_personal_property_taxes: 1_000
+      spouse:
+        age: 42
+        real_estate_taxes: 3_000
+        mn_personal_property_taxes: 4_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000
+        itemized_deductions_less_salt: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MN
+  output:
+    tax_units:
+      unit:
+        mn_property_tax_deduction: 10_000
+        mn_itemized_deductions: 10_000

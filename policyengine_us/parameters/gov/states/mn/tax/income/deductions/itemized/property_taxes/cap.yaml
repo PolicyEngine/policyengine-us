@@ -1,0 +1,19 @@
+description: Minnesota caps combined real estate and personal property tax deductions at this amount, by filing status.
+SINGLE:
+  2025-01-01: 10_000
+SEPARATE:
+  2025-01-01: 5_000
+JOINT:
+  2025-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 10_000
+SURVIVING_SPOUSE:
+  2025-01-01: 10_000
+metadata:
+  unit: currency-USD
+  label: Minnesota property tax deduction cap
+  breakdown:
+    - filing_status
+  reference:
+    - title: Minnesota Statutes 290.0122, subdivision 3(a)(1)
+      href: https://www.revisor.mn.gov/statutes/cite/290.0122#stat.290.0122.3

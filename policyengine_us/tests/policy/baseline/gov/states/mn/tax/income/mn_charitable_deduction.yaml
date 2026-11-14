@@ -1,0 +1,169 @@
+# Minn. Stat. 290.0122, subd. 4, effective for taxable years beginning after December 31, 2025.
+# https://www.revisor.mn.gov/laws/2026/0/Session+Law/Chapter/128/
+# https://www.revenue.state.mn.us/sites/default/files/2026-11/m1sa-26.pdf#page=1
+
+# The filer deducts max(750 - 1,000, 0) = 0 in Minnesota and subtracts max(0 - 500, 0) / 2 = 0.
+- name: A non-itemizer gives 750 with 100,000 of income in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    charitable_cash_donations: 750
+    mn_itemizing: false
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 750
+    charitable_deduction: 250
+    mn_charitable_deduction: 0
+    mn_charity_subtraction: 0.0
+
+# The filer deducts max(999 - 1,000, 0) = 0 in Minnesota and subtracts max(0 - 500, 0) / 2 = 0.
+- name: A non-itemizer gives 999 with 100,000 of income in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    charitable_cash_donations: 999
+    mn_itemizing: false
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 999
+    charitable_deduction: 499
+    mn_charitable_deduction: 0
+    mn_charity_subtraction: 0.0
+
+# The filer deducts max(1_000 - 1,000, 0) = 0 in Minnesota and subtracts max(0 - 500, 0) / 2 = 0.
+- name: A non-itemizer gives 1_000 with 100,000 of income in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    charitable_cash_donations: 1_000
+    mn_itemizing: false
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 1_000
+    charitable_deduction: 500
+    mn_charitable_deduction: 0
+    mn_charity_subtraction: 0.0
+
+# The filer deducts max(1_001 - 1,000, 0) = 1 in Minnesota and subtracts max(1 - 500, 0) / 2 = 0.
+- name: A non-itemizer gives 1_001 with 100,000 of income in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    charitable_cash_donations: 1_001
+    mn_itemizing: false
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 1_001
+    charitable_deduction: 501
+    mn_charitable_deduction: 1
+    mn_charity_subtraction: 0.0
+
+# The filer deducts max(1_499 - 1,000, 0) = 499 in Minnesota and subtracts max(499 - 500, 0) / 2 = 0.
+- name: A non-itemizer gives 1_499 with 100,000 of income in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    charitable_cash_donations: 1_499
+    mn_itemizing: false
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 1_499
+    charitable_deduction: 999
+    mn_charitable_deduction: 499
+    mn_charity_subtraction: 0.0
+
+# The filer deducts max(1_500 - 1,000, 0) = 500 in Minnesota and subtracts max(500 - 500, 0) / 2 = 0.
+- name: A non-itemizer gives 1_500 with 100,000 of income in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    charitable_cash_donations: 1_500
+    mn_itemizing: false
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 1_500
+    charitable_deduction: 1_000
+    mn_charitable_deduction: 500
+    mn_charity_subtraction: 0.0
+
+# The filer deducts max(1_501 - 1,000, 0) = 501 in Minnesota and subtracts max(501 - 500, 0) / 2 = 0.5.
+- name: A non-itemizer gives 1_501 with 100,000 of income in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 100_000
+    charitable_cash_donations: 1_501
+    mn_itemizing: false
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 1_501
+    charitable_deduction: 1_001
+    mn_charitable_deduction: 501
+    mn_charity_subtraction: 0.5
+
+# The filer retains the supplied 900 deduction and subtracts (900 - 500) / 2 = 200.
+- name: A filer supplies a federal charitable deduction directly in 2024
+  absolute_error_margin: 0.02
+  period: 2024
+  input:
+    adjusted_gross_income: 100_000
+    charitable_deduction: 900
+    mn_itemizing: false
+    state_code: MN
+  output:
+    mn_charitable_deduction: 900
+    mn_charity_subtraction: 200
+
+# The filer retains the supplied 900 deduction and subtracts (900 - 500) / 2 = 200.
+- name: A filer supplies a federal charitable deduction directly in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    adjusted_gross_income: 100_000
+    charitable_deduction: 900
+    mn_itemizing: false
+    state_code: MN
+  output:
+    mn_charitable_deduction: 900
+    mn_charity_subtraction: 200
+
+# The filer applies a floor of 0.01 * max(AGI, 0) = 0 and subtracts (1,000 - 500) / 2 = 250.
+- name: A filer with 0 of income applies no charitable floor in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: 0
+    charitable_deduction_before_floor: 1_000
+    mn_itemizing: false
+    state_code: MN
+  output:
+    charitable_deduction: 0
+    mn_charitable_deduction: 1_000
+    mn_charity_subtraction: 250
+
+# The filer applies a floor of 0.01 * max(AGI, 0) = 0 and subtracts (1,000 - 500) / 2 = 250.
+- name: A filer with -10_000 of income applies no charitable floor in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    adjusted_gross_income: -10_000
+    charitable_deduction_before_floor: 1_000
+    mn_itemizing: false
+    state_code: MN
+  output:
+    charitable_deduction: 0
+    mn_charitable_deduction: 1_000
+    mn_charity_subtraction: 250

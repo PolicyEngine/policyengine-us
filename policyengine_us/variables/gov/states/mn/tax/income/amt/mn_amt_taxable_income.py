@@ -8,6 +8,8 @@ class mn_amt_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://www.revisor.mn.gov/statutes/cite/290.091#stat.290.091.2",
+        "https://www.revenue.state.mn.us/sites/default/files/2026-10/m1mt-26.pdf#page=1",
         "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf",
         # 2024 Schedule M1MT, line 12
@@ -28,6 +30,9 @@ class mn_amt_taxable_income(Variable):
         charitable_addition = tax_unit("charitable_contributions_ald", period)
         itemizing = tax_unit("mn_itemizing", period)
         SOME_DEDUCTIONS = [
+            # Source conflict: Follow Minn. Stat. 290.091, subd. 2(a)(2)(i).
+            # Draft 2026 M1MT line 11 takes Minnesota's amount, while the
+            # Legislature retains the federal section 170 deduction.
             "charitable_deduction",
             "medical_expense_deduction",
             # M1MT line 12 takes the casualty and theft loss from Schedule

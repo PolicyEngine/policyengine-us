@@ -1,0 +1,16 @@
+# Removing Minnesota's floor restores all 4,000 of gifts while the federal
+# deduction remains 4,000 - 0.005 * 100,000 = 3,500.
+- name: A zero Minnesota floor restores contributions before the federal floor
+  period: 2026
+  input:
+    gov.states.mn.tax.income.deductions.itemized.charity.floor: 0
+    state_code: MN
+    adjusted_gross_income: 100_000
+    charitable_cash_donations: 4_000
+    itemized_deductions_less_salt: 4_500
+    mn_itemizing: false
+  output:
+    charitable_deduction: 3_500
+    mn_charitable_deduction: 4_000
+    mn_itemized_deductions: 5_000 # 4,500 - 3,500 + 4,000.
+    mn_charity_subtraction: 1_750 # (4,000 - 500) / 2.
