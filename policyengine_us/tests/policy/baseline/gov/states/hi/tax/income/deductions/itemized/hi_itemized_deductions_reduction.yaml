@@ -142,3 +142,18 @@
     hi_itemized_deductions_reduction: 3_000
     # 10,000 - 3,000 = 7,000.
     hi_itemized_deductions: 7_000
+
+- name: Case 9, the 80% ceiling leaves out gambling losses.
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 1_000_000
+    wagering_losses_deduction: 4_000
+    hi_total_itemized_deductions: 10_000
+  output:
+    # Line 5: (10,000 - 4,000) * 80% = 4,800.
+    # Line 9: (1,000,000 - 166,800) * 3% = 24,996.
+    hi_itemized_deductions_reduction: 4_800
+    # 10,000 - 4,800 = 5,200.
+    hi_itemized_deductions: 5_200
