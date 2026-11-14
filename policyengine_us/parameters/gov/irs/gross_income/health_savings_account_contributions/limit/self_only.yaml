@@ -31,15 +31,17 @@ metadata:
   unit: currency-USD
   period: year
   label: HSA contribution limit, self-only coverage
-  # Values after the last IRS publication are computed in
-  # parameters/uprating_extensions.py per 26 U.S.C. 223(g): the statutory
-  # $2,250 increased by the chained CPI-U cost-of-living adjustment with 1997
-  # as the base year and the 12 months ending March 31 as the averaging
-  # window, each increase rounded to the nearest multiple of $50. Those values
-  # supersede this uprating rule, which names the index family and rounding
-  # (and lets reforms that re-index gov.irs.uprating parameters find it).
   uprating:
-    parameter: gov.irs.uprating
+    # 26 U.S.C. 223(g)(1): the statutory $2,250 in 223(b)(2)(A) plus its
+    # cost-of-living increase with calendar year 1997 as the base year and
+    # the 12 months ending March 31 as the averaging window, rounded to the
+    # nearest multiple of $50 under 223(g)(2). The index's 1998 value covers
+    # calendar year 1997.
+    parameter: gov.irs.indexing.hsa_c_cpi_u
+    base:
+      period: 1998
+      value: 2_250
+      floor: true
     rounding:
       type: nearest
       interval: 50

@@ -9,9 +9,12 @@ metadata:
   # Tax Law § 1310(h)(1)(B)(iii) multiplies these amounts by one plus
   # the percentage by which the CPI-U for the preceding calendar year exceeds
   # the CPI-U for 2024, each year's CPI-U being the average for the 12 months
-  # ending August 31 (§ 1310(h)(3)(A)). Values after the last Department
-  # of Taxation and Finance publication are computed in
-  # parameters/uprating_extensions.py.
+  # ending August 31 (§ 1310(h)(3)(A)). The statute sets no rounding.
+  # `floor` holds the factor at one or above, since a CPI-U below its 2024
+  # level exceeds it by no percentage. Base mode projects each bracket's
+  # amount from its 2025 value; the thresholds count dependents and stay.
+  # Each amount carries its own uprating: gov/local propagates metadata to
+  # children, so a scale-level uprating would reach the thresholds too.
   reference:
     - title: NY Tax Law § 1310(h)(1)(B)(ii)
       href: https://www.nysenate.gov/legislation/laws/TAX/1310
@@ -21,32 +24,88 @@ brackets:
   - threshold:
       2025-01-01: 1
     amount:
-      2025-01-01: 31_503
+      values:
+        2025-01-01: 31_503
+      metadata:
+        uprating:
+          parameter: gov.local.ny.nyc.tax.income.credits.income_tax_elimination.cpi
+          base:
+            period: 2025
+            floor: true
   - threshold:
       2025-01-01: 2
     amount:
-      2025-01-01: 36_824
+      values:
+        2025-01-01: 36_824
+      metadata:
+        uprating:
+          parameter: gov.local.ny.nyc.tax.income.credits.income_tax_elimination.cpi
+          base:
+            period: 2025
+            floor: true
   - threshold:
       2025-01-01: 3
     amount:
-      2025-01-01: 46_512
+      values:
+        2025-01-01: 46_512
+      metadata:
+        uprating:
+          parameter: gov.local.ny.nyc.tax.income.credits.income_tax_elimination.cpi
+          base:
+            period: 2025
+            floor: true
   - threshold:
       2025-01-01: 4
     amount:
-      2025-01-01: 53_711
+      values:
+        2025-01-01: 53_711
+      metadata:
+        uprating:
+          parameter: gov.local.ny.nyc.tax.income.credits.income_tax_elimination.cpi
+          base:
+            period: 2025
+            floor: true
   - threshold:
       2025-01-01: 5
     amount:
-      2025-01-01: 59_928
+      values:
+        2025-01-01: 59_928
+      metadata:
+        uprating:
+          parameter: gov.local.ny.nyc.tax.income.credits.income_tax_elimination.cpi
+          base:
+            period: 2025
+            floor: true
   - threshold:
       2025-01-01: 6
     amount:
-      2025-01-01: 65_712
+      values:
+        2025-01-01: 65_712
+      metadata:
+        uprating:
+          parameter: gov.local.ny.nyc.tax.income.credits.income_tax_elimination.cpi
+          base:
+            period: 2025
+            floor: true
   - threshold:
       2025-01-01: 7
     amount:
-      2025-01-01: 74_565
+      values:
+        2025-01-01: 74_565
+      metadata:
+        uprating:
+          parameter: gov.local.ny.nyc.tax.income.credits.income_tax_elimination.cpi
+          base:
+            period: 2025
+            floor: true
   - threshold:
       2025-01-01: 8
     amount:
-      2025-01-01: 88_361
+      values:
+        2025-01-01: 88_361
+      metadata:
+        uprating:
+          parameter: gov.local.ny.nyc.tax.income.credits.income_tax_elimination.cpi
+          base:
+            period: 2025
+            floor: true

@@ -131,6 +131,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/parameters/gov/irs/credits/residential_clean_energy/fuel_cell_cap_per_kw.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/hce_salary_threshold.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/salary_basis_threshold.yaml": 1,
+    "policyengine_us/parameters/gov/irs/indexing/medical_care_c_cpi_u.yaml": 1,
     "policyengine_us/parameters/gov/states/ar/ade/oec/sra/rates/no_copay_smi_threshold.yaml": 1,
     "policyengine_us/parameters/gov/states/ca/cpuc/income_sources.yaml": 1,
     "policyengine_us/parameters/gov/states/ca/hbex/premium_subsidy/fpl_limit.yaml": 1,
