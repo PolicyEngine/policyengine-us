@@ -1,0 +1,15 @@
+description: Minnesota increases the otherwise payable Homestead Credit Refund by this share for the one-time additional refund.
+# The 2025 M1PR claim uses property taxes payable in 2026.
+values:
+  2000-01-01: 0
+  2025-01-01: 0.1488
+  2026-01-01: 0
+metadata:
+  unit: /1
+  period: year
+  label: Minnesota Homestead Credit Refund one-time additional refund rate
+  reference:
+    - title: Minnesota Laws 2026, chapter 128, article 4, section 11
+      href: https://www.revisor.mn.gov/laws/2026/0/128/
+    - title: 2025 Form M1PR Instructions, Line 17a
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-06/m1pr-inst-25.pdf#page=9

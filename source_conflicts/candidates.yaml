@@ -15272,3 +15272,36 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us-co:dac-inclusive-income-limit
+  program: disability_assistance_credit
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does a qualified single filer with exactly $20,000 of federal adjusted gross income, or a qualified joint return with exactly $32,000, qualify for the $400 Disability Assistance Credit?
+  sources:
+  - kind: statute
+    citation: Colorado Revised Statutes 39-31-104.5(4)(a)(V) and (4)(b), enacted by House Bill 24-1268
+    url: https://leg.colorado.gov/laws/session-laws/HB24-1268/475/download#page=8
+    excerpt: A qualified individual filing a single return who has a federal adjusted gross income greater than seventeen thousand five hundred dollars but less than or equal to twenty thousand dollars
+  - kind: guidance
+    citation: Colorado Department of Revenue, Disability Assistance Credit, Eligibility Requirements and FAQ 1 for tax year 2025
+    url: https://tax.colorado.gov/dac
+    excerpt: Your federal AGI is less than $20,000 for singles and $32,000 for married couples.
+  - kind: instructions
+    citation: 2025 Colorado Simplified Individual Income Tax Return, Disability Assistance Credit amount table
+    url: https://tax.colorado.gov/sites/tax/files/documents/DR0104EZ_2025.pdf#page=4
+  readings:
+    statute: Subsection (4)(a)(V) includes single federal AGI at or below $20,000 and joint federal AGI at or below $32,000 in the $400 band; subsection (4)(b) denies credit only above those limits.
+    other: The webpage's eligibility requirements and FAQ use less than, which would exclude the exact limits. Its introductory text and amount tables, and the official 2025 return instructions, agree with the statute's inclusive limits.
+  example: A qualified single filer with $20,000 federal AGI and no PTC election receives $400, and a qualifying joint return at $32,000 receives $400. Both receive zero when AGI exceeds their respective limit.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/co/tax/income/credits/disability_assistance/amount/non_joint.yaml
+    - policyengine_us/parameters/gov/states/co/tax/income/credits/disability_assistance/amount/joint.yaml
+    - policyengine_us/variables/gov/states/co/tax/income/credits/disability_assistance/co_dac_eligible.py
+    - policyengine_us/variables/gov/states/co/tax/income/credits/disability_assistance/co_dac.py
+    prs: []
+  state: ruled
+  note: This candidate concerns the 2025 income boundary only. It makes no ruling on part-year residency or future inflation-adjusted limits. Preserve a capture of the conflicting webpage text with the ruling PR if the corpus lacks it; add no register marker until the CONTRIBUTING follow-up steps permit one.

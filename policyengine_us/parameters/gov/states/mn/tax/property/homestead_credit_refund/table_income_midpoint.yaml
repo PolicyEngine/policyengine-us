@@ -1,0 +1,271 @@
+description: Minnesota uses these income-band midpoints to reproduce the printed Homestead Credit Refund table.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Minnesota Homestead Credit Refund table income-band midpoint
+  reference:
+    - title: "2025 Form M1PR Instructions, Homestead Credit Refund Table #page 14-23"
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-06/m1pr-inst-25.pdf#page=14
+brackets:
+  - threshold:
+      2025-01-01: 0
+    amount:
+      2025-01-01: 1_095
+  - threshold:
+      2025-01-01: 2_190
+    amount:
+      2025-01-01: 3_275
+  - threshold:
+      2025-01-01: 4_360
+    amount:
+      2025-01-01: 5_480
+  - threshold:
+      2025-01-01: 6_600
+    amount:
+      2025-01-01: 7_705
+  - threshold:
+      2025-01-01: 8_810
+    amount:
+      2025-01-01: 9_900
+  - threshold:
+      2025-01-01: 10_990
+    amount:
+      2025-01-01: 12_085
+  - threshold:
+      2025-01-01: 13_180
+    amount:
+      2025-01-01: 14_280
+  - threshold:
+      2025-01-01: 15_380
+    amount:
+      2025-01-01: 16_470
+  - threshold:
+      2025-01-01: 17_560
+    amount:
+      2025-01-01: 18_670
+  - threshold:
+      2025-01-01: 19_780
+    amount:
+      2025-01-01: 20_875
+  - threshold:
+      2025-01-01: 21_970
+    amount:
+      2025-01-01: 23_060
+  - threshold:
+      2025-01-01: 24_150
+    amount:
+      2025-01-01: 25_255
+  - threshold:
+      2025-01-01: 26_360
+    amount:
+      2025-01-01: 27_465
+  - threshold:
+      2025-01-01: 28_570
+    amount:
+      2025-01-01: 29_670
+  - threshold:
+      2025-01-01: 30_770
+    amount:
+      2025-01-01: 31_865
+  - threshold:
+      2025-01-01: 32_960
+    amount:
+      2025-01-01: 34_065
+  - threshold:
+      2025-01-01: 35_170
+    amount:
+      2025-01-01: 36_270
+  - threshold:
+      2025-01-01: 37_370
+    amount:
+      2025-01-01: 38_470
+  - threshold:
+      2025-01-01: 39_570
+    amount:
+      2025-01-01: 40_660
+  - threshold:
+      2025-01-01: 41_750
+    amount:
+      2025-01-01: 42_850
+  - threshold:
+      2025-01-01: 43_950
+    amount:
+      2025-01-01: 45_045
+  - threshold:
+      2025-01-01: 46_140
+    amount:
+      2025-01-01: 47_240
+  - threshold:
+      2025-01-01: 48_340
+    amount:
+      2025-01-01: 49_435
+  - threshold:
+      2025-01-01: 50_530
+    amount:
+      2025-01-01: 51_625
+  - threshold:
+      2025-01-01: 52_720
+    amount:
+      2025-01-01: 53_820
+  - threshold:
+      2025-01-01: 54_920
+    amount:
+      2025-01-01: 56_020
+  - threshold:
+      2025-01-01: 57_120
+    amount:
+      2025-01-01: 58_220
+  - threshold:
+      2025-01-01: 59_320
+    amount:
+      2025-01-01: 60_410
+  - threshold:
+      2025-01-01: 61_500
+    amount:
+      2025-01-01: 62_600
+  - threshold:
+      2025-01-01: 63_700
+    amount:
+      2025-01-01: 64_795
+  - threshold:
+      2025-01-01: 65_890
+    amount:
+      2025-01-01: 66_990
+  - threshold:
+      2025-01-01: 68_090
+    amount:
+      2025-01-01: 69_185
+  - threshold:
+      2025-01-01: 70_280
+    amount:
+      2025-01-01: 71_380
+  - threshold:
+      2025-01-01: 72_480
+    amount:
+      2025-01-01: 73_580
+  - threshold:
+      2025-01-01: 74_680
+    amount:
+      2025-01-01: 75_780
+  - threshold:
+      2025-01-01: 76_880
+    amount:
+      2025-01-01: 77_980
+  - threshold:
+      2025-01-01: 79_080
+    amount:
+      2025-01-01: 80_175
+  - threshold:
+      2025-01-01: 81_270
+    amount:
+      2025-01-01: 82_370
+  - threshold:
+      2025-01-01: 83_470
+    amount:
+      2025-01-01: 84_565
+  - threshold:
+      2025-01-01: 85_660
+    amount:
+      2025-01-01: 86_760
+  - threshold:
+      2025-01-01: 87_860
+    amount:
+      2025-01-01: 88_960
+  - threshold:
+      2025-01-01: 90_060
+    amount:
+      2025-01-01: 91_155
+  - threshold:
+      2025-01-01: 92_250
+    amount:
+      2025-01-01: 93_350
+  - threshold:
+      2025-01-01: 94_450
+    amount:
+      2025-01-01: 95_550
+  - threshold:
+      2025-01-01: 96_650
+    amount:
+      2025-01-01: 97_750
+  - threshold:
+      2025-01-01: 98_850
+    amount:
+      2025-01-01: 99_950
+  - threshold:
+      2025-01-01: 101_050
+    amount:
+      2025-01-01: 102_145
+  - threshold:
+      2025-01-01: 103_240
+    amount:
+      2025-01-01: 104_340
+  - threshold:
+      2025-01-01: 105_440
+    amount:
+      2025-01-01: 106_540
+  - threshold:
+      2025-01-01: 107_640
+    amount:
+      2025-01-01: 108_740
+  - threshold:
+      2025-01-01: 109_840
+    amount:
+      2025-01-01: 110_935
+  - threshold:
+      2025-01-01: 112_030
+    amount:
+      2025-01-01: 113_125
+  - threshold:
+      2025-01-01: 114_220
+    amount:
+      2025-01-01: 115_320
+  - threshold:
+      2025-01-01: 116_420
+    amount:
+      2025-01-01: 117_520
+  - threshold:
+      2025-01-01: 118_620
+    amount:
+      2025-01-01: 119_720
+  - threshold:
+      2025-01-01: 120_820
+    amount:
+      2025-01-01: 121_920
+  - threshold:
+      2025-01-01: 123_020
+    amount:
+      2025-01-01: 124_120
+  - threshold:
+      2025-01-01: 125_220
+    amount:
+      2025-01-01: 126_320
+  - threshold:
+      2025-01-01: 127_420
+    amount:
+      2025-01-01: 128_525
+  - threshold:
+      2025-01-01: 129_630
+    amount:
+      2025-01-01: 130_735
+  - threshold:
+      2025-01-01: 131_840
+    amount:
+      2025-01-01: 133_170
+  - threshold:
+      2025-01-01: 134_500
+    amount:
+      2025-01-01: 135_830
+  - threshold:
+      2025-01-01: 137_160
+    amount:
+      2025-01-01: 138_050
+  - threshold:
+      2025-01-01: 138_940
+    amount:
+      2025-01-01: 139_825
+  - threshold:
+      2025-01-01: 140_710
+    amount:
+      2025-01-01: 141_600

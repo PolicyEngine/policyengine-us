@@ -1,0 +1,1 @@
+Correct Minnesota's 2025 homeowner refund table and one-time increase, add the special homeowner refund with its regular-refund interaction, use market value for New York's real property tax credit asset test, and require source-specific household income and property facts for DC's senior and disabled property tax relief.

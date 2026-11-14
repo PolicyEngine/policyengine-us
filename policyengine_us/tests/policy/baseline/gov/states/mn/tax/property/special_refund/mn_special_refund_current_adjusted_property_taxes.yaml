@@ -1,0 +1,20 @@
+- name: Case 1, improvement shares round to whole percentages before excluded taxes round to dollars.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MN, MN, MN]
+    age: [40, 40, 40]
+    mn_special_refund_current_property_taxes: [4_000, 4_000, 4_005]
+    mn_special_refund_prior_property_taxes: [3_000, 3_000, 3_000]
+    mn_special_refund_prior_refund: [0, 0, 0]
+    mn_special_refund_improvement_value: [10_001, 10_500, 10_000]
+    mn_special_refund_taxable_market_value: [100_000, 100_000, 100_000]
+    mn_special_refund_current_home_use_fraction: [1, 1, 1]
+    mn_special_refund_prior_home_use_fraction: [1, 1, 1]
+    mn_special_refund_same_homestead: [true, true, true]
+    mn_special_refund_qualifying_claimant: [true, true, true]
+  output:
+    # Worksheet3: 10.001% ->10%, 10.5% ->11%, 10% ->10%.
+    # Last exclusion: 4,005 x10% =400.50 ->401, leaving3,604.
+    mn_special_refund_current_adjusted_property_taxes: [3_600, 3_560, 3_604]
+    mn_special_refund: [144, 120, 146]
