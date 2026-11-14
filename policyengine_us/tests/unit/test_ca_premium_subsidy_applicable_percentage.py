@@ -30,16 +30,13 @@ def _rates(year, incomes, *, truncate=True, fpg=FPG, dtype=float):
     inputs = {
         "aca_magi": incomes,
         "aca_magi_fraction": fractions,
-        "tax_unit_fpg": fpgs,
+        "aca_fpg": fpgs,
     }
 
     def tax_unit(name, input_period):
-        expected_period = (
-            calculation_period.last_year
-            if name == "tax_unit_fpg"
-            else calculation_period
-        )
-        assert input_period == expected_period
+        # aca_fpg is defined for the tax year; it already holds the prior
+        # year's guideline for the tax family (Form 8962 line 4).
+        assert input_period == calculation_period
         return inputs[name]
 
     formula = system.variables[VARIABLE].get_formula(calculation_period)

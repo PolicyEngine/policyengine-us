@@ -1201,13 +1201,13 @@
     is_medically_needy_for_medicaid: [false, false]
 
 # A year reads this month-defined status in December, when the couple is home, so
-# the couple is tested together: 8,000 + 34,000 - 240 = 41,760 is above 12 x 2,489 =
-# 29,868. Tested alone for the stay, person2's 33,760 is also above 12 x 1,836 =
-# 22,032. The ssi_countable_income assertion is left out until
-# PolicyEngine/policyengine-us#10820 merges. Until then SSI counts the couple's whole
-# income for each spouse in the months of the stay (PolicyEngine/policyengine-us#10818),
-# giving 31,320 each where (8,000 + 34,000 - 240) / 2 = 20,880 is right. Restore
-# ssi_countable_income: [20_880, 20_880] once the fix merges.
+# the couple is tested together against 12 x 2,489 = 29,868. ssi_countable_income
+# follows each month's status. During the stay each spouse counts their own income
+# less 20 (20 CFR 416.414(b)(3)): (8,000 / 12 - 20) x 6 = 3,880 and
+# (34,000 / 12 - 20) x 6 = 16,880. At home from July each counts half of the
+# couple's 42,000 / 12 - 20 = 3,480 (20 CFR 416.1802(b)(1)): 1,740 x 6 = 10,440.
+# That gives 3,880 + 10,440 = 14,320 and 16,880 + 10,440 = 27,320, together 41,640,
+# above 29,868. Tested alone, person2's 27,320 is also above 12 x 1,836 = 22,032.
 - name: Case 45, a facility stay that ends within the year tests the couple on its December status.
   period: 2026
   absolute_error_margin: 0.01
@@ -1248,6 +1248,7 @@
     ssi_couple_computation_applies:
       2026-01: [false, false]
       2026-12: [true, true]
+    ssi_countable_income: [14_320, 27_320]
     medicaid_medically_needy_uses_couple_standard: [true, true]
     medicaid_medically_needy_income_limit: [29_868, 29_868]
     is_medically_needy_for_medicaid: [false, false]

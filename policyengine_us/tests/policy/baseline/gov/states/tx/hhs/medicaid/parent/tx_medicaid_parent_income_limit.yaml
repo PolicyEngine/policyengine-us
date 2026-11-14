@@ -1,0 +1,259 @@
+# C-131.2 revision 15-4 effective October 1, 2015, one-parent column:
+# https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/c-130-medical-programs
+# Published dollars: 103,196,230,277,310,356,389,441,476,527,562,613,
+# 648,700,734; each further member $52. Outputs are dollars*12/FPG + .05.
+# HHS prior-guideline first/additional series: 2017 12060/4180; 2026 15960/5680.
+# These are table-component records with explicit Medicaid household sizes;
+# they do not assert that a person alone qualifies as a parent or activate
+# the restricted real-household router. Integration uses actual families.
+- name: Texas published one-parent dollar-table components at sizes one through fifteen and the additional-member
+    step, annual FPG convention.
+  period: 2017
+  input:
+    people:
+      component1:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 1
+          2026: 1
+      component2:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 2
+          2026: 2
+      component3:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 3
+          2026: 3
+      component4:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 4
+          2026: 4
+      component5:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 5
+          2026: 5
+      component6:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 6
+          2026: 6
+      component7:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 7
+          2026: 7
+      component8:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 8
+          2026: 8
+      component9:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 9
+          2026: 9
+      component10:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 10
+          2026: 10
+      component11:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 11
+          2026: 11
+      component12:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 12
+          2026: 12
+      component13:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 13
+          2026: 13
+      component14:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 14
+          2026: 14
+      component15:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 15
+          2026: 15
+      component16:
+        age:
+          2017: 30
+          2026: 30
+        medicaid_household_size:
+          2017: 16
+          2026: 16
+    households:
+      component1:
+        members:
+        - component1
+        state_code:
+          2017: TX
+          2026: TX
+      component2:
+        members:
+        - component2
+        state_code:
+          2017: TX
+          2026: TX
+      component3:
+        members:
+        - component3
+        state_code:
+          2017: TX
+          2026: TX
+      component4:
+        members:
+        - component4
+        state_code:
+          2017: TX
+          2026: TX
+      component5:
+        members:
+        - component5
+        state_code:
+          2017: TX
+          2026: TX
+      component6:
+        members:
+        - component6
+        state_code:
+          2017: TX
+          2026: TX
+      component7:
+        members:
+        - component7
+        state_code:
+          2017: TX
+          2026: TX
+      component8:
+        members:
+        - component8
+        state_code:
+          2017: TX
+          2026: TX
+      component9:
+        members:
+        - component9
+        state_code:
+          2017: TX
+          2026: TX
+      component10:
+        members:
+        - component10
+        state_code:
+          2017: TX
+          2026: TX
+      component11:
+        members:
+        - component11
+        state_code:
+          2017: TX
+          2026: TX
+      component12:
+        members:
+        - component12
+        state_code:
+          2017: TX
+          2026: TX
+      component13:
+        members:
+        - component13
+        state_code:
+          2017: TX
+          2026: TX
+      component14:
+        members:
+        - component14
+        state_code:
+          2017: TX
+          2026: TX
+      component15:
+        members:
+        - component15
+        state_code:
+          2017: TX
+          2026: TX
+      component16:
+        members:
+        - component16
+        state_code:
+          2017: TX
+          2026: TX
+  output:
+    tx_medicaid_parent_income_limit:
+      2017:
+      - 0.152487562
+      - 0.194827586
+      - 0.185161606
+      - 0.185121951
+      - 0.179256428
+      - 0.17961165
+      - 0.175686591
+      - 0.178073572
+      - 0.175538462
+      - 0.177294686
+      - 0.175213517
+      - 0.176740179
+      - 0.174975892
+      - 0.176506024
+      - 0.174794559
+      - 0.176163724
+      2026:
+      - 0.127443609
+      - 0.158687616
+      - 0.15102489
+      - 0.150727273
+      - 0.146173733
+      - 0.146302976
+      - 0.143285372
+      - 0.144974874
+      - 0.143029316
+      - 0.144275492
+      - 0.14268829
+      - 0.143778684
+      - 0.142439372
+      - 0.143541203
+      - 0.142249686
+      - 0.143238434
+  absolute_error_margin: 1.0e-07
