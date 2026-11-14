@@ -5,6 +5,10 @@ metadata:
   breakdown:
   - state_code
   reference:
+    - title: New York GIS 17 MA/005, MAGI income standards effective January 1, 2017
+      href: https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/17ma005attach3.pdf#page=1
+    - title: New York GIS 17 MA/005, Medicaid eligibility categories
+      href: https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/17ma005attach4.pdf#page=1
     - title: MACPAC Exhibit 36, Medicaid Income Eligibility Levels as a Percentage of the FPL (July 2024) - Georgia parents/caretakers 28% + 5% MAGI disregard
       href: https://www.macpac.gov/wp-content/uploads/2024/12/EXHIBIT-36.-Medicaid-Income-Eligibility-Levels-as-a-Percentage-of-the-FPL-for-Non-Aged-Non-Disabled-Non-Pregnant-Adults-July-2024.pdf
     - title: MACPAC Exhibit 36, Medicaid Income Eligibility Levels as a Percentage of the FPL (July 2025, data as of January 2025) - Georgia parents/caretakers 26% + 5% MAGI disregard
@@ -51,6 +55,10 @@ metadata:
       href: https://www.medicaid.gov/medicaid/spa/downloads/CT-24-0025.pdf#page=2
     - title: Medicaid Income Eligibility Limits for Parents, 2002-2026 | KFF State Health Facts - family of three, 5-point disregard included (May 2024 and January 2025 columns)
       href: https://www.kff.org/affordable-care-act/state-indicator/medicaid-income-eligibility-limits-for-parents/
+    - title: Utah Medicaid State Plan Amendment UT-16-0025, approved March 2017
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/UT/UT-16-0025.pdf#page=7
+    - title: Utah R414-303-4, parent and caretaker relative income standard effective July 2017
+      href: https://rules.utah.gov/publicat/bulletin/2017/20170415/41429.htm
 
 # Most of the states carrying a 2026 entry below set the section 1931
 # parent/caretaker standard as a frozen dollar amount, so its share of the
@@ -67,10 +75,6 @@ metadata:
 # family-of-three fraction is too strict for a single parent with one child:
 # the published size-two standard works out about 0.8 points higher in Texas
 # ($196/month) and about 2.6 points higher in Wyoming ($737/month).
-    - title: Utah Medicaid State Plan Amendment UT-16-0025, approved March 2017
-      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/UT/UT-16-0025.pdf#page=7
-    - title: Utah R414-303-4, parent and caretaker relative income standard effective July 2017
-      href: https://rules.utah.gov/publicat/bulletin/2017/20170415/41429.htm
 AK:
   2018-01-01: 1.44
   2021-01-01: 1.36
@@ -215,6 +219,7 @@ NV:
   2018-01-01: 0.37
   2021-01-01: 0.35
 NY:
+  2017-01-01: 1.38
   2018-01-01: 1.38
   2021-01-01: 1.38
 OH:

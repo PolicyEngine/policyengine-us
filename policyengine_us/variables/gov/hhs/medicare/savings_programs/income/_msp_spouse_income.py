@@ -33,10 +33,6 @@ def msp_spouse_income(person: Population, period: Period, spouse: ArrayLike) -> 
     # 416.1801(c); POMS SI 00501.154 A.1), not only aged, blind or disabled:
     # uncapped_ssi above zero adds the income test that is_ssi_eligible leaves
     # out.
-    # NOTE: SSI attributes a couple's income by the year's last month
-    # (ssi_marital_unearned_income). In the months before a facility stay that
-    # lasts through December, uncapped_ssi can be above zero for spouses whose
-    # combined income rules SSI out, and nothing is then deemed between them.
     year = period.this_year
     spouse_eligible_for_ssi = msp_spouse_value(
         person("uncapped_ssi", period) > 0, spouse

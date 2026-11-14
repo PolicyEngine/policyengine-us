@@ -48,9 +48,11 @@ class ma_connector_care(Variable):
         magi_fraction = tax_unit("aca_magi_fraction", period)
         per_person_monthly = p.enrollee_premium.calc(magi_fraction)
         enrollee_contribution = MONTHS_IN_YEAR * per_person_monthly * n_members
-        # SLCSP is a MONTH variable summed to the year to proxy the benchmark
-        # ConnectorCare plan; the full APTC is netted per 956 CMR 12.04(3)(c).
-        slcsp_annual = add(tax_unit, period, ["slcsp"])
+        # The benchmark for the federal coverage family (a MONTH variable
+        # summed to the year) proxies the benchmark ConnectorCare plan of the
+        # APTC-eligible enrollees (956 CMR 12.04(3)(a)2); the full APTC is
+        # netted per 956 CMR 12.04(3)(c).
+        slcsp_annual = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         subsidy = max_(0, slcsp_annual - aca_ptc - enrollee_contribution)
         eligible = tax_unit("ma_connector_care_eligible", period)
