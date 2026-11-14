@@ -501,7 +501,7 @@
     itemized_medical_expenses_applied_exclusion: 1_000
     nd_renters_refund_income: 35_000 # 40,000 - (4,000 + 1,000).
 
-- name: North Dakota uses a supplied zero exclusion with a computed subtotal.
+- name: North Dakota restores a dependent's exclusion beside a supplied zero filer exclusion.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -525,10 +525,12 @@
         state_code: ND
   output:
     itemized_medical_expenses: 4_000 # 2,000 + 3,000 - 1,000.
-    # The supplied zero omits the dependent's 1,000 medical exclusion.
+    # The supplied zero covers the filers' exclusion only.
     itemized_medical_expenses_applied_exclusion: 0
-    # North Dakota uses the supplied zero: 40,000 - (4,000 + 0) = 36,000.
-    nd_renters_refund_income: 36_000
+    itemized_medical_expenses_excluded_dependent_premiums: 1_000
+    # NDCC 57-02-08.1(5)(c) counts costs the applicant's dependent paid:
+    # 40,000 - (4,000 + 0 + 1,000) = 35,000.
+    nd_renters_refund_income: 35_000
 
 - name: New Mexico retains its senior medical credit at the paid cost boundary.
   period: 2025
@@ -555,7 +557,7 @@
     nm_medical_expense_credit: 2_800 # The paid cost base stays 28,000.
     nm_medical_expense_exemption: 0 # The exemption requires more than 28,000.
 
-- name: New Mexico uses a supplied zero exclusion with a computed subtotal.
+- name: New Mexico restores a dependent's exclusion beside a supplied zero filer exclusion.
   period: 2025
   input:
     people:
@@ -577,11 +579,13 @@
         state_code: NM
   output:
     itemized_medical_expenses: 27_001 # 28,001 - 1,000.
-    # The supplied zero omits the dependent's 1,000 medical exclusion.
+    # The supplied zero covers the filers' exclusion only.
     itemized_medical_expenses_applied_exclusion: 0
-    # New Mexico uses 27,001 + 0, below the 28,000 expense threshold.
-    nm_medical_expense_credit: 0
-    nm_medical_expense_exemption: 0
+    itemized_medical_expenses_excluded_dependent_premiums: 1_000
+    # 27,001 + 0 + 1,000 = 28,001: at least 28,000 for the credit and more
+    # than 28,000 for the exemption.
+    nm_medical_expense_credit: 2_800
+    nm_medical_expense_exemption: 3_000
 
 - name: Montana retains non-premium expenses after a dependent deducts medical premiums.
   period: 2023

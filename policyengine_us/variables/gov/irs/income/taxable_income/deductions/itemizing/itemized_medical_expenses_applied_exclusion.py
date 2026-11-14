@@ -8,7 +8,7 @@ class itemized_medical_expenses_applied_exclusion(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://www.law.cornell.edu/uscode/text/26/162#l_3",
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partVI-sec162.htm",
         "https://www.irs.gov/instructions/i1040sca",
     ]
     documentation = (
@@ -28,10 +28,8 @@ class itemized_medical_expenses_applied_exclusion(Variable):
         "including family coverage paid by a filer. "
         "For a computed subtotal, a supplied exclusion replaces only the "
         "filers' exclusion and excludes dependents' medical premiums. "
-        "Montana restores the computed dependent amount separately. North "
-        "Dakota and New Mexico use the supplied amount unchanged, so their "
-        "full paid-cost bases require the derived exclusion or a supplied "
-        "subtotal with its complete exclusion. A supplied exclusion for a "
+        "Montana, North Dakota and New Mexico each restore the computed "
+        "dependent amount separately. A supplied exclusion for a "
         "supplied subtotal includes all premiums that subtotal leaves out, "
         "including dependents' medical premiums, for North Dakota and New "
         "Mexico's addbacks. Montana caps the medical part of any supplied "

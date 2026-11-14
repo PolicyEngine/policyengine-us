@@ -30,10 +30,9 @@ class nd_renters_refund_income(Variable):
         "including when components are supplied. Premium inputs use payer "
         "attribution: each person reports premiums that person paid, including "
         "family coverage regardless of whom it covers."
-        " With a computed subtotal, a supplied applied exclusion omits the "
-        "dependent medical exclusion and overrides the addback unchanged. "
-        "Full paid-cost preservation requires a derived applied exclusion "
-        "or a supplied subtotal with its complete exclusion."
+        " With a computed subtotal, a supplied applied exclusion covers the "
+        "filers' premiums only, so the model also restores the dependents' "
+        "computed medical exclusion, as Montana does."
     )
 
     def formula(tax_unit, period, parameters):
@@ -103,6 +102,20 @@ class nd_renters_refund_income(Variable):
                 "itemized_medical_expenses_applied_exclusion",
             ],
         )
+        # NDCC 57-02-08.1(5)(c) takes out of income the medical expenses "paid
+        # during the year by the applicant or the applicant's dependent". A
+        # supplied exclusion beside a computed subtotal covers the filers
+        # only, so restore the dependents' computed exclusion as well, as
+        # Montana does.
+        simulation = tax_unit.simulation
+        if not has_input_for_period(
+            simulation, "itemized_medical_expenses", period
+        ) and has_input_for_period(
+            simulation, "itemized_medical_expenses_applied_exclusion", period
+        ):
+            medical_expenses = medical_expenses + tax_unit(
+                "itemized_medical_expenses_excluded_dependent_premiums", period
+            )
         return max_(
             add(tax_unit, period, p.income_sources)
             - person_exclusions
