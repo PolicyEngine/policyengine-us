@@ -4,6 +4,25 @@ from policyengine_us.variables.gov.usda.school_meals.school_meal_tier import (
 )
 
 
+def school_meal_lunch_tier_from(spm_unit, period, parameters, tier):
+    """Return the lunch tier, given the tier for both meals."""
+    state = spm_unit.household("state_code_str", period)
+    p = parameters(period).gov.usda.school_meals
+    state_covers_reduced_copay = p.state_covers_reduced_price_copay_lunch_only[
+        state
+    ].astype(bool)
+    reduced = tier == tier.possible_values.REDUCED
+    return select(
+        [
+            (tier == tier.possible_values.FREE)
+            | (reduced & state_covers_reduced_copay),
+            reduced,
+        ],
+        [SchoolMealTier.FREE, SchoolMealTier.REDUCED],
+        default=SchoolMealTier.PAID,
+    )
+
+
 class school_meal_lunch_tier(Variable):
     value_type = Enum
     label = "School lunch tier"
@@ -27,18 +46,4 @@ class school_meal_lunch_tier(Variable):
         # The tier for both meals already includes state coverage of both
         # meals, so only lunch-specific state policies apply here.
         tier = spm_unit("school_meal_tier", period)
-        state = spm_unit.household("state_code_str", period)
-        p = parameters(period).gov.usda.school_meals
-        state_covers_reduced_copay = p.state_covers_reduced_price_copay_lunch_only[
-            state
-        ].astype(bool)
-        reduced = tier == tier.possible_values.REDUCED
-        return select(
-            [
-                (tier == tier.possible_values.FREE)
-                | (reduced & state_covers_reduced_copay),
-                reduced,
-            ],
-            [SchoolMealTier.FREE, SchoolMealTier.REDUCED],
-            default=SchoolMealTier.PAID,
-        )
+        return school_meal_lunch_tier_from(spm_unit, period, parameters, tier)

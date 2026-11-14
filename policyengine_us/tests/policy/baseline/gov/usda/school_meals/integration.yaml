@@ -766,3 +766,97 @@
     school_meal_net_subsidy: 1_119.60
     free_school_meals: 1_119.60
     reduced_price_school_meals: 0
+
+# SNAP from October gives categorical eligibility from October: free meals
+# for three months, and at $90,000 of earnings for two people the paid rate
+# before then. Calendar 2025 contiguous rates above the paid rate: breakfast
+# 2.37 - 0.39 = 1.98, lunch 4.43 - 0.42 = 4.01.
+# (1.98 + 4.01) * 3 / 12 * 180 = 269.55.
+- name: SNAP from October gives three months of free school meals.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 90_000
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 100
+          2025-11: 100
+          2025-12: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    school_meal_categorical_eligibility_months: 3
+    free_school_meals: 269.55
+    reduced_price_school_meals: 0
+
+# A five-year-old can be both in Head Start and in school. SSI from July
+# makes the child eligible for Head Start from July, which gives free school
+# meals for six months: (1.98 + 4.01) * 6 / 12 * 180 = 539.10.
+- name: Head Start eligibility from July gives six months of free school meals.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+        ssi:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 500
+          2025-08: 500
+          2025-09: 500
+          2025-10: 500
+          2025-11: 500
+          2025-12: 500
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [6, 6]
+    school_meal_categorical_eligibility_months: 6
+    free_school_meals: 539.10
+    reduced_price_school_meals: 0

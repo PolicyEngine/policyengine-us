@@ -238,3 +238,22 @@
     is_in_k12_school: [true, true, true, true, true, true]
   output:
     reduced_price_school_meals: [1_184.40, 567.00, 0, 936.00, 444.60, 0]
+
+# Categorical eligibility from October, one K-12 child, 180 school days, at
+# 160% of the poverty guideline. Calendar 2025 contiguous rates above the
+# paid rate: breakfast REDUCED 2.07 - 0.39 = 1.68; lunch REDUCED
+# 4.03 - 0.42 = 3.61. The nine months before categorical eligibility cost the
+# reduced price: (1.68 + 3.61) * 9 / 12 * 180 = 714.15. With the three free
+# months, (1.98 + 4.01) * 3 / 12 * 180 = 269.55, the net subsidy is 983.70.
+- name: Months before categorical eligibility count at the reduced price.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: GA
+    meets_school_meal_categorical_eligibility: true
+    school_meal_categorical_eligibility_months: 3
+    school_meal_fpg_ratio: 1.6
+    is_in_k12_school: true
+  output:
+    reduced_price_school_meals: 714.15
+    school_meal_net_subsidy: 983.70

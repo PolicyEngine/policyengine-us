@@ -36,3 +36,38 @@
     # FY2024 (2023-09-01): 22,139,720 / 1,791 = 12,361.65 per child,
     # uprated to the 2024 period by gov.hhs.uprating.
     early_head_start: 12_722.72
+
+# Case 1's full-year value, 18,807.49, times 3 / 12 = 4,701.87.
+- name: SNAP from October gives three months of Early Head Start in California.
+  period: 2022
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2022-01: 0
+          2022-02: 0
+          2022-03: 0
+          2022-04: 0
+          2022-05: 0
+          2022-06: 0
+          2022-07: 0
+          2022-08: 0
+          2022-09: 0
+          2022-10: 100
+          2022-11: 100
+          2022-12: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    early_head_start: [0, 4_701.87]

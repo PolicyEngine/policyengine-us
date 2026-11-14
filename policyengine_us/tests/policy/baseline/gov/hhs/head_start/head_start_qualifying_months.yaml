@@ -1,0 +1,403 @@
+# Each case sets TANF to zero except the TANF case, so only the assistance
+# each case names qualifies the family.
+
+- name: SNAP in every month covers the whole year.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 100
+          2025-02: 100
+          2025-03: 100
+          2025-04: 100
+          2025-05: 100
+          2025-06: 100
+          2025-07: 100
+          2025-08: 100
+          2025-09: 100
+          2025-10: 100
+          2025-11: 100
+          2025-12: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [12, 12]
+
+# 45 CFR 1302.12(j)(1): eligibility continues from the first month of SNAP,
+# so October, November and December count.
+- name: SNAP from October covers October to December.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 100
+          2025-11: 100
+          2025-12: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [3, 3]
+
+- name: SNAP from March covers March to December.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 100
+          2025-04: 100
+          2025-05: 100
+          2025-06: 100
+          2025-07: 100
+          2025-08: 100
+          2025-09: 100
+          2025-10: 100
+          2025-11: 100
+          2025-12: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [10, 10]
+
+# Eligibility continues after the assistance stops (45 CFR 1302.12(j)), so
+# April to December count too.
+- name: SNAP from January to March covers the whole year.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 100
+          2025-02: 100
+          2025-03: 100
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [12, 12]
+
+# The income test reads the year's income, so it covers every month.
+- name: Income at or below the poverty line covers the whole year, even with SNAP from October.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 100
+          2025-11: 100
+          2025-12: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [12, 12]
+
+- name: SSI from July covers July to December.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+        ssi:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 500
+          2025-08: 500
+          2025-09: 500
+          2025-10: 500
+          2025-11: 500
+          2025-12: 500
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [6, 6]
+
+# receives_snap counts for a household the model gives a $0 allotment.
+- name: Reported SNAP receipt from October covers October to December.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+        receives_snap:
+          2025-01: false
+          2025-02: false
+          2025-03: false
+          2025-04: false
+          2025-05: false
+          2025-06: false
+          2025-07: false
+          2025-08: false
+          2025-09: false
+          2025-10: true
+          2025-11: true
+          2025-12: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [3, 3]
+
+- name: TANF covers the whole year, since the model computes it by year.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 100
+          2025-11: 100
+          2025-12: 100
+        tanf: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [12, 12]
+
+- name: Homelessness covers the whole year.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 100
+          2025-11: 100
+          2025-12: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+        is_homeless: true
+  output:
+    head_start_qualifying_months: [12, 12]
+
+# The foster care test reads the child's own status, so the parent keeps
+# the three months that SNAP from October gives.
+- name: Foster care covers the whole year for the foster child only.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+        was_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 100
+          2025-11: 100
+          2025-12: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [3, 12]
+
+# Twelve is the default: proration applies only when monthly assistance
+# starting after January is the family's only route.
+- name: Without public assistance, eligibility from any route covers the whole year.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2025-01: 0
+          2025-02: 0
+          2025-03: 0
+          2025-04: 0
+          2025-05: 0
+          2025-06: 0
+          2025-07: 0
+          2025-08: 0
+          2025-09: 0
+          2025-10: 0
+          2025-11: 0
+          2025-12: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    head_start_qualifying_months: [12, 12]

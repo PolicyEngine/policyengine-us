@@ -45,3 +45,39 @@
     is_head_start_eligible: true
   output:
     head_start: 12_076.41 # 540,532,752 x (321.9 / 304.7) / 47,286
+
+# Case 1's full-year value, 14,656.07, times 3 / 12 = 3,664.02. The parent is
+# not in Head Start's age range.
+- name: SNAP from October gives three months of Head Start in California.
+  period: 2022
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 80_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap:
+          2022-01: 0
+          2022-02: 0
+          2022-03: 0
+          2022-04: 0
+          2022-05: 0
+          2022-06: 0
+          2022-07: 0
+          2022-08: 0
+          2022-09: 0
+          2022-10: 100
+          2022-11: 100
+          2022-12: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    head_start: [0, 3_664.02]

@@ -1,0 +1,12 @@
+# Texas pays only the reduced-price breakfast copay, so at 160% of the poverty
+# guideline breakfast is free before categorical eligibility starts. Georgia
+# pays neither copay.
+- name: Texas breakfast is free without categorical eligibility at the reduced-price income.
+  period: 2025
+  input:
+    state_code: [TX, GA, GA]
+    meets_school_meal_categorical_eligibility: [true, true, true]
+    school_meal_fpg_ratio: [1.6, 1.6, 3]
+  output:
+    school_meal_breakfast_tier: [FREE, FREE, FREE]
+    school_meal_breakfast_tier_without_categorical_eligibility: [FREE, REDUCED, PAID]

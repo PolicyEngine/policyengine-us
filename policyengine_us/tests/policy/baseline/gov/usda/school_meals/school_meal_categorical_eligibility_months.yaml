@@ -1,0 +1,255 @@
+# One-person cases. Each sets TANF to zero unless it names TANF, so only the
+# programs each case names give categorical eligibility.
+
+- name: Without categorical eligibility no months count.
+  period: 2025
+  input:
+    snap:
+      2025-01: 0
+      2025-02: 0
+      2025-03: 0
+      2025-04: 0
+      2025-05: 0
+      2025-06: 0
+      2025-07: 0
+      2025-08: 0
+      2025-09: 0
+      2025-10: 0
+      2025-11: 0
+      2025-12: 0
+    tanf: 0
+  output:
+    school_meal_categorical_eligibility_months: 0
+
+- name: SNAP in every month covers the whole year.
+  period: 2025
+  input:
+    snap:
+      2025-01: 100
+      2025-02: 100
+      2025-03: 100
+      2025-04: 100
+      2025-05: 100
+      2025-06: 100
+      2025-07: 100
+      2025-08: 100
+      2025-09: 100
+      2025-10: 100
+      2025-11: 100
+      2025-12: 100
+    tanf: 0
+  output:
+    school_meal_categorical_eligibility_months: 12
+
+# 7 CFR 245.6(c)(1): eligibility lasts the rest of the school year, so
+# October, November and December count.
+- name: SNAP from October covers October to December.
+  period: 2025
+  input:
+    snap:
+      2025-01: 0
+      2025-02: 0
+      2025-03: 0
+      2025-04: 0
+      2025-05: 0
+      2025-06: 0
+      2025-07: 0
+      2025-08: 0
+      2025-09: 0
+      2025-10: 100
+      2025-11: 100
+      2025-12: 100
+    tanf: 0
+  output:
+    school_meal_categorical_eligibility_months: 3
+
+# Eligibility continues after SNAP stops, so the year counts from January.
+- name: SNAP from January to March covers the whole year.
+  period: 2025
+  input:
+    snap:
+      2025-01: 100
+      2025-02: 100
+      2025-03: 100
+      2025-04: 0
+      2025-05: 0
+      2025-06: 0
+      2025-07: 0
+      2025-08: 0
+      2025-09: 0
+      2025-10: 0
+      2025-11: 0
+      2025-12: 0
+    tanf: 0
+  output:
+    school_meal_categorical_eligibility_months: 12
+
+# A family the model gives no TANF benefit can still report TANF receipt.
+- name: Reported TANF receipt from July covers July to December.
+  period: 2025
+  input:
+    snap:
+      2025-01: 0
+      2025-02: 0
+      2025-03: 0
+      2025-04: 0
+      2025-05: 0
+      2025-06: 0
+      2025-07: 0
+      2025-08: 0
+      2025-09: 0
+      2025-10: 0
+      2025-11: 0
+      2025-12: 0
+    tanf: 0
+    receives_tanf:
+      2025-01: false
+      2025-02: false
+      2025-03: false
+      2025-04: false
+      2025-05: false
+      2025-06: false
+      2025-07: true
+      2025-08: true
+      2025-09: true
+      2025-10: true
+      2025-11: true
+      2025-12: true
+  output:
+    school_meal_categorical_eligibility_months: 6
+
+# The model computes TANF by year, so it covers the whole year.
+- name: TANF covers the whole year even with SNAP from October.
+  period: 2025
+  input:
+    snap:
+      2025-01: 0
+      2025-02: 0
+      2025-03: 0
+      2025-04: 0
+      2025-05: 0
+      2025-06: 0
+      2025-07: 0
+      2025-08: 0
+      2025-09: 0
+      2025-10: 100
+      2025-11: 100
+      2025-12: 100
+    tanf: 1_000
+  output:
+    school_meal_categorical_eligibility_months: 12
+
+- name: Foster care covers the whole year even with SNAP from October.
+  period: 2025
+  input:
+    snap:
+      2025-01: 0
+      2025-02: 0
+      2025-03: 0
+      2025-04: 0
+      2025-05: 0
+      2025-06: 0
+      2025-07: 0
+      2025-08: 0
+      2025-09: 0
+      2025-10: 100
+      2025-11: 100
+      2025-12: 100
+    tanf: 0
+    was_in_foster_care: true
+  output:
+    school_meal_categorical_eligibility_months: 12
+
+# Head Start eligibility counts its own months, here from SSI that starts
+# in July.
+- name: Head Start eligibility from July covers July to December.
+  period: 2025
+  input:
+    snap:
+      2025-01: 0
+      2025-02: 0
+      2025-03: 0
+      2025-04: 0
+      2025-05: 0
+      2025-06: 0
+      2025-07: 0
+      2025-08: 0
+      2025-09: 0
+      2025-10: 0
+      2025-11: 0
+      2025-12: 0
+    tanf: 0
+    is_head_start_eligible: true
+    head_start_qualifying_months: 6
+  output:
+    school_meal_categorical_eligibility_months: 6
+
+# The earliest program sets the start: SNAP from March before Head Start
+# eligibility from October.
+- name: SNAP from March and Head Start eligibility from October cover March to December.
+  period: 2025
+  input:
+    snap:
+      2025-01: 0
+      2025-02: 0
+      2025-03: 100
+      2025-04: 100
+      2025-05: 100
+      2025-06: 100
+      2025-07: 100
+      2025-08: 100
+      2025-09: 100
+      2025-10: 100
+      2025-11: 100
+      2025-12: 100
+    tanf: 0
+    is_head_start_eligible: true
+    head_start_qualifying_months: 3
+  output:
+    school_meal_categorical_eligibility_months: 10
+
+# Head Start months count only for a child eligible for Head Start.
+- name: Head Start months without Head Start eligibility leave SNAP's months.
+  period: 2025
+  input:
+    snap:
+      2025-01: 0
+      2025-02: 0
+      2025-03: 0
+      2025-04: 0
+      2025-05: 0
+      2025-06: 0
+      2025-07: 0
+      2025-08: 0
+      2025-09: 0
+      2025-10: 100
+      2025-11: 100
+      2025-12: 100
+    tanf: 0
+    is_head_start_eligible: false
+    head_start_qualifying_months: 12
+  output:
+    school_meal_categorical_eligibility_months: 3
+
+# Categorical eligibility that no program places in a month, such as an
+# input, covers the whole year.
+- name: Categorical eligibility as an input covers the whole year.
+  period: 2025
+  input:
+    snap:
+      2025-01: 0
+      2025-02: 0
+      2025-03: 0
+      2025-04: 0
+      2025-05: 0
+      2025-06: 0
+      2025-07: 0
+      2025-08: 0
+      2025-09: 0
+      2025-10: 0
+      2025-11: 0
+      2025-12: 0
+    tanf: 0
+    meets_school_meal_categorical_eligibility: true
+  output:
+    school_meal_categorical_eligibility_months: 12
