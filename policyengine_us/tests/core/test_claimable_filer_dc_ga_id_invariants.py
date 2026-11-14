@@ -23,7 +23,12 @@ subject to an actual claim requiring claimability and excluding the exception:
    a return on which every filer can be claimed has no Georgia low income
    credit.
 
-Hypothesis batches check 1 and 3; the seeded population checks 1, 2 and 3.
+4. Holder invariance: for a DC couple nobody can claim, the property tax
+   credit is the same whichever spouse holds the rent and property tax inputs
+   (D.C. Code 47-1806.06(b)(4), (j)(1): one claimant per married couple).
+
+Hypothesis batches check 1 and 3; the seeded population checks 1, 2 and 3; a
+seeded population of DC couples checks 4.
 """
 
 import gc
@@ -33,6 +38,7 @@ import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
+from policyengine_us import Simulation
 from policyengine_us.tests.core.test_claimable_filer_federal_invariants import (
     check_monotone,
     check_swap,
@@ -42,6 +48,7 @@ from policyengine_us.tests.core.test_dependent_elsewhere_head_spouse_swap_invari
     _calc,
     _crafted_cases,
     _seeded_couples,
+    _situation,
     adults,
     dependents,
 )
@@ -224,3 +231,49 @@ def test_dc_ga_id_claimable_filer_rules_seeded_population(year):
     # population here so every variant is valid and claimability changes with
     # the actual claim; the swap population independently exercises all inputs.
     _run_check(check_monotone, seeded + crafted, year, MONOTONE, _identities)
+
+
+def _one_holder_copies(couple):
+    """The couple as drawn, then with its rent and property tax on each spouse."""
+    first, second = couple["adults"]
+    keys = ("rent", "real_estate_taxes")
+    pooled = {key: first[key] + second[key] for key in keys}
+    none = dict.fromkeys(keys, 0.0)
+    return [
+        couple,
+        {**couple, "adults": [{**first, **pooled}, {**second, **none}]},
+        {**couple, "adults": [{**first, **none}, {**second, **pooled}]},
+    ]
+
+
+@pytest.mark.parametrize("year", [2021, 2025])
+def test_dc_ptc_is_the_same_whichever_spouse_holds_rent_or_property_tax(year):
+    # D.C. Code 47-1806.06(b)(4) and (j)(1): a married couple forms one tax
+    # filing unit with one claimant. Nobody can claim these couples, so moving
+    # their rent and property tax to either spouse leaves the credit unchanged.
+    couples_nobody_claims = [
+        {
+            **couple,
+            "dependents": [],
+            "claimed": (False, False),
+            "claimable": (False, False),
+            "exception": (False, False),
+        }
+        for couple in _seeded_couples(["DC"], per_state=36)
+    ]
+    units = [
+        copy for couple in couples_nobody_claims for copy in _one_holder_copies(couple)
+    ]
+    sim = Simulation(
+        situation=_situation(units, year, lambda unit: [(True, False, False)])
+    )
+    try:
+        credit = _calc(sim, "dc_ptc", year)
+        drawn, on_first, on_second = credit[0::3], credit[1::3], credit[2::3]
+        # Enough couples must draw a credit for the comparison to bind.
+        assert (drawn > 0).sum() >= 8
+        np.testing.assert_allclose(on_first, drawn, atol=0.01)
+        np.testing.assert_allclose(on_second, drawn, atol=0.01)
+    finally:
+        del sim
+        gc.collect()
