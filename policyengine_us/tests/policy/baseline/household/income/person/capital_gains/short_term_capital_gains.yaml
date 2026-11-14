@@ -1,0 +1,21 @@
+# short_term_capital_gains follows
+# calibration.gov.irs.soi.short_term_capital_gains_per_capita, the IRS SOI total
+# divided by population. An input dated in one year and read in a later year is
+# multiplied by the ratio of that index between the two years.
+
+- name: A 2020 input read in 2022 grows with SOI net short-term capital gain per capita, inside the new SOI series.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    short_term_capital_gains:
+      2020: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4A, all returns, net short-term capital
+    # gain, over calibration.gov.census.populations.total:
+    #   2020: 150,302,155,000 / 336,810,000 = 446.2521
+    #         (https://www.irs.gov/pub/irs-soi/20in14acg.xls)
+    #   2022: 77,731,595,000 / 339,654,000 = 228.8552
+    #         (https://www.irs.gov/pub/irs-soi/22in14acg.xls)
+    # 10,000 x 228.8552 / 446.2521 = 5,128.38. With the old values this came to
+    # 15,866.03.
+    short_term_capital_gains: 5_128.38

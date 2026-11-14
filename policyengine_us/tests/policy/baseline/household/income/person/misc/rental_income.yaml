@@ -1,0 +1,20 @@
+# rental_income follows calibration.gov.irs.soi.rental_income_per_capita, the
+# IRS SOI total divided by population. An input dated in one year and read in a
+# later year is multiplied by the ratio of that index between the two years.
+
+- name: A 2020 input read in 2021 grows with SOI rent and royalty net income less net loss per capita, into the restated 2021 total.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    rental_income:
+      2020: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, rent and royalty net
+    # income less net loss, over calibration.gov.census.populations.total:
+    #   2020: 40,035,052,000 / 336,810,000 = 118.8654
+    #         (https://www.irs.gov/pub/irs-soi/20in14ar.xls)
+    #   2021: 46,581,312,000 / 338,039,000 = 137.7986
+    #         (https://www.irs.gov/pub/irs-soi/21in14ar.xls)
+    # 10,000 x 137.7986 / 118.8654 = 11,592.83. With the old values this came to
+    # 9,751.65.
+    rental_income: 11_592.83
