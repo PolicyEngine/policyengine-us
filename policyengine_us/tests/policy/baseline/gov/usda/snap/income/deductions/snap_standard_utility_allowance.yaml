@@ -633,3 +633,168 @@
     snap_net_income: 2157
     snap_expected_contribution: 648
     snap: 1
+
+- name: Case 25, Washington FY2017 utility amount reaches the actual heating household benefit.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: {2017: 35}
+        employment_income_before_lsr: {2017: 24_000}
+        rent: {2017: 7_200}
+      person2:
+        age: {2017: 8}
+      person3:
+        age: {2017: 6}
+      person4:
+        age: {2017: 4}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: {2017: NATURAL_GAS}
+        gas_expense: {2017: 600}
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: {2017: WA}
+  output:
+    # WSR 16-20-058, effective October 1, 2016: SUA $411/month.
+    # $2,000 - $400 earned deduction - $168 standard = $1,432.
+    # Shelter: $600 + $411 - $716 = $295, below the $517 cap.
+    # Net $1,137; ceil(30% * $1,137) = $342; $649 - $342 = $307.
+    # Actual heating qualifies independently of the preserved WA deemed-SUA flag.
+    snap: 307
+    snap_earned_income: 2_000
+    snap_unearned_income: 0
+    snap_gross_income: 2_000
+    snap_earned_income_deduction: 400
+    snap_standard_deduction: 168
+    snap_net_income_pre_shelter: 1_432
+    has_heating_cooling_expense: true
+    snap_utility_allowance_type: SUA
+    snap_standard_utility_allowance: 411
+    snap_utility_allowance: 411
+    snap_excess_shelter_expense_deduction: 295
+    snap_net_income: 1_137
+    snap_expected_contribution: 342
+    snap_max_allotment: 649
+
+# Stored-amount component: the allowance type is supplied explicitly.
+# WA deemed-SUA and LUA-activation routing flags remain unchanged.
+# January 2018-2026 amounts preserve existing encoded history;
+# these are monthly January snapshots, not annual disbursements.
+- name: Case 26, Washington stored SUA amounts preserve January snapshots from 2017 through
+    2026.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2017: WA
+      2018: WA
+      2019: WA
+      2020: WA
+      2021: WA
+      2022: WA
+      2023: WA
+      2024: WA
+      2025: WA
+      2026: WA
+    snap_utility_allowance_type:
+      2017: SUA
+      2018: SUA
+      2019: SUA
+      2020: SUA
+      2021: SUA
+      2022: SUA
+      2023: SUA
+      2024: SUA
+      2025: SUA
+      2026: SUA
+  output:
+    snap_standard_utility_allowance:
+      2017-01: 411
+      2018-01: 421
+      2019-01: 430
+      2020-01: 437
+      2021-01: 449
+      2022-01: 458
+      2023-01: 462
+      2024-01: 483
+      2025-01: 502
+      2026-01: 515
+
+# WSR 16-20-058 starts FY2017 on October 1, 2016; WSR 17-20-048
+# starts the preserved successor on October 1, 2017. The prior
+# zero is an unchanged placeholder, not a September 2016 law claim.
+# Categories are explicit components, not household routing tests.
+- name: Case 27, Washington stored SUA boundaries preserve flat amounts and category isolation.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2016:
+      - WA
+      - WA
+      - WA
+      - WA
+      - WA
+      - WA
+      2017:
+      - WA
+      - WA
+      - WA
+      - WA
+      - WA
+      - WA
+    snap_utility_allowance_type:
+      2016: &id001
+      - SUA
+      - SUA
+      - SUA
+      - LUA
+      - IUA
+      - NONE
+      2017: *id001
+    spm_unit_size:
+      2016:
+      - 1
+      - 4
+      - 10
+      - 4
+      - 4
+      - 4
+      2017:
+      - 1
+      - 4
+      - 10
+      - 4
+      - 4
+      - 4
+  output:
+    snap_standard_utility_allowance:
+      2016-09:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      2016-10: &id002
+      - 411
+      - 411
+      - 411
+      - 0
+      - 0
+      - 0
+      2017-09: *id002
+      2017-10:
+      - 421
+      - 421
+      - 421
+      - 0
+      - 0
+      - 0
