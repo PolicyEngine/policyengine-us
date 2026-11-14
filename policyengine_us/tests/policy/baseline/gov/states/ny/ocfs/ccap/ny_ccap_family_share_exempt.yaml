@@ -48,6 +48,7 @@
     spm_units:
       spm_unit:
         members: [child]
+        ny_tanf: 0
     households:
       household:
         members: [child]
@@ -66,6 +67,7 @@
     spm_units:
       spm_unit:
         members: [child]
+        ny_tanf: 0
     households:
       household:
         members: [child]
@@ -83,6 +85,7 @@
     spm_units:
       spm_unit:
         members: [child]
+        ny_tanf: 0
     households:
       household:
         members: [child]
@@ -170,3 +173,22 @@
   output:
     ny_ccap_family_assistance: 0
     ny_ccap_family_share_exempt: false
+
+- name: Case 10, reported Family Assistance receipt exempts a family with no computed grant.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        receives_tanf: true
+        ny_tanf: 0
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_family_assistance: 0
+    ny_ccap_family_share_exempt: true

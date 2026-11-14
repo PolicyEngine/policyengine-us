@@ -311,8 +311,6 @@ def test_counted_family_assistance_keeps_the_family_share_zero(system, year, uni
 @PROPERTY_SETTINGS
 @given(st.sampled_from(YEARS), st.lists(families(), min_size=2, max_size=6))
 def test_safety_net_receipt_alone_keeps_the_family_share_zero(system, year, units):
-    if "ny_safety_net_assistance_received" not in system.variables:
-        pytest.skip("The model has no Safety Net Assistance receipt input yet.")
     cases = [
         (
             {**family, "enrolled": False, "takeup": False},
