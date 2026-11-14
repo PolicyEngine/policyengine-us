@@ -35,10 +35,11 @@ class mt_casualty_loss_deduction_joint(Variable):
         # The return figures its loss as on federal Form 4684 (lines 10-18),
         # using its Montana adjusted gross income in place of federal adjusted
         # gross income.
-        # In 2022, Montana taxpayers may deduct only federally declared disaster
-        # losses (line 15). The model cannot distinguish them, so it retains
-        # the federal activation flag. No personal casualty loss is deductible while
-        # gov.irs.deductions.itemized.casualty.active is false (from 2018).
+        # From 2021 to 2023, Montana taxpayers may deduct only federally declared
+        # disaster losses (line 15). The model cannot distinguish them, so it
+        # retains the federal activation flag. No personal casualty loss is
+        # deductible while gov.irs.deductions.itemized.casualty.active is false
+        # (from 2018).
         p_casualty = parameters(period).gov.irs.deductions.itemized.casualty
         # A joint return is one individual for the $100 rule. The model records
         # one loss amount per person, not separate casualty events, so the

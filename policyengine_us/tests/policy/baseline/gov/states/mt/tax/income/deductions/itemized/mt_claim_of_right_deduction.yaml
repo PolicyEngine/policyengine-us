@@ -228,7 +228,6 @@
     tax_units:
       unit:
         members: [head, spouse]
-        casualty_loss_deduction: 0
         mt_agi_joint: 60_000
         charitable_deduction: 10_000
         # Preserve the federal aggregate approximation while testing the
@@ -572,7 +571,6 @@
     tax_units:
       unit:
         members: [head, spouse]
-        casualty_loss_deduction: 0
         claim_of_right_deduction: 7_000
         mt_agi_joint: 60_000
     households:
