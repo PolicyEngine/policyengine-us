@@ -1,0 +1,42 @@
+# Independent source-derived expectations; never obtained from model output.
+# Sources: Acts1268/2005 pp1-4;541/2023 pp1-2;49/2017 pp1-2;152/2017 p1;1544/2001 p1.
+
+# Rows: ordinary qualified, knownzero, wrong property state, nonqualifying home, invalid registration,
+# disabled-veteran exemption actually claimed with zero exempt liability, unassigned unit, unknown facts.
+# An invalid second new claim or untimely claim is represented by verified registrationfalse.
+- name: "Case 1, every independent claim gate is enforced and known zero liability remains legally eligible."
+  period: 2025
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR]
+    ar_homestead_property_tax_credit_qualified_property_taxes: [1_200, 0, 1_200, 1_200, 1_200, 0, 1_200, 1_200]
+    ar_homestead_property_tax_credit_property_in_arkansas: [true, true, false, true, true, true, true, true]
+    ar_homestead_property_tax_credit_homestead_qualified: [true, true, true, false, true, true, true, true]
+    ar_homestead_property_tax_credit_registered: [true, true, true, true, false, true, true, true]
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: [false, false, false, false, false, true, false, false]
+    ar_homestead_property_tax_credit_claimant: [true, true, true, true, true, true, false, true]
+    ar_homestead_property_tax_credit_facts_available: [true, true, true, true, true, true, true, false]
+    ar_homestead_property_tax_credit_bill_before_credit: [1_280, 1_280, 1_280, 1_280, 1_280, 1_280, 1_280, 1_280]
+  output:
+    ar_homestead_property_tax_credit_inputs_available: [true, true, true, true, true, true, true, false]
+    ar_homestead_property_tax_credit_eligible: [true, true, false, false, false, false, false, false]
+
+# Act1544/2001 section1 excludes an actual26-3-306 exemption claimant.
+# Generic veteran/disability status and age40 do not establish that exemption claim.
+- name: "Case 2, veteran and disability status without the property exemption do not bar the flat credit."
+  period: 2025
+  input:
+    state_code: AR
+    ar_homestead_property_tax_credit_qualified_property_taxes: 1_200
+    ar_homestead_property_tax_credit_property_in_arkansas: true
+    ar_homestead_property_tax_credit_homestead_qualified: true
+    ar_homestead_property_tax_credit_registered: true
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: false
+    ar_homestead_property_tax_credit_claimant: true
+    ar_homestead_property_tax_credit_facts_available: true
+    ar_homestead_property_tax_credit_bill_before_credit: 1_280
+    age: 40
+    is_veteran: true
+    is_disabled: true
+  output:
+    ar_homestead_property_tax_credit_eligible: true
+

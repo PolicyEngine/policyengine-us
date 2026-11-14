@@ -1,0 +1,50 @@
+# Independent source-derived expectations; never obtained from model output.
+# Sources: approved explicit-data contract, grounded in Acts1268/2005 and541/2023 registration/property facts.
+
+# Rows: unknown liability, verified zero, unknown property/claim history, complete known positive facts.
+# Availability certifies evidence and is separate from whether the claim is legally eligible.
+- name: "Case 1, known zero is available while unknown liability or unknown historical facts are unavailable."
+  period: 2025
+  input:
+    state_code: [AR, AR, AR, AR]
+    ar_homestead_property_tax_credit_qualified_property_taxes: [-1, 0, 1_200, 1_200]
+    ar_homestead_property_tax_credit_property_in_arkansas: [true, true, true, true]
+    ar_homestead_property_tax_credit_homestead_qualified: [true, true, true, true]
+    ar_homestead_property_tax_credit_registered: [true, true, true, true]
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: [false, false, false, false]
+    ar_homestead_property_tax_credit_claimant: [true, true, true, true]
+    ar_homestead_property_tax_credit_facts_available: [true, true, false, true]
+    ar_homestead_property_tax_credit_bill_before_credit: [1_280, 1_280, 1_280, 1_280]
+  output:
+    ar_homestead_property_tax_credit_inputs_available: [false, true, false, true]
+
+# No generic-tax fallback is authorized for an omitted assessment-year parcel liability.
+- name: "Case 2, an omitted qualified liability keeps the default unknown sentinel."
+  period: 2025
+  input:
+    state_code: AR
+    ar_homestead_property_tax_credit_property_in_arkansas: true
+    ar_homestead_property_tax_credit_homestead_qualified: true
+    ar_homestead_property_tax_credit_registered: true
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: false
+    ar_homestead_property_tax_credit_claimant: true
+    ar_homestead_property_tax_credit_facts_available: true
+    ar_homestead_property_tax_credit_bill_before_credit: 1_280
+  output:
+    ar_homestead_property_tax_credit_inputs_available: false
+
+# Positive supplied liability alone does not certify ownership, qualification or accepted registration.
+- name: "Case 3, an omitted factual availability declaration is not proof of known property history."
+  period: 2025
+  input:
+    state_code: AR
+    ar_homestead_property_tax_credit_qualified_property_taxes: 1_200
+    ar_homestead_property_tax_credit_property_in_arkansas: true
+    ar_homestead_property_tax_credit_homestead_qualified: true
+    ar_homestead_property_tax_credit_registered: true
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: false
+    ar_homestead_property_tax_credit_claimant: true
+    ar_homestead_property_tax_credit_bill_before_credit: 1_280
+  output:
+    ar_homestead_property_tax_credit_inputs_available: false
+

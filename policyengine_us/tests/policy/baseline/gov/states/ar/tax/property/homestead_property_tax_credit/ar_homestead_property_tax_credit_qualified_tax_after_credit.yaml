@@ -1,0 +1,24 @@
+# Independent source-derived expectations; never obtained from model output.
+# Sources:26-26-1118(a) and(b), enacted Acts1268/2005 and541/2023; approved attribution contract.
+
+# Known non-AR parcel, no qualifying homestead, invalid registration and unassigned unit.
+# Creditzero means the existing1200 liability and1280 bill survive; after-credit outputs must
+# not be scoped only to legally eligible claims.
+- name: "Case 1, known ineligible positive liabilities and bills remain payable."
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    state_code: [AR, AR, AR, AR]
+    ar_homestead_property_tax_credit_qualified_property_taxes: [1_200, 1_200, 1_200, 1_200]
+    ar_homestead_property_tax_credit_property_in_arkansas: [false, true, true, true]
+    ar_homestead_property_tax_credit_homestead_qualified: [true, false, true, true]
+    ar_homestead_property_tax_credit_registered: [true, true, false, true]
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: [false, false, false, false]
+    ar_homestead_property_tax_credit_claimant: [true, true, true, false]
+    ar_homestead_property_tax_credit_facts_available: [true, true, true, true]
+    ar_homestead_property_tax_credit_bill_before_credit: [1_280, 1_280, 1_280, 1_280]
+  output:
+    ar_homestead_property_tax_credit: [0, 0, 0, 0]
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: [1_200, 1_200, 1_200, 1_200]
+    ar_homestead_property_tax_credit_bill_after_credit: [1_280, 1_280, 1_280, 1_280]
+
