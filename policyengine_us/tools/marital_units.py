@@ -148,9 +148,9 @@ def infer_missing_marital_units(situation, default_period=None, system=None):
        ``is_tax_unit_head`` and ``is_tax_unit_spouse`` infer from age order
        when everyone has their own marital unit: the oldest adult, and the
        next-oldest adult who fails the qualifying child age test against
-       them, with no couple when anyone in the unit is separated, a family
-       says the two aren't married, or either has a false input for the role
-       step 4 gives them. A tax unit whose ``filing_status`` input is JOINT
+       them, with no couple when the head or that spouse is separated, a
+       family says the two aren't married, or either has a false input for
+       the role step 4 gives them. A tax unit whose ``filing_status`` input is JOINT
        skips the age test, since only a married couple files jointly (26 USC
        6013(a)).
 
@@ -608,9 +608,6 @@ def _fallback_pair_in_year(
             return None
     if spouse is not None:
         return head, spouse
-    # is_tax_unit_spouse infers no spouse in a unit with a separated member.
-    if any(_is_true(value(name, "is_separated")) for name in members):
-        return None
     # The qualifying child age test (26 USC 152(c)(3)), as is_tax_unit_spouse
     # applies it to adults outside the head's marital unit. Under a reform,
     # Core passes the reformed system, so these are the reform's age limits.
@@ -636,5 +633,11 @@ def _fallback_pair_in_year(
     )
     # Likewise a false is_tax_unit_spouse input on the formula's spouse.
     if spouse is None or input_is_false(spouse, "is_tax_unit_spouse"):
+        return None
+    # is_tax_unit_spouse picks its spouse before checking separation, then
+    # drops that spouse when the head or the spouse is separated, without
+    # promoting another adult (26 USC 7703(a)(2)). Another member's
+    # separation doesn't matter.
+    if any(_is_true(value(name, "is_separated")) for name in (head, spouse)):
         return None
     return head, spouse

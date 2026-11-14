@@ -29,8 +29,7 @@ class is_tax_unit_head(Variable):
         # omits marital units, tools/marital_units.py pairs the head and
         # spouse this fallback picks, so the couple's older member is that
         # same head.
-        # A separated member doesn't form such a couple: is_tax_unit_spouse
-        # gives no one the spouse role in a unit with a separated member.
+        # A separated member doesn't form such a couple for head selection.
         # NOTE: the older adult then becomes the couple's dependent whatever
         # their income. If that adult files instead, claiming a couple who
         # don't file jointly, supply is_tax_unit_head or tax_unit_role_input.

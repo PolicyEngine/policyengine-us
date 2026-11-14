@@ -7173,6 +7173,55 @@ candidates:
     Montana AGI (Itemized Deductions Schedule line 1b), and from 2024 the federal floor on federal AGI applies (mt_medical_expense_deduction_joint.py,
     itemized/state_specific_deduction_applies.yaml); the joint standard deduction also uses pooled Montana AGI (mt_standard_deduction_joint.py).
     Verify the incorporated federal provision against the form''s AGI choice.'
+- id: us-mt:surviving-spouse-standard-deduction
+  program: income-tax
+  years:
+    from: 2018
+    to: 2020
+    type: tax
+  question: Does a federal qualifying widow or widower receive Montana's single standard deduction under the
+    federal head-of-household eligibility condition, or the doubled deduction through the department's head-of-household
+    instructions?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2132(1), 2017
+    url: https://mca.legmt.gov/bills/2017/mca/title_0150/chapter_0300/part_0210/section_0320/0150-0300-0210-0320.html
+  - kind: statute
+    citation: MCA 15-30-2132(1), 2019
+    url: https://mca.legmt.gov/bills/2019/mca/title_0150/chapter_0300/part_0210/section_0320/0150-0300-0210-0320.html
+  - kind: statute
+    citation: 26 USC 2(b)(1), 2017 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2017-title26/html/USCODE-2017-title26-subtitleA-chap1-subchapA-partI-sec2.htm
+  - kind: instructions
+    citation: 2018 Montana Form 2 instructions, Head of Household, PDF page 11
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2018_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=11
+  - kind: instructions
+    citation: 2019 Montana Form 2 instructions, Head of Household, PDF page 10
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2019_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=10
+  - kind: instructions
+    citation: 2020 Montana Form 2 instructions, Head of Household, PDF page 10
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2020_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=10
+  readings:
+    statute: A surviving spouse under 26 USC 2(a) cannot qualify for federal head-of-household filing under
+      2(b)(1). Montana therefore applies the single standard deduction unless the taxpayer files a married
+      joint return.
+    other: The department generally permits federal qualifying widows and widowers to use Montana head-of-household
+      filing, giving them twice the single standard deduction limits.
+  example: A 2018 federal qualifying widow with Montana AGI of $100,000 receives a $4,580 standard deduction
+    under the statute and $9,160 under the head-of-household reading.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/deductions/standard/cap.yaml
+    - policyengine_us/parameters/gov/states/mt/tax/income/deductions/standard/floor.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10847
+  state: ruled
+  note: PolicyEngine retains single standard deduction limits for SURVIVING_SPOUSE in 2018-2020. The 2017
+    booklet does not contain the qualifying-widow allowance. The operative excerpts and context summaries
+    are captured under source_conflicts/sources/us-mt/ in the surviving-spouse files. The historical YAML
+    cases compare the single and doubled limits at both deduction boundaries. Federal-tax and senior-interest
+    limits do not differ between single and head-of-household filing.
 - id: us-nc:lieap-gross-versus-net-income
   program: liheap
   years:

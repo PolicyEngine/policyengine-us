@@ -276,8 +276,25 @@ def _fallback_pairs(people, **groups):
         ),
         # The role formulas take adults from is_child, which can be an input.
         ({"parent": {"age": 45}, "child": {"age": 30, "is_child": True}}, []),
-        # A separated member leaves the unit without a spouse.
-        ({"first": {"age": 45}, "second": {"age": 40, "is_separated": True}}, []),
+        # A separated spouse leaves the unit without one, and no younger adult
+        # takes their place (26 USC 7703(a)(2)).
+        (
+            {
+                "first": {"age": 45},
+                "second": {"age": 40, "is_separated": True},
+                "third": {"age": 30},
+            },
+            [],
+        ),
+        # Another member's separation doesn't stop the couple.
+        (
+            {
+                "first": {"age": 45},
+                "second": {"age": 43},
+                "child": {"age": 18, "is_separated": True},
+            },
+            [["first", "second"]],
+        ),
         # A pairing that changes between years pairs no one.
         ({"parent": {"age": 45}, "child": {"age": {"2024": 18, "2025": 19}}}, []),
     ],

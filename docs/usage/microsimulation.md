@@ -27,8 +27,9 @@ applies, and gives everyone else their own unit:
    `is_tax_unit_spouse` infer from age order: the oldest adult, and the
    next-oldest adult who fails the qualifying child age test against them
    (under 19, or under 24 if a full-time student, and younger than the head,
-   or permanently and totally disabled). No couple is formed when anyone in
-   the tax unit is separated, when the two live in different households, when
+   or permanently and totally disabled). No couple is formed when the head or
+   that spouse is separated (another member's separation doesn't matter), when
+   the two live in different households, when
    a family they share has a false `is_married` input, or when either has a
    false `is_tax_unit_head` or `is_tax_unit_spouse` input for the role this
    step gives them. A tax unit whose `filing_status` input is `JOINT` skips
@@ -260,13 +261,15 @@ partner in their marital unit. A head without one takes the next-oldest such
 adult, except an adult who meets the qualifying child age test against the head
 (26 USC 152(c)(3)): under 19, or under 24 if a full-time student, and younger
 than the head, or permanently and totally disabled at any age. That adult stays
-a dependent. No spouse is inferred when any member of the unit is separated,
-and a separated member doesn't count toward a couple. When a situation omits
+a dependent. PolicyEngine infers no spouse when the head or selected spouse
+candidate is separated. It selects the candidate before checking separation,
+without promoting a younger adult; member order breaks equal-age ties. A
+separated member doesn't count toward a couple. When a situation omits
 marital units, the model builds them by these same rules (see "Marital
 membership and tax roles" above), so they give the same roles. A minor living
 without a parent is left with no head.
 
-This rule has four known limitations. Supply `is_tax_unit_head`,
+This rule has three known limitations. Supply `is_tax_unit_head`,
 `is_tax_unit_spouse` or `tax_unit_role_input` for these households:
 
 - When a tax unit holds a married couple and an older adult outside their
@@ -283,11 +286,6 @@ This rule has four known limitations. Supply `is_tax_unit_head`,
   becomes the head's dependent, whatever their income. Examples are a spouse
   living apart in a care facility, or a self-supporting sibling, whose income
   then leaves the return.
-- When a separated adult outside a married couple's marital unit shares their
-  tax unit, the couple heads the unit but no spouse is inferred, since a unit
-  with a separated member infers none. The other member of the couple becomes
-  a dependent. Under the law a spouse can't be the other spouse's dependent,
-  and the couple could file jointly.
 
 The Microcosm build carries its constructor's filing status in a
 `filing_status_input` column. No variable has that name, so the column is

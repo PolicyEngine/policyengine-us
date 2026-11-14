@@ -1,3 +1,24 @@
+## [2.121.6] - 2026-11-14
+
+### Fixed
+
+- Limited the inferred spouse's separation check to the head and selected spouse candidate.
+
+
+## [2.121.5] - 2026-11-14
+
+### Fixed
+
+- Correct Montana's 2017–2020 income tax brackets, exemptions, standard deductions, pension exemption limits, and eligible subtractions.
+
+
+## [2.121.4] - 2026-11-13
+
+### Fixed
+
+- Add Ohio's published FY2017 SNAP utility-allowance amounts while retaining the existing historical limited-allowance activation gap.
+
+
 ## [2.121.3] - 2026-11-13
 
 ### Fixed
