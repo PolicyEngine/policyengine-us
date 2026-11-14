@@ -168,7 +168,7 @@
         state_code: WA
         county: KING_COUNTY_WA
   output:
-    # Head (person1) is categorically eligible (age 70 >= 61) and is the
+    # Head (person1) is categorically eligible (age 70 >= 62) and is the
     # head/spouse, so the exemption is awarded. Spouse's age does not block.
     wa_pte_eligible: true
 
