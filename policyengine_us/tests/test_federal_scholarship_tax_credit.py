@@ -297,3 +297,80 @@ def test_qualified_gift_reduces_actual_federal_tax_dollar_for_dollar(system):
     # Net income does not itself subtract charitable spending. The donor's
     # after-gift resources are unchanged only after subtracting the $1,000 gift.
     assert net_income[1] - 1_000 == pytest.approx(net_income[0], abs=TOLERANCE)
+
+
+def test_scholarship_credit_moves_ctc_to_refund_in_real_household(system):
+    # IRC 24(d)(1)(B) can refund CTC displaced by another subpart A credit.
+    # This family's wages leave both tax liability and unused CTC refund
+    # capacity. Assert the $100 shift without pinning indexed tax totals.
+    # https://uscode.house.gov/us/usc/t26/s24/
+    year = 2027
+    people = {}
+    groups = {
+        group: {}
+        for group in (
+            "tax_units",
+            "households",
+            "spm_units",
+            "families",
+            "marital_units",
+        )
+    }
+    for index, gift in enumerate((0, 100)):
+        parent = f"parent_{index}"
+        people[parent] = {
+            "age": {year: 40},
+            "employment_income": {year: 50_000},
+            "is_tax_unit_head": {year: True},
+            "is_tax_unit_spouse": {year: False},
+            "is_tax_unit_dependent": {year: False},
+            "charitable_cash_donations": {year: gift},
+            GIFT: {year: gift},
+        }
+        members = [parent]
+        groups["marital_units"][parent] = {"members": [parent]}
+        for child_index, age in enumerate((2, 5, 8)):
+            child = f"child_{index}_{child_index}"
+            people[child] = {
+                "age": {year: age},
+                "is_tax_unit_head": {year: False},
+                "is_tax_unit_spouse": {year: False},
+                "is_tax_unit_dependent": {year: True},
+            }
+            members.append(child)
+            groups["marital_units"][child] = {"members": [child]}
+        groups["tax_units"][f"unit_{index}"] = {
+            "members": members,
+            "filing_status": {year: "HEAD_OF_HOUSEHOLD"},
+        }
+        for group in ("spm_units", "families"):
+            groups[group][f"unit_{index}"] = {"members": members}
+        groups["households"][f"unit_{index}"] = {
+            "members": members,
+            "state_code": {year: "TX"},
+        }
+    simulation = Simulation(
+        tax_benefit_system=system, situation={"people": people, **groups}
+    )
+    # No CTC entitlement, refund, worksheet flag, credit limit or tax is an
+    # input: this reaches the actual demographic and credit-ordering graph.
+    pre_credit_tax = values(simulation, "income_tax_before_credits", year)
+    assert pre_credit_tax[0] == pytest.approx(pre_credit_tax[1], abs=TOLERANCE)
+    ctc = values(simulation, "ctc", year)
+    assert ctc[0] > 0
+    assert ctc[0] == pytest.approx(ctc[1], abs=TOLERANCE)
+    np.testing.assert_array_equal(
+        simulation.calculate("ctc_credit_limit_worksheet_b_applies", year),
+        [True, True],
+    )
+    np.testing.assert_allclose(
+        values(simulation, PREFIX, year), [0, 100], atol=TOLERANCE
+    )
+    refundable_ctc = values(simulation, "refundable_ctc", year)
+    assert refundable_ctc[1] - refundable_ctc[0] == pytest.approx(100, abs=TOLERANCE)
+    non_refundable_ctc = values(simulation, "non_refundable_ctc", year)
+    assert non_refundable_ctc[0] - non_refundable_ctc[1] == pytest.approx(
+        100, abs=TOLERANCE
+    )
+    taxes = values(simulation, "income_tax", year)
+    assert taxes[0] - taxes[1] == pytest.approx(100, abs=TOLERANCE)
