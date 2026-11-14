@@ -1,33 +1,28 @@
-"""Properties of the federal deductions in Utah's taxpayer credit base.
+"""Check Utah's taxpayer credit across deductions and federal tax elections.
 
-Utah Code 59-10-1018 starts from the federal itemized deductions and removes
-only state or local income tax: in (2)(a)(ii)(A) of the edition superseded on
-May 8, 2018, which the 2017 draws use, and after that in the definition of
-the Utah itemized deduction ((1)(f)(i) in the 2021, 2023 and 2026 editions).
-A tax unit whose sales taxes strictly exceed its income taxes takes the
-sales tax under the federal formula (state_and_local_sales_or_income_tax is
-the larger of the two), so:
+Utah Code 59-10-1018 removes state or local income tax from the federal
+itemized total. From 2018 through 2025, claimants subtract the income tax
+paid and reported, up to $10,000. Before 2018 and from 2026, claimants
+subtract only the income tax allowed in their federal itemized deductions.
 
-1. Sales-tax election: nothing is removed. The base is never above the
-   supplied federal itemized total, and equals it; with no total supplied,
-   it equals the non-SALT itemized deductions plus the allowed SALT
-   deduction.
-2. Income-tax election: the base never exceeds the larger of the federal
-   itemized total and the non-SALT deductions plus capped real-estate tax,
-   and it never falls below the latter.
-3. Raising sales tax above income tax, with every other input fixed, never
-   lowers the base when the supplied total is not cut below the
-   reconstruction.
+The draws vary the SALT phase-down, all five filing statuses, and supplied
+federal itemized totals after a reduction of up to 80%. Each simulation
+holds every drawn unit twice, with the second unit electing sales tax.
 
-Section 68 enters through the supplied total: the draws cut it by up to 80%
-of the reconstructed total, which can leave it below the non-SALT deductions
-plus the allowed SALT deduction. Before this change (1) and (3) failed
-whenever the allowed SALT deduction exceeded capped real-estate taxes: the
-sales tax was removed from the base. With max(itemized, non-SALT + SALT) as
-the sales-tax base, (1) failed whenever the cut left the total below that
-reconstruction. Each example builds one small household simulation holding
-every drawn tax unit twice, once as drawn and once with sales tax raised
-above income tax.
+1. Sales-tax electors keep their supplied federal itemized total. When no
+   positive total enters the simulation, they keep non-SALT deductions plus
+   the allowed SALT deduction.
+2. Income-tax electors subtract the amount for the applicable statutory
+   edition. The base never exceeds the effective total or falls more than
+   $10,000 below it from 2018 through 2025; outside those years it stays
+   between zero and the effective total.
+3. Raising sales tax above income tax never lowers the base, including
+   when section 68 reduces the supplied federal itemized total.
+
+The paired, vectorized simulations check these properties over inputs that
+single-household policy examples cannot exhaust. The random reductions
+exercise the allocation independently of the federal section 68 formula;
+the YAML tests also calculate actual section 68 reductions.
 """
 
 import numpy as np
@@ -37,7 +32,13 @@ from hypothesis import strategies as st
 from policyengine_us import Simulation
 
 YEARS = (2017, 2018, 2024, 2025, 2026)
-FILING_STATUSES = ("SINGLE", "JOINT", "SEPARATE", "HEAD_OF_HOUSEHOLD")
+FILING_STATUSES = (
+    "SINGLE",
+    "JOINT",
+    "SEPARATE",
+    "HEAD_OF_HOUSEHOLD",
+    "SURVIVING_SPOUSE",
+)
 AMOUNT = st.integers(min_value=0, max_value=60_000)
 
 UNIT = st.fixed_dictionaries(
@@ -48,18 +49,16 @@ UNIT = st.fixed_dictionaries(
         "income_tax": AMOUNT,
         "sales_tax": AMOUNT,
         "extra_itemized": AMOUNT,
-        # Percent of the reconstructed total that section 68 removes from the
-        # supplied federal itemized deductions (at most 80% before 2018).
+        "magi": st.integers(min_value=0, max_value=800_000),
         "section_68_cut": st.integers(min_value=0, max_value=80),
         "supply_itemized": st.booleans(),
     }
 )
 
 
-def _salt_cap(filing_status, year):
-    # 26 U.S.C. 164(b)(6) and (b)(7) caps before any phase-down: none in
-    # 2017, $10,000 ($5,000 separate) from 2018 through 2024, $40,000
-    # ($20,000) in 2025 and $40,400 ($20,200) in 2026.
+def _salt_cap(unit, year):
+    # 26 U.S.C. 164(b)(6)-(7): halve the separate-filer maximum,
+    # threshold, floor and phase-down reduction.
     full = {
         2017: np.inf,
         2018: 10_000,
@@ -67,21 +66,30 @@ def _salt_cap(filing_status, year):
         2025: 40_000,
         2026: 40_400,
     }[year]
-    return full / 2 if filing_status == "SEPARATE" else full
+    fraction = 0.5 if unit["filing_status"] == "SEPARATE" else 1
+    if year < 2025:
+        return full * fraction
+    threshold = {2025: 500_000, 2026: 505_000}[year] * fraction
+    reduction = 0.3 * max(0, unit["magi"] - threshold) * fraction
+    return max(10_000 * fraction, full * fraction - reduction)
 
 
 def _salt(unit, year):
     return min(
         unit["real_estate"] + max(unit["income_tax"], unit["sales_tax"]),
-        _salt_cap(unit["filing_status"], year),
+        _salt_cap(unit, year),
     )
+
+
+def _reconstructed(unit, year):
+    return unit["charitable"] + unit["extra_itemized"] + _salt(unit, year)
 
 
 def _itemized(unit, year):
     if not unit["supply_itemized"]:
         return 0
-    total = unit["charitable"] + _salt(unit, year) + unit["extra_itemized"]
-    # Whole dollars keep the values exact in float32.
+    total = _reconstructed(unit, year)
+    # Round the amount removed from the total down to whole dollars.
     return total - total * unit["section_68_cut"] // 100
 
 
@@ -93,16 +101,18 @@ def _situation(year, units):
         people[name] = {
             "age": {period: 40},
             "real_estate_taxes": {period: unit["real_estate"]},
+            "investment_interest_expense": {period: 0},
         }
         tax_units[f"t{i}"] = {
             "members": [name],
             "filing_status": {period: unit["filing_status"]},
             "tax_unit_itemizes": {period: True},
             "charitable_deduction": {period: unit["charitable"]},
-            "interest_deduction": {period: 0},
+            "interest_deduction": {period: unit["extra_itemized"]},
             "medical_expense_deduction": {period: 0},
             "casualty_loss_deduction": {period: 0},
             "misc_deduction": {period: 0},
+            "agi_plus_section_911_931_933_exclusions": {period: unit["magi"]},
             "state_withheld_income_tax": {period: unit["income_tax"]},
             "local_income_tax": {period: 0},
             "state_sales_tax": {period: unit["sales_tax"]},
@@ -118,6 +128,21 @@ def _with_sales_election(unit):
     return {**unit, "sales_tax": unit["income_tax"] + 1 + unit["sales_tax"]}
 
 
+def _unit(**overrides):
+    return {
+        "filing_status": "JOINT",
+        "charitable": 6_000,
+        "real_estate": 4_000,
+        "income_tax": 9_000,
+        "sales_tax": 2_000,
+        "extra_itemized": 0,
+        "magi": 0,
+        "section_68_cut": 10,
+        "supply_itemized": True,
+        **overrides,
+    }
+
+
 @settings(
     max_examples=6,
     deadline=None,
@@ -128,75 +153,66 @@ def _with_sales_election(unit):
     year=st.sampled_from(YEARS),
     units=st.lists(UNIT, min_size=4, max_size=12),
 )
-# Section 68 cuts the supplied total below the reconstruction under both
-# elections: $15,000 - 10% = $13,500 against $6,000 + $9,000 for the first
-# unit, so (1) holds only if the base stays at $13,500.
+@example(year=2017, units=[_unit(filing_status=s) for s in FILING_STATUSES])
+@example(year=2018, units=[_unit(real_estate=10_000, income_tax=8_000)])
+@example(year=2024, units=[_unit(real_estate=10_000, income_tax=8_000)])
+@example(
+    year=2025,
+    units=[_unit(real_estate=5_000, income_tax=30_000, magi=600_000)],
+)
 @example(
     year=2026,
     units=[
-        {
-            "filing_status": "JOINT",
-            "charitable": 6_000,
-            "real_estate": 0,
-            "income_tax": 0,
-            "sales_tax": 9_000,
-            "extra_itemized": 0,
-            "section_68_cut": 10,
-            "supply_itemized": True,
-        },
-        {
-            "filing_status": "SINGLE",
-            "charitable": 6_000,
-            "real_estate": 4_000,
-            "income_tax": 9_000,
-            "sales_tax": 2_000,
-            "extra_itemized": 0,
-            "section_68_cut": 10,
-            "supply_itemized": True,
-        },
+        _unit(real_estate=0, income_tax=0, sales_tax=9_000),
+        _unit(),
+        _unit(real_estate=25_000, income_tax=30_000, magi=605_000),
+        _unit(
+            filing_status="SEPARATE",
+            real_estate=5_000,
+            income_tax=20_000,
+            magi=300_000,
+        ),
     ],
 )
 def test_utah_credit_base_keeps_sales_tax(year, units):
     paired = units + [_with_sales_election(unit) for unit in units]
-    situation = _situation(year, paired)
-    sim = Simulation(situation=situation)
+    sim = Simulation(situation=_situation(year, paired))
     base = sim.calculate("ut_federal_deductions_for_taxpayer_credit", year)
-    period = str(year)
-    tu = situation["tax_units"]
-    itemized = np.array(
-        [
-            tu[f"t{i}"]["itemized_taxable_income_deductions"][period]
-            for i in range(len(paired))
-        ]
-    )
-    salt = np.array([tu[f"t{i}"]["salt_deduction"][period] for i in range(len(paired))])
-    other = np.array([u["charitable"] for u in paired])
-    real_estate = np.array([u["real_estate"] for u in paired])
-    cap = np.array([_salt_cap(u["filing_status"], year) for u in paired])
+    itemized = np.array([_itemized(unit, year) for unit in paired])
+    salt = np.array([_salt(unit, year) for unit in paired])
+    reconstructed = np.array([_reconstructed(unit, year) for unit in paired])
+    effective = np.where(itemized > 0, itemized, reconstructed)
     sales_elected = np.array([u["sales_tax"] > u["income_tax"] for u in paired])
 
-    # (1) Sales-tax election removes nothing: never above the supplied
-    # federal itemized total, and equal to it, or to the fallback when no
-    # total is supplied.
-    supplied = sales_elected & (itemized > 0)
-    assert np.all(base[supplied] <= itemized[supplied] + 1e-6)
-    assert np.allclose(base[supplied], itemized[supplied])
-    not_supplied = sales_elected & (itemized == 0)
-    assert np.allclose(base[not_supplied], (other + salt)[not_supplied])
+    # (1) Sales-tax electors keep the effective federal itemized total.
+    assert np.allclose(base[sales_elected], effective[sales_elected])
 
-    # (2) Income-tax election stays within its bounds.
-    income_floor = other + np.minimum(real_estate, cap)
+    # (2) Income-tax electors subtract only the dated statutory amount.
     income = ~sales_elected
-    assert np.all(base[income] >= income_floor[income] - 1e-6)
-    assert np.all(base[income] <= np.maximum(itemized, income_floor)[income] + 1e-6)
-
-    # (3) Moving to a sales-tax election never lowers the base. A pair whose
-    # supplied total is cut is left out: the income-tax branch floors its
-    # base at the reconstruction before section 68, which the sales-tax
-    # branch does not.
-    n = len(units)
-    uncut = np.array(
-        [u["section_68_cut"] == 0 or not u["supply_itemized"] for u in units],
-        dtype=bool,
+    raw_income = np.array([unit["income_tax"] for unit in paired])
+    if 2018 <= year <= 2025:
+        excluded_income = np.minimum(raw_income, 10_000)
+    else:
+        real_estate = np.array([unit["real_estate"] for unit in paired])
+        deducted_income = np.maximum(0, salt - real_estate)
+        # The draws contain no section 68(c) protected deductions, so each
+        # dollar of the income-tax deduction retains the same fraction.
+        retained = np.divide(
+            itemized,
+            reconstructed,
+            out=np.ones_like(itemized, dtype=float),
+            where=(itemized > 0) & (reconstructed > 0),
+        )
+        excluded_income = np.minimum(raw_income, deducted_income * retained)
+    expected_income_base = effective - excluded_income
+    lower_bound = effective - 10_000 if 2018 <= year <= 2025 else 0
+    assert np.all(
+        base[income] >= np.broadcast_to(lower_bound, base.shape)[income] - 0.03
     )
-    assert np.all(base[n:][uncut] >= base[:n][uncut] - 1e-6)
+    assert np.all(base[income] <= effective[income] + 0.03)
+    assert np.allclose(base[income], expected_income_base[income], rtol=1e-6, atol=0.03)
+
+    # (3) Moving to a sales-tax election never lowers the base, including
+    # pairs whose supplied itemized totals include a section 68 reduction.
+    n = len(units)
+    assert np.all(base[n:] >= base[:n] - 0.03)
