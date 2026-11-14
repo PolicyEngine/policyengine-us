@@ -212,6 +212,12 @@ def test_parent_limits_outside_historical_correction_equal_existing_routes(year,
     for index, state in enumerate(states):
         if state == "MO":
             expected[index] = mo_limit[index]
+    if parameters.gov.states.fl.dcf.medicaid.parent.in_effect:
+        # Florida's dollar-standard route replaces the national ratio while
+        # its indicator is on; the people here have no children, so Texas's
+        # one-parent route never applies.
+        fl_limit = simulation.calculate("fl_medicaid_parent_income_limit", year)
+        expected[states.index("FL")] = fl_limit[states.index("FL")]
     if not historical:
         # Read the unchanged July 2025 schedule independently of compatibility entries.
         va = simulation.tax_benefit_system.parameters(
