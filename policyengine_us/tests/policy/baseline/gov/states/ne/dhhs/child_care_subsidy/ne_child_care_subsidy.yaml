@@ -5,6 +5,7 @@
     ne_child_care_subsidy_eligible: true
     ne_child_care_subsidy_family_fee: 0
     ne_child_care_subsidy_maximum_provider_rate: 450
+    age: 4
     ne_child_care_subsidy_provider_type: CENTER
     pre_subsidy_childcare_expenses: 1_200
     state_code: NE
@@ -20,6 +21,7 @@
     ne_child_care_subsidy_eligible: true
     ne_child_care_subsidy_family_fee: 0
     ne_child_care_subsidy_maximum_provider_rate: 80
+    age: 4
     ne_child_care_subsidy_provider_type: CENTER
     pre_subsidy_childcare_expenses: 1_200
     state_code: NE
@@ -34,6 +36,7 @@
     ne_child_care_subsidy_eligible: true
     ne_child_care_subsidy_family_fee: 150
     ne_child_care_subsidy_maximum_provider_rate: 80
+    age: 4
     ne_child_care_subsidy_provider_type: CENTER
     pre_subsidy_childcare_expenses: 1_200
     state_code: NE
@@ -48,10 +51,12 @@
   input:
     people:
       child1:
+        age: 3
         ne_child_care_subsidy_maximum_provider_rate: 100
         ne_child_care_subsidy_provider_type: CENTER
         pre_subsidy_childcare_expenses: 1_800
       child2:
+        age: 5
         ne_child_care_subsidy_maximum_provider_rate: 100
         ne_child_care_subsidy_provider_type: CENTER
         pre_subsidy_childcare_expenses: 0
@@ -72,11 +77,22 @@
   period: 2024
   absolute_error_margin: 0.01
   input:
-    ne_child_care_subsidy_countable_income: 200
-    ne_child_care_subsidy_eligible: true
-    spm_unit_fpg: 100
-    spm_unit_pre_subsidy_childcare_expenses: 50
-    state_code: NE
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ne_child_care_subsidy_countable_income: 200
+        ne_child_care_subsidy_eligible: true
+        spm_unit_fpg: 100
+        spm_unit_pre_subsidy_childcare_expenses: 50
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
   output:
     # $50 annual expense less the 7% historical family fee.
     ne_child_care_subsidy: 36
@@ -103,3 +119,219 @@
   output:
     # $100 monthly billed expenses less the $40 family fee.
     ne_child_care_subsidy: 60
+
+- name: Case 7, a teenager without a special need adds nothing to the payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 3
+        ne_child_care_subsidy_maximum_provider_rate: 819
+      teen:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, teen]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+        # $1,000 a month for each child under 18.
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [parent, young_child, teen]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: [false, true, false]
+    # 392 NAC 2-004(E) covers children age 12 or younger, so the state pays
+    # min($819 maximum, $1,000 share) for the 3-year-old and nothing toward
+    # the 15-year-old's $1,000 share.
+    ne_child_care_subsidy: 819
+
+- name: Case 8, with no care schedule the fallback pays only the covered child's share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 3
+      teen:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, teen]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [parent, young_child, teen]
+        state_code: NE
+  output:
+    # No attending days, so the rate matrix prices nothing for the 3-year-old.
+    ne_child_care_subsidy_maximum_provider_rate: [0, 0, 0]
+    # The 3-year-old's $1,000 share, and nothing for the teenager's.
+    ne_child_care_subsidy: 1_000
+
+- name: Case 9, a teenager with a special need is a covered child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 3
+        ne_child_care_subsidy_maximum_provider_rate: 819
+      teen:
+        age: 15
+        ne_dhhs_has_special_needs: true
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, teen]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [parent, young_child, teen]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: [false, true, true]
+    # $819 for the 3-year-old, and the teenager's $1,000 share, which the
+    # rate matrix does not price without a care schedule.
+    ne_child_care_subsidy: 1_819
+
+- name: Case 10, a child with no eligible provider adds nothing to the payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child_in_care:
+        age: 3
+        ne_child_care_subsidy_maximum_provider_rate: 819
+      child_without_provider:
+        age: 5
+        ne_child_care_subsidy_provider_type: NONE
+    spm_units:
+      spm_unit:
+        members: [parent, child_in_care, child_without_provider]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [parent, child_in_care, child_without_provider]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: [false, true, false]
+    # 392 NAC 2-004(H) requires an approved provider, so the 5-year-old's
+    # $1,000 share adds nothing.
+    ne_child_care_subsidy: 819
+
+- name: Case 11, the historical approximation pays only covered children's shares.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      young_child:
+        age: 4
+      teen:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [parent, young_child, teen]
+        ne_child_care_subsidy_countable_income: 0
+        ne_child_care_subsidy_eligible: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [parent, young_child, teen]
+        state_code: NE
+  output:
+    # No income, so no fee: the 4-year-old's $1,000 share, not the teenager's.
+    ne_child_care_subsidy: 1_000
+
+- name: Case 12, the historical approximation pays for an 18-year-old with a special need.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 18
+        ne_dhhs_has_special_needs: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ne_child_care_subsidy_countable_income: 0
+        ne_child_care_subsidy_eligible: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: [false, true]
+    # The model splits the bill only across members under 18, so the
+    # 18-year-old takes the $1,000 a month that no member received.
+    ne_child_care_subsidy: 1_000
+
+- name: Case 13, with no care schedule the fallback pays for an 18-year-old with a special need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 18
+        ne_dhhs_has_special_needs: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_maximum_provider_rate: [0, 0]
+    # The 18-year-old takes the $1,000 a month that no member received.
+    ne_child_care_subsidy: 1_000
+
+- name: Case 14, a 19-year-old with a special need takes no part of the bill.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 19
+        ne_dhhs_has_special_needs: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: [false, false]
+    # 392 NAC 2-004(E) covers a child with a special need through age 18.
+    ne_child_care_subsidy: 0
