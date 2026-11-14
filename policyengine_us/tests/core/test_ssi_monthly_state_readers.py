@@ -204,10 +204,11 @@ def test_constant_ism_keeps_the_annual_exclusion_result(
 
 
 def _maryland_reference_countable(monthly_earned, monthly_unearned):
-    # COMAR 07.03.07.08(A) disregards $20 of unearned income, then $65 and
-    # one-half of the remaining earned income, in any month. PAA Manual 900
-    # applies the part of the $20 that unearned income under $20 leaves
-    # unused to earnings.
+    # Maryland DHS deducts $20 from unearned income, then $65 and one-half
+    # of the remaining earned income. When unearned income falls short of
+    # $20, DHS applies the unused part to earnings (PAA Manual 900). Under
+    # COMAR 07.03.07.08(A), DHS takes these disregards "in any month".
+    # https://dhs.maryland.gov/documents/FIA/Manuals/Public%20Assistance%20to%20Adults%20%28PAA%29%20Manual/PAA%20900%20Calculation%20of%20Benefits%20rev%2011.22.docx
     # https://regs.maryland.gov/us/md/exec/comar/07.03.07.08
     general = min(20, monthly_unearned)
     return monthly_unearned - general + max(monthly_earned - 65 - (20 - general), 0) / 2
@@ -245,3 +246,20 @@ def test_state_readers_keep_a_small_ism_exclusion_in_its_month(
     np.testing.assert_allclose(
         supplement[:11, constant], supplement[:11, changed], atol=0.01
     )
+    # SSA applies the same exclusions to this person's own income in each
+    # month (20 CFR 416.1112(c)). In December, as in every other month, it
+    # pays the 2024 aged standard of $1,182.94, less $600 of SSI and that
+    # month's countable income, rounded up to the cent. For example, $10 of
+    # ISM and $200 of earnings leave 0 + (200 - 65 - 10) / 2 = $62.50
+    # countable and a $520.44 payment; a December ISM of $25 leaves
+    # (25 - 20) + (200 - 65) / 2 = $72.50 and a $510.44 payment.
+    for name, profile in profiles.items():
+        expected = [
+            1_182.94
+            - 600
+            - _maryland_reference_countable(annual_earned / 12, monthly_ism)
+            for monthly_ism in profile
+        ]
+        np.testing.assert_allclose(
+            supplement[:, rows[name, "CA", "CITIZEN"]], expected, atol=0.011
+        )
