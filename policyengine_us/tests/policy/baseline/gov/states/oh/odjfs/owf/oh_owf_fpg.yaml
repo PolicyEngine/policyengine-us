@@ -2,9 +2,7 @@
 # For 2024-01 (January): month < 7, uses July 1, 2023 FPL
 # 2023 FPL (contiguous US): first_person = $14,580, additional_person = $5,140
 #
-# NOTE: Cannot test July+ periods because PolicyEngine test system only supports
-# 2024-01 (first month) or 2024 (whole year) formats. The July 1 effective date
-# logic in the variable is correct, but tests must use January periods.
+# Non-January controls below explicitly key YEAR-defined inputs by year.
 
 - name: Case 1, January 2024 one person uses 2023 FPL.
   period: 2024-01
@@ -71,3 +69,97 @@
     # 2024 FPL: 15,060 + 5,380 * 2 = 25,820
     # Monthly: 25,820 / 12 = 2,151.67
     oh_owf_fpg: 2_151.67
+
+- name: Case 7, Source-bound 2017 January literal guideline rows and extensions.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    state_code: [OH, OH, OH, OH, OH, OH, OH, OH, OH, OH]
+  output:
+    # HHS 81 FR 4036: eight literal 2016 annual rows; add $4,160 only after 8.
+    # ORC 5107.10(D)(2), effective 2013: January 2017 still uses 2016 guidelines.
+    oh_owf_fpg: [990, 1_335, 1_680, 2_025, 2_370, 2_715, 3_060.833333, 3_407.5, 3_754.166667, 4_100.833333]
+
+- name: Case 8, June 2017 uses the exact prior guideline with current household size.
+  period: 2017-06
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2016: [1, 1, 1, 1]
+      2017: [1, 3, 8, 9]
+    state_code:
+      2017: [OH, OH, OH, OH]
+  output:
+    # The July date selects the guideline, not prior-year household membership.
+    oh_owf_fpg: [990, 1_680, 3_407.5, 3_754.166667]
+
+- name: Case 9, July 2017 leaves the literal 2016 table and preserves monthly arithmetic.
+  period: 2017-07
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2017: [3, 8, 9]
+    state_code:
+      2017: [OH, OH, OH]
+  output:
+    # Existing 2017 linear parameters: ($12,060 + $4,180 x (size - 1)) / 12.
+    # This is a compatibility control, not a new legal audit of the 2017 table.
+    oh_owf_fpg: [1_701.666667, 3_443.333333, 3_791.666667]
+
+- name: Case 10, June 2016 preserves the prior guideline arithmetic.
+  period: 2016-06
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2016: [3, 8]
+    state_code:
+      2016: [OH, OH]
+  output:
+    # Existing 2015 parameters; preservation rather than fresh certification.
+    oh_owf_fpg: [1_674.166667, 3_407.5]
+
+- name: Case 11, July 2016 starts the literal guideline window.
+  period: 2016-07
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2016: 3
+    state_code:
+      2016: OH
+  output:
+    # The statutory July adoption follows the HHS January 2016 notice.
+    oh_owf_fpg: 1_680
+
+- name: Case 12, invalid household sizes preserve the prior monthly fallback.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    # Component compatibility inputs, not demographic household claims.
+    spm_unit_size: [0, -1, 3]
+    state_code: [OH, OH, OH]
+  output:
+    oh_owf_fpg: [643.333333, 296.666667, 1_680]
+
+- name: Case 13, mixed geography placeholders preserve the prior monthly fallback.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    # Deliberate component geography overrides; no Ohio/territory policy claim.
+    spm_unit_size: [3, 3, 3, 3]
+    state_code: [OH, OH, OH, OH]
+    state_group_str: [CONTIGUOUS_US, GU, PR, VI]
+  output:
+    # Territories retain existing zero placeholders, not published HHS amounts.
+    oh_owf_fpg: [1_680, 0, 0, 0]
+
+- name: Case 14, annual 2017 FPG component aggregates both July-selected schedules.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 3
+    state_code: OH
+  output:
+    # Six months x $1,680 plus six x ($20,420 / 12) = $20,290.
+    # FPG component only; no annual cash or complete eligibility claim.
+    oh_owf_fpg: 20_290

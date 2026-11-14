@@ -8,6 +8,10 @@ class oh_owf_initial_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.OH
     reference = (
+        "https://codes.ohio.gov/ohio-revised-code/section-5107.10/9-29-2013",
+        "https://codes.ohio.gov/ohio-revised-code/section-5107.10/9-29-2017",
+        "https://codes.ohio.gov/ohio-revised-code/section-5107.10/9-30-2021",
+        "https://codes.ohio.gov/ohio-revised-code/section-5107.10",
         "https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-20",
         "https://dam.assets.ohio.gov/image/upload/jfs.ohio.gov/OWF/tanf/2024%20TANF%20State%20Plan%20Combined.pdf#page=4",
     )
@@ -25,6 +29,6 @@ class oh_owf_initial_income_eligible(Variable):
         p = parameters(period).gov.states.oh.odjfs.owf.initial_eligibility
         income_limit = fpg * p.income_limit_rate
 
-        # Initial eligibility test: gross income must be below limit
-        # Per ORC 5107.10(D)(1) and ODJFS Payment Standards Table
-        return gross_income < income_limit
+        # ORC 5107.10(D)(1)(a)-(b) permits initial gross income at the limit.
+        # The separate countable-income/payment-standard test remains strict.
+        return gross_income <= income_limit
