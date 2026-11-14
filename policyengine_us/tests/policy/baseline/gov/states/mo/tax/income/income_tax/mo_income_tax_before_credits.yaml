@@ -113,3 +113,80 @@
     # (2% + 2.5% + 3% + 3.5% + 4% + 4.5%) x 1,348 + 4.7% x (12,300 - 9,436)
     # = 262.86 + 134.61 (the chart shows $263 + $134.61 = $397.61)
     mo_income_tax_before_credits: 0.195 * 1_348 + 0.047 * (12_300 - 9_436)
+
+# A combined return where one spouse's own business loss exceeds their wages.
+# The Line 1 worksheet puts the loss in that spouse's column, so the other
+# spouse's column carries the whole Missouri taxable income.
+- name: Combined return, 2023, one spouse's column negative
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 5_000
+        self_employment_income: -15_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Line 1 (and 5): -10,000 and 100,000; Line 6: 90,000.
+    # Federal tax: 90,000 - 27,700 = 62,300 taxable;
+    #   10% x 22,000 + 12% x 40,300 = 7,036.
+    # Line 12: 15% (Line 6 from 50,001 to 100,000); Line 13: 1,055.40.
+    # Line 26: 90,000 - 27,700 - 1,055.40 = 61,244.60.
+    # Line 7: 0% and 100%, so Line 27 is 0 and 61,244.60.
+    # Tax: 0.195 x 1,207 + 4.95% x (61,244.60 - 8,449) = 2,848.75.
+    # (main split the loss by gross income share and taxed 4.76% of Line 26
+    # in the primary's low brackets: 36.70 + 2,704.39 = 2,741.09.)
+    mo_federal_income_tax_deduction: 1_055.40
+    mo_taxable_income: [0, 61_244.60]
+    mo_income_tax_before_credits: [0, 2_848.75]
+
+- name: Combined return, 2025, one spouse's separate federal AGI negative
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 5_000
+        self_employment_income: -15_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Line 1: 0 and the joint 90,000 (2025 instructions, page 6).
+    # Federal tax: 90,000 - 31,500 = 58,500 taxable;
+    #   10% x 23,850 + 12% x 34,650 = 6,543.
+    # Line 13: 15% x 6,543 = 981.45.
+    # Line 26: 90,000 - 31,500 - 981.45 = 57,518.55, all the secondary's.
+    # Tax: 0.195 x 1,313 + 4.7% x (57,518.55 - 9,191) = 2,527.43.
+    # (main: 29.08 + 2,398.70 = 2,427.78.)
+    mo_federal_income_tax_deduction: 981.45
+    mo_taxable_income: [0, 57_518.55]
+    mo_income_tax_before_credits: [0, 2_527.43]

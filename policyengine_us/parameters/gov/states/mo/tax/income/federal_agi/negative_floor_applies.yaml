@@ -1,0 +1,26 @@
+description: Missouri starts a filer's Missouri adjusted gross income from zero instead of a negative federal adjusted gross income, and gives the whole joint federal adjusted gross income to the spouse whose separate amount is positive, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Missouri negative federal adjusted gross income floor applies
+  reference:
+    - title: 2025 MO-1040 Book - Individual Income Tax Long Form, Negative Federal Adjusted Gross Income (12 CSR 10-2.710)
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=6
+    - title: 12 CSR 10-2.010(5), amended effective April 30, 2026
+      href: https://dor.mo.gov/resources/official-final-rules/documents/12_CSR_10-2_010_Income_Tax_of_Current_or_Former_Spouses.pdf#page=4
+    - title: 2024 MO-1040 Book - Individual Income Tax Long Form, Line 1
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=6
+    - title: 2023 MO-1040 Book - Individual Income Tax Long Form, Line 7 note on negative income
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=7
+
+values:
+  # Through 2023, spouses could report negative amounts in their separate
+  # columns; see the 2023 Line 7 instructions.
+  2019-01-01: false
+  # From 2024 the department directs a filer whose federal adjusted gross
+  # income would be negative to enter $0 on Line 1. For a combined return it
+  # gives no method in 2024 and gives one in 2025, citing 12 CSR 10-2.710.
+  # Apply the 2025 method from 2024: the positive spouse takes the joint
+  # amount, which keeps the joint total after the negative spouse enters
+  # zero.
+  2024-01-01: true
