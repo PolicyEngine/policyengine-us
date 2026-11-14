@@ -1,0 +1,38 @@
+# Congress keeps personal exemptions suspended after 2017.
+- name: Personal exemptions remain zero under current law after 2035
+  period: 2036
+  input:
+    exemptions_count: [1, 1, 1, 1, 1]
+    adjusted_gross_income: [0, 414_199, 414_200, 414_201, 1_000_000]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+  output:
+    exemptions: [0, 0, 0, 0, 0]
+
+# Isolate the legacy threshold in a counterfactual with a $1,000 exemption.
+# 406,200 * 217.05 / 212.85 = 414,215.22199, rounded down to $50 = 414,200.
+# One full $2,500 step above the threshold phases out 2% * $1,000 = $20.
+- name: A restored exemption uses the projected single phaseout threshold
+  period: 2036
+  absolute_error_margin: 0.001
+  input:
+    gov.irs.income.exemption.suspended: false
+    gov.irs.income.exemption.amount: 1_000
+    exemptions_count: [1, 1, 1]
+    adjusted_gross_income: [414_199, 414_200, 416_700]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+  output:
+    exemptions: [1_000, 1_000, 980]
+
+# 243,700 * 217.05 / 212.85 = 248,508.73855 -> 248,500 (down to $25).
+# One full $1,250 step above the threshold phases out 2% * $1,000 = $20.
+- name: A restored exemption uses half the joint threshold for separate filers
+  period: 2036
+  absolute_error_margin: 0.001
+  input:
+    gov.irs.income.exemption.suspended: false
+    gov.irs.income.exemption.amount: 1_000
+    exemptions_count: [1, 1, 1]
+    adjusted_gross_income: [248_499, 248_500, 249_750]
+    filing_status: [SEPARATE, SEPARATE, SEPARATE]
+  output:
+    exemptions: [1_000, 1_000, 980]
