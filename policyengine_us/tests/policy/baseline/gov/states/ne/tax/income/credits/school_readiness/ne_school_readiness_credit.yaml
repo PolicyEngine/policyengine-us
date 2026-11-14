@@ -24,3 +24,369 @@
     state_code: NE
   output:
     ne_school_readiness_credit: 3_500
+
+# Current parameters keep level 3 at $2,900 in 2024.
+# Set unrelated benefits, health costs and Nebraska child credit to $0.
+# Tax = 0 - 2,900; net income = 0 - (-2,900).
+- name: A level 3 worker lives with a child in 2024
+  period: 2024
+  input:
+    people:
+      worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      child:
+        age: 3
+    households:
+      household:
+        members: [worker, child]
+        state_code: NE
+        household_benefits: 0
+        household_health_costs: 0
+    tax_units:
+      tax_unit:
+        members: [worker, child]
+        ne_refundable_ctc: 0
+    spm_units:
+      spm_unit:
+        members: [worker, child]
+    families:
+      family:
+        members: [worker, child]
+    marital_units:
+      worker_unit:
+        members: [worker]
+      child_unit:
+        members: [child]
+  output:
+    ne_school_readiness_credit: [2_900, 0]
+    ne_income_tax: -2_900
+    household_net_income: 2_900
+
+# The worker receives $2,900; the spouse has no level and receives $0.
+- name: A level 3 worker lives with a spouse in 2024
+  period: 2024
+  input:
+    people:
+      worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      spouse:
+        age: 30
+    households:
+      household:
+        members: [worker, spouse]
+        state_code: NE
+    tax_units:
+      tax_unit:
+        members: [worker, spouse]
+    spm_units:
+      spm_unit:
+        members: [worker, spouse]
+    families:
+      family:
+        members: [worker, spouse]
+    marital_units:
+      couple:
+        members: [worker, spouse]
+  output:
+    ne_school_readiness_credit: [2_900, 0]
+
+# Each worker uses their own level: level 3 = $2,900; level 5 = $3,500.
+- name: Two workers receive their own level amounts in 2024
+  period: 2024
+  input:
+    people:
+      level_3_worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      level_5_worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 5
+    households:
+      household:
+        members: [level_3_worker, level_5_worker]
+        state_code: NE
+    tax_units:
+      tax_unit:
+        members: [level_3_worker, level_5_worker]
+    spm_units:
+      spm_unit:
+        members: [level_3_worker, level_5_worker]
+    families:
+      family:
+        members: [level_3_worker, level_5_worker]
+    marital_units:
+      couple:
+        members: [level_3_worker, level_5_worker]
+  output:
+    ne_school_readiness_credit: [2_900, 3_500]
+
+# An omitted level defaults to 0, below the first classification; credit = $0.
+- name: An eligible worker has no level in 2024
+  period: 2024
+  input:
+    ne_school_readiness_credit_eligible_worker: true
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 0
+
+# Levels -1 and 0 receive $0; level 1 receives $2,300.
+# Level 4 receives $3,200; levels 5 and 6 receive $3,500 under the existing cap.
+# The last person has level 3 but lacks worker eligibility, so receives $0.
+- name: Workers cross the level bounds in 2024
+  period: 2024
+  input:
+    ne_school_readiness_credit_eligible_worker: [true, true, true, true, true, true, false]
+    ne_school_readiness_credit_child_care_worker_rating: [-1, 0, 1, 4, 5, 6, 3]
+    state_code: [NE, NE, NE, NE, NE, NE, NE]
+  output:
+    ne_school_readiness_credit: [0, 0, 2_300, 3_200, 3_500, 3_500, 0]
+
+# Current parameters keep level 3 at $2,900 in 2025.
+# Set unrelated benefits, health costs and Nebraska child credit to $0.
+# Tax = 0 - 2,900; net income = 0 - (-2,900).
+- name: A level 3 worker lives with a child in 2025
+  period: 2025
+  input:
+    people:
+      worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      child:
+        age: 3
+    households:
+      household:
+        members: [worker, child]
+        state_code: NE
+        household_benefits: 0
+        household_health_costs: 0
+    tax_units:
+      tax_unit:
+        members: [worker, child]
+        ne_refundable_ctc: 0
+    spm_units:
+      spm_unit:
+        members: [worker, child]
+    families:
+      family:
+        members: [worker, child]
+    marital_units:
+      worker_unit:
+        members: [worker]
+      child_unit:
+        members: [child]
+  output:
+    ne_school_readiness_credit: [2_900, 0]
+    ne_income_tax: -2_900
+    household_net_income: 2_900
+
+# The worker receives $2,900; the spouse has no level and receives $0.
+- name: A level 3 worker lives with a spouse in 2025
+  period: 2025
+  input:
+    people:
+      worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      spouse:
+        age: 30
+    households:
+      household:
+        members: [worker, spouse]
+        state_code: NE
+    tax_units:
+      tax_unit:
+        members: [worker, spouse]
+    spm_units:
+      spm_unit:
+        members: [worker, spouse]
+    families:
+      family:
+        members: [worker, spouse]
+    marital_units:
+      couple:
+        members: [worker, spouse]
+  output:
+    ne_school_readiness_credit: [2_900, 0]
+
+# Each worker uses their own level: level 3 = $2,900; level 5 = $3,500.
+- name: Two workers receive their own level amounts in 2025
+  period: 2025
+  input:
+    people:
+      level_3_worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      level_5_worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 5
+    households:
+      household:
+        members: [level_3_worker, level_5_worker]
+        state_code: NE
+    tax_units:
+      tax_unit:
+        members: [level_3_worker, level_5_worker]
+    spm_units:
+      spm_unit:
+        members: [level_3_worker, level_5_worker]
+    families:
+      family:
+        members: [level_3_worker, level_5_worker]
+    marital_units:
+      couple:
+        members: [level_3_worker, level_5_worker]
+  output:
+    ne_school_readiness_credit: [2_900, 3_500]
+
+# An omitted level defaults to 0, below the first classification; credit = $0.
+- name: An eligible worker has no level in 2025
+  period: 2025
+  input:
+    ne_school_readiness_credit_eligible_worker: true
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 0
+
+# Levels -1 and 0 receive $0; level 1 receives $2,300.
+# Level 4 receives $3,200; levels 5 and 6 receive $3,500 under the existing cap.
+# The last person has level 3 but lacks worker eligibility, so receives $0.
+- name: Workers cross the level bounds in 2025
+  period: 2025
+  input:
+    ne_school_readiness_credit_eligible_worker: [true, true, true, true, true, true, false]
+    ne_school_readiness_credit_child_care_worker_rating: [-1, 0, 1, 4, 5, 6, 3]
+    state_code: [NE, NE, NE, NE, NE, NE, NE]
+  output:
+    ne_school_readiness_credit: [0, 0, 2_300, 3_200, 3_500, 3_500, 0]
+
+# Current parameters keep level 3 at $2,900 in 2026.
+# Set unrelated benefits, health costs and Nebraska child credit to $0.
+# Tax = 0 - 2,900; net income = 0 - (-2,900).
+- name: A level 3 worker lives with a child in 2026
+  period: 2026
+  input:
+    people:
+      worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      child:
+        age: 3
+    households:
+      household:
+        members: [worker, child]
+        state_code: NE
+        household_benefits: 0
+        household_health_costs: 0
+    tax_units:
+      tax_unit:
+        members: [worker, child]
+        ne_refundable_ctc: 0
+    spm_units:
+      spm_unit:
+        members: [worker, child]
+    families:
+      family:
+        members: [worker, child]
+    marital_units:
+      worker_unit:
+        members: [worker]
+      child_unit:
+        members: [child]
+  output:
+    ne_school_readiness_credit: [2_900, 0]
+    ne_income_tax: -2_900
+    household_net_income: 2_900
+
+# The worker receives $2,900; the spouse has no level and receives $0.
+- name: A level 3 worker lives with a spouse in 2026
+  period: 2026
+  input:
+    people:
+      worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      spouse:
+        age: 30
+    households:
+      household:
+        members: [worker, spouse]
+        state_code: NE
+    tax_units:
+      tax_unit:
+        members: [worker, spouse]
+    spm_units:
+      spm_unit:
+        members: [worker, spouse]
+    families:
+      family:
+        members: [worker, spouse]
+    marital_units:
+      couple:
+        members: [worker, spouse]
+  output:
+    ne_school_readiness_credit: [2_900, 0]
+
+# Each worker uses their own level: level 3 = $2,900; level 5 = $3,500.
+- name: Two workers receive their own level amounts in 2026
+  period: 2026
+  input:
+    people:
+      level_3_worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 3
+      level_5_worker:
+        age: 30
+        ne_school_readiness_credit_eligible_worker: true
+        ne_school_readiness_credit_child_care_worker_rating: 5
+    households:
+      household:
+        members: [level_3_worker, level_5_worker]
+        state_code: NE
+    tax_units:
+      tax_unit:
+        members: [level_3_worker, level_5_worker]
+    spm_units:
+      spm_unit:
+        members: [level_3_worker, level_5_worker]
+    families:
+      family:
+        members: [level_3_worker, level_5_worker]
+    marital_units:
+      couple:
+        members: [level_3_worker, level_5_worker]
+  output:
+    ne_school_readiness_credit: [2_900, 3_500]
+
+# An omitted level defaults to 0, below the first classification; credit = $0.
+- name: An eligible worker has no level in 2026
+  period: 2026
+  input:
+    ne_school_readiness_credit_eligible_worker: true
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 0
+
+# Levels -1 and 0 receive $0; level 1 receives $2,300.
+# Level 4 receives $3,200; levels 5 and 6 receive $3,500 under the existing cap.
+# The last person has level 3 but lacks worker eligibility, so receives $0.
+- name: Workers cross the level bounds in 2026
+  period: 2026
+  input:
+    ne_school_readiness_credit_eligible_worker: [true, true, true, true, true, true, false]
+    ne_school_readiness_credit_child_care_worker_rating: [-1, 0, 1, 4, 5, 6, 3]
+    state_code: [NE, NE, NE, NE, NE, NE, NE]
+  output:
+    ne_school_readiness_credit: [0, 0, 2_300, 3_200, 3_500, 3_500, 0]
