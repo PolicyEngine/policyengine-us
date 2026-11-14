@@ -1,0 +1,658 @@
+# Independent 2025 expectations from M.G.L. c. 62, s. 3(B)(a)(9),
+# 2025 Form 1 instructions printed page 12, and DOR rent-deduction guidance.
+# https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+# https://www.mass.gov/doc/2025-form-1-instructions/download
+# Missing/invalid facts preserve a compatibility amount, not a verified claim.
+# Boolean availability outputs are exact; no absolute_error_margin.
+
+# Non-MFS ignores irrelevant election defaults.
+- name: 'Case 1, single known rent is available without an allocation election.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction_available: true
+
+# No spouse documentation is required for the fixed default cap.
+- name: 'Case 2, explicit separate no alternative is available.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'NO_ALTERNATIVE'
+  output:
+    ma_rent_deduction_available: true
+
+# Own maximum is 3,000 and required consent is VERIFIED.
+- name: 'Case 3, documented external allocation above the default is available.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: true
+
+# Own maximum 3,000 exceeds default separate cap 2,000.
+- name: 'Case 4, unknown required signature leaves the allocation unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'UNKNOWN'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: false
+
+# No extra amount may be certified without required consent.
+- name: 'Case 5, invalid required signature leaves the allocation unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'MISSING_OR_INVALID'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: false
+
+# Own half is 1,500; the approved contract does not add a signature rule below default.
+- name: 'Case 6, a rent limited amount below default requires no extra signature.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 3_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'MISSING_OR_INVALID'
+    ma_rent_deduction_spouse_amount_taken: 0
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: true
+
+# Remaining couple ceiling is 1,500, below default.
+- name: 'Case 7, a couple limited amount below default requires no extra signature.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'UNKNOWN'
+    ma_rent_deduction_spouse_amount_taken: 2_500
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: true
+
+# Known flag distinguishes default values from an observed claim.
+- name: 'Case 8, unknown other spouse amount is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: false
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: false
+
+# Missing or negative documentary amounts cannot enlarge the ceiling.
+- name: 'Case 9, the missing amount sentinel is unavailable even if flagged known.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: -1
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: false
+
+# The supported own amount is zero; this is a known zero, not missing.
+- name: 'Case 10, known spouse amount at the couple ceiling is available.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'UNKNOWN'
+    ma_rent_deduction_spouse_amount_taken: 4_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: true
+
+# The actual amount must lie within the parameterized couple limit.
+- name: 'Case 11, spouse amount just above the couple ceiling is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 4_000.01
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: false
+
+# Nonfinite documentary amounts do not establish a claim.
+- name: 'Case 12, infinite spouse amount is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: .inf
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: false
+
+# NaN must not pass a pair of ordinary range comparisons.
+- name: 'Case 13, NaN spouse amount is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: .nan
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: false
+
+# A household relationship cannot supply external return evidence.
+- name: 'Case 14, unknown spouse return identity is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'UNKNOWN'
+  output:
+    ma_rent_deduction_available: false
+
+# Do not silently repair contradictory documentary facts.
+- name: 'Case 15, contradictory spouse facts are unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'CONTRADICTORY'
+  output:
+    ma_rent_deduction_available: false
+
+# Capability limit only; not a legal denial.
+- name: 'Case 16, a paired return election remains unsupported.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_PAIR'
+  output:
+    ma_rent_deduction_available: false
+
+# The numeric result remains the compatibility fallback.
+- name: 'Case 17, unknown separate election is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'UNKNOWN'
+  output:
+    ma_rent_deduction_available: false
+
+# Missing qualifying facts do not become verified zero rent.
+- name: 'Case 18, an unknown own expense base is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: false
+  output:
+    ma_rent_deduction_available: false
+
+# Both monetary inputs use sentinel -1 until actual facts arrive.
+- name: 'Case 19, the own missing amount sentinel is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: -1
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction_available: false
+
+# A qualifying-rent certification requires a finite nonnegative amount.
+- name: 'Case 20, infinite own expense base is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: .inf
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction_available: false
+
+# Do not certify a nonfinite payment base.
+- name: 'Case 21, NaN own expense base is unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: .nan
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction_available: false
+
+# Actual certified zero is a complete expense fact.
+- name: 'Case 22, known zero own expense base is available.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 0
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction_available: true
+
+# The approved documented path starts in 2025.
+- name: 'Case 23, pre2025 documentary facts are unavailable.'
+  period: 2024
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: false
+
+# Reformed threshold is 3,000; own maximum 2,500 does not require an above-default signature.
+- name: 'Case 24, the reform changes the signature threshold.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'UNKNOWN'
+    ma_rent_deduction_spouse_amount_taken: 1_500
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    gov.states.ma.tax.income.deductions.rent.cap.SEPARATE: 3_000
+  output:
+    ma_rent_deduction_available: true
+
+# Spouse amount 5,000 is within reformed couple cap 6,000; own maximum 1,000.
+- name: 'Case 25, the reform changes the spouse amount validity ceiling.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'UNKNOWN'
+    ma_rent_deduction_spouse_amount_taken: 5_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    gov.states.ma.tax.income.deductions.rent.cap.JOINT: 6_000
+  output:
+    ma_rent_deduction_available: true
+
+# State scoping remains Massachusetts.
+- name: 'Case 26, out of state source facts do not enable the MA component.'
+  period: 2025
+  input:
+    state_code: 'CA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction_available: false
+
+# The documentary allocation lane only applies to MFS.
+- name: 'Case 27, nonseparate rent ignores invalid irrelevant spouse facts.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'MISSING_OR_INVALID'
+    ma_rent_deduction_spouse_amount_taken: .nan
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'CONTRADICTORY'
+  output:
+    ma_rent_deduction_available: true
+
+# A JOINT fixture must represent one head and one joint spouse with known own rent.
+- name: 'Case 28, joint head only does not imply a known zero spouse.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'JOINT'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction_available: false
+
+# A missing spouse receipt cannot be imputed as zero.
+- name: 'Case 29, unknown joint spouse rent prevents availability.'
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ma_rent_deduction_qualifying_rent_paid: 1_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person2:
+        age: 39
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ma_rent_deduction_qualifying_rent_paid: 0
+        ma_rent_deduction_qualifying_rent_paid_known: false
+    tax_units:
+      tax_unit:
+        members: ['person1', 'person2']
+        filing_status: 'JOINT'
+    households:
+      household:
+        members: ['person1', 'person2']
+        state_code: 'MA'
+  output:
+    ma_rent_deduction_available: false
+
+# Known zero differs from a missing payer's receipt.
+- name: 'Case 30, explicit known zero joint spouse rent completes the receipts.'
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ma_rent_deduction_qualifying_rent_paid: 1_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person2:
+        age: 39
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ma_rent_deduction_qualifying_rent_paid: 0
+        ma_rent_deduction_qualifying_rent_paid_known: true
+    tax_units:
+      tax_unit:
+        members: ['person1', 'person2']
+        filing_status: 'JOINT'
+    households:
+      household:
+        members: ['person1', 'person2']
+        state_code: 'MA'
+  output:
+    ma_rent_deduction_available: true
+
+# Only the claiming head's personal payments count on this return.
+- name: 'Case 31, unknown dependent receipts do not contaminate head availability.'
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ma_rent_deduction_qualifying_rent_paid: 1_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person2:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ma_rent_deduction_qualifying_rent_paid: -1
+        ma_rent_deduction_qualifying_rent_paid_known: false
+    tax_units:
+      tax_unit:
+        members: ['person1', 'person2']
+        filing_status: 'SINGLE'
+    households:
+      household:
+        members: ['person1', 'person2']
+        state_code: 'MA'
+  output:
+    ma_rent_deduction_available: true
+
+# Malformed roles are incomplete coverage, not legal ineligibility.
+- name: 'Case 32, duplicate claimant heads leave receipt coverage unavailable.'
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        ma_rent_deduction_qualifying_rent_paid: 1_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person2:
+        age: 39
+        is_tax_unit_head: true
+        ma_rent_deduction_qualifying_rent_paid: 1_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+    tax_units:
+      tax_unit:
+        members: ['person1', 'person2']
+        filing_status: 'SINGLE'
+    households:
+      household:
+        members: ['person1', 'person2']
+        state_code: 'MA'
+  output:
+    ma_rent_deduction_available: false
+
+
+# Own maximum is exactly 2,000; the consent requirement uses greater-than, not greater-than-or-equal.
+- name: 'Case 33, an exact default maximum requires no extra signature.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'UNKNOWN'
+    ma_rent_deduction_spouse_amount_taken: 2_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction_available: true
+
+# No head must not be inferred from a certified expense amount.
+- name: 'Case 34, missing head role leaves the receipt coverage unavailable.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: false
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction_available: false
+
+# Role ambiguity is unsupported receipt coverage, not legal ineligibility.
+- name: 'Case 35, duplicate joint spouse roles leave receipt coverage unavailable.'
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ma_rent_deduction_qualifying_rent_paid: 1_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person2:
+        age: 39
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ma_rent_deduction_qualifying_rent_paid: 0
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person3:
+        age: 38
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ma_rent_deduction_qualifying_rent_paid: 0
+        ma_rent_deduction_qualifying_rent_paid_known: true
+    tax_units:
+      tax_unit:
+        members: ['person1', 'person2', 'person3']
+        filing_status: 'JOINT'
+    households:
+      household:
+        members: ['person1', 'person2', 'person3']
+        state_code: 'MA'
+  output:
+    ma_rent_deduction_available: false
+
+
+# The selected NO_ALTERNATIVE lane uses only complete own expenses and the separate cap.
+- name: 'Case 36, irrelevant spouse documents do not gate explicit no alternative.'
+  period: 2025
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'NO_ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'MISSING_OR_INVALID'
+    ma_rent_deduction_spouse_amount_taken: .nan
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'CONTRADICTORY'
+  output:
+    ma_rent_deduction_available: true
+
+# Only the head claims on a nonjoint return; another member's missing expenses are not selected.
+- name: 'Case 37, unknown nonjoint spouse receipts are irrelevant.'
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ma_rent_deduction_qualifying_rent_paid: 1_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person2:
+        age: 39
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ma_rent_deduction_qualifying_rent_paid: -1
+        ma_rent_deduction_qualifying_rent_paid_known: false
+    tax_units:
+      tax_unit:
+        members: ['person1', 'person2']
+        filing_status: 'SEPARATE'
+        ma_rent_deduction_allocation_election: 'NO_ALTERNATIVE'
+    households:
+      household:
+        members: ['person1', 'person2']
+        state_code: 'MA'
+  output:
+    ma_rent_deduction_available: true

@@ -1,0 +1,530 @@
+# Independent 2025 expectations from M.G.L. c. 62, s. 3(B)(a)(9),
+# 2025 Form 1 instructions printed page 12, and DOR rent-deduction guidance.
+# https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+# https://www.mass.gov/doc/2025-form-1-instructions/download
+# Missing/invalid facts preserve a compatibility amount, not a verified claim.
+
+# Certified source base is zero; do not substitute generic rent.
+- name: 'Case 1, known zero qualifying rent gives zero.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 0
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    rent: 12_000
+  output:
+    ma_rent_deduction: 0
+
+# 2025 Form 1 line 14: 6,000 x 0.5 = 3,000.
+- name: 'Case 2, single filer deducts half the qualified personal base.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction: 3_000
+
+# Half of 12,000 is 6,000; ordinary cap 4,000.
+- name: 'Case 3, single filer reaches the ordinary cap.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 12_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction: 4_000
+
+# Half of 8,000 equals the ordinary cap.
+- name: 'Case 4, head of household reaches the cap exactly.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'HEAD_OF_HOUSEHOLD'
+    ma_rent_deduction_qualifying_rent_paid: 8_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+  output:
+    ma_rent_deduction: 4_000
+
+# Half of 10,000 is 5,000; no alternative election gives cap 2,000.
+- name: 'Case 5, separate filer without an alternative retains the separate cap.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 10_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'NO_ALTERNATIVE'
+  output:
+    ma_rent_deduction: 2_000
+
+# Source counterexample: min(half of 6,000, 4,000 minus 1,000) = 3,000; old numerical result was 2,000.
+- name: 'Case 6, documented external spouse allocation exceeds the legacy cap.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    rent: 6_000
+  output:
+    ma_rent_deduction: 3_000
+
+# Own half of 5,000 is 2,500, below the remaining ceiling of 3,000.
+- name: 'Case 7, own qualified rent can leave the couple ceiling unused.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 5_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction: 2_500
+
+# Remaining ceiling 4,000 minus 1,500 = 2,500.
+- name: 'Case 8, actual other spouse claim limits this return.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_500
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction: 2_500
+
+# Known zero is distinct from unknown: min(5,000, 4,000) = 4,000.
+- name: 'Case 9, an actual zero spouse claim can permit the full couple ceiling.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 10_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 0
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction: 4_000
+
+# Remaining ceiling is zero; this return needs no above-default signature.
+- name: 'Case 10, an actual full spouse claim leaves no ceiling.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'UNKNOWN'
+    ma_rent_deduction_spouse_amount_taken: 4_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction: 0
+
+# Own maximum 1,500 is below default separate cap 2,000.
+- name: 'Case 11, a below default maximum does not require extra consent.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 3_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'MISSING_OR_INVALID'
+    ma_rent_deduction_spouse_amount_taken: 0
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction: 1_500
+
+# Remaining ceiling 1,500 is below default separate cap.
+- name: 'Case 12, a ceiling constrained below default does not require extra consent.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'UNKNOWN'
+    ma_rent_deduction_spouse_amount_taken: 2_500
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+  output:
+    ma_rent_deduction: 1_500
+
+# Compatibility only: legacy min(half generic rent 6,000, separate cap 2,000).
+- name: 'Case 13, unknown spouse amount preserves only the compatibility estimate.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: false
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    rent: 6_000
+  output:
+    ma_rent_deduction: 2_000
+
+# Malformed documentary amount must not increase the deduction.
+- name: 'Case 14, negative spouse amount preserves only the compatibility estimate.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: -1
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    rent: 6_000
+  output:
+    ma_rent_deduction: 2_000
+
+# Unsupported joint representation is not legal ineligibility; preserve old numerical component.
+- name: 'Case 15, unsupported paired election preserves only the compatibility estimate.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_PAIR'
+    rent: 6_000
+  output:
+    ma_rent_deduction: 2_000
+
+# Compatibility only: old formula uses half generic rent 1,000, giving 500.
+- name: 'Case 16, unknown election does not use the new qualified base.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 12_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'UNKNOWN'
+    rent: 1_000
+  output:
+    ma_rent_deduction: 500
+
+# Reform test: min(10,000, reformed 6,000), not preclipped 4,000.
+- name: 'Case 17, a reformed ordinary cap is not clipped to the current cap.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SINGLE'
+    ma_rent_deduction_qualifying_rent_paid: 20_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    gov.states.ma.tax.income.deductions.rent.cap.SINGLE: 6_000
+  output:
+    ma_rent_deduction: 6_000
+
+# Reform test: own half 5,000 limited by reformed separate cap 3,000.
+- name: 'Case 18, a reformed separate cap applies without an alternative.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 10_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'NO_ALTERNATIVE'
+    gov.states.ma.tax.income.deductions.rent.cap.SEPARATE: 3_000
+  output:
+    ma_rent_deduction: 3_000
+
+# Reform test: 12,000 x 0.25 = 3,000, equal to the remaining ceiling.
+- name: 'Case 19, a reformed rent share applies before the couple limit.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 12_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    gov.states.ma.tax.income.deductions.rent.share: 0.25
+  output:
+    ma_rent_deduction: 3_000
+
+# Reform test: min(5,000, 6,000 minus 1,000) = 5,000.
+- name: 'Case 20, a reformed couple cap is not clipped to four thousand.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 10_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    gov.states.ma.tax.income.deductions.rent.cap.JOINT: 6_000
+  output:
+    ma_rent_deduction: 5_000
+
+# Only head 1,000 plus joint spouse 3,000 count; half of 4,000 is 2,000. Dependent's unknown status must not poison availability.
+- name: 'Case 21, joint filer includes head and spouse payments but excludes a dependent.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ma_rent_deduction_qualifying_rent_paid: 1_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person2:
+        age: 39
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ma_rent_deduction_qualifying_rent_paid: 3_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person3:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ma_rent_deduction_qualifying_rent_paid: 60_000
+        ma_rent_deduction_qualifying_rent_paid_known: false
+    tax_units:
+      tax_unit:
+        members: ['person1', 'person2', 'person3']
+        filing_status: 'JOINT'
+    households:
+      household:
+        members: ['person1', 'person2', 'person3']
+        state_code: 'MA'
+  output:
+    ma_rent_deduction: 2_000
+
+# Explicit separate status counts only head payments: 1,000 x 0.5 = 500, below the default cap.
+- name: 'Case 22, separate filer does not receive another member''s personal rent.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ma_rent_deduction_qualifying_rent_paid: 1_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person2:
+        age: 39
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ma_rent_deduction_qualifying_rent_paid: 10_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+    tax_units:
+      tax_unit:
+        members: ['person1', 'person2']
+        filing_status: 'SEPARATE'
+        ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+        ma_rent_deduction_allocation_documentation: 'UNKNOWN'
+        ma_rent_deduction_spouse_amount_taken: 0
+        ma_rent_deduction_spouse_amount_taken_known: true
+        ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    households:
+      household:
+        members: ['person1', 'person2']
+        state_code: 'MA'
+  output:
+    ma_rent_deduction: 500
+
+# Even a shared marital unit does not approve the unsupported paired-return lane; each numerical fallback uses the old 2,000 cap.
+- name: 'Case 23, two separate tax units do not infer a documentary spouse relation.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        rent: 6_000
+        ma_rent_deduction_qualifying_rent_paid: 6_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+      person2:
+        age: 39
+        is_tax_unit_head: true
+        rent: 6_000
+        ma_rent_deduction_qualifying_rent_paid: 6_000
+        ma_rent_deduction_qualifying_rent_paid_known: true
+    tax_units:
+      tax_unit1:
+        members: ['person1']
+        filing_status: 'SEPARATE'
+        ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+        ma_rent_deduction_allocation_documentation: 'VERIFIED'
+        ma_rent_deduction_spouse_amount_taken: 1_000
+        ma_rent_deduction_spouse_amount_taken_known: true
+        ma_rent_deduction_spouse_facts_status: 'VERIFIED_PAIR'
+      tax_unit2:
+        members: ['person2']
+        filing_status: 'SEPARATE'
+        ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+        ma_rent_deduction_allocation_documentation: 'VERIFIED'
+        ma_rent_deduction_spouse_amount_taken: 3_000
+        ma_rent_deduction_spouse_amount_taken_known: true
+        ma_rent_deduction_spouse_facts_status: 'VERIFIED_PAIR'
+    marital_units:
+      marital_unit:
+        members: ['person1', 'person2']
+    households:
+      household:
+        members: ['person1', 'person2']
+        state_code: 'MA'
+  output:
+    ma_rent_deduction: [2_000, 2_000]
+
+
+# Compatibility only: NaN qualified expense facts do not propagate into the amount.
+- name: 'Case 24, a nonfinite own base uses the legacy numerical component.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: .nan
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    rent: 6_000
+  output:
+    ma_rent_deduction: 2_000
+
+# Compatibility only: infinite qualified expense facts do not establish a claim.
+- name: 'Case 25, an infinite own base uses the legacy numerical component.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: .inf
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    rent: 6_000
+  output:
+    ma_rent_deduction: 2_000
+
+# Compatibility only: NaN documentary amounts cannot propagate into the deduction.
+- name: 'Case 26, a nonfinite spouse amount uses the legacy numerical component.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: .nan
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    rent: 6_000
+  output:
+    ma_rent_deduction: 2_000
+
+# Compatibility only: infinite documentary amounts cannot establish the alternative.
+- name: 'Case 27, an infinite spouse amount uses the legacy numerical component.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: .inf
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    rent: 6_000
+  output:
+    ma_rent_deduction: 2_000
