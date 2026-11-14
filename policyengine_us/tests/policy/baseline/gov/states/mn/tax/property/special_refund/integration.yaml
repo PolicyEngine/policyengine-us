@@ -1,0 +1,31 @@
+- name: Case 1, special relief reduces ordinary qualified tax before the regular refund and bonus are combined once.
+  period: 2025
+  input:
+    state_code: [MN, MN, MN]
+    age: [40, 40, 40]
+    mn_homestead_credit_refund_household_income: [50_000, 200_000, 50_000]
+    # M1PR line14 uses current-year home use; the third claimant's .75
+    # share of4000 is3000, distinct from the special comparison's .5 share.
+    real_estate_taxes: [4_000, 4_000, 3_000]
+    mn_homestead_credit_refund_qualified_property_taxes: [4_000, 4_000, 3_000]
+    mn_special_refund_current_property_taxes: [4_000, 4_000, 4_000]
+    mn_special_refund_prior_property_taxes: [3_000, 3_000, 3_000]
+    mn_special_refund_prior_refund: [0, 0, 0]
+    mn_special_refund_improvement_value: [0, 0, 0]
+    mn_special_refund_current_home_use_fraction: [1, 1, 0.75]
+    mn_special_refund_prior_home_use_fraction: [1, 1, 0.5]
+    mn_special_refund_same_homestead: [true, true, true]
+    mn_special_refund_qualifying_claimant: [true, true, true]
+  output:
+    mn_special_refund_inputs_available: [true, true, true]
+    mn_special_refund_eligible: [true, true, true]
+    mn_special_refund_current_adjusted_property_taxes: [4_000, 4_000, 2_000]
+    mn_special_refund_prior_adjusted_property_taxes: [3_000, 3_000, 1_500]
+    mn_special_refund: [384, 384, 192]
+    # First line16=4000-384=3616; worksheet line17=round((3616-1000)x.68)
+    # =1779; bonus265 ->2044. High income disqualifies only regular refund.
+    # Third line16=3000-192=2808; p21 table row[48340,50530), column[2800,2825)
+    # gives1240; bonus185 ->1425. Line18 adds special once:2428/384/1617.
+    mn_homestead_credit_refund: [2_044, 0, 1_425]
+    state_property_tax_refunds: [2_428, 384, 1_617]
+    taxsim_state_property_tax_credit: [2_428, 384, 1_617]

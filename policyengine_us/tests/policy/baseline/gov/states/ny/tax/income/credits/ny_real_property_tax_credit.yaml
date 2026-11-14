@@ -817,3 +817,129 @@
         state_code: NY
   output:
     ny_real_property_tax_credit: 375
+
+# IT-214-I 2025 page 1 applies the $85,000 ceiling to current full market
+# value of all owned real property, rather than its assessed value or equity.
+- name: Case 38, full property market value exactly at the limit qualifies.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        assessed_property_value: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 85_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # $500 exceeds $2,000 x 3.5%; Table A's $0-$3,000 band pays $375.
+    ny_real_property_tax_credit: 375
+
+- name: Case 39, low assessed value does not rescue market value above the limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        assessed_property_value: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 85_001
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 40, other owned property counts in addition to the primary residence.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        primary_residence_value: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # $60,000 home plus a distinct $30,000 parcel of land.
+        ny_real_property_tax_credit_property_market_value: 90_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 41, a co-owner uses the full property value before ownership proration.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+        # A $50,000 share of a property whose full market value is $100,000.
+        primary_residence_value: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 42, a renter remains subject to the value of other owned property.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        rent: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 85_001
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Case 43, an assetless renter can explicitly supply zero owned property value.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_000
+        rent: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_real_property_tax_credit_property_market_value: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # $4,000/12 is below $450 and its 25% tax equivalent exceeds $70.
+    ny_real_property_tax_credit: 375
