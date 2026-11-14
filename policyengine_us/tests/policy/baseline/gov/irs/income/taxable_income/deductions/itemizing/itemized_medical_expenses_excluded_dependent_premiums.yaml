@@ -794,3 +794,41 @@
     # Line 1: (11,000 - 1,000) - 7.5% x 40,000 = 7,000.
     mt_premium_deduction_joint: 0
     mt_medical_expense_deduction_joint: [7_000, 0]
+
+- name: Montana reads no more of a supplied exclusion as a dependent's premiums than the dependent deducted.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        age: 30
+        health_insurance_premiums: 6_000
+        long_term_health_insurance_premiums: 400
+        self_employed_health_insurance_ald_person: 6_400
+      dependent:
+        is_tax_unit_dependent: true
+        age: 10
+        health_insurance_premiums: 1_000
+        self_employed_health_insurance_ald_person: 600
+    tax_units:
+      parents:
+        members: [parent, dependent]
+        # The subtotal holds 10,000 of other expenses + the 400 of premiums
+        # the dependent did not deduct. The exclusion exceeds the 7,000 these
+        # people deducted by 500.
+        itemized_medical_expenses: 10_400
+        itemized_medical_expenses_applied_exclusion: 7_500
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: MT
+  output:
+    # 7,500 - 6,400 = 1,100 of the exclusion sits above the filers' own;
+    # min(600, 1,100) = 600 of it holds the dependent's deducted premiums.
+    # Medical premiums the subtotal leaves out:
+    # min(6,000, 7,500 - 600) + 600 = 6,600; premiums left in it: 400.
+    # Line 1: (10,400 - 400) - 7.5% x 40,000 = 7,000.
+    mt_premium_deduction_joint: 0
+    mt_medical_expense_deduction_joint: [7_000, 0]
