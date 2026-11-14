@@ -14338,44 +14338,49 @@ candidates:
 - id: us-ny:ccap-child-ssi-state-supplement-exclusion
   program: child-care-assistance
   years:
-    from: 2021
+    from: 2023
     type: calendar
-  question: Does New York exclude children's SSI and state supplements from child care assistance income under
-    OCFS's regulatory compilation when LII omits the child exclusion?
+  question: Does New York exclude children's SSI and state supplements from child care assistance income from October
+    1, 2023, while LII still reproduces the earlier text without the child exclusion?
   sources:
   - kind: regulation
     citation: OCFS compilation of 18 NYCRR 404.5(b)(5)(vi) and (b)(6)(xxi), current October 1, 2023, pages 10-12
-    url: https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=12
+    url: https://web.archive.org/web/20240522174247id_/https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10
   - kind: regulation
-    citation: LII reproduction of 18 NYCRR 404.5(b)(5)(vi) and (b)(6), retrieved November 12, 2026
+    citation: OCFS compilation of 18 NYCRR 404.5(b)(5)(vi) and (b)(6), current November 24, 2021, pages 10-12
+    url: https://web.archive.org/web/20220529152858id_/https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10
+  - kind: regulation
+    citation: LII reproduction of 18 NYCRR 404.5, retrieved November 13, 2026
     url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5
   - kind: rulemaking
     citation: New York State Register, October 18, 2023, CFS-42-23-00002-EP, printed page 1
     url: https://dos.ny.gov/system/files/documents/2023/10/101823.pdf#page=7
   - kind: rulemaking
     citation: New York State Register, February 28, 2024, CFS-42-23-00002-ERP, printed pages 1-2
-    url: https://dos.ny.gov/system/files/documents/2024/02/022824.pdf#page=8
+    url: https://dos.ny.gov/system/files/documents/2024/02/022824.pdf#page=7
   - kind: rulemaking
     citation: New York State Register, June 12, 2024, CFS-42-23-00002-A, printed page 1
     url: https://dos.ny.gov/system/files/documents/2024/06/061224.pdf#page=7
   readings:
-    statute: No statute supplied; OCFS excludes children's SSI, including state supplemental payments, from child
-      care assistance income under both the income-source provision and the exclusions provision.
-    other: LII includes SSI and state supplemental payments among public assistance income sources, omits the child
-      exception, and ends the exclusions at paragraph (xx).
+    statute: No statute supplied; from October 1, 2023, OCFS excludes children's SSI, including state supplemental
+      payments, from child care assistance income under 404.5(b)(5)(vi) and (b)(6)(xxi).
+    other: LII still reproduces the text in force before October 1, 2023, which matches OCFS's November 24, 2021
+      compilation. Under that text, OCFS counts SSI and State supplemental payments for every member, and the exclusions
+      end at paragraph (xx).
   pe_us:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/ny/ocfs/ccap/ny_ccap_countable_income.py
-    - policyengine_us/parameters/gov/states/ny/ocfs/ccap/income/countable_income/sources.yaml
+    - policyengine_us/parameters/gov/states/ny/ocfs/ccap/income/countable_income/child_ssi_exclusion_in_effect.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10827
-  state: ruled
-  note: PolicyEngine follows OCFS's regulatory compilation and excludes children's SSI and state supplements while
-    counting adults' benefits. OCFS put the emergency amendment into effect on October 1, 2023 and retained the
-    child exclusion in the February 2024 revised rule. OCFS adopted that rule permanently, without further changes,
-    effective June 12, 2024. The captures under source_conflicts/sources/us-ny/ preserve the OCFS provision, LII's
-    end-of-exclusions text and the three rulemaking notices. The OCFS compilation capture records archive snapshot
-    20240522174247; the Department of State serves the rulemaking notices directly. The years begin with the model's
-    first countable-income source parameter on October 1, 2021. We have not verified the exclusion before October
-    2023 or the current consolidated 2026 text. Westlaw returned HTTP 403 when we requested its regulatory text.
+  state: unreviewed
+  note: OCFS put the child exclusion into effect on October 1, 2023 through emergency rule CFS-42-23-00002-EP, whose
+    notice says OCFS "further proposes to exclude Supplemental Security Income, including state supplemental payments,
+    received by any child(ren)". Before then, OCFS counted children's SSI and supplements under 404.5(b)(5)(vi). OCFS
+    retained the exclusion in the February 2024 revised rule and adopted it permanently, without further changes,
+    effective June 12, 2024. LII's notes list the 2024 emergency amendments, but its text omits them. PolicyEngine
+    counts children's payments before October 1, 2023 and excludes them from that date. The captures under
+    source_conflicts/sources/us-ny/ preserve both OCFS compilations, LII's text and the three rulemaking notices. We
+    could not reach OCFS's live copy in November 2026, so the current text rests on the archived October 2023
+    compilation and the June 2024 adoption notice.
