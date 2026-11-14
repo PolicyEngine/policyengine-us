@@ -1,3 +1,10 @@
+## [2.124.3] - 2026-11-14
+
+### Fixed
+
+- Corrected federal AGI allocation between Missouri spouses, applied Missouri's negative federal AGI rule from 2024 and its MOST subtraction limit for 2024-2025, preserved negative Missouri AGI, and allocated combined taxable income using positive columns.
+
+
 ## [2.124.2] - 2026-11-14
 
 ### Fixed
