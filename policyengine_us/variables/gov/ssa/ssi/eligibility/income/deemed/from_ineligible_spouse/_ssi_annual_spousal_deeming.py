@@ -22,11 +22,21 @@ def ssi_annual_spousal_deeming_applies(person, period, parameters):
     )
 
 
+def supplied_annual_spousal_deeming_flag(person, period):
+    """Return a supplied annual flag as a boolean array, or None without one."""
+    supplied = annual_input(person, period, "is_ssi_spousal_deeming_applies")
+    if supplied is None:
+        return None
+    # An abolished flag arrives as a scalar zero, and readers negate and
+    # index the flag, so give each of them an array.
+    return np.zeros(person.count, dtype=bool) | np.asarray(supplied, dtype=bool)
+
+
 def ssi_budget_spousal_deeming_applies(person, period, parameters):
     """Follow a program budget's period and preserve supplied annual flags."""
     if period.unit == MONTH:
         return person("is_ssi_spousal_deeming_applies_monthly", period)
-    supplied = annual_input(person, period, "is_ssi_spousal_deeming_applies")
+    supplied = supplied_annual_spousal_deeming_flag(person, period)
     if supplied is not None:
         return supplied
     return ssi_annual_spousal_deeming_applies(person, period, parameters)

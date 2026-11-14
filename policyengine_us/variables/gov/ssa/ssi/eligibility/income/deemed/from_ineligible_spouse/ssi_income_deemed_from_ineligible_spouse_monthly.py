@@ -1,27 +1,29 @@
+from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._annual_input import (
     annual_input,
 )
-# policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_income_deemed_from_ineligible_spouse.py
-
-from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
-    _apply_ssi_exclusions,
+    _apply_ssi_exclusions_monthly,
 )
 
 
 class ssi_income_deemed_from_ineligible_spouse_monthly(Variable):
     value_type = float
     entity = Person
-    label = "SSI income (deemed from ineligible spouse)"
+    label = "Monthly SSI income deemed from an ineligible spouse"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
-    documentation = """
-    Spousal deeming:
-      1) If leftover spouse income <= (coupleFBR - indivFBR), then 0 is deemed.
-      2) Otherwise, spouse's deemed = (couple combined countable) - (individual alone countable).
-      Each month is calculated before annual amounts are summed.
-    """
     unit = USD
+    reference = (
+        "https://www.ssa.gov/OP_Home/cfr20/416/416-1163.htm",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501320150",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501320400",
+    )
+    documentation = (
+        "Monthly combined countable income less the claimant's own countable "
+        "income when spousal deeming applies. Both budgets include the "
+        "claimant's in-kind support before applying one general exclusion. "
+        "Supplied legacy annual deemed income takes precedence."
+    )
 
     def formula(person, period, parameters):
         supplied = annual_input(
@@ -30,39 +32,34 @@ class ssi_income_deemed_from_ineligible_spouse_monthly(Variable):
         if supplied is not None:
             return supplied / MONTHS_IN_YEAR
 
-        # 1. Check if spousal deeming applies (avoids duplicating threshold logic)
+        # Each month takes its own deeming status and the spouse's income
+        # that remains after that month's allocations for ineligible children.
         deeming_applies = person("is_ssi_spousal_deeming_applies_monthly", period)
-
-        # 2. If deeming applies, calculate deemed amount using "difference" approach:
-        #    (couple combined countable) - (individual alone countable)
-
-        # Get spouse's leftover income (post-child allocations)
         spouse_earned = person(
             "ssi_earned_income_deemed_from_ineligible_spouse_monthly", period
         )
         spouse_unearned = person(
             "ssi_unearned_income_deemed_from_ineligible_spouse_monthly", period
         )
-
-        # Get individual's own income
         individual_earned = person("ssi_earned_income", period)
-        individual_unearned = person("ssi_unearned_income", period)
-
-        # Calculate individual's countable income (alone)
-        alone_countable = _apply_ssi_exclusions(
-            individual_earned, individual_unearned, parameters, period, monthly=True
+        # SSA counts claimant ISM in combined unearned income under
+        # SI 01320.150 B.1.a. Include it in both budgets so their difference
+        # adds no second general exclusion when ssi_countable_income counts ISM.
+        individual_unearned = person("ssi_unearned_income", period) + person(
+            "ssi_in_kind_support_and_maintenance_monthly", period
         )
-
-        # Calculate couple's combined countable income
-        couple_countable = _apply_ssi_exclusions(
+        alone_countable = _apply_ssi_exclusions_monthly(
+            individual_earned, individual_unearned, parameters, period
+        )
+        couple_countable = _apply_ssi_exclusions_monthly(
             individual_earned + spouse_earned,
             individual_unearned + spouse_unearned,
             parameters,
             period,
-            monthly=True,
         )
-
-        # Deemed amount is the difference (only when deeming applies)
         deemed_amount = max_(0, couple_countable - alone_countable)
-        result = deeming_applies * deemed_amount
-        return where(person("is_ssi_aged_blind_disabled", period), result, 0)
+        return where(
+            person("is_ssi_aged_blind_disabled", period),
+            deeming_applies * deemed_amount,
+            0,
+        )

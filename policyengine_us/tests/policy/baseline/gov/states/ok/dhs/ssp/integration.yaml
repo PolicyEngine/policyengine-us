@@ -477,13 +477,15 @@
     # the ineligible spouse's own 994 / 3 + 20 = 351.33 is excluded by
     # 317:35-5-42(l)(12).
     ssi_in_kind_support_and_maintenance: [258.5, 351.33]
-    # Federal: 1_491 - (258.50 - 20 + 700 - 20) = 572.50 (the deeming
-    # computation applies the $20 exclusion twice; issue 10243).
-    ssi: [572.5, 0]
-    # Combined: 258.50 + 700 - 20 + 572.50 = 1_511, the same as when only
-    # person1 receives the support; min(1_532 - 1_511, 40) = 21.
-    ok_ssp_countable_income: [1_511, 1_511]
-    ok_ssp: [21, 0]
+    # Federal: SSA adds the claimant's support to the spouse's 700 and applies
+    # one $20 exclusion (POMS SI 01320.150 B.1.a, SI 01320.400 B.1.e):
+    # 1_491 - (258.50 + 700 - 20) = 552.50, below the individual-only limit
+    # of 994 - (351.33 - 20) = 662.67 (20 CFR 416.1163(e)(2)).
+    ssi: [552.5, 0]
+    # Combined: 258.50 + 700 - 20 + 552.50 = 1_491, the same as when only
+    # person1 receives the support; min(1_532 - 1_491, 40) = 40.
+    ok_ssp_countable_income: [1_491, 1_491]
+    ok_ssp: [40, 0]
 
 - name: Case 17, eligible couple's shared in-kind support and maintenance counts once.
   period: 2026-01
@@ -734,22 +736,25 @@
     # 1_491 / 6 + 10 = 258.5. The annual average, 289.44, is not June's ISM.
     ssi_in_kind_support_and_maintenance_monthly:
       2026-06: [258.5, 0, 0, 0]
-    # Federal SSI: 1_491 - ((258.5 - 20) + (1_200 - 20)) = 72.5.
+    # Federal SSI: SSA adds the claimant's support to the spouse's 1_200 and
+    # applies one $20 exclusion (POMS SI 01320.150 B.1.a, SI 01320.400 B.1.e):
+    # 1_491 - (258.5 + 1_200 - 20) = 52.5, below the individual-only limit of
+    # 994 - (351.33 - 20) = 662.67 (20 CFR 416.1163(e)(2)).
     ssi:
-      2026-06: [72.5, 0, 0, 0]
+      2026-06: [52.5, 0, 0, 0]
     # Oklahoma's allocation is 0 because each student's gross 2_000 > 498.
     ok_ssp_spouse_child_allocation:
       2026-06: [0, 0, 0, 0]
-    # Claimant: 258.5 - 20 + 72.5 = 311. Spouse: 1_200 - 20 = 1_180.
+    # Claimant: 258.5 - 20 + 52.5 = 291. Spouse: 1_200 - 20 = 1_180.
     # Each student: (2_000 - 85) / 2 = 957.5.
     ok_ssp_own_countable_income:
-      2026-06: [311, 1_180, 957.5, 957.5]
-    # Combined: 258.5 + 1_200 - 20 + 72.5 = 1_511, leaving 1_532 - 1_511 = 21.
-    # Using annual-average ISM would give 1_541.94 and incorrectly pay 0.
+      2026-06: [291, 1_180, 957.5, 957.5]
+    # Combined: 258.5 + 1_200 - 20 + 52.5 = 1_491; min(1_532 - 1_491, 40) = 40.
+    # Using annual-average ISM would give 1_521.94 and pay 10.06.
     ok_ssp_countable_income:
-      2026-06: [1_511, 1_511, 957.5, 957.5]
+      2026-06: [1_491, 1_491, 957.5, 957.5]
     ok_ssp:
-      2026-06: [21, 0, 0, 0]
+      2026-06: [40, 0, 0, 0]
 
 - name: Case 23, a 17-year-old student sibling keeps the Oklahoma allocation.
   period: 2026-01

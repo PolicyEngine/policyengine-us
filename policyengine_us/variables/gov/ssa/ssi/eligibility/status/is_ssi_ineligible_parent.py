@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_spouse._deemed_income_without_ism import (
+    ssi_income_deemed_from_ineligible_spouse_without_ism,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_spouse._ssi_annual_spousal_deeming import (
     ssi_budget_spousal_deeming_applies,
 )
@@ -46,13 +49,16 @@ class is_ssi_ineligible_parent(Variable):
         unearned = person("ssi_unearned_income", period)
         # A joint claim tests the couple's income. Otherwise 416.1163(d)(2) adds
         # what remains of an ineligible spouse's income after the allocations
-        # for ineligible children in 416.1163(b).
+        # for ineligible children in 416.1163(b). Like the parent's own income,
+        # the deemed amount leaves out in-kind support and maintenance.
         countable_income = _apply_ssi_exclusions(
             where(joint_claim, person.marital_unit.sum(earned), earned),
             where(joint_claim, person.marital_unit.sum(unearned), unearned),
             parameters,
             period,
-        ) + person("ssi_income_deemed_from_ineligible_spouse", period)
+        ) + ssi_income_deemed_from_ineligible_spouse_without_ism(
+            person, period, parameters
+        )
         p = parameters(period).gov.ssa.ssi
         # This test covers the year, so it compares the year's remaining spouse
         # income with the year's rate difference, or takes a supplied flag.

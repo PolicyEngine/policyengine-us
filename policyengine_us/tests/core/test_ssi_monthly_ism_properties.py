@@ -538,6 +538,7 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
         get_holder=lambda name: SimpleNamespace(
             variable=system.variables[name],
             get_known_branch_periods=lambda: (),
+            _record_store=lambda period, sequence_number: None,
         ),
         tax_benefit_system=system,
         _get_visible_branch_names=lambda: ("default",),
