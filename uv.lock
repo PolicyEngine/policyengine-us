@@ -1813,7 +1813,7 @@ wheels = [
 
 [[package]]
 name = "policyengine-us"
-version = "2.121.6"
+version = "2.124.3"
 source = { editable = "." }
 dependencies = [
     { name = "microdf-python" },
@@ -1845,7 +1845,7 @@ requires-dist = [
     { name = "jupyter-book", marker = "extra == 'dev'", specifier = ">=1.0.4.post1" },
     { name = "microdf-python", specifier = ">=1.0.0" },
     { name = "pandas", specifier = ">=3.0" },
-    { name = "policyengine-core", specifier = ">=3.35.0" },
+    { name = "policyengine-core", specifier = ">=3.36.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9.0" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = ">=80.9.0" },
     { name = "spm-calculator", specifier = ">=1.1.0,<1.2" },

@@ -1,0 +1,13 @@
+description: Oregon increases its Child Tax Credit amount and phase-out start by the change in this Consumer Price Index for All Urban Consumers from its second-quarter 2022 average, under ORS 315.273(5).
+values:
+  # Computed in parameters/uprating_extensions.py (set_or_ctc_cpi): for
+  # 2023, the base, the monthly averaged CPI-U for the second quarter of
+  # 2022 (ORS 315.273(5)(b)-(c)); for each later tax year, the monthly
+  # averaged CPI-U for the 12 months ending August 31 of the year before.
+  2023-01-01: 1
+metadata:
+  unit: /1
+  label: Oregon Child Tax Credit cost-of-living index
+  reference:
+    - title: Oregon Revised Statutes Section 315.273(5) (cost-of-living adjustment)
+      href: https://oregon.public.law/statutes/ors_315.273
