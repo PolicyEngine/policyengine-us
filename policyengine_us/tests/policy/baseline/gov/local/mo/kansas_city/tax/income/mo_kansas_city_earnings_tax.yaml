@@ -1,0 +1,21 @@
+- name: Each person owes 1% of their own Kansas City taxable earnings
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        mo_kansas_city_earnings_tax_taxable_earnings: 100_000
+      person2:
+        age: 45
+        mo_kansas_city_earnings_tax_taxable_earnings: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 1% x 100,000 and 1% x 50,000.
+    mo_kansas_city_earnings_tax_person: [1_000, 500]
+    mo_kansas_city_earnings_tax: 1_500
