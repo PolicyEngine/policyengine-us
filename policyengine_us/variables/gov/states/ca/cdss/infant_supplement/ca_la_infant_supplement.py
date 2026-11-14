@@ -5,11 +5,15 @@ class ca_la_infant_supplement(Variable):
     value_type = float
     entity = Household
     definition_period = MONTH
-    label = "Los Angeles County infant supplement"
-    defined_for = "in_la"
+    reference = (
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11465.",
+        "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2021/21-123.pdf",
+    )
+    label = "California infant supplement"
+    defined_for = StateCode.CA
 
     def formula(household, period, parameters):
-        p = parameters(period).gov.local.ca.la.dss.infant_supplement
+        p = parameters(period).gov.states.ca.cdss.infant_supplement
         person = household.members
         is_in_group_home = household.any(person("is_in_foster_care_group_home", period))
         base_amount = where(is_in_group_home, p.amount.group_home, p.amount.base)

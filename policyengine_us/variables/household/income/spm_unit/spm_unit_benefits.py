@@ -100,8 +100,8 @@ class spm_unit_benefits(Variable):
             "trump_dividend",
             # Cash programs that household_benefits also counts.
             "ca_capi",  # California Cash Assistance Program for Immigrants.
-            "ca_la_expectant_parent_payment",  # Los Angeles County.
-            "ca_la_infant_supplement",  # Los Angeles County.
+            "ca_la_expectant_parent_payment",  # California.
+            "ca_la_infant_supplement",  # California.
             "co_denver_property_tax_relief",  # Denver.
             "ma_eaedc",  # Massachusetts.
             "nj_property_tax_relief",  # ANCHOR, Senior Freeze and Stay NJ.

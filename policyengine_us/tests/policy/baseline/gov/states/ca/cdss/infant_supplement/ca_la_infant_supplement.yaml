@@ -1,0 +1,183 @@
+- name: Eligible household with one infant, not in group home
+  period: 2024
+  input:
+    people:
+      person1:
+        ca_la_infant_supplement_eligible_person: true
+        is_in_foster_care_group_home: false
+      person2:
+        is_child: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 10_800  # 12 months * $900 * one child.
+
+- name: Fresno foster parent receives the supplement for two children
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 20
+        is_in_foster_care: true
+      first_child:
+        age: 0
+      second_child:
+        age: 2
+    households:
+      household:
+        members: [parent, first_child, second_child]
+        state_code: CA
+        county_str: FRESNO_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 21_600  # 12 months * $900 * two children.
+
+- name: San Diego foster parent receives the group home supplement
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 20
+        is_in_foster_care: true
+        is_in_foster_care_group_home: true
+      child:
+        age: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+        county_str: SAN_DIEGO_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 16_548  # 12 months * $1,379 * one child.
+
+- name: Fresno parent outside qualifying foster care receives no supplement
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 20
+        is_in_foster_care: false
+      child:
+        age: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+        county_str: FRESNO_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 0  # No eligible foster parent, so $900 * 0.
+
+- name: Nevada household receives no California infant supplement
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 20
+        is_in_foster_care: true
+      child:
+        age: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NV
+        county_str: CLARK_COUNTY_NV
+  output:
+    ca_la_infant_supplement: 0  # California residence fails, so $900 * 0.
+
+- name: Eligible household with one infant, in group home
+  period: 2024
+  input:
+    people:
+      person1:
+        ca_la_infant_supplement_eligible_person: true
+        is_in_foster_care_group_home: true
+      person2:
+        is_child: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 16_548  # 12 months * $1,379 * one child.
+
+
+- name: Eligible household with no infant, in group home
+  period: 2024
+  input:
+    people:
+      person1:
+        ca_la_infant_supplement_eligible_person: true
+        is_in_foster_care_group_home: true
+      person2:
+        is_child: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 0
+
+- name: Ineligible household with no infant, in group home
+  period: 2024
+  input:
+    people:
+      person1:
+        ca_la_infant_supplement_eligible_person: false
+        is_in_foster_care_group_home: true
+      person2:
+        is_child: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 0
+
+- name: Integration test, eligible caretaker but no eligible infant
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 19
+        was_in_foster_care: true
+        employment_income: 11_111
+        other_medical_expenses: 1_332
+        rent: 1_332
+        is_in_foster_care: true
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_child: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 0
+
+- name: Integration test, eligible caretaker but no eligible infant
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 19
+        was_in_foster_care: true
+        employment_income: 11_111
+        other_medical_expenses: 1_332
+        rent: 1_332
+        is_in_foster_care: true
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_child: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 10_800  # 12 months * $900 * one child.

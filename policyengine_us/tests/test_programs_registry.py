@@ -30,7 +30,6 @@ KNOWN_UNRESOLVED = {
     ("clean_vehicle_credits", "variable"),
     ("dc_power", "parameter_prefix"),
     ("dc_gac", "parameter_prefix"),
-    ("la_expectant_parent", "parameter_prefix"),
     ("sf_wftc", "variable"),
     ("montgomery_county_eitc", "variable"),
     ("montgomery_county_eitc", "parameter_prefix"),
