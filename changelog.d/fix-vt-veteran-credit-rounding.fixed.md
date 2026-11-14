@@ -1,0 +1,1 @@
+Count only whole $100 steps of adjusted gross income above $25,000 in the Vermont veteran tax credit's phase-out, as the Department of Taxes directs on Schedule IN-112. Veteran filers with adjusted gross income from $25,001 to $29,999, other than a multiple of $100, now receive $5 more.
