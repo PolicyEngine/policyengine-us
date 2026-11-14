@@ -118,7 +118,10 @@ def compute_charitable_deduction(
     )
 
 
-def compute_charitable_deduction_before_floor(tax_unit, period, parameters):
+def charitable_deduction_before_floor_given_contribution_base(
+    tax_unit, period, parameters, positive_agi
+):
+    """Apply charitable deduction ceilings to the contribution base."""
     # 26 U.S. Code § 170(b)(1) defines charitable deduction limits and their
     # interactions, calculated sequentially per IRS Publication 526, Worksheet 2:
     #   (G) Cash to 50% limit orgs: 60% AGI (post-TCJA; 50% pre-2018; 100% 2020-2021)
@@ -149,10 +152,9 @@ def compute_charitable_deduction_before_floor(tax_unit, period, parameters):
         ["resolved_charitable_capital_gain_donations_non_50_pct"],
     )
 
-    positive_agi = tax_unit("positive_agi", period)
     p = parameters(period).gov.irs.deductions.itemized.charity
 
-    total_allowed = compute_charitable_deduction(
+    return compute_charitable_deduction(
         cash_50=cash_50,
         cash_non_50=cash_non_50,
         ordinary_50=ordinary_50,
@@ -169,6 +171,23 @@ def compute_charitable_deduction_before_floor(tax_unit, period, parameters):
         qualified_cash_election=p.qualified_cash_election,
     )
 
+
+def charitable_deduction_given_contribution_base(
+    tax_unit, period, parameters, positive_agi
+):
+    """Apply charitable deduction ceilings and the floor to the contribution base."""
+    # Keep the raw helper result until the federal floor to preserve rounding.
+    total_allowed = charitable_deduction_before_floor_given_contribution_base(
+        tax_unit, period, parameters, positive_agi
+    )
+    p = parameters(period).gov.irs.deductions.itemized.charity
+
+    # 2026+ floor under IRC § 170(b)(1)(I) (P.L. 119-21):
+    # Applies to contributions otherwise allowable (after ceilings).
+    if p.floor.applies:
+        deduction_floor = p.floor.amount * positive_agi
+        return max_(0, total_allowed - deduction_floor)
+
     return total_allowed
 
 
@@ -182,17 +201,7 @@ class charitable_deduction(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/170"
 
     def formula(tax_unit, period, parameters):
-        # Keep the raw helper result until the federal floor to preserve rounding.
-        total_allowed = compute_charitable_deduction_before_floor(
-            tax_unit, period, parameters
-        )
         positive_agi = tax_unit("positive_agi", period)
-        p = parameters(period).gov.irs.deductions.itemized.charity
-
-        # 2026+ floor under IRC § 170(b)(1)(I) (P.L. 119-21):
-        # Applies to contributions otherwise allowable (after ceilings).
-        if p.floor.applies:
-            deduction_floor = p.floor.amount * positive_agi
-            return max_(0, total_allowed - deduction_floor)
-
-        return total_allowed
+        return charitable_deduction_given_contribution_base(
+            tax_unit, period, parameters, positive_agi
+        )
