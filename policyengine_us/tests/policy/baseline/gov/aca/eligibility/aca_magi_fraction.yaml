@@ -1,0 +1,166 @@
+# ACA MAGI as a fraction of the poverty guideline, floored to two decimals.
+# 26 U.S.C. 36B(d)(3)(B) measures income against the guideline for the year
+# before the coverage year. The model's guidelines start in 2015.
+
+- name: Coverage in 2016 uses the 2015 guideline.
+  # 30,000 / 11,770 = 2.5488, floored to 2.54. The 2016 guideline (11,880)
+  # would give 2.52.
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 2.54
+
+- name: Coverage in 2015, the first modeled year, uses the coverage year's guideline.
+  # The year before is not modeled, so the 2015 guideline stands in for the
+  # 2014 guideline the statute calls for: 30,000 / 11,770 = 2.5488, floored
+  # to 2.54.
+  period: 2015
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    aca_magi_fraction: 2.54
+
+- name: 2025 joint return with one claimable spouse measures income against the one-person line (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 22,590 / 15,060 = 1.50
+    aca_magi_fraction: 1.5
+
+- name: 2025 joint return with one claimable spouse measures income against the one-person line (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_magi_fraction: 1.5
+
+- name: 2025 joint return with neither spouse claimable measures income against the two-person line
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 22,590 / 20,440 = 1.105, truncated to 1.10 (Form 8962 Worksheet 2)
+    aca_magi_fraction: 1.1
+
+- name: 2025 single filer who can be claimed keeps the one-person line
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    aca_magi_fraction: 1.5

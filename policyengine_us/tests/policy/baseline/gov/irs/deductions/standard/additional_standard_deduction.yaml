@@ -71,3 +71,21 @@
     aged_blind_count: 1
   output:
     additional_standard_deduction: 1_600
+
+- name: 2027 aged single filer adds $2,100
+  # Rev. Proc. 2026-35 sec. 3.15(3): $2,100 for an unmarried filer.
+  period: 2027
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 1
+  output:
+    additional_standard_deduction: 2_100
+
+- name: 2027 joint filers who are both aged add $1,700 each
+  # Rev. Proc. 2026-35 sec. 3.15(3): $1,700 per box; 2 x $1,700 = $3,400.
+  period: 2027
+  input:
+    filing_status: JOINT
+    aged_blind_count: 2
+  output:
+    additional_standard_deduction: 3_400

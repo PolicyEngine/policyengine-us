@@ -71,7 +71,7 @@
     # baseline.
     self_employed_health_insurance_earned_income_limit: 37_174.09
 
-- name: Without a Schedule C business the limit stays zero
+- name: S corporation profits without box 5 wages leave the limit at zero
   period: 2027
   absolute_error_margin: 0.02
   reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
@@ -85,7 +85,7 @@
     self_employed_health_insurance_premiums: 8_000
   output:
     self_employment_tax_ald_person: 3_720
-    # Line 4 is zero, so line 13 and the deduction are zero.
+    # Lines 4 and 11 are zero, so line 13 and the deduction are zero.
     self_employed_health_insurance_earned_income_limit: 0
     self_employed_health_insurance_ald_person: 0
 
@@ -253,3 +253,65 @@
     # Line 5: 72,485.11; line 6: 0.5518375; 40,000 - 2,585.86 = 37,414.14.
     # Main gives 35,314.09; the whole S-corp profit in line 5 would give 38,214.38.
     self_employed_health_insurance_earned_income_limit: 37_414.14
+
+- name: A farm plan business with an owners' draw takes its share of line 15
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 10_000
+    farm_operations_income: 60_000
+    s_corp_income: 64_970.22
+    self_employed_health_insurance_plan_business: SCHEDULE_F
+  output:
+    # SE tax on Schedule C and the farm: 70,000 x 0.9235 x 15.3% =
+    # 9,890.685. Draw OASDI: 59,999.998 x 12.4% = 7,440.00. Half of
+    # 17,330.685 = 8,665.34.
+    self_employment_tax_ald_person: 8_665.34
+    # Line 5: 10,000 + 60,000 + 64,970.22 = 134,970.22. The farm's line 6:
+    # 60,000 / 134,970.22 = 0.4445425. Line 13: 60,000 - 8,665.34 x
+    # 0.4445425 = 56,147.89.
+    self_employed_health_insurance_earned_income_limit: 56_147.89
+
+- name: With an owners' draw and no named plan business the largest business sets the limit
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 10_000
+    farm_operations_income: 60_000
+    s_corp_income: 64_970.22
+  output:
+    # As above, the farm's line 13 is 56,147.89. The Schedule C business's
+    # is 10,000 - 8,665.34 x 10,000 / 134,970.22 = 9,357.98, so the farm
+    # sets the limit.
+    self_employed_health_insurance_earned_income_limit: 56_147.89
+
+- name: A named Schedule C plan business with an owners' draw beside a larger farm
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 10_000
+    farm_operations_income: 60_000
+    s_corp_income: 64_970.22
+    self_employed_health_insurance_plan_business: SCHEDULE_C
+  output:
+    # 10,000 - 8,665.34 x 10,000 / 134,970.22 = 9,357.98. Leaving the
+    # draw out of line 5 would give 10,000 - 8,665.34 / 7 = 8,762.09.
+    self_employed_health_insurance_earned_income_limit: 9_357.98

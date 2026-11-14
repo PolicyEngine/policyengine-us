@@ -120,3 +120,173 @@
     is_older_child_for_medicaid_fc: false
     is_older_child_for_medicaid_nfc: true
     is_older_child_for_medicaid: false
+
+# GIS 17 MA/005 attachments 3-4: the 154% standard is $2,085/month for two.
+- name: Case 11, New York older child at the published monthly income ceiling.
+  period: 2017
+  input:
+    state_code: NY
+    age: 18
+    medicaid_household_size: 2
+    medicaid_household_income: 25_020
+  output:
+    is_older_child_for_medicaid_fc: true
+    is_older_child_for_medicaid: true
+
+- name: Case 12, New York older child one dollar above the 2017 monthly ceiling.
+  period: 2017
+  input:
+    state_code: NY
+    age: 18
+    medicaid_household_size: 2
+    medicaid_household_income: 25_032
+  output:
+    is_older_child_for_medicaid_fc: false
+    is_older_child_for_medicaid: false
+
+# New York annual MAGI tables, 2017–2026:
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/17ma005attach3.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/18ma004_attachment_3.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/19ma06_attachment_iii.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/20ma02_att_iii.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/21ma06_att3.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma01_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/23ma02_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/24ma01_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/25ma03_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/26ma05_att1.pdf
+# Published GIS size-two monthly limits; at/one dollar above each ceiling.
+- name: Case 13, New York older child published monthly ceilings hold in every year from 2017
+    through 2026.
+  period: 2017
+  input:
+    people:
+      person1:
+        age:
+          2017: 18
+          2018: 18
+          2019: 18
+          2020: 18
+          2021: 18
+          2022: 18
+          2023: 18
+          2024: 18
+          2025: 18
+          2026: 18
+        medicaid_household_size:
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+        medicaid_household_income:
+          2017: 25_020
+          2018: 25_356
+          2019: 26_052
+          2020: 26_556
+          2021: 26_832
+          2022: 28_200
+          2023: 30_372
+          2024: 31_488
+          2025: 32_580
+          2026: 33_336
+      person2:
+        age:
+          2017: 18
+          2018: 18
+          2019: 18
+          2020: 18
+          2021: 18
+          2022: 18
+          2023: 18
+          2024: 18
+          2025: 18
+          2026: 18
+        medicaid_household_size:
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+        medicaid_household_income:
+          2017: 25_032
+          2018: 25_368
+          2019: 26_064
+          2020: 26_568
+          2021: 26_844
+          2022: 28_212
+          2023: 30_384
+          2024: 31_500
+          2025: 32_592
+          2026: 33_348
+    households:
+      household1:
+        members:
+        - person1
+        state_code:
+          2017: NY
+          2018: NY
+          2019: NY
+          2020: NY
+          2021: NY
+          2022: NY
+          2023: NY
+          2024: NY
+          2025: NY
+          2026: NY
+      household2:
+        members:
+        - person2
+        state_code:
+          2017: NY
+          2018: NY
+          2019: NY
+          2020: NY
+          2021: NY
+          2022: NY
+          2023: NY
+          2024: NY
+          2025: NY
+          2026: NY
+  output:
+    is_older_child_for_medicaid:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false

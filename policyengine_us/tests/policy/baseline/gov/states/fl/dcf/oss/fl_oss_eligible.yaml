@@ -87,7 +87,7 @@
         # ssi_countable_income is YEAR-defined.
         # Redesign income standard (I) 2025 = $991.40 + $54 = $1,045.40/month
         # = $12,544.80/year. Set income below that.
-        ssi_countable_income: 12_000
+        ssi_countable_income: {2025: 12_000}
     households:
       household:
         members: [person1]
@@ -106,7 +106,7 @@
         is_ssi_eligible: true
         uncapped_ssi: -500
         # Income well above income standard of $12,544.80/year.
-        ssi_countable_income: 15_000
+        ssi_countable_income: {2025: 15_000}
     households:
       household:
         members: [person1]
@@ -124,7 +124,7 @@
         age: 70
         is_ssi_eligible: true
         ssi: 0
-        ssi_countable_income: 5_000
+        ssi_countable_income: {2025: 5_000}
         receives_ssi: true
     households:
       household:

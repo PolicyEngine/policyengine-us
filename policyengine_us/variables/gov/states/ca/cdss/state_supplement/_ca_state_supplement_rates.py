@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
     SSIFederalLivingArrangement,
 )
@@ -28,7 +31,9 @@ def ca_state_supplement_rates(person, period, parameters, joint):
       (WIC 12200(a)), and a disabled child under 18 the disabled minor share
       (WIC 12200(f)). The no-cooking allowance goes only with the aged or
       disabled share (WIC 12200(e)), not the blind or disabled minor shares.
-    The couple rate is for the whole couple, and only a head or spouse has one.
+    The couple rate is for the whole couple. In a joint computation the
+    category counts cover the person and the spouse SSI's spouse test
+    identifies, whatever their tax roles.
     Outside a joint computation the ineligible spouse takes the person's
     category (POMS SI 01320.430 C.7).
     NOTE: the household-of-another shares (POMS SI 01415.058 codes D, F and G)
@@ -71,13 +76,12 @@ def ca_state_supplement_rates(person, period, parameters, joint):
         default=community_individual,
     )
 
-    head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
     blind_count = where(
-        joint, person.marital_unit.sum(blind & head_or_spouse), 2 * blind
+        joint, _ssi_couple_total(person, period.this_year, blind.astype(int)), 2 * blind
     )
     aged_or_disabled_count = where(
         joint,
-        person.marital_unit.sum(aged_or_disabled & head_or_spouse),
+        _ssi_couple_total(person, period.this_year, aged_or_disabled.astype(int)),
         2 * aged_or_disabled,
     )
     two_blind = (blind_count > 1) * p.blind.married.two_blind
@@ -100,4 +104,4 @@ def ca_state_supplement_rates(person, period, parameters, joint):
         [p.allowance.medical_care_facility_couple, out_of_home_care_couple],
         default=community_couple,
     )
-    return individual, couple * head_or_spouse
+    return individual, couple

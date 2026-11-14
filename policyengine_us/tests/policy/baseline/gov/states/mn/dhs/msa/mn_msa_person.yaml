@@ -557,3 +557,47 @@
   output:
     # 2025: $1,028 standard - max($967 SSI - $20, 0) = $81.
     mn_msa_person: 81
+
+- name: Minnesota couple income excludes a third aged adult at the same address.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        # The couple forms a separate household at the shared address.
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        mn_msa_living_arrangement: COUPLE_LIVING_ALONE
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: MN
+  output:
+    # CM 0020.21 combines only spouses' income. A separate household within
+    # a shared address can receive the living-alone standard (PDF pages 3-4).
+    # https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=3
+    # Couple: (1,582 - (1,491 - 20)) / 2 = 55.50 each.
+    # Individual: 1,055 - (994 - 20) = 81.
+    mn_msa_net_income_eligible: [true, true, true]
+    mn_msa_person: [55.5, 55.5, 81]

@@ -341,3 +341,26 @@
     amt_kiddie_tax_applies: true
     amt_exemption: 17_500
     amt_income_less_exemptions: 42_500
+
+- name: 2027 single filer below the phase-out keeps the full exemption
+  period: 2027
+  input:
+    amt_income: 200_000
+    amt_kiddie_tax_applies: false
+    employment_income: 400_000
+    filing_status: SINGLE
+  output:
+    # Rev. Proc. 2026-35 sec. 3.11: $93,000, phase-out from $515,950.
+    amt_exemption: 93_000
+
+- name: 2027 joint filers $100,000 into the phase-out
+  period: 2027
+  input:
+    amt_income: 1_131_900
+    amt_kiddie_tax_applies: false
+    employment_income: 1_200_000
+    filing_status: JOINT
+  output:
+    # Rev. Proc. 2026-35 sec. 3.11: $144,700, phase-out from $1,031,900 at
+    # 50%: 144,700 - 0.5 x (1,131,900 - 1,031,900) = 94,700.
+    amt_exemption: 94_700

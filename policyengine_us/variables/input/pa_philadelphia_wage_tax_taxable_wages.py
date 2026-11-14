@@ -12,3 +12,4 @@ class pa_philadelphia_wage_tax_taxable_wages(Variable):
     unit = USD
     definition_period = YEAR
     default_value = 0
+    uprating = "calibration.gov.irs.soi.employment_income"

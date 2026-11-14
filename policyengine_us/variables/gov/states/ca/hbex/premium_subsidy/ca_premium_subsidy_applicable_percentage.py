@@ -11,8 +11,11 @@ class ca_premium_subsidy_applicable_percentage(Variable):
     reference = (
         # California applicable percentage of household income toward the
         # benchmark second lowest cost silver plan, bracket-interpolated
-        # linearly within each federal poverty line band.
+        # linearly within each federal poverty line band: the (d)(4) table on
+        # PDF page 2 of each Design, and (d)(10) family size on PDF page 3.
+        # PDF pages 2-3
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2",
+        # PDF pages 2-3
         "https://hbex.coveredca.com/data-research/Final-2027-California-Premium-Subsidy-Program-Design.pdf#page=2",
         "https://hbex.coveredca.com/toolkit/webinars-briefings/downloads/OE27_Enroller_Kickoff.pdf#page=40",
         "https://www.ftb.ca.gov/forms/2020/2020-3849-instructions.pdf#page=6",
@@ -25,9 +28,10 @@ class ca_premium_subsidy_applicable_percentage(Variable):
         magi = max_(tax_unit("aca_magi", period), 0)
         # Divide in float64: a float32 quotient can round a ratio just above
         # 150% down onto it, which side="left" would put in the 0% band.
-        exact_magi_frac = magi.astype(np.float64) / tax_unit(
-            "tax_unit_fpg", period.last_year
-        )
+        # Both ratios divide by aca_fpg, the prior-year guideline for the
+        # section 36B tax family (Program Design (d)(10); Form 8962 line 4),
+        # so the band and the place within it use one poverty line.
+        exact_magi_frac = magi.astype(np.float64) / tax_unit("aca_fpg", period)
         p = parameters(period).gov.states.ca.hbex.premium_subsidy.applicable_percentage
 
         thresholds = np.array(p.threshold)

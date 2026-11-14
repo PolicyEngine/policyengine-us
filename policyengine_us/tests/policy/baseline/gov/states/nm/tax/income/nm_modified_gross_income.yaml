@@ -110,3 +110,16 @@
   output:
     # § 7-2-2(L): "undiminished by losses". max(-5,000, 0) = 0, so 20,000.
     nm_modified_gross_income: 20_000
+
+- name: NM modified gross income includes military retired pay and survivor annuities
+  period: 2025
+  input:
+    state_code: NM
+    irs_employment_income: 20_000
+    military_retirement_pay: 30_000
+    military_retirement_pay_survivors: 6_000
+  output:
+    # § 7-2-2(L)(9), (11): annuities and pensions, so military retired pay and
+    # a survivor annuity count:
+    # 20,000 + 30,000 + 6,000.
+    nm_modified_gross_income: 56_000

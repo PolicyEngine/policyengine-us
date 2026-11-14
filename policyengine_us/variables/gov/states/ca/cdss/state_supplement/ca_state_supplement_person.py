@@ -6,6 +6,9 @@ from policyengine_us.variables.gov.ssa.ssi._ssi_state_supplement import (
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
     ca_capi_couple_computation,
     ca_capi_ssi_ssp_standard,
@@ -58,21 +61,24 @@ class ca_state_supplement_person(Variable):
         # it equals own income whenever the spouse would receive CAPI.
         # NOTE: POMS SI 01320.430 D takes the lesser of each part separately;
         # the totals keep CAPI at zero when the spouse's income is deemed.
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         immigration_status = person("immigration_status", period.this_year)
         is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
         is_qualified_noncitizen = person(
             "is_ssi_qualified_noncitizen", period.this_year
         )
-        fails_test = ~(is_citizen | is_qualified_noncitizen) & head_or_spouse
+        fails_test = ~(is_citizen | is_qualified_noncitizen)
         # The exclusion needs a spouse who can receive CAPI, so key on CAPI
         # eligibility rather than on SSI's noncitizen test alone (issue 10482).
+        # Find the spouse as SSI's couple tests do, so the default marital
+        # unit of a situation that omits marital units does not pair a
+        # recipient with an unrelated member's CAPI eligibility or income.
         capi_eligible = person("ca_capi_eligible_person", period.this_year)
         spouse_capi_eligible = joint & (
-            person.marital_unit.sum(capi_eligible & head_or_spouse) > 0
+            _ssi_couple_total(person, period.this_year, capi_eligible.astype(int)) > 0
         )
         split_couple = spouse_capi_eligible | (
-            joint & (person.marital_unit.sum(fails_test) > 0)
+            joint
+            & (_ssi_couple_total(person, period.this_year, fails_test.astype(int)) > 0)
         )
         earned = max_(
             person("ssi_earned_income", period.this_year)
@@ -91,7 +97,9 @@ class ca_state_supplement_person(Variable):
             _apply_ssi_exclusions(earned, unearned, parameters, period) / MONTHS_IN_YEAR
         )
         ssi_countable_income = person("ssi_countable_income", period)
-        couple_income = person.marital_unit.sum(ssi_countable_income * head_or_spouse)
+        couple_income = _ssi_couple_total(
+            person, period.this_year, ssi_countable_income
+        )
         individual_standard, couple_standard = ca_capi_ssi_ssp_standard(
             person, period, parameters
         )

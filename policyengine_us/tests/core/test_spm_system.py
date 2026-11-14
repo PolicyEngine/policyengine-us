@@ -900,6 +900,10 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
             # Core 3.33.1 and later discard calculated caches when rebuilding;
             # earlier versions imported them as inputs. Calculate again so
             # both behaviors exercise holders for the reform's definitions.
+            # Supply an input to exercise yearly storage after the rebuild.
+            changed.set_input(
+                "is_household_head", 2024, np.ones(changed.person.count, dtype=bool)
+            )
             for variable in ("reform_only_income", "is_household_head"):
                 changed.calculate(variable, 2024)
                 holder = changed.get_holder(variable)
@@ -1269,7 +1273,7 @@ def test_documented_default_build_matches_the_shipped_constants():
 def test_default_dataset_is_digested_once_per_resolved_file(monkeypatch, tmp_path):
     """The certified build is ~830 MB; construction must not re-digest it."""
     path = tmp_path / "counted.h5"
-    path.write_bytes(b"populace")
+    path.write_bytes(b"microcosm")
     digests = []
 
     def counting_sha256(file_path):

@@ -502,3 +502,98 @@
     nc_tanf_countable_gross_unearned_income: 3_600
     # Need standard for 1: 362 a month; 0.5 * (362 - 300) = 31 a month
     nc_tanf: 31 * 12
+
+- name: One adult and one child with no income and $3,000 in the bank receive the full payment.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 3_000
+      person2:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # $3,000 is at the limit (10A NCAC 71W .0407), so the unit stays eligible.
+    nc_tanf: (472 - 0) * 0.5 * 12
+
+- name: One adult and one child with no income and $5,000 in stocks receive nothing.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        stock_assets: 5_000
+      person2:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # $5,000 of countable resources exceeds the $3,000 limit.
+    nc_tanf: 0
+
+- name: An SSI-recipient parent with $4,000 in the bank and a child aged 10 receive $181 per month.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        ssi: 11_000
+        bank_account_assets: 4_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    # The SSI parent is not in the household size, and their income and
+    # resources do not count (10A NCAC 71W .0407(b)(1)).
+    nc_tanf_household_size: 1
+    nc_tanf_countable_gross_unearned_income: 0
+    nc_tanf_countable_resources: 0
+    nc_tanf_resources_eligible: true
+    # Need standard for 1: 362 a month; 0.5 * (362 - 0) = 181 a month
+    nc_tanf: 181 * 12  # 2_172
+
+- name: A parent, an SSI-recipient child aged 8 with $4,000 in the bank, and a child aged 5 receive $236 per month.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+        ssi: 11_000
+        bank_account_assets: 4_000
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NC
+  output:
+    # The SSI child is not in the household size, and their resources do not
+    # count (10A NCAC 71W .0407(b)(2)).
+    nc_tanf_household_size: 2
+    nc_tanf_countable_resources: 0
+    nc_tanf_resources_eligible: true
+    # Need standard for 2: 472 a month; 0.5 * (472 - 0) = 236 a month
+    nc_tanf: 236 * 12  # 2_832

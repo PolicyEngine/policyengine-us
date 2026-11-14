@@ -5,20 +5,28 @@ class ia_net_income(Variable):
     value_type = float
     entity = Person
     label = "Iowa net income"
+    documentation = (
+        "Iowa net income in the head's and spouse's columns of the return. A "
+        "tax unit dependent's income belongs on the dependent's own Iowa "
+        "return, so a dependent's amount is zero."
+    )
     unit = USD
     definition_period = YEAR
     reference = (
         "https://revenue.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf",
-        "https://revenue.iowa.gov/media/2650/download?inline",
-        "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
-        "https://revenue.iowa.gov/media/2721/download?inline",
-        # Status 3: married filing separately on a combined return
+        # PDF page 7: Status 3, married filing separately on a combined return
         "https://revenue.iowa.gov/media/2650/download?inline#page=7",
-        # Borrowed for dependents' income: parents filing separately report a
-        # child's income on the return of the parent with the greater
-        # taxable income
-        "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
-        "https://www.irs.gov/instructions/i8814",
+        "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
+        # PDF pages 4, 8: who must file (c), and the note to dependents
+        # filing their own returns
+        "https://revenue.iowa.gov/media/2721/download?inline#page=4",
+        # Iowa Code 422.7: net income starts from federal adjusted gross
+        # income, which leaves out a dependent's income.
+        "https://www.legis.iowa.gov/docs/code/2022/422.7.pdf",
+        # Iowa Code 422.13(1)(a): a person claimed as a dependent on another
+        # person's return files their own return with net income of $5,000
+        # or more.
+        "https://www.legis.iowa.gov/docs/code/2022/422.13.pdf",
     )
     defined_for = StateCode.IA
 
@@ -26,7 +34,7 @@ class ia_net_income(Variable):
         gross_income = person("ia_gross_income", period)
         income_adjustments = person("ia_income_adjustments", period)
         net_income = gross_income - income_adjustments
-        # Each spouse's column holds their own income. The dependents' net
-        # income the model counts here goes on the column of the spouse with
-        # the greater net income (a modelling convention; see the helper).
-        return move_dependent_amounts_to_filer(person, period, net_income)
+        # Each spouse's column holds their own income. A dependent's income
+        # goes on the dependent's own return, not on the filer's.
+        is_dependent = person("is_tax_unit_dependent", period)
+        return where(is_dependent, 0, net_income)

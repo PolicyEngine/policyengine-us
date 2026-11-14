@@ -529,6 +529,23 @@
     id_deductions: [20_000, 20_000]
     id_taxable_income: [8_250, 8_250]
 
+- name: No subtraction when a Medicare Savings Program pays the Part B premium
+  # Idaho Code 63-3022P covers premiums the taxpayer paid. $12,000 of Social
+  # Security ($1,000 a month) is below the 135% FPL MSP limit, so the MSP
+  # pays the $185 standard premium for all 12 months and the filer pays none.
+  period: 2025
+  input:
+    age: 70
+    social_security_retirement: 12_000
+    state_code: ID
+  output:
+    medicare_part_b_enrolled: true
+    gross_medicare_part_b_premium: 2_220
+    msp_part_b_premium_coverage: 2_220
+    medicare_part_b_premium: 0
+    id_qualified_health_insurance_premiums: 0
+    id_health_insurance_premiums_subtraction: 0
+
 - name: A supplied deduction below the person amounts takes medical premiums first
   period: 2025
   input:

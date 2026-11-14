@@ -122,12 +122,13 @@
         members: [person]
         state_code: CO
   output:
-    co_taxable_income: 13_450
-    # 13,450 * 0.037 = 497.65 before non-refundable credits.
-    co_income_tax_before_non_refundable_credits: 497.65
+    # 30,000 - 16,600 (2027 federal standard deduction, Rev. Proc. 2026-35).
+    co_taxable_income: 13_400
+    # 13,400 * 0.037 = 495.80 before non-refundable credits.
+    co_income_tax_before_non_refundable_credits: 495.80
     # Less the $43 tax year 2027 sales tax refund projected for the first
-    # tier (modified AGI $30,000): 497.65 - 43 = 454.65.
-    co_income_tax: 454.65
+    # tier (modified AGI $30,000): 495.80 - 43 = 452.80.
+    co_income_tax: 452.80
 
 - name: Case 12, end-to-end single filer with $600,000 of employment income.
   period: 2027

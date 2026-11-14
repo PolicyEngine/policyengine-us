@@ -1,0 +1,43 @@
+description: Idaho counts these unearned income sources under the Low Income Home Energy Assistance Program.
+# Social Security is counted net of Part B separately; TANF enters once per household.
+values:
+  2025-10-01:
+    - ssi
+    - pension_income
+    # Military retirement includes Survivor Benefit Plan annuities.
+    - military_retirement_income
+    - railroad_benefits
+    # Ongoing IRA/401k distributions are separate from pension_income.
+    # Existing annual inputs do not identify an excluded one-time lump sum.
+    - retirement_distributions
+    - survivor_benefits
+    - total_unemployment_compensation
+    - strike_benefits
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - interest_income
+    - ordinary_dividend_income
+    - estate_income
+    - disability_benefits
+    - workers_compensation
+    # IDAPA 16.04.14.010.06 counts moneys "from all sources", and 151.02 excludes
+    # none of these, although plan 1.9 leaves VA and general assistance unchecked.
+    - veterans_benefits
+    - general_assistance
+    - id_aabd
+    # Plan 1.9's checked Other line and IDAPA 16.04.14.151.02.f count gifts and
+    # lottery winnings over $30, although its lump-sum line is unchecked. The
+    # specific line is followed. The $30 test has no input: annual amounts count.
+    - gambling_winnings
+    - financial_assistance
+
+metadata:
+  unit: list
+  period: year
+  label: Idaho LIHEAP countable unearned income sources
+  reference:
+    - title: "Idaho FY2026 LIHEAP State Plan #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5
+    - title: "IDAPA 16.04.14.010.06 and 151.02 as of September 10, 2025 #page 3,5"
+      href: https://web.archive.org/web/20250910171431id_/https://adminrules.idaho.gov/rules/current/16/160414.pdf#page=3

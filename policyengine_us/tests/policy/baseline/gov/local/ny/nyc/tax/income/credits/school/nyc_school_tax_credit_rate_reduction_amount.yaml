@@ -13,7 +13,7 @@
 
 - name: Joint filing gets $37 plus .228% of taxable income above $21,600 for total income not over $500,000.
   period: 2022
-  absolute_error_margin: 1 # The $37 amount is rounded in the instructions.
+  absolute_error_margin: 0.01
   input:
     nyc_school_tax_credit_rate_reduction_amount_eligible: true
     nyc_taxable_income: 500_000
@@ -22,7 +22,8 @@
     # NYC School Tax Instructions
     # See Page 27 for rate reduction amount
     # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
-    nyc_school_tax_credit_rate_reduction_amount: 1_127.75
+    # Tax Law § 606(ggg)(4-b)(A): 37 + 0.00228 * (500_000 - 21_600) = 1_127.752.
+    nyc_school_tax_credit_rate_reduction_amount: 1_127.752
 
 - name: Joint filing gets no reduction amount if not eligible.
   period: 2022
@@ -52,7 +53,7 @@
 
 - name: Single person gets $21 plus .228% of taxable income above $12,000 for total income not over $500,000.
   period: 2022
-  absolute_error_margin: 1 # The $21 amount is rounded in the instructions.
+  absolute_error_margin: 0.01
   input:
     nyc_school_tax_credit_rate_reduction_amount_eligible: true
     nyc_taxable_income: 500_000
@@ -61,6 +62,7 @@
     # NYC School Tax Instructions
     # See Page 27 for rate reduction amount
     # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
+    # Tax Law § 606(ggg)(4-b)(C): 21 + 0.00228 * (500_000 - 12_000) = 1_133.64.
     nyc_school_tax_credit_rate_reduction_amount: 1_133.64
 
 - name: Household head gets .171% of taxable income for income not over $14,400.
@@ -78,7 +80,7 @@
 
 - name: Household head gets $25 plus .228% of taxable income above $14,400 for total income not over $500,000.
   period: 2022
-  absolute_error_margin: 1 # The $25 amount is rounded in the instructions.
+  absolute_error_margin: 0.01
   input:
     nyc_school_tax_credit_rate_reduction_amount_eligible: true
     nyc_taxable_income: 500_000
@@ -87,4 +89,134 @@
     # NYC School Tax Instructions
     # See Page 27 for rate reduction amount
     # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
-    nyc_school_tax_credit_rate_reduction_amount: 1_132.17
+    # Tax Law § 606(ggg)(4-b)(B): 25 + 0.00228 * (500_000 - 14_400) = 1_132.168.
+    nyc_school_tax_credit_rate_reduction_amount: 1_132.168
+
+# Tax Law § 606(ggg)(4-b), as amended by L.2017, ch. 59, Part C, § 2 for tax
+# years beginning on and after January 1, 2017 (S.2009-C, PDF pages 8-9 and
+# 14), sets the amount above each threshold as a statutory base plus 0.228%
+# of the excess. The bases ($37 joint and surviving spouse, $25 head of
+# household, $21 single and separate) are fixed in the statute; they are not
+# 0.171% of the threshold (36.936, 24.624 and 20.52). City taxable income
+# equal to the threshold is "not over" it and stays in the lower branch.
+# 2025 IT-201-I line 69a tables (PDF page 21) give the same values.
+
+- name: 2017 head of household above the threshold gets the statutory $25 base.
+  period: 2017
+  absolute_error_margin: 0.001
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 20_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # 25 + 0.00228 * (20_000 - 14_400) = 25 + 12.768 = 37.768.
+    nyc_school_tax_credit_rate_reduction_amount: 37.768
+
+- name: 2025 joint filers above the threshold get the statutory $37 base.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 30_000
+    filing_status: JOINT
+  output:
+    # 37 + 0.00228 * (30_000 - 21_600) = 37 + 19.152 = 56.152.
+    nyc_school_tax_credit_rate_reduction_amount: 56.152
+
+- name: 2025 single filer above the threshold gets the statutory $21 base.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 20_000
+    filing_status: SINGLE
+  output:
+    # 21 + 0.00228 * (20_000 - 12_000) = 21 + 18.24 = 39.24.
+    nyc_school_tax_credit_rate_reduction_amount: 39.24
+
+- name: 2017 surviving spouse one dollar above the threshold gets the $37 base.
+  period: 2017
+  absolute_error_margin: 0.001
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 21_601
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # 37 + 0.00228 * 1 = 37.00228.
+    nyc_school_tax_credit_rate_reduction_amount: 37.00228
+
+- name: 2017 separate filer one dollar above the threshold gets the $21 base.
+  period: 2017
+  absolute_error_margin: 0.001
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 12_001
+    filing_status: SEPARATE
+  output:
+    # 21 + 0.00228 * 1 = 21.00228.
+    nyc_school_tax_credit_rate_reduction_amount: 21.00228
+
+- name: 2017 separate filer at the threshold stays in the lower branch.
+  period: 2017
+  absolute_error_margin: 0.001
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 12_000
+    filing_status: SEPARATE
+  output:
+    # "Not over $12,000": 0.00171 * 12_000 = 20.52.
+    nyc_school_tax_credit_rate_reduction_amount: 20.52
+
+- name: 2017 joint filers at the threshold stay in the lower branch.
+  period: 2017
+  absolute_error_margin: 0.001
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 21_600
+    filing_status: JOINT
+  output:
+    # "Not over $21,600": 0.00171 * 21_600 = 36.936.
+    nyc_school_tax_credit_rate_reduction_amount: 36.936
+
+- name: Negative city taxable income gives no rate reduction amount.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: -5_000
+    filing_status: SINGLE
+  output:
+    nyc_school_tax_credit_rate_reduction_amount: 0
+
+- name: Mixed filing statuses are computed together.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        nyc_school_tax_credit_rate_reduction_amount_eligible: true
+        nyc_taxable_income: 10_000
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        nyc_school_tax_credit_rate_reduction_amount_eligible: true
+        nyc_taxable_income: 14_401
+        filing_status: HEAD_OF_HOUSEHOLD
+      tax_unit3:
+        members: [person3]
+        nyc_school_tax_credit_rate_reduction_amount_eligible: true
+        nyc_taxable_income: 100_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    # Single below its threshold: 0.00171 * 10_000 = 17.1.
+    # Head of household $1 above: 25 + 0.00228 = 25.00228.
+    # Joint: 37 + 0.00228 * (100_000 - 21_600) = 37 + 178.752 = 215.752.
+    nyc_school_tax_credit_rate_reduction_amount: [17.1, 25.00228, 215.752]

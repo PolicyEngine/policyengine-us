@@ -66,3 +66,15 @@
     state_code: VA
   output:
     va_itemized_deductions: 40_000 #20,000+20,000
+
+- name: The 2018 unlimited branch retains federally allowable repayment deductions
+  period: 2018
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000
+    itemized_deductions_less_salt: 30_000
+    state_and_local_sales_or_income_tax: 0
+    real_estate_taxes: 0
+    state_code: VA
+  output:
+    va_itemized_deductions: 30_000

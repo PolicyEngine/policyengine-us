@@ -398,6 +398,11 @@ def _rederive_reader(
     stay as stated.
     """
     meta = normalize_uprating_metadata(parameter.metadata["uprating"])
+    if "base" in meta:
+        raise ValueError(
+            f"{parameter.name} uprates by {path.name} from a statutory base "
+            "year, which the SSA Trustees 2026 assumptions don't re-derive."
+        )
     if "at_defined_interval" in meta or "start_instant" in meta:
         raise ValueError(
             f"{parameter.name} uprates by {path.name} on a cadence or from a "

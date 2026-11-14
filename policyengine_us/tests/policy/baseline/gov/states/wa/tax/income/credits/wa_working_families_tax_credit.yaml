@@ -1424,11 +1424,12 @@
     # The maximum-qualifying-income expansion is not in effect in 2027, so the
     # ceiling is the frozen-structure federal childless EITC AGI limit (indexed
     # to 2027). For a married-filing-jointly childless couple this is the
-    # joint-return limit $27,421.18 (the single-filer childless limit is the
-    # lower ~$20,011). Either way it is far below the 2028 need-standard ceiling
+    # joint-return limit: 18,730 + 685 / 0.0765 = $27,684.25 (Rev. Proc. 2026-35
+    # sec. 3.06 prints $27,684; the single-filer childless limit is the lower
+    # $20,164.25). Either way it is far below the 2028 need-standard ceiling
     # of $72,528: this is the pre-flip side of the 2028 in_effect boundary
     # (paired with Case 30).
-    wa_working_families_tax_credit_maximum_qualifying_income: 27_421.18
+    wa_working_families_tax_credit_maximum_qualifying_income: 27_684.25
 
 # ---------------------------------------------------------------------------
 # S5: expansion-path amount, negative/AGI earnings guards, integration

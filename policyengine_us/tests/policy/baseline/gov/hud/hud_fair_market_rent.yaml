@@ -55,13 +55,13 @@
   output:
     hud_fair_market_rent: 22_272
 
-- name: LA County FY2024 falls back to nearest bundled FMR year
-  period: 2024
+- name: LA County pre-bundle lookup falls back to FY2017 without certifying 2016 law
+  period: 2016
   input:
     county_fips: "06037"
     bedrooms: 2
   output:
-    hud_fair_market_rent: 31_500
+    hud_fair_market_rent: 18_540
 
 - name: LA County 5BR FY2025 adds 15 percent to 4BR FMR
   period: 2025
@@ -138,3 +138,358 @@
     bedrooms: 2
   output:
     hud_fair_market_rent: 34_836
+- name: Los Angeles FY2017 two-bedroom rent reference uses the published historical snapshot.
+  period: 2017
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Original revised FY2017 county workbook: LA 2BR is $1,545 monthly.
+    # YEAR selects the revised FY snapshot; this is a rent reference, not
+    # an adopted payment standard or a historical assistance award.
+    hud_fair_market_rent: 18_540
+
+- name: Los Angeles FY2018 household uses its annual rent-reference snapshot
+  period: 2018
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Published monthly FMR $1,663 × 12; no historical HAP claim.
+    hud_fair_market_rent: 19_956
+
+- name: Los Angeles FY2019 household uses its annual rent-reference snapshot
+  period: 2019
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Published monthly FMR $1,791 × 12; no historical HAP claim.
+    hud_fair_market_rent: 21_492
+
+- name: Los Angeles FY2020 household uses its annual rent-reference snapshot
+  period: 2020
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Published monthly FMR $1,956 × 12; no historical HAP claim.
+    hud_fair_market_rent: 23_472
+
+- name: Los Angeles FY2021 household uses its annual rent-reference snapshot
+  period: 2021
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Published monthly FMR $2,058 × 12; no historical HAP claim.
+    hud_fair_market_rent: 24_696
+
+- name: Los Angeles FY2022 household uses its annual rent-reference snapshot
+  period: 2022
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Published monthly FMR $2,044 × 12; no historical HAP claim.
+    hud_fair_market_rent: 24_528
+
+- name: Los Angeles FY2023 household uses its annual rent-reference snapshot
+  period: 2023
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Published monthly FMR $2,222 × 12; no historical HAP claim.
+    hud_fair_market_rent: 26_664
+
+- name: Los Angeles FY2024 household uses its annual rent-reference snapshot
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Published monthly FMR $2,544 × 12; no historical HAP claim.
+    hud_fair_market_rent: 30_528
+
+- name: Los Angeles FY2025 household uses its annual rent-reference snapshot
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Published monthly FMR $2,625 × 12; no historical HAP claim.
+    hud_fair_market_rent: 31_500
+
+- name: Los Angeles FY2026 household uses its annual rent-reference snapshot
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 24_000
+        pre_subsidy_rent: 14_400
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+        county_fips: "06037"
+        bedrooms: 2
+  output:
+    # Published monthly FMR $2,903 × 12; no historical HAP claim.
+    hud_fair_market_rent: 34_836
+
+- name: FY2017 Los Angeles routes all five published bedroom columns
+  period: 2017
+  input:
+    county_fips: ["06037", "06037", "06037", "06037", "06037"]
+    bedrooms: [0, 1, 2, 3, 4]
+  output:
+    # Monthly source values [988.0, 1195.0, 1545.0, 2079.0, 2303.0], annualized by the existing variable.
+    hud_fair_market_rent: [11_856, 14_340, 18_540, 24_948, 27_636]
+
+- name: FY2017 New York routes all five published bedroom columns
+  period: 2017
+  input:
+    county_fips: ["36061", "36061", "36061", "36061", "36061"]
+    bedrooms: [0, 1, 2, 3, 4]
+  output:
+    # Monthly source values [1352.0, 1419.0, 1637.0, 2102.0, 2267.0], annualized by the existing variable.
+    hud_fair_market_rent: [16_224, 17_028, 19_644, 25_224, 27_204]
+
+- name: FY2017 Harris routes all five published bedroom columns
+  period: 2017
+  input:
+    county_fips: ["48201", "48201", "48201", "48201", "48201"]
+    bedrooms: [0, 1, 2, 3, 4]
+  output:
+    # Monthly source values [701.0, 797.0, 976.0, 1333.0, 1690.0], annualized by the existing variable.
+    hud_fair_market_rent: [8_412, 9_564, 11_712, 15_996, 20_280]
+
+- name: FY2017 Fairfield median-area fallback routes all five published bedroom columns
+  period: 2017
+  input:
+    county_fips: ["09001", "09001", "09001", "09001", "09001"]
+    bedrooms: [0, 1, 2, 3, 4]
+  output:
+    # Monthly source values [888.0, 1103.0, 1377.0, 1723.0, 2161.0], annualized by the existing variable.
+    hud_fair_market_rent: [10_656, 13_236, 16_524, 20_676, 25_932]
+
+- name: FY2017 Puerto Rico Adjuntas routes all five published bedroom columns
+  period: 2017
+  input:
+    county_fips: ["72001", "72001", "72001", "72001", "72001"]
+    bedrooms: [0, 1, 2, 3, 4]
+  output:
+    # Monthly source values [357.0, 374.0, 432.0, 540.0, 595.0], annualized by the existing variable.
+    hud_fair_market_rent: [4_284, 4_488, 5_184, 6_480, 7_140]
+
+- name: FY2017 American Samoa pseudo-area expansion routes all five published bedroom columns
+  period: 2017
+  input:
+    county_fips: ["60010", "60010", "60010", "60010", "60010"]
+    bedrooms: [0, 1, 2, 3, 4]
+  output:
+    # Monthly source values [502.0, 506.0, 677.0, 987.0, 1038.0], annualized by the existing variable.
+    hud_fair_market_rent: [6_024, 6_072, 8_124, 11_844, 12_456]
+
+- name: FY2017 Northern Mariana Islands pseudo-area expansion routes all five published bedroom columns
+  period: 2017
+  input:
+    county_fips: ["69110", "69110", "69110", "69110", "69110"]
+    bedrooms: [0, 1, 2, 3, 4]
+  output:
+    # Monthly source values [411.0, 498.0, 666.0, 961.0, 1158.0], annualized by the existing variable.
+    hud_fair_market_rent: [4_932, 5_976, 7_992, 11_532, 13_896]
+
+- name: FY2024 Honolulu uses the revised annual snapshot
+  period: 2024
+  input:
+    county_fips: ["15003", "15003", "15003", "15003", "15003"]
+    bedrooms: [0, 1, 2, 3, 4]
+  output:
+    # Revised source: $1,668/$1,824/$2,388/$3,365/$4,052 monthly.
+    # The revision took effect March 11, 2024. YEAR selects the latest
+    # snapshot and does not reconstruct the earlier operative schedule.
+    hud_fair_market_rent: [20_016, 21_888, 28_656, 40_380, 48_624]

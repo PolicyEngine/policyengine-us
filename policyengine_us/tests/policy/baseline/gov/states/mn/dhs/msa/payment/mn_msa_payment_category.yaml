@@ -174,3 +174,36 @@
         state_code: MN
   output:
     mn_msa_payment_category: INDIVIDUAL_LIVING_ALONE
+
+- name: Case 11, an unrelated adult's HCBS waiver leaves a couple on the living-with-others category when marital units are omitted.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        social_security: 7_200
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+      spouse:
+        age: 70
+        is_tax_unit_spouse: true
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+      third:
+        age: 70
+        is_tax_unit_head: true
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
+        mn_msa_hcbs_waiver_eligible: true
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: MN
+  output:
+    # The waiver moves only its holder to the living-alone standard. The
+    # spouse test pairs the head and spouse alone, so neither spouse has it.
+    mn_msa_payment_category:
+      [COUPLE_LIVING_WITH_OTHERS, COUPLE_LIVING_WITH_OTHERS, INDIVIDUAL_LIVING_ALONE]

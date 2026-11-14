@@ -1,11 +1,26 @@
 from policyengine_us.model_api import *
 
+# 7 CFR 273.9(a)(1)(i), (a)(2)(i):
+# https://www.govinfo.gov/content/pkg/CFR-2025-title7-vol4/pdf/CFR-2025-title7-vol4-sec273-9.pdf#page=1
+SNAP_CONTIGUOUS_US_GUIDELINE_AREAS = ["GU", "VI"]
+
 
 def snap_monthly_fpg_amounts(spm_unit, period, parameters):
     """Monthly poverty guideline for the first person and for each additional
     person, from the guidelines SNAP adopts each October 1 (7 CFR 273.9(a)(3)).
+
+    Guam and the Virgin Islands use the guidelines for the 48 contiguous
+    States and the District of Columbia (7 CFR 273.9(a)(1)(i) and (a)(2)(i)),
+    so they read the contiguous-US guideline rather than their own zero
+    placeholders. This mapping is specific to SNAP income standards; the
+    households keep their own state group elsewhere.
     """
     state_group = spm_unit.household("state_group_str", period.this_year)
+    state_group = np.where(
+        np.isin(state_group, SNAP_CONTIGUOUS_US_GUIDELINE_AREAS),
+        "CONTIGUOUS_US",
+        state_group,
+    )
     year = period.start.year
     month = period.start.month
     if month >= 10:

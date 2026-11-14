@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.states.ia.hhs.ssa._ia_ssa_smme_spouse_income import (
     ia_ssa_smme_spouse_income,
     ia_ssa_smme_spouse_is_sga_applicant,
@@ -94,11 +97,13 @@ class ia_ssa_smme_countable_income(Variable):
         # combined income, not SSI's deeming from the applicant (Cases 98 and
         # 102).
         applicant = deemed & person("ia_ssa_smme_coverage_eligible", period)
-        combined = person.marital_unit.sum(where(applicant, income, 0))
+        combined = _ssi_couple_total(
+            person, period.this_year, where(applicant, income, 0)
+        )
         income = where(
             ia_ssa_smme_spouse_is_sga_applicant(person, period), combined, income
         )
         # NOTE: For an eligible couple, ssi_countable_income takes off only
         # half of a student spouse's earned income exclusion (issue 10456).
         joint = person("ssi_couple_computation_applies", period)
-        return where(joint, person.marital_unit.sum(income), income)
+        return where(joint, _ssi_couple_total(person, period.this_year, income), income)

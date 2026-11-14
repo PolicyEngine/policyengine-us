@@ -1,0 +1,12 @@
+description: California truncates state median income limits to whole dollars through this household size under the Low Income Home Energy Assistance Program.
+# Inferred numerical method, not an express rule: through size 12, truncate the four-person 60% SMI base and the size-adjusted annual amount to dollars; above size 12, add the shared federal additional-person factor times the truncated four-person base. Then truncate to monthly cents. This reproduces all 25 published FY2026 rows; sizes above 25 and other years are unverified.
+values:
+  2025-10-01: 12
+
+metadata:
+  unit: person
+  period: year
+  label: California LIHEAP SMI rounding household size limit
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184

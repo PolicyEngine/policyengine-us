@@ -60,9 +60,12 @@ class co_premium_assistance(Variable):
             p.amount.first_member + p.amount.additional_member * (n - 1),
             0,
         )
-        # slcsp is a MONTH-period variable; core sums the 12 months when called
-        # from this YEAR formula. Approximates the enrolled-plan premium.
-        slcsp_annual = add(tax_unit, period, ["slcsp"])
+        # The benchmark for the federal coverage family, a MONTH variable that
+        # core sums over the year here; it approximates the eligible members'
+        # enrolled-plan premiums. C.R.S. 10-16-1205(1)(b)(II) pays carriers
+        # for Coloradans who receive the premium tax credit, so an enrollee
+        # outside the federal tax family is not counted.
+        slcsp_annual = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         residual = max_(0, slcsp_annual - aca_ptc)
         annual = min_(MONTHS_IN_YEAR * flat_monthly, residual)

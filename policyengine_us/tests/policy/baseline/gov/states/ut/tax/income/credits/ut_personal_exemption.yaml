@@ -33,3 +33,143 @@
     state_code: UT
   output: 
     ut_personal_exemption: 5_406 # 1802 * 3
+
+- name: "2025 single filer who can be claimed as a dependent: no Utah additional dependent for a child born this year"
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [filer, newborn]
+    households:
+      household:
+        members: [filer, newborn]
+        state_code: UT
+  output:
+    # The birth-year dependent (59-10-1018(1)(g)) must also be a dependent
+    # of the return; IRC 152(b)(1) leaves a claimable filer none.
+    ut_personal_exemption_additional_dependents: 0
+    ut_personal_exemption: 0
+
+- name: "2025 joint return with one claimable spouse: no Utah additional dependent for a child born this year (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, newborn]
+        state_code: UT
+  output:
+    ut_personal_exemption_additional_dependents: 0
+    ut_personal_exemption: 0
+
+- name: "2025 joint return with one claimable spouse: no Utah additional dependent for a child born this year (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, newborn]
+        state_code: UT
+  output:
+    ut_personal_exemption_additional_dependents: 0
+    ut_personal_exemption: 0
+
+- name: "2025 joint return with both spouses claimable: no Utah additional dependent for a child born this year"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, newborn]
+        state_code: UT
+  output:
+    ut_personal_exemption_additional_dependents: 0
+    ut_personal_exemption: 0
+
+- name: "2025 joint return with neither spouse claimable (control): Utah additional dependent for a child born this year"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, newborn]
+        state_code: UT
+  output:
+    # (1 dependent + 1 additional dependent) x $2,111 = $4,222.
+    ut_personal_exemption_additional_dependents: 1
+    ut_personal_exemption: 4222
