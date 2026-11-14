@@ -112,6 +112,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        nc_scca_need_eligible: true
         nc_scca_countable_income: 2_150
         spm_unit_pre_subsidy_childcare_expenses: 120_000
     households:

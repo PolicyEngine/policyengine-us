@@ -9,6 +9,7 @@
     spm_units:
       spm_unit:
         members: [person1, child1]
+        nc_scca_need_eligible: true
     households:
       household:
         members: [person1, child1]
@@ -47,6 +48,7 @@
     spm_units:
       spm_unit:
         members: [person1, child1, child2]
+        nc_scca_need_eligible: true
     households:
       household:
         members: [person1, child1, child2]
@@ -69,5 +71,24 @@
       household:
         members: [person1, child1]
         state_code: SC
+  output:
+    nc_scca_entry_eligible: false
+
+- name: Case 5, an eligible child without a need for care, not entry eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        nc_scca_child_eligible: false
+      child1:
+        nc_scca_child_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+        nc_scca_need_eligible: false
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
   output:
     nc_scca_entry_eligible: false
