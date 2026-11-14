@@ -1,3 +1,10 @@
+## [2.124.5] - 2026-11-14
+
+### Fixed
+
+- Retained shared SSA parameters and reported-benefit inputs in the calculator reference and added reform comparisons.
+
+
 ## [2.124.4] - 2026-11-14
 
 ### Fixed
