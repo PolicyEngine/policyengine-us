@@ -15412,3 +15412,41 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us-sd:cca-hourly-private-pay-cap
+  program: ccdf
+  years:
+    from: 2024
+    to: 2026
+    type: calendar
+    note: The hourly schedule applies from July 2024 through July 2026.
+  question: Does South Dakota cap hourly child care assistance at the provider's public charge when the state reimbursement ceiling exceeds that charge?
+  sources:
+  - kind: regulation
+    citation: ARSD 67:47:01:15, last amended September 12, 2016
+    url: https://sdlegislature.gov/Rules/Administrative/67:47:01:15
+  - kind: regulation
+    citation: ARSD 67:47:01:16, last amended January 18, 1993
+    url: https://sdlegislature.gov/Rules/Administrative/67:47:01:16
+  - kind: manual
+    citation: Child Care Provider Reimbursement Guide, pages 3, 7 and 18
+    url: https://dss.sd.gov/docs/childcare/assistance/regulated_manual.pdf
+  - kind: guidance
+    citation: Family Child Care maximum reimbursement rates, effective July 1, 2024, page 1
+    url: https://dss.sd.gov/docs/childcare/assistance/Reimbursement_Rates/Family_Child_Care.pdf
+  - kind: plan
+    citation: FFY 2025-2027 CCDF State Plan, initial plan certified September 24, 2024, sections 4.3.3 and 4.4.2, pages 60-63
+    url: https://dss.sd.gov/docs/childcare/state_plan/2025-2027/2025-2027_State_Plan_original.pdf
+  - kind: plan
+    citation: FFY 2025-2027 CCDF State Plan, Amendment 1 approved July 9, 2025, sections 4.3.3 and 4.4.2, pages 60-63
+    url: https://dss.sd.gov/docs/childcare/state_plan/2025-2027/Amendment_1.pdf
+  readings:
+    statute: No statute supplied; providers bill their usual public charge under ARSD 67:47:01:15. DSS pays at most actual allowable costs less the household contribution under section 67:47:01:16. DSS caps reimbursement at the public hourly charge or the provider's weekly bill in its provider guide. DSS applies that ceiling to the infant and toddler enhancement on its family rate sheet.
+    other: DSS checked no when asked whether it reduces payments if the private charge falls below its reimbursement ceiling. DSS also caps the infant and toddler enhancement at the public charge and describes hourly payments before its future weekly system in the same plan.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/cca/sd_cca.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10815
+  state: ruled
+  note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
