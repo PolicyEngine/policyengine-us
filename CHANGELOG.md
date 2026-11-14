@@ -1,3 +1,10 @@
+## [2.124.0] - 2026-11-14
+
+### Added
+
+- Added North Dakota CCAP Workforce Benefit, program co-payment waivers, and TANF co-payment exceptions.
+
+
 ## [2.123.0] - 2026-11-14
 
 ### Added
