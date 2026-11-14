@@ -13780,6 +13780,68 @@ candidates:
   state: ruled
   note: Ruled October 2026; verify the worksheet version and whether claiming the rebate defeats the refund-only
     joint-return exception.
+- id: us:school-meals-head-start-categorical-basis
+  program: school-meals
+  years:
+    from: 2007
+    type: calendar
+  question: Does every child enrolled in a Head Start program qualify for free school meals (7 CFR 245.2), or only
+    a child whom the program enrolled on a determination under 42 U.S.C. 9840(a)(1)(B) (42 U.S.C.
+    1758(b)(12)(A)(iii))?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1758(b)(12)(A)(iii)
+    url: https://uscode.house.gov/us/usc/119-124/t42/s1758/#b-12-A-iii
+  - kind: statute
+    citation: 42 U.S.C. 9840(a)(1)(B), (a)(2) and (d)(1)
+    url: https://uscode.house.gov/us/usc/119-124/t42/s9840/#a-1-B
+  - kind: statute
+    citation: Pub. L. 118-47, div. D, title II, sections 238 and 239 (42 U.S.C. 9840 note)
+    url: https://uscode.house.gov/us/usc/119-124/t42/s9840/#miscellaneous-note
+  - kind: regulation
+    citation: 7 CFR 245.2, definitions of "Categorically eligible" and "Head Start child"
+    url: https://www.ecfr.gov/current/title-7/section-245.2
+  - kind: rulemaking
+    citation: 76 FR 22785, 22791 (April 25, 2011), interim rule, "Children Enrolled in Head Start Programs"
+    url: https://www.govinfo.gov/content/pkg/FR-2011-04-25/html/2011-9457.htm
+  readings:
+    statute: Congress makes a child automatically eligible when a Head Start program enrolls the child "on the basis
+      of a determination that the child meets the eligibility criteria prescribed under section 645(a)(1)(B) of the
+      Head Start Act". A child whom a program enrolls on any other basis gets no free meals through Head Start.
+    other: USDA defines a Head Start child as "a child enrolled as a participant in a Head Start program authorized
+      under the Head Start Act", with no condition on the basis of enrollment. Its definition of "Categorically
+      eligible" lists a Head Start child. In the preamble to the 2011 interim rule, USDA says section 29(c) of Pub.
+      L. 110-134 amended clause (iii) "to extend categorical eligibility for free meals and free milk to all Head
+      Start enrollees".
+  example: In is_school_meal_categorically_eligible.yaml, a five-year-old enrollee in a family at 300% of the
+    poverty guideline gets the free tier in 2026 and free meals worth (2.46 + 4.60 - 0.40 - 0.44) x 180 =
+    $1,119.60. If a program in a community of 1,000 or fewer people enrolled that child under its own criteria
+    (9840(a)(2)), the child would get the paid tier and $0 under the statute's reading.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/usda/school_meals/child_categorical_eligibility.yaml
+    - policyengine_us/variables/gov/usda/school_meals/is_school_meal_categorically_eligible.py
+    - policyengine_us/variables/household/demographic/person/is_enrolled_in_head_start.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10838
+  state: open
+  note: PE-US counts every Head Start enrollee as categorically eligible. child_categorical_eligibility.yaml lists
+    is_enrolled_in_head_start, and is_school_meal_categorically_eligible.py qualifies a person when that input is
+    true, with no income test. is_enrolled_in_head_start.py records enrollment in Head Start or Early Head Start.
+    The model has no input for the basis of enrollment, so the statute's reading would need one. Under 42 U.S.C.
+    9840(a)(1)(B), programs enroll children whose families have income below the poverty line or qualify for public
+    assistance, homeless children and, within the shares clause (iii) allows, children who meet neither test. A
+    program can also enroll a child outside (a)(1)(B). Under 9840(a)(2), a program in a community of 1,000 or fewer
+    people sets its own criteria. Under 9840(d)(1), a tribe that enrolls every low-income child in its community
+    may enroll children who do not meet the low-income criteria. Under Pub. L. 118-47, div. D, sections 238 and
+    239, enacted on March 23, 2024, a tribe or a migrant or seasonal program sets its own selection criteria.
+    Congress wrote the (a)(1)(B) basis into clause (iii) on December 12, 2007 (Pub. L. 110-134, section 29(c)(1)),
+    and the clause named the low-income criteria of section 645(a)(1)(A) before then. USDA added both 245.2
+    definitions in the interim rule, effective June 24, 2011. is_school_meal_categorically_eligible.yaml pins the
+    model's reading for an enrollee at high income and for an enrollee above the Head Start income limit. An answer
+    should say whether the model keeps counting every enrollee, or takes a new input for enrollment on the (a)(1)(B)
+    basis and counts only those children.
 - id: us:se-plan-step-2-multiple-businesses
   program: income-tax
   years:
