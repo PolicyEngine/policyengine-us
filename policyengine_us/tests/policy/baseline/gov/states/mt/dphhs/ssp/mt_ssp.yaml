@@ -71,7 +71,7 @@
     mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
     # 13,055.88 / 12 = 1,087.99 countable a month, so federal SSI is 0 and
     # the supplement is 94 - (1,087.99 - 994) = 0.01, raised to $1.
-    ssi_countable_income: 13_055.88
+    ssi_countable_income: {2026: 13_055.88}
   output:
     ssi: 0
     mt_ssp: 1

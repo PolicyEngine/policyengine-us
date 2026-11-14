@@ -538,10 +538,9 @@ def get_la_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
     ``cpi`` is the ``gov.bls.cpi`` node. BLS reports the change from the not
     seasonally adjusted index, so the published Decembers in
     ``cpi_u_nsa_december`` are used when both years have one. Otherwise
-    both Decembers come from the model's CPI-U series (seasonally adjusted
-    from January 2024), through ``get_projected_cpi_u_for_month``; mixing
-    the two would add December's seasonal factor (about 0.6% in 2025) to
-    the change.
+    both Decembers come from the model's not seasonally adjusted CPI-U
+    series through ``get_projected_cpi_u_for_month``. CBO supplies annual
+    averages for projected months, so those months have no seasonal pattern.
     """
     december = cpi.cpi_u_nsa_december
     published = {int(value.instant_str[:4]) for value in december.values_list}
@@ -654,9 +653,9 @@ def get_cms_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
 
     ``cpi`` is the ``gov.bls.cpi`` node. The published Septembers in
     ``cpi_u_nsa_september`` are used when both are available. Otherwise both
-    Septembers come from the model's CPI-U series (seasonally adjusted from
-    January 2024) through ``get_projected_cpi_u_for_month``, so the two are
-    never mixed.
+    Septembers come from the model's not seasonally adjusted CPI-U series
+    through ``get_projected_cpi_u_for_month``. CBO supplies annual averages
+    for projected months, so those months have no seasonal pattern.
     """
     september = cpi.cpi_u_nsa_september
     published = {int(value.instant_str[:4]) for value in september.values_list}
@@ -1719,6 +1718,20 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_month=1,
         period_day=1,
         growth_years=(2031, 2032),
+    )
+
+    # Medicare Part D premiums per Part D enrollee (January values, last
+    # projection year 2035), which medicare_cost reads directly. Each year
+    # from 2036 to 2100 grows at the 2034-2035 rate, near the Trustees' 3.1
+    # percent growth in Part D cost per beneficiary in 2035 (Table V.D1, file
+    # page 210); later years hold the 2100 value. The Part D enrollment share
+    # needs no extension: the Trustees project enrollment through 2100.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.medicare.part_d.premiums_per_enrollee,
+        last_projected_year=2035,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
     )
 
     # CBO income-by-source aggregates are used directly and as anchors for

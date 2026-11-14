@@ -632,14 +632,14 @@
         age: 72
         is_tax_unit_head: true
         ssi: 994
-        ssi_countable_income: 0
+        ssi_countable_income: {2026: 0}
       spouse:
         age: 68
         is_tax_unit_spouse: true
         immigration_status: LEGAL_PERMANENT_RESIDENT
         ssi_qualifying_quarters_earnings: 39
         pension_income: 5_040
-        ssi_countable_income: 4_800
+        ssi_countable_income: {2026: 4_800}
       third:
         age: 70
         immigration_status: LEGAL_PERMANENT_RESIDENT

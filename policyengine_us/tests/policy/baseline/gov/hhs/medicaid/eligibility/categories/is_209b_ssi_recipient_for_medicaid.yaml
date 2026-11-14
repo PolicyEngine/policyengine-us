@@ -152,7 +152,7 @@
   output:
     is_209b_ssi_recipient_for_medicaid: true
 
-- name: Case 15, Missouri nonblind child SSI recipient is excluded.
+- name: Case 15, Missouri nonblind child SSI recipient is covered.
   period: 2026
   input:
     state_code: MO
@@ -162,7 +162,7 @@
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_asset_eligible: true
   output:
-    is_209b_ssi_recipient_for_medicaid: false
+    is_209b_ssi_recipient_for_medicaid: true
 
 - name: Case 16, New Hampshire nonblind child SSI recipient is excluded.
   period: 2026
@@ -256,8 +256,9 @@
         state_code: VA
   output:
     ssi: [196, 196, 0]
-    # The couple's budget is 17,500, above 12,768 (0.80 x 15,960). Deducting
-    # the third adult's 5,000 would leave 12,500, under it.
+    # The couple's budget is 17,500, above the couple limit of 17,312
+    # (0.80 x 21,640). Deducting the third adult's 5,000 would leave 12,500,
+    # under it.
     is_209b_ssi_recipient_for_medicaid: [false, false, false]
 
 - name: Case 20, Connecticut unrelated adult's spend-down budget leaves out a couple's medical expenses when marital units are omitted.
@@ -295,3 +296,79 @@
     # 11,010 > 10,214.40 (0.64 x 15,960). Deducting the couple's 1,000 would
     # leave 10,010, under it.
     is_209b_ssi_recipient_for_medicaid: [true, true, false]
+
+# Deemed income is (70,000 / 12 - 85) / 2 x 12 = 34,490, less 11,928, or 22,562.
+# The child's budget is 22,562 / 12 - 20 = 1,860.17, so 1,860 a month or 22,320
+# a year, and 22,320 - 9,000 = 13,320 is within the 13,572 standard. The child's
+# SSI is the reported amount, as in Case 17; computed SSI is zero at this income.
+- name: Case 21, Missouri nonblind disabled child reporting SSI qualifies after spenddown.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+        receives_ssi: true
+        other_medical_expenses: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_209b_ssi_recipient_for_medicaid: [false, true]
+    medicaid_category: [NONE, SSI_RECIPIENT]
+
+# 42 CFR 435.121(f)(1)(iii) deducts the expenses of financially responsible
+# relatives in every 209(b) state. Virginia's deemed income is (60,000 / 12
+# - 85) / 2 x 12 = 29,490, less 11,928, or 17,562. The child's income is
+# 17,562 - 240 = 17,322, above Virginia's 80% standard of 0.8 x 15,960 =
+# 12,768. The parent's 6,000 of expenses bring it to 11,322. In the model a
+# child with computed SSI is already under this standard, so the expense
+# decides the case only for reported SSI, as in Case 17.
+- name: Case 22, Virginia disabled child reporting SSI qualifies on the parent's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 60_000
+        other_medical_expenses: 6_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+        receives_ssi: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [0, 17_322]
+    medicaid_parental_medical_expense_share: [0, 6_000]
+    is_optional_senior_or_disabled_income_eligible: [true, false]
+    is_209b_ssi_recipient_for_medicaid: [false, true]
+    medicaid_category: [NONE, SSI_RECIPIENT]

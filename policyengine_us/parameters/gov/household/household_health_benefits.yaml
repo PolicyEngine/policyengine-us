@@ -4,7 +4,8 @@ values:
     - medicaid_cost
     - msp_cost
     - chip
-    - assigned_aca_ptc
+    # The federal premium tax credit counts as a refundable tax credit
+    # (household_refundable_tax_credits) whether or not health benefits do.
     - assigned_ca_premium_subsidy
     - basic_health_program
     - co_omnisalud
