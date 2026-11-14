@@ -10989,9 +10989,10 @@ candidates:
     fifty-percent disregard (January to April, a calendar proxy), sc_tanf_countable_earned_income_person.py halves a
     self-employment or farm loss and sc_tanf_countable_income.py adds the negative result to the group's other income.
     In the $100-disregard months (May to December) the same formula takes max(earned income - 100, 0), so the same
-    loss counts as zero. In every month sc_tanf_gross_income.py adds the whole signed loss for the gross income test,
-    where the example household has -$200. positive_sources.yaml counts capital gains, rental, farm rent, partnership
-    and S corporation, estate and miscellaneous income only when positive, citing section 7.1, and
+    loss counts as zero. In May 2026 the example household counts $1,000 and receives $44, against $400 and $287 in
+    January. In every month sc_tanf_gross_income.py adds the whole signed loss for the gross income test, where the
+    example household has -$200. positive_sources.yaml counts capital gains, rental, farm rent, partnership and S
+    corporation, estate and miscellaneous income only when positive, citing section 7.1, and
     sc_tanf_gross_unearned_income.py stops interest and dividends at zero. If B's loss came from a partnership, the
     example household would count $1,000 and receive $44 in both months. Section 7.7 counts rent as self-employment
     when the member manages the property 20 or more hours a week, and the model counts all rental_income as unearned.
