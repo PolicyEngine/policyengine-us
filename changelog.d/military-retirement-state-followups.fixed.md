@@ -1,0 +1,1 @@
+Apply Rhode Island's retirement income modification age test to each spouse, and add an input that marks military retirement pay as armed forces pay, for states whose exclusions cover the armed forces only. South Carolina counts NOAA and PHS retired pay toward its general retirement deduction, and Indiana's military deduction covers all uniformed services from 2025.

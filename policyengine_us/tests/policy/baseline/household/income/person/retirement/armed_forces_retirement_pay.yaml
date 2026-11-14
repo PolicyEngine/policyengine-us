@@ -1,0 +1,15 @@
+- name: By default all military retirement pay is armed forces retirement pay.
+  period: 2024
+  input:
+    military_retirement_pay: 10_000
+  output:
+    armed_forces_retirement_pay: 10_000
+
+- name: Retirement pay from a uniformed service outside the armed forces is not armed forces retirement pay.
+  period: 2024
+  input:
+    military_retirement_pay: 10_000
+    military_retirement_pay_is_armed_forces: false
+  output:
+    armed_forces_retirement_pay: 0
+    military_retirement_income: 10_000

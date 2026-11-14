@@ -20,7 +20,7 @@ class sc_military_deduction_survivors(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         surviving_spouse = person("is_surviving_spouse", period)
         return (
-            person("military_retirement_pay_survivors", period)
+            person("armed_forces_retirement_pay_survivors", period)
             * head_or_spouse
             * surviving_spouse
         )
