@@ -8,22 +8,28 @@ class ny_ccap_activity_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.NY
     documentation = (
-        "18 NYCRR 415.2(a)(2)(v)(a) serves a family whose caretakers are "
-        "engaged in work, and the section's opening paragraph requires each "
-        "caretaker of a two-caretaker family to meet one of the criteria. "
-        "415.1(o)(1)(i) defines engaged in work by a minimum weekly hours "
-        "figure the Office sets outside Part 415, so any hours count here. "
-        "Educational and vocational activities under 415.2(a)(2)(v)(d) are "
-        "read from full-time student status, and 415.2(a)(1)(i) and (iii) "
-        "guarantee care to a public assistance family whose caretaker is in "
-        "a required work activity; is_tanf_enrolled stands in for that "
-        "required-activity condition. The remaining pathways — job search, the "
-        "individual training programs, domestic violence services, substance "
-        "abuse treatment, and a caretaker who is incapacitated or has family "
-        "duties away from home — are represented by the "
-        "meets_ccdf_activity_test input."
+        "New York grants the public-assistance reason-for-care route when a "
+        "caretaker participates in a required activity under 18 NYCRR "
+        "415.2(a)(1). Family Assistance, Safety Net Assistance and veteran "
+        "assistance qualify as public assistance. Work, full-time study and "
+        "meets_ccdf_activity_test provide the other activity routes. For the "
+        "calculated work route, each tax-unit head or spouse must work or "
+        "study, and the unit must contain a caretaker. PolicyEngine counts "
+        "any positive weekly hours and retains the full-time-student "
+        "approximation. OCFS sets the minimum work hours outside Part 415; "
+        "public assistance recipients follow district work definitions. "
+        "PolicyEngine has no input for a pending public assistance "
+        "application, although applicants may also qualify for guaranteed "
+        "care. The fallback input records job search, training, domestic "
+        "violence services, substance abuse treatment, incapacity and family "
+        "duties away from home."
     )
-    reference = "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=13"
+    reference = (
+        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=13",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.2",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.1",
+        "https://www.nysenate.gov/legislation/laws/SOS/2",
+    )
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
@@ -33,9 +39,12 @@ class ny_ccap_activity_eligible(Variable):
         has_caretaker = spm_unit.sum(is_caretaker) > 0
         every_caretaker_active = spm_unit.sum(is_caretaker & ~in_activity) == 0
         work_eligible = has_caretaker & every_caretaker_active
-        # is_tanf_enrolled reflects reported enrollment rather than the
-        # computed tanf amount, so reading it does not close the
-        # CCAP -> TANF -> child care expenses circular dependency.
-        public_assistance = spm_unit("is_tanf_enrolled", period)
+        # Reported receipt avoids the CCAP -> TANF -> child care expense cycle.
+        public_assistance = (
+            spm_unit("is_tanf_enrolled", period)
+            | spm_unit("ny_safety_net_assistance_received", period)
+            | spm_unit("ny_veteran_assistance_received", period)
+        )
+        required_activity = spm_unit("ny_ccap_required_activity", period)
         fallback = spm_unit("meets_ccdf_activity_test", period.this_year)
-        return work_eligible | public_assistance | fallback
+        return work_eligible | (public_assistance & required_activity) | fallback

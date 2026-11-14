@@ -1,0 +1,1 @@
+Added New York child care inputs for Safety Net Assistance, veteran assistance, required activities, child-only units, preventive care and Title XX authorization, and a Title XX route for an authorized preventive child who meets the age test.
