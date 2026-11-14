@@ -265,3 +265,55 @@
     # Each earner receives 6,000 / 12 = 500 a month. Only the primary
     # student at 18 and the secondary student at 19 keep counted earnings.
     sc_tanf_gross_earned_income: [0, 0, 500, 0, 0, 500]
+
+- name: Case 11, Case 10 with K-12 attendance switched off gives the same results.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+      seventeen:
+        age: 17
+        is_in_k12_school: false
+        is_in_secondary_school: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      eighteen:
+        age: 18
+        is_in_k12_school: false
+        is_in_secondary_school: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      training_seventeen:
+        age: 17
+        is_in_k12_school: false
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      training_eighteen:
+        age: 18
+        is_in_k12_school: false
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+      training_nineteen:
+        age: 19
+        is_in_k12_school: false
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 6_000
+    households:
+      household:
+        members: [parent, seventeen, eighteen, training_seventeen, training_eighteen, training_nineteen]
+        state_code: SC
+  output:
+    # 114-1130(E) names secondary school and equivalent-level vocational or
+    # technical training, and no other school attendance. The last three
+    # members are in that training outside a K-12 school.
+    # 17 < 18 passes with no school. At 18, only the member in training
+    # passes 18 < 19; at 19 the member in training fails.
+    sc_tanf_dependent_child: [false, true, false, true, true, false]
+    # Each earner receives 6,000 / 12 = 500 a month. Only the 18-year-old
+    # with no school and the 19-year-old keep counted earnings.
+    sc_tanf_gross_earned_income: [0, 0, 500, 0, 0, 500]
