@@ -74,3 +74,18 @@
     misc_deduction: 1_000
     # 21,000 - min(80% x 21,000, 3% x (350,000 - 261,500)).
     va_reduced_itemized_deductions: 18_345
+
+- name: The 2026 single limitation starts above $340,750
+  # 2026 Virginia Schedule A (draft early release), Line 17.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 400_000
+    charitable_deduction: 20_000
+    claim_of_right_deduction: 0
+    state_and_local_sales_or_income_tax: 0
+    state_code: VA
+  output:
+    # Line 9: min(80% x 20,000, 3% x (400,000 - 340,750)) = 1,777.50.
+    va_reduced_itemized_deductions: 18_222.5
