@@ -101,6 +101,7 @@ def resource_snapshot(deadline=None):
             raise ValueError("Unexpectedly large cgroup resource record")
         snapshot[name] = value.strip()
     snapshot["threads"] = {name: os.environ.get(name) for name in THREADS}
+    snapshot["process_identity"] = {"uid": os.getuid(), "gid": os.getgid()}
     return validate_limits(snapshot)
 
 
@@ -192,14 +193,35 @@ def validate_export_receipt(receipt, side, mode, image):
             raise ValueError("Unexpected original Linux receipt path/hash")
 
 
-def validate_container(info, container_id, image_id, owner):
+def caller_user_options(uid, gid, output_uid, output_mode):
+    if any(
+        type(value) is not int or not 0 <= value < 2**32 - 1 for value in (uid, gid)
+    ):
+        raise ValueError("Invalid caller UID/GID")
+    if output_uid != uid or output_mode & 0o300 != 0o300:
+        raise ValueError(
+            "Caller must own the output directory with write/search permission"
+        )
+    return ["--user", f"{uid}:{gid}"]
+
+
+def validate_container(info, container_id, image_id, owner, user, output_path):
     host = info["HostConfig"]
     if (
         info["Id"] != container_id
         or info["Image"] != image_id
         or info["Config"]["Labels"].get("us10783.run") != owner
+        or info["Config"].get("User") != user
     ):
         raise ValueError("Container ownership/image identity changed")
+    if not any(
+        mount.get("Type") == "bind"
+        and mount.get("Source") == output_path
+        and mount.get("Destination") == "/output"
+        and mount.get("RW") is True
+        for mount in info.get("Mounts", [])
+    ):
+        raise ValueError("Container output mount differs or is read-only")
     if (
         host["Memory"] != MEMORY
         or host["MemorySwap"] != MEMORY
@@ -565,9 +587,24 @@ def publish_provenance():
 
 def container(argv, label, output, image, owner, deadline, maximum):
     name = "us10783-" + owner + "-" + label
+    output_stat = output.stat()
+    uid, gid = os.getuid(), os.getgid()
+    user_options = caller_user_options(
+        uid, gid, output_stat.st_uid, output_stat.st_mode
+    )
+    identity = {
+        "caller_uid": uid,
+        "caller_gid": gid,
+        "container_user": user_options[1],
+        "output_uid": output_stat.st_uid,
+        "output_gid": output_stat.st_gid,
+        "output_mode": oct(output_stat.st_mode & 0o7777),
+    }
+    write_new_json(output / (label + ".identity.json"), identity)
     create = [
         "docker",
         "create",
+        *user_options,
         "--name",
         name,
         "--label",
@@ -616,7 +653,9 @@ def container(argv, label, output, image, owner, deadline, maximum):
         )
         if observed.returncode == 0:
             info = json.loads(observed.stdout)[0]
-            validate_container(info, info["Id"], image, owner)
+            validate_container(
+                info, info["Id"], image, owner, user_options[1], str(output)
+            )
             if info["State"]["Running"]:
                 raise RuntimeError(
                     "Unexpected running container after failed create; cleanup pending"
@@ -628,6 +667,7 @@ def container(argv, label, output, image, owner, deadline, maximum):
                 "reconciled": observed.returncode == 0,
                 "inspect_exit": observed.returncode,
                 "model_started": False,
+                "caller_and_output_identity": identity,
             },
         )
         raise
@@ -636,7 +676,7 @@ def container(argv, label, output, image, owner, deadline, maximum):
 
     def inspect():
         info = json.loads(command(["docker", "inspect", cid], timeout=10).stdout)[0]
-        validate_container(info, cid, image, owner)
+        validate_container(info, cid, image, owner, user_options[1], str(output))
         return info
 
     process = None
@@ -688,6 +728,7 @@ def container(argv, label, output, image, owner, deadline, maximum):
                     "owner": owner,
                     "failure": failure,
                     "cleanup_verified": False,
+                    "caller_and_output_identity": identity,
                     "cleanup_error": repr(cleanup_error),
                     "final_resources": resource_record(
                         "final", None, "Docker cleanup/inspection did not complete"
@@ -713,6 +754,13 @@ def container(argv, label, output, image, owner, deadline, maximum):
                 "image": image,
                 "owner": owner,
                 "state": info["State"],
+                "caller_and_output_identity": identity,
+                "inspected_user": info["Config"]["User"],
+                "inspected_output_mount": [
+                    mount
+                    for mount in info["Mounts"]
+                    if mount.get("Destination") == "/output"
+                ],
                 "final_resources_status": final_resources["status"],
                 "limits": {
                     key: info["HostConfig"][key]

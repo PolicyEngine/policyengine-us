@@ -152,7 +152,18 @@ class Decisions(unittest.TestCase):
         return {
             "Id": "0" * 64,
             "Image": "sha256:" + "0" * 64,
-            "Config": {"Labels": {"us10783.run": "nonexistent-owner"}},
+            "Config": {
+                "Labels": {"us10783.run": "nonexistent-owner"},
+                "User": "2147483001:2147483002",
+            },
+            "Mounts": [
+                {
+                    "Type": "bind",
+                    "Source": "/nonexistent-output",
+                    "Destination": "/output",
+                    "RW": True,
+                }
+            ],
             "HostConfig": {
                 "Memory": remote.MEMORY,
                 "MemorySwap": remote.MEMORY,
@@ -162,6 +173,47 @@ class Decisions(unittest.TestCase):
                 "CapDrop": ["ALL"],
             },
         }
+
+    def check_container(self, data):
+        remote.validate_container(
+            data,
+            "0" * 64,
+            "sha256:" + "0" * 64,
+            "nonexistent-owner",
+            "2147483001:2147483002",
+            "/nonexistent-output",
+        )
+
+    def test_explicit_caller_user_can_write_owned_0755_output_without_extra_capabilities(
+        self,
+    ):
+        # Nonexistent identities and command options remain inert data.
+        options = remote.caller_user_options(
+            2147483001, 2147483002, 2147483001, 0o40755
+        )
+        self.assertEqual(options, ["--user", "2147483001:2147483002"])
+        for uid, gid, owner, mode in (
+            (2147483001, 2147483002, 2147483003, 0o40755),
+            (2147483001, 2147483002, 2147483001, 0o40555),
+            (2147483001, 2147483002, 2147483001, 0o40644),
+            (-1, 2147483002, 2147483001, 0o40755),
+            (2147483001, 2**32 - 1, 2147483001, 0o40755),
+        ):
+            with (
+                self.subTest(uid=uid, gid=gid, owner=owner, mode=mode),
+                self.assertRaises(ValueError),
+            ):
+                remote.caller_user_options(uid, gid, owner, mode)
+        for user in ("", "2147483003:2147483002"):
+            data = self.info()
+            data["Config"]["User"] = user
+            with self.subTest(user=user), self.assertRaises(ValueError):
+                self.check_container(data)
+        for key, value in (("RW", False), ("Source", "/another-nonexistent-output")):
+            data = self.info()
+            data["Mounts"][0][key] = value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.check_container(data)
 
     def test_limits_require_memory_swap_cpu_and_serial_threads(self):
         remote.validate_limits(self.limits())
@@ -196,9 +248,7 @@ class Decisions(unittest.TestCase):
                 remote.validate_context(data)
 
     def test_container_decision_rejects_wrong_identity_or_unbounded_resources(self):
-        remote.validate_container(
-            self.info(), "0" * 64, "sha256:" + "0" * 64, "nonexistent-owner"
-        )
+        self.check_container(self.info())
         for key, value in (
             ("Memory", 0),
             ("MemorySwap", -1),
@@ -210,22 +260,16 @@ class Decisions(unittest.TestCase):
             data = self.info()
             data["HostConfig"][key] = value
             with self.subTest(key=key), self.assertRaises(ValueError):
-                remote.validate_container(
-                    data, "0" * 64, "sha256:" + "0" * 64, "nonexistent-owner"
-                )
+                self.check_container(data)
         for key in ("Id", "Image"):
             data = self.info()
             data[key] = "nonexistent"
             with self.subTest(key=key), self.assertRaises(ValueError):
-                remote.validate_container(
-                    data, "0" * 64, "sha256:" + "0" * 64, "nonexistent-owner"
-                )
+                self.check_container(data)
         data = self.info()
         data["Config"]["Labels"]["us10783.run"] = "another-nonexistent-owner"
         with self.assertRaises(ValueError):
-            remote.validate_container(
-                data, "0" * 64, "sha256:" + "0" * 64, "nonexistent-owner"
-            )
+            self.check_container(data)
 
     def test_elapsed_deadline_refuses_any_launch(self):
         with self.assertRaises(TimeoutError):
