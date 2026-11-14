@@ -15483,7 +15483,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/variables/gov/states/wv/tax/income/credits/heptc/wv_homestead_excess_property_tax_credit_eligible.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10927
   state: ruled
   note: Applies the repository statute-first rule. The dated implementation preserves earlier formulas and
     does not resolve other HEPTC household-income, all-owner or refund-settlement requirements. Relevant official
@@ -15515,6 +15516,7 @@ candidates:
     - policyengine_us/variables/gov/states/wv/tax/income/credits/heptc/wv_homestead_excess_property_tax_credit.py
     - policyengine_us/variables/gov/states/wv/tax/income/credits/heptc/wv_homestead_excess_property_tax_credit_eligible.py
     - policyengine_us/variables/gov/states/wv/tax/income/credits/heptc/wv_gross_household_income.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10927
   state: ruled
   note: Records the statute-first current-period reading already in the code; this candidate proposes no formula change. Its years are limited to the explicit retained 2025-versus-2024 conflict. The first two code files read current-period income directly; the gross-income variable aggregates its configured income sources for the requested period. The conflicting overview is captured in source_conflicts/sources/us-wv-heptc-current-year-income.txt; pin it through the normal post-merge registration process. Do not add a source-conflict marker in the initial ruling PR. Negative gross income, household composition, income-source lists, and combined-cap interpretations remain outside this registration.
