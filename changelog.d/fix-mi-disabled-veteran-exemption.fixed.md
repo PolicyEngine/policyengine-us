@@ -1,0 +1,1 @@
+Give Michigan's qualified disabled veteran exemption to every veteran with a service-connected disability, at any rating, as MCL 206.30(3)(b) does, through a new `is_service_connected_disabled_veteran` input; the home heating credit's exemption count follows.
