@@ -1,0 +1,177 @@
+# IRC 25F(e) and proposed 1.25F-2(f): a creditable contribution is excluded
+# from section 170 even when the credit is carried forward for lack of tax.
+- name: Case 1, fully creditable cash cannot also receive a charitable deduction.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_tax_credit_credit_limit: 10_000
+    positive_agi: 100_000
+    filing_status: SINGLE
+  output:
+    resolved_charitable_cash_donations_50_pct: 1_000
+    federal_scholarship_tax_credit_person: 1_000
+    federal_scholarship_charitable_cash_donations: 0
+    charitable_deduction_for_non_itemizers: 0
+    charitable_deduction: 0
+
+- name: Case 2, unused current credit still excludes the gift from section 170.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_tax_credit_credit_limit: 0
+    positive_agi: 100_000
+    filing_status: SINGLE
+  output:
+    federal_scholarship_tax_credit: 0
+    federal_scholarship_tax_credit_carryforward_remaining_0: 1_000
+    federal_scholarship_charitable_cash_donations: 0
+    charitable_deduction_for_non_itemizers: 0
+    charitable_deduction: 0
+
+- name: Case 3, the amount above the annual credit cap remains deductible.
+  period: 2027
+  input:
+    charitable_cash_donations: 2_000
+    federal_scholarship_qualified_contributions: 2_000
+    federal_scholarship_tax_credit_credit_limit: 10_000
+    filing_status: SINGLE
+  output:
+    # Proposed 1.25F-2(h), Example 1: 2_000 - 1_700 = 300.
+    federal_scholarship_tax_credit_person: 1_700
+    federal_scholarship_charitable_cash_donations: 300
+    charitable_deduction_for_non_itemizers: 300
+
+- name: Case 4, generic gifts retain their deduction and receive no scholarship credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 500
+    federal_scholarship_tax_credit_credit_limit: 10_000
+    filing_status: SINGLE
+  output:
+    federal_scholarship_tax_credit: 0
+    federal_scholarship_charitable_cash_donations: 500
+    charitable_deduction_for_non_itemizers: 500
+
+- name: Case 5, a mixed gross gift is counted once and only the credited slice is excluded.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_500
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_tax_credit_credit_limit: 10_000
+    filing_status: SINGLE
+  output:
+    resolved_charitable_cash_donations_50_pct: 1_500
+    federal_scholarship_tax_credit: 1_000
+    federal_scholarship_charitable_cash_donations: 500
+    charitable_deduction_for_non_itemizers: 500
+
+- name: Case 6, detailed gross cash inputs follow the same subset contract.
+  period: 2027
+  input:
+    charitable_cash_donations_50_pct_orgs: 1_500
+    charitable_cash_donations_non_50_pct_orgs: 500
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_tax_credit_credit_limit: 10_000
+    filing_status: SINGLE
+  output:
+    resolved_charitable_cash_donations_50_pct: 1_500
+    resolved_charitable_cash_donations_non_50_pct: 500
+    federal_scholarship_charitable_cash_donations: 500
+    charitable_deduction_for_non_itemizers: 500
+
+- name: Case 7, using a prior credit does not exclude a second current gift.
+  period: 2028
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_tax_credit_carryforward_1: 500
+    federal_scholarship_tax_credit_credit_limit: 10_000
+    filing_status: SINGLE
+  output:
+    federal_scholarship_tax_credit_potential: 0
+    federal_scholarship_tax_credit: 500
+    federal_scholarship_charitable_cash_donations: 1_000
+    charitable_deduction_for_non_itemizers: 1_000
+
+- name: Case 8, the pre-enactment qualified input does not remove an ordinary deduction.
+  period: 2026
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_state_tax_credit: 400
+    filing_status: SINGLE
+  output:
+    federal_scholarship_tax_credit_person: 0
+    federal_scholarship_charitable_cash_donations: 1_000
+    charitable_deduction_for_non_itemizers: 1_000
+
+# 26 CFR 1.170A-1(h)(3)(i), (iv), (vi): state credits normally reduce
+# section-170-eligible giving, with a payment-specific exception at <=15%.
+- name: Case 9, state credits above fifteen percent also reduce deductible giving.
+  period: 2027
+  input:
+    charitable_cash_donations: 2_000
+    federal_scholarship_qualified_contributions: 2_000
+    federal_scholarship_state_tax_credit: 400
+    filing_status: SINGLE
+  output:
+    federal_scholarship_tax_credit_person: 1_600
+    federal_scholarship_state_credit_deduction_reduction: 400
+    federal_scholarship_charitable_cash_donations: 0
+    charitable_deduction_for_non_itemizers: 0
+
+- name: Case 10, a state credit at exactly fifteen percent meets the deduction exception.
+  period: 2027
+  input:
+    charitable_cash_donations: 2_000
+    federal_scholarship_qualified_contributions: 2_000
+    federal_scholarship_state_tax_credit: 300
+    filing_status: SINGLE
+  output:
+    federal_scholarship_tax_credit_person: 1_700
+    federal_scholarship_state_credit_deduction_reduction: 0
+    federal_scholarship_charitable_cash_donations: 300
+    charitable_deduction_for_non_itemizers: 300
+
+- name: Case 11, a state credit below fifteen percent meets the deduction exception.
+  period: 2027
+  input:
+    charitable_cash_donations: 2_000
+    federal_scholarship_qualified_contributions: 2_000
+    federal_scholarship_state_tax_credit: 299
+    filing_status: SINGLE
+  output:
+    federal_scholarship_tax_credit_person: 1_700
+    federal_scholarship_state_credit_deduction_reduction: 0
+    federal_scholarship_charitable_cash_donations: 300
+    charitable_deduction_for_non_itemizers: 300
+
+- name: Case 12, crossing the fifteen percent boundary applies the state reduction.
+  period: 2027
+  input:
+    charitable_cash_donations: 2_000
+    federal_scholarship_qualified_contributions: 2_000
+    federal_scholarship_state_tax_credit: 301
+    filing_status: SINGLE
+  output:
+    federal_scholarship_tax_credit_person: 1_699
+    federal_scholarship_state_credit_deduction_reduction: 301
+    federal_scholarship_charitable_cash_donations: 0
+    charitable_deduction_for_non_itemizers: 0
+
+- name: Case 13, payment-specific state reduction overrides a misleading aggregate ratio.
+  period: 2027
+  input:
+    charitable_cash_donations: 2_000
+    federal_scholarship_qualified_contributions: 2_000
+    federal_scholarship_state_tax_credit: 300
+    # Two 1_000 payments: one has a 200 state credit (20%, reduction200),
+    # the other a 100 credit (10%, no reduction). Aggregate15% hides this.
+    federal_scholarship_state_credit_deduction_reduction: 200
+    filing_status: SINGLE
+  output:
+    federal_scholarship_tax_credit_person: 1_700
+    federal_scholarship_state_credit_deduction_reduction: 200
+    federal_scholarship_charitable_cash_donations: 100
+    charitable_deduction_for_non_itemizers: 100

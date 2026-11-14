@@ -1,0 +1,11 @@
+description: The IRS provides the Federal Scholarship Tax Credit when this provision applies.
+values:
+  2000-01-01: false
+  2027-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Federal Scholarship Tax Credit in effect
+  reference:
+    - title: Public Law 119-21, section 70411(c)(1), effective date of IRC 25F
+      href: https://uscode.house.gov/us/usc/t26/s25F/

@@ -1,0 +1,13 @@
+description: The IRS limits each individual's current-year Federal Scholarship Tax Credit to this amount after the state credit offset.
+values:
+  2000-01-01: 0
+  2027-01-01: 1_700
+metadata:
+  unit: currency-USD
+  period: year
+  label: Federal Scholarship Tax Credit individual maximum
+  reference:
+    - title: 26 U.S.C. 25F(b)(1)
+      href: https://uscode.house.gov/us/usc/t26/s25F/
+    - title: Proposed 26 CFR 1.25F-2(a)(2) and (c)(1), REG-117199-25
+      href: https://www.govinfo.gov/content/pkg/FR-2026-10-02/html/2026-20277.htm

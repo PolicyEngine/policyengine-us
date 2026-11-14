@@ -1,0 +1,20 @@
+# IRC 25F(f) and 26(a): the credit is limited by remaining income tax.
+- name: Case 1, available income tax limits the usable credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_700
+    federal_scholarship_qualified_contributions: 1_700
+    federal_scholarship_tax_credit_credit_limit: 500
+  output:
+    federal_scholarship_tax_credit_potential: 1_700
+    federal_scholarship_tax_credit: 500
+
+- name: Case 2, zero remaining income tax makes the credit unusable this year.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_tax_credit_credit_limit: 0
+  output:
+    federal_scholarship_tax_credit_potential: 1_000
+    federal_scholarship_tax_credit: 0

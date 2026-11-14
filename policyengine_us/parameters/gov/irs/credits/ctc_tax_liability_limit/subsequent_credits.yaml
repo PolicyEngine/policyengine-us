@@ -5,6 +5,11 @@ values:
   # also belong here but are not modeled.
   2013-01-01:
     - residential_clean_energy_credit # Form 5695, line 15 (Schedule 3, line 5a from 2023)
+  # Section 24(d)(1)(B) counts section 25F among the subpart A credits
+  # that can displace refundable CTC, although 25F(f)(1) orders it after CTC.
+  2027-01-01:
+    - federal_scholarship_tax_credit
+    - residential_clean_energy_credit
 
 metadata:
   unit: list
@@ -19,5 +24,7 @@ metadata:
       href: https://www.irs.gov/pub/irs-prior/p972--2020.pdf#page=9
     - title: 26 U.S. Code § 24(d)(1)(B) - Portion of credit refundable
       href: https://www.law.cornell.edu/uscode/text/26/24#d_1_B
+    - title: 26 U.S.C. 25F(f)(1)
+      href: https://uscode.house.gov/us/usc/t26/s25F/
     - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
       href: https://www.law.cornell.edu/uscode/text/26/25D#c

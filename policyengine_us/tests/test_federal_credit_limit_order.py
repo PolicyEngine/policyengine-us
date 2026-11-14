@@ -14,6 +14,8 @@ from the model's parameters):
 - Form 8936, line 11: the same and line 6m.
 - Schedule 8812, Credit Limit Worksheet A: lines 1 through 4, 5b, 6d, 6f, 6m.
 - Form 5695, line 14 worksheet: every other credit, including the CTC.
+- From 2027, section25F(f): earlier personal credits except sections23 and25D;
+  section25D(c) therefore applies after the scholarship credit.
 
 These tests check that the parameters encode that order, and that the model's
 credits match a direct sequential application of 26 U.S.C. 26(a) in that
@@ -45,6 +47,7 @@ LEGAL_ORDER = [
     "used_clean_vehicle_credit",
     "new_clean_vehicle_credit",
     "non_refundable_ctc",
+    "federal_scholarship_tax_credit",
     "residential_clean_energy_credit",
 ]
 
@@ -64,6 +67,7 @@ PRECEDING_CREDITS = {
     "used_clean_vehicle_credit": "clean_vehicle.used.preceding_credits",
     "new_clean_vehicle_credit": "clean_vehicle.new.preceding_credits",
     "non_refundable_ctc": "ctc_tax_liability_limit.preceding_credits",
+    "federal_scholarship_tax_credit": "federal_scholarship.preceding_credits",
     "residential_clean_energy_credit": "residential_clean_energy.preceding_credits",
 }
 
@@ -76,6 +80,7 @@ DATES = [
     "2023-06-01",
     "2025-06-01",
     "2026-06-01",
+    "2027-01-01",
     "2035-06-01",
 ]
 
@@ -89,9 +94,12 @@ def credit_list(credits, path, date):
 
 def expected_preceding(non_refundable, credit):
     before = non_refundable[: non_refundable.index(credit)]
-    if credit == "residential_clean_energy_credit":
-        # Its limit subtracts the CTC in the formula (Form 1040, line 19, or
-        # Credit Limit Worksheet B, line 14), not through the list.
+    if credit in (
+        "federal_scholarship_tax_credit",
+        "residential_clean_energy_credit",
+    ):
+        # These limits subtract CTC in the formula (Form1040 line19 or
+        # Credit Limit Worksheet B line14), not through the list.
         before = [c for c in before if c != "non_refundable_ctc"]
     return before
 

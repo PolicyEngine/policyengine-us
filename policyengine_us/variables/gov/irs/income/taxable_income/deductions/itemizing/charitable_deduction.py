@@ -135,7 +135,9 @@ class charitable_deduction(Variable):
         #   (B) Cash & non-cash ordinary to non-50% limit orgs: 30% AGI (reduced by 50% gifts)
         #   (C) Capital gain property to 50% limit orgs: 30% AGI (reduced by ordinary 50% gifts)
         #   (D) Capital gain property to non-50% limit orgs: 20% AGI (taken into account last)
-        cash_50 = add(tax_unit, period, ["resolved_charitable_cash_donations_50_pct"])
+        cash_50 = add(
+            tax_unit, period, ["federal_scholarship_charitable_cash_donations"]
+        )
         cash_non_50 = add(
             tax_unit, period, ["resolved_charitable_cash_donations_non_50_pct"]
         )

@@ -48,6 +48,19 @@ values:
     - non_refundable_ctc # Form 1040, line 19
     # Adoption expense credit, home mortgage credit
     - residential_clean_energy_credit # Schedule 3, line 5a
+  2027-01-01:
+    - foreign_tax_credit
+    - cdcc
+    - elderly_disabled_credit
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - energy_efficient_home_improvement_credit
+    - used_clean_vehicle_credit
+    - new_clean_vehicle_credit
+    - non_refundable_ctc
+    - federal_scholarship_tax_credit
+    - residential_clean_energy_credit
 
 metadata:
   unit: list
@@ -59,6 +72,8 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/26/21#g_1
     - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
       href: https://www.law.cornell.edu/uscode/text/26/25D#c
+    - title: 26 U.S.C. 25F(f)(1) - Carryforward and ordering of unused scholarship credit
+      href: https://uscode.house.gov/us/usc/t26/s25F/
     - title: 26 U.S. Code § 30D - New qualified plug-in electric drive motor vehicles (c)(2)
       href: https://www.law.cornell.edu/uscode/text/26/30D#c_2
     - title: 2025 Schedule 3 (Form 1040), Additional Credits and Payments
