@@ -54,12 +54,24 @@ class mt_medical_expense_deduction_joint(Variable):
                 )
                 if supplied_subtotal:
                     # The exclusion supplied with a subtotal holds every
-                    # premium that subtotal leaves out. Take the medical
-                    # premiums first: up to the filers' premiums plus the
-                    # medical premiums the dependents deducted. The rest
-                    # covered long-term care premiums.
-                    medical_exclusion = min_(
-                        filer_premiums + dependent_exclusion, excluded
+                    # premium that subtotal leaves out. Read the part above
+                    # the filers' own exclusion as the medical premiums the
+                    # dependents deducted, up to their computed exclusion.
+                    # Take the rest from the filers' medical premiums first;
+                    # what remains covered long-term care premiums.
+                    filer_exclusion = add(
+                        tax_unit,
+                        period,
+                        [
+                            "itemized_medical_expenses_excluded_premiums",
+                            "itemized_medical_expenses_excluded_long_term_care_premiums",
+                        ],
+                    )
+                    dependent_part = min_(
+                        dependent_exclusion, max_(0, excluded - filer_exclusion)
+                    )
+                    medical_exclusion = (
+                        min_(filer_premiums, excluded - dependent_part) + dependent_part
                     )
                 else:
                     # Beside a computed subtotal, a supplied exclusion covers

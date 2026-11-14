@@ -708,8 +708,9 @@
         state_code: MT
   output:
     itemized_medical_expenses_excluded_dependent_premiums: 1_000
-    # Medical premiums the subtotal leaves out: min(0 + 1,000, 1,000) = 1,000.
-    # Premiums left in it: 3,000 - 1,000 = 2,000.
+    # The filers excluded nothing, so the 1,000 exclusion holds the
+    # dependent's deducted premiums: min(1,000, 1,000 - 0) = 1,000.
+    # Premiums left in the subtotal: 3,000 - 1,000 = 2,000.
     # Line 1: (10,000 - 2,000) - 7.5% x 100,000 = 500, as computed.
     mt_medical_expense_deduction_joint: [500, 0]
 
@@ -745,9 +746,51 @@
         state_code: MT
   output:
     itemized_medical_expenses_excluded_dependent_premiums: 600
-    # Medical premiums the subtotal leaves out: min(6,000 + 600, 7,000) =
-    # 6,600. Premiums left in it: 7,000 - 6,600 = 400.
+    # The filers' own exclusion: 6,000 + 400 = 6,400. The other
+    # 7,000 - 6,400 = 600 of the supplied exclusion holds the dependent's
+    # deducted premiums. Medical premiums the subtotal leaves out:
+    # min(6,000, 7,000 - 600) + 600 = 6,600; premiums left in it:
+    # 7,000 - 6,600 = 400.
     # Line 1: (10,400 - 400) - 7.5% x 40,000 = 7,000.
     # Lines 2 and 3: 6,000 + 400 - 6,400 = 0.
+    mt_premium_deduction_joint: 0
+    mt_medical_expense_deduction_joint: [7_000, 0]
+
+- name: Montana leaves a dependent's deducted premiums in a supplied subtotal when its exclusion covers the filers only.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        age: 30
+        health_insurance_premiums: 6_000
+        long_term_health_insurance_premiums: 400
+        self_employed_health_insurance_ald_person: 6_400
+      dependent:
+        is_tax_unit_dependent: true
+        age: 10
+        health_insurance_premiums: 1_000
+        self_employed_health_insurance_ald_person: 600
+    tax_units:
+      parents:
+        members: [parent, dependent]
+        # This subtotal holds 10,000 of other expenses and all 1,000 of the
+        # dependent's premiums. Its exclusion holds only the parent's 6,000
+        # of medical and 400 of long-term care premiums.
+        itemized_medical_expenses: 11_000
+        itemized_medical_expenses_applied_exclusion: 6_400
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: MT
+  output:
+    itemized_medical_expenses_excluded_dependent_premiums: 600
+    # The supplied exclusion equals the filers' own 6,400, so none of it
+    # holds the dependent's premiums: min(600, 6,400 - 6,400) = 0.
+    # Medical premiums the subtotal leaves out: min(6,000, 6,400) = 6,000;
+    # premiums left in it: 7,000 - 6,000 = 1,000.
+    # Line 1: (11,000 - 1,000) - 7.5% x 40,000 = 7,000.
     mt_premium_deduction_joint: 0
     mt_medical_expense_deduction_joint: [7_000, 0]
