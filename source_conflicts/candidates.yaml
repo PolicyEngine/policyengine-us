@@ -15486,6 +15486,7 @@ candidates:
     code:
     - policyengine_us/variables/gov/states/nj/tax/income/credits/cdcc/nj_cdcc.py
     - policyengine_us/parameters/gov/states/nj/tax/income/credits/cdcc/rate.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10943
   state: ruled
-  note: "PolicyEngine follows the enacted statute under CONTRIBUTING.md. This candidate records the model reading; it does not assert a ruled global registry entry or a personal ruling. Add the actual ruling PR URL after creation. Preserve the complete statute and worksheet context in the separately owned source archive."
+  note: "PolicyEngine follows the enacted statute under CONTRIBUTING.md. This candidate records the model reading pending shared-register registration. The source archive retains the complete statute and worksheet context."
