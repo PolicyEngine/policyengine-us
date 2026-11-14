@@ -1,0 +1,105 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/mi/tax/income/mi_household_resources.yaml
+# Batch A audit cases. Each fails on upstream/main 06c0dcbc54 (the value main
+# gives is in the comment) and passes once the source is counted.
+# Line numbers are the MI-1040CR's (2025 MI-1040 book, pages 26, 31 and 32).
+# MCL 206.510(1): "Income" means the sum of federal adjusted gross income
+# "plus all income specifically excluded or exempt from the computations of
+# the federal adjusted gross income."
+
+- name: IRA and 401(k) distributions are line 18 pension and retirement benefits
+  period: 2025
+  input:
+    age: 68
+    employment_income_before_lsr: 20_000
+    taxable_ira_distributions: 10_000
+    taxable_401k_distributions: 5_000
+    state_code: MI
+  output:
+    # Line 14: 20,000.
+    # Line 18: "Enter all annuity, retirement, pension and individual
+    # retirement account (IRA) benefits. This should be the taxable amount
+    # shown on your U.S. Form 1099-R": 10,000 + 5,000 = 15,000.
+    # Line 33: 20,000 + 15,000 = 35,000. Main: 20,000.
+    mi_household_resources: 35_000
+
+- name: Military retired pay and a survivor annuity are line 18 retirement benefits
+  period: 2025
+  input:
+    age: 68
+    employment_income_before_lsr: 10_000
+    military_retirement_pay: 15_000
+    military_retirement_pay_survivors: 2_000
+    state_code: MI
+  output:
+    # Line 14: 10,000.
+    # Line 26: "Veterans receiving retirement benefits should enter the
+    # benefits on line 18." Line 18: 15,000 + 2,000 = 17,000.
+    # Line 33: 10,000 + 17,000 = 27,000. Main: 10,000.
+    mi_household_resources: 27_000
+
+- name: A taxable Roth conversion is line 18 income
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    taxable_roth_conversions: 5_000
+    state_code: MI
+  output:
+    # Line 18: "amounts rolled over into a Roth IRA must be included to the
+    # extent included in AGI": 5,000.
+    # Line 33: 20,000 + 5,000 = 25,000. Main: 20,000.
+    mi_household_resources: 25_000
+
+- name: Forgiven debt included in federal AGI is line 20 income
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    debt_relief: 4_000
+    state_code: MI
+  output:
+    # Line 20: "forgiveness of debt to the extent included in federal AGI
+    # (e.g., mortgage foreclosure)": 4,000.
+    # Line 33: 20,000 + 4,000 = 24,000. Main: 20,000.
+    mi_household_resources: 24_000
+
+- name: Employer dependent care benefits stay in household resources
+  period: 2025
+  input:
+    employment_income_before_lsr: 40_000
+    dependent_care_employer_benefits: 3_000
+    state_code: MI
+  output:
+    # Compensation is 40,000, of which 3,000 is dependent care assistance
+    # (W-2 box 10). Whatever part IRC 129 excludes, total household resources
+    # include "Reimbursement from dependent care and/or medical care spending
+    # accounts" (book page 26; line 25), and the rest is federal AGI (Form
+    # 1040 line 1e).
+    # Line 33: 40,000. Main: 37,000.
+    mi_household_resources: 40_000
+
+- name: Survivor benefits other than Social Security are household resources
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    survivor_benefits: 6_000
+    state_code: MI
+  output:
+    # Line 18 ("all annuity, retirement, pension ... benefits") or line 25
+    # ("Death benefits paid by or on behalf of an employer"): 6,000.
+    # Line 33: 20,000 + 6,000 = 26,000. Main: 20,000.
+    mi_household_resources: 26_000
+
+- name: After-tax premiums reported without Medicare Part B come off on line 31
+  period: 2025
+  input:
+    employment_income_before_lsr: 30_000
+    health_insurance_premiums_without_medicare_part_b: 1_200
+    state_code: MI
+  output:
+    # MCL 206.510(1): a person "may deduct from income the amount that person
+    # paid in premiums in the tax year for that insurance plan for the
+    # person's family". The premiums are in the decomposed input, which
+    # medical_expense_health_insurance_premiums reads when the direct
+    # health_insurance_premiums input is zero.
+    # Line 14: 30,000. Line 31: 1,200.
+    # Line 33: 30,000 - 1,200 = 28,800. Main: 30,000.
+    mi_household_resources: 28_800

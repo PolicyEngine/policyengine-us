@@ -1,0 +1,167 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/ok/tax/income/ok_gross_income.yaml
+# Each case fails on main (06c0dcbc54), with or without #10769, and passes once
+# the gap is fixed.
+# 68 O.S. 5012 and 2904(3): "gross household income" means the gross amount of
+# income of every type, regardless of the source, received by all persons
+# occupying the same household, whether such income was taxable or nontaxable
+# for federal or state income tax purposes, including pensions, annuities,
+# federal social security, unemployment payments, veterans' disability
+# compensation, public assistance payments, alimony, support money, workers'
+# compensation, loss-of-time insurance payments, capital gains and any other
+# type of income received; and excluding gifts.
+
+- name: OK gross household income counts everyone living in the household
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+        # 1,500 a month, above the SSI income limit, so no SSI is computed.
+        social_security_retirement: 18_000
+      adult_child:
+        age: 40
+        irs_employment_income: 30_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+        eitc: 0
+      child_unit:
+        members: [adult_child]
+        eitc: 0
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: OK
+  output:
+    # Income "received by all persons occupying the same household"; Form
+    # 538-S line 13, "income of others living in your household".
+    # 18,000 + 30,000 = 48,000 on either claim (main: [18,000, 30,000]).
+    ok_gross_income: [48_000, 48_000]
+
+- name: OK gross income counts nontaxable W-2 income such as dependent care benefits
+  period: 2025
+  input:
+    age: 40
+    employment_income: 20_000
+    # Excluded from federal wages (W-2 box 10), so irs_employment_income is
+    # 17,000.
+    dependent_care_employer_benefits: 3_000
+    eitc: 0
+    state_code: OK
+  output:
+    # Form 538-S line 1: wages "(including nontaxable income from your
+    # W-2s)"; its definitions name "a dependent care reimbursement account".
+    # 20,000 (main: 17,000).
+    ok_gross_income: 20_000
+
+- name: OK gross income counts IRA distributions
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 10_000
+    taxable_ira_distributions: 15_000
+    eitc: 0
+    state_code: OK
+  output:
+    # Form 538-S line 6: "Other pensions, annuities, and Individual
+    # Retirement Accounts (IRAs)". Deferred income is "included when
+    # distributed and taxed on your federal return".
+    # 10,000 + 15,000 = 25,000 (main: 10,000).
+    ok_gross_income: 25_000
+
+- name: OK gross income counts TANF as a public assistance payment
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 5_000
+    tanf: 2_400
+    eitc: 0
+    state_code: OK
+  output:
+    # "public assistance payments".
+    # 5,000 + 2,400 = 7,400 (main: 5,000).
+    ok_gross_income: 7_400
+
+- name: OK gross income counts veterans' disability compensation
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 10_000
+    veterans_benefits: 12_000
+    eitc: 0
+    state_code: OK
+  output:
+    # "veterans' disability compensation".
+    # 10,000 + 12,000 = 22,000 (main: 10,000).
+    ok_gross_income: 22_000
+
+- name: OK gross income counts loss-of-time insurance and disability benefits
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 10_000
+    disability_benefits: 6_000
+    eitc: 0
+    state_code: OK
+  output:
+    # "loss-of-time insurance payments".
+    # 10,000 + 6,000 = 16,000 (main: 10,000).
+    ok_gross_income: 16_000
+
+- name: OK gross income counts school grants and scholarships
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 10_000
+    educational_assistance: 4_000
+    eitc: 0
+    state_code: OK
+  output:
+    # Forms 538-S and 538-H: gross household income "includes, but is not
+    # limited to ... school grants or scholarships".
+    # 10,000 + 4,000 = 14,000 (main: 10,000).
+    ok_gross_income: 14_000
+
+- name: OK gross income counts gambling winnings
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 10_000
+    gambling_winnings: 3_000
+    eitc: 0
+    state_code: OK
+  output:
+    # "income of every type, regardless of the source".
+    # 10,000 + 3,000 = 13,000 (main: 10,000).
+    ok_gross_income: 13_000
+
+- name: OK gross income counts the earned income credit received in the year, not this year's credit
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 10_000
+    # The credit on the 2025 return, paid in 2026.
+    eitc: 3_000
+    state_code: OK
+  output:
+    # Form 538-S line 9: "Earned Income Credit (EIC) received in 2025". The
+    # 2025 credit is received in 2026, so it is not 2025 income. This case
+    # assumes the fix records credits received in an input that defaults to
+    # zero, as Montana's elderly homeowner/renter credit does.
+    # 10,000 (main: 13,000).
+    ok_gross_income: 10_000
+
+- name: OK gross income counts foreign earned income excluded from federal income
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 10_000
+    # Wage inputs are the amounts left after the IRC 911 exclusion.
+    foreign_earned_income_exclusion: 10_000
+    eitc: 0
+    state_code: OK
+  output:
+    # Income counts "whether such income was taxable or nontaxable for
+    # federal or state income tax purposes".
+    # 10,000 + 10,000 = 20,000 (main: 10,000).
+    ok_gross_income: 20_000

@@ -1,0 +1,45 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/ut/tax/income/credits/ut_ctc.yaml
+# Batch F (sweep). Not run. Fails on main (06c0dcbc54), where
+# ut_ctc_potential phases the credit out on tax_exempt_interest_income +
+# ut_taxable_income (total income less Utah subtractions and the state tax
+# refund).
+#
+# Law: Utah Code 59-10-1047(1)(d): "Modified adjusted gross income" is the sum
+# of "(i) adjusted gross income ...; (ii) any interest income that is not
+# included in adjusted gross income ...; and (iii) any addition to adjusted
+# gross income required by Section 59-10-114". Nothing is subtracted.
+# 2025 TC-40 instructions, Child Tax Credit Worksheet (PDF page 24): line 3 is
+# "the amount from TC-40, line 6 (Total Income)".
+
+- name: Batch F UT, Utah subtractions do not reduce modified adjusted gross income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child_ignoring_filer_identification: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child_ignoring_filer_identification: true
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        ut_total_income: 50_000
+        ut_subtractions: 5_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: UT
+  output:
+    # MAGI = total income 50,000 + tax-exempt interest 0 = 50,000.
+    # Excess over the head of household threshold: 50,000 - 43,000 = 7,000.
+    # Reduction: 7,000 x 0.10 = 700. Credit: 1,000 - 700 = 300.
+    # Main uses 50,000 - 5,000 = 45,000: 1,000 - 2,000 x 0.10 = 800.
+    ut_ctc_potential: 300

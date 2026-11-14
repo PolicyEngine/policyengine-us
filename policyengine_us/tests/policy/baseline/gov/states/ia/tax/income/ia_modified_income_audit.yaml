@@ -1,0 +1,76 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/ia/tax/income/ia_modified_income.yaml
+# (No such file on upstream/main 06c0dcbc54.)
+# Batch E audit cases. Each fails on main (main's value is in the comment).
+# Iowa Code 422.5(2)(a): net income for the low-income exemption, the tax
+# reduction and the alternate tax adds back "any amount of itemized or
+# standard deduction, personal exemption deduction, or qualified business
+# income deduction that was allowed as a deduction in computing federal
+# taxable income". 2025 expanded instructions, line 4: Iowa taxable income
+# (line 4) + line 1d + Schedule 1-A line 37 + line 1e.
+# The expected values do not depend on the size of the standard deduction:
+# it is subtracted in line 2 and added back. Not run (the audit was read-only).
+
+- name: The qualified business income deduction is added back once.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        qualified_business_income_deduction: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Line 2: 50,000 - standard deduction - 2,000. Add back the standard
+    # deduction and the 2,000. Main: 52,000 (the 2,000 is added twice).
+    ia_modified_income: 50_000
+
+- name: The overtime deduction is not one of the deductions added back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        overtime_income_deduction: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Line 2: 50,000 - standard deduction - 5,000 (federal Form 1040 line
+    # 13b). Only the standard deduction is added back. Main: 50,000.
+    ia_modified_income: 45_000
+
+- name: Federal taxable income may be negative for Iowa, so low income stays low.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Line 2: 8,000 - standard deduction (negative). Add back the standard
+    # deduction: 8,000. Main: the standard deduction (15,750), because
+    # taxable income is floored at zero first.
+    ia_modified_income: 8_000
+    # 8,000 <= 9,000. Main: false.
+    ia_is_tax_exempt: true

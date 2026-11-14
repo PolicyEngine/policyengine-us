@@ -1,0 +1,20 @@
+# Target: policyengine_us/tests/policy/baseline/gov/states/wv/tax/income/credits/heptc/wv_gross_household_income.yaml
+# (No such file on upstream/main 06c0dcbc54; open PR #10722 creates it.)
+# Batch E audit case. Fails on main (main's value is in the comment).
+# W. Va. Code 11-21-23(d)(1): gross household income is federal adjusted gross
+# income plus "(C) Workers' compensation and loss of earnings insurance".
+# Not run (the audit was read-only).
+
+- name: Disability insurance benefits outside federal AGI are loss of earnings insurance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 60
+    state_code: WV
+    employment_income: 20_000
+    workers_compensation: 1_000
+    tax_exempt_disability_benefits: 4_000
+  output:
+    # Federal AGI 20,000 + 1,000 workers' compensation + 4,000 loss of
+    # earnings insurance. Main: 21,000.
+    wv_gross_household_income: 25_000
