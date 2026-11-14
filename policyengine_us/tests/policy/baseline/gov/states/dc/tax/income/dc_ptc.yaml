@@ -290,3 +290,51 @@
         state_code: MN
   output:
     dc_ptc: 0
+
+# DC Office of Revenue Analysis, Notice N146436 (D.C. Register Vol. 73/37):
+# for tax year 2026 the non-senior income threshold is $67,600 and the
+# maximum credit is $1,475.
+- name: DC property tax credit 2026 non-senior just below the $67,600 income threshold
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 67_550
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    adjusted_gross_income: 67_550
+    # AGI 67,550 sits in the 5% band (52,000 to 67,600).
+    # Credit = 4,000 - 0.05 x 67,550 = 4,000 - 3,377.50 = 622.50
+    dc_ptc: 622.50
+
+- name: DC property tax credit 2026 reaches the $1,475 maximum
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 10_000
+        real_estate_taxes: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    adjusted_gross_income: 10_000
+    # Credit = min(1,475, 5,000 - 0.03 x 10,000 = 4,700) = 1,475
+    dc_ptc: 1_475
