@@ -86,3 +86,61 @@
   output:
     # Base for 12: $1,225 + increment $53 = $1,278
     sd_tanf_payment_standard: 1_278
+
+- name: Case 11, source-bound July 2026 independent payment table component.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    # Component sizes stand for the source's eligible parent-unit count.
+    # This does not certify that arbitrary SPM membership forms that unit.
+    spm_unit_size:
+      2026: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    state_code:
+      2026: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    sd_tanf_is_shared_living: [false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    # ARSD 67:10:05:03, effective July 1, 2026: 12 literal rows;
+    # above 12, the unchanged $53 increment gives $1,304 + $53 = $1,357.
+    sd_tanf_payment_standard: [491, 601, 672, 743, 812, 884, 954, 1_025, 1_093, 1_163, 1_233, 1_304, 1_357]
+
+- name: Case 12, source-bound July 2026 shared payment table component.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    # Shared status and size are explicit component inputs, not routing proof.
+    spm_unit_size:
+      2026: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    state_code:
+      2026: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    sd_tanf_is_shared_living: [true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # ARSD 67:10:05:03, effective July 1, 2026: 12 literal rows;
+    # above 12, $1,118 + the unchanged $53 increment = $1,171.
+    sd_tanf_payment_standard: [304, 414, 486, 557, 627, 697, 767, 839, 909, 977, 1_047, 1_118, 1_171]
+
+- name: Case 13, June 2026 independent component preserves the prior schedule.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2026: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    state_code:
+      2026: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    sd_tanf_is_shared_living: [false, false, false, false, false, false, false, false, false, false, false, false, false]
+  output:
+    # Existing schedule and $53 extension: compatibility, not a new audit
+    # of the held earlier adoption dates or full assistance-unit routing.
+    sd_tanf_payment_standard: [461, 564, 631, 698, 763, 830, 896, 963, 1_027, 1_092, 1_158, 1_225, 1_278]
+
+- name: Case 14, June 2026 shared component preserves the prior schedule.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2026: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    state_code:
+      2026: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    sd_tanf_is_shared_living: [true, true, true, true, true, true, true, true, true, true, true, true, true]
+  output:
+    # Existing shared schedule and $53 extension; same held-date limitations.
+    sd_tanf_payment_standard: [285, 389, 456, 523, 589, 655, 720, 788, 854, 918, 984, 1_050, 1_103]
