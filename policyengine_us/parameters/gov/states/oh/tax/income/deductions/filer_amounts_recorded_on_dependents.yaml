@@ -1,0 +1,16 @@
+description: Ohio deducts these medical amounts the filer paid for dependents, even when recorded on the covered dependent. Other deductions on a dependent belong on their own return.
+values:
+  2021-01-01:
+    # Premiums and medical care the taxpayer paid "for the taxpayer, the
+    # taxpayer's spouse, and dependents" (R.C. 5747.01(A)(10)), recorded on
+    # the person they covered.
+    - oh_unreimbursed_medical_care_expense_deduction_person
+metadata:
+  unit: list
+  period: year
+  label: Ohio filer-paid medical deductions recorded on dependents
+  reference:
+    - title: Ohio Revised Code 5747.01(A)(10)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+    - title: Ohio 2025 IT 1040 Instructions, Schedule of Adjustments line 44
+      href: https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=24

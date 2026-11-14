@@ -15,8 +15,12 @@ class sc_net_capital_gain_deduction(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        ltcg = add(tax_unit, period, ["long_term_capital_gains"])
-        stcg = add(tax_unit, period, ["short_term_capital_gains"])
+        # S.C. Code 12-6-1150(A) deducts 44% of the net capital gain included
+        # in the individual's federal taxable income. A tax unit dependent's
+        # gains are on the dependent's own return, so only the head's and
+        # spouse's gains count.
+        ltcg = tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
+        stcg = tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
         capped_stcg = min_(0, stcg)
         base = max_(0, ltcg + capped_stcg)
         p = parameters(period).gov.states.sc.tax.income.deductions.net_capital_gain

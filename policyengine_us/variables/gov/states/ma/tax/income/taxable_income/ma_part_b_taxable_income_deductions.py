@@ -35,7 +35,11 @@ class ma_part_b_taxable_income_deductions(Variable):
         # Bank interest deduction.
         filing_status = tax_unit("ma_filing_status", period)
         if tax.exemptions.interest.in_effect:
-            bank_interest = add(tax_unit, period, ["taxable_interest_income"])
+            # The head's and spouse's interest: a tax unit dependent's is on
+            # the dependent's own return.
+            bank_interest = tax_unit_non_dep_add(
+                tax_unit, period, ["taxable_interest_income"]
+            )
             bank_interest_deduction = min_(
                 tax.exemptions.interest.amount[filing_status],
                 bank_interest,

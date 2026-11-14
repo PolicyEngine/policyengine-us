@@ -18,10 +18,17 @@ class ma_long_term_capital_gains(Variable):
     reference = (
         "https://taxsim.nber.org/historical_state_tax_forms/MA/2023/dor-2023-inc-sch-d-(form-1).pdf",
         "https://taxsim.nber.org/historical_state_tax_forms/MA/2023/dor-2023-inc-form1-instructions.pdf#page=27",
+        "https://budget.digital.mass.gov/govbudget/fy27/tax-expenditure-budget/personal-income-tax/introduction/",
     )
     defined_for = StateCode.MA
-    adds = [
-        "long_term_capital_gains",
-        "non_sch_d_capital_gains",
-        "other_net_gain",
-    ]
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            [
+                "long_term_capital_gains",
+                "non_sch_d_capital_gains",
+                "other_net_gain",
+            ],
+        )

@@ -15,7 +15,7 @@ class ma_part_a_adjusted_dividends(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        dividends = add(tax_unit, period, ["dividend_income"])
+        dividends = tax_unit_non_dep_add(tax_unit, period, ["dividend_income"])
         losses_applied = add(
             tax_unit,
             period,

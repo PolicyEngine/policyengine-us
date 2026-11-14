@@ -108,3 +108,20 @@
     # Taxable LTCG = 1,000,000 - 108,000 - 270,000 = 622,000.
     # Tax = 622,000 * 0.07 = 43,540.
     wa_capital_gains_tax: 43_540
+
+- name: A dependent's gains are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 100_000
+      child:
+        age: 10
+        long_term_capital_gains: 300_000
+    household:
+      state_code: WA
+  output:
+    wa_capital_gains_tax: 0

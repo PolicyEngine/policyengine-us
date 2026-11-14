@@ -20,9 +20,11 @@ class ma_short_term_loss_against_dividends(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        short_term_capital_gains = add(tax_unit, period, ["short_term_capital_gains"])
+        short_term_capital_gains = tax_unit_non_dep_add(
+            tax_unit, period, ["short_term_capital_gains"]
+        )
         short_term_capital_loss = max_(0, -short_term_capital_gains)
-        dividends = add(tax_unit, period, ["dividend_income"])
+        dividends = tax_unit_non_dep_add(tax_unit, period, ["dividend_income"])
         cap = parameters(
             period
         ).gov.states.ma.tax.income.capital_gains.deductible_against_interest_dividends

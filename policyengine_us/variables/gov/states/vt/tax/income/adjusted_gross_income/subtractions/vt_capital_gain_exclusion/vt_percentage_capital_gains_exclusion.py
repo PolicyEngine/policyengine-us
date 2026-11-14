@@ -19,7 +19,11 @@ class vt_percentage_capital_gains_exclusion(Variable):
         # depreciable personal property (except farm property/timber), and real estate.
         # Since standard capital gains inputs map to financial instruments (ineligible),
         # we only use explicitly designated VT-eligible capital gains.
-        eligible_gains = add(
+        # 32 V.S.A. 5811(21)(B)(ii) excludes 40% of gains on "assets held by
+        # the taxpayer for more than three years", to the extent included in
+        # federal adjusted gross income. A tax unit dependent's gains are on
+        # the dependent's own return, so only the head's and spouse's count.
+        eligible_gains = tax_unit_non_dep_add(
             tax_unit,
             period,
             ["long_term_capital_gains_on_assets_eligible_for_vt_exclusion"],

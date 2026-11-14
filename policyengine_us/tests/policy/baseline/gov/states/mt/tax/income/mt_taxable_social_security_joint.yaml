@@ -1,0 +1,41 @@
+- name: A dependent's tax-exempt interest and benefits are on the dependent's own return
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 30_000
+        taxable_pension_income: 20_000
+      child:
+        age: 10
+        tax_exempt_interest_income: 50_000
+        social_security_survivors: 10_000
+    household:
+      state_code: MT
+  output:
+    # Pension exemption: 5,060. Provisional income: 35,000 - 5,060 = 29,940.
+    # Taxable benefits: (29,940 - 25,000) x 0.5 = 2,470.
+    mt_pension_exemption_joint: 5_060
+    mt_taxable_social_security_joint: 2_470
+    taxable_social_security: [5_350, 0]
+
+- name: Same household without the dependent's income
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 30_000
+        taxable_pension_income: 20_000
+      child:
+        age: 10
+    household:
+      state_code: MT
+  output:
+    # Pension exemption: 5,060. Provisional income: 35,000 - 5,060 = 29,940.
+    # Taxable benefits: (29,940 - 25,000) x 0.5 = 2,470.
+    mt_pension_exemption_joint: 5_060
+    mt_taxable_social_security_joint: 2_470
+    taxable_social_security: [5_350, 0]

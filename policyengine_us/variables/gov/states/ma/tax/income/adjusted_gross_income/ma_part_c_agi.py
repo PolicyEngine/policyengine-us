@@ -18,7 +18,9 @@ class ma_part_c_agi(Variable):
         # Schedule B applies a short-term loss first against up to $2,000 of
         # dividends (line 20). Only the rest (line 21) offsets long-term
         # gains (line 22 and Schedule D, lines 14 and 15).
-        short_term_capital_gains = add(tax_unit, period, ["short_term_capital_gains"])
+        short_term_capital_gains = tax_unit_non_dep_add(
+            tax_unit, period, ["short_term_capital_gains"]
+        )
         short_term_capital_loss = max_(0, -short_term_capital_gains)
         loss_against_dividends = tax_unit(
             "ma_short_term_loss_against_dividends", period

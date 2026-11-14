@@ -33,3 +33,20 @@
     short_term_capital_gains: -5_000
   output: 
     sc_net_capital_gain_deduction: 880
+
+- name: A dependent's gains are on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        long_term_capital_gains: 100_000
+    household:
+      state_code: SC
+  output:
+    sc_net_capital_gain_deduction: 4_400

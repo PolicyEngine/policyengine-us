@@ -1,0 +1,94 @@
+- name: A dependent's U.S. government interest is not subtracted
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        us_govt_interest_person: 200
+        taxable_interest_income: 200
+      child:
+        age: 10
+        us_govt_interest_person: 50_000
+        taxable_interest_income: 50_000
+    household:
+      state_code: DE
+  output:
+    de_subtractions: [200, 0]
+
+- name: A dependent's state tax refund is not subtracted
+  # 30 Del. C. 1106(b)(9) subtracts a Delaware refund "to the extent included
+  # in federal adjusted gross income". The child's is on the child's return.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        salt_refund_income: 300
+      child:
+        age: 16
+        salt_refund_income: 5_000
+    household:
+      state_code: DE
+  output:
+    de_subtractions: [300, 0]
+
+- name: A dependent's 2021 unemployment compensation is not subtracted
+  # 30 Del. C. 1106(b)(10): 2020 and 2021 unemployment benefits, "to the
+  # extent included in federal adjusted gross income".
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        unemployment_compensation: 1_000
+      child:
+        age: 16
+        unemployment_compensation: 10_000
+    household:
+      state_code: DE
+  output:
+    de_subtractions: [1_000, 0]
+
+- name: A dependent's 529 contribution is not subtracted
+  # 30 Del. C. 1106(b)(11): amounts "contributed by an individual", or by the
+  # spouses on a joint return. A contributor's subtraction is on their own
+  # return.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        investment_in_529_plan_indv: 300
+      child:
+        age: 16
+        investment_in_529_plan_indv: 800
+    household:
+      state_code: DE
+  output:
+    de_subtractions: [300, 0]
+
+- name: A dependent's own items leave Delaware taxable income unchanged
+  # Taxable income is the head's $60,000 less the $3,250 standard deduction,
+  # as without the child's refund. Counting the refund made it $51,750.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+      child:
+        age: 16
+        salt_refund_income: 5_000
+    household:
+      state_code: DE
+  output:
+    de_taxable_income_joint: [56_750, 0]

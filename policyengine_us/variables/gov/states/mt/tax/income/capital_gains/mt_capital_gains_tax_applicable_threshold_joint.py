@@ -12,8 +12,10 @@ class mt_capital_gains_tax_applicable_threshold_joint(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.main.capital_gains
-        ltcg = add(tax_unit, period, ["long_term_capital_gains"])
-        stcg = add(tax_unit, period, ["short_term_capital_gains"])
+        # The head's and spouse's gains: a tax unit dependent's are on the
+        # dependent's own return, as federal taxable income leaves them out.
+        ltcg = tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
+        stcg = tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
         capital_gains = max_(min_(ltcg, ltcg + stcg), 0)
         taxable_income = add(tax_unit, period, ["mt_taxable_income_joint"])
         filing_status = tax_unit("filing_status", period)

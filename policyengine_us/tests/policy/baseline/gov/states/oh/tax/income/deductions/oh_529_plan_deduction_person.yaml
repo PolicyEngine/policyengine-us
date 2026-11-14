@@ -54,3 +54,26 @@
         state_code: OH
   output:
     oh_529_plan_deduction_person: [0, 0]
+
+- name: Filer contributions determine each share without a dependent's contribution
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        investment_in_529_plan_indv: 3_000
+        count_529_contribution_beneficiaries: 1
+      spouse:
+        is_tax_unit_spouse: true
+        investment_in_529_plan_indv: 1_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        investment_in_529_plan_indv: 5_000
+        count_529_contribution_beneficiaries: 1
+    household:
+      state_code: OH
+  output:
+    # Filer contributions total 4,000 for one beneficiary, shared 3,000:1,000.
+    oh_529_plan_deduction: 4_000
+    oh_529_plan_deduction_person: [3_000, 1_000, 0]

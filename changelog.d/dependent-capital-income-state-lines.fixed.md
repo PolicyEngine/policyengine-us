@@ -1,0 +1,1 @@
+Leave tax unit dependents' interest, dividends and capital gains out of the state lines that adjust the filers' federal adjusted gross income or taxable income (AZ, DC, DE, IA, IL, MA, MD, ME, MN, MT, ND, NH, OH, PA, SC, UT, VA, VT, WA, WI and WV), and out of the U.S. government interest that most states subtract.

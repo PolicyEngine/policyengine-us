@@ -186,6 +186,33 @@ def person_share_of_tax_unit_amount(
     return where(filer, filer_share, own)
 
 
+def person_non_dep_add(person, period, variables, include_dependents=()):
+    """
+    Add person-level variables for each person, leaving out dependents' own.
+
+    Like `add` over people, for per-person amounts that are later pooled into
+    the filer's return. A tax unit dependent's own items belong on their own
+    return, as irs_gross_income leaves their income off this one, so a
+    dependent gets zero for every variable except those named in
+    `include_dependents`: the filer's amounts even when recorded on a
+    dependent, such as medical expenses the filer paid for them. Variables
+    must be person-level; `add` rejects others.
+    """
+    if not person.entity.is_person:
+        raise ValueError(
+            f"person_non_dep_add needs a person, not a {person.entity.key}."
+        )
+    filer = ~person("is_tax_unit_dependent", period)
+    total = np.zeros(person.count, dtype=np.float32)
+    for variable in variables:
+        amount = add(person, period, [variable])
+        if variable in include_dependents:
+            total = total + amount
+        else:
+            total = total + filer * amount
+    return total
+
+
 def filer_share(person, period, amounts):
     """
     Each head's or spouse's share of the tax unit's total of `amounts`.

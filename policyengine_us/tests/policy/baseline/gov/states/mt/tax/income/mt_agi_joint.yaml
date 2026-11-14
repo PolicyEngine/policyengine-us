@@ -43,3 +43,22 @@
     # Federal AGI 53,000 includes the spouse's 3,000 of unemployment
     # compensation, which Montana subtracts: 53,000 - 3,000 = 50,000.
     mt_agi_joint: 50_000
+
+- name: A dependent's U.S. government interest is not subtracted
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        us_govt_interest_person: 200
+        taxable_interest_income: 200
+      child:
+        age: 10
+        us_govt_interest_person: 50_000
+        taxable_interest_income: 50_000
+    household:
+      state_code: MT
+  output:
+    mt_agi_joint: 60_000

@@ -16,7 +16,9 @@ class wi_capital_loss(Variable):
     def formula(tax_unit, period, parameters):
         # calculate Schedule WD, Line 18
         GAIN_SOURCES = ["short_term_capital_gains", "long_term_capital_gains"]
-        netcg = add(tax_unit, period, GAIN_SOURCES)
+        # Only the head's and spouse's gains and losses are on this return; a
+        # tax unit dependent reports theirs on their own return.
+        netcg = tax_unit_non_dep_add(tax_unit, period, GAIN_SOURCES)
         # return Schedule WD, Line 28, as a positive amount as on form
         p = parameters(period).gov.states.wi.tax.income.additions
         filing_status = tax_unit("filing_status", period)
