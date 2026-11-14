@@ -3057,6 +3057,76 @@ candidates:
   note: Read the 2010 amendment to reach claimable filers whom nobody claims; a claimed filer nearly always already
     could be claimed. DOR's 2025 IT-511 supports this reading. PE-US excludes the claimable filer and gives $0;
     the literal disjunction gives $26.
+- id: us-ga:child-credit-dependent-filer-child
+  program: income-tax
+  years:
+    from: 2026
+    to: 2026
+    type: tax
+  question: Does Georgia's child credit reach the child of a filer whom another taxpayer can claim as a dependent?
+  sources:
+  - kind: statute
+    citation: O.C.G.A. 48-7-29.27(a), HB 136 (2025) section 1-2
+    url: https://gov.georgia.gov/document/2025-signed-legislation/hb-136/download#page=3
+  - kind: statute
+    citation: 26 U.S.C. 24(c)(1)-(2)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartA-sec24.htm
+  - kind: statute
+    citation: 26 U.S.C. 152(b)(1)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec152.htm
+  - kind: guidance
+    citation: Georgia Department of Revenue, Qualifying Child Credit
+    url: https://dor.georgia.gov/qualifying-child-credit
+  readings:
+    statute: Section 24(c)(2) excludes an individual who would not be a dependent once 152(b)(3)(A) loses its words
+      after "resident of the United States". Section 152(b)(1) still gives a dependent filer no dependents, so that
+      filer's child fails the test.
+    other: Paragraph (2)'s heading names noncitizens only. Read as a citizenship test alone, it leaves the child of
+      a dependent filer inside 24(c)(1).
+  example: In 2026, a single filer whom another taxpayer claims has one resident child aged 2 and $10,000 of Georgia
+    tax. The filer receives $0 under the first reading versus $250 under the second.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ga/tax/income/credits/ctc/ga_ctc_eligible_child.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: open
+  note: PE-US applies 152(b)(1) inside the 24(c)(2) test, with the federal filing exception, and gives $0. The
+    Department of Revenue's page repeats the 24(c) definition and addresses neither reading. Nobody has ruled on
+    this choice.
+- id: us-ga:surplus-refund-earned-income-loss-offset
+  program: income-tax
+  years:
+    from: 2021
+    to: 2021
+    type: tax
+  question: Does a filer whom another taxpayer claimed for 2021 have earned income for Georgia's HB 162 refund when
+    a business loss offsets the filer's wages?
+  sources:
+  - kind: statute
+    citation: O.C.G.A. 48-7-20.2(a)(1)(B), (a)(2), HB 162 (2023) section 1
+    url: https://gov.georgia.gov/document/2023-signed-legislation/hb-162/download#page=2
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(2)(A)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+  readings:
+    statute: Georgia lawmakers require that the individual "had earned income for the 2021 taxable year" and define
+      no netting. Positive wages or profit from any one source meet the condition.
+    other: Federal earned income under 32(c)(2)(A) adds wages to net earnings from self-employment, so a business
+      loss as large as the wages leaves no earned income.
+  example: A single filer whom another taxpayer claimed for 2021 has $1,000 of wages, a $1,000 business loss and
+    $600 of 2021 Georgia tax. The filer receives $250 under the first reading versus $0 under the second.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ga/tax/income/credits/ga_surplus_tax_rebate.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: open
+  note: PE-US counts positive wages, self-employment profit, farm profit or a partner's net earnings, each before
+    any loss from another source. The Georgia statute imports no federal definition of earned income, and no
+    Department of Revenue source for this refund addresses netting. Nobody has ruled on this choice.
 - id: us-ga:liheap-subsidized-renter-energy-burden
   program: liheap
   years:
