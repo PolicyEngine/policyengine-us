@@ -120,7 +120,7 @@
         state_code: DC
   output:
     adjusted_gross_income: 56_200
-    dc_ptc: 1_190  # = 12000 * 20% - 56_200 * 5%
+    dc_ptc: 1_190  # = 20000 * 20% - 56_200 * 5%
 
 - name: dc_ptc unit test 5 (same as test 4 except an extra dollar of income)
   absolute_error_margin: 0.01
