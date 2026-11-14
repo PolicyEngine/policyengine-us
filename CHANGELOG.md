@@ -1,3 +1,10 @@
+## [2.124.6] - 2026-11-14
+
+### Fixed
+
+- Corrected Washington's senior property tax exemption age threshold to 62 in the collection year, matching age 61 at the preceding filing-year deadline. Kept the veteran rating parameter available for historical calculations before 2016.
+
+
 ## [2.124.5] - 2026-11-14
 
 ### Fixed
