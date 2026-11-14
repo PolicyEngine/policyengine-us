@@ -1,0 +1,14 @@
+description: Mississippi uses this indicator to apply source-verified parent and caretaker monthly income tables under Medicaid.
+# These dates bound the verified annual model scope; they are not legal
+# enactment or sunset dates. Later periods retain their existing route.
+values:
+  0000-01-01: false
+  2017-01-01: true
+  2027-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Mississippi Medicaid parent dollar income tables in effect
+  reference:
+    - title: 'Mississippi DOM Eligibility Policy and Procedures Manual Appendix A-3, dated 2017-2026 tables #page 1-10'
+      href: https://medicaid.ms.gov/wp-content/uploads/2026/03/Appendix-A-3-MAGI-Income-Limits.-2014-to-present.pdf#page=1
