@@ -2,6 +2,8 @@
 # experiencing homelessness, families at or below 100% of the state income
 # standard, children in foster care, children receiving child care as a
 # protective or preventive service, and child-only units.
+# A lone child with no income computes a Family Assistance grant, so cases
+# without public assistance set ny_tanf to zero.
 
 - name: Case 1, a family with none of the exceptions is not exempt.
   period: 2025-01
@@ -12,6 +14,7 @@
     spm_units:
       spm_unit:
         members: [child]
+        ny_tanf: 0
     households:
       household:
         members: [child]
@@ -121,6 +124,7 @@
         members: [child]
         ny_ccap_countable_income: 60_000
         spm_unit_fpg: 25_000
+        ny_tanf: 0
     households:
       household:
         members: [child]
@@ -129,3 +133,40 @@
     ny_ccap_family_share_exempt: false
     ny_ccap_family_share: (60_000 - 25_000) * 0.01 / 12
   absolute_error_margin: 0.01
+
+- name: Case 8, a family that takes up a Family Assistance grant is exempt.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_tanf: 200
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_family_assistance: 200
+    ny_ccap_family_share_exempt: true
+
+- name: Case 9, a family that declines the grant is not exempt.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_tanf: 200
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_family_assistance: 0
+    ny_ccap_family_share_exempt: false
