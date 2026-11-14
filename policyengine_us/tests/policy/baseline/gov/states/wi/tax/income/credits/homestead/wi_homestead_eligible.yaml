@@ -1,0 +1,35 @@
+# Independent source expectations: Wis. Stat.71.07(6e), 2025 Form1 instructions pp13,27-30.
+# Evidence and approved SHAREDv3 ten-input/six-output contract: wi/independent-test-design.md and scope-approved.md.
+
+# Retained accepted Homestead eligibility primitive: age70and household income9000qualify absent a veterans election.
+# Form1 p27 prohibits Homestead when claimant or spouse claims veterans credit. Do not force wi_homestead_eligible itself.
+- name: Case 1, the actual Homestead eligibility gate respects both directions of the family election.
+  period: 2025
+  input:
+    state_code: [WI, WI, WI, WI, WI, WI]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [3_000, 0, -1, 3_000, 3_000, 3_000]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_elected: [true, true, true, false, false, true]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false, false, false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, VALID_CLAIM, VALID_CLAIM]
+    wi_veterans_property_tax_credit_facts_available: [true, true, true, true, true, false]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false, false, false, false]
+    age: [70, 70, 70, 70, 70, 70]
+    wi_homestead_income: [9_000, 9_000, 9_000, 9_000, 9_000, 9_000]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SEPARATE, SEPARATE]
+  output:
+    wi_homestead_eligible: [false, false, false, true, false, false]
+
+# Existing accepted age62+and low-income eligibility fixture; no historical veterans claim is asserted.
+- name: Case 2, prior supported Homestead eligibility is preserved without a veterans claim.
+  period: 2024
+  input:
+    state_code: WI
+    age: 70
+    wi_homestead_income: 9_000
+    filing_status: SINGLE
+  output:
+    wi_homestead_eligible: true

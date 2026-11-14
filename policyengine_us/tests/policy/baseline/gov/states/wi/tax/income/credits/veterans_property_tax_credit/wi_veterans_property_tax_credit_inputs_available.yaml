@@ -1,0 +1,23 @@
+# Independent source expectations: Wis. Stat.71.07(6e), 2025 Form1 instructions pp13,27-30.
+# Evidence and approved SHAREDv3 ten-input/six-output contract: wi/independent-test-design.md and scope-approved.md.
+
+# Negative sentinels/invalid amounts are unavailable; zero is an actual known dollar amount.
+# Last two rows distinguish known NOT_ELIGIBLE from missing legal facts.
+- name: Case 1, known zero and known ineligibility retain amount availability.
+  period: 2025
+  input:
+    state_code: [WI, WI, WI, WI, WI, WI, WI]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [-1, -0.01, 0, 0.49, 3_000, 3_000, 3_000]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, NOT_ELIGIBLE, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_elected: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false, false, false, false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED]
+    wi_veterans_property_tax_credit_facts_available: [true, true, true, true, true, true, false]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false, false, false, false, false]
+    age: [35, 35, 35, 35, 35, 35, 35]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+  output:
+    wi_veterans_property_tax_credit_inputs_available: [false, false, true, true, true, true, false]
