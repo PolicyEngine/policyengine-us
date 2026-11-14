@@ -163,6 +163,52 @@
     snap: 1_368
     spm_unit_benefits: 11_586
 
+- name: Before 2024 three child care subsidies stay resources, because the SPM expense has no formula to lower.
+  period: 2023
+  input:
+    co_ccap_subsidy: 1
+    wa_child_care_subsidies: 2
+    wv_child_care_subsidies: 4
+    spm_unit_capped_housing_subsidy: 0
+    social_security: 0
+    ssi: 0
+    ca_cvrp: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+  output:
+    spm_unit_benefits: 1 + 2 + 4
+
+- name: From 2024 child care subsidies leave resources and lower the SPM expense instead.
+  period: 2024
+  input:
+    co_ccap_subsidy: 1
+    wa_child_care_subsidies: 2
+    wv_child_care_subsidies: 4
+    spm_unit_capped_housing_subsidy: 0
+    social_security: 0
+    ssi: 0
+    ca_cvrp: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+  output:
+    spm_unit_benefits: 0
+
 # A one-adult household with enough earnings to rule out every means-tested
 # benefit, so each case isolates one payment. Each case also checks that
 # household_benefits counts the same payment.

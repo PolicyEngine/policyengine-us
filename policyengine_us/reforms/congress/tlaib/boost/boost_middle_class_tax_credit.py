@@ -110,7 +110,6 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 # California programs.
                 "ca_cvrp",  # California Clean Vehicle Rebate Project.
                 # Colorado programs.
-                "co_ccap_subsidy",
                 "co_state_supplement",
                 "co_oap",
                 "snap",
@@ -148,6 +147,12 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 BENEFITS.append("aca_ptc")
             if not parameters(period).gov.hud.abolition:
                 BENEFITS.append("spm_unit_capped_housing_subsidy")
+            # From 2024, child care subsidies lower the expense in
+            # spm_unit_capped_work_childcare_expenses instead of adding to
+            # resources. That expense has no formula before 2024, so this one
+            # stays a resource until then.
+            if period.start.year < 2024:
+                BENEFITS.append("co_ccap_subsidy")
             p = parameters(
                 period
             ).gov.contrib.congress.tlaib.boost.middle_class_tax_credit
