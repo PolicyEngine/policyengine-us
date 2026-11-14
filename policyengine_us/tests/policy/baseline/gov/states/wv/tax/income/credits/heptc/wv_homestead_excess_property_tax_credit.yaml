@@ -80,3 +80,119 @@
     # - AGI = 0 - 613,000 = -613,000
     adjusted_gross_income: -613_000
     wv_homestead_excess_property_tax_credit: 0
+
+# Sole low-income 45-year-old owner lacks the county senior/disability exemption but
+# has complete HEPTC facts. Section 23 has no senior/exemption-participation gate.
+# SCTC 0 known; HEPTC=min(2000-0-0.04*25000,1000)=1000.
+- name: Case 6, a known SCTC denial permits the independent HEPTC without SCTC payment inputs.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    age: 45
+    adjusted_gross_income: 25_000
+    alternative_minimum_tax: 0
+    wv_sctc_homestead_qualified: false
+    wv_sctc_family_unit_size: 1
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+    wv_sctc_payment_facts_available: false
+    real_estate_taxes: 2_000
+    wv_gross_household_income: 25_000
+  output:
+    wv_sctc: 0
+    wv_homestead_excess_property_tax_credit: 1_000
+    wv_refundable_credits: 1_000
+
+# The 0s are compatibility placeholders with amount/coordination unavailable in their
+# variable tests. Missing SCTC measurement must not silently produce the 400 HEPTC
+# obtained by subtracting a known 0.
+- name: Case 7, unknown SCTC must not be consumed as a known zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    age: 70
+    adjusted_gross_income: 15_000
+    alternative_minimum_tax: 0
+    wv_sctc_homestead_qualified: true
+    wv_sctc_family_unit_size: 1
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+    wv_sctc_payment_facts_available: false
+    real_estate_taxes: 1_000
+    wv_gross_household_income: 15_000
+  output:
+    wv_sctc: 0
+    wv_homestead_excess_property_tax_credit: 0
+
+# Sections 21(a)(2)/23(e) disqualify required federalAMT payers; 2025 IT-140 pp 11/36
+# excludes simultaneousDV claims. No HEPTC income-source definition is changed.
+- name: Case 8, confirmed AMT and actual DV claims stop both credits.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 1_000
+      person2:
+        age: 70
+        real_estate_taxes: 1_000
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 1
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 100_000
+        wv_sctc_qualified_property_taxes_paid: 1_000
+        wv_gross_household_income: 15_000
+      tax_unit2:
+        members:
+        - person2
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 100_000
+        wv_sctc_qualified_property_taxes_paid: 1_000
+        wv_gross_household_income: 15_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+  output:
+    wv_sctc:
+    - 0
+    - 0
+    wv_homestead_excess_property_tax_credit:
+    - 0
+    - 0
+    wv_refundable_credits:
+    - 0
+    - 0

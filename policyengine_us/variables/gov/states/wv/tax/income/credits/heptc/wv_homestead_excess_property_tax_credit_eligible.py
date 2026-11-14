@@ -7,6 +7,7 @@ class wv_homestead_excess_property_tax_credit_eligible(Variable):
     label = "Eligible for the West Virginia homestead excess property tax credit"
     reference = (
         "https://code.wvlegislature.gov/11-21-23/",
+        "https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=11",
         "https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=13",
         "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=14",
     )
@@ -29,3 +30,17 @@ class wv_homestead_excess_property_tax_credit_eligible(Variable):
         ghi_amount = max_(p.household_income * wv_ghi, 0)
         property_tax_eligible = property_tax_value > ghi_amount
         return lig_eligible & has_property_tax & property_tax_eligible
+
+    def formula_2025_01_01(tax_unit, period, parameters):
+        legacy_conditions = wv_homestead_excess_property_tax_credit_eligible.formula(
+            tax_unit, period, parameters
+        )
+        coordination_known = tax_unit("wv_heptc_coordination_available", period)
+        amt = tax_unit("alternative_minimum_tax", period)
+        dv_claim = tax_unit("wv_sctc_disabled_veteran_credit_claim_status", period)
+        return (
+            legacy_conditions
+            & coordination_known
+            & (amt == 0)
+            & (dv_claim == dv_claim.possible_values.NOT_CLAIMED)
+        )

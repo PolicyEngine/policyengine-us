@@ -1,0 +1,417 @@
+# Conditional application tests keep statutory entitlement separate from use.
+
+# CONDITIONAL UNIT TEST: S/H/L are upstream entitlements/liability, not public award
+# inputs. Sections 21(a)(2)-(3)/23(a)-(b) support offset/refund restrictions.
+# Maximum-utilization allocation R+min(N,L) is the approved INFERENCE, not an express
+# agency order. Rows 5/6 prevent a combined 18 credit refund or reuse of L10. Rows
+# 11/12 use mixed pools; row 10 tests entitlement 200 with a permitted 5 remainder.
+- name: Case 1, independently thresholded credits share one liability pool.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+      person4:
+        age: 70
+      person5:
+        age: 70
+      person6:
+        age: 70
+      person7:
+        age: 70
+      person8:
+        age: 70
+      person9:
+        age: 70
+      person10:
+        age: 70
+      person11:
+        age: 70
+      person12:
+        age: 70
+      person13:
+        age: 70
+      person14:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        wv_sctc: 9
+        wv_homestead_excess_property_tax_credit: 0
+        wv_income_tax_before_refundable_credits: 0
+        wv_heptc_coordination_available: true
+      tax_unit2:
+        members:
+        - person2
+        wv_sctc: 9
+        wv_homestead_excess_property_tax_credit: 0
+        wv_income_tax_before_refundable_credits: 20
+        wv_heptc_coordination_available: true
+      tax_unit3:
+        members:
+        - person3
+        wv_sctc: 0
+        wv_homestead_excess_property_tax_credit: 9
+        wv_income_tax_before_refundable_credits: 0
+        wv_heptc_coordination_available: true
+      tax_unit4:
+        members:
+        - person4
+        wv_sctc: 0
+        wv_homestead_excess_property_tax_credit: 9
+        wv_income_tax_before_refundable_credits: 20
+        wv_heptc_coordination_available: true
+      tax_unit5:
+        members:
+        - person5
+        wv_sctc: 9
+        wv_homestead_excess_property_tax_credit: 9
+        wv_income_tax_before_refundable_credits: 10
+        wv_heptc_coordination_available: true
+      tax_unit6:
+        members:
+        - person6
+        wv_sctc: 9
+        wv_homestead_excess_property_tax_credit: 9
+        wv_income_tax_before_refundable_credits: 0
+        wv_heptc_coordination_available: true
+      tax_unit7:
+        members:
+        - person7
+        wv_sctc: 10
+        wv_homestead_excess_property_tax_credit: 0
+        wv_income_tax_before_refundable_credits: 0
+        wv_heptc_coordination_available: true
+      tax_unit8:
+        members:
+        - person8
+        wv_sctc: 0
+        wv_homestead_excess_property_tax_credit: 10
+        wv_income_tax_before_refundable_credits: 0
+        wv_heptc_coordination_available: true
+      tax_unit9:
+        members:
+        - person9
+        wv_sctc: 200
+        wv_homestead_excess_property_tax_credit: 200
+        wv_income_tax_before_refundable_credits: 0
+        wv_heptc_coordination_available: true
+      tax_unit10:
+        members:
+        - person10
+        wv_sctc: 200
+        wv_homestead_excess_property_tax_credit: 0
+        wv_income_tax_before_refundable_credits: 195
+        wv_heptc_coordination_available: true
+      tax_unit11:
+        members:
+        - person11
+        wv_sctc: 9
+        wv_homestead_excess_property_tax_credit: 200
+        wv_income_tax_before_refundable_credits: 5
+        wv_heptc_coordination_available: true
+      tax_unit12:
+        members:
+        - person12
+        wv_sctc: 200
+        wv_homestead_excess_property_tax_credit: 9
+        wv_income_tax_before_refundable_credits: 5
+        wv_heptc_coordination_available: true
+      tax_unit13:
+        members:
+        - person13
+        wv_sctc: 200
+        wv_homestead_excess_property_tax_credit: 200
+        wv_income_tax_before_refundable_credits: 500
+        wv_heptc_coordination_available: true
+      tax_unit14:
+        members:
+        - person14
+        wv_sctc: 0
+        wv_homestead_excess_property_tax_credit: 0
+        wv_income_tax_before_refundable_credits: 20
+        wv_heptc_coordination_available: true
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit4:
+        members:
+        - person4
+      spm_unit5:
+        members:
+        - person5
+      spm_unit6:
+        members:
+        - person6
+      spm_unit7:
+        members:
+        - person7
+      spm_unit8:
+        members:
+        - person8
+      spm_unit9:
+        members:
+        - person9
+      spm_unit10:
+        members:
+        - person10
+      spm_unit11:
+        members:
+        - person11
+      spm_unit12:
+        members:
+        - person12
+      spm_unit13:
+        members:
+        - person13
+      spm_unit14:
+        members:
+        - person14
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+      household3:
+        members:
+        - person3
+        state_code: WV
+      household4:
+        members:
+        - person4
+        state_code: WV
+      household5:
+        members:
+        - person5
+        state_code: WV
+      household6:
+        members:
+        - person6
+        state_code: WV
+      household7:
+        members:
+        - person7
+        state_code: WV
+      household8:
+        members:
+        - person8
+        state_code: WV
+      household9:
+        members:
+        - person9
+        state_code: WV
+      household10:
+        members:
+        - person10
+        state_code: WV
+      household11:
+        members:
+        - person11
+        state_code: WV
+      household12:
+        members:
+        - person12
+        state_code: WV
+      household13:
+        members:
+        - person13
+        state_code: WV
+      household14:
+        members:
+        - person14
+        state_code: WV
+  output:
+    wv_property_tax_credits_applied:
+    - 0
+    - 9
+    - 0
+    - 9
+    - 10
+    - 0
+    - 10
+    - 10
+    - 400
+    - 200
+    - 205
+    - 205
+    - 400
+    - 0
+    wv_refundable_credits:
+    - 0
+    - 9
+    - 0
+    - 9
+    - 10
+    - 0
+    - 10
+    - 10
+    - 400
+    - 200
+    - 205
+    - 205
+    - 400
+    - 0
+    wv_income_tax:
+    - 0
+    - 11
+    - 0
+    - 11
+    - 0
+    - 0
+    - -10
+    - -10
+    - -400
+    - -5
+    - -200
+    - -200
+    - 100
+    - 20
+
+# Conditional helper-only guard: the native upstream liability already floors at 0.
+# Clamp this finite override to 0; only the 200 refundable pool applies. No native
+# final-tax claim is made from a negative upstream override.
+- name: Case 2, a finite negative raw liability is clamped for application.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    wv_sctc: 9
+    wv_homestead_excess_property_tax_credit: 200
+    wv_income_tax_before_refundable_credits: -5
+    wv_heptc_coordination_available: true
+  output:
+    wv_property_tax_credits_applied: 200
+
+# Counterfactual SCTC minimum 5 versus unchanged HEPTC minimum 10. Only SCTC 6 is
+# refundable; HEPTC 9 has no liability to offset. A shared minimum would incorrectly
+# produce 15.
+- name: Case 3, reforming the SCTC refund threshold leaves the HEPTC threshold separate.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    wv_sctc: 6
+    wv_homestead_excess_property_tax_credit: 9
+    wv_income_tax_before_refundable_credits: 0
+    wv_heptc_coordination_available: true
+    gov.states.wv.tax.income.credits.sctc.refund_minimum: 5
+  output:
+    wv_property_tax_credits_applied: 6
+    wv_refundable_credits: 6
+    wv_income_tax: -6
+
+# Counterfactual HEPTC minimum 5 versus unchanged SCTC minimum 10. Only HEPTC 9 is
+# refundable. Asymmetric 6/9 amounts detect swapped parameter ownership.
+- name: Case 4, reforming the HEPTC refund threshold leaves the SCTC threshold separate.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    wv_sctc: 6
+    wv_homestead_excess_property_tax_credit: 9
+    wv_income_tax_before_refundable_credits: 0
+    wv_heptc_coordination_available: true
+    gov.states.wv.tax.income.credits.heptc.refund_minimum: 5
+  output:
+    wv_property_tax_credits_applied: 9
+    wv_refundable_credits: 9
+    wv_income_tax: -9
+
+# The new helper is inactive before 2025 while the historical refundable list contains
+# both entitlements. Conditional list-routing coverage does not rewrite the historical
+# SCTC formula.
+- name: Case 5, earlier refund-list routing remains unchanged.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    wv_sctc: 200
+    wv_homestead_excess_property_tax_credit: 200
+    wv_income_tax_before_refundable_credits: 0
+    wv_heptc_coordination_available: true
+  output:
+    wv_property_tax_credits_applied: 0
+    wv_refundable_credits: 400
+    wv_income_tax: -400
+
+# Companion availability cases distinguish these 0 placeholders from a known lawful
+# zero. Invalid or missing upstream amounts cannot become known claim determinations.
+# Infinity reaches the policy guard; Core rejects NaN inputs before evaluation.
+- name: Case 6, unavailable or invalid application returns a diagnostic zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        wv_sctc: 9
+        wv_homestead_excess_property_tax_credit: 0
+        wv_income_tax_before_refundable_credits: 20
+        wv_heptc_coordination_available: false
+      tax_unit2:
+        members:
+        - person2
+        wv_sctc: .inf
+        wv_homestead_excess_property_tax_credit: 0
+        wv_income_tax_before_refundable_credits: 0
+        wv_heptc_coordination_available: true
+      tax_unit3:
+        members:
+        - person3
+        wv_sctc: 0
+        wv_homestead_excess_property_tax_credit: .inf
+        wv_income_tax_before_refundable_credits: 0
+        wv_heptc_coordination_available: true
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+      household3:
+        members:
+        - person3
+        state_code: WV
+  output:
+    wv_property_tax_credits_applied:
+    - 0
+    - 0
+    - 0

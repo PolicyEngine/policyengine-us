@@ -29,3 +29,354 @@
     wv_sctc_eligible: false
   output:
     wv_sctc: 0
+
+# 2025 IT-140 physical pp 11/36; W.Va. Code 11-21-21(a)(2), (b)(2)(B), (e) and
+# 11-21-23(a). Full uniform cohort: A120000-E20000 gives V100000. Paid T1000 -> SCTC
+# 200. HEPTC =1000-200-0.04*15000=200; refundable list contains these two credits.
+- name: Case 5, paid tax on the covered value and computed HEPTC flow to refundable credits.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    age: 70
+    adjusted_gross_income: 15_000
+    alternative_minimum_tax: 0
+    wv_sctc_homestead_qualified: true
+    wv_sctc_family_unit_size: 1
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+    wv_sctc_payment_facts_available: true
+    wv_sctc_taxable_assessed_value: 100_000
+    wv_sctc_qualified_property_taxes_paid: 1_000
+    real_estate_taxes: 1_000
+    wv_gross_household_income: 15_000
+  output:
+    wv_sctc_covered_assessed_value: 20_000
+    wv_sctc: 200
+    wv_homestead_excess_property_tax_credit: 200
+    wv_refundable_credits: 400
+
+# Section 21(b)(2)(B): T includes discounts, excludes interest/penalties. All eight
+# records are fully paid uniform single cohorts. Row 5 is 975 after 25 discount from
+# 1000. Rows 6/7 retain credit 9/10; the refund threshold does not erase a tax offset.
+- name: Case 6, covered-value boundaries and full paid-tax measures.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+      person4:
+        age: 70
+      person5:
+        age: 70
+      person6:
+        age: 70
+      person7:
+        age: 70
+      person8:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 19_900
+        wv_sctc_qualified_property_taxes_paid: 199
+      tax_unit2:
+        members:
+        - person2
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 20_000
+        wv_sctc_qualified_property_taxes_paid: 200
+      tax_unit3:
+        members:
+        - person3
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 20_100
+        wv_sctc_qualified_property_taxes_paid: 201
+      tax_unit4:
+        members:
+        - person4
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 100_000
+        wv_sctc_qualified_property_taxes_paid: 2_000
+      tax_unit5:
+        members:
+        - person5
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 100_000
+        wv_sctc_qualified_property_taxes_paid: 975
+      tax_unit6:
+        members:
+        - person6
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 900
+        wv_sctc_qualified_property_taxes_paid: 9
+      tax_unit7:
+        members:
+        - person7
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 1_000
+        wv_sctc_qualified_property_taxes_paid: 10
+      tax_unit8:
+        members:
+        - person8
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 0
+        wv_sctc_qualified_property_taxes_paid: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit4:
+        members:
+        - person4
+      spm_unit5:
+        members:
+        - person5
+      spm_unit6:
+        members:
+        - person6
+      spm_unit7:
+        members:
+        - person7
+      spm_unit8:
+        members:
+        - person8
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+      household3:
+        members:
+        - person3
+        state_code: WV
+      household4:
+        members:
+        - person4
+        state_code: WV
+      household5:
+        members:
+        - person5
+        state_code: WV
+      household6:
+        members:
+        - person6
+        state_code: WV
+      household7:
+        members:
+        - person7
+        state_code: WV
+      household8:
+        members:
+        - person8
+        state_code: WV
+  output:
+    wv_sctc:
+    - 199
+    - 200
+    - 200
+    - 400
+    - 195
+    - 9
+    - 10
+    - 0
+
+# Counterfactual coverage cap only: full V100000 and T1000 stay unchanged, as does the
+# separate homestead exemption. SCTC=1000*30000/100000=300; HEPTC=1000-300-600=100.
+# This is not an entered award or a pre-capped tax input.
+- name: Case 7, the full uncapped value supports a covered-value cap reform.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    age: 70
+    adjusted_gross_income: 15_000
+    alternative_minimum_tax: 0
+    wv_sctc_homestead_qualified: true
+    wv_sctc_family_unit_size: 1
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+    wv_sctc_payment_facts_available: true
+    wv_sctc_taxable_assessed_value: 100_000
+    wv_sctc_qualified_property_taxes_paid: 1_000
+    gov.states.wv.tax.income.credits.sctc.max_amount: 30_000
+    real_estate_taxes: 1_000
+    wv_gross_household_income: 15_000
+  output:
+    wv_sctc_covered_assessed_value: 30_000
+    wv_sctc: 300
+    wv_homestead_excess_property_tax_credit: 100
+    wv_refundable_credits: 400
+
+# Section 21(b)(1) permits AGI below the poverty ceiling. The credit remains tax on
+# the covered slice, not maximum minus negative income.
+- name: Case 8, negative AGI does not inflate the paid-tax credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    age: 70
+    adjusted_gross_income: -100
+    alternative_minimum_tax: 0
+    wv_sctc_homestead_qualified: true
+    wv_sctc_family_unit_size: 1
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+    wv_sctc_payment_facts_available: true
+    wv_sctc_taxable_assessed_value: 100_000
+    wv_sctc_qualified_property_taxes_paid: 1_000
+  output:
+    wv_sctc: 200
+
+# Section 21(b)(1), 2025 IT-140 physicalp 36: one-person inclusive ceiling 23475;23476
+# is over it.
+- name: Case 9, known income ineligibility returns zero with a valid positive receipt.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    age: 70
+    adjusted_gross_income: 23_476
+    alternative_minimum_tax: 0
+    wv_sctc_homestead_qualified: true
+    wv_sctc_family_unit_size: 1
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+    wv_sctc_payment_facts_available: true
+    wv_sctc_taxable_assessed_value: 100_000
+    wv_sctc_qualified_property_taxes_paid: 1_000
+  output:
+    wv_sctc: 0
+
+# Unknown amount uses diagnostic 0. Explicit receipt/value inputs remain missing
+# despite generic property inputs; availability is separately asserted in the
+# amount/input-missing tests.
+- name: Case 10, generic assessed values and paid taxes do not fill missing cohort inputs.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    age: 70
+    adjusted_gross_income: 15_000
+    alternative_minimum_tax: 0
+    wv_sctc_homestead_qualified: true
+    wv_sctc_family_unit_size: 1
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+    wv_sctc_payment_facts_available: false
+    assessed_property_value: 120_000
+    real_estate_taxes: 1_000
+    wv_homestead_exemption: 20_000
+  output:
+    wv_sctc: 0
+    wv_sctc_covered_assessed_value: 0
+
+# FULL INTEGRATION: qualifying sole-owner cohort A20900-E20000 gives fullV 900; fully
+# paid uniform after-discount/ex-interest T9 gives SCTC 9. Section 23 subtracts
+# authorizedS 9, so HEPTC=9-9-4%*0=0. Native AGI/liability 0 means no offset and no
+# sub 10 refund. No S/H, eligibility, gross-income, liability or applied-result
+# override.
+- name: Case 11, a full small-tax cohort preserves entitlement but cannot create a cash refund.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WV
+    age: 70
+    employment_income: 0
+    real_estate_taxes: 9
+    alternative_minimum_tax: 0
+    wv_sctc_taxable_assessed_value: 900
+    wv_sctc_qualified_property_taxes_paid: 9
+    wv_sctc_homestead_qualified: true
+    wv_sctc_family_unit_size: 1
+    wv_sctc_payment_facts_available: true
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+  output:
+    adjusted_gross_income: 0
+    wv_gross_household_income: 0
+    wv_income_tax_before_refundable_credits: 0
+    wv_sctc: 9
+    wv_homestead_excess_property_tax_credit: 0
+    wv_property_tax_credits_applied: 0
+    wv_refundable_credits: 0
+    wv_income_tax: 0
