@@ -4,12 +4,14 @@
     people:
       person1:
         age: 65
+        dc_senior_disabled_property_tax_relief_ownership_share: 1
         employment_income: 100_000
         real_estate_taxes: 4_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 4_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -17,6 +19,10 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 100_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
   output:
     dc_senior_disabled_property_tax_relief_eligible: true
 
@@ -26,13 +32,16 @@
     people:
       person1:
         age: 40
+        dc_senior_disabled_property_tax_relief_ownership_share: 1
         employment_income: 80_000
         real_estate_taxes: 3_000
         is_permanently_and_totally_disabled: true
+        dc_senior_disabled_property_tax_relief_qualifying_disability: true
         is_tax_unit_head: true
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 3_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -40,6 +49,10 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 80_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
   output:
     dc_senior_disabled_property_tax_relief_eligible: true
 
@@ -49,12 +62,14 @@
     people:
       person1:
         age: 65
+        dc_senior_disabled_property_tax_relief_ownership_share: 1
         employment_income: 163_500
         real_estate_taxes: 4_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 4_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -62,6 +77,10 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 163_500
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
   output:
     dc_senior_disabled_property_tax_relief_eligible: false
 
@@ -71,12 +90,14 @@
     people:
       person1:
         age: 65
+        dc_senior_disabled_property_tax_relief_ownership_share: 0
         employment_income: 40_000
         rent: 12_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -84,6 +105,10 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 40_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: false
   output:
     dc_senior_disabled_property_tax_relief_eligible: false
 
@@ -93,12 +118,14 @@
     people:
       person1:
         age: 64
+        dc_senior_disabled_property_tax_relief_ownership_share: 1
         employment_income: 40_000
         real_estate_taxes: 4_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 4_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -106,6 +133,10 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 40_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
   output:
     dc_senior_disabled_property_tax_relief_eligible: false
 
@@ -115,6 +146,7 @@
     people:
       person1:
         age: 40
+        dc_senior_disabled_property_tax_relief_ownership_share: 1
         employment_income: 80_000
         real_estate_taxes: 3_000
         is_disabled: true
@@ -122,6 +154,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 3_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -129,5 +162,106 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 80_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
   output:
     dc_senior_disabled_property_tax_relief_eligible: false
+
+- name: Case 7, 2025 reference income and availability determine eligibility independently of current earnings.
+  period: 2025
+  input:
+    state_code: [DC, DC, DC, DC, DC, DC, DC, DC, DC]
+    age: [65, 65, 65, 65, 65, 65, 65, 65, 65]
+    employment_income: [1_000_000, 0, 0, 0, 0, 0, 0, 0, 0]
+    dc_senior_disabled_property_tax_relief_household_prior_agi: [159_749, 159_750, 0, 0, -1_000, 20_000, 20_000, 20_000, 20_000]
+    dc_senior_disabled_property_tax_relief_household_prior_agi_available: [true, true, true, false, true, true, true, true, true]
+    dc_senior_disabled_property_tax_relief_residence_eligible: [true, true, true, true, true, false, true, true, true]
+    dc_senior_disabled_property_tax_relief_ownership_share: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4999, 1.01, 0.5]
+    dc_senior_disabled_property_tax_relief_pre_relief_tax: [4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 0]
+  output:
+    # ASD100 Rev02/2025 requires known2023 household AGI strictly below159,750.
+    # Negative AGI is not floored; missing facts do not establish entitlement.
+    dc_senior_disabled_property_tax_relief_eligible: [true, false, true, false, true, false, false, false, false]
+
+- name: Case 8, categorical status and ownership must satisfy the DC-specific requirements.
+  period: 2025
+  input:
+    state_code: [DC, DC, DC, DC, DC, DC, DC, DC]
+    age: [65, 64.99, 40, 40, 40, 65, 65, 40]
+    dc_senior_disabled_property_tax_relief_household_prior_agi: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000]
+    dc_senior_disabled_property_tax_relief_household_prior_agi_available: [true, true, true, true, true, true, true, true]
+    dc_senior_disabled_property_tax_relief_residence_eligible: [true, true, true, true, true, true, true, true]
+    dc_senior_disabled_property_tax_relief_ownership_share: [0.5, 0.5, 0.5, 0.5, 0.5, 1, 1.01, 0.5]
+    dc_senior_disabled_property_tax_relief_pre_relief_tax: [4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000]
+    dc_senior_disabled_property_tax_relief_qualifying_disability: [false, false, true, false, false, true, false, false]
+    is_permanently_and_totally_disabled: [false, false, false, true, false, true, false, false]
+    total_disability_payments: [0, 0, 0, 0, 10_000, 0, 0, 0]
+    is_disabled: [false, false, false, false, false, false, false, true]
+  output:
+    # A generic disability or private-payment fact does not certify DC's
+    # covered disability routes. The same owner needs age65+ or that DC fact.
+    dc_senior_disabled_property_tax_relief_eligible: [true, false, true, false, false, true, false, false]
+
+- name: Case 9, ownership is individual and a qualifying dependent owner is included.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        dc_senior_disabled_property_tax_relief_ownership_share: 0.25
+      person2:
+        age: 70
+        dc_senior_disabled_property_tax_relief_ownership_share: 0.25
+      person3:
+        age: 70
+        dc_senior_disabled_property_tax_relief_ownership_share: 0.25
+      person4:
+        age: 40
+        dc_senior_disabled_property_tax_relief_ownership_share: 0.75
+      person5:
+        age: 40
+        dc_senior_disabled_property_tax_relief_ownership_share: 0.5
+      person6:
+        age: 70
+        is_tax_unit_dependent: true
+        dc_senior_disabled_property_tax_relief_ownership_share: 0.5
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 4_000
+      tax_unit2:
+        members: [person3, person4]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 4_000
+      tax_unit3:
+        members: [person5, person6]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 4_000
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: DC
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 20_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
+      household2:
+        members: [person3, person4]
+        state_code: DC
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 20_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
+      household3:
+        members: [person5, person6]
+        state_code: DC
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 20_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
+  output:
+    dc_senior_disabled_property_tax_relief_eligible: [false, false, true]

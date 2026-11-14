@@ -7,7 +7,10 @@ class ny_real_property_tax_credit(Variable):
     label = "NY real property tax credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (e)
+    reference = (
+        "https://www.nysenate.gov/legislation/laws/TAX/606",  # (e)
+        "https://www.tax.ny.gov/pdf/2025/inc/it214i_2025.pdf#page=1",
+    )
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
@@ -67,8 +70,10 @@ class ny_real_property_tax_credit(Variable):
         # the credit at line 22. The form applies the cap to adjusted rent (net
         # of heat, gas, electricity, furnishings, and board); PolicyEngine has
         # only gross rent, so the cap is applied to gross rent.
-        assessed_value = add(tax_unit, period, ["assessed_property_value"])
-        meets_value_conditions = (assessed_value <= rptc.max_property_value) & (
+        property_market_value = tax_unit(
+            "ny_real_property_tax_credit_property_market_value", period
+        )
+        meets_value_conditions = (property_market_value <= rptc.max_property_value) & (
             rent <= rptc.max_rent
         )
 

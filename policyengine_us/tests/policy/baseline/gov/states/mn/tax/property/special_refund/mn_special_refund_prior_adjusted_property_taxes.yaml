@@ -1,0 +1,23 @@
+- name: Case 1, all home-use comparisons retain the correct prior special refund adjustment.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MN, MN, MN, MN]
+    age: [40, 40, 40, 40]
+    mn_special_refund_current_property_taxes: [4_000, 4_000, 4_000, 4_000]
+    mn_special_refund_prior_property_taxes: [3_000, 3_000, 3_000, 3_000]
+    mn_special_refund_prior_refund: [200, 200, 200, 200]
+    mn_special_refund_improvement_value: [0, 0, 0, 0]
+    mn_special_refund_current_home_use_fraction: [0.5, 0.75, 0.5, 1]
+    mn_special_refund_prior_home_use_fraction: [0.5, 0.5, 0.75, 1]
+    mn_special_refund_same_homestead: [true, true, true, true]
+    mn_special_refund_qualifying_claimant: [true, true, true, true]
+  output:
+    # Equal/increased home use compares both taxes at50%, subtracting200.
+    # Decreased use also compares at50% but subtracts200 x50% =100.
+    # Full personal use subtracts200 from the prior3000 ->2800.
+    mn_special_refund_current_adjusted_property_taxes: [2_000, 2_000, 2_000, 4_000]
+    mn_special_refund_prior_adjusted_property_taxes: [1_300, 1_300, 1_400, 2_800]
+    # round((700-156)x.6)=326; round((600-168)x.6)=259;
+    # round((1200-336)x.6)=518.
+    mn_special_refund: [326, 326, 259, 518]

@@ -1,0 +1,20 @@
+- name: Case 1, ordinary awards cap and exact growth thresholds follow Schedule M1PR-SR.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MN, MN, MN, MN, MN, MN, MN, MN]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    mn_special_refund_current_property_taxes: [4_000, 10_000, 1_120, 1_121, 599, 600, 601, 1_205]
+    mn_special_refund_prior_property_taxes: [3_000, 1_000, 1_000, 1_000, 500, 500, 500, 1_004]
+    mn_special_refund_prior_refund: [0, 0, 0, 0, 0, 0, 0, 0]
+    mn_special_refund_improvement_value: [0, 0, 0, 0, 0, 0, 0, 0]
+    mn_special_refund_current_home_use_fraction: [1, 1, 1, 1, 1, 1, 1, 1]
+    mn_special_refund_prior_home_use_fraction: [1, 1, 1, 1, 1, 1, 1, 1]
+    mn_special_refund_same_homestead: [true, true, true, true, true, true, true, true]
+    mn_special_refund_qualifying_claimant: [true, true, true, true, true, true, true, true]
+  output:
+    # Schedule lines8-13: (4,000 - 3,000 - 360) x .6 = 384.
+    # The second claim caps at1000. Exact12% growth and a100dollar increase
+    # leave no excess; the next dollar yields round(.6) = 1.
+    # Last claim: 12% of1004 rounds120; (1205-1004-120)x.6=48.6 ->49.
+    mn_special_refund: [384, 1_000, 0, 1, 0, 0, 1, 49]

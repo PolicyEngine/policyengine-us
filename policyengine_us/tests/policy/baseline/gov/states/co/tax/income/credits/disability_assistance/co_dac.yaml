@@ -1,0 +1,220 @@
+# Source: CRS 39-31-104.5(2)-(6), enacted HB24-1268, PDF pages 6-8.
+# Official 2025 DR0104EZ, physical PDF page 4, confirms the amount table.
+# Fractional AGI boundaries follow the statute, without rounding income.
+- name: Non-joint DAC income boundaries include the statutory upper limits
+  period: 2025
+  input:
+    state_code:
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    filing_status:
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    - SINGLE
+    co_dac_disability_qualified:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    co_dac_resident_qualified:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    adjusted_gross_income:
+    - -100
+    - 0
+    - 10000
+    - 10000.01
+    - 12500
+    - 12500.01
+    - 15000
+    - 15000.01
+    - 17500
+    - 17500.01
+    - 20000
+    - 20000.01
+  output:
+    co_dac:
+    - 1200
+    - 1200
+    - 1200
+    - 1000
+    - 1000
+    - 800
+    - 800
+    - 600
+    - 600
+    - 400
+    - 400
+    - 0
+- name: Joint DAC income boundaries include the statutory upper limits
+  period: 2025
+  input:
+    state_code:
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    - CO
+    filing_status:
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    co_dac_disability_qualified:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    co_dac_resident_qualified:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    adjusted_gross_income:
+    - 16000
+    - 16000.01
+    - 20000
+    - 20000.01
+    - 24000
+    - 24000.01
+    - 28000
+    - 28000.01
+    - 32000
+    - 32000.01
+  output:
+    co_dac:
+    - 1200
+    - 1000
+    - 1000
+    - 800
+    - 800
+    - 600
+    - 600
+    - 400
+    - 400
+    - 0
+- name: All non-joint filing statuses use the non-joint DAC schedule
+  period: 2025
+  input:
+    state_code:
+    - CO
+    - CO
+    - CO
+    - CO
+    filing_status:
+    - SINGLE
+    - SEPARATE
+    - HEAD_OF_HOUSEHOLD
+    - SURVIVING_SPOUSE
+    co_dac_disability_qualified:
+    - true
+    - true
+    - true
+    - true
+    co_dac_resident_qualified:
+    - true
+    - true
+    - true
+    - true
+    adjusted_gross_income:
+    - 20000
+    - 20000
+    - 20000
+    - 20000
+  output:
+    co_dac:
+    - 400
+    - 400
+    - 400
+    - 400
+- name: DAC starts in 2025
+  period: 2024
+  input:
+    state_code: CO
+    co_dac_disability_qualified: true
+    co_dac_resident_qualified: true
+    adjusted_gross_income: 0
+  output:
+    co_dac: 0
+- name: DAC reaches Colorado income tax once with no income tax liability
+  period: 2025
+  input:
+    state_code: CO
+    age: 45
+    co_dac_disability_qualified: true
+    co_dac_resident_qualified: true
+    adjusted_gross_income: 0
+    co_income_tax_before_refundable_credits: 0
+    co_amt: 0
+    co_ctc: 0
+    co_cdcc: 0
+    co_family_affordability_credit: 0
+    co_low_income_cdcc: 0
+    co_eitc: 0
+    co_sales_tax_refund: 0
+    co_care_worker_credit: 0
+  output:
+    co_dac_eligible: true
+    co_dac: 1200
+    co_refundable_credits: 1200
+    co_income_tax: -1200

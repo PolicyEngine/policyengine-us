@@ -1,0 +1,25 @@
+- name: Case 1, unknown qualified claim tax is distinct from known zero and positive tax.
+  period: 2025
+  input:
+    state_code: [MN, MN, MN]
+    age: [40, 40, 40]
+    mn_homestead_credit_refund_household_income: [0, 0, 0]
+    real_estate_taxes: [4_000, 4_000, 4_000]
+    mn_homestead_credit_refund_qualified_property_taxes: [-1, 0, 4_000]
+  output:
+    # Unknown payable2026 tax suppresses the estimate, without claiming
+    # statutory ineligibility; a positive generic2025paid tax is no fallback.
+    mn_homestead_credit_refund_property_taxes_available: [false, true, true]
+    mn_homestead_credit_refund_eligible: [false, false, true]
+    mn_homestead_credit_refund: [0, 0, 3_998]
+
+- name: Case 2, omitting qualified claim tax leaves availability false.
+  period: 2025
+  input:
+    state_code: MN
+    age: 40
+    real_estate_taxes: 4_000
+    mn_homestead_credit_refund_household_income: 0
+  output:
+    mn_homestead_credit_refund_property_taxes_available: false
+    mn_homestead_credit_refund: 0
