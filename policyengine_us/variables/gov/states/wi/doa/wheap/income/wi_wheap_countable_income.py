@@ -32,7 +32,7 @@ class wi_wheap_countable_income(Variable):
         ) + add(person, period, p.sources.rental)
         unearned = 0
         for source in p.sources.unearned:
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            unearned = unearned + max_(person(source, period), 0)
         # All withdrawals count from age 73. Regular withdrawals before 73
         # also count but cannot be told apart from lump sums, which are
         # ignored as asset drawdowns.

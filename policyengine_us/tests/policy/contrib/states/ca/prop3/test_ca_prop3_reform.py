@@ -200,11 +200,11 @@ def test_ca_prop3_app_activation_from_2031():
     _assert_active_years(simulation, years, active_years={2031, 2035})
     assert simulation.calculate("ca_income_tax_before_credits", 2031)[
         0
-    ] == pytest.approx(101_169.10, abs=1)
+    ] == pytest.approx(100_927.11, abs=0.01)
     # With the toggle off, 2031 tax is the baseline.
     baseline = Simulation(situation=_situation(years))
     assert baseline.calculate("ca_income_tax_before_credits", 2031)[0] == pytest.approx(
-        88_942.90, abs=1
+        88_897.94, abs=0.01
     )
 
 

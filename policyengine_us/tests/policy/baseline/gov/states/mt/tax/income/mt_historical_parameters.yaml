@@ -1,0 +1,1918 @@
+# Form 2 instructions give the yearly exemption, income-tax schedule and
+# pension exemption. The 2021 instructions, PDF page 54, also list the
+# historical standard-deduction limits for every year below.
+
+- name: Montana applies its 2017 exemptions and income tax schedule
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 40
+    mt_agi_indiv: 25_000
+    mt_taxable_income_indiv: 20_000
+    taxable_pension_income: 10_000
+    adjusted_gross_income_person: 35_260
+  output:
+    # 20% x 25,000 exceeds the 4,510 standard deduction cap.
+    mt_standard_deduction_indiv: 4_510
+    mt_personal_exemptions_indiv: 2_400
+    # Apply the year's seven marginal rates to 20,000 of taxable income.
+    mt_regular_income_tax_indiv: 819.60
+    # Pension cap 4,110 less 2 x 1,000 of excess federal AGI.
+    mt_pension_exemption_indiv: 2_110
+
+- name: Montana applies its 2018 exemptions and income tax schedule
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 40
+    mt_agi_indiv: 25_000
+    mt_taxable_income_indiv: 20_000
+    taxable_pension_income: 10_000
+    adjusted_gross_income_person: 35_820
+  output:
+    # 20% x 25,000 exceeds the 4,580 standard deduction cap.
+    mt_standard_deduction_indiv: 4_580
+    mt_personal_exemptions_indiv: 2_440
+    # Apply the year's seven marginal rates to 20,000 of taxable income.
+    mt_regular_income_tax_indiv: 809.90
+    # Pension cap 4,180 less 2 x 1,000 of excess federal AGI.
+    mt_pension_exemption_indiv: 2_180
+
+- name: Montana applies its 2019 exemptions and income tax schedule
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 40
+    mt_agi_indiv: 25_000
+    mt_taxable_income_indiv: 20_000
+    taxable_pension_income: 10_000
+    adjusted_gross_income_person: 36_800
+  output:
+    # 20% x 25,000 exceeds the 4,710 standard deduction cap.
+    mt_standard_deduction_indiv: 4_710
+    mt_personal_exemptions_indiv: 2_510
+    # Apply the year's seven marginal rates to 20,000 of taxable income.
+    mt_regular_income_tax_indiv: 793.40
+    # Pension cap 4,300 less 2 x 1,000 of excess federal AGI.
+    mt_pension_exemption_indiv: 2_300
+
+- name: Montana applies its 2020 exemptions and income tax schedule
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 40
+    mt_agi_indiv: 25_000
+    mt_taxable_income_indiv: 20_000
+    taxable_pension_income: 10_000
+    adjusted_gross_income_person: 37_420
+  output:
+    # 20% x 25,000 exceeds the 4,790 standard deduction cap.
+    mt_standard_deduction_indiv: 4_790
+    mt_personal_exemptions_indiv: 2_560
+    # Apply the year's seven marginal rates to 20,000 of taxable income.
+    mt_regular_income_tax_indiv: 783.70
+    # Pension cap 4,370 less 2 x 1,000 of excess federal AGI.
+    mt_pension_exemption_indiv: 2_370
+
+- name: Montana includes all four existing subtractions in 2017
+  period: 2017
+  input:
+    state_code: MT
+    mt_interest_exemption_person: 800
+    us_govt_interest_person: 1_000
+    mt_tuition_subtraction_person: 3_000
+    salt_refund_income: 200
+  output:
+    # 800 + 1,000 + 3,000 + 200 = 5,000.
+    mt_subtractions: 5_000
+
+- name: Montana includes all four existing subtractions in 2020
+  period: 2020
+  input:
+    state_code: MT
+    mt_interest_exemption_person: 800
+    us_govt_interest_person: 1_000
+    mt_tuition_subtraction_person: 3_000
+    salt_refund_income: 200
+  output:
+    # 800 + 1,000 + 3,000 + 200 = 5,000.
+    mt_subtractions: 5_000
+
+# Apply each published marginal rate to its occupied bracket.
+- name: Montana applies both sides of its 2017 tax boundaries
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 2899
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 2900
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 2901
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5199
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5200
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5201
+      person_6:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 7899
+      person_7:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 7900
+      person_8:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 7901
+      person_9:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 10599
+      person_10:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 10600
+      person_11:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 10601
+      person_12:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 13599
+      person_13:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 13600
+      person_14:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 13601
+      person_15:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 17599
+      person_16:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 17600
+      person_17:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 17601
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+      person_6:
+        members:
+        - person_6
+      person_7:
+        members:
+        - person_7
+      person_8:
+        members:
+        - person_8
+      person_9:
+        members:
+        - person_9
+      person_10:
+        members:
+        - person_10
+      person_11:
+        members:
+        - person_11
+      person_12:
+        members:
+        - person_12
+      person_13:
+        members:
+        - person_13
+      person_14:
+        members:
+        - person_14
+      person_15:
+        members:
+        - person_15
+      person_16:
+        members:
+        - person_16
+      person_17:
+        members:
+        - person_17
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+      person_6:
+        members:
+        - person_6
+        state_code: MT
+      person_7:
+        members:
+        - person_7
+        state_code: MT
+      person_8:
+        members:
+        - person_8
+        state_code: MT
+      person_9:
+        members:
+        - person_9
+        state_code: MT
+      person_10:
+        members:
+        - person_10
+        state_code: MT
+      person_11:
+        members:
+        - person_11
+        state_code: MT
+      person_12:
+        members:
+        - person_12
+        state_code: MT
+      person_13:
+        members:
+        - person_13
+        state_code: MT
+      person_14:
+        members:
+        - person_14
+        state_code: MT
+      person_15:
+        members:
+        - person_15
+        state_code: MT
+      person_16:
+        members:
+        - person_16
+        state_code: MT
+      person_17:
+        members:
+        - person_17
+        state_code: MT
+  output:
+    mt_regular_income_tax_indiv:
+    - 28.99
+    - 29.0
+    - 29.02
+    - 74.98
+    - 75.0
+    - 75.03
+    - 155.97
+    - 156.0
+    - 156.04
+    - 263.96
+    - 264.0
+    - 264.05
+    - 413.95
+    - 414.0
+    - 414.06
+    - 653.94
+    - 654.0
+    - 654.07
+
+# Standard deduction: min(cap, max(floor, 20% x AGI)).
+- name: Montana applies both sides of its 2017 deduction boundaries
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 9999
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10000
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10001
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 22549
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 22550
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 22551
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+  output:
+    mt_standard_deduction_indiv:
+    - 2000
+    - 2000.0
+    - 2000.2
+    - 4509.8
+    - 4510.0
+    - 4510
+
+# Pension exemption: max(cap - 2 x max(AGI - threshold, 0), 0).
+- name: Montana applies both sides of its 2017 pension boundaries
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 34259
+        taxable_pension_income: 10000
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 34260
+        taxable_pension_income: 10000
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 34261
+        taxable_pension_income: 10000
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 36314.0
+        taxable_pension_income: 10000
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 36315.0
+        taxable_pension_income: 10000
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 36316.0
+        taxable_pension_income: 10000
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+  output:
+    mt_pension_exemption_indiv:
+    - 4110
+    - 4110
+    - 4108
+    - 2.0
+    - 0.0
+    - 0
+
+# Apply each published marginal rate to its occupied bracket.
+- name: Montana applies both sides of its 2018 tax boundaries
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 2999
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 3000
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 3001
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5199
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5200
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5201
+      person_6:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 7999
+      person_7:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 8000
+      person_8:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 8001
+      person_9:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 10799
+      person_10:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 10800
+      person_11:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 10801
+      person_12:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 13899
+      person_13:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 13900
+      person_14:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 13901
+      person_15:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 17899
+      person_16:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 17900
+      person_17:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 17901
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+      person_6:
+        members:
+        - person_6
+      person_7:
+        members:
+        - person_7
+      person_8:
+        members:
+        - person_8
+      person_9:
+        members:
+        - person_9
+      person_10:
+        members:
+        - person_10
+      person_11:
+        members:
+        - person_11
+      person_12:
+        members:
+        - person_12
+      person_13:
+        members:
+        - person_13
+      person_14:
+        members:
+        - person_14
+      person_15:
+        members:
+        - person_15
+      person_16:
+        members:
+        - person_16
+      person_17:
+        members:
+        - person_17
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+      person_6:
+        members:
+        - person_6
+        state_code: MT
+      person_7:
+        members:
+        - person_7
+        state_code: MT
+      person_8:
+        members:
+        - person_8
+        state_code: MT
+      person_9:
+        members:
+        - person_9
+        state_code: MT
+      person_10:
+        members:
+        - person_10
+        state_code: MT
+      person_11:
+        members:
+        - person_11
+        state_code: MT
+      person_12:
+        members:
+        - person_12
+        state_code: MT
+      person_13:
+        members:
+        - person_13
+        state_code: MT
+      person_14:
+        members:
+        - person_14
+        state_code: MT
+      person_15:
+        members:
+        - person_15
+        state_code: MT
+      person_16:
+        members:
+        - person_16
+        state_code: MT
+      person_17:
+        members:
+        - person_17
+        state_code: MT
+  output:
+    mt_regular_income_tax_indiv:
+    - 29.99
+    - 30.0
+    - 30.02
+    - 73.98
+    - 74.0
+    - 74.03
+    - 157.97
+    - 158.0
+    - 158.04
+    - 269.96
+    - 270.0
+    - 270.05
+    - 424.95
+    - 425.0
+    - 425.06
+    - 664.94
+    - 665.0
+    - 665.07
+
+# Standard deduction: min(cap, max(floor, 20% x AGI)).
+- name: Montana applies both sides of its 2018 deduction boundaries
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10149
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10150
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10151
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 22899
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 22900
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 22901
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+  output:
+    mt_standard_deduction_indiv:
+    - 2030
+    - 2030.0
+    - 2030.2
+    - 4579.8
+    - 4580.0
+    - 4580
+
+# Pension exemption: max(cap - 2 x max(AGI - threshold, 0), 0).
+- name: Montana applies both sides of its 2018 pension boundaries
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 34819
+        taxable_pension_income: 10000
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 34820
+        taxable_pension_income: 10000
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 34821
+        taxable_pension_income: 10000
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 36909.0
+        taxable_pension_income: 10000
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 36910.0
+        taxable_pension_income: 10000
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 36911.0
+        taxable_pension_income: 10000
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+  output:
+    mt_pension_exemption_indiv:
+    - 4180
+    - 4180
+    - 4178
+    - 2.0
+    - 0.0
+    - 0
+
+# Apply each published marginal rate to its occupied bracket.
+- name: Montana applies both sides of its 2019 tax boundaries
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 3099
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 3100
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 3101
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5399
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5400
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5401
+      person_6:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 8199
+      person_7:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 8200
+      person_8:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 8201
+      person_9:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 11099
+      person_10:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 11100
+      person_11:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 11101
+      person_12:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 14299
+      person_13:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 14300
+      person_14:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 14301
+      person_15:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 18399
+      person_16:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 18400
+      person_17:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 18401
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+      person_6:
+        members:
+        - person_6
+      person_7:
+        members:
+        - person_7
+      person_8:
+        members:
+        - person_8
+      person_9:
+        members:
+        - person_9
+      person_10:
+        members:
+        - person_10
+      person_11:
+        members:
+        - person_11
+      person_12:
+        members:
+        - person_12
+      person_13:
+        members:
+        - person_13
+      person_14:
+        members:
+        - person_14
+      person_15:
+        members:
+        - person_15
+      person_16:
+        members:
+        - person_16
+      person_17:
+        members:
+        - person_17
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+      person_6:
+        members:
+        - person_6
+        state_code: MT
+      person_7:
+        members:
+        - person_7
+        state_code: MT
+      person_8:
+        members:
+        - person_8
+        state_code: MT
+      person_9:
+        members:
+        - person_9
+        state_code: MT
+      person_10:
+        members:
+        - person_10
+        state_code: MT
+      person_11:
+        members:
+        - person_11
+        state_code: MT
+      person_12:
+        members:
+        - person_12
+        state_code: MT
+      person_13:
+        members:
+        - person_13
+        state_code: MT
+      person_14:
+        members:
+        - person_14
+        state_code: MT
+      person_15:
+        members:
+        - person_15
+        state_code: MT
+      person_16:
+        members:
+        - person_16
+        state_code: MT
+      person_17:
+        members:
+        - person_17
+        state_code: MT
+  output:
+    mt_regular_income_tax_indiv:
+    - 30.99
+    - 31.0
+    - 31.02
+    - 76.98
+    - 77.0
+    - 77.03
+    - 160.97
+    - 161.0
+    - 161.04
+    - 276.96
+    - 277.0
+    - 277.05
+    - 436.95
+    - 437.0
+    - 437.06
+    - 682.94
+    - 683.0
+    - 683.07
+
+# Standard deduction: min(cap, max(floor, 20% x AGI)).
+- name: Montana applies both sides of its 2019 deduction boundaries
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10449
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10450
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10451
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 23549
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 23550
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 23551
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+  output:
+    mt_standard_deduction_indiv:
+    - 2090
+    - 2090.0
+    - 2090.2
+    - 4709.8
+    - 4710.0
+    - 4710
+
+# Pension exemption: max(cap - 2 x max(AGI - threshold, 0), 0).
+- name: Montana applies both sides of its 2019 pension boundaries
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 35799
+        taxable_pension_income: 10000
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 35800
+        taxable_pension_income: 10000
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 35801
+        taxable_pension_income: 10000
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 37949.0
+        taxable_pension_income: 10000
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 37950.0
+        taxable_pension_income: 10000
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 37951.0
+        taxable_pension_income: 10000
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+  output:
+    mt_pension_exemption_indiv:
+    - 4300
+    - 4300
+    - 4298
+    - 2.0
+    - 0.0
+    - 0
+
+# Apply each published marginal rate to its occupied bracket.
+- name: Montana applies both sides of its 2020 tax boundaries
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 3099
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 3100
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 3101
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5499
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5500
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 5501
+      person_6:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 8399
+      person_7:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 8400
+      person_8:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 8401
+      person_9:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 11299
+      person_10:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 11300
+      person_11:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 11301
+      person_12:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 14499
+      person_13:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 14500
+      person_14:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 14501
+      person_15:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 18699
+      person_16:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 18700
+      person_17:
+        is_tax_unit_head: true
+        age: 40
+        mt_taxable_income_indiv: 18701
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+      person_6:
+        members:
+        - person_6
+      person_7:
+        members:
+        - person_7
+      person_8:
+        members:
+        - person_8
+      person_9:
+        members:
+        - person_9
+      person_10:
+        members:
+        - person_10
+      person_11:
+        members:
+        - person_11
+      person_12:
+        members:
+        - person_12
+      person_13:
+        members:
+        - person_13
+      person_14:
+        members:
+        - person_14
+      person_15:
+        members:
+        - person_15
+      person_16:
+        members:
+        - person_16
+      person_17:
+        members:
+        - person_17
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+      person_6:
+        members:
+        - person_6
+        state_code: MT
+      person_7:
+        members:
+        - person_7
+        state_code: MT
+      person_8:
+        members:
+        - person_8
+        state_code: MT
+      person_9:
+        members:
+        - person_9
+        state_code: MT
+      person_10:
+        members:
+        - person_10
+        state_code: MT
+      person_11:
+        members:
+        - person_11
+        state_code: MT
+      person_12:
+        members:
+        - person_12
+        state_code: MT
+      person_13:
+        members:
+        - person_13
+        state_code: MT
+      person_14:
+        members:
+        - person_14
+        state_code: MT
+      person_15:
+        members:
+        - person_15
+        state_code: MT
+      person_16:
+        members:
+        - person_16
+        state_code: MT
+      person_17:
+        members:
+        - person_17
+        state_code: MT
+  output:
+    mt_regular_income_tax_indiv:
+    - 30.99
+    - 31.0
+    - 31.02
+    - 78.98
+    - 79.0
+    - 79.03
+    - 165.97
+    - 166.0
+    - 166.04
+    - 281.96
+    - 282.0
+    - 282.05
+    - 441.95
+    - 442.0
+    - 442.06
+    - 693.94
+    - 694.0
+    - 694.07
+
+# Standard deduction: min(cap, max(floor, 20% x AGI)).
+- name: Montana applies both sides of its 2020 deduction boundaries
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10649
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10650
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 10651
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 23949
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 23950
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 23951
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+  output:
+    mt_standard_deduction_indiv:
+    - 2130
+    - 2130.0
+    - 2130.2
+    - 4789.8
+    - 4790.0
+    - 4790
+
+# Pension exemption: max(cap - 2 x max(AGI - threshold, 0), 0).
+- name: Montana applies both sides of its 2020 pension boundaries
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 36419
+        taxable_pension_income: 10000
+      person_1:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 36420
+        taxable_pension_income: 10000
+      person_2:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 36421
+        taxable_pension_income: 10000
+      person_3:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 38604.0
+        taxable_pension_income: 10000
+      person_4:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 38605.0
+        taxable_pension_income: 10000
+      person_5:
+        is_tax_unit_head: true
+        age: 40
+        adjusted_gross_income_person: 38606.0
+        taxable_pension_income: 10000
+    tax_units:
+      person_0:
+        members:
+        - person_0
+      person_1:
+        members:
+        - person_1
+      person_2:
+        members:
+        - person_2
+      person_3:
+        members:
+        - person_3
+      person_4:
+        members:
+        - person_4
+      person_5:
+        members:
+        - person_5
+    households:
+      person_0:
+        members:
+        - person_0
+        state_code: MT
+      person_1:
+        members:
+        - person_1
+        state_code: MT
+      person_2:
+        members:
+        - person_2
+        state_code: MT
+      person_3:
+        members:
+        - person_3
+        state_code: MT
+      person_4:
+        members:
+        - person_4
+        state_code: MT
+      person_5:
+        members:
+        - person_5
+        state_code: MT
+  output:
+    mt_pension_exemption_indiv:
+    - 4370
+    - 4370
+    - 4368
+    - 2.0
+    - 0.0
+    - 0
+
+# At zero AGI, apply the minimums: 2,030 for a surviving spouse and
+# 4,060 for HoH. At 100,000 AGI, 20% exceeds both caps: 4,580 and 9,160.
+- name: Montana keeps the single standard deduction for a surviving spouse in 2018
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      widow_floor:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 0
+      hoh_floor:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 0
+      widow_cap:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 100000
+      hoh_cap:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 100000
+    tax_units:
+      widow_floor:
+        members:
+        - widow_floor
+        filing_status: SURVIVING_SPOUSE
+        mt_agi_joint: 0
+      hoh_floor:
+        members:
+        - hoh_floor
+        filing_status: HEAD_OF_HOUSEHOLD
+        mt_agi_joint: 0
+      widow_cap:
+        members:
+        - widow_cap
+        filing_status: SURVIVING_SPOUSE
+        mt_agi_joint: 100000
+      hoh_cap:
+        members:
+        - hoh_cap
+        filing_status: HEAD_OF_HOUSEHOLD
+        mt_agi_joint: 100000
+    households:
+      widow_floor:
+        members:
+        - widow_floor
+        state_code: MT
+      hoh_floor:
+        members:
+        - hoh_floor
+        state_code: MT
+      widow_cap:
+        members:
+        - widow_cap
+        state_code: MT
+      hoh_cap:
+        members:
+        - hoh_cap
+        state_code: MT
+  output:
+    mt_standard_deduction_joint:
+    - 2030
+    - 4060
+    - 4580
+    - 9160
+    mt_standard_deduction_indiv:
+    - 2030
+    - 4060
+    - 4580
+    - 9160
+
+# At zero AGI, apply the minimums: 2,090 for a surviving spouse and
+# 4,180 for HoH. At 100,000 AGI, 20% exceeds both caps: 4,710 and 9,420.
+- name: Montana keeps the single standard deduction for a surviving spouse in 2019
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      widow_floor:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 0
+      hoh_floor:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 0
+      widow_cap:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 100000
+      hoh_cap:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 100000
+    tax_units:
+      widow_floor:
+        members:
+        - widow_floor
+        filing_status: SURVIVING_SPOUSE
+        mt_agi_joint: 0
+      hoh_floor:
+        members:
+        - hoh_floor
+        filing_status: HEAD_OF_HOUSEHOLD
+        mt_agi_joint: 0
+      widow_cap:
+        members:
+        - widow_cap
+        filing_status: SURVIVING_SPOUSE
+        mt_agi_joint: 100000
+      hoh_cap:
+        members:
+        - hoh_cap
+        filing_status: HEAD_OF_HOUSEHOLD
+        mt_agi_joint: 100000
+    households:
+      widow_floor:
+        members:
+        - widow_floor
+        state_code: MT
+      hoh_floor:
+        members:
+        - hoh_floor
+        state_code: MT
+      widow_cap:
+        members:
+        - widow_cap
+        state_code: MT
+      hoh_cap:
+        members:
+        - hoh_cap
+        state_code: MT
+  output:
+    mt_standard_deduction_joint:
+    - 2090
+    - 4180
+    - 4710
+    - 9420
+    mt_standard_deduction_indiv:
+    - 2090
+    - 4180
+    - 4710
+    - 9420
+
+# At zero AGI, apply the minimums: 2,130 for a surviving spouse and
+# 4,260 for HoH. At 100,000 AGI, 20% exceeds both caps: 4,790 and 9,580.
+- name: Montana keeps the single standard deduction for a surviving spouse in 2020
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      widow_floor:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 0
+      hoh_floor:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 0
+      widow_cap:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 100000
+      hoh_cap:
+        is_tax_unit_head: true
+        age: 40
+        mt_agi_indiv: 100000
+    tax_units:
+      widow_floor:
+        members:
+        - widow_floor
+        filing_status: SURVIVING_SPOUSE
+        mt_agi_joint: 0
+      hoh_floor:
+        members:
+        - hoh_floor
+        filing_status: HEAD_OF_HOUSEHOLD
+        mt_agi_joint: 0
+      widow_cap:
+        members:
+        - widow_cap
+        filing_status: SURVIVING_SPOUSE
+        mt_agi_joint: 100000
+      hoh_cap:
+        members:
+        - hoh_cap
+        filing_status: HEAD_OF_HOUSEHOLD
+        mt_agi_joint: 100000
+    households:
+      widow_floor:
+        members:
+        - widow_floor
+        state_code: MT
+      hoh_floor:
+        members:
+        - hoh_floor
+        state_code: MT
+      widow_cap:
+        members:
+        - widow_cap
+        state_code: MT
+      hoh_cap:
+        members:
+        - hoh_cap
+        state_code: MT
+  output:
+    mt_standard_deduction_joint:
+    - 2130
+    - 4260
+    - 4790
+    - 9580
+    mt_standard_deduction_indiv:
+    - 2130
+    - 4260
+    - 4790
+    - 9580

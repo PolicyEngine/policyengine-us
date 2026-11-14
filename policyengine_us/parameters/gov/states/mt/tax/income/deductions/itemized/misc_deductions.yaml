@@ -4,7 +4,7 @@ description: Montana counts these sources as miscellaneous deductions.
 # separately because its income limit uses the return's own Montana AGI, which
 # differs between a joint return and separate columns (Form 2441-M line 3).
 values:
-  2021-01-01:
+  2017-01-01:
     - casualty_loss_deduction
     # Form 2 itemized deductions line 18 follows federal Schedule A line 16.
     - mt_claim_of_right_deduction
@@ -17,6 +17,10 @@ metadata:
   label: Montana miscellaneous deductions
   period: year
   reference:
+    - title: 2017 Montana Form 2 instructions, Schedule III, line 28
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=31
+    - title: 2017 Montana Form 2 instructions, Schedule III, miscellaneous deductions
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
     - title: 2023 Montana Form 2 instructions, itemized deductions line 18
       href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=39
     - title: 2024 Montana Form 2 instructions, line 2 and Worksheet A
