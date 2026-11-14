@@ -1,0 +1,22 @@
+description: Hawaii allows the federal deduction for qualified tips if this is true.
+values:
+  # For 2025, HRS 235-2.3(a) conforms to the Internal Revenue Code as amended
+  # as of December 31, 2024, before P.L. 119-21 added section 224.
+  2025-01-01: false
+  # Act 35, SLH 2026 conforms to the Internal Revenue Code as amended as of
+  # December 31, 2025 and does not make section 224 inoperative.
+  2026-01-01: true
+  # Section 224(h) allows no deduction for taxable years beginning after
+  # December 31, 2028.
+  2029-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii qualified tips deduction in effect
+  reference:
+    - title: Act 35, SLH 2026 (H.B. 2329, C.D. 1), Section 2, amending HRS 235-2.3
+      href: https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=1
+    - title: Hawaii Department of Taxation Announcement No. 2026-06, Act 35
+      href: https://files.hawaii.gov/tax/news/announce/ann26-06.pdf#page=3
+    - title: 26 U.S. Code 224(h)
+      href: https://www.law.cornell.edu/uscode/text/26/224#h

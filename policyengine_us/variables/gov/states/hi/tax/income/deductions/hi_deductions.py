@@ -7,6 +7,8 @@ class hi_deductions(Variable):
     label = "Hawaii deductions"
     unit = USD
     reference = (
+        "https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=1",
+        "https://files.hawaii.gov/tax/news/announce/ann26-06.pdf#page=2",
         "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=11",
         # PDF pages 15 (itemized deduction), 20 (standard deduction)
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",
@@ -55,4 +57,14 @@ class hi_deductions(Variable):
         itemized_deduction = where(
             itemized_deductions_eligible, total_itemized_deduction, 0
         )
-        return max_(itemized_deduction, applicable_standard_deduction)
+        non_itemizer_charitable_deduction = tax_unit(
+            "charitable_deduction_for_non_itemizers", period
+        )
+        tip_income_deduction = tax_unit("hi_tip_income_deduction", period)
+        return (
+            max_(
+                itemized_deduction,
+                applicable_standard_deduction + non_itemizer_charitable_deduction,
+            )
+            + tip_income_deduction
+        )

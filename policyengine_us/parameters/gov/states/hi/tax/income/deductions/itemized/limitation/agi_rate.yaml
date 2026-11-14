@@ -1,0 +1,19 @@
+description: Hawaii reduces itemized deductions by this share of Hawaii adjusted gross income above the itemized deductions reduction threshold, under the overall limitation on itemized deductions.
+values:
+  2021-01-01: 0.03
+metadata:
+  unit: /1
+  period: year
+  label: Hawaii itemized deductions limitation adjusted gross income rate
+  reference:
+    # Section 68 stays operative for Hawaii "in the form that it existed as of
+    # December 31, 2024" (Act 35, SLH 2026, for taxable years beginning after
+    # December 31, 2025); section 68(a)(1) sets the 3 percent rate.
+    - title: Act 35, SLH 2026 (H.B. 2329, C.D. 1), Section 3, amending HRS 235-2.4(b)
+      href: https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=18
+    - title: 26 U.S. Code 68(a)(1) (2024 edition)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partI-sec68.htm
+    - title: 2021 Hawaii N-11 Instructions, Total Itemized Deductions Worksheet, line 9
+      href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=32
+    - title: 2025 Hawaii N-11 Instructions, Total Itemized Deductions Worksheet, line 9
+      href: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=34

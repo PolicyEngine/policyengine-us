@@ -118,6 +118,68 @@ def compute_charitable_deduction(
     )
 
 
+def charitable_deduction_given_contribution_base(
+    tax_unit, period, parameters, positive_agi
+):
+    """Apply charitable deduction ceilings and the floor to the contribution base."""
+    # 26 U.S. Code § 170(b)(1) defines charitable deduction limits and their
+    # interactions, calculated sequentially per IRS Publication 526, Worksheet 2:
+    #   (G) Cash to 50% limit orgs: 60% AGI (post-TCJA; 50% pre-2018; 100% 2020-2021)
+    #   (A) Non-cash ordinary / non-capital-gain to 50% limit orgs: 50% AGI
+    #   (B) Cash & non-cash ordinary to non-50% limit orgs: 30% AGI (reduced by 50% gifts)
+    #   (C) Capital gain property to 50% limit orgs: 30% AGI (reduced by ordinary 50% gifts)
+    #   (D) Capital gain property to non-50% limit orgs: 20% AGI (taken into account last)
+    cash_50 = add(tax_unit, period, ["resolved_charitable_cash_donations_50_pct"])
+    cash_non_50 = add(
+        tax_unit, period, ["resolved_charitable_cash_donations_non_50_pct"]
+    )
+    ordinary_50 = add(
+        tax_unit, period, ["resolved_charitable_non_cash_donations_50_pct"]
+    )
+    ordinary_non_50 = add(
+        tax_unit,
+        period,
+        ["resolved_charitable_non_cash_donations_non_50_pct"],
+    )
+    cg_50 = add(
+        tax_unit,
+        period,
+        ["resolved_charitable_capital_gain_donations_50_pct"],
+    )
+    cg_non_50 = add(
+        tax_unit,
+        period,
+        ["resolved_charitable_capital_gain_donations_non_50_pct"],
+    )
+
+    p = parameters(period).gov.irs.deductions.itemized.charity
+
+    total_allowed = compute_charitable_deduction(
+        cash_50=cash_50,
+        cash_non_50=cash_non_50,
+        ordinary_50=ordinary_50,
+        ordinary_non_50=ordinary_non_50,
+        cg_50=cg_50,
+        cg_non_50=cg_non_50,
+        positive_agi=positive_agi,
+        ceiling_all=p.ceiling.all,
+        ceiling_non_cash=p.ceiling.non_cash,
+        ceiling_non_50=p.ceiling.non_cash_to_non_50_pct_org,
+        ceiling_cg_50=p.ceiling.capital_gain_to_50_pct_org,
+        ceiling_cg_non_50=p.ceiling.capital_gain_to_non_50_pct_org,
+        non_50_pct_cash_add_back=p.ceiling.non_50_pct_cash_add_back,
+        qualified_cash_election=p.qualified_cash_election,
+    )
+
+    # 2026+ floor under IRC § 170(b)(1)(I) (P.L. 119-21):
+    # Applies to contributions otherwise allowable (after ceilings).
+    if p.floor.applies:
+        deduction_floor = p.floor.amount * positive_agi
+        return max_(0, total_allowed - deduction_floor)
+
+    return total_allowed
+
+
 class charitable_deduction(Variable):
     value_type = float
     entity = TaxUnit
@@ -128,60 +190,7 @@ class charitable_deduction(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/170"
 
     def formula(tax_unit, period, parameters):
-        # 26 U.S. Code § 170(b)(1) defines charitable deduction limits and their
-        # interactions, calculated sequentially per IRS Publication 526, Worksheet 2:
-        #   (G) Cash to 50% limit orgs: 60% AGI (post-TCJA; 50% pre-2018; 100% 2020-2021)
-        #   (A) Non-cash ordinary / non-capital-gain to 50% limit orgs: 50% AGI
-        #   (B) Cash & non-cash ordinary to non-50% limit orgs: 30% AGI (reduced by 50% gifts)
-        #   (C) Capital gain property to 50% limit orgs: 30% AGI (reduced by ordinary 50% gifts)
-        #   (D) Capital gain property to non-50% limit orgs: 20% AGI (taken into account last)
-        cash_50 = add(tax_unit, period, ["resolved_charitable_cash_donations_50_pct"])
-        cash_non_50 = add(
-            tax_unit, period, ["resolved_charitable_cash_donations_non_50_pct"]
-        )
-        ordinary_50 = add(
-            tax_unit, period, ["resolved_charitable_non_cash_donations_50_pct"]
-        )
-        ordinary_non_50 = add(
-            tax_unit,
-            period,
-            ["resolved_charitable_non_cash_donations_non_50_pct"],
-        )
-        cg_50 = add(
-            tax_unit,
-            period,
-            ["resolved_charitable_capital_gain_donations_50_pct"],
-        )
-        cg_non_50 = add(
-            tax_unit,
-            period,
-            ["resolved_charitable_capital_gain_donations_non_50_pct"],
-        )
-
         positive_agi = tax_unit("positive_agi", period)
-        p = parameters(period).gov.irs.deductions.itemized.charity
-
-        total_allowed = compute_charitable_deduction(
-            cash_50=cash_50,
-            cash_non_50=cash_non_50,
-            ordinary_50=ordinary_50,
-            ordinary_non_50=ordinary_non_50,
-            cg_50=cg_50,
-            cg_non_50=cg_non_50,
-            positive_agi=positive_agi,
-            ceiling_all=p.ceiling.all,
-            ceiling_non_cash=p.ceiling.non_cash,
-            ceiling_non_50=p.ceiling.non_cash_to_non_50_pct_org,
-            ceiling_cg_50=p.ceiling.capital_gain_to_50_pct_org,
-            ceiling_cg_non_50=p.ceiling.capital_gain_to_non_50_pct_org,
-            non_50_pct_cash_add_back=p.ceiling.non_50_pct_cash_add_back,
-            qualified_cash_election=p.qualified_cash_election,
+        return charitable_deduction_given_contribution_base(
+            tax_unit, period, parameters, positive_agi
         )
-
-        # 2026+ floor under IRC § 170(b)(1)(I) (P.L. 119-21):
-        # Applies to contributions otherwise allowable (after ceilings).
-        if p.floor.applies:
-            deduction_floor = p.floor.amount * positive_agi
-            return max_(0, total_allowed - deduction_floor)
-
-        return total_allowed
