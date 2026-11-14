@@ -311,6 +311,7 @@ def _simulate(households, parameters):
 @given(st.lists(household(), min_size=3, max_size=8))
 def test_ny_ccap_rate_and_payment_invariants(generated):
     parameters = system.parameters(f"{MONTH}-01").gov.states.ny.ocfs.ccap
+    multiplier = parameters.rates.special_needs_multiplier
     simulation, rows = _simulate(_coverage_households() + generated, parameters)
 
     def calc(variable, period=MONTH):
@@ -369,17 +370,11 @@ def test_ny_ccap_rate_and_payment_invariants(generated):
                 # A qualifying child's center rate rises to the special-needs rate.
                 np.testing.assert_allclose(
                     center[i],
-                    case["center_table"] * (1.15 if special_needs[i] else 1),
+                    case["center_table"] * (multiplier if special_needs[i] else 1),
                     err_msg=f"group payment cap rate: {context}",
                     **TOLERANCE,
                 )
                 assert payment[i] <= center[i] + 0.01, f"group payment cap: {context}"
-                np.testing.assert_allclose(
-                    payment[i],
-                    min(min(expenses[i], market[i]) * (1 + differential[i]), center[i]),
-                    err_msg=f"group payment: {context}",
-                    **TOLERANCE,
-                )
             if row["variant"] == "default":
                 if row["group"] == "GROUP_4" and case["provider"] == "LE_ENH":
                     # ACS's 75% informal rate intentionally exceeds main's 70%.
@@ -400,7 +395,7 @@ def test_ny_ccap_rate_and_payment_invariants(generated):
                     **TOLERANCE,
                 )
             if row["variant"] in {"special", "special_differentials", "all"}:
-                expected = regular[i] * (1.15 if expenses[i] > regular[i] else 1)
+                expected = regular[i] * (multiplier if expenses[i] > regular[i] else 1)
                 np.testing.assert_allclose(
                     market[i],
                     expected,

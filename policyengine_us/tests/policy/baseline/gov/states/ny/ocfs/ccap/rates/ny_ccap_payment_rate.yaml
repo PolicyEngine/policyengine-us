@@ -555,6 +555,43 @@
     ny_ccap_payment_rate: [1_050, 1_050, 1_150, 1_020]
   absolute_error_margin: 0.01
 
+# District with low configured rates and a 40% waiver, April 2025.
+# The district configures 0%, so it pays the state minimum, 10% from
+# April 1, 2025, for nontraditional hours and for licensed homelessness
+# care: max(0, .10) = .10; $1,000 * 1.10 = $1,100.
+- name: Configured rates below the minimum rise to ten percent in April 2025.
+  period: 2025-04
+  input:
+    gov.states.ny.ocfs.ccap.differentials.nontraditional_hours: 0
+    gov.states.ny.ocfs.ccap.differentials.homelessness: 0
+    gov.states.ny.ocfs.ccap.differentials.legally_exempt_homelessness: 0.02
+    gov.states.ny.ocfs.ccap.differentials.accreditation: 0.01
+    gov.states.ny.ocfs.ccap.differentials.maximum: 0.40
+    people:
+      nontraditional:
+        childcare_provider_type_group: {2025: DCC_SACC}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+        ny_ccap_nontraditional_hours: {2025: true}
+      homeless:
+        childcare_provider_type_group: {2025: DCC_SACC}
+        ny_ccap_childcare_expenses: 1_200
+        ny_ccap_market_rate: 1_000
+    households:
+      nontraditional:
+        members: [nontraditional]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+      homeless:
+        members: [homeless]
+        state_code: {2025: NY}
+        ny_ccap_county_group: {2025: GROUP_1}
+        is_homeless: {2025: true}
+  output:
+    ny_ccap_differential: [0.10, 0.10]
+    ny_ccap_payment_rate: [1_100, 1_100]
+  absolute_error_margin: 0.01
+
 # District with low configured rates and a 40% waiver, June 2025.
 # Nontraditional hours and licensed homelessness rise to the 10% minimum,
 # while accreditation keeps its 5% minimum.
