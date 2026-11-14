@@ -1,1 +1,0 @@
-Updated Hawaii deductions for Act 35 conformity, including qualified tips, nonitemizer charity and charitable limits based on Hawaii AGI. Corrected the itemized deduction limitation and pooled miscellaneous expenses with repayments before applying the 2% floor.
