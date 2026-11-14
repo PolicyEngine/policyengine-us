@@ -14,11 +14,15 @@ metadata:
     # household, so the formula counts it for the household head's couple
     # and floors each amount at zero. Rental property equity counts less the
     # exclusion for income-producing property essential to self-support
-    # (see part_d_lis_countable_rental_property_equity).
+    # (see part_d_lis_countable_rental_property_equity). That exclusion comes
+    # from the statute's section 1382b and SSA's application of SI 01130.503
+    # (HI 03030.020 A), not from 42 CFR 423.772 or 20 CFR 418.3425 read alone.
     - title: 20 CFR § 418.3405(b) - What types of resources do we count?
       href: https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3405#p-418.3405(b)
     - title: 20 CFR § 418.3425 - What resources do we exclude from counting?
       href: https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3425
+    - title: 20 CFR § 416.1222(a) - How income-producing property essential to self-support is counted
+      href: https://www.ecfr.gov/current/title-20/chapter-III/part-416/subpart-L/section-416.1222#p-416.1222(a)
     - title: 42 CFR § 423.772 - Definitions (resources)
       href: https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-B/part-423/subpart-P/section-423.772
     - title: SSA POMS HI 03030.020 - Resource Exclusions

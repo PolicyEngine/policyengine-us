@@ -226,6 +226,21 @@
     # 13,091.
     part_d_lis_resource_eligible: false
 
+- name: Real estate worth less than its debt counts as zero, not as its shortfall.
+  period: 2026
+  input:
+    people:
+      person:
+        bank_account_assets: 18_090
+    households:
+      household:
+        members: [person]
+        household_other_real_estate_equity: -5_000
+  output:
+    # 18,090 + 0 = 18,090 <= 18,090. Counting the shortfall as a positive
+    # amount would give 23,090.
+    part_d_lis_resource_eligible: true
+
 - name: An overdrawn bank account does not offset stocks.
   period: 2026
   input:
@@ -236,3 +251,15 @@
   output:
     # 18,091 > 18,090. Netting the overdraft would give 17,091.
     part_d_lis_resource_eligible: false
+
+- name: An overdrawn bank account counts as zero, not as the amount overdrawn.
+  period: 2026
+  input:
+    people:
+      person:
+        bank_account_assets: -1_000
+        stock_assets: 18_090
+  output:
+    # 0 + 18,090 = 18,090 <= 18,090. Counting the overdraft as a positive
+    # amount would give 19,090.
+    part_d_lis_resource_eligible: true
