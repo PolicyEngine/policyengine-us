@@ -10940,6 +10940,100 @@ candidates:
   note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
     section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
     member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-current-self-employment-loss-offset
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: When a South Carolina TANF benefit group member has a current net loss from self-employment or farming,
+    or from rent, a partnership or S corporation, capital, or a trust or estate, does the loss reduce the other income
+    the group counts, or does it count as zero?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(A), (B)(3), (B)(4), (C) and (E)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 sections 7.1, 7.7, 8.9, 8.12 and 8.16
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=102
+  - kind: instructions
+    citation: 2025 IRS Instructions for Schedule C, Line 31
+    url: https://www.irs.gov/pub/irs-prior/i1040sc--2025.pdf#page=14
+  readings:
+    statute: No statute is supplied. 114-1150(B)(3) defines self-employment earned income as "the total profit from
+      a business enterprise, farming, etc.", determined "using Internal Revenue Service methods", and Schedule C line
+      31 reports a net profit or a loss. On one reading that signed result carries through the disregard in section
+      8.16 C and the sum in 8.16 E, so a current loss reduces the other income the group counts.
+    other: Section 7.1 says "Income is money received by a BG member (s) from any source", and section 8.9 calls
+      self-employment income "the total profit from a business enterprise". On the other reading a loss is no income,
+      so it counts as zero and reduces nothing. Section 8.9 item 7 B bars "Net losses from previous providers" as a
+      business cost.
+  example: Adult A receives $1,000 a month of alimony and adult B has a $1,200 monthly self-employment loss, with
+    one child and a need standard of $1,110. In January 2026 the model halves the loss, counts 1,000 - 600 = $400 and
+    pays floor(710 x 0.4046) = $287. In May 2026 it sets the loss to zero, counts $1,000 and pays floor(110 x 0.4046)
+    = $44.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_earned_income_person.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_income.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_gross_income.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_gross_unearned_income.py
+    - policyengine_us/parameters/gov/states/sc/tanf/income/unearned/positive_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10184
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: open
+  note: Neither source names a current loss, an offset between members or a floor at zero, so both readings
+    interpret silent texts. The model applies each reading on a different path. In the months it gives the
+    fifty-percent disregard (January to April, a calendar proxy), sc_tanf_countable_earned_income_person.py halves a
+    self-employment or farm loss and sc_tanf_countable_income.py adds the negative result to the group's other income.
+    In the $100-disregard months (May to December) the same formula takes max(earned income - 100, 0), so the same
+    loss counts as zero. In May 2026 the example household counts $1,000 and receives $44, against $400 and $287 in
+    January. In every month sc_tanf_gross_income.py adds the whole signed loss for the gross income test, where the
+    example household has -$200. positive_sources.yaml counts capital gains, rental, farm rent, partnership and S
+    corporation, estate and miscellaneous income only when positive, citing section 7.1, and
+    sc_tanf_gross_unearned_income.py stops interest and dividends at zero. If B's loss came from a partnership, the
+    example household would count $1,000 and receive $44 in both months. Section 7.7 counts rent as self-employment
+    when the member manages the property 20 or more hours a week, and the model counts all rental_income as unearned.
+    integration.yaml Cases 35, 36 and 38 pin the January results and Case 39 the May result, and
+    sc_tanf_gross_unearned_income.yaml Cases 12, 13 and 15 to 18 pin the unearned floors. An answer should cover each
+    path and say whether a fifty-percent month counts half the loss or all of it. Counting all of it gives the example
+    household -$200 of countable income and the $449 payment standard.
+- id: us-sc:tanf-dependent-child-school-level
+  program: tanf
+  years:
+    from: 2025
+    type: federal-fiscal
+  question: Can an eighteen-year-old full-time primary-school student qualify as a South Carolina TANF dependent child,
+    or must the student attend secondary school or an equivalent level of vocational or technical training?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1130(E)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=204
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 4.10
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=75
+  readings:
+    statute: No statute is supplied; 114-1130(E) permits the extension from under eighteen to under nineteen only for
+      full-time students in secondary school or an equivalent level of vocational or technical training.
+    other: Section 4.10 permits full-time primary-school students, as well as secondary-school students, to receive
+      benefits until age nineteen.
+  example: An eighteen-year-old full-time primary-school student who does not head the household fails the regulation's
+    dependent-child age test and passes the manual's. An otherwise identical secondary-school student passes both.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_dependent_child.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: ruled
+  note: The regulation governs. The model uses is_in_secondary_school, which includes equivalent-level training, for
+    the under-nineteen extension. This entry addresses school level only; it does not resolve the manual's unmarried
+    condition or change the model's head-of-household inference. Volume 65, effective October 1, 2024, has the same
+    section 4.10 text as Volume 67 (https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=74), so
+    the difference dates from fiscal 2025 at the latest.
 - id: us-sc:tanf-gross-income-limit-cents
   program: tanf
   years:
