@@ -218,9 +218,9 @@
         members: [parent, separated_adult, partner]
         state_code: TX
   output:
-    # A unit with a separated member infers no spouse, so the two-person
-    # marital unit is not a couple that can file jointly. The oldest adult
-    # heads the unit.
+    # The separated adult doesn't form a couple for head selection. The
+    # oldest adult heads the unit, and the selected spouse candidate's
+    # separation leaves the unit without a spouse.
     is_tax_unit_head: [true, false, false]
     is_tax_unit_spouse: [false, false, false]
     filing_status: SINGLE
@@ -249,7 +249,7 @@
   output:
     # With marital units omitted, Core puts all three adults in one marital
     # unit. It isn't a two-person unit, so the two non-separated adults aren't
-    # a couple, and the oldest adult heads the unit. A unit with a separated
-    # member infers no spouse.
+    # a couple, and the oldest adult heads the unit. That head's separation
+    # leaves the unit without a spouse.
     is_tax_unit_head: [true, false, false]
     is_tax_unit_spouse: [false, false, false]

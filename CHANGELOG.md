@@ -1,3 +1,110 @@
+## [2.124.6] - 2026-11-14
+
+### Fixed
+
+- Corrected Washington's senior property tax exemption age threshold to 62 in the collection year, matching age 61 at the preceding filing-year deadline. Kept the veteran rating parameter available for historical calculations before 2016.
+
+
+## [2.124.5] - 2026-11-14
+
+### Fixed
+
+- Retained shared SSA parameters and reported-benefit inputs in the calculator reference and added reform comparisons.
+
+
+## [2.124.4] - 2026-11-14
+
+### Fixed
+
+- Count only whole $100 steps of adjusted gross income above $25,000 in the Vermont veteran tax credit's phase-out, as the Department of Taxes directs on Schedule IN-112. Veteran filers with adjusted gross income from $25,001 to $29,999, other than a multiple of $100, now receive $5 more.
+- Updated Hawaii deductions for Act 35 conformity, including qualified tips, nonitemizer charity and charitable limits based on Hawaii AGI. Corrected the itemized deduction limitation and pooled miscellaneous expenses with repayments before applying the 2% floor.
+
+
+## [2.124.3] - 2026-11-14
+
+### Fixed
+
+- Corrected federal AGI allocation between Missouri spouses, applied Missouri's negative federal AGI rule from 2024 and its MOST subtraction limit for 2024-2025, preserved negative Missouri AGI, and allocated combined taxable income using positive columns.
+
+
+## [2.124.2] - 2026-11-14
+
+### Fixed
+
+- Added South Dakota child care assistance payments from the July 2024 hourly county rates before the August 2026 weekly schedule.
+
+
+## [2.124.1] - 2026-11-14
+
+### Fixed
+
+- Fixed the 2020 unemployment compensation exclusion: the $150,000 test no longer subtracts the compensation twice, each spouse on a joint return excludes up to $10,200 of their own compensation, and a dependent's compensation is excluded on the dependent's own return instead of using the filers' exclusion. The tax unit's taxable unemployment compensation now leaves out dependents' compensation in every year, so Indiana's unemployment compensation deduction no longer deducts compensation that is not in the filers' federal AGI. A dependent's own estate or trust loss now reduces the modified AGI of the dependent's own return.
+
+
+## [2.124.0] - 2026-11-14
+
+### Added
+
+- Added North Dakota CCAP Workforce Benefit, program co-payment waivers, and TANF co-payment exceptions.
+
+
+## [2.123.0] - 2026-11-14
+
+### Added
+
+- Add Hawaii's employee temporary disability insurance contribution under HRS 392-43, with the maximum weekly wage base for 2004 through 2026 computed from the state average annual wage that HRS 383-61(b) rounds to $100, and count it in employee payroll tax and household net income.
+
+### Fixed
+
+- Extend the federal 401(k) elective deferral and catch-up limits back to 2004 from the IRS cost-of-living table, which sets the 2015 through 2017 elective deferral limit at $18,000 rather than $18,500.
+
+
+## [2.122.1] - 2026-11-14
+
+### Fixed
+
+- Fill the IRS Statistics of Income uprating series with Publication 1304 Table 1.4 and 1.4A actuals for every year from 2015 to their last value, and the Social Security cost-of-living index with third-quarter CPI-W for 2015 to 2021. Each series held its 2015 value through the gap, so inputs dated in or before it were uprated past it by the wrong factor. Also corrects values keyed to the wrong tax year or misread from the table (partnership and S corporation income, Social Security benefits, farm rental income), restates rounded totals exactly, and replaces the short-term capital gains placeholder with SOI net short-term capital gain, the counterpart of the long-term series.
+
+
+## [2.122.0] - 2026-11-14
+
+### Added
+
+- Added New York child care inputs for Safety Net Assistance, veteran assistance, required activities, child-only units, preventive care and Title XX authorization, and a Title XX route for an authorized preventive child who meets the age test.
+
+### Fixed
+
+- New York child care assistance now requires a public assistance family to work, study, take part in a required activity or meet another reason for care. It also waives the family share for preventive care and child-only units.
+
+
+## [2.121.7] - 2026-11-14
+
+### Changed
+
+- Project the standard deduction, child tax credit and long-term care premium limits from their statutory base-year amounts with core's base-mode uprating, so each year rounds the increase over the base instead of chaining from the last rounded value; the joint and surviving spouse standard deductions now equal twice the single amount in every year. Move the dependent standard deduction, educator expense cap, HSA limits, Oregon Kids' Credit and NYC income tax elimination credit projections from hand-coded extensions to the same mechanism. Encode the dependent standard deduction's earned income addition from 1998 ($250, then $300 from 2006). Under the Trustees core-thresholds reform, amounts on base-mode uprating round their wage-indexed increase over the statutory base, so the head of household standard deduction stays $23,625 plus whole $50 steps; `trustees_core_threshold_parameters` lists every parameter the reform re-projects.
+
+
+## [2.121.6] - 2026-11-14
+
+### Fixed
+
+- Limited the inferred spouse's separation check to the head and selected spouse candidate.
+
+
+## [2.121.5] - 2026-11-14
+
+### Fixed
+
+- Correct Montana's 2017–2020 income tax brackets, exemptions, standard deductions, pension exemption limits, and eligible subtractions.
+
+
+## [2.121.4] - 2026-11-13
+
+### Fixed
+
+- Add Ohio's published FY2017 SNAP utility-allowance amounts while retaining the existing historical limited-allowance activation gap.
+
+
 ## [2.121.3] - 2026-11-13
 
 ### Fixed
