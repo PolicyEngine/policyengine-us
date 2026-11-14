@@ -17,6 +17,18 @@ programs:
     verified_start_year: 2018
     notes: Validated against NBER TAXSIM for 2022
 
+  - id: federal_scholarship_tax_credit
+    name: Federal Scholarship Tax Credit
+    full_name: Federal Scholarship Tax Credit for qualified elementary and secondary education scholarships
+    category: Taxes
+    agency: IRS
+    status: partial
+    coverage: US
+    variable: federal_scholarship_tax_credit
+    parameter_prefix: gov.irs.credits.federal_scholarship
+    verified_start_year: 2027
+    notes: Donor credit with supplied SGO qualification and state-credit facts; historical balances require explicit annual vintage rollover with fixed TaxUnit membership. The default state-credit deduction adjustment assumes one or homogeneous qualified payments; mixed payments require an explicit receipt-specific adjustment. SGO administration and scholarship awards are not modeled.
+
   - id: state_income_tax
     name: State income taxes
     full_name: State income taxes (including credits)

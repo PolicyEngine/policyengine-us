@@ -7,8 +7,9 @@ class ctc_credit_limit_worksheet_b_applies(Variable):
     label = "Schedule 8812 Credit Limit Worksheet B applies"
     documentation = (
         "Whether the filer completes Schedule 8812 Credit Limit Worksheet B, "
-        "which lets the residential clean energy credit (and the adoption, "
-        "mortgage interest and DC first-time homebuyer credits) displace the "
+        "which lets the residential clean energy credit, Federal Scholarship "
+        "Tax Credit from 2027 (and adoption, mortgage interest and DC "
+        "first-time homebuyer credits) displace the "
         "part of the Child Tax Credit that can be refunded. The IRS also "
         "requires the filer to claim one of those credits; that condition is "
         "omitted because Worksheet B changes nothing when those credits are "
@@ -19,6 +20,7 @@ class ctc_credit_limit_worksheet_b_applies(Variable):
         # 2025 Instructions for Schedule 8812, Credit Limit Worksheet A, line 3.
         "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4",
         "https://www.law.cornell.edu/uscode/text/26/24#d_1_B",
+        "https://uscode.house.gov/us/usc/t26/s25F/",
         # No refundable CTC for filers excluding foreign earned income under
         # section 911 (added as 24(d)(5), redesignated (d)(3) in 2018).
         "https://www.law.cornell.edu/uscode/text/26/24#d_3",

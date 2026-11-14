@@ -1,0 +1,247 @@
+# IRC 25F(a), (b), (e); the October 2026 proposed rules, 1.25F-2(a)(2)
+# and (c)(1), interpret the cap per individual and apply the state offset first.
+# Qualified contributions are a subset of gross charitable cash donations.
+- name: Case 1, the credit is unavailable before 2027.
+  period: 2026
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: 0
+    federal_scholarship_tax_credit_potential: 0
+    federal_scholarship_tax_credit: 0
+
+- name: Case 2, zero qualified contributions produce no credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 0
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: 0
+    federal_scholarship_tax_credit: 0
+
+- name: Case 3, contributions below the cap receive a dollar for dollar credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_699
+    federal_scholarship_qualified_contributions: 1_699
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: 1_699
+    federal_scholarship_tax_credit_potential: 1_699
+    federal_scholarship_tax_credit: 1_699
+
+- name: Case 4, contributions at the annual cap receive the full cap.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_700
+    federal_scholarship_qualified_contributions: 1_700
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: 1_700
+    federal_scholarship_tax_credit: 1_700
+
+- name: Case 5, contributions above the annual cap cannot increase current credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_701
+    federal_scholarship_qualified_contributions: 1_701
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: 1_700
+    federal_scholarship_tax_credit: 1_700
+
+- name: Case 6, state credit is subtracted before applying the annual cap.
+  period: 2027
+  input:
+    charitable_cash_donations: 2_500
+    federal_scholarship_qualified_contributions: 2_500
+    federal_scholarship_state_tax_credit: 500
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    # min(2_500 - 500, 1_700), not min(2_500, 1_700) - 500.
+    federal_scholarship_tax_credit_person: 1_700
+    federal_scholarship_tax_credit: 1_700
+
+- name: Case 7, the state offset can reduce current credit below the cap.
+  period: 2027
+  input:
+    charitable_cash_donations: 2_000
+    federal_scholarship_qualified_contributions: 2_000
+    federal_scholarship_state_tax_credit: 400
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    # Proposed 1.25F-2(h), Example 3: 2_000 - 400 = 1_600.
+    federal_scholarship_tax_credit_person: 1_600
+    federal_scholarship_tax_credit: 1_600
+
+- name: Case 8, state credit cannot produce a negative federal credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 500
+    federal_scholarship_qualified_contributions: 500
+    federal_scholarship_state_tax_credit: 600
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: 0
+    federal_scholarship_tax_credit: 0
+
+- name: Case 9, a negative qualified contribution does not create a credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: -100
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: 0
+    federal_scholarship_tax_credit: 0
+
+- name: Case 10, a negative state offset cannot inflate the federal credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_state_tax_credit: -100
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: 1_000
+    federal_scholarship_tax_credit: 1_000
+
+- name: Case 11, one donor cannot use the other spouse's annual cap.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        charitable_cash_donations: 3_400
+        federal_scholarship_qualified_contributions: 3_400
+      person2:
+        age: 38
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: [1_700, 0]
+    federal_scholarship_tax_credit_potential: 1_700
+    federal_scholarship_tax_credit: 1_700
+
+- name: Case 12, each spouse who contributes can use an individual cap.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        charitable_cash_donations: 2_000
+        federal_scholarship_qualified_contributions: 2_000
+      person2:
+        age: 38
+        charitable_cash_donations: 2_000
+        federal_scholarship_qualified_contributions: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    # Proposed 1.25F-2(h), Example 2: 1_700 for each actual donor.
+    federal_scholarship_tax_credit_person: [1_700, 1_700]
+    federal_scholarship_tax_credit_potential: 3_400
+    federal_scholarship_tax_credit: 3_400
+
+- name: Case 13, spouses retain separate caps with unequal contributions.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        charitable_cash_donations: 2_000
+        federal_scholarship_qualified_contributions: 2_000
+      person2:
+        age: 38
+        charitable_cash_donations: 300
+        federal_scholarship_qualified_contributions: 300
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: [1_700, 300]
+    federal_scholarship_tax_credit_potential: 2_000
+    federal_scholarship_tax_credit: 2_000
+
+- name: Case 14, a dependent's contribution does not credit the parent's return.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        charitable_cash_donations: 1_000
+        federal_scholarship_qualified_contributions: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: [0, 0]
+    federal_scholarship_tax_credit_potential: 0
+    federal_scholarship_tax_credit: 0
+
+- name: Case 15, married filing separately retains an individual donor cap.
+  period: 2027
+  input:
+    charitable_cash_donations: 2_000
+    federal_scholarship_qualified_contributions: 2_000
+    filing_status: SEPARATE
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_person: 1_700
+    federal_scholarship_tax_credit: 1_700
+
+- name: Case 16, the qualified subset cannot exceed gross cash donations.
+  period: 2027
+  input:
+    charitable_cash_donations: 500
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_qualified_contributions_eligible: 500
+    federal_scholarship_tax_credit_person: 500
+    federal_scholarship_tax_credit: 500
+
+- name: Case 17, a qualified subset without a recorded gross gift produces no credit.
+  period: 2027
+  input:
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_qualified_contributions_eligible: 0
+    federal_scholarship_tax_credit_person: 0
+    federal_scholarship_tax_credit: 0
+
+- name: Case 18, disabling the provision preserves ordinary charitable deductions.
+  period: 2027
+  input:
+    gov.irs.credits.federal_scholarship.in_effect: false
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    federal_scholarship_tax_credit_credit_limit: 10_000
+    filing_status: SINGLE
+  output:
+    federal_scholarship_qualified_contributions_eligible: 0
+    federal_scholarship_tax_credit_person: 0
+    federal_scholarship_tax_credit_potential: 0
+    federal_scholarship_tax_credit: 0
+    federal_scholarship_charitable_cash_donations: 1_000
+    charitable_deduction_for_non_itemizers: 1_000

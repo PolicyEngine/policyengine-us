@@ -1,0 +1,130 @@
+- name: Case 1, a qualifying gift receives the credit without a deduction.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        charitable_cash_donations: 1_000
+        federal_scholarship_qualified_contributions: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 100_000
+    resolved_charitable_cash_donations_50_pct: 1_000
+    federal_scholarship_qualified_contributions_eligible: 1_000
+    federal_scholarship_tax_credit_person: 1_000
+    federal_scholarship_tax_credit_potential: 1_000
+    federal_scholarship_tax_credit: 1_000
+    federal_scholarship_charitable_cash_donations: 0
+    charitable_deduction_for_non_itemizers: 0
+    tax_unit_itemizes: false
+    federal_scholarship_tax_credit_carryforward_remaining: 0
+
+- name: Case 2, two joint donors receive separate credits on their shared return.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        charitable_cash_donations: 1_000
+        federal_scholarship_qualified_contributions: 1_000
+      person2:
+        age: 38
+        employment_income: 50_000
+        charitable_cash_donations: 1_000
+        federal_scholarship_qualified_contributions: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    adjusted_gross_income: 150_000
+    federal_scholarship_qualified_contributions_eligible: [1_000, 1_000]
+    federal_scholarship_tax_credit_person: [1_000, 1_000]
+    federal_scholarship_tax_credit_potential: 2_000
+    federal_scholarship_tax_credit: 2_000
+    federal_scholarship_charitable_cash_donations: [0, 0]
+    charitable_deduction_for_non_itemizers: 0
+    tax_unit_itemizes: false
+    federal_scholarship_tax_credit_carryforward_remaining: 0
+
+- name: Case 3, an excess gift retains its uncredited deduction amount.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        charitable_cash_donations: 2_000
+        federal_scholarship_qualified_contributions: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 100_000
+    resolved_charitable_cash_donations_50_pct: 2_000
+    federal_scholarship_qualified_contributions_eligible: 2_000
+    federal_scholarship_tax_credit_person: 1_700
+    federal_scholarship_tax_credit: 1_700
+    federal_scholarship_charitable_cash_donations: 300
+    charitable_deduction_for_non_itemizers: 300
+    tax_unit_itemizes: false
+    federal_scholarship_tax_credit_carryforward_remaining: 0
+
+- name: Case 4, ordinary charitable giving retains existing tax treatment.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        charitable_cash_donations: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 100_000
+    resolved_charitable_cash_donations_50_pct: 1_000
+    federal_scholarship_qualified_contributions_eligible: 0
+    federal_scholarship_tax_credit_person: 0
+    federal_scholarship_tax_credit: 0
+    federal_scholarship_charitable_cash_donations: 1_000
+    charitable_deduction_for_non_itemizers: 1_000
+    tax_unit_itemizes: false
+    federal_scholarship_tax_credit_carryforward_remaining: 0
+
+- name: Case 5, a donor without income tax carries the credit instead of deducting the gift.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+        charitable_cash_donations: 1_000
+        federal_scholarship_qualified_contributions: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 0
+    income_tax_before_credits: 0
+    federal_scholarship_qualified_contributions_eligible: 1_000
+    federal_scholarship_tax_credit_person: 1_000
+    federal_scholarship_tax_credit_potential: 1_000
+    federal_scholarship_tax_credit_credit_limit: 0
+    federal_scholarship_tax_credit: 0
+    federal_scholarship_charitable_cash_donations: 0
+    charitable_deduction_for_non_itemizers: 0
+    federal_scholarship_tax_credit_carryforward_remaining_0: 1_000
+    federal_scholarship_tax_credit_carryforward_remaining: 1_000

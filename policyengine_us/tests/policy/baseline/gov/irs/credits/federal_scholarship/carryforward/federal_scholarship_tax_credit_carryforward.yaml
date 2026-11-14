@@ -1,0 +1,124 @@
+# IRC 25F(f): use the oldest credit first, through the fifth succeeding year.
+# Vintage inputs are valid unused balances at the start of the current year.
+- name: Case 1, insufficient liability preserves current credit for next year.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_700
+    federal_scholarship_qualified_contributions: 1_700
+    federal_scholarship_tax_credit_credit_limit: 500
+  output:
+    federal_scholarship_tax_credit: 500
+    federal_scholarship_tax_credit_carryforward_remaining_0: 1_200
+    federal_scholarship_tax_credit_carryforward_remaining: 1_200
+    federal_scholarship_tax_credit_expired: 0
+
+- name: Case 2, carryforward permits usage above the current contribution cap.
+  period: 2028
+  input:
+    charitable_cash_donations: 1_700
+    federal_scholarship_qualified_contributions: 1_700
+    federal_scholarship_tax_credit_carryforward_1: 1_000
+    federal_scholarship_tax_credit_credit_limit: 5_000
+  output:
+    federal_scholarship_tax_credit_potential: 1_700
+    federal_scholarship_tax_credit_carryforward: 1_000
+    federal_scholarship_tax_credit: 2_700
+    federal_scholarship_tax_credit_carryforward_remaining_0: 0
+    federal_scholarship_tax_credit_carryforward_remaining_1: 0
+    federal_scholarship_tax_credit_carryforward_remaining: 0
+
+- name: Case 3, older credit is used before current contributions.
+  period: 2028
+  input:
+    charitable_cash_donations: 1_700
+    federal_scholarship_qualified_contributions: 1_700
+    federal_scholarship_tax_credit_carryforward_1: 1_000
+    federal_scholarship_tax_credit_credit_limit: 500
+  output:
+    federal_scholarship_tax_credit: 500
+    federal_scholarship_tax_credit_carryforward_remaining_0: 1_700
+    federal_scholarship_tax_credit_carryforward_remaining_1: 500
+    federal_scholarship_tax_credit_carryforward_remaining: 2_200
+
+- name: Case 4, five entering vintages are consumed in FIFO order.
+  period: 2033
+  input:
+    charitable_cash_donations: 600
+    federal_scholarship_qualified_contributions: 600
+    federal_scholarship_tax_credit_carryforward_5: 100
+    federal_scholarship_tax_credit_carryforward_4: 200
+    federal_scholarship_tax_credit_carryforward_3: 300
+    federal_scholarship_tax_credit_carryforward_2: 400
+    federal_scholarship_tax_credit_carryforward_1: 500
+    federal_scholarship_tax_credit_credit_limit: 450
+  output:
+    federal_scholarship_tax_credit_carryforward: 1_500
+    federal_scholarship_tax_credit: 450
+    federal_scholarship_tax_credit_carryforward_remaining_5: 0
+    federal_scholarship_tax_credit_carryforward_remaining_4: 0
+    federal_scholarship_tax_credit_carryforward_remaining_3: 150
+    federal_scholarship_tax_credit_carryforward_remaining_2: 400
+    federal_scholarship_tax_credit_carryforward_remaining_1: 500
+    federal_scholarship_tax_credit_carryforward_remaining_0: 600
+    federal_scholarship_tax_credit_carryforward_remaining: 1_650
+    federal_scholarship_tax_credit_expired: 0
+
+- name: Case 5, unused fifth-year credit expires and is excluded from next-year balance.
+  period: 2033
+  input:
+    federal_scholarship_tax_credit_carryforward_5: 500
+    federal_scholarship_tax_credit_carryforward_1: 400
+    federal_scholarship_tax_credit_credit_limit: 200
+  output:
+    federal_scholarship_tax_credit_carryforward: 900
+    federal_scholarship_tax_credit: 200
+    federal_scholarship_tax_credit_carryforward_remaining_5: 300
+    federal_scholarship_tax_credit_carryforward_remaining_1: 400
+    federal_scholarship_tax_credit_expired: 300
+    federal_scholarship_tax_credit_carryforward_remaining: 400
+
+- name: Case 6, a credit from 2027 remains usable in its fifth succeeding year.
+  period: 2032
+  input:
+    federal_scholarship_tax_credit_carryforward_5: 100
+    federal_scholarship_tax_credit_credit_limit: 100
+  output:
+    federal_scholarship_tax_credit: 100
+    federal_scholarship_tax_credit_expired: 0
+    federal_scholarship_tax_credit_carryforward_remaining: 0
+
+- name: Case 7, input balances with origins before enactment create no credit.
+  period: 2027
+  input:
+    federal_scholarship_tax_credit_carryforward_1: 100
+    federal_scholarship_tax_credit_carryforward_2: 200
+    federal_scholarship_tax_credit_carryforward_3: 300
+    federal_scholarship_tax_credit_carryforward_4: 400
+    federal_scholarship_tax_credit_carryforward_5: 500
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_carryforward: 0
+    federal_scholarship_tax_credit: 0
+    federal_scholarship_tax_credit_carryforward_remaining: 0
+    federal_scholarship_tax_credit_expired: 0
+
+- name: Case 8, only the enacted vintage is included at the first carryforward boundary.
+  period: 2028
+  input:
+    federal_scholarship_tax_credit_carryforward_1: 100
+    federal_scholarship_tax_credit_carryforward_2: 200
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_carryforward: 100
+    federal_scholarship_tax_credit: 100
+
+- name: Case 9, negative entering balances cannot offset valid carryforward.
+  period: 2033
+  input:
+    federal_scholarship_tax_credit_carryforward_1: -1_000
+    federal_scholarship_tax_credit_carryforward_2: 300
+    federal_scholarship_tax_credit_credit_limit: 10_000
+  output:
+    federal_scholarship_tax_credit_carryforward: 300
+    federal_scholarship_tax_credit: 300
+    federal_scholarship_tax_credit_carryforward_remaining: 0

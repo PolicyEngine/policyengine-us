@@ -1,0 +1,23 @@
+description: The IRS applies these nonrefundable credits before the Federal Scholarship Tax Credit, with the Child Tax Credit handled separately in its tax-liability limit.
+values:
+  2027-01-01:
+    - foreign_tax_credit
+    - cdcc
+    - elderly_disabled_credit
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - energy_efficient_home_improvement_credit
+    - used_clean_vehicle_credit
+    - new_clean_vehicle_credit
+metadata:
+  unit: list
+  period: year
+  label: Nonrefundable credits preceding the Federal Scholarship Tax Credit
+  reference:
+    - title: 26 U.S.C. 25F(f)(1) and 26(a)
+      href: https://uscode.house.gov/us/usc/t26/s25F/
+    - title: 26 U.S.C. 24(d)(1)(B)
+      href: https://uscode.house.gov/us/usc/t26/s24/
+    - title: Proposed 26 CFR 1.25F-2(d), REG-117199-25
+      href: https://www.govinfo.gov/content/pkg/FR-2026-10-02/html/2026-20277.htm

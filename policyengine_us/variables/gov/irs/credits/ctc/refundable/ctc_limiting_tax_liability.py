@@ -10,13 +10,14 @@ class ctc_limiting_tax_liability(Variable):
         "The tax liability used to determine the maximum amount of the "
         "non-refundable CTC (Schedule 8812 Credit Limit Worksheet A, line 5): "
         "income tax before credits less the credits that precede the CTC, "
-        "less the residential clean energy credit when Credit Limit Worksheet "
-        "B applies."
+        "less subsequent personal credits when Credit Limit Worksheet B applies, "
+        "including the Federal Scholarship Tax Credit from 2027."
     )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/26#a",
         "https://www.law.cornell.edu/uscode/text/26/24#d_1_B",
+        "https://uscode.house.gov/us/usc/t26/s25F/",
         # 2025 Instructions for Schedule 8812, Credit Limit Worksheets A and B.
         "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4",
         "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=6",
@@ -26,10 +27,9 @@ class ctc_limiting_tax_liability(Variable):
         liability_after_preceding_credits = tax_unit(
             "ctc_tax_liability_after_preceding_credits", period
         )  # Line 3
-        # Section 25D(c) orders the residential clean energy credit after the
-        # CTC, but section 24(d)(1)(B) refunds the CTC by the increase in all
-        # subpart A credits. Worksheet B therefore lets that credit use the
-        # liability first, moving the displaced CTC into the refundable part.
+        # Sections 25D(c) and 25F(f)(1) order those credits after CTC, but
+        # section 24(d)(1)(B) refunds CTC by the increase in all subpart A
+        # credits. Worksheet B lets them displace the refundable CTC portion.
         p = parameters(period).gov.irs.credits.ctc_tax_liability_limit
         # add() returns None for an empty list, which a reform may set.
         subsequent_credits = (

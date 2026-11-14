@@ -1,0 +1,97 @@
+# IRC 25F(f)(1), 26(a), and 24(d)(1)(B): section 25F uses the remaining
+# personal-credit liability, and section 25D follows section 25F.
+- name: Case 1, preceding personal credits and CTC reduce available liability.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    income_tax_before_credits: 1_000
+    foreign_tax_credit: 100
+    cdcc: 200
+    elderly_disabled_credit: 30
+    non_refundable_american_opportunity_credit: 40
+    lifetime_learning_credit: 50
+    savers_credit: 60
+    energy_efficient_home_improvement_credit: 70
+    used_clean_vehicle_credit: 80
+    new_clean_vehicle_credit: 90
+    ctc: 100
+    ctc_credit_limit_worksheet_b_applies: false
+  output:
+    # Preceding credits total720; CTC100 leaves1_000 - 720 - 100 =180.
+    federal_scholarship_tax_credit_credit_limit: 180
+    federal_scholarship_tax_credit: 180
+    federal_scholarship_tax_credit_carryforward_remaining_0: 820
+
+- name: Case 2, the refundable CTC worksheet reserves its nonrefundable minimum.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_700
+    federal_scholarship_qualified_contributions: 1_700
+    income_tax_before_credits: 1_000
+    ctc: 2_000
+    ctc_credit_limit_worksheet_b_applies: true
+    ctc_non_refundable_minimum: 500
+  output:
+    federal_scholarship_tax_credit_credit_limit: 500
+    federal_scholarship_tax_credit: 500
+    federal_scholarship_tax_credit_carryforward_remaining_0: 1_200
+
+- name: Case 3, preceding credits that exhaust liability leave no scholarship credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    income_tax_before_credits: 1_000
+    foreign_tax_credit: 1_000
+    ctc: 100
+    ctc_credit_limit_worksheet_b_applies: false
+  output:
+    federal_scholarship_tax_credit_credit_limit: 0
+    federal_scholarship_tax_credit: 0
+
+- name: Case 4, section 25F has priority over the residential clean energy credit.
+  period: 2027
+  input:
+    charitable_cash_donations: 1_700
+    federal_scholarship_qualified_contributions: 1_700
+    income_tax_before_credits: 2_000
+    ctc: 0
+    ctc_credit_limit_worksheet_b_applies: false
+    # A legal section25D carryforward may remain after new expenses sunset.
+    # The existing model's pre-liability potential is supplied for this unit test.
+    residential_clean_energy_credit_potential: 1_000
+  output:
+    federal_scholarship_tax_credit_credit_limit: 2_000
+    federal_scholarship_tax_credit: 1_700
+    residential_clean_energy_credit_credit_limit: 300
+    residential_clean_energy_credit: 300
+
+- name: Case 5, other taxes do not make the scholarship credit refundable.
+  period: 2027
+  input:
+    age: 40
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    income_tax_before_credits: 0
+    qualified_retirement_penalty: 1_000
+  output:
+    federal_scholarship_tax_credit_credit_limit: 0
+    federal_scholarship_tax_credit: 0
+    federal_scholarship_tax_credit_carryforward_remaining_0: 1_000
+    income_tax_before_refundable_credits: 1_000
+
+- name: Case 6, a fully refundable CTC does not consume scholarship credit liability.
+  period: 2027
+  input:
+    gov.irs.credits.ctc.refundable.fully_refundable: true
+    charitable_cash_donations: 1_000
+    federal_scholarship_qualified_contributions: 1_000
+    income_tax_before_credits: 1_000
+    ctc: 2_000
+    refundable_ctc: 2_000
+    ctc_credit_limit_worksheet_b_applies: false
+  output:
+    federal_scholarship_tax_credit_credit_limit: 1_000
+    federal_scholarship_tax_credit: 1_000
+    federal_scholarship_tax_credit_carryforward_remaining_0: 0

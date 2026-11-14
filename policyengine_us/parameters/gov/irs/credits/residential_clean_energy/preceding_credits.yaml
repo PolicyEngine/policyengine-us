@@ -27,6 +27,17 @@ values:
     - energy_efficient_home_improvement_credit # Form 5695, line 32 (line 30 in 2022)
     - used_clean_vehicle_credit # Schedule 3, line 6m
     - new_clean_vehicle_credit # Schedule 3, line 6f
+  2027-01-01:
+    - foreign_tax_credit
+    - cdcc
+    - elderly_disabled_credit
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - energy_efficient_home_improvement_credit
+    - used_clean_vehicle_credit
+    - new_clean_vehicle_credit
+    - federal_scholarship_tax_credit
 
 metadata:
   unit: list
@@ -35,6 +46,8 @@ metadata:
   reference:
     - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
       href: https://www.law.cornell.edu/uscode/text/26/25D#c
+    - title: 26 U.S.C. 25F(f)(1)
+      href: https://uscode.house.gov/us/usc/t26/s25F/
     - title: 2025 Instructions for Form 5695, Residential Clean Energy Credit Limit Worksheet, line 2
       href: https://www.irs.gov/pub/irs-pdf/i5695.pdf#page=5
     - title: 2022 Instructions for Form 5695, Residential Clean Energy Credit Limit Worksheet—Line 14, line 2
