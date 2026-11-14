@@ -463,7 +463,7 @@ def test_child_categories_qualify_each_child_in_a_microsimulation():
     Core routes a formula's variable calls through Microsimulation's own
     methods, and the cases above build household simulations. A foster
     placement covers July and no other month for the third family's child,
-    and an annual read of the monthly input leaves July out.
+    and an annual read of the monthly input returns December's value.
     """
     simulation = Microsimulation(dataset=_three_family_dataset(), dataset_end_year=YEAR)
     simulation.set_input(
@@ -471,6 +471,9 @@ def test_child_categories_qualify_each_child_in_a_microsimulation():
         f"{YEAR}-07",
         np.array([False, False, False, False, False, True]),
     )
+    # Core carries the latest earlier monthly input forward, so the test sets
+    # August to false.
+    simulation.set_input("is_in_foster_care", f"{YEAR}-08", np.zeros(6, dtype=bool))
     eligible = simulation.calculate("is_school_meal_categorically_eligible", YEAR)
     assert np.asarray(eligible).tolist() == [False, False, False, True, False, True]
     for meal in ("breakfast", "lunch"):

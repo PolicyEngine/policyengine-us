@@ -329,7 +329,8 @@
     free_school_meals: 1119.6
     reduced_price_school_meals: 0
 # A foster placement covers March 2026 and no other month, and one month of
-# is_in_foster_care qualifies the child for the year.
+# is_in_foster_care qualifies the child for the year. Core carries the latest
+# earlier monthly input forward, so the case sets April to false.
 # Free value = (2.46 + 4.60 - 0.40 - 0.44) * 180 = 6.22 * 180 = 1,119.60.
 - name: One month of foster care before December qualifies the child for the year.
   period: 2026
@@ -342,6 +343,7 @@
         age: 10
         is_in_foster_care:
           2026-03: true
+          2026-04: false
       sibling:
         age: 10
     spm_units:
