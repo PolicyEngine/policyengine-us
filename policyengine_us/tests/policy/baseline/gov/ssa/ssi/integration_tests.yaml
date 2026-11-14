@@ -227,7 +227,7 @@
     households:
       household:
         members: [adult1, adult2, child]
-        state_code: CA
+        state_code: TX
   output:
     is_ssi_eligible: [true, false, true]
     # Spouse's countable: $5,000 - $20 - $65 - $2,457.50 = $2,457.50/month = $29,490/year
@@ -235,9 +235,11 @@
     # With deeming, use couple FBR: $1,450/month = $17,400/year
     # Adult1 SSI: $17,400 (couple FBR) - $29,490 (countable) = -$12,090, capped at $0
     ssi_income_deemed_from_ineligible_spouse: [29_490, 0, 0]
-    # Parent income deeming to child also gets high amount
-    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 17_886]
-    ssi_countable_income: [29_490, 0, 17_646]
+    # Both parents live with the child, so 20 CFR 416.1165(d)(3)(i) subtracts the
+    # couple rate: $29,490 - $17,400 = $12,090 deemed to the child, less the $240
+    # general exclusion = $11,850, above the $11,604 individual rate.
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 12_090]
+    ssi_countable_income: [29_490, 0, 11_850]
     ssi: [0, 0, 0]  # Both disabled members have countable income exceeding FBR
 
 - name: Case 7 - Illinois single parent with $9,600 income + healthy child

@@ -1,7 +1,7 @@
 description: Montana uses this indicator to determine whether the child and dependent care expense deduction applies.
 
 values:
-  2021-01-01: true
+  2017-01-01: true
   2024-01-01: false
 
 metadata:
@@ -9,6 +9,8 @@ metadata:
   period: year
   label: Montana Child and Dependent Care Expense Deduction in effect
   reference:
+    - title: 2017 Montana Form 2 instructions, line 19, child and dependent care expenses
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
     - title: SB 399 (2021), Ch. 503, L. 2021, Sec. 65, repealing Mont. Code Ann. § 15-30-2131 effective January 1, 2024
       href: https://web.archive.org/web/20240315074930/https://leg.mt.gov/bills/2021/billpdf/SB0399.pdf#page=96
     - title: Montana 2021 Legislative Review, Table of Code Sections Affected

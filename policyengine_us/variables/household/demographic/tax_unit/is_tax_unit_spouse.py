@@ -9,7 +9,10 @@ class is_tax_unit_spouse(Variable):
     entity = Person
     label = "Spouse of tax unit"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/152#c_3"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/152#c_3",
+        "https://www.law.cornell.edu/uscode/text/26/7703#a_2",
+    )
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
@@ -18,10 +21,9 @@ class is_tax_unit_spouse(Variable):
         supplied = tax_unit("tax_unit_roles_supplied", period)
         # Otherwise only non-head adults can be spouses, skipping input
         # dependents.
-        is_separated = tax_unit.any(person("is_separated", period))
         candidate = head_or_spouse_candidates(person, period)
         head = person("is_tax_unit_head", period)
-        eligible = candidate & ~head & ~is_separated
+        eligible = candidate & ~head
         # A marital unit holds a married, cohabiting couple, and
         # is_tax_unit_head takes the head from such a couple when the tax
         # unit has one, so the head's partner in their marital unit is the
@@ -39,9 +41,8 @@ class is_tax_unit_spouse(Variable):
         # test is still paired with the head, even if they could be a
         # qualifying relative. A permanently and totally disabled adult
         # outside the head's marital unit becomes a dependent whatever their
-        # income. And when a separated adult shares the unit with a couple who
-        # heads it, the head's partner isn't inferred as the spouse. Supply
-        # is_tax_unit_spouse or tax_unit_role_input for these households.
+        # income. Supply is_tax_unit_spouse or tax_unit_role_input for these
+        # households.
         marital_unit = person.marital_unit.reference_entity.members_entity_id
         head_marital_unit = tax_unit.max(where(head, marital_unit, -1))
         in_head_marital_unit = marital_unit == head_marital_unit
@@ -60,6 +61,12 @@ class is_tax_unit_spouse(Variable):
             eligible & ~meets_age_test,
         )
         next_oldest_adult = person.get_rank(tax_unit, -age, eligible) == 0
+        # Legal separation concerns the head's own marriage (26 USC 7703).
+        # Select before checking separation, without promoting another adult;
+        # member order breaks equal-age ties.
+        separated = person("is_separated", period)
+        head_or_spouse_separated = tax_unit.any((head | next_oldest_adult) & separated)
+        next_oldest_adult = next_oldest_adult & ~head_or_spouse_separated
         # An explicit is_tax_unit_head input still wins over a supplied role,
         # so keep the head out of the spouse role either way.
         supplied_spouse = (role == role.possible_values.SPOUSE) & ~head

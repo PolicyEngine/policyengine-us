@@ -6,6 +6,8 @@ metadata:
   type: marginal_rate
   label: Montana Child and Dependent Care Expense Deduction income limit
   reference:
+    - title: 2017 Montana Form 2 instructions, line 19, child and dependent care expenses
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
     # Tax forms only show mathematically derived income limit 
     - title: 2022 Montana Form 2 Individual income tax instruction line 14
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=35
@@ -18,10 +20,10 @@ metadata:
 
 brackets:
   - threshold:
-      2021-01-01: 0
+      2017-01-01: 0
     rate:
-      2021-01-01: 0
+      2017-01-01: 0
   - threshold:
-      2021-01-01: 18_000
+      2017-01-01: 18_000
     rate:
-      2021-01-01: 0.5
+      2017-01-01: 0.5

@@ -264,3 +264,16 @@
   output:
     # The LUA formula returns 0 for any allowance type other than LUA.
     snap_limited_utility_allowance: 0
+
+# This supplies LUA to test the published amount only. Historical activation
+# remains unverified and unchanged; this is not an eligibility-routing case.
+- name: Ohio FY2017 published limited amount is tested as a component with category supplied
+  period: 2017
+  input:
+    state_code: OH
+    snap_utility_allowance_type: LUA
+  output:
+    snap_limited_utility_allowance:
+      2017-01: 332
+      2017-09: 332
+      2017-10: 342
