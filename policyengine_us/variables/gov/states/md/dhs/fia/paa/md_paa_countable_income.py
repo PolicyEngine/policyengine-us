@@ -58,9 +58,12 @@ class md_paa_countable_income(Variable):
         is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
         is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
         meets_ssi_immigration_test = is_citizen | is_qualified_noncitizen
+        # The deemed amount comes from the same month as the income above:
+        # ssi_income_deemed_from_ineligible_spouse_monthly counts that month's
+        # in-kind support in the couple's budget and in the claimant's.
         spousal_deemed = where(
             meets_ssi_immigration_test,
-            person("ssi_income_deemed_from_ineligible_spouse", period),
+            person("ssi_income_deemed_from_ineligible_spouse_monthly", period),
             0,
         )
         return where(

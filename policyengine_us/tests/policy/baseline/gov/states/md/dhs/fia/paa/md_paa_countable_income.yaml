@@ -185,3 +185,55 @@
     ssi_in_kind_support_and_maintenance: 3_677.666667
     # 11 * (943 / 3) + 0 = 3,457.666667 countable income.
     md_paa_countable_income: 3_457.666667
+
+- name: Maryland adds the month's income deemed from an ineligible spouse to that month's PAA income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        ssi_receives_outside_shelter_support:
+          2026-01: false
+          2026-07: true
+          2026-08: false
+      spouse:
+        age: 60
+        employment_income: 24_000
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: MD
+  output:
+    # The spouse's $2,000 of monthly wages exceeds 1,491 - 994 = 497, so SSA
+    # combines the spouses' incomes (20 CFR 416.1163(d)(2)). The claimant
+    # receives shelter support in July alone, at the presumed maximum value
+    # of 1,491 / 6 + 10 = 258.50 (POMS SI 01320.150 B.1.a).
+    # https://secure.ssa.gov/poms.nsf/lnx/0501320150
+    # The deemed income is the couple's countable income less the
+    # claimant's own.
+    # January: the couple counts (2,000 - 20 - 65) / 2 = 957.50 and the
+    # claimant alone counts 0, which leaves 957.50.
+    # July: the couple counts (258.50 - 20) + (2,000 - 65) / 2 = 238.50 +
+    # 967.50 = 1,206 and the claimant alone counts 258.50 - 20 = 238.50,
+    # which leaves 967.50.
+    ssi_income_deemed_from_ineligible_spouse_monthly:
+      2026-01: [957.50, 0]
+      2026-07: [967.50, 0]
+    # The claimant counts own income plus that month's deemed income:
+    # 0 + 957.50 = 957.50 in January and 238.50 + 967.50 = 1,206 in July.
+    # One-twelfth of the year's deemed income, (11 x 957.50 + 967.50) / 12 =
+    # 958.33, would give 958.33 in January and 1,196.83 in July.
+    # The spouse counts own wages: (2,000 - 20 - 65) / 2 = 957.50 a month.
+    # Year: claimant 11 x 957.50 + 1,206 = 11,738.50; spouse 12 x 957.50 =
+    # 11,490.
+    md_paa_countable_income:
+      2026-01: [957.50, 957.50]
+      2026-07: [1_206, 957.50]
+      2026: [11_738.50, 11_490]
