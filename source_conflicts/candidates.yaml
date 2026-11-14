@@ -15100,30 +15100,40 @@ candidates:
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:
-    from: 2026
-    to: 2026
+    from: 1974
     type: calendar
   question: Does the regulation's ineligible-child definition include the claimant's siblings in spouse-to-spouse
     deeming, or does POMS limit it to the couple's children?
   sources:
   - kind: regulation
     citation: 20 CFR 416.1160(d)
-    url: null
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)
+  - kind: regulation
+    citation: 20 CFR 416.1163(b)
+    url: https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)
   - kind: manual
-    citation: POMS SI 01310.115 A.3; POMS SI 01310.140 A
+    citation: POMS SI 01310.115 A.3
     url: https://secure.ssa.gov/poms.nsf/lnx/0501310115
+  - kind: manual
+    citation: POMS SI 01310.140 A
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501310140
   readings:
-    statute: The full regulatory definition would include the claimant's own siblings.
-    other: POMS limits spouse-to-spouse deeming to the children of either member of the couple.
+    statute: 416.1160(d) defines an ineligible child to include the natural or adopted child of the claimant's parent
+      or of the parent's spouse, so 416.1163(b) would also allocate for the claimant's co-resident siblings.
+    other: POMS SI 01310.140 A forms the spouse-to-spouse deeming household from the couple and the children of either
+      member, so only those children receive allocations.
   pe_us:
-    follows: unknown
+    follows: conflicting-source
     code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_spousal_deeming_child_allocations.py
     - policyengine_us/variables/gov/ssa/ssi/eligibility/status/is_ssi_ineligible_child.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10146
   state: unreviewed
-  note: 'The open PR follows POMS rather than the broader regulatory reading; no statutory comparison or specific
-    ruling is supplied. Code not yet on main: ssi_spousal_deeming_child_allocations, ssi_ineligible_child_allocation.'
+  note: The code allocates for the co-resident ineligible children of the claimant or the claimant's spouse, as POMS SI
+    01310.140 A describes, and leaves out the claimant's siblings, whom the 416.1160(d) definition also covers. The
+    code applies this scope in every year; the student age limit it uses starts in 1974. The project lead has not
+    ruled on this reading.
 - id: us:standard-plan-minimum-consolidated
   program: student-loans
   years:
@@ -15473,6 +15483,9 @@ candidates:
   - kind: manual
     citation: Wisconsin Medicaid Eligibility Handbook 15.1.2
     url: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm
+  - kind: manual
+    citation: POMS SI 01715.020
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501715020
   readings:
     statute: Non-209(b) states preserve SSI child allocations in optional aged, blind or disabled budgets when narrower child definitions would make their methodologies more restrictive than SSI.
     other: State child definitions exclusively govern allocations, including New York's under-18 limit and Wisconsin's minor or dependent-18 limit and nonblind, nondisabled requirement.
@@ -15485,4 +15498,4 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10146
   state: unreviewed
-  note: Preserve existing Missouri and Virginia restrictions as 209(b) states; the hub must confirm the reading before landing. This replaces the prior application of narrower definitions in other states and removes Wisconsin's secondary-school proxy from this pathway. Historical 1972 state-plan authority for Missouri and Virginia has not been rechecked.
+  note: Missouri (children under 18) and Virginia (children under 21 who are not blind or disabled), which POMS SI 01715.020 lists as 209(b) states, keep their manual child definitions for parental allocations. Every other state uses SSI's child scope. We have not checked Missouri's and Virginia's 1972 state plans for these definitions. The project lead has not ruled on this reading.
