@@ -60,3 +60,63 @@
   output:
     # ($15,960 + 2 x $5,680) / 12.
     snap_fpg: 2_276.67
+
+# USDA FY 2017 Income Eligibility Standards, PDF pages 1-2.
+# https://fns-prod.azureedge.us/sites/default/files/resource-files/FY17-Income-Eligibility-Standards.pdf
+# Effective October 1, 2016 through September 30, 2017; ordinary gross/net
+# tables and separately rounded additional-person increments. HHS raw rows:
+# https://www.govinfo.gov/content/pkg/FR-2016-01-25/pdf/2016-01450.pdf#page=1
+- name: Case 5, FY 2017 uses the published nonuniform HHS rows and preserves zero-size fallback.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    snap_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 1, 2, 3,
+      4, 5, 6, 7, 8, 9, 12, 0, 0, 0]
+    state_group_str:
+      2017: [CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US,
+        CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, CONTIGUOUS_US, AK, AK, AK, AK, AK, AK,
+        AK, AK, AK, AK, HI, HI, HI, HI, HI, HI, HI, HI, HI, HI, CONTIGUOUS_US, AK, HI]
+  output:
+    snap_fpg: [990.0, 1335.0, 1680.0, 2025.0, 2370.0, 2715.0, 3060.8333333333335, 3407.5,
+      3754.1666666666665, 4794.166666666667, 1236.6666666666667, 1668.3333333333333, 2100.0,
+      2531.6666666666665, 2963.3333333333335, 3395.0, 3826.6666666666665, 4260.0, 4693.333333333333,
+      5993.333333333333, 1139.1666666666667, 1535.8333333333333, 1932.5, 2329.1666666666665,
+      2725.8333333333335, 3122.5, 3519.1666666666665, 3917.5, 4315.833333333333, 5510.833333333333,
+      643.3333333333334, 803.3333333333334, 740.8333333333334]
+- name: Case 6, FY 2016 compatibility before the table window.
+  period: 2016-09
+  absolute_error_margin: 0.01
+  input:
+    snap_unit_size: 3
+    state_group_str: {2016: CONTIGUOUS_US}
+  output: {snap_fpg: 1674.1666666666667}
+- name: Case 7, FY 2017 begins in October 2016.
+  period: 2016-10
+  absolute_error_margin: 0.01
+  input:
+    snap_unit_size: 3
+    state_group_str: {2016: CONTIGUOUS_US}
+  output: {snap_fpg: 1680.0}
+- name: Case 8, FY 2017 retains the 2016 table through September.
+  period: 2017-09
+  absolute_error_margin: 0.01
+  input:
+    snap_unit_size: 3
+    state_group_str: {2017: CONTIGUOUS_US}
+  output: {snap_fpg: 1680.0}
+- name: Case 9, FY 2018 compatibility resumes the 2017 linear guideline.
+  period: 2017-10
+  absolute_error_margin: 0.01
+  input:
+    snap_unit_size: 3
+    state_group_str: {2017: CONTIGUOUS_US}
+  output: {snap_fpg: 1701.6666666666667}
+- name: Case 10, Guam and Virgin Islands use the FY 2017 contiguous guideline.
+  period: 2016-10
+  absolute_error_margin: 0.01
+  input:
+    snap_unit_size: [3, 3]
+    state_group_str:
+      2016: [GU, VI]
+  output:
+    snap_fpg: [1680, 1680]
