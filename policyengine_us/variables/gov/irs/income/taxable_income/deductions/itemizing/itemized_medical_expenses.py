@@ -8,8 +8,9 @@ class itemized_medical_expenses(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://www.law.cornell.edu/uscode/text/26/213",
-        "https://www.law.cornell.edu/uscode/text/26/162#l_3",
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partVII-sec213.htm",
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partVI-sec162.htm",
+        "https://www.ecfr.gov/current/title-26/section-1.213-1#p-1.213-1(a)(1)",
         "https://www.irs.gov/instructions/i1040sca",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=2",
     ]
@@ -24,13 +25,16 @@ class itemized_medical_expenses(Variable):
         "age. Current modeling uses health insurance premiums, those eligible "
         "long-term care premiums (recorded on the insured person) and other "
         "medical expenses, excluding general over-the-counter health "
-        "expenses. Premiums deducted through the "
-        "filer's self-employed health insurance deduction are excluded under "
-        "IRC Section 162(l)(3) before the medical expense floor is applied. "
+        "expenses. Section 162(l)(3) excludes premiums the filers deduct "
+        "through their self-employed health insurance deduction. Section "
+        "213(a) and Treasury regulation 1.213-1(a)(1) allow only expenses "
+        "the filers paid, so premiums a dependent deducts on their own "
+        "return also leave the subtotal before the medical expense floor. "
         "Premium inputs use payer attribution: each person reports premiums "
         "that person paid, including the full cost of family coverage regardless "
         "of whom it covers. A parent-paid dependent policy belongs on the parent. "
-        "The exclusion is bounded to filer-paid premiums; beneficiary-attributed "
+        "The filer exclusion is bounded to the head's and spouse's premium pool; "
+        "each dependent exclusion is bounded to their own premiums. Beneficiary-attributed "
         "inputs with an ALD exceeding that pool are inconsistent with this contract "
         "and cannot establish conservation of the supplied ALD. A supplied value "
         "bypasses this formula and is used as given. By default it is taken as "
@@ -48,11 +52,15 @@ class itemized_medical_expenses(Variable):
 
     def formula(tax_unit, period, parameters):
         premiums = add(tax_unit, period, ["medical_expense_health_insurance_premiums"])
-        # The federal ALD covers the head and spouse; dependents take their
-        # own SE deductions on their own returns. Bound the exclusion to the
-        # corresponding filer premiums, leaving other medical costs intact.
-        excluded_premiums = tax_unit(
-            "itemized_medical_expenses_excluded_premiums", period
+        # Filers and dependents deduct their own premiums on their own
+        # returns. Exclude each deducted payment once, within its paid pool.
+        excluded_premiums = add(
+            tax_unit,
+            period,
+            [
+                "itemized_medical_expenses_excluded_premiums",
+                "itemized_medical_expenses_excluded_dependent_premiums",
+            ],
         )
         # Eligible long-term care premiums less the part the same deduction
         # took.

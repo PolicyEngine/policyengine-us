@@ -176,7 +176,100 @@
     dependents_self_employed_health_insurance_ald: 1_000
     # The child deducts the 1,000 of premiums on their own return. Only the
     # 500 of other expenses remains, under the 600 floor (2% of 30,000).
+    itemized_medical_expenses: 500
     nj_medical_expense_deduction: 0
+
+- name: New Jersey excludes a dependent's deducted premiums once with a computed federal subtotal
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 30_000
+        medicare_enrolled: false
+        other_medical_expenses: 10_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        self_employment_income: 10_000
+        medicare_enrolled: false
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 480
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    # The child deducts 3,000 medical + min(480, 480) long-term care = 3,480.
+    # The earnings limit, 10,000 - 10,000 x 0.9235 x 0.153 / 2 = 9,293.52,
+    # exceeds those premiums.
+    dependents_self_employed_health_insurance_ald: 3_480
+    itemized_medical_expenses_excluded_dependent_premiums: 3_000
+    itemized_medical_expenses_long_term_care_premiums: 0
+    # Federal medical expenses: 3,000 - 3,000 + 480 - 480 + 10,000 = 10,000.
+    itemized_medical_expenses: 10_000
+    itemized_medical_expenses_applied_exclusion: 3_000
+    nj_agi: 30_000
+    # New Jersey deducts 10,000 - 0.02 x 30,000 = 9,400. The parent takes
+    # no separate self-employed deduction or second dependent exclusion.
+    nj_medical_expense_deduction: 9_400
+
+- name: New Jersey retains its dependent premium exclusion for a supplied federal subtotal
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 30_000
+        medicare_enrolled: false
+        other_medical_expenses: 10_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        self_employment_income: 10_000
+        medicare_enrolled: false
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 480
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        # This subtotal includes 3,000 medical premiums and 10,000 other
+        # expenses, after leaving out the child's deducted 480 LTC premiums.
+        itemized_medical_expenses: 13_000
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    # The child deducts 3,480, below the 9,293.52 earned income limit.
+    dependents_self_employed_health_insurance_ald: 3_480
+    itemized_medical_expenses_excluded_dependent_premiums: 3_000
+    itemized_medical_expenses_long_term_care_premiums: 0
+    itemized_medical_expenses: 13_000
+    itemized_medical_expenses_applied_exclusion: 0
+    nj_agi: 30_000
+    # New Jersey removes the 3,000 medical premiums from the supplied
+    # subtotal: 13,000 - 3,000 - 0.02 x 30,000 = 9,400.
+    nj_medical_expense_deduction: 9_400
 
 - name: New Jersey cannot subtract one dependent's deduction from another dependent's premiums
   period: 2025
