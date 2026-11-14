@@ -691,3 +691,25 @@
     # N.D.C.C. 57-02-08.1(5)(c) counts income from all sources, and federal
     # law counts gambling winnings in gross income: 20,000 + 4,000.
     nd_renters_refund_income: 24_000
+
+- name: North Dakota takes income from Puerto Rico out of the gambling winnings that hold it.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        gambling_winnings: 10_000
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        # IRC 933 excludes it, and the winnings are the only market income.
+        puerto_rico_income: 4_000
+    households:
+      household:
+        members: [person]
+        state_code: ND
+  output:
+    # 10,000 + 20,000 - min(4,000, 10,000). Social security stays whole.
+    nd_renters_refund_income: 26_000
