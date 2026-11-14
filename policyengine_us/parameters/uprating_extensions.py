@@ -653,9 +653,10 @@ def get_september_cpi_u_values(cpi: ParameterNode, year: int) -> Tuple[float, fl
     no seasonal pattern. Returns ``(prior September, later September)``.
     """
     september = cpi.cpi_u_nsa_september
-    # Only September instants are BLS values, so any other instant (such as
-    # a backdated first value) is skipped. The series has gaps (1988, then
-    # 2018 on), and a missing year must not read the September before it.
+    # Only September instants are BLS values, so any other instant is
+    # skipped. The published years skip 1989 to 2017, so a year uses them
+    # only when both of its Septembers are published; otherwise a missing
+    # year would read the last September before it.
     published = {
         int(value.instant_str[:4])
         for value in september.values_list

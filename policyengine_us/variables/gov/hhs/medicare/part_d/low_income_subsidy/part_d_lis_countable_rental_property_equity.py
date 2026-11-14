@@ -8,14 +8,17 @@ class part_d_lis_countable_rental_property_equity(Variable):
         "Countable rental property equity for the Medicare Part D low-income subsidy"
     )
     documentation = (
-        "Equity in rental property counts as a resource, less up to $6,000 "
-        "of it when the household's net rental income is at least 6% of "
-        "the excluded equity. If the return falls short, all of the equity "
-        "counts."
+        "Equity in rental property counts as a resource, less the exclusion "
+        "for income-producing property essential to self-support: up to the "
+        "equity exclusion when the household's net rental income is at least "
+        "the minimum return on the excluded equity. If the return falls "
+        "short, all of the equity counts."
     )
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://www.law.cornell.edu/uscode/text/42/1395w-114#a_3_E_i",
+        "https://www.law.cornell.edu/uscode/text/42/1382b#a_3",
         "https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3405#p-418.3405(b)",
         "https://www.ecfr.gov/current/title-20/chapter-III/part-416/subpart-L/section-416.1222#p-416.1222(a)",
         "https://secure.ssa.gov/poms.nsf/lnx/0603030020",
