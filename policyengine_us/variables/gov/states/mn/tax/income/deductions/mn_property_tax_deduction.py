@@ -8,13 +8,20 @@ class mn_property_tax_deduction(Variable):
     unit = USD
     definition_period = YEAR
     documentation = "Real estate and personal property taxes allowable for Minnesota itemized deductions."
-    reference = "https://www.revisor.mn.gov/statutes/cite/290.0122#stat.290.0122.3"
+    reference = (
+        "https://www.revisor.mn.gov/statutes/cite/290.0122#stat.290.0122.3",
+        # Laws 2019, First Special Session, chapter 6, article 1, section 16
+        "https://www.revisor.mn.gov/laws/2019/1/Session+Law/Chapter/6/",
+    )
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
+        # The Legislature enacted section 290.0122 for taxable years
+        # beginning after December 31, 2018. For earlier years, return
+        # real estate taxes under the federal cap.
         return tax_unit("capped_property_taxes", period)
 
-    def formula_2025(tax_unit, period, parameters):
+    def formula_2019(tax_unit, period, parameters):
         property_taxes = add(
             tax_unit, period, ["real_estate_taxes", "mn_personal_property_taxes"]
         )

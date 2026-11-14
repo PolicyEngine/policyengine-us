@@ -359,6 +359,30 @@
     mn_taxable_income: 77_000
     mn_income_tax: 4753.0
 
+# Minn. Stat. 290.0122, subd. 3(a)(1), from tax year 2019 (Laws 2019, First
+# Special Session, chapter 6, article 1, section 16).
+# The filer itemizes min(7,000 + 4,000, 10,000) + 12,000 = 22,000. Real estate
+# taxes alone fall below the cap. Income of 100,000 lies below the 2024
+# threshold of 232,500, so the reduction is 3% of zero. Taxable income equals
+# 100,000 - 22,000 = 78,000.
+- name: A homeowner adds personal property taxes when itemizing in 2024
+  absolute_error_margin: 0.02
+  period: 2024
+  input:
+    age: 40
+    employment_income: 100_000
+    real_estate_taxes: 7_000
+    mn_personal_property_taxes: 4_000
+    deductible_mortgage_interest: 12_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    capped_property_taxes: 7_000
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 22_000
+    mn_itemizing: true
+    mn_taxable_income: 78_000
+
 # The filer itemizes min(18,000, 10,000) + 12,000 = 22,000; taxable income equals 200,000 - 22,000 = 178,000.
 - name: A homeowner limits property taxes when itemizing in 2024
   absolute_error_margin: 0.02
