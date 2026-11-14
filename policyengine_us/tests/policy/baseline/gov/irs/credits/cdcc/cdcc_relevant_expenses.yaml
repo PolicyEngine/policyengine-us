@@ -287,6 +287,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 2_000
         tax_unit_childcare_expenses: 2_000
     households:
       household:
@@ -310,6 +313,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 2_000
         tax_unit_childcare_expenses: 2_000
     households:
       household:
@@ -335,6 +341,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:

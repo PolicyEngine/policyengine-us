@@ -18,6 +18,9 @@
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
         # Qualified expenses at least equal to the benefits (Form 2441 line 16).
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:
@@ -48,6 +51,9 @@
       tax_unit:
         members: [head, child]
         filing_status: SEPARATE
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:
@@ -82,6 +88,9 @@
       tax_unit:
         members: [head, spouse, child]
         filing_status: JOINT
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 6_000
         tax_unit_childcare_expenses: 6_000
     households:
       household:
@@ -112,6 +121,9 @@
       tax_unit:
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:
@@ -142,6 +154,10 @@
       tax_unit:
         members: [head, child]
         filing_status: SINGLE
+        # Isolated positive-expense component override: test the separate
+        # qualifying-person gate, not whether this child's costs qualify.
+        # IRC 152(b)(1) bars this child from qualifying for this return.
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:

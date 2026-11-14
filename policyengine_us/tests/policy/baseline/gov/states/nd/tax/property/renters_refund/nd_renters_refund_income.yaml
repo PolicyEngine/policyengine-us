@@ -306,6 +306,9 @@
     age: 40
     state_code: ND
     employment_income: 50_000
+    # Isolated income component: one qualifying recipient and known costs.
+    count_cdcc_eligible: 1
+    dependent_care_assistance_qualified_expenses: 9_000
     dependent_care_employer_benefits: 9_000
   output:
     # IRC 129(a)(2)(A) excludes 7,500 for 2026, and the other 1,500 is

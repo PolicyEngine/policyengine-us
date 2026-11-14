@@ -164,6 +164,10 @@ def test_employer_care_exclusion_and_credit_do_not_reuse_expenses(system, year, 
         units[f"unit_{i}"] = {
             "members": [head, child],
             "filing_status": {year: "SINGLE"},
+            # Independently known IRC 129 line16 costs; this is separate
+            # from the computed-CDCC helper override used to isolate no reuse.
+            # No carryovers, forfeitures or disallowed public reimbursement.
+            "dependent_care_assistance_qualified_expenses": {year: qualified},
             "cdcc_qualified_care_expenses": {year: qualified},
             "min_head_spouse_earned": {year: earnings},
         }
@@ -233,3 +237,93 @@ def test_saver_rates_change_immediately_above_published_ceilings(
     assert (credits >= 0).all()
     assert (credits <= 0.5 * np.array(capped) + 0.01).all()
     np.testing.assert_allclose(credits, expected, atol=0.01, rtol=0)
+
+
+@pytest.mark.parametrize("benefits", [(0,), (2_000,), (0, 2_000)])
+def test_pa_dependent_care_graph_handles_zero_positive_and_mixed_benefits(
+    system, benefits
+):
+    """Exercise both batch routes with a shared model and an actual PA care graph.
+
+    Independent qualified costs900 and benefits2000 follow IRS2025 line16.
+    The900 qualified amount is independently known after disallowed public
+    reimbursements and before employer exclusion. The12000 gross-care input
+    does not establish qualified costs. No carryovers or forfeitures apply.
+    The working US-citizen grandparent claims a three-year-old grandchild
+    who lives in the home all year; the parents live elsewhere. The
+    grandparent pays over half the home costs and meets the dependency and
+    head-of-household tests. Care from an eligible provider enables work.
+    The grandparent has 40 covered-work quarters, consistent with the
+    model's default; no Medicare eligibility or enrollment input is forced.
+    State subsidies are exercised, not used as independent qualified-cost
+    evidence or asserted against untraced numerical grant expectations.
+    """
+    year = 2025
+    people, units, spm_units, households = {}, {}, {}, {}
+    for i, benefit in enumerate(benefits):
+        head, child = f"head_{i}", f"child_{i}"
+        members = [head, child]
+        people[head] = {
+            "age": {year: 67},
+            "is_tax_unit_head": {year: True},
+            "employment_income": {year: 40_000},
+            "dependent_care_employer_benefits": {year: benefit},
+            "weekly_hours_worked_before_lsr": {year: 40},
+            "immigration_status": {year: "CITIZEN"},
+        }
+        people[child] = {
+            "age": {year: 3},
+            "is_tax_unit_dependent": {year: True},
+            "immigration_status": {year: "CITIZEN"},
+            "pa_ccw_provider_type": {
+                f"{year}-{month:02d}": "CENTER" for month in range(1, 13)
+            },
+            "pa_ccw_age_group": {
+                f"{year}-{month:02d}": "PRE_SCHOOL" for month in range(1, 13)
+            },
+            "childcare_hours_per_day": {year: 8},
+            "childcare_attending_days_per_month": {year: 20},
+        }
+        units[f"unit_{i}"] = {
+            "members": members,
+            "filing_status": {year: "HEAD_OF_HOUSEHOLD"},
+            "dependent_care_assistance_qualified_expenses": {year: 900},
+        }
+        spm_units[f"spm_{i}"] = {
+            "members": members,
+            "spm_unit_pre_subsidy_childcare_expenses": {year: 12_000},
+        }
+        households[f"household_{i}"] = {
+            "members": members,
+            "state_code": {year: "PA"},
+            "pa_ccw_region": {year: 1},
+        }
+    sim = Simulation(
+        situation={
+            "people": people,
+            "tax_units": units,
+            "spm_units": spm_units,
+            "households": households,
+        },
+        tax_benefit_system=system,
+    )
+    exclusion = sim.calculate("dependent_care_assistance_exclusion", year)
+    net_care = sim.calculate("tax_unit_childcare_expenses", year)
+    agi = sim.calculate("adjusted_gross_income", year)
+    box_1 = sim.calculate("irs_employment_income", year)[::2]
+    taxable = sim.calculate("taxable_dependent_care_benefits", year)[::2]
+    expected = np.minimum(benefits, 900)
+    np.testing.assert_allclose(exclusion, expected, atol=0.01, rtol=0)
+    np.testing.assert_allclose(box_1 + taxable + exclusion, 40_000, atol=0.01, rtol=0)
+    np.testing.assert_allclose(agi, 40_000 - expected, atol=0.01, rtol=0)
+    assert np.isfinite(net_care).all() and (net_care >= 0).all()
+    assert (exclusion >= 0).all() and (exclusion <= 900).all()
+
+    # Calculate after care and AGI so a prewarmed premium cannot hide the
+    # original care -> premium -> IRMAA -> AGI dependency. Inputs start in
+    # 2025, so the IRMAA lookback fallback also reads this year's AGI.
+    eligible = sim.calculate("is_medicare_eligible", year)[::2]
+    enrolled = sim.calculate("medicare_part_b_enrolled", year)[::2]
+    gross_part_b = sim.calculate("gross_medicare_part_b_premium", year)[::2]
+    assert eligible.all() and enrolled.all()
+    assert np.isfinite(gross_part_b).all() and (gross_part_b > 0).all()
