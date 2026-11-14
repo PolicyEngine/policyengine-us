@@ -1,3 +1,10 @@
+## [2.124.2] - 2026-11-14
+
+### Fixed
+
+- Added South Dakota child care assistance payments from the July 2024 hourly county rates before the August 2026 weekly schedule.
+
+
 ## [2.124.1] - 2026-11-14
 
 ### Fixed
