@@ -2,7 +2,12 @@ description: Missouri funds this share of the base reimbursement rate by federal
 # Traditional families (at or below 150% FPL) are funded at the full base rate.
 # Transitional Child Care families are funded at a reduced share:
 # Level 1 (above 150% up to 185%) = 80%, Level 2 (above 185% up to 215%) = 60%,
-# Level 3 (above 215% up to 242%) = 50%.
+# Level 3 (above 215% up to 242%) = 50%. DESE removed Level 3 on July 1, 2026, so no
+# eligible family reaches the 50% share from that date.
+# Each threshold gives, as a multiple of the guideline, the top of the level below
+# it. DESE's chart prints each top as the nearest dollar ($3,331, $4,109 and $4,775
+# a month for three from July 2026), and mo_ccs_funding_rate rounds them the same
+# way.
 metadata:
   type: single_amount
   threshold_unit: /1
@@ -27,14 +32,14 @@ brackets:
     amount:
       2025-10-01: 1
   - threshold:
-      2025-10-01: 1.5001
+      2025-10-01: 1.5
     amount:
       2025-10-01: 0.8
   - threshold:
-      2025-10-01: 1.8501
+      2025-10-01: 1.85
     amount:
       2025-10-01: 0.6
   - threshold:
-      2025-10-01: 2.1501
+      2025-10-01: 2.15
     amount:
       2025-10-01: 0.5

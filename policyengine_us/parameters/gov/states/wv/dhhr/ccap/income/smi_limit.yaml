@@ -1,0 +1,19 @@
+description: West Virginia limits income to this share of the state median income under the Child Care Assistance Program.
+# Federal rules cap child care eligibility at 85% of the state median income, and the
+# CCDF plan allows no higher limit. Appendix A ends the ten- and eleven-person scales at
+# that cap, below 185% of the guideline: $9,247 and $9,440 a month on the October 2024
+# state median income table.
+values:
+  2015-01-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: West Virginia CCAP income limit as share of state median income
+  reference:
+    - title: 45 CFR 98.20(a)(2)(i)
+      href: https://www.ecfr.gov/current/title-45/section-98.20#p-98.20(a)(2)(i)
+    - title: West Virginia CCDF State Plan FFY 2025-2027, 2.2.4(a)(ii)
+      href: https://bfa.wv.gov/media/39915/download?inline#page=21
+    - title: "WV Child Care Subsidy Appendix A, Sliding Fee Scale (FY 2024 Federal Poverty Level), ten- and eleven-person families #page 5-6"
+      href: https://bfa.wv.gov/media/6826/download?inline#page=5

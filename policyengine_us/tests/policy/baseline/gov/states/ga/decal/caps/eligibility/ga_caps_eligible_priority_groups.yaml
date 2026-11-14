@@ -1,0 +1,500 @@
+# GA CAPS eligibility with the priority group requirement.
+
+- name: New family earning $40,000 meets the October 2026 income limit but has no priority group.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_333.33
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    # CAPS/00-7, 7.3.1: new applicants outside a priority group are denied.
+    ga_caps_income_eligible: true
+    ga_caps_priority_group_eligible: false
+    ga_caps_eligible: false
+
+- name: Enrolled family at the same income keeps CAPS without a priority group.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_333.33
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    # CAPS/00-7, 7.3.1.3: no priority group at annual redetermination.
+    ga_caps_priority_group_eligible: false
+    ga_caps_eligible: true
+
+- name: New family at the same income with a child in Georgia's Pre-K qualifies.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+        ga_caps_pre_k_enrolled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_333.33
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_priority_group_eligible: true
+    ga_caps_eligible: true
+
+- name: A family earning $40,000 fails the January 2026 limit even with a priority group.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        ga_caps_pre_k_enrolled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_333.33
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_income_eligible: false
+    ga_caps_priority_group_eligible: true
+    ga_caps_eligible: false
+
+- name: Before August 2016 a family needed no priority group.
+  period: 2016-07
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+        weekly_hours_worked_before_lsr:
+          2016: 40
+        immigration_status:
+          2016: CITIZEN
+      person2:
+        age:
+          2016: 2
+        immigration_status:
+          2016: CITIZEN
+      person3:
+        age:
+          2016: 4
+        immigration_status:
+          2016: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+  output:
+    ga_caps_eligible: true
+
+- name: From August 2016 the same family needs one.
+  period: 2016-08
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+        weekly_hours_worked_before_lsr:
+          2016: 40
+        immigration_status:
+          2016: CITIZEN
+      person2:
+        age:
+          2016: 2
+        immigration_status:
+          2016: CITIZEN
+      person3:
+        age:
+          2016: 4
+        immigration_status:
+          2016: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+  output:
+    ga_caps_eligible: false
+
+- name: Grandparents raising grandchildren need no qualifying activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_grandparents_raising_grandchildren: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.13.
+    ga_caps_activity_eligible: true
+    ga_caps_eligible: true
+
+- name: Grandparents raising grandchildren still meet the income limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 5_000
+        ga_caps_grandparents_raising_grandchildren: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_activity_eligible: true
+    ga_caps_income_eligible: false
+    ga_caps_eligible: false
+
+- name: Without the group the same family needs a qualifying activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        ga_caps_pre_k_enrolled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_activity_eligible: false
+    ga_caps_eligible: false
+
+- name: June 2024, an enrolled family first admitted through Pre-K needs no priority group.
+  period: 2024-06
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+        weekly_hours_worked_before_lsr:
+          2024: 40
+        immigration_status:
+          2024: CITIZEN
+      person2:
+        age:
+          2024: 2
+        immigration_status:
+          2024: CITIZEN
+      person3:
+        age:
+          2024: 6
+        immigration_status:
+          2024: CITIZEN
+        ga_caps_pre_k_at_previous_determination: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    # CAPS/00-7, 7.3.1.3 exempts enrolled families at redetermination.
+    ga_caps_eligible: true
+
+- name: July 2024, an enrolled family first admitted through Pre-K needs a priority group.
+  period: 2024-07
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+        weekly_hours_worked_before_lsr:
+          2024: 40
+        immigration_status:
+          2024: CITIZEN
+      person2:
+        age:
+          2024: 2
+        immigration_status:
+          2024: CITIZEN
+      person3:
+        age:
+          2024: 6
+        immigration_status:
+          2024: CITIZEN
+        ga_caps_pre_k_at_previous_determination: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    # DECAL letter, July 1, 2024: families whose child attended Georgia's Pre-K at the
+    # initial application or previous determination must belong to a group at redetermination.
+    ga_caps_priority_group_eligible: false
+    ga_caps_eligible: false
+
+- name: July 2024, an enrolled family first admitted through Pre-K keeps CAPS through another group.
+  period: 2024-07
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+        weekly_hours_worked_before_lsr:
+          2024: 40
+        immigration_status:
+          2024: CITIZEN
+      person2:
+        age:
+          2024: 2
+        immigration_status:
+          2024: CITIZEN
+      person3:
+        age:
+          2024: 6
+        immigration_status:
+          2024: CITIZEN
+        ga_caps_pre_k_at_previous_determination: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_enrolled: true
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_eligible: true
+
+- name: July 2024, an enrolled family with no Pre-K child needs no priority group.
+  period: 2024-07
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+        weekly_hours_worked_before_lsr:
+          2024: 40
+        immigration_status:
+          2024: CITIZEN
+      person2:
+        age:
+          2024: 2
+        immigration_status:
+          2024: CITIZEN
+      person3:
+        age:
+          2024: 6
+        immigration_status:
+          2024: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_eligible: true
+
+- name: October 2025 reads October 1, so an enrolled family first admitted through Pre-K still needs a group.
+  period: 2025-10
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+        weekly_hours_worked_before_lsr:
+          2025: 40
+        immigration_status:
+          2025: CITIZEN
+      person2:
+        age:
+          2025: 2
+        immigration_status:
+          2025: CITIZEN
+      person3:
+        age:
+          2025: 6
+        immigration_status:
+          2025: CITIZEN
+        ga_caps_pre_k_at_previous_determination: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    # DECAL letter, October 6, 2025 removes the requirement; the model applies it from November.
+    ga_caps_eligible: false
+
+- name: November 2025, an enrolled family first admitted through Pre-K needs no priority group again.
+  period: 2025-11
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+        weekly_hours_worked_before_lsr:
+          2025: 40
+        immigration_status:
+          2025: CITIZEN
+      person2:
+        age:
+          2025: 2
+        immigration_status:
+          2025: CITIZEN
+      person3:
+        age:
+          2025: 6
+        immigration_status:
+          2025: CITIZEN
+        ga_caps_pre_k_at_previous_determination: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    ga_caps_eligible: true

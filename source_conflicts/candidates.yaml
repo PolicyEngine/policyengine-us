@@ -300,6 +300,44 @@ candidates:
     and that no authority for a statewide delay before Alaska''s November 1, 2025 good-faith exemption was found
     (hr1_in_effect.yaml, is_snap_abawd_hr1_in_effect.py). The good-faith window is modeled separately, through the
     waived areas and the retained pre-HR1 exceptions.'
+- id: us-al:ccdf-new-applicant-limit-june-2026
+  program: child-care-assistance
+  years:
+    from: 2026
+    type: calendar
+  question: From June 1, 2026, does a new Alabama Child Care Subsidy applicant face 180% of the poverty guideline
+    and a family at recertification 200%, as the FFY 2025-2027 CCDF State Plan says, or the 150% and 170% that DHR's
+    June 1, 2026 fact sheet prints?
+  sources:
+  - kind: plan
+    citation: Alabama CCDF State Plan FFY 2025-2027, 2.2.4 (initial eligibility)
+    url: https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=26
+  - kind: plan
+    citation: Alabama CCDF State Plan FFY 2025-2027, 2.5.2(c)(iii) (second tier)
+    url: https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=39
+  - kind: guidance
+    citation: Alabama Department of Human Resources, Child Care Fact Sheet (June 1, 2026)
+    url: https://dhr.alabama.gov/wp-content/uploads/2026/06/CHILD-CARE-FACT-SHEET-Jun2026-1.pdf#page=1
+  readings:
+    statute: PolicyEngine found no statute or rule that sets either limit. Plan 2.2.4 states "The income eligibility
+      limit is 180% of Federal Poverty Line (FPL)", effective January 1, 2024, and 2.5.2(c)(iii) describes a second
+      tier that "caps at 200% FPL".
+    other: The June 1, 2026 fact sheet ends its initial scale at the 141-150% column, $3,331 a month for a family
+      of three, and its continuing scale at the 161-170% column, $3,775.
+  example: A family of three that applies in July 2026 with $3,500 a month qualifies at 180% (the January 2026 fact
+    sheet tops out at $3,998) but not under the June 2026 scale ($3,331).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/al/dhr/ccsp/income/limit/fpl_initial.yaml
+    - policyengine_us/parameters/gov/states/al/dhr/ccsp/income/limit/fpl_continuing.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10670
+  state: ruled
+  note: On 2026-11-06, PolicyEngine took the June 2026 fact sheet's limits from June 1, 2026. The fact sheet holds
+    the scales DHR posts for families, and it says "All new applicants must enter under the Initial Eligibility
+    Monthly Income Scale." The plan's limits carry an effective date of January 1, 2024, and DHR's January 2026
+    fact sheet still printed them.
 - id: us-al:federal-tax-deduction-credit-list
   program: income-tax
   years:
@@ -3652,6 +3690,52 @@ candidates:
   state: ruled
   note: 'Ruled statute-first in October 2026; confirm line 12(c)''s scope against the per-person statute and worksheet.
     Code not yet on main: id_grocery_credit.'
+- id: us-id:iccp-initial-income-limit
+  program: child-care-assistance
+  years:
+    from: 2025
+    type: calendar
+  question: Does a new Idaho Child Care Program applicant face the 175% of poverty limit in IDAPA 16.06.12.070.01,
+    or the 130% limit that the Department of Health and Welfare has applied since it reopened applications on January
+    13, 2025?
+  sources:
+  - kind: regulation
+    citation: IDAPA 16.06.12.070.01, Income at Application (effective April 6, 2023)
+    url: https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=7
+  - kind: regulation
+    citation: IDAPA 16.06.12.705, Funding Restrictions
+    url: https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=18
+  - kind: agency-practice
+    citation: Idaho Department of Health and Welfare, DHW will resume applications to Idaho Child Care Program in
+      January (November 14, 2024)
+    url: https://healthandwelfare.idaho.gov/news/dhw-will-resume-applications-idaho-child-care-program-january
+  - kind: guidance
+    citation: Idaho Department of Health and Welfare, Apply for Child Care, maximum monthly income limits effective
+      October 2025
+    url: https://healthandwelfare.idaho.gov/services-programs/children-families/apply-child-care
+  readings:
+    statute: No statute supplied. Under IDAPA 16.06.12.070.01, "When applying, a family's income cannot exceed one
+      hundred seventy-five percent (175%) of FPG for a family of the same size."
+    other: The department applies 130% to new applicants from January 13, 2025, to stay within its appropriation,
+      and posts $2,888 a month for a family of three from October 2025. IDAPA 16.06.12.705 lets it reduce child
+      care benefits when it projects a funding shortfall.
+  example: A family of three that applies in June 2026 with $3,000 a month of countable income qualifies under the
+    rule's 175% (limit $3,887) but not under the department's 130% (limit $2,888).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/id/dhw/iccp/income/fpl_rate/initial_eligibility.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10670
+  state: ruled
+  note: On 2026-11-06, PolicyEngine took the department's 130%. Rule 070 lists conditions a family must meet to
+    be eligible, and rule 705 lets the department reduce child care benefits when it projects a funding shortfall;
+    the department tied the change to its appropriation. The rules' text doesn't settle whether 705 reaches the
+    intake limit, so the agency's reading breaks the tie. PolicyEngine has not settled whether a state rule binds
+    like a Treasury regulation; if it does and 070.01 reads as clear text, new applicants return to 175%. The 2026
+    Legislature enacted none of S1374 (155% at application), S1419 (135%) and H0958 (175%). The department also
+    applies 130% at recertification, with a phase-out; the model keeps enrolled families on the 85% of state median
+    income limit.
 - id: us-id:liheap-heat-in-rent-fy2026
   program: liheap
   years:
@@ -4974,6 +5058,48 @@ candidates:
   state: unreviewed
   note: PE-US follows the regulation; the October 2016-September 2024 span is approximate and needs contemporaneous-source
     verification.
+- id: us-md:ccdf-new-applicant-limit-sources-differ
+  program: child-care-assistance
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: From October 2025, does a new Maryland Child Care Scholarship applicant face 75% of the federal fiscal
+    2025 state median income, $94,026 a year for a family of three, as MSDE's scholarship page posts, or 75% of
+    the fiscal 2026 median, $97,094, as page 4 of MSDE's February 2026 briefing applies?
+  sources:
+  - kind: guidance
+    citation: MSDE, Child Care Scholarship Program, Initial Income Scale effective December 15, 2024 and Continuation
+      Income Scale effective April 22, 2024 (captured October 9, 2026)
+    url: https://web.archive.org/web/20261009215322/https://earlychildhood.marylandpublicschools.org/child-care-providers/child-care-scholarship-program
+  - kind: guidance
+    citation: MSDE, Child Care Scholarship Program briefing to the House Ways and Means Committee (February 4, 2026),
+      pages 4, 20 and 21
+    url: https://mgaleg.maryland.gov/meeting_material/2026/w&m%20-%20134146885147130127%20-%20Briefing%20materials.pdf#page=4
+  readings:
+    statute: PolicyEngine found no statute or rule that names the median income year. COMAR 13A.14.06.03(H) prints
+      a dollar scale, which us-md:ccs-income-scale-regulation covers.
+    other: 'MSDE''s scholarship page posts the Initial Income Scale effective December 15, 2024 as the "Table used
+      for new applications": $94,026 a year for a family of three, 75% of the federal fiscal 2025 median. Page 20
+      of the briefing says the program uses the fiscal 2025 estimates ($149,249 for four); page 4 gives $115,587
+      for four, 75% of the fiscal 2026 median of $154,117.'
+  example: A family of three that applies in March 2026 with $95,000 a year qualifies at 75% of the fiscal 2026
+    median ($97,094) but not under the posted scale ($94,026).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/md/msde/ccs/income/smi_freeze_in_effect.yaml
+    - policyengine_us/parameters/gov/states/md/msde/ccs/income/smi_frozen_year.yaml
+    - policyengine_us/parameters/gov/states/md/msde/ccs/income/continuation_smi_freeze_in_effect.yaml
+    - policyengine_us/parameters/gov/states/md/msde/ccs/income/continuation_smi_frozen_year.yaml
+    - policyengine_us/variables/gov/states/md/msde/ccs/md_ccs_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10670
+  state: ruled
+  note: On 2026-11-07, PolicyEngine took the posted scales, which MSDE applies to applications and page 20 of its
+    briefing describes. The model holds the fiscal 2025 median for new applicants from October 1, 2025, and for
+    continuing families from April 22, 2024, when the posted Continuation Income Scale ($106,563 for three) took
+    effect. Before this change, the model moved new applicants to the fiscal 2026 median in January 2026 and kept
+    continuing families on the median MSDE froze at its 2021 level until January 2025.
 - id: us-md:ccs-copay-flat-schedule
   program: child-care-assistance
   years:
@@ -5015,6 +5141,47 @@ candidates:
     2022 to May 2024 no statute is supplied. The bulletin''s amounts are maximums and some families pay $0, while
     the model charges the maximum, subject to the 7 percent federal cap. The parameter starts 2022-05-01; the bulletin
     dates the change May 23, 2022.'
+- id: us-md:ccs-income-scale-regulation
+  program: child-care-assistance
+  years:
+    from: 2023
+    type: state-fiscal
+  question: Does a new Maryland Child Care Scholarship applicant face the income eligibility scale in COMAR 13A.14.06.03(H),
+    which tops out at $60,081 a year for a family of three, or the 75% of state median income that MSDE has applied
+    since July 2022?
+  sources:
+  - kind: statute
+    citation: Md. Code, Educ. §9.5-111(d)(2) (Chapter 732 of 2023)
+    url: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=ged&section=9.5-111&enactments=false
+  - kind: regulation
+    citation: COMAR 13A.14.06.03(F)(1) and (H)
+    url: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.03
+  - kind: guidance
+    citation: MSDE, Child Care Scholarship Program briefing to the House Ways and Means Committee (February 4, 2026),
+      page 21
+    url: https://mgaleg.maryland.gov/meeting_material/2026/w&m%20-%20134146885147130127%20-%20Briefing%20materials.pdf#page=21
+  readings:
+    statute: From July 1, 2023, the Department "may not" alter the Program in effect as of January 1, 2023 to "Reduce
+      the income eligibility requirements", unless it first notifies four legislative committees or the Board of
+      Public Works approves budget reductions.
+    other: COMAR 13A.14.06.03(F)(1) has an applicant meet the scale in §H, which tops out at $60,081 a year for
+      a family of three, 65% of the federal fiscal 2018 median. Page 21 of MSDE's briefing lists 75% of the median
+      it froze at its 2021 level for new applicants in fiscal 2023 and 2024.
+  example: A family of three that applies in March 2026 with $70,000 a year qualifies under MSDE's posted scale
+    ($94,026) but not under COMAR's ($60,081).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/md/msde/ccs/income/smi_rate/initial.yaml
+    - policyengine_us/variables/gov/states/md/msde/ccs/md_ccs_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10670
+  state: ruled
+  note: On 2026-11-07, PolicyEngine kept MSDE's limits. On January 1, 2023, MSDE applied 75% of the median it froze
+    at its 2021 level, $78,628 a year for three, and a move to COMAR's scale would reduce that limit, which the
+    statute bars. If the Program in effect on that date means the regulation's scale, the statute doesn't reach
+    MSDE's higher limit, and the question turns on whether a state rule binds like a Treasury regulation, which
+    PolicyEngine has not settled. The model also follows MSDE from July 2022, before the statute took effect.
 - id: us-md:dependent-exemption-chart-10a
   program: income-tax
   years:
@@ -6060,6 +6227,51 @@ candidates:
     prs: []
   state: unreviewed
   note: Establish the guidance's statutory basis and reconcile M1SA with M1REF.
+- id: us-mo:ccs-chart-guideline-year-2026
+  program: child-care-assistance
+  years:
+    from: 2026
+    type: calendar
+  question: Does a new Missouri Child Care Subsidy applicant in 2026 face 150% of the 2026 poverty guideline, or
+    150% of the 2025 guideline, which DESE's income chart prints through 2026?
+  sources:
+  - kind: regulation
+    citation: 5 CSR 25-200.060(1), incorporating the Child Care Subsidy Eligibility Policy Manual revised November
+      2022
+    url: https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-060
+  - kind: manual
+    citation: DESE, Child Care Subsidy Eligibility Policy Manual (revised August 2022), 4.7 (p. 7) and 11.1 (p.
+      21), the copy DESE lists among its incorporated reference materials
+    url: https://web.archive.org/web/20250901014258/https://dese.mo.gov/sites/dese/files/media/pdf/2022/10/Manual%20CCSEPM%20FINAL_POST.pdf#page=7
+  - kind: manual
+    citation: DESE, Child Care Manual 2010.045.00, Income Eligibility Guidelines (archived August 31, 2025)
+    url: https://web.archive.org/web/20250831220820id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/045/00
+  - kind: guidance
+    citation: DESE, November 2025 Child Care Eligibility Income Guidelines and Sliding Fee Chart, updated July 1,
+      2026
+    url: https://dese.mo.gov/sites/g/files/zuston521/files/media/pdf/2026/07/Income%20Elig%20_Updated%206.29.26.pdf#page=1
+  readings:
+    statute: The entry cites no statute. 5 CSR 25-200.060(1) incorporates the manual revised November 2022 and no
+      later amendment. In the copy DESE lists, 4.7 caps adjusted gross income at 85% of state median income at application
+      and says the income maximums "are listed on the Child Care Income Eligibility Guidelines and Sliding Fee Chart",
+      and 11.1 starts Transitional Child Care at 151% of poverty. Neither section names a guideline year.
+    other: Manual 2010.045.00 caps a new applicant's adjusted gross income at "150% of the federal poverty level",
+      and DESE's chart, headed November 2025 and updated July 1, 2026, tops the traditional scale at $3,331 a month
+      for a family of three, 150% of the 2025 guideline.
+  example: A family of three that applies in August 2026 with $3,400 a month of adjusted gross income qualifies
+    at 150% of the 2026 guideline ($3,415) but not under the chart ($3,331).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/mo/dese/ccs/income/fpg_year_lag.yaml
+    - policyengine_us/variables/gov/states/mo/dese/ccs/eligibility/mo_ccs_fpg.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10670
+  state: ruled
+  note: On 2026-11-06, PolicyEngine took the chart's 2025 guideline through 2026. The incorporated manual leaves
+    the maximums to the chart, and neither manual names a guideline year, so the agency's chart fills the gap. The
+    model also keeps 4.7's 85% of state median income as an outer limit, which the July 2026 chart restates. From
+    2027 a lag of one year extrapolates until DESE posts a new chart.
 - id: us-mo:claim-of-right-federal-tax-deduction
   program: income-tax
   years:
@@ -6740,6 +6952,115 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10640
   state: ruled
   note: "Follows the regulation. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6591157776"
+- id: us-mt:best-beginnings-graduated-income-limit
+  program: child-care-assistance
+  years:
+    from: 2025
+    type: calendar
+  question: Does a Best Beginnings family at annual redetermination keep graduated eligibility only with income
+    below 185% of poverty, as ARM 37.80.202(2) says, or up to 200%, as the department's sliding fee scale effective
+    July 1, 2025 prints?
+  sources:
+  - kind: statute
+    citation: MCA 52-2-715(2) (En. Sec. 2, Ch. 773, L. 2023)
+    url: https://archive.legmt.gov/bills/MCA/title_0520/chapter_0020/part_0070/section_0150/0520-0020-0070-0150.html
+  - kind: regulation
+    citation: ARM 37.80.202(2)
+    url: https://rules.mt.gov/gateway/ruleno.asp?RN=37.80.202
+  - kind: guidance
+    citation: DPHHS, Best Beginnings Child Care Sliding Fee Scale, effective July 1, 2025
+    url: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf#page=1
+  readings:
+    statute: MCA 52-2-715(2) has the department set a maximum qualifying income level no higher than the federal
+      child care and development block grant allows, and sets no graduated level. ARM 37.80.202(2) gives graduated
+      eligibility at redetermination to a non-TANF household with income above 150% and below 185% of the poverty
+      guideline.
+    other: The department's scale runs Graduated Eligibility from 185% to 200% of the poverty guideline for families
+      already on the program.
+  example: A family of three at redetermination in March 2026 with $4,300 a month keeps graduated eligibility under
+    the scale (limit $4,442) but has income above the rule's 185% (limit $4,109).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/ccap/income/fpg_limit/graduated.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/ccap/eligibility/mt_ccap_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10670
+  state: ruled
+  note: On 2026-11-06, PolicyEngine took the department's 200% from July 1, 2025, the date of the earliest scale
+    it found that prints it. Once the statute moved initial eligibility to 185%, the rule's graduated band, 150%
+    to 185%, covers no one above the initial limit; the statute leaves the maximum qualifying income level to the
+    department within the federal limit, and its scale sets it. If PolicyEngine decides that a state rule binds
+    like a Treasury regulation, enrolled families could return to 185%.
+- id: us-mt:best-beginnings-initial-income-limit
+  program: child-care-assistance
+  years:
+    from: 2023
+    type: calendar
+  question: From July 1, 2023, does a new Best Beginnings applicant face ARM 37.80.202(1)'s limit of income below
+    150% of poverty, or the threshold of no less than 185% that MCA 52-2-715(1) requires and the department's sliding
+    fee scale applies?
+  sources:
+  - kind: statute
+    citation: MCA 52-2-715(1) (En. Sec. 2, Ch. 773, L. 2023)
+    url: https://archive.legmt.gov/bills/MCA/title_0520/chapter_0020/part_0070/section_0150/0520-0020-0070-0150.html
+  - kind: regulation
+    citation: ARM 37.80.202(1)
+    url: https://rules.mt.gov/gateway/ruleno.asp?RN=37.80.202
+  - kind: guidance
+    citation: DPHHS, Best Beginnings Child Care Sliding Fee Scale, effective July 1, 2025
+    url: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf#page=1
+  readings:
+    statute: Under MCA 52-2-715(1), the department shall "set a qualifying income threshold at no less than 185%
+      of the federal poverty level for each family size".
+    other: ARM 37.80.202(1) still makes a household with income below 150% of the poverty guideline eligible.
+  example: A family of three that applies in March 2026 with $3,500 a month qualifies at 185% (limit $4,109) but
+    not under the rule's 150% (limit $3,331).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/ccap/income/fpg_limit/initial.yaml
+    - policyengine_us/variables/gov/states/mt/dphhs/ccap/eligibility/mt_ccap_income_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10670
+  state: ruled
+  note: 'On 2026-11-06, PolicyEngine took the statute''s floor, which the department''s scale applies: its Standard
+    Eligibility ends at 185%. The rule''s 150% predates the 2023 statute. If PolicyEngine decides that a state rule
+    binds like a Treasury regulation, a rule that contradicts its statute goes to the project lead case by case.'
+- id: us-mt:best-beginnings-pandemic-income-limit
+  program: child-care-assistance
+  years:
+    from: 2021
+    to: 2022
+    type: calendar
+  question: From July 2021 through December 2022, did a new Best Beginnings applicant face ARM 37.80.202(1)'s limit
+    of income below 150% of poverty, or the 185% the department applied under its pandemic CCDF policies?
+  sources:
+  - kind: regulation
+    citation: ARM 37.80.202(1)
+    url: https://rules.mt.gov/gateway/ruleno.asp?RN=37.80.202
+  - kind: agency-practice
+    citation: Montana Legislative Fiscal Division, Child Care Overview (June 2024), Policy Timeline, adapted from
+      DPHHS communications
+    url: https://leg.mt.gov/content/Publications/fiscal/2025-Biennium/Special-Topics/Childcare/Childcare-Overview-LEG-Days-June2024.pdf#page=13
+  readings:
+    statute: No statute supplied; ARM 37.80.202(1) makes a household with income below 150% of the poverty guideline
+      eligible.
+    other: The timeline lists 185% under the department's pandemic CCDF policies from July 2021 to December 2022,
+      then 150% from January to June 2023.
+  example: A family of three that applied in June 2022 with $3,300 a month qualified at 185% (limit $3,550) but
+    not under the rule's 150% ($2,878.75).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/dphhs/ccap/income/fpg_limit/initial.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10670
+  state: unreviewed
+  note: 'PE-US keeps the rule''s 150% for these months, and the PR leaves them unchanged. The question turns on
+    whether a state rule binds like a Treasury regulation, which PolicyEngine has not settled. With no statute in
+    the entry, the rule fills the statute slot, as in us-ak:hap-general-relief-assistance, so follows: statute means
+    the model follows ARM 37.80.202(1).'
 - id: us-mt:elderly-credit-homestead-costs
   program: income-tax
   years:
@@ -13079,6 +13400,45 @@ candidates:
   note: 'PE-US follows the handbook: only liquid assets are tested against the limit, and the comment says the statutory
     home-value and vehicle-equity limits are not part of the operational test (wi_shares_asset_eligible.py). The
     statute-first rule requires implementing the omitted home-value and vehicle-equity limits.'
+- id: us-wv:ccap-initial-income-limit
+  program: child-care-assistance
+  years:
+    from: 2025
+    to: 2027
+    type: federal-fiscal
+  question: Does a new West Virginia Child Care Assistance applicant face 85% of state median income, which the
+    FFY 2025-2027 CCDF State Plan lists as its maximum initial eligibility limit, or 185% of the poverty guideline,
+    which the Child Care Subsidy Policy manual and Appendix A's sliding fee scale print?
+  sources:
+  - kind: plan
+    citation: West Virginia CCDF State Plan FFY 2025-2027, 2.2.4(a)(i) (p. 20)
+    url: https://bfa.wv.gov/media/39915/download?inline#page=20
+  - kind: manual
+    citation: West Virginia Child Care Subsidy Policy and Procedures Manual, 3.2.1, Eligibility Guidelines
+    url: https://bfa.wv.gov/media/6766/download?inline#page=25
+  - kind: guidance
+    citation: West Virginia Child Care Subsidy Appendix A, Sliding Fee Scale (October 1, 2024)
+    url: https://bfa.wv.gov/media/6826/download?inline#page=1
+  readings:
+    statute: No statute or rule supplied. The plan's table lists a maximum initial eligibility limit of 85% of state
+      median income, $5,394 a month for a family of three.
+    other: The manual's eligibility guidelines point to Appendix A, whose scale ends at 185% of the 2024 poverty
+      guideline, $3,981 a month for a family of three.
+  example: A family of three that applies in January 2026 with $4,500 a month qualifies under the plan's 85% of
+    state median income ($5,394) but not under Appendix A's 185% ($3,981).
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/wv/dhhr/ccap/income/fpl_limit.yaml
+    - policyengine_us/parameters/gov/states/wv/dhhr/ccap/income/smi_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10670
+  state: unreviewed
+  note: PE-US follows the manual and Appendix A, which the Bureau for Family Assistance links from its Child Care
+    Policy page. The PR changes the guideline year and adds Appendix A's own stop at 85% of state median income,
+    which binds from ten people ($9,247 a month), so the code takes the lower of the two limits at every size.
+    Check whether the plan's 85% states a limit the Bureau applies or the federal ceiling. With no statute or rule
+    in the entry, gap-fill means the code follows the manual and Appendix A, not the plan.
 - id: us-wv:claim-of-right-subtraction-authority
   program: income-tax
   years:

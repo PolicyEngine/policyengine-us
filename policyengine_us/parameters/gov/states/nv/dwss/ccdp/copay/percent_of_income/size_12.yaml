@@ -1,0 +1,50 @@
+description: Nevada sets the family copayment at this share of gross income for a twelve-person household under the Child Care and Development Program.
+# Chart effective October 1, 2023. Each threshold sits just above the top of the
+# printed row, so income at a row's top stays in that row. Income tops out at 85% of
+# SMI ($9,490.78 a month), where the copayment reaches 7%.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  threshold_period: month
+  period: month
+  label: Nevada CCDP copayment share of income for twelve-person household
+  reference:
+    - title: Nevada DWSS Policy Transmittal CC PT 07-23 (October 9, 2023), Household Size Monthly Income Chart
+      href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Care/CC%20PT%2007-23%20Annual%20Income%20Ceiling%20Increase%20(Public%20Distribution).pdf#page=2
+    - title: Nevada Child Care Policy Manual (July 1, 2024), MS 170, Household Size Monthly Income Chart
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=32
+
+brackets:
+  - threshold:
+      2024-04-01: 0
+    amount:
+      2024-04-01: 0
+  - threshold:
+      2024-04-01: 6373.0001
+    amount:
+      2024-04-01: 0.01
+  - threshold:
+      2024-04-01: 6819.0001
+    amount:
+      2024-04-01: 0.02
+  - threshold:
+      2024-04-01: 7265.0001
+    amount:
+      2024-04-01: 0.03
+  - threshold:
+      2024-04-01: 7711.0001
+    amount:
+      2024-04-01: 0.04
+  - threshold:
+      2024-04-01: 8157.0001
+    amount:
+      2024-04-01: 0.05
+  - threshold:
+      2024-04-01: 8603.0001
+    amount:
+      2024-04-01: 0.06
+  - threshold:
+      2024-04-01: 9049.0001
+    amount:
+      2024-04-01: 0.07

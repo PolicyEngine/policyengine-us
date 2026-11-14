@@ -1,0 +1,1985 @@
+# GA CAPS priority groups (CAPS/00-7).
+# New applicants must belong to one. The very low income group tests income against a dated
+# share of the poverty guideline.
+
+- name: Family with income over the very low income limit and no group.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Child under court-ordered supervision.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_under_court_supervision: true
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.4.
+    ga_caps_priority_group_eligible: true
+
+- name: Child receiving or needing protective services.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        receives_or_needs_protective_services: true
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.4 and 7.15.
+    ga_caps_priority_group_eligible: true
+
+- name: A child in DFCS custody doesn't place the rest of the family in a priority group.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_in_foster_care: true
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-5, 5.4.1: the child forms a family unit of one, which
+    # ga_caps_dfcs_custody_child serves (CAPS/00-7, 7.5).
+    ga_caps_priority_group_eligible: false
+    ga_caps_dfcs_custody_child: [false, true, false]
+
+- name: Child with a disability.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_disabled: true
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.7.
+    ga_caps_priority_group_eligible: true
+
+- name: Child with a developmental delay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        has_developmental_delay: true
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.7.
+    ga_caps_priority_group_eligible: true
+
+- name: A parent's disability does not form a group.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: A 25-year-old with a disability is not an eligible child, so forms no group.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 25
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Child enrolled in Georgia's Pre-K.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        ga_caps_pre_k_enrolled: true
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.8.
+    ga_caps_priority_group_eligible: true
+
+- name: Parent aged 20.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+      person2:
+        age: 2
+      person3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.14: minor parents aged 20 and younger.
+    ga_caps_priority_group_eligible: true
+
+- name: Parent aged 21.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 21
+      person2:
+        age: 2
+      person3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Full-time student parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_full_time_student: true
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.16.
+    ga_caps_priority_group_eligible: true
+
+- name: Student parent before the group began.
+  period: 2022-04
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+        is_full_time_student:
+          2022: true
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Student parent from the month the group began.
+  period: 2022-05
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+        is_full_time_student:
+          2022: true
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: GA
+  output:
+    # CAPS/00-7 revision history: added May 1, 2022.
+    ga_caps_priority_group_eligible: true
+
+- name: Family in TANF.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.9.
+    ga_caps_priority_group_eligible: true
+
+- name: Family without fixed, regular and adequate housing.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+        is_homeless: true
+  output:
+    # CAPS/00-7, 7.11.
+    ga_caps_priority_group_eligible: true
+
+- name: Family experiencing domestic violence.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+        ga_caps_domestic_violence: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.6.
+    ga_caps_priority_group_eligible: true
+
+- name: Family after a natural disaster.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+        ga_caps_natural_disaster: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.10.
+    ga_caps_priority_group_eligible: true
+
+- name: Grandparents raising grandchildren.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 3_000
+        ga_caps_grandparents_raising_grandchildren: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # CAPS/00-7, 7.13.
+    ga_caps_priority_group_eligible: true
+
+- name: Before August 2016 Georgia required no group.
+  period: 2016-07
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+      person2:
+        age:
+          2016: 5
+      person3:
+        age:
+          2016: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: From August 2016 Georgia required a group.
+  period: 2016-08
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+      person2:
+        age:
+          2016: 5
+      person3:
+        age:
+          2016: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+  output:
+    # DECAL funding Q&A: new applicants from August 1, 2016 must belong to a priority group.
+    ga_caps_priority_group_eligible: false
+
+- name: Family after a natural disaster, August 2016, in a group from the start.
+  period: 2016-08
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+      person2:
+        age:
+          2016: 5
+      person3:
+        age:
+          2016: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_natural_disaster: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+  output:
+    # DECAL funding Q&A: natural disaster victims form a group from August 1, 2016.
+    ga_caps_priority_group_eligible: true
+
+- name: Homeless family, September 2016, before the group began.
+  period: 2016-09
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+      person2:
+        age:
+          2016: 5
+      person3:
+        age:
+          2016: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+        is_homeless:
+          2016: true
+  output:
+    # DECAL funding Q&A: the homeless, domestic violence and very low income groups start October 1, 2016.
+    ga_caps_priority_group_eligible: false
+
+- name: Homeless family, October 2016, from the month the group began.
+  period: 2016-10
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+      person2:
+        age:
+          2016: 5
+      person3:
+        age:
+          2016: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+        is_homeless:
+          2016: true
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: Family experiencing domestic violence, September 2016, before the group began.
+  period: 2016-09
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+      person2:
+        age:
+          2016: 5
+      person3:
+        age:
+          2016: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_domestic_violence: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+  output:
+    # DECAL funding Q&A: the homeless, domestic violence and very low income groups start October 1, 2016.
+    ga_caps_priority_group_eligible: false
+
+- name: Family experiencing domestic violence, October 2016, from the month the group began.
+  period: 2016-10
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+      person2:
+        age:
+          2016: 5
+      person3:
+        age:
+          2016: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_000
+        ga_caps_domestic_violence: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, September 2016, before the group began.
+  period: 2016-09
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+      person2:
+        age:
+          2016: 5
+      person3:
+        age:
+          2016: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+  output:
+    # DECAL funding Q&A: the homeless, domestic violence and very low income groups start October 1, 2016.
+    # 50% of the 2016 guideline is $10,100 for three.
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, October 2016, from the month the group began.
+  period: 2016-10
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+      person2:
+        age:
+          2016: 5
+      person3:
+        age:
+          2016: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2016: GA
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, May 2018 reads May 1, so 50 percent, at the limit.
+  period: 2018-05
+  input:
+    people:
+      person1:
+        age:
+          2018: 30
+      person2:
+        age:
+          2018: 5
+      person3:
+        age:
+          2018: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 865
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2018: GA
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, May 2018 reads May 1, so 50 percent, over the limit.
+  period: 2018-05
+  input:
+    people:
+      person1:
+        age:
+          2018: 30
+      person2:
+        age:
+          2018: 5
+      person3:
+        age:
+          2018: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 866
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2018: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, June 2018, 100 percent, at the limit.
+  period: 2018-06
+  input:
+    people:
+      person1:
+        age:
+          2018: 30
+      person2:
+        age:
+          2018: 5
+      person3:
+        age:
+          2018: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_731
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2018: GA
+  output:
+    # DECAL letter, June 18, 2018: 100% from May 30, 2018.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, June 2018, 100 percent, over the limit.
+  period: 2018-06
+  input:
+    people:
+      person1:
+        age:
+          2018: 30
+      person2:
+        age:
+          2018: 5
+      person3:
+        age:
+          2018: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_732
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2018: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, June 2019, 100 percent, at the limit.
+  period: 2019-06
+  input:
+    people:
+      person1:
+        age:
+          2019: 30
+      person2:
+        age:
+          2019: 5
+      person3:
+        age:
+          2019: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_777
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2019: GA
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, June 2019, 100 percent, over the limit.
+  period: 2019-06
+  input:
+    people:
+      person1:
+        age:
+          2019: 30
+      person2:
+        age:
+          2019: 5
+      person3:
+        age:
+          2019: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_778
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2019: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, July 2019, 50 percent, at the limit.
+  period: 2019-07
+  input:
+    people:
+      person1:
+        age:
+          2019: 30
+      person2:
+        age:
+          2019: 5
+      person3:
+        age:
+          2019: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 888
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2019: GA
+  output:
+    # DECAL webinar, July 10, 2019: 50% for applications from July 1, 2019.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, July 2019, 50 percent, over the limit.
+  period: 2019-07
+  input:
+    people:
+      person1:
+        age:
+          2019: 30
+      person2:
+        age:
+          2019: 5
+      person3:
+        age:
+          2019: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 889
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2019: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, November 2021, 150 percent for four, at the limit.
+  period: 2021-11
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+      person4:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 3_312.5
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2021: GA
+  output:
+    # DECAL letter, October 21, 2021: $39,750 for four.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, November 2021, 150 percent for four, over the limit.
+  period: 2021-11
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+      person4:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 3_313
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2021: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, October 2021, 50 percent for four, at the limit.
+  period: 2021-10
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+      person4:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 1_104
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2021: GA
+  output:
+    # DECAL letter, October 21, 2021: $13,250 for four.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, October 2021, 50 percent for four, over the limit.
+  period: 2021-10
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+      person4:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ga_caps_countable_income: 1_105
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2021: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, December 2022 reads December 1, so 150 percent, at the limit.
+  period: 2022-12
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_878
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: GA
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, December 2022 reads December 1, so 150 percent, over the limit.
+  period: 2022-12
+  input:
+    people:
+      person1:
+        age:
+          2022: 30
+      person2:
+        age:
+          2022: 5
+      person3:
+        age:
+          2022: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_879
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2022: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, January 2023, 50 percent of the 2022 guideline, at the limit.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 959.58
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # DECAL letter, December 19, 2022: 50% from December 16, 2022. The chart takes up
+    # the 2023 guideline on March 1, 2023, so 50% of the 2022 guideline, $11,515 for
+    # three, applies until then.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, January 2023, 50 percent of the 2022 guideline, over the limit.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 959.59
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, March 2023, 50 percent of the 2023 guideline, at the limit.
+  period: 2023-03
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_035
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: GA
+  output:
+    # Appendix A, guidelines effective for CAPS March 1, 2023: $12,430 for three.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, March 2023, 50 percent of the 2023 guideline, over the limit.
+  period: 2023-03
+  input:
+    people:
+      person1:
+        age:
+          2023: 30
+      person2:
+        age:
+          2023: 5
+      person3:
+        age:
+          2023: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_036
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, June 2024, 50 percent, at the limit.
+  period: 2024-06
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_075
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, June 2024, 50 percent, over the limit.
+  period: 2024-06
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_076
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, July 2024, 10 percent, at the limit.
+  period: 2024-07
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 215
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    # DECAL letter, July 1, 2024: 10% from July 1, 2024.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, July 2024, 10 percent, over the limit.
+  period: 2024-07
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+      person2:
+        age:
+          2024: 5
+      person3:
+        age:
+          2024: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 216
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, January 2025, 10 percent of the 2024 guideline, at the limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 215.16
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # The chart effective July 1, 2024 holds until March 1, 2025: $2,582 for three.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, January 2025, 10 percent of the 2024 guideline, over the limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 215.17
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, March 2025, 10 percent of the 2025 guideline, at the limit.
+  period: 2025-03
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 222.08
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    # Appendix A, guidelines effective for CAPS March 1, 2025: $2,665 for three.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, March 2025, 10 percent of the 2025 guideline, over the limit.
+  period: 2025-03
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 222.09
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, October 2025 reads October 1, so 10 percent, at the limit.
+  period: 2025-10
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 222
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, October 2025 reads October 1, so 10 percent, over the limit.
+  period: 2025-10
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 223
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, November 2025, 30 percent, at the limit.
+  period: 2025-11
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 666
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    # DECAL letter, October 6, 2025: 10% to 30%.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, November 2025, 30 percent, over the limit.
+  period: 2025-11
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+      person3:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 667
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, January 2026, 30 percent of the 2025 guideline, at the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 666.25
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # The chart takes up the 2026 guideline on March 2, 2026: $7,995 for three until then.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, January 2026, 30 percent of the 2025 guideline, over the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 666.26
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, March 2026 reads March 1, so 30 percent of the 2025 guideline, at the limit.
+  period: 2026-03
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 666.25
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, March 2026 reads March 1, so 30 percent of the 2025 guideline, over the limit.
+  period: 2026-03
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 666.26
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, April 2026, 50 percent, at the limit.
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_138
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    # DECAL letter, March 2, 2026: 30% to 50%.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, April 2026, 50 percent, over the limit.
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_139
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, October 2026, 50 percent, at the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_138
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    # Appendix A, effective October 5, 2026, prints $13,660 for three.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, October 2026, 50 percent, over the limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_139
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: Appendix A's very low income limits hold at sizes 1 to 14 in November 2026.
+  period: 2026-11
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+      p23:
+        age:
+          2026: 30
+      p24:
+        age:
+          2026: 30
+      p25:
+        age:
+          2026: 30
+      p26:
+        age:
+          2026: 30
+      p27:
+        age:
+          2026: 30
+      p28:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        ga_caps_countable_income: 665
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        ga_caps_countable_income: 665.09
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        ga_caps_countable_income: 901.66
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        ga_caps_countable_income: 901.75
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        ga_caps_countable_income: 1_138.33
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        ga_caps_countable_income: 1_138.42
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        ga_caps_countable_income: 1_375
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        ga_caps_countable_income: 1_375.09
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        ga_caps_countable_income: 1_611.66
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        ga_caps_countable_income: 1_611.75
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        ga_caps_countable_income: 1_848.33
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        ga_caps_countable_income: 1_848.42
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        ga_caps_countable_income: 2_085
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        ga_caps_countable_income: 2_085.09
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        ga_caps_countable_income: 2_321.66
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        ga_caps_countable_income: 2_321.75
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        ga_caps_countable_income: 2_558.33
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        ga_caps_countable_income: 2_558.42
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        ga_caps_countable_income: 2_795
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        ga_caps_countable_income: 2_795.09
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        ga_caps_countable_income: 3_031.66
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        ga_caps_countable_income: 3_031.75
+      u23:
+        members: [p23]
+        spm_unit_size:
+          2026: 12
+        ga_caps_countable_income: 3_268.33
+      u24:
+        members: [p24]
+        spm_unit_size:
+          2026: 12
+        ga_caps_countable_income: 3_268.42
+      u25:
+        members: [p25]
+        spm_unit_size:
+          2026: 13
+        ga_caps_countable_income: 3_505
+      u26:
+        members: [p26]
+        spm_unit_size:
+          2026: 13
+        ga_caps_countable_income: 3_505.09
+      u27:
+        members: [p27]
+        spm_unit_size:
+          2026: 14
+        ga_caps_countable_income: 3_741.66
+      u28:
+        members: [p28]
+        spm_unit_size:
+          2026: 14
+        ga_caps_countable_income: 3_741.75
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: GA
+      h2:
+        members: [p2]
+        state_code:
+          2026: GA
+      h3:
+        members: [p3]
+        state_code:
+          2026: GA
+      h4:
+        members: [p4]
+        state_code:
+          2026: GA
+      h5:
+        members: [p5]
+        state_code:
+          2026: GA
+      h6:
+        members: [p6]
+        state_code:
+          2026: GA
+      h7:
+        members: [p7]
+        state_code:
+          2026: GA
+      h8:
+        members: [p8]
+        state_code:
+          2026: GA
+      h9:
+        members: [p9]
+        state_code:
+          2026: GA
+      h10:
+        members: [p10]
+        state_code:
+          2026: GA
+      h11:
+        members: [p11]
+        state_code:
+          2026: GA
+      h12:
+        members: [p12]
+        state_code:
+          2026: GA
+      h13:
+        members: [p13]
+        state_code:
+          2026: GA
+      h14:
+        members: [p14]
+        state_code:
+          2026: GA
+      h15:
+        members: [p15]
+        state_code:
+          2026: GA
+      h16:
+        members: [p16]
+        state_code:
+          2026: GA
+      h17:
+        members: [p17]
+        state_code:
+          2026: GA
+      h18:
+        members: [p18]
+        state_code:
+          2026: GA
+      h19:
+        members: [p19]
+        state_code:
+          2026: GA
+      h20:
+        members: [p20]
+        state_code:
+          2026: GA
+      h21:
+        members: [p21]
+        state_code:
+          2026: GA
+      h22:
+        members: [p22]
+        state_code:
+          2026: GA
+      h23:
+        members: [p23]
+        state_code:
+          2026: GA
+      h24:
+        members: [p24]
+        state_code:
+          2026: GA
+      h25:
+        members: [p25]
+        state_code:
+          2026: GA
+      h26:
+        members: [p26]
+        state_code:
+          2026: GA
+      h27:
+        members: [p27]
+        state_code:
+          2026: GA
+      h28:
+        members: [p28]
+        state_code:
+          2026: GA
+  output:
+    # 50% of the 2026 guideline, which CAPS took up on March 2, 2026.
+    # Annual tops as monthly income: the top rounded down to the cent, then a
+    # dollar more a year rounded up to the cent.
+    ga_caps_priority_group_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]

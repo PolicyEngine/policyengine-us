@@ -1,10 +1,11 @@
 # WV CCAP Edge Case Tests
 # Income test: 185% FPL initial intake cap (Manual §3.2.1, Appendix A).
-# 2025 FPG (Contiguous US): first_person = 15_650, additional = 5_500.
-#   Family of 2 FPG = 21_150/yr = 1_762.50/mo; family of 3 = 26_650/yr.
-# 185% FPL family of 2  = 21_150 * 1.85 = 39_127.50/yr
-# 185% FPL family of 3  = 26_650 * 1.85 = 49_302.50/yr
-# 185% FPL family of 11 = 70_650 * 1.85 = 130_702.50/yr
+# Appendix A uses the 2024 FPG (Contiguous US): first_person = 15_060, additional = 5_380.
+#   Family of 2 FPG = 20_440/yr = 1_703.33/mo; family of 3 = 25_820/yr.
+# Intake cap (185% FPL, nearest dollar a month):
+#   family of 2  = 3_151/mo = 37_812/yr
+#   family of 3  = 3_981/mo = 47_772/yr
+#   family of 11 = 68_860 * 1.85 / 12 -> 10_616/mo = 127_392/yr
 
 # ============================================================
 # Income threshold boundaries (185% FPL)
@@ -39,7 +40,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # $24,000/yr is well below 185% FPL family of 2 ($39,127.50/yr) → eligible.
+    # $24,000/yr is well below the family of 2 cap ($37,812/yr) → eligible.
     wv_ccap_income_eligible: true
 
 - name: Case 2, income just below 185% FPL eligible.
@@ -49,8 +50,8 @@
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        # 185% FPL family of 2 = $39,127.50/yr
-        employment_income: 39_000
+        # Family of 2 cap = $37,812/yr
+        employment_income: 37_800
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -82,8 +83,8 @@
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        # Just above 185% FPL family of 2 ($39,127.50/yr)
-        employment_income: 39_200
+        # Just above the family of 2 cap ($37,812/yr)
+        employment_income: 37_900
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -119,8 +120,8 @@
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        # 185% FPL family of 3 = $49,302.50/yr
-        employment_income: 48_000
+        # Family of 3 cap = $47,772/yr
+        employment_income: 47_700
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -178,8 +179,8 @@
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        # Just above 185% FPL family of 3 ($49,302.50/yr)
-        employment_income: 50_000
+        # Just above the family of 3 cap ($47,772/yr)
+        employment_income: 47_800
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -214,8 +215,8 @@
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        # 185% FPL family of 11 = $130,702.50/yr
-        employment_income: 131_000
+        # Family of 11 cap = $127,392/yr
+        employment_income: 127_500
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -278,7 +279,7 @@
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        # Below 185% FPL family of 11 ($130,702.50/yr)
+        # Below the family of 11 cap ($127,392/yr)
         employment_income: 100_000
         immigration_status: CITIZEN
       person2:
@@ -560,8 +561,8 @@
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        # 40% FPL family of 2 = 21_150 * 0.4 = 8_460/yr
-        employment_income: 8_460
+        # 40% FPL family of 2 = 20_440 * 0.4 = 8_176/yr
+        employment_income: 8_176
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -583,8 +584,8 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 8_460 / 12 = 705
-    # FPL ratio = 705 / 1_762.50 = 0.4
+    # monthly income = 8_176 / 12 = 681.33
+    # FPL ratio = 681.33 / 1_703.33 = 0.4
     # Threshold for non-zero copay is 0.4001, so 0.4 -> 0% bracket
     wv_ccap_copay: 0
 
@@ -597,8 +598,8 @@
         age: 30
         weekly_hours_worked_before_lsr: 40
         # Just above 40% FPL: need FPL ratio > 0.4001
-        # 21_150 * 0.4001 = 8_462.12/yr; use 8_475 -> ratio ~0.4008
-        employment_income: 8_475
+        # 20_440 * 0.4001 = 8_178.04/yr; use 8_190 -> ratio ~0.4007
+        employment_income: 8_190
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -620,10 +621,10 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Monthly income = 8_475 / 12 = $706.25. FPL ratio = 0.4007 > 0.4001 → bracket
+    # Monthly income = 8_190 / 12 = $682.50. FPL ratio = 0.4007 > 0.4001 → bracket
     # "above 40% up to 50%" → Appendix A 2-person "50%" row daily fee = $2.00/child.
     # copay = $2.00 × 22 × 1 = $44.
-    # 7% cap = $706.25 × 0.07 = $49.44; cap does not bind.
+    # 7% cap = $682.50 × 0.07 = $47.78; cap does not bind.
     wv_ccap_copay: 44
 
 # ============================================================
@@ -638,8 +639,8 @@
       person1:
         age: 30
         weekly_hours_worked_before_lsr: 40
-        # ~170% FPL family of 2: 21_150 * 1.7 = 35_955/yr.
-        employment_income: 35_955
+        # ~170% FPL family of 2: 20_440 * 1.7 = 34_748/yr.
+        employment_income: 34_748
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -661,10 +662,10 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Monthly income = $2_996.25. FPL ratio = 1.7000 → bracket "above 160% up to 170%"
+    # Monthly income = $2_895.67. FPL ratio = 1.7000 → bracket "above 160% up to 170%"
     # → Appendix A 2-person "170%" row daily fee = $8.25/child.
     # uncapped copay = $8.25 × 22 × 1 = $181.50.
-    # 7% cap = $2_996.25 × 0.07 = $209.74; cap does not bind.
+    # 7% cap = $2_895.67 × 0.07 = $202.70; cap does not bind.
     wv_ccap_copay: 181.5
 
 - name: Case 19, large family with three children triggers 7 percent cap.
@@ -856,7 +857,7 @@
         state_code: WV
   output:
     # Foster child -> copay = $0 regardless of income
-    # FPL ratio would be ~1.42 -> normally 3.5% bracket
+    # FPL ratio would be ~1.47 -> normally 3.5% bracket
     # But foster child exemption overrides
     wv_ccap_copay: 0
 
@@ -1509,7 +1510,7 @@
     # daily benefit = min(45, 13.64) = 13.64
     wv_ccap_daily_benefit: [0, 13.64]
 
-    # 2-person family, FPL ratio = 2_000 / 1_762.50 = 1.1348.
+    # 2-person family, FPL ratio = 2_000 / 1_703.33 = 1.1742.
     # Appendix A 2-person "120%" row daily fee = $5.75/child; 22 days.
     # copay = $5.75 × 22 = $126.50.
     # 22 days > 20 → per-day billing; per_child = min($45 × 22, $300) = $300.

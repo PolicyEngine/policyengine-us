@@ -349,3 +349,76 @@
     #   tier 7 full fee $5/day * 20 = $100. Disabled child waived.
     # Benefit = max(3,709.25 - 100, 0) = $3,609.25.
     mo_ccs: 3_609.25
+
+- name: July 2026, an enrolled family of three at the $4,109 Level 1 top gets 80 percent of the remaining rate.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 30
+      person3:
+        age:
+          2026: 4
+        childcare_attending_days_per_month:
+          2026: 20
+        mo_ccs_maximum_daily_benefit: 60
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_eligible: true
+        mo_ccs_adjusted_income: 4_109
+        mo_ccs_copay: 200
+        spm_unit_pre_subsidy_childcare_expenses:
+          2026: 36_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    # DESE's July 2026 chart puts $4,109 for three at the top of Transitional Level 1.
+    # Reimbursement = min($60 * 20, $36,000 / 12) = $1,200; less the $200 fee = $1,000.
+    # Benefit = 80% * $1,000 = $800.
+    mo_ccs_funding_rate: 0.8
+    mo_ccs: 800
+
+- name: July 2026, an enrolled family of three at $4,110 gets 60 percent of the remaining rate.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 30
+      person3:
+        age:
+          2026: 4
+        childcare_attending_days_per_month:
+          2026: 20
+        mo_ccs_maximum_daily_benefit: 60
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_eligible: true
+        mo_ccs_adjusted_income: 4_110
+        mo_ccs_copay: 200
+        spm_unit_pre_subsidy_childcare_expenses:
+          2026: 36_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    # $4,110 for three falls in Transitional Level 2 on DESE's July 2026 chart.
+    # Benefit = 60% * ($1,200 - $200) = $600.
+    mo_ccs_funding_rate: 0.6
+    mo_ccs: 600

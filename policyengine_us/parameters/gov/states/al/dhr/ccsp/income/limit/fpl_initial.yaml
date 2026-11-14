@@ -1,6 +1,8 @@
 description: Alabama caps initial-application family income at this share of the federal poverty guideline under the Child Care Subsidy Program.
 values:
   2024-01-01: 1.8
+  # The June 2026 scale stops at the 141-150% column and tells new applicants to enter under it.
+  2026-06-01: 1.5
 
 metadata:
   unit: /1
@@ -9,5 +11,9 @@ metadata:
   reference:
     - title: Alabama CCDF State Plan 2025-2027, Section 2.2.4
       href: https://dhr.alabama.gov/wp-content/uploads/2023/04/2025-2027-CCDF-State-Plan-with-Approval-Letter.pdf#page=26
-    - title: Alabama Child Care Fact Sheet (Initial Eligibility Monthly Income Scale)
-      href: https://dhr.alabama.gov/wp-content/uploads/2024/01/Child-Care-Fact-Sheet-2024.pdf
+    - title: Alabama Child Care Fact Sheet, January 1, 2024 (Initial Eligibility Monthly Income Scale)
+      href: https://dhr.alabama.gov/wp-content/uploads/2024/01/Child-Care-Fact-Sheet-2024.pdf#page=1
+    - title: Alabama Child Care Fact Sheet, January 1, 2026 (Initial Eligibility Monthly Income Scale, top column 171-180% FPL)
+      href: https://dhr.alabama.gov/wp-content/uploads/2025/12/CHILD-CARE-FACT-SHEET-Jan2026.pdf#page=1
+    - title: Alabama Child Care Fact Sheet, June 1, 2026 (Initial Eligibility Monthly Income Scale, top column 141-150% FPL)
+      href: https://dhr.alabama.gov/wp-content/uploads/2026/06/CHILD-CARE-FACT-SHEET-Jun2026-1.pdf#page=1

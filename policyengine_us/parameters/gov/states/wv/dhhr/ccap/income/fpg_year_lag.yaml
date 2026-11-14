@@ -1,0 +1,20 @@
+description: West Virginia uses the federal poverty guideline from this many years before the current date under the Child Care Assistance Program.
+# Appendix A's sliding fee scale, created October 1, 2024, prints the 2024 guideline
+# (headed "FY 2024 Federal Poverty Level"; $3,981 a month for three at 185%). The
+# Bureau's Child Care Policy page still linked that scale on November 5, 2026, so the
+# lag grows to keep the 2024 guideline. A new scale adds a date here. From 2027 the
+# lag of two extrapolates: it reads the 2025 guideline, which no scale prints.
+values:
+  2015-01-01: 0
+  2025-01-01: 1
+  2026-01-01: 2
+
+metadata:
+  unit: year
+  period: year
+  label: West Virginia CCAP poverty guideline year lag
+  reference:
+    - title: WV Child Care Subsidy Appendix A, Sliding Fee Scale (FY 2024 Federal Poverty Level)
+      href: https://bfa.wv.gov/media/6826/download?inline#page=1
+    - title: WV Bureau for Family Assistance, Child Care Policy
+      href: https://bfa.wv.gov/bfa-policy-and-plans/child-care-policy

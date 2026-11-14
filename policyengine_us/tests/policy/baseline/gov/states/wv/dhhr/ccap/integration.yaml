@@ -1,8 +1,8 @@
 # WV CCAP Integration Tests
-# 2025 FPG (Contiguous US):
-#   first_person = 15_650, additional = 5_500
-#   Family of 2: 21_150
-#   Family of 3: 26_650
+# Appendix A uses the 2024 FPG (Contiguous US):
+#   first_person = 15_060, additional = 5_380
+#   Family of 2: 20_440
+#   Family of 3: 25_820
 
 - name: Case 1, basic eligible family with center care.
   period: 2025-01
@@ -37,7 +37,7 @@
     # === Eligibility ===
     wv_ccap_eligible_child: [false, true]
 
-    # 185% FPL family of 2 = $39,127.50/yr; $24,000/yr → eligible.
+    # The family of 2 cap = $37,812/yr; $24,000/yr → eligible.
     wv_ccap_income_eligible: true
     is_ccdf_asset_eligible: true
     wv_ccap_eligible: true
@@ -51,7 +51,7 @@
     wv_ccap_daily_rate: [0, 37]
 
     # === Copay ===
-    # 2-person family, FPL ratio = 2_000 / 1_762.50 = 1.1348.
+    # 2-person family, FPL ratio = 2_000 / 1_703.33 = 1.1742.
     # Appendix A 2-person "120%" row daily fee = $5.75/child.
     # 1 eligible child × 22 monthly days.
     # copay = $5.75 × 22 × 1 = $126.50.
@@ -107,7 +107,7 @@
     # Family Home Tier I Infant = $30/day
     wv_ccap_daily_rate: [0, 30]
 
-    # FPL ratio = 500 / 1_762.50 = 0.2837 < 0.40 -> 0% copay
+    # FPL ratio = 500 / 1_703.33 = 0.2935 < 0.40 -> 0% copay
     wv_ccap_copay: 0
 
     # daily charge = 500 / 22 = 22.73
@@ -124,7 +124,7 @@
     people:
       person1:
         age: 35
-        # Above 185% FPL family of 2 ($39,127.50/yr).
+        # Above the family of 2 cap ($37,812/yr).
         employment_income: 60_000
         immigration_status: CITIZEN
         weekly_hours_worked: 40
@@ -148,7 +148,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # $60,000/yr > 185% FPL family of 2 ($39,127.50/yr).
+    # $60,000/yr > the family of 2 cap ($37,812/yr).
     wv_ccap_income_eligible: false
     wv_ccap_eligible: false
     wv_ccap: 0
@@ -200,7 +200,7 @@
     # daily charge = (10_000/12) / 22 = 37.88; daily benefit = min(35+3, 37.88) = 37.88.
     wv_ccap_daily_benefit: [0, 37.88]
 
-    # Copay: same 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 22 = $126.50.
+    # Copay: same 2-person FPL 1.1742 → Appendix A "120%" row $5.75/day × 22 = $126.50.
     wv_ccap_copay: 126.5
 
     # 22 days/month > 20 → per-day billing for base.
@@ -272,7 +272,7 @@
     wv_ccap_daily_rate: [0, 37]
     # 17 days/month is in the 13-20 monthly-rate range.
     # Base reimbursement (monthly rate): $37 × 20 = $740.
-    # Copay: 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 17 = $97.75.
+    # Copay: 2-person FPL 1.1742 → Appendix A "120%" row $5.75/day × 17 = $97.75.
     wv_ccap_copay: 97.75
     # benefit = max($740 - $97.75, 0) = $642.25.
     wv_ccap: 642.25
@@ -357,7 +357,7 @@
     # 9 days/month is below the 13-day monthly-rate threshold.
     # Center Tier I Toddler = $37/day; daily charge = $1_000 / 9 = $111.11.
     wv_ccap_daily_benefit: [0, 37]
-    # Copay: 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 9 = $51.75.
+    # Copay: 2-person FPL 1.1742 → Appendix A "120%" row $5.75/day × 9 = $51.75.
     wv_ccap_copay: 51.75
     # Per-child reimbursement is capped before copay:
     # max(min($1_000 expense, $37 × 9 max rate) - $51.75, 0) = $281.25.

@@ -1,0 +1,27 @@
+description: Nevada uses this indicator to determine whether new applicants face a limit set as a share of the federal poverty guideline under the Child Care and Development Program.
+
+# Urban's CCDF Policies Database prints 85% of state median income for new applicants
+# in October 2017 and a lower limit by October 2018, so the start date falls between
+# those two snapshots. The state's own figures from February 2019 through October 2021
+# all equal 130% of the poverty guideline. The FFY 2022-2024 plan moves new applicants
+# to 85% of state median income on July 1, 2022.
+values:
+  2015-01-01: false
+  2018-10-01: true
+  2022-07-01: false
+
+metadata:
+  unit: bool
+  period: month
+  label: Nevada CCDP poverty-guideline intake limit in effect
+  reference:
+    - title: Urban Institute, CCDF Policies Database Book of Tables 2018, Changes in Financial Eligibility Tests from 2017 to 2018
+      href: https://ccdf.urban.org/sites/default/files/CrossStateVariationCCDFPolicies2018%20%28final%2011%2021%202019%29.pdf#page=41
+    - title: "National Women's Law Center, State Child Care Assistance Policies: Nevada (February 2020) #page 1-2"
+      href: https://nwlc.org/wp-content/uploads/2020/02/nevada-childcare-subsidy2019_v1.pdf#page=1
+    - title: Nevada draft CCDF State Plan FFY 2022-2024, Section 3.1.3 (limits effective October 1, 2020)
+      href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Home/Features/2022-2024%20Child%20Care%20PrePrint%20Draft(1).pdf#page=45
+    - title: Urban Institute, CCDF Policies Database Book of Tables 2021, Table B-1 (thresholds reported for October 1, 2021)
+      href: https://ccdf.urban.org/sites/default/files/CCDF%20Policies%20Database%202021%20Book%20of%20Tables%20%28final%29_1.pdf#page=393
+    - title: "Nevada CCDF State Plan FFY 2022-2024, Amendment approved May 16, 2023, Section 3.1.3 (85% of SMI effective July 1, 2022) #page 50-51"
+      href: https://dwss.nv.gov/uploadedFiles/dwssnvgov/content/Care/Amended%20State%20Plan.pdf#page=50

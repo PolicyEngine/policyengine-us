@@ -414,3 +414,46 @@
     # Homeless is NOT a §3.3.1 copay-waiver category (§3.3.1(iii)
     # unchecked); 105% FPL -> band [1.0001, 1.1001) -> $18/wk, not $0.
     al_ccsp_weekly_copay_per_child: 18
+
+- name: A family of nine at 6,500 dollars pays the eight-or-more row's 30 dollars a week in June 2026.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+        is_tax_unit_dependent: true
+      person4:
+        age: 13
+        is_tax_unit_dependent: true
+      person5:
+        age: 11
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 7
+        is_tax_unit_dependent: true
+      person8:
+        age: 5
+        is_tax_unit_dependent: true
+      person9:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        # The June 2026 fact sheet's >=8 row charges 30 dollars from 6,319 to 6,769 dollars (141-150% FPL).
+        al_ccsp_countable_income: 6_500
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_weekly_copay_per_child: 30

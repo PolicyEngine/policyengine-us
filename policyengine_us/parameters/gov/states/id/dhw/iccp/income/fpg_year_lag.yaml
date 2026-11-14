@@ -1,0 +1,22 @@
+description: Idaho uses the federal poverty guideline from this many years before the current date to set initial income limits under the Idaho Child Care Program.
+# The department reopened applications on January 13, 2025 at 130% of the 2024
+# guideline ($33,566 a year for three). Its table effective October 2025 uses the
+# 2025 guideline ($2,888 a month for three), and the page still showed that table
+# on November 5, 2026, so a lag of one holds it through 2026. A new table adds a
+# date here. No source dates the guideline year before 2025, so the list keeps
+# the current year until then.
+values:
+  2015-01-01: 0
+  2025-01-13: 1
+  2025-10-01: 0
+  2026-01-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Idaho Child Care Program poverty guideline year lag
+  reference:
+    - title: Idaho Department of Health and Welfare, Apply for Child Care (limits effective October 2025; page last updated September 30, 2025)
+      href: https://healthandwelfare.idaho.gov/services-programs/children-families/apply-child-care
+    - title: Idaho Department of Health and Welfare, DHW will resume applications for the Idaho Child Care Program in January (November 14, 2024)
+      href: https://healthandwelfare.idaho.gov/news/dhw-will-resume-applications-idaho-child-care-program-january

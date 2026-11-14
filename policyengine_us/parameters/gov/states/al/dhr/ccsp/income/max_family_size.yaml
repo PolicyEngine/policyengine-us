@@ -1,0 +1,15 @@
+description: Alabama applies the income scale row for this family size to larger families under the Child Care Subsidy Program.
+# Each fact sheet's income scales and fee charts end with one row for families of
+# eight or more.
+values:
+  2024-01-01: 8
+
+metadata:
+  unit: person
+  period: year
+  label: Alabama CCSP largest family size on the income scales
+  reference:
+    - title: Alabama Child Care Fact Sheet, January 1, 2024 (family size row ">=8")
+      href: https://dhr.alabama.gov/wp-content/uploads/2024/01/Child-Care-Fact-Sheet-2024.pdf#page=1
+    - title: Alabama Child Care Fact Sheet, June 1, 2026 (family size row ">=8")
+      href: https://dhr.alabama.gov/wp-content/uploads/2026/06/CHILD-CARE-FACT-SHEET-Jun2026-1.pdf#page=1

@@ -1,0 +1,40 @@
+description: Georgia reads the state median income table from this many federal fiscal years before the one in effect for the month under the Childcare and Parent Services program.
+
+# Each Appendix A chart prints the date its state median income data took effect:
+# - The charts from October 2020 through October 2023 take up each federal table on
+#   its October 1 start.
+# - The September 1, 2024 chart takes up the fiscal year 2025 table a month early,
+#   at 30% ($26,686 a year for three), so September 2024 reads one year ahead.
+# - The CCDF plan prints the 40% limits that took effect October 6, 2025 on the
+#   fiscal year 2026 table ($3,101 a month for three). The chart effective October 5,
+#   2026 takes up the fiscal year 2027 table. The first days of each October keep the
+#   prior table.
+# The model applies each date at the first month that starts on or after it, so the
+# fiscal year 2026 and 2027 tables take effect in November 2025 and November 2026. No
+# chart before October 2020 survives, so earlier months take each table on October 1.
+values:
+  2015-10-01: 0
+  2024-09-01: -1
+  2024-10-01: 0
+  2025-10-01: 1
+  2025-10-06: 0
+  2026-10-01: 1
+  2026-10-05: 0
+
+metadata:
+  unit: year
+  period: month
+  label: Georgia CAPS state median income table year lag
+  reference:
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (effective October 1, 2020), state median income effective October 1, 2020
+      href: https://web.archive.org/web/20201124060600id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (archived December 8, 2023), state median income effective October 1, 2023
+      href: https://web.archive.org/web/20231208060145id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (archived March 1, 2025), state median income effective September 1, 2024
+      href: https://web.archive.org/web/20250301224420id_/https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia CCDF Plan FFY 2025-2027, Section 2.2.4, 40% of state median income effective October 6, 2025
+      href: https://www.decal.ga.gov/documents/attachments/CCDFStatePlan25-27.pdf#page=22
+    - title: Georgia DECAL, Letter to CAPS Families (October 6, 2025), 30% to 40% from October 6, 2025
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_to_Families_Policy_Revisions_10.06.25.pdf#page=1
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (effective October 5, 2026), state median income effective October 5, 2026
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1

@@ -256,3 +256,731 @@
   output:
     # 75,145.96 > 75,145.95 (85% SMI cap) -> SMI cap fails.
     al_ccsp_income_eligible: false
+
+# Family of three on the 2025 guideline ($26,650): the January 1, 2026 fact sheet
+# tops at 180% ($3,998) for new applicants and 200% ($4,442) for continuing families;
+# the June 1, 2026 fact sheet tops at 150% ($3,331) and 170% ($3,775).
+- name: New applicant of three at 3,998 dollars qualifies in May 2026.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_998
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: New applicant of three at the June 2026 top of 3,331 dollars qualifies.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_331
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: New applicant of three at 3,332 dollars doesn't qualify from June 2026.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_332
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: false
+
+- name: Continuing family of three at the January 2026 top of 4,442 dollars stays eligible in May 2026.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 4_442
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: Continuing family of three at the June 2026 top of 3,775 dollars stays eligible.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_775
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: Continuing family of three at 3,776 dollars loses eligibility from June 2026.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        al_ccsp_countable_income: 3_776
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: false
+
+- name: A half-dollar limit prints up, so a family of two at 3,173 dollars qualifies in May 2026.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # 21,150 x 1.8 / 12 = 3,172.50, printed as 3,173 on the January 2026 fact sheet.
+        al_ccsp_countable_income: 3_173
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: A new applicant family of nine uses the eight-or-more row, so 6,769 dollars qualifies in June 2026.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+        is_tax_unit_dependent: true
+      person4:
+        age: 13
+        is_tax_unit_dependent: true
+      person5:
+        age: 11
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 7
+        is_tax_unit_dependent: true
+      person8:
+        age: 5
+        is_tax_unit_dependent: true
+      person9:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        # The June 2026 fact sheet's >=8 row tops out at 6,769 dollars (141-150% FPL).
+        al_ccsp_countable_income: 6_769
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: A new applicant family of nine at 6,770 dollars doesn't qualify in June 2026.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+        is_tax_unit_dependent: true
+      person4:
+        age: 13
+        is_tax_unit_dependent: true
+      person5:
+        age: 11
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 7
+        is_tax_unit_dependent: true
+      person8:
+        age: 5
+        is_tax_unit_dependent: true
+      person9:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        al_ccsp_countable_income: 6_770
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_income_eligible: false
+
+- name: A continuing family of nine at the eight-or-more top of 8,427 dollars stays eligible in January 2024.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+        is_tax_unit_dependent: true
+      person4:
+        age: 13
+        is_tax_unit_dependent: true
+      person5:
+        age: 11
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 7
+        is_tax_unit_dependent: true
+      person8:
+        age: 5
+        is_tax_unit_dependent: true
+      person9:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        # The January 2024 fact sheet's >=8 row tops out at 8,427 dollars (191-200% FPL).
+        al_ccsp_countable_income: 8_427
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code:
+          2024: AL
+  output:
+    al_ccsp_income_eligible: true
+
+- name: A continuing family of nine at 8,428 dollars loses eligibility in January 2024.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+        is_tax_unit_dependent: true
+      person4:
+        age: 13
+        is_tax_unit_dependent: true
+      person5:
+        age: 11
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 7
+        is_tax_unit_dependent: true
+      person8:
+        age: 5
+        is_tax_unit_dependent: true
+      person9:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        al_ccsp_countable_income: 8_428
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code:
+          2024: AL
+  output:
+    al_ccsp_income_eligible: false
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: The June 1, 2026 fact sheet's initial scale holds at every family size.
+  period: 2026-06
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        al_ccsp_countable_income: 2_644
+        al_ccsp_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        al_ccsp_countable_income: 2_645
+        al_ccsp_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        al_ccsp_countable_income: 3_331
+        al_ccsp_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        al_ccsp_countable_income: 3_332
+        al_ccsp_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        al_ccsp_countable_income: 4_019
+        al_ccsp_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        al_ccsp_countable_income: 4_020
+        al_ccsp_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        al_ccsp_countable_income: 4_706
+        al_ccsp_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        al_ccsp_countable_income: 4_707
+        al_ccsp_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        al_ccsp_countable_income: 5_394
+        al_ccsp_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        al_ccsp_countable_income: 5_395
+        al_ccsp_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        al_ccsp_countable_income: 6_081
+        al_ccsp_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        al_ccsp_countable_income: 6_082
+        al_ccsp_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        al_ccsp_countable_income: 6_769
+        al_ccsp_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        al_ccsp_countable_income: 6_770
+        al_ccsp_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: AL
+      h2:
+        members: [p2]
+        state_code:
+          2026: AL
+      h3:
+        members: [p3]
+        state_code:
+          2026: AL
+      h4:
+        members: [p4]
+        state_code:
+          2026: AL
+      h5:
+        members: [p5]
+        state_code:
+          2026: AL
+      h6:
+        members: [p6]
+        state_code:
+          2026: AL
+      h7:
+        members: [p7]
+        state_code:
+          2026: AL
+      h8:
+        members: [p8]
+        state_code:
+          2026: AL
+      h9:
+        members: [p9]
+        state_code:
+          2026: AL
+      h10:
+        members: [p10]
+        state_code:
+          2026: AL
+      h11:
+        members: [p11]
+        state_code:
+          2026: AL
+      h12:
+        members: [p12]
+        state_code:
+          2026: AL
+      h13:
+        members: [p13]
+        state_code:
+          2026: AL
+      h14:
+        members: [p14]
+        state_code:
+          2026: AL
+  output:
+    # Initial Eligibility Monthly Income Scale, 141-150% FPL column, sizes 2 to 8.
+    al_ccsp_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: The June 1, 2026 fact sheet's continuing scale holds at every family size.
+  period: 2026-06
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 2
+        al_ccsp_countable_income: 2_996
+        al_ccsp_enrolled: true
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 2
+        al_ccsp_countable_income: 2_997
+        al_ccsp_enrolled: true
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 3
+        al_ccsp_countable_income: 3_775
+        al_ccsp_enrolled: true
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 3
+        al_ccsp_countable_income: 3_776
+        al_ccsp_enrolled: true
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 4
+        al_ccsp_countable_income: 4_555
+        al_ccsp_enrolled: true
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 4
+        al_ccsp_countable_income: 4_556
+        al_ccsp_enrolled: true
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 5
+        al_ccsp_countable_income: 5_334
+        al_ccsp_enrolled: true
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 5
+        al_ccsp_countable_income: 5_335
+        al_ccsp_enrolled: true
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 6
+        al_ccsp_countable_income: 6_113
+        al_ccsp_enrolled: true
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 6
+        al_ccsp_countable_income: 6_114
+        al_ccsp_enrolled: true
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 7
+        al_ccsp_countable_income: 6_892
+        al_ccsp_enrolled: true
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 7
+        al_ccsp_countable_income: 6_893
+        al_ccsp_enrolled: true
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 8
+        al_ccsp_countable_income: 7_671
+        al_ccsp_enrolled: true
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 8
+        al_ccsp_countable_income: 7_672
+        al_ccsp_enrolled: true
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: AL
+      h2:
+        members: [p2]
+        state_code:
+          2026: AL
+      h3:
+        members: [p3]
+        state_code:
+          2026: AL
+      h4:
+        members: [p4]
+        state_code:
+          2026: AL
+      h5:
+        members: [p5]
+        state_code:
+          2026: AL
+      h6:
+        members: [p6]
+        state_code:
+          2026: AL
+      h7:
+        members: [p7]
+        state_code:
+          2026: AL
+      h8:
+        members: [p8]
+        state_code:
+          2026: AL
+      h9:
+        members: [p9]
+        state_code:
+          2026: AL
+      h10:
+        members: [p10]
+        state_code:
+          2026: AL
+      h11:
+        members: [p11]
+        state_code:
+          2026: AL
+      h12:
+        members: [p12]
+        state_code:
+          2026: AL
+      h13:
+        members: [p13]
+        state_code:
+          2026: AL
+      h14:
+        members: [p14]
+        state_code:
+          2026: AL
+  output:
+    # Continuing Eligibility Monthly Income Scale, 161-170% FPL column, sizes 2 to 8.
+    al_ccsp_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]

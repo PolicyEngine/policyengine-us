@@ -901,9 +901,10 @@ programs:
       - state: OH
         status: complete
         name: Ohio Publicly Funded Child Care
-        full_name: Ohio Child Care Assistance Program (Publicly Funded Child Care)
+        full_name: Ohio Child Care Assistance Program (Publicly Funded Child Care and Child Care Choice Voucher Program)
         variable: oh_child_care_subsidies
         parameter_prefix: gov.states.oh.dcy.ccap
+        notes: The Child Care Choice Voucher Program starts in November 2025 with Procedure Letter 36's monthly payment chart; the model leaves out the voucher from its April 2024 launch until then and the initial enrollment payment the letter adds on top of the monthly payments.
       - state: PA
         status: complete
         name: Pennsylvania CCW
@@ -959,6 +960,7 @@ programs:
         full_name: Georgia Childcare and Parent Services
         variable: ga_caps
         parameter_prefix: gov.states.ga.decal.caps
+        notes: Models the dated limits for new applicants since 2016 (50% of state median income from October 2016, 85% from November 2021, 50% from December 2022, 30% from September 2024, 40% from October 2025 and 50% from March 2026), the 85% limit for enrolled families, and the priority groups that decide which new applicants DECAL serves from August 2016. Not modeled - application dates, the 2020 Essential Services Workforce group, and DECAL's discretionary waivers
       - state: ND
         status: partial
         name: North Dakota CCAP

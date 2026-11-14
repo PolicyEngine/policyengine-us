@@ -1,0 +1,39 @@
+description: Georgia limits the very low income priority group to families with income at or below this share of the federal poverty guideline under the Childcare and Parent Services program.
+
+# DECAL's letters date every change. DECAL applies each rate by application received
+# date. The model carries no application date, so it moves every new applicant at
+# the first month that starts on or after the effective date. The 50% back to
+# October 2016 rests on the June 2018 letter's "previously".
+values:
+  2016-10-01: 0.5
+  2018-05-30: 1
+  2019-07-01: 0.5
+  2021-11-01: 1.5
+  2022-12-16: 0.5
+  2024-07-01: 0.1
+  2025-10-06: 0.3
+  2026-03-02: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Georgia CAPS very low income priority group poverty guideline rate
+  reference:
+    - title: Georgia CAPS Policy CAPS/00-7, Section 7.12 (revised October 5, 2026)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/07-CAPS_Policy-Priority%20Groups.pdf#page=7
+    - title: Georgia CAPS Appendix A, Maximum Income Limits (effective October 5, 2026)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixA-CAPS%20Maximum%20Income%20Limits%20by%20Family%20Size.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Child Care Providers (June 18, 2018), 50% to 100% from May 30, 2018
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS_Letter_from_Elisabetta_Kasfir_6-18-2018.pdf#page=1
+    - title: Georgia DECAL, CAPS Policy Webinar (July 10, 2019), slide 4, back to 50% for applications from July 1, 2019
+      href: http://caps.decal.ga.gov/Assets/downloads/CAPS_Policy_Webinar_for_Child_Care_Providers_7-10-19.pdf#page=4
+    - title: Georgia DECAL, Letter to CAPS Families (October 21, 2021), 50% to 150% from November 1, 2021
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS_Letter_from_Elisabetta_Kasfir_Families_10-21-21.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Families (December 19, 2022), back to 50% from December 16, 2022
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS_Letter_to_Parents_Change_in_Income_Limits_12.19.2022.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Families (July 1, 2024), 50% to 10% from July 1, 2024
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_from_Elisabetta_Kasfir_Families_07.01.2024.pdf#page=2
+    - title: Georgia DECAL, Letter to CAPS Families (October 6, 2025), 10% to 30% from October 6, 2025
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_to_Families_Policy_Revisions_10.06.25.pdf#page=1
+    - title: Georgia DECAL, Letter to CAPS Families (March 2, 2026), 30% to 50% from March 2, 2026
+      href: https://caps.decal.ga.gov/Assets/downloads/CAPS_Letter_to_Families_Policy_Revisions_03.02.26.pdf#page=1

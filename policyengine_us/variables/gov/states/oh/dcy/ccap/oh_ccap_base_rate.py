@@ -13,7 +13,10 @@ class oh_ccap_base_rate(Variable):
     unit = USD
     label = "Ohio CCAP monthly maximum reimbursement rate before add-ons"
     definition_period = MONTH
-    defined_for = "oh_ccap_eligible_child"
+    # Both readers apply their own child test: oh_ccap_rate_with_addons for
+    # Publicly Funded Child Care and oh_ccvp_rate for the voucher, which also
+    # covers 13- and 14-year-olds.
+    defined_for = StateCode.OH
     reference = "https://codes.ohio.gov/assets/laws/administrative-code/pdfs/5180/6/1/5180$6-1-10_PH_FF_N_APP1_20251020_1028.pdf#page=1"
 
     def formula(person, period, parameters):

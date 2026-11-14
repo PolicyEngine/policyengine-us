@@ -388,10 +388,10 @@
     # Income 17_160 / 12 = 1_430 per month; care 7_894 / 12 = 657.83 per month.
     # Age 5 -> PRESCHOOL; max rate = 51.50 * 21.67 = 1_116.005, so the charge binds.
     # 2015-09, FFY 2015 table: SMI = 65_832 * 0.68 / 12 = 3_730.48.
-    #   1_430 <= 41% * 3_730.48 = 1_529.50 -> eligible.
+    #   1_430 <= 85% * 3_730.48 = 3_170.91 -> eligible.
     #   Ratio 1_430 / 3_730.48 = 0.3833 -> $90 copay (33% to 42% band).
     # 2015-10, FFY 2016 table: SMI = 66_461 * 0.68 / 12 = 3_766.12.
-    #   1_430 <= 41% * 3_766.12 = 1_544.11 -> eligible.
+    #   1_430 <= 85% * 3_766.12 = 3_201.20 -> eligible.
     #   Ratio 1_430 / 3_766.12 = 0.3797 -> $90 copay.
     # benefit = min(657.83, 1_116.005) - 90 = 567.83 in both months.
     nv_ccdp_smi:
