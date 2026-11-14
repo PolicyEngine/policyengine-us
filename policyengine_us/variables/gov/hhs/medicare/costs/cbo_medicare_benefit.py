@@ -22,7 +22,7 @@ class cbo_medicare_benefit(Variable):
     definition_period = YEAR
     reference = (
         "https://www.cbo.gov/system/files/2026-01/61910-DOHI-health.pdf#page=27",
-        # PDF pages 27, 39
+        # PDF pages 27, 41
         "https://www.cbo.gov/system/files/2024-09/60341-income.pdf#page=27",
         # PDF pages 46, 52
         "https://www.cbo.gov/system/files/2018-07/54234-workingpaper.pdf#page=46",
