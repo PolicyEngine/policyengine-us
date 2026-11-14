@@ -453,15 +453,15 @@
     ma_rent_deduction: [2_000, 2_000]
 
 
-# Compatibility only: NaN qualified expense facts do not propagate into the amount.
-- name: 'Case 24, a nonfinite own base uses the legacy numerical component.'
+# Compatibility only: negative-infinite qualified expenses use the fallback.
+- name: 'Case 24, a negative-infinite own base uses the legacy numerical component.'
   period: 2025
   absolute_error_margin: 0.01
   input:
     state_code: 'MA'
     is_tax_unit_head: true
     filing_status: 'SEPARATE'
-    ma_rent_deduction_qualifying_rent_paid: .nan
+    ma_rent_deduction_qualifying_rent_paid: -.inf
     ma_rent_deduction_qualifying_rent_paid_known: true
     ma_rent_deduction_allocation_election: 'ALTERNATIVE'
     ma_rent_deduction_allocation_documentation: 'VERIFIED'
@@ -491,8 +491,8 @@
   output:
     ma_rent_deduction: 2_000
 
-# Compatibility only: NaN documentary amounts cannot propagate into the deduction.
-- name: 'Case 26, a nonfinite spouse amount uses the legacy numerical component.'
+# Compatibility only: negative-infinite documentary amounts use the fallback.
+- name: 'Case 26, a negative-infinite spouse amount uses the legacy numerical component.'
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -503,7 +503,7 @@
     ma_rent_deduction_qualifying_rent_paid_known: true
     ma_rent_deduction_allocation_election: 'ALTERNATIVE'
     ma_rent_deduction_allocation_documentation: 'VERIFIED'
-    ma_rent_deduction_spouse_amount_taken: .nan
+    ma_rent_deduction_spouse_amount_taken: -.inf
     ma_rent_deduction_spouse_amount_taken_known: true
     ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
     rent: 6_000

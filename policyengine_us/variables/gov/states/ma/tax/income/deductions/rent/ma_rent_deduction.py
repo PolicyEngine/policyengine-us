@@ -47,7 +47,7 @@ class ma_rent_deduction(Variable):
             election == election.possible_values.ALTERNATIVE
         )
         spouse_amount = tax_unit("ma_rent_deduction_spouse_amount_taken", period)
-        couple_cap = p.cap[statuses.JOINT]
+        couple_cap = p.cap.JOINT
         spouse_amount_valid = (
             np.isfinite(spouse_amount)
             & (spouse_amount >= 0)

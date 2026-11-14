@@ -55,7 +55,7 @@ class ma_rent_deduction_available(Variable):
         spouse_amount_known = tax_unit(
             "ma_rent_deduction_spouse_amount_taken_known", period
         )
-        couple_cap = p.cap[statuses.JOINT]
+        couple_cap = p.cap.JOINT
         spouse_amount_valid = (
             spouse_amount_known
             & np.isfinite(spouse_amount)
@@ -68,7 +68,7 @@ class ma_rent_deduction_available(Variable):
         safe_spouse_amount = where(spouse_amount_valid, spouse_amount, 0)
         own_maximum = min_(p.share * qualified_rent, couple_cap - safe_spouse_amount)
         documentation = tax_unit("ma_rent_deduction_allocation_documentation", period)
-        documentation_available = (own_maximum <= p.cap[statuses.SEPARATE]) | (
+        documentation_available = (own_maximum <= p.cap.SEPARATE) | (
             documentation == documentation.possible_values.VERIFIED
         )
         alternative_available = (

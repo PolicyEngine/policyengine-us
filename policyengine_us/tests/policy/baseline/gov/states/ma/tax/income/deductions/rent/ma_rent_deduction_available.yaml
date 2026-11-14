@@ -200,8 +200,8 @@
   output:
     ma_rent_deduction_available: false
 
-# NaN must not pass a pair of ordinary range comparisons.
-- name: 'Case 13, NaN spouse amount is unavailable.'
+# A negative-infinite documentary amount cannot establish a claim.
+- name: 'Case 13, negative-infinite spouse amount is unavailable.'
   period: 2025
   input:
     state_code: 'MA'
@@ -211,7 +211,7 @@
     ma_rent_deduction_qualifying_rent_paid_known: true
     ma_rent_deduction_allocation_election: 'ALTERNATIVE'
     ma_rent_deduction_allocation_documentation: 'VERIFIED'
-    ma_rent_deduction_spouse_amount_taken: .nan
+    ma_rent_deduction_spouse_amount_taken: -.inf
     ma_rent_deduction_spouse_amount_taken_known: true
     ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
   output:
@@ -317,14 +317,14 @@
   output:
     ma_rent_deduction_available: false
 
-# Do not certify a nonfinite payment base.
-- name: 'Case 21, NaN own expense base is unavailable.'
+# Do not certify a negative-infinite payment base.
+- name: 'Case 21, negative-infinite own expense base is unavailable.'
   period: 2025
   input:
     state_code: 'MA'
     is_tax_unit_head: true
     filing_status: 'SINGLE'
-    ma_rent_deduction_qualifying_rent_paid: .nan
+    ma_rent_deduction_qualifying_rent_paid: -.inf
     ma_rent_deduction_qualifying_rent_paid_known: true
   output:
     ma_rent_deduction_available: false
@@ -417,7 +417,7 @@
     ma_rent_deduction_qualifying_rent_paid_known: true
     ma_rent_deduction_allocation_election: 'ALTERNATIVE'
     ma_rent_deduction_allocation_documentation: 'MISSING_OR_INVALID'
-    ma_rent_deduction_spouse_amount_taken: .nan
+    ma_rent_deduction_spouse_amount_taken: -.inf
     ma_rent_deduction_spouse_amount_taken_known: true
     ma_rent_deduction_spouse_facts_status: 'CONTRADICTORY'
   output:
@@ -622,7 +622,7 @@
     ma_rent_deduction_qualifying_rent_paid_known: true
     ma_rent_deduction_allocation_election: 'NO_ALTERNATIVE'
     ma_rent_deduction_allocation_documentation: 'MISSING_OR_INVALID'
-    ma_rent_deduction_spouse_amount_taken: .nan
+    ma_rent_deduction_spouse_amount_taken: -.inf
     ma_rent_deduction_spouse_amount_taken_known: true
     ma_rent_deduction_spouse_facts_status: 'CONTRADICTORY'
   output:
