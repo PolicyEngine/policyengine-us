@@ -112,3 +112,15 @@
     other_net_gain_person: 7_500
     other_net_gain_gross_income: 7_500
     market_income: 7_500
+
+- name: Gambling winnings are market income before losses.
+  period: 2026
+  input:
+    gambling_winnings: 5_000
+    gambling_losses: 3_000
+  output:
+    # Gross income counts the 5,000 of winnings in full, and filers deduct the
+    # losses only as an itemized deduction.
+    market_income: 5_000
+    household_market_income: 5_000
+    spm_unit_market_income: 5_000
