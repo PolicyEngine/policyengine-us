@@ -1,0 +1,27 @@
+description: North Dakota exempts the second caretaker in a Workforce Benefit household from the allowable-activity requirement under the Child Care Assistance Program if this is true.
+
+# From June 1, 2024 (ML 3819), North Dakota exempted the second caretaker of a
+# Workforce Benefit household from the activity requirement, and it kept that
+# rule in ML 3862 and ML 3909. From January 1, 2026 (Release 26.1), North
+# Dakota requires the second caretaker's activity. North Dakota started the
+# Workforce Benefit on June 1, 2024, so the earlier false value has no effect.
+values:
+  0000-01-01: false
+  2024-06-01: true
+  2026-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: North Dakota CCAP Workforce Benefit second caretaker activity exemption
+  reference:
+    - title: North Dakota CCAP Manual Letter 3819, Basic Eligibility Alignment 400-28-20-40 (eff. June 1, 2024)
+      href: https://www.nd.gov/dhs/policymanuals/40028/Content/ML/2024/CCAP%20ML%203819%20Effective%20June.1.2024.pdf#page=2
+    - title: North Dakota CCAP Manual Letter 3862, Basic Eligibility Alignment 400-28-20-40 (eff. September 1, 2024)
+      href: https://www.nd.gov/dhs/policymanuals/40028/Content/ML/2024/CCAP%20ML%203862%20Effective%20September.1.2024.pdf#page=2
+    - title: North Dakota CCAP Manual Letter 3909, Basic Eligibility Alignment 400-28-20-40 (eff. May 1, 2025)
+      href: https://www.nd.gov/dhs/policymanuals/40028/Content/ML/2025/CCAP%20ML%203909%20Effective%20May.1.2025.pdf#page=4
+    - title: "North Dakota CCAP Release 26.1, Basic Eligibility Alignment 400-28-20-40 (eff. January 1, 2026) #page 1-2"
+      href: https://www.nd.gov/dhs/policymanuals/40028/Content/ML/2026/CCAP%20Release%2026.1%20Effective%20January.1.2026.pdf#page=1
+    - title: North Dakota CCAP Policy Manual, Basic Eligibility Alignment 400-28-20-40
+      href: https://www.nd.gov/dhs/policymanuals/40028/Content/400_28_20_40.htm

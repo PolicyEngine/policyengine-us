@@ -1,0 +1,112 @@
+# Tests for nd_ccap_tanf_copay_exception (SPMUnit, MONTH, bool).
+# From October 2011 through September 2026, North Dakota charged the co-pay
+# when child care followed from the activity of a TANF caretaker "In receipt
+# of SSI" (400-28-90-20, ML 3278 and ML 3605 versions). North Dakota repealed
+# that exception on October 1, 2026 (Release 26.3) and moved the SSI test to
+# the child.
+
+- name: North Dakota applies the caretaker-SSI exception from October 2011
+  period: 2020-01
+  input:
+    people:
+      parent:
+        age:
+          2020: 30
+        ssi: 100
+      child:
+        age:
+          2020: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2020: ND
+  output:
+    nd_ccap_tanf_copay_exception: true
+
+- name: North Dakota applies the caretaker-SSI exception through September 2026
+  period: 2026-09
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 100
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_tanf_copay_exception: true
+
+- name: North Dakota ends the caretaker-SSI exception in October 2026
+  period: 2026-10
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 100
+      child:
+        age:
+          2026: 3
+        ssi: 0
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_tanf_copay_exception: false
+
+# The 18-year-old receives SSI but is neither the tax unit head nor spouse,
+# so the model does not treat them as a caretaker.
+- name: North Dakota applies the caretaker-SSI exception to caretakers alone
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age:
+          2025: 40
+        is_tax_unit_head_or_spouse:
+          2025: true
+        ssi: 0
+      adult_child:
+        age:
+          2025: 18
+        is_tax_unit_head_or_spouse:
+          2025: false
+        ssi: 100
+      child:
+        age:
+          2025: 3
+        is_tax_unit_head_or_spouse:
+          2025: false
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, adult_child, child]
+    households:
+      household:
+        members: [parent, adult_child, child]
+        state_code:
+          2025: ND
+  output:
+    nd_ccap_tanf_copay_exception: false

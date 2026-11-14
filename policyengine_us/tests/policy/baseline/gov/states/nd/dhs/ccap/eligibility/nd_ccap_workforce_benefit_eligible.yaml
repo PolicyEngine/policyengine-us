@@ -1,0 +1,90 @@
+# Tests for nd_ccap_workforce_benefit_eligible (SPMUnit, MONTH, bool).
+# North Dakota started the Workforce Benefit on June 1, 2024.
+
+# A qualifying parent receives the Workforce Benefit from June 1, 2024.
+- name: North Dakota withholds the Workforce Benefit before June 2024
+  period: 2024-05
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2024: 30
+        ssi: 0
+        nd_ccap_workforce_benefit_eligible_parent: true
+      child:
+        age:
+          2024: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2024: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2024: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: false
+
+# A qualifying parent receives the Workforce Benefit from June 1, 2024.
+- name: North Dakota starts the Workforce Benefit in June 2024
+  period: 2024-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2024: 30
+        ssi: 0
+        nd_ccap_workforce_benefit_eligible_parent: true
+      child:
+        age:
+          2024: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2024: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2024: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: true
+
+# North Dakota requires a caretaker in qualifying child care employment
+# (400-28-20-40). A 16-year-old sibling's job leaves the family ineligible.
+- name: North Dakota withholds the Workforce Benefit when only a non-caretaker qualifies
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age:
+          2025: 30
+        nd_ccap_workforce_benefit_eligible_parent: false
+      teen:
+        age:
+          2025: 16
+        nd_ccap_workforce_benefit_eligible_parent: true
+      child:
+        age:
+          2025: 3
+    spm_units:
+      family:
+        members: [parent, teen, child]
+    households:
+      household:
+        members: [parent, teen, child]
+        state_code:
+          2025: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: false
