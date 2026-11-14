@@ -1,0 +1,20 @@
+description: Hawaii limits the employee temporary disability insurance contribution to this share of weekly wages.
+values:
+  # Zero marks years before the first notice read (2004), not a law without a
+  # contribution. See maximum_weekly_wage_base.yaml.
+  0000-01-01: 0
+  2004-01-01: 0.005
+
+metadata:
+  period: year
+  unit: /1
+  label: Hawaii employee TDI maximum contribution rate
+  reference:
+    - title: Hawaii Revised Statutes Section 392-43(a)
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0043.htm
+    - title: Hawaii DLIR, 2004 maximum weekly wage base notice
+      href: https://web.archive.org/web/20050226051453/http://hawaii.gov:80/labor/dcd/pdf/TDI/2004%20TDI%20Wage%20Base.pdf#page=1
+    - title: Hawaii DLIR, 2026 maximum weekly wage base notice
+      href: https://labor.hawaii.gov/dcd/files/2025/12/2026-Maximum-Weekly-Wage-Base.pdf#page=1
+    - title: Hawaii DLIR, Form TDI-15 (rev. June 2026)
+      href: https://labor.hawaii.gov/dcd/files/2023/05/TDI15-rev-2026.06-1.pdf#page=1
