@@ -1,0 +1,22 @@
+Source-conflict capture: us-wv:heptc-current-year-income
+
+Official source URL:
+https://tax.wv.gov/Individuals/SeniorCitizens/Pages/SeniorCitizensTaxCredit.aspx
+Section: Homestead Excess Property Tax Credit
+Retained HTML SHA256: e682be96ac41c7961356fb062fb0c850497c93c2920fc02693d0783c1b263a16
+Retained text SHA256: 3cf1aa72e433b9728eac56b1d226d6e8bd4d1f5ad06fd7c3f5bd3c94c6d02d6e
+Existing retained original only; no new retrieval in this check.
+
+Exact retained timing sentence (line break as in retained text):
+In order to qualify for the Homestead Excess Property Tax Credit
+(HEPTC-1), your property taxes paid in 2025 must have exceeded 4% of your income in 2024.
+
+Conflicting primary authority:
+https://code.wvlegislature.gov/11-21-23/
+Retained HTML SHA256: 3fc86ae5b2213e59f57d58e33493d8cfe8819d96f17597146841dc6180d723a5
+Section23(a) expressly uses West Virginia real property taxes paid for the tax year and taxpayer gross household income for the tax year. Section23(d)(1) defines gross household income from federal adjusted gross income plus specified additions. Section23(h)(2)-(3) specifies federal adjusted gross income for the tax year and the poverty guideline for the year in which property tax was paid. Statutory text is already corpus-admitted; this capture supplies the overview's contradictory timing text.
+
+Dedicated 2025 form corroboration:
+https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=11
+Original SHA256: 6383bf9748fde18c0469b0eb1b836f4ff6999a2c541bf4e909502a8b3132e0b0
+Physicalpage11, 2025 HEPTC-1, PartsI-II: line1 specifies property tax paid during2025; line4 takes federal adjusted gross income for that2025 return; line4c explicitly takes earnings-replacement income received in2025. No2024 income line or lag is prescribed there.

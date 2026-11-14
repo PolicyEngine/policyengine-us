@@ -15488,3 +15488,33 @@ candidates:
   note: Applies the repository statute-first rule. The dated implementation preserves earlier formulas and
     does not resolve other HEPTC household-income, all-owner or refund-settlement requirements. Relevant official
     source excerpts are captured under source_conflicts/sources/us-wv-heptc-amt.txt.
+- id: us-wv:heptc-current-year-income
+  program: wv_homestead_excess_property_tax_credit
+  years:
+    from: 2025
+    to: 2025
+    type: calendar
+  question: For property taxes paid in 2025, does HEPTC use income for the same 2025 tax year or the overview's previous-year 2024 income?
+  sources:
+  - kind: statute
+    citation: W. Va. Code §11-21-23(a), (d)(1), and (h)(2)-(3)
+    url: https://code.wvlegislature.gov/11-21-23/
+  - kind: guidance
+    citation: West Virginia Tax Division Senior Citizens Tax Credit overview, Homestead Excess Property Tax Credit timing paragraph
+    url: https://tax.wv.gov/Individuals/SeniorCitizens/Pages/SeniorCitizensTaxCredit.aspx
+  - kind: form
+    citation: 2025 HEPTC-1 Parts I-II, IT-140 booklet physical page 11, especially lines 1, 4, and 4c
+    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=11
+  readings:
+    statute: Section 23(a) pairs property taxes paid for the tax year with gross household income for the tax year. Section 23(d)(1) defines that income from federal adjusted gross income plus listed additions; section 23(h)(2)-(3) uses federal adjusted gross income for the tax year and poverty guidelines for the year property tax was paid. Thus the 2025 calculation uses current 2025 income, without a one-year lag. The 2025 form uses 2025 tax payments and current return income.
+    other: The overview expressly says property taxes paid in 2025 must exceed four percent of income in 2024, applying a one-year income lag to its four-percent calculation.
+  example: Holding SCTC at a known zero and all other HEPTC requirements fixed, property taxes paid of $1,000, 2025 gross household income of $15,000, and 2024 income of $20,000 give a $400 preliminary credit under the current-year reading versus $200 under the overview's lagged-income reading. This is a constructed arithmetic comparison, not a measured claim or model-run result.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/heptc/wv_homestead_excess_property_tax_credit.py
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/heptc/wv_homestead_excess_property_tax_credit_eligible.py
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/heptc/wv_gross_household_income.py
+    prs: []
+  state: ruled
+  note: Records the statute-first current-period reading already in the code; this candidate proposes no formula change. Its years are limited to the explicit retained 2025-versus-2024 conflict. The first two code files read current-period income directly; the gross-income variable aggregates its configured income sources for the requested period. The conflicting overview is captured in source_conflicts/sources/us-wv-heptc-current-year-income.txt; pin it through the normal post-merge registration process. Do not add a source-conflict marker in the initial ruling PR. Negative gross income, household composition, income-source lists, and combined-cap interpretations remain outside this registration.
