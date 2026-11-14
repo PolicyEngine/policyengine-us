@@ -11,12 +11,16 @@ This belongs to Rest/core.
 import numpy as np
 import pytest
 from policyengine_core.parameters import ParameterNode
+from policyengine_core.periods import period as make_period
 from policyengine_core.simulations import Simulation
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 
 from policyengine_us.entities import Household, MaritalUnit, Person, TaxUnit
 from policyengine_us.system import system as country_system
 from policyengine_us.tools.period_branch import get_override_branch
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_spouse._ssi_annual_spousal_deeming import (
+    ssi_budget_spousal_deeming_applies,
+)
 
 YEAR = 2026
 MONTH = "2026-01"
@@ -197,3 +201,22 @@ def test_disabled_annual_interface_reaches_monthly_budget(mode, expected):
     np.testing.assert_array_equal(
         simulation.calculate(f"{name}_monthly", MONTH), [expected, 0]
     )
+
+
+def test_abolished_deeming_flag_reaches_annual_screens_as_a_boolean_array():
+    name = "is_ssi_spousal_deeming_applies"
+    parameters = ParameterNode(
+        "", data={"gov": {"abolitions": {name: {"values": {"2026-01-01": True}}}}}
+    )
+    simulation = spouse_income_simulation(make_small_system(parameters), {MONTH: 0})
+    person = simulation.populations["person"]
+
+    flag = ssi_budget_spousal_deeming_applies(
+        person, make_period(str(YEAR)), parameters
+    )
+    # The input adapter returns a scalar zero for an abolished name. Annual
+    # screens negate the flag and pass it to select, which takes boolean
+    # arrays only.
+    assert flag.dtype == bool
+    np.testing.assert_array_equal(flag, [False, False])
+    np.testing.assert_array_equal(np.select([flag, ~flag], [1, 2]), [2, 2])
