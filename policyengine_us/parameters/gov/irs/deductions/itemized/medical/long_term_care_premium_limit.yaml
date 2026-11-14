@@ -25,7 +25,11 @@ brackets:
         2027-01-01: 500
       metadata:
         uprating:
-          parameter: gov.bls.cpi.cpi_u_medical_care
+          parameter: gov.irs.indexing.medical_care_c_cpi_u
+          base:
+            period: 1997
+            value: 200
+            floor: true
           rounding:
             type: nearest
             interval: 10
@@ -53,7 +57,11 @@ brackets:
         2027-01-01: 945
       metadata:
         uprating:
-          parameter: gov.bls.cpi.cpi_u_medical_care
+          parameter: gov.irs.indexing.medical_care_c_cpi_u
+          base:
+            period: 1997
+            value: 375
+            floor: true
           rounding:
             type: nearest
             interval: 10
@@ -79,7 +87,11 @@ brackets:
         2027-01-01: 1_890
       metadata:
         uprating:
-          parameter: gov.bls.cpi.cpi_u_medical_care
+          parameter: gov.irs.indexing.medical_care_c_cpi_u
+          base:
+            period: 1997
+            value: 750
+            floor: true
           rounding:
             type: nearest
             interval: 10
@@ -105,7 +117,11 @@ brackets:
         2027-01-01: 5_030
       metadata:
         uprating:
-          parameter: gov.bls.cpi.cpi_u_medical_care
+          parameter: gov.irs.indexing.medical_care_c_cpi_u
+          base:
+            period: 1997
+            value: 2_000
+            floor: true
           rounding:
             type: nearest
             interval: 10
@@ -131,7 +147,11 @@ brackets:
         2027-01-01: 6_290
       metadata:
         uprating:
-          parameter: gov.bls.cpi.cpi_u_medical_care
+          parameter: gov.irs.indexing.medical_care_c_cpi_u
+          base:
+            period: 1997
+            value: 2_500
+            floor: true
           rounding:
             type: nearest
             interval: 10
@@ -141,12 +161,29 @@ metadata:
   amount_unit: currency-USD
   period: year
   label: Eligible long-term care premium limit
-  # 26 U.S.C. 213(d)(10)(B) indexes these amounts by the medical care
-  # component of the chained CPI-U for August of the preceding year,
-  # rounding each increase to the nearest $10. Neither CBO nor CMS projects
-  # that index, so years after the last published values use CBO's
-  # projection of the CPI-U medical care component, by calendar year, as a
-  # proxy (as long_term_health_insurance_premiums does).
+  # 26 U.S.C. 213(d)(10)(B)(i) increases each 1997 amount in (A), $200,
+  # $375, $750, $2,000 and $2,500, by its medical care cost adjustment and
+  # rounds each increase to the nearest $10. (B)(ii): "the medical care cost
+  # adjustment for any calendar year is the percentage (if any) by which—
+  # (I) the medical care component of the C-CPI-U (as defined in section
+  # 1(f)(6)) for August of the preceding calendar year, exceeds (II) such
+  # component of the CPI (as defined in section 1(f)(4)) for August of
+  # 1996, multiplied by the amount determined under section 1(f)(3)(B)."
+  # That amount, the C-CPI-U for 2016 over the CPI for 2016, is an all-items
+  # ratio of averages over the 12 months ending August 2016. The model
+  # retains the stated annual IRS limits. For unpublished limits, the index
+  # (gov.irs.indexing.medical_care_c_cpi_u) chooses the medical components'
+  # August-2016 ratio as a projection convention. It reproduces all five
+  # 2027 limits in Rev. Proc. 2026-35, section 3.29; that consistency does
+  # not identify the prescribed agency method. The index's 1997 value
+  # covers August 1996. After the last published August (2026), the
+  # index grows the chained component at CBO's projected rate for the
+  # unchained CPI-U medical care component, by calendar year. That annual
+  # growth proxies future chained August growth. From August 2016 to August 2026
+  # the unchained component grew about 0.28 percentage points a year faster
+  # than the chained one (2.39% against 2.10%, cpi_u_medical_care_nsa_august
+  # and c_cpi_u_medical_care_august). If that gap persists, the projected
+  # limits run high by a margin that compounds each year.
   reference:
     - title: 26 U.S. Code § 213(d)(10) - Eligible long-term care premiums
       href: https://www.law.cornell.edu/uscode/text/26/213#d_10

@@ -32,7 +32,6 @@ from hypothesis import strategies as st
 from policyengine_core.parameters.operations.get_parameter import get_parameter
 
 from policyengine_us.parameters.uprating_extensions import (
-    HSA_CONTRIBUTION_LIMIT_STATUTORY_BASES,
     get_average_for_12_months_ending_march,
     get_hsa_cola,
 )
@@ -40,7 +39,8 @@ from policyengine_us.system import system
 
 LIMIT = "gov.irs.gross_income.health_savings_account_contributions.limit"
 END_YEAR = 2100
-BASES = dict(HSA_CONTRIBUTION_LIMIT_STATUTORY_BASES)
+# 26 U.S.C. 223(b)(2) dollar amounts by coverage.
+BASES = {"self_only": 2_250, "family": 4_500}
 
 # (self-only, family) limits from the IRS publication for each year: Notice
 # 2004-2 (2004), then the Rev. Proc. for each year cited in the parameter files

@@ -44,13 +44,12 @@ JOINT:
     unit: currency-USD
     period: year
     # The federal method makes the joint amount twice the single amount
-    # (26 U.S.C. 63(c)(2)(A)). With a 2026 joint amount of twice the single
-    # amount, a $100 round-down equals twice the single amount's $50
-    # round-down.
+    # (26 U.S.C. 63(c)(2)(A)), so each projected year doubles the Arizona
+    # single amount. Rounding to $100 clears float error from the ratio.
     uprating:
-      parameter: gov.irs.uprating
+      parameter: gov.states.az.tax.income.deductions.standard.amount.SINGLE
       rounding:
-        type: downwards
+        type: nearest
         interval: 100
 HEAD_OF_HOUSEHOLD:
   values:
@@ -64,8 +63,17 @@ HEAD_OF_HOUSEHOLD:
   metadata:
     unit: currency-USD
     period: year
+    # A.R.S. 43-1041(H) indexes the $23,625 "in the same manner" as
+    # 26 U.S.C. 63(c)(7)(B)(ii) indexes the federal one: the 2025 amount plus
+    # its cost-of-living increase with calendar year 2024 as the base year,
+    # rounded down to a multiple of $50. The index's 2025 value covers
+    # calendar year 2024.
     uprating:
       parameter: gov.irs.uprating
+      base:
+        period: 2025
+        value: 23_625
+        floor: true
       rounding:
         type: downwards
         interval: 50
@@ -81,8 +89,17 @@ SINGLE:
   metadata:
     unit: currency-USD
     period: year
+    # A.R.S. 43-1041(H) indexes the $15,750 "in the same manner" as
+    # 26 U.S.C. 63(c)(7)(B)(ii) indexes the federal one: the 2025 amount plus
+    # its cost-of-living increase with calendar year 2024 as the base year,
+    # rounded down to a multiple of $50. The index's 2025 value covers
+    # calendar year 2024.
     uprating:
       parameter: gov.irs.uprating
+      base:
+        period: 2025
+        value: 15_750
+        floor: true
       rounding:
         type: downwards
         interval: 50
@@ -98,8 +115,17 @@ SEPARATE:
   metadata:
     unit: currency-USD
     period: year
+    # A.R.S. 43-1041(H) indexes the $15,750 "in the same manner" as
+    # 26 U.S.C. 63(c)(7)(B)(ii) indexes the federal one: the 2025 amount plus
+    # its cost-of-living increase with calendar year 2024 as the base year,
+    # rounded down to a multiple of $50. The index's 2025 value covers
+    # calendar year 2024.
     uprating:
       parameter: gov.irs.uprating
+      base:
+        period: 2025
+        value: 15_750
+        floor: true
       rounding:
         type: downwards
         interval: 50

@@ -8,25 +8,35 @@ import pytest
 import yaml
 
 from policyengine_core.parameters import Parameter, ParameterNode
+from policyengine_core.parameters.operations.uprate_parameters import (
+    uprate_parameters,
+)
 from policyengine_core.variables.variable import QuantityType
 
 from policyengine_us.system import system
 from policyengine_us.tools.default_uprating import NO_DEFAULT_UPRATING_VARIABLES
 from policyengine_us.tools.per_capita_uprating import per_capita_path
 from policyengine_us.parameters.uprating_extensions import (
-    DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES,
-    EDUCATOR_EXPENSE_CAP_STATUTORY_BASE,
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
-    extend_dependent_standard_deduction_parameters,
-    extend_educator_expense_cap,
     get_irs_cola,
     get_irs_cola_denominator,
     round_social_security_amount,
     round_social_security_payroll_cap,
+    set_irs_c_cpi_u_index,
 )
 
 
 PARAMETERS = system.parameters
+PARAMETER_DIR = Path(__file__).parents[4] / "parameters"
+
+# 26 U.S.C. 63(c)(5) limits on a dependent's basic standard deduction:
+# parameter name, statutory dollar amount, and 63(c)(4)(B) base year.
+DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES = (
+    ("amount", 500, 1987),  # 63(c)(5)(A)
+    ("additional_earned_income", 250, 1997),  # 63(c)(5)(B)
+)
+# 26 U.S.C. 62(d)(3): the 62(a)(2)(D) $250 and its 1(f)(3) base year.
+EDUCATOR_EXPENSE_CAP_STATUTORY_BASE = (250, 2014)
 
 
 def test_all_uprating_factors_extend_to_2100():
@@ -1040,7 +1050,10 @@ def test_dependent_standard_deduction_encoded_values_take_precedence():
     statute_differs = []
     for name, base, base_year in DEPENDENT_STANDARD_DEDUCTION_STATUTORY_BASES:
         parameter = getattr(dependent, name)
-        # The 0001 placeholder in additional_earned_income.yaml is not a year.
+        # From TCJA's 2018, when 1(f)(3) moved to the C-CPI-U that
+        # statutory_dependent_standard_deduction_amount reads. The earlier
+        # earned income additions follow the CPI-U; test_base_mode_uprating.py
+        # checks them.
         encoded = {
             year: value
             for year, value in encoded_dependent_standard_deduction_values(name).items()
@@ -1058,53 +1071,82 @@ def test_dependent_standard_deduction_encoded_values_take_precedence():
     assert statute_differs
 
 
-def test_dependent_standard_deduction_extension_starts_after_last_encoded_year():
-    """A non-statutory last encoded value is kept; later years are computed."""
+def _months(start_year, level):
+    """A monthly index at ``level`` from September through the next August."""
+    return {
+        **{f"{start_year}-{month:02d}-01": level for month in range(9, 13)},
+        **{f"{start_year + 1}-{month:02d}-01": level for month in range(1, 9)},
+    }
 
-    def months(start_year, level):
-        return {
-            **{f"{start_year}-{month:02d}-01": level for month in range(9, 13)},
-            **{f"{start_year + 1}-{month:02d}-01": level for month in range(1, 9)},
-        }
 
-    cpi = SimpleNamespace(
-        cpi_u=Parameter(
-            "cpi_u", data={**months(1986, 40), **months(1996, 100), **months(2015, 200)}
-        ),
-        # Monthly observations end in August 2030; 2032 holds a projection.
-        c_cpi_u=Parameter(
-            "c_cpi_u",
-            data={**months(2015, 150), **months(2029, 190), "2032-02-01": 205},
-        ),
-    )
-    # A node, so Parameter.update can reach a parent.
-    dependent = ParameterNode(
-        "dependent",
+def _shipped_metadata(relative_path):
+    """The metadata block of a parameter YAML file in this package."""
+    return yaml.safe_load((PARAMETER_DIR / relative_path).read_text())["metadata"]
+
+
+def _synthetic_irs_c_cpi_u_tree(*, cpi_u, c_cpi_u, first_index_year, irs):
+    """A tree with synthetic CPI series, the 1(f)(3) index and ``irs``."""
+    return ParameterNode(
+        "",
         data={
-            "amount": {"values": {"2018-01-01": 1_050, "2030-01-01": 1_234}},
-            "additional_earned_income": {
-                "values": {"2018-01-01": 350, "2030-01-01": 999}
-            },
+            "gov": {
+                "bls": {
+                    "cpi": {
+                        "cpi_u": {"values": cpi_u},
+                        "c_cpi_u": {"values": c_cpi_u},
+                    }
+                },
+                "irs": {
+                    "indexing": {
+                        "c_cpi_u": {"values": {f"{first_index_year}-01-01": 1}}
+                    },
+                    **irs,
+                },
+            }
         },
     )
-    parameters = SimpleNamespace(
-        gov=SimpleNamespace(
-            bls=SimpleNamespace(cpi=cpi),
-            irs=SimpleNamespace(
-                deductions=SimpleNamespace(
-                    standard=SimpleNamespace(dependent=dependent)
-                )
-            ),
-        )
+
+
+def test_dependent_standard_deduction_base_mode_starts_after_last_encoded_year():
+    """A non-statutory last encoded value is kept; later years come from the
+    statutory base through the shipped base-mode metadata."""
+    dependent_path = "gov/irs/deductions/standard/dependent"
+    parameters = _synthetic_irs_c_cpi_u_tree(
+        cpi_u={**_months(1986, 40), **_months(1996, 100), **_months(2015, 200)},
+        # Monthly observations end in August 2030; 2032 holds a projection.
+        c_cpi_u={**_months(2015, 150), **_months(2029, 190), "2032-02-01": 205},
+        first_index_year=1988,
+        irs={
+            "deductions": {
+                "standard": {
+                    "dependent": {
+                        "amount": {
+                            "values": {"2018-01-01": 1_050, "2030-01-01": 1_234},
+                            "metadata": _shipped_metadata(
+                                f"{dependent_path}/amount.yaml"
+                            ),
+                        },
+                        "additional_earned_income": {
+                            "values": {"2018-01-01": 350, "2030-01-01": 999},
+                            "metadata": _shipped_metadata(
+                                f"{dependent_path}/additional_earned_income.yaml"
+                            ),
+                        },
+                    }
+                }
+            }
+        },
     )
-    extend_dependent_standard_deduction_parameters(parameters, 2033)
+    set_irs_c_cpi_u_index(parameters, 2033)
+    uprate_parameters(parameters)
+    dependent = parameters.gov.irs.deductions.standard.dependent
 
     # Encoded years keep their values, statutory or not.
     assert dependent.amount("2029-01-01") == 1_050
     assert dependent.amount("2030-01-01") == 1_234
     assert dependent.additional_earned_income("2029-01-01") == 350
     assert dependent.additional_earned_income("2030-01-01") == 999
-    # Denominators: 1987 base 40 x 150 / 200 = 30; 1997 base 100 x 150 / 200 = 75.
+    # Index bases: 1987 is 40 x 150 / 200 = 30; 1997 is 100 x 150 / 200 = 75.
     # 2031 reads the observed Sep 2029-Aug 2030 window (190); 2032 has no
     # observed month and no projection point of its own, so it reads 190 too.
     # Floor: $500 x (190 / 30 - 1) = $2,666.67, rounded down to $2,650.
@@ -1207,41 +1249,35 @@ def test_educator_expense_cap_projections_follow_statute():
         assert cap(f"{year}-01-01") == 400, year
 
 
-def test_educator_expense_cap_extension_rounds_the_base_increase_to_nearest_50():
-    """Encoded years are kept; later years round the $250 base's increase."""
-
-    def months(start_year, level):
-        return {
-            **{f"{start_year}-{month:02d}-01": level for month in range(9, 13)},
-            **{f"{start_year + 1}-{month:02d}-01": level for month in range(1, 9)},
-        }
-
-    cpi = SimpleNamespace(
-        cpi_u=Parameter("cpi_u", data={**months(2013, 100), **months(2015, 200)}),
+def test_educator_expense_cap_base_mode_rounds_the_base_increase_to_nearest_50():
+    """Encoded years are kept; later years round the $250 base's increase
+    through the shipped base-mode metadata."""
+    parameters = _synthetic_irs_c_cpi_u_tree(
+        cpi_u={**_months(2013, 100), **_months(2015, 200)},
         # Monthly observations end in August 2030; 2032 holds a projection.
-        c_cpi_u=Parameter(
-            "c_cpi_u",
-            data={**months(2015, 150), **months(2029, 102), "2032-02-01": 126},
-        ),
+        c_cpi_u={**_months(2015, 150), **_months(2029, 102), "2032-02-01": 126},
+        first_index_year=2015,
+        irs={
+            "ald": {
+                "educator_expense": {
+                    "cap": {
+                        "values": {"2002-01-01": 250, "2030-01-01": 999},
+                        "metadata": _shipped_metadata(
+                            "gov/irs/ald/educator_expense/cap.yaml"
+                        ),
+                    }
+                }
+            }
+        },
     )
-    # A node, so Parameter.update can reach a parent.
-    educator_expense = ParameterNode(
-        "educator_expense",
-        data={"cap": {"values": {"2002-01-01": 250, "2030-01-01": 999}}},
-    )
-    parameters = SimpleNamespace(
-        gov=SimpleNamespace(
-            bls=SimpleNamespace(cpi=cpi),
-            irs=SimpleNamespace(ald=SimpleNamespace(educator_expense=educator_expense)),
-        )
-    )
-    extend_educator_expense_cap(parameters, 2033)
+    set_irs_c_cpi_u_index(parameters, 2033)
+    uprate_parameters(parameters)
 
-    cap = educator_expense.cap
+    cap = parameters.gov.irs.ald.educator_expense.cap
     # Encoded years keep their values, statutory or not.
     assert cap("2029-01-01") == 250
     assert cap("2030-01-01") == 999
-    # Denominator: 2014 base 100 x 150 / 200 = 75. 2031 reads the observed
+    # Index base: 2014 is 100 x 150 / 200 = 75. 2031 reads the observed
     # Sep 2029-Aug 2030 window (102); 2032 has no observed month and no
     # projection point of its own, so it reads 102 too.
     # $250 x (102 / 75 - 1) = $90, nearest to $100 (rounding down gives $50).

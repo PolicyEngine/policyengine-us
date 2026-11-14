@@ -1,0 +1,25 @@
+description: The IRS increases dollar amounts that the Internal Revenue Code indexes from a stated base year by the change in this C-CPI-U, which holds for each tax year the index for the calendar year before it under 26 U.S.C. 1(f)(3).
+values:
+  # Computed in parameters/uprating_extensions.py (set_irs_c_cpi_u_index):
+  # from calendar year 2016, the C-CPI-U averaged over the 12 months ending
+  # August 31 (1(f)(6)(B)); before 2016, the CPI-U over the same months
+  # (1(f)(4)) times the 1(f)(3)(B) ratio of the two for 2016. A statute's
+  # base year B is this index's period B + 1.
+  #
+  # The dependent standard deduction amounts and the educator cap project
+  # on this index. The standard deduction and the CTC, which 1(f)(3)
+  # indexes the same way, stay on gov.irs.uprating, the index the tax
+  # brackets and other chained IRS amounts use, whose window ends in July
+  # (#9105; open #9621 moves it). For projected years this index reads
+  # CBO's calendar-year points, about 0.7% high (#9608). On the shipped
+  # series gov.irs.uprating runs 0.6% below this index in 2028 and 1.0%
+  # below in 2029 and 2030, so a 2024 base grows 0.4% to 0.9% less on it:
+  # the single standard deduction is $16,950 in 2028 and $17,550 in 2030,
+  # against $17,000 and $17,700 here.
+  1988-01-01: 1
+metadata:
+  unit: /1
+  label: C-CPI-U for base-year IRS indexing
+  reference:
+    - title: 26 U.S. Code § 1(f)(3)-(7) - Cost-of-living adjustment
+      href: https://www.law.cornell.edu/uscode/text/26/1#f_3

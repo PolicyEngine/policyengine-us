@@ -22,6 +22,20 @@ metadata:
   label: Child tax credit refundable maximum amount
   uprating:
     parameter: gov.irs.uprating
+    # 26 U.S.C. 24(i)(1) and (3): the $1,400 in 24(h)(5), plus its 1(f)(3)
+    # cost-of-living increase with calendar year 2017 as the base year,
+    # rounded down to a multiple of $100. The index's 2018 value covers
+    # calendar year 2017. Base mode adds values only after CBO's, above.
+    # Like the standard deduction, this stays on gov.irs.uprating, whose
+    # window ends in July (#9105; open #9621 moves it), not
+    # gov.irs.indexing.c_cpi_u, which the dependent amounts and educator cap
+    # use. gov.irs.uprating runs 0.6% to 1.0% below that index in 2028-2030
+    # and about 1.0% below through 2037;
+    # gov/irs/deductions/standard/amount.yaml explains the split.
+    base:
+      period: 2018
+      value: 1_400
+      floor: true
     rounding:
       type: downwards
       interval: 100
@@ -48,6 +62,3 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
     - title: 2019 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=12
-    # IRC §24(i)(1) adjusts the $1,400 statutory base using 2017 as reference year.
-    # Current implementation uses incremental uprating from latest value, which
-    # produces correct results but differs from statutory base-year calculation.

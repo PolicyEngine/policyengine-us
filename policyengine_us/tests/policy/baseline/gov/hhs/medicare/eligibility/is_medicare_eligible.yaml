@@ -28,3 +28,240 @@
     months_receiving_social_security_disability: 24
   output:
     is_medicare_eligible: true
+
+# 8 U.S.C. 1611(b)(3) limits Medicare benefits to noncitizens lawfully present.
+- name: is_medicare_eligible unit test 5
+  period: 2026
+  input:
+    age: 70
+    immigration_status: UNDOCUMENTED
+  output:
+    is_medicare_eligible: false
+
+# 42 U.S.C. 1395o(a)(2): a permanent resident of five years may enroll at 65
+# without Part A entitlement, and one of fewer than five years may not.
+- name: is_medicare_eligible unit test 6
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 5
+    medicare_quarters_of_coverage: 0
+  output:
+    is_medicare_eligible: true
+
+- name: is_medicare_eligible unit test 7
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 4
+    medicare_quarters_of_coverage: 0
+  output:
+    is_medicare_eligible: false
+
+# 42 U.S.C. 1395o(a)(1): entitlement to Part A opens Part B to anyone with an allowed
+# status, so the five-year rule doesn't apply. A permanent resident stays allowed from
+# 2027 under 42 U.S.C. 1395mmm(a)(2).
+- name: is_medicare_eligible unit test 8
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 4
+    medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: true
+
+# Temporary protected status is allowed in 2026 only because the model treats everyone
+# as grandfathered under 42 U.S.C. 1395mmm(b)(1) through 2026. Unit test 14 covers 2027.
+- name: is_medicare_eligible unit test 9
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: true
+
+- name: is_medicare_eligible unit test 10
+  period: 2026
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 39
+  output:
+    is_medicare_eligible: false
+
+# A citizen without enough quarters can still buy Part A and enroll in Part B.
+- name: is_medicare_eligible unit test 11
+  period: 2026
+  input:
+    age: 70
+    medicare_quarters_of_coverage: 0
+  output:
+    is_medicare_eligible: true
+
+# The SSDI route also needs an allowed status. Temporary protected status is allowed in
+# 2026 only because the model treats everyone as grandfathered under 42 U.S.C.
+# 1395mmm(b)(1) through 2026. Unit test 16 covers 2027.
+- name: is_medicare_eligible unit test 12
+  period: 2026
+  input:
+    age: 50
+    immigration_status: TPS
+    social_security_disability: 12_000
+    months_receiving_social_security_disability: 24
+  output:
+    is_medicare_eligible: true
+
+- name: is_medicare_eligible unit test 13
+  period: 2026
+  input:
+    age: 50
+    immigration_status: UNDOCUMENTED
+    social_security_disability: 12_000
+    months_receiving_social_security_disability: 24
+  output:
+    is_medicare_eligible: false
+
+# 42 U.S.C. 1395mmm(a) limits Medicare from 2027 to citizens and nationals, permanent
+# residents, Cuban and Haitian entrants, and Compact of Free Association residents.
+# Part A work history doesn't open Medicare to anyone else.
+- name: is_medicare_eligible unit test 14
+  period: 2027
+  input:
+    age: 70
+    immigration_status: TPS
+    medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: false
+
+- name: is_medicare_eligible unit test 15
+  period: 2027
+  input:
+    age: 70
+    immigration_status: REFUGEE
+    medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: false
+
+# 42 U.S.C. 1395mmm(a) applies to the SSDI route as well.
+- name: is_medicare_eligible unit test 16
+  period: 2027
+  input:
+    age: 50
+    immigration_status: TPS
+    social_security_disability: 12_000
+    months_receiving_social_security_disability: 24
+  output:
+    is_medicare_eligible: false
+
+# 42 U.S.C. 1395mmm(a)(3) keeps Cuban and Haitian entrants, and entitlement to Part A
+# opens Part B under 42 U.S.C. 1395o(a)(1).
+- name: is_medicare_eligible unit test 17
+  period: 2027
+  input:
+    age: 70
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+    medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: true
+
+# 42 U.S.C. 1395o(a)(2): without Part A, only a citizen or a permanent resident of five
+# years may enroll at 65, so an allowed status isn't enough on its own.
+- name: is_medicare_eligible unit test 18
+  period: 2027
+  input:
+    age: 70
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+    medicare_quarters_of_coverage: 0
+  output:
+    is_medicare_eligible: false
+
+# 42 U.S.C. 1395mmm(a)(2) keeps permanent residents, and entitlement to Part A opens
+# Part B under 42 U.S.C. 1395o(a)(1) inside the five years.
+- name: is_medicare_eligible unit test 19
+  period: 2027
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: true
+
+# 8 U.S.C. 1611(b)(3): through 2026 every lawfully present status is on the list, so
+# 40 quarters of coverage open Medicare at 65 for each of these seven. Taking any one
+# of them off the pre-2027 list fails this case.
+- name: is_medicare_eligible unit test 20
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: REFUGEE
+        medicare_quarters_of_coverage: 40
+      person2:
+        age: 70
+        immigration_status: ASYLEE
+        medicare_quarters_of_coverage: 40
+      person3:
+        age: 70
+        immigration_status: DEPORTATION_WITHHELD
+        medicare_quarters_of_coverage: 40
+      person4:
+        age: 70
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+        medicare_quarters_of_coverage: 40
+      person5:
+        age: 70
+        immigration_status: CONDITIONAL_ENTRANT
+        medicare_quarters_of_coverage: 40
+      person6:
+        age: 70
+        immigration_status: PAROLED_ONE_YEAR
+        medicare_quarters_of_coverage: 40
+      person7:
+        age: 70
+        immigration_status: DACA
+        medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: [true, true, true, true, true, true, true]
+
+# 42 U.S.C. 1395mmm(a): from 2027 only the Cuban and Haitian entrant among the same
+# seven people keeps Medicare.
+- name: is_medicare_eligible unit test 21
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: REFUGEE
+        medicare_quarters_of_coverage: 40
+      person2:
+        age: 70
+        immigration_status: ASYLEE
+        medicare_quarters_of_coverage: 40
+      person3:
+        age: 70
+        immigration_status: DEPORTATION_WITHHELD
+        medicare_quarters_of_coverage: 40
+      person4:
+        age: 70
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+        medicare_quarters_of_coverage: 40
+      person5:
+        age: 70
+        immigration_status: CONDITIONAL_ENTRANT
+        medicare_quarters_of_coverage: 40
+      person6:
+        age: 70
+        immigration_status: PAROLED_ONE_YEAR
+        medicare_quarters_of_coverage: 40
+      person7:
+        age: 70
+        immigration_status: DACA
+        medicare_quarters_of_coverage: 40
+  output:
+    is_medicare_eligible: [false, false, false, true, false, false, false]

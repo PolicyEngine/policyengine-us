@@ -1,0 +1,25 @@
+description: The IRS increases the long-term care premium limits by the change in this medical care component of the C-CPI-U, which holds for each tax year the August index of the calendar year before it under 26 U.S.C. 213(d)(10)(B)(ii).
+values:
+  # Computed in parameters/uprating_extensions.py
+  # (set_medical_care_c_cpi_u_index): from August 2017, the medical care
+  # component of the C-CPI-U for August; through August 2016, that
+  # component of the CPI-U times the two components' ratio for August 2016.
+  # With that ratio, each 1997 amount plus its increase rounded to the
+  # nearest $10 gives the five 2027 limits in Rev. Proc. 2026-35, section
+  # 3.29; some earlier published limits depart from it by $5 to $30
+  # (tests/core/test_base_mode_uprating.py lists them). After the last
+  # published August, the index grows with CBO's calendar-year CPI-U
+  # medical care component.
+  # For unpublished limits, the model chooses this August-2016 medical
+  # splice as a projection convention. The statutory default conversion
+  # uses all-items indexes averaged over the 12 months ending August 2016.
+  # The 2027 match supports consistency with the IRS table; the available
+  # sources do not identify this splice as the prescribed agency method.
+  # CBO's annual unchained growth proxies future chained August growth.
+  1997-01-01: 1
+metadata:
+  unit: /1
+  label: Medical care C-CPI-U for long-term care premium limit indexing
+  reference:
+    - title: 26 U.S. Code § 213(d)(10)(B) - Indexing
+      href: https://www.law.cornell.edu/uscode/text/26/213#d_10_B

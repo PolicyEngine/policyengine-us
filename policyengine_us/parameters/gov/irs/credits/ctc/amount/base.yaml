@@ -18,6 +18,20 @@ brackets:
       metadata:
         uprating:
           parameter: gov.irs.uprating
+          # 26 U.S.C. 24(i)(2) and (3): the $2,200 in 24(h)(2), plus its 1(f)(3)
+          # cost-of-living increase with calendar year 2024 as the base year,
+          # rounded down to a multiple of $100. The index's 2025 value covers
+          # calendar year 2024. Base mode adds values only after the last
+          # value above. Like the standard deduction, this stays on
+          # gov.irs.uprating, whose window ends in July (#9105; open #9621
+          # moves it), not gov.irs.indexing.c_cpi_u, which the dependent
+          # amounts and educator cap use. gov.irs.uprating runs 0.6% to 1.0%
+          # below that index in 2028-2030 and about 1.0% below through 2037;
+          # gov/irs/deductions/standard/amount.yaml explains the split.
+          base:
+            period: 2025
+            value: 2_200
+            floor: true
           rounding:
             type: downwards
             interval: 100
@@ -30,9 +44,6 @@ brackets:
             href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=8
           - title: 2026 IRS data release
             href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=14
-        # IRC §24(i)(2) adjusts the $2,200 statutory base using 2024 as reference year.
-        # Current implementation uses incremental uprating from latest value, which
-        # produces correct results but differs from statutory base-year calculation.
   - threshold:
       values:
         2013-01-01: 17

@@ -11,9 +11,10 @@ prescribes no rounding.
 
 The model computes the adjustment in
 ``parameters/uprating_extensions.py``
-(``get_nyc_income_tax_elimination_credit_cola``) and projects the thresholds
-from the statutory 2025 amounts
-(``extend_nyc_income_tax_elimination_credit_thresholds``). These tests check:
+(``get_nyc_income_tax_elimination_credit_cola``), fills the index it rests on
+(``set_nyc_income_tax_elimination_credit_cpi``), and core's base-mode
+uprating projects the thresholds from the statutory 2025 amounts. These tests
+check:
 
 (a) the 2026 thresholds on the live parameters against a factor computed here
     by hand from the 24 monthly CPI-U values in ``cpi_u.yaml``;
@@ -22,23 +23,29 @@ from the statutory 2025 amounts
 (c) that every projected year scales the statutory amounts by one plus that
     year's adjustment, with one factor shared by every bracket and filing
     status, rather than chaining from the prior year;
-(d) the Oregon Kids' Credit adjustment, which now shares the same window
+(d) that the thresholds, which count dependents, never move;
+(e) the Oregon Kids' Credit adjustment, which now shares the same window
     helper, at its tax year 2026 value.
 """
 
 from fractions import Fraction
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+import yaml
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
 from policyengine_core.parameters import Parameter, ParameterNode
+from policyengine_core.parameters.operations.uprate_parameters import (
+    uprate_parameters,
+)
 
 from policyengine_us.parameters.uprating_extensions import (
-    extend_nyc_income_tax_elimination_credit_thresholds,
     get_nyc_income_tax_elimination_credit_cola,
     get_or_ctc_cola,
+    set_nyc_income_tax_elimination_credit_cpi,
 )
 from policyengine_us.system import system
 
@@ -78,46 +85,46 @@ STATUTORY_THRESHOLDS = {
     "head_of_household": SINGLE_SEPARATE_OR_HEAD_THRESHOLDS,
 }
 
-# Monthly CPI-U values transcribed by hand from
-# parameters/gov/bls/cpi/cpi_u.yaml, independent of any model helper. If that
-# series is revised, update these lists and FACTOR_2026 together.
+# BLS CUUR0000SA0 monthly values (not seasonally adjusted), retrieved
+# November 5, 2026: https://data.bls.gov/timeseries/CUUR0000SA0.
+# Compute the factor independently of the model's averaging helper.
 # Calendar year 2024 index (§ 1310(h)(3)(A)): September 2023 - August 2024.
 CPI_U_SEPTEMBER_2023_TO_AUGUST_2024 = (
     ("2023-09-01", "307.789"),
     ("2023-10-01", "307.671"),
     ("2023-11-01", "307.051"),
     ("2023-12-01", "306.746"),
-    ("2024-01-01", "309.794"),
-    ("2024-02-01", "311.022"),
-    ("2024-03-01", "312.107"),
-    ("2024-04-01", "313.016"),
-    ("2024-05-01", "313.140"),
-    ("2024-06-01", "313.131"),
-    ("2024-07-01", "313.566"),
-    ("2024-08-01", "314.131"),
+    ("2024-01-01", "308.417"),
+    ("2024-02-01", "310.326"),
+    ("2024-03-01", "312.332"),
+    ("2024-04-01", "313.548"),
+    ("2024-05-01", "314.069"),
+    ("2024-06-01", "314.175"),
+    ("2024-07-01", "314.540"),
+    ("2024-08-01", "314.796"),
 )
 # Calendar year 2025 index: September 2024 - August 2025.
 CPI_U_SEPTEMBER_2024_TO_AUGUST_2025 = (
-    ("2024-09-01", "314.851"),
-    ("2024-10-01", "315.564"),
-    ("2024-11-01", "316.449"),
-    ("2024-12-01", "317.603"),
-    ("2025-01-01", "319.086"),
-    ("2025-02-01", "319.775"),
-    ("2025-03-01", "319.615"),
-    ("2025-04-01", "320.321"),
-    ("2025-05-01", "320.580"),
-    ("2025-06-01", "321.500"),
-    ("2025-07-01", "322.132"),
-    ("2025-08-01", "323.364"),
+    ("2024-09-01", "315.301"),
+    ("2024-10-01", "315.664"),
+    ("2024-11-01", "315.493"),
+    ("2024-12-01", "315.605"),
+    ("2025-01-01", "317.671"),
+    ("2025-02-01", "319.082"),
+    ("2025-03-01", "319.799"),
+    ("2025-04-01", "320.795"),
+    ("2025-05-01", "321.465"),
+    ("2025-06-01", "322.561"),
+    ("2025-07-01", "323.048"),
+    ("2025-08-01", "323.976"),
 )
-# The twelve values sum to 3,729.164 (average 310.7636...) for 2024 and
-# 3,830.840 (average 319.2366...) for 2025. Both averages divide by 12, so the
-# tax year 2026 factor is the ratio of the sums:
-#   3,830.840 / 3,729.164 = 957,710 / 932,291 = 1.0272650921225...
-# a cost-of-living adjustment of about 2.7265%.
-FACTOR_2026 = Fraction(957_710, 932_291)
-FACTOR_2026_DECIMAL = 1.0272650921225
+# The twelve values sum to 3,731.460 (average 310.955) for 2024 and 3,830.460
+# (average 319.205) for 2025. Both averages divide by 12, so the tax year 2026
+# factor is the ratio of the sums:
+#   3,830.460 / 3,731.460 = 63,841 / 62,191 = 1.0265311701050...
+# a cost-of-living adjustment of about 2.6531%.
+FACTOR_2026 = Fraction(63_841, 62_191)
+FACTOR_2026_DECIMAL = 1.0265311701050
 
 
 def _twelve_month_sum(months):
@@ -134,8 +141,8 @@ def test_transcribed_cpi_u_values_match_the_parameter_file():
 def test_hand_computed_2026_factor():
     sum_2024 = _twelve_month_sum(CPI_U_SEPTEMBER_2023_TO_AUGUST_2024)
     sum_2025 = _twelve_month_sum(CPI_U_SEPTEMBER_2024_TO_AUGUST_2025)
-    assert sum_2024 == Fraction("3729.164")
-    assert sum_2025 == Fraction("3830.840")
+    assert sum_2024 == Fraction("3731.460")
+    assert sum_2025 == Fraction("3830.460")
     assert (sum_2025 / 12) / (sum_2024 / 12) == FACTOR_2026
     assert float(FACTOR_2026) == pytest.approx(FACTOR_2026_DECIMAL, abs=1e-13)
     # The model's adjustment agrees with the hand computation.
@@ -165,7 +172,7 @@ def test_2025_thresholds_are_the_statutory_amounts(status):
 @pytest.mark.parametrize("status", sorted(STATUTORY_THRESHOLDS))
 def test_2026_thresholds_apply_the_hand_computed_factor(status):
     # The statute prescribes no rounding, so each threshold is the exact
-    # product: $36,789 becomes $37,792.0555, not a whole-dollar amount.
+    # product: $36,789 becomes $37,765.0552, not a whole-dollar amount.
     for bracket, (dependents, amount) in _brackets(status):
         expected = amount * FACTOR_2026
         assert expected.denominator != 1
@@ -364,8 +371,38 @@ def test_thresholds_hold_their_last_projected_value_after_2100():
             assert bracket.amount("2150-01-01") == bracket.amount("2100-01-01")
 
 
+@pytest.mark.parametrize("year", (2025,) + PROJECTED_YEARS + (2100, 2150))
+def test_bracket_thresholds_count_dependents_in_every_year(year):
+    """Only the income amounts index; the dependent counts never move.
+
+    gov/local propagates metadata to its children, so a scale-level uprating
+    would reach these thresholds too; each amount carries its own instead.
+    """
+    for status in STATUTORY_THRESHOLDS:
+        for bracket, (dependents, _) in _brackets(status):
+            assert bracket.threshold(f"{year}-01-01") == dependents, status
+            assert "uprating" not in bracket.threshold.metadata, status
+
+
 # Projection on a synthetic parameter tree, exercising behaviour the live
 # series cannot reach: deflation and a published value.
+
+
+THRESHOLD_DIR = (
+    Path(__file__).parents[2]
+    / "parameters/gov/local/ny/nyc/tax/income/credits/income_tax_elimination"
+    / "income_threshold"
+)
+
+
+def _shipped_amount_uprating(status):
+    """The uprating each bracket amount carries in ``status``'s YAML file."""
+    brackets = yaml.safe_load((THRESHOLD_DIR / f"{status}.yaml").read_text())[
+        "brackets"
+    ]
+    upratings = [bracket["amount"]["metadata"]["uprating"] for bracket in brackets]
+    assert all(uprating == upratings[0] for uprating in upratings), status
+    return upratings[0]
 
 
 def _synthetic_threshold_parameters(cpi_values, published=None):
@@ -373,17 +410,22 @@ def _synthetic_threshold_parameters(cpi_values, published=None):
 
     ``published`` maps (status, dependents) to {year: value} entries encoded
     after 2025, as a Department of Taxation and Finance publication would be.
+    Each amount carries the uprating its shipped YAML file gives it.
     """
     published = published or {}
     data = {}
     for status, statutory in STATUTORY_THRESHOLDS.items():
+        uprating = _shipped_amount_uprating(status)
         brackets = []
         for dependents, amount in statutory.items():
             amounts = {"2025-01-01": amount}
             for year, value in published.get((status, dependents), {}).items():
                 amounts[f"{year}-01-01"] = value
             brackets.append(
-                {"threshold": {"2025-01-01": dependents}, "amount": amounts}
+                {
+                    "threshold": {"2025-01-01": dependents},
+                    "amount": {"values": amounts, "metadata": {"uprating": uprating}},
+                }
             )
         data[status] = {
             "metadata": {
@@ -393,16 +435,34 @@ def _synthetic_threshold_parameters(cpi_values, published=None):
             },
             "brackets": brackets,
         }
-    thresholds = ParameterNode("income_threshold", data=data)
-    credits = SimpleNamespace(
-        income_tax_elimination=SimpleNamespace(income_threshold=thresholds)
+    parameters = ParameterNode(
+        "",
+        data={
+            "gov": {
+                "bls": {"cpi": {"cpi_u": {"values": cpi_values}}},
+                "local": {
+                    "ny": {
+                        "nyc": {
+                            "tax": {
+                                "income": {
+                                    "credits": {
+                                        "income_tax_elimination": {
+                                            "cpi": {"values": {"2025-01-01": 1}},
+                                            "income_threshold": data,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        },
     )
-    nyc = SimpleNamespace(tax=SimpleNamespace(income=SimpleNamespace(credits=credits)))
-    gov = SimpleNamespace(
-        bls=SimpleNamespace(cpi=SimpleNamespace(cpi_u=Parameter("cpi_u", cpi_values))),
-        local=SimpleNamespace(ny=SimpleNamespace(nyc=nyc)),
-    )
-    return SimpleNamespace(gov=gov), thresholds
+    set_nyc_income_tax_elimination_credit_cpi(parameters, end_year=2030)
+    uprate_parameters(parameters)
+    credit = parameters.gov.local.ny.nyc.tax.income.credits.income_tax_elimination
+    return parameters, credit.income_threshold
 
 
 def _rising_then_falling_series():
@@ -416,16 +476,13 @@ def _rising_then_falling_series():
     return values
 
 
-def test_extension_recomputes_each_year_from_the_statutory_amounts():
+def test_base_mode_recomputes_each_year_from_the_statutory_amounts():
     # Adjustments: 2026 +10%, 2027 +20%, 2028 floored at 0 (index 270 below
     # 300), 2029 +5%, and 2030 +5% (the last projection point persists).
     # Thresholds may fall from one year to the next, since each adjustment
     # measures against 2024 rather than the prior year, but never below the
     # statutory amounts.
-    parameters, thresholds = _synthetic_threshold_parameters(
-        _rising_then_falling_series()
-    )
-    extend_nyc_income_tax_elimination_credit_thresholds(parameters, end_year=2030)
+    _, thresholds = _synthetic_threshold_parameters(_rising_then_falling_series())
     factors = {2025: 1, 2026: 1.1, 2027: 1.2, 2028: 1, 2029: 1.05, 2030: 1.05}
     for status, statutory in STATUTORY_THRESHOLDS.items():
         scale = thresholds.children[status]
@@ -437,15 +494,14 @@ def test_extension_recomputes_each_year_from_the_statutory_amounts():
             assert bracket.amount("2040-01-01") == bracket.amount("2030-01-01")
 
 
-def test_extension_keeps_published_values_and_projects_after_them():
+def test_base_mode_keeps_published_values_and_projects_after_them():
     # A published 2026 value for one bracket takes precedence for 2026; 2027
     # still applies its adjustment to the statutory amount, not to the
     # published value. Other brackets are projected from 2026 as usual.
     published = {("joint", 1): {2026: 40_000}}
-    parameters, thresholds = _synthetic_threshold_parameters(
+    _, thresholds = _synthetic_threshold_parameters(
         _rising_then_falling_series(), published
     )
-    extend_nyc_income_tax_elimination_credit_thresholds(parameters, end_year=2030)
     joint = thresholds.children["joint"].brackets
     assert joint[0].amount("2026-01-01") == 40_000
     assert joint[0].amount("2027-01-01") == pytest.approx(36_789 * 1.2, rel=1e-12)
@@ -456,8 +512,8 @@ def test_extension_keeps_published_values_and_projects_after_them():
 # helper. test_or_ctc_sunset.py pins the 2026 dollar amounts, but those floor
 # to $50 steps and cannot detect a small window change, so pin the adjustment.
 
-# ORS 315.273(5)(c) base: CPI-U for the second quarter of 2022, transcribed by
-# hand from parameters/gov/bls/cpi/cpi_u.yaml (sum 877.716, average 292.572).
+# ORS 315.273(5)(c) base: BLS CUUR0000SA0 for the second quarter of 2022,
+# retrieved November 5, 2026 (sum 877.716, average 292.572).
 CPI_U_2022_Q2 = (
     ("2022-04-01", "289.109"),
     ("2022-05-01", "292.296"),
@@ -471,9 +527,9 @@ def test_or_ctc_2026_cola_uses_the_window_ending_august_2025():
     base = sum(Fraction(value) for _, value in CPI_U_2022_Q2) / 3
     assert base == Fraction("292.572")
     window = _twelve_month_sum(CPI_U_SEPTEMBER_2024_TO_AUGUST_2025) / 12
-    # 319.2366... / 292.572 - 1 = 9.1139%.
+    # 319.205 / 292.572 - 1 = 9.1031%.
     expected = window / base - 1
-    assert float(expected) == pytest.approx(0.0911388194, abs=1e-10)
+    assert float(expected) == pytest.approx(0.0910305839, abs=1e-10)
     assert get_or_ctc_cola(system.parameters, 2026) == pytest.approx(
         float(expected), rel=1e-12
     )
