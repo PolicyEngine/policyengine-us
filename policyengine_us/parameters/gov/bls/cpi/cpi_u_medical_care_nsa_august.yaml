@@ -1,0 +1,42 @@
+description: The Bureau of Labor Statistics publishes this August value of the medical care component of the Consumer Price Index for All Urban Consumers, not seasonally adjusted, which 26 U.S.C. 213(d)(10)(B)(ii) uses to index the long-term care premium limits.
+values:
+  # BLS series CUUR0000SAM (U.S. city average, medical care, 1982-84=100),
+  # from the BLS public data API on November 9, 2026.
+  1996-08-01: 229.2
+  1997-08-01: 235.2
+  1998-08-01: 243.5
+  1999-08-01: 251.9
+  2000-08-01: 262.6
+  2001-08-01: 274.4
+  2002-08-01: 287.3
+  2003-08-01: 298.4
+  2004-08-01: 311.6
+  2005-08-01: 323.9
+  2006-08-01: 337.7
+  2007-08-01: 352.961
+  2008-08-01: 364.477
+  2009-08-01: 376.537
+  2010-08-01: 388.467
+  2011-08-01: 400.874
+  2012-08-01: 417.123
+  2013-08-01: 426.866
+  2014-08-01: 435.777
+  2015-08-01: 446.536
+  2016-08-01: 468.379
+  2017-08-01: 476.869
+  2018-08-01: 484.172
+  2019-08-01: 500.916
+  2020-08-01: 523.295
+  2021-08-01: 525.247
+  2022-08-01: 553.429
+  2023-08-01: 548.082
+  2024-08-01: 564.407
+  2025-08-01: 583.875
+  2026-08-01: 593.003
+metadata:
+  unit: /1
+  label: CPI-U medical care, not seasonally adjusted, August
+  economy: false
+  reference:
+    - title: BLS | CPI-U, U.S. city average, medical care, not seasonally adjusted (CUUR0000SAM)
+      href: https://data.bls.gov/timeseries/CUUR0000SAM

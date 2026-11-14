@@ -1119,6 +1119,7 @@
       person1:
         age: 72
         is_tax_unit_head: true
+        ssi_earned_income: 12_000
         ssi_unearned_income: 12_000
       person2:
         age: 70
@@ -1143,13 +1144,18 @@
     ssi_couple_computation_applies:
       2025-06: [true, true]
       2025-07: [false, false]
-    # January-June: (1,500 - 20) / 2 x 6 = 4,440 each.
-    # July-December: (1,000 - 20) x 6 = 5,880 and (500 - 20) x 6 = 2,880.
-    # Annual totals: 4,440 + 5,880 = 10,320 and 4,440 + 2,880 = 7,320.
-    medicaid_optional_senior_or_disabled_countable_income: [10_320, 7_320]
+    # person1 has 1,000 of earned and 1,000 of unearned income a month;
+    # person2 has 500 of unearned income.
+    # January-June, combined: (1,500 - 20) + (1,000 - 65) / 2 = 1,947.50,
+    # so 973.75 each, x 6 = 5,842.50.
+    # July-December, separate: person1 (1,000 - 20) + (1,000 - 65) / 2 =
+    # 1,447.50, x 6 = 8,685; person2 (500 - 20) x 6 = 2,880.
+    # Annual totals: 5,842.50 + 8,685 = 14,527.50 and
+    # 5,842.50 + 2,880 = 8,722.50.
+    medicaid_optional_senior_or_disabled_countable_income: [14_527.50, 8_722.50]
     medicaid_optional_senior_or_disabled_countable_income_monthly:
-      2025-06: [740, 740]
-      2025-07: [980, 480]
+      2025-06: [973.75, 973.75]
+      2025-07: [1_447.50, 480]
 
 - name: A California couple who are tax dependents do not take the filer's other dependents' premiums.
   period: 2026

@@ -1,0 +1,264 @@
+- name: Case 1, tipped worker deducts qualified tips in 2026.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 50_000
+  output:
+    hi_tip_income_deduction: 10_000
+
+- name: Case 2, no Hawaii tips deduction in 2025.
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 50_000
+  output:
+    # HRS 235-2.3(a) uses the Internal Revenue Code as of December 31, 2024.
+    hi_tip_income_deduction: 0
+
+- name: Case 3, the deduction ends after 2028.
+  period: 2029
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 50_000
+  output:
+    hi_tip_income_deduction: 0
+
+- name: Case 4, the deduction is capped at $25,000.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 102
+    tip_income: 30_000
+    hi_agi: 50_000
+  output:
+    hi_tip_income_deduction: 25_000
+
+- name: Case 5, the phase-out uses Hawaii AGI, not federal AGI.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    adjusted_gross_income: 250_000
+    hi_agi: 200_000
+  output:
+    # (200,000 - 150,000) * 10% = 5,000. 10,000 - 5,000 = 5,000.
+    hi_tip_income_deduction: 5_000
+
+- name: Case 6, joint filers phase out above $300,000.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: JOINT
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 320_000
+  output:
+    # (320,000 - 300,000) * 10% = 2,000. 10,000 - 2,000 = 8,000.
+    hi_tip_income_deduction: 8_000
+
+- name: Case 7, married filing separately gets no deduction.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 50_000
+  output:
+    # Section 224(f) requires married individuals to file a joint return.
+    hi_tip_income_deduction: 0
+
+- name: Case 8, tips outside a listed tipped occupation do not qualify.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 0
+    tip_income: 10_000
+    hi_agi: 50_000
+  output:
+    hi_tip_income_deduction: 0
+
+- name: Case 9, no deduction without a valid social security number.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    tip_income_deduction_ssn_requirement_met: false
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 50_000
+  output:
+    hi_tip_income_deduction: 0
+
+- name: Case 10, fully phased out.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: HEAD_OF_HOUSEHOLD
+    tip_income_deduction_ssn_requirement_met: true
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 260_000
+  output:
+    # (260,000 - 150,000) * 10% = 11,000, more than the 10,000 of tips.
+    hi_tip_income_deduction: 0
+
+- name: Case 11, $500 above the phase-out threshold leaves the deduction unchanged.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 150_500
+  output:
+    hi_tip_income_deduction: 10_000
+
+- name: Case 12, $999 above the phase-out threshold leaves the deduction unchanged.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 150_999
+  output:
+    hi_tip_income_deduction: 10_000
+
+- name: Case 13, the first full $1,000 increment reduces the deduction by $100.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 151_000
+  output:
+    hi_tip_income_deduction: 9_900
+
+- name: Case 14, one dollar beyond a full increment leaves the reduction unchanged.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 151_001
+  output:
+    hi_tip_income_deduction: 9_900
+
+- name: Case 15, the second full $1,000 increment reduces the deduction by $200.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 152_000
+  output:
+    hi_tip_income_deduction: 9_800
+
+- name: Case 16, a dependent's tips do not count toward the filer's deduction.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: false
+        tip_income: 4_000
+        treasury_tipped_occupation_code: 102
+      child:
+        age: 17
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+        tip_income: 6_000
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        hi_agi: 50_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    hi_tip_income_deduction: 4_000
+
+- name: Case 17, only the spouse with a valid SSN contributes qualified tips.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: false
+        tip_income: 15_000
+        treasury_tipped_occupation_code: 102
+      spouse:
+        age: 38
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_dependent: false
+        tip_income: 20_000
+        treasury_tipped_occupation_code: 102
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        hi_agi: 50_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    tip_income_deduction_ssn_requirement_met: true
+    hi_tip_income_deduction: 15_000
+
+- name: Case 18, Hawaii honors the federal in-effect parameter.
+  period: 2026
+  input:
+    gov.irs.deductions.tip_income.in_effect: false
+    state_code: HI
+    filing_status: SINGLE
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 50_000
+  output:
+    tip_income_deduction: 0
+    hi_tip_income_deduction: 0
+
+- name: Case 19, one dollar short of the second increment leaves the reduction at $100.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    treasury_tipped_occupation_code: 102
+    tip_income: 10_000
+    hi_agi: 151_999
+  output:
+    hi_tip_income_deduction: 9_900

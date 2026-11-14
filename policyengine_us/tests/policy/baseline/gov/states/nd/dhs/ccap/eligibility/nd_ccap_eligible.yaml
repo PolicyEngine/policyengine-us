@@ -129,3 +129,63 @@
   output:
     # defined_for = StateCode.ND zeroes eligibility outside North Dakota.
     nd_ccap_eligible: false
+
+# ML 3819 Example 1 with the income and activity tests computed. North Dakota
+# excludes all income of a Workforce Benefit family and, from June 2024 through
+# December 2025, required no activity of its second caretaker.
+- name: North Dakota approves a Workforce Benefit household with an inactive second caretaker in 2025
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 240_000
+        is_tax_unit_head_or_spouse: true
+        nd_ccap_workforce_benefit_eligible_parent: true
+      person2:
+        age: 30  # no activity
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_ccdf_asset_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: true
+    nd_ccap_activity_eligible: true
+    nd_ccap_eligible: true
+
+# North Dakota denies the same household from January 2026 (Release 26.1).
+- name: North Dakota denies a Workforce Benefit household with an inactive second caretaker from 2026
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 240_000
+        is_tax_unit_head_or_spouse: true
+        nd_ccap_workforce_benefit_eligible_parent: true
+      person2:
+        age: 30  # no activity
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_ccdf_asset_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: true
+    nd_ccap_activity_eligible: false
+    nd_ccap_eligible: false

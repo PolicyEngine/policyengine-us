@@ -1,33 +1,142 @@
-- name: Total deduction amount, single
+- name: Case 1, single filer below the reduction threshold keeps the total.
   period: 2022
   input:
     state_code: HI
     filing_status: SINGLE
     hi_agi: 166_779
     hi_total_itemized_deductions: 5_000
-    hi_reduced_itemized_deductions: 1_000
   output:
     hi_itemized_deductions: 5_000
 
-
-- name: Total deduction amount joint
+- name: Case 2, joint filer below the reduction threshold keeps the total.
   period: 2022
   input:
     state_code: HI
     filing_status: JOINT
     hi_agi: 166_779
     hi_total_itemized_deductions: 5_000
-    hi_reduced_itemized_deductions: 4_500
   output:
     hi_itemized_deductions: 5_000
 
-- name: Separate, have reduced deductions
+- name: Case 3, total less the reduction.
   period: 2022
   input:
     state_code: HI
     filing_status: SEPARATE
     hi_agi: 166_880
     hi_total_itemized_deductions: 5_000
-    hi_reduced_itemized_deductions: 4_500
+    hi_itemized_deductions_reduction: 500
   output:
     hi_itemized_deductions: 4_500
+
+- name: Case 4, joint filer above $166,800 is limited in 2026.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 200_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    # Worksheet line 9: (200,000 - 166,800) * 3% = 996, below line 5 (24,000).
+    # 30,000 - 996 = 29,004.
+    hi_itemized_deductions: 29_004
+
+- name: Case 5, head of household above $166,800 is limited in 2026.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: HEAD_OF_HOUSEHOLD
+    hi_agi: 200_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    hi_itemized_deductions: 29_004
+
+- name: Case 6, surviving spouse above $166,800 is limited in 2026.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SURVIVING_SPOUSE
+    hi_agi: 200_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    hi_itemized_deductions: 29_004
+
+- name: Case 7, separate filer above $83,400 is limited in 2026.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    hi_agi: 100_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    # (100,000 - 83,400) * 3% = 498. 30,000 - 498 = 29,502.
+    hi_itemized_deductions: 29_502
+
+- name: Case 8, single filer above $166,800 is limited in 2026.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 200_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    hi_itemized_deductions: 29_004
+
+- name: Case 9, only medical expenses, deduction is not limited.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 300_000
+    hi_medical_expense_deduction: 20_000
+    hi_total_itemized_deductions: 20_000
+  output:
+    # Worksheet line 4: the excluded deductions are not less than the total,
+    # so the deduction is not limited.
+    hi_itemized_deductions: 20_000
+
+- name: Case 10, the 80% ceiling applies to deductions other than medical expenses.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 1_000_000
+    hi_medical_expense_deduction: 45_000
+    hi_total_itemized_deductions: 50_000
+  output:
+    # Line 5: (50,000 - 45,000) * 80% = 4,000.
+    # Line 9: (1,000,000 - 166,800) * 3% = 24,996.
+    # 50,000 - 4,000 = 46,000.
+    hi_itemized_deductions: 46_000
+
+- name: Case 11, joint filer exactly at the threshold keeps the total.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 166_800
+    hi_total_itemized_deductions: 30_000
+  output:
+    hi_itemized_deductions: 30_000
+
+- name: Case 12, the same limit applies in 2025.
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 200_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    hi_itemized_deductions: 29_004
+
+- name: Case 13, high-income joint filer in 2026 loses 80% of limited deductions.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 1_000_000
+    hi_total_itemized_deductions: 30_000
+  output:
+    # The federal 2/37 limit under P.L. 119-21 does not apply in Hawaii.
+    # 30,000 - min(24,000, 24,996) = 6,000.
+    hi_itemized_deductions: 6_000
