@@ -3,16 +3,20 @@ description: The IRS limits 401(k) catch-up contributions to this amount based o
 brackets:
   - threshold:
       values:
-        2018-01-01: 0
+        2004-01-01: 0
     amount:
       values:
-        2018-01-01: 0
+        2004-01-01: 0
   - threshold:
       values:
-        2018-01-01: 50
+        2004-01-01: 50
     amount:
       values:
-        2018-01-01: 6_000
+        2004-01-01: 3_000
+        2005-01-01: 4_000
+        2006-01-01: 5_000
+        2009-01-01: 5_500
+        2015-01-01: 6_000
         2020-01-01: 6_500
         2023-01-01: 7_500
         2024-01-01: 7_500
@@ -26,10 +30,14 @@ brackets:
             interval: 500
   - threshold:
       values:
-        2018-01-01: 60
+        2004-01-01: 60
     amount:
       values:
-        2018-01-01: 6_000
+        2004-01-01: 3_000
+        2005-01-01: 4_000
+        2006-01-01: 5_000
+        2009-01-01: 5_500
+        2015-01-01: 6_000
         2020-01-01: 6_500
         2023-01-01: 7_500
         2024-01-01: 7_500
@@ -45,10 +53,14 @@ brackets:
             interval: 500
   - threshold:
       values:
-        2018-01-01: 64
+        2004-01-01: 64
     amount:
       values:
-        2018-01-01: 6_000
+        2004-01-01: 3_000
+        2005-01-01: 4_000
+        2006-01-01: 5_000
+        2009-01-01: 5_500
+        2015-01-01: 6_000
         2020-01-01: 6_500
         2023-01-01: 7_500
         2024-01-01: 7_500
@@ -75,5 +87,5 @@ metadata:
       href: https://www.irs.gov/newsroom/401k-limit-increases-to-23500-for-2025-ira-limit-remains-7000
     - title: IRS announcement - 401(k) limit increases for 2026
       href: https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500
-    - title: Cost-of-Living Adjustments for Retirement Items
+    - title: "Cost-of-Living Adjustments for Retirement Items #page 1,3-6"
       href: https://www.irs.gov/pub/irs-tege/cola-table.pdf#page=1

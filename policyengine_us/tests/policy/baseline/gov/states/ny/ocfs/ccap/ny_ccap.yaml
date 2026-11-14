@@ -258,3 +258,1286 @@
   output:
     ny_ccap: 1_000
   absolute_error_margin: 0.01
+
+# The child receives min($900 of monthly expenses, $600 market rate) = $600 after the share waiver.
+- name: Safety Net Assistance waives the share and required activity qualifies the child.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+        ny_safety_net_assistance_received:
+          2025-01: true
+        ny_ccap_required_activity:
+          2025-01: true
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+# Monthly income of $3,000 minus the $2,000 poverty guideline, times 1%, gives a $10 share; $600 - $10 = $590.
+- name: A working family without public assistance pays its income-based share.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: false
+    ny_ccap_family_share: 10
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 590
+  absolute_error_margin: 0.01
+
+- name: Veteran assistance waives the share and required activity qualifies the child.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+        ny_veteran_assistance_received:
+          2025-01: true
+        ny_ccap_required_activity:
+          2025-01: true
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+- name: A TANF family qualifies when its caretaker takes part in a required activity.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: true
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+        ny_ccap_required_activity:
+          2025-01: true
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+# Public assistance receipt waives the share but does not itself satisfy the reason for care.
+- name: A TANF family without work or another activity does not qualify.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: true
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+- name: A working TANF family qualifies without the required-activity input.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: true
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+- name: Safety Net Assistance alone does not satisfy the reason for care.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+        ny_safety_net_assistance_received:
+          2025-01: true
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+- name: Veteran assistance alone does not satisfy the reason for care.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+        ny_veteran_assistance_received:
+          2025-01: true
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+- name: A required activity without public assistance does not open the guarantee.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+        ny_ccap_required_activity:
+          2025-01: true
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_family_share_exempt: false
+    ny_ccap_family_share: 10
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+- name: A full-time student qualifies without public assistance.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: false
+    ny_ccap_family_share: 10
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 590
+  absolute_error_margin: 0.01
+
+- name: Preventive child care waives the share for a working family.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+- name: Preventive child care alone does not supply a reason for care.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+# The $8,000 monthly income exceeds 85% of the $5,000 state median income: $4,250.
+- name: Preventive child care alone does not waive the income limit.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+# District approval records the applicable Title XX financial and provider conditions,
+# and the four-year-old passes the 18 NYCRR 415.1(b) age test.
+- name: A district-approved preventive child qualifies through Title XX.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+- name: A district-approved preventive child can continue after turning thirteen during the school year.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 13
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+# 18 NYCRR 415.1(b)(1) and 415.2(d)(4)(ii) close Title XX care at 13, apart from
+# the school-year continuation, which ends before the child turns 14. Income of
+# $96,000 / 12 = $8,000 a month exceeds 85% x $60,000 / 12 = $4,250, so the block
+# grant route fails too. Preventive care still waives the share: $0 share, $0 benefit.
+- name: District approval does not open the Title XX route to a fourteen-year-old without special needs.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 14
+        is_disabled: false
+        is_under_court_supervision: false
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_age_eligible: [false, false]
+    ny_ccap_activity_eligible: false
+    ny_ccap_income_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+# 18 NYCRR 415.1(b)(2) extends the age limit to 18 for a child with special needs,
+# so an approved preventive 15-year-old keeps the Title XX route.
+# min($10,800 / 12 = $900, $600 rate) = $600, less a $0 share = $600.
+- name: District approval opens the Title XX route to a fifteen-year-old with special needs.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 15
+        is_disabled: true
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_age_eligible: [false, true]
+    ny_ccap_activity_eligible: false
+    ny_ccap_income_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+# The Title XX route needs preventive care and district approval for the same child.
+# One child receives preventive care without approval, and the other has approval
+# without preventive care, so neither qualifies. Preventive care still waives the
+# share: $0 share, and no eligible child leaves a $0 benefit.
+- name: Preventive care for one child and Title XX approval for another qualify neither child.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      preventive_child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+      approved_child:
+        age: 6
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, preventive_child, approved_child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 21_600
+    households:
+      household:
+        members: [caretaker, preventive_child, approved_child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_income_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+- name: Title XX approval without preventive child care does not open the preventive route.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_family_share_exempt: false
+    ny_ccap_family_share: 10
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+- name: A child-only unit living with a nonparent relative pays no share.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 65
+        weekly_hours_worked_before_lsr: 40
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+        ny_ccap_child_only_unit:
+          2025: true
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+- name: A parent household pays its income-based share without a child-only unit.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: false
+    ny_ccap_family_share: 10
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 590
+  absolute_error_margin: 0.01
+
+- name: A child-only unit does not itself supply a reason for care.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 65
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+        ny_ccap_child_only_unit:
+          2025: true
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+# The district approves only the preventive child's Title XX care.
+# Both children have a $600 market rate; the $1,800 expense total gives
+# $900 per child, so the eligible child receives $600 and the sibling receives $0.
+- name: A preventive child's Title XX approval does not qualify an ordinary sibling.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      preventive_child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+        ny_ccap_receives_preventive_services:
+          2025: true
+        ny_ccap_title_xx_preventive_services_approved:
+          2025: true
+      sibling:
+        age: 6
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, preventive_child, sibling]
+        is_tanf_enrolled:
+          2025-01: false
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 21_600
+    households:
+      household:
+        members: [caretaker, preventive_child, sibling]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_income_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true, false]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+# This family differs from the working family without assistance only in
+# Safety Net Assistance receipt: the $10 share falls to $0 and $590 rises to $600.
+- name: A working Safety Net Assistance family pays no share.
+  period: 2025-01
+  input:
+    people:
+      caretaker:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        is_full_time_student: false
+        ny_ccap_market_rate:
+          2025-01: 0
+      child:
+        age: 4
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        ny_ccap_market_rate:
+          2025-01: 600
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-01: false
+        ny_safety_net_assistance_received:
+          2025-01: true
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, true]
+    ny_ccap: 600
+  absolute_error_margin: 0.01
+
+# The district's June approval ends before July; the child has no other route.
+# Preventive care keeps the family share at $0, but July eligibility and benefit fall to $0.
+- name: A thirteen-year-old loses the Title XX route after district approval expires.
+  period: 2025-07
+  input:
+    people:
+      caretaker:
+        age:
+          2025: 30
+        weekly_hours_worked_before_lsr:
+          2025: 0
+        is_full_time_student:
+          2025: false
+        ny_ccap_market_rate:
+          2025-07: 0
+      child:
+        age:
+          2025: 13
+        childcare_hours_per_day:
+          2025: 6
+        childcare_days_per_week:
+          2025: 5
+        ny_ccap_market_rate:
+          2025-07: 600
+        ny_ccap_receives_preventive_services:
+          2025-07: true
+        ny_ccap_title_xx_preventive_services_approved:
+          2025-06: true
+          2025-07: false
+    spm_units:
+      spm_unit:
+        members: [caretaker, child]
+        is_tanf_enrolled:
+          2025-07: false
+        meets_ccdf_activity_test:
+          2025: false
+        ny_ccap_countable_income:
+          2025: 96_000
+        spm_unit_fpg:
+          2025: 24_000
+        hhs_smi:
+          2025: 60_000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10_800
+    households:
+      household:
+        members: [caretaker, child]
+        state_code:
+          2025: NY
+  output:
+    ny_ccap_activity_eligible: false
+    ny_ccap_income_eligible: false
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+    ny_ccap_eligible_child: [false, false]
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+# June status does not waive July fees; ($3,000 - $2,000) * 1% = $10, and $600 - $10 = $590.
+- name: A working family pays the ordinary share after preventive child care ends.
+  period: 2025-07
+  input:
+    people:
+      caretaker:
+        age:
+          2025: 30
+        weekly_hours_worked_before_lsr:
+          2025: 40
+        is_full_time_student:
+          2025: false
+        ny_ccap_market_rate:
+          2025-07: 0
+      child:
+        age:
+          2025: 4
+        childcare_hours_per_day:
+          2025: 6
+        childcare_days_per_week:
+          2025: 5
+        ny_ccap_market_rate:
+          2025-07: 600
+        ny_ccap_receives_preventive_services:
+          2025-06: true
+          2025-07: false
+        ny_ccap_title_xx_preventive_services_approved:
+          2025-07: false
+    spm_units:
+      spm_unit:
+        members:
+        - caretaker
+        - child
+        is_tanf_enrolled:
+          2025-07: false
+        meets_ccdf_activity_test:
+          2025: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24000
+        hhs_smi:
+          2025: 60000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10800
+    households:
+      household:
+        members:
+        - caretaker
+        - child
+        state_code:
+          2025: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: false
+    ny_ccap_family_share: 10
+    ny_ccap_eligible_child:
+    - false
+    - true
+    ny_ccap: 590
+  absolute_error_margin: 0.01
+- name: A working family pays the ordinary share after child-only status ends.
+  period: 2025-07
+  input:
+    people:
+      caretaker:
+        age:
+          2025: 30
+        weekly_hours_worked_before_lsr:
+          2025: 40
+        is_full_time_student:
+          2025: false
+        ny_ccap_market_rate:
+          2025-07: 0
+      child:
+        age:
+          2025: 4
+        childcare_hours_per_day:
+          2025: 6
+        childcare_days_per_week:
+          2025: 5
+        ny_ccap_market_rate:
+          2025-07: 600
+    spm_units:
+      spm_unit:
+        members:
+        - caretaker
+        - child
+        is_tanf_enrolled:
+          2025-07: false
+        meets_ccdf_activity_test:
+          2025: false
+        ny_ccap_countable_income:
+          2025: 36_000
+        spm_unit_fpg:
+          2025: 24000
+        hhs_smi:
+          2025: 60000
+        spm_unit_pre_subsidy_childcare_expenses:
+          2025: 10800
+        ny_ccap_child_only_unit:
+          2025-06: true
+          2025-07: false
+    households:
+      household:
+        members:
+        - caretaker
+        - child
+        state_code:
+          2025: NY
+  output:
+    ny_ccap_activity_eligible: true
+    ny_ccap_family_share_exempt: false
+    ny_ccap_family_share: 10
+    ny_ccap_eligible_child:
+    - false
+    - true
+    ny_ccap: 590
+  absolute_error_margin: 0.01

@@ -18,18 +18,7 @@ class nd_ccap(Variable):
         # co-payment (400-28-100-30).
         base_subsidy = spm_unit("nd_ccap_base_subsidy", period)
         person = spm_unit.members
-        # Reported care days or hours establish participation independently
-        # of the missing-hours pricing fallback.
-        weekly_hours = person("childcare_hours_per_week", period.this_year)
-        daily_hours = person("childcare_hours_per_day", period.this_year)
-        monthly_days = person("childcare_attending_days_per_month", period.this_year)
-        weekly_days = person("childcare_days_per_week", period.this_year)
-        in_care = (
-            (weekly_hours > 0)
-            | (daily_hours > 0)
-            | (monthly_days > 0)
-            | (weekly_days > 0)
-        )
+        in_care = person("nd_ccap_child_in_care", period)
         qris_step_bonus = spm_unit.sum(
             person("nd_ccap_qris_step_bonus", period) * in_care
         )

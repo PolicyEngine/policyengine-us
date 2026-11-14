@@ -311,6 +311,15 @@ def make_employer_total_simulation(
             id="DE",
         ),
         pytest.param(
+            "HI",
+            {
+                "hi_employee_temporary_disability_insurance_contribution": 390.2262,
+                "hi_employee_state_payroll_tax": 390.2262,
+                "employee_state_payroll_tax": 390.2262,
+            },
+            id="HI",
+        ),
+        pytest.param(
             "MA",
             {
                 "ma_employee_paid_leave_contribution": 460,

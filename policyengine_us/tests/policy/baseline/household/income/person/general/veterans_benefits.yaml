@@ -1,0 +1,35 @@
+# veterans_benefits follows gov.ssa.uprating, the Social Security
+# cost-of-living index. An input dated in one year and read in a later year is
+# multiplied by the ratio of that index between the two years.
+
+- name: A 2015 veterans benefit read in 2016 is unchanged, since no COLA was payable for 2016.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    veterans_benefits:
+      2015: 10_000
+  output:
+    # gov.ssa.uprating holds the third-quarter CPI-W average of the latest
+    # cost-of-living computation quarter (42 U.S.C. 415(i)(1)(B), (D)). The
+    # 2015Q3
+    # average, 233.278, fell below 2014Q3's 234.242, so 2015Q3 was not one and
+    # 2016 keeps 2014Q3's level (BLS CWUR0000SA0:
+    # https://data.bls.gov/timeseries/CWUR0000SA0).
+    # 10,000 x 234.242 / 234.242. Before 2015-2021 were filled, both years held
+    # 2022's value and this also came to 10,000.
+    veterans_benefits: 10_000
+
+- name: A 2021 veterans benefit read in 2022 grows by the 2022 COLA.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    veterans_benefits:
+      2021: 10_000
+  output:
+    # Third-quarter CPI-W averages (BLS CWUR0000SA0): 2020Q3 (252.636 + 253.597
+    # + 254.004) / 3 = 253.412 and 2021Q3 (267.789 + 268.387 + 269.086) / 3 =
+    # 268.421 (https://data.bls.gov/timeseries/CWUR0000SA0).
+    # 10,000 x 268.421 / 253.412 = 10,592.28, the 5.9% COLA for 2022. Before
+    # 2021 was
+    # filled, 2021 held 2022's value and this came to 10,000.
+    veterans_benefits: 10_592.28

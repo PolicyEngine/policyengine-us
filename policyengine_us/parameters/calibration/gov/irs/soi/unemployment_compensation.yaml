@@ -1,16 +1,36 @@
 description: Total unemployment compensation.
 values:
+  # IRS SOI Publication 1304 Table 1.4, all returns: unemployment compensation.
+  # Amounts are published in thousands of dollars. Each value is for the tax
+  # year of its date.
   2015-01-01: 27_225_383_000
+  2016-01-01: 25_420_264_000
+  2017-01-01: 23_946_035_000
+  2018-01-01: 21_998_211_000
+  2019-01-01: 21_395_491_000
   2020-01-01: 405_283_667_000
-  2021-01-01: 208_000_000_000
+  2021-01-01: 208_872_354_000
+  2022-01-01: 30_247_572_000
 metadata:
   unit: currency-USD
   label: SOI unemployment compensation
-  # CBO's unemployment compensation outlays begin in 2022, a year after the
-  # last SOI total, so growth is applied from 2022.
-  uprating:
-    parameter: calibration.gov.cbo.unemployment_compensation
-    start_instant: 2022-01-01
+  # CBO's unemployment compensation outlays begin in 2022, the year of the
+  # last SOI total, so later years grow with them.
+  uprating: calibration.gov.cbo.unemployment_compensation
   reference:
-    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
-      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2015, unemployment compensation
+      href: https://www.irs.gov/pub/irs-soi/15in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2016, unemployment compensation
+      href: https://www.irs.gov/pub/irs-soi/16in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2017, unemployment compensation
+      href: https://www.irs.gov/pub/irs-soi/17in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2018, unemployment compensation
+      href: https://www.irs.gov/pub/irs-soi/18in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2019, unemployment compensation
+      href: https://www.irs.gov/pub/irs-soi/19in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2020, unemployment compensation
+      href: https://www.irs.gov/pub/irs-soi/20in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2021, unemployment compensation
+      href: https://www.irs.gov/pub/irs-soi/21in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2022, unemployment compensation
+      href: https://www.irs.gov/pub/irs-soi/22in14ar.xls

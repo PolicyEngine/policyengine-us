@@ -1,4 +1,5 @@
 # Tests for nd_ccap_copay (SPMUnit, MONTH, USD).
+# The original worksheet cases below check SMI bands and the TANF waiver.
 # The family monthly co-payment is a flat amount per SMI band from the HHS
 # "Individual Worksheet for Calculating Co-pay": copay = share(income/SMI) x
 # monthly SMI, where the band share = band rate (2% for 30-50%, 4% for 50-60%,
@@ -6,7 +7,7 @@
 # TANF recipients (400-28-90-10/-20). The rate structure was validated against
 # the worksheet for household sizes 1-8 on 2026-06-26.
 #
-# Period is 2025-01: at that period PolicyEngine's hhs_smi equals the real
+# The original worksheet cases use 2025-01, when hhs_smi equals the real
 # published FFY2025 SMI exactly (the uprating projection only applies after the
 # last published value, 2025-10-01), so these cases use real-world SMI rather
 # than the uprated calendar-2026 projection.
@@ -380,3 +381,996 @@
   output:
     # share 0.0474 * 8,616.44 = 408.42
     nd_ccap_copay: 408.42
+
+# The additional waiver cases set annual SMI directly to 120,000.
+# Monthly SMI = 120,000 / 12 = 10,000.
+# At monthly income 4,500, the worksheet applies the 44-46 percent SMI band:
+# ordinary copay = 2 percent * 44 percent * 10,000 = 88.
+# Set eligibility directly in these copay cases to isolate waiver decisions.
+
+# Monthly SMI = 120,000 / 12 = 10,000; income / SMI = 0.45.
+# Copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges the worksheet copay when new inputs retain their defaults
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: false
+    nd_ccap_copay: 88
+
+# The ordinary copay = 0.02 * 0.44 * 10,000 = 88; North Dakota waives it.
+- name: North Dakota waives the copay for a Workforce Benefit family
+  period: 2024-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2024: 30
+        ssi: 0
+        nd_ccap_workforce_benefit_eligible_parent: true
+      child:
+        age:
+          2024: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2024: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2024: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: true
+    nd_ccap_copay: 0
+
+# The ordinary copay = 0.02 * 0.44 * 10,000 = 88; North Dakota waives it.
+- name: North Dakota waives the copay for a family receiving Crossroads
+  period: 2024-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2024: 30
+        ssi: 0
+      child:
+        age:
+          2024: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2024: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+        nd_ccap_crossroads_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2024: ND
+  output:
+    nd_ccap_copay: 0
+
+# The ordinary copay = 0.02 * 0.44 * 10,000 = 88; North Dakota waives it.
+- name: North Dakota waives the copay for a family receiving Diversion
+  period: 2024-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2024: 30
+        ssi: 0
+      child:
+        age:
+          2024: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2024: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+        nd_ccap_tanf_diversion_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2024: ND
+  output:
+    nd_ccap_copay: 0
+
+# The ordinary copay = 0.02 * 0.44 * 10,000 = 88; North Dakota waives it.
+- name: North Dakota waives the copay for a family receiving ARSEN
+  period: 2024-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2024: 30
+        ssi: 0
+      child:
+        age:
+          2024: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2024: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+        nd_ccap_arsen_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2024: ND
+  output:
+    nd_ccap_copay: 0
+
+# The ordinary copay = 0.02 * 0.44 * 10,000 = 88; North Dakota waives it.
+- name: North Dakota retains the TANF copay waiver without an exception
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 0
+
+# The child receives 100 in monthly SSI.
+# The ordinary copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota retains the TANF waiver for a child receiving SSI before October 2026
+  period: 2026-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 0
+
+# The child attends care 40 hours a week and receives 100 in monthly SSI.
+# The ordinary copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges the TANF copay for a child receiving SSI from October 2026
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# The parent receives 100 in monthly SSI; the child receives zero.
+# North Dakota waives the ordinary copay of 88.
+- name: North Dakota retains the TANF copay waiver when only an adult receives SSI
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 100
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 0
+
+# Copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges the TANF copay for a disqualified alien caretaker
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_has_disqualified_alien_caretaker: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# Copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges the TANF copay for an ineligible non-legally responsible caretaker
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_has_ineligible_non_legally_responsible_caretaker: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# Copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges the TANF copay for an ineligible kinship caretaker with non-TANF children
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_has_ineligible_kinship_caretaker: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# A TANF-eligible non-kinship child preserves the waiver of the ordinary copay of 88.
+- name: North Dakota preserves the kinship waiver when a non-kinship child qualifies for TANF
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_has_ineligible_kinship_caretaker: true
+        nd_ccap_has_tanf_eligible_child: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 0
+
+# The TANF-eligible-child exception applies to kinship caretakers.
+# Copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges an alien caretaker despite a TANF-eligible child
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_has_disqualified_alien_caretaker: true
+        nd_ccap_has_tanf_eligible_child: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# Monthly SMI = 120,000 / 12 = 10,000; 3,000 / 10,000 = 0.30.
+# North Dakota waives the copay at the 30 percent boundary.
+- name: North Dakota waives the copay at 30 percent of SMI despite TANF exceptions
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 3000
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_has_disqualified_alien_caretaker: true
+        nd_ccap_has_ineligible_non_legally_responsible_caretaker: true
+        nd_ccap_has_ineligible_kinship_caretaker: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 0
+
+# Crossroads, ARSEN and Workforce families retain independent waivers.
+# North Dakota charges the Diversion family for a disqualified alien caretaker.
+# The Diversion copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota applies TANF exceptions to Diversion and retains independent program waivers
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      crossroads_parent:
+        age:
+          2026: 30
+        ssi: 0
+      crossroads_child:
+        age:
+          2026: 3
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 40
+      diversion_parent:
+        age:
+          2026: 30
+        ssi: 0
+      diversion_child:
+        age:
+          2026: 3
+        ssi: 0
+      arsen_parent:
+        age:
+          2026: 30
+        ssi: 0
+      arsen_child:
+        age:
+          2026: 3
+        ssi: 0
+      workforce_parent:
+        age:
+          2026: 30
+        ssi: 0
+        nd_ccap_workforce_benefit_eligible_parent: true
+      workforce_child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      crossroads:
+        members: [crossroads_parent, crossroads_child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_crossroads_enrolled: true
+      diversion:
+        members: [diversion_parent, diversion_child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+        nd_ccap_tanf_diversion_enrolled: true
+        nd_ccap_has_disqualified_alien_caretaker: true
+      arsen:
+        members: [arsen_parent, arsen_child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_arsen_enrolled: true
+        nd_ccap_has_ineligible_non_legally_responsible_caretaker: true
+      workforce:
+        members: [workforce_parent, workforce_child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_has_ineligible_kinship_caretaker: true
+    tax_units:
+      crossroads:
+        members: [crossroads_parent, crossroads_child]
+      diversion:
+        members: [diversion_parent, diversion_child]
+      arsen:
+        members: [arsen_parent, arsen_child]
+      workforce:
+        members: [workforce_parent, workforce_child]
+    households:
+      crossroads:
+        members: [crossroads_parent, crossroads_child]
+        state_code:
+          2026: ND
+      diversion:
+        members: [diversion_parent, diversion_child]
+        state_code:
+          2026: ND
+      arsen:
+        members: [arsen_parent, arsen_child]
+        state_code:
+          2026: ND
+      workforce:
+        members: [workforce_parent, workforce_child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: [0, 88, 0, 0]
+
+# Each ordinary copay = 0.02 * 0.44 * 10,000 = 88.
+# North Dakota waives only the first and third families; the second has a child receiving SSI.
+- name: North Dakota keeps Workforce and child SSI decisions within each family
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      workforce_parent:
+        age:
+          2026: 30
+        ssi: 0
+        nd_ccap_workforce_benefit_eligible_parent: true
+      workforce_child:
+        age:
+          2026: 3
+        ssi: 0
+      tanf_ssi_parent:
+        age:
+          2026: 30
+        ssi: 0
+      tanf_ssi_child:
+        age:
+          2026: 3
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 40
+      tanf_plain_parent:
+        age:
+          2026: 30
+        ssi: 0
+      tanf_plain_child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      workforce:
+        members: [workforce_parent, workforce_child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+      tanf_ssi:
+        members: [tanf_ssi_parent, tanf_ssi_child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+      tanf_plain:
+        members: [tanf_plain_parent, tanf_plain_child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    tax_units:
+      workforce:
+        members: [workforce_parent, workforce_child]
+      tanf_ssi:
+        members: [tanf_ssi_parent, tanf_ssi_child]
+      tanf_plain:
+        members: [tanf_plain_parent, tanf_plain_child]
+    households:
+      workforce:
+        members: [workforce_parent, workforce_child]
+        state_code:
+          2026: ND
+      tanf_ssi:
+        members: [tanf_ssi_parent, tanf_ssi_child]
+        state_code:
+          2026: ND
+      tanf_plain:
+        members: [tanf_plain_parent, tanf_plain_child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: [true, false, false]
+    nd_ccap_copay: [0, 88, 0]
+
+# The disabled child qualifies under the existing CCAP child age limit and receives 100 in SSI.
+# Copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges the TANF copay for an eligible disabled child aged 18 receiving SSI
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 18
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 40
+        is_disabled:
+          2026: true
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# Before October 2026, a TANF-eligible child does not preserve the kinship waiver.
+# Copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges the kinship caretaker before the October 2026 TANF-child exception
+  period: 2026-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+        nd_ccap_has_ineligible_kinship_caretaker: true
+        nd_ccap_has_tanf_eligible_child: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# The child receives 100 in monthly SSI at age 17 and does not have a disability.
+# Copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges the TANF copay for a child aged 17 receiving SSI
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 17
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 40
+        is_disabled:
+          2026: false
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# The family receives Diversion and no TANF; the child receives 100 in monthly SSI.
+# The ordinary copay = 0.02 * 0.44 * 10,000 = 88.
+# North Dakota retains the Diversion waiver before October 1, 2026.
+- name: North Dakota retains the Diversion waiver for a child receiving SSI before October 2026
+  period: 2026-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+        nd_ccap_tanf_diversion_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 0
+
+# The family receives Diversion and no TANF; the child receives 100 in monthly SSI.
+# The ordinary copay = 0.02 * 0.44 * 10,000 = 88.
+# North Dakota applies the child SSI exception from October 1, 2026.
+- name: North Dakota charges a Diversion family for a child receiving SSI from October 2026
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+        nd_ccap_tanf_diversion_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# Monthly SMI = 120,000 / 12 = 10,000; 4,500 / 10,000 = 0.45, the 44-46% band.
+# Until October 2026, North Dakota charges the co-pay for care that follows
+# from the activity of a TANF caretaker who receives SSI (400-28-90-20).
+# Copay = min(0.02 * 0.44 * 10,000, 0.07 * 4,500) = min(88, 315) = 88.
+- name: North Dakota charges the TANF copay when a caretaker receives SSI before October 2026
+  period: 2026-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 100
+      child:
+        age:
+          2026: 3
+        ssi: 0
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# The Diversion family loses its waiver to the same caretaker-SSI exception.
+# Copay = 0.02 * 0.44 * 10,000 = 88.
+- name: North Dakota charges the Diversion copay when a caretaker receives SSI before October 2026
+  period: 2026-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 100
+      child:
+        age:
+          2026: 3
+        ssi: 0
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: false
+        nd_ccap_eligible: true
+        nd_ccap_tanf_diversion_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 88
+
+# The 10-year-old receives SSI and attends no child care; the 3-year-old attends
+# care and receives no SSI. North Dakota charges the co-pay for "child care for
+# an SSI child" (400-28-45-05), so the TANF waiver covers the 88 worksheet copay.
+- name: North Dakota keeps the TANF waiver when the SSI child attends no child care
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      ssi_child:
+        age:
+          2026: 10
+        ssi: 100
+      child:
+        age:
+          2026: 3
+        ssi: 0
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, ssi_child, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, ssi_child, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 0
+
+# The model applies North Dakota's under-19 incapacity age limit to annual age,
+# so a disabled 19-year-old who receives SSI and attends care does not trigger
+# the child-SSI exception. The TANF waiver covers the 88 worksheet copay.
+- name: North Dakota keeps the TANF waiver for a disabled 19-year-old receiving SSI
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 45
+        ssi: 0
+      disabled_adult_child:
+        age:
+          2026: 19
+        is_disabled:
+          2026: true
+        ssi: 100
+        childcare_hours_per_week:
+          2026: 20
+      child:
+        age:
+          2026: 3
+        ssi: 0
+        childcare_hours_per_week:
+          2026: 40
+    spm_units:
+      family:
+        members: [parent, disabled_adult_child, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 4500
+        is_tanf_enrolled: true
+        nd_ccap_eligible: true
+    households:
+      household:
+        members: [parent, disabled_adult_child, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_copay: 0

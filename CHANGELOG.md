@@ -1,3 +1,39 @@
+## [2.124.0] - 2026-11-14
+
+### Added
+
+- Added North Dakota CCAP Workforce Benefit, program co-payment waivers, and TANF co-payment exceptions.
+
+
+## [2.123.0] - 2026-11-14
+
+### Added
+
+- Add Hawaii's employee temporary disability insurance contribution under HRS 392-43, with the maximum weekly wage base for 2004 through 2026 computed from the state average annual wage that HRS 383-61(b) rounds to $100, and count it in employee payroll tax and household net income.
+
+### Fixed
+
+- Extend the federal 401(k) elective deferral and catch-up limits back to 2004 from the IRS cost-of-living table, which sets the 2015 through 2017 elective deferral limit at $18,000 rather than $18,500.
+
+
+## [2.122.1] - 2026-11-14
+
+### Fixed
+
+- Fill the IRS Statistics of Income uprating series with Publication 1304 Table 1.4 and 1.4A actuals for every year from 2015 to their last value, and the Social Security cost-of-living index with third-quarter CPI-W for 2015 to 2021. Each series held its 2015 value through the gap, so inputs dated in or before it were uprated past it by the wrong factor. Also corrects values keyed to the wrong tax year or misread from the table (partnership and S corporation income, Social Security benefits, farm rental income), restates rounded totals exactly, and replaces the short-term capital gains placeholder with SOI net short-term capital gain, the counterpart of the long-term series.
+
+
+## [2.122.0] - 2026-11-14
+
+### Added
+
+- Added New York child care inputs for Safety Net Assistance, veteran assistance, required activities, child-only units, preventive care and Title XX authorization, and a Title XX route for an authorized preventive child who meets the age test.
+
+### Fixed
+
+- New York child care assistance now requires a public assistance family to work, study, take part in a required activity or meet another reason for care. It also waives the family share for preventive care and child-only units.
+
+
 ## [2.121.7] - 2026-11-14
 
 ### Changed

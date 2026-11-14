@@ -56,9 +56,20 @@ def cached_periods_before_first_modeled_year(simulation):
 def test_first_modeled_year_is_the_backdating_floor():
     # The constant must match how far CountryTaxBenefitSystem backdates: a
     # parameter first dated after the floor is defined from it, not before.
-    limit = SYSTEM.parameters.gov.irs.gross_income.retirement_contributions.limit
-    assert limit.children["401k"](f"{FIRST_MODELED_YEAR}-01-01") > 0
-    assert limit.children["401k"](f"{FIRST_MODELED_YEAR - 1}-12-31") is None
+    # So every parameter starts by the floor, the latest start is the floor
+    # itself, and a parameter starting there has no value the day before.
+    # Scanning the tree keeps the check from naming a parameter that a later
+    # backfill could move.
+    floor = f"{FIRST_MODELED_YEAR}-01-01"
+    leaves = [
+        parameter
+        for parameter in SYSTEM.parameters.get_descendants()
+        if getattr(parameter, "values_list", None)
+    ]
+    starts = [leaf.values_list[-1].instant_str for leaf in leaves]
+    assert max(starts) == floor
+    starts_at_floor = leaves[starts.index(floor)]
+    assert starts_at_floor(f"{FIRST_MODELED_YEAR - 1}-12-31") is None
 
 
 @pytest.mark.parametrize("year", UNMODELED_LAG_YEARS)

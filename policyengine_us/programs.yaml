@@ -875,7 +875,7 @@ programs:
         full_name: New York Child Care Assistance Program
         variable: ny_ccap
         parameter_prefix: gov.states.ny.ocfs.ccap
-        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes, the 18 NYCRR 415.1(b) age extensions for special needs and court supervision, and the statutory family-share exceptions. The model prices excess periods for a sixth or seventh day of care, and for each day of care at or above the daily maximum hours, at the applicable daily or part-day rate under 24-OCFS-LCM-22. Without a county or county FIPS input, the model places a New York household in Albany County, in county group 2. That placement overstates rates for households in the 38 group 3 counties and understates them in New York City and the five group 1 counties. An UNKNOWN county falls to group 3, the lowest-rate group. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because OCFS sets market rates by duration of care; expenses alone yield no benefit. OCFS dropped hourly market rates on June 1, 2022 (22-OCFS-LCM-14); 18 NYCRR 415.9 and 24-OCFS-LCM-22 set weekly, daily and part-day rates only. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), safety net assistance as public assistance for the family-share exception, preventive services as distinct from protective services, public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction), the required-work-activity condition on the 415.2(a)(1) guarantee of care to public-assistance families (public assistance enrollment alone satisfies the reason-for-care test), and the child-only assistance unit exception to the family share
+        notes: PolicyEngine models New York income eligibility, market rates, and the family share. It includes the categorical routes for foster care, protective services and preventive care with district approval under Title XX. It applies public assistance activity conditions and the 18 NYCRR 415.1(b) age extensions for special needs and court supervision. It also applies the statutory family share exceptions for public assistance, preventive care and child-only units. The model prices excess periods for a sixth or seventh day of care, and for each day of care at or above the daily maximum hours, at the applicable daily or part-day rate under 24-OCFS-LCM-22. Without a county or county FIPS input, the model places a New York household in Albany County, in county group 2. That placement overstates rates for households in the 38 group 3 counties and understates them in New York City and the five group 1 counties. An UNKNOWN county falls to group 3, the lowest-rate group. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because OCFS sets market rates by duration of care; expenses alone yield no benefit. OCFS dropped hourly market rates on June 1, 2022 (22-OCFS-LCM-14); 18 NYCRR 415.9 and 24-OCFS-LCM-22 set weekly, daily and part-day rates only. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), and public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction)
       - state: OR
         status: complete
         name: Oregon ERDC
@@ -965,7 +965,7 @@ programs:
         full_name: North Dakota Child Care Assistance Program
         variable: nd_ccap
         parameter_prefix: gov.states.nd.dhs.ccap
-        notes: Models the initial (75% of SMI) and continuing (85% of SMI) income limits, the SMI-band co-payment schedule with the 30%-of-SMI and TANF waivers, and the federal family-share ceiling. Not modeled - the CCAP Workforce Benefit income-limit and co-payment waiver for early-childhood workforce families, and the Diversion and Crossroads co-payment waivers
+        notes: Models the initial (75% of SMI) and continuing (85% of SMI) income limits, the SMI-band co-payment schedule with the 30%-of-SMI and TANF waivers, and the federal family-share ceiling. Also models the Workforce Benefit income-limit and co-payment waiver, Crossroads, Diversion and ARSEN co-payment waivers, and TANF and Diversion co-payment exceptions. From October 2026, when a child who receives SSI in a TANF or Diversion family attends care, the model charges one family co-payment that also covers that child's siblings in care. Not modeled - the income-requirement exemption for TANF and Diversion families, the co-payment waiver they keep after TANF or Diversion closes, Workforce Benefit eligibility for households outside North Dakota, and provider registration fees
       - state: NM
         status: complete
         name: New Mexico CCAP
@@ -2210,6 +2210,18 @@ programs:
     coverage: CA
     variable: ca_fera
     parameter_prefix: gov.states.ca.cpuc.fera
+
+  - id: hi_tdi
+    name: Hawaii Temporary Disability Insurance
+    full_name: Hawaii Temporary Disability Insurance employee contribution
+    category: Taxes
+    agency: Hawaii Department of Labor and Industrial Relations
+    status: partial
+    coverage: HI
+    variable: hi_employee_temporary_disability_insurance_contribution
+    parameter_prefix: gov.states.hi.tax.payroll.temporary_disability_insurance
+    verified_start_year: 2004
+    notes: Models the employee contribution as the HRS 392-43(a) limit times the employer's deduction share, which defaults to 1; benefits and employer costs are out of scope.
 
   - id: il_fpp
     name: Illinois Family Planning Program
