@@ -1,1 +1,0 @@
-Extend the federal 401(k) elective deferral and catch-up limits back to 2004 from the IRS cost-of-living table, which sets the 2015 through 2017 elective deferral limit at $18,000 rather than $18,500.

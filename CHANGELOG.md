@@ -1,3 +1,14 @@
+## [2.123.0] - 2026-11-14
+
+### Added
+
+- Add Hawaii's employee temporary disability insurance contribution under HRS 392-43, with the maximum weekly wage base for 2004 through 2026 computed from the state average annual wage that HRS 383-61(b) rounds to $100, and count it in employee payroll tax and household net income.
+
+### Fixed
+
+- Extend the federal 401(k) elective deferral and catch-up limits back to 2004 from the IRS cost-of-living table, which sets the 2015 through 2017 elective deferral limit at $18,000 rather than $18,500.
+
+
 ## [2.122.1] - 2026-11-14
 
 ### Fixed
