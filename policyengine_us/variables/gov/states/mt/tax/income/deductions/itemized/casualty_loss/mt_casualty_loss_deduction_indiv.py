@@ -38,11 +38,12 @@ class mt_casualty_loss_deduction_indiv(Variable):
         # for their own loss, using their own Montana adjusted gross income in
         # place of federal adjusted gross income. A deduction attributable to
         # only one spouse must be claimed by that spouse.
-        # From 2021 to 2023, Montana taxpayers may deduct only federally declared
-        # disaster losses (line 15). The model cannot distinguish them, so it
-        # retains the federal activation flag. No personal casualty loss is
-        # deductible while gov.irs.deductions.itemized.casualty.active is false
-        # (from 2018).
+        # From 2018 to 2023, Montana taxpayers may deduct only federally declared
+        # disaster losses (Form 2 instructions, line 15: PDF page 29 for 2018,
+        # 34 for 2019, 31 for 2020, 34 for 2021, 35 for 2022 and 39 for 2023).
+        # The model cannot distinguish them, so it retains the federal activation
+        # flag. No personal casualty loss is deductible while
+        # gov.irs.deductions.itemized.casualty.active is false (from 2018).
         p_casualty = parameters(period).gov.irs.deductions.itemized.casualty
         # Only the owner of the property claims the loss. A dependent's loss
         # belongs on the dependent's own return, as the dependent's income does:

@@ -132,7 +132,7 @@
   output:
     mt_casualty_loss_deduction_indiv: [0, 0]
 
-- name: In 2023, Only the spouse who had the loss deducts it, above 10% of their own Montana AGI
+- name: In 2023, only the spouse who had the loss deducts it, above 10% of their own Montana AGI
   period: 2023
   input:
     gov.irs.deductions.itemized.casualty.active: true

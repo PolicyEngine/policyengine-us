@@ -198,7 +198,7 @@
   output:
     mt_casualty_loss_deduction_joint: 0
 
-- name: In 2023, A joint return deducts the couple's loss once, above 10% of Montana AGI
+- name: In 2023, a joint return deducts the couple's loss once, above 10% of Montana AGI
   period: 2023
   input:
     gov.irs.deductions.itemized.casualty.active: true
