@@ -1,4 +1,4 @@
-description: Ohio applies this cumulative cost-of-living adjustment multiplier to Ohio Works First payment standards.
+description: Ohio applies this multiplier to the payment standard amounts under the Ohio Works First program.
 
 values:
   2017-01-01: 1
@@ -10,13 +10,19 @@ values:
   2023-01-01: 1.2423
   2024-01-01: 1.2821
   2025-01-01: 1.3141
+  2026-01-01: 1
+
+# Earlier schedules apply cumulative COLAs to 2017 base amounts.
+# The 2026 published amounts already include the COLA, so use a multiplier of 1.
 
 metadata:
   unit: /1
   period: year
-  label: Ohio Works First COLA multiplier
+  label: Ohio Works First payment standard multiplier
   reference:
     - title: Social Security Administration COLA History
       href: https://www.ssa.gov/oact/cola/colaseries.html
     - title: Ohio Revised Code § 5107.04
       href: https://codes.ohio.gov/ohio-revised-code/section-5107.04
+    - title: ODJFS Action Change Transmittal Letter No. 297 - January 1, 2026 COLA Increase
+      href: https://dam.assets.ohio.gov/image/upload/v1764089750/jfs.ohio.gov/EBS/Programs%20Rules%20and%20Resources/Cash/Cash%20Assistance%20Action%20Change%20letter/2025/ACT_297_-_January_1_2026_Ohio_Works_First_and_Refugee_Cash_Assistance_Cost-of-Living_Increase.pdf#page=1

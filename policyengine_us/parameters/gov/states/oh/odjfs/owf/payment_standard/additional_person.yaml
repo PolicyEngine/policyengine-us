@@ -1,14 +1,18 @@
-description: Ohio adds this base amount to the payment standard for each additional person under the Ohio Works First program.
+description: Ohio adds this amount before applying the payment standard multiplier for each additional person under the Ohio Works First program.
 
 values:
   2017-01-01: 118
-# Base 2017 values; actual payment standard = base × cola_multiplier
+  2026-01-01: 159
+# Earlier schedules use the 2017 base and cumulative COLA multiplier.
+# The 2026 published amount is nominal, with the multiplier set to 1.
 metadata:
   unit: currency-USD
   period: month
-  label: Ohio Works First additional person base amount
+  label: Ohio Works First additional person amount
   reference:
     - title: Ohio Administrative Code § 5101:1-23-40(A)(1)
       href: https://codes.ohio.gov/ohio-administrative-code/rule-5101:1-23-40
     - title: ODJFS Action Change Transmittal Letter No. 262 - January 1, 2017 COLA Increase
       href: https://web.archive.org/web/20210515105829/https://emanuals.jfs.ohio.gov/CashFoodAssist/CAM/ACT/ACT-262.stm
+    - title: ODJFS Action Change Transmittal Letter No. 297 - January 1, 2026 COLA Increase
+      href: https://dam.assets.ohio.gov/image/upload/v1764089750/jfs.ohio.gov/EBS/Programs%20Rules%20and%20Resources/Cash/Cash%20Assistance%20Action%20Change%20letter/2025/ACT_297_-_January_1_2026_Ohio_Works_First_and_Refugee_Cash_Assistance_Cost-of-Living_Increase.pdf#page=1
