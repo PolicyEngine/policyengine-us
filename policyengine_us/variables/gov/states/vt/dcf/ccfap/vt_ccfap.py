@@ -11,6 +11,7 @@ class vt_ccfap(Variable):
     reference = (
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=13",
         "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=17",
+        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/Act76/Memo-Act-76-CCFAP-Rule-Revision.pdf#page=11",
         "https://legislature.vermont.gov/statutes/section/33/035/03512",
     )
 
@@ -23,9 +24,12 @@ class vt_ccfap(Variable):
         # 2023 falls under the earlier rule.
         # Source: CCFAP Understanding Payments (Q3 and "Jane Smith" example)
         # https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Understanding-Payments.pdf
-        # CCFAP Regulations V pays from the first day of eligibility and actual
-        # attendance, so a child who attends no provider draws nothing. Care hours
-        # or a bill stand in for attendance.
+        # Under CCFAP Regulations V, as the department revised it on June 28,
+        # 2024, payment runs from the first week of submitted attendance. With
+        # no attendance record, care hours or a share of the SPM unit's bill
+        # count as attendance. pre_subsidy_childcare_expenses splits the bill
+        # evenly across the unit's children, so once the unit has a bill a child
+        # with no care hours also counts.
         p = parameters(period).gov.states.vt.dcf.ccfap.rates
         person = spm_unit.members
         eligible_child = person("vt_ccfap_eligible_child", period)
