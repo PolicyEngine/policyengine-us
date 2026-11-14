@@ -8,10 +8,12 @@ class nj_dependents_attending_college_exemption(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/new-jersey/title-54a/section-54a-3-1-1/",
+        # N.J.S.A. 54A:3-1.1 in the Legislature's statutes database.
+        "https://lis.njleg.state.nj.us/nxt/gateway.dll?f=templates&fn=default.htm&vid=Publish:10.1048/Enu",
         # 2025 NJ-1040 instructions, line 12.
         "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=9",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        # IRC 152(b)(1).
+        "https://uscode.house.gov/us/usc/t26/s152/",
     )
     defined_for = StateCode.NJ
 

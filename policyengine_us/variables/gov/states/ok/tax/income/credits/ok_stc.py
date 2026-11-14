@@ -12,6 +12,9 @@ class ok_stc(Variable):
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/538-S.pdf",
         # 68 O.S. 5011, as codified.
         "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=93282",
+        # 68 O.S. 5011 in the Legislature's compiled Title 68.
+        # PDF pages 1633-1634
+        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=1633",
         "https://www.law.cornell.edu/regulations/oklahoma/OAC-710-50-15-96",
     )
     defined_for = StateCode.OK
