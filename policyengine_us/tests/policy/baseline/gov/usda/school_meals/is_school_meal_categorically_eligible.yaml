@@ -1,0 +1,707 @@
+# 42 USC 1758(b)(12)(A)(iii); 7 CFR 245.6(b)(7)-(8):
+# Head Start enrollment qualifies that child; SNAP qualifies every child.
+# https://www.ecfr.gov/current/title-7/section-245.6#p-245.6(b)(8)
+# The income ratio stays fixed to isolate categorical eligibility.
+# At 300% FPG, a sibling pays; at 100% FPG, a sibling qualifies by income.
+# Calendar 2026 contiguous rates, USDA SY 2025-26:
+# https://www.govinfo.gov/content/pkg/FR-2025-07-24/pdf/2025-13879.pdf
+# Free value per K12 child = (2.46 + 4.60 - 0.40 - 0.44) * 180 = 1,119.60.
+# A four-year-old defaults outside K12, so contributes no school-meal value.
+# A five-year-old defaults in K12. Each child counts once in the unit total.
+# Mixed free/reduced annual value = 1,119.60 + 993.60 = 2,113.20.
+# PolicyEngine's Head Start eligibility counts SSI receipt, but
+# 42 USC 1758(b)(12)(A)(iii) qualifies a child only through enrollment.
+- name: Head Start enrollment qualifies a preschooler without changing an older sibling.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 4
+        is_enrolled_in_head_start: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_net_subsidy: 0.0
+    free_school_meals: 0.0
+    reduced_price_school_meals: 0
+- name: Head Start enrollment qualifies only the enrolled school child at high income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 5
+        is_enrolled_in_head_start: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_net_subsidy: 1119.6
+    free_school_meals: 1119.6
+    reduced_price_school_meals: 0
+- name: A sibling still gets free meals through the income test.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 5
+        is_enrolled_in_head_start: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 1
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - FREE
+    - FREE
+    - FREE
+    school_meal_child_lunch_tier:
+    - FREE
+    - FREE
+    - FREE
+    school_meal_net_subsidy: 2239.2
+    free_school_meals: 2239.2
+    reduced_price_school_meals: 0
+- name: SNAP qualifies every child even when only one enrolls in Head Start.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 5
+        is_enrolled_in_head_start: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 1
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - true
+    - true
+    - true
+    school_meal_child_breakfast_tier:
+    - FREE
+    - FREE
+    - FREE
+    school_meal_child_lunch_tier:
+    - FREE
+    - FREE
+    - FREE
+    school_meal_net_subsidy: 2239.2
+    free_school_meals: 2239.2
+    reduced_price_school_meals: 0
+- name: SNAP qualifies every child without Head Start enrollment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 10
+        is_enrolled_in_head_start: false
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 1
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - true
+    - true
+    - true
+    school_meal_child_breakfast_tier:
+    - FREE
+    - FREE
+    - FREE
+    school_meal_child_lunch_tier:
+    - FREE
+    - FREE
+    - FREE
+    school_meal_net_subsidy: 2239.2
+    free_school_meals: 2239.2
+    reduced_price_school_meals: 0
+- name: An enrolled child gets free meals while a sibling pays the reduced price.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 5
+        is_enrolled_in_head_start: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 1.6
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - REDUCED
+    - FREE
+    - REDUCED
+    school_meal_child_lunch_tier:
+    - REDUCED
+    - FREE
+    - REDUCED
+    school_meal_net_subsidy: 2113.2
+    free_school_meals: 1119.6
+    reduced_price_school_meals: 993.6
+    school_meal_daily_subsidy: 6.71
+- name: is_in_foster_care qualifies only the child with that status.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 10
+        is_in_foster_care:
+          2026-12: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_net_subsidy: 1119.6
+    free_school_meals: 1119.6
+    reduced_price_school_meals: 0
+- name: is_homeless_child qualifies only the child with that status.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 10
+        is_homeless_child: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_net_subsidy: 1119.6
+    free_school_meals: 1119.6
+    reduced_price_school_meals: 0
+- name: is_runaway_child qualifies only the child with that status.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 10
+        is_runaway_child: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_net_subsidy: 1119.6
+    free_school_meals: 1119.6
+    reduced_price_school_meals: 0
+- name: is_migratory_child qualifies only the child with that status.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 10
+        is_migratory_child: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_net_subsidy: 1119.6
+    free_school_meals: 1119.6
+    reduced_price_school_meals: 0
+- name: Modeled Head Start eligibility through SSI does not qualify an unenrolled child.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 60000
+        receives_ssi:
+          2026-01: true
+        ssi: 0
+      participant:
+        age: 4
+        ssi: 0
+      sibling:
+        age: 10
+        ssi: 0
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_head_start_eligible:
+    - false
+    - true
+    - false
+    is_school_meal_categorically_eligible:
+    - false
+    - false
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - PAID
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - PAID
+    - PAID
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+
+# 42 USC 1758(b)(12)(A)(vii) covers qualifying foster placement.
+# Prior placement alone supplies no current foster category.
+- name: Historical foster care alone does not qualify a child or sibling.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      participant:
+        age: 10
+        was_in_foster_care: true
+      sibling:
+        age: 10
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_school_meal_categorically_eligible:
+    - false
+    - false
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - PAID
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - PAID
+    - PAID
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+
+# 42 USC 11434a(2)(A) defines a homeless child as one who lacks a fixed,
+# regular and adequate nighttime residence, so every child in a household
+# that lacks one qualifies at any income (1758(b)(12)(A)(iv)).
+# At 300% FPG both children would otherwise pay.
+# Daily subsidy per child = 2.46 + 4.60 = 7.06.
+# Free value = 2 children * (2.46 + 4.60 - 0.40 - 0.44) * 180
+#            = 2 * 6.22 * 180 = 2,239.20.
+- name: A homeless household gives every child free meals above the income limits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      first_child:
+        age: 10
+      second_child:
+        age: 12
+    spm_units:
+      unit:
+        members:
+        - parent
+        - first_child
+        - second_child
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - first_child
+        - second_child
+        state_code: AL
+        is_homeless: true
+  output:
+    meets_school_meal_categorical_eligibility: true
+    school_meal_tier: FREE
+    is_school_meal_categorically_eligible:
+    - true
+    - true
+    - true
+    school_meal_child_breakfast_tier:
+    - FREE
+    - FREE
+    - FREE
+    school_meal_child_lunch_tier:
+    - FREE
+    - FREE
+    - FREE
+    school_meal_daily_subsidy: 7.06
+    free_school_meals: 2239.2
+    reduced_price_school_meals: 0
+
+# 42 USC 9840(a)(1)(B)(iii)(I) lets a program enroll children above the
+# income limit, and 1758(b)(12)(A)(iii) covers every child enrolled under
+# 9840(a)(1)(B). Alabama, three people, 2026: FPG = 15,960 + 2 * 5,680
+# = 27,320. Wages of 100,000 exceed it, so the five-year-old fails the
+# Head Start income test, and no family member receives public assistance.
+# The fixed 300% FPG ratio leaves the sibling paying.
+# Free value = (2.46 + 4.60 - 0.40 - 0.44) * 180 = 1,119.60.
+- name: Head Start enrollment qualifies a child above the Head Start income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 100_000
+        ssi: 0
+      participant:
+        age: 5
+        is_enrolled_in_head_start: true
+        ssi: 0
+      sibling:
+        age: 10
+        ssi: 0
+    spm_units:
+      unit:
+        members:
+        - parent
+        - participant
+        - sibling
+        snap: 0
+        tanf: 0
+        fdpir: 0
+        school_meal_fpg_ratio: 3
+    households:
+      home:
+        members:
+        - parent
+        - participant
+        - sibling
+        state_code: AL
+  output:
+    is_head_start_eligible:
+    - false
+    - false
+    - false
+    school_meal_tier: PAID
+    is_school_meal_categorically_eligible:
+    - false
+    - true
+    - false
+    school_meal_child_breakfast_tier:
+    - PAID
+    - FREE
+    - PAID
+    school_meal_child_lunch_tier:
+    - PAID
+    - FREE
+    - PAID
+    free_school_meals: 1119.6
+    reduced_price_school_meals: 0
+
+# Pub. L. 111-296, section 102(b), added 42 USC 1758(b)(12)(A)(vii) for
+# foster children, and section 445 makes it effective October 1, 2010.
+# Calendar 2010 reads the list in force on January 1, 2010.
+- name: Foster care does not qualify a child before the foster clause took effect.
+  period: 2010
+  input:
+    age: 10
+    is_in_foster_care:
+      2010-12: true
+    snap: 0
+    tanf: 0
+    fdpir: 0
+  output:
+    is_school_meal_categorically_eligible: false
+
+- name: Foster care qualifies a child once the foster clause took effect.
+  period: 2011
+  input:
+    age: 10
+    is_in_foster_care:
+      2011-12: true
+    snap: 0
+    tanf: 0
+    fdpir: 0
+  output:
+    is_school_meal_categorically_eligible: true
