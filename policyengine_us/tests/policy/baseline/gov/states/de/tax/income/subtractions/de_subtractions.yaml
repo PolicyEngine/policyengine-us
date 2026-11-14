@@ -58,7 +58,9 @@
 - name: A dependent's 529 contribution is not subtracted
   # 30 Del. C. 1106(b)(11): amounts "contributed by an individual", or by the
   # spouses on a joint return. A contributor's subtraction is on their own
-  # return.
+  # return. de_529_plan_subtraction already leaves out a dependent's
+  # contribution, so this case passes with or without the de_subtractions
+  # mask.
   period: 2025
   input:
     people:
