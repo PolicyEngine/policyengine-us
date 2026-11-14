@@ -49,7 +49,7 @@ def ssi_state_supplement(
     payment = max_(standard - excess, 0)
 
     deeming = person("is_ssi_spousal_deeming_applies", period.this_year)
-    deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
+    deemed = person("ssi_income_deemed_from_ineligible_spouse_monthly", period)
     own_income = max_(countable - deemed, 0)
     ssi = parameters(period).gov.ssa.ssi
     federal_la = person("ssi_federal_living_arrangement", period)

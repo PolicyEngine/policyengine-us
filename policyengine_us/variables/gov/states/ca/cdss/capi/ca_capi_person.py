@@ -53,7 +53,9 @@ class ca_capi_person(Variable):
             separated, own_alone, person("ssi_countable_income", period)
         )
         payment_standard = person("ca_capi_payment_standard", period)
-        deemed_income = person("ssi_income_deemed_from_ineligible_spouse", period)
+        deemed_income = person(
+            "ssi_income_deemed_from_ineligible_spouse_monthly", period
+        )
         own_income = max_(countable_income - deemed_income, 0)
         # Deeming needs an ineligible spouse living in the same household
         # (20 CFR 416.1160(a)(1)), so a Title XIX facility resident counts

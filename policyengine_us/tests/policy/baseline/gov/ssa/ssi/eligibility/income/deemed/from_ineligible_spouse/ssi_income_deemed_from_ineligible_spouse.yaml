@@ -305,3 +305,39 @@
     # Couple: (24,204 / 12 - 20 - 65) x 0.5 x 12 = (2,017 - 85) x 6 = 11,592.
     # Alone: 0. Deemed: 11,592 - 0 = 11,592.
     ssi_income_deemed_from_ineligible_spouse: [0, 0, 11_592, 0]
+
+# SSA includes claimant ISM in the couple's unearned income and applies
+# one general exclusion (POMS SI 01320.150 B.1.a and SI 01320.400 B.1.e).
+# https://secure.ssa.gov/poms.nsf/lnx/0501320150
+# https://secure.ssa.gov/poms.nsf/lnx/0501320400
+- name: Outside shelter support uses the general exclusion once with spouse wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        ssi_receives_outside_shelter_support: true
+      spouse:
+        age: 60
+        employment_income: 2_000 * 12
+    tax_units:
+      couple:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+        state_code: FL
+  output:
+    # 2026 rates: individual $994, couple $1,491; PMV = $1,491 / 6 + $10.
+    # Couple: ($258.50 - $20) + ($2,000 - $65) / 2 = $1,206.
+    # Alone: $258.50 - $20 = $238.50; deemed: $1,206 - $238.50 = $967.50.
+    # Payment: min($1,491 - $1,206, $994 - $994 / 3) = $285.
+    ssi_in_kind_support_and_maintenance: [258.50, 0]
+    ssi_income_deemed_from_ineligible_spouse_monthly: [967.50, 0]
+    ssi_countable_income: [1_206, 0]
+    uncapped_ssi_without_spousal_deeming: [662.67, 0]
+    ssi: [285, 0]
