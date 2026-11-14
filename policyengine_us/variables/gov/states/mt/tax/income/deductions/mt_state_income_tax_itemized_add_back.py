@@ -18,13 +18,8 @@ class mt_state_income_tax_itemized_add_back(Variable):
 
     def formula_2024(tax_unit, period, parameters):
         itemizes = tax_unit("tax_unit_itemizes", period)
-        # The federal model adds wagering losses separately from its general
-        # itemized aggregate; they are also part of the allowed itemized amount.
-        itemized = add(
-            tax_unit,
-            period,
-            ["itemized_taxable_income_deductions", "wagering_losses_deduction"],
-        )
+        # The federal itemized aggregate includes wagering losses once.
+        itemized = tax_unit("itemized_taxable_income_deductions", period)
         standard = tax_unit("standard_deduction", period)
         salt = tax_unit("salt_deduction", period)
         state_income_tax = add(tax_unit, period, ["state_withheld_income_tax"])

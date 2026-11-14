@@ -56,6 +56,8 @@ class mn_itemized_deductions(Variable):
         # (step 2: lines 4, 13 and 19) leave medical expenses, investment
         # interest and casualty and theft losses out of the reduction. M1SA
         # line 13 is the investment interest that interest_deduction holds.
+        # Subd. 8 also leaves wagering losses out. The casualty amount is
+        # Minnesota's own.
         exempt_deds = add(
             tax_unit,
             period,
@@ -63,6 +65,7 @@ class mn_itemized_deductions(Variable):
                 "medical_expense_deduction",
                 "investment_interest_expense",
                 "mn_casualty_loss_deduction",
+                "wagering_losses_deduction",
             ],
         )
         net_deds = max_(0, mn_itm_deds - exempt_deds)

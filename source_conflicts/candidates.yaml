@@ -6155,6 +6155,70 @@ candidates:
     prs: []
   state: unreviewed
   note: Establish the guidance's statutory basis and reconcile M1SA with M1REF.
+- id: us-mn:wagering-losses-itemized-limitation-exclusion
+  program: income-tax
+  years:
+    from: 2019
+    to: 2025
+    type: tax
+  question: Does Minnesota exclude wagering losses from its itemized deduction limitation when Schedule M1SA protects only medical expenses, investment interest, and casualty losses?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0122, subd. 2(d)(3) and 8; subd. 2(c)(3) before 2023
+    url: https://www.revisor.mn.gov/statutes/cite/290.0122
+  - kind: statute
+    citation: 1Sp2019 c 6 art 1 s 16, subd. 2(c)(3), subd. 8, and effective date
+    url: https://www.revisor.mn.gov/laws/2019/1/6/#laws.1.16.0
+  - kind: statute
+    citation: 1Sp2021 c 14 art 1 s 7, subd. 8 and effective date
+    url: https://www.revisor.mn.gov/laws/2021/1/14/#laws.1.7.0
+  - kind: statute
+    citation: 2023 c 64 art 1 s 18, subd. 2(d)(3) and effective date
+    url: https://www.revisor.mn.gov/laws/2023/0/64/#laws.1.18.0
+  - kind: instructions
+    citation: 2019 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_19.pdf#page=7
+  - kind: instructions
+    citation: 2020 Schedule M1SA, line 24, PDF p. 7, and Worksheet for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_20.pdf#page=8
+  - kind: instructions
+    citation: 2021 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1sa_21.pdf#page=7
+  - kind: instructions
+    citation: 2022 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_22.pdf#page=7
+  - kind: instructions
+    citation: 2023 Schedule M1SA, line 24 and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-23.pdf#page=8
+  - kind: instructions
+    citation: 2024 Schedule M1SA, line 24 and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1sa-24.pdf#page=8
+  - kind: instructions
+    citation: 2025 Schedule M1SA, line 24, PDF p. 7, and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-25_0.pdf#page=8
+  - kind: instructions
+    citation: 2026 Schedule M1SA final draft dated November 4, 2026, line 26 and Worksheets A and B for Line 28, PDF p. 9
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-11/m1sa-26.pdf#page=9
+  readings:
+    statute: Taxpayers exclude all subdivision 8 losses, including wagering losses under IRC 165(d), from the deductions subject to the limitation.
+    other: Taxpayers enter gambling losses on line 24, but exclude only lines 4, 13, and 19 when computing the limitation, so they reduce gambling deductions with other unprotected deductions.
+  example: A 2023 filer with $2,000,000 of AGI, $50,000 of allowable wagering losses, and no other itemized deductions retains $50,000 under the statute. Under Worksheet B, the filer subtracts 80% of $50,000, or $40,000, and retains $10,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py
+    - policyengine_us/reforms/states/mn/walz/mn_walz_hf1938.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10070
+  state: ruled
+  note: >-
+    The Legislature enacted both the limitation exclusion and the wagering deduction for tax years beginning after December 31, 2018.
+    In 2021, the Legislature rewrote subdivision 8 while retaining wagering losses; that amendment took effect July 2, 2021.
+    In 2023, the Legislature moved the exclusion from paragraph (c)(3) to (d)(3), effective for tax years beginning after December 31, 2022.
+    We confirmed every final M1SA from 2019 through 2025; no year in that range remained unreachable.
+    The Department has published a 2026 final draft, which moves gambling losses to line 26 and protects only lines 4, 13, and 22 in the line 28 worksheets.
+    We exclude 2026 from the years above because the Department still labels that form a draft.
+    The baseline excludes wagering_losses_deduction at mn_itemized_deductions.py lines 68 and 71; the Walz reform does so at mn_walz_hf1938.py lines 136 and 139.
 - id: us-mo:claim-of-right-federal-tax-deduction
   program: income-tax
   years:

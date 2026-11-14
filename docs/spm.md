@@ -21,6 +21,10 @@ that counts its cash, and it fails when a new source has none. Market income
 keeps a source's losses where the source has them, such as partnership, farm
 rental and Form 4797 losses.
 
+Market income counts gambling winnings before losses, as gross income does.
+Filers deduct gambling losses only as an itemized deduction, up to their
+winnings, and neither net income total subtracts the losses.
+
 Three sources stay out of resources on purpose:
 
 - `debt_relief`: discharged debt brings the family no cash.

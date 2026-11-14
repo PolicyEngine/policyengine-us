@@ -128,3 +128,22 @@
     # (0.8 x 10,000 = 8,000) and 3% of AGI over $220,650 (53,380.50).
     # 10,000 + 49,900 - 8,000
     mn_itemized_deductions: 51_900
+
+- name: Minnesota HF1938 repeal exempts wagering losses from the itemized deduction offset.
+  absolute_error_margin: 0.01
+  period: 2023
+  reforms: policyengine_us.reforms.states.mn.walz.mn_walz_hf1938.mn_walz_hf1938
+  input:
+    gov.contrib.states.mn.walz.hf1938.repeal: true
+    age: 40
+    filing_status: SINGLE
+    employment_income: 1_900_000
+    gambling_winnings: 100_000
+    gambling_losses: 50_000
+    salt_deduction: 0
+    state_code: MN
+  output:
+    adjusted_gross_income: 2_000_000
+    wagering_losses_deduction: 50_000
+    # All 50,000 of itemized deductions qualify for the exemption.
+    mn_itemized_deductions: 50_000

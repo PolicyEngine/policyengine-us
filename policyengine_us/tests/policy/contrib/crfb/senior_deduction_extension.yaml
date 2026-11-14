@@ -29,6 +29,38 @@
     # additional_senior_deduction: 12_000 (from extension)
     taxable_income_deductions_if_itemizing: 47_000
 
+- name: Senior deduction extension counts wagering losses once when itemizing in 2029.
+  absolute_error_margin: 0.01
+  period: 2029
+  reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension
+  input:
+    gov.contrib.crfb.senior_deduction_extension.applies: true
+    age: 70
+    filing_status: SINGLE
+    employment_income: 30_000
+    gambling_winnings: 30_000
+    gambling_losses: 30_000
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    charitable_deduction: 0
+    interest_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+    qualified_business_income_deduction: 0
+    state_code: TX
+  output:
+    adjusted_gross_income: 60_000
+    # 90% x 30,000 losses = 27,000, below 30,000 winnings.
+    wagering_losses_deduction: 27_000
+    itemized_taxable_income_deductions: 27_000
+    # AGI falls below the 75,000 phase-out threshold.
+    additional_senior_deduction: 6_000
+    # 27,000 itemized + 6,000 senior deduction = 33,000.
+    taxable_income_deductions_if_itemizing: 33_000
+    tax_unit_itemizes: true
+    # 60,000 - 33,000 = 27,000.
+    taxable_income: 27_000
+
 - name: Integration test - senior deduction included in taxable income deductions when not itemizing in 2029
   period: 2029
   reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension

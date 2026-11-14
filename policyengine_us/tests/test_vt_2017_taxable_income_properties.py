@@ -80,9 +80,13 @@ def complete_addback_unit(draw):
         unit["salt_deduction"]
         + unit["medical_expense_deduction"]
         + unit["charitable_deduction"]
+        + unit["wagering_losses_deduction"]
         + unit.pop("other_itemized")
     )
-    ceiling = 0.8 * max(total - unit["medical_expense_deduction"], 0)
+    ceiling = 0.8 * max(
+        total - unit["medical_expense_deduction"] - unit["wagering_losses_deduction"],
+        0,
+    )
     reduction = round(unit.pop("reduction_share") * ceiling)
     unit["itemized_taxable_income_deductions_reduction"] = reduction
     unit["itemized_taxable_income_deductions"] = total - reduction
@@ -108,9 +112,7 @@ addback_unit = st.fixed_dictionaries(
 
 
 def itemized_total(unit):
-    return (
-        unit["itemized_taxable_income_deductions"] + unit["wagering_losses_deduction"]
-    )
+    return unit["itemized_taxable_income_deductions"]
 
 
 def in155_line_11(unit):
@@ -121,10 +123,7 @@ def in155_line_11(unit):
     # Worksheet: L8 total deductions, L9 deductions not limited at the
     # federal level (medical and wagering losses here), L10 total deductions
     # after limitations.
-    l8 = (
-        unit["total_itemized_taxable_income_deductions"]
-        + unit["wagering_losses_deduction"]
-    )
+    l8 = unit["total_itemized_taxable_income_deductions"]
     l9 = unit["medical_expense_deduction"] + unit["wagering_losses_deduction"]
     l10 = itemized_total(unit)
     ratio = (l10 - l9) / (l8 - l9) if l8 > l9 else 1.0

@@ -1,0 +1,51 @@
+- name: New York allows all gambling losses up to winnings in 2026.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    filing_status: SINGLE
+    employment_income: 50_000
+    gambling_winnings: 20_000
+    gambling_losses: 20_000
+    ny_salt_deduction: 0
+    state_code: NY
+  output:
+    # The federal deduction is 90% of the losses from 2026.
+    wagering_losses_deduction: 18_000
+    ny_wagering_losses_deduction: 20_000
+    ny_agi: 70_000
+    ny_itemized_deductions: 20_000
+    # 70,000 - 20,000
+    ny_taxable_income: 50_000
+
+- name: New York gambling losses are capped at winnings.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    gambling_winnings: 5_000
+    gambling_losses: 8_000
+    state_code: NY
+  output:
+    ny_wagering_losses_deduction: 5_000
+
+- name: A dependent's gambling is not on the parent's New York return.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 10_000
+        gambling_losses: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_wagering_losses_deduction: 0
