@@ -46,6 +46,50 @@
     medical_expense_deduction: 42_500 # 50,000 - 7.5% x 100,000.
     tax_unit_itemizes: true
 
+- name: A filer excludes each premium payment once alongside a dependent deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        is_self_employed: true
+        self_employment_income: 20_000
+        health_insurance_premiums: 5_000
+        other_medical_expenses: 50_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        is_self_employed: true
+        self_employment_income: 10_000
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 500
+    tax_units:
+      family:
+        members: [head, dependent]
+    marital_units:
+      head:
+        members: [head]
+      dependent:
+        members: [dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: TX
+  output:
+    eligible_long_term_care_premiums: [0, 480]
+    # 20,000 - (20,000 x 0.9235 x 0.153 / 2) = 18,587.045 > 5,000.
+    # 10,000 - (10,000 x 0.9235 x 0.153 / 2) = 9,293.5225 > 3,480.
+    self_employed_health_insurance_ald_person: [5_000, 3_480]
+    self_employed_health_insurance_ald: 5_000
+    dependents_self_employed_health_insurance_ald: 3_480
+    itemized_medical_expenses_excluded_premiums: 5_000
+    itemized_medical_expenses_excluded_dependent_premiums: 3_000
+    itemized_medical_expenses_long_term_care_premiums: 0
+    # 5,000 + 3,000 + 480 - 5,000 - 3,000 - 480 + 50,000 = 50,000.
+    itemized_medical_expenses: 50_000
+
 - name: Parents exclude premiums their dependent deducts against partnership earnings.
   period: 2025
   absolute_error_margin: 0.01
@@ -457,6 +501,35 @@
     itemized_medical_expenses_applied_exclusion: 1_000
     nd_renters_refund_income: 35_000 # 40,000 - (4,000 + 1,000).
 
+- name: North Dakota uses a supplied zero exclusion with a computed subtotal.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+        other_medical_expenses: 2_000
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent]
+        itemized_medical_expenses_applied_exclusion: 0
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: ND
+  output:
+    itemized_medical_expenses: 4_000 # 2,000 + 3,000 - 1,000.
+    # The supplied zero omits the dependent's 1,000 medical exclusion.
+    itemized_medical_expenses_applied_exclusion: 0
+    # North Dakota uses the supplied zero: 40,000 - (4,000 + 0) = 36,000.
+    nd_renters_refund_income: 36_000
+
 - name: New Mexico retains its senior medical credit at the paid cost boundary.
   period: 2025
   input:
@@ -481,6 +554,34 @@
     itemized_medical_expenses_applied_exclusion: 1_000
     nm_medical_expense_credit: 2_800 # The paid cost base stays 28,000.
     nm_medical_expense_exemption: 0 # The exemption requires more than 28,000.
+
+- name: New Mexico uses a supplied zero exclusion with a computed subtotal.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 65
+        medicare_enrolled: false
+      dependent:
+        age: 17
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 28_001
+        self_employed_health_insurance_ald_person: 1_000
+    tax_units:
+      parents:
+        members: [parent, dependent]
+        itemized_medical_expenses_applied_exclusion: 0
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: NM
+  output:
+    itemized_medical_expenses: 27_001 # 28,001 - 1,000.
+    # The supplied zero omits the dependent's 1,000 medical exclusion.
+    itemized_medical_expenses_applied_exclusion: 0
+    # New Mexico uses 27,001 + 0, below the 28,000 expense threshold.
+    nm_medical_expense_credit: 0
+    nm_medical_expense_exemption: 0
 
 - name: Montana retains non-premium expenses after a dependent deducts medical premiums.
   period: 2023

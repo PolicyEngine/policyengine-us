@@ -12,6 +12,9 @@ Supplied filer deductions stay within the head's and spouse's paid pool.
 The independent accounting invariant is that Schedule A's premium base plus
 every self-employed health insurance deduction never exceeds premiums paid.
 Non-premium medical expenses must remain available in full before the floor.
+This accounting identity retains the existing inclusion of undeducted
+dependent-paid premiums. Section 213(a) allows parents only expenses they paid;
+the broader payer-attribution correction needs separate coverage.
 
 Examples use small vectorized simulations and a shared read-only reference
 system. Supplied and computed subtotal scenarios use separate simulations to

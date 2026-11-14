@@ -23,6 +23,10 @@ class nm_medical_expense_credit(Variable):
         "This assumes qualifying costs were funded from income included in AGI. "
         "Premium inputs use payer attribution: each person reports premiums that "
         "person paid, including family coverage regardless of whom it covers. "
+        "With a computed subtotal, a supplied applied exclusion omits the "
+        "dependent medical exclusion and overrides the addback unchanged. "
+        "Full paid-cost preservation requires a derived applied exclusion "
+        "or a supplied subtotal with its complete exclusion."
     )
 
     def formula(tax_unit, period, parameters):
