@@ -17,7 +17,23 @@ class self_employed_health_insurance_employer_plan_eligible(Variable):
         "those inputs can describe a parent's plan. Treasury includes related "
         "individuals in employer offers under 26 CFR 1.36B-2(c)(3)(i)(A); "
         "Congress does not list a parent's employer for the dependent's "
-        "deduction. The model assumes a subsidy when a filer has ESI or an "
+        "deduction. The model misses a dependent's own subsidized employer "
+        "enrollment or offer without contributions of SOME or ALL. Entering "
+        "a parent's family-plan contribution on the dependent instead bars "
+        "the dependent, because the model reads it as their own employer's "
+        "contribution. A qualifying plan established by the person's own "
+        "partnership, or S corporation in which they own more than 2%, does "
+        "not trigger the statutory employer-plan bar (sections 162(l)(5) "
+        "and 1372(a); Notice 2008-1). Enter that business's eligible premium "
+        "payments or reimbursements in health_insurance_premiums, without "
+        "recording those payments as employer contributions of SOME or ALL. "
+        "Setting has_esi or offered_aca_disqualifying_esi for that plan still "
+        "bars a filer's deduction in the model, because the inputs cannot "
+        "distinguish it from another employer's plan. Retain flags for "
+        "subsidized coverage through an unrelated employer. Keep coverage "
+        "flags accurate for ACA calculations; the current inputs cannot "
+        "represent every own-business plan for both calculations. "
+        "The model assumes a subsidy when a filer has ESI or an "
         "ACA-disqualifying offer, and assumes that each joint filer can join "
         "the other's plan. The inputs identify neither the employer "
         "maintaining a plan nor its subsidy or family eligibility. The model "
@@ -45,6 +61,8 @@ class self_employed_health_insurance_employer_plan_eligible(Variable):
         "https://www.irs.gov/pub/irs-prior/i7206--2025.pdf#page=2",  # Other coverage
         "https://www.irs.gov/pub/irs-prior/i1040gi--2022.pdf#page=88",  # Line 17, before Form 7206
         "https://www.ecfr.gov/current/title-26/section-1.36B-2#p-1.36B-2(c)(3)(i)(A)",
+        # PDF pages 3-4: own-business plans and the other-coverage condition
+        "https://www.irs.gov/pub/irs-drop/n-08-01.pdf#page=3",
     )
 
     def formula(person, period, parameters):

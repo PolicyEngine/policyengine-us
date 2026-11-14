@@ -354,3 +354,64 @@
     adjusted_gross_income: 85_967.61
     # Schedule A retains 6,000 + 500 - 500 = 6,000 before its floor.
     itemized_medical_expenses: 6_000
+
+# Notice 2008-1, examples 2-4, and Form 7206 lines 1, 11 and 14:
+# a more-than-2% shareholder can deduct premiums paid by their S corporation.
+# The 66,000 of box 1 wages include 6,000 of premiums; box 5 excludes them.
+- name: A shareholder deducts own-business premiums when coverage flags are clear.
+  period: 2025
+  input:
+    is_self_employed: true
+    employment_income: 66_000
+    s_corp_shareholder_medicare_wages: 60_000
+    self_employed_health_insurance_plan_business: S_CORPORATION
+    health_insurance_premiums: 6_000
+    employer_contribution_to_health_insurance_premiums_category: NONE
+    has_esi: false
+    offered_aca_disqualifying_esi: false
+  output:
+    self_employed_health_insurance_employer_plan_eligible: false
+    self_employed_health_insurance_premiums: 6_000
+    self_employed_health_insurance_earned_income_limit: 60_000
+    # Line 14 = min(6,000, 60,000) = 6,000; no self-employment tax.
+    self_employed_health_insurance_ald_person: 6_000
+    # AGI = box 1 wages 66,000 - deduction 6,000 = 60,000.
+    adjusted_gross_income: 60_000
+
+- name: An unrelated employer's contribution bars a shareholder's own-business premiums.
+  period: 2025
+  input:
+    is_self_employed: true
+    employment_income: 66_000
+    s_corp_shareholder_medicare_wages: 60_000
+    self_employed_health_insurance_plan_business: S_CORPORATION
+    health_insurance_premiums: 6_000
+    employer_contribution_to_health_insurance_premiums_category: ALL
+  output:
+    # ALL describes another employer's subsidized plan, not the corporation's
+    # own payment. Section 162(l)(2)(B) bars line 1; min(0, 60,000) = 0.
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_earned_income_limit: 60_000
+    self_employed_health_insurance_ald_person: 0
+    adjusted_gross_income: 66_000
+
+- name: The model bars a shareholder who sets ESI for their own S corporation's plan.
+  period: 2025
+  input:
+    is_self_employed: true
+    employment_income: 66_000
+    s_corp_shareholder_medicare_wages: 60_000
+    self_employed_health_insurance_plan_business: S_CORPORATION
+    health_insurance_premiums: 6_000
+    employer_contribution_to_health_insurance_premiums_category: NONE
+    has_esi: true
+  output:
+    # Known input limitation: has_esi does not identify whose plan covers the
+    # filer. The model bars line 1 even for the qualifying own-business plan,
+    # which Notice 2008-1 permits: base = 0; min(0, 60,000) = 0.
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_earned_income_limit: 60_000
+    self_employed_health_insurance_ald_person: 0
+    adjusted_gross_income: 66_000
