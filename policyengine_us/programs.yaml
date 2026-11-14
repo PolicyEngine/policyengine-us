@@ -2046,6 +2046,22 @@ programs:
     verified_start_year: 2023
 
   # --- State programs ---
+
+  - id: ar_homestead_property_tax_credit
+    name: Arkansas homestead property tax credit
+    full_name: Arkansas Homestead Property Tax Credit
+    category: Taxes
+    agency: State
+    status: partial
+    coverage: AR
+    variable: ar_homestead_property_tax_credit
+    parameter_prefix: gov.states.ar.tax.property.homestead_property_tax_credit
+    verified_start_year: 2025
+    notes: >-
+      Assessment-year bill credit with 2025 and 2026 caps. Requires source-qualified
+      parcel liability, registration, history, exemption and claim-attribution facts;
+      population data do not supply these inputs. Earlier years are not modeled.
+
   - id: al_ui
     name: Alabama UI
     full_name: Alabama Unemployment Compensation
