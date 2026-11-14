@@ -1,1 +1,1 @@
-Added South Carolina TANF boundary and loss-offset tests, recorded the school and loss interpretations, and refreshed manual references.
+Added South Carolina TANF gross-limit, school-level and current-loss tests, recorded the school-level reading and the open current-loss question as source-conflict candidates, and refreshed manual and regulation references.
