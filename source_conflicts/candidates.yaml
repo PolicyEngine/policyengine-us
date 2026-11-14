@@ -15454,3 +15454,37 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
+- id: us-wv:heptc-federal-amt-disqualification
+  program: wv_homestead_excess_property_tax_credit
+  years:
+    from: 2025
+    to: 2026
+    type: calendar
+  question: Are homeowners required to pay federal alternative minimum income tax disqualified from HEPTC,
+    although the Tax Division overview presents an AMT-paying qualification branch?
+  sources:
+  - kind: statute
+    citation: W. Va. Code §11-21-23(e)
+    url: https://code.wvlegislature.gov/11-21-23/
+  - kind: guidance
+    citation: West Virginia Tax Division Senior Citizens Tax Credit overview, HEPTC section
+    url: https://tax.wv.gov/Individuals/SeniorCitizens/Pages/SeniorCitizensTaxCredit.aspx
+  - kind: form
+    citation: 2025 HEPTC-1 Part I, IT-140 booklet physical page 11
+    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=11
+  readings:
+    statute: Section 11-21-23(e) disqualifies any person required to pay federal alternative minimum income
+      tax in the current tax year. A poverty threshold does not remove that bar.
+    other: The overview describes AMT-paying homeowners as qualifying under its 300-percent income thresholds.
+      The dedicated 2025 form instead branches on whether a federal return is required.
+  example: With confirmed AMT liability of $1, otherwise qualifying income and positive excess property taxes,
+    the statutory reading disallows HEPTC. The overview AMT branch would permit qualification.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wv/tax/income/credits/heptc/wv_homestead_excess_property_tax_credit_eligible.py
+    prs: []
+  state: ruled
+  note: Applies the repository statute-first rule. The dated implementation preserves earlier formulas and
+    does not resolve other HEPTC household-income, all-owner or refund-settlement requirements. Relevant official
+    source excerpts are captured under source_conflicts/sources/us-wv-heptc-amt.txt.

@@ -41,3 +41,407 @@
     state_code: WV
   output:
     wv_sctc_eligible: false
+
+# Section 21(b)(1) and 2025 IT-140 physicalp 36. Family limits 23475/31725/39975/48225
+# are inclusive. T/V are deliberately absent: legal eligibility is independent of
+# payment measurement.
+- name: Case 5, the inclusive 2025 family-income limits and negative AGI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+      person4:
+        age: 70
+      person5:
+        age: 70
+      person6:
+        age: 70
+      person7:
+        age: 70
+      person8:
+        age: 70
+      person9:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        adjusted_gross_income: 23_475
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit2:
+        members:
+        - person2
+        adjusted_gross_income: 23_476
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit3:
+        members:
+        - person3
+        adjusted_gross_income: 31_725
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 2
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit4:
+        members:
+        - person4
+        adjusted_gross_income: 31_726
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 2
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit5:
+        members:
+        - person5
+        adjusted_gross_income: 39_975
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 3
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit6:
+        members:
+        - person6
+        adjusted_gross_income: 39_976
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 3
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit7:
+        members:
+        - person7
+        adjusted_gross_income: 48_225
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 4
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit8:
+        members:
+        - person8
+        adjusted_gross_income: 48_226
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 4
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit9:
+        members:
+        - person9
+        adjusted_gross_income: -100
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit4:
+        members:
+        - person4
+      spm_unit5:
+        members:
+        - person5
+      spm_unit6:
+        members:
+        - person6
+      spm_unit7:
+        members:
+        - person7
+      spm_unit8:
+        members:
+        - person8
+      spm_unit9:
+        members:
+        - person9
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+      household3:
+        members:
+        - person3
+        state_code: WV
+      household4:
+        members:
+        - person4
+        state_code: WV
+      household5:
+        members:
+        - person5
+        state_code: WV
+      household6:
+        members:
+        - person6
+        state_code: WV
+      household7:
+        members:
+        - person7
+        state_code: WV
+      household8:
+        members:
+        - person8
+        state_code: WV
+      household9:
+        members:
+        - person9
+        state_code: WV
+  output:
+    wv_sctc_eligible:
+    - true
+    - false
+    - true
+    - false
+    - true
+    - false
+    - true
+    - false
+    - true
+    wv_sctc_eligibility_available:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+
+# Sections 11-6B-2/3 and 21(a)(2): source-qualified county exemption can be based on
+# permanent/total disability. No additional senior-only age gate. Payment facts are
+# still unavailable.
+- name: Case 6, actual exemption participation can qualify a certified disabled owner under
+    65.
+  period: 2025
+  input:
+    state_code: WV
+    age: 45
+    adjusted_gross_income: 15_000
+    alternative_minimum_tax: 0
+    wv_sctc_homestead_qualified: true
+    wv_sctc_family_unit_size: 1
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+    wv_sctc_payment_facts_available: false
+  output:
+    wv_sctc_eligible: true
+    wv_sctc_eligibility_available: true
+    wv_sctc_amount_available: false
+
+# The sole homestead owner and related adult child reside together but file separate
+# returns. Verified legal family 2 permits 31725; using the owner TaxUnit size 1 would
+# wrongly deny. The child has no confirmed SCTC claim.
+- name: Case 7, legal family size can exceed the claimant federal tax-unit size.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 30
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        adjusted_gross_income: 31_725
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 2
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit2:
+        members:
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: WV
+  output:
+    wv_sctc_eligible:
+    - true
+    - false
+    wv_sctc_eligibility_available:
+    - true
+    - false
+
+# Section 21(a)(2) requires no federalAMT liability; 2025 IT-140 pp 11/36 excludes
+# actualDV claims. An unverified zeroAMT or unknownDV status is not proof. Reported
+# filerAGI 24000 remains above 23475, even if it includes taxable SocialSecurity.
+- name: Case 8, AMT liability and actual DV selection bar eligibility while unknown selection
+    stays unknown.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+      person4:
+        age: 70
+      person5:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 1
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit2:
+        members:
+        - person2
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit3:
+        members:
+        - person3
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: UNKNOWN
+        wv_sctc_payment_facts_available: false
+      tax_unit4:
+        members:
+        - person4
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: false
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit5:
+        members:
+        - person5
+        adjusted_gross_income: 24_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit4:
+        members:
+        - person4
+      spm_unit5:
+        members:
+        - person5
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+      household3:
+        members:
+        - person3
+        state_code: WV
+      household4:
+        members:
+        - person4
+        state_code: WV
+      household5:
+        members:
+        - person5
+        state_code: WV
+  output:
+    wv_sctc_eligible:
+    - false
+    - false
+    - false
+    - false
+    - false
+    wv_sctc_eligibility_available:
+    - true
+    - true
+    - false
+    - false
+    - true

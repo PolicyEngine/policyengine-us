@@ -1,0 +1,86 @@
+# Source-derived 2025 tests: W.Va. Code 11-21-21(a)(2),(b),(e);11-21-23(a),(e);2025
+# IT-140 physicalpp 11/36.
+# Paid-tax cases require a verified fully paid single homogeneous cohort; no supplied
+# credit or forced eligibility.
+
+# WV unknown differs from WV known ineligibility. An out-of-state record is outside
+# this WV 2025 diagnostic, rather than a missing WV claim.
+- name: Case 1, amount missingness is reported only within the new WV scope.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+      tax_unit2:
+        members:
+        - person2
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_homestead_qualified: false
+      tax_unit3:
+        members:
+        - person3
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+      household3:
+        members:
+        - person3
+        state_code: VA
+  output:
+    wv_sctc_input_missing:
+    - true
+    - false
+    - false
+    wv_sctc_amount_available:
+    - false
+    - true
+    - false
+
+# The approved repair begins 2025. Existing pre 2025 SCTC/HEPTC formulas and all
+# historical cases remain unchanged.
+- name: Case 2, new diagnostics are inactive before the bounded repair year.
+  period: 2024
+  input:
+    state_code: WV
+    age: 70
+    adjusted_gross_income: 15_000
+    alternative_minimum_tax: 0
+    wv_sctc_homestead_qualified: true
+    wv_sctc_family_unit_size: 1
+    wv_sctc_homestead_facts_available: true
+    wv_sctc_income_facts_available: true
+    wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+    wv_sctc_payment_facts_available: true
+    wv_sctc_taxable_assessed_value: 100_000
+    wv_sctc_qualified_property_taxes_paid: 1_000
+  output:
+    wv_sctc_eligibility_available: false
+    wv_sctc_payment_inputs_available: false
+    wv_sctc_amount_available: false
+    wv_sctc_input_missing: false
+    wv_sctc_refund_minimum_met: false
+    wv_heptc_coordination_available: false

@@ -1,0 +1,221 @@
+# Source-derived 2025 tests: W.Va. Code 11-21-21(a)(2),(b),(e);11-21-23(a),(e);2025
+# IT-140 physicalpp 11/36.
+# Paid-tax cases require a verified fully paid single homogeneous cohort; no supplied
+# credit or forced eligibility.
+
+# Independent legal denials: no county exemption, over 150%FPG, confirmedAMT, actualDV
+# selection. No T/V required for eligibility. An unobserved claim remains unknown.
+- name: Case 1, a proven disqualifier is sufficient without unrelated missing facts.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+      person4:
+        age: 70
+      person5:
+        age: 70
+      person6:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_homestead_qualified: false
+      tax_unit2:
+        members:
+        - person2
+        wv_sctc_income_facts_available: true
+        wv_sctc_family_unit_size: 1
+        adjusted_gross_income: 23_476
+        alternative_minimum_tax: 0
+      tax_unit3:
+        members:
+        - person3
+        wv_sctc_income_facts_available: true
+        wv_sctc_family_unit_size: 1
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 1
+      tax_unit4:
+        members:
+        - person4
+        wv_sctc_disabled_veteran_credit_claim_status: CLAIMED
+      tax_unit5:
+        members:
+        - person5
+      tax_unit6:
+        members:
+        - person6
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit4:
+        members:
+        - person4
+      spm_unit5:
+        members:
+        - person5
+      spm_unit6:
+        members:
+        - person6
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+      household3:
+        members:
+        - person3
+        state_code: WV
+      household4:
+        members:
+        - person4
+        state_code: WV
+      household5:
+        members:
+        - person5
+        state_code: WV
+      household6:
+        members:
+        - person6
+        state_code: WV
+  output:
+    wv_sctc_eligibility_available:
+    - true
+    - true
+    - true
+    - true
+    - false
+    - true
+    wv_sctc_eligible:
+    - false
+    - false
+    - false
+    - false
+    - false
+    - true
+
+# The receipt flag cannot make a nonfinite AGI/AMT, negative AMT or missing legal
+# family count valid. Negative finite AGI is tested separately as valid.
+- name: Case 2, invalid income or family facts do not certify eligibility.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 70
+      person3:
+        age: 70
+      person4:
+        age: 70
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 0
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit2:
+        members:
+        - person2
+        adjusted_gross_income: .nan
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit3:
+        members:
+        - person3
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: -1
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+      tax_unit4:
+        members:
+        - person4
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: .inf
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit4:
+        members:
+        - person4
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+      household3:
+        members:
+        - person3
+        state_code: WV
+      household4:
+        members:
+        - person4
+        state_code: WV
+  output:
+    wv_sctc_eligibility_available:
+    - false
+    - false
+    - false
+    - false
+    wv_sctc_eligible:
+    - false
+    - false
+    - false
+    - false

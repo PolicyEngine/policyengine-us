@@ -53,3 +53,169 @@
     state_code: WV
   output:
     wv_homestead_excess_property_tax_credit_eligible: true
+
+# Sections 21(e)/23(a),(e): retain the prior income/burden conditions, plus confirmed
+# SCTC/AMT/DV coordination. Known shared bars give a known denial; missing
+# amount/status does not permit a guessed credit.
+- name: Case 5, existing HEPTC conditions also require known coordination and no shared bar.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 1_000
+      person2:
+        age: 70
+        real_estate_taxes: 1_000
+      person3:
+        age: 70
+        real_estate_taxes: 1_000
+      person4:
+        age: 70
+        real_estate_taxes: 1_000
+      person5:
+        age: 70
+        real_estate_taxes: 1_000
+      person6:
+        age: 45
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 100_000
+        wv_sctc_qualified_property_taxes_paid: 1_000
+        wv_gross_household_income: 15_000
+      tax_unit2:
+        members:
+        - person2
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+        wv_gross_household_income: 15_000
+      tax_unit3:
+        members:
+        - person3
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 1
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 100_000
+        wv_sctc_qualified_property_taxes_paid: 1_000
+        wv_gross_household_income: 15_000
+      tax_unit4:
+        members:
+        - person4
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: CLAIMED
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 100_000
+        wv_sctc_qualified_property_taxes_paid: 1_000
+        wv_gross_household_income: 15_000
+      tax_unit5:
+        members:
+        - person5
+        adjusted_gross_income: 15_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: true
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: UNKNOWN
+        wv_sctc_payment_facts_available: true
+        wv_sctc_taxable_assessed_value: 100_000
+        wv_sctc_qualified_property_taxes_paid: 1_000
+        wv_gross_household_income: 15_000
+      tax_unit6:
+        members:
+        - person6
+        adjusted_gross_income: 25_000
+        alternative_minimum_tax: 0
+        wv_sctc_homestead_qualified: false
+        wv_sctc_family_unit_size: 1
+        wv_sctc_homestead_facts_available: true
+        wv_sctc_income_facts_available: true
+        wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
+        wv_sctc_payment_facts_available: false
+        wv_gross_household_income: 25_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+      spm_unit2:
+        members:
+        - person2
+      spm_unit3:
+        members:
+        - person3
+      spm_unit4:
+        members:
+        - person4
+      spm_unit5:
+        members:
+        - person5
+      spm_unit6:
+        members:
+        - person6
+    households:
+      household1:
+        members:
+        - person1
+        state_code: WV
+      household2:
+        members:
+        - person2
+        state_code: WV
+      household3:
+        members:
+        - person3
+        state_code: WV
+      household4:
+        members:
+        - person4
+        state_code: WV
+      household5:
+        members:
+        - person5
+        state_code: WV
+      household6:
+        members:
+        - person6
+        state_code: WV
+  output:
+    wv_homestead_excess_property_tax_credit_eligible:
+    - true
+    - false
+    - false
+    - false
+    - false
+    - true
+    wv_heptc_coordination_available:
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true

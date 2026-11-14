@@ -15,3 +15,17 @@ class wv_sctc(Variable):
         p = parameters(period).gov.states.wv.tax.income.credits.sctc
 
         return min_(wv_taxable_property_value, p.max_amount)
+
+    def formula_2025_01_01(tax_unit, period, parameters):
+        payment_known = tax_unit("wv_sctc_payment_inputs_available", period)
+        value = tax_unit("wv_sctc_taxable_assessed_value", period)
+        covered_value = tax_unit("wv_sctc_covered_assessed_value", period)
+        paid = tax_unit("wv_sctc_qualified_property_taxes_paid", period)
+        # Allocate a fully paid, uniform-base cohort's tax to the covered value.
+        covered_share = np.divide(
+            covered_value,
+            value,
+            out=np.zeros_like(value, dtype=float),
+            where=payment_known & (value > 0),
+        )
+        return where(payment_known, paid, 0) * covered_share
