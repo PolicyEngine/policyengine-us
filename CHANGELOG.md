@@ -1,3 +1,46 @@
+## [2.124.6] - 2026-11-14
+
+### Fixed
+
+- Corrected Washington's senior property tax exemption age threshold to 62 in the collection year, matching age 61 at the preceding filing-year deadline. Kept the veteran rating parameter available for historical calculations before 2016.
+
+
+## [2.124.5] - 2026-11-14
+
+### Fixed
+
+- Retained shared SSA parameters and reported-benefit inputs in the calculator reference and added reform comparisons.
+
+
+## [2.124.4] - 2026-11-14
+
+### Fixed
+
+- Count only whole $100 steps of adjusted gross income above $25,000 in the Vermont veteran tax credit's phase-out, as the Department of Taxes directs on Schedule IN-112. Veteran filers with adjusted gross income from $25,001 to $29,999, other than a multiple of $100, now receive $5 more.
+- Updated Hawaii deductions for Act 35 conformity, including qualified tips, nonitemizer charity and charitable limits based on Hawaii AGI. Corrected the itemized deduction limitation and pooled miscellaneous expenses with repayments before applying the 2% floor.
+
+
+## [2.124.3] - 2026-11-14
+
+### Fixed
+
+- Corrected federal AGI allocation between Missouri spouses, applied Missouri's negative federal AGI rule from 2024 and its MOST subtraction limit for 2024-2025, preserved negative Missouri AGI, and allocated combined taxable income using positive columns.
+
+
+## [2.124.2] - 2026-11-14
+
+### Fixed
+
+- Added South Dakota child care assistance payments from the July 2024 hourly county rates before the August 2026 weekly schedule.
+
+
+## [2.124.1] - 2026-11-14
+
+### Fixed
+
+- Fixed the 2020 unemployment compensation exclusion: the $150,000 test no longer subtracts the compensation twice, each spouse on a joint return excludes up to $10,200 of their own compensation, and a dependent's compensation is excluded on the dependent's own return instead of using the filers' exclusion. The tax unit's taxable unemployment compensation now leaves out dependents' compensation in every year, so Indiana's unemployment compensation deduction no longer deducts compensation that is not in the filers' federal AGI. A dependent's own estate or trust loss now reduces the modified AGI of the dependent's own return.
+
+
 ## [2.124.0] - 2026-11-14
 
 ### Added

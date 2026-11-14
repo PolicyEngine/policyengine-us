@@ -12834,7 +12834,7 @@ candidates:
     type: program
     note: property tax collection year (taxes levied for collection in that year)
   question: Before collection year 2016, does RCW 84.36.381(3)(b)'s "one hundred percent service-connected disability
-    as provided in 42 U.S.C. Sec. 423(d)(1)(A)" mean a disability wholly connected to service under Social Security's
+    as provided in 42 U.S.C. Sec. 423 (d)(1)(A)" mean a disability wholly connected to service under Social Security's
     definition, or a 100% VA rating?
   sources:
   - kind: statute
@@ -12846,6 +12846,9 @@ candidates:
   - kind: statute
     citation: 42 U.S.C. 423(d)(1)(A) (Social Security Act 223(d)(1)(A))
     url: https://www.ssa.gov/OP_Home/ssact/title02/0223.htm
+  - kind: statute
+    citation: 42 U.S.C. 423(a), (d)(1)(A), 2004 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2004-title42/pdf/USCODE-2004-title42-chap7-subchapII-sec423.pdf#page=1
   readings:
     statute: A disability that meets Social Security's definition in 42 U.S.C. 423(d)(1)(A) and is wholly connected
       to service; the cross-reference names that definition, and the 2016 amendment's move to VA-rating language marks
@@ -12865,7 +12868,8 @@ candidates:
   note: PolicyEngine ruled on 2026-10-21 for the Social Security reading. The model has no service-connection input,
     so wa_pte_wholly_service_connected_disability defaults to is_disabled (or is_fully_disabled_service_connected_veteran)
     as an overridable proxy, read together with is_veteran in wa_pte_categorical_eligible; it over-includes a veteran
-    whose disability is not service-connected.
+    whose disability is not service-connected. SSDI receipt requires insured status and an application under
+    42 U.S.C. 423(a); Washington imports only the disability definition.
 - id: us-wi:age-65-exemption-claimable-filer
   program: income-tax
   years:
@@ -15412,3 +15416,41 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us-sd:cca-hourly-private-pay-cap
+  program: ccdf
+  years:
+    from: 2024
+    to: 2026
+    type: calendar
+    note: The hourly schedule applies from July 2024 through July 2026.
+  question: Does South Dakota cap hourly child care assistance at the provider's public charge when the state reimbursement ceiling exceeds that charge?
+  sources:
+  - kind: regulation
+    citation: ARSD 67:47:01:15, last amended September 12, 2016
+    url: https://sdlegislature.gov/Rules/Administrative/67:47:01:15
+  - kind: regulation
+    citation: ARSD 67:47:01:16, last amended January 18, 1993
+    url: https://sdlegislature.gov/Rules/Administrative/67:47:01:16
+  - kind: manual
+    citation: Child Care Provider Reimbursement Guide, pages 3, 7 and 18
+    url: https://dss.sd.gov/docs/childcare/assistance/regulated_manual.pdf
+  - kind: guidance
+    citation: Family Child Care maximum reimbursement rates, effective July 1, 2024, page 1
+    url: https://dss.sd.gov/docs/childcare/assistance/Reimbursement_Rates/Family_Child_Care.pdf
+  - kind: plan
+    citation: FFY 2025-2027 CCDF State Plan, initial plan certified September 24, 2024, sections 4.3.3 and 4.4.2, pages 60-63
+    url: https://dss.sd.gov/docs/childcare/state_plan/2025-2027/2025-2027_State_Plan_original.pdf
+  - kind: plan
+    citation: FFY 2025-2027 CCDF State Plan, Amendment 1 approved July 9, 2025, sections 4.3.3 and 4.4.2, pages 60-63
+    url: https://dss.sd.gov/docs/childcare/state_plan/2025-2027/Amendment_1.pdf
+  readings:
+    statute: No statute supplied; providers bill their usual public charge under ARSD 67:47:01:15. DSS pays at most actual allowable costs less the household contribution under section 67:47:01:16. DSS caps reimbursement at the public hourly charge or the provider's weekly bill in its provider guide. DSS applies that ceiling to the infant and toddler enhancement on its family rate sheet.
+    other: DSS checked no when asked whether it reduces payments if the private charge falls below its reimbursement ceiling. DSS also caps the infant and toddler enhancement at the public charge and describes hourly payments before its future weekly system in the same plan.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/cca/sd_cca.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10815
+  state: ruled
+  note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
