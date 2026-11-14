@@ -801,8 +801,10 @@
     meets_school_meal_categorical_eligibility: false
     school_meal_tier: PAID
 
-# 45,000 wages + 7 * max(-1, 0) = 45,000.
-- name: A parent reports -1 in each business source and schools floor each source.
+# Five groups: nonfarm self-employment (Schedule C and SSTB), rental (property
+# and farm rent), farm operations, partnership/S-corporation and estate.
+# 45,000 wages + max(-1 - 1, 0) + max(-1 - 1, 0) + 3 * max(-1, 0) = 45,000.
+- name: A parent reports a 1-dollar loss in each business source and no business income counts.
   period: 2026
   input:
     people:
@@ -839,8 +841,8 @@
   output:
     school_meal_countable_income: 45_000
 
-# 45,000 wages + 7 * max(0, 0) = 45,000.
-- name: A parent reports 0 in each business source and schools floor each source.
+# 45,000 wages + max(0 + 0, 0) + max(0 + 0, 0) + 3 * max(0, 0) = 45,000.
+- name: A parent reports zero in each business source and no business income counts.
   period: 2026
   input:
     people:
@@ -877,8 +879,8 @@
   output:
     school_meal_countable_income: 45_000
 
-# 45,000 wages + 7 * max(1, 0) = 45,007.
-- name: A parent reports 1 in each business source and schools floor each source.
+# 45,000 wages + max(1 + 1, 0) + max(1 + 1, 0) + 3 * max(1, 0) = 45,007.
+- name: A parent reports 1 dollar in each business source and schools count 7 dollars.
   period: 2026
   input:
     people:
@@ -915,7 +917,9 @@
   output:
     school_meal_countable_income: 45_007
 
-# 45,000 wages + 7 * (max(-100, 0) + max(40, 0)) = 45,280.
+# Parent: max(-100 - 100, 0) + max(-100 - 100, 0) + 3 * max(-100, 0) = 0.
+# Other adult: max(40 + 40, 0) + max(40 + 40, 0) + 3 * max(40, 0) = 280.
+# 45,000 wages + 0 + 280 = 45,280.
 - name: A parent has losses and another adult has gains in the same business sources.
   period: 2026
   input:
@@ -964,8 +968,11 @@
   output:
     school_meal_countable_income: 45_280
 
-# The parent contributes 3 * 40; the other adult contributes 4 * 40.
-# 45,000 wages + (3 + 4) * 40 = 45,280.
+# Parent: max(-100 + 40, 0) self-employment + max(-100 - 100, 0) rental
+# + 40 farm operations + 40 partnership + max(-100, 0) estate = 80.
+# Other adult: max(40 - 100, 0) self-employment + max(40 + 40, 0) rental
+# + max(-100, 0) farm operations + max(-100, 0) partnership + 40 estate = 120.
+# 45,000 wages + 80 + 120 = 45,200.
 - name: Two adults have gains and losses in different business sources.
   period: 2026
   input:
@@ -1012,7 +1019,77 @@
         members: [parent, child, other_adult]
         state_code: TN
   output:
-    school_meal_countable_income: 45_280
+    school_meal_countable_income: 45_200
+
+# One person's two kinds of nonfarm self-employment income net before the floor.
+# 30,000 wages + max(10,000 - 10,000, 0) = 30,000.
+# 30,000 / 21,640 = 1.386, below the 40,034 reduced-price limit.
+- name: A parent's SSTB loss offsets their other nonfarm self-employment gain.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income_before_lsr: 30_000
+        self_employment_income_before_lsr: 10_000
+        sstb_self_employment_income_before_lsr: -10_000
+      child:
+        age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 30_000
+    school_meal_tier: REDUCED
+
+# One person's property rental loss offsets their farm rent before the floor.
+# 30,000 wages + max(-4,000 + 6,000, 0) = 32,000.
+- name: A parent's rental loss offsets their farm rent.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income_before_lsr: 30_000
+        rental_income: -4_000
+        farm_rent_income: 6_000
+      child:
+        age: 10
+    families:
+      family:
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      child_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TN
+  output:
+    school_meal_countable_income: 32_000
 
 # Federal SSI = 12 * 994 = 11,928.
 # Wisconsin SSP = 4 * 83.78 + 8 * 92.16 = 1,072.40.

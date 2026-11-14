@@ -19,6 +19,14 @@ BUSINESS_SOURCES = (
     "partnership_s_corp_income",
     "estate_income",
 )
+# Each person's sources net within these income categories before the floor.
+NET_INCOME_CATEGORIES = (
+    ("self_employment_income", "sstb_self_employment_income"),
+    ("rental_income", "farm_rent_income"),
+    ("farm_operations_income",),
+    ("partnership_s_corp_income",),
+    ("estate_income",),
+)
 ADDED_CASH_SOURCES = (
     "alimony_income",
     "workers_compensation",
@@ -119,7 +127,8 @@ business_people = st.fixed_dictionaries(
 @given(
     st.lists(st.lists(business_people, min_size=1, max_size=3), min_size=1, max_size=4)
 )
-def test_business_losses_cannot_offset_any_person_or_income_source(households):
+def test_business_losses_cannot_offset_another_category_or_person(households):
+    assert sorted(sum(NET_INCOME_CATEGORIES, ())) == sorted(BUSINESS_SOURCES)
     actual = _income([{"people": people} for people in households])
     wages = np.array(
         [sum(person["employment_income"] for person in people) for people in households]
@@ -127,9 +136,9 @@ def test_business_losses_cannot_offset_any_person_or_income_source(households):
     business = np.array(
         [
             sum(
-                max(person[source], 0)
+                max(sum(person[source] for source in category), 0)
                 for person in people
-                for source in BUSINESS_SOURCES
+                for category in NET_INCOME_CATEGORIES
             )
             for people in households
         ]

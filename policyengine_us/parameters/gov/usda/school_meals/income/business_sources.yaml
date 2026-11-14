@@ -1,15 +1,13 @@
 description: >-
-  USDA counts these business, rental and pass-through income sources for school
-  meals after treating each person's losses as zero. PolicyEngine retains
-  component netting within each person's partnership/S-corporation and
-  estate/trust aggregate.
+  PolicyEngine counts each person's net income from these business, rental and
+  pass-through sources for school meals, and treats a person's net loss in any
+  one source as zero. The nonfarm self-employment total combines both kinds of
+  Schedule C income, and net rental income combines property and farm rent.
 values:
   2009-01-01:
-    - self_employment_income
-    - sstb_self_employment_income
-    - rental_income
+    - total_self_employment_income
+    - school_meal_net_rental_income
     - farm_operations_income
-    - farm_rent_income
     - partnership_s_corp_income
     - estate_income
 metadata:
