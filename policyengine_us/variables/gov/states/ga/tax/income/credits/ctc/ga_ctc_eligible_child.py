@@ -9,7 +9,8 @@ class ga_ctc_eligible_child(Variable):
     defined_for = StateCode.GA
     reference = (
         "https://gov.georgia.gov/document/2025-signed-legislation/hb-136/download#page=3",
-        "https://www.law.cornell.edu/uscode/text/26/24#c",
+        # IRC 24(c).
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartA-sec24.htm",
         # Georgia Department of Revenue, Qualifying Child Credit (tax years
         # beginning on or after January 1, 2026).
         "https://dor.georgia.gov/qualifying-child-credit",
