@@ -10918,9 +10918,6 @@ candidates:
   - kind: manual
     citation: SC DSS TANF Policy Manual Vol. 67 section 4.10
     url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=75
-  - kind: manual
-    citation: SC DSS TANF Policy Manual Vol. 65 section 4.10
-    url: https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=74
   readings:
     statute: No statute is supplied; 114-1130(E) permits the extension from under eighteen to under nineteen only for
       full-time students in secondary school or an equivalent level of vocational or technical training.
@@ -10939,7 +10936,8 @@ candidates:
   note: The regulation governs. The model uses is_in_secondary_school, which includes equivalent-level training, for
     the under-nineteen extension. This entry addresses school level only; it does not resolve the manual's unmarried
     condition or change the model's head-of-household inference. Volume 65, effective October 1, 2024, has the same
-    section 4.10 text as Volume 67, so the difference dates from fiscal 2025 at the latest.
+    section 4.10 text as Volume 67 (https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=74), so
+    the difference dates from fiscal 2025 at the latest.
 - id: us-sc:tanf-gross-income-limit-cents
   program: tanf
   years:
