@@ -434,3 +434,39 @@
         state_code: MT
   output:
     mt_itemized_deductions_joint: [19_900, 0, 0]
+
+# 2017 Form 2 instructions, Schedule III, line 20 (PDF p. 30): complete federal
+# Form 4684 using Montana AGI in place of federal AGI.
+# gov.irs.deductions.itemized.casualty.active is true through 2017, so this
+# case sets no reform input.
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
+
+- name: A couple's ordinary casualty loss counts once on a 2017 joint return
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        casualty_loss: 30_000
+        mt_salt_deduction: 0
+      person2:
+        age: 40
+        employment_income: 40_000
+        mt_salt_deduction: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_federal_income_tax_deduction_unit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Form 4684 lines 11 and 17 with Montana AGI:
+    # (30,000 - 100) - 10% x 100,000 = 19,900, counted once.
+    # Adding the federal deduction of 30,000 - 10% x 100,000 = 20,000 for
+    # each spouse would give 19,900 + 2 x 20,000 = 59,900.
+    mt_itemized_deductions_joint: [19_900, 0]
+    # Wages of 60,000 + 40,000, with no Montana additions or subtractions.
+    mt_agi_joint: 100_000

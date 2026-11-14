@@ -219,3 +219,40 @@
     # (30,000 - 100) - 10% x 60,000 Montana AGI in the head's column; none for
     # the spouse.
     mt_itemized_deductions_indiv: [23_900, 0]
+
+# 2017 Form 2 instructions, Schedule III, line 20 (PDF p. 30): spouses filing
+# separately each complete their own Form 4684 using their own Montana AGI.
+# gov.irs.deductions.itemized.casualty.active is true through 2017, so this
+# case sets no reform input.
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
+
+- name: Only the spouse who had an ordinary casualty loss deducts it when filing separately in 2017
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        casualty_loss: 30_000
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+      person2:
+        age: 40
+        employment_income: 40_000
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Form 4684 lines 11 and 17 with the head's Montana AGI:
+    # (30,000 - 100) - 10% x 60,000 = 23,900; none for the spouse.
+    # Adding the federal deduction of 30,000 - 10% x 100,000 = 20,000 to
+    # each column would give [43,900, 20,000].
+    mt_itemized_deductions_indiv: [23_900, 0]
+    # Each spouse's own wages, with no Montana additions or subtractions.
+    mt_agi_indiv: [60_000, 40_000]
