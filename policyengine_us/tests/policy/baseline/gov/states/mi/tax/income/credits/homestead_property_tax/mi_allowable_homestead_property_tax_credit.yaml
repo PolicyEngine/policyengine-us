@@ -148,3 +148,64 @@
   output:
     # $100 * 0.6 = $60 (well below cap)
     mi_allowable_homestead_property_tax_credit: 60
+
+# Isolated cap component: eligibility and line 35 amounts are premises.
+# 2017 MI-1040CR, line 39: maximum $1,200 for disabled claimants.
+# https://www.legislature.mi.gov/Publications/TaxpayerGuide-2018.pdf#page=32
+- name: Case 8, 2017 isolated disabled cap boundary vector.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: [MI, MI, MI]
+    mi_homestead_property_tax_credit_eligible: [true, true, true]
+    disabled_tax_unit_head_or_spouse: [true, true, true]
+    mi_is_senior_for_tax: [false, false, false]
+    mi_household_resources: [0, 0, 0]
+    mi_homestead_property_tax_credit_household_resource_exemption: [1_199, 1_200, 1_201]
+  output:
+    mi_allowable_homestead_property_tax_credit: [1_199, 1_200, 1_200]
+
+# Isolated cap component: eligibility and the line 40 amount are premises.
+# 2017 MI-1040CR, line 41: $2,500 * 60% = $1,500, capped at $1,200.
+- name: Case 9, 2017 isolated ordinary claimant cap.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: MI
+    mi_homestead_property_tax_credit_eligible: true
+    disabled_tax_unit_head_or_spouse: false
+    mi_is_senior_for_tax: false
+    mi_household_resources: 0
+    mi_homestead_property_tax_credit_household_resource_exemption: 2_500
+  output:
+    mi_allowable_homestead_property_tax_credit: 1_200
+
+# Isolated cap component: senior eligibility and the ordinary award are premises.
+# 2017 MI-1040CR, line 44 note: the alternate senior award cannot exceed $1,200.
+- name: Case 10, 2017 isolated alternate senior claimant cap.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: MI
+    mi_homestead_property_tax_credit_eligible: true
+    mi_is_senior_for_tax: true
+    mi_household_resources: 0
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
+    rent: 1_500
+  output:
+    mi_homestead_property_tax_credit_alternate_senior_amount: 1_200
+
+# MCL 206.520(15): the maximum increases to $1,500 for the 2018 tax year.
+# https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-520
+- name: Case 11, 2018 isolated disabled claimant cap remains unchanged.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: MI
+    mi_homestead_property_tax_credit_eligible: true
+    disabled_tax_unit_head_or_spouse: true
+    mi_is_senior_for_tax: false
+    mi_household_resources: 0
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_600
+  output:
+    mi_allowable_homestead_property_tax_credit: 1_500
