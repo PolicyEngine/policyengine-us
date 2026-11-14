@@ -1,1 +1,0 @@
-New York child care assistance now requires a public assistance family to work, study, take part in a required activity or meet another reason for care. It also waives the family share for preventive care and child-only units.

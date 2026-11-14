@@ -1,3 +1,14 @@
+## [2.122.0] - 2026-11-14
+
+### Added
+
+- Added New York child care inputs for Safety Net Assistance, veteran assistance, required activities, child-only units, preventive care and Title XX authorization, and a Title XX route for an authorized preventive child who meets the age test.
+
+### Fixed
+
+- New York child care assistance now requires a public assistance family to work, study, take part in a required activity or meet another reason for care. It also waives the family share for preventive care and child-only units.
+
+
 ## [2.121.7] - 2026-11-14
 
 ### Changed
