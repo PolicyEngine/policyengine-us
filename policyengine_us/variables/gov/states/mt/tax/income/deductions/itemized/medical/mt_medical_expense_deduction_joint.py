@@ -45,13 +45,27 @@ class mt_medical_expense_deduction_joint(Variable):
                 period,
             ):
                 # Supplied amounts use the pooled filer-first split.
-                excluded = tax_unit(
-                    "itemized_medical_expenses_applied_exclusion", period
+                excluded = max_(
+                    0,
+                    tax_unit("itemized_medical_expenses_applied_exclusion", period),
                 )
-                medical_exclusion = min_(filer_premiums, max_(0, excluded))
-                if not supplied_subtotal:
-                    medical_exclusion += tax_unit(
-                        "itemized_medical_expenses_excluded_dependent_premiums", period
+                dependent_exclusion = tax_unit(
+                    "itemized_medical_expenses_excluded_dependent_premiums", period
+                )
+                if supplied_subtotal:
+                    # The exclusion supplied with a subtotal holds every
+                    # premium that subtotal leaves out. Take the medical
+                    # premiums first: up to the filers' premiums plus the
+                    # medical premiums the dependents deducted. The rest
+                    # covered long-term care premiums.
+                    medical_exclusion = min_(
+                        filer_premiums + dependent_exclusion, excluded
+                    )
+                else:
+                    # Beside a computed subtotal, a supplied exclusion covers
+                    # the filers only, so add the dependents' exclusion.
+                    medical_exclusion = (
+                        min_(filer_premiums, excluded) + dependent_exclusion
                     )
             else:
                 medical_exclusion = add(
