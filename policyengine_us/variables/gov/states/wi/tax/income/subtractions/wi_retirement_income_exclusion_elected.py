@@ -2,6 +2,15 @@ from policyengine_us.model_api import *
 
 
 class wi_retirement_income_exclusion_elected(Variable):
+    """Honor source-verified actual selections before the default tax comparison.
+
+    An actual valid retirement claim prevails over a prohibited veterans claim;
+    otherwise an active veterans election is retained even with unknown or zero
+    taxes. Unaffected returns retain automatic optimization. Direct inputs to
+    this derived helper can bypass these rules and are outside certified use
+    when they contradict the source-qualified claim facts.
+    """
+
     value_type = bool
     entity = TaxUnit
     label = "Wisconsin retirement income exclusion is elected"
@@ -10,6 +19,7 @@ class wi_retirement_income_exclusion_elected(Variable):
         "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/6/b/54m/d",
         "https://docs.legis.wisconsin.gov/2025/related/acts/174.pdf#page=2",
         "https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleSB-Inst.pdf#page=7",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/6e",
     )
     defined_for = StateCode.WI
 
@@ -39,3 +49,18 @@ class wi_retirement_income_exclusion_elected(Variable):
         line16 = tax_unit("wi_retirement_income_exclusion_amount", period)
         # Keep the standard path on a tie and require qualifying income.
         return (line16 > 0) & (exclusion_net < standard_net)
+
+    def formula_2025_01_01(tax_unit, period, parameters):
+        actual_retirement_claim = tax_unit(
+            "wi_veterans_property_tax_credit_retirement_income_exclusion_claimed",
+            period,
+        )
+        veterans_election = tax_unit("wi_veterans_property_tax_credit_eligible", period)
+        automatic_election = wi_retirement_income_exclusion_elected.formula(
+            tax_unit, period, parameters
+        )
+        return where(
+            actual_retirement_claim,
+            True,
+            where(veterans_election, False, automatic_election),
+        )

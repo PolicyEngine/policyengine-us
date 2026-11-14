@@ -1,0 +1,49 @@
+# Independent source expectations: Wis. Stat.71.07(6e), 2025 Form1 instructions pp13,27-30.
+# Evidence and approved SHAREDv3 ten-input/six-output contract: wi/independent-test-design.md and scope-approved.md.
+
+# Rows: unknown facts; unknown type; known ineligible; zero tax; unknown tax; known no certification; contradictory spouse claim.
+# A known failure can be available. A valid spouse claim plus an actual incompatible family claim is contradictory.
+- name: Case 1, known legal status is independent of amount and differs from unavailable or contradictory facts.
+  period: 2025
+  input:
+    state_code: [WI, WI, WI, WI, WI, WI, WI]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [3_000, 3_000, 3_000, 0, -1, 3_000, 3_000]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, UNKNOWN, NOT_ELIGIBLE, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true, true, true, true, false, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_elected: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false, false, false, false, true]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, VALID_CLAIM]
+    wi_veterans_property_tax_credit_facts_available: [false, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false, false, false, false, false]
+    age: [35, 35, 35, 35, 35, 35, 35]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SEPARATE]
+  output:
+    wi_veterans_property_tax_credit_eligibility_available: [false, false, true, true, true, true, false]
+
+# Accepted consistency rule: valid counterpart claim and an actual family incompatible claim cannot both be legally operative.
+# All six outputs remain unavailable/framework0; this does not adjudicate which filed claim prevails.
+- name: Case 2, a contradictory supplied family record leaves all six outputs unavailable.
+  period: 2025
+  input:
+    state_code: WI
+    age: 35
+    filing_status: SEPARATE
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: false
+    wi_veterans_property_tax_credit_qualified_property_taxes: 3_000
+    wi_veterans_property_tax_credit_claimant_type: ELIGIBLE_VETERAN
+    wi_veterans_property_tax_credit_wdva_verified: true
+    wi_veterans_property_tax_credit_property_qualified: true
+    wi_veterans_property_tax_credit_claim_permitted: true
+    wi_veterans_property_tax_credit_elected: true
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: true
+    wi_veterans_property_tax_credit_spouse_claim_status: VALID_CLAIM
+    wi_veterans_property_tax_credit_facts_available: true
+  output:
+    wi_veterans_property_tax_credit_eligibility_available: false
+    wi_veterans_property_tax_credit_inputs_available: false
+    wi_veterans_property_tax_credit_eligible: false
+    wi_veterans_property_tax_credit: 0
+    wi_veterans_property_tax_credit_incompatible_credits_disallowed: false
+    wi_veterans_property_tax_credit_coordination_available: false

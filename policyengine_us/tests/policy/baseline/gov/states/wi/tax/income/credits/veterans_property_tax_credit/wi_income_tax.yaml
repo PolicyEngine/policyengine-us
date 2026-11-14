@@ -1,0 +1,340 @@
+# Independent source expectations: Wis. Stat.71.07(6e), 2025 Form1 instructions pp13,27-30.
+# Evidence and approved SHAREDv3 ten-input/six-output contract: wi/independent-test-design.md and scope-approved.md.
+# Conditional final-tax arithmetic from actual2025Form1 pp2-3; upstream pre-credit tax is supplied explicitly.
+
+# Statute(b)/Form1 lines22/34/37-43: net tax before refunds minus3000; zero floor applies before refundable credits only.
+# School otherwise has12%of the first2500=300but is excluded by actual veterans election. No second cash benefit.
+- name: Case 1, the credit offsets tax and refunds the excess once.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WI, WI, WI]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [3_000, 3_000, 3_000]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true]
+    wi_veterans_property_tax_credit_elected: [true, true, true]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED]
+    wi_veterans_property_tax_credit_facts_available: [true, true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false]
+    age: [35, 35, 35]
+    real_estate_taxes: [3_000, 3_000, 3_000]
+    rent: [0, 0, 0]
+    wi_homestead_income: [30_000, 30_000, 30_000]
+    wi_itemized_deduction_credit: [0, 0, 0]
+    wi_childcare_expense_credit: [0, 0, 0]
+    wi_married_couple_credit: [0, 0, 0]
+    wi_earned_income_credit: [0, 0, 0]
+    wi_income_tax_before_credits: [0, 1_000, 5_000]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+  output:
+    wi_veterans_property_tax_credit: [3_000, 3_000, 3_000]
+    wi_property_tax_credit_potential: [0, 0, 0]
+    wi_property_tax_credit: [0, 0, 0]
+    wi_non_refundable_credits: [0, 0, 0]
+    wi_homestead_credit: [0, 0, 0]
+    wi_refundable_credits: [3_000, 3_000, 3_000]
+    wi_income_tax_before_refundable_credits: [0, 1_000, 5_000]
+    wi_income_tax: [-3_000, -2_000, 2_000]
+    state_property_tax_refunds: [0, 0, 0]
+
+# First row: no veterans family claim, School300offsets1000to700.
+# Second row: valid counterpart veterans claim excludes School although current own veterans amount/election is0.
+- name: Case 2, a lawful alternative election differs from a separate-return counterpart prohibition.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [WI, WI]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [3_000, 3_000]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true]
+    wi_veterans_property_tax_credit_elected: [false, false]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, VALID_CLAIM]
+    wi_veterans_property_tax_credit_facts_available: [true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false]
+    age: [35, 35]
+    real_estate_taxes: [3_000, 3_000]
+    rent: [0, 0]
+    wi_homestead_income: [30_000, 30_000]
+    wi_itemized_deduction_credit: [0, 0]
+    wi_childcare_expense_credit: [0, 0]
+    wi_married_couple_credit: [0, 0]
+    wi_earned_income_credit: [0, 0]
+    wi_income_tax_before_credits: [1_000, 1_000]
+    filing_status: [SINGLE, SEPARATE]
+  output:
+    wi_veterans_property_tax_credit: [0, 0]
+    wi_property_tax_credit_potential: [300, 0]
+    wi_property_tax_credit: [300, 0]
+    wi_non_refundable_credits: [300, 0]
+    wi_refundable_credits: [0, 0]
+    wi_income_tax: [700, 1_000]
+    state_property_tax_refunds: [0, 0]
+
+# Age35and no retirement distributions cannot elect the age67retirement subtraction.
+# Leave the retirement election computed;1000-3000=-2000. This must exercise the real selection dependency.
+- name: Case 3, the computed retirement election remains acyclic for a young claimant.
+  period: 2025
+  input:
+    state_code: WI
+    wi_veterans_property_tax_credit_qualified_property_taxes: 3_000
+    wi_veterans_property_tax_credit_claimant_type: ELIGIBLE_VETERAN
+    wi_veterans_property_tax_credit_wdva_verified: true
+    wi_veterans_property_tax_credit_property_qualified: true
+    wi_veterans_property_tax_credit_claim_permitted: true
+    wi_veterans_property_tax_credit_elected: true
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: false
+    wi_veterans_property_tax_credit_spouse_claim_status: NOT_CLAIMED
+    wi_veterans_property_tax_credit_facts_available: true
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: false
+    age: 35
+    real_estate_taxes: 3_000
+    rent: 0
+    wi_homestead_income: 30_000
+    wi_itemized_deduction_credit: 0
+    wi_childcare_expense_credit: 0
+    wi_married_couple_credit: 0
+    wi_earned_income_credit: 0
+    wi_income_tax_before_credits: 1_000
+    filing_status: SINGLE
+  output:
+    wi_veterans_property_tax_credit: 3_000
+    wi_retirement_income_exclusion_elected: false
+    wi_property_tax_credit_potential: 0
+    wi_refundable_credits: 3_000
+    wi_income_tax: -2_000
+    state_property_tax_refunds: 0
+
+# Section71.05(6)(b)54m.d prohibits71.07credits. Both years retain the restricted list without veterans.
+# Explicit upstream retirement-branch tax1000is a conditional worksheet fact, not derived from invented wages.
+- name: Case 4, the retirement-elected branch does not publish or aggregate the forbidden veterans credit.
+  period: 2025
+  input:
+    state_code: WI
+    wi_veterans_property_tax_credit_qualified_property_taxes: 3_000
+    wi_veterans_property_tax_credit_claimant_type: ELIGIBLE_VETERAN
+    wi_veterans_property_tax_credit_wdva_verified: true
+    wi_veterans_property_tax_credit_property_qualified: true
+    wi_veterans_property_tax_credit_claim_permitted: true
+    wi_veterans_property_tax_credit_elected: true
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: false
+    wi_veterans_property_tax_credit_spouse_claim_status: NOT_CLAIMED
+    wi_veterans_property_tax_credit_facts_available: true
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: true
+    taxable_pension_income: 24_000
+    age: 70
+    real_estate_taxes: 3_000
+    rent: 0
+    wi_homestead_income: 30_000
+    wi_itemized_deduction_credit: 0
+    wi_childcare_expense_credit: 0
+    wi_married_couple_credit: 0
+    wi_earned_income_credit: 0
+    wi_retirement_income_exclusion_tax: 1_000
+    wi_income_tax_before_credits: 2_000
+    filing_status: SINGLE
+  output:
+    wi_veterans_property_tax_credit: 0
+    wi_veterans_property_tax_credit_eligibility_available: true
+    wi_veterans_property_tax_credit_inputs_available: true
+    wi_retirement_income_exclusion_elected: true
+    wi_refundable_credits: 0
+    wi_income_tax_before_refundable_credits: 1_000
+    wi_income_tax: 1_000
+    state_property_tax_refunds: 0
+
+# Section71.05(6)(b)54m.d prohibits71.07credits. Both years retain the restricted list without veterans.
+# Explicit upstream retirement-branch tax1000is a conditional worksheet fact, not derived from invented wages.
+- name: Case 5, the retirement-elected branch does not publish or aggregate the forbidden veterans credit.
+  period: 2026
+  input:
+    state_code: WI
+    wi_veterans_property_tax_credit_qualified_property_taxes: 3_000
+    wi_veterans_property_tax_credit_claimant_type: ELIGIBLE_VETERAN
+    wi_veterans_property_tax_credit_wdva_verified: true
+    wi_veterans_property_tax_credit_property_qualified: true
+    wi_veterans_property_tax_credit_claim_permitted: true
+    wi_veterans_property_tax_credit_elected: true
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: false
+    wi_veterans_property_tax_credit_spouse_claim_status: NOT_CLAIMED
+    wi_veterans_property_tax_credit_facts_available: true
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: true
+    taxable_pension_income: 24_000
+    age: 70
+    real_estate_taxes: 3_000
+    rent: 0
+    wi_homestead_income: 30_000
+    wi_itemized_deduction_credit: 0
+    wi_childcare_expense_credit: 0
+    wi_married_couple_credit: 0
+    wi_earned_income_credit: 0
+    wi_retirement_income_exclusion_tax: 1_000
+    wi_income_tax_before_credits: 2_000
+    filing_status: SINGLE
+  output:
+    wi_veterans_property_tax_credit: 0
+    wi_veterans_property_tax_credit_eligibility_available: true
+    wi_veterans_property_tax_credit_inputs_available: true
+    wi_retirement_income_exclusion_elected: true
+    wi_refundable_credits: 0
+    wi_income_tax_before_refundable_credits: 1_000
+    wi_income_tax: 1_000
+    state_property_tax_refunds: 0
+
+# A valid actual veterans election controls the return even when zero/unknown tax makes its amount0.
+# Qualifying pension24000and an alternative exclusion tax0must not silently override that known election.
+- name: Case 6, active zero or unknown-dollar veterans claims keep the actual return choice.
+  period: 2025
+  input:
+    state_code: [WI, WI]
+    age: [70, 70]
+    filing_status: [SINGLE, SINGLE]
+    taxable_pension_income: [24_000, 24_000]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [0, -1]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true]
+    wi_veterans_property_tax_credit_elected: [true, true]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED]
+    wi_veterans_property_tax_credit_facts_available: [true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false]
+    real_estate_taxes: [3_000, 3_000]
+    wi_homestead_income: [30_000, 30_000]
+    wi_itemized_deduction_credit: [0, 0]
+    wi_childcare_expense_credit: [0, 0]
+    wi_married_couple_credit: [0, 0]
+    wi_earned_income_credit: [0, 0]
+    wi_income_tax_before_credits: [1_000, 1_000]
+    wi_retirement_income_exclusion_tax: [0, 0]
+  output:
+    wi_veterans_property_tax_credit: [0, 0]
+    wi_veterans_property_tax_credit_eligible: [true, true]
+    wi_veterans_property_tax_credit_inputs_available: [true, false]
+    wi_retirement_income_exclusion_elected: [false, false]
+    wi_property_tax_credit_potential: [0, 0]
+    wi_refundable_credits: [0, 0]
+    wi_income_tax: [1_000, 1_000]
+
+# Hypothetical rate0does not undo the legally operative veterans election or trigger tax-minimizing retirement selection.
+- name: Case 7, a zero-rate reform retains the actual veterans return election.
+  period: 2025
+  input:
+    state_code: WI
+    age: 70
+    filing_status: SINGLE
+    taxable_pension_income: 24_000
+    wi_veterans_property_tax_credit_qualified_property_taxes: 3_000
+    wi_veterans_property_tax_credit_claimant_type: ELIGIBLE_VETERAN
+    wi_veterans_property_tax_credit_wdva_verified: true
+    wi_veterans_property_tax_credit_property_qualified: true
+    wi_veterans_property_tax_credit_claim_permitted: true
+    wi_veterans_property_tax_credit_elected: true
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: false
+    wi_veterans_property_tax_credit_spouse_claim_status: NOT_CLAIMED
+    wi_veterans_property_tax_credit_facts_available: true
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: false
+    gov.states.wi.tax.income.credits.veterans_property_tax_credit.rate: 0
+    real_estate_taxes: 3_000
+    wi_homestead_income: 30_000
+    wi_itemized_deduction_credit: 0
+    wi_childcare_expense_credit: 0
+    wi_married_couple_credit: 0
+    wi_earned_income_credit: 0
+    wi_income_tax_before_credits: 1_000
+    wi_retirement_income_exclusion_tax: 0
+  output:
+    wi_veterans_property_tax_credit: 0
+    wi_veterans_property_tax_credit_eligible: true
+    wi_retirement_income_exclusion_elected: false
+    wi_property_tax_credit_potential: 0
+    wi_income_tax: 1_000
+
+# Controlled upstream worksheet fixture:804is independently verified2025TableB[1000,1010), physicalp26.
+# It is NOT a verified2026annualTableBaward; the2026test isolates permitted-refund-list composition.
+# Actual eligibility stays computed. Input804does not test the unchanged nativeHomestead amount algorithm (Axiomissue2031).
+- name: Case 8, the 2026 retirement branch includes an explicitly supplied upstream Homestead amount.
+  period: 2026
+  input:
+    state_code: WI
+    age: 70
+    taxable_pension_income: 8_000
+    ssi: 0
+    wi_veterans_property_tax_credit_qualified_property_taxes: 1_000
+    wi_veterans_property_tax_credit_claimant_type: ELIGIBLE_VETERAN
+    wi_veterans_property_tax_credit_wdva_verified: true
+    wi_veterans_property_tax_credit_property_qualified: true
+    wi_veterans_property_tax_credit_claim_permitted: true
+    wi_veterans_property_tax_credit_elected: true
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: false
+    wi_veterans_property_tax_credit_facts_available: true
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: true
+    real_estate_taxes: 1_000
+    wi_homestead_income: 8_000
+    wi_itemized_deduction_credit: 0
+    wi_childcare_expense_credit: 0
+    wi_married_couple_credit: 0
+    wi_earned_income_credit: 0
+    wi_income_tax_before_credits: 1_000
+    wi_retirement_income_exclusion_tax: 1_000
+    filing_status: SINGLE
+    wi_veterans_property_tax_credit_spouse_claim_status: NOT_CLAIMED
+    wi_homestead_credit: 804
+  output:
+    wi_veterans_property_tax_credit: 0
+    wi_veterans_property_tax_credit_eligibility_available: true
+    wi_veterans_property_tax_credit_inputs_available: true
+    wi_veterans_property_tax_credit_eligible: false
+    wi_retirement_income_exclusion_elected: true
+    wi_homestead_eligible: true
+    wi_refundable_credits: 804
+    wi_income_tax_before_refundable_credits: 1_000
+    wi_income_tax: 196
+    state_property_tax_refunds: 0
+
+# Counterpart valid veterans claim independently prohibitsHomestead even on the2026permitted-retirement branch.
+# No Homestead amount or eligibility input is supplied: the actual gate must yieldfalseand credit0.
+- name: Case 9, a counterpart veterans claim blocks the actual 2026 Homestead gate.
+  period: 2026
+  input:
+    state_code: WI
+    age: 70
+    taxable_pension_income: 8_000
+    ssi: 0
+    wi_veterans_property_tax_credit_qualified_property_taxes: 1_000
+    wi_veterans_property_tax_credit_claimant_type: ELIGIBLE_VETERAN
+    wi_veterans_property_tax_credit_wdva_verified: true
+    wi_veterans_property_tax_credit_property_qualified: true
+    wi_veterans_property_tax_credit_claim_permitted: true
+    wi_veterans_property_tax_credit_elected: true
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: false
+    wi_veterans_property_tax_credit_facts_available: true
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: true
+    real_estate_taxes: 1_000
+    wi_homestead_income: 8_000
+    wi_itemized_deduction_credit: 0
+    wi_childcare_expense_credit: 0
+    wi_married_couple_credit: 0
+    wi_earned_income_credit: 0
+    wi_income_tax_before_credits: 1_000
+    wi_retirement_income_exclusion_tax: 1_000
+    filing_status: SEPARATE
+    wi_veterans_property_tax_credit_spouse_claim_status: VALID_CLAIM
+  output:
+    wi_veterans_property_tax_credit: 0
+    wi_veterans_property_tax_credit_eligibility_available: true
+    wi_veterans_property_tax_credit_inputs_available: true
+    wi_veterans_property_tax_credit_eligible: false
+    wi_retirement_income_exclusion_elected: true
+    wi_homestead_eligible: false
+    wi_homestead_credit: 0
+    wi_refundable_credits: 0
+    wi_income_tax_before_refundable_credits: 1_000
+    wi_income_tax: 1_000
+    state_property_tax_refunds: 0

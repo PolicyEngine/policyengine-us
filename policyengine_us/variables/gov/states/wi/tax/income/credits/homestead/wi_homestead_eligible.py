@@ -15,6 +15,8 @@ class wi_homestead_eligible(Variable):
         "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/53/2",
         "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/54",
         "https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52/1g",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/6e/c/2",
+        "https://www.revenue.wi.gov/TaxForms2025/2025-Form1-Inst.pdf#page=27",
     )
     defined_for = StateCode.WI
 
@@ -42,3 +44,11 @@ class wi_homestead_eligible(Variable):
         income_eligible = homestead_income < p.max_income
         # overall eligibility
         return tax_unit.any(eligible_claimant) & income_eligible
+
+    def formula_2025_01_01(tax_unit, period, parameters):
+        eligible = wi_homestead_eligible.formula(tax_unit, period, parameters)
+        disallowed = tax_unit(
+            "wi_veterans_property_tax_credit_incompatible_credits_disallowed",
+            period,
+        )
+        return eligible & ~disallowed

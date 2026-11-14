@@ -1,0 +1,37 @@
+# The diagnostic reports the refundable income-tax credit once; it adds no
+# separate property-tax cash refund. Wis. Stat. 71.07(6e)(b), 2025 Form 1 line 34.
+# Explicit worksheet input isolates composition; component eligibility and
+# source-qualified paid-tax arithmetic have separate source-derived tests.
+- name: Case 1, the 2025 diagnostic reports the veterans credit once without a cash refund.
+  period: 2025
+  input:
+    state_code: WI
+    wi_veterans_property_tax_credit: 3_000
+    wi_homestead_credit: 0
+    wi_property_tax_credit: 0
+    wi_earned_income_credit: 0
+    wi_income_tax_before_refundable_credits: 1_000
+    wi_retirement_income_exclusion_amount: 0
+  output:
+    taxsim_state_property_tax_credit: 3_000
+    state_property_tax_credit: 3_000
+    state_property_tax_refunds: 0
+    wi_refundable_credits: 3_000
+    wi_income_tax: -2_000
+
+- name: Case 2, the 2026 diagnostic retains the credit without adding a cash transfer.
+  period: 2026
+  input:
+    state_code: WI
+    wi_veterans_property_tax_credit: 3_000
+    wi_homestead_credit: 0
+    wi_property_tax_credit: 0
+    wi_earned_income_credit: 0
+    wi_income_tax_before_refundable_credits: 1_000
+    wi_retirement_income_exclusion_amount: 0
+  output:
+    taxsim_state_property_tax_credit: 3_000
+    state_property_tax_credit: 3_000
+    state_property_tax_refunds: 0
+    wi_refundable_credits: 3_000
+    wi_income_tax: -2_000
