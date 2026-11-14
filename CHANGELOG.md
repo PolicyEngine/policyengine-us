@@ -1,3 +1,10 @@
+## [2.121.6] - 2026-11-14
+
+### Fixed
+
+- Limited the inferred spouse's separation check to the head and selected spouse candidate.
+
+
 ## [2.121.5] - 2026-11-14
 
 ### Fixed
