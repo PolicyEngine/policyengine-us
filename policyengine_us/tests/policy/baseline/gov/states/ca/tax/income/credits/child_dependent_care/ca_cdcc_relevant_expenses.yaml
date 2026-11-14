@@ -156,7 +156,8 @@
     ca_dependent_care_assistance_exclusion: 5_000
     # min($12,000, $6,000 two-person 2020 limit - $5,000, $40,000) = $1,000.
     ca_cdcc_relevant_expenses: 1_000
-    # AGI $95,000: the 2020 rate is 35% less 1 point per $2,000 over $15,000,
+    # AGI $86,000 ($95,000 of employment_income less the $9,000 of excluded
+    # benefits): the 2020 rate is 35% less 1 point per $2,000 over $15,000,
     # floored at 20%. $1,000 x 20% = $200.
     ca_federal_cdcc: 200
     # California matches 34% for AGI over $70,000 and not over $100,000.
@@ -186,7 +187,8 @@
         members: [head, child1, child2]
         state_code: CA
   output:
-    # Treated as unmarried: federal min($6,000, $10,500, $50,000) = $6,000.
+    # Treated as unmarried: federal min($6,000, $10,500, $44,000) = $6,000,
+    # where $44,000 is the $50,000 of wages less the $6,000 of benefits.
     # California line 22 is $5,000 (FTB 3506 line 20 instructions), so the
     # state exclusion is $5,000 and its remaining limit is $1,000.
     # The federal $16,000 - $6,000 limit does not further reduce the base.
@@ -268,7 +270,8 @@
     # Using federal line 29 alone incorrectly gives a $1,000 California base.
     # https://www.ftb.ca.gov/forms/2021/2021-3506.pdf#page=2
     ca_cdcc_relevant_expenses: 500
-    # FTB 3506 lines 7-10: AGI $95,000 gives 20% and a 34% state match.
+    # FTB 3506 lines 7-10: AGI $89,000 ($95,000 of employment_income less the
+    # $6,000 of excluded benefits) gives 20% and a 34% state match.
     ca_federal_cdcc: 100
     ca_federal_capped_cdcc: 100
     ca_cdcc: 34

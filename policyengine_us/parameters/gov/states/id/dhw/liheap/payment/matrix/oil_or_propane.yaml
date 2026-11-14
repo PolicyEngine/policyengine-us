@@ -1,0 +1,40 @@
+description: Idaho provides this base oil or propane heating benefit by heating area and energy-burden group under the Low Income Home Energy Assistance Program.
+
+# Heating areas 1-3 correspond to Areas I-III in the published chart.
+# Energy-burden groups: 1 = low, 2 = medium, 3 = high.
+1:
+  1:
+    2025-10-01: 776
+  2:
+    2025-10-01: 808
+  3:
+    2025-10-01: 840
+2:
+  1:
+    2025-10-01: 970
+  2:
+    2025-10-01: 1_010
+  3:
+    2025-10-01: 1_050
+3:
+  1:
+    2025-10-01: 1_164
+  2:
+    2025-10-01: 1_212
+  3:
+    2025-10-01: 1_260
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Idaho LIHEAP base oil or propane heating benefit
+  breakdown:
+    - range(1, 4)
+    - range(1, 4)
+  breakdown_labels:
+    - Heating area
+    - Energy-burden group
+  reference:
+    - title: Idaho PY26 LIHEAP Benefit Determination Chart
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=1

@@ -1,0 +1,94 @@
+# Federal AGI leaves out the whole IRC 129 exclusion. California kept its
+# $5,000 cap for 2021 and from 2026, so the federal exclusion above
+# California's goes back into California AGI (Schedule CA (540), Part I,
+# line 1, column C).
+
+- name: 2021 federal $10,500 exclusion adds back $5,500 in California
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 60_000
+        dependent_care_employer_benefits: 10_500
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_childcare_expenses: 16_000
+    households:
+      household:
+        members: [head, child]
+        state_code: CA
+  output:
+    # Federal min($10,500, $10,500, $49,500) = $10,500; federal AGI
+    # $60,000 - $10,500 = $49,500.
+    dependent_care_assistance_exclusion: 10_500
+    adjusted_gross_income: 49_500
+    # California min($10,500, $5,000, earned income) = $5,000.
+    ca_dependent_care_assistance_exclusion: 5_000
+    # $10,500 - $5,000 = $5,500; California AGI $49,500 + $5,500 = $55,000.
+    ca_dependent_care_assistance_addition: 5_500
+    ca_agi: 55_000
+    ca_income_tax: 215.79
+
+- name: 2026 federal $7,500 exclusion adds back $2,500 in California
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 60_000
+        dependent_care_employer_benefits: 7_500
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_childcare_expenses: 16_000
+    households:
+      household:
+        members: [head, child]
+        state_code: CA
+  output:
+    # Federal min($7,500, $7,500, $52,500) = $7,500; federal AGI $52,500.
+    dependent_care_assistance_exclusion: 7_500
+    adjusted_gross_income: 52_500
+    ca_dependent_care_assistance_exclusion: 5_000
+    # $7,500 - $5,000 = $2,500; California AGI $52,500 + $2,500 = $55,000.
+    ca_dependent_care_assistance_addition: 2_500
+    ca_agi: 55_000
+
+- name: 2024 equal caps add nothing back for a part-time worker
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: CA
+  output:
+    # Federal min($5,000, $5,000, $1,000) = $1,000; federal AGI $1,000 of
+    # box 1 wages plus $4,000 of line 1e = $5,000. The model's California
+    # earned income keeps the benefits, so California's exclusion is $5,000;
+    # the addition is max($1,000 - $5,000, 0) = 0.
+    dependent_care_assistance_exclusion: 1_000
+    ca_dependent_care_assistance_addition: 0
+    ca_agi: 5_000

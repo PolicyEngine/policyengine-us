@@ -1,13 +1,13 @@
 # Supplied-record Social Security calculator
 
-The opt-in calculator implements design v3 D0, 4a-1 and the shared 4d core,
+The opt-in calculator implements design v3 D0, 4a-1, 4a-2 and the shared 4d core,
 including amendments M1–M4, the top-factor structure in M6 and M8. It returns
 **gross benefits before Medicare deductions**, from an identified worker record.
 Existing public benefit inputs continue to work independently.
 
 ## Inputs and outputs
 
-Set `ss_calculator_source` to `aime`, `pia` or `survivor`; its default is `off`.
+Set `ss_calculator_source` to `aime`, `pia`, `history` or `survivor`; its default is `off`.
 The selector determines the route even when the selected amount is zero.
 Omitting the selected amount fails; it is distinct from supplying zero.
 Identity/source fields are eternal inputs. Supply exact recipient birth date,
@@ -19,7 +19,11 @@ computations are outside this route.
 
 For own retirement, also supply `ss_calculator_eligibility_year` and either
 `ss_calculator_supplied_aime` (whole monthly dollars) or
-`ss_calculator_supplied_pia` (monthly dimes at initial eligibility). Optional
+`ss_calculator_supplied_pia` (monthly dimes at initial eligibility). The
+`history` mode instead requires a complete `ss_calculator_earnings_history`
+JSON source with observed or certified-zero years through the year before
+claiming. See [annual histories, owners' draw, mini-PIA and above-cap credit](../contributed_reforms/social_security_history.md)
+for the source contract and annual reconciliation outputs. Optional
 `ss_calculator_claiming_factor` is an exact decimal **string**; otherwise exact
 claiming months, birth-cohort FRA, early reduction and delayed credits determine
 it. Delayed credits earned in a midyear claiming year enter the benefit the
@@ -175,9 +179,12 @@ text](https://www.congress.gov/bill/119th-congress/senate-bill/770/text).
 ## Shared PIA paths and policies
 
 `tools.social_security.pia.compute_pia` is the common pure monthly service for
-supplied AIME, recovered AIME and future history callers. Its inputs explicitly
+supplied AIME, recovered AIME and annual history callers. Its inputs explicitly
 separate initial eligibility, formula path, scoring/payment year and cohort vs
 retroactive applicability. All computations and inverses require E >= 1983.
+The annual history route requires E >= 1984, because 42 U.S.C.
+415(a)(4)(B)(i) keeps the December 1978 computation, when larger, for workers
+eligible before 1984; see [annual histories](../contributed_reforms/social_security_history.md).
 Historical bends back to 1979 are separate parameters, preserving legacy scale
 values. Future bends use the model's existing wage-indexed projections.
 
@@ -240,6 +247,16 @@ then reads the calculated checks, bypassing population PIA, COLA, across-the-boa
 and payable factors already applied in this ledger. The earnings test runs
 once. Explicit public final overrides retain their precedence. Calculated
 checks are never written into `_reported` as original data.
+
+The public selectors do not yet accept `history`: a public source of `history`,
+or any pair other than those above, raises an error. With
+`ss_calculator_source` of `history`, read the calculated checks from
+`ss_calculated_retirement` and the other `ss_calculated_*` outputs. To place
+such a check in a public component, call `set_input` on that component
+**after** constructing the simulation. A later public input is an explicit
+final override, so no benefit factor is applied to it again. A public benefit
+supplied when the simulation is constructed is instead treated as a reported
+source, and the benefit factors apply to it.
 
 ## Sources and validation
 

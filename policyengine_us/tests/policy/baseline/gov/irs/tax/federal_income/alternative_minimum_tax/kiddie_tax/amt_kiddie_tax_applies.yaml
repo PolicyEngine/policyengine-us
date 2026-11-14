@@ -3,24 +3,29 @@
   period: 2022
   input:
     age_head: 18
+    filing_status: SINGLE
   output:
     amt_kiddie_tax_applies: true
 
-- name: Kiddie tax does not apply when spouse is 19+ (non-student)
-  period: 2022
+# IRC 1(g)(2) looks at the filer alone; only a joint return (C) excludes a
+# married child, so an older spouse on a separate return does not.
+- name: An older spouse does not remove a separate filer from the child rule
+  period: 2017
   input:
     age_head: 18
-    age_spouse: 19
+    age_spouse: 30
+    filing_status: SEPARATE
   output:
-    amt_kiddie_tax_applies: false
+    amt_kiddie_tax_applies: true
 
-- name: Kiddie tax applies when both head and spouse under 19
+- name: Kiddie tax does not apply to a joint return when both spouses are under 19
   period: 2022
   input:
     age_head: 18
     age_spouse: 18
+    filing_status: JOINT
   output:
-    amt_kiddie_tax_applies: true
+    amt_kiddie_tax_applies: false
 
 - name: Kiddie tax does not apply when head is 19+ (non-student)
   period: 2022
@@ -87,7 +92,7 @@
   output:
     amt_kiddie_tax_applies: false
 
-- name: Kiddie tax does not apply when student spouse is 24+
+- name: Kiddie tax does not apply to a joint return with a student spouse aged 24
   period: 2022
   input:
     people:
@@ -102,5 +107,123 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        filing_status: JOINT
   output:
     amt_kiddie_tax_applies: false
+
+- name: A young separate filer remains subject to the child limitation before 2018
+  period: 2017
+  input:
+    age_head: 18
+    filing_status: SEPARATE
+  output:
+    amt_kiddie_tax_applies: true
+
+- name: Young full-time students filing jointly are excluded before 2018
+  period: 2017
+  input:
+    people:
+      head:
+        age: 22
+        is_full_time_college_student: true
+        is_tax_unit_head: true
+      spouse:
+        age: 23
+        is_full_time_college_student: true
+        is_tax_unit_spouse: true
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    amt_kiddie_tax_applies: false
+
+# IRC 1(g)(2)(A)(ii)(II) (2016 ed.): a child aged 18, or a full-time student
+# under 24, is covered only if earned income "does not exceed one-half of the
+# amount of the individual's support". A child under 18 has no support test.
+# 2017 instructions, Exemption Worksheet - Line 29:
+# https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=10
+- name: An 18-year-old whose earnings equal half of support is covered
+  period: 2017
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 10_000
+        care_and_support_costs: 20_000
+        is_tax_unit_head: true
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    # 10,000 <= 0.5 * 20,000 = 10,000.
+    amt_kiddie_tax_applies: true
+
+- name: An 18-year-old whose earnings exceed half of support is not covered
+  period: 2017
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 10_000
+        care_and_support_costs: 19_998
+        is_tax_unit_head: true
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    # 10,000 > 0.5 * 19,998 = 9,999.
+    amt_kiddie_tax_applies: false
+
+- name: A full-time student aged 22 whose earnings are under half of support is covered
+  period: 2017
+  input:
+    people:
+      head:
+        age: 22
+        is_full_time_college_student: true
+        employment_income: 5_000
+        care_and_support_costs: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    # 5,000 <= 0.5 * 12,000 = 6,000.
+    amt_kiddie_tax_applies: true
+
+- name: A 17-year-old is covered whatever their earnings
+  period: 2017
+  input:
+    people:
+      head:
+        age: 17
+        employment_income: 40_000
+        is_tax_unit_head: true
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    # IRC 1(g)(2)(A)(i): under 18, so no support test.
+    amt_kiddie_tax_applies: true
+
+- name: An 18-year-old with earnings and no reported support is covered
+  period: 2017
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    # care_and_support_costs is 0, so nobody reported support, and the model
+    # treats the test as met.
+    amt_kiddie_tax_applies: true

@@ -125,3 +125,288 @@
     state_code: IL
   output:
     il_ccap_income_eligible: false
+
+# IDHS October 1, 2019 announcement: a family of three can apply with
+# annual income up to $42,660, or $3,555 monthly, at 200% FPL.
+- name: Case 12, October 2019 new applicant one cent above the published limit.
+  period: 2019-10
+  input:
+    people:
+      person1:
+        age: {2019: 30}
+        employment_income: {2019: 42_660.12}
+      person2:
+        age: {2019: 3}
+      person3:
+        age: {2019: 5}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: {2019: IL}
+  output:
+    il_ccap_income_eligible: false
+
+- name: Case 13, October 2019 new applicant at the published limit.
+  period: 2019-10
+  input:
+    people:
+      person1:
+        age: {2019: 30}
+        employment_income: {2019: 42_660}
+      person2:
+        age: {2019: 3}
+      person3:
+        age: {2019: 5}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: {2019: IL}
+  output:
+    il_ccap_income_eligible: true
+
+# October 2019-June 2022 ordinary initial applications use 200% FPL.
+# Pre-window cases preserve the canonical legacy fallback and do not
+# validate 2017-September 2019 law. Enrolled-family rules stay unchanged.
+- name: Case 14, unverified 2017 legacy entry fallback remains outside the sourced window.
+  period: 2017-10
+  input:
+    people:
+      person1: {age: {2017: 30}, employment_income: {2017: 43000}}
+      person2: {age: {2017: 3}}
+      person3: {age: {2017: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2017: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 15, unverified 2018 legacy entry fallback remains outside the sourced window.
+  period: 2018-10
+  input:
+    people:
+      person1: {age: {2018: 30}, employment_income: {2018: 44000}}
+      person2: {age: {2018: 3}}
+      person3: {age: {2018: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2018: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 16, 2019 October new applicant income control.
+  period: 2019-10
+  input:
+    people:
+      person1: {age: {2019: 30}, employment_income: {2019: 47000}}
+      person2: {age: {2019: 3}}
+      person3: {age: {2019: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2019: IL}}
+  output:
+    il_ccap_income_eligible: false
+- name: Case 17, 2020 October new applicant income control.
+  period: 2020-10
+  input:
+    people:
+      person1: {age: {2020: 30}, employment_income: {2020: 47000}}
+      person2: {age: {2020: 3}}
+      person3: {age: {2020: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2020: IL}}
+  output:
+    il_ccap_income_eligible: false
+- name: Case 18, 2021 October new applicant income control.
+  period: 2021-10
+  input:
+    people:
+      person1: {age: {2021: 30}, employment_income: {2021: 47000}}
+      person2: {age: {2021: 3}}
+      person3: {age: {2021: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2021: IL}}
+  output:
+    il_ccap_income_eligible: false
+- name: Case 19, 2022 October new applicant income control.
+  period: 2022-10
+  input:
+    people:
+      person1: {age: {2022: 30}, employment_income: {2022: 47000}}
+      person2: {age: {2022: 3}}
+      person3: {age: {2022: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2022: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 20, 2023 October new applicant income control.
+  period: 2023-10
+  input:
+    people:
+      person1: {age: {2023: 30}, employment_income: {2023: 47000}}
+      person2: {age: {2023: 3}}
+      person3: {age: {2023: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2023: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 21, 2024 October new applicant income control.
+  period: 2024-10
+  input:
+    people:
+      person1: {age: {2024: 30}, employment_income: {2024: 47000}}
+      person2: {age: {2024: 3}}
+      person3: {age: {2024: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2024: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 22, 2025 October new applicant income control.
+  period: 2025-10
+  input:
+    people:
+      person1: {age: {2025: 30}, employment_income: {2025: 47000}}
+      person2: {age: {2025: 3}}
+      person3: {age: {2025: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2025: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 23, 2026 October new applicant income control.
+  period: 2026-10
+  input:
+    people:
+      person1: {age: {2026: 30}, employment_income: {2026: 47000}}
+      person2: {age: {2026: 3}}
+      person3: {age: {2026: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2026: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 24, September 2019 legacy entry fallback remains outside the sourced window.
+  period: 2019-09
+  input:
+    people:
+      person1: {age: {2019: 30}, employment_income: {2019: 45000}}
+      person2: {age: {2019: 3}}
+      person3: {age: {2019: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2019: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 25, October 2019 new applicant is subject to 200 percent FPL.
+  period: 2019-10
+  input:
+    people:
+      person1: {age: {2019: 30}, employment_income: {2019: 45000}}
+      person2: {age: {2019: 3}}
+      person3: {age: {2019: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2019: IL}}
+  output:
+    il_ccap_income_eligible: false
+- name: Case 26, June 2022 new applicant remains subject to 200 percent FPL.
+  period: 2022-06
+  input:
+    people:
+      person1: {age: {2022: 30}, employment_income: {2022: 47000}}
+      person2: {age: {2022: 3}}
+      person3: {age: {2022: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2022: IL}}
+  output:
+    il_ccap_income_eligible: false
+- name: Case 27, July 2022 new applicant uses the existing 225 percent FPL limit.
+  period: 2022-07
+  input:
+    people:
+      person1: {age: {2022: 30}, employment_income: {2022: 47000}}
+      person2: {age: {2022: 3}}
+      person3: {age: {2022: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2022: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 28, October 2019 enrolled family retains the existing continuation route.
+  period: 2019-10
+  input:
+    people:
+      person1: {age: {2019: 30}, employment_income: {2019: 47000}}
+      person2: {age: {2019: 3}}
+      person3: {age: {2019: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: true}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2019: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 29, October 2019 Indiana household is outside Illinois CCAP.
+  period: 2019-10
+  input:
+    people:
+      person1: {age: {2019: 30}, employment_income: {2019: 42660}}
+      person2: {age: {2019: 3}}
+      person3: {age: {2019: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2019: IN}}
+  output:
+    il_ccap_income_eligible: false
+- name: Case 30, October 2019 zero earnings pass the income test only.
+  period: 2019-10
+  input:
+    people:
+      person1: {age: {2019: 30}, employment_income: {2019: 0}}
+      person2: {age: {2019: 3}}
+      person3: {age: {2019: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2019: IL}}
+  output:
+    il_ccap_income_eligible: true
+- name: Case 31, October 2019 business loss leaves no countable income.
+  period: 2019-10
+  input:
+    people:
+      person1: {age: {2019: 30}, employment_income: {2019: 0}, self_employment_income: {2019: -12000}}
+      person2: {age: {2019: 3}}
+      person3: {age: {2019: 5}}
+    spm_units:
+      spm_unit: {members: [person1, person2, person3], il_ccap_enrolled: false}
+    households:
+      household: {members: [person1, person2, person3], state_code: {2019: IL}}
+  output:
+    il_ccap_countable_income: 0
+    il_ccap_income_eligible: true

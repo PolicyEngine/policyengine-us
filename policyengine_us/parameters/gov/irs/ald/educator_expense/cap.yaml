@@ -15,20 +15,22 @@ values:
   2024-01-01: 300
   2025-01-01: 300
   2026-01-01: 350
+  2027-01-01: 350
 metadata:
   unit: currency-USD
   period: year
   label: Educator expense deduction cap
-  # Values after the last IRS publication are computed in
-  # parameters/uprating_extensions.py per 26 U.S.C. 62(d)(3): the statutory
-  # $250 increased by the 1(f)(3) cost-of-living adjustment with calendar
-  # year 2014 as the base year, each increase rounded to the nearest multiple
-  # of $50. Computing from the $250 base rather than chaining from the
-  # rounded $350 puts each projected $50 step in the year the statute does on
-  # the model's CPI projection; those values supersede this uprating rule,
-  # which describes the index and rounding.
   uprating:
-    parameter: gov.irs.uprating
+    # 26 U.S.C. 62(d)(3): the statutory $250 plus its 1(f)(3) cost-of-living
+    # increase with calendar year 2014 as the base year, rounded to the
+    # nearest multiple of $50. The index's 2015 value covers calendar year
+    # 2014. Projecting from the $250 base rather than chaining from a rounded
+    # published value puts each $50 step in the year the statute does.
+    parameter: gov.irs.indexing.c_cpi_u
+    base:
+      period: 2015
+      value: 250
+      floor: true
     rounding:
       type: nearest
       interval: 50
@@ -57,5 +59,7 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=11
     - title: Rev. Proc. 2024-40, section 2.13 (2025)
       href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=11
+    - title: Rev. Proc. 2026-35, section 3.13 (2027)
+      href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=12
     - title: Rev. Proc. 2025-32, section 4.12 (2026)
       href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=17

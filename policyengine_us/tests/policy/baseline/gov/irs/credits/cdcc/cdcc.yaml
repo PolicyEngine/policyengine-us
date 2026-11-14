@@ -241,7 +241,9 @@
     people:
       parent1:
         age: 40
-        employment_income: 60_000
+        # employment_income includes the $9,000 of dependent care benefits;
+        # box 1 wages are $60,000 ($69,000 - $9,000).
+        employment_income: 69_000
         dependent_care_employer_benefits: 9_000
       parent2:
         age: 38

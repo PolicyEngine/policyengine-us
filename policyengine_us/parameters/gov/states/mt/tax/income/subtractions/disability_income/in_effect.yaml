@@ -1,0 +1,15 @@
+description: Montana provides the disability income exclusion if this is true.
+values:
+  2010-01-01: true
+  # 2021 Mont. Laws ch. 503 repeals 15-30-2110, MCA, which held the
+  # exclusion, for income tax years beginning after December 31, 2023.
+  2024-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Montana disability income exclusion in effect
+  reference:
+    - title: "2021 Mont. Laws ch. 503 (SB 399), section 65 repeals 15-30-2110, MCA; section 70(1) applies the act to income tax years beginning after December 31, 2023 #page 68,70"
+      href: https://archive.legmt.gov/content/Publications/sales/2021SessionLaws_V3_ERRATA-VERSION.pdf#page=68
+    - title: 2024 Montana Form 2 instructions, repealed deductions, "Partial retirement disability deduction for taxpayers under age 65"
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5

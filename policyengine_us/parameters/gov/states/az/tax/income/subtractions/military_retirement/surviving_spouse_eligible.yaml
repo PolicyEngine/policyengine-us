@@ -1,0 +1,15 @@
+description: Arizona includes a deceased veteran's surviving spouse's military survivor benefit payments in the military retirement subtraction if this is true.
+values:
+  2018-01-01: false
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Arizona military retirement subtraction surviving spouse eligibility
+  reference:
+    - title: A.R.S. 43-1022(2), (26)
+      href: https://www.azleg.gov/ars/43/01022.htm
+    - title: Arizona Individual Income Tax Ruling ITR 11-3
+      href: https://azdor.gov/sites/default/files/2023-03/RULINGS_INDV_2011_itr11-3.pdf#page=2
+    - title: 2025 Arizona Form 140 Resident Personal Income Tax Instructions, line 29b
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf

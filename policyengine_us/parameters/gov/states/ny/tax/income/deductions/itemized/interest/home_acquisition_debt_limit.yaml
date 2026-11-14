@@ -1,0 +1,33 @@
+description: New York limits the home acquisition debt on which mortgage interest is deductible to this amount, reduced by any grandfathered debt, based on filing status.
+SINGLE:
+  2018-01-01: 1_000_000
+JOINT:
+  2018-01-01: 1_000_000
+SEPARATE:
+  2018-01-01: 500_000
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 1_000_000
+SURVIVING_SPOUSE:
+  2018-01-01: 1_000_000
+metadata:
+  propagate_metadata_to_children: true
+  breakdown: filing_status
+  unit: currency-USD
+  period: year
+  label: New York home acquisition debt limit
+  reference:
+    # N.Y. Tax Law 615(a) computes New York itemized deductions as they
+    # existed immediately before P.L. 115-97, so the IRC 163(h)(3)(B)(ii)
+    # limit applies rather than the IRC 163(h)(3)(F) limit for later debt.
+    - title: New York Tax Law 615(a)
+      href: https://www.nysenate.gov/legislation/laws/TAX/615
+    - title: "L.2018, chapter 59 (S7509C), Part JJ, sections 3 and 7 #page 42-43"
+      href: https://legislation.nysenate.gov/pdf/bills/2017/S7509C#page=42
+    - title: 26 U.S. Code 163(h)(3)(B)(ii) (2016 edition)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2016-title26/html/USCODE-2016-title26-subtitleA-chap1-subchapB-partVI-sec163.htm
+    - title: New York State Department of Taxation and Finance, Itemized deductions (2025), Interest you paid
+      href: https://www.tax.ny.gov/pit/file/itemized-deductions-2025.htm#interest
+    - title: 2018 Form IT-196 instructions, Interest you paid
+      href: https://www.tax.ny.gov/pdf/2018/inc/it196i_2018.pdf#page=2
+    - title: 2025 Form IT-196 instructions, Limit on home mortgage interest
+      href: https://www.tax.ny.gov/pdf/2025/inc/it196i_2025.pdf#page=2

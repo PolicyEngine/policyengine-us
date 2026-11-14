@@ -517,3 +517,44 @@ def test_generated_single_contributions_preserve_shares_within_compensation():
         ]
         == 1
     )
+
+
+def test_dependent_helper_repeats_the_formula_without_line_1e():
+    # ira_compensation_without_line_1e repeats the formula's sum without
+    # Form 1040 line 1e, so with line 1e at zero the two agree on every term.
+    path = RETIREMENT / "ira_compensation.py"
+    tree = ast.parse(path.read_text(), filename=str(path))
+    helper = next(
+        node
+        for node in tree.body
+        if isinstance(node, ast.FunctionDef)
+        and node.name == "ira_compensation_without_line_1e"
+    )
+    namespace = {
+        "max_": np.maximum,
+        "add": lambda person, period, names: sum(
+            person(name, period) for name in names
+        ),
+    }
+    exec(
+        compile(ast.Module(body=[helper], type_ignores=[]), str(path), "exec"),
+        namespace,
+    )
+    terms = [
+        "irs_employment_income",
+        "earned_disability_benefits",
+        "taxable_alimony_income",
+        "self_employment_income",
+        "sstb_self_employment_income",
+        "farm_operations_income",
+        "partnership_self_employment_net_earnings",
+        "self_employment_tax_ald_person",
+        "self_employed_pension_contribution_ald_person",
+    ]
+    # Each row sets one term to 1,000, plus one row with every term set.
+    rows = [{term: 1_000} for term in terms] + [dict.fromkeys(terms, 1_000)]
+    people = People({term: [row.get(term, 0) for row in rows] for term in terms})
+    expected = formula(path, "ira_compensation")(people, None, parameters())
+    np.testing.assert_array_equal(
+        namespace["ira_compensation_without_line_1e"](people, None), expected
+    )

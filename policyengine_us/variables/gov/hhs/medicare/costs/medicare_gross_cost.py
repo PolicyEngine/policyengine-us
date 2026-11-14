@@ -18,7 +18,7 @@ class medicare_gross_cost(Variable):
     definition_period = YEAR
     reference = (
         "https://www.cms.gov/about-cms/what-we-do/medicare",
-        "https://www.cbo.gov/publication/61910",
+        "https://www.cbo.gov/system/files/2026-01/61910-DOHI-health.pdf#page=27",
     )
     defined_for = "medicare_enrolled"
 

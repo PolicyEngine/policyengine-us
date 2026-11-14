@@ -7,8 +7,9 @@ class cbo_household_social_insurance_benefits(Variable):
     label = "CBO household social insurance benefits"
     documentation = (
         "Social insurance benefits included in CBO household income: Social "
-        "Security, Medicare benefits net of enrollee premiums, unemployment "
-        "insurance, and workers' compensation."
+        "Security, Medicare at average spending per enrollee less premium "
+        "income and the Part D low-income subsidy (cbo_medicare_benefit), "
+        "unemployment insurance, and workers' compensation."
     )
     definition_period = YEAR
     unit = USD

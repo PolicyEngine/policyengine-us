@@ -2,6 +2,8 @@ description: Income sources counted as gross income for tax purposes.
 values:
   2010-01-01:
     - irs_employment_income
+    # Dependent care benefits above the IRC 129 exclusion (Form 1040 line 1e).
+    - taxable_dependent_care_benefits
     - self_employment_income
     - sstb_self_employment_income
     - partnership_s_corp_income
@@ -54,6 +56,8 @@ metadata:
   reference:
     - title: 26 U.S. Code § 61 - Gross income defined
       href: https://www.law.cornell.edu/uscode/text/26/61
+    - title: 26 U.S. Code § 129 - Dependent care assistance programs
+      href: https://www.law.cornell.edu/uscode/text/26/129
     - title: 26 U.S. Code § 111 - Recovery of tax benefit items
       href: https://www.law.cornell.edu/uscode/text/26/111
     - title: 26 U.S. Code § 104(a)(3) - Amounts received through accident or health insurance

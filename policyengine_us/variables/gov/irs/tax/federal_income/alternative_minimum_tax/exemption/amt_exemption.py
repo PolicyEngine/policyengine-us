@@ -55,7 +55,12 @@ class amt_exemption(Variable):
         # same children and the same 911(d)(2) definition, generally take
         # earned income from Form 1040 line 7 (taxable wages), so the cap
         # uses adjusted_earnings, which leaves out pre-tax payroll deductions.
-        adj_earnings = tax_unit_non_dep_sum("adjusted_earnings", tax_unit, period)
+        # IRC 59(j)(1)(A) counts the child's own earned income, and a covered
+        # filer never files jointly, so the cap reads only the head's earnings.
+        person = tax_unit.members
+        adj_earnings = tax_unit.sum(
+            person("adjusted_earnings", period) * person("is_tax_unit_head", period)
+        )
         child_amount = p.exemption.child.amount
 
         exemption_cap = where(

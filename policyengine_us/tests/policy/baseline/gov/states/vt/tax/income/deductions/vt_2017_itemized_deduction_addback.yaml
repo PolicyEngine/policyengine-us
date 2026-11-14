@@ -1,0 +1,263 @@
+- name: A 2017 nonitemizer adds nothing back.
+  period: 2017
+  input:
+    state_code: VT
+    tax_unit_itemizes: false
+    itemized_taxable_income_deductions: 30_000
+    standard_deduction: 6_350
+    salt_deduction: 2_000
+    state_withheld_income_tax: 2_000
+  output:
+    vt_2017_itemized_deduction_addback: 0
+
+- name: 2017 adds back income taxes and other deductions above 2.5 times the standard deduction.
+  period: 2017
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 30_000
+    standard_deduction: 6_350
+    salt_deduction: 2_000
+    state_withheld_income_tax: 2_000
+    medical_expense_deduction: 0
+    charitable_deduction: 0
+  output:
+    # min(2,000, 30,000 - 6,350) + max(30,000 - 2,000 - 2.5 x 6,350, 0)
+    # = 2,000 + 12,125
+    vt_2017_itemized_deduction_addback: 14_125
+
+- name: 2017 income tax addback is limited to itemized deductions above the standard deduction.
+  period: 2017
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 7_000
+    standard_deduction: 6_350
+    salt_deduction: 3_000
+    state_withheld_income_tax: 3_000
+    medical_expense_deduction: 0
+    charitable_deduction: 0
+  output:
+    # min(3,000, 650) + max(7,000 - 3,000 - 15,875, 0)
+    vt_2017_itemized_deduction_addback: 650
+
+- name: 2017 sales tax deducted instead of income tax is not added back.
+  period: 2017
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 25_000
+    standard_deduction: 6_350
+    salt_deduction: 3_000
+    state_withheld_income_tax: 1_000
+    state_sales_tax: 3_000
+    medical_expense_deduction: 2_000
+    charitable_deduction: 3_000
+  output:
+    # T = 0; max(25,000 - 0 - 2,000 - 3,000 - 15,875, 0) = 4,125
+    vt_2017_itemized_deduction_addback: 4_125
+
+- name: 2017 medical and charitable deductions are not in the other-deduction pool.
+  period: 2017
+  input:
+    state_code: VT
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 40_000
+    standard_deduction: 12_700
+    salt_deduction: 5_000
+    state_withheld_income_tax: 5_000
+    medical_expense_deduction: 10_000
+    charitable_deduction: 5_000
+  output:
+    # min(5,000, 27,300) + max(40,000 - 5,000 - 10,000 - 5,000 - 31,750, 0)
+    vt_2017_itemized_deduction_addback: 5_000
+
+- name: The addback only applies in 2017.
+  period: 2018
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 30_000
+    standard_deduction: 12_000
+    salt_deduction: 2_000
+    state_withheld_income_tax: 2_000
+  output:
+    vt_2017_itemized_deduction_addback: 0
+
+- name: 2017 counts wagering losses among the other itemized deductions.
+  period: 2017
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 12_850
+    wagering_losses_deduction: 30_000
+    standard_deduction: 6_350
+    salt_deduction: 4_850
+    state_withheld_income_tax: 4_850
+    medical_expense_deduction: 0
+    charitable_deduction: 0
+  output:
+    # IN-155 line 1 takes Schedule A line 29, so I = 12,850 + 30,000 = 42,850.
+    # min(4,850, 42,850 - 6,350) + max(42,850 - 4,850 - 2.5 x 6,350, 0)
+    # = 4,850 + 22,125
+    vt_2017_itemized_deduction_addback: 26_975
+
+- name: 2017 scales deducted income taxes by the share section 68 leaves.
+  period: 2017
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    total_itemized_taxable_income_deductions: 44_000
+    itemized_taxable_income_deductions_reduction: 4_000
+    itemized_taxable_income_deductions: 40_000
+    standard_deduction: 6_350
+    salt_deduction: 20_000
+    state_withheld_income_tax: 20_000
+    medical_expense_deduction: 4_000
+    charitable_deduction: 10_000
+  output:
+    # Limited base 44,000 - 4,000 medical = 40,000; r = 1 - 4,000 / 40,000 = 0.9.
+    # T = 18,000, C = 9,000.
+    # min(18,000, 40,000 - 6,350) + max(40,000 - 18,000 - 4,000 - 9,000 - 15,875, 0)
+    # = 18,000 + 0 (unscaled: 20,000)
+    vt_2017_itemized_deduction_addback: 18_000
+
+- name: 2017 scales charitable deductions by the share section 68 leaves.
+  period: 2017
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    total_itemized_taxable_income_deductions: 74_000
+    itemized_taxable_income_deductions_reduction: 7_000
+    itemized_taxable_income_deductions: 67_000
+    standard_deduction: 6_350
+    salt_deduction: 20_000
+    state_withheld_income_tax: 20_000
+    medical_expense_deduction: 4_000
+    charitable_deduction: 10_000
+  output:
+    # Limited base 74,000 - 4,000 = 70,000; r = 1 - 7,000 / 70,000 = 0.9.
+    # T = 18,000, C = 9,000.
+    # min(18,000, 67,000 - 6,350) + max(67,000 - 18,000 - 4,000 - 9,000 - 15,875, 0)
+    # = 18,000 + 20,125 (unscaled: 37,125)
+    vt_2017_itemized_deduction_addback: 38_125
+
+- name: 2017 leaves income taxes whole when no deductions are subject to section 68.
+  period: 2017
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    total_itemized_taxable_income_deductions: 8_000
+    itemized_taxable_income_deductions_reduction: 0
+    itemized_taxable_income_deductions: 8_000
+    standard_deduction: 6_350
+    salt_deduction: 2_000
+    state_withheld_income_tax: 2_000
+    medical_expense_deduction: 8_000
+    charitable_deduction: 0
+  output:
+    # Limited base max(8,000 - 8,000, 0) = 0, so r = 1.
+    # min(2,000, 8,000 - 6,350) + max(8,000 - 2,000 - 8,000 - 15,875, 0) = 1,650
+    vt_2017_itemized_deduction_addback: 1_650
+
+- name: 2017 addback through the section 68 limitation, end to end.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    adjusted_gross_income: 500_000
+    salt_deduction: 20_000
+    state_withheld_income_tax: 20_000
+    charitable_deduction: 10_000
+    medical_expense_deduction: 4_000
+    interest_deduction: 40_000
+    standard_deduction: 6_350
+  output:
+    # Total 20,000 + 10,000 + 4,000 + 40,000 = 74,000; limited base 70,000.
+    # Reduction min((500,000 - 261,500) x 3%, 80% x 70,000) = 7,155.
+    # I = 66,845; r = 62,845 / 70,000.
+    # T = 17,955.71, C = 8,977.86.
+    # min(17,955.71, 60,495) + max(66,845 - 17,955.71 - 4,000 - 8,977.86 - 15,875, 0)
+    # = 17,955.71 + 20,036.43
+    itemized_taxable_income_deductions_reduction: 7_155
+    itemized_taxable_income_deductions: 66_845
+    vt_2017_itemized_deduction_addback: 37_992.14
+
+- name: 2017 separate filer whose spouse doesn't itemize measures the addback against the standard deduction.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    separate_filer_itemizes: false
+    employment_income: 100_000
+    real_estate_taxes: 8_000
+    state_withheld_income_tax: 4_850
+  output:
+    # Schedule A line 29: 4,850 state income tax + 8,000 real estate tax
+    # = 12,850, with no section 68 cut.
+    # Line 1 12,850; line 2 6,350; line 3 6,500.
+    # Line 4 4,850; lines 5 and 6 0; line 7 4,850.
+    # Line 8 8,000; line 9 2.5 x 6,350 = 15,875; line 10 0.
+    # Line 11 min(6,500, 4,850) + 0 = 4,850.
+    standard_deduction: 6_350
+    vt_2017_itemized_deduction_addback: 4_850
+    # 100,000 - 4,050 exemption - 12,850 itemized + 4,850 addback
+    vt_taxable_income: 87_950
+
+- name: 2017 separate filer whose spouse itemizes has no standard deduction on line 2.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    separate_filer_itemizes: true
+    employment_income: 100_000
+    real_estate_taxes: 8_000
+    state_withheld_income_tax: 4_850
+  output:
+    # The filer's spouse itemizes, so the filer's standard deduction falls
+    # to 0 (26 U.S.C. 63(c)(6)(A)). Schedule A line 29: 12,850, as in the
+    # case above.
+    # Line 1 12,850; line 2 0; line 3 12,850.
+    # Line 4 4,850; lines 5 and 6 0; line 7 4,850.
+    # Line 8 8,000; line 9 0; line 10 8,000.
+    # Line 11 min(12,850, 4,850) + 8,000 = 12,850.
+    standard_deduction: 0
+    vt_2017_itemized_deduction_addback: 12_850
+    # 100,000 - 4,050 exemption - 12,850 itemized + 12,850 addback
+    vt_taxable_income: 95_950
+
+- name: 2017 single filer aged 65 adds the aged amount to line 2.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: true
+        state_withheld_income_tax: 4_850
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # Line 1 4,850 + 20,000 = 24,850; line 2 6,350 + 1,550 aged = 7,900;
+    # line 3 16,950. Line 4 4,850; line 8 20,000; line 9 2.5 x 7,900 =
+    # 19,750; line 10 250. Line 11 min(16,950, 4,850) + 250 = 5,100.
+    # Without the aged amount, line 9 would come to 15,875 and the
+    # addback to 8,975.
+    standard_deduction: 7_900
+    vt_2017_itemized_deduction_addback: 5_100
+    # 100,000 - 4,050 - 24,850 + 5,100
+    vt_taxable_income: 76_200

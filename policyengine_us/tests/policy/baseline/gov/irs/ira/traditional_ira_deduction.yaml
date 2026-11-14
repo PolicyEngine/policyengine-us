@@ -1,0 +1,29 @@
+- name: Taxable dependent care benefits are IRA compensation, 2024
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 6_000
+        dependent_care_employer_benefits: 5_000
+        traditional_ira_contributions: 3_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Box 1 $1,000; exclusion min($5,000, $5,000, $1,000) = $1,000; line 1e
+    # $4,000. Treas. Reg. 1.219-1(c)(1) counts includible pay for services,
+    # so compensation is $1,000 + $4,000 = $5,000.
+    ira_compensation: [5_000, 0]
+    # min($3,000, $7,000 limit, $5,000 compensation) = $3,000.
+    traditional_ira_deduction: [3_000, 0]
+    # $5,000 - $3,000.
+    adjusted_gross_income: 2_000

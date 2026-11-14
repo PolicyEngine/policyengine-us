@@ -27,24 +27,28 @@ class nj_medical_expense_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nj.tax.income.deductions.medical_expenses
-        # nj_agi counts every member's income, dependents included, so the
-        # dependents' self-employed health insurance deductions count too.
-        self_employed_medical_expense_deduction = add(
-            tax_unit,
-            period,
-            [
-                "self_employed_health_insurance_ald",
-                "dependents_self_employed_health_insurance_ald",
-            ],
+        # The filers' own self-employed health insurance deduction. A
+        # dependent's self-employment income and its deduction go on the
+        # dependent's own return, as nj_agi leaves out the dependent's income.
+        self_employed_medical_expense_deduction = tax_unit(
+            "self_employed_health_insurance_ald", period
         )
         # C.54A:3-3 excludes premiums counted by the separate SE deduction
-        # under C.54A:3-5, including dependents' deductions recognized by NJ.
-        # The federal base already excludes the filers' deduction. Apply
-        # each dependent's deduction only to that person's own paid premiums.
+        # under C.54A:3-5, including a dependent's deduction on their own
+        # return.
+        # The federal base already excludes the filers' deduction and the
+        # long-term care part (Form 7206 line 2) of each dependent's own
+        # deduction. Remove the medical part (line 1) of each dependent's
+        # deduction (the deduction less its long-term care part), limited to
+        # that person's own paid medical premiums.
         person = tax_unit.members
+        dependent_medical_part = min_(
+            person("self_employed_health_insurance_ald_excluded_premiums", period),
+            max_(0, person("self_employed_health_insurance_ald_person", period))
+            - person("self_employed_health_insurance_ald_long_term_care_part", period),
+        )
         excluded_dependent_premiums = tax_unit.sum(
-            person("self_employed_health_insurance_ald_excluded_premiums", period)
-            * person("is_tax_unit_dependent", period)
+            dependent_medical_part * person("is_tax_unit_dependent", period)
         )
         # New Jersey includes salary-reduction cafeteria-plan premiums in
         # taxable wages (TB-39(R)), so these employee-paid premiums also

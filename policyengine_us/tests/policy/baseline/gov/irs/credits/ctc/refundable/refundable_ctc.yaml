@@ -207,6 +207,119 @@
     # Without the section 911 bar, the same phase-in gives a $3,400 refund.
     refundable_ctc: 0
 
+# Sources: 2021 IRC 24(i)(1)(B), 24(i)(4)(C)-(D), and Schedule 8812
+# PDF pages 57-58
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title26/pdf/USCODE-2021-title26-subtitleA.pdf#page=57
+# https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf#page=1
+- name: ARPA phaseout cannot make other-dependent credit refundable in 2021
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 170_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 170_000
+    # min(50 * ceil((170,000 - 112,500) / 1,000), 1,600, 4,375).
+    ctc_arpa_phase_out: 1_600
+    ctc_phase_out: 0
+    # Schedule 8812 lines 5 + 7 = (3,600 - 1,600) + 500.
+    ctc: 2_500
+    # Lines 14a = 500; 14b = 2,500 - 500 = 2,000.
+    refundable_ctc: 2_000
+    # Before the section 26(a) tax limit (not binding in this household).
+    non_refundable_ctc: 500
+    ctc_value: 2_500
+
+- name: Other-dependent credit remains nonrefundable after the child portion phases out in 2021
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 240_001
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: TX
+  output:
+    ctc_arpa_phase_out: 1_600
+    # 50 * ceil((240,001 - 200,000) / 1,000) = 2,050.
+    ctc_phase_out: 2_050
+    ctc: 450
+    # max(3,600 - 1,600 - 2,050, 0) = 0.
+    refundable_ctc: 0
+    non_refundable_ctc: 450
+    ctc_value: 450
+
+# This interaction proves the split affects total federal tax, not only labels.
+# 2021 IRC 25D(c), Form 5695 lines 6b/14/15 and its Credit Limit Worksheet:
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title26/pdf/USCODE-2021-title26-subtitleA.pdf#page=81
+# https://www.irs.gov/pub/irs-prior/f5695--2021.pdf#page=1
+# https://www.irs.gov/pub/irs-prior/i5695--2021.pdf#page=4
+- name: Nonrefundable ODC reduces solar credit capacity before the 2021 child refund
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 170_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+        solar_electric_property_expenditures: 150_000
+    households:
+      household:
+        members: [parent, child, other_dependent]
+        state_code: TX
+  output:
+    income_tax_before_credits: 28_857
+    residential_clean_energy_credit_potential: 39_000
+    # 28,857 - 500 ODC; refundable child credit is in a different subpart.
+    residential_clean_energy_credit_credit_limit: 28_357
+    residential_clean_energy_credit: 28_357
+    refundable_ctc: 2_000
+    non_refundable_ctc: 500
+    ctc_value: 2_500
+    income_tax: -2_000
+
 - name: A filer claiming only the foreign housing deduction gets the refundable credit
   # Section 24(d)(3) bars only an election to exclude an amount under section
   # 911; the section 911(c)(4)(A) housing deduction is not an exclusion.
@@ -247,3 +360,238 @@
     ctc_credit_limit_worksheet_b_applies: true
     ctc_limiting_tax_liability: 500
     refundable_ctc: 3_000
+
+- name: 2021 ARPA threshold boundary, head of household at exactly $112,500 has no first reduction
+  # 24(i)(4)(A): $50 for each $1,000 (or fraction) above $112,500; none at it.
+  # ctc = 3,600 + 500 ODC = 4,100; line 14b = 3,600; line 14a = 500.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 112_500
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child_1, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 112_500
+    ctc_arpa_phase_out: 0
+    ctc_phase_out: 0
+    ctc: 4_100
+    refundable_ctc: 3_600
+    non_refundable_ctc: 500
+
+- name: 2021 ARPA threshold boundary, head of household at $112,501 moves the split by $50
+  # F = 50 x ceil(1 / 1,000) = 50, under the caps of 1,600 (3,600 - 2,000)
+  # and 4,375 (5% x (200,000 - 112,500)). ctc = 4,100 - 50 = 4,050.
+  # Line 14b = 3,600 - 50 = 3,550; line 14a = 500 (the old code gave 3,600 / 450).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 112_501
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child_1, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 112_501
+    ctc_arpa_phase_out: 50
+    ctc_phase_out: 0
+    ctc: 4_050
+    refundable_ctc: 3_550
+    non_refundable_ctc: 500
+
+- name: 2021 ARPA threshold boundary, single filer at $75,001 moves the split by $50
+  # Filing status supplied: the $75,000 threshold of 24(i)(4)(B)(iii).
+  # F = 50 (caps 1,600 and 5% x (200,000 - 75,000) = 6,250).
+  # ctc = 4,050; line 14b = 3,550; line 14a = 500 (old code: 3,600 / 450).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 75_001
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, other_dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, child_1, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 75_001
+    ctc_arpa_phase_out: 50
+    ctc_phase_out: 0
+    ctc: 4_050
+    refundable_ctc: 3_550
+    non_refundable_ctc: 500
+
+- name: 2021 ARPA threshold boundary, joint return at $150,001 with an other dependent
+  # Child amounts 3,600 + 3,000 = 6,600; base 4,000; enhancement 2,600; ODC 500.
+  # F = 50 (caps 2,600 and 5% x (400,000 - 150,000) = 12,500); P = 0.
+  # ctc = 7,100 - 50 = 7,050; line 14b = 6,600 - 50 = 6,550; line 14a = 500
+  # (old code: 6,600 / 450).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 150_001
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 0
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 10
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 150_001
+    ctc_arpa_phase_out: 50
+    ctc_phase_out: 0
+    ctc: 7_050
+    refundable_ctc: 6_550
+    non_refundable_ctc: 500
+
+- name: 2021 joint return just over $400,000 has both phaseouts and keeps the ODC nonrefundable
+  # F = min(50 x ceil(250,001 / 1,000) = 12,550, 2,600, 12,500) = 2,600.
+  # 24(b) after (i)(4)(D): P = 50 x ceil(1 / 1,000) = 50.
+  # ctc = 7,100 - 2,600 - 50 = 4,450; line 14b = 6,600 - 2,650 = 3,950;
+  # line 14a = 500 (old code: 4,450 / 0).
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 400_001
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 0
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 10
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 400_001
+    ctc_arpa_phase_out: 2_600
+    ctc_phase_out: 50
+    ctc: 4_450
+    refundable_ctc: 3_950
+    non_refundable_ctc: 500
+
+- name: 2021 joint return at $480,001 phases out the child amounts and leaves part of the ODC
+  # F = 2,600; P = 50 x ceil(80,001 / 1,000) = 4,050.
+  # Line 12 = 7,100 - 2,600 - 4,050 = 450; 6,600 - 6,650 < 0, so line 14b = 0
+  # and line 14a = min(500, 450) = 450.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 480_001
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 0
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_2:
+        age: 10
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child_1, child_2, other_dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 480_001
+    ctc_arpa_phase_out: 2_600
+    ctc_phase_out: 4_050
+    ctc: 450
+    refundable_ctc: 0
+    non_refundable_ctc: 450

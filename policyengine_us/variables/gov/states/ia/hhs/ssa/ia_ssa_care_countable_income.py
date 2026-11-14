@@ -1,4 +1,11 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states._spouses import (
+    state_couple_total,
+    state_is_married,
+)
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
@@ -11,7 +18,7 @@ class ia_ssa_care_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.IA
-    documentation = "Care income without the $20 general exclusion: SSI countable income plus SSI. In-home care counts an adult's spouse's income. An eligible family-life home couple, and a residential care couple in the month of entry, split the couple's income. After the month of entry, a married resident counts own income plus the SSI individual amount from it. A child in in-home care receives income deemed from parents under the Iowa method. Interest and dividends are excluded. First-month deeming from an ineligible spouse, and deductions absent from the federal SSI income inputs, are not modeled."
+    documentation = "Care income without the $20 general exclusion: SSI countable income plus SSI. In-home care counts an adult's spouse's income. An eligible family-life home couple, and a residential care couple in the month of entry, split the couple's income. A retained prior-SSI entry couple now living apart uses the SSI couple amount calculated from its combined income. After the month of entry, a married resident counts own income plus the SSI individual amount from it. A child in in-home care receives income deemed from parents under the Iowa method. Interest and dividends are excluded. First-month deeming from an ineligible spouse, and deductions absent from the federal SSI income inputs, are not modeled."
     reference = (
         # 441 IAC 52.1(3)"a"
         "https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1",
@@ -84,9 +91,8 @@ class ia_ssa_care_countable_income(Variable):
         # income is below the SSI rate "must now apply for and accept SSI
         # benefits" (p.61). The model therefore assumes SSA pays each spouse as
         # an individual from that month, and credits that amount even to a
-        # resident who does not take up SSI. Federal SSI has no input for
-        # spouses who live apart and keeps the couple or deemed amount, so the
-        # SSI individual amount is computed here from the resident's own income
+        # resident who does not take up SSI. The SSI individual amount is
+        # computed here from the resident's own income
         # (ia_ssa.yaml Cases 57, 58, 60 and 73).
         individual_ssi = max_(
             ssi.amount.individual
@@ -99,11 +105,61 @@ class ia_ssa_care_countable_income(Variable):
             / MONTHS_IN_YEAR,
             0,
         )
-        separated = rcf & spouse & ~person("ia_ssa_care_initial_partial_month", period)
+        separated = (
+            rcf
+            & state_is_married(person, period.this_year)
+            & ~person("ia_ssa_care_initial_partial_month", period)
+        )
         benefit = where(separated, individual_ssi, person("ssi", period))
-        earned = where(combine, person.marital_unit.sum(earned), earned)
-        unearned = where(combine, person.marital_unit.sum(unearned), unearned)
-        benefit = where(combine, person.marital_unit.sum(benefit), benefit)
+        # RCF's prior-SSI entry budget retains the marriage across facilities;
+        # other care paths pool only with the spouse living in the home.
+        earned = where(
+            combine,
+            where(
+                rcf,
+                state_couple_total(person, period.this_year, earned),
+                _ssi_couple_total(person, period.this_year, earned),
+            ),
+            earned,
+        )
+        unearned = where(
+            combine,
+            where(
+                rcf,
+                state_couple_total(person, period.this_year, unearned),
+                _ssi_couple_total(person, period.this_year, unearned),
+            ),
+            unearned,
+        )
+        benefit = where(
+            combine,
+            where(
+                rcf,
+                state_couple_total(person, period.this_year, benefit),
+                _ssi_couple_total(person, period.this_year, benefit),
+            ),
+            benefit,
+        )
+        # 6-B's entry-month example (PDF p.69) retains couple SSI of 1,236
+        # for pensions of 175 and 100: 1,491 - (275 - 20). Current separate
+        # households make federal SSI individual immediately in this static
+        # model, so pooling those payments would overstate entry-month care
+        # income. Reconstruct only this retained Iowa entry budget, as the
+        # individual RCF amount above is reconstructed after entry. This uses
+        # the regular RCF SSI rate and the income inputs already used for
+        # care; it does not change federal timing or the documented gaps.
+        retained_entry_ssi = max_(
+            ssi.amount.couple
+            - _apply_ssi_exclusions(
+                earned * MONTHS_IN_YEAR,
+                unearned * MONTHS_IN_YEAR,
+                parameters,
+                period,
+            )
+            / MONTHS_IN_YEAR,
+            0,
+        )
+        benefit = where(rcf & combine & ~spouse, retained_entry_ssi, benefit)
         income = (
             _apply_ssi_exclusions(
                 earned * MONTHS_IN_YEAR,

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class vt_aabd_ep_is_spouse(Variable):
@@ -12,10 +15,9 @@ class vt_aabd_ep_is_spouse(Variable):
 
     def formula(person, period, parameters):
         abd = person("is_ssi_aged_blind_disabled", period.this_year)
-        # A marital unit has at most two members, so a non-ABD member of an
-        # ABD person's marital unit is that person's spouse.
+        # Only a co-resident spouse can be an ineligible-spouse essential person.
         return (
             abd
-            & person.marital_unit.any(~abd)
+            & (_ssi_couple_total(person, period.this_year, (~abd).astype(int)) > 0)
             & ~person("vt_aabd_ep_nonspouse_essential_person", period)
         )

@@ -632,3 +632,109 @@
     # A citizen would receive min($1,300 - $1,200, $156) = $100 plus the PNA.
     mo_ssp_eligible: false
     mo_ssp: 0
+
+# RSMo 208.010.1 and DSS Manual 1035.005.00 retain the combined property
+# test for spouses separated to obtain medical or nursing care.
+# https://revisor.mo.gov/main/OneSection.aspx?section=208.010
+# https://dssmanuals.mo.gov/december-1973-eligibility-requirements/1035-000-00/1035-005-00/
+# MHABD Appendix J (effective July 2026): SNC couple limit $12,441,
+# SNF grant cap $390 plus $50 personal needs allowance.
+# https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf
+# $7,000 + $1,000 = $8,000 passes; $1,000 + $15,000 = $16,000 fails.
+# $2,000 facility charge - $1,200 pension = $800 need; min($800, $390)
+# + $50 = $440 for the eligible claimant. SSI is calculated naturally.
+- name: MO medical separation retains the couple resource cap and SNC payment
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age:
+          2026: 75
+        is_tax_unit_head:
+          2026: true
+        ssi_countable_resources:
+          2026: 7000
+        pension_income:
+          2026: 14400
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 2000
+      community_spouse:
+        age:
+          2026: 73
+        is_tax_unit_spouse:
+          2026: true
+        ssi_countable_resources:
+          2026: 1000
+    tax_units:
+      joint_return:
+        members: [claimant, community_spouse]
+    marital_units:
+      declared_marriage:
+        members: [claimant, community_spouse]
+    spm_units:
+      claimant_unit:
+        members: [claimant]
+      community_unit:
+        members: [community_spouse]
+    households:
+      nursing_facility:
+        members: [claimant]
+        state_code:
+          2026: MO
+      community_home:
+        members: [community_spouse]
+        state_code:
+          2026: MO
+  output:
+    mo_ssp_resource_eligible: [true, true]
+    mo_ssp_eligible: [true, false]
+    mo_ssp: [440, 0]
+
+- name: MO medical separation retains resources held by the community spouse
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age:
+          2026: 75
+        is_tax_unit_head:
+          2026: true
+        ssi_countable_resources:
+          2026: 1000
+        pension_income:
+          2026: 14400
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 2000
+      community_spouse:
+        age:
+          2026: 73
+        is_tax_unit_spouse:
+          2026: true
+        ssi_countable_resources:
+          2026: 15000
+    tax_units:
+      joint_return:
+        members: [claimant, community_spouse]
+    marital_units:
+      declared_marriage:
+        members: [claimant, community_spouse]
+    spm_units:
+      claimant_unit:
+        members: [claimant]
+      community_unit:
+        members: [community_spouse]
+    households:
+      nursing_facility:
+        members: [claimant]
+        state_code:
+          2026: MO
+      community_home:
+        members: [community_spouse]
+        state_code:
+          2026: MO
+  output:
+    mo_ssp_resource_eligible: [false, true]
+    mo_ssp_eligible: [false, false]
+    mo_ssp: [0, 0]

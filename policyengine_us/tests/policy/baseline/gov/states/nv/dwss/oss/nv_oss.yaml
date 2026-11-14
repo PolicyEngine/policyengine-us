@@ -1448,3 +1448,38 @@
         state_code: NV
   output:
     nv_oss: [391, 391, 0, 0]
+
+# POMS SI 01415.058 I.2: independent aged living pays
+# $74.46 per couple and $36.40 per individual; $74.46 / 2 = $37.23.
+# https://secure.ssa.gov/poms.nsf/lnx/0501415058#i2
+# No marital units: only the head and spouse form the eligible couple.
+- name: NV couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NV
+  output:
+    nv_oss: [37.23, 37.23, 36.4]

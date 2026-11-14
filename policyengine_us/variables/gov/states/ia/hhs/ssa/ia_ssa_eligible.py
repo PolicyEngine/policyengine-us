@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states._spouses import state_couple_total
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class ia_ssa_eligible(Variable):
@@ -33,16 +37,14 @@ class ia_ssa_eligible(Variable):
         # resident lives apart from the spouse after the month of entry (6-B
         # p.60), so only the couple-budget entry month pools resources
         # (ia_ssa.yaml Case 61).
-        # NOTE: The spouse who stays at home still pools resources with the
-        # resident after the month of entry, though p.12 would test that
-        # spouse alone. Federal SSI in the model has no input for spouses who
-        # live apart and keeps them a couple, and that spouse's SSA income
-        # comes from federal SSI, so this belongs with the federal treatment of
-        # spouses living apart.
-        couple = person("ia_ssa_has_spouse", period) & (
-            community | person("ia_ssa_rcf_couple_budget", period)
+        entry_couple = person("ia_ssa_rcf_couple_budget", period)
+        couple = (person("ia_ssa_has_spouse", period) & community) | entry_couple
+        combined = where(
+            entry_couple,
+            state_couple_total(person, period.this_year, resource),
+            _ssi_couple_total(person, period.this_year, resource),
         )
-        resource = where(couple, person.marital_unit.sum(resource), resource)
+        resource = where(couple, combined, resource)
         resource = resource + person("ia_ssa_resources_deemed_from_parents", period)
         # 6-B Resources prints "$2,000 for an individual" and "$3,000 for a
         # married couple living together" under 20 CFR 416.1202; these equal

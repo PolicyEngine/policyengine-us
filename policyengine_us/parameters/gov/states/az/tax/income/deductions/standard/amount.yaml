@@ -20,12 +20,14 @@ metadata:
     href: https://www.azleg.gov/ars/43/01041.htm
   - title: Laws 2026, ch. 140 (HB 4168), secs. 16 and 35(A)
     href: https://www.azleg.gov/legtext/57leg/2R/laws/0140.htm
-  # 2026: 43-1041(H) indexes the subsection A amounts "in the same manner in
-  # which the federal basic standard deduction is adjusted for inflation
-  # pursuant to section 63". The Arizona and federal 2025 bases are equal, so
-  # the 2026 amounts equal the federal ones.
+  # 2026 and 2027: 43-1041(H) indexes the subsection A amounts "in the same
+  # manner in which the federal basic standard deduction is adjusted for
+  # inflation pursuant to section 63". The Arizona and federal 2025 bases are
+  # equal, so the 2026 and 2027 amounts equal the federal ones.
   - title: Rev. Proc. 2025-32, sec. 4.14(1) (2026 federal standard deduction)
     href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
+  - title: Rev. Proc. 2026-35, sec. 3.15(1) (2027 federal standard deduction)
+    href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=13
   # Each filing-status amount below carries its own uprating, because
   # policyengine-core uprates only parameters whose own metadata names one.
 
@@ -37,17 +39,17 @@ JOINT:
     2024-01-01: 29_200
     2025-01-01: 31_500
     2026-01-01: 32_200
+    2027-01-01: 33_200
   metadata:
     unit: currency-USD
     period: year
     # The federal method makes the joint amount twice the single amount
-    # (26 U.S.C. 63(c)(2)(A)). With a 2026 joint amount of twice the single
-    # amount, a $100 round-down equals twice the single amount's $50
-    # round-down.
+    # (26 U.S.C. 63(c)(2)(A)), so each projected year doubles the Arizona
+    # single amount. Rounding to $100 clears float error from the ratio.
     uprating:
-      parameter: gov.irs.uprating
+      parameter: gov.states.az.tax.income.deductions.standard.amount.SINGLE
       rounding:
-        type: downwards
+        type: nearest
         interval: 100
 HEAD_OF_HOUSEHOLD:
   values:
@@ -57,11 +59,21 @@ HEAD_OF_HOUSEHOLD:
     2024-01-01: 21_900
     2025-01-01: 23_625
     2026-01-01: 24_150
+    2027-01-01: 24_925
   metadata:
     unit: currency-USD
     period: year
+    # A.R.S. 43-1041(H) indexes the $23,625 "in the same manner" as
+    # 26 U.S.C. 63(c)(7)(B)(ii) indexes the federal one: the 2025 amount plus
+    # its cost-of-living increase with calendar year 2024 as the base year,
+    # rounded down to a multiple of $50. The index's 2025 value covers
+    # calendar year 2024.
     uprating:
       parameter: gov.irs.uprating
+      base:
+        period: 2025
+        value: 23_625
+        floor: true
       rounding:
         type: downwards
         interval: 50
@@ -73,11 +85,21 @@ SINGLE:
     2024-01-01: 14_600
     2025-01-01: 15_750
     2026-01-01: 16_100
+    2027-01-01: 16_600
   metadata:
     unit: currency-USD
     period: year
+    # A.R.S. 43-1041(H) indexes the $15,750 "in the same manner" as
+    # 26 U.S.C. 63(c)(7)(B)(ii) indexes the federal one: the 2025 amount plus
+    # its cost-of-living increase with calendar year 2024 as the base year,
+    # rounded down to a multiple of $50. The index's 2025 value covers
+    # calendar year 2024.
     uprating:
       parameter: gov.irs.uprating
+      base:
+        period: 2025
+        value: 15_750
+        floor: true
       rounding:
         type: downwards
         interval: 50
@@ -89,11 +111,21 @@ SEPARATE:
     2024-01-01: 14_600
     2025-01-01: 15_750
     2026-01-01: 16_100
+    2027-01-01: 16_600
   metadata:
     unit: currency-USD
     period: year
+    # A.R.S. 43-1041(H) indexes the $15,750 "in the same manner" as
+    # 26 U.S.C. 63(c)(7)(B)(ii) indexes the federal one: the 2025 amount plus
+    # its cost-of-living increase with calendar year 2024 as the base year,
+    # rounded down to a multiple of $50. The index's 2025 value covers
+    # calendar year 2024.
     uprating:
       parameter: gov.irs.uprating
+      base:
+        period: 2025
+        value: 15_750
+        floor: true
       rounding:
         type: downwards
         interval: 50

@@ -436,3 +436,51 @@
     # 39.6% x 35,150 = 13,919.4.
     income_tax_main_rates: 143_915.90
 
+
+- name: 2027 single filer with 60,000 of taxable income (Rev. Proc. 2026-35)
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    filing_status: SINGLE
+    taxable_income: 60_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # Table 3: 5,987 + 22% x (60,000 - 52,025) = 5,987 + 1,754.50.
+    income_tax_main_rates: 7_741.50
+
+- name: 2027 head of household with 300,000 of taxable income (Rev. Proc. 2026-35)
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income: 300_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # Table 2: 58,480 + 35% x (300,000 - 264,550) = 58,480 + 12,407.50.
+    income_tax_main_rates: 70_887.50
+
+- name: 2027 joint filers with 900,000 of taxable income (Rev. Proc. 2026-35)
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    filing_status: JOINT
+    taxable_income: 900_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # Table 1: 213,290.50 + 37% x (900,000 - 793,650) = 213,290.50 + 39,349.50.
+    income_tax_main_rates: 252_640
+
+- name: 2027 separate filer with 400,000 of taxable income (Rev. Proc. 2026-35)
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    filing_status: SEPARATE
+    taxable_income: 400_000
+    foreign_earned_income_exclusion: 0
+    capital_gains_excluded_from_taxable_income: 0
+  output:
+    # Table 4: 106,645.25 + 37% x (400,000 - 396,825) = 106,645.25 + 1,174.75.
+    income_tax_main_rates: 107_820

@@ -1,0 +1,18 @@
+description: Washington requires a veteran claiming the senior citizens and disabled persons property tax exemption to be entitled to and receiving VA compensation at a qualifying service-connected disability rating, if this is true.
+values:
+  # 2008 c 6 s 706, RCW 84.36.381(3)(b): a veteran "with one hundred percent
+  # service-connected disability as provided in 42 U.S.C. Sec. 423(d)(1)(A)".
+  2008-01-01: false
+  # 2015 3rd sp.s. c 30 s 2, for taxes levied for collection in 2016 and after.
+  2016-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Washington senior and disabled property tax exemption veteran rating requirement in effect
+  reference:
+    - title: RCW 84.36.381(3)(a)(ii)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.381
+    - title: 2008 c 6 s 706 (2SHB 3104), RCW 84.36.381(3)
+      href: https://lawfilesext.leg.wa.gov/biennium/2007-08/Pdf/Bills/Session%20Laws/House/3104-S2.SL.pdf#page=85
+    - title: RCW 84.36.381 as amended by 2015 3rd sp.s. c 30 s 2, with the s 4 application note
+      href: https://lawfilestestext.leg.wa.gov/LawTest/RCW%20Supplement/RCW%20%2084%20%20TITLE/RCW%20%2084%20.%2036%20%20CHAPTER/RCW%20%2084%20.%2036%20.381.htm

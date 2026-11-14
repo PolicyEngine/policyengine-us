@@ -1,0 +1,29 @@
+description: Colorado estimates these wood heating costs when included in rent under the Low-income Energy Assistance Program.
+HOUSE_MODULAR:
+  2025-11-01: 480
+MOBILE_HOME:
+  2025-11-01: 310
+DUPLEX_TRIPLEX_FOURPLEX:
+  2025-11-01: 215
+TOWNHOUSE:
+  2025-11-01: 215
+APARTMENT_CONDO:
+  2025-11-01: 208
+HOTEL_MOTEL:
+  2025-11-01: 208
+CABIN:
+  2025-11-01: 208
+TINY_HOME:
+  2025-11-01: 208
+CAMPER_RV:
+  2025-11-01: 196
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Colorado LEAP wood heating included in rent
+  breakdown:
+    - co_leap_dwelling_type
+  reference:
+    - title: Colorado FY2026 LEAP benefit methodology and annual rates
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/CO_BenefitMatrix_Heat-Crisis_2026.pdf#page=6

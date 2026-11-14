@@ -87,3 +87,43 @@
         state_code: OH
   output:
     mi_ssp: 0
+
+- name: Michigan couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: MI
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    mi_ssp_couple_eligible: [true, true, false]
+    # Michigan RFT 248, independent living, effective January 1, 2026:
+    # https://mdhhs-pres-prod.michigan.gov/olmweb/ex/RF/Public/RFT/248.pdf#page=2
+    # $21 / 2 = $10.50 per spouse, plus $14 for the individual = $35.
+    mi_ssp_person: [10.5, 10.5, 14]
+    mi_ssp: 35

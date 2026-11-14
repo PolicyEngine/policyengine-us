@@ -98,3 +98,45 @@
   output:
     # amount.yaml has no 2026 STANDARD entry -> most recent value (2024-04-01: 35.50) carries forward.
     wa_ssp: 35.50
+
+- name: Washington historical ineligible-spouse category excludes a third aged adult.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2022: 40
+        is_tax_unit_head:
+          2022: true
+        meets_ssi_disability_criteria:
+          2022: true
+      spouse:
+        age:
+          2022: 40
+        is_tax_unit_spouse:
+          2022: true
+      dependent:
+        age:
+          2022: 68
+        is_tax_unit_dependent:
+          2022: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2022: WA
+  output:
+    # WAC 388-474-0012(2)(b) includes an SSI recipient with an ineligible spouse.
+    # https://app.leg.wa.gov/wac/default.aspx?cite=388-474-0012
+    # WSR 20-23-053 set $38.25 for that category and for aged recipients.
+    # https://lawfilesext.leg.wa.gov/law/wsr/2020/23/20-23-053.htm
+    # Head qualifies through the actual spouse; the third adult through age.
+    wa_ssp_payment_category: [STANDARD, NONE, STANDARD]
+    wa_ssp: [38.25, 0, 38.25]

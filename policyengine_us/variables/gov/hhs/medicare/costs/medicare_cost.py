@@ -12,7 +12,10 @@ class medicare_cost(Variable):
         "the gross Part B premium, the average Part D premium per Medicare "
         "enrollee, and the person's own Part D income-related monthly "
         "adjustment amount. This represents the net benefit value of "
-        "Medicare coverage."
+        "Medicare coverage. Every enrollee nets the same average Part D "
+        "premium, including low-income subsidy enrollees and people whose "
+        "drug coverage isn't Part D, so that term doesn't measure what a "
+        "given person pays."
     )
     unit = USD
     definition_period = YEAR

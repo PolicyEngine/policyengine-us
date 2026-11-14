@@ -689,6 +689,8 @@ _CHUNK_SAFE_POPULATION_READERS = {
     # Tests whether the simulation holds one marital unit. calculate_chunked
     # rejects a chunk holding exactly one of several marital units.
     "gov/ssa/ssi/eligibility/resources/deemed/_ssi_spouses.py": "chunk guard",
+    # The state retained-pair test makes the same one-marital-unit test.
+    "gov/states/_spouses.py": "chunk guard",
 }
 _POPULATION_SIGNAL = re.compile(
     r"MicroSeries|[\"'](?:"

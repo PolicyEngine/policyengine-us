@@ -3,7 +3,7 @@
   absolute_error_margin: 20
   input:
     employment_income: 20_500
-    eitc_child_count: 0
+    ca_eitc_child_count: 0
   output:
     ca_eitc: 88
 
@@ -54,3 +54,115 @@
     ca_income_tax_before_refundable_credits: 0
     ca_eitc: 0  # too much investment income to be CalEITC eligible
     ca_income_tax: 0
+
+- name: A qualifying ITIN child uses the one-child CalEITC schedule
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+        has_tin: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      unit:
+        members: [parent, child]
+        ca_eitc_eligible: true
+        ca_eitc_earned_income: 1_000
+        adjusted_gross_income: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_child_count: 0
+    ca_eitc_child_count: 1
+    # $1,000 * .34 * .85, rather than the childless $65.025.
+    ca_eitc: 289
+
+- name: A child without an SSN or ITIN does not increase CalEITC
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+        has_tin: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      unit:
+        members: [parent, child]
+        ca_eitc_eligible: true
+        ca_eitc_earned_income: 1_000
+        adjusted_gross_income: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_child_count: 0
+    ca_eitc_child_count: 0
+    ca_eitc: 65.025
+
+- name: Four ITIN qualifying children use the three-or-more-child CalEITC schedule
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_head: true
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+        has_tin: true
+      child1:
+        age: 12
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: true
+      child2:
+        age: 10
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: true
+      child3:
+        age: 8
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: true
+      child4:
+        age: 6
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      unit:
+        members: [parent, child1, child2, child3, child4]
+        ca_eitc_eligible: true
+        ca_eitc_earned_income: 1_000
+        adjusted_gross_income: 1_000
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4]
+        state_code: CA
+  output:
+    eitc_child_count: 0
+    ca_eitc_child_count: 4
+    # $1,000 * .45 * .85; the count itself is not capped at three.
+    ca_eitc: 382.5

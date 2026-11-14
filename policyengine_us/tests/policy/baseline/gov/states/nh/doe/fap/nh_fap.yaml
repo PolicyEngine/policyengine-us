@@ -2809,8 +2809,8 @@
 
 # Manual pp15,17: Social Security of 28,000 is 2,333.33 a month, or 2,313.33 after
 # the $20 exclusion, above the MSP limit (135% of the 2027 one-person guideline,
-# about 1,838), so the enrollee pays 202.90 * 12 = 2,434.80.
-# 28,000 - 2,434.80 = 25,565.20, 160.2% of 15,960: above 150% (23,940) and within
+# about 1,838), so the enrollee pays the projected 2027 premium of 209.50 * 12 = 2,514.
+# 28,000 - 2,514 = 25,486, 159.7% of 15,960: above 150% (23,940) and within
 # 175% (27,930), band E. The 2,000 oil bill is in tier BB; BB/E = 1,100.
 - name: "Case 86, the Part B deduction moves a Social Security recipient into a higher-paying band."
   period: 2027
@@ -2836,8 +2836,8 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    medicare_part_b_premium: 2_434.8
-    nh_fap_countable_income: 25_565.2
+    medicare_part_b_premium: 2_514
+    nh_fap_countable_income: 25_486
     nh_fap: 1_100
 
 # Manual p15 and plan item 1.9: municipal general assistance is not counted.

@@ -17,6 +17,8 @@ from .household import (
 )
 from .parameters import bend_points_at, formula_path_at
 from .pia import FormulaPath
+from .history import EarningsHistory, history_parameters_at
+from .history_report import history_report
 from .means_test import cola_override, component_withholding, indexed_cola_rate
 
 
@@ -30,9 +32,13 @@ def calculator_output(person, period, parameters, output):
     """
     year = period.start.year
     sources = person("ss_calculator_source", period)
-    result = np.zeros(len(sources))
+    result = (
+        np.full(len(sources), "", dtype=object)
+        if output == "history_ledger"
+        else np.zeros(len(sources))
+    )
     for index, source in enumerate(sources):
-        if source == "off":
+        if source == "off" or (output.startswith("history_") and source != "history"):
             continue
 
         def value(name, when=period):
@@ -107,6 +113,24 @@ def calculator_output(person, period, parameters, output):
             **kwargs,
         )
         benchmark = record.benchmark()
+        if source == "history":
+            history = EarningsHistory.from_json(text("earnings_history"))
+            # The full annual source travels as one structural JSON input;
+            # Core cannot carry an earlier earnings observation into a gap.
+            from dataclasses import replace
+
+            record = replace(
+                record,
+                history=history,
+                history_parameters=history_parameters_at(
+                    parameters,
+                    history,
+                    benchmark,
+                    month_number(record.entitlement_month) // 12,
+                    birth_year=record.birth_date.year,
+                    donut_variant=text("donut_variant"),
+                ),
+            )
         # Include the following January to price December entitlement, and any
         # supplied source valuation used for baseline survivor recovery.
         through = max(
@@ -322,7 +346,10 @@ def calculator_output(person, period, parameters, output):
             ),
             earnings_test_settlement_months=settlement_months,
         )
-        if output in ("retirement", "survivors"):
+        if output.startswith("history_"):
+            report = history_report(annual, output)
+            result[index] = report if output == "history_ledger" else float(report)
+        elif output in ("retirement", "survivors"):
             selected = (
                 source != "survivor" if output == "retirement" else source == "survivor"
             )

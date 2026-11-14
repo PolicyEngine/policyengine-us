@@ -24,10 +24,15 @@ For every tax unit:
 1. Differential: dependent_care_assistance_exclusion equals an independent
    numpy min of the benefits, the cap printed on Form 2441 line 21 for the
    year (not the model's parameter) and the lesser of the filers' earnings.
+   Earnings are box 1 wages: Form 2441 line 18 earned income leaves out the
+   line 12 benefits, which the fixtures add on top to form employment_income.
+   Raising benefits therefore raises employment_income by the same amount.
 2. Bound: 0 <= exclusion <= benefits, the year/status cap and earned income.
 3. Monotone: raising benefits never lowers the exclusion.
 4. California: ca_dependent_care_assistance_exclusion equals the same min with
-   the FTB 3506 line 22 cap, and never exceeds the federal exclusion.
+   the FTB 3506 line 22 cap and California wages (which the model does not
+   reduce by the benefits), and doesn't exceed the federal exclusion where
+   the federal earned income limit doesn't bind below California's cap.
    Separate filers treated as unmarried use the full cap in both systems.
 5. Section 21(c): cdcc_limit equals max(Form 2441 line 27 amount x the
    number of qualifying persons (at most two) - exclusion, 0).
@@ -82,7 +87,7 @@ wages = st.one_of(st.just(0.0), st.integers(1, 150_000).map(float))
 @st.composite
 def filers(draw):
     return {
-        "employment_income": draw(wages),
+        "box_1_wages": draw(wages),
         "benefits": draw(benefits),
         "increase": draw(increases),
     }
@@ -109,7 +114,7 @@ def _seeded_units(n=200):
     def filer():
         level = rng.choice([0, 1, 2])
         return {
-            "employment_income": float(rng.integers(0, 150_001)),
+            "box_1_wages": float(rng.integers(0, 150_001)),
             "benefits": float(
                 [0, rng.integers(1, 5_001), rng.integers(5_000, 12_001)][level]
             ),
@@ -142,7 +147,9 @@ def _situation(units, year):
             "age": 40,
             "is_tax_unit_head": role == "head",
             "is_tax_unit_spouse": role == "spouse",
-            "employment_income": values["employment_income"],
+            # Benefits sit inside employment_income as a pre-tax payroll
+            # deduction, so box 1 wages are employment_income - benefits.
+            "employment_income": values["box_1_wages"] + values["benefits"],
             "dependent_care_employer_benefits": values["benefits"],
         }
 
@@ -223,7 +230,7 @@ def _treated_as_unmarried(unit):
     )
 
 
-def _expected(units, year, caps, *, raised=False):
+def _expected(units, year, caps, *, raised=False, wages_include_benefits=False):
     # Independent cap-arithmetic oracle; qualified-expense/person eligibility
     # under Form 2441 lines 16-25 is outside this property's domain.
     benefits, cap, earned = [], [], []
@@ -234,7 +241,13 @@ def _expected(units, year, caps, *, raised=False):
             "filing_status"
         ] == "SEPARATE" and not _treated_as_unmarried(unit)
         cap.append(caps[1] if ordinary_separate else caps[0])
-        earned.append(min(f["employment_income"] for f in filers))
+        earned.append(
+            min(
+                f["box_1_wages"]
+                + wages_include_benefits * (f["benefits"] + raised * f["increase"])
+                for f in filers
+            )
+        )
     return np.minimum(np.array(benefits), np.minimum(cap, earned))
 
 
@@ -275,9 +288,9 @@ def _check(units, year):
     )
     earned_income_limits = np.array(
         [
-            min(unit["head"]["employment_income"], unit["spouse"]["employment_income"])
+            min(unit["head"]["box_1_wages"], unit["spouse"]["box_1_wages"])
             if unit["spouse"]
-            else unit["head"]["employment_income"]
+            else unit["head"]["box_1_wages"]
             for unit in units
         ]
     )
@@ -294,12 +307,23 @@ def _check(units, year):
         atol=TOLERANCE,
     )
 
-    # 4. California's line 22 cap.
+    # 4. California's line 22 cap. California earned income is measured from
+    # California wages (ca_taxable_wages), which the model does not reduce by
+    # the line 12 benefits; California law on that point is not checked here.
     california = base["ca_dependent_care_assistance_exclusion"]
     np.testing.assert_allclose(
-        california, _expected(units, year, CALIFORNIA_CAP), atol=TOLERANCE
+        california,
+        _expected(units, year, CALIFORNIA_CAP, wages_include_benefits=True),
+        atol=TOLERANCE,
     )
-    assert (california <= exclusion + TOLERANCE).all()
+    # Where the federal earned income limit doesn't bind below California's
+    # cap, California's smaller cap keeps its exclusion at or below federal.
+    federal_limit_slack = earned_income_limits >= np.minimum(
+        benefits, CALIFORNIA_CAP[0]
+    )
+    assert (
+        california[federal_limit_slack] <= exclusion[federal_limit_slack] + TOLERANCE
+    ).all()
 
     # 5. Section 21(c) dollar limit.
     persons = np.array([min(unit["children"], 2) for unit in units])

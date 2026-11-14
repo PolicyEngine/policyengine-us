@@ -1,0 +1,102 @@
+# Long-term care premiums the federal self-employed health insurance
+# deduction took already reduced federal AGI, Ohio's starting point, so the
+# Ohio worksheet counts only the rest. The federal deduction takes medical
+# insurance premiums (Form 7206 line 1) first, then eligible long-term care
+# premiums (line 2), limited by 26 U.S.C. 213(d)(10): $1,800 at age 51-60 in
+# 2025 (Rev. Proc. 2024-40).
+- name: An employee's long-term care premiums count in full
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 55
+        employment_income: 50_000
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 2_500
+    households:
+      household:
+        members: [head]
+        state_code: OH
+  output:
+    # No federal self-employed deduction: 2,500.
+    oh_long_term_care_insurance_premiums: 2_500
+
+- name: A self-employed person's deducted long-term care premiums are not counted again
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 55
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 2_500
+    households:
+      household:
+        members: [head]
+        state_code: OH
+  output:
+    # Eligible long-term care premiums = min(2,500, 1,800) = 1,800.
+    # Federal deduction = 3,000 + 1,800 = 4,800, below the earned income limit.
+    # Long-term care part = 4,800 - 3,000 = 1,800; Ohio = 2,500 - 1,800 = 700.
+    self_employed_health_insurance_ald_person: 4_800
+    oh_long_term_care_insurance_premiums: 700
+    # Medical premiums: 3,000 less the deduction's medical part (line 1),
+    # 3,000, = 0, and no other expenses, so the worksheet takes only the 700.
+    oh_unreimbursed_medical_care_expense_deduction_person: 700
+
+- name: When the earned income limit binds, medical premiums take the deduction first
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 55
+        is_self_employed: true
+        self_employment_income: 4_000
+        health_insurance_premiums: 3_000
+        long_term_health_insurance_premiums: 2_500
+    households:
+      household:
+        members: [head]
+        state_code: OH
+  output:
+    # SE tax = 4,000 x 0.9235 x 0.153 = 565.18; half = 282.59.
+    # Earned income limit = 4,000 - 282.59 = 3,717.41 < 4,800.
+    # Long-term care part = 3,717.41 - 3,000 = 717.41.
+    # Ohio = 2,500 - 717.41 = 1,782.59.
+    self_employed_health_insurance_ald_person: 3_717.41
+    oh_long_term_care_insurance_premiums: 1_782.59
+
+- name: A supplied deduction is removed once across the two premium lines
+  period: 2025
+  input:
+    state_code: OH
+    age: 55
+    is_self_employed: true
+    self_employment_income: 120_000
+    health_insurance_premiums_without_medicare_part_b: 3_000
+    long_term_health_insurance_premiums: 3_000
+    self_employed_health_insurance_ald_person: 2_300
+  output:
+    # Line 1 is 0 and line 2 is 1,800, so the long-term care part is 1,800
+    # and the other 500 is medical: 3,000 - 500 and 3,000 - 1,800.
+    oh_medical_care_insurance_premiums: 2_500
+    oh_long_term_care_insurance_premiums: 1_200
+
+- name: A supplied deduction for a person who is not self-employed is removed once
+  period: 2025
+  input:
+    state_code: OH
+    age: 55
+    employment_income: 50_000
+    health_insurance_premiums: 300
+    long_term_health_insurance_premiums: 1_000
+    self_employed_health_insurance_ald_person: 800
+  output:
+    # The medical premiums absorb 300 of the 800; the other 500 comes off
+    # the long-term care premiums.
+    oh_medical_care_insurance_premiums: 0
+    oh_long_term_care_insurance_premiums: 500

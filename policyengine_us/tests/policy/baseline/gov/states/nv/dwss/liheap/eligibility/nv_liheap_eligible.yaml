@@ -1,7 +1,8 @@
 # Countable annual gross income must not exceed 150% of the poverty guideline (NRS
-# 702.260(3); EAP Manual 701, 802; SFY2026 size-one limit 23,475). The household needs a
-# home heating source and responsibility for energy costs: a heating bill, or heat in the
-# rent (803 V.3); households in subsidized or public housing with all utilities in the
+# 702.260(3); EAP Manual 701, 802; SFY2026 size-one limit 23,475). Every household is
+# assumed to have the active Nevada energy account that Manual 500 requires, so any known
+# heating fuel or NONE qualifies without a bill; an unspecified fuel qualifies only with
+# heat in the rent. Households in subsidized or public housing with all utilities in the
 # rent are ineligible unless they have an energy burden (501 I, 503). Household size
 # counts citizens and qualified non-citizens outside the five-year bar only (302 C,
 # 502 A.I). Wages of 18,720 are 30 hours a week at the Nevada minimum wage of 12.00; gas
@@ -50,7 +51,7 @@
   output:
     nv_liheap_eligible: false
 
-- name: Case 3, a home with no heating is ineligible.
+- name: Case 3, a home with no heating is eligible.
   period: 2026
   input:
     people:
@@ -67,7 +68,9 @@
         members: [person1]
         state_code: NV
   output:
-    nv_liheap_eligible: false
+    # Was false, now true: every household is assumed to have the active energy
+    # account (Manual 500), and NONE is a sent heating_type; 18,720 <= 23,475.
+    nv_liheap_eligible: true
 
 - name: Case 4, an unspecified heating fuel without heat in rent is ineligible even with reported heating costs.
   period: 2026
@@ -207,7 +210,7 @@
     # Energy cost 0 + 1,320 > 0: an energy burden remains (501 I)
     nv_liheap_eligible: true
 
-- name: Case 10, a gas-heated home with a zero gas bill and heat outside the rent is ineligible.
+- name: Case 10, a gas-heated home with a zero gas bill and heat outside the rent is eligible.
   period: 2026
   input:
     people:
@@ -225,7 +228,9 @@
         members: [person1]
         state_code: NV
   output:
-    nv_liheap_eligible: false
+    # Was false, now true: every household is assumed to have the active energy
+    # account (Manual 500), so no heating bill is required; 18,720 <= 23,475.
+    nv_liheap_eligible: true
 
 - name: Case 11, a household of only undocumented members with no income is ineligible.
   period: 2026
@@ -282,3 +287,39 @@
     # 24,960 > 23,475
     nv_liheap_eligible: false
     nv_liheap: 0
+
+- name: Case 13, a home with no heating and all utilities in the rent is ineligible only in subsidized housing.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+      person2:
+        age: 40
+        employment_income: 18_720
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NONE
+        receives_housing_assistance: true
+        pre_subsidy_electricity_expense: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: NONE
+        receives_housing_assistance: false
+        pre_subsidy_electricity_expense: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: NV
+        tenant_pays_utilities: false
+      household2:
+        members: [person2]
+        state_code: NV
+        tenant_pays_utilities: false
+  output:
+    # The tenant pays no utilities and has no energy burden. With rental
+    # assistance the household is ineligible (501 I); without it the credit
+    # pays the minimum (803 V.3).
+    nv_liheap_eligible: [false, true]

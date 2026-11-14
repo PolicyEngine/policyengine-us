@@ -24,6 +24,10 @@ class eitc_earned_income(Variable):
         # deduction, so supplied W-2 wages are not reduced twice.
         earned_income_sources = [
             "irs_employment_income",
+            # Dependent care benefits above the IRC 129 exclusion (Form 1040
+            # line 1e) are includible in gross income, so they are earned
+            # income under IRC 32(c)(2)(A)(i).
+            "taxable_dependent_care_benefits",
             "self_employment_income",
             "sstb_self_employment_income",
             "farm_operations_income",

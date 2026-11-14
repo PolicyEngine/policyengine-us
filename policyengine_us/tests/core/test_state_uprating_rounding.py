@@ -1,6 +1,7 @@
 """Regression coverage for state parameter uprating and rounding."""
 
-from math import isinf
+from fractions import Fraction
+from math import floor, isinf
 
 import pytest
 
@@ -277,27 +278,32 @@ def test_az_standard_deduction_is_indexed_like_the_federal_basic_amount(status):
     # inflation pursuant to section 63". Laws 2026, ch. 140 set those amounts
     # to the federal 2025 amounts, so under current law the Arizona amounts
     # equal the federal ones in every later year. A parent-level uprating key
-    # used to leave Arizona at its 2025 amounts from 2026 on. After 2026 this
-    # checks the model's projection, which uprates the rounded 2026 amount.
+    # used to leave Arizona at its 2025 amounts from 2026 on. 2027 is the
+    # federal amount in Rev. Proc. 2026-35 sec. 3.15(1). After 2027 this checks
+    # the model's projection: 26 U.S.C. 63(c)(7)(B)(ii) adds to the 2025 amount
+    # its cost-of-living increase since calendar year 2024 (the index's 2025
+    # value), rounded down to a multiple of $50.
     arizona = getattr(
         SYSTEM.parameters.gov.states.az.tax.income.deductions.standard.amount, status
     )
     federal = getattr(SYSTEM.parameters.gov.irs.deductions.standard.amount, status)
     uprating = SYSTEM.parameters.gov.irs.uprating
-    base_2026 = arizona("2026-01-01")
-    previous = arizona("2025-01-01")
-    for year in range(2025, 2036):
+    base = arizona("2025-01-01")
+    previous = base
+    for year in range(2025, 2101):
         period = f"{year}-01-01"
         amount = arizona(period)
         assert amount == federal(period), (status, year)
         assert amount >= previous, (status, year)
         previous = amount
-        if year > 2026:
-            # 26 U.S.C. 63(c)(7)(B)(ii): round increases down to a multiple
-            # of $50.
-            factor = uprating(period) / uprating("2026-01-01")
-            assert amount == base_2026 * factor // 50 * 50, (status, year)
-    assert arizona("2035-01-01") > base_2026
+        if year > 2027:
+            increase = Fraction(base) * (
+                Fraction(repr(uprating(period)))
+                / Fraction(repr(uprating("2025-01-01")))
+                - 1
+            )
+            assert amount == base + floor(increase / 50) * 50, (status, year)
+    assert arizona("2035-01-01") > arizona("2027-01-01")
 
 
 def test_az_joint_standard_deduction_is_twice_the_single_amount():
@@ -305,6 +311,10 @@ def test_az_joint_standard_deduction_is_twice_the_single_amount():
     # return is 200% of the single amount, so the Arizona joint amount,
     # indexed in the same manner, is twice the Arizona single amount.
     amount = SYSTEM.parameters.gov.states.az.tax.income.deductions.standard.amount
-    for year in range(2025, 2036):
+    assert amount.JOINT.metadata["uprating"] == {
+        "parameter": "gov.states.az.tax.income.deductions.standard.amount.SINGLE",
+        "rounding": {"type": "nearest", "interval": 100},
+    }
+    for year in range(2025, 2101):
         period = f"{year}-01-01"
         assert amount.JOINT(period) == 2 * amount.SINGLE(period), year

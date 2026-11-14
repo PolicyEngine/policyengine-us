@@ -44,9 +44,9 @@ PERIOD = "2026-01"
 YEAR = 2026
 N = 480
 SEED = 20260928
-# 13 CSR 40-2.310(13) standard of need and (12) payment percentage.
+# 13 CSR 40-2.310(13) lists the standard of need and maximum grant.
 STANDARD_OF_NEED = {1: 393, 2: 678, 3: 846, 4: 990, 5: 1_123}
-PAYMENT_PERCENTAGE = 0.34526
+MAXIMUM_GRANT = {1: 136, 2: 234, 3: 292, 4: 342, 5: 388, 6: 431}
 WORK_EXPENSE = 90
 RESOURCE_LIMIT = 1_000
 
@@ -179,7 +179,7 @@ PEOPLE = _person_index()
 
 
 def _payment(size):
-    return STANDARD_OF_NEED.get(size, 0) * PAYMENT_PERCENTAGE
+    return MAXIMUM_GRANT.get(size, 0)
 
 
 def test_unflagged_households_include_dependent_parents(unflagged_sim):

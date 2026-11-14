@@ -45,7 +45,7 @@ class ny_itemized_deductions_phase_out(Variable):
     L3 = L1 - L2 (worksheet line 3) is therefore the mortgage interest, real
     estate taxes, charitable gifts, and 2%-floor miscellaneous deductions -
     exactly the 68(c) base subject to the limitation. Because investment
-    interest appears in both L1 (inside interest_deduction) and L2, it cancels
+    interest appears in both L1 (inside ny_interest_deduction) and L2, it cancels
     out of L3, as intended.
     """
 

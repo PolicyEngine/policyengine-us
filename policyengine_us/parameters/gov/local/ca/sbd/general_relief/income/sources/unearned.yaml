@@ -49,7 +49,7 @@ values:
     # other program's budget covers the recipient, so neither their SSI
     # nor their other income is charged to the AU. SSP
     # (ca_state_supplement) and CAPI (ca_capi) recipients are barred the
-    # same way, so those unit-level benefits never enter AU income either.
+    # same way, so those benefits never enter AU income either.
     - ssi
 
 metadata:
