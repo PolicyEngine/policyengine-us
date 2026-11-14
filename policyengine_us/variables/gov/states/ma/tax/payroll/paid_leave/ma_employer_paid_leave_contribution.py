@@ -23,16 +23,9 @@ class ma_employer_paid_leave_contribution(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ma.tax.payroll.paid_leave
-        liable = person("employer_headcount", period) >= p.employer_headcount_threshold
-        employer_rate = p.family_rate * (
-            1 - p.family_employee_share
-        ) + p.medical_rate * (1 - p.medical_employee_share)
-        employee_rate = (
-            p.family_rate * p.family_employee_share
-            + p.medical_rate * p.medical_employee_share
-        )
+        # The employer-share rate is zero below the headcount threshold.
+        employer_rate = person("ma_employer_paid_leave_contribution_rate", period)
+        employee_rate = person("ma_employee_paid_leave_contribution_rate", period)
         taxable_wages = person("ma_paid_leave_taxable_wages", period)
-        employer_share = where(liable, employer_rate * taxable_wages, 0)
         undeducted = 1 - person("state_payroll_premium_deduction_share", period)
-        return employer_share + undeducted * employee_rate * taxable_wages
+        return (employer_rate + undeducted * employee_rate) * taxable_wages

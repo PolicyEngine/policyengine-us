@@ -276,3 +276,62 @@
     # NJDOL's 2027 TDI and FLI taxable wage base for workers is $177,100.
     nj_temporary_disability_insurance_taxable_wages: 177_100
     nj_family_leave_insurance_taxable_wages: 177_100
+
+# Worker TDI and FLI rates and wage bases from NJDOL's employer rate information
+# page. Through 2019 the TDI and FLI worker wage base equals the UI wage base.
+
+- name: New Jersey worker contributions in 2018 share the 33,700 wage base.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: NJ
+  output:
+    nj_temporary_disability_insurance_taxable_wages: 33_700
+    nj_family_leave_insurance_taxable_wages: 33_700
+    # TDI: 0.19% * 33,700 = 64.03.
+    nj_employee_temporary_disability_insurance_contribution: 64.03
+    # FLI: 0.09% * 33,700 = 30.33.
+    nj_employee_family_leave_insurance_contribution: 30.33
+    # UI: 0.3825% * 33,700 = 128.9025; workforce: 0.0425% * 33,700 = 14.3225.
+    # 64.03 + 30.33 + 128.9025 + 14.3225 = 237.585.
+    nj_employee_state_payroll_tax: 237.585
+    employee_state_payroll_tax: 237.585
+
+- name: New Jersey worker TDI and FLI in 2021 stop at the 138,200 wage base.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 150_000
+    state_code: NJ
+  output:
+    nj_temporary_disability_insurance_taxable_wages: 138_200
+    # TDI: 0.47% * 138,200 = 649.54.
+    nj_employee_temporary_disability_insurance_contribution: 649.54
+    # FLI: 0.28% * 138,200 = 386.96.
+    nj_employee_family_leave_insurance_contribution: 386.96
+    # UI and workforce: (0.3825% + 0.0425%) * 36,200 = 153.85.
+    # 649.54 + 386.96 + 153.85 = 1,190.35.
+    nj_employee_state_payroll_tax: 1_190.35
+
+- name: New Jersey charged workers no TDI in 2023, and FLI was 0.06%.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: NJ
+  output:
+    nj_employee_temporary_disability_insurance_contribution: 0
+    # FLI: 0.06% * 50,000 = 30.
+    nj_employee_family_leave_insurance_contribution: 30
+
+- name: New Jersey 2027 worker TDI and FLI rates are each 0.24%.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: NJ
+  output:
+    # 0.24% * 50,000 = 120.
+    nj_employee_temporary_disability_insurance_contribution: 120
+    nj_employee_family_leave_insurance_contribution: 120

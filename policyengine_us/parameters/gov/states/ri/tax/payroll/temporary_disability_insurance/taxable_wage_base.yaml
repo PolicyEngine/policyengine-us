@@ -1,6 +1,13 @@
 description: Taxable wage base for Rhode Island TDI employee contributions.
 values:
-  0000-01-01: 0
+  # The Rhode Island TDI wage base existed before 2018. The model does not encode
+  # earlier years, so it carries the 2018 value back to 2015, its first year.
+  2018-01-01: 69_300
+  2019-01-01: 71_000
+  2020-01-01: 72_300
+  2021-01-01: 74_000
+  2022-01-01: 81_500
+  2023-01-01: 84_000
   2024-01-01: 87_000
   2025-01-01: 89_200
   2026-01-01: 100_000
@@ -12,6 +19,16 @@ metadata:
   reference:
     - title: Rhode Island General Laws Section 28-40-1
       href: https://webserver.rilegislature.gov/Statutes/TITLE28/28-40/28-40-1_28-40-1.htm
+    - title: Rhode Island Division of Taxation, Advisory for Tax Professionals ADV 2017-47 (2018 TDI rate and taxable wage base)
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/Advisory/ADV-2017-47.pdf
+    - title: Rhode Island Division of Taxation, Advisory for Tax Professionals ADV 2019-37 (2019 and 2020 TDI rates and taxable wage bases)
+      href: http://www.tax.ri.gov/Advisory/ADV_2019_37.pdf
+    - title: Rhode Island Division of Taxation, Advisory for Tax Professionals ADV 2020-63 (2021 TDI rate and taxable wage base)
+      href: http://www.tax.ri.gov/Advisory/ADV_2020_63.pdf
+    - title: Rhode Island Department of Labor and Training, 2022 UI and TDI quick reference
+      href: https://dlt.ri.gov/sites/g/files/xkgbur571/files/2021-12/quickref.pdf
+    - title: Rhode Island Department of Labor and Training, 2023 UI and TDI quick reference
+      href: https://dlt.ri.gov/sites/g/files/xkgbur571/files/2021-12/quickref_0.pdf
     - title: 2024 Rhode Island tax rates for unemployment insurance and temporary disability insurance
       href: https://dlt.ri.gov/press-releases/2024-tax-rates-unemployment-insurance-and-temporary-disability-insurance
     - title: 2025 Rhode Island tax rates for unemployment insurance and temporary disability insurance

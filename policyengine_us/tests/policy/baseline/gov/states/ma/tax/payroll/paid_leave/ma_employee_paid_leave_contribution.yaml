@@ -121,3 +121,19 @@
     ma_employee_paid_leave_contribution: 442.29
     # 60% * 0.70% = 0.42%; 0.42% * 192,300 = 807.66; 807.66 + 442.29 = 1,249.95.
     ma_employer_paid_leave_contribution: 1_249.95
+
+- name: Massachusetts PFML 2019 partial deduction share applies to the October-to-December contribution.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 100_000
+    employer_headcount: 25
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: MA
+  output:
+    # 0.13% + 40% * 0.62% = 0.378% for one quarter of the year is 0.0945%;
+    # 0.0945% * 100,000 = 94.50 permitted, of which the employer deducts half.
+    ma_employee_paid_leave_contribution: 47.25
+    # 60% * 0.62% = 0.372% for one quarter is 0.093%; 0.093% * 100,000 = 93.00,
+    # plus the 47.25 the employer does not deduct.
+    ma_employer_paid_leave_contribution: 140.25

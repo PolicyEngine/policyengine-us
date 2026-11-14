@@ -67,23 +67,15 @@ class employer_total_additional_state_payroll_tax(Variable):
         )
         de = de_contribution_rate * (1 - de_p.employee_share * deducted) * ss_taxable
 
-        ma_p = parameters(period).gov.states.ma.tax.payroll.paid_leave
+        # The Massachusetts and Vermont rates average the four quarter starts;
+        # the Massachusetts employer-share rate is zero below the headcount
+        # threshold.
         ma_wages = person("employer_total_ma_paid_leave_taxable_wages", period)
-        ma_employer_rate = ma_p.family_rate * (
-            1 - ma_p.family_employee_share
-        ) + ma_p.medical_rate * (1 - ma_p.medical_employee_share)
-        ma_employee_rate = (
-            ma_p.family_rate * ma_p.family_employee_share
-            + ma_p.medical_rate * ma_p.medical_employee_share
-        )
         ma = (
-            where(
-                headcount >= ma_p.employer_headcount_threshold,
-                ma_employer_rate * ma_wages,
-                0,
-            )
-            + (1 - deducted) * ma_employee_rate * ma_wages
-        )
+            person("ma_employer_paid_leave_contribution_rate", period)
+            + (1 - deducted)
+            * person("ma_employee_paid_leave_contribution_rate", period)
+        ) * ma_wages
 
         me_p = parameters(period).gov.states.me.tax.payroll.paid_leave
         me_wages = person("employer_total_me_paid_leave_taxable_wages", period)
@@ -119,10 +111,11 @@ class employer_total_additional_state_payroll_tax(Variable):
             * state_ui_taxable
         )
 
-        vt_p = parameters(period).gov.states.vt.tax.payroll.child_care
-        vt = (vt_p.employer_rate + (1 - deducted) * vt_p.employee_rate) * person(
-            "employer_total_vt_child_care_contribution_wages", period
-        )
+        vt = (
+            person("vt_employer_child_care_contribution_rate", period)
+            + (1 - deducted)
+            * person("vt_employee_child_care_contribution_rate", period)
+        ) * person("employer_total_vt_child_care_contribution_wages", period)
 
         wa_p = parameters(period).gov.states.wa.tax.payroll.paid_leave
         wa_wages = person("employer_total_wa_paid_leave_taxable_wages", period)

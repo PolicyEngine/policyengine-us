@@ -1,0 +1,71 @@
+# Vermont Child Care Contribution: 0.44% of wages from July 1, 2024. By default
+# the model assumes the employer withholds the most it may (0.11%) and pays the
+# other 0.33%; employer_state_payroll_premium_deduction_share sets a smaller
+# deduction, and the employer pays the rest.
+
+- name: Vermont child care employer rate is zero in 2023, before collection began.
+  period: 2023
+  input:
+    employment_income: 50_000
+    state_code: VT
+  output:
+    vt_employer_child_care_contribution_rate: 0
+    vt_employer_child_care_contribution: 0
+
+- name: Vermont child care employer rate in 2024 counts only July through December.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: VT
+  output:
+    # 0.33% * 6/12 = 0.165%.
+    vt_employer_child_care_contribution_rate: 0.00165
+    # 0.165% * 50,000 = 82.50.
+    vt_employer_child_care_contribution: 82.50
+    vt_employer_additional_state_payroll_tax: 82.50
+    employer_additional_state_payroll_tax: 82.50
+
+- name: Vermont child care employer rate is 0.33% in 2025.
+  period: 2025
+  absolute_error_margin: 0.0000001
+  input:
+    state_code: VT
+  output:
+    vt_employer_child_care_contribution_rate: 0.0033
+
+- name: Vermont employer-total child care contribution in 2024 applies the July-to-December share.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employer_total_vt_child_care_contribution_wages: 1_000_000
+    state_code: VT
+  output:
+    # 0.165% * 1,000,000 = 1,650.
+    employer_total_additional_state_payroll_tax: 1_650
+
+- name: Vermont child care 2024 partial deduction share applies to the July-to-December contribution.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 100_000
+    employer_state_payroll_premium_deduction_share: 0.5
+    state_code: VT
+  output:
+    # 0.11% for half the year is 0.055%; 0.055% * 100,000 = 55 permitted, of
+    # which the employer deducts half.
+    vt_employee_child_care_contribution: 27.50
+    # 0.33% for half the year is 0.165%; 0.165% * 100,000 = 165, plus the 27.50
+    # the employer does not deduct.
+    vt_employer_child_care_contribution: 192.50
+
+- name: Vermont employer-total child care contribution in 2024 adds the undeducted part of the July-to-December employee share.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employer_state_payroll_premium_deduction_share: 0.5
+    employer_total_vt_child_care_contribution_wages: 1_000_000
+    state_code: VT
+  output:
+    # 0.165% * 1,000,000 = 1,650, plus half of 0.055% * 1,000,000 = 275.
+    employer_total_additional_state_payroll_tax: 1_925

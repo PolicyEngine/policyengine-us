@@ -1,7 +1,10 @@
 description: Massachusetts limits an employer's deduction from wages to this share of the family leave contribution under the Paid Family and Medical Leave program.
 values:
   0000-01-01: 0
-  2024-01-01: 1
+  # Contributions began October 1, 2019, after legislation delayed the start by
+  # three months from July 1, 2019. From the start the employer could withhold
+  # the whole family leave contribution.
+  2019-10-01: 1
   # Acts 2026 c. 101 s. 26 strikes "100" in s. 6(c)(2), (d) and (e)(2) and inserts "40".
   # Dated 2027-01-01 to match the rates the Department of Family and Medical Leave published. Section 45 applies ss. 25-26 to taxable years from 2026, and s. 43(a) directs guidance for calendar year 2027.
   2027-01-01: 0.4
@@ -15,6 +18,16 @@ metadata:
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXII/Chapter175M/Section6
     - title: Massachusetts Paid Family and Medical Leave employer contribution rates and calculator (2026 and 2027 sections, updated October 1, 2026)
       href: https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
+    - title: Massachusetts Department of Family and Medical Leave, Notice to Massachusetts employers about the PFML delay (June 14, 2019; archived July 16, 2019)
+      href: https://web.archive.org/web/20190716144139/https://www.mass.gov/news/notice-to-massachusetts-employers-about-pfml-delay
+    - title: Massachusetts Paid Family and Medical Leave contribution rates for employers, 2019 (archived November 19, 2019)
+      href: https://web.archive.org/web/20191119050248/https://www.mass.gov/info-details/family-and-medical-leave-contribution-rates-for-employers
+    - title: Massachusetts Paid Family and Medical Leave contribution rates for employers, 2020 (archived July 15, 2020)
+      href: https://web.archive.org/web/20200715141908/https://www.mass.gov/info-details/family-and-medical-leave-contribution-rates-for-employers
+    - title: Massachusetts Paid Family and Medical Leave employer contribution rates, 2021 and 2022 sections (archived December 24, 2021)
+      href: https://web.archive.org/web/20211224090330/https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
+    - title: Massachusetts Paid Family and Medical Leave employer contribution rates, 2022 and 2023 sections (archived March 16, 2023)
+      href: https://web.archive.org/web/20230316153652/https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
     - title: Massachusetts Paid Family and Medical Leave employer contribution rates, 2024 section (archived May 26, 2024)
       href: https://web.archive.org/web/20240526092717/https://www.mass.gov/info-details/paid-family-and-medical-leave-employer-contribution-rates-and-calculator
     - title: Massachusetts Paid Family and Medical Leave employer contribution rates, 2025 & 2026 section (archived December 8, 2025)

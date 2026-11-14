@@ -1,5 +1,7 @@
 description: Employee-side Connecticut Paid Leave contribution rate.
 values:
+  # CGS 31-49g(b)(1) starts contributions on January 1, 2021.
+  0000-01-01: 0
   2021-01-01: 0.005
 
 metadata:
