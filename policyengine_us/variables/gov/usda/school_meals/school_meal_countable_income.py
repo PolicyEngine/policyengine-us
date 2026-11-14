@@ -16,10 +16,11 @@ class school_meal_countable_income(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.usda.school_meals.income
-        income = add(spm_unit, period, p.sources)
-        income += add(spm_unit, period, p.state_supplement_sources)
+        income = add(spm_unit, period, p.sources) + add(
+            spm_unit, period, p.state_supplement_sources
+        )
         # Treat each person's net loss in each business, rental or
         # pass-through source as zero.
         for source in p.business_sources:
-            income += spm_unit.sum(max_(spm_unit.members(source, period), 0))
+            income = income + spm_unit.sum(max_(spm_unit.members(source, period), 0))
         return income
