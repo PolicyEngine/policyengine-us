@@ -14,8 +14,12 @@ programs:
     coverage: US
     variable: income_tax
     parameter_prefix: gov.irs
-    verified_start_year: 2018
-    notes: Validated against NBER TAXSIM for 2022
+    verified_start_year: 2017
+    notes: >-
+      Validated against NBER TAXSIM for 2022. Selected wage-only household cases
+      match Tax-Calculator 6.9.1 for every year from 2017 through 2026, with
+      source-based historical provision tests. See docs/gov/irs/historical-validation.md
+      for the validation scope and limitations.
 
   - id: state_income_tax
     name: State income taxes

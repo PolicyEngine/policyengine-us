@@ -47,11 +47,11 @@ class ira_contribution_limit(Variable):
         if supplied_traditional is None:
             generated_desired = generated_desired + person(
                 "traditional_ira_contributions_desired", period
-            )
+            ) * person("traditional_ira_age_eligible", period)
         else:
             supplied_consumed = supplied_consumed + min_(
                 max_(supplied_traditional, 0), own_limit
-            )
+            ) * person("traditional_ira_age_eligible", period)
         if supplied_roth is None:
             generated_desired = generated_desired + person(
                 "roth_ira_contributions_desired", period

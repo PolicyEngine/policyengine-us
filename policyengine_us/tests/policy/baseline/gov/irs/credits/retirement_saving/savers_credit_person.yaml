@@ -350,3 +350,350 @@
   output:
     # 50% x min(3,000, 2,000) = 1,000.
     savers_credit_person: 1_000
+
+# IRS Form 8880 (2017), line 9; Notice 2016-62, PDF pages 2-3.
+# Each element is an independent filer with $2,000 of eligible contributions.
+- name: Case 8, 2017 joint rate boundaries retain the last dollar in each band.
+  period: 2017
+  input:
+    filing_status: [JOINT, JOINT, JOINT, JOINT, JOINT, JOINT]
+    adjusted_gross_income: [37_000, 37_001, 40_000, 40_001, 62_000, 62_001]
+    savers_credit_eligible_person: [true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 400, 400, 200, 200, 0]
+
+- name: Case 9, 2017 nonjoint nonhead filers use the all-other-filers column.
+  # Form 8880 puts qualifying widow(er) with single and separate filers.
+  period: 2017
+  input:
+    filing_status: [SINGLE, SINGLE, SEPARATE, SEPARATE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SINGLE, SINGLE]
+    adjusted_gross_income: [18_500, 18_501, 20_000, 20_001, 31_000, 31_001, -1, 0]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 3_000]
+  output:
+    savers_credit_person: [1_000, 400, 400, 200, 200, 0, 1_000, 1_000]
+
+- name: Case 10, 2017 head-of-household rate boundaries use the published amounts.
+  period: 2017
+  input:
+    filing_status: [HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD]
+    adjusted_gross_income: [27_750, 27_751, 30_000, 30_001, 46_500, 46_501]
+    savers_credit_eligible_person: [true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 400, 400, 200, 200, 0]
+
+- name: Case 11, 2018 joint thresholds remain unchanged after adding 2017 history.
+  # IRS Form 8880 (2018), line 9.
+  period: 2018
+  input:
+    filing_status: [JOINT, JOINT]
+    adjusted_gross_income: [38_000, 38_001]
+    savers_credit_eligible_person: [true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 400]
+
+# Contiguous annual rate controls: IRS Notices 2018-83, 2019-59, 2020-79,
+# and 2021-61, their section 25B(b)(1) indexed joint-return amounts.
+- name: Case 12, 2019 Saver rate boundaries follow IRS Notice 2018-83.
+  period: 2019
+  input:
+    filing_status:
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    adjusted_gross_income:
+    - 38_500
+    - 38_501
+    - 41_500
+    - 41_501
+    - 64_000
+    - 64_001
+    savers_credit_eligible_person:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    savers_credit_qualified_contributions:
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+  output:
+    savers_credit_person:
+    - 1_000
+    - 400
+    - 400
+    - 200
+    - 200
+    - 0
+
+- name: Case 13, 2020 Saver rate boundaries follow IRS Notice 2019-59.
+  period: 2020
+  input:
+    filing_status:
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    adjusted_gross_income:
+    - 39_000
+    - 39_001
+    - 42_500
+    - 42_501
+    - 65_000
+    - 65_001
+    savers_credit_eligible_person:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    savers_credit_qualified_contributions:
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+  output:
+    savers_credit_person:
+    - 1_000
+    - 400
+    - 400
+    - 200
+    - 200
+    - 0
+- name: Case 14, 2021 Saver rate boundaries follow IRS Notice 2020-79.
+  period: 2021
+  input:
+    filing_status:
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    adjusted_gross_income:
+    - 39_500
+    - 39_501
+    - 43_000
+    - 43_001
+    - 66_000
+    - 66_001
+    savers_credit_eligible_person:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    savers_credit_qualified_contributions:
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+  output:
+    savers_credit_person:
+    - 1_000
+    - 400
+    - 400
+    - 200
+    - 200
+    - 0
+- name: Case 15, 2022 Saver rate boundaries follow IRS Notice 2021-61.
+  period: 2022
+  input:
+    filing_status:
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    - JOINT
+    adjusted_gross_income:
+    - 41_000
+    - 41_001
+    - 44_000
+    - 44_001
+    - 68_000
+    - 68_001
+    savers_credit_eligible_person:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    savers_credit_qualified_contributions:
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+    - 2_000
+  output:
+    savers_credit_person:
+    - 1_000
+    - 400
+    - 400
+    - 200
+    - 200
+    - 0
+
+# 26 U.S.C. 25B(b)(1)-(3) uses inclusive AGI ceilings, including cents.
+# Sources: Notice 2016-62 PDF pages 2-3 and Notice 2025-67 PDF pages 3-4.
+# For each band: ceiling - $0.25, ceiling, ceiling + $0.25, next dollar.
+# Every filing-status multiplier also retains the first band at negative/zero AGI.
+
+- name: Case 16, 2017 joint credit changes immediately above each inclusive ceiling.
+  period: 2017
+  input:
+    filing_status: [JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT]
+    adjusted_gross_income: [-1, 0, 36_999.75, 37_000, 37_000.25, 37_001, 39_999.75, 40_000, 40_000.25, 40_001, 61_999.75, 62_000, 62_000.25, 62_001]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 17, 2017 head of household credit changes immediately above each inclusive ceiling.
+  period: 2017
+  input:
+    filing_status: [HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD]
+    adjusted_gross_income: [-1, 0, 27_749.75, 27_750, 27_750.25, 27_751, 29_999.75, 30_000, 30_000.25, 30_001, 46_499.75, 46_500, 46_500.25, 46_501]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 18, 2017 single credit changes immediately above each inclusive ceiling.
+  period: 2017
+  input:
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+    adjusted_gross_income: [-1, 0, 18_499.75, 18_500, 18_500.25, 18_501, 19_999.75, 20_000, 20_000.25, 20_001, 30_999.75, 31_000, 31_000.25, 31_001]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 19, 2017 separate credit changes immediately above each inclusive ceiling.
+  period: 2017
+  input:
+    filing_status: [SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE]
+    adjusted_gross_income: [-1, 0, 18_499.75, 18_500, 18_500.25, 18_501, 19_999.75, 20_000, 20_000.25, 20_001, 30_999.75, 31_000, 31_000.25, 31_001]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 20, 2017 surviving spouse credit changes immediately above each inclusive ceiling.
+  period: 2017
+  input:
+    filing_status: [SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE]
+    adjusted_gross_income: [-1, 0, 18_499.75, 18_500, 18_500.25, 18_501, 19_999.75, 20_000, 20_000.25, 20_001, 30_999.75, 31_000, 31_000.25, 31_001]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 21, 2026 joint credit changes immediately above each inclusive ceiling.
+  period: 2026
+  input:
+    filing_status: [JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT, JOINT]
+    adjusted_gross_income: [-1, 0, 48_499.75, 48_500, 48_500.25, 48_501, 52_499.75, 52_500, 52_500.25, 52_501, 80_499.75, 80_500, 80_500.25, 80_501]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 22, 2026 head of household credit changes immediately above each inclusive ceiling.
+  period: 2026
+  input:
+    filing_status: [HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD]
+    adjusted_gross_income: [-1, 0, 36_374.75, 36_375, 36_375.25, 36_376, 39_374.75, 39_375, 39_375.25, 39_376, 60_374.75, 60_375, 60_375.25, 60_376]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 23, 2026 single credit changes immediately above each inclusive ceiling.
+  period: 2026
+  input:
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+    adjusted_gross_income: [-1, 0, 24_249.75, 24_250, 24_250.25, 24_251, 26_249.75, 26_250, 26_250.25, 26_251, 40_249.75, 40_250, 40_250.25, 40_251]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 24, 2026 separate credit changes immediately above each inclusive ceiling.
+  period: 2026
+  input:
+    filing_status: [SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE, SEPARATE]
+    adjusted_gross_income: [-1, 0, 24_249.75, 24_250, 24_250.25, 24_251, 26_249.75, 26_250, 26_250.25, 26_251, 40_249.75, 40_250, 40_250.25, 40_251]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 25, 2026 surviving spouse credit changes immediately above each inclusive ceiling.
+  period: 2026
+  input:
+    filing_status: [SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE, SURVIVING_SPOUSE]
+    adjusted_gross_income: [-1, 0, 24_249.75, 24_250, 24_250.25, 24_251, 26_249.75, 26_250, 26_250.25, 26_251, 40_249.75, 40_250, 40_250.25, 40_251]
+    savers_credit_eligible_person: [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    savers_credit_qualified_contributions: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    savers_credit_person: [1_000, 1_000, 1_000, 1_000, 400, 400, 400, 400, 200, 200, 200, 200, 0, 0]
+
+- name: Case 26, fractional 2017 joint AGI reaches the lower Saver credit and final tax.
+  # Form 8880 line 9: $37,000.50 is over the $37,000 inclusive 50% ceiling.
+  # AGI = wages $39,000.50 - deductible IRA $2,000.
+  # Taxable income = $37,000.50 - $12,700 standard deduction - $8,100 exemptions.
+  # Ordinary tax = $16,200.50 x 10% = $1,620.05; less $400 credit = $1,220.05.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 39_000.50
+        traditional_ira_contributions: 2_000
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        aca_ptc: 0
+        state_sales_tax: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    adjusted_gross_income: 37_000.50
+    savers_credit_qualified_contributions: [2_000, 0]
+    savers_credit_person: [400, 0]
+    savers_credit: 400
+    income_tax_before_credits: 1_620.05
+    income_tax: 1_220.05

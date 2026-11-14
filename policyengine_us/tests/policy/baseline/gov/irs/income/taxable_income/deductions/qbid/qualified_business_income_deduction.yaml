@@ -376,3 +376,28 @@
     # Eligible QBI = 999.97, below $1,000, so no minimum. With the joint
     # threshold ($403,500) the whole $2,000 would count and give $400.
     qualified_business_income_deduction: 0
+
+# P.L. 115-97 section 11011(e) applies section 199A to taxable years beginning
+# after December 31, 2017. The final deduction cap is zero in 2017 even when
+# component inputs are positive; the 2018 rate is 20 percent.
+- name: Case 1, positive QBI inputs do not create a deduction in 2017.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    qbid_amount: 20_000
+    qualified_business_income: 100_000
+    taxable_income_less_qbid: 100_000
+    section_199a_net_capital_gain: 0
+  output:
+    qualified_business_income_deduction: 0
+
+- name: Case 2, section 199A takes effect for the same inputs in 2018.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    qbid_amount: 20_000
+    qualified_business_income: 100_000
+    taxable_income_less_qbid: 100_000
+    section_199a_net_capital_gain: 0
+  output:
+    qualified_business_income_deduction: 20_000

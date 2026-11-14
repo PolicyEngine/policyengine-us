@@ -3,15 +3,19 @@ description: The IRS limits 401(k) catch-up contributions to this amount based o
 brackets:
   - threshold:
       values:
+        2017-01-01: 0
         2018-01-01: 0
     amount:
       values:
+        2017-01-01: 0
         2018-01-01: 0
   - threshold:
       values:
+        2017-01-01: 50
         2018-01-01: 50
     amount:
       values:
+        2017-01-01: 6_000
         2018-01-01: 6_000
         2020-01-01: 6_500
         2023-01-01: 7_500
@@ -26,9 +30,11 @@ brackets:
             interval: 500
   - threshold:
       values:
+        2017-01-01: 60
         2018-01-01: 60
     amount:
       values:
+        2017-01-01: 6_000
         2018-01-01: 6_000
         2020-01-01: 6_500
         2023-01-01: 7_500
@@ -45,9 +51,11 @@ brackets:
             interval: 500
   - threshold:
       values:
+        2017-01-01: 64
         2018-01-01: 64
     amount:
       values:
+        2017-01-01: 6_000
         2018-01-01: 6_000
         2020-01-01: 6_500
         2023-01-01: 7_500
@@ -67,6 +75,8 @@ metadata:
   amount_period: year
   label: 401(k) catch-up contribution limit by age
   reference:
+    - title: "IRS Notice 2016-62 #page 1-2"
+      href: https://www.irs.gov/pub/irs-drop/n-16-62.pdf#page=1
     - title: 26 CFR 1.414(v)-1(c)(2) - Applicable dollar catch-up limit
       href: https://www.law.cornell.edu/cfr/text/26/1.414(v)-1#c_2
     - title: 26 USC 414(v)(2)(E) - Increased catch-up contribution limit for individuals aged 60-63

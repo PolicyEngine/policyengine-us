@@ -44,3 +44,27 @@
   output:
     # defined_for requires is_tax_unit_dependent
     is_qualifying_child_dependent: false
+- name: Case 1, the 2017 dependency age test excludes the exact non-student and student limits.
+  # 2017 Form 1040 instructions, PDF page 17, Step 1: under 19,
+  # or under 24 if a student. This variable isolates the age test.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+      person3:
+        age: 23
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+      person4:
+        age: 24
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+  output:
+    is_qualifying_child_dependent: [true, false, true, false]

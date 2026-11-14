@@ -441,3 +441,101 @@
     self_employed_pension_contribution_limit: 0
     self_employed_pension_contributions: 0
     self_employed_pension_contribution_ald_person: 0
+
+- name: Case 1, 2017 annual additions limit is fifty-four thousand dollars.
+  # Notice 2016-62, PDF page 1, section 415(c)(1)(A).
+  period: 2017
+  input:
+    age: 40
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 54_000
+    self_employed_pension_contributions: 54_000
+
+- name: Case 2, 2017 catch-up contributions sit outside the annual additions limit.
+  # Sections 414(v)(3)(A) and 415(c); Notice 2016-62, PDF pages 1-2.
+  period: 2017
+  input:
+    age: 50
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 60_000
+    self_employed_pension_contributions: 60_000
+
+- name: Case 3, 2018 annual additions preserve the next-year increase.
+  # Notice 2017-64, section 415(c)(1)(A).
+  period: 2018
+  input:
+    age: 40
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 55_000
+
+# IRS retirement COLA table, PDF pages 1 and 3, section 415(c)(1)(A).
+# https://www.irs.gov/pub/irs-tege/cola-table.pdf
+- name: Case 4, 2019 actual self-employed additions stop at that year's dollar limit.
+  period: 2019
+  input:
+    age: 40
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 56_000
+    self_employed_pension_contributions: 56_000
+- name: Case 5, 2020 actual self-employed additions stop at that year's dollar limit.
+  period: 2020
+  input:
+    age: 40
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 57_000
+    self_employed_pension_contributions: 57_000
+- name: Case 6, 2021 actual self-employed additions stop at that year's dollar limit.
+  period: 2021
+  input:
+    age: 40
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 58_000
+    self_employed_pension_contributions: 58_000
+- name: Case 7, 2022 actual self-employed additions stop at that year's dollar limit.
+  period: 2022
+  input:
+    age: 40
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 61_000
+    self_employed_pension_contributions: 61_000
+- name: Case 8, 2023 actual self-employed additions stop at that year's dollar limit.
+  period: 2023
+  input:
+    age: 40
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 66_000
+    self_employed_pension_contributions: 66_000
+- name: Case 9, 2024 actual self-employed additions stop at that year's dollar limit.
+  period: 2024
+  input:
+    age: 40
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 69_000
+    self_employed_pension_contributions: 69_000
+- name: Case 10, 2025 actual self-employed additions stop at that year's dollar limit.
+  period: 2025
+  input:
+    age: 40
+    self_employed_pension_earned_income: 500_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 70_000
+    self_employed_pension_contributions: 70_000

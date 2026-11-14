@@ -377,3 +377,24 @@
     # Line 20 = 0, line 21 = 48,350, line 22 = 211,900, line 23 = 48,350,
     # line 24 = 163,550, line 30 = 163,550, line 31 = 24,532.50.
     amt_tax_including_cg: 24_532.50
+
+# 2017 Form 6251, PDF page 2, Part III: ordinary AMTI uses the $187,800
+# 26% bracket, preferential gain uses the $37,950 single-filer 0% band,
+# and unrecaptured section 1250 gain uses 25% at line 61.
+# https://www.irs.gov/pub/irs-prior/f6251--2017.pdf#page=2
+- name: Case 1, the 2017 AMT capital gains worksheet retains the 25 percent rate.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    amt_income_less_exemptions: 1_000_000
+    dwks10: 500_000
+    dwks13: 300_000
+    dwks14: 0
+    dwks19: 0
+    unrecaptured_section_1250_gain: 200_000
+  output:
+    # Ordinary tax: 187,800 * .26 + 312,200 * .28 = 136,244.
+    # Preferential tax: (300,000 - 37,950) * .15 = 39,307.50.
+    # Section 1250 tax: 200,000 * .25 = 50,000.
+    amt_tax_including_cg: 225_551.50

@@ -1,5 +1,7 @@
 description: The IRS defines social security taxes under the Child Tax Credit to exclude the following variables.
 values:
+  2017-01-01:
+    - excess_payroll_tax_withheld
   2018-01-01:
     - excess_payroll_tax_withheld
 metadata:
@@ -7,5 +9,7 @@ metadata:
   period: year
   label: Child Tax Credit subtracted social security taxes 
   reference:
+    - title: 2017 Schedule 8812, Part III, line 10
+      href: https://www.irs.gov/pub/irs-prior/f1040s8--2017.pdf#page=2
     - title: 26 U.S. Code § 24(d)(2)(B)
       href: https://www.law.cornell.edu/uscode/text/26/24#d_2_B

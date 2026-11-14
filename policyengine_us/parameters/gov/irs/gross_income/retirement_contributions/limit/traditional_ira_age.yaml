@@ -1,0 +1,13 @@
+description: The IRS limits traditional IRA contributions to individuals younger than this age at the close of the tax year.
+values:
+  2017-01-01: 70.5
+  2020-01-01: .inf
+metadata:
+  unit: year
+  period: year
+  label: Traditional IRA contribution upper age limit
+  reference:
+    - title: 2017 Publication 590-A
+      href: https://www.irs.gov/pub/irs-prior/p590a--2017.pdf#page=5
+    - title: "Public Law 116-94, Division O, section 107(a) and (d) #page 616-617"
+      href: https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf#page=616

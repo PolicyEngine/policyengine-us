@@ -11,7 +11,8 @@ class traditional_ira_contributions(Variable):
         "traditional and Roth IRA contribution limit. If desired IRA "
         "contributions exceed the limit, PolicyEngine preserves desired "
         "allocation shares by scaling traditional and Roth IRA contributions "
-        "proportionally."
+        "proportionally. Before 2020, desired traditional contributions are "
+        "excluded at age 70.5 or older at the close of the tax year."
     )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/219#b"
@@ -19,4 +20,4 @@ class traditional_ira_contributions(Variable):
     def formula(person, period, parameters):
         desired = person("traditional_ira_contributions_desired", period)
         scale = person("ira_contribution_scale", period)
-        return desired * scale
+        return desired * scale * person("traditional_ira_age_eligible", period)

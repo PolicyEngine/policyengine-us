@@ -119,3 +119,168 @@
   output:
     elective_deferral_limit: 32_500
     traditional_401k_contributions: 32_500
+
+- name: Case 11, 2017 deferral and catch-up limits follow Notice 2016-62.
+  # Notice 2016-62, PDF pages 1-2: $18,000 plus $6,000 from age 50.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    employment_income: [100_000, 100_000, 100_000, 100_000]
+    age: [49, 50, 60, 64]
+    traditional_401k_contributions_desired: [30_000, 30_000, 30_000, 30_000]
+  output:
+    elective_deferral_limit: [18_000, 24_000, 24_000, 24_000]
+    traditional_401k_contributions: [18_000, 24_000, 24_000, 24_000]
+
+- name: Case 12, 2018 deferral limits preserve the next-year increase.
+  # Notice 2017-64, $18,500 regular deferrals and $6,000 catch-up.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    employment_income: [100_000, 100_000]
+    age: [49, 50]
+    traditional_401k_contributions_desired: [30_000, 30_000]
+  output:
+    elective_deferral_limit: [18_500, 24_500]
+    traditional_401k_contributions: [18_500, 24_500]
+
+# IRS retirement COLA table, PDF pages 1 and 3 (2019-2025); Notice 2018-83.
+# https://www.irs.gov/pub/irs-tege/cola-table.pdf
+- name: Case 13, 2019 actual elective deferrals respect that year's indexed cap.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    employment_income: [100_000, 100_000, 100_000]
+    age:
+    - 49
+    - 50
+    - 62
+    traditional_401k_contributions_desired:
+    - 50_000
+    - 50_000
+    - 50_000
+  output:
+    elective_deferral_limit: &id001
+    - 19_000
+    - 25_000
+    - 25_000
+    traditional_401k_contributions: *id001
+- name: Case 14, 2020 actual elective deferrals respect that year's indexed cap.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    employment_income: [100_000, 100_000, 100_000]
+    age:
+    - 49
+    - 50
+    - 62
+    traditional_401k_contributions_desired:
+    - 50_000
+    - 50_000
+    - 50_000
+  output:
+    elective_deferral_limit: &id002
+    - 19_500
+    - 26_000
+    - 26_000
+    traditional_401k_contributions: *id002
+- name: Case 15, 2021 actual elective deferrals respect that year's indexed cap.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    employment_income: [100_000, 100_000, 100_000]
+    age:
+    - 49
+    - 50
+    - 62
+    traditional_401k_contributions_desired:
+    - 50_000
+    - 50_000
+    - 50_000
+  output:
+    elective_deferral_limit: &id003
+    - 19_500
+    - 26_000
+    - 26_000
+    traditional_401k_contributions: *id003
+- name: Case 16, 2022 actual elective deferrals respect that year's indexed cap.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    employment_income: [100_000, 100_000, 100_000]
+    age:
+    - 49
+    - 50
+    - 62
+    traditional_401k_contributions_desired:
+    - 50_000
+    - 50_000
+    - 50_000
+  output:
+    elective_deferral_limit: &id004
+    - 20_500
+    - 27_000
+    - 27_000
+    traditional_401k_contributions: *id004
+- name: Case 17, 2023 actual elective deferrals respect that year's indexed cap.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    employment_income: [100_000, 100_000, 100_000]
+    age:
+    - 49
+    - 50
+    - 62
+    traditional_401k_contributions_desired:
+    - 50_000
+    - 50_000
+    - 50_000
+  output:
+    elective_deferral_limit: &id005
+    - 22_500
+    - 30_000
+    - 30_000
+    traditional_401k_contributions: *id005
+- name: Case 18, 2024 actual elective deferrals respect that year's indexed cap.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employment_income: [100_000, 100_000, 100_000]
+    age:
+    - 49
+    - 50
+    - 62
+    traditional_401k_contributions_desired:
+    - 50_000
+    - 50_000
+    - 50_000
+  output:
+    elective_deferral_limit: &id006
+    - 23_000
+    - 30_500
+    - 30_500
+    traditional_401k_contributions: *id006
+
+# IRS Notice 2025-67, PDF pages 1-2, and section 414(v)(2)(E).
+- name: Case 19, 2026 actual deferrals include standard and enhanced catch-up limits.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: [100_000, 100_000, 100_000]
+    age:
+    - 49
+    - 50
+    - 62
+    traditional_401k_contributions_desired:
+    - 50_000
+    - 50_000
+    - 50_000
+  output:
+    elective_deferral_limit:
+    - 24_500
+    - 32_500
+    - 35_750
+    traditional_401k_contributions:
+    - 24_500
+    - 32_500
+    - 35_750
