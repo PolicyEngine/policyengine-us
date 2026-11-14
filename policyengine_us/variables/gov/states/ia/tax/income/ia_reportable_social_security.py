@@ -14,12 +14,11 @@ class ia_reportable_social_security(Variable):
     defined_for = StateCode.IA
 
     def formula(tax_unit, period, parameters):
-        # Sum benefits and interest for the head and spouse.
-        benefits = tax_unit_non_dep_add(tax_unit, period, ["social_security"])
+        benefits = add(tax_unit, period, ["social_security"])
         income = (
             tax_unit("adjusted_gross_income", period)
             - add(tax_unit, period, ["taxable_social_security"])
-            + tax_unit_non_dep_add(tax_unit, period, ["tax_exempt_interest_income"])
+            + add(tax_unit, period, ["tax_exempt_interest_income"])
         )
         p = parameters(period).gov.states.ia.tax.income
         filing_status = tax_unit("filing_status", period)

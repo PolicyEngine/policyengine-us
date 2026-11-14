@@ -14,7 +14,4 @@ class vt_additions(Variable):
         "https://legislature.vermont.gov/statutes/section/32/151/05811",
     )
 
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_add(
-            tax_unit, period, ["tax_exempt_interest_income", "vt_other_additions"]
-        )
+    adds = ["tax_exempt_interest_income", "vt_other_additions"]

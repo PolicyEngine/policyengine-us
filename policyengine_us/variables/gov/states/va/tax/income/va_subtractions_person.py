@@ -38,5 +38,4 @@ class va_subtractions_person(Variable):
         other_sub = person.tax_unit("va_other_subtractions", period) * prorate
         total_subtractions = person_subtractions + other_sub
         # Prevent negative subtractions from acting as additions.
-        filer = ~person("is_tax_unit_dependent", period)
-        return max_(0, total_subtractions) * filer
+        return max_(0, total_subtractions)
