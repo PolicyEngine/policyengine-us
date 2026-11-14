@@ -10,5 +10,6 @@ class tx_dta_csfp_income_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.tx.dta.csfp
-        fpg = person.spm_unit("school_meal_fpg_ratio", period)
+        income = person.spm_unit("tx_dta_csfp_countable_income", period)
+        fpg = income / person.spm_unit("spm_unit_fpg", period)
         return fpg <= p.fpg_limit

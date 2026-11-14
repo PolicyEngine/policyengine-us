@@ -1,0 +1,22 @@
+description: >-
+  USDA counts these business, rental and pass-through income sources for school
+  meals after treating each person's losses as zero. PolicyEngine retains
+  component netting within each person's partnership/S-corporation and
+  estate/trust aggregate.
+values:
+  2009-01-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - rental_income
+    - farm_operations_income
+    - farm_rent_income
+    - partnership_s_corp_income
+    - estate_income
+metadata:
+  reference:
+    - title: "USDA Eligibility Manual for School Meals #page 27-29"
+      href: https://opi.mt.gov/Portals/182/Page%20Files/School%20Nutrition/Meal%20Eligibility/Forms%20and%20Policy/2017eligibilitymanual.pdf#page=27
+    - title: USDA Child Nutrition Programs income eligibility guidelines, 91 FR 17932
+      href: https://www.govinfo.gov/content/pkg/FR-2026-04-09/html/2026-06842.htm
+    - title: IRS 2024 Schedule K-1 (Form 1041) beneficiary instructions, boxes 5 through 8
+      href: https://www.irs.gov/pub/irs-prior/i1041sk1--2024.pdf#page=2

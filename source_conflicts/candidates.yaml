@@ -15412,3 +15412,42 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us:school-meal-state-ssi-supplements
+  program: school-meals
+  years:
+    from: 2009
+    type: calendar
+  question: Should school meal income include state SSI supplements despite USDA's adoption of Social Security Act income exclusions?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1382a(a), (b)(6), (b)(9) and (b)(23)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXVI-partA-sec1382a.htm
+  - kind: regulation
+    citation: 7 CFR 245.6(a)(5)(ii)
+    url: https://www.ecfr.gov/current/title-7/section-245.6#p-245.6(a)(5)(ii)
+  - kind: guidance
+    citation: 91 FR 17932, 17933, Definition of Income
+    url: https://www.govinfo.gov/content/pkg/FR-2026-04-09/html/2026-06842.htm
+  - kind: manual
+    citation: USDA Eligibility Manual for School Meals, June 29, 2017, pages 26, 29 and 30
+    url: https://opi.mt.gov/Portals/182/Page%20Files/School%20Nutrition/Meal%20Eligibility/Forms%20and%20Policy/2017eligibilitymanual.pdf
+  readings:
+    statute: Congress limits section 1382a's income definition to SSI's statutory subchapter. Section 1382a(b)(6) excludes
+      need-based state assistance for SSI without directing school meal administrators to exclude it. School meal
+      administrators count welfare and other cash income under 7 CFR 245.6(a)(5)(ii).
+    other: Read the Manual's page 30 adoption of Social Security Act exclusions as importing section 1382a(b)(6) into
+      school meals. Under that reading, administrators exclude need-based state SSI supplements. Page 26's regular state
+      cash assistance category can cover payments that do not depend on need.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/usda/school_meals/income/state_supplement_sources.yaml
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10873
+  state: ruled
+  note: PolicyEngine counts modeled state SSI supplements under the school meal regulation, USDA's current public
+    assistance definition and the Manual's page 26 state cash assistance category. The page 30 wording leaves a competing
+    exclusion reading. Congress also excludes some dividends, interest and child support for SSI under section
+    1382a(b)(9) and (23), while USDA specifically counts those sources for school meals. PolicyEngine therefore does not
+    import every SSI exclusion into school meals. The reviewed USDA sources do not name state SSI supplements.

@@ -1,0 +1,32 @@
+description: >-
+  Income sources the model includes in its California CVRP approximation pending a
+  separate review of program income rules.
+
+values:
+  2009-01-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - dividend_income
+    - interest_income
+    - gi_cash_assistance
+    - child_support_received
+    - social_security
+    - ssi
+    - tanf
+    - general_assistance
+    - pension_income
+    - survivor_benefits
+    - financial_assistance
+    - miscellaneous_income
+    - veterans_benefits
+    - total_unemployment_compensation
+    - strike_benefits
+    - rental_income
+    - retirement_distributions
+    - educational_assistance
+
+metadata:
+  reference:
+    - title: CVRP Implementation Manual, pages 12-15 and 38
+      href: https://cleanvehiclerebate.org/sites/default/files/docs/nav/transportation/cvrp/documents/CVRP-Implementation-Manual.pdf#page=12
