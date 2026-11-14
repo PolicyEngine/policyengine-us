@@ -480,7 +480,8 @@ def test_estate_income_raises_household_net_income_by_its_after_tax_amount(
     A single Texas filer with $50,000 of wages in 2024 receives $10,000 of
     estate income, which stays in the 12% bracket. Texas has no income tax
     and estate income carries no payroll tax, so household net income rises
-    by the $10,000 less the federal income tax increase.
+    by the $10,000 less the federal income tax increase. The filer has
+    employer coverage, so no premium tax credit falls as income rises.
     """
 
     def net_income(estate):
@@ -488,6 +489,7 @@ def test_estate_income_raises_household_net_income_by_its_after_tax_amount(
             "age": {2024: 40},
             "employment_income": {2024: 50_000},
             "estate_income": {2024: estate},
+            "has_esi": {2024: True},
         }
         if qualified is not None:
             head["estate_income_would_be_qualified"] = {2024: qualified}

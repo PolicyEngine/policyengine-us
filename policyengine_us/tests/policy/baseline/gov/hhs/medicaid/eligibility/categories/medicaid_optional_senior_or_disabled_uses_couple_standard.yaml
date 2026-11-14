@@ -1,0 +1,788 @@
+- name: Case 1, both spouses aged use the couple standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 68
+        social_security_retirement: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true]
+    medicaid_optional_senior_or_disabled_income_limit: [21_640, 21_640]
+
+# 20 CFR 416.1163(d)(1): with nothing to deem, the applicant is tested alone. West
+# Virginia's limit is the SSI rate: 12 x 994 = 11,928 rather than 12 x 1,491 = 17,892.
+# Countable income is 14,640 - 240 = 14,400.
+- name: Case 2, spouse with no income leaves the applicant tested alone.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 14_640
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, true]
+    medicaid_optional_senior_or_disabled_income_limit: [11_928, 17_892]
+    is_optional_senior_or_disabled_income_eligible: [false, true]
+
+# 416.1163(d)(1): income "not more than" the rate difference, 12 x 497 = 5,964.
+- name: Case 3, spouse income at the deeming threshold leaves the applicant tested alone.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 5_964
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    is_ssi_spousal_deeming_applies: [false, false]
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, true]
+
+# 416.1163(d)(2): income above 5,964 means the two are treated as an eligible couple.
+- name: Case 4, spouse income above the deeming threshold uses the couple standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 5_965
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    is_ssi_spousal_deeming_applies: [true, false]
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true]
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892]
+
+- name: Case 5, a poverty-level state uses the one-person guideline when nothing is deemed.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, true]
+    medicaid_optional_senior_or_disabled_income_limit: [15_960, 21_640]
+
+# DSS Manual 0805.015.05 has no deeming threshold, so Missouri keeps the couple standard.
+- name: Case 6, Missouri budgets a couple together whatever the spouse earns.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true]
+    medicaid_optional_senior_or_disabled_income_limit: [18_396, 18_396]
+
+# 20 CFR 416.414(b)(3): SSI computes each spouse separately. Countable income is
+# 14,400 - 240 = 14,160 each, within the one-person guideline of 15,960, and the
+# 28,320 together would fail the two-person guideline of 21,640.
+- name: Case 7, spouses split by a facility are tested alone on their own income.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 14_400
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security_retirement: 14_400
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, false]
+    medicaid_optional_senior_or_disabled_income_limit: [15_960, 15_960]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+# AHCCCS MA611 tests a 70-year-old with a 50-year-old spouse against the couple
+# limit: 12 x 1,580 - 240 = 18,720 is within 21,640 and above the one-person 15,960.
+- name: Case 8, Arizona budgets a couple together when the spouse has no income.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 18_960
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true]
+    medicaid_optional_senior_or_disabled_income_limit: [21_640, 21_640]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+
+# 16,800 + 5,400 - 240 = 21,960 is above 21,640. SSI's threshold is 12 x 497 = 5,964.
+- name: Case 9, Arizona counts spouse income below SSI's deeming threshold.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 16_800
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 5_400
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    is_ssi_spousal_deeming_applies: [false, false]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+
+# 210-RICR-40-05-1 1.11.2: a group of two whether or not the spouse applies.
+# 18,000 - 240 = 17,760 is within 21,640 and above the one-person 15,960.
+- name: Case 10, Rhode Island keeps the couple limit when nothing is deemed.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 18_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+
+- name: Case 11, a state that budgets together still splits spouses in a facility.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 14_400
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security_retirement: 14_400
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, false]
+
+# A year reads this month-defined status in December, when the couple is home, so
+# income and limit agree: 8,000 + 22,000 - 240 = 29,760, or 14,880 each, is above
+# 21,640. Tested alone for the stay (20 CFR 416.414(b)(3)), person2's 21,760 is also
+# above 15,960, so person2 is not eligible in any month.
+- name: Case 12, a facility stay that ends within the year tests the couple on its December status.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 8_000
+        ssi_lives_in_medical_treatment_facility:
+          2026-01: true
+          2026-02: true
+          2026-03: true
+          2026-04: true
+          2026-05: true
+          2026-06: true
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security_retirement: 22_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    ssi_couple_computation_applies:
+      2026-01: [false, false]
+      2026-12: [true, true]
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true]
+    medicaid_optional_senior_or_disabled_income_limit: [21_640, 21_640]
+    medicaid_optional_senior_or_disabled_countable_income: [14_880, 14_880]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+    is_medicaid_eligible: [false, false]
+    medicaid_category: [NONE, NONE]
+
+# 42 USC 1396r-5(b)(1): "no income of the community spouse shall be deemed available
+# to the institutionalized spouse". 15,000 - 240 = 14,760, without the spouse's 5,400,
+# against the one-person 15,960.
+- name: Case 13, a facility resident with a spouse who is not aged, blind or disabled is tested alone.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        social_security_retirement: 15_000
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 60
+        taxable_interest_income: 5_400
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, false]
+    medicaid_optional_senior_or_disabled_income_limit: [15_960, 15_960]
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [0, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [14_760, 0]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+    medicaid_category: [SENIOR_OR_DISABLED, ADULT]
+
+# HAR 17-1724.1-16(1) makes the income of spouses in the same residence available to
+# each other, and HAR 17-1719-11.1(a)(3) sets the limit at the poverty level for a
+# household of the applicable size. 21,000 - 240 = 20,760 is within 24,890 for two and
+# above 18,360 for one.
+- name: Case 14, Hawaii budgets a couple together when the spouse has no income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 21_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true]
+    medicaid_optional_senior_or_disabled_income_limit: [24_890, 24_890]
+    medicaid_optional_senior_or_disabled_countable_income: [20_760, 0]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+    medicaid_category: [SENIOR_OR_DISABLED, ADULT]
+
+# HAR 17-1724.1-16(1) has no deeming threshold, so interest below SSI's 12 x 497 =
+# 5,964 still counts: 12,000 + 5,000 - 240 = 16,760. SSI tests the applicant alone:
+# 12,000 - 240 = 11,760 is below 12 x 994 = 11,928, so the applicant receives SSI.
+- name: Case 15, Hawaii counts spouse income below SSI's deeming threshold.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 5_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    is_ssi_spousal_deeming_applies: [false, false]
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [5_000, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [16_760, 0]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+    medicaid_category: [SSI_RECIPIENT, ADULT]
+
+# OAC 317:35-7-40(1): "total countable income of the eligible individual must be equal
+# to or less than the QMBP standards for an individual, and the income of both must be
+# equal to or less than the QMBP standards for a couple." Budgeting together keeps
+# only the second test, so Oklahoma follows SSI's rule, which tests this applicant
+# alone: 16,800 - 240 = 16,560 is above the one-person 15,960, though within the
+# two-person 21,640.
+- name: Case 16, Oklahoma applicant with a spouse who has no income is tested against the individual standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 16_800
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, true]
+    medicaid_optional_senior_or_disabled_income_limit: [15_960, 21_640]
+    medicaid_optional_senior_or_disabled_countable_income: [16_560, 0]
+    is_optional_senior_or_disabled_income_eligible: [false, true]
+
+# One household per state: a 70-year-old with Social Security of 12,000 and a
+# 50-year-old spouse with no income, so SSI deems nothing (20 CFR 416.1163(d)(1)).
+# Each state here budgets the couple together, and Maine keeps the couple limit
+# without deeming, so the applicant is tested as a couple. Montana follows SSI's rule
+# (ARM 37.82.903(2) and 37.82.1107(1)(b)), so its applicant is tested alone.
+- name: Case 17, each state with its own couple rule tests an applicant whose spouse has no income as a couple.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+      person3:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person4:
+        is_tax_unit_spouse: true
+        age: 50
+      person5:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person6:
+        is_tax_unit_spouse: true
+        age: 50
+      person7:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person8:
+        is_tax_unit_spouse: true
+        age: 50
+      person9:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person10:
+        is_tax_unit_spouse: true
+        age: 50
+      person11:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person12:
+        is_tax_unit_spouse: true
+        age: 50
+      person13:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person14:
+        is_tax_unit_spouse: true
+        age: 50
+      person15:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person16:
+        is_tax_unit_spouse: true
+        age: 50
+      person17:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person18:
+        is_tax_unit_spouse: true
+        age: 50
+      person19:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person20:
+        is_tax_unit_spouse: true
+        age: 50
+      person21:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person22:
+        is_tax_unit_spouse: true
+        age: 50
+      person23:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person24:
+        is_tax_unit_spouse: true
+        age: 50
+      person25:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person26:
+        is_tax_unit_spouse: true
+        age: 50
+      person27:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person28:
+        is_tax_unit_spouse: true
+        age: 50
+      person29:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person30:
+        is_tax_unit_spouse: true
+        age: 50
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+      tax_unit3:
+        members: [person5, person6]
+      tax_unit4:
+        members: [person7, person8]
+      tax_unit5:
+        members: [person9, person10]
+      tax_unit6:
+        members: [person11, person12]
+      tax_unit7:
+        members: [person13, person14]
+      tax_unit8:
+        members: [person15, person16]
+      tax_unit9:
+        members: [person17, person18]
+      tax_unit10:
+        members: [person19, person20]
+      tax_unit11:
+        members: [person21, person22]
+      tax_unit12:
+        members: [person23, person24]
+      tax_unit13:
+        members: [person25, person26]
+      tax_unit14:
+        members: [person27, person28]
+      tax_unit15:
+        members: [person29, person30]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3, person4]
+      marital_unit3:
+        members: [person5, person6]
+      marital_unit4:
+        members: [person7, person8]
+      marital_unit5:
+        members: [person9, person10]
+      marital_unit6:
+        members: [person11, person12]
+      marital_unit7:
+        members: [person13, person14]
+      marital_unit8:
+        members: [person15, person16]
+      marital_unit9:
+        members: [person17, person18]
+      marital_unit10:
+        members: [person19, person20]
+      marital_unit11:
+        members: [person21, person22]
+      marital_unit12:
+        members: [person23, person24]
+      marital_unit13:
+        members: [person25, person26]
+      marital_unit14:
+        members: [person27, person28]
+      marital_unit15:
+        members: [person29, person30]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AK
+      household2:
+        members: [person3, person4]
+        state_code: CO
+      household3:
+        members: [person5, person6]
+        state_code: CT
+      household4:
+        members: [person7, person8]
+        state_code: IL
+      household5:
+        members: [person9, person10]
+        state_code: IN
+      household6:
+        members: [person11, person12]
+        state_code: MA
+      household7:
+        members: [person13, person14]
+        state_code: ME
+      household8:
+        members: [person15, person16]
+        state_code: MI
+      household9:
+        members: [person17, person18]
+        state_code: MN
+      household10:
+        members: [person19, person20]
+        state_code: MT
+      household11:
+        members: [person21, person22]
+        state_code: NE
+      household12:
+        members: [person23, person24]
+        state_code: NH
+      household13:
+        members: [person25, person26]
+        state_code: SC
+      household14:
+        members: [person27, person28]
+        state_code: VT
+      household15:
+        members: [person29, person30]
+        state_code: WI
+  output:
+    # Each pair is the applicant, then the spouse, in the order of the households.
+    medicaid_optional_senior_or_disabled_uses_couple_standard:
+      - true  # AK
+      - true
+      - true  # CO
+      - true
+      - true  # CT
+      - true
+      - true  # IL
+      - true
+      - true  # IN
+      - true
+      - true  # MA
+      - true
+      - true  # ME
+      - true
+      - true  # MI
+      - true
+      - true  # MN
+      - true
+      - false  # MT
+      - true
+      - true  # NE
+      - true
+      - true  # NH
+      - true
+      - true  # SC
+      - true
+      - true  # VT
+      - true
+      - true  # WI
+      - true
+
+# No marital units given, so the three adults form one default marital unit. The
+# spouse test pairs the head and spouse of the first tax unit and leaves the
+# 67-year-old in their own tax unit with no spouse. The applicant's spouse is not aged,
+# blind or disabled and has no income, so nothing is deemed (20 CFR 416.1163(d)(1))
+# and the applicant is tested alone against West Virginia's SSI rate, 12 x 994 =
+# 11,928. The spouse keeps the couple rate, 12 x 1,491 = 17,892, and the unpaired
+# 67-year-old the one-person 11,928. Counting the 67-year-old as a second aged member
+# of the couple would give the applicant the couple standard.
+- name: Case 18, an unrelated aged adult in a default marital unit does not count as the applicant's spouse.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+      person3:
+        is_tax_unit_head: true
+        age: 67
+        pension_income: 20_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [false, true, false]
+    medicaid_optional_senior_or_disabled_income_limit: [11_928, 17_892, 11_928]
+
+# The example in us:medicaid-abd-budgeting-together-stricter-than-ssi. The spouse's
+# interest of 5,964 equals SSI's threshold, 12 x 497 = 5,964, so SSI deems nothing
+# (20 CFR 416.1163(d)(1)). Arizona budgets the couple together (AHCCCS MA611 A):
+# 16,200 + 5,964 - 240 = 21,924 is above the two-person 21,640. Pennsylvania follows
+# SSI's rule and tests the applicant alone: 16,200 - 240 = 15,960 is within the
+# one-person 15,960. The Pennsylvania spouse's couple total is 15,960 + 0, within
+# 21,640.
+- name: Case 19, budgeting together denies an applicant whom SSI's rule tests alone and finds eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 16_200
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 5_964
+      person3:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 16_200
+      person4:
+        is_tax_unit_spouse: true
+        age: 50
+        taxable_interest_income: 5_964
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AZ
+      household2:
+        members: [person3, person4]
+        state_code: PA
+  output:
+    # Each pair is the applicant, then the spouse: Arizona, then Pennsylvania.
+    is_ssi_spousal_deeming_applies: [false, false, false, false]
+    medicaid_optional_senior_or_disabled_uses_couple_standard: [true, true, false, true]
+    medicaid_optional_senior_or_disabled_income_limit: [21_640, 21_640, 15_960, 21_640]
+    medicaid_optional_senior_or_disabled_countable_income: [21_924, 0, 15_960, 0]
+    is_optional_senior_or_disabled_income_eligible: [false, false, true, true]

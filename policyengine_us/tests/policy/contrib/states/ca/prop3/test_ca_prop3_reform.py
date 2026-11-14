@@ -202,11 +202,11 @@ def test_ca_prop3_app_activation_from_2031():
     # 198.360243 / 177.11375, as independently integrated in ca_prop3.yaml.
     assert simulation.calculate("ca_income_tax_before_credits", 2031)[
         0
-    ] == pytest.approx(100_808.08, abs=1)
+    ] == pytest.approx(100_808.08, abs=0.02)
     # With the toggle off, 2031 tax is the baseline.
     baseline = Simulation(situation=_situation(years))
     assert baseline.calculate("ca_income_tax_before_credits", 2031)[0] == pytest.approx(
-        88_875.81, abs=1
+        88_875.81, abs=0.02
     )
 
 

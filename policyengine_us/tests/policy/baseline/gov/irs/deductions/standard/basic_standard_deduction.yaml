@@ -41,27 +41,31 @@
   output:
     basic_standard_deduction: 16_600
 
-- name: 2028 single filer standard deduction grows from the 2027 amount at CBO's projected rate
-  # No month of the 12 ending August 2027 has a BLS observation, so the
-  # index for 2028 is the 2027 index times CBO's projected growth in that
-  # 12-month average (tax_year_projection/c_cpi_u.yaml):
-  # 185.881 / 181.654 = 1.023270.
-  # $16,600 x 1.023270 = $16,986.27, rounded down to $50: $16,950.
-  # Reading CBO's 185.881 as a level against the observed 182.501 gives
-  # $16,907.47 and $16,900.
+- name: 2028 single filer standard deduction adds the rounded cost-of-living increase to $15,750
+  # 26 U.S.C. 63(c)(7)(B)(ii) increases the $15,750 by the growth of the
+  # C-CPI-U since calendar year 2024 (index 173.093417) and rounds the
+  # increase down to $50. No month of the 12 ending August 2027 has a BLS
+  # observation, so the index for 2028 is the 2027 index times CBO's
+  # projected growth in that 12-month average
+  # (tax_year_projection/c_cpi_u.yaml):
+  # 182.500667 x 185.881 / 181.654 = 186.747368.
+  # $15,750 x (186.747368 / 173.093417 - 1) = $1,242.39, rounded down to
+  # $1,200: $16,950.
+  # Reading CBO's 185.881 as a level gives an increase of $1,163.56,
+  # rounded down to $1,150: $16,900.
   period: 2028
   input:
     filing_status: SINGLE
   output:
     basic_standard_deduction: 16_950
 
-- name: 2028 joint standard deduction grows from the 2027 amount at CBO's projected rate
-  # $33,200 x 185.881 / 181.654 = $33,972.55, rounded down to $50: $33,950.
+- name: 2028 joint standard deduction is twice the single amount
+  # 26 U.S.C. 63(c)(2)(A): 200 percent of the single amount, 2 x $16,950.
   period: 2028
   input:
     filing_status: JOINT
   output:
-    basic_standard_deduction: 33_950
+    basic_standard_deduction: 33_900
 
 - name: 2023 dependent filer with $3,000 of wages gets $400 plus earned income
   # Rev. Proc. 2022-38 sec. 3.15(2): greater of $1,250 or $400 plus earned
@@ -156,7 +160,7 @@
   # 182.501 x 201.335 / 181.654 = 202.273.
   # Increase = $250 x (202.273 / 90.886 - 1) = $306.40, rounded down to
   # $300, so $550. Floor: $500 x 202.273 / 63.813 = $1,584.89, so $1,550.
-  # max($1,550, $550 + $3,000) = $3,550, below the $18,350 cap.
+  # max($1,550, $550 + $3,000) = $3,550, below the $18,400 cap.
   period: 2032
   input:
     people:

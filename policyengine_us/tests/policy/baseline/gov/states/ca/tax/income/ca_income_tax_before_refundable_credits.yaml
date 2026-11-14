@@ -54,10 +54,11 @@
 # claimed deduction: $159,729.30 federal AGI + $337.50 = $160,066.80 CA AGI.
 # https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=64
 # On this model head, CA deductions are $12,621 donations + $8,653.50
-# property tax = $21,274.50, so taxable income is $138,792.30. Applying the
-# published 2026 joint brackets gives $5,693.62 less $1,298 exemptions
-# (2 x $158 personal + 2 x $491 dependent) = $4,395.62 tax. Restoring
-# $337.50 at 8% adds $27 to the unfixed $4,368.62.
+# property tax = $21,274.50, so taxable income is $138,792.30. FTB's 2026
+# Schedule Y (FTB Tax News, October 2026) gives $4,109.92 + 8% x
+# ($138,792.30 - $118,996) = $5,693.62, less $1,298 of exemption credits
+# ($316 + 2 x $491) = $4,395.62 tax. Restoring $337.50 at 8% adds $27 to the
+# unfixed $4,368.62.
 - name: 2026, PolicyBench scenario_099 restores the spouse educator deduction
   period: 2026
   absolute_error_margin: 0.02

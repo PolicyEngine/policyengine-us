@@ -93,10 +93,10 @@ def test_statutory_cola_matches_published_and_determined_values():
 
     2024 and 2025 are Department of Revenue published values (OR-40
     instructions). Tax year 2026 is already determined by published CPI-U:
-    the window ending August 2025 averages 319.24, a 9.114% COLA over the
-    2022 Q2 base of 292.572, so the $91.14 amount increase floors to $50
+    the window ending August 2025 averages 319.205, a 9.103% COLA over the
+    2022 Q2 base of 292.572, so the $91.03 amount increase floors to $50
     (no change at the $50 grid: $1,000 base + $50 = $1,050) and the
-    $2,278.47 threshold increase floors to $2,250.
+    $2,275.76 threshold increase floors to $2,250.
     """
     assert OR_CTC_PARAMS.amount("2024-01-01") == 1_000
     assert OR_CTC_PARAMS.reduction.start("2024-01-01") == 25_750

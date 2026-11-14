@@ -91,6 +91,76 @@
     # 74_675.27 + .123 * (1_000_000 - 768_213) = 103_185.071
     ca_income_tax_before_credits: 103_185.07
 
+# 2026 cases: FTB Tax News, October 2026, 2026 Indexing, lists each schedule's
+# tax at each bracket threshold.
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/2026/10.html#article1
+
+- name: 2026 single filer at the start of Schedule X's 4% bracket owes FTB's $428.58
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ca_taxable_income: 27_157
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # 1% x 11,456 + 2% x (27,157 - 11,456) = 114.56 + 314.02
+    ca_income_tax_before_credits: 428.58
+
+- name: 2026 single filer at the start of Schedule X's 12.3% bracket owes FTB's $74,675.27
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    ca_taxable_income: 768_213
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    # 39,951.95 + 11.3% x (768,213 - 460,927)
+    ca_income_tax_before_credits: 74_675.27
+
+- name: 2026 joint filers at the start of Schedule Y's 4% bracket owe FTB's $857.16
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ca_taxable_income: 54_314
+    filing_status: JOINT
+    state_code: CA
+  output:
+    # 1% x 22,912 + 2% x (54,314 - 22,912) = 229.12 + 628.04
+    ca_income_tax_before_credits: 857.16
+
+- name: 2026 joint filers at the start of Schedule Y's 12.3% bracket owe FTB's $149,350.54
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    ca_taxable_income: 1_536_426
+    filing_status: JOINT
+    state_code: CA
+  output:
+    # 79,903.90 + 11.3% x (1,536,426 - 921,854)
+    ca_income_tax_before_credits: 149_350.54
+
+- name: 2026 head of household at the start of Schedule Z's 4% bracket owes FTB's $857.05
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ca_taxable_income: 54_316
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: CA
+  output:
+    # 1% x 22,927 + 2% x (54,316 - 22,927) = 229.27 + 627.78
+    ca_income_tax_before_credits: 857.05
+
+- name: 2026 head of household at the start of Schedule Z's 12.3% bracket owes FTB's $100,786.98
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    ca_taxable_income: 1_044_771
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: CA
+  output:
+    # 53,563.49 + 11.3% x (1,044,771 - 626,864)
+    ca_income_tax_before_credits: 100_786.98
+
 # 2030-2031 cases: thresholds are the published FTB 2026 schedules uprated by
 # gov.states.ca.cpi, which grows with gov.irs.uprating after the last California
 # observation. That index averages 182.500667 over the 12 months ending August 2026

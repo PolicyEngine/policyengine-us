@@ -1,13 +1,15 @@
 description: Montana limits the child and dependent care expense deduction to expenses for dependents who are incapable of self-care or are below this age.
 
 values:
-  2021-01-01: 15
+  2017-01-01: 15
 
 metadata:
   unit: year
   period: year
   label: Montana Child and Dependent Care Expense deduction age threshold
   reference:
+    - title: 2017 Montana Form 2 instructions, line 19, child and dependent care expenses
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
     - title: Mont. Code Ann. § 15-30-2131(1)(c)(i)(A)
       href: https://mca.legmt.gov/bills/2019/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
     - title: 2022 Montana Form 2 Individual income tax instructions, line 14
