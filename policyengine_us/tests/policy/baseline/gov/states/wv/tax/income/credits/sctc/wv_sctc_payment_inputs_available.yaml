@@ -7,6 +7,7 @@
 # interest. It is false for unverified/partial/mixed receipts; nonnegative finite T/V
 # and zeroV=>zeroT are required. Last row proves payment validity is independent of
 # legal eligibility.
+# Infinity reaches the policy guard; Core rejects NaN inputs before evaluation.
 - name: Case 1, only finite coherent paid-tax and full-value receipts are available.
   period: 2025
   input:
@@ -106,7 +107,7 @@
         wv_sctc_income_facts_available: true
         wv_sctc_disabled_veteran_credit_claim_status: NOT_CLAIMED
         wv_sctc_payment_facts_available: true
-        wv_sctc_taxable_assessed_value: .nan
+        wv_sctc_taxable_assessed_value: .inf
         wv_sctc_qualified_property_taxes_paid: 1_000
       tax_unit7:
         members:

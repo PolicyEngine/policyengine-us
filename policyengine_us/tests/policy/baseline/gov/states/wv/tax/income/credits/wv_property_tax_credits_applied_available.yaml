@@ -4,6 +4,8 @@
 # liability are necessary; negative finite liability clamps 0. Unknown coordination
 # remains unknown; outsideWV is outside this diagnostic. This is not complete
 # return-data availability.
+# Infinity reaches the policy guard; Core rejects NaN inputs before evaluation.
+# Negative infinite raw liability remains invalid after its numerical zero clamp.
 - name: Case 1, bounded coordination and coherent amounts determine application availability.
   period: 2025
   input:
@@ -57,7 +59,7 @@
       tax_unit4:
         members:
         - person4
-        wv_sctc: .nan
+        wv_sctc: .inf
         wv_homestead_excess_property_tax_credit: 0
         wv_income_tax_before_refundable_credits: 0
         wv_heptc_coordination_available: true
@@ -65,7 +67,7 @@
         members:
         - person5
         wv_sctc: 9
-        wv_homestead_excess_property_tax_credit: .nan
+        wv_homestead_excess_property_tax_credit: .inf
         wv_income_tax_before_refundable_credits: 0
         wv_heptc_coordination_available: true
       tax_unit6:
@@ -87,7 +89,7 @@
         - person8
         wv_sctc: 0
         wv_homestead_excess_property_tax_credit: 0
-        wv_income_tax_before_refundable_credits: .nan
+        wv_income_tax_before_refundable_credits: -.inf
         wv_heptc_coordination_available: true
       tax_unit9:
         members:

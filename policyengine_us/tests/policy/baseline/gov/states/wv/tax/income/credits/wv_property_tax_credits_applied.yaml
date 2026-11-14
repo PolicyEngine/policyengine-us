@@ -353,6 +353,7 @@
 
 # Companion availability cases distinguish these 0 placeholders from a known lawful
 # zero. Invalid or missing upstream amounts cannot become known claim determinations.
+# Infinity reaches the policy guard; Core rejects NaN inputs before evaluation.
 - name: Case 6, unavailable or invalid application returns a diagnostic zero.
   period: 2025
   absolute_error_margin: 0.01
@@ -375,7 +376,7 @@
       tax_unit2:
         members:
         - person2
-        wv_sctc: .nan
+        wv_sctc: .inf
         wv_homestead_excess_property_tax_credit: 0
         wv_income_tax_before_refundable_credits: 0
         wv_heptc_coordination_available: true

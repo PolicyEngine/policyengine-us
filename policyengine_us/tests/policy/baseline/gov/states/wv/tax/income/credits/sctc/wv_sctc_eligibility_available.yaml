@@ -121,6 +121,7 @@
 
 # The receipt flag cannot make a nonfinite AGI/AMT, negative AMT or missing legal
 # family count valid. Negative finite AGI is tested separately as valid.
+# Infinity reaches the policy guard; Core rejects NaN inputs before evaluation.
 - name: Case 2, invalid income or family facts do not certify eligibility.
   period: 2025
   input:
@@ -148,7 +149,7 @@
       tax_unit2:
         members:
         - person2
-        adjusted_gross_income: .nan
+        adjusted_gross_income: .inf
         alternative_minimum_tax: 0
         wv_sctc_homestead_qualified: true
         wv_sctc_family_unit_size: 1
