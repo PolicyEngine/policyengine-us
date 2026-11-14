@@ -1,0 +1,131 @@
+# Independent source-derived expectations; never obtained from model output.
+# Sources: Acts330/2025;174/2026;1268/2005; Sebastian County single-parcel registration with joint signatures.
+
+# The2025 parcel credit is600; its reduced bill is ordinarily collected in2026.
+# The independent2025 generic paid-tax fact500 remains unchanged; no extra cash is paid.
+- name: "Case 1, assessment 2025 credit enters the diagnostic once and adds no cash refund."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_homestead_property_tax_credit_qualified_property_taxes: 1_200
+        ar_homestead_property_tax_credit_property_in_arkansas: true
+        ar_homestead_property_tax_credit_homestead_qualified: true
+        ar_homestead_property_tax_credit_registered: true
+        ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: false
+        ar_homestead_property_tax_credit_claimant: true
+        ar_homestead_property_tax_credit_facts_available: true
+        ar_homestead_property_tax_credit_bill_before_credit: 1_280
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_homestead_property_tax_credit: 600
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: 600
+    ar_homestead_property_tax_credit_bill_after_credit: 680
+    taxsim_state_property_tax_credit: 600
+    state_property_tax_credit: 600
+    state_property_tax_refunds: 0
+    ar_refundable_credits: 0
+    household_refundable_state_tax_credits: 0
+    real_estate_taxes: 500
+
+# The2026 assessment credit675 belongs on the ordinary2027 bill.
+# The2026 paid-tax input600 is the net qualified tax from the2025 L1200 minus600 credit;
+# non-ad-valorem charges80 remain outside this generic real-estate-tax expense.
+- name: "Case 2, assessment 2026 diagnostic uses the new cap without adding a cash transfer."
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        real_estate_taxes: 600
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_homestead_property_tax_credit_qualified_property_taxes: 1_200
+        ar_homestead_property_tax_credit_property_in_arkansas: true
+        ar_homestead_property_tax_credit_homestead_qualified: true
+        ar_homestead_property_tax_credit_registered: true
+        ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: false
+        ar_homestead_property_tax_credit_claimant: true
+        ar_homestead_property_tax_credit_facts_available: true
+        ar_homestead_property_tax_credit_bill_before_credit: 1_280
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_homestead_property_tax_credit: 675
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: 525
+    ar_homestead_property_tax_credit_bill_after_credit: 605
+    taxsim_state_property_tax_credit: 675
+    state_property_tax_credit: 675
+    state_property_tax_refunds: 0
+    ar_refundable_credits: 0
+    household_refundable_state_tax_credits: 0
+    real_estate_taxes: 600
+
+# One co-owned parcel and its complete bill are attributed only to tax_unit1.
+# The other co-owner has no duplicated parcel monetary record, claimantfalse and unavailable
+# parcel facts. Attribution does not halve600 or create a second600 award. No cash is added.
+- name: "Case 3, two co-owners in separate tax units receive one assigned parcel credit."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+      person2:
+        age: 45
+        employment_income: 50_000
+        real_estate_taxes: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        ar_homestead_property_tax_credit_qualified_property_taxes: 1_200
+        ar_homestead_property_tax_credit_property_in_arkansas: true
+        ar_homestead_property_tax_credit_homestead_qualified: true
+        ar_homestead_property_tax_credit_registered: true
+        ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: false
+        ar_homestead_property_tax_credit_claimant: true
+        ar_homestead_property_tax_credit_facts_available: true
+        ar_homestead_property_tax_credit_bill_before_credit: 1_280
+      tax_unit2:
+        members: [person2]
+        ar_homestead_property_tax_credit_claimant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_homestead_property_tax_credit_inputs_available: [true, false]
+    ar_homestead_property_tax_credit_eligible: [true, false]
+    ar_homestead_property_tax_credit: [600, 0]
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: [600, 0]
+    ar_homestead_property_tax_credit_bill_after_credit: [680, 0]
+    taxsim_state_property_tax_credit: [600, 0]
+    state_property_tax_refunds: [0, 0]
+    household_refundable_state_tax_credits: 0

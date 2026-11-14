@@ -1,0 +1,23 @@
+# Independent source-derived expectations; never obtained from model output.
+# Sources:26-26-1118(a), Act330/2025; approved distinct core and complete-bill availability contract.
+
+# Rows: unknown optional bill, inconsistent bill, unknown core facts, known consistent bill.
+# Unavailable numeric defaults are checked separately by exact availability tests.
+# For known core facts min(1200,600)=600 even when the optional total bill is missing.
+- name: "Case 1, an unavailable or inconsistent total bill does not suppress a known core credit."
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    state_code: [AR, AR, AR, AR]
+    ar_homestead_property_tax_credit_qualified_property_taxes: [1_200, 1_200, 1_200, 1_200]
+    ar_homestead_property_tax_credit_property_in_arkansas: [true, true, true, true]
+    ar_homestead_property_tax_credit_homestead_qualified: [true, true, true, true]
+    ar_homestead_property_tax_credit_registered: [true, true, true, true]
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: [false, false, false, false]
+    ar_homestead_property_tax_credit_claimant: [true, true, true, true]
+    ar_homestead_property_tax_credit_facts_available: [true, true, false, true]
+    ar_homestead_property_tax_credit_bill_before_credit: [-1, 1_100, 1_280, 1_280]
+  output:
+    ar_homestead_property_tax_credit: [600, 600, 0, 600]
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: [600, 600, 0, 600]
+    ar_homestead_property_tax_credit_bill_after_credit: [0, 0, 0, 680]
