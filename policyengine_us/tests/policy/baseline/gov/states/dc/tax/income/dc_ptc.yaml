@@ -27,8 +27,7 @@
         state_code: DC
   output:
     adjusted_gross_income: 40_000
-    # One claimant: max(8,000 * 20% - 40,000 * 4%, 0) = 0.
-    dc_ptc: 0
+    dc_ptc: 800  # = 12000 * 20% - 40000 * 4%
 
 - name: dc_ptc unit test 2
   absolute_error_margin: 0.01
@@ -59,9 +58,7 @@
         state_code: DC
   output:
     adjusted_gross_income: 40_000
-    # Age 69: 8,000 * 20% - 40,000 * 4% = 0.
-    # Age 70: max(4,000 * 20% - 40,000 * 3%, 0) = 0.
-    dc_ptc: 0
+    dc_ptc: 1_200  # = 12000 * 20% - 40000 * 3%
 
 - name: dc_ptc unit test 3
   absolute_error_margin: 0.01
@@ -123,8 +120,7 @@
         state_code: DC
   output:
     adjusted_gross_income: 56_200
-    # Either claimant: max(10,000 * 20% - 56,200 * 5%, 0) = 0.
-    dc_ptc: 0
+    dc_ptc: 1_190  # = 12000 * 20% - 56_200 * 5%
 
 - name: dc_ptc unit test 5 (same as test 4 except an extra dollar of income)
   absolute_error_margin: 0.01
@@ -186,8 +182,7 @@
         state_code: DC
   output:
     adjusted_gross_income: 57_600
-    # Either claimant: max(10,000 * 20% - 57,600 * 5%, 0) = 0.
-    dc_ptc: 0
+    dc_ptc: 1_120  # = 20000 * 20% - 57_600 * 5%
 
 - name: dc_ptc unit test 7 (same as test 6 except an extra dollar of income)
   absolute_error_margin: 0.01
@@ -247,7 +242,7 @@
         members: [person1, person2, person3]
         state_code: DC
   output:
-    dc_ptc: 1_250  # min(1,250, 10,000 * 20% - 0 * 3%) = 1,250.
+    dc_ptc: 1_250  # = min(1250, 20000 * 20% - 0 * 5%)
 
 - name: dc_ptc unit test 9 (negative AGI with no rent or property taxes)
   absolute_error_margin: 0.01
@@ -500,7 +495,7 @@
     # actual claim.
     dc_ptc: 0
 
-- name: 2025 Schedule H uses the eligible spouse's own rent when the head can be claimed
+- name: 2025 Schedule H counts the couple's whole rent when the head can be claimed
   period: 2025
   input:
     people:
@@ -524,11 +519,11 @@
         members: [head, spouse]
         state_code: DC
   output:
-    # Sections 47-1806.06(b)(4), (b)(8): one claimant's rent.
-    # min(1,425, 5,000 * 20% - 10,000 * 3%) = 700.
-    dc_ptc: 700
+    # Sections 47-1806.06(b)(4), (j)(1): the spouse claims for the couple.
+    # min(1,425, 10,000 * 20% - 10,000 * 3%) = min(1,425, 1,700) = 1,425.
+    dc_ptc: 1_425
 
-- name: 2025 Schedule H uses the eligible head's own rent when the spouse can be claimed
+- name: 2025 Schedule H counts the couple's whole rent when the spouse can be claimed
   period: 2025
   input:
     people:
@@ -552,10 +547,10 @@
         members: [head, spouse]
         state_code: DC
   output:
-    # min(1,425, 5,000 * 20% - 10,000 * 3%) = 700.
-    dc_ptc: 700
+    # min(1,425, 10,000 * 20% - 10,000 * 3%) = min(1,425, 1,700) = 1,425.
+    dc_ptc: 1_425
 
-- name: 2025 Schedule H applies each eligible claimant's own age to their rent
+- name: 2025 Schedule H applies each eligible claimant's own age to the couple's rent
   period: 2025
   input:
     people:
@@ -578,10 +573,11 @@
         members: [head, spouse]
         state_code: DC
   output:
-    # Age 69: 12,000 * 20% - 40,000 * 4% = 800.
-    # Age 70: max(1,000 * 20% - 40,000 * 3%, 0) = 0.
-    # The couple chooses the eligible claimant with the larger credit: 800.
-    dc_ptc: 800
+    # The couple pays 13,000: 13,000 * 20% = 2,600.
+    # Age 69: 2,600 - 40,000 * 4% = 1,000.
+    # Age 70: 2,600 - 40,000 * 3% = 1,400.
+    # The couple claims through the spouse aged 70: min(1,425, 1,400) = 1,400.
+    dc_ptc: 1_400
 
 - name: 2025 Schedule H uses the full property tax bill for co-owners
   period: 2025
@@ -710,7 +706,7 @@
         members: [head, spouse]
         state_code: DC
   output:
-    # One claimant pays 12,000: 12,000 * 20% - 40,000 * 4% = 800.
+    # Neither spouse has reached 70: 12,000 * 20% - 40,000 * 4% = 800.
     dc_ptc: 800
 
 - name: 2025 Schedule H excludes a non-filer child's property tax from the filing unit's bill
@@ -736,3 +732,165 @@
   output:
     # The filer's bill gives min(1,425, 1,000 - 20,000 * 3%) = 400.
     dc_ptc: 400
+
+- name: 2025 Schedule H gives a couple the senior rate when the spouse under 70 holds the rent
+  period: 2025
+  input:
+    people:
+      head:
+        age: 69
+        employment_income: 40_000
+        rent: 30_000
+        is_tax_unit_head: true
+      spouse:
+        age: 70
+        employment_income: 40_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    adjusted_gross_income: 80_000
+    # Age 69: 80,000 exceeds the 66,000 limit, so 0.
+    # Age 70: 30,000 * 20% - 80,000 * 3% = 3,600, under the 90,000 limit.
+    # min(1,425, 3,600) = 1,425.
+    dc_ptc: 1_425
+
+- name: 2021 Schedule H gives a couple the senior rate when the spouse under 70 holds the rent
+  period: 2021
+  input:
+    people:
+      head:
+        age: 69
+        employment_income: 20_000
+        rent: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 70
+        employment_income: 20_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    adjusted_gross_income: 40_000
+    # Age 69: 12,000 * 20% - 40,000 * 4% = 800.
+    # Age 70: 12,000 * 20% - 40,000 * 3% = 1,200.
+    # min(1,225, 1,200) = 1,200.
+    dc_ptc: 1_200
+
+- name: 2025 Schedule H counts both spouses' rent for a couple nobody can claim
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: true
+      spouse:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    adjusted_gross_income: 10_000
+    # min(1,425, 10,000 * 20% - 10,000 * 3%) = min(1,425, 1,700) = 1,425.
+    dc_ptc: 1_425
+
+- name: 2025 Schedule H lets the eligible spouse claim rent that the claimable spouse holds
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 5_000
+        rent: 6_000
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+      spouse:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # Section (k) bars the head; the spouse claims the couple's rent.
+    # min(1,425, 6,000 * 20% - 10,000 * 3%) = 900.
+    dc_ptc_eligible_claimant: [false, true]
+    dc_ptc: 900
+
+- name: 2025 Schedule H gives owners the senior rate when the spouse under 70 holds the tax bill
+  period: 2025
+  input:
+    people:
+      head:
+        age: 69
+        employment_income: 35_000
+        real_estate_taxes: 3_000
+        is_tax_unit_head: true
+      spouse:
+        age: 70
+        employment_income: 35_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    adjusted_gross_income: 70_000
+    # Age 69: 70,000 exceeds the 66,000 limit, so 0.
+    # Age 70: 3,000 - 70,000 * 3% = 900, under the 90,000 limit.
+    dc_ptc: 900
+
+- name: 2025 Schedule H leaves a non-filer child's rent out of the filing unit's rent
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        rent: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    # The head can claim but pays no rent: max(0 * 20% - 10,000 * 3%, 0) = 0.
+    dc_ptc_eligible_claimant: [true, false]
+    dc_ptc: 0

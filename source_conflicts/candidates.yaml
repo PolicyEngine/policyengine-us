@@ -2113,7 +2113,7 @@ candidates:
     url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)(C)
   - kind: statute
     citation: 26 U.S.C. 32(c)(1)(A)(ii)(III)
-    url: https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
   - kind: instructions
     citation: 2025 IRS Publication 596, Rule 12, pages 17-18
     url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=17
@@ -2414,8 +2414,8 @@ candidates:
   state: ruled
   note: The statutory dependent definition controls the actual-claim wording in the confirmed 2021, 2022 and 2025
     instructions. The same statutory definition applies in 2026. The federal exception for claiming one's own
-    dependents does not remove the claimant's dependent status. Either independently eligible spouse may claim;
-    only that claimant's own rent enters the calculation.
+    dependents does not remove the claimant's dependent status. Either eligible spouse may claim for the couple,
+    and the couple's whole rent enters the calculation.
 - id: us-de:529-subtraction-exact-agi-limit
   program: income-tax
   years:
@@ -3726,22 +3726,26 @@ candidates:
   - kind: regulation
     citation: IDAPA 35.01.01.771.01.a, 2022 archive, PDF pages 125-126
     url: https://files.dfm.idaho.gov/dfm-admin-website/rules/2022%20Archive/35/350101.pdf#page=125
+  - kind: statute
+    citation: Idaho Code 63-3024A(4), one credit for the same personal exemption
+    url: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3024A/
   readings:
     statute: From 2019, lawmakers grant a credit for the taxpayer and spouse without incorporating section 151.
     other: The earlier regulation requires a permitted and claimed personal-exemption deduction, which may retain
       the earlier dependent-filer restriction.
-  example: A claimable but unclaimed filer aged 30 with twelve qualifying months receives $0 under the retained
-    treatment in 2021, versus $100 under the per-taxpayer grant.
+  example: A claimable but unclaimed filer aged 30 with twelve qualifying months receives $100 in 2021 under the
+    per-taxpayer grant, versus $0 under the former regulation's exemption condition.
   pe_us:
-    follows: gap-fill
+    follows: statute
     code:
     - policyengine_us/variables/gov/states/id/tax/income/credits/grocery/id_grocery_credit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10050
   state: open
-  note: Retain the pre-2023 treatment pending review of the earlier regulation and the 2019 statutory amendment.
-    The parameter starts in 2015; the statute's former section 151 wording and the prior regulation need separate
-    historical review. The current-rule change applies from 2023.
+  note: PE-US excludes a filer in every year only when another taxpayer claims them, under the limit of one
+    credit for the same personal exemption. Nobody has ruled whether the former regulation's exemption condition
+    also excluded a claimable but unclaimed filer from 2019 to 2022. Through 2018 the statute granted the credit
+    for each exemption that section 151 permitted, and that wording needs its own review.
 - id: us-id:grocery-credit-claimable-unclaimed-filer
   program: income-tax
   years:
@@ -3776,9 +3780,9 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10050
   state: ruled
   note: The statute supplies the per-taxpayer grant, and the current regulation adds no claimability restriction.
-    Follow the statute from 2023, when the regulation drops the personal-exemption deduction condition. Preserve
-    the earlier treatment pending the historical review recorded separately. The dependent-child route still
-    applies IRC 152(b)(1), including the filing exception.
+    Follow the statute from 2023, when the regulation drops the personal-exemption deduction condition. A
+    separate item records the open question about the regulation in force before 2023. The dependent-child route
+    still applies IRC 152(b)(1), including the filing exception.
 - id: us-id:grocery-credit-claimable-spouse
   program: income-tax
   years:

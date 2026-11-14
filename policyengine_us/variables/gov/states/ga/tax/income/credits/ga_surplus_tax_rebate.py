@@ -38,12 +38,15 @@ class ga_surplus_tax_rebate(Variable):
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
         claimed = person("claimed_as_dependent_on_another_return", period)
-        # Count positive wages or either self-employment source separately:
-        # a business loss does not undo wages the filer earned.
+        # Count positive wages or any self-employment source separately: a
+        # business loss does not undo wages the filer earned. Farm profit and
+        # a partner's net earnings sit outside self_employment_income.
         own_earnings = (
             (person("employment_income", period) > 0)
             | (person("self_employment_income", period) > 0)
             | (person("sstb_self_employment_income", period) > 0)
+            | (person("farm_operations_income", period) > 0)
+            | (person("partnership_self_employment_net_earnings", period) > 0)
         )
         qualified = tax_unit.any(filer & (~claimed | own_earnings))
         return min_(cap, line_16_tax) * qualified

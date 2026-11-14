@@ -13,7 +13,8 @@ class ga_exemptions(Variable):
         # 2025 IT-511, Lines 7a-d: "Georgia follows the Federal rules for
         # qualified dependents."
         "https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=16",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        # IRC 152(b)(1).
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec152.htm",
         "https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=2c053fd5-32c1-4cc1-86b0-36aaade9da5b&pdistocdocslideraccess=true&config=00JAA1MDBlYzczZi1lYjFlLTQxMTgtYWE3OS02YTgyOGM2NWJlMDYKAFBvZENhdGFsb2feed0oM9qoQOMCSJFX5qkd&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A6348-G0H1-DYB7-W3JT-00008-00&pdcomponentid=234187&pdtocnodeidentifier=ABWAALAADAAL&ecomp=k2vckkk&prid=4862391c-e031-443f-ad52-ae86c6bb5ce2",
     )
 

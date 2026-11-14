@@ -11,7 +11,8 @@ class dc_ctc_eligible_child(Variable):
         # D.C. Code 47-1806.17(a), (d): a child for whom the taxpayer is allowed
         # a deduction under IRC 151, claimed on the federal and District returns.
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        # IRC 152(b)(1).
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec152.htm",
     )
 
     def formula(person, period, parameters):

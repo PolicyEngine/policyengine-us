@@ -4,9 +4,9 @@ as a dependent.
 A return on which the filer, or on a joint return either spouse, can be claimed
 as a dependent outside the filing exception has no dependents (IRC 152(b)(1)).
 DC's property tax credit needs a claimant who was not a dependent or is 65 or
-older; Georgia's low income credit and 2023 surplus refund need one filer who
-qualifies; Idaho excludes claimed food-credit filers from 2023 and
-claimable filers before 2023.
+older; Georgia's low income credit and its surplus refund of 2021 liability
+need one filer who qualifies; Idaho excludes food-credit filers whom another
+taxpayer claims.
 
 For couples drawn by Hypothesis and a seeded population in these states,
 claimability, actual claims and the filing exception vary independently,

@@ -12,7 +12,8 @@ class id_household_and_dependent_care_expense_deduction(Variable):
         # Idaho Code 63-3022D: for an individual who maintains a household that
         # includes one or more qualifying individuals under IRC 21(b)(1).
         "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022D/",
-        "https://www.law.cornell.edu/uscode/text/26/21#b",
+        # IRC 21(b)(1).
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartA-sec21.htm",
         "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=44",
     )
 

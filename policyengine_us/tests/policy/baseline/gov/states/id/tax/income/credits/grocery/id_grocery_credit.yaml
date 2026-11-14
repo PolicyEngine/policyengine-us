@@ -272,9 +272,7 @@
     id_grocery_credit: 155
 
 
-- name: 2021 single filer who can be claimed but is not claimed retains the earlier food credit treatment
-  # The commission required a permitted and claimed personal exemption before 2023.
-  # Preserve the earlier treatment pending review of that historical wording.
+- name: 2021 single filer who can be claimed but is not claimed keeps the food tax credit
   period: 2021
   input:
     people:
@@ -293,6 +291,30 @@
         members: [filer]
         state_code: ID
   output:
+    # Idaho Code 63-3024A(1): 1 x $100 x 12/12, with no duplicate claim.
+    id_grocery_credit: 100
+
+
+- name: 2022 claimed single filer receives no food tax credit
+  period: 2022
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 10_000
+        id_grocery_credit_qualified_months: 12
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: ID
+  output:
+    # Idaho Code 63-3024A(4) allows one credit per personal exemption:
+    # the taxpayer who claims this filer takes the $100, so 0 x $100 = 0.
     id_grocery_credit: 0
 
 

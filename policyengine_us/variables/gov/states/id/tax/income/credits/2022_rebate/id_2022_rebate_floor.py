@@ -11,7 +11,8 @@ class id_2022_rebate_floor(Variable):
         # Idaho Code 63-3024B(3): "seventy-five dollars ($75.00) per taxpayer and
         # each dependent", based on the 2020 return.
         "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3024B/",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        # IRC 152(b)(1).
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec152.htm",
     )
 
     def formula(person, period, parameters):

@@ -13,7 +13,8 @@ class dc_kccatc(Variable):
         # D.C. Code 47-1806.15(a)(3), (d)(1): the child must be claimed as a
         # dependent on the taxpayer's federal and District returns.
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.15",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        # IRC 152(b)(1).
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec152.htm",
     )
     defined_for = StateCode.DC
 

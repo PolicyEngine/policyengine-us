@@ -19,16 +19,19 @@ class dc_ptc(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        # Under section (b)(8), rent belongs to the claimant who pays it.
-        rent = person("rent", period)
-        retax = person("real_estate_taxes", period)
         filer = person("is_tax_unit_head_or_spouse", period)
-        # Under section (e)(1), an owner claims the home's whole tax bill.
-        # Positive property tax identifies an owner in the available inputs.
-        filing_unit_retax = tax_unit.sum(retax * filer)
-        claimant_retax = where(retax > 0, tax_unit.project(filing_unit_retax), 0)
+        eligible_claimant = person("dc_ptc_eligible_claimant", period)
+        # Sections (b)(4) and (j)(1): a married couple forms one tax filing
+        # unit with one claimant, so its rent counts whichever spouse pays it.
+        rent = tax_unit.sum(person("rent", period) * filer)
+        # Section (e)(1): an owner claims the home's whole tax bill. The
+        # inputs carry no title field, so positive property tax identifies an
+        # owner, and the unit claims the bill when an eligible claimant owns.
+        retax = person("real_estate_taxes", period)
+        has_eligible_owner = tax_unit.any(eligible_claimant & (retax > 0))
+        bill = tax_unit.sum(retax * filer) * has_eligible_owner
         p_dc = parameters(period).gov.states.dc.tax.income.credits
-        ptax = claimant_retax + rent * p_dc.ptc.rent_ratio
+        ptax = tax_unit.project(bill + rent * p_dc.ptc.rent_ratio)
 
         elderly_age = p_dc.ptc.min_elderly_age
         age = person("age", period)
@@ -44,7 +47,6 @@ class dc_ptc(Variable):
         )
         uncapped_ptc = max_(0, ptax - ptax_offset)
         # Section (b)(4) permits one claimant, using that claimant's age.
-        eligible_claimant = person("dc_ptc_eligible_claimant", period)
         claimant_ptc = where(eligible_claimant, uncapped_ptc, 0)
         return min_(p_dc.ptc.max, tax_unit.max(claimant_ptc)) * tax_unit(
             "takes_up_dc_ptc", period

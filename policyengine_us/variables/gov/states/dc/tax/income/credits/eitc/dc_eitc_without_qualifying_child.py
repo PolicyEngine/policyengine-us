@@ -16,7 +16,7 @@ class dc_eitc_without_qualifying_child(Variable):
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04",  # (f)
         # IRC 32(c)(1)(A)(ii)(III): a filer without a qualifying child must not
         # be a dependent of another taxpayer.
-        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm",
         # Publication 596: on a joint return, neither spouse may be claimable.
         "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18",
     )

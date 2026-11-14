@@ -15,7 +15,8 @@ class ga_low_income_credit_potential(Variable):
         # O.C.G.A. 48-7A-3(a) as amended by HB 1069 (2010), section 5, printed
         # page 1172.
         "https://dlg.usg.edu/record/dlg_ggpd_y-ga-bl407-b2010-bv-p1-bbk-p1-belec-p-btext",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        # IRC 152(b)(1).
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec152.htm",
     )
     defined_for = StateCode.GA
 
