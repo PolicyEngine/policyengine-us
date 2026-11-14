@@ -3960,6 +3960,37 @@ candidates:
     component (31) and an unearned component (38), which cannot represent a cell that departs from that sum. Issue
     10471, which encodes the full 21 x 21 table, will make PE-US follow the ruling. The other 440 cells of the
     regulation and the chart agree.'
+- id: us-il:hbwd-regular-medical-card-scope
+  program: medicaid
+  years:
+    from: 2022
+    type: calendar
+  question: Does Illinois Health Benefits for Workers with Disabilities bar a person otherwise eligible for any medical
+    assistance without a spenddown, as 89 Ill. Adm. Code 120.510(b) says, or only a person eligible for the regular
+    medical program for those with disabilities, as the lead clause of the HFS eligibility page reads?
+  sources:
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.510(b)
+    url: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510
+  - kind: guidance
+    citation: HFS Health Benefits for Workers with Disabilities eligibility page, first requirement
+    url: https://hfs.illinois.gov/medicalprograms/hbwd/eligibility.html
+  readings:
+    statute: No statute settles this; 305 ILCS 5/5-2(11) covers these workers "as provided by the Illinois Department
+      by rule". The rule, 120.510(b), says "An individual shall not be determined eligible if the individual is
+      otherwise eligible for medical assistance without a spenddown."
+    other: The HFS page requires that the person "Not be eligible for the state's regular medical program for those
+      with disabilities - the applicant cannot be eligible for a regular non-spenddown medical card."
+  example: A disabled worker aged 40 with wages of $18,000 in 2026 qualifies for the ACA adult group. 120.510(b) bars
+    this person from the program; the page's lead clause, read alone, keeps them in it at a $31 monthly premium.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/il/hfs/hbwd/eligibility/il_hbwd_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10631
+  state: ruled
+  note: "Follows the regulation: any coverage without a spenddown bars the program, including the ACA adult group, which 120.10(h) places under medical assistance. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10631#issuecomment-6855055391"
 - id: us-il:joint-childless-eitc-dependency-skip
   program: income-tax
   years:
@@ -3987,6 +4018,27 @@ candidates:
   state: ruled
   note: Ruled statute-first in October 2026; verify the incorporated dependency bar and annual questionnaire routing,
     including the 2026 draft.
+- id: us-il:mang-earned-exemption-order
+  program: medicaid
+  years:
+    from: 2026
+    to: 2026
+    type: program
+    note: program year as the program defines it
+  question: "Does Illinois take its MANG earned income exemption on gross earned income, as 89 Ill. Adm. Code 120.362(b) reads, or after the $25 exemption and self-employment expenses, as IDHS PM 08-02-03 sets out?"
+  sources:
+  - kind: regulation
+    citation: 89 Ill. Adm. Code 120.362(b)
+    url: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.362
+  - kind: manual
+    citation: IDHS PM 08-02-03
+    url: https://www.dhs.state.il.us/page.aspx?item=15379
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/medicaid_optional_senior_or_disabled_countable_income.py
+  state: ruled
+  note: "The regulation reads \"the first $20.00 of gross earned income\" and, for blind people, \"The first $85.00 of the gross earned income\"; the manual says \"Allow these deductions after deducting the $25 AABD income disregard and self-employment expenses.\" The count follows the regulation: the exemption comes off gross earned income. The shared AABD variable still takes the exemption after expenses and the $25. Ruled by the project lead, 2026-11-13: https://github.com/PolicyEngine/policyengine-us/pull/10631#issuecomment-6855055391"
 - id: us-il:msp-exemption-applicant-without-income
   program: medicare-savings-programs
   years:
