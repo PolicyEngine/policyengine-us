@@ -269,19 +269,21 @@
 # publishes 67% of the guidelines, which the 2021 entry of 1.00 overwrote, so
 # 0.67 now holds in both 2025 and 2026.
 
-- name: Case 17, Texas parent limit is 0.151 FPL in 2026 ($230 + $113.85 per month).
+- name: Case 17, Texas one-parent size-3 dollar standard with one MAGI disregard in 2026.
   period: 2026
   input:
     people:
       person1:
         age: 30
+        own_children_in_household: 2
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: TX
   output:
-    medicaid_parent_income_limit: 0.151
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.151024890
+  absolute_error_margin: 0.0000001
 
 - name: Case 18, Mississippi parent limit is 0.219 FPL in 2026 ($498/month for three).
   period: 2026
@@ -297,18 +299,19 @@
     medicaid_parent_income_limit: 0.219
   absolute_error_margin: 0.0001
 
-- name: Case 19, Florida parent limit is 0.264 FPL in 2026 ($600/month for three).
+- name: Case 19, Florida uses the size-three 2026 monthly dollar ceiling.
   period: 2026
   input:
     people:
       person1:
         age: 30
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: FL
   output:
-    medicaid_parent_income_limit: 0.264
+    medicaid_parent_income_limit: 0.263543192
   absolute_error_margin: 0.0001
 
 - name: Case 20, Wyoming parent limit is 0.433 FPL in 2026 ($873/month plus the disregard).
@@ -372,80 +375,90 @@
 # for a family of three over that year's guideline for three ($25,820 in
 # 2024, $26,650 in 2025), inclusive of the 5-point MAGI disregard.
 
-# The 2021 entry is a rounded share above the $230 standard (0.161 for 2023);
-# the 2018-2023 values are tracked in issue 10491.
-- name: Case 24, Texas 2023 parent limit still reads the 2021 entry of 0.19 FPL.
+# The one-adult identified-parent route now converts the $230 size-3
+# standard to an unrounded FPG ratio; other household routes stay unchanged.
+- name: Case 24, Texas one-parent size-3 dollar standard with one MAGI disregard in 2023.
   period: 2023
   input:
     people:
       person1:
         age: 30
+        own_children_in_household: 2
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: TX
   output:
-    medicaid_parent_income_limit: 0.19
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.161021722
+  absolute_error_margin: 0.0000001
 
 # $230 x 12 = $2,760; $2,760 / $25,820 = 0.1069 + 0.05 = 0.157.
-- name: Case 25, Texas parent limit is 0.157 FPL in 2024 ($230 per month plus the disregard).
+- name: Case 25, Texas one-parent size-3 dollar standard with one MAGI disregard in 2024.
   period: 2024
   input:
     people:
       person1:
         age: 30
+        own_children_in_household: 2
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: TX
   output:
-    medicaid_parent_income_limit: 0.157
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.156893881
+  absolute_error_margin: 0.0000001
 
 # $2,760 / $26,650 = 0.1036 + 0.05 = 0.154.
-- name: Case 26, Texas parent limit is 0.154 FPL in 2025 ($230 per month plus the disregard).
+- name: Case 26, Texas one-parent size-3 dollar standard with one MAGI disregard in 2025.
   period: 2025
   input:
     people:
       person1:
         age: 30
+        own_children_in_household: 2
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: TX
   output:
-    medicaid_parent_income_limit: 0.154
-  absolute_error_margin: 0.0001
+    medicaid_parent_income_limit: 0.153564728
+  absolute_error_margin: 0.0000001
 
-# ($303 + $183) x 12 = $5,832; $5,832 / $25,820 = 0.2259 + 0.05 = 0.276.
-- name: Case 27, Florida parent limit is 0.276 FPL in 2024 ($486 per month plus the disregard).
+# A7: $303 + $183 + ceil(5% x $25,820 / 12) = $594/month.
+# $594 x 12 / $25,820 = 0.276065066.
+- name: Case 27, Florida uses the size-three 2024 monthly dollar ceiling.
   period: 2024
   input:
     people:
       person1:
         age: 30
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: FL
   output:
-    medicaid_parent_income_limit: 0.276
+    medicaid_parent_income_limit: 0.276065066
   absolute_error_margin: 0.0001
 
-# $5,832 / $26,650 = 0.2188 + 0.05 = 0.269.
-- name: Case 28, Florida parent limit is 0.269 FPL in 2025 ($486 per month plus the disregard).
+# A7: $303 + $183 + ceil(5% x $26,650 / 12) = $598/month.
+# $598 x 12 / $26,650 = 0.269268293.
+- name: Case 28, Florida uses the size-three 2025 monthly dollar ceiling.
   period: 2025
   input:
     people:
       person1:
         age: 30
+        medicaid_household_size: 3
     households:
       household:
         members: [person1]
         state_code: FL
   output:
-    medicaid_parent_income_limit: 0.269
+    medicaid_parent_income_limit: 0.269268293
   absolute_error_margin: 0.0001
 
 # $492 x 12 = $5,904 (disregard included); $5,904 / $25,820 = 0.229.
@@ -538,3 +551,400 @@
   output:
     medicaid_parent_income_limit: 1.38
   absolute_error_margin: 0.0001
+
+# Florida Appendix A7 (https://ffic.myflfamilies.com/manual/essfiles/30446.pdf).
+# Fixed adult + standard disregard amounts, plus 5% of current-year monthly FPG,
+# rounded up once. Size 25 extends the size-24 $2,579 by the $100 increment.
+- name: Case 35, Florida preserves every fixed size-one-through-24 amount and the additional-person step.
+  period: 2026
+  absolute_error_margin: 1.0e-06
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 1
+      person2:
+        age: 30
+        medicaid_household_size: 2
+      person3:
+        age: 30
+        medicaid_household_size: 3
+      person4:
+        age: 30
+        medicaid_household_size: 4
+      person5:
+        age: 30
+        medicaid_household_size: 5
+      person6:
+        age: 30
+        medicaid_household_size: 6
+      person7:
+        age: 30
+        medicaid_household_size: 7
+      person8:
+        age: 30
+        medicaid_household_size: 8
+      person9:
+        age: 30
+        medicaid_household_size: 9
+      person10:
+        age: 30
+        medicaid_household_size: 10
+      person11:
+        age: 30
+        medicaid_household_size: 11
+      person12:
+        age: 30
+        medicaid_household_size: 12
+      person13:
+        age: 30
+        medicaid_household_size: 13
+      person14:
+        age: 30
+        medicaid_household_size: 14
+      person15:
+        age: 30
+        medicaid_household_size: 15
+      person16:
+        age: 30
+        medicaid_household_size: 16
+      person17:
+        age: 30
+        medicaid_household_size: 17
+      person18:
+        age: 30
+        medicaid_household_size: 18
+      person19:
+        age: 30
+        medicaid_household_size: 19
+      person20:
+        age: 30
+        medicaid_household_size: 20
+      person21:
+        age: 30
+        medicaid_household_size: 21
+      person22:
+        age: 30
+        medicaid_household_size: 22
+      person23:
+        age: 30
+        medicaid_household_size: 23
+      person24:
+        age: 30
+        medicaid_household_size: 24
+      person25:
+        age: 30
+        medicaid_household_size: 25
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        - person6
+        - person7
+        - person8
+        - person9
+        - person10
+        - person11
+        - person12
+        - person13
+        - person14
+        - person15
+        - person16
+        - person17
+        - person18
+        - person19
+        - person20
+        - person21
+        - person22
+        - person23
+        - person24
+        - person25
+        state_code: FL
+  output:
+    medicaid_parent_income_limit:
+    - 0.267669173
+    - 0.265064695
+    - 0.263543192
+    - 0.262909091
+    - 0.26246122
+    - 0.261857529
+    - 0.261630695
+    - 0.261450108
+    - 0.260912052
+    - 0.261001789
+    - 0.261077515
+    - 0.260989291
+    - 0.261055635
+    - 0.261113586
+    - 0.261038961
+    - 0.26109134
+    - 0.261138151
+    - 0.261073587
+    - 0.261116751
+    - 0.261155957
+    - 0.261099105
+    - 0.261135759
+    - 0.261169458
+    - 0.26111869
+    - 0.261150512
+
+# GIS 17 MA/005 attachments 3-4: parent/caretaker relatives use 138% FPL.
+- name: Case 35, New York parent income limit starts in 2017.
+  period: 2017
+  input:
+    state_code: NY
+  output:
+    medicaid_parent_income_limit: 1.38
+  absolute_error_margin: 0.0001
+
+# These controls preserve fallback routing; they do not certify the omitted
+# Texas two-parent/multi-adult or pre-2017 law.
+- name: Texas unmarried linked two-parent household preserves the national-ratio route.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 30
+        person_id: 101
+        is_tax_unit_dependent: false
+        own_children_in_household: 1
+      parent2:
+        age: 29
+        person_id: 202
+        is_tax_unit_dependent: false
+        own_children_in_household: 1
+      child:
+        age: 8
+        person_id: 303
+        parent_1_id: 101
+        parent_2_id: 202
+        is_tax_unit_dependent: true
+    tax_units:
+      unit1:
+        members:
+        - parent1
+        - child
+      unit2:
+        members:
+        - parent2
+    families:
+      family:
+        members:
+        - parent1
+        - parent2
+        - child
+    spm_units:
+      unit:
+        members:
+        - parent1
+        - parent2
+        - child
+    households:
+      household:
+        members:
+        - parent1
+        - parent2
+        - child
+        state_code: TX
+  output:
+    is_parent:
+    - true
+    - true
+    - false
+    medicaid_parent_income_limit:
+    - 0.151
+    - 0.151
+    - 0.151
+  absolute_error_margin: 1.0e-07
+- name: Texas parent with an additional adult relative preserves the national-ratio route.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        own_children_in_household: 1
+        is_tax_unit_dependent: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+      relative:
+        age: 60
+        is_tax_unit_dependent: false
+    tax_units:
+      unit1:
+        members:
+        - parent
+        - child
+      unit2:
+        members:
+        - relative
+    families:
+      family:
+        members:
+        - parent
+        - child
+        - relative
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child
+        - relative
+    households:
+      household:
+        members:
+        - parent
+        - child
+        - relative
+        state_code: TX
+  output:
+    is_parent:
+    - true
+    - false
+    - false
+    medicaid_parent_income_limit:
+    - 0.151
+    - 0.151
+    - 0.151
+  absolute_error_margin: 1.0e-07
+- name: Texas identified one-parent household preserves the national route before the verified 2017 scope.
+  period: 2016
+  input:
+    people:
+      parent:
+        age:
+          2016: 30
+        is_tax_unit_dependent:
+          2016: false
+        own_children_in_household:
+          2016: 1
+        employment_income:
+          2016: 0
+      child1:
+        age:
+          2016: 8
+        is_tax_unit_dependent:
+          2016: true
+    tax_units:
+      unit:
+        members:
+        - parent
+        - child1
+    families:
+      family:
+        members:
+        - parent
+        - child1
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child1
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        state_code:
+          2016: TX
+  output:
+    is_parent:
+    - true
+    - false
+    medicaid_parent_income_limit:
+    - 0.2
+    - 0.2
+  absolute_error_margin: 1.0e-07
+
+# Age 19 bounds this verified subset; age 18 retains legacy routing.
+- name: Texas age-18 identified parent checks the verified-adult scope boundary without asserting legal
+    exclusion.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 18
+        is_tax_unit_dependent: false
+        own_children_in_household: 1
+        employment_income: 0
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members:
+        - parent
+        - child1
+    families:
+      family:
+        members:
+        - parent
+        - child1
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child1
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        state_code: TX
+  output:
+    is_parent:
+    - true
+    - false
+    medicaid_parent_income_limit:
+    - 0.151
+    - 0.151
+  absolute_error_margin: 1.0e-07
+- name: Texas age-19 identified parent checks the verified-adult scope boundary without asserting legal
+    exclusion.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 19
+        is_tax_unit_dependent: false
+        own_children_in_household: 1
+        employment_income: 0
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      unit:
+        members:
+        - parent
+        - child1
+    families:
+      family:
+        members:
+        - parent
+        - child1
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child1
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        state_code: TX
+  output:
+    is_parent:
+    - true
+    - false
+    medicaid_household_size:
+    - 2
+    - 2
+    medicaid_parent_income_limit:
+    - 0.158687616
+    - 0.151
+  absolute_error_margin: 1.0e-07

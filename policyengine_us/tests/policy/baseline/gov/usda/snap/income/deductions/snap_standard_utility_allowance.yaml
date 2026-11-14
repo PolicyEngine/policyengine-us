@@ -154,3 +154,482 @@
   output:
     snap_standard_utility_allowance: 387
     # TN size 7 HCSUA = 387 per FY2020 SNAP QC Tech Doc Table F.7
+
+- name: Ohio FY2017 heating utility allowance reaches the final earned-income benefit
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+        rent: 7_200
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 4
+    spm_units:
+      unit:
+        members: [parent, child1, child2, child3]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: OH
+  output:
+    snap:
+      2017-01: 338
+    # ODJFS FACT 58, effective October 1, 2016: SUA $513 and standard
+    # deduction $168 for four people. The FY2017 federal maximum is $649.
+    # $2,000 - $400 - $168 = $1,432 before shelter.
+    # $600 rent + $513 SUA - $716 = $397 shelter deduction; net $1,035.
+    # Contribution ceil($310.50) = $311; $649 - $311 = $338.
+    snap_gross_income:
+      2017-01: 2_000
+    snap_earned_income_deduction:
+      2017-01: 400
+    snap_standard_deduction:
+      2017-01: 168
+    snap_net_income_pre_shelter:
+      2017-01: 1_432
+    snap_utility_allowance_type:
+      2017-01: SUA
+    snap_standard_utility_allowance:
+      2017-01: 513
+      2017-09: 513
+      2017-10: 530
+    snap_excess_shelter_expense_deduction:
+      2017-01: 397
+    snap_net_income:
+      2017-01: 1_035
+    snap_expected_contribution:
+      2017-01: 311
+    snap_max_allotment:
+      2017-01: 649
+    snap_normal_allotment:
+      2017-01: 338
+
+# Annual sums use nine months of the previous October amount and three
+# months of the new amount. Existing FY2018–2026 values remain controls;
+# 2026 keeps $766/month because no later change is currently encoded.
+- name: Ohio utility amounts preserve consecutive model years through 2026
+  period: 2017
+  input:
+    state_code:
+      2017: OH
+      2018: OH
+      2019: OH
+      2020: OH
+      2021: OH
+      2022: OH
+      2023: OH
+      2024: OH
+      2025: OH
+      2026: OH
+    has_heating_cooling_expense:
+      2017: true
+      2018: true
+      2019: true
+      2020: true
+      2021: true
+      2022: true
+      2023: true
+      2024: true
+      2025: true
+      2026: true
+  output:
+    snap_standard_utility_allowance:
+      2017: 6207
+      2018: 6402
+      2019: 6540
+      2020: 6597
+      2021: 6735
+      2022: 7158
+      2023: 7986
+      2024: 8754
+      2025: 9012
+      2026: 9192
+
+- name: Ohio update leaves the existing Texas October 2017 amount unchanged
+  period: 2017
+  input:
+    state_code:
+      2017: [OH, TX]
+    has_heating_cooling_expense:
+      2017: [true, true]
+  output:
+    snap_standard_utility_allowance:
+      2017-10: [530, 342]
+
+- name: Case 14, California FY2017 utility allowance reaches the final earned-income benefit.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        rent: 4_800
+      person2:
+        age: 35
+      person3:
+        age: 8
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        has_heating_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+  output:
+    # CDSS ACIN I-68-16 pp. 1-2,4: FY2017 SUA $389, standard
+    # deduction $168 for four people, maximum allotment $649.
+    # $2,000 - 20% earnings deduction - $168 = $1,432 before shelter.
+    # Shelter = $400 rent + $389 SUA - 50% * $1,432 = $73.
+    # Net = $1,359; ceil(30% * $1,359) = $408; $649 - $408 = $241.
+    snap_earned_income:
+      2017-01: 2_000
+    snap_gross_income:
+      2017-01: 2_000
+    snap_earned_income_deduction:
+      2017-01: 400
+    snap_standard_deduction:
+      2017-01: 168
+    snap_net_income_pre_shelter:
+      2017-01: 1_432
+    snap_standard_utility_allowance:
+      2017-01: 389
+      2017-09: 389
+      2017-10: 397
+    snap_excess_shelter_expense_deduction:
+      2017-01: 73
+    snap_net_income:
+      2017-01: 1_359
+    snap_expected_contribution:
+      2017-01: 408
+    snap_max_allotment:
+      2017-01: 649
+    snap_normal_allotment:
+      2017-01: 241
+    snap:
+      2017-01: 241
+
+- name: Case 15, New York FY2017 county regions change at the October boundary.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: [NY, NY, NY, NY]
+    county_str: [NEW_YORK_COUNTY_NY, NASSAU_COUNTY_NY, SUFFOLK_COUNTY_NY, ALBANY_COUNTY_NY]
+    has_heating_cooling_expense: [true, true, true, true]
+  output:
+    # 18 NYCRR 387.12(f)(3)(v)(a), NY Register 2016-09-28 p.84:
+    # NYC $758; Nassau/Suffolk $706; all other NY counties $627.
+    snap_standard_utility_allowance:
+      2017-01: [758, 706, 706, 627]
+      2017-09: [758, 706, 706, 627]
+      2017-10: [791, 736, 736, 654]
+
+- name: Case 16, California FY2017 standard utility allowance does not vary with household size.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: [SUA, SUA, SUA, SUA, SUA, SUA, SUA, SUA, SUA, SUA]
+    snap_utility_region_str: [CA, CA, CA, CA, CA, CA, CA, CA, CA, CA]
+    spm_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  output:
+    # CDSS ACIN I-68-16 supplies one amount for every household size.
+    snap_standard_utility_allowance: [389, 389, 389, 389, 389, 389, 389, 389, 389, 389]
+
+- name: Case 17, FY2017 standard utility allowance requires the standard allowance category.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: [NONE, NONE, NONE, NONE]
+    snap_utility_region_str: [CA, NY_NYC, NY_NAS, NY_ONY]
+  output:
+    snap_standard_utility_allowance: [0, 0, 0, 0]
+
+- name: Case 18, California annual utility amounts preserve consecutive years through 2026.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    has_heating_cooling_expense:
+      2017: true
+      2018: true
+      2019: true
+      2020: true
+      2021: true
+      2022: true
+      2023: true
+      2024: true
+      2025: true
+      2026: true
+  output:
+    # Each calendar year is nine months of the previous October amount
+    # plus three months of the new October amount. Later amounts are
+    # unchanged regression controls for the existing FY2018-FY2026 history.
+    snap_standard_utility_allowance:
+      2017: 4_692  # 389 * 9 + 397 * 3
+      2018: 4_818  # 397 * 9 + 415 * 3
+      2019: 5_031  # 415 * 9 + 432 * 3
+      2020: 5_202  # 432 * 9 + 438 * 3
+      2021: 5_403  # 438 * 9 + 487 * 3
+      2022: 6_063  # 487 * 9 + 560 * 3
+      2023: 6_828  # 560 * 9 + 596 * 3
+      2024: 7_299  # 596 * 9 + 645 * 3
+      2025: 7_794  # 645 * 9 + 663 * 3
+      2026: 7_956  # 663 * 12; no later change is currently encoded
+
+- name: Case 19, the bounded FY2017 repair leaves an unmodified state unchanged.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    has_heating_cooling_expense: true
+  output:
+    # Texas January-September 2017 remains an explicitly unfilled gap;
+    # the existing FY2018 amount still begins in October.
+    snap_standard_utility_allowance:
+      2017-01: 0
+      2017-09: 0
+      2017-10: 342
+
+- name: Case 20, California FY2017 utility allowance preserves a benefit near exhaustion.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income:
+          2017: 37_980
+        rent:
+          2017: 12_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf:
+          2017: 0
+        has_heating_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+  output:
+    # ACIN I-68-16 pp.1-2,4 supplies the FY2017 amounts.
+    # ACL 14-56 pp.4,6 allows positive MCE allotments above the regular
+    # net-income limit but denies zero allotments for three or more people.
+    # This continuing-household example avoids initial-month issuance rules.
+    # $3,165 - $633 - $168 = $2,364 before shelter.
+    # Shelter = $1,000 + $389 - $1,182 = $207.
+    # Net = $2,157; ceil(30% * $2,157) = $648; $649-$648 = $1.
+    # January 2017 7 CFR 273.10(e)(2)(ii)(C) increases this $1 to $2.
+    snap_gross_income: 3_165
+    snap_earned_income_deduction: 633
+    snap_standard_deduction: 168
+    snap_standard_utility_allowance: 389
+    snap_net_income_pre_shelter: 2_364
+    snap_excess_shelter_expense_deduction: 207
+    snap_net_income: 2_157
+    snap_expected_contribution: 648
+    snap: 2
+
+- name: Case 21, five more dollars of monthly earnings exhaust the California FY2017 allotment.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income:
+          2017: 38_040
+        rent:
+          2017: 12_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf:
+          2017: 0
+        has_heating_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+  output:
+    # $3,170 - $634 - $168 = $2,368 before shelter.
+    # Shelter = $1,389 - $1,184 = $205; net = $2,163.
+    # ceil(30% * $2,163) = $649, exhausting the $649 maximum.
+    # ACL 14-56 p.6 denies three-plus-person MCE zero-allotment cases.
+    snap_gross_income: 3_170
+    snap_earned_income_deduction: 634
+    snap_standard_utility_allowance: 389
+    snap_net_income_pre_shelter: 2_368
+    snap_excess_shelter_expense_deduction: 205
+    snap_net_income: 2_163
+    snap_expected_contribution: 649
+    snap: 0
+
+# January 2017 CFR 273.10(e)(2)(ii)(C) increases raw $3/$5 to $4/$6.
+# 82 FR 2010, 2039 repeals that rule March 7; April uses raw $1.
+- name: Case 22, the January 2017 small-allotment rule increases the sourced California benefit.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income:
+          2017: 37920
+        rent:
+          2017: 12000
+      person2:
+        age: 35
+      person3:
+        age: 8
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        tanf:
+          2017: 0
+        has_heating_cooling_expense: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: CA
+  output:
+    snap_gross_income: 3160
+    snap_earned_income_deduction: 632
+    snap_standard_deduction: 168
+    snap_standard_utility_allowance: 389
+    snap_net_income_pre_shelter: 2360
+    snap_excess_shelter_expense_deduction: 209
+    snap_net_income: 2151
+    snap_expected_contribution: 646
+    snap: 4
+- name: Case 23, the January 2017 small-allotment rule increases the sourced California benefit.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income:
+          2017: 37860
+        rent:
+          2017: 12000
+      person2:
+        age: 35
+      person3:
+        age: 8
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        tanf:
+          2017: 0
+        has_heating_cooling_expense: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: CA
+  output:
+    snap_gross_income: 3155
+    snap_earned_income_deduction: 631
+    snap_standard_deduction: 168
+    snap_standard_utility_allowance: 389
+    snap_net_income_pre_shelter: 2356
+    snap_excess_shelter_expense_deduction: 211
+    snap_net_income: 2145
+    snap_expected_contribution: 644
+    snap: 6
+- name: Case 24, April 2017 uses the unrounded California allotment after the federal repeal.
+  period: 2017-04
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2017: 30
+        employment_income:
+          2017: 37980
+        rent:
+          2017: 12000
+      person2:
+        age:
+          2017: 35
+      person3:
+        age:
+          2017: 8
+      person4:
+        age:
+          2017: 6
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        tanf:
+          2017: 0
+        has_heating_cooling_expense:
+          2017: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code:
+          2017: CA
+  output:
+    snap_gross_income: 3165
+    snap_earned_income_deduction: 633
+    snap_standard_deduction: 168
+    snap_standard_utility_allowance: 389
+    snap_net_income_pre_shelter: 2364
+    snap_excess_shelter_expense_deduction: 207
+    snap_net_income: 2157
+    snap_expected_contribution: 648
+    snap: 1

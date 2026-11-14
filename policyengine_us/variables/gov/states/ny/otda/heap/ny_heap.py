@@ -17,8 +17,9 @@ class ny_heap(Variable):
     )
     documentation = (
         "Annual regular heating benefit and ordinary Tier I/vulnerability supplements, "
-        "verified for FY2024 to FY2026; only the Tier I supplement changed across "
-        "those years. Earlier years are unverified backfilled estimates. Housing "
+        "with payment schedules verified for FY2017 to FY2026. Eligibility before "
+        "FY2024 remains unverified. The annual model uses FFY schedules and does "
+        "not model application dates or the timing of retroactive supplements. Housing "
         "assistance approximates subsidized rent (market-rent voucher exceptions are "
         "unsupported). An unknown direct-heating fuel returns zero as a coverage gap, "
         "tracked in issue 9754; solar falls within other fuels. No bill cap. Crisis, "
