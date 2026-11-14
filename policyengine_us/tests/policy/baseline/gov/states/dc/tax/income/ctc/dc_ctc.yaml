@@ -1,6 +1,30 @@
-- name: 2026 single filer below threshold with 2 children
+- name: 2026 temporary child tax credit expires before the calendar year ends
   period: 2026
   input:
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    dc_ctc_eligible_child: [false, true]
+    # One otherwise qualifying child * $0 after the temporary act expires = $0.
+    dc_ctc: 0
+
+- name: 2026 single filer below threshold with 2 children under a $1000 amount reform
+  period: 2026
+  input:
+    gov.states.dc.tax.income.credits.ctc.amount: 1_000
     people:
       parent:
         age: 35
@@ -20,11 +44,13 @@
         members: [parent, child1, child2]
         state_code: DC
   output:
+    # Two qualifying children * $1,000 = $2,000.
     dc_ctc: 2_000
 
-- name: 2026 single filer with phase-out
+- name: 2026 single filer with phase-out under a $1000 amount reform
   period: 2026
   input:
+    gov.states.dc.tax.income.credits.ctc.amount: 1_000
     people:
       parent:
         age: 35
@@ -44,13 +70,14 @@
         members: [parent, child1, child2]
         state_code: DC
   output:
-    # $3,000 excess over $55,000 threshold = 3 increments * $50 = $150 phase-out
-    # $2,000 base - $150 = $1,850
+    # $3,000 excess / $1,000 = 3 increments; 3 * $50 = $150 phase-out.
+    # Two children * $1,000 - $150 = $1,850.
     dc_ctc: 1_850
 
-- name: 2026 joint filer below threshold with 3 children
+- name: 2026 joint filer below threshold with 3 children under a $1000 amount reform
   period: 2026
   input:
+    gov.states.dc.tax.income.credits.ctc.amount: 1_000
     people:
       parent1:
         age: 35
@@ -75,11 +102,13 @@
         members: [parent1, parent2, child1, child2, child3]
         state_code: DC
   output:
+    # Three qualifying children * $1,000 = $3,000.
     dc_ctc: 3_000
 
-- name: 2026 joint filer with phase-out
+- name: 2026 joint filer with phase-out under a $1000 amount reform
   period: 2026
   input:
+    gov.states.dc.tax.income.credits.ctc.amount: 1_000
     people:
       parent1:
         age: 35
@@ -101,13 +130,14 @@
         members: [parent1, parent2, child1, child2]
         state_code: DC
   output:
-    # $5,000 excess over $70,000 threshold = 5 increments * $50 = $250 phase-out
-    # $2,000 base - $250 = $1,750
+    # $5,000 excess / $1,000 = 5 increments; 5 * $50 = $250 phase-out.
+    # Two children * $1,000 - $250 = $1,750.
     dc_ctc: 1_750
 
-- name: 2026 separate filer with phase-out
+- name: 2026 separate filer with phase-out under a $1000 amount reform
   period: 2026
   input:
+    gov.states.dc.tax.income.credits.ctc.amount: 1_000
     people:
       parent:
         age: 35
@@ -124,13 +154,14 @@
         members: [parent, child]
         state_code: DC
   output:
-    # $2,500 excess over $35,000 threshold = 3 increments * $50 = $150 phase-out
-    # $1,000 base - $150 = $850
+    # $2,500 excess / $1,000 rounds up to 3 increments; 3 * $50 = $150.
+    # One child * $1,000 - $150 = $850.
     dc_ctc: 850
 
-- name: 2026 income fully phases out credit
+- name: 2026 income fully phases out credit under a $1000 amount reform
   period: 2026
   input:
+    gov.states.dc.tax.income.credits.ctc.amount: 1_000
     people:
       parent:
         age: 35
@@ -147,12 +178,14 @@
         members: [parent, child]
         state_code: DC
   output:
-    # $45,000 excess = 45 increments * $50 = $2,250 phase-out exceeds $1,000 base
+    # $45,000 excess / $1,000 = 45 increments; 45 * $50 = $2,250.
+    # max($1,000 - $2,250, $0) = $0.
     dc_ctc: 0
 
-- name: 2026 non-DC household with otherwise-qualifying children gets no DC CTC
+- name: 2026 non-DC household receives no DC CTC under a $1000 amount reform
   period: 2026
   input:
+    gov.states.dc.tax.income.credits.ctc.amount: 1_000
     people:
       parent:
         age: 30
@@ -177,7 +210,7 @@
     # umbrella must be zero (guards against ungated components).
     taxsim_state_ctc: 0
 
-- name: 2026 DC household credit flows through the state CTC umbrella
+- name: 2026 DC household receives no state child tax credit after temporary expiry
   period: 2026
   input:
     people:
@@ -199,12 +232,14 @@
         members: [parent, child1, child2]
         state_code: DC
   output:
-    dc_ctc: 2_000
-    taxsim_state_ctc: 2_000
+    # Two otherwise qualifying children * $0 = $0, including the umbrella.
+    dc_ctc: 0
+    taxsim_state_ctc: 0
 
-- name: 2026 child over 18 not eligible
+- name: 2026 child over 18 fails the child test under a $1000 amount reform
   period: 2026
   input:
+    gov.states.dc.tax.income.credits.ctc.amount: 1_000
     people:
       parent:
         age: 45
@@ -224,5 +259,6 @@
         members: [parent, child1, child2]
         state_code: DC
   output:
-    # Only child1 (age 17) is eligible
+    dc_ctc_eligible_child: [false, true, false]
+    # Only child1 meets the child test; one child * $1,000 = $1,000.
     dc_ctc: 1_000

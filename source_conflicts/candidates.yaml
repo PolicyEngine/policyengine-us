@@ -2099,6 +2099,44 @@ candidates:
     (aca_ptc_slcsp.py) less the federal credit. The regulation text is the amended version linked from the Division
     of Insurance''s adoption notice of September 29, 2025, effective November 30, 2025; its Section 2 sets standards
     for "including payments to carriers pursuant to" 10-16-1205(1)(b)(II).'
+- id: us-dc:eitc-joint-dependent-worksheet-omission
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does the childless EITC worksheet's omission of a joint-return dependency question override the federal
+    dependency condition that DC incorporates?
+  sources:
+  - kind: statute
+    citation: D.C. Code 47-1806.04(f)(1)(C)(i)
+    url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)(C)
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(1)(A)(ii)(III)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+  - kind: instructions
+    citation: 2025 IRS Publication 596, Rule 12, pages 17-18
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=17
+  - kind: worksheet
+    citation: 2025 D-40 booklet, childless EITC worksheet, Section A question 3, PDF page 24
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=24
+  readings:
+    statute: DC requires federal section 32 eligibility. A childless joint return fails the dependent condition
+      when either spouse can be claimed outside the federal filing exception.
+    other: The worksheet asks unmarried and married-but-not-joint filers whether they can be claimed. Reading its
+      omission as an exemption would allow a joint return with a dependent spouse.
+  example: A 2025 joint return with $1,000 wages and one claimable spouse receives $0 under the statute. Omitting
+    the dependency bar gives 7.65% times $1,000, or $76.50.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/dc/tax/income/credits/eitc/dc_eitc_without_qualifying_child.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: ruled
+  note: The statute supplies no joint-return exemption from the incorporated dependency condition. The worksheet
+    omission creates no separate statutory alternative. PE-US keeps the either-spouse bar and its federal filing
+    exception.
 - id: us-ct:abd-spouse-income-hearing-decision
   program: medicaid
   years:
@@ -2339,26 +2377,44 @@ candidates:
     than" (dc_liheap_eligible.py).
 - id: us-dc:schedule-h-claimable-unclaimed-claimant
   program: property-tax-credit
+  years:
+    from: 2021
+    to: 2026
+    type: tax
   question: Does the statutory dependent-claimant bar apply to a claimable but unclaimed filer or only to a filer
     actually claimed under the instructions?
   sources:
   - kind: statute
-    citation: D.C. Code 47-1806.06(k)
+    citation: D.C. Code 47-1806.06(b)(4), (k)
     url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.06
+  - kind: statute
+    citation: D.C. Code 47-1801.04(13), incorporating IRC 152
+    url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1801.04#(13)
   - kind: instructions
-    citation: DC Schedule H instructions
-    url: null
+    citation: 2025 Schedule H instructions, eligibility and additional information, PDF page 4
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_Schedule_H_021226.pdf#page=4
+  - kind: instructions
+    citation: 2021 Schedule H instructions, eligibility, PDF page 4
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2021_SCHEDULE%20H.pdf#page=4
   readings:
-    statute: The PR interprets dependent as claimable and applies the statutory age exception.
-    other: Only an actual dependency claim triggers the bar.
+    statute: The claimant's IRC 152 dependent status triggers the bar, whether another taxpayer claims them or not.
+      The statutory exception permits a dependent aged 65 or older to claim.
+    other: The instructions require that the claimant not be claimed on another return, allowing an unclaimed
+      dependent under 65 to claim the credit.
+  example: A claimable but unclaimed adult aged 30 with $10,000 AGI and $10,000 rent receives $0 under the statute
+    versus $1,425 under the instructions' actual-claim wording in 2025.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/dc/tax/income/credits/dc_ptc.py
+    - policyengine_us/variables/gov/states/dc/tax/income/credits/dc_ptc_has_eligible_claimant.py
+    - policyengine_us/variables/gov/states/dc/tax/income/credits/dc_ptc_eligible_claimant.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10050
   state: ruled
-  note: 'The October 2026 statute-first ruling requires rechecking dependent; establish years and instruction text,
-    separately from the rent-pooling issue. Code not yet on main: dc_ptc, dc_ptc_has_eligible_claimant.'
+  note: The statutory dependent definition controls the actual-claim wording in the confirmed 2021, 2022 and 2025
+    instructions. The same statutory definition applies in 2026. The federal exception for claiming one's own
+    dependents does not remove the claimant's dependent status. Either eligible spouse may claim for the couple.
 - id: us-de:529-subtraction-exact-agi-limit
   program: income-tax
   years:
@@ -2968,6 +3024,39 @@ candidates:
     disability benefits and workers'' compensation, and its comments record that the FY2025 and FY2026 plans leave
     those categories unchecked (income/sources/person.yaml, ga_liheap_income.py). Obtain the complete plan questions
     to verify categories and years.'
+- id: us-ga:low-income-credit-claimed-or-eligible-disjunction
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does Georgia's 2010 amendment exclude a claimable but unclaimed filer from the low-income credit?
+  sources:
+  - kind: statute
+    citation: O.C.G.A. 48-7A-3(a), HB 1069 (2010) section 5, printed page 1172
+    url: https://dlg.usg.edu/record/dlg_ggpd_y-ga-bl407-b2010-bv-p1-bbk-p1-belec-p-btext
+  - kind: instructions
+    citation: 2025 IT-511, line 17 eligibility, page 17
+    url: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=17
+  - kind: guidance
+    citation: Georgia Department of Revenue, Low Income Tax Credit
+    url: https://dor.georgia.gov/low-income-tax-credit
+  readings:
+    statute: Georgia lawmakers added otherwise-eligible filers to the exclusion in 2010. Reading the conditions
+      as one exclusion gives that addition work and excludes claimable filers whom nobody claims.
+    other: A literal disjunction admits an unclaimed filer even when another taxpayer could claim them.
+  example: With $5,000 AGI and sufficient liability, a claimable but unclaimed single filer receives $0 under the
+    retained reading versus $26 under the literal disjunction.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ga/tax/income/credits/ga_low_income_credit_potential.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: ruled
+  note: Read the 2010 amendment to reach claimable filers whom nobody claims; a claimed filer nearly always already
+    could be claimed. DOR's 2025 IT-511 supports this reading. PE-US excludes the claimable filer and gives $0;
+    the literal disjunction gives $26.
 - id: us-ga:liheap-subsidized-renter-energy-burden
   program: liheap
   years:
@@ -3716,6 +3805,78 @@ candidates:
   state: ruled
   note: 'Code not yet on main: ia_ssa_smme_countable_income. Iowa determines SMME income according to SSI income
     criteria (6-B p.77), and 20 CFR 416.1112(c)(3) also has no marital test.'
+- id: us-id:grocery-credit-claimability-before-2023
+  program: income-tax
+  years:
+    from: 2015
+    to: 2022
+    type: tax
+  question: Does the prior regulation's personal-exemption condition exclude a claimable but unclaimed filer after
+    lawmakers removed the section 151 reference from the statute in 2019?
+  sources:
+  - kind: statute
+    citation: Idaho HB 17 (2019), section 1, removing the section 151 reference from 63-3024A(1)
+    url: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2019/legislation/H0017.pdf
+  - kind: regulation
+    citation: IDAPA 35.01.01.771.01.a, 2022 archive, PDF pages 125-126
+    url: https://files.dfm.idaho.gov/dfm-admin-website/rules/2022%20Archive/35/350101.pdf#page=125
+  - kind: statute
+    citation: Idaho Code 63-3024A(4), one credit for the same personal exemption
+    url: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3024A/
+  readings:
+    statute: From 2019, lawmakers grant a credit for the taxpayer and spouse without incorporating section 151.
+    other: The earlier regulation requires a permitted and claimed personal-exemption deduction, which may retain
+      the earlier dependent-filer restriction.
+  example: A claimable but unclaimed filer aged 30 with twelve qualifying months receives $100 in 2021 under the
+    per-taxpayer grant, versus $0 under the former regulation's exemption condition.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/credits/grocery/id_grocery_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: open
+  note: PE-US excludes a filer in every year only when another taxpayer claims them, under the limit of one
+    credit for the same personal exemption. Nobody has ruled whether the former regulation's exemption condition
+    also excluded a claimable but unclaimed filer from 2019 to 2022. Through 2018 the statute granted the credit
+    for each exemption that section 151 permitted, and that wording needs its own review.
+- id: us-id:grocery-credit-claimable-unclaimed-filer
+  program: income-tax
+  years:
+    from: 2023
+    to: 2026
+    type: tax
+  question: May a filer whom another taxpayer could claim, but does not claim, receive their own food tax credit?
+  sources:
+  - kind: statute
+    citation: Idaho Code 63-3024A(1)-(12), especially the taxpayer grant in (1) and duplicate-credit limit in (4)
+    url: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3024A/
+  - kind: regulation
+    citation: IDAPA 35.01.01.771, effective April 6, 2023, PDF page 107
+    url: https://adminrules.idaho.gov/rules/current/35/350101.pdf#page=107
+  - kind: instructions
+    citation: 2025 Form 40 instructions, line 43, PDF page 13
+    url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=13
+  - kind: form
+    citation: 2025 Form 40, line 12(c), PDF page 2
+    url: https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_03-02-2026.pdf#page=2
+  readings:
+    statute: Lawmakers grant the credit for the taxpayer and spouse. Subsection (4) bars duplicate credits for an
+      exemption, so an actually claimed filer gets no separate credit; claimability alone does not exclude a filer.
+    other: The form and instructions exclude anyone whom another taxpayer can claim, even without an actual claim.
+  example: An unclaimed but claimable single filer aged 30 with twelve qualifying months receives $155 in 2025
+    under the statute, versus $0 under the form and instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/credits/grocery/id_grocery_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: ruled
+  note: The statute supplies the per-taxpayer grant, and the current regulation adds no claimability restriction.
+    Follow the statute from 2023, when the regulation drops the personal-exemption deduction condition. A
+    separate item records the open question about the regulation in force before 2023. The dependent-child route
+    still applies IRC 152(b)(1), including the filing exception.
 - id: us-id:grocery-credit-claimable-spouse
   program: income-tax
   years:
@@ -3729,7 +3890,7 @@ candidates:
     citation: Idaho Code 63-3024A(1), (4)
     url: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3024A/
   - kind: worksheet
-    citation: Idaho grocery credit statute (with the per-person worksheet)
+    citation: 2025 Idaho Form 40 instructions, grocery credit eligibility and per-person worksheet, pages 13-14
     url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=14
   - kind: form
     citation: Form 40 line 12(c)
@@ -3737,16 +3898,20 @@ candidates:
   readings:
     statute: Preserve the remaining spouse's per-person credit and any restored dependent's amount.
     other: Read the zero-credit instruction as barring the entire joint return.
-  example: For 2025, the remaining spouse receives $155 versus $0; a restored dependent child brings the statutory
-    amount to $310.
+  example: For 2025, an unclaimed spouse receives $155 when the other spouse is actually claimed, versus $0
+    under a whole-return exclusion.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/credits/grocery/id_grocery_credit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10050
   state: ruled
-  note: 'Ruled statute-first in October 2026; confirm line 12(c)''s scope against the per-person statute and worksheet.
-    Code not yet on main: id_grocery_credit.'
+  note: Section 63-3024A grants amounts per taxpayer, spouse and dependent. The remaining unclaimed spouse keeps
+    $155. Form 40 line 12(c) has no joint-return exception, but its zero-credit direction cannot override the
+    per-person grant. If neither adult is actually claimed and the filing exception restores their child, the
+    three-person household receives $465. The separate items record individual eligibility from 2023 and the
+    earlier regulation.
 - id: us-id:liheap-heat-in-rent-fy2026
   program: liheap
   years:
