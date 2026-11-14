@@ -2,8 +2,12 @@ from policyengine_us.model_api import *
 
 
 # Person-level sources whose losses make up the business part of loss_ald.
+# limited_business_loss deducts each Schedule C category's loss on its own and
+# irs_gross_income counts each category's profit on its own, so a person's
+# SSTB loss stays theirs beside a non-SSTB profit, and the reverse.
 BUSINESS_LOSS_SOURCES = [
-    "total_self_employment_income",
+    "self_employment_income",
+    "sstb_self_employment_income",
     "farm_operations_income",
     "rental_income",
     "farm_rent_income",
@@ -32,7 +36,8 @@ class mo_federal_adjusted_gross_income(Variable):
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=6",
         # Line 1: filers replace negative federal AGI with zero.
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=6",
-        # Negative Federal Adjusted Gross Income, citing 12 CSR 10-2.710.
+        # Negative Federal Adjusted Gross Income: the department cites
+        # 12 CSR 10-2.710 and prints the combined-return table.
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=6",
         # PDF pages 1-4: under 12 CSR 10-2.010(2), spouses allocate capital
         # losses according to responsibility. Under (4), each spouse computes
@@ -40,7 +45,6 @@ class mo_federal_adjusted_gross_income(Variable):
         "https://dor.mo.gov/resources/official-final-rules/documents/12_CSR_10-2_010.pdf#page=1",
         # 12 CSR 10-2.010(5), effective April 30, 2026.
         "https://dor.mo.gov/resources/official-final-rules/documents/12_CSR_10-2_010_Income_Tax_of_Current_or_Former_Spouses.pdf#page=4",
-        "https://www.law.cornell.edu/regulations/missouri/12-CSR-10-2-710",
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.121",
     )
     defined_for = StateCode.MO

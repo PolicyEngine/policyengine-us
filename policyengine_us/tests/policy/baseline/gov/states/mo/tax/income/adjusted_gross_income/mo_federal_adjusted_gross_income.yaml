@@ -2,8 +2,8 @@
 # worksheet puts each spouse's own income, losses and federal adjustments in
 # their column, and the columns add up to joint federal AGI (2023
 # instructions, pages 6-7). From 2024 a negative amount is replaced by zero:
-# 12 CSR 10-2.710(1), the 2025 instructions' Negative Federal Adjusted Gross
-# Income table (page 6) and 12 CSR 10-2.010(5).
+# the 2025 instructions, which cite 12 CSR 10-2.710 and print the Negative
+# Federal Adjusted Gross Income table (page 6), and 12 CSR 10-2.010(5).
 
 - name: Single filer with negative federal AGI keeps it through 2023
   period: 2023
@@ -160,8 +160,8 @@
   output:
     # The department requires zero for negative federal AGI in 2024.
     # We assign the joint 90,000 to the secondary spouse and preserve the
-    # combined total, following the 2025 instructions under
-    # 12 CSR 10-2.710(1).
+    # combined total, following the method in the 2025 instructions, which
+    # cite 12 CSR 10-2.710.
     mo_federal_adjusted_gross_income: [0, 90_000]
 
 - name: 2025 table row 2, joint federal AGI (50,000) = 200,000 + (250,000)
@@ -458,11 +458,13 @@
     # long-term loss) and 300 for spouse 2. Deductible shares:
     # 3,000 * 5,200 / 5,500 = 2,836.36 and
     # 3,000 * 300 / 5,500 = 163.64. The department prints 2,850 and 150 in
-    # its table; those amounts do not match its stated fractions.
-    # The department printed spouse 2's positive 3,000 long-term gain in the
-    # 2018 proposed amendment; later PDFs print the opposite sign despite
-    # retaining the same total and excess-loss calculation:
-    # https://www.sos.mo.gov/CMSImages/AdRules/moreg/2018/v43n22Nov15/v43n22a.pdf#page=69
+    # its table: the same fractions rounded to whole percents
+    # (5,200 / 5,500 = 94.55% to 95% and 300 / 5,500 = 5.45% to 5%;
+    # 0.95 * 3,000 = 2,850 and 0.05 * 3,000 = 150), the rounding it asks for
+    # on Line 7. We keep the unrounded fractions, as we do on Line 7.
+    # The department prints spouse 2's long-term amount as (3,000). Only a
+    # 3,000 gain fits its long-term total, (8,000) + 3,000 = (5,000), and its
+    # 5,200 of the excess for spouse 1, 200 + 5,000.
     # Spouse 2's long-term gain nets against spouse 1's losses and is in
     # neither column.
     adjusted_gross_income: 12_000
@@ -531,6 +533,81 @@
     adjusted_gross_income: 46_000
     mo_federal_adjusted_gross_income: [30_000, 16_000]
 
+- name: An SSTB loss beside a non-SSTB profit stays in its owner's column
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        self_employment_income: 10_000
+        sstb_self_employment_income: -5_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # The primary spouse earns 10,000 from a non-SSTB Schedule C business and
+    # loses 5,000 in an SSTB, so worksheet line 6 (business income or loss)
+    # shows 5,000 in their column and the loss is theirs alone.
+    # Self-employment tax on the net 5,000: 5,000 * 0.9235 = 4,617.50, and
+    # 4,617.50 * 15.3% = 706.48; half, 353.24, is an adjustment.
+    # Primary: 10,000 - 5,000 - 353.24 = 4,646.76. Secondary: 30,000.
+    # Joint federal AGI: 4,646.76 + 30,000 = 34,646.76.
+    # Netting the two Schedule C amounts before reading losses would show the
+    # primary spouse no loss and divide the 5,000 equally:
+    # [10,000 - 2,500 - 353.24, 30,000 - 2,500] = [7,146.76, 27,500].
+    adjusted_gross_income: 34_646.76
+    mo_federal_adjusted_gross_income: [4_646.76, 30_000]
+
+- name: A non-SSTB loss beside an SSTB profit stays in its owner's column
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        self_employment_income: -10_000
+        sstb_self_employment_income: 4_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 50_000
+        rental_income: -6_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Primary: 4,000 SSTB profit - 10,000 non-SSTB loss = -6,000; a net
+    # Schedule C loss owes no self-employment tax.
+    # Secondary: 50,000 wages - 6,000 rental loss = 44,000.
+    # Joint federal AGI: -6,000 + 44,000 = 38,000.
+    # Netting the two Schedule C amounts before reading losses would read
+    # the primary spouse's loss as 6,000, equal to the secondary spouse's,
+    # and divide the 16,000 of losses 8,000 each:
+    # [4,000 - 8,000, 50,000 - 8,000] = [-4,000, 42,000].
+    adjusted_gross_income: 38_000
+    mo_federal_adjusted_gross_income: [-6_000, 44_000]
+
 - name: A dependent's column is zero
   period: 2025
   absolute_error_margin: 0.01
@@ -552,3 +629,43 @@
         state_code: MO
   output:
     mo_federal_adjusted_gross_income: [40_000, 0]
+
+- name: An adoption benefit recorded on the child is divided equally between the spouses
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 30_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        qualified_adoption_assistance_expense: 5_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary, child]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [primary, secondary, child]
+        state_code: MO
+  output:
+    # The household records 5,000 of employer adoption assistance, which
+    # 26 USC 137 excludes from the adopting employee's income, on the child.
+    # It does not record which parent's employer paid it, so each parent
+    # subtracts 2,500: 50,000 - 2,500 = 47,500 and 30,000 - 2,500 = 27,500.
+    # The child's column is zero. The columns add up to joint federal AGI:
+    # 50,000 + 30,000 - 5,000 = 75,000. Leaving the 5,000 out of the columns
+    # would give [50,000, 30,000, 0], 5,000 more than joint federal AGI.
+    adjusted_gross_income: 75_000
+    mo_federal_adjusted_gross_income: [47_500, 27_500, 0]

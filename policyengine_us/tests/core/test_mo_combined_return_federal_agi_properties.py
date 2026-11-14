@@ -9,7 +9,7 @@ proportionally when both contribute. From 2024, filers replace a negative
 amount with zero. If joint federal AGI is zero or less, both spouses enter
 zero. Otherwise, a spouse with a negative separate amount enters zero and
 the other spouse enters the whole joint amount (2025 instructions, page 6;
-12 CSR 10-2.710(1); 12 CSR 10-2.010(5)). Each spouse adds Missouri additions
+12 CSR 10-2.710; 12 CSR 10-2.010(5)). Each spouse adds Missouri additions
 and subtracts Missouri subtractions on Line 5 without a floor. They add their
 columns on Line 6 and use zero percent for a negative column on Line 7.
 
@@ -17,11 +17,11 @@ The YAML cases pin the published examples. This test checks what YAML cannot,
 for every drawn couple, and for each couple both ways round: as drawn and with
 the head and spouse labels exchanged. Hypothesis draws batches of Missouri
 tax units (single filers and married couples filing jointly) with wages,
-self-employment and rental income or losses, short- and long-term capital
-gains or losses, and the spouse's own IRA, educator, early withdrawal,
-alimony and health savings account deductions, U.S. obligation interest and
-529 contributions. A seeded population adds breadth in one year of each
-regime. Each batch is one vectorized simulation.
+non-SSTB and SSTB self-employment and rental income or losses, short- and
+long-term capital gains or losses, and the spouse's own IRA, educator, early
+withdrawal, alimony and health savings account deductions, U.S. obligation
+interest and 529 contributions. A seeded population adds breadth in one year
+of each regime. Each batch is one vectorized simulation.
 
 1. Accounting: the filers' Line 1 amounts add up to federal AGI through 2023,
    and to federal AGI floored at zero from 2024. A dependent's is zero.
@@ -52,6 +52,7 @@ CAPITAL_LOSS_LIMIT = 3_000  # 26 U.S.C. 1211(b)(1), joint return
 PERSON_INPUTS = [
     "employment_income",
     "self_employment_income",
+    "sstb_self_employment_income",
     "rental_income",
     "short_term_capital_gains",
     "long_term_capital_gains",
@@ -79,6 +80,9 @@ def person_amounts(draw):
     return {
         "employment_income": draw(maybe(money(1, 120_000))),
         "self_employment_income": draw(maybe(money(-60_000, 60_000))),
+        # A person can have a profit in one Schedule C category and a loss in
+        # the other.
+        "sstb_self_employment_income": draw(maybe(money(-30_000, 30_000))),
         "rental_income": draw(maybe(money(-20_000, 20_000))),
         "short_term_capital_gains": draw(maybe(money(-10_000, 10_000))),
         "long_term_capital_gains": draw(maybe(money(-20_000, 30_000))),
@@ -118,6 +122,7 @@ def _seeded_units(n=150):
         return {
             "employment_income": some(1, 120_000, 0.7),
             "self_employment_income": some(-60_000, 60_000, 0.4),
+            "sstb_self_employment_income": some(-30_000, 30_000, 0.25),
             "rental_income": some(-20_000, 20_000, 0.2),
             "short_term_capital_gains": some(-10_000, 10_000, 0.25),
             "long_term_capital_gains": some(-20_000, 30_000, 0.3),
@@ -229,6 +234,7 @@ def _reference_line_1(person, n, floor_applies):
     own = (
         person["employment_income"]
         + person["self_employment_income"]
+        + person["sstb_self_employment_income"]
         + person["rental_income"]
         + person["us_govt_interest_person"]
         - person["self_employment_tax_ald_person"]
@@ -280,7 +286,7 @@ def _check(units, year):
     line_5 = person["mo_adjusted_gross_income"]
     taxable = person["mo_taxable_income"]
     # The years come from the sources, not from the model's parameters:
-    # 12 CSR 10-2.710(1) and the 2024 and 2025 instructions from 2024, and
+    # 12 CSR 10-2.710 and the 2024 and 2025 instructions from 2024, and
     # the MOST limit under the 12 CSR 10-2.010 version effective February 29,
     # 2024 for 2024 and 2025.
     floor_applies = year >= 2024
