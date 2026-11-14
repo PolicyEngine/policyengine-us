@@ -271,6 +271,55 @@
     part_d_lis_income_eligible: false
     part_d_lis: 0
 
+- name: Rental property equity above the $6,000 exclusion counts as a resource.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 18_000
+        rental_income: 6_000
+        bank_account_assets: 15_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+        household_rental_property_equity: 100_000
+  output:
+    # Countable income ((18,000 + 6,000) / 12 - 20) x 12 = 23,760 is under
+    # 23,940. The rental returns at least 6% of the excluded $6,000, so
+    # 100,000 - 6,000 = 94,000 counts: 15,000 + 94,000 = 109,000 > 18,090
+    # (20 CFR 418.3405(b), 416.1222(a)).
+    part_d_lis_countable_income: 23_760
+    part_d_lis_income_eligible: true
+    part_d_lis_countable_rental_property_equity: 94_000
+    part_d_lis_resource_eligible: false
+    part_d_lis_eligible: false
+    part_d_lis: 0
+
+- name: Negative real estate equity does not bring resources under the limit.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 72
+        social_security: 22_800
+        bank_account_assets: 20_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+        household_other_real_estate_equity: -5_000
+  output:
+    # Countable income 22,560 is over the QI limit and under 23,940. The real
+    # estate counts as zero, so $20,000 is over 18,090; netting it would give
+    # 15,000.
+    msp_eligible: false
+    part_d_lis_income_eligible: true
+    part_d_lis_resource_eligible: false
+    part_d_lis_eligible: false
+    part_d_lis: 0
+
 - name: Spouses filing separately share one family size.
   period: 2026
   input:

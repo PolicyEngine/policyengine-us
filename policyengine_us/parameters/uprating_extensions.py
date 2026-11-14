@@ -2,6 +2,7 @@
 
 import math
 from decimal import ROUND_HALF_UP, Decimal
+from fractions import Fraction
 from typing import Dict, Optional, Tuple
 
 from policyengine_us.model_api import *
@@ -652,8 +653,9 @@ def get_september_cpi_u_values(cpi: ParameterNode, year: int) -> Tuple[float, fl
     no seasonal pattern. Returns ``(prior September, later September)``.
     """
     september = cpi.cpi_u_nsa_september
-    # Only September instants are BLS values; the parameter tree also
-    # backdates the first value to 2015-01-01.
+    # Only September instants are BLS values, so any other instant (such as
+    # a backdated first value) is skipped. The series has gaps (1988, then
+    # 2018 on), and a missing year must not read the September before it.
     published = {
         int(value.instant_str[:4])
         for value in september.values_list
@@ -773,15 +775,17 @@ def adjust_part_d_lis_resource_limit_for_inflation(
     times the unrounded 1.030127 ($16,585.04), where 1.0301 would give
     $16,584.61 and so $16,580. A fall in the index is not an increase, so the
     limit never falls: SSA kept the 2009 and 2015 limits for 2010 and 2016.
-    The arithmetic is decimal, with halves rounding up, so a product that
-    ends in exactly $5 rounds up as it does on paper.
+    The arithmetic is exact (each input is read as the decimal it prints
+    as), with halves rounding up, so a product that ends in exactly $5 rounds
+    up as it does on paper.
     """
     ratio = max(
-        Decimal(str(float(current_september))) / Decimal(str(float(prior_september))),
+        Fraction(repr(float(current_september)))
+        / Fraction(repr(float(prior_september))),
         1,
     )
-    adjusted = Decimal(str(float(prior_limit))) * ratio
-    tens = (adjusted / 10).quantize(Decimal(1), rounding=ROUND_HALF_UP)
+    adjusted = Fraction(repr(float(prior_limit))) * ratio
+    tens = math.floor(adjusted / 10 + Fraction(1, 2))
     return float(tens * 10)
 
 

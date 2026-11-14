@@ -52,13 +52,17 @@ Security, more interest and more assets):
     ineligible person resource eligible.
 11. Eligibility equals the restated rule: family size counts the dependents
     on both returns when spouses file separately, and resources include the
-    household's other real estate for the couple that holds it. Enrollees
+    household's other real estate and its rental property equity, less up to
+    $6,000 when net rent is at least 6% of the excluded equity, for the
+    couple that holds them, each counted at no less than zero. Enrollees
     are the eligible people in a Part D plan who are on Medicaid or SSI or
     take the subsidy up, and the benefit is either zero or the year's amount
     per recipient, positive exactly for enrollees.
 12. Spouses get the same countable income, family size and test results.
-13. Reach: the sample reaches every branch the properties above check, so a
-    change to the generator or the seed can't leave them vacuous.
+13. Reach: the sample reaches every branch the properties above check, and
+    each variant raises its inputs and changes some test result (or, for
+    interest, would if interest counted), so a change to the generator or
+    the seed can't leave them vacuous.
 14. Differential: for people without interest, dividends or rental income,
     countable income equals 12 times ``msp_countable_income``, which applies
     the same SSI exclusions through a separate formula (single people, and
@@ -142,8 +146,8 @@ V_B3_TOTAL = dict(
 # BLS CPI-U, U.S. city average, all items, not seasonally adjusted
 # (CUUR0000SA0), September of each year, from the BLS public API: 2004 to
 # 2025 retrieved 2026-10-11, 2026 retrieved 2026-11-08. pe-us's
-# gov.bls.cpi.cpi_u_nsa_september starts in 2018; the years both hold must
-# agree.
+# gov.bls.cpi.cpi_u_nsa_september holds 1988 and 2018 on; the years both
+# hold must agree.
 CPI_U_SEPTEMBER = {
     **{2004: 189.9, 2005: 198.8, 2006: 202.9, 2007: 208.490, 2008: 218.783},
     **{2009: 215.969, 2010: 218.439, 2011: 226.889, 2012: 231.407},
@@ -203,14 +207,14 @@ def test_recipients_times_amount_matches_per_enrollee_series(year):
 
 def test_typed_septembers_match_the_parameter():
     september = P.gov.bls.cpi.cpi_u_nsa_september
-    # pe-us backdates each parameter's first value to 2015-01-01; only the
-    # September instants are BLS values.
+    # Only the September instants are BLS values.
     years = [
         int(value.instant_str[:4])
         for value in september.values_list
         if value.instant_str.endswith("-09-01")
+        and int(value.instant_str[:4]) in CPI_U_SEPTEMBER
     ]
-    assert LAST_SEPTEMBER in years
+    assert set(range(2018, LAST_SEPTEMBER + 1)) <= set(years)
     for year in years:
         assert september(f"{year}-09-01") == pytest.approx(
             CPI_U_SEPTEMBER[year], abs=5e-4
@@ -218,8 +222,9 @@ def test_typed_septembers_match_the_parameter():
 
 
 def test_september_values_skip_non_september_instants():
-    # The backdated 2015-01-01 entry is no BLS September, so 2017, which
-    # needs Septembers 2015 and 2016, reads both from the model's series.
+    # A non-September instant (such as a backdated first value) is no BLS
+    # September, so 2017, which needs Septembers 2015 and 2016, reads both
+    # from the model's series.
     cpi = ParameterNode(
         data={
             "cpi_u_nsa_september": {
@@ -229,6 +234,28 @@ def test_september_values_skip_non_september_instants():
         }
     )
     assert get_september_cpi_u_values(cpi, 2017) == (200.0, 210.0)
+
+
+def test_september_values_fall_back_to_the_model_septembers():
+    # September 2025 is not published, so both Septembers come from the
+    # model's monthly series, September each year rather than a neighbouring
+    # month or the published 2024 value.
+    cpi = ParameterNode(
+        data={
+            "cpi_u_nsa_september": {"values": {"2024-09-01": 300.0}},
+            "cpi_u": {
+                "values": {
+                    "2024-08-01": 199.0,
+                    "2024-09-01": 200.0,
+                    "2024-10-01": 201.0,
+                    "2025-08-01": 205.0,
+                    "2025-09-01": 210.0,
+                    "2025-10-01": 220.0,
+                }
+            },
+        }
+    )
+    assert get_september_cpi_u_values(cpi, 2026) == (200.0, 210.0)
 
 
 @pytest.mark.parametrize("kind", KINDS)
@@ -281,6 +308,12 @@ def test_published_2026_limits_need_the_unrounded_ratio():
         (1_005, 100.0, 100.0, 1_010),
         (1_000, 100.0, 100.5, 1_010),
         (1_000, 100.0, 100.4, 1_000),
+        # Exact $5 products whose ratios have no finite decimal: 16,590 /
+        # 331.8 = 50, so 50 x 332.3 = 16,615 and 50 x 336.1 = 16,805; 33,120
+        # / 331.2 = 100, so 100 x 331.45 = 33,145.
+        (16_590, 331.8, 332.3, 16_620),
+        (16_590, 331.8, 336.1, 16_810),
+        (33_120, 331.2, 331.45, 33_150),
     ],
 )
 def test_adjustment_rounds_to_the_nearest_10(prior_limit, prior, current, expected):
@@ -290,7 +323,7 @@ def test_adjustment_rounds_to_the_nearest_10(prior_limit, prior, current, expect
     )
 
 
-def _synthetic_tree(nsa_septembers, sa_septembers):
+def _synthetic_tree(nsa_septembers, model_septembers):
     def values(data):
         return {"values": data}
 
@@ -323,7 +356,7 @@ def _synthetic_tree(nsa_septembers, sa_septembers):
                 "bls": {
                     "cpi": {
                         "cpi_u_nsa_september": values(nsa_septembers),
-                        "cpi_u": values(sa_septembers),
+                        "cpi_u": values(model_septembers),
                     }
                 },
             }
@@ -335,11 +368,12 @@ def test_extension_on_a_synthetic_tree():
     nsa = {"2024-09-01": 315.301, "2025-09-01": 324.8, "2026-09-01": 336.94}
     nsa["2027-09-01"] = 330.0  # a fall
     nsa["2028-09-01"] = 340.0
-    # The model's (seasonally adjusted) series differs from the published one,
-    # so a year that reads it shows which series it used.
-    sa = {date: 0.99 * value for date, value in nsa.items()}
-    sa["2029-09-01"] = 0.99 * 350.0
-    parameters = _synthetic_tree(nsa, sa)
+    # The model's series (CBO annual averages for projected months) differs
+    # from the published one, so a year that reads it shows which series it
+    # used.
+    model = {date: 0.99 * value for date, value in nsa.items()}
+    model["2029-09-01"] = 0.99 * 350.0
+    parameters = _synthetic_tree(nsa, model)
     extend_part_d_lis_resource_limits(parameters, end_year=2031)
     limits = parameters.gov.hhs.medicare.part_d.low_income_subsidy.eligibility
     limits = limits.resources.limit
@@ -381,13 +415,15 @@ STATES = ["TX", "CA", "NY", "AK", "HI", "FL", "PR", "DC"]
 VARIANTS = ["base", "more_ss", "more_interest", "more_assets"]
 LIMITS = LIS.eligibility.resources(f"{YEAR}-01-01")
 BURIAL = LIMITS.burial_exclusion
+RENTAL = LIMITS.rental_property
 
 
 def _random_households():
     rng = np.random.default_rng(SEED)
-    # Features added after the first sample come from their own generator,
-    # so the original draws stay the same.
+    # Features added after the first sample come from their own generators,
+    # so the earlier draws stay the same.
     extra = np.random.default_rng(SEED + 1)
+    equity = np.random.default_rng(SEED + 2)
     out = []
     for _ in range(N):
         married = bool(rng.random() < 0.5)
@@ -418,12 +454,16 @@ def _random_households():
                 real_estate=int(extra.choice([0, 0, 0, 6_000, 60_000])),
             )
         )
+        rental_equity = int(equity.choice([0, 0, 0, 4_000, 14_000, -10_000]))
+        out[-1]["rental_equity"] = rental_equity
+        if equity.random() < 0.1:
+            out[-1]["real_estate"] = -8_000
     return out
 
 
 def _boundary_households():
     # Not deemed, in a Part D plan, taking the subsidy up, in Texas.
-    def person(social_security, bank_account_assets=0):
+    def person(social_security, bank_account_assets=0, rental_income=0):
         return dict(
             social_security=social_security,
             employment_income=0,
@@ -437,16 +477,17 @@ def _boundary_households():
             msp_eligible=False,
             takes_up_part_d_lis_if_eligible=True,
             takes_up_medicare_part_d_if_eligible=True,
-            rental_income=0,
+            rental_income=rental_income,
         )
 
-    def household(members, real_estate=0):
+    def household(members, real_estate=0, rental_equity=0):
         return dict(
             state="TX",
             dependents=0,
             members=members,
             separate=False,
             real_estate=real_estate,
+            rental_equity=rental_equity,
         )
 
     single = LIMITS.limit.individual + BURIAL
@@ -460,6 +501,13 @@ def _boundary_households():
             household([person(6_000, couple - 9_000 + over), person(6_000, 9_000)])
         )
         out.append(household([person(6_000, single - 10_000 + over)], 10_000))
+        # $14,000 of rental equity returning 6% of $6,000 counts $8,000.
+        out.append(
+            household(
+                [person(6_000, single - 8_000 + over, rental_income=1_000)],
+                rental_equity=14_000,
+            )
+        )
         # Countable income at 150% of the guideline, and $12 a year below.
         out.append(household([person(int(single_income + 240 - 12 * (1 - over)))]))
         out.append(
@@ -542,6 +590,7 @@ def _situation(households, variants, inputs=True):
                 "members": members,
                 "state_code": {YEAR: h["state"]},
                 "household_other_real_estate_equity": {YEAR: h["real_estate"]},
+                "household_rental_property_equity": {YEAR: h["rental_equity"]},
             }
     situation = {
         "people": people,
@@ -586,15 +635,29 @@ def _restated_countable(members, floor_sources=True):
     return 12 * (countable_unearned + countable_earned)
 
 
-def _restated_tests(h, members, real_estate=True):
+def _restated_rental(h, members, exclude=True):
+    """Rental equity less up to $6,000 if net rent is 6% of the excluded part."""
+    equity = max(h["rental_equity"], 0)
+    # Dependents have no rental income, so the couple's is the household's.
+    rent = sum(m["rental_income"] for m in members)
+    excludable = min(equity, RENTAL.equity_exclusion)
+    meets_return = rent >= RENTAL.minimum_return * excludable
+    return equity - (excludable if exclude and meets_return else 0)
+
+
+def _restated_tests(
+    h, members, real_estate=True, rental=True, exclude_rental=True, floor=True
+):
     """Family size, income test and resource test for the household's couple."""
     couple = len(members)
     size = couple + h["dependents"]
     income_ok = _restated_countable(members) < 1.5 * _fpg(h["state"], size)
     resources = sum(m["bank_account_assets"] + m["stock_assets"] for m in members)
     # Every adult is 70 and every dependent 10, so the couple holds the
-    # household's real estate.
-    resources += h["real_estate"] if real_estate else 0
+    # household's real estate, each amount counted at no less than zero.
+    other = max(h["real_estate"], 0) if floor else h["real_estate"]
+    resources += other if real_estate else 0
+    resources += _restated_rental(h, members, exclude_rental) if rental else 0
     limit = LIMITS.limit.couple if couple == 2 else LIMITS.limit.individual
     resource_ok = resources <= limit + BURIAL * couple
     return size, income_ok, resource_ok, resources - (limit + BURIAL * couple)
@@ -725,9 +788,27 @@ def test_sample_reaches_every_branch():
             "split_dependents_change_income_test",
             "rental_floor_changes_income_test",
             "real_estate_changes_resource_test",
+            "real_estate_floor_changes_resource_test",
+            "rental_equity_changes_resource_test",
+            "rental_exclusion_changes_resource_test",
+            "rental_return_short_counts_all_equity",
+            "more_ss_changes_income_test",
+            "more_assets_changes_resource_test",
+            "counting_interest_would_change_income_test",
         ],
         0,
     )
+    # The variants raise the head's inputs, so the monotonicity and
+    # no-change properties compare different households.
+    head = HOUSEHOLDS[0]["members"][0]
+    assert _variant(head, "more_ss", True)["social_security"] > head["social_security"]
+    assert (
+        _variant(head, "more_assets", True)["bank_account_assets"]
+        > (head["bank_account_assets"])
+    )
+    more_interest = _variant(head, "more_interest", True)
+    assert more_interest["interest_income"] > head["interest_income"]
+    assert more_interest["dividend_income"] > head["dividend_income"]
     for i, h in enumerate(HOUSEHOLDS):
         members = _members(i, "base")
         size, income_ok, resource_ok, over = _restated_tests(h, members)
@@ -748,6 +829,31 @@ def test_sample_reaches_every_branch():
         )
         without = _restated_tests(h, members, real_estate=False)[2]
         counts["real_estate_changes_resource_test"] += without != resource_ok
+        netted = _restated_tests(h, members, floor=False)[2]
+        counts["real_estate_floor_changes_resource_test"] += netted != resource_ok
+        without = _restated_tests(h, members, rental=False)[2]
+        counts["rental_equity_changes_resource_test"] += without != resource_ok
+        in_full = _restated_tests(h, members, exclude_rental=False)[2]
+        counts["rental_exclusion_changes_resource_test"] += in_full != resource_ok
+        counts["rental_return_short_counts_all_equity"] += h["rental_equity"] > 0 and (
+            _restated_rental(h, members) == h["rental_equity"]
+        )
+        more_ss = _restated_tests(h, _members(i, "more_ss"))[1]
+        counts["more_ss_changes_income_test"] += more_ss != income_ok
+        more_assets = _restated_tests(h, _members(i, "more_assets"))[2]
+        counts["more_assets_changes_resource_test"] += more_assets != resource_ok
+        with_interest = [
+            {
+                **m,
+                "social_security": m["social_security"]
+                + m["interest_income"]
+                + m["dividend_income"],
+            }
+            for m in _members(i, "more_interest")
+        ]
+        counts["counting_interest_would_change_income_test"] += income_ok != (
+            _restated_countable(with_interest) < 1.5 * _fpg(h["state"], size)
+        )
         for me in members:
             counts["no_medicare"] += not me["medicare_enrolled"]
             routes = [me["medicaid_enrolled"], me["ssi"] > 0, me["msp_eligible"]]

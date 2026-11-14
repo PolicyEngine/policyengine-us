@@ -10,7 +10,9 @@ class part_d_lis_resource_eligible(Variable):
         "not exceed the individual or couple limit plus the burial funds "
         "exclusion for each of them. Resources are the couple's financial "
         "assets and, for the household head's couple, the household's "
-        "equity in real estate other than the home."
+        "equity in real estate other than the home, with rental property "
+        "equity reduced by the exclusion for income-producing property. "
+        "Each amount counts at zero when negative."
     )
     definition_period = YEAR
     reference = (
@@ -19,6 +21,7 @@ class part_d_lis_resource_eligible(Variable):
         "https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3405",
         "https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3410",
         "https://www.ecfr.gov/current/title-20/chapter-III/part-418/subpart-D/section-418.3425",
+        "https://secure.ssa.gov/poms.nsf/lnx/0603030020",
         "https://secure.ssa.gov/poms.nsf/lnx/0603030025",
     )
 
@@ -26,7 +29,11 @@ class part_d_lis_resource_eligible(Variable):
         p = parameters(
             period
         ).gov.hhs.medicare.part_d.low_income_subsidy.eligibility.resources
-        own = add(person, period, p.sources)
+        # A resource is worth at least nothing: an overdrawn account or
+        # property worth less than its debt does not offset other resources.
+        own = person.filled_array(0.0)
+        for source in p.sources:
+            own = own + max_(person(source, period), 0)
         # A household amount does not say whose it is. It counts in full for
         # the marital unit of the household head (the oldest member when no
         # head is designated), so it counts for one couple.
@@ -40,7 +47,9 @@ class part_d_lis_resource_eligible(Variable):
         )
         household_amount = person.filled_array(0.0)
         for source in p.household_sources:
-            household_amount = household_amount + person.household(source, period)
+            household_amount = household_amount + max_(
+                person.household(source, period), 0
+            )
         resources = person.marital_unit.sum(
             own + holds_household_amount * household_amount
         )

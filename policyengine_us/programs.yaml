@@ -449,9 +449,10 @@ programs:
       a Part D plan: Medicaid enrollees and SSI recipients get it without
       applying, and other eligible people take it up through
       takes_up_part_d_lis_if_eligible, which defaults to true. Each enrollee
-      gets the Medicare Trustees' average payment per subsidy enrollee, the
-      amount CBO assigns each recipient; the premium and cost-sharing
-      subsidies are not computed per person.
+      gets the Medicare Trustees' average payment per subsidy enrollee,
+      following CBO's method of assigning every recipient the same average
+      cost; the premium and cost-sharing subsidies are not computed per
+      person.
 
   - id: tanf
     name: TANF
