@@ -7,3 +7,60 @@
     tax_unit_taxable_unemployment_compensation: 3_000
   output:
     in_unemployment_compensation_deduction: 2_000
+
+- name: Case 2, a spouse's compensation in federal AGI is deductible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 10_000
+      person2:
+        age: 43
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # IC 6-3-2-10(a): federal AGI 15,000 less 18,000 is below zero, so the
+    # Indiana-taxable part is 0 and all 5,000 in federal AGI is deducted.
+    adjusted_gross_income: 15_000
+    tax_unit_taxable_unemployment_compensation: 5_000
+    in_unemployment_compensation_deduction: 5_000
+
+- name: Case 3, a dependent's compensation is not in the filers' federal AGI, so it is not deducted.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 10_000
+      person2:
+        age: 43
+      person3:
+        age: 17
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    # The dependent's 5,000 is on the dependent's own return, not in the
+    # filers' federal AGI of 10,000, so the filers deduct none of it.
+    is_tax_unit_dependent: [false, false, true]
+    adjusted_gross_income: 10_000
+    tax_unit_taxable_unemployment_compensation: 0
+    in_unemployment_compensation_deduction: 0

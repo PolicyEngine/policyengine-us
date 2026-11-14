@@ -1,37 +1,52 @@
 # 26 USC 85(c)(1) excludes up to $10,200 of 2020 unemployment compensation
-# only if AGI (determined without regard to unemployment compensation) is
-# strictly less than $150,000.
-- name: No exclusion in 2020 when AGI over UC equals the $150,000 cutoff exactly
+# only if AGI, determined without regard to section 85 and so without any
+# unemployment compensation (85(c)(2)(B)), is strictly less than $150,000.
+# 2020 Unemployment Compensation Exclusion Worksheet (Instructions for Form
+# 1040, rev. 4-2021, p. 88), lines 6 and 7.
+- name: Case 1, no exclusion when AGI without the compensation equals the cutoff.
   period: 2020
   input:
     people:
       head:
         age: 40
-        employment_income: 155_000
+        employment_income: 150_000
         unemployment_compensation: 5_000
     tax_units:
       tax_unit:
         members: [head]
         filing_status: SINGLE
-    marital_units:
-      marital_unit:
-        members: [head]
-    families:
-      family:
-        members: [head]
-    spm_units:
-      spm_unit:
-        members: [head]
     households:
       household:
         members: [head]
         state_code: TX
   output:
-    # AGI over UC = 155,000 - 5,000 = 150,000, not below the cutoff,
-    # so all unemployment compensation is taxable.
+    # Line 6: 150,000 of wages. Line 7: $150,000 or more, so all of the
+    # compensation is taxable.
+    taxable_uc_agi: 150_000
     tax_unit_taxable_unemployment_compensation: 5_000
 
-- name: Full exclusion in 2020 when AGI over UC is one dollar below the cutoff
+- name: Case 2, full exclusion when AGI without the compensation is one dollar below the cutoff.
+  period: 2020
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 149_999
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Line 6: 149,999, under the cutoff. Line 8: 5,000.
+    taxable_uc_agi: 149_999
+    tax_unit_taxable_unemployment_compensation: 0
+
+- name: Case 3, the compensation itself does not count toward the cutoff.
   period: 2020
   input:
     people:
@@ -43,20 +58,45 @@
       tax_unit:
         members: [head]
         filing_status: SINGLE
-    marital_units:
-      marital_unit:
-        members: [head]
-    families:
-      family:
-        members: [head]
-    spm_units:
-      spm_unit:
-        members: [head]
     households:
       household:
         members: [head]
         state_code: TX
   output:
-    # AGI over UC = 154,999 - 5,000 = 149,999, below the $150,000 cutoff,
-    # so unemployment compensation up to $10,200 is excluded.
-    tax_unit_taxable_unemployment_compensation: 0
+    # Line 6: 154,999, the wages alone. Subtracting the 5,000 of
+    # compensation from it (149,999) would wrongly allow the exclusion.
+    taxable_uc_agi: 154_999
+    tax_unit_taxable_unemployment_compensation: 5_000
+
+- name: Case 4, the joint return sums each spouse's taxable compensation and leaves out a dependent's.
+  period: 2020
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+        unemployment_compensation: 15_000
+      spouse:
+        age: 43
+        unemployment_compensation: 12_000
+      child:
+        age: 17
+        unemployment_compensation: 11_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # Line 6: 40,000. Line 8: 10,200. Line 9: 10,200. Line 10: 20,400 of
+    # the couple's 27,000, so 6,600 is taxable on their return. The child's
+    # 11,000 (800 taxable after the child's own exclusion) is on the
+    # child's return.
+    taxable_unemployment_compensation: [4_800, 1_800, 800]
+    tax_unit_taxable_unemployment_compensation: 6_600
+    adjusted_gross_income: 46_600
