@@ -282,3 +282,164 @@
     medicaid_category: [ADULT, ADULT, PREGNANT, SSI_RECIPIENT]
     medicaid_enrolled: [true, true, true, true]
     medicaid_federal_share: [0.9, 0.9, 0.5501, 0.5501]
+
+# 42 U.S.C. 1396b(v)(1) bars Title XIX payment for anyone who fails the federal
+# immigration test, apart from emergency services under (v)(2) and the lawfully
+# residing children and pregnant people option under (v)(4). California covers
+# undocumented, DACA and TPS residents and former foster youth regardless of
+# immigration status, and uses state funds where federal participation is
+# unavailable (Cal. Welf. & Inst. Code § 14007.8(a), (b)(3) and (f)(2)).
+# Former foster youth who pass the federal test are in the Title XIX former
+# foster care group (42 CFR 435.150) and keep a match, as does a TPS child
+# under California's lawfully residing election. FY2025 FMAP: CA 50%.
+# https://www.law.cornell.edu/uscode/text/42/1396b#v
+# https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.8.&lawCode=WIC
+# https://www.ecfr.gov/current/title-42/section-435.150
+- name: California state-funded Medi-Cal and former foster youth coverage get no federal share without federal immigration status.
+  period: 2025
+  input:
+    people:
+      person1:
+        # Undocumented adult covered by state-funded full-scope Medi-Cal.
+        age: 30
+        immigration_status: UNDOCUMENTED
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+        medicaid_cost: 1_000
+      person2:
+        # Lawful permanent resident within the five-year bar, reached only
+        # through the Former Foster Youth Program.
+        age: 22
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        was_in_foster_care: true
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person3:
+        # DACA is not lawfully residing for the (v)(4) option.
+        age: 10
+        immigration_status: DACA
+        medicaid_category: OLDER_CHILD
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person4:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+        medicaid_cost: 1_000
+      person5:
+        age: 22
+        immigration_status: CITIZEN
+        was_in_foster_care: true
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person6:
+        age: 10
+        immigration_status: TPS
+        medicaid_category: OLDER_CHILD
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: CA
+  output:
+    is_federal_medicaid_immigration_status_eligible: [false, false, false, true, true, true]
+    ca_ffyp_eligible: [false, true, false, false, true, false]
+    medicaid_enrolled: [true, true, true, true, true, true]
+    medicaid_federal_share: [0, 0, 0, 0.9, 0.9, 0.5]
+    medicaid_federal_cost: [0, 0, 0, 900, 0, 0]
+    medicaid_state_cost: [1_000, 0, 0, 100, 0, 0]
+
+# Illinois Health Benefits for Immigrants covers noncitizens who are not
+# eligible for Medicaid because of their immigration status (305 ILCS
+# 5/12-4.35); HFS calls HBIS and the related programs state-funded. HBIA
+# (ages 42 to 64) ended July 1, 2025, so this uses 2025, read at January 1.
+# A citizen and a lawful permanent resident past the five-year bar keep the
+# expansion FMAP.
+# https://www.ilga.gov/Documents/legislation/ilcs/documents/030500050K12-4.35.htm
+# https://hfs.illinois.gov/medicalclients/healthbenefitsforimmigrants.html
+- name: Illinois Health Benefits for Immigrants enrollees get no federal share, while federally eligible adults keep the expansion FMAP.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: UNDOCUMENTED
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        medicaid_category: OLDER_CHILD
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person3:
+        age: 50
+        immigration_status: CITIZEN
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person4:
+        age: 50
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    il_hbi_eligible: [true, true, false, false]
+    medicaid_enrolled: [true, true, true, true]
+    medicaid_federal_share: [0, 0, 0.9, 0.9]
+
+# The District covers undocumented residents through locally funded coverage,
+# and 42 U.S.C. 1396b(v)(1) bars a Title XIX match for it. A citizen keeps the
+# expansion FMAP.
+# https://www.law.cornell.edu/uscode/text/42/1396b#v
+- name: An undocumented adult covered through state-funded coverage gets no federal share.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person2:
+        age: 30
+        immigration_status: CITIZEN
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    is_medicaid_immigration_status_eligible: [true, true]
+    is_federal_medicaid_immigration_status_eligible: [false, true]
+    medicaid_enrolled: [true, true]
+    medicaid_federal_share: [0, 0.9]

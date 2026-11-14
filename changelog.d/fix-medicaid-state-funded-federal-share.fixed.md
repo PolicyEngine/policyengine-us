@@ -1,0 +1,1 @@
+Medicaid federal share is now zero for enrollees who fail the federal immigration test and reach Medicaid only through state-funded coverage, such as California's state-funded Medi-Cal, Illinois Health Benefits for Immigrants and states that cover undocumented immigrants.
