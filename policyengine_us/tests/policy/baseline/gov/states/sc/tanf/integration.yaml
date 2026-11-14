@@ -1086,6 +1086,11 @@
         members: [parent, child1, child2]
         state_code: SC
   output:
+    # This case pins the model's current behavior: in a month of the 50%
+    # disregard the formula halves a self-employment loss and keeps it
+    # negative. 114-1150(B)(3) and Sections 7.1, 8.9 and 8.16 name no
+    # current loss, and source_conflicts/candidates.yaml records the open
+    # question as us-sc:tanf-current-self-employment-loss-offset.
     # -14,400 / 12 = -1,200 a month, and the 50% January disregard leaves
     # -600. With no support paid, countable income stays at -600.
     sc_tanf_gross_earned_income: [-1_200, 0, 0]
@@ -1121,6 +1126,8 @@
         members: [adult_a, adult_b, child]
         state_code: SC
   output:
+    # B's loss stays negative in a month of the 50% disregard, the model's
+    # current behavior that Case 35 describes.
     # A: 600 x 0.5 = 300, less A's 2,400 / 12 = 200 of support, leaves 100.
     # B: -1,200 x 0.5 = -600. Countable income is 100 - 600 = -500.
     # Deducting from the group's income (300 - 600 = -300) would leave
@@ -1155,3 +1162,91 @@
     sc_tanf_countable_income: 814.75
     # floor((881 - 814.75) x 0.4046 = 26.80) = 26.
     sc_tanf: 26
+
+- name: Case 38, a current self-employment loss offsets another member's unearned income in January.
+  period: 2026-01
+  input:
+    people:
+      adult_a:
+        age: 40
+        is_tax_unit_head: true
+        alimony_income: 12_000
+      adult_b:
+        age: 38
+        is_tax_unit_spouse: true
+        self_employment_income_before_lsr: -14_400
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [adult_a, adult_b]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [adult_a, adult_b, child]
+        state_code: SC
+  output:
+    # This case pins the model's current behavior in a month of the 50%
+    # disregard, where B's loss reduces A's unearned income. Case 39 pins
+    # the $100 disregard months, and source_conflicts/candidates.yaml
+    # records the open question as
+    # us-sc:tanf-current-self-employment-loss-offset.
+    # A: 12,000 / 12 = 1,000 of monthly unearned income.
+    # B: -14,400 / 12 = -1,200; the 50% disregard leaves -600.
+    sc_tanf_gross_earned_income: [0, -1_200, 0]
+    sc_tanf_gross_unearned_income: [1_000, 0, 0]
+    sc_tanf_child_support_deduction: 0
+    # 1,000 - 600 = 400. Flooring B's earnings at zero would leave 1,000.
+    sc_tanf_countable_income: 400
+    # Size 3: floor((15,650 + 2 x 5,500) / 12 x 0.5) = 1,110.
+    # floor((1,110 - 400) x 0.4046 = 287.266) = 287.
+    # Flooring B's earnings would give floor(110 x 0.4046 = 44.506) = 44.
+    sc_tanf: 287
+
+- name: Case 39, the Case 38 household in May, when the $100 disregard sets the loss to zero.
+  # Annual inputs cover calendar 2026; outputs select May, when the $100
+  # disregard applies.
+  period: 2026
+  input:
+    people:
+      adult_a:
+        age: 40
+        is_tax_unit_head: true
+        alimony_income: 12_000
+      adult_b:
+        age: 38
+        is_tax_unit_spouse: true
+        self_employment_income_before_lsr: -14_400
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [adult_a, adult_b]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [adult_a, adult_b, child]
+        state_code: SC
+  output:
+    # This case pins the model's current behavior in a month of the $100
+    # disregard, the other earned-income path of the open question in
+    # Case 38.
+    # The gross test adds B's whole loss: 1,000 - 1,200 = -200, under the
+    # limit of 1,110 x 1.85 = 2,053.50.
+    sc_tanf_gross_income:
+      2026-05: -200
+    sc_tanf_gross_income_eligible:
+      2026-05: true
+    # B: max(-1,200 - 100, 0) = 0, so the loss reduces nothing.
+    sc_tanf_countable_earned_income_person:
+      2026-05: [0, 0, 0]
+    # A's 1,000 of alimony counts in full.
+    sc_tanf_countable_income:
+      2026-05: 1_000
+    # floor((1,110 - 1,000) x 0.4046 = 44.506) = 44.
+    sc_tanf:
+      2026-05: 44

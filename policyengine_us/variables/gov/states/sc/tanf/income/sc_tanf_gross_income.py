@@ -8,9 +8,7 @@ class sc_tanf_gross_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.SC
-    reference = (
-        "https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=131"
-    )
+    reference = "https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=102"
 
     adds = [
         "sc_tanf_gross_earned_income",
