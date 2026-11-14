@@ -155,6 +155,116 @@
     snap_standard_utility_allowance: 387
     # TN size 7 HCSUA = 387 per FY2020 SNAP QC Tech Doc Table F.7
 
+- name: Ohio FY2017 heating utility allowance reaches the final earned-income benefit
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+        rent: 7_200
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 4
+    spm_units:
+      unit:
+        members: [parent, child1, child2, child3]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: OH
+  output:
+    snap:
+      2017-01: 338
+    # ODJFS FACT 58, effective October 1, 2016: SUA $513 and standard
+    # deduction $168 for four people. The FY2017 federal maximum is $649.
+    # $2,000 - $400 - $168 = $1,432 before shelter.
+    # $600 rent + $513 SUA - $716 = $397 shelter deduction; net $1,035.
+    # Contribution ceil($310.50) = $311; $649 - $311 = $338.
+    snap_gross_income:
+      2017-01: 2_000
+    snap_earned_income_deduction:
+      2017-01: 400
+    snap_standard_deduction:
+      2017-01: 168
+    snap_net_income_pre_shelter:
+      2017-01: 1_432
+    snap_utility_allowance_type:
+      2017-01: SUA
+    snap_standard_utility_allowance:
+      2017-01: 513
+      2017-09: 513
+      2017-10: 530
+    snap_excess_shelter_expense_deduction:
+      2017-01: 397
+    snap_net_income:
+      2017-01: 1_035
+    snap_expected_contribution:
+      2017-01: 311
+    snap_max_allotment:
+      2017-01: 649
+    snap_normal_allotment:
+      2017-01: 338
+
+# Annual sums use nine months of the previous October amount and three
+# months of the new amount. Existing FY2018–2026 values remain controls;
+# 2026 keeps $766/month because no later change is currently encoded.
+- name: Ohio utility amounts preserve consecutive model years through 2026
+  period: 2017
+  input:
+    state_code:
+      2017: OH
+      2018: OH
+      2019: OH
+      2020: OH
+      2021: OH
+      2022: OH
+      2023: OH
+      2024: OH
+      2025: OH
+      2026: OH
+    has_heating_cooling_expense:
+      2017: true
+      2018: true
+      2019: true
+      2020: true
+      2021: true
+      2022: true
+      2023: true
+      2024: true
+      2025: true
+      2026: true
+  output:
+    snap_standard_utility_allowance:
+      2017: 6207
+      2018: 6402
+      2019: 6540
+      2020: 6597
+      2021: 6735
+      2022: 7158
+      2023: 7986
+      2024: 8754
+      2025: 9012
+      2026: 9192
+
+- name: Ohio update leaves the existing Texas October 2017 amount unchanged
+  period: 2017
+  input:
+    state_code:
+      2017: [OH, TX]
+    has_heating_cooling_expense:
+      2017: [true, true]
+  output:
+    snap_standard_utility_allowance:
+      2017-10: [530, 342]
+
 - name: Case 14, California FY2017 utility allowance reaches the final earned-income benefit.
   period: 2017
   absolute_error_margin: 0.01
