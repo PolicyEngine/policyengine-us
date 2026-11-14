@@ -18,6 +18,7 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         "https://www.law.cornell.edu/uscode/text/42/1382#a",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-45-income-maximum/",
         "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2018/10/appendix_k.pdf#page=2",
         "https://www.law.cornell.edu/regulations/alaska/7-AAC-40.310",
         "https://gc.nh.gov/rules/state_agencies/he-w800.html",
         "https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=39",
@@ -31,7 +32,9 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         # Non-MAGI Medicaid follows the SSI financial responsibility rules
         # (42 CFR 435.602): the unit is the individual, or the married
         # couple living together, whatever their filing status.
-        is_couple = person.marital_unit.nb_persons() == 2
+        is_couple = person(
+            "medicaid_optional_senior_or_disabled_uses_couple_standard", period
+        )
         state = person.household("state_code_str", period)
         p = parameters(
             period
@@ -43,11 +46,14 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         )
         # Missouri MHABD tests eligibility based on blindness against a
         # higher share of the poverty guideline than eligibility based on
-        # old age or permanent and total disability.
+        # old age or permanent and total disability. Appendix K gives a child
+        # under 18 who is "permanently and totally disabled, or blind" one
+        # standard, the one for MO HealthNet for Disabled Children, so the
+        # blind share applies from age 18.
         mo_mhabd = parameters(period).gov.states.mo.dss.mhabd.income_limit
         is_mo = person.household("state_code", period) == StateCode.MO
-        is_blind = person("is_blind", period)
-        limit_pct = where(is_mo & is_blind, mo_mhabd.blind, limit_pct)
+        is_blind_adult = person("is_blind", period) & ~person("is_child", period)
+        limit_pct = where(is_mo & is_blind_adult, mo_mhabd.blind, limit_pct)
         state_group = person.household("state_group_str", period)
         unit_fpg = fpg(where(is_couple, 2, 1), state_group, period, parameters)
         # Missouri publishes monthly dollar standards (Appendix J), each the

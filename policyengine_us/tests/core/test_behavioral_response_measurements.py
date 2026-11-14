@@ -649,7 +649,8 @@ def test_semi_elasticity_capital_gains_response_end_to_end_from_a_zero_rate():
     """The semi-elasticity form through the model, from a 0% baseline rate.
 
     A Texas filer whose $30,000 of gains sit in the 0% bracket faces a new 10%
-    rate there. The semi-elasticity response depends only on the change in the
+    rate there. The filer has employer coverage, so no premium tax credit
+    phases out with the gains. The semi-elasticity response depends only on the change in the
     measured rate, so it is about 29% at 3.4, where the log-rate form's 0.001
     floor would remove about 96% (test_capital_gains_response_forms.py covers
     the forms' arithmetic without a simulation).
@@ -659,7 +660,13 @@ def test_semi_elasticity_capital_gains_response_end_to_end_from_a_zero_rate():
     year = "2026"
     gains = 30_000
     situation = {
-        "people": {"p": {"age": {year: 50}, "long_term_capital_gains": {year: gains}}},
+        "people": {
+            "p": {
+                "age": {year: 50},
+                "long_term_capital_gains": {year: gains},
+                "has_esi": {year: True},
+            }
+        },
         "tax_units": {"tu": {"members": ["p"]}},
         "families": {"f": {"members": ["p"]}},
         "spm_units": {"s": {"members": ["p"]}},

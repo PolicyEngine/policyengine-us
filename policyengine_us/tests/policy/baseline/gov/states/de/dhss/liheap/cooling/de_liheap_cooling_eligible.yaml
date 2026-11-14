@@ -1,0 +1,293 @@
+# Delaware Summer Cooling Assistance Program electric benefit eligibility
+# (FY2026 plan sections 3.3-3.5; FY2027 plan sections 3.3-3.5; DHSS Utility
+# Assistance page; historical manual 303 and the SCAP chart on page 100): a
+# household that buys its heating (de_liheap_eligible), or one that meets the
+# LIHEAP household and income test (de_liheap_income_eligible, without the
+# heating responsibility test of regular heating) and has a cooling cost, with
+# a member aged 60 or older, a child five or under, or a disabled member.
+# heating_type must be reported: UNSPECIFIED does not qualify. No amount is
+# modeled.
+# FY2026 one-person LIHEAP limit 39,342 (60% of state median income).
+
+- name: Case 1, a retiree with gas heat and a cooling cost is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Countable income at most 18,000 <= 39,342; gas heating bill; aged 67.
+    de_liheap_eligible: true
+    de_liheap_cooling_eligible: true
+
+- name: Case 2, a worker aged 63 with income over the LIHEAP limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income_before_lsr: 65_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # 65,000 less estimated withholding stays well above 39,342.
+    de_liheap_income_eligible: false
+    de_liheap_cooling_eligible: false
+
+- name: Case 3, a LIHEAP-eligible member aged 60 qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        de_liheap_income_eligible: true
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: true
+
+- name: Case 4, a LIHEAP-eligible member aged 59 does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        de_liheap_income_eligible: true
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: false
+
+- name: Case 5, a LIHEAP-eligible parent with a five-year-old child qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        de_liheap_income_eligible: true
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: true
+
+- name: Case 6, a LIHEAP-eligible parent with a six-year-old child does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        de_liheap_income_eligible: true
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: false
+
+- name: Case 7, a LIHEAP-eligible disabled adult qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        de_liheap_income_eligible: true
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: true
+
+- name: Case 8, a household without a separate cooling cost does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        de_liheap_income_eligible: true
+        has_cooling_expense: false
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # No gas bill, so the household does not buy its heating, and it reports no
+    # cooling cost.
+    de_liheap_cooling_eligible: false
+
+- name: Case 9, a retiree with no heating who pays for cooling qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # No heating bill, so no regular heating assistance.
+    de_liheap_eligible: false
+    # Was false, now true: the SCAP chart's LIHEAP eligibility is "Purchase
+    # Source of Heating or Cooling", and this household pays for cooling.
+    de_liheap_cooling_eligible: true
+
+- name: Case 10, a retiree with heat in rent and an unspecified heating type does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Unsubsidized heat in rent passes de_liheap_eligible with an unknown
+    # building fuel. heating_type is a required input in PolicyEngine (a
+    # convention, not a Delaware rule), so an unspecified type does not qualify.
+    de_liheap_eligible: true
+    de_liheap_cooling_eligible: false
+
+- name: Case 11, the FY2027 rules keep a retiree with gas heat eligible.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: true
+
+- name: Case 12, a public-housing tenant with heat in the rent who pays for cooling qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 14_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+        is_in_public_housing: true
+  output:
+    # Subsidized heat in the rent is not regular heating responsibility.
+    de_liheap_eligible: false
+    # Plan 3.3 sets no cooling policy for subsidized renters, and the SCAP chart
+    # asks for a purchased source of heating or cooling.
+    de_liheap_cooling_eligible: true
+
+- name: Case 13, a retiree with gas heat and no reported cooling cost qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        has_cooling_expense: false
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Countable income at most 18,000 <= 39,342 and a gas heating bill: the
+    # household buys its heating, which meets the SCAP chart's "Purchase Source
+    # of Heating or Cooling", and manual 303.2 A processes its SCAP application
+    # automatically. Aged 67.
+    de_liheap_eligible: true
+    de_liheap_cooling_eligible: true
