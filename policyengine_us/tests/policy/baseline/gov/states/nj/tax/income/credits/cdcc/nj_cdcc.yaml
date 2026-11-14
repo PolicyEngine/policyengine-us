@@ -69,3 +69,1245 @@
     cdcc: 1_000
   output:
     nj_cdcc: 0
+
+- name: Case 9, 2018 NJ CDCC statutory upper ceiling.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal awards and qualifying counts isolate the NJ component.
+    # Each full-year NJ household has one parent and two dependent children.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 59_999.99
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000.01
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+  output:
+    # P.L.2018 c.45 section5: through $60,000, min(10% * $1,000,
+    # the $1,000 two-person cap) = $100; above the ceiling the credit is zero.
+    # https://pub.njleg.state.nj.us/Bills/2018/PL18/45_.HTM
+    nj_cdcc: [100, 100, 0]
+
+- name: Case 10, 2018 NJ CDCC remaining statutory band boundaries.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credit/count and NJ income isolate the state component.
+    # P.L.2018 c.45 sections5/12; P.L.2021 c.308 sections1/2.
+    # Income bands include their upper endpoint; no full federal entitlement claim.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+      person10: {age: 40, is_tax_unit_head: true}
+      person11: {age: 6, is_tax_unit_dependent: true}
+      person12: {age: 8, is_tax_unit_dependent: true}
+      person13: {age: 40, is_tax_unit_head: true}
+      person14: {age: 6, is_tax_unit_dependent: true}
+      person15: {age: 8, is_tax_unit_dependent: true}
+      person16: {age: 40, is_tax_unit_head: true}
+      person17: {age: 6, is_tax_unit_dependent: true}
+      person18: {age: 8, is_tax_unit_dependent: true}
+      person19: {age: 40, is_tax_unit_head: true}
+      person20: {age: 6, is_tax_unit_dependent: true}
+      person21: {age: 8, is_tax_unit_dependent: true}
+      person22: {age: 40, is_tax_unit_head: true}
+      person23: {age: 6, is_tax_unit_dependent: true}
+      person24: {age: 8, is_tax_unit_dependent: true}
+      person25: {age: 40, is_tax_unit_head: true}
+      person26: {age: 6, is_tax_unit_dependent: true}
+      person27: {age: 8, is_tax_unit_dependent: true}
+      person28: {age: 40, is_tax_unit_head: true}
+      person29: {age: 6, is_tax_unit_dependent: true}
+      person30: {age: 8, is_tax_unit_dependent: true}
+      person31: {age: 40, is_tax_unit_head: true}
+      person32: {age: 6, is_tax_unit_dependent: true}
+      person33: {age: 8, is_tax_unit_dependent: true}
+      person34: {age: 40, is_tax_unit_head: true}
+      person35: {age: 6, is_tax_unit_dependent: true}
+      person36: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 19_999.99
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000.01
+      tax_unit4:
+        members: [person10, person11, person12]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 29_999.99
+      tax_unit5:
+        members: [person13, person14, person15]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000
+      tax_unit6:
+        members: [person16, person17, person18]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000.01
+      tax_unit7:
+        members: [person19, person20, person21]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 39_999.99
+      tax_unit8:
+        members: [person22, person23, person24]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 40_000
+      tax_unit9:
+        members: [person25, person26, person27]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 40_000.01
+      tax_unit10:
+        members: [person28, person29, person30]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 49_999.99
+      tax_unit11:
+        members: [person31, person32, person33]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 50_000
+      tax_unit12:
+        members: [person34, person35, person36]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 50_000.01
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+      household4:
+        members: [person10, person11, person12]
+        state_code: NJ
+      household5:
+        members: [person13, person14, person15]
+        state_code: NJ
+      household6:
+        members: [person16, person17, person18]
+        state_code: NJ
+      household7:
+        members: [person19, person20, person21]
+        state_code: NJ
+      household8:
+        members: [person22, person23, person24]
+        state_code: NJ
+      household9:
+        members: [person25, person26, person27]
+        state_code: NJ
+      household10:
+        members: [person28, person29, person30]
+        state_code: NJ
+      household11:
+        members: [person31, person32, person33]
+        state_code: NJ
+      household12:
+        members: [person34, person35, person36]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 500, 400, 400, 400, 300, 300, 300, 200, 200, 200, 100]
+
+- name: Case 11, 2017 NJ CDCC is absent before enactment.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credit/count and NJ income isolate the state component.
+    # P.L.2018 c.45 sections5/12; P.L.2021 c.308 sections1/2.
+    # Income bands include their upper endpoint; no full federal entitlement claim.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+      person10: {age: 40, is_tax_unit_head: true}
+      person11: {age: 6, is_tax_unit_dependent: true}
+      person12: {age: 8, is_tax_unit_dependent: true}
+      person13: {age: 40, is_tax_unit_head: true}
+      person14: {age: 6, is_tax_unit_dependent: true}
+      person15: {age: 8, is_tax_unit_dependent: true}
+      person16: {age: 40, is_tax_unit_head: true}
+      person17: {age: 6, is_tax_unit_dependent: true}
+      person18: {age: 8, is_tax_unit_dependent: true}
+      person19: {age: 40, is_tax_unit_head: true}
+      person20: {age: 6, is_tax_unit_dependent: true}
+      person21: {age: 8, is_tax_unit_dependent: true}
+      person22: {age: 40, is_tax_unit_head: true}
+      person23: {age: 6, is_tax_unit_dependent: true}
+      person24: {age: 8, is_tax_unit_dependent: true}
+      person25: {age: 40, is_tax_unit_head: true}
+      person26: {age: 6, is_tax_unit_dependent: true}
+      person27: {age: 8, is_tax_unit_dependent: true}
+      person28: {age: 40, is_tax_unit_head: true}
+      person29: {age: 6, is_tax_unit_dependent: true}
+      person30: {age: 8, is_tax_unit_dependent: true}
+      person31: {age: 40, is_tax_unit_head: true}
+      person32: {age: 6, is_tax_unit_dependent: true}
+      person33: {age: 8, is_tax_unit_dependent: true}
+      person34: {age: 40, is_tax_unit_head: true}
+      person35: {age: 6, is_tax_unit_dependent: true}
+      person36: {age: 8, is_tax_unit_dependent: true}
+      person37: {age: 40, is_tax_unit_head: true}
+      person38: {age: 6, is_tax_unit_dependent: true}
+      person39: {age: 8, is_tax_unit_dependent: true}
+      person40: {age: 40, is_tax_unit_head: true}
+      person41: {age: 6, is_tax_unit_dependent: true}
+      person42: {age: 8, is_tax_unit_dependent: true}
+      person43: {age: 40, is_tax_unit_head: true}
+      person44: {age: 6, is_tax_unit_dependent: true}
+      person45: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 19_999.99
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000.01
+      tax_unit4:
+        members: [person10, person11, person12]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 29_999.99
+      tax_unit5:
+        members: [person13, person14, person15]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000
+      tax_unit6:
+        members: [person16, person17, person18]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000.01
+      tax_unit7:
+        members: [person19, person20, person21]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 39_999.99
+      tax_unit8:
+        members: [person22, person23, person24]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 40_000
+      tax_unit9:
+        members: [person25, person26, person27]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 40_000.01
+      tax_unit10:
+        members: [person28, person29, person30]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 49_999.99
+      tax_unit11:
+        members: [person31, person32, person33]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 50_000
+      tax_unit12:
+        members: [person34, person35, person36]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 50_000.01
+      tax_unit13:
+        members: [person37, person38, person39]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 59_999.99
+      tax_unit14:
+        members: [person40, person41, person42]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+      tax_unit15:
+        members: [person43, person44, person45]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000.01
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+      household4:
+        members: [person10, person11, person12]
+        state_code: NJ
+      household5:
+        members: [person13, person14, person15]
+        state_code: NJ
+      household6:
+        members: [person16, person17, person18]
+        state_code: NJ
+      household7:
+        members: [person19, person20, person21]
+        state_code: NJ
+      household8:
+        members: [person22, person23, person24]
+        state_code: NJ
+      household9:
+        members: [person25, person26, person27]
+        state_code: NJ
+      household10:
+        members: [person28, person29, person30]
+        state_code: NJ
+      household11:
+        members: [person31, person32, person33]
+        state_code: NJ
+      household12:
+        members: [person34, person35, person36]
+        state_code: NJ
+      household13:
+        members: [person37, person38, person39]
+        state_code: NJ
+      household14:
+        members: [person40, person41, person42]
+        state_code: NJ
+      household15:
+        members: [person43, person44, person45]
+        state_code: NJ
+  output:
+    nj_cdcc: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+- name: Case 12, 2019 NJ CDCC statutory band boundaries.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credit/count and NJ income isolate the state component.
+    # P.L.2018 c.45 sections5/12; P.L.2021 c.308 sections1/2.
+    # Income bands include their upper endpoint; no full federal entitlement claim.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+      person10: {age: 40, is_tax_unit_head: true}
+      person11: {age: 6, is_tax_unit_dependent: true}
+      person12: {age: 8, is_tax_unit_dependent: true}
+      person13: {age: 40, is_tax_unit_head: true}
+      person14: {age: 6, is_tax_unit_dependent: true}
+      person15: {age: 8, is_tax_unit_dependent: true}
+      person16: {age: 40, is_tax_unit_head: true}
+      person17: {age: 6, is_tax_unit_dependent: true}
+      person18: {age: 8, is_tax_unit_dependent: true}
+      person19: {age: 40, is_tax_unit_head: true}
+      person20: {age: 6, is_tax_unit_dependent: true}
+      person21: {age: 8, is_tax_unit_dependent: true}
+      person22: {age: 40, is_tax_unit_head: true}
+      person23: {age: 6, is_tax_unit_dependent: true}
+      person24: {age: 8, is_tax_unit_dependent: true}
+      person25: {age: 40, is_tax_unit_head: true}
+      person26: {age: 6, is_tax_unit_dependent: true}
+      person27: {age: 8, is_tax_unit_dependent: true}
+      person28: {age: 40, is_tax_unit_head: true}
+      person29: {age: 6, is_tax_unit_dependent: true}
+      person30: {age: 8, is_tax_unit_dependent: true}
+      person31: {age: 40, is_tax_unit_head: true}
+      person32: {age: 6, is_tax_unit_dependent: true}
+      person33: {age: 8, is_tax_unit_dependent: true}
+      person34: {age: 40, is_tax_unit_head: true}
+      person35: {age: 6, is_tax_unit_dependent: true}
+      person36: {age: 8, is_tax_unit_dependent: true}
+      person37: {age: 40, is_tax_unit_head: true}
+      person38: {age: 6, is_tax_unit_dependent: true}
+      person39: {age: 8, is_tax_unit_dependent: true}
+      person40: {age: 40, is_tax_unit_head: true}
+      person41: {age: 6, is_tax_unit_dependent: true}
+      person42: {age: 8, is_tax_unit_dependent: true}
+      person43: {age: 40, is_tax_unit_head: true}
+      person44: {age: 6, is_tax_unit_dependent: true}
+      person45: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 19_999.99
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000.01
+      tax_unit4:
+        members: [person10, person11, person12]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 29_999.99
+      tax_unit5:
+        members: [person13, person14, person15]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000
+      tax_unit6:
+        members: [person16, person17, person18]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000.01
+      tax_unit7:
+        members: [person19, person20, person21]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 39_999.99
+      tax_unit8:
+        members: [person22, person23, person24]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 40_000
+      tax_unit9:
+        members: [person25, person26, person27]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 40_000.01
+      tax_unit10:
+        members: [person28, person29, person30]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 49_999.99
+      tax_unit11:
+        members: [person31, person32, person33]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 50_000
+      tax_unit12:
+        members: [person34, person35, person36]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 50_000.01
+      tax_unit13:
+        members: [person37, person38, person39]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 59_999.99
+      tax_unit14:
+        members: [person40, person41, person42]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+      tax_unit15:
+        members: [person43, person44, person45]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000.01
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+      household4:
+        members: [person10, person11, person12]
+        state_code: NJ
+      household5:
+        members: [person13, person14, person15]
+        state_code: NJ
+      household6:
+        members: [person16, person17, person18]
+        state_code: NJ
+      household7:
+        members: [person19, person20, person21]
+        state_code: NJ
+      household8:
+        members: [person22, person23, person24]
+        state_code: NJ
+      household9:
+        members: [person25, person26, person27]
+        state_code: NJ
+      household10:
+        members: [person28, person29, person30]
+        state_code: NJ
+      household11:
+        members: [person31, person32, person33]
+        state_code: NJ
+      household12:
+        members: [person34, person35, person36]
+        state_code: NJ
+      household13:
+        members: [person37, person38, person39]
+        state_code: NJ
+      household14:
+        members: [person40, person41, person42]
+        state_code: NJ
+      household15:
+        members: [person43, person44, person45]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 500, 400, 400, 400, 300, 300, 300, 200, 200, 200, 100, 100, 100, 0]
+
+- name: Case 13, 2020 NJ CDCC statutory band boundaries.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credit/count and NJ income isolate the state component.
+    # P.L.2018 c.45 sections5/12; P.L.2021 c.308 sections1/2.
+    # Income bands include their upper endpoint; no full federal entitlement claim.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+      person10: {age: 40, is_tax_unit_head: true}
+      person11: {age: 6, is_tax_unit_dependent: true}
+      person12: {age: 8, is_tax_unit_dependent: true}
+      person13: {age: 40, is_tax_unit_head: true}
+      person14: {age: 6, is_tax_unit_dependent: true}
+      person15: {age: 8, is_tax_unit_dependent: true}
+      person16: {age: 40, is_tax_unit_head: true}
+      person17: {age: 6, is_tax_unit_dependent: true}
+      person18: {age: 8, is_tax_unit_dependent: true}
+      person19: {age: 40, is_tax_unit_head: true}
+      person20: {age: 6, is_tax_unit_dependent: true}
+      person21: {age: 8, is_tax_unit_dependent: true}
+      person22: {age: 40, is_tax_unit_head: true}
+      person23: {age: 6, is_tax_unit_dependent: true}
+      person24: {age: 8, is_tax_unit_dependent: true}
+      person25: {age: 40, is_tax_unit_head: true}
+      person26: {age: 6, is_tax_unit_dependent: true}
+      person27: {age: 8, is_tax_unit_dependent: true}
+      person28: {age: 40, is_tax_unit_head: true}
+      person29: {age: 6, is_tax_unit_dependent: true}
+      person30: {age: 8, is_tax_unit_dependent: true}
+      person31: {age: 40, is_tax_unit_head: true}
+      person32: {age: 6, is_tax_unit_dependent: true}
+      person33: {age: 8, is_tax_unit_dependent: true}
+      person34: {age: 40, is_tax_unit_head: true}
+      person35: {age: 6, is_tax_unit_dependent: true}
+      person36: {age: 8, is_tax_unit_dependent: true}
+      person37: {age: 40, is_tax_unit_head: true}
+      person38: {age: 6, is_tax_unit_dependent: true}
+      person39: {age: 8, is_tax_unit_dependent: true}
+      person40: {age: 40, is_tax_unit_head: true}
+      person41: {age: 6, is_tax_unit_dependent: true}
+      person42: {age: 8, is_tax_unit_dependent: true}
+      person43: {age: 40, is_tax_unit_head: true}
+      person44: {age: 6, is_tax_unit_dependent: true}
+      person45: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 19_999.99
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000.01
+      tax_unit4:
+        members: [person10, person11, person12]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 29_999.99
+      tax_unit5:
+        members: [person13, person14, person15]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000
+      tax_unit6:
+        members: [person16, person17, person18]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000.01
+      tax_unit7:
+        members: [person19, person20, person21]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 39_999.99
+      tax_unit8:
+        members: [person22, person23, person24]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 40_000
+      tax_unit9:
+        members: [person25, person26, person27]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 40_000.01
+      tax_unit10:
+        members: [person28, person29, person30]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 49_999.99
+      tax_unit11:
+        members: [person31, person32, person33]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 50_000
+      tax_unit12:
+        members: [person34, person35, person36]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 50_000.01
+      tax_unit13:
+        members: [person37, person38, person39]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 59_999.99
+      tax_unit14:
+        members: [person40, person41, person42]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+      tax_unit15:
+        members: [person43, person44, person45]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000.01
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+      household4:
+        members: [person10, person11, person12]
+        state_code: NJ
+      household5:
+        members: [person13, person14, person15]
+        state_code: NJ
+      household6:
+        members: [person16, person17, person18]
+        state_code: NJ
+      household7:
+        members: [person19, person20, person21]
+        state_code: NJ
+      household8:
+        members: [person22, person23, person24]
+        state_code: NJ
+      household9:
+        members: [person25, person26, person27]
+        state_code: NJ
+      household10:
+        members: [person28, person29, person30]
+        state_code: NJ
+      household11:
+        members: [person31, person32, person33]
+        state_code: NJ
+      household12:
+        members: [person34, person35, person36]
+        state_code: NJ
+      household13:
+        members: [person37, person38, person39]
+        state_code: NJ
+      household14:
+        members: [person40, person41, person42]
+        state_code: NJ
+      household15:
+        members: [person43, person44, person45]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 500, 400, 400, 400, 300, 300, 300, 200, 200, 200, 100, 100, 100, 0]
+
+- name: Case 14, 2021 NJ CDCC statutory band boundaries.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal credit/count and NJ income isolate the state component.
+    # P.L.2018 c.45 sections5/12; P.L.2021 c.308 sections1/2.
+    # Income bands include their upper endpoint; no full federal entitlement claim.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+      person10: {age: 40, is_tax_unit_head: true}
+      person11: {age: 6, is_tax_unit_dependent: true}
+      person12: {age: 8, is_tax_unit_dependent: true}
+      person13: {age: 40, is_tax_unit_head: true}
+      person14: {age: 6, is_tax_unit_dependent: true}
+      person15: {age: 8, is_tax_unit_dependent: true}
+      person16: {age: 40, is_tax_unit_head: true}
+      person17: {age: 6, is_tax_unit_dependent: true}
+      person18: {age: 8, is_tax_unit_dependent: true}
+      person19: {age: 40, is_tax_unit_head: true}
+      person20: {age: 6, is_tax_unit_dependent: true}
+      person21: {age: 8, is_tax_unit_dependent: true}
+      person22: {age: 40, is_tax_unit_head: true}
+      person23: {age: 6, is_tax_unit_dependent: true}
+      person24: {age: 8, is_tax_unit_dependent: true}
+      person25: {age: 40, is_tax_unit_head: true}
+      person26: {age: 6, is_tax_unit_dependent: true}
+      person27: {age: 8, is_tax_unit_dependent: true}
+      person28: {age: 40, is_tax_unit_head: true}
+      person29: {age: 6, is_tax_unit_dependent: true}
+      person30: {age: 8, is_tax_unit_dependent: true}
+      person31: {age: 40, is_tax_unit_head: true}
+      person32: {age: 6, is_tax_unit_dependent: true}
+      person33: {age: 8, is_tax_unit_dependent: true}
+      person34: {age: 40, is_tax_unit_head: true}
+      person35: {age: 6, is_tax_unit_dependent: true}
+      person36: {age: 8, is_tax_unit_dependent: true}
+      person37: {age: 40, is_tax_unit_head: true}
+      person38: {age: 6, is_tax_unit_dependent: true}
+      person39: {age: 8, is_tax_unit_dependent: true}
+      person40: {age: 40, is_tax_unit_head: true}
+      person41: {age: 6, is_tax_unit_dependent: true}
+      person42: {age: 8, is_tax_unit_dependent: true}
+      person43: {age: 40, is_tax_unit_head: true}
+      person44: {age: 6, is_tax_unit_dependent: true}
+      person45: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 29_999.99
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 30_000.01
+      tax_unit4:
+        members: [person10, person11, person12]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 59_999.99
+      tax_unit5:
+        members: [person13, person14, person15]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+      tax_unit6:
+        members: [person16, person17, person18]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000.01
+      tax_unit7:
+        members: [person19, person20, person21]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 89_999.99
+      tax_unit8:
+        members: [person22, person23, person24]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 90_000
+      tax_unit9:
+        members: [person25, person26, person27]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 90_000.01
+      tax_unit10:
+        members: [person28, person29, person30]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 119_999.99
+      tax_unit11:
+        members: [person31, person32, person33]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 120_000
+      tax_unit12:
+        members: [person34, person35, person36]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 120_000.01
+      tax_unit13:
+        members: [person37, person38, person39]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 149_999.99
+      tax_unit14:
+        members: [person40, person41, person42]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 150_000
+      tax_unit15:
+        members: [person43, person44, person45]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 150_000.01
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+      household4:
+        members: [person10, person11, person12]
+        state_code: NJ
+      household5:
+        members: [person13, person14, person15]
+        state_code: NJ
+      household6:
+        members: [person16, person17, person18]
+        state_code: NJ
+      household7:
+        members: [person19, person20, person21]
+        state_code: NJ
+      household8:
+        members: [person22, person23, person24]
+        state_code: NJ
+      household9:
+        members: [person25, person26, person27]
+        state_code: NJ
+      household10:
+        members: [person28, person29, person30]
+        state_code: NJ
+      household11:
+        members: [person31, person32, person33]
+        state_code: NJ
+      household12:
+        members: [person34, person35, person36]
+        state_code: NJ
+      household13:
+        members: [person37, person38, person39]
+        state_code: NJ
+      household14:
+        members: [person40, person41, person42]
+        state_code: NJ
+      household15:
+        members: [person43, person44, person45]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 500, 400, 400, 400, 300, 300, 300, 200, 200, 200, 100, 100, 100, 0]
+
+- name: Case 15, 2018 NJ CDCC caps depend on qualifying people.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    # Positive rows are synthetic cap-component premises, not a derivation
+    # of complete federal entitlement. P.L.2018 c.45 section5 supplies the caps.
+    # The zero row has one adult, no qualifying people, income or federal award.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 40, is_tax_unit_head: true}
+      person4: {age: 6, is_tax_unit_dependent: true}
+      person5: {age: 8, is_tax_unit_dependent: true}
+      person6: {age: 40, is_tax_unit_head: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_050
+        count_cdcc_eligible: 1
+        nj_taxable_income: 20_000
+      tax_unit2:
+        members: [person3, person4, person5]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 2_100
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+      tax_unit3:
+        members: [person6]
+        filing_status: SINGLE
+        cdcc: 0
+        count_cdcc_eligible: 0
+        nj_taxable_income: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: NJ
+      household2:
+        members: [person3, person4, person5]
+        state_code: NJ
+      household3:
+        members: [person6]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 1_000, 0]
+
+- name: Case 16, 2019 NJ CDCC caps depend on qualifying people.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    # Positive rows are synthetic cap-component premises, not a derivation
+    # of complete federal entitlement. P.L.2018 c.45 section5 supplies the caps.
+    # The zero row has one adult, no qualifying people, income or federal award.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 40, is_tax_unit_head: true}
+      person4: {age: 6, is_tax_unit_dependent: true}
+      person5: {age: 8, is_tax_unit_dependent: true}
+      person6: {age: 40, is_tax_unit_head: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_050
+        count_cdcc_eligible: 1
+        nj_taxable_income: 20_000
+      tax_unit2:
+        members: [person3, person4, person5]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 2_100
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+      tax_unit3:
+        members: [person6]
+        filing_status: SINGLE
+        cdcc: 0
+        count_cdcc_eligible: 0
+        nj_taxable_income: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: NJ
+      household2:
+        members: [person3, person4, person5]
+        state_code: NJ
+      household3:
+        members: [person6]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 1_000, 0]
+
+- name: Case 17, 2020 NJ CDCC caps depend on qualifying people.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    # Positive rows are synthetic cap-component premises, not a derivation
+    # of complete federal entitlement. P.L.2018 c.45 section5 supplies the caps.
+    # The zero row has one adult, no qualifying people, income or federal award.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 40, is_tax_unit_head: true}
+      person4: {age: 6, is_tax_unit_dependent: true}
+      person5: {age: 8, is_tax_unit_dependent: true}
+      person6: {age: 40, is_tax_unit_head: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_050
+        count_cdcc_eligible: 1
+        nj_taxable_income: 20_000
+      tax_unit2:
+        members: [person3, person4, person5]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 2_100
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+      tax_unit3:
+        members: [person6]
+        filing_status: SINGLE
+        cdcc: 0
+        count_cdcc_eligible: 0
+        nj_taxable_income: 0
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: NJ
+      household2:
+        members: [person3, person4, person5]
+        state_code: NJ
+      household3:
+        members: [person6]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 1_000, 0]
+
+- name: Case 18, 2021 NJ CDCC no longer has the historical state cap.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    # Independently known actual annual federal award, not a potential credit.
+    # P.L.2021 c.308 section1: 50% * 8000 = 4000, with the old state cap removed.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 8_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_cdcc: [4_000]
+
+- name: Case 19, 2018 NJ CDCC matches an actual federal award of zero.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    # The actual annual federal award is independently known to be zero.
+    # A hypothetical potential credit is neither an input nor the state match base.
+    # P.L.2018 c.45 section5 / P.L.2021 c.308 section1: allowed federal award * rate.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 0
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_cdcc: [0]
+
+- name: Case 20, 2019 NJ CDCC matches an actual federal award of zero.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    # The actual annual federal award is independently known to be zero.
+    # A hypothetical potential credit is neither an input nor the state match base.
+    # P.L.2018 c.45 section5 / P.L.2021 c.308 section1: allowed federal award * rate.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 0
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_cdcc: [0]
+
+- name: Case 21, 2020 NJ CDCC matches an actual federal award of zero.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    # The actual annual federal award is independently known to be zero.
+    # A hypothetical potential credit is neither an input nor the state match base.
+    # P.L.2018 c.45 section5 / P.L.2021 c.308 section1: allowed federal award * rate.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 0
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_cdcc: [0]
+
+- name: Case 22, 2021 NJ CDCC matches an actual federal award of zero.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    # The actual annual federal award is independently known to be zero.
+    # A hypothetical potential credit is neither an input nor the state match base.
+    # P.L.2018 c.45 section5 / P.L.2021 c.308 section1: allowed federal award * rate.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 0
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_cdcc: [0]

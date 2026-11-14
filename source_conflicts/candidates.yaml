@@ -15450,3 +15450,42 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
+
+- id: us-nj:cdcc-statutory-income-ceilings
+  program: child-and-dependent-care-credit
+  years:
+    from: 2018
+    to: 2021
+    type: tax
+  question: "Do the statutory New Jersey taxable-income ceilings include exactly $60,000 in 2018–2020 and $150,000 in 2021 despite the final worksheet and-over row?"
+  sources:
+  - kind: instructions
+    citation: "2018 NJ-1040 instructions, Worksheet J, physical page 38 (printed 36)"
+    url: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2018/1040i.pdf
+  - kind: instructions
+    citation: "2019 NJ-1040 instructions, Worksheet J, physical page 37 (printed 35)"
+    url: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2019/1040i.pdf
+  - kind: instructions
+    citation: "2020 NJ-1040 instructions, Worksheet J, physical page 36 (printed 34)"
+    url: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2020/1040i.pdf
+  - kind: instructions
+    citation: "2021 NJ-1040 instructions, Worksheet J, physical page 44 (printed 42)"
+    url: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf
+  - kind: statute
+    citation: "P.L.2018 c.45, full sections 5 and 12"
+    url: https://pub.njleg.state.nj.us/Bills/2018/PL18/45_.HTM
+  - kind: statute
+    citation: "P.L.2021 c.308, complete act (sections 1 and 2)"
+    url: https://pub.njleg.state.nj.us/Bills/2020/PL21/308_.HTM
+  readings:
+    statute: "Include $60,000 in 2018–2020 and $150,000 in 2021 in the final 10% band; apply the other statutory upper-inclusive bands."
+    other: "The 2018–2020 worksheet final row says $60,000 and over not eligible; the 2021 row says $150,000 and over not eligible, excluding the exact endpoint."
+  example: "With an independently known federal child and dependent care credit of $1,000, the statutory final band yields $100 at New Jersey taxable income $60,000 in 2018 and $150,000 in 2021; the worksheet final row yields zero."
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/credits/cdcc/nj_cdcc.py
+    - policyengine_us/parameters/gov/states/nj/tax/income/credits/cdcc/rate.yaml
+    prs: []
+  state: ruled
+  note: "PolicyEngine follows the enacted statute under CONTRIBUTING.md. This candidate records the model reading; it does not assert a ruled global registry entry or a personal ruling. Add the actual ruling PR URL after creation. Preserve the complete statute and worksheet context in the separately owned source archive."
