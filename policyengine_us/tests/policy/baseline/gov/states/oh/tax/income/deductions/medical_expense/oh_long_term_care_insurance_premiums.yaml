@@ -151,3 +151,31 @@
     oh_long_term_care_insurance_premiums: [10, 20, 0]
     oh_unreimbursed_medical_care_expense_deduction_person: [110, 220, 0]
     oh_unreimbursed_medical_care_expense_deduction: 330
+
+# Publication 501 (2025), Dependent Taxpayer Test exception.
+# https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=11
+
+- name: A filer whose would-be claimant files only for a refund counts a child's long-term care premiums
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        long_term_health_insurance_premiums: 100
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: OH
+  output:
+    # The head keeps the child as a dependent, and neither person has a
+    # federal self-employed health insurance deduction, so worksheet line 2
+    # takes the child's 100 in full: [0, 100].
+    oh_long_term_care_insurance_premiums: [0, 100]
