@@ -1,0 +1,12 @@
+description: Wisconsin limits the blind-worker transportation credit to this amount per claimant.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin blind-worker transportation credit claimant limit
+  reference:
+    - title: Wisconsin Statutes 71.07(11)(c)3
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71.pdf#page=56
+    - title: "2025 Wisconsin Form 1 instructions #page 17-18"
+      href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=17
+values:
+  2024-01-01: 1_500

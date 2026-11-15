@@ -18,6 +18,8 @@ metadata:
     href: https://www.revenue.wi.gov/TaxForms2024/2024-Form1-inst.pdf#page=16
   - title: 2025 Form 1 instructions
     href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=16
+  - title: Wisconsin Statutes 71.10(4)
+    href: https://docs.legis.wisconsin.gov/statutes/statutes/71.pdf#page=58
 
 values:
   2021-01-01:
@@ -27,5 +29,11 @@ values:
   2022-01-01:
     - wi_itemized_deduction_credit
     - wi_childcare_expense_credit  # was an income subtraction before 2022
+    - wi_property_tax_credit
+    - wi_married_couple_credit
+  2024-01-01:
+    - wi_itemized_deduction_credit
+    - wi_childcare_expense_credit
+    - wi_blind_worker_transportation_credit
     - wi_property_tax_credit
     - wi_married_couple_credit
