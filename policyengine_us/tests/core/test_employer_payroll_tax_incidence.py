@@ -9,6 +9,7 @@ continuous, piecewise linear and increasing in payroll wages w, so:
    whose cost under the schedule equals the target, for any target of zero or
    more; a brute-force bisection agrees; and an unchanged schedule returns the
    same wages, so a reform that leaves employer taxes alone moves no wages.
+   It reproduces the after-offset wages in JCT's three worked examples.
 2. Monotonicity: raising any rate weakly lowers the wage at a given cost.
 3. Conservation: under a reform with the default employee share of 1, every
    worker's federal employer cost in the reformed simulation equals the
@@ -128,6 +129,26 @@ def test_higher_rate_lowers_wages(components, data, increase, costs):
         wages_at_employer_cost(costs, raised)
         <= wages_at_employer_cost(costs, components) + 1e-9
     )
+
+
+@pytest.mark.parametrize(
+    "wages, benefits, expected",
+    [(10_000, 0, 9_954), (200_000, 10_000, 199_443), (1_000_000, 20_000, 999_427)],
+)
+def test_inverse_reproduces_jct_examples(wages, benefits, expected):
+    """Differential against JCX-89-16's worked examples (pp. 10-11, Table 1).
+
+    JCT raises the employer OASDI rate from 6.2% to 6.7% under 2016 law (a
+    $118,500 cap, 1.45% HI, no FUTA) and keeps nontaxable benefits a fixed
+    share of wages, so here they enter as an uncapped component at rate
+    benefits / wages. The model itself leaves benefits out of the cost.
+    https://www.jct.gov/getattachment/df6ad7a8-d3f8-4f39-b465-1cbe5b077d20/x-89-16-4962.pdf#page=12
+    """
+    benefits_rate = benefits / wages
+    baseline = [(0.062, 118_500), (0.0145, np.inf), (benefits_rate, np.inf)]
+    policy = [(0.067, 118_500), (0.0145, np.inf), (benefits_rate, np.inf)]
+    cost = employer_cost([wages], baseline)
+    assert wages_at_employer_cost(cost, policy)[0] == pytest.approx(expected, abs=0.5)
 
 
 def test_inverse_takes_rates_that_vary_by_person():
