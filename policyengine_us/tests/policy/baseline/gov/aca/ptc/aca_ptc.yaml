@@ -1806,3 +1806,21 @@
     # 1,200 - 25,000 * 0.04 = 200 for both credit variables.
     aca_ptc_before_filing_gate: 200
     aca_ptc: 200
+
+- name: A supplied 2014 benchmark needs no enrollment calculation when everyone is in the tax family
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    is_aca_tax_family_member: true
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.5
+    filing_status: SINGLE
+    tax_unit_is_filer: true
+  output:
+    # All possible enrollees belong to the coverage family, so its benchmark
+    # is the supplied 12,000 (26 CFR 1.36B-3(f)). At 250% FPL in 2014:
+    # 12,000 - 30,000 * 0.0805 = 9,585.
+    aca_ptc_slcsp: 12_000
+    aca_ptc: 9_585
