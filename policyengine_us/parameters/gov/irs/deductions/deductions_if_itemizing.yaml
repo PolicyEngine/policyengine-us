@@ -5,14 +5,12 @@ values:
   # that switches them on in another year also reaches taxable income.
   2018-01-01:
     - qualified_business_income_deduction
-    - wagering_losses_deduction
     - itemized_taxable_income_deductions
     - tip_income_deduction
     - overtime_income_deduction
 
   2025-01-01:
     - qualified_business_income_deduction
-    - wagering_losses_deduction
     - itemized_taxable_income_deductions
     - tip_income_deduction
     - overtime_income_deduction
@@ -21,7 +19,6 @@ values:
 
   2029-01-01:
     - qualified_business_income_deduction
-    - wagering_losses_deduction
     - itemized_taxable_income_deductions
     - tip_income_deduction
     - overtime_income_deduction
