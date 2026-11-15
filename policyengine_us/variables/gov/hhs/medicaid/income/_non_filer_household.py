@@ -23,6 +23,12 @@ def medicaid_non_filer_fallback_sum(person, period, values, spouse_sum, income=F
     income, keep own/spouse amounts signed, remaining parents netted within
     each marital unit and floored, and remaining children's positive amounts.
     ``spouse_sum`` retains the caller's fallback for an unidentified spouse.
+
+    The spouse is the one ``spouse_sum`` counts: the other head or spouse of
+    a joint return (head_spouse_count 2), or the cohabiting spouse on a
+    separate return. A head or spouse on a return that isn't joint, such as
+    an inferred spouse under a supplied HEAD_OF_HOUSEHOLD filing status, has
+    no spouse here, so a child-age partner still counts once as a relative.
     """
     values = np.asarray(values, dtype=np.float64)
     total = values + spouse_sum
@@ -30,23 +36,23 @@ def medicaid_non_filer_fallback_sum(person, period, values, spouse_sum, income=F
     child = person("medicaid_non_filer_child_age_eligible", period)
     parent = person("is_parent", period)
     head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+    head_spouse_count = person.tax_unit("head_spouse_count", period)
+    joint = head_or_spouse & (head_spouse_count == 2)
     separate = (
         person.tax_unit("cohabitating_spouses", period)
-        & (person.tax_unit("head_spouse_count", period) == 1)
+        & (head_spouse_count == 1)
         & (head_or_spouse | person("claimed_as_dependent_on_another_return", period))
     )
     spouse = np.full(person.count, -1, dtype=int)
     matches = np.zeros(person.count, dtype=int)
     for member in group_member_indices(person.tax_unit):
-        included = (
-            (member >= 0) & (member != own) & head_or_spouse & head_or_spouse[member]
-        )
+        included = (member >= 0) & (member != own) & joint & head_or_spouse[member]
         spouse = np.where(included, member, spouse)
-        matches += included
+        matches = matches + included
     for member in group_member_indices(person.marital_unit):
         included = (member >= 0) & (member != own) & separate
         spouse = np.where(included, member, spouse)
-        matches += included
+        matches = matches + included
     # A larger, ambiguous group cannot identify which member is the spouse.
     spouse = np.where(matches == 1, spouse, -1)
 
@@ -89,7 +95,9 @@ def medicaid_non_filer_fallback_sum(person, period, values, spouse_sum, income=F
             )
         else:
             amount = values[member]
-        total += np.where(included & (relative_parent | relative_child), amount, 0)
+        total = total + np.where(
+            included & (relative_parent | relative_child), amount, 0
+        )
     return total
 
 
@@ -161,8 +169,8 @@ def _spouse_rule(person, period, first, second):
 def medicaid_non_filer_member_sum(person, period, values):
     """Sum ``values`` once over each person's MAGI non-filer household.
 
-    Callers use this in households with parent links and keep their original
-    family-level expressions elsewhere. Under 42 CFR 435.603(f)(3) the
+    Callers use this in households with parent links and
+    medicaid_non_filer_fallback_sum elsewhere. Under 42 CFR 435.603(f)(3) the
     household is the individual and, if living with the individual, (i) the
     spouse, (ii) the individual's children under the age limit and (iii) for
     an individual under the age limit, their parents and their siblings under

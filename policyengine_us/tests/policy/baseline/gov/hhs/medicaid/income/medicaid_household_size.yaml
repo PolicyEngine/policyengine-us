@@ -98,311 +98,286 @@
   output:
     medicaid_household_size: 1
 
-# Non-filer members in 42 CFR 435.603(f)(3) form a union, even for young parents.
-- name: Non-filing adults and their child keep the ordinary household size.
+# 42 CFR 435.603(f)(3): a non-filer's household is the individual and, if
+# living with them, their spouse, their children under 19 and, for an
+# individual under 19, their parents and siblings under 19. Each person counts
+# once, even when they fit more than one of those groups, such as a spouse who
+# is also under 19 or a parent who is also under 19. Without parent ids the
+# parents and children come from the family (is_parent and age). Cases 4-11
+# are the household examples in issue 9562.
+- name: Case 4, non-filing adults and their child keep the ordinary household size.
   period: 2025
   input:
     people:
-      parent1:
+      person1:
         age: 35
-      parent2:
+      person2:
         age: 35
-      child:
+      person3:
         age: 1
     marital_units:
-      couple:
-        members:
-        - parent1
-        - parent2
-      child_unit:
-        members:
-        - child
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child
+        members: [person1, person2, person3]
         state_code: CA
   output:
     tax_unit_size: 3
     tax_unit_is_filer: false
-    medicaid_uses_non_filer_rules:
-    - true
-    - true
-    - false
-    medicaid_household_size:
-    - 3
-    - 3
-    - 3
-- name: Filing adults and their child keep the ordinary household size.
+    medicaid_uses_non_filer_rules: [true, true, false]
+    # Each adult: self, spouse and child. The child: the tax household of 3.
+    medicaid_household_size: [3, 3, 3]
+
+- name: Case 5, filing adults and their child keep the ordinary household size.
   period: 2025
   input:
     people:
-      parent1:
+      person1:
         age: 35
-        employment_income: 50000
-      parent2:
+        employment_income: 50_000
+      person2:
         age: 35
-      child:
+      person3:
         age: 1
     marital_units:
-      couple:
-        members:
-        - parent1
-        - parent2
-      child_unit:
-        members:
-        - child
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child
+        members: [person1, person2, person3]
         state_code: CA
   output:
     tax_unit_size: 3
     tax_unit_is_filer: true
-    medicaid_uses_non_filer_rules:
-    - false
-    - false
-    - false
-    medicaid_household_size:
-    - 3
-    - 3
-    - 3
-- name: Non-filing young spouses are counted once without parent-count inputs.
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [3, 3, 3]
+
+- name: Case 6, non-filing 18-year-old spouses without parent-count inputs are each counted once.
   period: 2025
   input:
     people:
-      parent1:
+      person1:
         age: 18
-      parent2:
+      person2:
         age: 18
-      child:
+      person3:
         age: 1
     marital_units:
-      couple:
-        members:
-        - parent1
-        - parent2
-      child_unit:
-        members:
-        - child
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child
+        members: [person1, person2, person3]
         state_code: CA
   output:
     tax_unit_size: 3
     tax_unit_is_filer: false
-    medicaid_uses_non_filer_rules:
-    - true
-    - true
-    - false
-    medicaid_household_size:
-    - 3
-    - 3
-    - 3
-- name: Filing young spouses keep their tax-unit household size.
+    medicaid_uses_non_filer_rules: [true, true, false]
+    # Each spouse: self, spouse and child. Main also counted the spouse as a
+    # family member under 19, giving 4.
+    medicaid_household_size: [3, 3, 3]
+
+- name: Case 7, filing 18-year-old spouses keep their tax household size.
   period: 2025
   input:
     people:
-      parent1:
+      person1:
         age: 18
-        employment_income: 50000
-      parent2:
+        employment_income: 50_000
+      person2:
         age: 18
-      child:
+      person3:
         age: 1
     marital_units:
-      couple:
-        members:
-        - parent1
-        - parent2
-      child_unit:
-        members:
-        - child
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child
+        members: [person1, person2, person3]
         state_code: CA
   output:
     tax_unit_size: 3
     tax_unit_is_filer: true
-    medicaid_uses_non_filer_rules:
-    - false
-    - false
-    - false
-    medicaid_household_size:
-    - 3
-    - 3
-    - 3
-- name: Non-filing young parents and their child are each counted once.
+    medicaid_uses_non_filer_rules: [false, false, false]
+    medicaid_household_size: [3, 3, 3]
+
+- name: Case 8, non-filing 18-year-old parents and their child are each counted once.
   period: 2025
   input:
     people:
-      parent1:
+      person1:
         age: 18
         own_children_in_household: 1
-      parent2:
+      person2:
         age: 18
         own_children_in_household: 1
-      child:
+      person3:
         age: 1
     marital_units:
-      couple:
-        members:
-        - parent1
-        - parent2
-      child_unit:
-        members:
-        - child
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child
+        members: [person1, person2, person3]
         state_code: CA
   output:
     tax_unit_size: 3
     tax_unit_is_filer: false
-    medicaid_uses_non_filer_rules:
-    - true
-    - true
-    - false
-    medicaid_household_size:
-    - 3
-    - 3
-    - 3
-- name: Non-filing young parents add an expected child after counting members once.
+    medicaid_uses_non_filer_rules: [true, true, false]
+    # Each parent: self, spouse and child. Main gave 6: the spouse, both
+    # parents and the three people under 19.
+    medicaid_household_size: [3, 3, 3]
+
+- name: Case 9, non-filing 18-year-old parents add an expected child after counting members once.
   period: 2025
   input:
     people:
-      parent1:
+      person1:
         age: 18
         own_children_in_household: 1
-      parent2:
+      person2:
         age: 18
         own_children_in_household: 1
         current_pregnancies: 1
-      child:
+      person3:
         age: 1
     marital_units:
-      couple:
-        members:
-        - parent1
-        - parent2
-      child_unit:
-        members:
-        - child
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child
+        members: [person1, person2, person3]
         state_code: CA
   output:
     tax_unit_size: 3
     tax_unit_is_filer: false
-    medicaid_uses_non_filer_rules:
-    - true
-    - true
-    - false
-    medicaid_household_size:
-    - 4
-    - 4
-    - 4
-- name: Non-filing adult and young spouse are each counted once.
+    medicaid_uses_non_filer_rules: [true, true, false]
+    # Case 8's 3 members plus the 1 expected child, which California counts in
+    # every member's household (ca_medicaid_household_pregnancies).
+    medicaid_household_size: [4, 4, 4]
+
+- name: Case 10, a non-filing adult and an 18-year-old spouse are each counted once.
   period: 2025
   input:
     people:
-      parent1:
+      person1:
         age: 35
         own_children_in_household: 1
-      parent2:
+      person2:
         age: 18
         own_children_in_household: 1
-      child:
+      person3:
         age: 1
     marital_units:
-      couple:
-        members:
-        - parent1
-        - parent2
-      child_unit:
-        members:
-        - child
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child
+        members: [person1, person2, person3]
         state_code: CA
   output:
     tax_unit_size: 3
     tax_unit_is_filer: false
-    medicaid_uses_non_filer_rules:
-    - true
-    - true
-    - false
-    medicaid_household_size:
-    - 3
-    - 3
-    - 3
+    medicaid_uses_non_filer_rules: [true, true, false]
+    # Each parent: self, spouse and child. Main gave the adult 4 (the spouse
+    # again as a member under 19) and the 18-year-old 5.
+    medicaid_household_size: [3, 3, 3]
 
-- name: Young non-filing spouses on separate tax returns are each counted once.
+- name: Case 11, non-filing 18-year-old spouses on separate tax returns are each counted once.
   period: 2025
   input:
     people:
-      parent1:
+      person1:
         age: 18
         own_children_in_household: 1
-      parent2:
+      person2:
         age: 18
         own_children_in_household: 1
-      child:
+      person3:
         age: 1
     marital_units:
-      couple:
-        members:
-        - parent1
-        - parent2
-      child_unit:
-        members:
-        - child
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
     tax_units:
-      return1:
-        members:
-        - parent1
-        - child
+      tax_unit1:
+        members: [person1, person3]
         cohabitating_spouses: true
-      return2:
-        members:
-        - parent2
+      tax_unit2:
+        members: [person2]
         cohabitating_spouses: true
     households:
       household:
-        members:
-        - parent1
-        - parent2
-        - child
+        members: [person1, person2, person3]
         state_code: CA
   output:
-    tax_unit_is_filer:
-    - false
-    - false
-    medicaid_household_size:
-    - 3
-    - 3
-    - 3
+    tax_unit_is_filer: [false, false]
+    # The cohabiting spouse on the other return is the spouse (42 CFR
+    # 435.603(f)(4)), counted once with the child.
+    medicaid_household_size: [3, 3, 3]
+
+# A Household API partner reported this household (issue 9562): a New Jersey
+# parent and an 18-year-old child with no relationship or tax-role inputs.
+- name: Case 12, a New Jersey parent and an 18-year-old with no role inputs are a household of two.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 31_000
+      person2:
+        age: 18
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Without marital units or roles, the model takes the 18-year-old as the
+    # parent's spouse, so the return is joint and $31,000 is below the joint
+    # filing threshold: both use the non-filer rules. Main counted the
+    # 18-year-old as both spouse and member under 19, giving the parent 3.
+    medicaid_household_size: [2, 2]
+
+- name: Case 13, an 18-year-old taken as the spouse on a head of household return counts once as the parent's child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        own_children_in_household: 1
+      person2:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # The model still takes the 18-year-old as the tax unit spouse, but the
+    # supplied filing status isn't joint, so neither is counted as the other's
+    # spouse. With no income neither files. The 18-year-old is the parent's
+    # child under 19 (435.603(f)(3)(ii)) and the parent is the 18-year-old's
+    # parent ((f)(3)(iii)).
+    is_tax_unit_spouse: [false, true]
+    tax_unit_is_filer: false
+    medicaid_uses_non_filer_rules: [true, true]
+    medicaid_household_size: [2, 2]

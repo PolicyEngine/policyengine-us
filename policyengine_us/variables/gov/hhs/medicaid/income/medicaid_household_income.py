@@ -35,9 +35,11 @@ class medicaid_household_income(Variable):
         "amounts are added only when positive (each child's, and each "
         "couple's parents' netted), so a relative outside the household "
         "cannot lower its income. The applicant's own amount and their spouse's "
-        "are added signed and excluded from the relatives' groups. A parent "
-        "who is also child-age is counted only as a parent. Unmarried "
-        "co-resident parents are each counted only when positive."
+        "(the other head or spouse of a joint return, or a cohabiting spouse "
+        "filing separately) are added signed and excluded from the relatives' "
+        "groups. In a child-age applicant's household, a parent who is also "
+        "child-age is counted only as a parent. Unmarried co-resident parents "
+        "are each counted only when positive."
     )
     definition_period = YEAR
     reference = (
@@ -59,13 +61,17 @@ class medicaid_household_income(Variable):
             person("medicaid_magi_person", period),
         )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        head_or_spouse_count = head_or_spouse.astype(int)
-        head_spouse_income = person.tax_unit.sum(head_or_spouse_count * member_income)
-        same_unit_spouse_income = head_or_spouse_count * head_spouse_income - (
-            head_or_spouse_count * member_income
+        head_spouse_count = person.tax_unit("head_spouse_count", period)
+        head_spouse_income = person.tax_unit.sum(head_or_spouse * member_income)
+        # As in medicaid_household_size, the other head or spouse is a
+        # same-unit spouse only on a joint return (head_spouse_count 2).
+        same_unit_spouse_income = where(
+            head_or_spouse & (head_spouse_count == 2),
+            head_spouse_income - member_income,
+            0,
         )
         cohabitating_separate = person.tax_unit("cohabitating_spouses", period) & (
-            person.tax_unit("head_spouse_count", period) == 1
+            head_spouse_count == 1
         )
         claimed_by_another_return = person(
             "claimed_as_dependent_on_another_return", period
