@@ -95,6 +95,9 @@ GROSS_INCOME_IN_RESOURCES = {
     # employment_income holds these benefits: irs_employment_income subtracts
     # them, and the part above the IRC 129 exclusion returns here.
     "taxable_dependent_care_benefits": "employment_income",
+    # strike_benefits holds the whole union payment, the gift part included;
+    # gross income takes the part that is not a gift.
+    "taxable_strike_benefits": "strike_benefits",
     "self_employment_income": "self_employment_income",
     "sstb_self_employment_income": "sstb_self_employment_income",
     "partnership_s_corp_income": "partnership_s_corp_income",
@@ -114,6 +117,9 @@ GROSS_INCOME_IN_RESOURCES = {
     "illicit_income": "illicit_income",
     "taxable_retirement_distributions": "retirement_distributions",
     "miscellaneous_income": "miscellaneous_income",
+    # Winnings before losses. Filers deduct losses only as an itemized
+    # deduction, and neither net income total subtracts them.
+    "gambling_winnings": "gambling_winnings",
     "ak_permanent_fund_dividend": "ak_permanent_fund_dividend",
     "taxable_alimony_income": "alimony_income",
     "military_retirement_income": "military_retirement_income",
@@ -130,6 +136,7 @@ GROSS_INCOME_OUTSIDE_RESOURCES = {
 }
 
 # Market income inputs: the entity each sits on, and whether it can be a loss.
+GAMBLING_WINNINGS = ("gambling_winnings", "person", False)
 MARKET_SOURCES = [
     ("partnership_income", "person", True),
     ("s_corp_income", "person", True),
@@ -137,6 +144,7 @@ MARKET_SOURCES = [
     ("non_sch_d_capital_gains", "person", False),
     ("other_net_gain", "tax_unit", True),
     ("disability_benefits", "person", False),
+    GAMBLING_WINNINGS,
 ]
 
 # Cash payments, with the state that pays each and a year it pays.
@@ -318,6 +326,7 @@ def market_situation(name, entity, amount, year=2026, state="TX"):
 )
 @example(source=MARKET_SOURCES[0], magnitude=287_010, loss=False)
 @example(source=MARKET_SOURCES[0], magnitude=40_000, loss=True)
+@example(source=GAMBLING_WINNINGS, magnitude=30_000, loss=False)
 def test_market_income_moves_both_totals_dollar_for_dollar(source, magnitude, loss):
     name, entity, can_be_loss = source
     amount = -magnitude if loss and can_be_loss else magnitude
@@ -335,6 +344,9 @@ def test_market_income_moves_both_totals_dollar_for_dollar(source, magnitude, lo
     state=st.sampled_from(STATES),
 )
 @example(source=MARKET_SOURCES[0], amount=287_010, state="TN")
+# Texas taxes no income; Minnesota taxes the winnings too.
+@example(source=GAMBLING_WINNINGS, amount=30_000, state="TX")
+@example(source=GAMBLING_WINNINGS, amount=30_000, state="MN")
 def test_cash_income_never_lowers_spm_net_income(source, amount, state):
     """The tax on a source never exceeds the source in SPM resources.
 
