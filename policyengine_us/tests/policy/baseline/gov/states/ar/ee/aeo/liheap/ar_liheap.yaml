@@ -32,7 +32,7 @@
   output:
     ar_liheap_household_size: 2
     ar_liheap_countable_income: 4_800
-    ar_liheap_income_limit: 36_840
+    ar_liheap_income_limit: 36_834
     ar_liheap_matrix_amount: 227
     ar_liheap: 227
 
@@ -120,7 +120,8 @@
   output:
     ar_liheap: [308, 0]
 
-# FY2025: wages 21000x0.8=16800, MCI 1400; size-one limit 2251 (x12=27012).
+# FY2025: wages 21000x0.8=16800, MCI 1400; size-one limit 27011 (chart 2251 x12=27012, stopped at
+# HHS's FY2025 60% state median income amount).
 # FFY2025 electric row 1390-1449 pays 91 for 1&2 (the FY2026 row pays 88).
 - name: Case 6, FY2025 electric grant for a one person household.
   period: 2025
@@ -144,7 +145,7 @@
   output:
     ar_liheap_household_size: 1
     ar_liheap_countable_income: 16_800
-    ar_liheap_income_limit: 27_012
+    ar_liheap_income_limit: 27_011
     ar_liheap_eligible: true
     ar_liheap_matrix_amount: 91
     ar_liheap: 91
@@ -187,6 +188,7 @@
     ar_liheap: 64
 
 # Boundary: FY2025 size 7 uses 150% FPG, 47340x1.5/12=5917.50 -> 5918 (x12=71016); 60% SMI would be 5844.
+# The federal maximum, 150% of the 2024 guideline (47340x1.5=71010), stops the limit at 71010.
 # Wages (50000+38500)x0.8=70800, MCI 5900, so eligible; FFY2025 electric 5140-Max pays 60 for 5&up.
 - name: Case 8, FY2025 seven person household between the SMI and FPG limits is paid.
   period: 2025
@@ -235,13 +237,13 @@
   output:
     ar_liheap_household_size: 7
     ar_liheap_countable_income: 70_800
-    ar_liheap_income_limit: 71_016
+    ar_liheap_income_limit: 71_010
     ar_liheap_eligible: true
     ar_liheap_matrix_amount: 60
     ar_liheap: 60
 
 # FY2025 Medicare-net Social Security (plan 1.9 p6; manual 4.7.2 p59): 2025 Part B 185x12=2220;
-# 26400-2220=24180, MCI 2015; size-one limit 27012; FFY2025 gas 2010-2129 pays 73 for 1&2.
+# 26400-2220=24180, MCI 2015; size-one limit 27011; FFY2025 gas 2010-2129 pays 73 for 1&2.
 - name: Case 9, FY2025 Social Security net of the Part B premium sets the gas grant.
   period: 2025
   input:
@@ -265,7 +267,7 @@
   output:
     ar_liheap_household_size: 1
     ar_liheap_countable_income: 24_180
-    ar_liheap_income_limit: 27_012
+    ar_liheap_income_limit: 27_011
     ar_liheap_eligible: true
     ar_liheap_matrix_amount: 73
     ar_liheap: 73
@@ -484,7 +486,7 @@
 
 # Current application section III excludes under-18 earnings whether or not the member
 # attends school, so countable income is 0. The FY2026 natural gas matrix awards 308 at
-# zero income for size two (limit 3_070 x 12 = 36_840).
+# zero income for size two (limit 36_834, HHS's 60% state median income amount).
 - name: Case 17, age 17 nonstudent earnings determine the final heating award.
   period: 2026
   input:
@@ -511,13 +513,13 @@
         state_code: AR
   output:
     ar_liheap_countable_income: 0
-    ar_liheap_income_limit: 36_840
+    ar_liheap_income_limit: 36_834
     ar_liheap_eligible: true
     ar_liheap: 308
 
 # At 18, a member who is not in high school (manual section 4.7, p56) or college
 # reports work income: wages 48_000 x 0.8 = 38_400 exceed the two-person FY2026 limit
-# 36_840, so no grant is paid.
+# 36_834, so no grant is paid.
 - name: Case 18, age 18 nonstudent earnings determine the final heating award.
   period: 2026
   input:
@@ -545,7 +547,7 @@
         state_code: AR
   output:
     ar_liheap_countable_income: 38_400
-    ar_liheap_income_limit: 36_840
+    ar_liheap_income_limit: 36_834
     ar_liheap_eligible: false
     ar_liheap: 0
 

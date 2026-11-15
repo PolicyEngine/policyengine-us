@@ -5,6 +5,12 @@ metadata:
   breakdown:
   - state_code
   reference:
+    - title: New York Medicaid Eligibility Changes under the Affordable Care Act, III.B.1(g)
+      href: https://healthweb-back.health.ny.gov/health_care/medicaid/publications/adm/13adm3.htm
+    - title: New York 2017 MAGI population income standards
+      href: https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/17ma005attach4.pdf#page=1
+    - title: "New York 2026 Medicaid income standards #page 3-4"
+      href: https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/26ma05_att1.pdf#page=3
     - title: Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022 | KFF
       href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=36
     - title: medicaidscreener.com
@@ -89,7 +95,9 @@ NM:
 NV:
   2018-01-01: -.inf
 NY:
-  2018-01-01: -.inf
+  2013-01-01: -.inf
+  # Includes the five-percentage-point MAGI disregard.
+  2014-01-01: 1.55
 OH:
   2018-01-01: -.inf
 OK:
