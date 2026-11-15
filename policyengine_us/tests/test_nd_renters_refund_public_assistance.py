@@ -4,7 +4,10 @@ N.D.C.C. 57-02-08.1(5)(c) (https://ndlegis.gov/cencode/t57c02.pdf#page=16)
 counts income "including any county, state, or federal public assistance
 benefits" and excludes "any amount excluded from income by federal or state
 law with the exception of income from social security benefits". No federal or
-North Dakota law excludes SSI, TANF or general assistance from income.
+North Dakota statute or regulation excludes SSI or TANF from income. Congress
+wrote the IRS's general welfare exclusion into law for some payments, among them
+disaster relief payments (26 U.S.C. 139) and Indian general welfare benefits
+(26 U.S.C. 139E), so general assistance counts outside those sections.
 7 U.S.C. 2017(b) excludes SNAP from income "for any purpose under any Federal,
 State, or local laws", and 42 U.S.C. 8624(f)(1) excludes LIHEAP, including
 North Dakota's, "for any purpose under any Federal or State law". SSI and
@@ -17,7 +20,9 @@ Four invariants hold for every input.
 1. A dollar of a tax unit's SSI, general assistance or TANF share raises its
    renter's refund income by at most a dollar and never lowers it. It raises
    it by exactly a dollar when the income without the benefits exceeds zero,
-   since only the floor at zero can absorb any of it.
+   since only the floor at zero can absorb any of it. For a renter alone in a
+   tax unit, the test checks the income itself: wages, public assistance and
+   the TANF share, less medical costs, and at least zero.
 2. SNAP and North Dakota LIHEAP never change renter's refund income or the
    refund.
 3. Public assistance never raises the refund, since the refund falls as
@@ -277,6 +282,26 @@ def test_public_assistance_counts_dollar_for_dollar_above_the_floor(units):
     above_floor = without_benefits > 0
     np.testing.assert_allclose(
         added[above_floor], benefits[above_floor], atol=TOLERANCE
+    )
+    # A renter's tax unit has no exclusions or premiums, so its income is its
+    # wages, public assistance and TANF share less medical costs, at least zero.
+    # This pins where the floor applies, before or after public assistance.
+    rows = tax_unit_rows(units)
+    renters = [row for row, (_, members, _) in enumerate(rows) if members == 1]
+    wages_less_medical = np.array(
+        [
+            units[rows[row][0]]["renter"]["employment_income"]
+            - units[rows[row][0]]["renter"]["other_medical_expenses"]
+            for row in renters
+        ]
+    )
+    np.testing.assert_allclose(
+        with_benefits[renters],
+        np.maximum(wages_less_medical + benefits[renters], 0),
+        atol=TOLERANCE,
+    )
+    np.testing.assert_allclose(
+        without_benefits[renters], np.maximum(wages_less_medical, 0), atol=TOLERANCE
     )
     # SNAP and LIHEAP stay out of income and the refund.
     np.testing.assert_allclose(without_snap_or_liheap, with_benefits, atol=TOLERANCE)
