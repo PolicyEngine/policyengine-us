@@ -1,3 +1,49 @@
+## [2.135.14] - 2026-11-15
+
+### Fixed
+
+- Count Montana casualty losses once per joint return and allocate separate-return losses to the owning spouse, after the $100 reduction and 10% Montana AGI floor.
+
+
+## [2.135.13] - 2026-11-15
+
+### Fixed
+
+- Correct Hawaii's 2018 federal poverty guideline increment for each additional person from $4,810 to $4,970.
+
+
+## [2.135.12] - 2026-11-15
+
+### Fixed
+
+- Restore published New York HEAP income eligibility and Tier I thresholds at listed household sizes for FY2017–FY2023.
+- Restore Washington's FY2017 SNAP utility allowance amounts.
+- Correct Massachusetts Senior Circuit Breaker income, credit, and assessed property limits for 2017 through 2020.
+- Correct Ohio Works First payment standards from January 2026 using the official monthly schedule.
+- Update South Dakota TANF parent-unit payment standards effective July 1, 2026.
+
+
+## [2.135.11] - 2026-11-15
+
+### Fixed
+
+- Supply the count of qualifying individuals in the Kentucky dependent care credit tests that check the federal credit.
+
+
+## [2.135.10] - 2026-11-15
+
+### Fixed
+
+- Correct Michigan's 2017 homestead property tax credit maximum to $1,200.
+
+
+## [2.135.9] - 2026-11-15
+
+### Fixed
+
+- Cap Montana's 2018–2023 state and local tax deduction once per joint return and at $5,000 per separate column. For 2017–2023, add the larger of sales taxes and local income taxes to real estate taxes.
+
+
 ## [2.135.8] - 2026-11-15
 
 ### Fixed
