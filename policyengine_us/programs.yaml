@@ -1046,7 +1046,15 @@ programs:
         variable: al_liheap
         parameter_prefix: gov.states.al.adeca.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2026 regular heating with the HUD allowance deduction and the funded IIJA supplement. Regular Cooling is a separate entry; crisis, weatherization and equipment assistance are out of scope.
+      - state: AL
+        status: partial
+        name: Alabama LIHEAP cooling
+        full_name: Alabama Low Income Home Energy Assistance Program Regular Cooling
+        variable: al_liheap_cooling
+        parameter_prefix: gov.states.al.adeca.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 Regular Cooling from the Electric column of the February 17, 2025 and May 15, 2026 charts, less the HUD allowance, plus the funded IIJA supplement, including nonsubsidized renters with energy costs in rent. Crisis cooling, fans, air conditioners and the discretionary $50 high-need addition are out of scope.
       - state: AK
         status: partial
         name: Alaska HAP
