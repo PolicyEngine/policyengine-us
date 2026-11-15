@@ -13,8 +13,10 @@ class nd_renters_refund_federally_excluded_income(Variable):
         "from renter's refund income: the payroll deductions federal law "
         "excludes from wages, tax-exempt interest, the nontaxable part of "
         "pensions and of retirement account distributions, disability "
-        "benefits from a plan the recipient paid for, and alimony under a "
-        "divorce or separation instrument executed after 2018. Each part is at "
+        "benefits from a plan the recipient paid for, alimony under a divorce "
+        "or separation instrument executed after 2018, and the strike benefits "
+        "federal gross income leaves out (under current law, the part a union "
+        "paid as a gift). Each part is at "
         "least zero and at most the market_income component it comes from. "
         "nd_renters_refund_income also subtracts the federal exclusions the "
         "model deducts above the line."
@@ -45,6 +47,9 @@ class nd_renters_refund_federally_excluded_income(Variable):
         "https://www.law.cornell.edu/uscode/text/26/104#a_3",
         # Alimony under an instrument executed after 2018.
         "https://www.irs.gov/taxtopics/tc452",
+        # Strike benefits a union paid as a gift (IRC 102(a)).
+        "https://www.law.cornell.edu/uscode/text/26/102#a",
+        "https://www.irs.gov/pub/irs-prior/p525--2025.pdf#page=36",
     )
     defined_for = StateCode.ND
 
@@ -98,6 +103,13 @@ class nd_renters_refund_federally_excluded_income(Variable):
         excluded_alimony = excluded_part(
             alimony, alimony - person("taxable_alimony_income", period)
         )
+        # Strike benefits federal gross income leaves out: under current law
+        # the part a union paid as a gift (IRC 102(a); Pub. 525), and the
+        # whole amount under a reform that excludes them from gross income.
+        strike_benefits = excluded_part(
+            person("strike_benefits", period),
+            person("strike_benefits_excluded_from_gross_income", period),
+        )
         return (
             payroll_exclusions
             + interest
@@ -105,4 +117,5 @@ class nd_renters_refund_federally_excluded_income(Variable):
             + retirement_distributions
             + disability_benefits
             + excluded_alimony
+            + strike_benefits
         )

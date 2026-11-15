@@ -1,3 +1,54 @@
+## [2.135.8] - 2026-11-15
+
+### Fixed
+
+- Leave tax unit dependents' own income and expenses out of the DC, Delaware and Ohio subtractions on the filers' return, and their contributions out of Ohio's 529 deduction. Count the DC disability income exclusion once per return, split between the filers by their capped payments.
+
+
+## [2.135.7] - 2026-11-15
+
+### Fixed
+
+- Correct 2017 personal-exemption phase-outs, tuition deduction accounting, CTC identification, retirement limits and Saver's Credit histories. Apply inclusive Saver's Credit bands to fractional AGI, enforce the pre-2020 traditional IRA age limit, cap federal and California dependent-care exclusions by independently supplied qualified expenses, and prevent expense reuse in the care credit. Keep the employer-assistance expense input independent of modeled childcare subsidies to avoid an adjusted-gross-income cycle, and document the zero default for unreported costs. Add annual federal tax reference cases for 2017–2026. Existing callers that report positive `dependent_care_employer_benefits` must also supply independently known `dependent_care_assistance_qualified_expenses`. If callers omit qualified costs, the model uses zero, excludes none of the employer benefits, and treats all reported benefits as taxable. Earlier calculations could exclude benefits under the dollar and earnings limits without this independent expense input.
+
+
+## [2.135.6] - 2026-11-15
+
+### Fixed
+
+- Limited Head Start, foster care, migrant, runaway and child-level homeless school-meal eligibility to each qualifying child, and required Head Start enrollment. Counted current foster care from October 2010 in place of past foster care, and added an is_homeless_child input and a child_categorical_eligibility parameter list.
+
+
+## [2.135.5] - 2026-11-15
+
+### Fixed
+
+- Restore Colorado Works grant amounts from September 2018 and date the 2022 payment increase to July 1.
+- Count strike and lockout benefits other than gifts in federal gross income and as earned income, and carry them through the state income tax bases that list federal income sources, except Pennsylvania's, which leaves them out of taxable income and counts them in Tax Forgiveness eligibility income; Utah, Montana and Arizona property relief now count only the gift part as nontaxable income, and North Dakota's renter's refund leaves it out. Leave strike benefits out of the kiddie tax support test and the federal and California AMT child exemptions. Count an adult dependent's own adjusted gross income in Utah homeowner's and renter's relief household income, and leave out the income of a parent or grandparent of the claimant or spouse.
+- Use the published 2016 HHS household-size poverty guideline tables in the shared FPG helper and public tax-unit and SPM-unit guideline variables.
+
+
+## [2.135.4] - 2026-11-15
+
+### Fixed
+
+- Corrected Medicaid parent income limits for Utah, Tennessee and Virginia in 2018–2020 using state percentage and household-size dollar standards. Started the Medicaid adult group in Virginia on January 1, 2019, and in Utah on April 1, 2019 at 95% of the poverty guideline, rising to 133% on January 1, 2020.
+
+
+## [2.135.3] - 2026-11-15
+
+### Fixed
+
+- Fix Arkansas income-tax indexing projections and Kentucky's 2021 dependent care credit conformity.
+
+
+## [2.135.2] - 2026-11-15
+
+### Fixed
+
+- Apply District of Columbia, Georgia and Idaho rules for filers who can be claimed as dependents. Bar a dependent under 65 from claiming the DC property tax credit, and count the couple's whole rent and the home's whole tax bill in the claim. Deny DC's EITC without a qualifying child when another taxpayer can claim a filer, and remove the expired 2026 child tax credit amount. Exclude claimable filers' children from Georgia's child credit outside the filing exception while allowing otherwise qualifying children with ITINs. Apply Georgia's dependent exemption and low income credit exclusions, and count positive earnings before offsetting losses for its surplus refund. Exclude Idaho filers whom another taxpayer claims from the food tax credit, and apply the dependent care deduction and rebate rules. Exclude nonqualifying child-only daycare even when a disabled adult qualifies for care.
+
+
 ## [2.135.1] - 2026-11-15
 
 ### Fixed

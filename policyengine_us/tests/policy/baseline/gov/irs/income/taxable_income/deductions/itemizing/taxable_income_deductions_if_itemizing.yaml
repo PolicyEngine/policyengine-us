@@ -28,3 +28,45 @@
     # 3,500 of itemized deductions and 1,000 of QBID; the wagering losses
     # are not added a second time.
     taxable_income_deductions_if_itemizing: 4_500
+
+
+# Component premises: the 2017 Schedule A instructions, physical page 13,
+# line 28, allow gambling losses up to winnings. Physical page 14 includes
+# line 28 in the itemized total before the section 68 reduction. The known
+# AGI is below the 261,500 single-filer threshold; other component amounts
+# are fixed independently. This case does not derive filing eligibility or AGI.
+- name: Case 4, 2017 wagering losses enter the itemized deduction once.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        gambling_winnings: 1_000
+        gambling_losses: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+        charitable_deduction: 3_000
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+        claim_of_right_deduction: 0
+        qualified_business_income_deduction: 0
+        tip_income_deduction: 0
+        overtime_income_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Allowed losses: min(500, 1,000) = 500. Total: 3,000 + 500 = 3,500.
+    # AGI is below the phaseout threshold, so there is no reduction. The
+    # outer aggregate must not add the same 500 of losses a second time.
+    total_itemized_taxable_income_deductions: 3_500
+    itemized_taxable_income_deductions: 3_500
+    taxable_income_deductions_if_itemizing: 3_500
