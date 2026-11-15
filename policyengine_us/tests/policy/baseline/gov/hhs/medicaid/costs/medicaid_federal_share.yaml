@@ -442,17 +442,18 @@
     medicaid_enrolled: [true, true, true]
     medicaid_federal_share: [0.9, 0.7, 0.7]
 
-# Indiana's adult group covers adults to 133% FPL plus the 5 percentage point
-# disregard, with no higher optional group (CMS's April 2018 eligibility
-# levels list it at 133%), so an Indiana adult at 136% FPL gets the 2019
-# expansion FMAP of 93%.
-- name: An Indiana adult at 136% FPL receives the expansion FMAP in 2019.
+# Through 2020 Indiana applied a disregard of 5 percent of the 133% FPL
+# standard (KFF, January 2019, Table 5 note 5), so its adult group ran to
+# about 139.65% FPL (stored as 1.39) with no higher optional group. An Indiana
+# adult at 138.5% FPL is in the adult group and gets the 2019 expansion FMAP
+# of 93%.
+- name: An Indiana adult at 138.5% FPL receives the expansion FMAP in 2019.
   period: 2019
   input:
     state_code: IN
     age: 30
     medicaid_household_size: 1
-    medicaid_income_level: 1.36
+    medicaid_income_level: 1.385
     takes_up_medicaid_if_eligible: true
   output:
     medicaid_category: ADULT
@@ -501,12 +502,14 @@
 
 # Lowering the expansion FMAP income limit to 100% FPL makes Wisconsin's 100%
 # adult limit reach it, so a Wisconsin adult at 90% FPL gets the expansion
-# FMAP, while a New York adult at 120% FPL is now above it and gets New York's
+# FMAP. New York's 138% adult limit now exceeds it, so the disregard comes off
+# and New York's limit is 95% FPL: a New York adult at 120% FPL gets New York's
 # regular 50% FMAP.
 - name: A 100% FPL expansion FMAP income limit moves both the state test and the person test.
   period: 2026
   input:
-    gov.hhs.medicaid.cost_share.expansion_fmap_income_limit: 1.00
+    gov.hhs.medicaid.cost_share.expansion_fmap_income_limit.WI: 1.00
+    gov.hhs.medicaid.cost_share.expansion_fmap_income_limit.NY: 1.00
     people:
       person1:
         age: 30

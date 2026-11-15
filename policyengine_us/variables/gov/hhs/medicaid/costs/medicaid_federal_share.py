@@ -61,15 +61,16 @@ class medicaid_federal_share(Variable):
         # covered through an optional group at the regular FMAP. CMS also
         # requires a state to cover adults to the full group limit: adults in
         # a state with a lower limit are covered through a section 1115
-        # demonstration at the regular FMAP. The group limit includes the 5
-        # percentage point MAGI disregard. Where the state's adult limit
-        # exceeds it, the state covers a higher optional adult group, and
-        # 42 CFR 435.603(d)(4) applies the disregard to that group instead,
-        # so the subclause (VIII) group stops at the limit without it.
+        # demonstration at the regular FMAP. The group limit includes the
+        # state's MAGI disregard (5 percentage points, or Indiana's 5 percent
+        # of the standard through 2020). Where the state's adult limit exceeds
+        # it, the state covers a higher optional adult group, and 42 CFR
+        # 435.603(d)(4) applies the disregard to that group instead, so the
+        # subclause (VIII) group stops at the limit without it.
         adult_limit = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.adult.income_limit[state]
-        group_limit = p.expansion_fmap_income_limit
+        group_limit = p.expansion_fmap_income_limit[state]
         state_qualifies = where(
             p.expansion_fmap_requires_full_adult_group,
             adult_limit >= group_limit,
