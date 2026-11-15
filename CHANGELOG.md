@@ -1,3 +1,10 @@
+## [2.135.0] - 2026-11-15
+
+### Added
+
+- Add Virginia Energy Assistance Program cooling assistance electric bill payment.
+
+
 ## [2.134.0] - 2026-11-15
 
 ### Added
