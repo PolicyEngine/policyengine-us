@@ -1,3 +1,10 @@
+## [2.135.11] - 2026-11-15
+
+### Fixed
+
+- Supply the count of qualifying individuals in the Kentucky dependent care credit tests that check the federal credit.
+
+
 ## [2.135.10] - 2026-11-15
 
 ### Fixed
