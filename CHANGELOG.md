@@ -1,3 +1,40 @@
+## [2.121.2] - 2026-11-13
+
+### Fixed
+
+- Apply IRC 36B(c)(1)(D) to the premium tax credit: a filer who can be claimed as a dependent on another return is outside the tax family (26 CFR 1.36B-1(d)(2)), so the credit uses the tax family size for the poverty line and the coverage family's benchmark premium, on a joint return the other spouse keeps the credit, and the Washington, Massachusetts, Connecticut, Colorado, Maryland, California, New Mexico, Vermont and New Jersey premium programs follow their own rules for that person.
+
+  Preserve supplied benchmark premiums, NY dependent predicates and Medicaid MAGI; rank only enrolled children; test every insured member for shared-policy CSR eligibility; infer both minor joint filers; and allocate shared premiums by coverage month, with zero allocation for empty enrollment. A supplied pays_aca_premium of true marks a Marketplace enrollee, and a supplied annual or monthly premium for a tax unit in which the model finds no enrollee, with enrollment not supplied, is the tax family's, as before enrollment was modeled.
+
+  Count enrolled nonpayers in Washington Cascade Care Savings Group 2 before applying the household premium cap.
+
+  Complete partially inferred joint ACA filers without an adult age cutoff, and use the completed set for tax-family membership and MAGI additions.
+
+  Honor supplied ACA family-tier child predicates for nonpayers in their supplied month while retaining uncapped calculated classifications in other months.
+
+
+## [2.121.1] - 2026-11-13
+
+### Changed
+
+- Disabled Hypothesis's explain phase for the owners' draw simulation properties while preserving shrinking.
+
+
+## [2.121.0] - 2026-11-13
+
+### Added
+
+- Add HUD's revised annual Fair Market Rent snapshots for FY2017 through FY2024 under the existing annual lookup convention.
+
+
+## [2.120.2] - 2026-11-13
+
+### Fixed
+
+- Add official Illinois CCAP provider reimbursement schedules from July 2021 through June 2025 while preserving the historical payment gate.
+- Correct Texas Medicaid parent income limits by household size from 2017 for identified parents in one-adult, one-parent households, retaining the existing annual FPG and rounding conventions.
+
+
 ## [2.120.1] - 2026-11-13
 
 ### Fixed
