@@ -1830,18 +1830,21 @@ candidates:
 - id: us-co:dr0104amt-line-2-duplication-bar
   program: income-tax
   years:
-    from: 2025
+    from: 2022
     to: 2026
     type: tax
   question: Does Colorado's AMT carry the federal deduction addback from the regular return, or reduce it for deductions
     already disallowed in federal alternative minimum taxable income?
   sources:
   - kind: statute
-    citation: C.R.S. 39-22-105(2)(a) and 39-22-104(3)(p.5)(I), (3)(p.7)(I)
+    citation: C.R.S. 39-22-105(2)(a) and 39-22-104(3)(p)(I), (3)(p.5)(I), (3)(p.7)(I), PDF pages 382-385, 401
     url: https://olls.info/crs/crs2025-title-39.pdf#page=401
   - kind: regulation
-    citation: 1 CCR 201-2, Rule 39-22-104(3)(p.5), paragraphs (1) and (3)
-    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12424&fileName=1%20CCR%20201-2#page=13
+    citation: 1 CCR 201-2, Rule 39-22-104(3)(p), paragraph (3), and Rule 39-22-104(3)(p.5), paragraphs (1) and (3), PDF pages 12-13
+    url: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12424&fileName=1%20CCR%20201-2#page=12
+  - kind: instructions
+    citation: 2024 DR 0104AMT, page 1, duplicate adjustments on lines 2 and 4
+    url: https://tax.colorado.gov/sites/tax/files/documents/DR_0104AMT_2024.pdf#page=1
   - kind: instructions
     citation: 2025 DR 0104AMT, page 1, duplicate adjustments on lines 2 and 4
     url: https://tax.colorado.gov/sites/tax/files/documents/DR0104AMT_2025.pdf#page=1
@@ -1849,31 +1852,30 @@ candidates:
     citation: 26 U.S.C. 56(b)(1)(A)(ii) and (D), federal AMT deduction disallowances
     url: https://uscode.house.gov/us/usc/119-124/t26/s56/
   readings:
-    statute: Colorado applies the section 39-22-104 modifications under section 39-22-105(2)(a). Filers compute the
-      deduction addback from deductions claimed under section 63, net of the existing Colorado state income tax
-      addback. The General Assembly does not expressly require substituting deductions allowed for federal AMT.
-    other: The Department of Revenue instructs filers to exclude duplicate federal adjustments. Reduce the deduction addback by overlapping
+    current-code: The code computes the deduction addback from regular-return section 63 deductions and carries
+      that amount into Colorado AMTI. It nets the state income tax addback under Rule 39-22-104(3)(p), paragraph (3),
+      and Rule 39-22-104(3)(p.5), paragraph (3)(a)(i), and continues that net calculation in 2026.
+    agency: The Department of Revenue instructs filers to exclude duplicate federal adjustments. Reduce the deduction addback by overlapping
       federal AMT disallowances, without subtracting the Colorado state income tax addback twice. This also removes
       the standard deduction addback, since filers cannot claim a standard deduction for federal AMT.
   example: A single itemizer with wages of $450,000, $5,000 state income tax, $5,000 property tax and $20,000 mortgage
     interest has Colorado AMTI of $354,900 in 2025 and $363,900 in 2026 under the retained reading. Removing the
     property tax overlap gives $349,900 and $358,900. Neither reading produces Colorado AMT for these households.
   pe_us:
-    follows: statute
+    follows: unknown
     code:
     - policyengine_us/variables/gov/states/co/tax/income/amt/co_alternative_minimum_taxable_income.py
     - policyengine_us/variables/gov/states/co/tax/income/additions/federal_deductions/co_federal_deduction_addback.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10099
     - https://github.com/PolicyEngine/policyengine-us/pull/10832
-  state: ruled
-  note: Retain the section 63 deduction base under the statute-first principle. The Department coordinates other
-    Colorado addbacks under Rule 39-22-104(3)(p.5) without addressing the federal AMT overlap. The Department tells
-    filers to exclude duplicates in the 2025 AMT instructions; we have not verified a 2026 AMT form. We check the
-    retained reading for itemizers and standard deduction filers in
-    policyengine_us/tests/policy/baseline/gov/states/co/tax/income/amt/co_alternative_minimum_taxable_income.yaml
-    and capture the deciding instruction excerpt in source_conflicts/sources/us-co/dr0104amt-2025-duplication-excerpt.txt.
-    We retain all formulas and parameter values.
+  state: open
+  note: The project lead must resolve whether the AMT duplication instruction changes this addback. The code
+    measures the (3)(d) state income tax addback against the federal AMT base but carries the (3)(p), (3)(p.5) and
+    (3)(p.7) addback from regular-return deductions. Whether the statutory bond-interest exception extends to this
+    deduction overlap remains open. We retain current formulas pending a ruling. The code applies this calculation
+    to itemizers from 2022 and standard deduction filers from 2023. We verified the 2024 and 2025 AMT instructions;
+    we have not verified the 2022, 2023 or 2026 AMT forms.
 - id: us-co:joint-childless-eitc-dependent-question
   program: income-tax
   years:

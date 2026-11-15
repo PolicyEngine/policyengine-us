@@ -100,11 +100,13 @@
 # DR 0104AMT line 2 takes DR 0104 lines 3 through 7 and 9, so it carries the
 # line 4 addback of federal deductions but not the line 2 state income tax
 # addback. Sales taxes are zero, so the SALT deduction is the 5,000 of state
-# income tax withheld plus the 5,000 of real estate tax. We retain the
-# section 63 deduction base under the statute-first principle; see entry
+# income tax withheld plus the 5,000 of real estate tax. The code retains
+# the regular-return deduction base pending a project-lead ruling; see entry
 # us-co:dr0104amt-line-2-duplication-bar in source_conflicts/candidates.yaml.
 # Removing the 5,000 property tax overlap gives 349,900 and 358,900; both
 # readings leave tentative minimum tax below normal tax in these cases.
+# The AMTI assertions distinguish the readings; the zero-AMT assertions
+# check integration with normal tax.
 - name: Colorado AMTI for a 2025 single itemizer with $450,000 of wages
   absolute_error_margin: 0.01
   period: 2025
@@ -135,8 +137,9 @@
     amt_income: 430_000
     amt_income_less_exemptions: 341_900
     # DR 0104 line 2 (39-22-104(3)(d)(I)): min(5,000, 30,000 - 15,750) = 5,000.
-    # Line 4 (39-22-104(3)(p.5)(I)(A)): 30,000 - 12,000 = 18,000, less the
-    # 5,000 line 2 addback = 13,000.
+    # Line 4 (39-22-104(3)(p.5)(I)(A)): 30,000 - 12,000 = 18,000.
+    # Under Rule 39-22-104(3)(p.5), paragraph (3)(a)(i), subtract the 5,000
+    # line 2 addback: 18,000 - 5,000 = 13,000.
     co_state_addback: 5_000
     co_federal_deduction_addback: 13_000
     # DR 0104AMT line 1 341,900 + line 2 13,000 - line 4 0.
@@ -176,7 +179,7 @@
     amt_income_less_exemptions: 339_900
     # DR 0104 line 2: min(5,000, 30,000 - 16,100) = 5,000. Line 4
     # (39-22-104(3)(p.7)(I)(A)): 30,000 - 1,000 = 29,000, less the 5,000
-    # line 2 addback = 24,000.
+    # line 2 addback = 24,000 under the existing net calculation.
     co_state_addback: 5_000
     co_federal_deduction_addback: 24_000
     # DR 0104AMT line 1 339,900 + line 2 24,000 - line 4 0.
@@ -185,9 +188,10 @@
     # Tentative minimum tax: 363,900 * 3.47% = 12,627.33 < 19,756.
     co_amt: 0
 
-# The same choice retains the section 63 standard deduction in the Colorado
+# The code also retains the section 63 standard deduction in the Colorado
 # addback even though federal AMT disallows it. The broad duplication reading
 # would remove the entire Colorado deduction addback in each case.
+# Neither household owes Colorado AMT under either reading.
 - name: Colorado AMTI retains the 2025 standard deduction addback
   period: 2025
   input:

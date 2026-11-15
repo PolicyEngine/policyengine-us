@@ -1,1 +1,1 @@
-Record Colorado's AMT deduction addback source conflict and test the retained statutory reading for itemizers and standard deduction filers.
+Record Colorado's open AMT deduction addback question and test current results for itemizers and standard deduction filers.
