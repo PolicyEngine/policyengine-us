@@ -1,0 +1,14 @@
+description: The Medicaid expansion FMAP income limit drops by this income disregard in states whose adult income limit exceeds it, since the disregard then applies to the higher optional adult group.
+metadata:
+  unit: /1
+  period: year
+  label: Medicaid expansion FMAP income disregard
+  reference:
+  - title: 42 U.S.C. § 1396a(e)(14)(I) — 5 percentage point income disregard
+    href: https://www.law.cornell.edu/uscode/text/42/1396a#e_14_I
+  - title: 42 CFR § 435.603(d)(4) — disregard applies only under the eligibility group with the highest income standard
+    href: https://www.ecfr.gov/current/title-42/section-435.603#p-435.603(d)(4)
+  - title: 42 CFR § 435.218 — optional group for adults with income above 133 percent FPL
+    href: https://www.ecfr.gov/current/title-42/section-435.218
+values:
+  2014-01-01: 0.05

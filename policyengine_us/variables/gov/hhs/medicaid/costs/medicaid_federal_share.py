@@ -19,11 +19,11 @@ class medicaid_federal_share(Variable):
         "state with a lower adult limit (such as Wisconsin's childless adults "
         "to 100 percent of the poverty line) and adults above that level in "
         "a state with a higher limit receive the state's regular FMAP (42 "
-        "U.S.C. 1396d(b)), as do all other enrollment groups. In a state "
-        "with a higher adult group, 42 CFR 435.603(d)(4) gives the disregard "
-        "to that group, so adults between 133 and 138 percent of the poverty "
-        "line there are also in it at the regular FMAP; that band is not "
-        "modeled. Rhode Island's "
+        "U.S.C. 1396d(b)), as do all other enrollment groups, including "
+        "parents who are not newly eligible. In a state with a higher adult "
+        "limit, 42 CFR 435.603(d)(4) gives the disregard to the optional "
+        "adult group of 42 CFR 435.218, so the expansion FMAP stops at 133 "
+        "percent of the poverty line there. Rhode Island's "
         "postpartum continuation receives no Title XIX match unless the "
         "pregnancy was covered by Medicaid and the enrollee meets Medicaid "
         "immigration requirements: RIte Start serves people not eligible "
@@ -62,9 +62,10 @@ class medicaid_federal_share(Variable):
         # requires a state to cover adults to the full group limit: adults in
         # a state with a lower limit are covered through a section 1115
         # demonstration at the regular FMAP. The group limit includes the 5
-        # percentage point MAGI disregard in every state. Where a higher
-        # optional adult group exists, 42 CFR 435.603(d)(4) applies the
-        # disregard to that group instead, which this does not model.
+        # percentage point MAGI disregard. Where the state's adult limit
+        # exceeds it, the state covers a higher optional adult group, and
+        # 42 CFR 435.603(d)(4) applies the disregard to that group instead,
+        # so the subclause (VIII) group stops at the limit without it.
         adult_limit = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.adult.income_limit[state]
@@ -74,8 +75,12 @@ class medicaid_federal_share(Variable):
             adult_limit >= group_limit,
             True,
         )
+        higher_adult_group = adult_limit > group_limit
+        person_limit = group_limit - where(
+            higher_adult_group, p.expansion_fmap_income_disregard, 0
+        )
         within_adult_group_limit = medicaid_income_eligible(
-            person, period, parameters, group_limit
+            person, period, parameters, person_limit
         )
         expansion_adult = (
             (category == categories.ADULT) & state_qualifies & within_adult_group_limit

@@ -371,12 +371,13 @@
     medicaid_enrolled: true
     medicaid_federal_share: 0.9
 
-# Adults above 138% FPL in a state with a higher adult limit fall in the
+# Adults above 133% FPL in a state with a higher adult limit fall in the
 # optional group of 42 U.S.C. 1396a(a)(10)(A)(ii)(XX), not subclause (VIII),
-# and receive the regular FMAP. Under a reform raising Texas's adult limit to
-# 200% FPL, an adult at 120% FPL gets the expansion FMAP and an adult at 150%
-# FPL gets Texas's FY2027 FMAP.
-- name: Under a 200% FPL Texas adult limit, adults above 138% FPL receive the regular FMAP.
+# and receive the regular FMAP: 42 CFR 435.603(d)(4) gives the 5 percentage
+# point disregard to that higher group. Under a reform raising Texas's adult
+# limit to 200% FPL, an adult at 120% FPL gets the expansion FMAP, and adults
+# at 135% and 150% FPL get Texas's FY2027 FMAP.
+- name: Under a 200% FPL Texas adult limit, adults above 133% FPL receive the regular FMAP.
   period: 2027
   input:
     gov.hhs.medicaid.eligibility.categories.adult.income_limit.TX: 2.00
@@ -390,25 +391,30 @@
       person2:
         age: 30
         medicaid_household_size: 1
+        medicaid_income_level: 1.35
+        medicaid_work_requirement_eligible: true
+        takes_up_medicaid_if_eligible: true
+      person3:
+        age: 30
+        medicaid_household_size: 1
         medicaid_income_level: 1.5
         medicaid_work_requirement_eligible: true
         takes_up_medicaid_if_eligible: true
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, person3]
         state_code: TX
   output:
-    medicaid_category: [ADULT, ADULT]
-    medicaid_enrolled: [true, true]
-    medicaid_federal_share: [0.9, 0.5854]
+    medicaid_category: [ADULT, ADULT, ADULT]
+    medicaid_enrolled: [true, true, true]
+    medicaid_federal_share: [0.9, 0.5854, 0.5854]
 
 # Before 2026 the District of Columbia covered adults to 215% FPL: to 133% FPL
 # in the subclause (VIII) group and above it in the optional group of 42 CFR
-# 435.218 (DC SPA DC-22-0014). Adults above 138% FPL receive DC's regular 70%
-# FMAP. Under 42 CFR 435.603(d)(4) adults between 133% and 138% FPL are also
-# in the optional group, but the model gives the disregard to the adult group
-# in every state, so this case avoids that band.
-- name: District of Columbia adults above 138% FPL receive the regular FMAP in 2025.
+# 435.218 (DC SPA DC-22-0014). Under 42 CFR 435.603(d)(4) the 5 percentage
+# point disregard goes to that higher group, so adults above 133% FPL,
+# including those between 133% and 138% FPL, receive DC's regular 70% FMAP.
+- name: District of Columbia adults above 133% FPL receive the regular FMAP in 2025.
   period: 2025
   input:
     people:
@@ -420,16 +426,38 @@
       person2:
         age: 30
         medicaid_household_size: 1
+        medicaid_income_level: 1.35
+        takes_up_medicaid_if_eligible: true
+      person3:
+        age: 30
+        medicaid_household_size: 1
         medicaid_income_level: 2.0
         takes_up_medicaid_if_eligible: true
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, person3]
         state_code: DC
   output:
-    medicaid_category: [ADULT, ADULT]
-    medicaid_enrolled: [true, true]
-    medicaid_federal_share: [0.9, 0.7]
+    medicaid_category: [ADULT, ADULT, ADULT]
+    medicaid_enrolled: [true, true, true]
+    medicaid_federal_share: [0.9, 0.7, 0.7]
+
+# Indiana's adult group covers adults to 133% FPL plus the 5 percentage point
+# disregard, with no higher optional group (CMS's April 2018 eligibility
+# levels list it at 133%), so an Indiana adult at 136% FPL gets the 2019
+# expansion FMAP of 93%.
+- name: An Indiana adult at 136% FPL receives the expansion FMAP in 2019.
+  period: 2019
+  input:
+    state_code: IN
+    age: 30
+    medicaid_household_size: 1
+    medicaid_income_level: 1.36
+    takes_up_medicaid_if_eligible: true
+  output:
+    medicaid_category: ADULT
+    medicaid_enrolled: true
+    medicaid_federal_share: 0.93
 
 # If CMS matched partial expansions at the enhanced rate (as Georgia's pending
 # Pathways amendment requests), adults to a state's lower limit would receive
