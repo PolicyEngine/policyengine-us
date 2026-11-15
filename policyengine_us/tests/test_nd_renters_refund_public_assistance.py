@@ -194,7 +194,7 @@ def expected_public_assistance(units):
     return person_benefits + tanf_shares(units)
 
 
-@settings(max_examples=12, deadline=None)
+@settings(max_examples=12, deadline=None, derandomize=True)
 @given(units=st.lists(spm_units(), min_size=1, max_size=8))
 @example(
     units=[
@@ -285,7 +285,7 @@ def test_public_assistance_counts_dollar_for_dollar_above_the_floor(units):
     assert (refund[:count] <= refund[count : 2 * count] + TOLERANCE).all()
 
 
-@settings(max_examples=12, deadline=None)
+@settings(max_examples=12, deadline=None, derandomize=True)
 @given(units=st.lists(spm_units(positive_income=True), min_size=1, max_size=8))
 @example(
     units=[
