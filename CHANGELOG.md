@@ -1,3 +1,14 @@
+## [2.133.0] - 2026-11-15
+
+### Added
+
+- Add Alabama LIHEAP regular cooling assistance.
+
+### Fixed
+
+- Stop Alabama LIHEAP income limits at the federal maximum, the greater of HHS's 60% state median income amount and 150% of the poverty guideline.
+
+
 ## [2.132.0] - 2026-11-15
 
 ### Added
