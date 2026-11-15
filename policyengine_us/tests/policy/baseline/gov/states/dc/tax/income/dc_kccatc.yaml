@@ -360,6 +360,9 @@
 # DC Office of Revenue Analysis, Notice N146434 (D.C. Register Vol. 73/37):
 # for tax year 2026 the income limit for single and head of household filers
 # is $184,300 and the maximum credit is $1,225 per eligible child.
+# The Council directs that each adjusted income limit round down to a
+# multiple of $100 (D.C. Code 47-1806.15(d)(5)) and that the adjusted
+# credit limit round down to a multiple of $5 (47-1806.15(b)(2)(B)(ii)).
 - name: DC KCCATC 2026 head of household just below the $184,300 income limit
   absolute_error_margin: 0.01
   period: 2026

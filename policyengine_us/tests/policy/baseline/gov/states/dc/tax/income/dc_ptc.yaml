@@ -898,6 +898,9 @@
 # DC Office of Revenue Analysis, Notice N146436 (D.C. Register Vol. 73/37):
 # for tax year 2026 the non-senior income threshold is $67,600 and the
 # maximum credit is $1,475.
+# The Council directs that each adjusted income threshold round down to a
+# multiple of $100 (D.C. Code 47-1806.06(b)(13)(C)) and that the adjusted
+# maximum credit round down to a multiple of $25 (47-1806.06(b)(14)(C)).
 - name: DC property tax credit 2026 non-senior just below the $67,600 income threshold
   absolute_error_margin: 0.01
   period: 2026
