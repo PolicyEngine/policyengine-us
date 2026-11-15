@@ -8633,6 +8633,48 @@ candidates:
   state: unreviewed
   note: PE-US counts TANF under the handbook; obtain the plan URL, verify the anchor and General Assistance treatment,
     and do not infer a contrary handbook rule for strike pay.
+- id: us-nj:medicaid-abd-income-limit-rounding
+  program: medicaid
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: Is New Jersey's 2026 monthly Medicaid income limit for an aged, blind or disabled couple the $1,803 that
+    N.J.A.C. 10:72-4.1(a) gives by rounding 1/12 of the poverty guideline down, or the $1,804 that Medicaid
+    Communication 26-03 prints?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(m)(2)(A)
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#m_2_A
+  - kind: regulation
+    citation: N.J.A.C. 10:72-4.1(a) and (d)
+    url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-72-4-1
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 26-03, Income Eligibility Standards Effective January 1, 2026 (February
+      26, 2026), chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/info/resources/medicaid/2026/26-03_Income_Eligibility_Standards_Effective_January-1-2026.pdf#page=3
+  readings:
+    statute: The statute caps the income level at "not more than 100 percent" of the poverty line, $1,803.33 a month
+      for two people in 2026. The regulation sets the monthly standard at 1/12 of the annual guideline "rounded down
+      to the next whole dollar amount for household unit sizes of one and two", $1,803, and income must be "equal
+      to or less than the income limit" (4.1(d)).
+    other: The chart prints $1,804 a month for two people, 1/12 of the $21,640 guideline rounded up, above the
+      statutory cap. Its one-person amount, $1,330, is exact.
+  example: In 2026, an aged couple with $1,803.50 of combined countable income a month ($21,642 a year) is over the
+    regulation's $1,803 limit and the statute's $1,803.33 cap, but within the chart's $1,804.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/limit/rounds_monthly_limit_down.yaml
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/medicaid_optional_senior_or_disabled_income_limit.py
+    prs: []
+  state: ruled
+  note: 'PE-US rounds New Jersey''s monthly limit down to the whole dollar for both unit sizes (rounds_monthly_limit_down.yaml,
+    applied in medicaid_optional_senior_or_disabled_income_limit.py), giving $21,636 a year for a couple in 2026,
+    and admits income equal to the limit. The regulation''s amount stays within the statute''s cap and the chart''s
+    does not. Ruled by the project lead, 2026-11-15. Pinning cases: the New Jersey cases in medicaid_optional_senior_or_disabled_income_limit.yaml
+    (2026 couple, 2025 single) and is_optional_senior_or_disabled_income_eligible.yaml (2026 couple at the limit
+    and one dollar over). Charts for other years were not checked.'
 - id: us-nj:school-meals-income-limit-carryforward
   program: school-meals
   years:

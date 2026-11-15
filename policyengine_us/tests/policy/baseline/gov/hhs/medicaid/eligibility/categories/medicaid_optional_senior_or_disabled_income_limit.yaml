@@ -706,3 +706,45 @@
   output:
     # 1,432 x 12; 2,121 x 12
     medicaid_optional_senior_or_disabled_income_limit: [17_184, 25_452, 25_452]
+
+# N.J.A.C. 10:72-4.1(a): New Jersey's monthly standard is 1/12 of the annual
+# poverty guideline "rounded down to the next whole dollar amount" for units of
+# one and two (2026: $21,640 for two; 2025: $15,650 for one).
+- name: New Jersey aged couple gets the 2026 couple standard rounded down to the whole dollar
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # floor(1.00 x 21,640 / 12) = floor(1,803.33) = 1,803 monthly; 1,803 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [21_636, 21_636]
+
+- name: New Jersey aged single person gets the 2025 individual standard rounded down to the whole dollar
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # floor(1.00 x 15,650 / 12) = floor(1,304.17) = 1,304 monthly; 1,304 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [15_648]

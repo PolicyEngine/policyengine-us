@@ -42,7 +42,8 @@ every year from 2018 to 2026:
   of income gets Medicaid without SSI at or above the rate.
 
 A last test checks that states which are not flagged keep the share of the
-poverty guideline that their parameter gives. States with a dollar standard
+poverty guideline that their parameter gives, with New Jersey's monthly
+amount rounded down to the whole dollar. States with a dollar standard
 of their own (`uses_state_standard`) are tested in
 medicaid_optional_senior_or_disabled_income_limit.yaml.
 """
@@ -112,6 +113,9 @@ OFFSETS = [-6_000, -12, -1, 0, 1, 12, 42, 600, 6_000]
 # "their allowances ... are more than their income" (IDAPA 16.03.05.500).
 STATE_STANDARD_STATES = ["AK", "ID", "NH", "VT", "WI"]
 STATE_STANDARD_BELOW_ONLY_STATES = ["ID"]
+# States that round the monthly poverty-guideline standard down to the whole
+# dollar (rounds_monthly_limit_down.yaml).
+ROUNDS_DOWN_STATES = ["NJ"]
 
 SYSTEM = CountryTaxBenefitSystem()
 
@@ -303,6 +307,10 @@ def test_unflagged_states_keep_their_share_of_the_poverty_guideline(year, couple
             for state in states
         ]
     )
+    # New Jersey's monthly standard is 1/12 of the guideline "rounded down to
+    # the next whole dollar amount" (N.J.A.C. 10:72-4.1(a)).
+    rounds_down = np.isin(states, ROUNDS_DOWN_STATES)
+    expected = np.where(rounds_down, np.floor(expected / 12) * 12, expected)
     np.testing.assert_allclose(limit, expected, rtol=1e-6)
 
 

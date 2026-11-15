@@ -20,6 +20,8 @@ metadata:
       href: https://www.law.cornell.edu/regulations/california/22-CCR-50420
     - title: 42 U.S.C. 1396a(m)(1)(C)
       href: https://www.law.cornell.edu/uscode/text/42/1396a#m_1_C
+    - title: N.J.A.C. 10:72-4.5(b) - Resource eligibility (no eligibility in a month in which countable resources "exceeds the limits")
+      href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-72-4-5
 
 AK:
   2015-01-01: false
@@ -92,7 +94,8 @@ NE:
 NH:
   2015-01-01: false
 NJ:
-  2015-01-01: false
+  # Eligibility fails only when resources exceed the limit (N.J.A.C. 10:72-4.5(b)).
+  2015-01-01: true
 NM:
   2015-01-01: false
 NV:
