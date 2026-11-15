@@ -132,3 +132,111 @@
         state_code: ND
   output:
     nd_ccap_activity_eligible: true
+
+# ML 3819 Example 1: one caretaker works 30 hours a week at a North Dakota
+# licensed program and qualifies for the Workforce Benefit; the other has no
+# allowable activity. North Dakota approved CCAP from June 2024 through
+# December 2025.
+- name: North Dakota exempts the second caretaker of a Workforce Benefit household in 2025
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        nd_ccap_workforce_benefit_eligible_parent: true
+      person2:
+        age: 30  # no activity
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: true
+
+# North Dakota requires the second caretaker's activity from January 2026
+# (Release 26.1).
+- name: North Dakota requires the second caretaker's activity in a Workforce Benefit household from 2026
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        nd_ccap_workforce_benefit_eligible_parent: true
+      person2:
+        age: 30  # no activity
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: false
+
+# North Dakota started the Workforce Benefit on June 1, 2024.
+- name: North Dakota requires the second caretaker's activity before the Workforce Benefit starts
+  period: 2024-05
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        nd_ccap_workforce_benefit_eligible_parent: true
+      person2:
+        age: 30  # no activity
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: false
+
+# Without a Workforce Benefit caretaker, North Dakota still requires the
+# second caretaker's activity in 2025.
+- name: North Dakota requires the second caretaker's activity outside the Workforce Benefit in 2025
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 30  # no activity
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: false

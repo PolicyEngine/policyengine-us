@@ -3,7 +3,9 @@ from policyengine_us.variables.gov.hhs.medicaid.income._apply_medicaid_optional_
     _apply_medicaid_optional_senior_or_disabled_exclusions,
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_budget_total,
+    _ssi_couple_income,
+    _ssi_couple_total,
+    _ssi_spouse_index,
 )
 
 
@@ -32,7 +34,15 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
     )
 
     def formula(person, period, parameters):
-        pre_reduction_earned_income = person("ssi_marital_earned_income", period)
+        # NOTE: this annual formula applies one couple status to the whole
+        # year (couple_computation below), so it combines the spouses' annual
+        # income by that same status. ssi_marital_earned_income and
+        # ssi_marital_unearned_income are monthly and follow each month's
+        # status; their annual totals would not match it in a year with a
+        # part-year facility stay.
+        pre_reduction_earned_income = _ssi_couple_income(
+            person, period, "ssi_earned_income"
+        )
         blind_disabled_working_student_income = person(
             "ssi_blind_or_disabled_working_student_exclusion", period
         )
@@ -41,14 +51,13 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             0,
         )
 
-        total_unearned_income = add(
-            person,
-            period,
-            [
-                "ssi_marital_unearned_income",
+        total_unearned_income = (
+            _ssi_couple_income(person, period, "ssi_unearned_income")
+            + person(
                 "medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent",
-                "ssi_in_kind_support_and_maintenance",
-            ],
+                period,
+            )
+            + person("ssi_in_kind_support_and_maintenance", period)
         )
 
         couple_computation = person("ssi_couple_computation_applies", period)
@@ -97,13 +106,32 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
         )
         # 22 CCR 50555.2(a) deducts premiums paid by and purchased for any
         # person in the family. A couple's budget takes both spouses'
-        # premiums and those of unmarried tax dependents in their marital
-        # unit and tax unit. It leaves out another couple's dependent and an
-        # unrelated adult, whose income also stays out of
-        # ssi_marital_unearned_income when a situation omits marital units.
+        # premiums and, when the couple head their tax unit, those of its
+        # unmarried tax dependents, whatever marital unit those dependents
+        # are in: a child never shares a couple's marital unit. Spouses who
+        # file separately each take the dependents of both tax units, so the
+        # two halves of the budget agree. Another couple's dependent and an
+        # unrelated adult in another tax unit stay out, as do the other
+        # dependents of a tax unit the couple belong to as dependents.
+        spouse = _ssi_spouse_index(person, period)
+        safe_spouse = np.maximum(spouse, 0)
+        unmarried_dependent = person("is_tax_unit_dependent", period) & (spouse < 0)
+        dependents_premiums = where(
+            person("is_tax_unit_head_or_spouse", period),
+            person.tax_unit.sum(where(unmarried_dependent, own_premiums, 0)),
+            0,
+        )
+        tax_unit_id = person.tax_unit.reference_entity.members_entity_id
+        spouse_in_another_tax_unit = (spouse >= 0) & (
+            tax_unit_id[safe_spouse] != tax_unit_id
+        )
+        family_dependents_premiums = dependents_premiums + where(
+            spouse_in_another_tax_unit, dependents_premiums[safe_spouse], 0
+        )
         premiums = where(
             couple_computation,
-            _ssi_couple_budget_total(person, period, own_premiums),
+            _ssi_couple_total(person, period, own_premiums)
+            + family_dependents_premiums,
             own_premiums,
         )
         deducts_premiums = p.deducts_health_insurance_premiums[state].astype(bool)

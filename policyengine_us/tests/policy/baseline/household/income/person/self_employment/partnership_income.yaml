@@ -1,0 +1,22 @@
+# partnership_income follows
+# calibration.gov.irs.soi.partnership_s_corp_income_per_capita, the IRS SOI
+# total divided by population. An input dated in one year and read in a later
+# year is multiplied by the ratio of that index between the two years.
+
+- name: A 2021 input read in 2022 grows with SOI partnership and S corporation net income less net loss per capita, between the corrected 2021 and 2022 totals.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    partnership_income:
+      2021: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, partnership and S
+    # corporation net income less net loss, over
+    # calibration.gov.census.populations.total:
+    #   2021: 975,656,401,000 / 338,039,000 = 2,886.224
+    #         (https://www.irs.gov/pub/irs-soi/21in14ar.xls)
+    #   2022: 1,031,207,920,000 / 339,654,000 = 3,036.054
+    #         (https://www.irs.gov/pub/irs-soi/22in14ar.xls)
+    # 10,000 x 3,036.054 / 2,886.224 = 10,519.12. With the old values this came
+    # to 15,442.91.
+    partnership_income: 10_519.12

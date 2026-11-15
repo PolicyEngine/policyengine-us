@@ -1,4 +1,6 @@
-description: Oregon provides this annual regular heating payment for electricity by region, household size and income band under the Low Income Home Energy Assistance Program.
+description: Oregon provides this annual regular heating or cooling payment for electricity by region, household size and income band under the Low Income Home Energy Assistance Program.
+# The COOLING Electricity column equals the HEATING Electricity column in every
+# row of the PY2025 to PY2027 matrices, so this table pays both.
 1:
   1:
     1:
@@ -175,7 +177,7 @@ description: Oregon provides this annual regular heating payment for electricity
 metadata:
   unit: currency-USD
   period: year
-  label: Oregon LIHEAP electricity heating payment
+  label: Oregon LIHEAP electricity heating or cooling payment
   breakdown:
   - range(1, 3)
   - range(1, 7)

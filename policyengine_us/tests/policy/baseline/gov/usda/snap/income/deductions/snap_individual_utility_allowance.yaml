@@ -278,3 +278,224 @@
     cooking_fuel_expense: 120
   output:
     snap_individual_utility_allowance: 162
+
+# FACT58 supplies the FY2017 single and telephone amounts. Heat is
+# included in rent, so these separately billed utilities do not heat/cool.
+- name: Ohio FY2017 water-only utility allowance reaches the final earned-income benefit
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24000
+        rent: 9000
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 4
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        tanf: 0
+        heat_expense_included_in_rent: true
+        water_expense: 600
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        state_code: OH
+  output:
+    snap:
+      2017-01: 251
+    snap_gross_income:
+      2017-01: 2000
+    snap_earned_income_deduction:
+      2017-01: 400
+    snap_standard_deduction:
+      2017-01: 168
+    snap_net_income_pre_shelter:
+      2017-01: 1432
+    snap_utility_allowance_type:
+      2017-01: IUA
+    snap_individual_utility_allowance:
+      2017-01: 73
+    snap_excess_shelter_expense_deduction:
+      2017-01: 107
+    snap_net_income:
+      2017-01: 1325
+    snap_expected_contribution:
+      2017-01: 398
+    snap_max_allotment:
+      2017-01: 649
+    snap_normal_allotment:
+      2017-01: 251
+- name: Ohio FY2017 phone-only utility allowance reaches the final earned-income benefit
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24000
+        rent: 9000
+      child1:
+        age: 8
+      child2:
+        age: 6
+      child3:
+        age: 4
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        tanf: 0
+        heat_expense_included_in_rent: true
+        phone_expense: 600
+    households:
+      household:
+        members:
+        - parent
+        - child1
+        - child2
+        - child3
+        state_code: OH
+  output:
+    snap:
+      2017-01: 241
+    snap_gross_income:
+      2017-01: 2000
+    snap_earned_income_deduction:
+      2017-01: 400
+    snap_standard_deduction:
+      2017-01: 168
+    snap_net_income_pre_shelter:
+      2017-01: 1432
+    snap_utility_allowance_type:
+      2017-01: IUA
+    snap_individual_utility_allowance:
+      2017-01: 40
+    snap_excess_shelter_expense_deduction:
+      2017-01: 74
+    snap_net_income:
+      2017-01: 1358
+    snap_expected_contribution:
+      2017-01: 408
+    snap_max_allotment:
+      2017-01: 649
+    snap_normal_allotment:
+      2017-01: 241
+- name: Ohio FY2017 single-bill amounts cover each nonheating utility, phone and no utility
+  period: 2017
+  input:
+    state_code:
+    - OH
+    - OH
+    - OH
+    - OH
+    - OH
+    - OH
+    - OH
+    heat_expense_included_in_rent:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    pre_subsidy_electricity_expense:
+    - 120
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    gas_expense:
+    - 0
+    - 120
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    water_expense:
+    - 0
+    - 0
+    - 120
+    - 0
+    - 0
+    - 0
+    - 0
+    sewage_expense:
+    - 0
+    - 0
+    - 0
+    - 120
+    - 0
+    - 0
+    - 0
+    trash_expense:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 120
+    - 0
+    - 0
+    phone_expense:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 120
+    - 0
+  output:
+    snap_utility_allowance_type:
+      2017-01:
+      - IUA
+      - IUA
+      - IUA
+      - IUA
+      - IUA
+      - IUA
+      - NONE
+    snap_individual_utility_allowance:
+      2017-01:
+      - 73
+      - 73
+      - 73
+      - 73
+      - 73
+      - 40
+      - 0
+      2017-09:
+      - 73
+      - 73
+      - 73
+      - 73
+      - 73
+      - 40
+      - 0
+      2017-10:
+      - 76
+      - 76
+      - 76
+      - 76
+      - 76
+      - 39
+      - 0

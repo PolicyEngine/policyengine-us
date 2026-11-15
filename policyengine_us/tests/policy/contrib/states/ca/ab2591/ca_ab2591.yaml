@@ -183,10 +183,10 @@
         members: [person1]
         state_code: CA
   output:
-    # 2025 indexed value ($5,706) uprated by CA CPI to 2027; the 2027
-    # CA CPI point is an IRS-uprating projection, so it reflects the
-    # observed chained-CPI actuals through June 2026.
-    ca_standard_deduction: 6_009.22
+    # FTB's 2026 value ($5,900) uprated by CA CPI to 2027. The 2027
+    # CA CPI point projects the June 2026 actual (364.969) with the IRS
+    # uprating index: 5,900 x 181.979583 / 176.713083 = 6,075.84.
+    ca_standard_deduction: 6_075.84
 
 - name: Non-California filer unaffected by the reform.
   period: 2027

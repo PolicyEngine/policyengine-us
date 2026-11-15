@@ -1,11 +1,17 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.aca.slspc.is_aca_family_tier_dependent_child import (
+    family_tier_child_condition_for_enrollee,
+)
 from policyengine_us.variables.gov.aca.slspc.slcsp_family_tier_category import (
     FamilyTierCategory,
 )
 
 
-def _family_tier_components(tax_unit, period, parameters):
-    family_category = tax_unit("slcsp_family_tier_category", period)
+def family_tier_multiplier(tax_unit, period, parameters, family_category, enrolled):
+    """
+    Family tier premium multiplier for `family_category`, counting only the
+    members flagged in `enrolled` (a person-level boolean array).
+    """
     p = parameters(period).gov.aca.family_tier_ratings
     state_code = tax_unit.household("state_code", period)
     in_ny = state_code == state_code.possible_values.NY
@@ -43,11 +49,20 @@ def _family_tier_components(tax_unit, period, parameters):
     )
 
     person = tax_unit.members
-    pays_premium = person("pays_aca_premium", period)
-    dependent_child = person("is_aca_family_tier_dependent_child", period)
-    adult_count = tax_unit.sum(pays_premium & ~dependent_child)
+    dependent_child = enrolled & family_tier_child_condition_for_enrollee(
+        person, period, parameters
+    )
+    adult_count = tax_unit.sum(enrolled & ~dependent_child)
     extra_adults = max_(adult_count - 2, 0)
-    return base_multiplier, extra_adults * one_adult
+    age_29_multiplier = 1
+    if period.start.year >= 2015:
+        age_29_child = enrolled & person("is_aca_ny_age_29_dependent_child", period)
+        age_29_multiplier = where(
+            tax_unit.any(age_29_child),
+            parameters(period).gov.aca.ny_age_29_dependent_child_tier_multiplier,
+            1,
+        )
+    return base_multiplier * age_29_multiplier + extra_adults * one_adult
 
 
 class slcsp_family_tier_multiplier(Variable):
@@ -64,20 +79,8 @@ class slcsp_family_tier_multiplier(Variable):
     )
 
     def formula_2014(tax_unit, period, parameters):
-        base_multiplier, extra_adult_multiplier = _family_tier_components(
-            tax_unit, period, parameters
+        family_category = tax_unit("slcsp_family_tier_category", period)
+        enrolled = tax_unit.members("pays_aca_premium", period)
+        return family_tier_multiplier(
+            tax_unit, period, parameters, family_category, enrolled
         )
-        return base_multiplier + extra_adult_multiplier
-
-    def formula_2015(tax_unit, period, parameters):
-        base_multiplier, extra_adult_multiplier = _family_tier_components(
-            tax_unit, period, parameters
-        )
-        person = tax_unit.members
-        age_29_child = person("is_aca_ny_age_29_dependent_child", period)
-        age_29_multiplier = where(
-            tax_unit.any(age_29_child),
-            parameters(period).gov.aca.ny_age_29_dependent_child_tier_multiplier,
-            1,
-        )
-        return base_multiplier * age_29_multiplier + extra_adult_multiplier

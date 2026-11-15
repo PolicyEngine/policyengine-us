@@ -1,0 +1,336 @@
+# 12 x 1,836 = 22,032 for one and 12 x 2,489 = 29,868 for two.
+- name: Case 1, New York follows SSI's rule, so a spouse with no income leaves the applicant alone.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_medically_needy_uses_couple_standard: [false, true]
+    medicaid_medically_needy_income_limit: [22_032, 29_868]
+
+
+# 12 x 650 = 7,800 for two.
+- name: Case 2, Massachusetts budgets a couple together.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [7_800, 7_800]
+
+
+# 12 x 1,242 = 14,904 for two.
+- name: Case 3, Rhode Island keeps the couple limit when nothing is deemed.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [14_904, 14_904]
+
+
+# N.J.A.C. 10:70-3.5(c)2: 12 x 434 = 5,208 for two.
+- name: Case 4, New Jersey keeps the couple limit when nothing is deemed.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [5_208, 5_208]
+
+
+- name: Case 5, both spouses aged use the couple limit under SSI's rule.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 68
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_medically_needy_uses_couple_standard: [true, true]
+    medicaid_medically_needy_income_limit: [29_868, 29_868]
+
+# One household per state: a 70-year-old with Social Security of 12,000 and a
+# 50-year-old spouse with no income, so SSI deems nothing (20 CFR 416.1163(d)(1)).
+# Each state here budgets the couple together in its medically needy program, so the
+# applicant is tested as a couple. Montana follows SSI's rule (ARM 37.82.903(2) and
+# 37.82.1107(1)(b)), so its applicant is tested alone.
+- name: Case 6, each state that budgets a couple together tests an applicant whose spouse has no income as a couple.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+      person3:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person4:
+        is_tax_unit_spouse: true
+        age: 50
+      person5:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person6:
+        is_tax_unit_spouse: true
+        age: 50
+      person7:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person8:
+        is_tax_unit_spouse: true
+        age: 50
+      person9:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person10:
+        is_tax_unit_spouse: true
+        age: 50
+      person11:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person12:
+        is_tax_unit_spouse: true
+        age: 50
+      person13:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person14:
+        is_tax_unit_spouse: true
+        age: 50
+      person15:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person16:
+        is_tax_unit_spouse: true
+        age: 50
+      person17:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person18:
+        is_tax_unit_spouse: true
+        age: 50
+      person19:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person20:
+        is_tax_unit_spouse: true
+        age: 50
+      person21:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person22:
+        is_tax_unit_spouse: true
+        age: 50
+      person23:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person24:
+        is_tax_unit_spouse: true
+        age: 50
+      person25:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 12_000
+      person26:
+        is_tax_unit_spouse: true
+        age: 50
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+      tax_unit3:
+        members: [person5, person6]
+      tax_unit4:
+        members: [person7, person8]
+      tax_unit5:
+        members: [person9, person10]
+      tax_unit6:
+        members: [person11, person12]
+      tax_unit7:
+        members: [person13, person14]
+      tax_unit8:
+        members: [person15, person16]
+      tax_unit9:
+        members: [person17, person18]
+      tax_unit10:
+        members: [person19, person20]
+      tax_unit11:
+        members: [person21, person22]
+      tax_unit12:
+        members: [person23, person24]
+      tax_unit13:
+        members: [person25, person26]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3, person4]
+      marital_unit3:
+        members: [person5, person6]
+      marital_unit4:
+        members: [person7, person8]
+      marital_unit5:
+        members: [person9, person10]
+      marital_unit6:
+        members: [person11, person12]
+      marital_unit7:
+        members: [person13, person14]
+      marital_unit8:
+        members: [person15, person16]
+      marital_unit9:
+        members: [person17, person18]
+      marital_unit10:
+        members: [person19, person20]
+      marital_unit11:
+        members: [person21, person22]
+      marital_unit12:
+        members: [person23, person24]
+      marital_unit13:
+        members: [person25, person26]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: AR
+      household2:
+        members: [person3, person4]
+        state_code: CA
+      household3:
+        members: [person5, person6]
+        state_code: CT
+      household4:
+        members: [person7, person8]
+        state_code: IL
+      household5:
+        members: [person9, person10]
+        state_code: MD
+      household6:
+        members: [person11, person12]
+        state_code: MI
+      household7:
+        members: [person13, person14]
+        state_code: MN
+      household8:
+        members: [person15, person16]
+        state_code: MT
+      household9:
+        members: [person17, person18]
+        state_code: ND
+      household10:
+        members: [person19, person20]
+        state_code: NE
+      household11:
+        members: [person21, person22]
+        state_code: NH
+      household12:
+        members: [person23, person24]
+        state_code: VT
+      household13:
+        members: [person25, person26]
+        state_code: WI
+  output:
+    # Each pair is the applicant, then the spouse, in the order of the households.
+    medicaid_medically_needy_uses_couple_standard:
+      - true  # AR
+      - true
+      - true  # CA
+      - true
+      - true  # CT
+      - true
+      - true  # IL
+      - true
+      - true  # MD
+      - true
+      - true  # MI
+      - true
+      - true  # MN
+      - true
+      - false  # MT
+      - true
+      - true  # ND
+      - true
+      - true  # NE
+      - true
+      - true  # NH
+      - true
+      - true  # VT
+      - true
+      - true  # WI
+      - true
