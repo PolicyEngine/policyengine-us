@@ -2,6 +2,11 @@ description: New Mexico includes these income sources in its modified gross inco
 values:
   2021-01-01:
     - tax_unit_social_security
+    # NMSA 1978 7-2-2(L) counts "(9) annuities", "(11) pensions" and "(16)
+    # social security benefits", taxable or not, so every railroad tier counts.
+    - railroad_social_security_equivalent_benefits
+    - taxable_railroad_pension_benefits
+    - tax_exempt_railroad_pension_benefits
     - capital_gains
     - tanf
     - ssi

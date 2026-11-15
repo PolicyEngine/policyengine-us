@@ -28,8 +28,17 @@ class wi_unemployment_compensation_subtraction(Variable):
         wi = parameters(period).gov.states.wi.tax.income
         p = wi.subtractions.unemployment_compensation.income_phase_out
         base_income = p.base[tax_unit("filing_status", period)]
-        us_taxed_socsec = tax_unit("tax_unit_taxable_social_security", period)
-        ucsub_income = base_income + us_taxed_socsec
+        # Worksheet line 4 takes Form 1040 line 6b: taxable title II and tier 1
+        # railroad retirement benefits.
+        section_86_benefits = add(
+            tax_unit,
+            period,
+            [
+                "tax_unit_taxable_social_security",
+                "tax_unit_taxable_railroad_social_security_equivalent_benefits",
+            ],
+        )
+        ucsub_income = base_income + section_86_benefits
         excess_inc = max_(0, us_agi - ucsub_income)
         tuc_limit = excess_inc * p.rate  # WI Unemploy Compen Worksheet, Line 8
         wi_tuc = min_(tuc_limit, us_tuc)

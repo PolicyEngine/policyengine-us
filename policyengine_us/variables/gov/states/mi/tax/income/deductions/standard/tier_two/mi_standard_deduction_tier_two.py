@@ -26,21 +26,23 @@ class mi_standard_deduction_tier_two(Variable):
         )
         increased_amount = p.standard.tier_two.amount.increase * eligible_people
         increased_base_amount = base_amount + increased_amount
-        # After that we reduce the amount by the amounts from line 11 and line 14
-        # just applicable to head and spouse
+        # After that we reduce the amount by the amounts from line 11
+        # (military retirement benefits and taxable railroad retirement
+        # benefits) and line 14 (military pay), just applicable to head and
+        # spouse (Worksheet 2, lines 4 to 7)
         person = tax_unit.members
-        military_pay = add(
+        reductions = add(
             person,
             period,
             [
-                "mi_military_retirement_subtraction",
+                "mi_military_and_railroad_retirement_subtraction",
                 "military_service_income",
             ],
         )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        head_or_spouse_military_pay = tax_unit.sum(military_pay * is_head_or_spouse)
+        head_or_spouse_reductions = tax_unit.sum(reductions * is_head_or_spouse)
         standard_deduction_tier_two = max_(
-            increased_base_amount - head_or_spouse_military_pay, 0
+            increased_base_amount - head_or_spouse_reductions, 0
         )
         # Worksheet 3.3: Retirement and Pension Benefits Subtraction for Section D of Form 4884
         if p.retirement_benefits.expanded.availability:

@@ -19,15 +19,29 @@ class id_retirement_benefits_deduction(Variable):
         # Line 8a
         # Max retirement benefits deduction amount
         cap = p.cap[filing_status]
-        # Line 8c
-        # Social Security retirement benefits received
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        # Line 8b
+        # Railroad Retirement Act benefits received, taxable or not:
+        # Form RRB-1099 box 5 plus Form RRB-1099-R box 7 (63-3022A(3)).
+        railroad_benefits = add(
+            person,
+            period,
+            [
+                "railroad_social_security_equivalent_benefits",
+                "taxable_railroad_pension_benefits",
+                "tax_exempt_railroad_pension_benefits",
+            ],
+        )
+        # Line 8c
+        # Social Security retirement benefits received
         ss_retirement = person("social_security_retirement", period)
-        total_head_spouse_ss = tax_unit.sum(ss_retirement * head_or_spouse)
+        total_federal_benefits = tax_unit.sum(
+            (railroad_benefits + ss_retirement) * head_or_spouse
+        )
         # Line 8d
-        # Base amount minus social Security benefits received
-        ded_amt = max_(cap - total_head_spouse_ss, 0)
+        # Base amount minus lines 8b and 8c
+        ded_amt = max_(cap - total_federal_benefits, 0)
         # Line 8e
         # Qualified retirement benefits included in federal income
         # The head or spouse condition is included in the eligible person variable

@@ -339,3 +339,37 @@
     # AGI 150,000: ratio (175,000 - 150,000) / 50,000 = 0.50 -> 30,000 x 0.50 = 15,000
     vt_military_retirement_income_based_exemption: 15_000
     vt_retirement_income_exemption: 15_000
+
+# Tier 1 railroad retirement benefits. 32 V.S.A. 5830e(a) excludes "federally
+# taxable benefits received under the federal Social Security Act". Tier 1
+# benefits are paid under the Railroad Retirement Act, and Schedule IN-112,
+# Part I, line 13 (taxable_railroad_benefits) subtracts the taxable tier 1 and
+# tier 2 benefits, so the exemption covers the taxable title II benefits alone,
+# though worksheet line 9 points to Form 1040 line 6b.
+- name: VT 2024 Social Security exemption leaves the taxable tier 1 benefits to line 13
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 10_000
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_private_pension_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # Federal: taxable benefits 9,600, half title II and half tier 1.
+    tax_unit_taxable_social_security: 4_800
+    taxable_railroad_benefits: 4_800
+    adjusted_gross_income: 39_600
+    # AGI is below the $50,000 full-exemption limit. With line 6b on worksheet
+    # line 9, the exemption would be 9,600 and line 13 would subtract the
+    # same 4,800 of tier 1 benefits again.
+    vt_retirement_income_exemption: 4_800

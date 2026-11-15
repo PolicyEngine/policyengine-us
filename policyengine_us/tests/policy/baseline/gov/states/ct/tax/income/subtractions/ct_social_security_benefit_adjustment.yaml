@@ -5,7 +5,7 @@
     tax_unit_taxable_social_security: 12_000
     adjusted_gross_income: 74_999
     tax_unit_ss_combined_income_excess: 5_000
-    tax_unit_social_security: 20_000
+    tax_unit_section_86_benefits: 20_000
     filing_status: SINGLE
   output:
     ct_social_security_benefit_adjustment: 12_000
@@ -17,7 +17,7 @@
     tax_unit_taxable_social_security: 12_000
     adjusted_gross_income: 99_999
     tax_unit_ss_combined_income_excess: 5_000
-    tax_unit_social_security: 20_000
+    tax_unit_section_86_benefits: 20_000
     filing_status: JOINT
   output:
     ct_social_security_benefit_adjustment: 12_000
@@ -29,7 +29,7 @@
     tax_unit_taxable_social_security: 12_000
     adjusted_gross_income: 100_000
     tax_unit_ss_combined_income_excess: 5_000
-    tax_unit_social_security: 15_000
+    tax_unit_section_86_benefits: 15_000
     filing_status: JOINT
   output:
     # Part C: min(15000, 5000) = 5000
@@ -87,3 +87,103 @@
     ct_social_security_benefit_adjustment: 38_802
     ct_agi: 43_544
     ct_income_tax: 332
+
+# Tier 1 railroad retirement benefits. Under IRC 86(d)(1) the federal Social
+# Security Benefits Worksheet, and so worksheet lines A, B and E, count title
+# II and tier 1 benefits together. Conn. Gen. Stat. 12-701(a)(20)(B)(iv)
+# subtracts the taxable tier 1 benefits that clause (x) does not, and the
+# model subtracts them with the rest of the railroad annuity
+# (taxable_railroad_benefits), so line F keeps the title II share and takes
+# line D from it first.
+- name: CT social security adjustment 2025 below the threshold keeps the taxable title II benefits
+  period: 2025
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    adjusted_gross_income: 70_000
+    # 20,000 of title II benefits and 10,000 of tier 1 benefits.
+    tax_unit_section_86_benefits: 30_000
+    tax_unit_ss_combined_income_excess: 20_000
+    # The title II share of the 12,000 of taxable benefits.
+    tax_unit_taxable_social_security: 8_000
+  output:
+    # Clause (x)(III): all taxable benefits come off, the 8,000 of title II
+    # benefits here and the 4,000 of tier 1 benefits through clause (iv).
+    ct_social_security_benefit_adjustment: 8_000
+
+- name: CT social security adjustment 2025 line A counts tier 1 benefits
+  period: 2025
+  input:
+    state_code: CT
+    filing_status: JOINT
+    adjusted_gross_income: 150_000
+    # 30,000 of title II benefits and 20,000 of tier 1 benefits.
+    tax_unit_section_86_benefits: 50_000
+    tax_unit_ss_combined_income_excess: 60_000
+    # 85% of 50,000 is 42,500 of taxable benefits; title II's 60% share.
+    tax_unit_taxable_social_security: 25_500
+  output:
+    # C: min(50,000, 60,000) = 50,000. D: 12,500. F: 25,500 - 12,500.
+    # With clause (iv)'s 17,000, Connecticut subtracts 30,000, line E less
+    # line D.
+    ct_social_security_benefit_adjustment: 13_000
+
+- name: CT social security adjustment 2025 line D larger than the taxable title II benefits
+  period: 2025
+  input:
+    state_code: CT
+    filing_status: JOINT
+    adjusted_gross_income: 150_000
+    # 4,000 of title II benefits and 36,000 of tier 1 benefits.
+    tax_unit_section_86_benefits: 40_000
+    tax_unit_ss_combined_income_excess: 60_000
+    # 85% of 40,000 is 34,000 of taxable benefits; title II's 10% share.
+    tax_unit_taxable_social_security: 3_400
+  output:
+    # C: 40,000. D: 10,000, more than the 3,400 of taxable title II
+    # benefits, so line F is 0. Clause (iv) still subtracts all 30,600 of
+    # taxable tier 1 benefits, and Connecticut taxes the 3,400 of title II
+    # benefits.
+    ct_social_security_benefit_adjustment: 0
+
+- name: CT social security adjustment 2025 integration with tier 1 benefits and a dependent's benefits
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 30_000
+        railroad_social_security_equivalent_benefits: 20_000
+        taxable_private_pension_income: 90_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 70
+      child:
+        is_tax_unit_dependent: true
+        age: 10
+        social_security_survivors: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CT
+  output:
+    # Federal worksheet line 1 holds the head's 30,000 of title II and
+    # 20,000 of tier 1 benefits; the child's benefits go on the child's own
+    # worksheet.
+    tax_unit_section_86_benefits: 50_000
+    # Line 9: 90,000 + 50% x 50,000 - 32,000.
+    tax_unit_ss_combined_income_excess: 83_000
+    # Line 18: min(85% x 50,000, 85% x (115,000 - 44,000) + 6,000) = 42,500,
+    # 25,500 of it title II (60%) and 17,000 tier 1 (40%).
+    tax_unit_taxable_social_security: 25_500
+    taxable_railroad_benefits: [17_000, 0, 0]
+    adjusted_gross_income: 132_500
+    # AGI is at least 100,000. C: min(50,000, 83,000). D: 12,500.
+    # F: 25,500 - 12,500.
+    ct_social_security_benefit_adjustment: 13_000

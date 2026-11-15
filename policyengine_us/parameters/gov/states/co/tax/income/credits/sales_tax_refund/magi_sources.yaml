@@ -7,6 +7,11 @@ values:
   1999-01-01:
     - adjusted_gross_income
     - tax_exempt_social_security
+    # C.R.S. 39-22-2003 adds back "social security benefits excluded from
+    # federal adjusted gross income", and 39-22-103(11) gives terms their
+    # federal meaning. IRC 86(d)(1)(B) makes tier 1 railroad benefits social
+    # security benefits.
+    - tax_exempt_railroad_social_security_equivalent_benefits
 #    - non_taxable_interest_income_from_state_and_local_bonds
 metadata:
   period: year

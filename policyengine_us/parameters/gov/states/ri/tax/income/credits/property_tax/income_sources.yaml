@@ -6,6 +6,11 @@ values:
     - tax_exempt_pension_income
     - tax_exempt_interest_income
     - tax_exempt_social_security
+    # R.I. Gen. Laws 44-33-3: "the gross amount of any pension or annuity
+    # (including Railroad Retirement Act benefits ...)". Adjusted gross income
+    # holds the taxable part, so only the rest belongs here.
+    - tax_exempt_railroad_social_security_equivalent_benefits
+    - tax_exempt_railroad_pension_benefits
     - tax_exempt_unemployment_compensation
     - alimony_income
     - tanf

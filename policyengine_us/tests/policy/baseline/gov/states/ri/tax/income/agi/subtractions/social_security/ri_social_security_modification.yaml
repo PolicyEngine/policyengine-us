@@ -131,3 +131,36 @@
         state_code: RI
   output:
     ri_social_security_modification: 10_000
+
+# Tier 1 railroad retirement benefits. Schedule M line 1d subtracts the taxable
+# tier 1 benefits as railroad retirement benefits exempt under federal law
+# (taxable_railroad_benefits, 45 U.S.C. 231m(a)). The header of the 2024
+# worksheet reads "Do not include amounts from Railroad Retirement Benefits on
+# this worksheet", so line 13 holds the taxable title II benefits alone.
+- name: RI Social Security modification 2024 takes the taxable tier 1 benefits on line 1d
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 10_000
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_private_pension_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: RI
+  output:
+    # Federal: taxable benefits 9,600, half title II and half tier 1.
+    adjusted_gross_income: 39_600
+    taxable_railroad_benefits: 4_800
+    ri_social_security_modification_eligible: true
+    # Line 12: 1.0000, since the filer was born before the 2024 cutoff. Line
+    # 13: the 4,800 of taxable title II benefits.
+    ri_social_security_modification: 4_800

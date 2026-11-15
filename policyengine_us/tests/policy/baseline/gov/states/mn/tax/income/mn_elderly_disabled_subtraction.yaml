@@ -121,6 +121,96 @@
   output:
     mn_elderly_disabled_subtraction: 0  # = 12_000 - 0.5 * (42_000 - 18_000)
 
+# Minn. Stat. 290.0802, subd. 1(c): nontaxable retirement and disability
+# benefits are the amounts section 22(c)(3) counts (title II and tier 1
+# benefits section 86 leaves out, and the tax-free rest of the railroad
+# annuity) plus pension and annuity benefits in federal gross income that the
+# state cannot tax (the taxable railroad benefits, 45 U.S.C. 231m(a)).
+# Subd. 1(a): adjusted gross income leaves out those taxable railroad benefits.
+- name: MN elderly/disabled subtraction counts all railroad retirement benefits in the reduction
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        railroad_social_security_equivalent_benefits: 6_000
+        taxable_railroad_social_security_equivalent_benefits: 0
+        taxable_railroad_pension_benefits: 2_000
+        tax_exempt_railroad_pension_benefits: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Reduction: 6,000 + 500 + 2,000 = 8,500, so 9,600 - 8,500 = 1,100.
+    # AGI: 12,000 - 2,000 = 10,000, under the $14,500 threshold.
+    mn_elderly_disabled_subtraction: 1_100
+
+- name: MN elderly/disabled subtraction takes taxable railroad benefits out of AGI
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 66
+        social_security: 4_000
+        taxable_social_security: 600
+        railroad_social_security_equivalent_benefits: 3_000
+        taxable_railroad_social_security_equivalent_benefits: 500
+        taxable_railroad_pension_benefits: 1_500
+        tax_exempt_railroad_pension_benefits: 200
+      spouse:
+        is_tax_unit_spouse: true
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 21_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MN
+  output:
+    # Reduction: (4,000 - 600) + 3,000 + 1,500 + 200 = 8,100, so
+    # 12,000 - 8,100 = 3,900.
+    # AGI: 21,000 - (500 + 1,500) = 19,000; both spouses qualify, so the
+    # threshold is 14,500 + 3,500 = 18,000, and half the 1,000 excess is 500.
+    # 3,900 - 500 = 3,400.
+    mn_elderly_disabled_subtraction: 3_400
+
+- name: MN elderly/disabled subtraction leaves out a dependent's social security
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 5_000
+        taxable_social_security: 0
+      grandchild:
+        age: 12
+        social_security: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, grandchild]
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [head, grandchild]
+        state_code: MN
+  output:
+    # Section 22(c)(3) counts what the individual receives, so only the
+    # head's $5,000 reduces the $9,600 base.
+    mn_elderly_disabled_subtraction: 4_600
+
 - name: Railroad retirement benefits reduce the base and leave AGI.
   period: 2025
   input:

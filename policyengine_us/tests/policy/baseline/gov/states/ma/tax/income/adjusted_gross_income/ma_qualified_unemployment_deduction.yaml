@@ -108,3 +108,53 @@
         state_code: MA
   output:
     ma_qualified_unemployment_deduction: 0
+
+- name: Untaxed tier 1 railroad retirement benefits count in household income
+  period: 2021
+  input:
+    people:
+      person:
+        age: 70
+        unemployment_compensation: 8_000
+        social_security_retirement: 6_000
+        railroad_social_security_equivalent_benefits: 12_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    # Provisional income is 8,000 + 50% x 18,000 = 17,000, below the 25,000
+    # base, so none of the benefits are taxable and federal AGI is 8,000.
+    adjusted_gross_income: 8_000
+    # Worksheet line 7 takes Form 1040 line 6a less line 6b, which counts
+    # the tier 1 benefits with the title II benefits: household income is
+    # 8,000 + 18,000 = 26,000, above the 25,520 limit for one person.
+    ma_qualified_unemployment_deduction: 0
+
+- name: A dependent's Social Security stays out of household income
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        unemployment_compensation: 14_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        social_security_survivors: 21_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MA
+  output:
+    # Line 7 takes the parent's Form 1040 lines 6a and 6b; the child's
+    # benefits go on the child's own return. Household income is 14,000,
+    # within the 34,480 limit for two (25,520 + 8,960); with the child's
+    # benefits it would be 35,000, above it.
+    ma_qualified_unemployment_deduction: 10_200

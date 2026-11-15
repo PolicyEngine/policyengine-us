@@ -52,3 +52,41 @@
     state_code: UT
   output:
     ut_ss_benefits_credit_max: 4_700  
+
+# Tier 1 railroad retirement benefits. Utah Code 59-10-1042(1)(f) limits
+# "social security benefit" to monthly benefits under the Social Security Act,
+# and subsection (2)(b) gives the credit on those included in state taxable
+# income. Tier 1 benefits are paid under the Railroad Retirement Act, and the
+# subtraction for railroad retirement income (code 78,
+# taxable_railroad_benefits) removes them from state taxable income, so line 1
+# holds the taxable title II benefits alone, though the 2024 worksheet points
+# to Form 1040 line 6b. From 2025 the worksheet's line 2 takes those benefits
+# back out of line 1.
+- name: UT Social Security benefits credit 2024 leaves the taxable tier 1 benefits out of line 1
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 10_000
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_private_pension_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: UT
+  output:
+    # Federal: taxable benefits 9,600, half title II and half tier 1.
+    taxable_social_security: 4_800
+    taxable_railroad_benefits: 4_800
+    # Lines 2 to 6: Utah total income is federal AGI, 30,000 + 9,600.
+    ut_total_income: 39_600
+    # Line 7: 4,800 x 4.55%. Line 9: 39,600 is below 45,000. With line 6b on
+    # line 1, line 7 would be 9,600 x 4.55% = 436.80.
+    ut_ss_benefits_credit_max: 218.40

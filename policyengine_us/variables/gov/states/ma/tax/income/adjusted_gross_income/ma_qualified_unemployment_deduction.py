@@ -27,10 +27,14 @@ class ma_qualified_unemployment_deduction(Variable):
             + tax_unit("tax_unit_dependents", period)
         )
         limit = p.income_limit.base + (size - 1) * p.income_limit.additional_person
-        # Lines 5-9: federal AGI + tax-exempt interest + untaxed social security.
+        # Lines 5-9: federal AGI + tax-exempt interest + untaxed social
+        # security. Line 7 takes Form 1040 line 6a less line 6b: the head's
+        # and spouse's title II and tier 1 railroad retirement benefits (IRC
+        # 86(d)(1)) less the taxable part. A dependent's benefits go on the
+        # dependent's own return.
         untaxed_social_security = tax_unit(
-            "tax_unit_social_security", period
-        ) - tax_unit("tax_unit_taxable_social_security", period)
+            "tax_unit_section_86_benefits", period
+        ) - tax_unit("tax_unit_taxable_section_86_benefits", period)
         household_income = (
             tax_unit("adjusted_gross_income", period)
             + add(tax_unit, period, ["tax_exempt_interest_income"])

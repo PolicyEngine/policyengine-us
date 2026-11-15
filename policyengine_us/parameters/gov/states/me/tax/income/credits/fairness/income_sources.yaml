@@ -3,6 +3,10 @@ values:
   2021-01-01:
     - irs_gross_income
     - tax_exempt_social_security
+    # 36 M.R.S. 5213-A(1)(B) and 5219-KK(1)(D): "railroad retirement benefits
+    # to the extent not included in federal adjusted gross income".
+    - tax_exempt_railroad_social_security_equivalent_benefits
+    - tax_exempt_railroad_pension_benefits
     - tax_exempt_interest_income
 metadata:
   unit: list

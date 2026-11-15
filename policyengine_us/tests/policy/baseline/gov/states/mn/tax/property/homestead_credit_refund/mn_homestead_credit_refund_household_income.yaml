@@ -22,3 +22,60 @@
   output:
     traditional_ira_deduction: 0
     mn_homestead_credit_refund_household_income: 93_000
+
+- name: Line 2 adds nontaxable tier 1 railroad retirement benefits
+  # 2025 M1PR instructions, line 2: box 5 of Form SSA-1099 or RRB-1099 less
+  # the taxable part on Form 1040 line 6b. Minn. Stat. 290A.03, subd.
+  # 3(a)(2)(v) counts railroad retirement benefits and Social Security Act
+  # payments.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 10_000
+        taxable_social_security: 1_000
+        railroad_social_security_equivalent_benefits: 4_000
+        taxable_railroad_social_security_equivalent_benefits: 400
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # 20,000 + (10,000 - 1,000) + (4,000 - 400) - 5,200 (age 65 or older).
+    mn_homestead_credit_refund_household_income: 27_400
+
+- name: Line 6 adds the part of a railroad annuity recovered tax free
+  # Minn. Stat. 290A.03, subd. 3(a)(2)(v) counts a pension or annuity,
+  # railroad retirement benefits included, "which was not exclusively funded
+  # by the claimant or spouse". Railroad employers pay tier 2 tax as employees
+  # do (26 U.S.C. 3201(b), 3221(b)), so the annuity counts in full, the part
+  # that returns the employee's tier 2 tax tax free included, and subd.
+  # 3(b)(2), for annuities the claimant or spouse funded alone, doesn't reach
+  # it.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        taxable_railroad_pension_benefits: 20_000
+        tax_exempt_railroad_pension_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [head]
+        state_code: MN
+  output:
+    # 20,000 + 5,000 - 5,200 (age 65 or older).
+    mn_homestead_credit_refund_household_income: 19_800

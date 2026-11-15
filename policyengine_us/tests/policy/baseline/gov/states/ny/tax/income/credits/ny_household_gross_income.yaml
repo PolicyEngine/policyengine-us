@@ -13,3 +13,44 @@
   output:
     # AGI 5,000 (Social Security not taxable at this income) + nontaxable SS 12,000
     ny_household_gross_income: 17_000
+
+- name: Line 13 adds the untaxed part of every railroad tier and nothing already in AGI.
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 6_000
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_railroad_pension_benefits: 3_000
+        tax_exempt_railroad_pension_benefits: 2_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Provisional income 6,000 + 3,000 + half of 10,000 = 14,000, under the
+    # 25,000 base, so no tier 1 benefit reaches AGI: line 9 is 9,000.
+    # Line 13: 10,000 + 2,000 = 12,000.
+    ny_household_gross_income: 21_000
+
+- name: Lines 11 and 13 split untaxed benefits between title II and tier 1 and count them once.
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 30_000
+        social_security_retirement: 5_000
+        railroad_social_security_equivalent_benefits: 5_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Provisional income 30,000 + half of 10,000 = 35,000. Taxable benefits:
+    # 4,500 + 85% of (35,000 - 34,000) = 5,350, half each from title II and
+    # tier 1. Line 9: 35,350. Line 11: 5,000 - 2,675 = 2,325. Line 13: 2,325.
+    ny_household_gross_income: 40_000

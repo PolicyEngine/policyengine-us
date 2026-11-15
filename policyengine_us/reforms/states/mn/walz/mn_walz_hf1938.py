@@ -44,13 +44,21 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             net_income_fraction = p.net_income_fraction
             alt_amount = p.alternative_amount[filing_status]
             # calculate subtraction amount (following "Worksheet for line 12")
-            # ... US-taxable social security benefits
+            # ... US-taxable social security benefits: Form 1040 line 6b holds
+            # the taxable title II and tier 1 railroad retirement benefits,
+            # which subd. 26(e) (2022), now (i), defines through IRC 86(d)(1)
             us_taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
+            us_taxable_tier_1 = add(
+                tax_unit,
+                period,
+                ["taxable_railroad_social_security_equivalent_benefits"],
+            )
+            us_taxable_benefits = us_taxable_oasdi + us_taxable_tier_1
             # ... alternative benefit subtraction amount
             us_gross_income = add(tax_unit, period, ["irs_gross_income"])
-            adj_income = us_gross_income - us_taxable_oasdi
-            total_oasdi = add(tax_unit, period, ["social_security"])
-            oasdi_amount = total_oasdi * total_benefit_fraction
+            adj_income = us_gross_income - us_taxable_benefits
+            # Provisional income adds one-half of the taxable benefits.
+            oasdi_amount = us_taxable_benefits * total_benefit_fraction
             tax_exempt_int = add(tax_unit, period, ["tax_exempt_interest_income"])
             sum_income = adj_income + oasdi_amount + tax_exempt_int
             us_ald = tax_unit("above_the_line_deductions", period)
@@ -59,6 +67,10 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             income = max_(0, sum_income - mn_ald)
             net_income = max_(0, income - income_amount)
             alt_sub_amt = max_(0, alt_amount - (net_income * net_income_fraction))
+            # Line 17 subtracts the taxable tier 1 benefits with the rest of
+            # the railroad annuity (taxable_railroad_benefits), so line 12
+            # takes the taxable title II benefits, as in the 2022 worksheet's
+            # steps 17-20.
             return min_(us_taxable_oasdi, alt_sub_amt)
 
     class mn_standard_deduction(Variable):

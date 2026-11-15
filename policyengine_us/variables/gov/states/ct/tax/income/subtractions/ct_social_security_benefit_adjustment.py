@@ -6,8 +6,21 @@ class ct_social_security_benefit_adjustment(Variable):
     entity = TaxUnit
     unit = USD
     label = "Connecticut social security benefit adjustment"
+    documentation = (
+        "Form CT-1040 line 41, Conn. Gen. Stat. 12-701(a)(20)(B)(x). "
+        "Following IRC 86(d)(1), the worksheet counts title II benefits and "
+        "tier 1 railroad retirement benefits (the social security equivalent "
+        "benefit) together. Clause (iv) subtracts the taxable tier 1 benefits "
+        "that clause (x) does not, and the model subtracts them with the rest "
+        "of the railroad annuity (taxable_railroad_benefits, 45 U.S.C. "
+        "231m(a)), so this adjustment covers the title II benefits alone."
+    )
     reference = (
         "https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701",
+        # Line 43: tier 1 and tier 2 benefits not already subtracted on
+        # line 41.
+        "https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=9",
+        # Social Security Benefit Adjustment Worksheet, lines A to F.
         "https://portal.ct.gov/-/media/drs/forms/2024/income/2024-ct-1040-instructions_1224.pdf#page=24",
     )
     definition_period = YEAR
@@ -17,38 +30,38 @@ class ct_social_security_benefit_adjustment(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.subtractions.social_security
 
-        # Part A: Gross Social Security
-        gross_social_security = tax_unit("tax_unit_social_security", period)
+        # Line A: federal Social Security Benefits Worksheet line 1, the
+        # head's and spouse's title II and tier 1 benefits (box 5 of Forms
+        # SSA-1099 and RRB-1099).
+        section_86_benefits = tax_unit("tax_unit_section_86_benefits", period)
 
-        # Part B: Combined income excess
+        # Line B: federal worksheet line 9, the excess in IRC 86(b)(1).
         ss_combined_income_excess = tax_unit(
             "tax_unit_ss_combined_income_excess", period
         )
 
-        # Part C: Lesser of gross SS and combined income excess
-        capped_social_security = min_(gross_social_security, ss_combined_income_excess)
+        # Lines C and D: 25% of the lesser of lines A and B.
+        capped_benefits = min_(section_86_benefits, ss_combined_income_excess)
+        capped_benefits_portion = capped_benefits * p.rate
 
-        # Part D: Apply CT rate to capped amount
-        capped_social_security_portion = capped_social_security * p.rate
+        # Line E: federal worksheet line 18. The title II share stays here;
+        # the tier 1 share goes to clause (iv).
+        taxable_title_ii = tax_unit("tax_unit_taxable_social_security", period)
 
-        # Part E: Federal taxable SS (Line 18 from federal SS worksheet)
-        federal_taxable_social_security = tax_unit(
-            "tax_unit_taxable_social_security", period
-        )
-
-        # Part F: Reduced taxable SS
-        reduced_taxable_social_security = max_(
-            federal_taxable_social_security - capped_social_security_portion,
+        # Line F, with line D taken from the title II benefits first, so
+        # that clause (iv) subtracts every taxable tier 1 dollar.
+        reduced_taxable_title_ii = max_(
+            taxable_title_ii - capped_benefits_portion,
             0,
         )
 
-        # Filers with AGI below the threshold can subtract the full amount
-        # of their taxable social security benefits
+        # Clause (x)(III): below the threshold, filers subtract all their
+        # taxable benefits.
         agi = tax_unit("adjusted_gross_income", period)
         full_adjustment_eligible = agi < p.reduction_threshold[filing_status]
 
         return where(
             full_adjustment_eligible,
-            federal_taxable_social_security,
-            reduced_taxable_social_security,
+            taxable_title_ii,
+            reduced_taxable_title_ii,
         )

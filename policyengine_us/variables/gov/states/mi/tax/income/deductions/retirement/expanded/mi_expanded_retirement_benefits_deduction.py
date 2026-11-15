@@ -49,21 +49,20 @@ class mi_expanded_retirement_benefits_deduction(Variable):
 
         # Modeled after Worksheet 3.3 Retirement and Pension Benefits Subtraction for Section D of Form 4884
 
-        # If a filer is recieving military retirement pay, the calculation includes the smaller of
-        # a part of tier one or expanded deduction amount
+        # If a filer subtracts military retirement benefits or taxable
+        # railroad retirement benefits on Schedule 1, line 11, the calculation
+        # includes the smaller of a part of tier one or expanded deduction amount
         # Line 1
         tier_one_cap = p.tier_one.amount[filing_status]
-        head_or_spouse_military_retirement_pay = (
-            person("mi_military_retirement_subtraction", period) * is_head_or_spouse
+        head_or_spouse_line_11_benefits = (
+            person("mi_military_and_railroad_retirement_subtraction", period)
+            * is_head_or_spouse
         )
         # Line 2
-        total_military_retirement_pay = tax_unit.sum(
-            head_or_spouse_military_retirement_pay
-        )
-        received_military_retirement_pay = total_military_retirement_pay > 0
-        # the cap is reduced by the amount of military retirement pay
+        total_line_11_benefits = tax_unit.sum(head_or_spouse_line_11_benefits)
+        received_line_11_benefits = total_line_11_benefits > 0
         # Line 3
-        reduced_tier_one_cap = max_(tier_one_cap - total_military_retirement_pay, 0)
+        reduced_tier_one_cap = max_(tier_one_cap - total_line_11_benefits, 0)
         # Line 4
         applicable_tier_one_cap = reduced_tier_one_cap * p.expanded.rate
         # Line 6
@@ -78,7 +77,7 @@ class mi_expanded_retirement_benefits_deduction(Variable):
 
         # Line 19
         return where(
-            received_military_retirement_pay,
+            received_line_11_benefits,
             capped_benefit_amount,
             capped_head_or_spouse_pension_income,
         )

@@ -390,3 +390,34 @@
         members: [person1]
   output:
     me_pension_income_deduction: 35_000
+
+- name: Railroad retirement benefits reduce the pension deduction cap, taxable or not
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        taxable_private_pension_income: 40_000
+        railroad_social_security_equivalent_benefits: 10_000
+        taxable_railroad_pension_benefits: 6_000
+        tax_exempt_railroad_pension_benefits: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Provisional income 40,000 + 6,000 + 5,000 = 51,000, so 85% of the
+    # tier 1 benefits is taxable federally.
+    taxable_railroad_social_security_equivalent_benefits: 8_500
+    adjusted_gross_income: 54_500
+    # Line P3 counts all $17,000 of railroad retirement benefits:
+    # min(40,000, 48,216 - 17,000) = 31,216.
+    me_pension_income_deduction: 31_216

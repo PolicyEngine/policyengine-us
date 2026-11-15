@@ -302,3 +302,31 @@
     # Federal AGI holds the taxable 6,000 and line 11 the exempt 4,000.
     adjusted_gross_income: 6_000
     pa_property_tax_or_rent_rebate_income: 10_000
+
+- name: Half of every railroad benefit counts once, the tax-free tier 2 part included.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        pa_ssp: 0
+        railroad_social_security_equivalent_benefits: 20_000
+        taxable_railroad_pension_benefits: 30_000
+        tax_exempt_railroad_pension_benefits: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Provisional income 30,000 + 50% x 20,000 = 40,000; taxable tier 1
+    # benefits min(85% x 20,000, 85% x (40,000 - 34,000) + 4,500) = 9,600.
+    adjusted_gross_income: 39_600
+    # Taxpayer Relief Act section 1303, "Income" (2): 50% of railroad
+    # retirement benefits. The 39,600 of railroad benefits in federal AGI
+    # comes out, and half of 52,000 (20,000 + 30,000 + 2,000) goes in:
+    # 39,600 - 39,600 + 26,000 = 26,000.
+    pa_property_tax_or_rent_rebate_income: 26_000

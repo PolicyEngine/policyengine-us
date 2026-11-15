@@ -14,6 +14,8 @@ values:
     # and don't track the included subcomponents separately.
     # RCW 84.36.383(7)(g) — Social Security and Railroad Retirement not in AGI
     - tax_exempt_social_security
+    - tax_exempt_railroad_social_security_equivalent_benefits
+    - tax_exempt_railroad_pension_benefits
     # RCW 84.36.383(7)(i) — state/municipal bond interest not in AGI
     - tax_exempt_interest_income
     # RCW 84.36.383(7)(a) — capital gains add-back. AGI already includes

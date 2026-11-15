@@ -13,3 +13,17 @@
     state_code: VT
   output:
     vt_renter_credit_countable_tax_exempt_ss: 0
+
+- name: Tier 1 railroad benefits count as Social Security benefits under IRC 86(d).
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    age: 70
+    state_code: VT
+    employment_income: 30_000
+    railroad_social_security_equivalent_benefits: 10_000
+  output:
+    # Provisional income 35,000 exceeds the 34,000 single second threshold:
+    # 0.85 * 1,000 + 4,500 = 5,350 taxable, so 4,650 stays excluded.
+    # 75 percent of 4,650 = 3,487.50.
+    vt_renter_credit_countable_tax_exempt_ss: 3_487.5

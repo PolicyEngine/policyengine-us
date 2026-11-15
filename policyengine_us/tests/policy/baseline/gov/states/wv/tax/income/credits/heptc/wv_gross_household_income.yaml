@@ -1,0 +1,14 @@
+- name: Tier 1 railroad benefits outside AGI count as nontaxable social security benefits.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    age: 70
+    state_code: WV
+    employment_income: 30_000
+    railroad_social_security_equivalent_benefits: 10_000
+    taxable_railroad_pension_benefits: 3_000
+    tax_exempt_railroad_pension_benefits: 2_000
+  output:
+    # AGI: 30,000 + 7,900 taxable of the 10,000 + 3,000 = 40,900.
+    # Add the 2,100 of tier 1 outside AGI.
+    wv_gross_household_income: 43_000

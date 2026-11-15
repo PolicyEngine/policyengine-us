@@ -1,0 +1,14 @@
+- name: Household income counts the railroad benefits federal AGI leaves out.
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    age: 70
+    state_code: RI
+    employment_income: 30_000
+    railroad_social_security_equivalent_benefits: 10_000
+    taxable_railroad_pension_benefits: 3_000
+    tax_exempt_railroad_pension_benefits: 2_000
+  output:
+    # AGI: 30,000 + 7,900 taxable of the 10,000 + 3,000 = 40,900.
+    # Add 2,100 of tier 1 and 2,000 of tier 2 outside AGI.
+    ri_property_tax_household_income: 45_000

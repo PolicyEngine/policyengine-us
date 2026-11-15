@@ -22,6 +22,11 @@ description: Income sources re-added to total income for the Massachusetts Senio
 values:
   2001-01-01:
     - social_security
+    # "[T]he total amount of income and receipts from social security,
+    # retirement, pension, or annuities" reaches every railroad tier.
+    - railroad_social_security_equivalent_benefits
+    - taxable_railroad_pension_benefits
+    - tax_exempt_railroad_pension_benefits
     - tax_exempt_unemployment_compensation
     - tax_exempt_pension_income
     - taxable_public_pension_income

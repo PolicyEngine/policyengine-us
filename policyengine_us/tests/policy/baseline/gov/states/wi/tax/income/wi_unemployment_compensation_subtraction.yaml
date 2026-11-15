@@ -96,3 +96,18 @@
     # line 9 = min(2,000, 1,000) = 1,000; line 10 = 2,000 - 1,000 = 1,000.
     adjusted_gross_income: 14_000
     wi_unemployment_compensation_subtraction: 1_000
+
+- name: Taxable tier 1 railroad benefits raise the worksheet's income floor as Form 1040 line 6b does
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    taxable_unemployment_compensation: 6_000
+    adjusted_gross_income: 30_000
+    tax_unit_taxable_social_security: 2_000
+    tax_unit_taxable_railroad_social_security_equivalent_benefits: 8_000
+    filing_status: SINGLE
+    state_code: WI
+  output:
+    # Line 4 is $10,000, line 6 is $22,000, line 7 is $8,000, line 8 is
+    # $4,000 and line 9 is $4,000. Line 10: $6,000 - $4,000.
+    wi_unemployment_compensation_subtraction: 2_000

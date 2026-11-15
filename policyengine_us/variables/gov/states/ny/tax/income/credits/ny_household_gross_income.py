@@ -15,14 +15,18 @@ class ny_household_gross_income(Variable):
         "statute (Tax Law 606(e)(1)(C)) household gross income is the income of "
         "ALL household members; this variable sums at the tax unit as a "
         "simplification. It also omits statutory line items PolicyEngine does "
-        "not yet add back here: pensions and annuities not in AGI (line 13), "
+        "not yet add back here: pensions and annuities not in AGI other than "
+        "railroad retirement benefits (line 13), "
         "cash public assistance and TANF (line 14), workers' compensation, "
         "child support / support money, and veterans' disability pensions "
         "(line 11)."
     )
     # Year-specific 2024 instructions; the current_forms/ URL resolves to the
     # latest (2025) form, whose Step 3 uses federal AGI, not this measure.
-    reference = "https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=2"  # IT-214 Step 3, lines 9-16
+    reference = (
+        "https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=2",  # IT-214 Step 3, lines 9-16
+        "https://www.tax.ny.gov/pdf/2024/inc/it214_2024_fill_in.pdf",  # Line 13
+    )
 
     def formula(tax_unit, period, parameters):
         # Form IT-214, Step 3 "Determine household gross income" (line 16 =
@@ -39,7 +43,28 @@ class ny_household_gross_income(Variable):
         nontaxable_social_security = max_(social_security - taxable_social_security, 0)
         # Line 12: Supplemental Security Income (SSI).
         ssi = person("ssi", period)
+        # Line 13: "Pensions and annuities (including railroad retirement
+        # benefits) not included on lines 9 through 12". Line 11 covers only
+        # the Social Security Act, so the untaxed part of every railroad tier
+        # lands here.
+        railroad_benefits = add(
+            person,
+            period,
+            [
+                "railroad_social_security_equivalent_benefits",
+                "taxable_railroad_pension_benefits",
+                "tax_exempt_railroad_pension_benefits",
+            ],
+        )
+        untaxed_railroad_benefits = max_(
+            railroad_benefits - person("taxable_railroad_benefits", period), 0
+        )
         # Line 15: other income (tax-exempt interest).
         tax_exempt_interest = person("tax_exempt_interest_income", period)
-        additions = tax_unit.sum(nontaxable_social_security + ssi + tax_exempt_interest)
+        additions = tax_unit.sum(
+            nontaxable_social_security
+            + ssi
+            + untaxed_railroad_benefits
+            + tax_exempt_interest
+        )
         return agi + additions
