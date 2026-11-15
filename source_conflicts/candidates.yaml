@@ -14335,3 +14335,29 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us-ca:expectant-parent-payment-residential-rate
+  program: foster-care
+  years:
+    from: 2026
+    type: calendar
+  question: Does California pay an expectant parent in a short-term residential therapeutic program the home-based rate or the residential rate from July 2026?
+  sources:
+  - kind: guidance
+    citation: CDSS All County Letter 21-123, page two (PDF page 3)
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2021/21-123.pdf#page=3
+  - kind: guidance
+    citation: CDSS All County Letter 26-44, pages two and four (PDF pages 3 and 5)
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-44.pdf#page=5
+  readings:
+    statute: We could not retrieve the amended Welfare and Institutions Code section 11465 from the legislature's official site. We have not confirmed a statutory reading.
+    other: CDSS directs counties to pay the home-based infant supplement amount for every placement in ACL 21-123. CDSS publishes separate home-based and residential rates in ACL 26-44's combined table for the infant supplement and expectant payment.
+  example: In August 2026 an eligible expectant parent in a residential placement receives $932 under the placement-neutral reading or $1,429 under the residential-table reading, a difference of $497 per month.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/ca/cdss/expectant_parent_payment/amount.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/expectant_parent_payment/ca_la_expectant_parent_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10836
+  state: open
+  note: PolicyEngine retains the home-based rate for all placements pending confirmation of the amended statute and CDSS's residential rate. PolicyEngine has recorded no ruling.
