@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.usda.school_meals.school_meal_daily_subsidy import (
+    school_meal_daily_rate,
+)
 
 
 class reduced_price_school_meals(Variable):
@@ -17,26 +20,11 @@ class reduced_price_school_meals(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        # Split the net subsidy by each meal's value above the paid rate, so
-        # each meal counts here only when its own tier is REDUCED.
-        state_group = spm_unit.household("state_group_str", period)
-        breakfast_tier = spm_unit("school_meal_breakfast_tier", period)
-        lunch_tier = spm_unit("school_meal_lunch_tier", period)
-        p_amount = parameters(period).gov.usda.school_meals.amount
-        breakfast_value = (
-            p_amount.sbp[state_group][breakfast_tier.decode_to_str()]
-            - p_amount.sbp[state_group]["PAID"]
+        # Weight each school child's reduced-price meals by their net value.
+        reduced_value = school_meal_daily_rate(
+            spm_unit, period, parameters, net=True, tier="REDUCED"
         )
-        lunch_value = (
-            p_amount.nslp[state_group][lunch_tier.decode_to_str()]
-            - p_amount.nslp[state_group]["PAID"]
-        )
-        reduced_breakfast = breakfast_tier == breakfast_tier.possible_values.REDUCED
-        reduced_lunch = lunch_tier == lunch_tier.possible_values.REDUCED
-        reduced_value = where(reduced_breakfast, breakfast_value, 0) + where(
-            reduced_lunch, lunch_value, 0
-        )
-        total_value = breakfast_value + lunch_value
+        total_value = school_meal_daily_rate(spm_unit, period, parameters, net=True)
         reduced_share = np.divide(
             reduced_value,
             total_value,

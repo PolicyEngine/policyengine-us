@@ -194,3 +194,33 @@
     # Worksheet lines 7-10): min(8,300 + 5,000, 84,550) = 13,300. The
     # federal IRC 59(j) amount of 8,200 would give 13,200.
     ca_amt_exemption: 13_300
+
+- name: Child exemption leaves strike benefits out of earned income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_qualifying_child_dependent: true
+        employment_income: 5_000
+        strike_benefits: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # The dependent care credit counts strike benefits (FTB 3506 line 4), so
+    # ca_head_earned is 5,000 + 8,000 = 13,000.
+    ca_head_earned: 13_000
+    # Worksheet line 8 counts "wages, tips, and other payments received for
+    # personal services performed", which strike benefits are not: 5,000.
+    # Adult exemption: AMTI below the 347,808 threshold, so 92,749. Child
+    # (2025 Schedule P (540) instructions, line 22, Exemption Worksheet lines
+    # 7-10): min(9,750 + 5,000, 92,749) = 14,750.
+    ca_amt_exemption: 14_750
