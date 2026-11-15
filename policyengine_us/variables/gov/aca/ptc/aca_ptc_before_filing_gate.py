@@ -13,12 +13,15 @@ class aca_ptc_before_filing_gate(Variable):
         "https://www.irs.gov/pub/irs-prior/i8962--2015.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/i8962--2016.pdf#page=6",
         "https://www.irs.gov/pub/irs-prior/i8962--2017.pdf#page=6",
+        "https://www.irs.gov/pub/irs-prior/i8962--2018.pdf#page=6",
     )
     documentation = (
         "The premium tax credit the tax unit could claim on a return: the "
         "benchmark premium less the required contribution. aca_ptc is this "
-        "amount for a tax unit that files a return claiming it. For 2014 through "
-        "2017, the IRS instructs filers to enter zero when combined MAGI is negative."
+        "amount for a tax unit that files a return claiming it. The IRS instructs "
+        "filers to enter zero when combined MAGI is negative, including after "
+        "2017. This variable applies that floor in 2014–2017; correcting the "
+        "2018+ negative-input calculation needs a separate change."
     )
     defined_for = "is_aca_ptc_eligible"
 
