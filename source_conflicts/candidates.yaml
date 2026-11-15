@@ -13940,8 +13940,8 @@ candidates:
   years:
     from: 2014
     type: tax
-  question: Does a 529 or prepaid tuition contribution deducted under W. Va. Code 11-21-12a reduce the income base of
-    the senior or disability modification under 11-21-12(c)(9)?
+  question: Must filers reduce the senior or disability modification income base under W. Va. Code 11-21-12(c)(9)
+    when they deduct contributions under section 11-21-12a?
   sources:
   - kind: statute
     citation: W. Va. Code 11-21-12a
@@ -13950,8 +13950,8 @@ candidates:
     citation: W. Va. Code 11-21-12(c)(9)
     url: https://code.wvlegislature.gov/11-21-12/
   - kind: form
-    citation: 2025 Schedule M, line 39 and line 47 box (c), PDF p. 6
-    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=6
+    citation: 2025 Schedule M, line 39 and line 47 box (c), PDF pp. 5-6
+    url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=5
   - kind: statute
     citation: West Virginia 2000 HB4679, section 11-21-12a, PDF p. 3
     url: https://code.wvlegislature.gov/signed_bills/2000/2000-RS-HB4679-SUB%20ENR_signed.pdf#page=3
@@ -13962,10 +13962,10 @@ candidates:
     citation: 2014 Schedule M, line 47 and line 52 box (a), PDF p. 9
     url: https://tax.wv.gov/Documents/TaxForms/2014/it140.booklet.pdf#page=9
   readings:
-    statute: Section 12a's deduction adds to the subsection (c) modifications, and (c)(9)(ii) limits the senior
-      modification only by the modifications under (c)(1), (2) and (5)-(8), so a contribution doesn't reduce it.
-    other: Schedule M box (c) counts income not included in lines 35 to 46, and line 39 holds the 529 contribution, so
-      the form excludes it.
+    statute: Filers deduct contributions in addition to subsection (c) modifications under section 12a. They reduce
+      the senior cap only by the modifications under (c)(1), (2) and (5)-(8), as (c)(9)(ii) requires.
+    other: Filers enter income outside Schedule M lines 35 to 46 in box (c). They claim contributions on line 39,
+      excluding those payments from box (c) income.
   pe_us:
     follows: statute
     code:
@@ -13975,11 +13975,12 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10673
   state: ruled
   note: 'PolicyEngine follows section 12a for contributions and preserves the receipt exclusions under the registered
-    us-wv:senior-disability-modification-income-base reading. Section 12a expressly permits the additional deduction,
-    so the canon against double deductions does not offset the contribution against the senior modification.
-    The annual model deducts current-year contributions in full without tracking the optional five-tax-year election.
-    The 2014 boundary preserves verified model coverage; HB4679 already included the additional deduction in 2000,
-    and SB65 retained the senior modification under subdivision (c)(8) in 2013. The existing marker, register and pin
+    us-wv:senior-disability-modification-income-base reading. Filers may expressly deduct contributions separately
+    under section 12a, meeting the canon''s requirement for clear authorization of an additional deduction.
+    PolicyEngine deducts current-year contributions in full without tracking an election to carry them forward
+    over up to five taxable years, beginning with the payment year.
+    PolicyEngine retains 2014 as the verified coverage boundary; the Legislature already authorized the additional
+    deduction in 2000 HB4679 and retained the senior modification under subdivision (c)(8) in 2013 SB65. The existing marker, register and pin
     remain until a follow-up registers this contribution-specific ruling after merge.'
 - id: us-wv:senior-modification-excluded-line-range
   program: income-tax
