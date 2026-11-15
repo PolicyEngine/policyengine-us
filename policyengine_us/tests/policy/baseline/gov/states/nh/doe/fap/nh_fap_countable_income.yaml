@@ -819,7 +819,7 @@
 # Railroad retirement counts as SSI unearned income for MSP, and 1,500 - 20 =
 # 1,480 a month is within the MSP limit (about 1,848 a month), so MSP status
 # turns on assets: 20,000 exceeds the 9,950 MSP resource limit and the enrollee
-# pays the 2027 premium of 202.90 * 12 = 2,434.80. 18,000 - 2,434.80 = 15,565.20.
+# pays the projected 2027 premium of 209.50 * 12 = 2,514. 18,000 - 2,514 = 15,486.
 - name: "Case 28, the Part B premium withheld from railroad retirement is deducted."
   period: 2027
   absolute_error_margin: 0.01
@@ -842,12 +842,12 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    medicare_part_b_premium: 2_434.8
-    nh_fap_countable_income: 15_565.2
+    medicare_part_b_premium: 2_514
+    nh_fap_countable_income: 15_486
 
 # Manual pp14-17 allow support paid and the withheld Medicare premium separately.
 # Social Security of 2,000 a month is above the MSP limit (about 1,848 a month),
-# so the premium is 2,434.80: 24,000 - 2,000 - 2,434.80 = 19,565.20.
+# so the premium is 2,514: 24,000 - 2,000 - 2,514 = 19,486.
 - name: "Case 29, support paid and the Part B premium are both deducted."
   period: 2027
   absolute_error_margin: 0.01
@@ -870,10 +870,10 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    medicare_part_b_premium: 2_434.8
-    nh_fap_countable_income: 19_565.2
+    medicare_part_b_premium: 2_514
+    nh_fap_countable_income: 19_486
 
-# Manual pp14-17 deductions; 24,000 - 23,000 - 2,434.80 is negative and floors at 0.
+# Manual pp14-17 deductions; 24,000 - 23,000 - 2,514 is negative and floors at 0.
 - name: "Case 30, combined allowed deductions cannot produce negative income."
   period: 2027
   absolute_error_margin: 0.01
@@ -896,13 +896,13 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    medicare_part_b_premium: 2_434.8
+    medicare_part_b_premium: 2_514
     nh_fap_countable_income: 0
 
 # Manual p17 and plan item 1.9 count Social Security net of the Medicare deduction.
 # An enrollee aged 70 needs no reported amount: 1,980 a month after the $20
 # exclusion is above the MSP limit (about 1,848), so the premium is
-# 202.90 * 12 = 2,434.80 and 24,000 - 2,434.80 = 21,565.20.
+# the projected 2027 premium of 209.50 * 12 = 2,514, and 24,000 - 2,514 = 21,486.
 - name: "Case 31, a Medicare enrollee's Part B premium is deducted from Social Security."
   period: 2027
   absolute_error_margin: 0.01
@@ -924,13 +924,13 @@
         members: ["person1"]
         state_code: "NH"
   output:
-    medicare_part_b_premium: 2_434.8
-    nh_fap_countable_income: 21_565.2
+    medicare_part_b_premium: 2_514
+    nh_fap_countable_income: 21_486
 
 # Manual pp14-17; each member's withheld premium is deducted within its own SPM
 # unit. Separate tax and marital units keep each person's MSP test individual.
 # Person1 (Social Security above the MSP limit) and person2 (assets of 20,000 above
-# the 9,950 limit) each pay 2,434.80: 24,000 + 18,000 - 2 * 2,434.80 = 37,130.40.
+# the 9,950 limit) each pay 2,514: 24,000 + 18,000 - 2 * 2,514 = 36,972.
 # Person3's 980 a month after the $20 exclusion is within the MSP limit, so MSP
 # pays the premium and unit 2 keeps 12,000.
 - name: "Case 32, each SPM unit deducts its members' Part B premiums, and none that MSP pays."
@@ -985,8 +985,8 @@
         members: ["person1", "person2", "person3"]
         state_code: "NH"
   output:
-    medicare_part_b_premium: [2_434.8, 2_434.8, 0]
-    nh_fap_countable_income: [37_130.4, 12_000]
+    medicare_part_b_premium: [2_514, 2_514, 0]
+    nh_fap_countable_income: [36_972, 12_000]
 
 # Each SPM unit in the same household gets its own $50 exclusion.
 # Unit 1: 40 + 40 - 50 = 30. Unit 2: 25 + 25 - 50 = 0.
@@ -1092,8 +1092,8 @@
 
 # Manual p17 deducts Medicare premiums withheld from Social Security or railroad
 # retirement, so the deduction cannot exceed those benefits. Pension income of
-# 30,000 keeps both enrollees above the MSP limit, so each pays 2,434.80.
-# Unit 1: 30,000 + 1,200 - min(2,434.80, 1,200) = 30,000.
+# 30,000 keeps both enrollees above the MSP limit, so each pays 2,514.
+# Unit 1: 30,000 + 1,200 - min(2,514, 1,200) = 30,000.
 # Unit 2: no Social Security or railroad retirement, so 30,000 - 0 = 30,000.
 - name: "Case 36, the Part B deduction is capped at the Social Security and railroad benefits."
   period: 2027
@@ -1140,5 +1140,5 @@
         members: ["person2"]
         state_code: "NH"
   output:
-    medicare_part_b_premium: [2_434.8, 2_434.8]
+    medicare_part_b_premium: [2_514, 2_514]
     nh_fap_countable_income: [30_000, 30_000]

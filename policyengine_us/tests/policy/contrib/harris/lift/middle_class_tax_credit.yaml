@@ -107,3 +107,32 @@
   output:
     middle_class_tax_credit: 3_750
     income_tax_refundable_credits: 3_750
+
+- name: Oregon federal tax subtraction nets the reform's refundable credit
+  # The reform adds the credit to income_tax_refundable_credits, not to the
+  # gov.irs.credits.refundable list. Oregon's subtraction reads the federal
+  # total, so the credit reduces it as it reduces income_tax: the subtraction
+  # equals income_tax (2,153.37), not federal tax before the credit
+  # (3,871.50, the baseline value).
+  period: 2025
+  reforms: policyengine_us.reforms.harris.lift.middle_class_tax_credit.middle_class_tax_credit
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.harris.lift.middle_class_tax_credit.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    middle_class_tax_credit: 1_718.13
+    income_tax: 2_153.37
+    or_federal_tax_liability_subtraction: 2_153.37
+    or_income_tax: 3_014.64

@@ -61,3 +61,183 @@
     # state supplement is due. Federal = 0, state = min(239.94, 607.83 -
     # 966.50) = -358.67, and CAPI = max(0 - 358.67, 0) = 0 in every month.
     ca_capi_income_eligible: false
+
+# MPP 49-035.1 and 49-055.32: income and the citizen spouse's SSP
+# exhaust the 2,315.57 monthly standard at these three incomes.
+# https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=47
+- name: Case 4, a mixed couple gets no CAPI at the income boundary.
+  period: 2025
+  absolute_error_margin: 1.0e-06
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6000
+      person2:
+        age: 68
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 18000.0
+      person3:
+        age: 40
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    tax_units:
+      citizen:
+        members: [person1]
+      third:
+        members: [person3, person2]
+    marital_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    ca_capi_person: [0, 0, 0]
+    ca_capi_income_eligible: [false, false]
+
+- name: Case 5, a mixed couple gets no CAPI a cent below the income boundary.
+  period: 2025
+  absolute_error_margin: 1.0e-06
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6000
+      person2:
+        age: 68
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 17999.88
+      person3:
+        age: 40
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    tax_units:
+      citizen:
+        members: [person1]
+      third:
+        members: [person3, person2]
+    marital_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    ca_capi_person: [0, 0, 0]
+    ca_capi_income_eligible: [false, false]
+
+- name: Case 6, a mixed couple gets no CAPI a cent above the income boundary.
+  period: 2025
+  absolute_error_margin: 1.0e-06
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6000
+      person2:
+        age: 68
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 18000.12
+      person3:
+        age: 40
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    tax_units:
+      citizen:
+        members: [person1]
+      third:
+        members: [person3, person2]
+    marital_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    ca_capi_person: [0, 0, 0]
+    ca_capi_income_eligible: [false, false]
+
+- name: Case 7, a mixed couple keeps a cent of CAPI when SSI and SSP leave a cent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6000
+        ca_state_supplement_person: 4026.72
+      person2:
+        age: 68
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 18000.0
+      person3:
+        age: 40
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    tax_units:
+      citizen:
+        members: [person1]
+      third:
+        members: [person3, person2]
+    marital_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    ca_capi_person: [0, 0.12, 0]
+    ca_capi_income_eligible: [true, false]

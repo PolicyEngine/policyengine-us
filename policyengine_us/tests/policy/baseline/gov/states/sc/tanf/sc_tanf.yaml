@@ -7,10 +7,10 @@
     sc_tanf_eligible: true
     sc_tanf_benefit_group_size: 2
   output:
-    sc_tanf: 344.58
+    sc_tanf: 344
     # FPG for a benefit group of 2 (2025-01, uses 2024-10 FPG) = 1703.33/month
-    # need_standard = 1703.33 * 0.5 = 851.67
-    # benefit = 851.67 * 0.4046 = 344.59
+    # need_standard = floor(1703.33 * 0.5 = 851.67) = 851 (114-1140(A)(4))
+    # benefit = floor(851 * 0.4046 = 344.31) = 344
 
 - name: Case 2, not eligible.
   period: 2025-01
@@ -31,11 +31,11 @@
     sc_tanf_eligible: true
     sc_tanf_benefit_group_size: 2
   output:
-    sc_tanf: 142.28
+    sc_tanf: 142
     # FPG for a benefit group of 2 (2025-01) = 1703.33/month
-    # need_standard = 1703.33 * 0.5 = 851.67
-    # excess = 851.67 - 500 = 351.67
-    # benefit = 351.67 * 0.4046 = 142.31
+    # need_standard = floor(851.67) = 851
+    # excess = 851 - 500 = 351
+    # benefit = floor(351 * 0.4046 = 142.01) = 142
 
 - name: Case 4, a benefit under $10 is not paid.
   absolute_error_margin: 0.01
@@ -56,8 +56,8 @@
         members: [parent, child]
         state_code: SC
   output:
-    # Need standard for 2 (2025-01) = $1,703.33 * 0.5 = $851.67
-    # Benefit = ($851.67 - $840) * 0.4046 = $4.72, under $10
+    # Need standard for 2 (2025-01) = floor($1,703.33 * 0.5) = $851
+    # Benefit = floor(($851 - $840) * 0.4046 = $4.45) = $4, under $10
     # (S.C. Code Regs. 114-1140(A)(5))
     sc_tanf: 0
 
@@ -80,14 +80,12 @@
         members: [parent, child]
         state_code: SC
   output:
-    # Need standard for 2 (2025-01) = $851.67
-    # Benefit = ($851.67 - $820) * 0.4046 = $12.81
-    # The rule rounds the need standard and benefit down
-    # (114-1140(A)(4)), which is not modeled:
-    # (851 - 820) * 0.4046 = 12.54, so $12.
-    sc_tanf: 12.81
+    # Need standard for 2 (2025-01) = floor($851.67) = $851
+    # 114-1140(A)(4) rounds the payment down:
+    # floor(($851 - $820) * 0.4046 = $12.54) = $12.
+    sc_tanf: 12
 
-- name: Case 6, a benefit of $9.99 is not paid.
+- name: Case 6, a benefit of $9.72 is not paid.
   absolute_error_margin: 0.01
   period: 2025-01
   input:
@@ -106,8 +104,8 @@
         members: [parent, child]
         state_code: SC
   output:
-    # Need standard for 2 (2025-01) = $851.67
-    # Benefit = ($851.67 - $826.98) * 0.4046 = $9.99, under $10
+    # Need standard for 2 (2025-01) = $851
+    # Benefit = floor(($851 - $826.98) * 0.4046 = $9.72) = $9, under $10
     sc_tanf: 0
 
 - name: Case 7, a benefit just over $10 is paid.
@@ -129,8 +127,130 @@
         members: [parent, child]
         state_code: SC
   output:
-    # Need standard for 2 (2025-01) = $851.67
-    # Benefit = ($851.67 - $826.20) * 0.4046 = $10.30, at least $10
-    # With the 114-1140(A)(4) rounding, which is not modeled:
-    # (851 - 826.20) * 0.4046 = 10.03, so $10, which is also paid.
-    sc_tanf: 10.30
+    # Need standard for 2 (2025-01) = $851
+    # Benefit = floor(($851 - $826.20) * 0.4046 = $10.03) = $10, at least $10
+    sc_tanf: 10
+
+- name: Case 8, a benefit that rounds down to $9 is not paid.
+  absolute_error_margin: 0.01
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        sc_tanf_countable_income: 826.8
+        sc_tanf_eligible: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: SC
+  output:
+    # Need standard for 2 (2025-01) = $851
+    # floor(($851 - $826.80) * 0.4046 = $9.79) = $9, under the $10 minimum
+    # (114-1140(A)(4)-(5); the South Carolina part of issue 10497).
+    sc_tanf: 0
+
+# The Section 8.15 table (PDF page 133), 2026-01: "multiply the Need Standard
+# by .4046 and drop the cents" gives the payment standard, the payment with
+# no countable income.
+
+- name: Section 8.15 table, payment standard for a benefit group of 1.
+  period: 2026-01
+  input:
+    state_code:
+      2026: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_eligible: true
+    sc_tanf_benefit_group_size: 1
+  output:
+    # Need standard 652; floor(652 x 0.4046 = 263.80) = 263.
+    sc_tanf: 263
+
+- name: Section 8.15 table, payment standard for a benefit group of 2.
+  period: 2026-01
+  input:
+    state_code:
+      2026: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_eligible: true
+    sc_tanf_benefit_group_size: 2
+  output:
+    # Need standard 881; floor(881 x 0.4046 = 356.45) = 356.
+    sc_tanf: 356
+
+- name: Section 8.15 table, payment standard for a benefit group of 3.
+  period: 2026-01
+  input:
+    state_code:
+      2026: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_eligible: true
+    sc_tanf_benefit_group_size: 3
+  output:
+    # Need standard 1,110; floor(1,110 x 0.4046 = 449.11) = 449.
+    sc_tanf: 449
+
+- name: Section 8.15 table, payment standard for a benefit group of 4.
+  period: 2026-01
+  input:
+    state_code:
+      2026: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_eligible: true
+    sc_tanf_benefit_group_size: 4
+  output:
+    # Need standard 1,339; floor(1,339 x 0.4046 = 541.76) = 541.
+    sc_tanf: 541
+
+- name: Section 8.15 table, payment standard for a benefit group of 5.
+  period: 2026-01
+  input:
+    state_code:
+      2026: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_eligible: true
+    sc_tanf_benefit_group_size: 5
+  output:
+    # Need standard 1,568; floor(1,568 x 0.4046 = 634.41) = 634.
+    sc_tanf: 634
+
+- name: Section 8.15 table, payment standard for a benefit group of 6.
+  period: 2026-01
+  input:
+    state_code:
+      2026: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_eligible: true
+    sc_tanf_benefit_group_size: 6
+  output:
+    # Need standard 1,797; floor(1,797 x 0.4046 = 727.07) = 727.
+    sc_tanf: 727
+
+- name: Section 8.15 table, payment standard for a benefit group of 7.
+  period: 2026-01
+  input:
+    state_code:
+      2026: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_eligible: true
+    sc_tanf_benefit_group_size: 7
+  output:
+    # Need standard 2,027; floor(2,027 x 0.4046 = 820.12) = 820.
+    sc_tanf: 820
+
+- name: Section 8.15 table, payment standard for a benefit group of 8.
+  period: 2026-01
+  input:
+    state_code:
+      2026: SC
+    sc_tanf_countable_income: 0
+    sc_tanf_eligible: true
+    sc_tanf_benefit_group_size: 8
+  output:
+    # Need standard 2,256; floor(2,256 x 0.4046 = 912.78) = 912.
+    sc_tanf: 912

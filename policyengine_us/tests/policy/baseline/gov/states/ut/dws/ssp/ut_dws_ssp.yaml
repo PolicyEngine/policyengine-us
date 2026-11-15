@@ -298,3 +298,90 @@
     # single person amount, since person2 does not qualify.
     ut_dws_ssp_eligible: [true, false]
     ut_dws_ssp: [3.91, 0]
+
+- name: Utah couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: UT
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    ut_dws_ssp_eligible: [true, true, true]
+    # Utah DWS Eligibility Manual 205-10, effective January 1, 2026:
+    # https://jobs.utah.gov/infosource/eligibilitymanual/200_Program_Eligibility_Requirements/205-10_State_Supplemental_Payments_to_SSI_Recipients_-_General_Information.htm
+    # Own-household couple $5.75 / 2 = $2.875 each; individual $3.91.
+    ut_dws_ssp: [2.875, 2.875, 3.91]
+    ut_ssp: [2.875, 2.875, 3.91]
+
+- name: Utah household-of-another couple amount excludes the third aged adult.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: UT
+  output:
+    # The same 205-10 table pays $12.19 to a couple in another's household.
+    # https://jobs.utah.gov/infosource/eligibilitymanual/200_Program_Eligibility_Requirements/205-10_State_Supplemental_Payments_to_SSI_Recipients_-_General_Information.htm
+    # $12.19 / 2 = $6.095 per spouse; individual $3.91.
+    ut_dws_ssp: [6.095, 6.095, 3.91]
+    ut_ssp: [6.095, 6.095, 3.91]

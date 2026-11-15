@@ -87,7 +87,7 @@ def irmaa_control():
         values["medicare_irmaa_magi_two_years_prior"], [463100.31], rtol=0, atol=0.01
     )
     np.testing.assert_allclose(
-        values["medicare_part_b_premium"], [7790.40], rtol=0, atol=0.01
+        values["medicare_part_b_premium"], [8043.60], rtol=0, atol=0.01
     )
     return situation, values
 

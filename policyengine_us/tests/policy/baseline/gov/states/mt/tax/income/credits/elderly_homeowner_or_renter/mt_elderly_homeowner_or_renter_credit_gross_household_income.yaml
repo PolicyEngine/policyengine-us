@@ -49,7 +49,6 @@
         age: 70
         taxable_pension_income: 20_000
         long_term_capital_gains: -3_000
-        mt_refundable_credits_before_renter_credit: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -71,11 +70,12 @@
       person1:
         age: 70
         taxable_pension_income: 20_000
-        mt_refundable_credits_before_renter_credit: 0
+        # Net household income is computed for eligible claimants.
+        mt_elderly_homeowner_or_renter_credit_eligible: true
       person2:
         age: 68
         self_employment_income: -5_000
-        mt_refundable_credits_before_renter_credit: 0
+        mt_elderly_homeowner_or_renter_credit_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -202,6 +202,10 @@
       person2:
         age: 40
         employment_income: 10_000
+        # Supplied receipts: federal and Montana EITC refunds received during
+        # 2024.
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 632
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 63.20
     tax_units:
       tax_unit1:
         members: [person1]
@@ -214,11 +218,10 @@
   output:
     # 2024 Schedule 2EC line 8: "Combine all the refundable credits received
     # by all household members in 2024. Refundable credits include the
-    # federal and Montana earned income tax credits". Rev. Proc. 2023-34, no
-    # qualifying child: 10_000 is above the 8_260 earned income amount and
-    # under the 10_330 phaseout threshold, so the maximum 632; the Montana
-    # EITC is 10% of it, 63.20. The member's 10_000 + 632 + 63.20.
-    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: [0, 632]
+    # federal and Montana earned income tax credits". The member received a
+    # 632 federal and a 63.20 Montana EITC refund during 2024; both are
+    # supplied receipts, not this year's credits, which are paid in 2025.
+    # The member's 10_000 + 632 + 63.20.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_695.20]
 
 - name: A parent's federal EITC and refundable child tax credit count in gross household income
@@ -232,6 +235,10 @@
       person2:
         age: 30
         employment_income: 10_000
+        # Supplied receipts: federal EITC and refundable CTC, and a Montana
+        # EITC refund, received during 2024.
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 4_525
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 340
       person3:
         age: 5
     tax_units:
@@ -245,9 +252,9 @@
         state_name: MT
   output:
     # 2024 Schedule 2EC line 8 counts "the refundable portion of the federal
-    # child tax credit". Federal EITC 34% x 10_000 = 3_400; refundable CTC
-    # min(1_700, 15% x 7_500) = 1_125; Montana EITC 340. The parent:
-    # 10_000 + 3_400 + 1_125 + 340 = 14_865.
+    # child tax credit". The parent received 4_525 of federal EITC and
+    # refundable child tax credit and a 340 Montana EITC refund during 2024
+    # (supplied receipts). The parent: 10_000 + 4_525 + 340 = 14_865.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 14_865, 0]
 
 - name: The elderly homeowner/renter credit received during the year counts
@@ -330,7 +337,8 @@
       person1:
         age: 40
         employment_income: 10_000
-        mt_refundable_credits_before_renter_credit: 0
+        # A supplied receipt: a federal EITC refund received during 2017.
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 383.01
     tax_units:
       tax_unit:
         members: [person1]
@@ -341,9 +349,7 @@
   output:
     # ARM 42.4.301(2)(b), effective 11/10/2017: "federal refundable credits
     # received"; 2017 Form 2EC worksheet item 4: "Any federal or state
-    # refundable credits". Rev. Proc. 2016-55, no qualifying child:
-    # 510 - 7.65% x (10_000 - 8_340) = 383.01.
-    eitc: 383.01
+    # refundable credits". 10_000 + the 383.01 received.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 10_383.01
 
 - name: Federal refundable credits do not count before 2017
@@ -353,7 +359,8 @@
       person1:
         age: 40
         employment_income: 10_000
-        mt_refundable_credits_before_renter_credit: 0
+        # A supplied receipt: a federal EITC refund received during 2016.
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 383.01
     tax_units:
       tax_unit:
         members: [person1]
@@ -366,6 +373,57 @@
     # extent that the amount recovered reduced the claimant's Montana income
     # tax in a prior year".
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 10_000
+
+- name: Montana refundable credits received count in 2017 to 2022
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 63
+        taxable_pension_income: 20_000
+        # Supplied receipts: no Economic Impact Payment, and a 50 Montana
+        # EITC refund received during 2021.
+        mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 0
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 50
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # ARM 42.4.301(2)(c), effective 11/10/2017: "any state refundable
+    # credits received"; 2021 instructions, line 7: "Combine all the
+    # refundable credits received by the members of the household in 2021",
+    # including "the federal and Montana Earned Income Tax Credit".
+    # 20_000 + 0 + 50.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_050
+
+- name: Montana refundable credits received count before 2017
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        # A supplied receipt: a 50 Montana refundable credit paid with a
+        # Montana income tax refund received during 2016.
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 50
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # The 2004-2017 ARM 42.4.301(2)(c) counted "Montana state income tax and
+    # elderly homeowner/renter credit refunds received", and MCA
+    # 15-30-2337(9)(a) (2009) counts all nontaxable income. 20_000 + 50.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_050
 
 - name: A filer's short-term loss netted against their own long-term gain does not reduce gross household income
   period: 2024
@@ -517,6 +575,10 @@
       person2:
         age: 35
         employment_income: 25_000
+        # Supplied receipts: federal EITC and refundable CTC, and a Montana
+        # EITC refund, received during 2024.
+        mt_elderly_homeowner_or_renter_credit_other_federal_refundable_credits: 9_854.83
+        mt_elderly_homeowner_or_renter_credit_state_refundable_credits: 647.98
       person3:
         age: 5
       person4:
@@ -532,12 +594,10 @@
         members: [person1, person2, person3, person4]
         state_name: MT
   output:
-    # Three generations. The daughter's line 8 credits: federal EITC with
-    # two children 6_960 - 21.06% x (25_000 - 22_720) = 6_479.83; refundable
-    # child tax credit min(2 x 1_700, 15% x (25_000 - 2_500)) = 3_375;
-    # Montana EITC 10% = 647.98. Her total: 25_000 + 6_479.83 + 3_375 +
-    # 647.98 = 35_502.81. The grandchild is her dependent; their 3_000 of
-    # wages count through the dependent path.
+    # Three generations. The daughter's line 8 credits are the supplied
+    # receipts: 9_854.83 federal and 647.98 Montana. Her total: 25_000 +
+    # 9_854.83 + 647.98 = 35_502.81. The grandchild is her dependent; their
+    # 3_000 of wages count through the dependent path.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [15_000, 35_502.81, 0, 3_000]
 
 - name: A prior-year capital loss carryover does not reduce the year's gain

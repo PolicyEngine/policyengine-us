@@ -748,3 +748,390 @@
         state_code: FL
   output:
     is_parent_for_medicaid: [false, false]
+
+# New York annual MAGI tables, 2017–2026:
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/17ma005attach3.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/18ma004_attachment_3.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/19ma06_attachment_iii.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/20ma02_att_iii.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/21ma06_att3.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma01_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/23ma02_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/24ma01_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/25ma03_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/26ma05_att1.pdf
+# New York annual GIS MAGI standards: size-two 138% monthly ceilings.
+- name: Case 31, New York parent at the published monthly ceiling in every year from 2017
+    through 2026.
+  period: 2017
+  input:
+    people:
+      person1:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        employment_income:
+          2017: 22_416
+          2018: 22_716
+          2019: 23_340
+          2020: 23_796
+          2021: 24_048
+          2022: 25_272
+          2023: 27_216
+          2024: 28_212
+          2025: 29_196
+          2026: 29_868
+      person2:
+        age:
+          2017: 5
+          2018: 5
+          2019: 5
+          2020: 5
+          2021: 5
+          2022: 5
+          2023: 5
+          2024: 5
+          2025: 5
+          2026: 5
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code:
+          2017: NY
+          2018: NY
+          2019: NY
+          2020: NY
+          2021: NY
+          2022: NY
+          2023: NY
+          2024: NY
+          2025: NY
+          2026: NY
+  output:
+    medicaid_household_size:
+      2017:
+      - 2
+      - 2
+      2018:
+      - 2
+      - 2
+      2019:
+      - 2
+      - 2
+      2020:
+      - 2
+      - 2
+      2021:
+      - 2
+      - 2
+      2022:
+      - 2
+      - 2
+      2023:
+      - 2
+      - 2
+      2024:
+      - 2
+      - 2
+      2025:
+      - 2
+      - 2
+      2026:
+      - 2
+      - 2
+    is_parent_for_medicaid:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false
+    medicaid_category:
+      2017:
+      - PARENT
+      - YOUNG_CHILD
+      2018:
+      - PARENT
+      - YOUNG_CHILD
+      2019:
+      - PARENT
+      - YOUNG_CHILD
+      2020:
+      - PARENT
+      - YOUNG_CHILD
+      2021:
+      - PARENT
+      - YOUNG_CHILD
+      2022:
+      - PARENT
+      - YOUNG_CHILD
+      2023:
+      - PARENT
+      - YOUNG_CHILD
+      2024:
+      - PARENT
+      - YOUNG_CHILD
+      2025:
+      - PARENT
+      - YOUNG_CHILD
+      2026:
+      - PARENT
+      - YOUNG_CHILD
+    medicaid_enrolled:
+      2017:
+      - true
+      - true
+      2018:
+      - true
+      - true
+      2019:
+      - true
+      - true
+      2020:
+      - true
+      - true
+      2021:
+      - true
+      - true
+      2022:
+      - true
+      - true
+      2023:
+      - true
+      - true
+      2024:
+      - true
+      - true
+      2025:
+      - true
+      - true
+      2026:
+      - true
+      - true
+
+# New York annual GIS MAGI standards: size-two 138% monthly ceilings.
+- name: Case 32, New York parent one dollar above the published monthly ceiling in every year
+    from 2017 through 2026.
+  period: 2017
+  input:
+    people:
+      person1:
+        age:
+          2017: 30
+          2018: 30
+          2019: 30
+          2020: 30
+          2021: 30
+          2022: 30
+          2023: 30
+          2024: 30
+          2025: 30
+          2026: 30
+        employment_income:
+          2017: 22_428
+          2018: 22_728
+          2019: 23_352
+          2020: 23_808
+          2021: 24_060
+          2022: 25_284
+          2023: 27_228
+          2024: 28_224
+          2025: 29_208
+          2026: 29_880
+      person2:
+        age:
+          2017: 5
+          2018: 5
+          2019: 5
+          2020: 5
+          2021: 5
+          2022: 5
+          2023: 5
+          2024: 5
+          2025: 5
+          2026: 5
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code:
+          2017: NY
+          2018: NY
+          2019: NY
+          2020: NY
+          2021: NY
+          2022: NY
+          2023: NY
+          2024: NY
+          2025: NY
+          2026: NY
+  output:
+    medicaid_household_size:
+      2017:
+      - 2
+      - 2
+      2018:
+      - 2
+      - 2
+      2019:
+      - 2
+      - 2
+      2020:
+      - 2
+      - 2
+      2021:
+      - 2
+      - 2
+      2022:
+      - 2
+      - 2
+      2023:
+      - 2
+      - 2
+      2024:
+      - 2
+      - 2
+      2025:
+      - 2
+      - 2
+      2026:
+      - 2
+      - 2
+    is_parent_for_medicaid:
+      2017:
+      - false
+      - false
+      2018:
+      - false
+      - false
+      2019:
+      - false
+      - false
+      2020:
+      - false
+      - false
+      2021:
+      - false
+      - false
+      2022:
+      - false
+      - false
+      2023:
+      - false
+      - false
+      2024:
+      - false
+      - false
+      2025:
+      - false
+      - false
+      2026:
+      - false
+      - false
+    medicaid_category:
+      2017:
+      - NONE
+      - YOUNG_CHILD
+      2018:
+      - NONE
+      - YOUNG_CHILD
+      2019:
+      - NONE
+      - YOUNG_CHILD
+      2020:
+      - NONE
+      - YOUNG_CHILD
+      2021:
+      - NONE
+      - YOUNG_CHILD
+      2022:
+      - NONE
+      - YOUNG_CHILD
+      2023:
+      - NONE
+      - YOUNG_CHILD
+      2024:
+      - NONE
+      - YOUNG_CHILD
+      2025:
+      - NONE
+      - YOUNG_CHILD
+      2026:
+      - NONE
+      - YOUNG_CHILD
+    medicaid_enrolled:
+      2017:
+      - false
+      - true
+      2018:
+      - false
+      - true
+      2019:
+      - false
+      - true
+      2020:
+      - false
+      - true
+      2021:
+      - false
+      - true
+      2022:
+      - false
+      - true
+      2023:
+      - false
+      - true
+      2024:
+      - false
+      - true
+      2025:
+      - false
+      - true
+      2026:
+      - false
+      - true

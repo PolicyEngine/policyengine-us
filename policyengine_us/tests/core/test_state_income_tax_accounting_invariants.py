@@ -67,11 +67,6 @@ STATES_WITH_FORMULA_INCOME_TAX = {
     # Lower of the joint return and separate returns on one form, each after
     # refundable credits.
     "MT",
-    # No refundable credits in baseline, so the before-refundable list holds
-    # nc_income_tax itself. The contributed EITC and child care credit reforms
-    # net their refundable credits inside nc_income_tax, which keeps NC out of
-    # the refundable list.
-    "NC",
     # No tax at or below the filing threshold. The zero-out is in both
     # nj_income_tax_before_refundable_credits and nj_income_tax; the second
     # copy keeps tests that set the first as an input right.

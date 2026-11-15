@@ -204,3 +204,46 @@
   output:
     # Married households use the $2,400 couple limit; $2,500 is ineligible.
     ct_ssp_resource_eligible: [false, false]
+
+# CT DSS State Supplement page and fact sheet: $2,400 combined assets for a
+# married couple; $1,600 for a single person. $1,000 + $1,000 = $2,000 passes;
+# the third adult's $1,000 is tested separately. Section 17b-600 in chapter
+# 319mm authorizes the program but does not specify these dollar limits.
+# https://portal.ct.gov/dss/knowledge-base/articles/cash-assistance/state-supplement-cash-assistance?language=en_US
+# https://portal.ct.gov/-/media/departments-and-agencies/dss/fact-sheets-and-issue-briefs/fact-sheets/agedblinddiabledfactsheet.pdf
+- name: Connecticut excludes a third adult from the couple resource test
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        ssi_countable_resources:
+          2026: 1000
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ssi_countable_resources:
+          2026: 1000
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        ssi_countable_resources:
+          2026: 1000
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: CT
+  output:
+    ct_ssp_resource_eligible: [true, true, true]

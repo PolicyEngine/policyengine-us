@@ -44,8 +44,10 @@ every tax unit:
    exactly that amount.
 7. A supplied subtotal holds no computed long-term care premiums and no
    applied exclusion.
-8. Years after the last published table: every amount is a multiple of $10,
-   amounts rise with age, and no amount falls from one year to the next.
+8. Years after the last published table: every amount is its 1997 amount in
+   213(d)(10)(A) plus a multiple of $10, as 213(d)(10)(B) rounds the
+   increase, amounts rise with age, and no amount falls from one year to the
+   next.
 """
 
 import numpy as np
@@ -74,8 +76,11 @@ PUBLISHED_LIMITS = {
     2024: (470, 880, 1_760, 4_710, 5_880),  # Rev. Proc. 2023-34
     2025: (480, 900, 1_800, 4_810, 6_020),  # Rev. Proc. 2024-40
     2026: (500, 930, 1_860, 4_960, 6_200),  # Rev. Proc. 2025-32
+    2027: (500, 945, 1_890, 5_030, 6_290),  # Rev. Proc. 2026-35
 }
 BAND_TOPS = (40, 50, 60, 70)
+# 213(d)(10)(A): the 1997 limits the (B) increases build on.
+STATUTORY_LIMITS = (200, 375, 750, 2_000, 2_500)
 LAST_PUBLISHED = max(PUBLISHED_LIMITS)
 EDGE_AGES = [0, 18, 39, 40, 41, 50, 51, 60, 61, 70, 71, 95]
 
@@ -107,7 +112,7 @@ def test_limits_after_the_last_published_year():
     ages = np.array([30, 45, 55, 65, 75], dtype=float)
     for year in range(LAST_PUBLISHED + 1, LAST_PUBLISHED + 10):
         amounts = _limit_parameter(year).calc(ages, right=True)
-        assert (amounts % 10 == 0).all(), (year, amounts)
+        assert ((amounts - STATUTORY_LIMITS) % 10 == 0).all(), (year, amounts)
         assert (np.diff(amounts) > 0).all(), (year, amounts)
         assert (amounts >= previous).all(), (year, amounts, previous)
         previous = amounts

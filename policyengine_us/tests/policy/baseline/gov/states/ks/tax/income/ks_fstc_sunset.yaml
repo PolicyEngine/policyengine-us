@@ -105,13 +105,23 @@
 - name: FSTC comparison 2024 vs 2025 - same eligible household
   period: 2024
   input:
-    age_head: 60
-    blind_head: false
-    adjusted_gross_income: 20_000
-    tax_unit_size: 2
-    state_code: KS
+    people:
+      head:
+        age: 60
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [head, child]
+        state_code: KS
   output:
-    # 2024: 2 persons * $125 = $250
+    # 2024: 1 unclaimable filer + 1 dependent child under 18 = 2 federal
+    # exemptions; 2 * $125 = $250.
     ks_fstc: 250
 
 - name: FSTC sunset 2025 - large eligible family gets $0

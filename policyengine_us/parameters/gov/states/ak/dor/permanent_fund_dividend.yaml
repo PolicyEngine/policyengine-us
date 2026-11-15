@@ -1,9 +1,18 @@
 description: Alaska provides this Permanent Fund Dividend amount.
 values:
+  2015-01-01: 2_072
+  2016-01-01: 1_022
+  2017-01-01: 1_100
+  2018-01-01: 1_600
+  2019-01-01: 1_606
+  2020-01-01: 992
+  2021-01-01: 1_114
   2022-01-01: 2_622
   2023-01-01: 1_312
   2024-01-01: 1_403.83
   2025-01-01: 1_000
+  # Alaska sets each year's dividend in its budget, and it has set none for
+  # 2027 or later, so PolicyEngine keeps the 2026 dividend for later years.
   2026-01-01: 1_000
 
 metadata:
@@ -11,9 +20,21 @@ metadata:
   period: year
   unit: currency-USD
   reference:
-    # 2022 and 2023.
-    - title: Alaska Permanent Fund Dividend Tax Information
-      href: https://pfd.alaska.gov/payments/tax-information
+    # 2015 to 2021.
+    - title: Alaska Permanent Fund Dividend Division, Summary of Dividend Applications & Payments
+      href: https://pfd.alaska.gov/division-info/summary-of-dividend-applications-payments
+    # 2015 to 2019, in the five-year dividend calculation.
+    - title: Alaska Permanent Fund Dividend Division, 2019 Annual Report
+      href: https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2019-pfd-annual-report.pdf#page=24
+    # 2017 to 2021, in the five-year dividend calculation.
+    - title: Alaska Permanent Fund Dividend Division, 2021 Annual Report
+      href: https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2021-pfd-annual-report---final.pdf#page=24
+    # 2022: $2,621.81 of the $3,284 payment, which PolicyEngine rounds to $2,622.
+    - title: Alaska Department of Revenue, DOR Response to IRS Guidance on 2022 PFD (release 23-002)
+      href: https://dor.alaska.gov/docs/default-source/press-releases/2023_02_17-dor-response-to-irs-guidance-on-2022-pfd.pdf#page=1
+    # 2023.
+    - title: Alaska Permanent Fund Dividend Division, 2023 Annual Report
+      href: https://pfd.alaska.gov/docs/permanentfunddividendlibraries/annual-reports/2023-pfd-annual-report.pdf#page=3
     # 2024.
     - title: Department of Revenue Announces 2024 Permanent Fund Dividend Amount and Energy Relief
       href: https://dor.alaska.gov/department-of-revenue/news-detail/2024/09/19/department-of-revenue-announces-2024-permanent-fund-dividend-amount-and-energy-relief

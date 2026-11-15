@@ -120,7 +120,7 @@
     # The return claims 1,500, shared 1:2.
     ms_health_savings_account_adjustment: [500, 1_000]
 
-- name: A dependent's income is not reduced by the filer's deduction, nor by the dependent's own account
+- name: A dependent's income and own account stay off the filers' Mississippi AGI
   period: 2025
   input:
     people:
@@ -148,9 +148,9 @@
     # account is left out.
     ms_health_savings_account_adjustment: [1_500, 1_500, 0]
     ms_agi_adjustments: [1_500, 1_500, 0]
-    # The child's 5,000 reaches the Mississippi AGI of the spouse with the
-    # greater income in full: 40,000 - 1,500 + 5,000.
-    ms_agi: [43_500, 28_500, 0]
+    # The child's 5,000 goes on the child's own return: 40,000 - 1,500 and
+    # 30,000 - 1,500.
+    ms_agi: [38_500, 28_500, 0]
 
 - name: A married person filing a separate federal return takes their own deduction
   period: 2025

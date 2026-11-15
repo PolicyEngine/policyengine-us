@@ -13,8 +13,9 @@ class spm_unit_medical_out_of_pocket_expenses(Variable):
         "expenses. Health insurance premiums include pretax payroll premiums "
         "and disjoint other health insurance premiums plus modeled "
         "Marketplace, CHIP, Medicaid, and Medicare "
-        "Part A and Part B premiums net of Medicare Savings Program coverage "
-        "where modeled, plus the Part D IRMAA surcharge. "
+        "Part A and Part B premiums net of Medicare Savings Program and "
+        "Medicaid buy-in coverage where modeled, plus the Part D IRMAA "
+        "surcharge. "
         "Non-premium expenses include other medical expenses and "
         "over-the-counter health expenses."
     )

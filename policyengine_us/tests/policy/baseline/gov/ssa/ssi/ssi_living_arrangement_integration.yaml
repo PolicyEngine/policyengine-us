@@ -196,8 +196,8 @@
         is_disabled: true
         meets_ssi_disability_criteria: true
         ssi_receives_outside_shelter_support: true
-        # Actual annual shelter value $1,200 ($100/month electric bill)
-        ssi_shelter_support_value: 1_200
+        # Actual monthly shelter value $100 (electric bill)
+        ssi_shelter_support_value: 100
     spm_units:
       spm_unit:
         members: [person1]
@@ -207,9 +207,8 @@
   output:
     ssi_federal_living_arrangement: OWN_HOUSEHOLD
     ssi_pmv_applies: true
-    # PMV annual = 342.33 * 12 = 4,108
-    # Actual = 1,200 < PMV → use actual
-    # ISM monthly = 1,200 / 12 = 100
+    # PMV monthly = 342.33
+    # Actual = 100 < PMV → use actual
     ssi_in_kind_support_and_maintenance: 100
     # Countable = (100 - 20) = 80 (after $20 general exclusion)
     ssi_countable_income: 80
@@ -226,7 +225,8 @@
         age: 40
         is_disabled: true
         meets_ssi_disability_criteria: true
-        ssi_receives_food_from_others: true
+        ssi_receives_food_from_others:
+          2024: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -235,7 +235,7 @@
         members: [person1]
   output:
     ssi_federal_living_arrangement: OWN_HOUSEHOLD
-    # food_counts = true in 2024-01 → PMV applies
+    # January 2024 uses November 2023 food_counts and the January FBR.
     ssi_pmv_applies: true
     # PMV monthly = (1/3 x 943) + 20 = 334.33
     ssi_in_kind_support_and_maintenance: 334.33
@@ -244,6 +244,308 @@
     # uncapped = 943 - 314.33 = 628.67
     uncapped_ssi: 628.67
     ssi: 628.67
+
+- name: Case 9b, a continuing recipient counts August food for the October 2024 payment.
+  period: 2024-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others:
+          2024: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # 20 CFR 416.420(a) uses the second prior income month.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9b2, a continuing recipient counts September food for the November 2024 payment.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others:
+          2024: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # September food counts unless all food came on or after September 30.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9b3, a continuing recipient excludes October food for the December 2024 payment.
+  period: 2024-12
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others:
+          2024: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # October income excludes food, so December pays the full $943 FBR.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: false
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
+    uncapped_ssi: 943
+    ssi: 943
+
+- name: Case 9c, the September 2024 payment still counts July food.
+  period: 2024-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others:
+          2024: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9d, a September food date flag does not change the September 2024 payment.
+  period: 2024-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others:
+          2024: true
+        ssi_food_from_others_only_on_or_after_food_exclusion:
+          2024-09: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # September pays on July income, before the September 30 exclusion.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9d2, food received only on September 30 does not reduce the November 2024 payment.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others:
+          2024: true
+        ssi_food_from_others_only_on_or_after_food_exclusion:
+          2024-09: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # November reads the September income-month flag under 416.420(a).
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: false
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
+    uncapped_ssi: 943
+    ssi: 943
+
+- name: Case 9e, a date flag before the exclusion month leaves food countable.
+  period: 2024-08
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others:
+          2024: true
+        ssi_food_from_others_only_on_or_after_food_exclusion:
+          2024-06: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # August pays on June income, which predates September 30.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9e2, the February 2024 payment reads December 2023 food policy.
+  period: 2024-02
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 40
+        is_disabled:
+          2024: true
+        meets_ssi_disability_criteria:
+          2024: true
+        ssi_receives_food_from_others:
+          2024: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # Current-year support inputs still apply when the income month crosses years.
+    # $943 / 3 + $20 = $334.33 PMV; less $20 leaves $314.33 countable.
+    # $943 - $314.33 = $628.67 for a continuing recipient.
+    ssi_federal_living_arrangement: OWN_HOUSEHOLD
+    ssi_pmv_applies: true
+    ssi_in_kind_support_and_maintenance: 334.33
+    ssi_countable_income: 314.33
+    uncapped_ssi: 628.67
+    ssi: 628.67
+
+- name: Case 9f, a year of food-only support reduces payments through November 2024.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_food_from_others:
+          2024: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+  output:
+    # 11 x ($943 / 3 + $20) = $3,677.6667 annual ISM.
+    ssi_in_kind_support_and_maintenance: 3_677.67
+    # 11 x ($943 / 3) = $3,457.6667 annual countable income.
+    ssi_countable_income: 3_457.67
+    # 11 x ($943 - $943 / 3) + $943 = $7,858.3333 annual SSI.
+    ssi: 7_858.33
+
+- name: Case 9g, food received from October 2024 leaves October and November payments unreduced.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 70
+        ssi_receives_food_from_others:
+          2024-10: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: TX
+  output:
+    # October and November use August and September, before food began.
+    # With no countable income, SSA pays the full $943 federal benefit rate.
+    ssi_in_kind_support_and_maintenance:
+      2024-10: 0
+      2024-11: 0
+    ssi:
+      2024-10: 943
+      2024-11: 943
 
 - name: Case 10, food-only support after 9/30/2024 does not trigger PMV.
   period: 2025-01
@@ -263,11 +565,31 @@
         members: [person1]
   output:
     ssi_federal_living_arrangement: OWN_HOUSEHOLD
-    # food_counts = false in 2025-01 → PMV does not apply
+    # January 2025 reads November 2024 food policy and uses its current FBR.
     ssi_pmv_applies: false
     ssi_in_kind_support_and_maintenance: 0
     ssi_countable_income: 0
     uncapped_ssi: 967
+    ssi: 967
+
+- name: Case 10b, February 2025 excludes food using December 2024 policy.
+  period: 2025-02
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2025: 40
+        is_disabled:
+          2025: true
+        meets_ssi_disability_criteria:
+          2025: true
+        ssi_receives_food_from_others: true
+  output:
+    # February reads December 2024 policy; current-year inputs need no history.
+    ssi_pmv_applies: false
+    ssi_in_kind_support_and_maintenance: 0
+    ssi_countable_income: 0
     ssi: 967
 
 - name: Case 11, couple both eligible with PMV shelter support.
@@ -355,8 +677,8 @@
         is_disabled: true
         meets_ssi_disability_criteria: true
         ssi_receives_outside_shelter_support: true
-        # Actual annual shelter value $6,000 exceeds PMV ($4,108)
-        ssi_shelter_support_value: 6_000
+        # Actual monthly shelter value $500 exceeds PMV ($342.33)
+        ssi_shelter_support_value: 500
     spm_units:
       spm_unit:
         members: [person1]
@@ -366,8 +688,8 @@
   output:
     ssi_federal_living_arrangement: OWN_HOUSEHOLD
     ssi_pmv_applies: true
-    # PMV annual = 342.33 * 12 = 4,108
-    # Actual = 6,000 > PMV → capped at PMV
+    # PMV monthly = 342.33
+    # Actual = 500 > PMV → capped at PMV
     # ISM monthly = 342.33 (PMV, not 500)
     ssi_in_kind_support_and_maintenance: 342.33
     # Countable = 342.33 - 20 = 322.33

@@ -739,3 +739,40 @@
     # counts as living alone. The resident gets the family care rate.
     ny_ssp_living_arrangement: [LIVING_ALONE, FAMILY_CARE]
     ny_ssp: [87, 228.48]
+
+# 18 NYCRR 398-4.5(a)(1)-(2): an unrelated third adult means living
+# with others. The official 2026 chart pays $46 per couple and $23 per
+# individual; $46 / 2 = $23 for each spouse.
+# https://opwdd.ny.gov/system/files/documents/2025/11/25-inf-06-attachment-1.pdf
+# No marital units: only the head and spouse form the eligible couple.
+- name: NY couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: NY
+  output:
+    ny_ssp_living_arrangement: [LIVING_WITH_OTHERS, LIVING_WITH_OTHERS, LIVING_WITH_OTHERS]
+    ny_ssp: [23, 23, 23]

@@ -6,8 +6,10 @@ class de_employer_paid_leave_contribution(Variable):
     entity = Person
     label = "Delaware employer paid leave contribution"
     documentation = (
-        "Employer-side Delaware paid leave contribution, assuming the employer "
-        "contributes only the minimum required share."
+        "Employer-side Delaware Paid Leave contribution: the half the "
+        "employer may not deduct, plus the part of the permitted employee "
+        "half it does not deduct, for which it remains liable "
+        "(19 Del. C. s. 3705(g))."
     )
     definition_period = YEAR
     unit = USD
@@ -23,8 +25,11 @@ class de_employer_paid_leave_contribution(Variable):
             person("payroll_tax_gross_wages", period),
             parameters(period).gov.irs.payroll.social_security.cap,
         )
+        deducted = p.employee_share * person(
+            "state_payroll_premium_deduction_share", period
+        )
         return (
             person("de_paid_leave_contribution_rate", period)
-            * (1 - p.employee_share)
+            * (1 - deducted)
             * taxable_wages
         )

@@ -50,10 +50,10 @@ class nm_medical_expense_exemption(Variable):
         filer = person("is_tax_unit_head_or_spouse", period)
         age_eligible = tax_unit.any(filer & (age >= p.age_eligibility))
         # NMSA 7-2-5.9(A) requires expenses that "exceed twenty-eight thousand
-        # dollars ($28,000)"; PIT-ADJ line 18 instructions allow expenses "of
-        # $28,000 or more". This keeps the instructions' reading, under which
-        # expenses of exactly $28,000 qualify, until the conflict is resolved.
-        expense_eligible = medical_expense >= p.min_expenses
+        # dollars ($28,000)", but the PIT-ADJ line 18 instructions say expenses
+        # "of $28,000 or more" qualify. The model follows the statute, so
+        # expenses of exactly $28,000 do not qualify.
+        expense_eligible = medical_expense > p.min_expenses
         eligible = age_eligible & expense_eligible
         # Neither 7-2-5.9 nor the PIT-ADJ line 18 instructions halve the
         # exemption for married individuals filing separately. Sections that

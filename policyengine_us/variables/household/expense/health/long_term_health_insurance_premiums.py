@@ -10,7 +10,10 @@ class long_term_health_insurance_premiums(Variable):
     documentation = (
         "Annual long-term care insurance premiums paid for this person's own "
         "contract, excluding pretax payroll deductions and employer-paid "
-        "premiums. Unlike the other premium inputs, which sit on the person "
+        "premiums. Premiums a partnership or S corporation pays or reimburses "
+        "for a partner or more-than-2% shareholder, and reports as guaranteed "
+        "payments or W-2 box 1 wages, count as the person's own and belong "
+        "here. Unlike the other premium inputs, which sit on the person "
         "who paid them, record these on the insured person, whoever in the "
         "tax unit paid them: 26 U.S.C. 213(d)(10) limits the premiums that "
         "count as medical care by the insured person's age. The model treats "

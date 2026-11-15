@@ -201,6 +201,9 @@ def _calculate(variables, wages, net_self_employment, parameters, de_rate=0.008)
         "payroll_tax_gross_wages": wages,
         "taxable_self_employment_income": net_self_employment,
         "de_paid_leave_contribution_rate": de_rate,
+        # The employer deducts the full permitted Delaware share (the input's
+        # default), so the contributions are those the reform must preserve.
+        "state_payroll_premium_deduction_share": 1,
     }
 
     def person(name, period):
