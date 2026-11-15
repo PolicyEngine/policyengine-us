@@ -1,14 +1,51 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.payroll.payroll_tax_gross_wages import (
+    payroll_tax_gross_wages as default_payroll_tax_gross_wages,
+)
+from policyengine_us.reforms.tax_exempt.tax_exempt_reform import (
+    payroll_tax_exempt_income,
+    tax_exempt_payroll_tax_gross_wages,
+)
 
 
-def federal_employer_payroll_tax_components(gov, state_code):
+# The variables each federal employer tax is calculated from. Abolishing any
+# of them (core's gov.abolitions switches, which zero a variable) removes the
+# tax.
+SOCIAL_SECURITY_VARIABLES = (
+    "employer_social_security_tax",
+    "taxable_earnings_for_social_security",
+    "payroll_tax_gross_wages",
+)
+MEDICARE_VARIABLES = ("employer_medicare_tax", "payroll_tax_gross_wages")
+FEDERAL_UNEMPLOYMENT_VARIABLES = (
+    "employer_federal_unemployment_tax",
+    "employer_federal_unemployment_tax_rate",
+    "taxable_earnings_for_federal_unemployment_tax",
+    "payroll_tax_gross_wages",
+)
+
+
+def abolishes(gov, variables):
+    """Whether ``gov`` abolishes any of ``variables``, which core then zeroes."""
+    for variable in variables:
+        try:
+            if gov.abolitions[variable]:
+                return True
+        except KeyError:
+            # Core has abolition switches only for calculated variables.
+            continue
+    return False
+
+
+def federal_employer_payroll_tax_components(gov, state_code, cap=None):
     """Federal employer payroll taxes on payroll wages, as (rate, base) pairs.
 
     Each tax is ``rate * min(wages, base)``, as in
     ``employer_social_security_tax``, ``employer_medicare_tax`` and
     ``employer_federal_unemployment_tax``. The base is ``inf`` for the
     uncapped Medicare tax. The federal unemployment rate varies by state
-    through its credit reduction, so it is an array.
+    through its credit reduction, so it is an array. A tax whose variable, or
+    a variable it is calculated from, is abolished has a rate of zero.
 
     A finite ``gov.contrib.cbo.payroll.secondary_earnings_threshold`` turns on
     CBO's option to tax earnings above a second threshold as well as below the
@@ -19,6 +56,7 @@ def federal_employer_payroll_tax_components(gov, state_code):
     Args:
         gov: The ``gov`` parameter node for one period.
         state_code: Each person's state code.
+        cap: The Social Security taxable maximum to use, if not ``gov``'s own.
 
     Returns:
         A list of (rate, base) pairs.
@@ -26,22 +64,31 @@ def federal_employer_payroll_tax_components(gov, state_code):
     payroll = gov.irs.payroll
     social_security = payroll.social_security
     federal_unemployment = payroll.federal_unemployment
+    if cap is None:
+        cap = social_security.cap
+    social_security_rate = social_security.rate.employer * (
+        not abolishes(gov, SOCIAL_SECURITY_VARIABLES)
+    )
     components = [
-        (social_security.rate.employer, social_security.cap),
-        (payroll.medicare.rate.employer, np.inf),
+        (social_security_rate, cap),
         (
-            federal_unemployment.effective_rate
-            + federal_unemployment.credit_reduction_rate[state_code],
+            payroll.medicare.rate.employer * (not abolishes(gov, MEDICARE_VARIABLES)),
+            np.inf,
+        ),
+        (
+            (
+                federal_unemployment.effective_rate
+                + federal_unemployment.credit_reduction_rate[state_code]
+            )
+            * (not abolishes(gov, FEDERAL_UNEMPLOYMENT_VARIABLES)),
             federal_unemployment.taxable_wage_base,
         ),
     ]
-    secondary_threshold = max(
-        gov.contrib.cbo.payroll.secondary_earnings_threshold, social_security.cap
-    )
+    secondary_threshold = max(gov.contrib.cbo.payroll.secondary_earnings_threshold, cap)
     if np.isfinite(secondary_threshold):
         components += [
-            (social_security.rate.employer, np.inf),
-            (-social_security.rate.employer, secondary_threshold),
+            (social_security_rate, np.inf),
+            (-social_security_rate, secondary_threshold),
         ]
     return components
 
@@ -79,7 +126,7 @@ def wages_at_employer_cost(cost, components):
         cost: Employer cost of each person's payroll wages, at least zero.
         components: (rate, base) pairs, as from
             ``federal_employer_payroll_tax_components``. Rates may be arrays;
-            bases must be scalars.
+            bases must be scalars of zero or more.
 
     Returns:
         The payroll wages for each cost.
@@ -106,7 +153,10 @@ def wages_at_employer_cost(cost, components):
         if np.any(slope <= 0):
             raise ValueError(
                 "Employer payroll tax rates must keep the employer's cost "
-                "rising with wages: a segment's marginal cost is not positive."
+                f"rising with wages, but on payroll wages from {lower:,.0f} "
+                f"the rates sum to {float(np.min(slope)) - 1:.4f}, so a "
+                "dollar of wages costs the employer nothing or less. "
+                f"Components (rate, base): {components!r}."
             )
         cost_at_lower = lower + employer_payroll_tax_from_components(
             np.full_like(cost, lower), components
@@ -119,6 +169,108 @@ def wages_at_employer_cost(cost, components):
     return wages
 
 
+def fixed_employer_cost_wage_change(
+    pay,
+    baseline_exclusions,
+    reform_exclusions,
+    baseline_components,
+    reform_components,
+    share,
+):
+    """Change in pay that holds the employer's federal cost of it fixed.
+
+    Payroll wages are ``max(0, pay - exclusions)``, with each system's own
+    exclusions. The employer's outlay on a worker is their pay plus federal
+    employer payroll tax on their payroll wages. The change brings the outlay
+    under the reform's schedule and exclusions to its baseline amount, and
+    ``share`` of it applies.
+
+    Args:
+        pay: Each person's pay, which may be negative.
+        baseline_exclusions: Pay the baseline's payroll wages leave out.
+        reform_exclusions: Pay the reform's payroll wages leave out.
+        baseline_components: Baseline (rate, base) pairs.
+        reform_components: Reform (rate, base) pairs.
+        share: The share of the fixed-cost change that applies.
+
+    Returns:
+        The change in each person's pay.
+    """
+    pay = np.asarray(pay, dtype=np.float64)
+    baseline_wages = np.maximum(pay - baseline_exclusions, 0)
+    # Payroll wages under the reform's definition, before the change.
+    # Negative when the reform excludes more than the pay.
+    reform_wages = pay - reform_exclusions
+    # The baseline outlay less the reform's exclusions: pay differs from
+    # reform payroll wages by a fixed amount, so holding this fixed holds the
+    # outlay fixed.
+    cost = reform_wages + employer_payroll_tax_from_components(
+        baseline_wages, baseline_components
+    )
+    # Below zero, the reform taxes none of the pay, so the employer pays out
+    # the whole saving and the reform's wages equal the cost.
+    new_wages = np.where(
+        cost > 0,
+        wages_at_employer_cost(np.maximum(cost, 0), reform_components),
+        cost,
+    )
+    change = (new_wages - reform_wages) * share
+    # With nonnegative tax rates and a share of at most 1 this floor never
+    # binds. A larger share passes on more than the fixed-cost change, and
+    # the floor keeps reform payroll wages from falling below zero.
+    return np.maximum(change, -np.maximum(reform_wages, 0))
+
+
+DEFAULT_WAGE_RULE = "default"
+TAX_EXEMPT_WAGE_RULE = "tax_exempt"
+
+
+def payroll_wage_rule(system, period):
+    """Which definition of payroll wages a tax-benefit system uses.
+
+    Payroll wages are ``max(0, employment_income - exclusions)`` under every
+    definition in this package: the exclusions are FICA pre-tax contributions,
+    plus exempt tips and overtime premiums under the tax-exempt reform. A
+    definition this function does not know raises, so that a new structural
+    reform to payroll wages adds its exclusions here rather than having
+    employer cost held on the wrong wages.
+    """
+    formula = system.get_variable("payroll_tax_gross_wages").get_formula(period)
+    # Code objects compare by content, so a formula loaded again from the
+    # same source still matches.
+    code = getattr(formula, "__code__", None)
+    if code == default_payroll_tax_gross_wages.formula.__code__:
+        return DEFAULT_WAGE_RULE
+    if code == tax_exempt_payroll_tax_gross_wages.__code__:
+        return TAX_EXEMPT_WAGE_RULE
+    raise NotImplementedError(
+        "employer_payroll_tax_fixed_employer_cost_change does not know this "
+        f"system's payroll_tax_gross_wages formula ({formula!r}). Add its "
+        "exclusions to payroll_wage_exclusions."
+    )
+
+
+def payroll_wage_exclusions(person, period, system, rule):
+    """Pay that ``system``'s payroll wages leave out, for each person.
+
+    Each system's FICA pre-tax contributions come from its own list of them
+    (inputs), so a reform to the list, or to its abolition switch, leaves the
+    baseline's exclusions alone.
+    """
+    gov = system.parameters(period).gov
+    if abolishes(gov, ["fica_pre_tax_contributions"]):
+        exclusions = 0
+    else:
+        exclusions = add(
+            person, period, gov.irs.gross_income.fica_pre_tax_contributions
+        )
+    if rule == TAX_EXEMPT_WAGE_RULE:
+        exclusions = exclusions + payroll_tax_exempt_income(
+            person, period, system.parameters
+        )
+    return exclusions
+
+
 class employer_payroll_tax_fixed_employer_cost_change(Variable):
     value_type = float
     entity = Person
@@ -127,18 +279,33 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         "The change in wages that holds the employer's cost of each worker "
         "fixed when a reform changes federal employer payroll taxes: the "
         "employer Social Security rate, taxable maximum or CBO secondary "
-        "earnings threshold, the employer Medicare rate, or the federal "
-        "unemployment tax rate or wage base. "
-        "The baseline cost is the worker's payroll wages plus the baseline "
-        "federal employer taxes on them. The reformed wage is the one whose "
-        "payroll wages plus reformed federal employer taxes equal that cost, "
-        "and gov.simulation.employer_payroll_tax_incidence.employee_share of "
-        "the difference applies. State and local employer payroll taxes are "
-        "held at their baseline schedules, so the cost leaves out the small "
-        "change in them that the new wage brings. Zero without a reform, for "
-        "a person with no payroll wages, and when the reform leaves the "
-        "federal employer taxes unchanged. employment_income includes it, so "
-        "income and employee payroll taxes respond to the new wage."
+        "earnings threshold, the employer Medicare rate, the federal "
+        "unemployment tax rate or wage base, or which pay counts as payroll "
+        "wages (the tax-exempt reform's tips and overtime, and the list of "
+        "FICA pre-tax contributions), including abolishing these taxes or the "
+        "variables they are calculated from. The baseline cost "
+        "is the worker's pay plus current-law federal employer taxes on it. "
+        "The reformed pay is the one whose reformed federal employer taxes "
+        "bring it to that cost, and "
+        "gov.simulation.employer_payroll_tax_incidence.employee_share of the "
+        "difference applies. The current-law taxable maximum is the reform's "
+        "copy in gov.contrib.ssa.owners_draw.current_law_cap: policy reforms "
+        "leave it alone, while scenario reforms such as the Trustees' "
+        "economic assumptions extend it with the live cap, so a scenario is "
+        "not read as a tax change. The cost leaves out state and local "
+        "employer payroll taxes, which change with the new wage where they "
+        "apply to it. Zero without a reform "
+        "(including a simulation built on a reformed tax-benefit system "
+        "without one, which has no baseline), for a person with no pay, and "
+        "when the reform leaves the federal employer taxes and the payroll "
+        "wage definition unchanged. employment_income includes it, so income "
+        "and employee payroll taxes respond to the new wage, and marginal "
+        "tax rates measured in a reform count each added dollar of pay at "
+        "its baseline cost to the employer. Programs that read "
+        "employment_income_before_lsr, as some TANF and SNAP rules do, see "
+        "neither this change nor the labor supply response, and a dataset "
+        "that stores employment_income itself, rather than "
+        "employment_income_before_lsr, overrides both."
     )
     unit = USD
     definition_period = YEAR
@@ -153,23 +320,34 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         baseline = person.simulation.baseline
         if share == 0 or baseline is None:
             return 0
+        baseline_system = baseline.tax_benefit_system
+        reform_system = person.simulation.tax_benefit_system
+        reform_gov = parameters(period).gov
         state_code = person.household("state_code", period)
         baseline_components = federal_employer_payroll_tax_components(
-            baseline.tax_benefit_system.parameters(period).gov, state_code
+            baseline_system.parameters(period).gov,
+            state_code,
+            cap=reform_gov.contrib.ssa.owners_draw.current_law_cap,
         )
         reform_components = federal_employer_payroll_tax_components(
-            parameters(period).gov, state_code
+            reform_gov, state_code
         )
-        if components_match(baseline_components, reform_components):
+        baseline_rule = payroll_wage_rule(baseline_system, period)
+        reform_rule = payroll_wage_rule(reform_system, period)
+        if baseline_rule == reform_rule and components_match(
+            baseline_components, reform_components
+        ):
             return 0
-        # Payroll wages before this change, as payroll_tax_gross_wages
-        # computes them from employment_income.
+        # Pay before this change, as payroll_tax_gross_wages reads it from
+        # employment_income.
         pay = person("employment_income_before_lsr", period) + person(
             "employment_income_behavioral_response", period
         )
-        wages = max_(pay - person("fica_pre_tax_contributions", period), 0)
-        cost = wages + employer_payroll_tax_from_components(wages, baseline_components)
-        new_wages = wages_at_employer_cost(cost, reform_components)
-        # A cost of zero or more maps to wages of zero or more, so pay stays
-        # at or above the FICA pre-tax deductions.
-        return where(wages > 0, (new_wages - wages) * share, 0)
+        return fixed_employer_cost_wage_change(
+            pay,
+            payroll_wage_exclusions(person, period, baseline_system, baseline_rule),
+            payroll_wage_exclusions(person, period, reform_system, reform_rule),
+            baseline_components,
+            reform_components,
+            share,
+        )

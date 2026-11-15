@@ -10,7 +10,11 @@ class marginal_tax_rate(Variable):
         "Fraction of marginal income gains that do not increase household net income."
         " Simulated only where marginal_tax_rate_computed is true: for up to"
         " simulation.marginal_tax_rate_adults adults per household, those with"
-        " the highest market income. Zero for everyone else."
+        " the highest market income. Zero for everyone else. In a reform that"
+        " changes federal employer payroll taxes, an added dollar of pay"
+        " becomes the wages its baseline cost to the employer buys"
+        " (employer_payroll_tax_fixed_employer_cost_change), so the rate is"
+        " per dollar of baseline employer cost rather than per dollar of wages."
     )
     entity = Person
     definition_period = YEAR
