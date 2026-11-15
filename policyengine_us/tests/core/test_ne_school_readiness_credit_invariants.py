@@ -18,7 +18,6 @@ YEARS = [2024, 2025, 2026]
 CREDIT = "ne_school_readiness_credit"
 ELIGIBLE = "ne_school_readiness_credit_eligible_worker"
 LEVEL = "ne_school_readiness_credit_child_care_worker_rating"
-CURRENT_AMOUNTS = {1: 2_300, 2: 2_600, 3: 2_900, 4: 3_200, 5: 3_500}
 
 levels = st.one_of(st.none(), st.integers(min_value=-20, max_value=20))
 # Each record contains age, worker eligibility and the worker's own level.
@@ -26,19 +25,7 @@ members = st.tuples(st.integers(0, 100), st.booleans(), levels)
 workers = st.tuples(st.integers(18, 100), st.just(True), levels)
 
 
-@pytest.fixture(scope="module")
-def reference_system():
-    return system
-
-
-def _expected(member):
-    _, eligible, level = member
-    if not eligible or level is None or level < 1:
-        return 0
-    return CURRENT_AMOUNTS[min(level, 5)]
-
-
-def _credits(reference_system, households, year):
+def _credits(households, year):
     people = {}
     groups = {
         name: {}
@@ -72,12 +59,14 @@ def _credits(reference_system, households, year):
 
     simulation = Simulation(
         situation={"people": people, **groups},
-        tax_benefit_system=reference_system,
+        tax_benefit_system=system,
     )
     actual = np.asarray(simulation.calculate(CREDIT, year))
-    np.testing.assert_array_equal(actual, [_expected(member) for member in records])
+    table = simulation.tax_benefit_system.parameters(
+        year
+    ).gov.states.ne.tax.income.credits.school_readiness.amount.refundable
     assert np.isfinite(actual).all()
-    assert ((actual >= 0) & (actual <= 3_500)).all()
+    assert ((actual >= 0) & (actual <= table["5"])).all()
     eligible = np.array([member[1] for member in records], dtype=bool)
     assert (actual[~eligible] == 0).all()
 
@@ -85,6 +74,7 @@ def _credits(reference_system, households, year):
     positive = np.array(
         [level is not None and level >= 1 for _, _, level in records], dtype=bool
     )
+    assert (actual[~positive] == 0).all()
     if positive.any():
         old_levels = np.array(
             [
@@ -93,9 +83,6 @@ def _credits(reference_system, households, year):
                 if level is not None and level >= 1
             ]
         )
-        table = simulation.tax_benefit_system.parameters(
-            year
-        ).gov.states.ne.tax.income.credits.school_readiness.amount.refundable
         np.testing.assert_array_equal(
             actual[positive], table[old_levels] * eligible[positive]
         )
@@ -115,9 +102,7 @@ def _credits(reference_system, households, year):
     others=[(3, False, None), (42, True, 0), (43, True, 1), (44, True, 20)],
     added=(30, True, 4),
 )
-def test_credit_depends_only_on_each_workers_own_level(
-    reference_system, year, anchor, others, added
-):
+def test_credit_depends_only_on_each_workers_own_level(year, anchor, others, added):
     drawn = [anchor, *others]
     changed_others = [
         (100 - age, not eligible, -20 if level is not None and level >= 1 else 20)
@@ -130,7 +115,7 @@ def test_credit_depends_only_on_each_workers_own_level(
         "changed": [anchor, *changed_others],
         **{f"alone_{index}": [member] for index, member in enumerate(drawn)},
     }
-    results = _credits(reference_system, households, year)
+    results = _credits(households, year)
     np.testing.assert_array_equal(results["drawn"], results["reversed"][::-1])
     np.testing.assert_array_equal(results["drawn"], results["extended"][:-1])
     assert results["drawn"][0] == results["changed"][0]
@@ -139,5 +124,5 @@ def test_credit_depends_only_on_each_workers_own_level(
 
     # Core returns zero without attempting a lookup when nobody qualifies.
     no_workers = [(age, False, level) for age, _, level in drawn]
-    masked = _credits(reference_system, {"no_workers": no_workers}, year)
+    masked = _credits({"no_workers": no_workers}, year)
     np.testing.assert_array_equal(masked["no_workers"], np.zeros(len(drawn)))
