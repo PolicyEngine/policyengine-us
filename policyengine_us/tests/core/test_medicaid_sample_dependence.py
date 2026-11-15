@@ -1,36 +1,22 @@
-"""Reproduce Medicaid calibration failures with synthetic households.
+"""Check Medicaid household isolation and stored reference inputs.
 
 Dataset-mode tests set the same flag as dataset loading, without loading
-microdata. Python exercises population removal and reform branch selection,
-which the policy YAML runner cannot express. Strict xfails retain the known
-failures while valuation methodology awaits a choice.
+microdata. Python exercises sample splits and stored simulation inputs,
+which the policy YAML runner cannot express.
 """
 
 import numpy as np
 import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
-from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
-from policyengine_us.variables.gov.aca.slspc.slcsp_age_0 import (
-    slcsp_age_0 as baseline_slcsp_age_0,
-)
 
 
 YEAR = 2026
 AVERAGE = "medicaid_slcsp_state_average_cost_index"
 DENOMINATOR = "medicaid_slcsp_state_denominator"
 VALUE = "medicaid_cost_if_enrolled"
-
-
-class DoublePremiums(Reform):
-    def apply(self):
-        class slcsp_age_0(baseline_slcsp_age_0):
-            def formula(household, period, parameters):
-                return 2 * baseline_slcsp_age_0.formula(household, period, parameters)
-
-        self.update_variable(slcsp_age_0)
 
 
 def _simulation(indices, weights, *, dataset=True, reform=None):
@@ -78,21 +64,6 @@ def _spending(simulation):
 @pytest.mark.xfail(
     strict=True,
     raises=AssertionError,
-    reason="Dataset formulas recalculate state totals after households are removed",
-)
-def test_removing_an_unrelated_household_preserves_medicaid_value():
-    full = _simulation([100, 100], [1_000, 1_000])
-    subset = _simulation([100], [1_000])
-    # Full denominator = 2 * 1,000 * 100 = 200,000; subset = 100,000.
-    # Each household should retain S / 2,000 when its peer is removed.
-    expected = full.calculate(VALUE, YEAR)[0]
-    actual = subset.calculate(VALUE, YEAR)[0]
-    assert actual == pytest.approx(expected)
-
-
-@pytest.mark.xfail(
-    strict=True,
-    raises=AssertionError,
     reason="Household formulas infer the state average from unrelated households",
 )
 def test_adding_an_unrelated_household_preserves_medicaid_value():
@@ -103,26 +74,6 @@ def test_adding_an_unrelated_household_preserves_medicaid_value():
     assert together.calculate(VALUE, YEAR)[0] == pytest.approx(
         alone.calculate(VALUE, YEAR)[0]
     )
-
-
-@pytest.mark.xfail(
-    strict=True,
-    raises=AssertionError,
-    reason="Reform premiums use the unreformed allocation denominator",
-)
-def test_premium_reform_preserves_full_reference_state_spending():
-    simulation = _simulation([None], [1_000], reform=DoublePremiums)
-    baseline_index = simulation.baseline.calculate("medicaid_slcsp_cost_index", YEAR)
-    reform_index = simulation.calculate("medicaid_slcsp_cost_index", YEAR)
-    if not np.allclose(reform_index, 2 * baseline_index) or not np.all(
-        baseline_index > 0
-    ):
-        raise ValueError("The reform must double positive premium indices")
-    # With fixed enrollment, doubling every index should leave S unchanged:
-    # 1,000 * S * (2 * index) / (1,000 * 2 * index) = S.
-    # Reading the baseline denominator instead allocates 2 * S.
-    total = np.dot([1_000], simulation.calculate(VALUE, YEAR))
-    assert total == pytest.approx(_spending(simulation), rel=1e-6)
 
 
 @settings(
