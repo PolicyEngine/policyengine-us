@@ -1,6 +1,19 @@
 from policyengine_us.model_api import *
 
 
+def va_eap_income_test(spm_unit, period, limit):
+    """Countable income at or below limit, or every member receives SSI."""
+    income = spm_unit("va_eap_countable_income", period)
+    # Manual B.6.a: "No eligible household shall exceed the income maximums
+    # set by the VDSS, except households in which all members are SSI
+    # recipients." 22VAC40-680-20(B)(1): income "must be at or below" the
+    # limit.
+    person = spm_unit.members
+    receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
+    all_ssi = spm_unit.all(receives_ssi)
+    return (income <= limit) | all_ssi
+
+
 class va_eap_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
@@ -15,13 +28,5 @@ class va_eap_income_eligible(Variable):
     defined_for = StateCode.VA
 
     def formula(spm_unit, period, parameters):
-        income = spm_unit("va_eap_countable_income", period)
         limit = spm_unit("va_eap_income_limit", period)
-        # Manual B.6.a: "No eligible household shall exceed the income maximums
-        # set by the VDSS, except households in which all members are SSI
-        # recipients." 22VAC40-680-20(B)(1): income "must be at or below" the
-        # limit.
-        person = spm_unit.members
-        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
-        all_ssi = spm_unit.all(receives_ssi)
-        return (income <= limit) | all_ssi
+        return va_eap_income_test(spm_unit, period, limit)
