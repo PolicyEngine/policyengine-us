@@ -9,7 +9,8 @@
 # figure (spread across 12 months and re-summed by add()), matching the NM
 # convention. aca_magi, aca_magi_fraction, slcsp, aca_ptc and is_aca_ptc_eligible
 # are supplied directly so each expectation is exactly hand-verifiable.
-# Prior-year tax_unit_fpg is pinned so supplied MAGI and FPL fractions agree.
+# aca_fpg (the prior-year guideline for the tax family) is pinned so supplied
+# MAGI and FPL fractions agree.
 # The negative-MAGI clamp case supplies eligibility and a positive rate to
 # isolate the amount formula; its income fraction is correctly zero.
 #   CA schedule: threshold [1.0, 1.5, 1.65], initial [0, 0.0319], final [0, 0.0391]
@@ -31,8 +32,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 21_000
         aca_magi_fraction: 1.40
         slcsp: 6_000
@@ -56,8 +57,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 21_000
         aca_magi_fraction: 1.40
         slcsp: 6_000
@@ -85,8 +86,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_873.015873015873
+        aca_fpg:
+          2026: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -113,8 +114,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_650
+        aca_fpg:
+          2026: 15_650
         aca_magi: 25_822.50
         aca_magi_fraction: 1.65
         slcsp: 7_000
@@ -141,8 +142,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 24_000
         aca_magi_fraction: 1.60
         slcsp: 3_000
@@ -174,8 +175,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg:
+          2026: 10_000
         aca_magi: -10_000
         aca_magi_fraction: 0
         ca_premium_subsidy_eligible: true
@@ -204,8 +205,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_873.015873015873
+        aca_fpg:
+          2026: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -230,8 +231,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2024: 15_873.015873015873
+        aca_fpg:
+          2025: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -256,8 +257,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 16_265.060240963856
+        aca_fpg:
+          2026: 16_265.060240963856
         aca_magi: 27_000
         aca_magi_fraction: 1.66
         slcsp: 6_000
@@ -283,8 +284,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 21_000
         aca_magi_fraction: 1.40
         slcsp: 0
@@ -314,8 +315,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_650
+        aca_fpg:
+          2026: 15_650
         aca_magi: 15_650
         aca_magi_fraction: 1.00
         slcsp: 6_000
@@ -347,8 +348,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 24_000
         aca_magi_fraction: 1.60
         slcsp: 6_000
@@ -377,8 +378,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2027: 15_873.015873015873
+        aca_fpg:
+          2028: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -409,8 +410,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 16_265.060240963856
+        aca_fpg:
+          2026: 16_265.060240963856
         aca_magi: 27_000
         aca_magi_fraction: 1.66
         slcsp: 6_000
@@ -440,8 +441,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_000
+        aca_fpg:
+          2026: 15_000
         aca_magi: 14_850
         aca_magi_fraction: 0.99
         slcsp: 6_000
@@ -475,8 +476,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2026: 15_873.015873015873
+        aca_fpg:
+          2027: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -508,8 +509,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2025: 15_873.015873015873
+        aca_fpg:
+          2026: 15_873.015873015873
         aca_magi: 25_000
         aca_magi_fraction: 1.575
         slcsp: 6_000
@@ -528,7 +529,7 @@
   # add(is_aca_ptc_eligible) > 0, which fires on any eligible member, so the tax
   # unit is eligible. The amount uses tax-unit slcsp/aca_ptc (not per-member), so
   # the asymmetry does NOT halve or zero the payout. magi_frac 1.575 -> pct 0.0355.
-  # Pin prior-year FPG to 20_000: income 31_500 / 20_000 = 1.575.
+  # Pin aca_fpg (prior-year FPG) to 20_000: income 31_500 / 20_000 = 1.575.
   # amount = max(0, 8_000 - 3_000 - 0.0355*31_500) = 5_000 - 1_118.25 = 3_881.75.
   # Confirms the add()>0 gate + defined_for + person->tax_unit aggregation produce
   # the full subsidy rather than a per-eligible-member proration.
@@ -545,8 +546,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        tax_unit_fpg:
-          2025: 20_000
+        aca_fpg:
+          2026: 20_000
         aca_magi: 31_500
         aca_magi_fraction: 1.575
         slcsp: 8_000
@@ -585,8 +586,8 @@
     tax_units:
       tax_unit:
         members: [person1]
-        tax_unit_fpg:
-          2026: 15_960
+        aca_fpg:
+          2027: 15_960
         aca_magi: 31_920
         aca_magi_fraction: 2.00
         slcsp: 8_256
@@ -600,3 +601,375 @@
     ca_premium_subsidy_eligible: true
     ca_premium_subsidy_applicable_percentage: 0.0528
     ca_premium_subsidy: 478.80
+
+- name: 2026 CA joint return with one claimable spouse (the claimable spouse is the head)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # Program Design (c)(2), (d)(7)(B). 22,000 / 15,650 = 140% FPL;
+    # federal 3.5724%: aca_ptc = 6,000 - 785.92 = 5,214.08; CA 0%:
+    # 6,000 - 5,214.08 = 785.92.
+    ca_premium_subsidy: 785.92
+
+- name: 2026 CA joint return with one claimable spouse (the claimable spouse is the spouse)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: CA
+  output:
+    ca_premium_subsidy: 785.92
+
+- name: 2026 CA joint return with neither spouse claimable
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # 104% FPL, 2.1%: aca_ptc = 12,000 - 462 = 11,538; CA 0%: 462.
+    ca_premium_subsidy: 462
+
+# ---- One poverty line: the tax family's (aca_fpg) ----
+# The couple of the joint-return cases above: one spouse can be claimed on
+# another return, so the section 36B tax family has one member and the tax
+# unit has two. The band test, the rate lookup and the federal credit all
+# divide by aca_fpg, the one-person guideline ($15,650 for 2026, $15,960 for
+# 2027), not the two-person guideline ($21,150, $21,640) for the tax unit.
+# Coverage-family benchmark: 6,000 (one enrollee in the tax family).
+
+- name: 2026 CA one-claimable-spouse couple at $20,000 is in the 0% band over the one-person line
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 20_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # 20,000 / 15,650 = 1.2780 (127.8%), in [1.00, 1.65]: eligible, 0% band.
+    # Over the two-person 21,150 it would be 0.9456, below the floor.
+    # Federal 2.10% at 1.27: aca_ptc = 6,000 - 420 = 5,580.
+    # CA: 6,000 - 5,580 - 0 = 420.
+    aca_fpg: 15_650
+    aca_magi_fraction: 1.27
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy_applicable_percentage: 0
+    aca_ptc: 5_580
+    ca_premium_subsidy: 420
+
+- name: 2026 CA one-claimable-spouse couple at $25,000 is in the paying band (the claimable spouse is the head)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 25_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # 25,000 / 15,650 = 1.5974 (159.7%): eligible, band above 150%.
+    # Over 21,150 it would be 1.1820, the 0% band.
+    # Federal at 1.59: 4.19% + 0.18 * 2.41 points = 4.6238%;
+    # aca_ptc = 6,000 - 1,155.95 = 4,844.05.
+    # CA at 1.59: 3.19% + 0.6 * 0.72 points = 3.622%;
+    # 6,000 - 4,844.05 - 0.03622 * 25,000 = 1,155.95 - 905.50 = 250.45.
+    aca_fpg: 15_650
+    aca_magi_fraction: 1.59
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy_applicable_percentage: 0.03622
+    aca_ptc: 4_844.05
+    ca_premium_subsidy: 250.45
+
+- name: 2026 CA one-claimable-spouse couple at $25,000 is in the paying band (the claimable spouse is the spouse)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 25_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: CA
+  output:
+    # Same household with the labels swapped: same results.
+    aca_fpg: 15_650
+    aca_magi_fraction: 1.59
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy_applicable_percentage: 0.03622
+    aca_ptc: 4_844.05
+    ca_premium_subsidy: 250.45
+
+- name: 2026 CA one-claimable-spouse couple at $27,000 is above 165% of the one-person line
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 27_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # 27,000 / 15,650 = 1.7252 (172.5%), above 1.65: not eligible.
+    # Over 21,150 it would be 1.2766, eligible at 0%.
+    # Federal at 1.72: 4.19% + 0.44 * 2.41 points = 5.2504%;
+    # aca_ptc = 6,000 - 1,417.61 = 4,582.39.
+    aca_fpg: 15_650
+    aca_magi_fraction: 1.72
+    ca_premium_subsidy_eligible: false
+    aca_ptc: 4_582.39
+    ca_premium_subsidy: 0
+
+- name: 2027 CA one-claimable-spouse couple at $35,000 is above 200% of the one-person line
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_medicaid_ineligible_due_to_work_requirement: false
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_medicaid_ineligible_due_to_work_requirement: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 35_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # This case supplies aca_magi without income, so Medicaid sees $0, and
+    # main's 2027 work requirement would bar these childless adults from
+    # Medicaid and, through ineligible_coverage, from the Marketplace. With
+    # $35,000 of earnings the flag reads false; the case holds it false to match.
+    # 35,000 / 15,960 (2026 one-person guideline) = 2.1930 (219.3%),
+    # above 2.00: not eligible. Over the two-person 21,640 it would be
+    # 1.6174, eligible.
+    # Federal 2027 at 2.19: 6.78% + 0.38 * 1.88 points = 7.4944%;
+    # aca_ptc = 6,000 - 2,623.04 = 3,376.96.
+    aca_fpg: 15_960
+    aca_magi_fraction: 2.19
+    ca_premium_subsidy_eligible: false
+    aca_ptc: 3_376.96
+    ca_premium_subsidy: 0

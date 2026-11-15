@@ -1,9 +1,10 @@
 # Tests for nd_ccap_income_eligible (SPMUnit, MONTH, bool).
+# The original threshold cases below isolate the two-tier income comparison.
 # Initial applicants (is_nd_ccap_enrolled = false) are tested against 75% of
 # the monthly state median income; enrolled recipients (is_nd_ccap_enrolled =
 # true) are tested against 85% (400-28-25-15). Countable income is set
 # directly to isolate the two-tier comparison.
-# 2-person ND monthly SMI for 2026 = $7,361.62/mo:
+# The original threshold cases use 2026-01 and two-person SMI of $7,361.62/mo:
 #   75% = $5,521.22/mo, 85% = $6,257.38/mo.
 # nd_ccap_countable_income is a MONTH variable, so values are monthly.
 
@@ -146,3 +147,209 @@
         state_code: ND
   output:
     nd_ccap_income_eligible: false
+
+# The additional Workforce Benefit cases set annual SMI to 120,000.
+# Monthly SMI = 10,000; application threshold = 0.75 * 10,000 = 7,500;
+# continuing threshold = 0.85 * 10,000 = 8,500.
+# Qualifying Workforce families receive an income exclusion and copay waiver.
+
+# Monthly SMI = 120,000 / 12 = 10,000; earnings = 240,000 / 12 = 20,000.
+# Earnings exceed 75 percent SMI (7,500); North Dakota waives the income limit and copay.
+- name: North Dakota waives the income limit for a Workforce Benefit applicant
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+        nd_ccap_workforce_benefit_eligible_parent: true
+        employment_income:
+          2026: 240000
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        is_ccdf_asset_eligible:
+          2026: true
+        meets_ccdf_activity_test:
+          2026: true
+        is_tanf_enrolled: false
+        is_nd_ccap_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: true
+    nd_ccap_countable_income: 20000
+    nd_ccap_income_eligible: true
+    nd_ccap_eligible: true
+    nd_ccap_copay: 0
+
+# Monthly SMI = 120,000 / 12 = 10,000; income 20,000 exceeds 7,500.
+- name: North Dakota applies the income limit to an ordinary applicant
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 20000
+        is_tanf_enrolled: false
+        is_nd_ccap_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: false
+    nd_ccap_income_eligible: false
+
+# Monthly SMI = 120,000 / 12 = 10,000; earnings = 240,000 / 12 = 20,000.
+# Earnings exceed 85 percent SMI (8,500); North Dakota waives the income limit and copay.
+- name: North Dakota waives the income limit for an enrolled Workforce Benefit family
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+        nd_ccap_workforce_benefit_eligible_parent: true
+        employment_income:
+          2026: 240000
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        is_ccdf_asset_eligible:
+          2026: true
+        meets_ccdf_activity_test:
+          2026: true
+        is_tanf_enrolled: false
+        is_nd_ccap_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: true
+    nd_ccap_countable_income: 20000
+    nd_ccap_income_eligible: true
+    nd_ccap_eligible: true
+    nd_ccap_copay: 0
+
+# Monthly SMI = 120,000 / 12 = 10,000; income 20,000 exceeds 8,500.
+- name: North Dakota applies the income limit to an ordinary enrolled family
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age:
+          2026: 30
+        ssi: 0
+      child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      family:
+        members: [parent, child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 20000
+        is_tanf_enrolled: false
+        is_nd_ccap_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: false
+    nd_ccap_income_eligible: false
+
+# Monthly SMI = 120,000 / 12 = 10,000; income 20,000 exceeds 75 percent SMI (7,500).
+# North Dakota waives the income limit for the Workforce Benefit family.
+- name: North Dakota keeps the Workforce income waiver within the qualifying family
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      workforce_parent:
+        age:
+          2026: 30
+        ssi: 0
+        nd_ccap_workforce_benefit_eligible_parent: true
+      workforce_child:
+        age:
+          2026: 3
+        ssi: 0
+      ordinary_parent:
+        age:
+          2026: 30
+        ssi: 0
+      ordinary_child:
+        age:
+          2026: 3
+        ssi: 0
+    spm_units:
+      workforce:
+        members: [workforce_parent, workforce_child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 20000
+        is_tanf_enrolled: false
+        is_nd_ccap_enrolled: false
+      ordinary:
+        members: [ordinary_parent, ordinary_child]
+        hhs_smi:
+          2026: 120000
+        nd_ccap_countable_income: 20000
+        is_tanf_enrolled: false
+        is_nd_ccap_enrolled: false
+    tax_units:
+      workforce:
+        members: [workforce_parent, workforce_child]
+      ordinary:
+        members: [ordinary_parent, ordinary_child]
+    households:
+      workforce:
+        members: [workforce_parent, workforce_child]
+        state_code:
+          2026: ND
+      ordinary:
+        members: [ordinary_parent, ordinary_child]
+        state_code:
+          2026: ND
+  output:
+    nd_ccap_workforce_benefit_eligible: [true, false]
+    nd_ccap_income_eligible: [true, false]

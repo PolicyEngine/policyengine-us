@@ -20,16 +20,17 @@ metadata:
   unit: currency-USD
   period: year
   label: Educator expense deduction cap
-  # Values after the last IRS publication are computed in
-  # parameters/uprating_extensions.py per 26 U.S.C. 62(d)(3): the statutory
-  # $250 increased by the 1(f)(3) cost-of-living adjustment with calendar
-  # year 2014 as the base year, each increase rounded to the nearest multiple
-  # of $50. Computing from the $250 base rather than chaining from the
-  # rounded $350 puts each projected $50 step in the year the statute does on
-  # the model's CPI projection; those values supersede this uprating rule,
-  # which describes the index and rounding.
   uprating:
-    parameter: gov.irs.uprating
+    # 26 U.S.C. 62(d)(3): the statutory $250 plus its 1(f)(3) cost-of-living
+    # increase with calendar year 2014 as the base year, rounded to the
+    # nearest multiple of $50. The index's 2015 value covers calendar year
+    # 2014. Projecting from the $250 base rather than chaining from a rounded
+    # published value puts each $50 step in the year the statute does.
+    parameter: gov.irs.indexing.c_cpi_u
+    base:
+      period: 2015
+      value: 250
+      floor: true
     rounding:
       type: nearest
       interval: 50

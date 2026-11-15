@@ -7,14 +7,13 @@ class vt_2017_itemized_deduction_addback(Variable):
     label = "Vermont 2017 itemized deduction addback"
     unit = USD
     documentation = (
-        "Federal itemized deductions Vermont adds back to 2017 federal "
-        "taxable income, following Schedule IN-155: deducted state and local "
-        "income taxes, up to the itemized deductions above the federal "
-        "standard deduction, plus other itemized deductions (excluding "
-        "medical and charitable) above 2.5 times the federal standard "
-        "deduction. Itemized deductions include wagering losses and are after "
-        "the section 68 limitation, which also scales the income taxes and "
-        "charity."
+        "For 2017, Vermont filers add back deducted state and local income taxes, "
+        "up to federal itemized deductions above the federal standard "
+        "deduction. They also add back other itemized deductions, "
+        "excluding medical and charitable deductions, above 2.5 times the "
+        "standard deduction. PolicyEngine includes wagering losses in federal "
+        "itemized deductions after applying section 68. Filers scale income "
+        "taxes and charity by the share that section 68 leaves."
     )
     definition_period = YEAR
     defined_for = StateCode.VT
@@ -31,14 +30,9 @@ class vt_2017_itemized_deduction_addback(Variable):
     def formula_2017(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.deductions.itemized_addback
         itemizes = tax_unit("tax_unit_itemizes", period)
-        # IN-155 line 1 takes Schedule A line 29: allowed itemized deductions
-        # after the section 68 limitation, including wagering losses, which
-        # itemized_taxable_income_deductions leaves out.
-        itemized = add(
-            tax_unit,
-            period,
-            ["itemized_taxable_income_deductions", "wagering_losses_deduction"],
-        )
+        # The filer enters allowed itemized deductions, including wagering losses,
+        # after the section 68 limitation on IN-155 line 1 (Schedule A line 29).
+        itemized = tax_unit("itemized_taxable_income_deductions", period)
         standard = tax_unit("standard_deduction", period)
         # The SALT deduction holds income taxes only when they exceed sales
         # taxes (state_and_local_sales_or_income_tax takes the larger).
@@ -50,9 +44,9 @@ class vt_2017_itemized_deduction_addback(Variable):
         deducted_income_taxes = where(
             income_taxes >= sales_taxes, min_(income_taxes, salt), 0
         )
-        # The Department's worksheet for limited itemized deductions scales
-        # income taxes and charity by the share of the limited deductions that
-        # section 68 leaves. Section 68(c) doesn't limit medical expenses.
+        # Filers scale income taxes and charity by the share of limited
+        # deductions that section 68 leaves, following the Department's worksheet.
+        # Filers exclude medical expenses and wagering losses under section 68(c).
         limitation = parameters(period).gov.irs.deductions.itemized.limitation
         total = tax_unit("total_itemized_taxable_income_deductions", period)
         excluded = add(tax_unit, period, limitation.excluded_deductions)

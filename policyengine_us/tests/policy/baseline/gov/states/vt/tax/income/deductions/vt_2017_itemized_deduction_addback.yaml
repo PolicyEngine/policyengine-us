@@ -90,7 +90,7 @@
   input:
     state_code: VT
     tax_unit_itemizes: true
-    itemized_taxable_income_deductions: 12_850
+    itemized_taxable_income_deductions: 42_850
     wagering_losses_deduction: 30_000
     standard_deduction: 6_350
     salt_deduction: 4_850
@@ -98,7 +98,7 @@
     medical_expense_deduction: 0
     charitable_deduction: 0
   output:
-    # IN-155 line 1 takes Schedule A line 29, so I = 12,850 + 30,000 = 42,850.
+    # The filer reports all 42,850 of itemized deductions on Schedule A line 29.
     # min(4,850, 42,850 - 6,350) + max(42,850 - 4,850 - 2.5 x 6,350, 0)
     # = 4,850 + 22,125
     vt_2017_itemized_deduction_addback: 26_975
@@ -261,3 +261,33 @@
     vt_2017_itemized_deduction_addback: 5_100
     # 100,000 - 4,050 - 24,850 + 5,100
     vt_taxable_income: 76_200
+
+- name: 2017 Vermont single filer adds back gambling losses above the threshold.
+  period: 2017
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        gambling_winnings: 30_000
+        gambling_losses: 30_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        salt_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    adjusted_gross_income: 90_000
+    wagering_losses_deduction: 30_000
+    itemized_taxable_income_deductions: 30_000
+    standard_deduction: 6_350
+    exemptions: 4_050
+    taxable_income: 55_950
+    # IN-155 line 9: 2.5 x 6,350 = 15,875; line 11: 30,000 - 15,875.
+    vt_2017_itemized_deduction_addback: 14_125
+    # Federal taxable income 55,950 + IN-155 addback 14,125.
+    vt_taxable_income: 70_075
