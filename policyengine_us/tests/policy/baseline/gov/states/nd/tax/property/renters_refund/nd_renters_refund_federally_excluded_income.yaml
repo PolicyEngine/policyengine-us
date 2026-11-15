@@ -9,6 +9,9 @@
     traditional_403b_contributions: 1_000
     pre_tax_health_insurance_premiums: 3_000
     health_savings_account_payroll_contributions: 2_000
+    # Isolated income component: one qualifying recipient and known costs.
+    count_cdcc_eligible: 1
+    dependent_care_assistance_qualified_expenses: 5_000
     dependent_care_employer_benefits: 5_000
     taxable_interest_income: 700
     tax_exempt_interest_income: 1_500

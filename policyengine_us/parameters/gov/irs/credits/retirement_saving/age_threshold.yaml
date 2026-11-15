@@ -1,11 +1,14 @@
 description: The IRS limits the saver's credit to taxpayers at or over to following age.  
 values:
+  2017-01-01: 18
   2018-01-01: 18
 metadata:
   unit: year
   period: year
   label: Retirement Savings Contributions Credit (Saver's Credit) age threshold
   reference:
+    - title: 2017 Form 8880
+      href: https://www.irs.gov/pub/irs-prior/f8880--2017.pdf#page=1
     - title: 26 U.S. Code § 25B(c)(1)
       href: https://www.law.cornell.edu/uscode/text/26/25B#c
     - title: IRS | Retirement Savings Contributions Credit (Saver's Credit)
