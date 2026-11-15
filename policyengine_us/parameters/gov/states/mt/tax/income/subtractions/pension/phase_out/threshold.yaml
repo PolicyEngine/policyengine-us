@@ -1,5 +1,9 @@
 description: Montana reduces the partial pension, annuity, and IRA income exemption when federal adjusted gross income exceeds this amount.
 values:
+  2017-01-01: 34_260
+  2018-01-01: 34_820
+  2019-01-01: 35_800
+  2020-01-01: 36_420
   2021-01-01: 36_700
   2022-01-01: 38_660
   2023-01-01: 42_140
@@ -8,6 +12,14 @@ metadata:
   period: year
   label: Montana partial pension, annuity, and IRA income exemption phase-out threshold
   reference:
+    - title: 2017 Montana Form 2 instructions, partial pension exemption
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=23
+    - title: 2018 Montana Form 2 instructions, partial pension exemption
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2018_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=25
+    - title: 2019 Montana Form 2 instructions, partial pension exemption
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2019_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
+    - title: 2020 Montana Form 2 instructions, partial pension exemption
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2020_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=27
     - title: Montana Code Annotated 2021, 15-30-2110(2)(c)(ii) and (17)
       href: https://web.archive.org/web/20220630022434/https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0100/0150-0300-0210-0100.html
     - title: 2021 Montana Form 2 instructions, line 35, Partial Pension, Annuity, and IRA Income Exemption

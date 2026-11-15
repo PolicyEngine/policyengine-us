@@ -514,7 +514,7 @@ def test_couple_food_pmv_uses_payment_rate_and_splits_countable_income(month):
         "ssi_earned_income": zero,
         "ssi_unearned_income": zero,
         "ssi_unearned_income_deemed_from_ineligible_parent": zero,
-        "ssi_income_deemed_from_ineligible_spouse": zero,
+        "ssi_income_deemed_from_ineligible_spouse_monthly": zero,
         "is_ssi_aged_blind_disabled": np.ones(3, dtype=bool),
         "is_child": zero.astype(bool),
     }

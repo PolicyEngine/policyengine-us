@@ -1,0 +1,12 @@
+description: Nebraska qualifies a household for cooling assistance when a member is at least this age under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01: 70
+metadata:
+  unit: year
+  period: year
+  label: Nebraska LIHEAP cooling elderly member age
+  reference:
+    - title: 476 NAC 2-003(B) Cooling Assistance (a household member who "is age 70 or older")
+      href: https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/chapter-pdfs/476%20NAC%202%20(06-26-2022).pdf/1747#page=2
+    - title: Nebraska FY2026 LIHEAP State Plan, section 3.3
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NE_Plan_2026.pdf#page=11

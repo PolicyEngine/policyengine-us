@@ -24,3 +24,185 @@
     eitc: 100
   output:
     ma_eitc: 40
+
+# Isolated annual MA match-rate component; federal EITC amounts are known inputs.
+# These inputs do not assert full household eligibility or derive federal awards.
+# 2017 DOR Form 1 instructions, physical page 16, Line 42: refundable 23% match.
+# https://www.mass.gov/files/documents/2018/01/18/dor-2017-inc-form-1-inst.pdf#page=16
+# Acts of 2018 c.154, sections 30 and 111: 30% starts with tax year 2019.
+# https://malegislature.gov/Laws/SessionLaws/Acts/2018/Chapter154
+- name: Case 4, 2017_known_federal_credit_vector.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members: [person_0]
+        eitc: 0
+      tax_unit_100:
+        members: [person_100]
+        eitc: 100
+      tax_unit_1000:
+        members: [person_1000]
+        eitc: 1000
+    households:
+      household_0:
+        members: [person_0]
+        state_code: MA
+      household_100:
+        members: [person_100]
+        state_code: MA
+      household_1000:
+        members: [person_1000]
+        state_code: MA
+  output:
+    ma_eitc: [0, 23, 230]
+
+# Isolated annual MA match-rate component; federal EITC amounts are known inputs.
+# These inputs do not assert full household eligibility or derive federal awards.
+# Mechanical pre-2017 exposure control: the existing 2001 rate is 15% in 2015.
+# Official FY2018 Tax Expenditure Budget item 1.605; Acts of 2015 c.52, sections 1 and 5.
+# https://budget.digital.mass.gov/bb/h1/fy18h1/tax_18/items/htax1605.htm
+# https://malegislature.gov/Laws/SessionLaws/Acts/2015/Chapter52
+- name: Case 5, 2015 known federal credit vector.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members: [person_0]
+        eitc: 0
+      tax_unit_100:
+        members: [person_100]
+        eitc: 100
+      tax_unit_1000:
+        members: [person_1000]
+        eitc: 1000
+    households:
+      household_0:
+        members: [person_0]
+        state_code: MA
+      household_100:
+        members: [person_100]
+        state_code: MA
+      household_1000:
+        members: [person_1000]
+        state_code: MA
+  output:
+    ma_eitc: [0, 15, 150]
+
+# Isolated annual MA match-rate component; federal EITC amounts are known inputs.
+# These inputs do not assert full household eligibility or derive federal awards.
+# Mechanical pre-2017 exposure control: 23% first applies in tax year 2016.
+# Acts of 2015 c.52, sections 1 and 5.
+# https://malegislature.gov/Laws/SessionLaws/Acts/2015/Chapter52
+- name: Case 6, 2016 known federal credit vector.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members: [person_0]
+        eitc: 0
+      tax_unit_100:
+        members: [person_100]
+        eitc: 100
+      tax_unit_1000:
+        members: [person_1000]
+        eitc: 1000
+    households:
+      household_0:
+        members: [person_0]
+        state_code: MA
+      household_100:
+        members: [person_100]
+        state_code: MA
+      household_1000:
+        members: [person_1000]
+        state_code: MA
+  output:
+    ma_eitc: [0, 23, 230]
+
+# Isolated annual MA match-rate component; federal EITC amounts are known inputs.
+# These inputs do not assert full household eligibility or derive federal awards.
+# The 23% rate continues in 2018; the enacted increase first applies in 2019.
+# Acts of 2018 c.154, sections 30 and 111; DOR TIR 18-13, section I.A.
+# https://malegislature.gov/Laws/SessionLaws/Acts/2018/Chapter154
+- name: Case 7, 2018 known federal credit vector.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members: [person_0]
+        eitc: 0
+      tax_unit_100:
+        members: [person_100]
+        eitc: 100
+      tax_unit_1000:
+        members: [person_1000]
+        eitc: 1000
+    households:
+      household_0:
+        members: [person_0]
+        state_code: MA
+      household_100:
+        members: [person_100]
+        state_code: MA
+      household_1000:
+        members: [person_1000]
+        state_code: MA
+  output:
+    ma_eitc: [0, 23, 230]
+
+# Isolated annual MA match-rate component; federal EITC amounts are known inputs.
+# These inputs do not assert full household eligibility or derive federal awards.
+# Transition control: the 30% rate first applies in tax year 2019.
+# Acts of 2018 c.154, sections 30 and 111; DOR TIR 18-13, section I.A.
+# https://malegislature.gov/Laws/SessionLaws/Acts/2018/Chapter154
+- name: Case 8, 2019 known federal credit vector.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_0: {}
+      person_100: {}
+      person_1000: {}
+    tax_units:
+      tax_unit_0:
+        members: [person_0]
+        eitc: 0
+      tax_unit_100:
+        members: [person_100]
+        eitc: 100
+      tax_unit_1000:
+        members: [person_1000]
+        eitc: 1000
+    households:
+      household_0:
+        members: [person_0]
+        state_code: MA
+      household_100:
+        members: [person_100]
+        state_code: MA
+      household_1000:
+        members: [person_1000]
+        state_code: MA
+  output:
+    ma_eitc: [0, 30, 300]

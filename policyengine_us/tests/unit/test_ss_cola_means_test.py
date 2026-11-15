@@ -906,7 +906,7 @@ def test_a9_preset_reproduces_captured_description():
     assert means_test.thresholds.joint == 170_000
     parameters = simulation.tax_benefit_system.parameters
     index = parameters.gov.bls.cpi.cpi_u
-    assert index("2026-12-01") == 332.568  # Latest BLS value: June 2026.
+    assert index("2026-12-01") == 337.511  # Latest BLS value: October 2026.
     assert index("2028-12-01") == 348.3  # CBO value authored February 2028.
     np.testing.assert_array_equal(
         simulation.calculate(
@@ -1154,9 +1154,12 @@ def test_means_test_off_preserves_downstream_dependency_closure(
         for component in COMPONENTS:
             record[f"social_security_{component}"] = {2027: 6_000}
             record.pop(f"social_security_{component}_reported")
+    # Employer coverage keeps the worker off the premium tax credit, which
+    # household net income counts since main supplied these literals.
     record.update(
         employment_income={2027: 10_000},
         taxable_interest_income={2027: 20_000},
+        has_esi={2027: True},
     )
     situation = _situation({"worker": record})
     situation["households"]["worker"]["state_code"] = {2027: "NY"}

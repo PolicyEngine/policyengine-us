@@ -1,0 +1,23 @@
+# tax_exempt_private_pension_income follows
+# calibration.gov.irs.soi.tax_exempt_pension_income_per_capita, the IRS SOI
+# total divided by population. An input dated in one year and read in a later
+# year is multiplied by the ratio of that index between the two years.
+
+- name: A 2018 input read in 2019 grows with SOI pensions and annuities, total less taxable per capita, from the 2018 estimate.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    tax_exempt_private_pension_income:
+      2018: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, pensions and annuities,
+    # total less taxable (2018 is the estimate: the geometric mean of 2017 and
+    # 2019, as the parameter file says), over
+    # calibration.gov.census.populations.total:
+    #   2018: 473,418,497,000 / 333,525,000 = 1,419.439
+    #         (estimate)
+    #   2019: 506,377,761,000 / 335,329,000 = 1,510.092
+    #         (https://www.irs.gov/pub/irs-soi/19in14ar.xls)
+    # 10,000 x 1,510.092 / 1,419.439 = 10,638.65. With the old values this came
+    # to 9,946.20.
+    tax_exempt_private_pension_income: 10_638.65

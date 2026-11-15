@@ -60,3 +60,315 @@
     eitc: 4_328
     nm_eitc_eligible: true
     nm_eitc: 1_082
+
+- name: Case 5, 2017 New Mexico working families credit match.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    # Independently known annual federal-style credit components and eligibility.
+    # These component premises do not establish historical federal eligibility.
+    nm_eitc_eligible: true
+    eitc_maximum: 1_000
+    eitc_phased_in: 1_000
+    eitc_reduction: 0
+    state_code: NM
+  output:
+    # 2008 Second Special Session HB 4, sections 1-2: 10% from tax year 2008.
+    # https://www.nmlegis.gov/Sessions/08%20Special/final/HB0004.pdf#page=1
+    # Known annual credit of 1,000 x 10% = 100; this is not a population claim.
+    nm_eitc: 100
+
+- name: Case 6, 2015 New Mexico working families credit match across four tax units.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    # Independently known annual federal-style credit components and eligibility.
+    # Synthetic component premises do not establish historical federal eligibility.
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+      person3:
+        age: 35
+      person4:
+        age: 35
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        nm_eitc_eligible: true
+        eitc_maximum: 0
+        eitc_phased_in: 0
+        eitc_reduction: 0
+      tax_unit2:
+        members: [person2]
+        nm_eitc_eligible: true
+        eitc_maximum: 100
+        eitc_phased_in: 100
+        eitc_reduction: 0
+      tax_unit3:
+        members: [person3]
+        nm_eitc_eligible: true
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+      tax_unit4:
+        members: [person4]
+        nm_eitc_eligible: false
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    # 2008 Second Special Session HB 4, sections 1-2: 10% of the eligible annual credit.
+    # https://www.nmlegis.gov/Sessions/08%20Special/final/HB0004.pdf#page=1
+    # Known bases [0, 100, 1,000, 1,000]; the fourth tax unit is ineligible.
+    nm_eitc: [0, 10, 100, 0]
+
+- name: Case 7, 2016 New Mexico working families credit match across four tax units.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    # Independently known annual federal-style credit components and eligibility.
+    # Synthetic component premises do not establish historical federal eligibility.
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+      person3:
+        age: 35
+      person4:
+        age: 35
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        nm_eitc_eligible: true
+        eitc_maximum: 0
+        eitc_phased_in: 0
+        eitc_reduction: 0
+      tax_unit2:
+        members: [person2]
+        nm_eitc_eligible: true
+        eitc_maximum: 100
+        eitc_phased_in: 100
+        eitc_reduction: 0
+      tax_unit3:
+        members: [person3]
+        nm_eitc_eligible: true
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+      tax_unit4:
+        members: [person4]
+        nm_eitc_eligible: false
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    # 2008 Second Special Session HB 4, sections 1-2: 10% of the eligible annual credit.
+    # https://www.nmlegis.gov/Sessions/08%20Special/final/HB0004.pdf#page=1
+    # Known bases [0, 100, 1,000, 1,000]; the fourth tax unit is ineligible.
+    nm_eitc: [0, 10, 100, 0]
+
+- name: Case 8, 2018 New Mexico working families credit match across four tax units.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    # Independently known annual federal-style credit components and eligibility.
+    # Synthetic component premises do not establish historical federal eligibility.
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+      person3:
+        age: 35
+      person4:
+        age: 35
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        nm_eitc_eligible: true
+        eitc_maximum: 0
+        eitc_phased_in: 0
+        eitc_reduction: 0
+      tax_unit2:
+        members: [person2]
+        nm_eitc_eligible: true
+        eitc_maximum: 100
+        eitc_phased_in: 100
+        eitc_reduction: 0
+      tax_unit3:
+        members: [person3]
+        nm_eitc_eligible: true
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+      tax_unit4:
+        members: [person4]
+        nm_eitc_eligible: false
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    # 2008 Second Special Session HB 4, sections 1-2: 10% of the eligible annual credit.
+    # https://www.nmlegis.gov/Sessions/08%20Special/final/HB0004.pdf#page=1
+    # Known bases [0, 100, 1,000, 1,000]; the fourth tax unit is ineligible.
+    nm_eitc: [0, 10, 100, 0]
+
+- name: Case 9, 2019 New Mexico working families credit match across four tax units.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    # Independently known annual federal-style credit components and eligibility.
+    # Synthetic component premises do not establish historical federal eligibility.
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+      person3:
+        age: 35
+      person4:
+        age: 35
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        nm_eitc_eligible: true
+        eitc_maximum: 0
+        eitc_phased_in: 0
+        eitc_reduction: 0
+      tax_unit2:
+        members: [person2]
+        nm_eitc_eligible: true
+        eitc_maximum: 100
+        eitc_phased_in: 100
+        eitc_reduction: 0
+      tax_unit3:
+        members: [person3]
+        nm_eitc_eligible: true
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+      tax_unit4:
+        members: [person4]
+        nm_eitc_eligible: false
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    # 2019 HB 6, sections 13 and 59(A): 17% of the eligible annual credit.
+    # https://www.nmlegis.gov/Sessions/19%20Regular/final/HB0006.pdf#page=40
+    # Known bases [0, 100, 1,000, 1,000]; the fourth tax unit is ineligible.
+    nm_eitc: [0, 17, 170, 0]
+
+- name: Case 10, 2020 New Mexico working families credit match across four tax units.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    # Independently known annual federal-style credit components and eligibility.
+    # Synthetic component premises do not establish historical federal eligibility.
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+      person3:
+        age: 35
+      person4:
+        age: 35
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        nm_eitc_eligible: true
+        eitc_maximum: 0
+        eitc_phased_in: 0
+        eitc_reduction: 0
+      tax_unit2:
+        members: [person2]
+        nm_eitc_eligible: true
+        eitc_maximum: 100
+        eitc_phased_in: 100
+        eitc_reduction: 0
+      tax_unit3:
+        members: [person3]
+        nm_eitc_eligible: true
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+      tax_unit4:
+        members: [person4]
+        nm_eitc_eligible: false
+        eitc_maximum: 1_000
+        eitc_phased_in: 1_000
+        eitc_reduction: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    # 2019 HB 6, sections 13 and 59(A): 17% of the eligible annual credit.
+    # https://www.nmlegis.gov/Sessions/19%20Regular/final/HB0006.pdf#page=40
+    # Known bases [0, 100, 1,000, 1,000]; the fourth tax unit is ineligible.
+    nm_eitc: [0, 17, 170, 0]

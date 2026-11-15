@@ -717,3 +717,80 @@
     # Arizona: the cap lookup clips size 0 to the size 1 row (guideline
     # 15,650 - 5,500 = 10,150, income 0 -> band 1); the benefit is 0 outside Nevada
     nv_liheap: [1_588.224, 0]
+
+# A home without heating receives the FAC on its electric cost alone: heating_expense is 0
+# for NONE, so the energy cost is the electricity bill, and the standard cap table
+# applies. Every household is assumed to have the active energy account (Manual 500), so
+# no bill or cooling cost is required, and a FAC below 360 pays 360 (803 V.1-2).
+# Electricity of 1,500 is 125 a month.
+
+- name: Case 26, a cooling-only household receives a FAC on its electricity bill.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    nv_liheap_energy_cost: 1_500
+    # 1,500 - 0.0181 x 18,720 = 1,500 - 338.832 = 1,161.168
+    # 18,720 / 15,650 = 1.196 -> band 3; standard cap 1,280
+    nv_liheap: 1_161.168
+
+- name: Case 27, a home without heating and without energy bills receives the 360 minimum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: false
+        pre_subsidy_electricity_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    nv_liheap_eligible: true
+    # 0 - 0.0181 x 18,720 = -338.832 < 360 -> 360
+    nv_liheap: 360
+
+- name: Case 28, a cooling-only household in SFY2027 uses the 1.48 percent burden and the 2026 guideline.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_720
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        has_cooling_expense: true
+        pre_subsidy_electricity_expense: 1_500
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # 18,720 <= 23,940
+    # 1,500 - 0.0148 x 18,720 = 1,500 - 277.056 = 1,222.944
+    # 18,720 / 15,960 = 1.173 -> band 3; standard cap 1,280
+    nv_liheap: 1_222.944
