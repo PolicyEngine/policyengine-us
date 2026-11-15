@@ -15819,7 +15819,7 @@ candidates:
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:
-    from: 1974
+    from: 1987
     type: calendar
   question: Does the regulation's ineligible-child definition include the claimant's siblings in spouse-to-spouse
     deeming, or does POMS limit it to the couple's children?
@@ -15830,6 +15830,18 @@ candidates:
   - kind: regulation
     citation: 20 CFR 416.1163(b)
     url: https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)
+  - kind: regulation
+    citation: 20 CFR 416.1160(c)(2)
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(c)(2)
+  - kind: regulation
+    citation: 20 CFR 416.1101
+    url: https://www.ecfr.gov/current/title-20/section-416.1101
+  - kind: regulation
+    citation: 20 CFR 416.1132(a)
+    url: https://www.ecfr.gov/current/title-20/section-416.1132#p-416.1132(a)
+  - kind: rulemaking
+    citation: 52 FR 8883 (March 20, 1987)
+    url: https://www.govinfo.gov/content/pkg/FR-1987-03-20/pdf/FR-1987-03-20.pdf
   - kind: manual
     citation: POMS SI 01310.115 A.3
     url: https://secure.ssa.gov/poms.nsf/lnx/0501310115
@@ -15838,21 +15850,26 @@ candidates:
     url: https://secure.ssa.gov/poms.nsf/lnx/0501310140
   readings:
     statute: 416.1160(d) defines an ineligible child to include the natural or adopted child of the claimant's parent
-      or of the parent's spouse, so 416.1163(b) would also allocate for the claimant's co-resident siblings.
+      or of that parent's spouse, and 416.1160(c)(2) and 416.1163(b) apply that definition in spouse-to-spouse deeming,
+      so the claimant's co-resident siblings and step-siblings receive allocations whether or not the parent lives there.
     other: POMS SI 01310.140 A forms the spouse-to-spouse deeming household from the couple and the children of either
       member, so only those children receive allocations.
+  example: In 2026 a claimant with no income, whose spouse has $1,000 of monthly unearned income and whose 15-year-old
+    brother lives with them, gets $994 a month of SSI with the brother's $497 allocation and $511 without it.
   pe_us:
-    follows: conflicting-source
+    follows: statute
     code:
     - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_spousal_deeming_child_allocations.py
     - policyengine_us/variables/gov/ssa/ssi/eligibility/status/is_ssi_ineligible_child.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10146
-  state: unreviewed
-  note: The code allocates for the co-resident ineligible children of the claimant or the claimant's spouse, as POMS SI
-    01310.140 A describes, and leaves out the claimant's siblings, whom the 416.1160(d) definition also covers. The
-    code applies this scope in every year; the student age limit it uses starts in 1974. The project lead has not
-    ruled on this reading.
+  state: ruled
+  note: Follows the regulation. 416.1160(d) defines an ineligible child once for all deeming, 416.1160(c)(2) applies it
+    to spouse deemors, "you" is the claimant (416.1101), and a household is a place of residence (416.1132(a)). The
+    claimant's co-resident siblings, half-siblings and step-siblings get allocations; the spouse's siblings do not.
+    POMS SI 01310.140 A lists only the couple's children and is not followed. The code finds a sibling through a parent
+    id the claimant and the child share, and a step-sibling when the claimant's parent and that parent's spouse both
+    live in the household. It applies this scope in every year; the 1987 final rule is the earliest text checked.
 - id: us:standard-plan-minimum-consolidated
   program: student-loans
   years:

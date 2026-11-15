@@ -1,13 +1,15 @@
 """Invariants of the SSI ineligible-child allocation in spousal deeming.
 
-20 CFR 416.1163(b) deducts an allocation from an ineligible spouse's income
-for each ineligible child: 'your natural child or adopted child, or the
-natural or adopted child of your spouse ... who lives in the same household
-with you, and is not eligible for SSI benefits' (416.1160(d)). Each
-Hypothesis example builds a batch of random households (a married couple,
-their children, step-children, grandchildren, unrelated children and other
-adults, some living elsewhere, filed in assorted tax units, with parent ids
-on everyone, no one or some people) and checks:
+Under 20 CFR 416.1163(b), SSA deducts an allocation from an ineligible
+spouse's income for each ineligible child. In 416.1160(d), SSA defines one
+as a child of the claimant, of the claimant's spouse, or 'of your parent or
+of your parent's spouse', who lives in the same household with the claimant
+and is not eligible for SSI benefits. Each Hypothesis example builds a batch
+of random households (a married couple, their children, step-children,
+grandchildren, each spouse's siblings, unrelated children and other adults,
+some living elsewhere, filed in assorted tax units, with parent ids on
+everyone, no one or some people), adds a fixed set of sibling households,
+and checks:
 
 1. Differential: every person's ssi_spousal_deeming_child_allocations
    equals an oracle written here from the regulation and the parent-link
@@ -16,8 +18,9 @@ on everyone, no one or some people) and checks:
    the regulation itself. Without ids it is the documented proxy: the
    co-resident members of the person's or the spouse's tax unit, and in a
    household with links only for an unlinked parent.
-2. Spouses see the same total: a child of either spouse is a child of 'you
-   or your spouse' for both.
+2. Spouses see the same total for the couple's children: a child of either
+   spouse is a child of 'you or your spouse' for both. A spouse's own
+   sibling, the child 'of your parent', adds to that spouse's total alone.
 3. Order: listing each household's people in reverse gives the same totals.
 4. Monotonicity: raising every child's unearned income never raises a
    total (416.1163(b)(2)).
@@ -30,7 +33,9 @@ exclusion runs month by month until its yearly limit is used up, each
 month's allocation is floored at zero, and a loss counts as no income. It also checks the bounds and that
 more income never raises an allocation.
 
-YAML covers the worked cases. This file routes to the Rest/core group.
+Each spouse's parent lives outside the simulation here, so YAML covers a
+sibling whose parent lives in the household and a step-sibling, with the
+other worked cases. This file routes to the Rest/core group.
 """
 
 import numpy as np
@@ -45,12 +50,24 @@ MONTHLY_ALLOCATION = 1_491 - 994
 CHILD_AGE = 18  # 416.1856(a)(1)
 STUDENT_AGE = 22  # 416.1856(a)(2)
 ABSENT_PARENT_ID = 999_999
+# Each spouse's own parent lives outside the simulation and has an id of
+# their own, which that spouse and the parent's other children carry.
+CLAIMANT_PARENT_ID = 700_000
+SPOUSE_PARENT_ID = 800_000
 HOUSEHOLDS_PER_EXAMPLE = 30
 # 416.1112(c)(3) student earned income exclusion in 2026 (POMS SI 00820.510).
 STUDENT_MONTHLY_EXCLUSION = 2_410
 STUDENT_YEARLY_EXCLUSION = 9_730
 
-CHILD_KINDS = ("claimant", "spouse", "both", "grandchild", "unrelated")
+CHILD_KINDS = (
+    "claimant",
+    "spouse",
+    "both",
+    "grandchild",
+    "unrelated",
+    "sibling",
+    "in_law",
+)
 OTHER = st.fixed_dictionaries(
     {
         "kind": st.sampled_from(CHILD_KINDS + ("adult",)),
@@ -69,6 +86,8 @@ HOUSEHOLD = st.fixed_dictionaries(
         "spouse_unearned": st.sampled_from((0, 300, 600, 1_200)),
         "spouse_files_separately": st.booleans(),
         "ids": st.sampled_from(("none", "all", "some")),
+        "claimant_has_ids": st.booleans(),
+        "spouse_has_ids": st.booleans(),
         "report_own_children": st.booleans(),
         "others": st.lists(OTHER, min_size=0, max_size=5),
     }
@@ -78,9 +97,52 @@ BATCH = st.lists(
 )
 
 
+def _sibling_household(kind, ids="all", claimant_has_ids=True, spouse_has_ids=True):
+    """A couple and one 10-year-old with no income, in the couple's tax unit."""
+    return {
+        "aged_claimant": False,
+        "spouse_unearned": 1_200,
+        "spouse_files_separately": False,
+        "ids": ids,
+        "claimant_has_ids": claimant_has_ids,
+        "spouse_has_ids": spouse_has_ids,
+        "report_own_children": False,
+        "others": [
+            {
+                "kind": kind,
+                "age": 10,
+                "student": False,
+                "monthly_unearned": 0,
+                "away": False,
+                "tax_unit": "couple",
+                "has_ids": True,
+            }
+        ],
+    }
+
+
+# Every example also holds these households, so each run checks the sibling
+# scope whatever Hypothesis draws. The pairs give the claimant's total and
+# the spouse's.
+ONE_CHILD = 12 * MONTHLY_ALLOCATION
+SIBLING_HOUSEHOLDS = (
+    # The claimant's sibling counts for the claimant alone.
+    (_sibling_household("sibling"), (ONE_CHILD, 0)),
+    # The spouse's sibling counts for the spouse alone, and deeming reads
+    # the claimant's total.
+    (_sibling_household("in_law"), (0, ONE_CHILD)),
+    # A sibling's id finds no one when the claimant carries no parent id.
+    (_sibling_household("sibling", ids="some", claimant_has_ids=False), (0, 0)),
+    (_sibling_household("in_law", ids="some", spouse_has_ids=False), (0, 0)),
+    # No one has ids: the tax-unit proxy counts the child for both spouses.
+    (_sibling_household("sibling", ids="none"), (ONE_CHILD, ONE_CHILD)),
+)
+
+
 def _people(index, household):
     """Return each person's facts, with true parents and tax unit."""
     claimant, spouse = f"h{index}_claimant", f"h{index}_spouse"
+    claimant_parent, spouse_parent = _absent_parents(index)
     people = [
         dict(
             name=claimant,
@@ -88,10 +150,11 @@ def _people(index, household):
             disabled=not household["aged_claimant"],
             unearned=0,
             student=False,
-            parents=(),
+            parents=(claimant_parent,),
             away=False,
             tax_unit="couple",
             role="head",
+            has_ids=household["claimant_has_ids"],
         ),
         dict(
             name=spouse,
@@ -99,10 +162,11 @@ def _people(index, household):
             disabled=False,
             unearned=household["spouse_unearned"],
             student=False,
-            parents=(),
+            parents=(spouse_parent,),
             away=False,
             tax_unit="spouse" if household["spouse_files_separately"] else "couple",
             role="head" if household["spouse_files_separately"] else "spouse",
+            has_ids=household["spouse_has_ids"],
         ),
     ]
     # The first other adult can parent grandchildren and head a tax unit.
@@ -120,6 +184,8 @@ def _people(index, household):
             "both": (claimant, spouse),
             "grandchild": (adult,) if adult else (None,),
             "unrelated": (None,),
+            "sibling": (claimant_parent,),
+            "in_law": (spouse_parent,),
             "adult": (),
         }[kind]
         tax_unit = other["tax_unit"]
@@ -152,6 +218,11 @@ def _people(index, household):
     return people
 
 
+def _absent_parents(index):
+    """Names of the claimant's and the spouse's parents, who live elsewhere."""
+    return f"h{index}_claimant_parent", f"h{index}_spouse_parent"
+
+
 def _tax_unit_key(index, person):
     if person["tax_unit"] == "own":
         return f"{person['name']}_tu"
@@ -178,6 +249,9 @@ def _situation(households, reverse=False, income_rise=0):
             people = people[::-1]
         for number, person in enumerate(people):
             person_ids[person["name"]] = 1_000 * (index + 1) + number + 1
+        claimant_parent, spouse_parent = _absent_parents(index)
+        person_ids[claimant_parent] = CLAIMANT_PARENT_ID + index
+        person_ids[spouse_parent] = SPOUSE_PARENT_ID + index
         # Each spouse reports their co-resident children when asked.
         own_children = {}
         for person in people:
@@ -249,7 +323,10 @@ def _allocation(person):
 
 
 def _oracle(facts):
-    """Each person's total, from true relationships and the id contract."""
+    """Each person's total, and the siblings' part of it.
+
+    Both come from true relationships and the id contract.
+    """
     names = list(facts)
     spouse_of = {}
     for name in names:
@@ -271,8 +348,15 @@ def _oracle(facts):
         return {
             parent
             for parent in facts[name]["parents"]
-            if parent and home(parent) == home(name)
+            if parent in facts and home(parent) == home(name)
         }
+
+    def named_parents(name):
+        # A parent with a name is one person, in the simulation or outside
+        # it. None stands for an unknown parent and identifies no sibling.
+        if not facts[name]["has_ids"]:
+            return set()
+        return {parent for parent in facts[name]["parents"] if parent}
 
     def linked_count(name):
         return sum(name in co_resident_named_parents(other) for other in names)
@@ -288,6 +372,7 @@ def _oracle(facts):
         return (own > 0 or linked > 0) and (linked == 0 or own > linked)
 
     totals = {}
+    sibling_totals = {}
     for name in names:
         selves = {name} | ({spouse_of[name]} if name in spouse_of else set())
         presume = not household_linked(name) or any(
@@ -295,16 +380,24 @@ def _oracle(facts):
         )
         units = {tax_unit(member) for member in selves}
         total = 0
+        siblings = 0
         for other in names:
             if other in selves or home(other) != home(name):
                 continue
+            # 416.1160(d): the child 'of your parent' counts for a married
+            # person, whose spouse's income SSA can deem.
+            sibling = name in spouse_of and bool(
+                named_parents(other) & named_parents(name)
+            )
             if facts[other]["has_ids"]:
-                counts = bool(co_resident_named_parents(other) & selves)
+                counts = bool(co_resident_named_parents(other) & selves) or sibling
             else:
                 counts = presume and tax_unit(other) in units
             total += counts * _allocation(facts[other])
+            siblings += sibling * _allocation(facts[other])
         totals[name] = total
-    return totals
+        sibling_totals[name] = siblings
+    return totals, sibling_totals
 
 
 def _record_reported_children(situation, facts):
@@ -331,20 +424,29 @@ def test_allocations_match_oracle_and_invariants(households):
         "ssi_unearned_income_deemed_from_ineligible_spouse",
         "is_ssi_ineligible_spouse",
     )
+    households = households + [household for household, _ in SIBLING_HOUSEHOLDS]
     situation, facts = _situation(households)
     _record_reported_children(situation, facts)
     results = _calculate(situation, variables)
     totals = results["ssi_spousal_deeming_child_allocations"]
-    oracle = _oracle(facts)
+    oracle, sibling_totals = _oracle(facts)
 
     # 1. Differential against the oracle.
     for name in facts:
         assert totals[name] == oracle[name], name
 
+    # The fixed sibling households, checked without the oracle.
+    for index, (_, expected) in enumerate(SIBLING_HOUSEHOLDS, HOUSEHOLDS_PER_EXAMPLE):
+        claimant, spouse = f"h{index}_claimant", f"h{index}_spouse"
+        assert (totals[claimant], totals[spouse]) == expected, index
+
     for index in range(len(households)):
         claimant, spouse = f"h{index}_claimant", f"h{index}_spouse"
-        # 2. Both spouses see the same children.
-        assert totals[claimant] == totals[spouse]
+        # 2. Both spouses see the same children of the couple.
+        assert (
+            totals[claimant] - sibling_totals[claimant]
+            == totals[spouse] - sibling_totals[spouse]
+        )
         # 5. Deemed unearned income, 416.1163(b)(3).
         assert results["is_ssi_ineligible_spouse"][spouse]
         spouse_unearned = 12 * facts[spouse]["unearned"]
