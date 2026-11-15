@@ -208,3 +208,21 @@
   output:
     # min(50% * 10_000, 2_646); 2025 Form AR1075 "50% of Weighted Average Tuition" table
     ar_post_secondary_education_tuition_deduction_person: 2_646
+
+- name: Post-secondary education tuition deduction is capped at the 2025 weighted average tuition for a technical institute
+  period: 2025
+  input:
+    people:
+      person1:
+        qualified_tuition_expenses: 10_000
+        technical_institution_student: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # min(50% * 10_000, 1_635); 2025 Form AR1075 "50% of Weighted Average Tuition" table
+    ar_post_secondary_education_tuition_deduction_person: 1_635
