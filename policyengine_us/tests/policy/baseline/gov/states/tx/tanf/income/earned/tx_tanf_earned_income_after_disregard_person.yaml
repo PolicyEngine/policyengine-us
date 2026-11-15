@@ -1,3 +1,7 @@
+# Conditional Part A arithmetic: no TANF receipt in any state in the preceding four months.
+# Monthly gross earnings are $600; the work deduction is $120, with no other deductions.
+# HHSC A-1425.2: (600 - 120) - (600 - 120) / 3 = 320. Eligibility/history are premises.
+# https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-1420-types-deductions
 - name: Case 1, new applicant with low earnings gets 1/3 disregard.
   period: 2025-01
   absolute_error_margin: 0.01
@@ -6,7 +10,7 @@
     is_tanf_enrolled: false
     state_code: TX
   output:
-    tx_tanf_earned_income_after_disregard_person: 321.60
+    tx_tanf_earned_income_after_disregard_person: 320
 
 - name: Case 2, continuing recipient gets 90% disregard.
   period: 2025-01
@@ -34,3 +38,301 @@
     state_code: TX
   output:
     tx_tanf_earned_income_after_disregard_person: 0
+
+# Conditional Part A component with supplied lawful applicant history and no other deductions.
+# HHSC A-1425.1 and A-1425.2; this case does not derive eligibility or EID history.
+# https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-1420-types-deductions
+- name: Case 5, 2017 conditional Part A uses one third after the work deduction.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2017: 30
+        tx_tanf_gross_earned_income: 0
+      person2:
+        age:
+          2017: 30
+        tx_tanf_gross_earned_income: 120
+      person3:
+        age:
+          2017: 30
+        tx_tanf_gross_earned_income: 123
+      person4:
+        age:
+          2017: 30
+        tx_tanf_gross_earned_income: 420
+      person5:
+        age:
+          2017: 30
+        tx_tanf_gross_earned_income: 600
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        is_tanf_enrolled: false
+      spm_unit2:
+        members:
+        - person2
+        is_tanf_enrolled: false
+      spm_unit3:
+        members:
+        - person3
+        is_tanf_enrolled: false
+      spm_unit4:
+        members:
+        - person4
+        is_tanf_enrolled: false
+      spm_unit5:
+        members:
+        - person5
+        is_tanf_enrolled: false
+    households:
+      household1:
+        members:
+        - person1
+        state_code:
+          2017: TX
+      household2:
+        members:
+        - person2
+        state_code:
+          2017: TX
+      household3:
+        members:
+        - person3
+        state_code:
+          2017: TX
+      household4:
+        members:
+        - person4
+        state_code:
+          2017: TX
+      household5:
+        members:
+        - person5
+        state_code:
+          2017: TX
+  output:
+    tx_tanf_earned_income_after_disregard_person:
+    - 0
+    - 0
+    - 2
+    - 200
+    - 320
+
+# One-third leaves 2/3, 0.74 and 262 dollars; do not floor at the earned-income stage.
+# All amounts are monthly components under the same conditional Part A premises.
+- name: Case 6, 2025 Part A retains fractional income and exact-dollar results.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+        tx_tanf_gross_earned_income: 121
+      person2:
+        age:
+          2025: 30
+        tx_tanf_gross_earned_income: 121.11
+      person3:
+        age:
+          2025: 30
+        tx_tanf_gross_earned_income: 513
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        is_tanf_enrolled: false
+      spm_unit2:
+        members:
+        - person2
+        is_tanf_enrolled: false
+      spm_unit3:
+        members:
+        - person3
+        is_tanf_enrolled: false
+    households:
+      household1:
+        members:
+        - person1
+        state_code:
+          2025: TX
+      household2:
+        members:
+        - person2
+        state_code:
+          2025: TX
+      household3:
+        members:
+        - person3
+        state_code:
+          2025: TX
+  output:
+    tx_tanf_earned_income_after_disregard_person:
+    - 0.6666666666666666
+    - 0.74
+    - 262
+
+# January and September preserve inherited 0.33 software behavior, not established law.
+# HHSC A-1425.2, Rev. 15-4, authenticates one third from October 1, 2015.
+# Conditional Part A: lawful applicant history/deductions and no other deductions.
+# https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-1420-types-deductions
+- name: Case 7, 2015 preserves earlier software behavior and applies the October source rule.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2015: 30
+        tx_tanf_gross_earned_income:
+          2015-01: 120
+          2015-09: 120
+          2015-10: 120
+      person2:
+        age:
+          2015: 30
+        tx_tanf_gross_earned_income:
+          2015-01: 123
+          2015-09: 123
+          2015-10: 123
+      person3:
+        age:
+          2015: 30
+        tx_tanf_gross_earned_income:
+          2015-01: 420
+          2015-09: 420
+          2015-10: 420
+      person4:
+        age:
+          2015: 30
+        tx_tanf_gross_earned_income:
+          2015-01: 600
+          2015-09: 600
+          2015-10: 600
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        is_tanf_enrolled:
+          2015-01: false
+          2015-09: false
+          2015-10: false
+      spm_unit2:
+        members:
+        - person2
+        is_tanf_enrolled:
+          2015-01: false
+          2015-09: false
+          2015-10: false
+      spm_unit3:
+        members:
+        - person3
+        is_tanf_enrolled:
+          2015-01: false
+          2015-09: false
+          2015-10: false
+      spm_unit4:
+        members:
+        - person4
+        is_tanf_enrolled:
+          2015-01: false
+          2015-09: false
+          2015-10: false
+    households:
+      household1:
+        members:
+        - person1
+        state_code:
+          2015: TX
+      household2:
+        members:
+        - person2
+        state_code:
+          2015: TX
+      household3:
+        members:
+        - person3
+        state_code:
+          2015: TX
+      household4:
+        members:
+        - person4
+        state_code:
+          2015: TX
+  output:
+    tx_tanf_earned_income_after_disregard_person:
+      2015-01: [0, 2.01, 201, 321.6]
+      2015-09: [0, 2.01, 201, 321.6]
+      2015-10: [0, 2, 200, 320]
+
+# HHSC A-1425.2, Rev. 15-4: one third applies after October 1, 2015.
+# December 2016 is source-backed conditional Part A arithmetic, not a legacy approximation.
+- name: Case 8, December 2016 uses the source one-third disregard.
+  period: 2016-12
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2016: 30
+        tx_tanf_gross_earned_income: 120
+      person2:
+        age:
+          2016: 30
+        tx_tanf_gross_earned_income: 123
+      person3:
+        age:
+          2016: 30
+        tx_tanf_gross_earned_income: 420
+      person4:
+        age:
+          2016: 30
+        tx_tanf_gross_earned_income: 600
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        is_tanf_enrolled: false
+      spm_unit2:
+        members:
+        - person2
+        is_tanf_enrolled: false
+      spm_unit3:
+        members:
+        - person3
+        is_tanf_enrolled: false
+      spm_unit4:
+        members:
+        - person4
+        is_tanf_enrolled: false
+    households:
+      household1:
+        members:
+        - person1
+        state_code:
+          2016: TX
+      household2:
+        members:
+        - person2
+        state_code:
+          2016: TX
+      household3:
+        members:
+        - person3
+        state_code:
+          2016: TX
+      household4:
+        members:
+        - person4
+        state_code:
+          2016: TX
+  output:
+    tx_tanf_earned_income_after_disregard_person:
+    - 0
+    - 2
+    - 200
+    - 320
