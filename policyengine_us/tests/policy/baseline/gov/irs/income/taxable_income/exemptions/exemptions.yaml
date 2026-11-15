@@ -23,6 +23,22 @@
   output:
     exemptions: [1_000, 1_000, 980]
 
+# CBO's January 2025 CSV gives the 2032 head-of-household threshold as $421,200:
+# https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/budget/tax_parameters/annual_cy_2025-01.csv
+# At $421,200, excess AGI = $0; at $423,700, excess AGI / $2,500 = 1 step.
+# $1,000 * (1 - 1 * 0.02) = $980 after one full step.
+- name: A restored exemption uses CBO's 2032 head-of-household threshold
+  period: 2032
+  absolute_error_margin: 0.001
+  input:
+    gov.irs.income.exemption.suspended: false
+    gov.irs.income.exemption.amount: 1_000
+    exemptions_count: [1, 1, 1]
+    adjusted_gross_income: [421_199, 421_200, 423_700]
+    filing_status: [HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD]
+  output:
+    exemptions: [1_000, 1_000, 980]
+
 # 243,700 * 217.05 / 212.85 = 248,508.73855 -> 248,500 (down to $25).
 # One full $1,250 step above the threshold phases out 2% * $1,000 = $20.
 - name: A restored exemption uses half the joint threshold for separate filers
@@ -34,5 +50,21 @@
     exemptions_count: [1, 1, 1]
     adjusted_gross_income: [248_499, 248_500, 249_750]
     filing_status: [SEPARATE, SEPARATE, SEPARATE]
+  output:
+    exemptions: [1_000, 1_000, 980]
+
+# 487,400 * (217.05 / 212.85)^3 = 516,825.49806 in 2038.
+# Round down to $50 = $516,800; rounding to nearest would give $516,850.
+# At $519,300, ($519,300 - $516,800) / $2,500 = 1 full step.
+# $1,000 * (1 - 1 * 0.02) = $980.
+- name: A restored exemption rounds the projected joint threshold down
+  period: 2038
+  absolute_error_margin: 0.001
+  input:
+    gov.irs.income.exemption.suspended: false
+    gov.irs.income.exemption.amount: 1_000
+    exemptions_count: [1, 1, 1]
+    adjusted_gross_income: [516_799, 516_800, 519_300]
+    filing_status: [JOINT, JOINT, JOINT]
   output:
     exemptions: [1_000, 1_000, 980]

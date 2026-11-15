@@ -162,10 +162,7 @@ def test_biden_projection_tracks_index_and_filing_status_ratios(year, status):
         assert _value(BIDEN_PATH, same_threshold, year) == joint
 
 
-@settings(**PROPERTY_SETTINGS)
-@given(case=st.sampled_from(AUTHORED_VALUES))
-@example(case=(CO_PATH, "SINGLE", "2021-01-01", float("inf")))
-@example(case=(PEP_PATH, "JOINT", "2018-01-01", float("inf")))
+@pytest.mark.parametrize("case", AUTHORED_VALUES)
 def test_uprating_preserves_authored_values(case):
     path, status, date, expected = case
     actual = get_parameter(system.parameters, f"{path}.{status}")(date)
