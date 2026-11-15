@@ -1,0 +1,12 @@
+- name: Case 1, railroad retirement benefits count as income.
+  # 40 TAC 809.44(c): "Income that is not listed in subsection (b) of this
+  # section as excluded from income is included as income." Item (b)(17)
+  # excludes "Regular payments from Social Security", which the Railroad
+  # Retirement Board's annuities are not.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    railroad_benefits: 12_000
+  output:
+    tx_ccs_countable_income: 1_000

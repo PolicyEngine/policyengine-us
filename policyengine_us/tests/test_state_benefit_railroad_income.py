@@ -119,6 +119,7 @@ PROGRAMS = [
     ("SD", "sd_cca_gross_income", "CCA subsidy manual, section 4"),
     ("TX", "tx_fpp_countable_unearned_income", "FPP manual 9000"),
     ("TX", "tx_ceap_countable_income_person", "10 TAC 6.4"),
+    ("TX", "tx_ccs_countable_income", "40 TAC 809.44(c)"),
     ("UT", "ut_ccap_gross_income", "Utah Admin. Code R986-200-235(2)(a)"),
     ("VA", "va_ccsp_countable_income", "8 VAC 20-790-40(H)"),
     ("VT", "vt_ccfap_countable_income", "CCFAP regulations"),
@@ -250,7 +251,8 @@ def test_railroad_benefits_count_as_received(state, variable, rule, amount):
 
 
 # Programs whose modeled lists have no pension line, so R2 doesn't apply. Illinois
-# marks pension_income as exempt in its TANF list; the other lists don't name it.
+# marks pension_income as exempt in its TANF and AABD lists; the other lists
+# don't name it.
 NO_PENSION_LINE = {
     "ca_ala_general_assistance_countable_income_person",
     "ca_tanf_other_unearned_income",
@@ -381,7 +383,6 @@ NO_RAILROAD_INCOME = {
     _STATE_CODE + "il/hfs/hbwd/eligibility/il_hbwd_disability_eligible.py": SIGNAL,
     _STATE_CODE + "in/ihcda/eap/in_eap.py": SIGNAL,
     _STATE_CODE + "la/lhc/liheap/la_liheap.py": SIGNAL,
-    _STATE_CODE + "md/dhs/fia/paa/md_paa_eligible.py": SIGNAL,
     _STATE_CODE + "ms/dom/wd/eligibility/ms_wd_disability_eligible.py": SIGNAL,
     _STATE_CODE + "nm/hca/liheap/nm_liheap.py": SIGNAL,
     _STATE_CODE + "pa/dhs/liheap/payment/pa_liheap_supplement.py": SIGNAL,
@@ -389,7 +390,9 @@ NO_RAILROAD_INCOME = {
     _STATE_CODE + "wa/dor/property_tax_exemption/senior_disabled/"
     "wa_pte_retired_due_to_disability.py": SIGNAL,
     _STATE_CODE + "wi/dhs/ssp/wi_ssp_countable_for_hud.py": SIGNAL,
-    _STATE_CODE + "wi/doa/wheap/wi_wheap_household_size.py": SIGNAL,
+    # WHEAP Manual 3.2.2.4 counts a non-citizen who receives FoodShare or "any
+    # form of monthly Social Security income" as an eligible household member.
+    _STATE_CODE + "wi/doa/wheap/wi_wheap_household_size.py": SOCIAL_SECURITY_ONLY,
 }
 
 
@@ -633,17 +636,40 @@ def scope_paths(scope, outer):
     return paths, aliases
 
 
-def reads_a_list(tree, lists):
-    """The listed parameter paths that parsed code reads or names in a string."""
+def read_paths(tree):
+    """The parameter paths that parsed code reads or names in a string."""
     paths, aliases = scope_paths(tree, {})
     for node in ast.walk(tree):
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             paths |= scope_paths(node, aliases)[0]
-    return lists & (paths | code_strings([tree], set()))
+    return paths | code_strings([tree], set())
+
+
+def reads_a_list(tree, lists):
+    """The listed parameter paths that parsed code reads or names in a string."""
+    return lists & read_paths(tree)
+
+
+def federal_parameter_lists():
+    """Each federal parameter file's dotted path and the names its lists hold."""
+    found = {}
+    for path in (PACKAGE / "parameters" / "gov").rglob("*.yaml"):
+        relative = path.relative_to(PACKAGE).as_posix()
+        if is_state_or_local(relative):
+            continue
+        held = {
+            name
+            for names in parameter_lists(path.read_text(encoding="utf8"))
+            for name in names
+        }
+        if held:
+            parts = path.relative_to(PACKAGE / "parameters").with_suffix("").parts
+            found[".".join(parts)] = held
+    return found
 
 
 def federal_variables():
-    """Each federal variable: its adds, the variables it names, its code and scopes."""
+    """Each federal variable: its adds, the variables and paths it names, its scopes."""
     found = {}
     for name, variable in system.variables.items():
         try:
@@ -660,38 +686,51 @@ def federal_variables():
         if isinstance(adds, (list, tuple)):
             names |= set(adds)
         scopes = list(code_scopes(text))
-        found[name] = (adds, names & set(system.variables), tree, scopes)
+        found[name] = (adds, names & set(system.variables), read_paths(tree), scopes)
     return found
 
 
-def counts_social_security_alone(adds, names, tree, scopes, lists):
+def counts_social_security_alone(adds, names, paths, scopes, lists):
     """Whether a federal variable takes Social Security with no railroad amount."""
     if isinstance(adds, str):
         listed = adds in lists
     else:
         listed = isinstance(adds, (list, tuple)) and lacks_railroad(adds)
-    if (listed or reads_a_list(tree, lists)) and not names & RAILROAD:
+    if (listed or lists & paths) and not names & RAILROAD:
         return True
     return any(lacks_railroad(scope) for scope in scopes)
+
+
+def carrying_lists(held, found):
+    """Federal lists that hold a found variable and no railroad amount."""
+    return {
+        path for path, names in held.items() if names & found and not names & RAILROAD
+    }
 
 
 def federal_sources_without_railroad():
     """Federal lists and variables that count Social Security without railroad."""
     lists = federal_lists_without_railroad()
+    held = federal_parameter_lists()
     variables = federal_variables()
     found = {
         name
-        for name, (adds, names, tree, scopes) in variables.items()
+        for name, (adds, names, paths, scopes) in variables.items()
         if name not in SOCIAL_SECURITY
-        and counts_social_security_alone(adds, names, tree, scopes, lists)
+        and counts_social_security_alone(adds, names, paths, scopes, lists)
     }
+    # Each step takes the variables that name a found variable, or that add or
+    # read a federal list holding one, such as the gross income sources list.
     for _ in range(FEDERAL_FORMULA_STEPS):
+        carriers = carrying_lists(held, found)
         found |= {
             name
-            for name, (_, names, _, _) in variables.items()
-            if name not in SOCIAL_SECURITY and names & found and not names & RAILROAD
+            for name, (_, names, paths, _) in variables.items()
+            if name not in SOCIAL_SECURITY
+            and (names & found or paths & carriers)
+            and not names & RAILROAD
         }
-    return lists, found
+    return lists | carrying_lists(held, found), found
 
 
 def inherited_federal_sources():

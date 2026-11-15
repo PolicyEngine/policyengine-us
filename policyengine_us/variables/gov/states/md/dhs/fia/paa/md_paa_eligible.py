@@ -40,6 +40,13 @@ class md_paa_eligible(Variable):
         receives_other_oasdi_qualifying = (
             non_ssdi_oasi > 0
         ) & is_categorically_qualifying
+        # The Railroad Retirement Board pays retirement, disability and survivor
+        # annuities, each a federal benefit under (A)(2). railroad_benefits
+        # doesn't say which kind, so the same aged, blind or disabled gate
+        # applies as for non-SSDI Social Security.
+        receives_railroad_qualifying = (
+            person("railroad_benefits", period) > 0
+        ) & is_categorically_qualifying
         pending_federal_benefit = (
             person("md_paa_pending_federal_benefit", period)
             & is_categorically_qualifying
@@ -48,6 +55,7 @@ class md_paa_eligible(Variable):
             receives_ssi
             | receives_ssdi
             | receives_other_oasdi_qualifying
+            | receives_railroad_qualifying
             | pending_federal_benefit
         )
         # PAA Manual §500: $2,000 resource limit. Each person's resources
