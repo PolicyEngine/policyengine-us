@@ -1,3 +1,17 @@
+## [2.135.10] - 2026-11-15
+
+### Fixed
+
+- Correct Michigan's 2017 homestead property tax credit maximum to $1,200.
+
+
+## [2.135.9] - 2026-11-15
+
+### Fixed
+
+- Cap Montana's 2018–2023 state and local tax deduction once per joint return and at $5,000 per separate column. For 2017–2023, add the larger of sales taxes and local income taxes to real estate taxes.
+
+
 ## [2.135.8] - 2026-11-15
 
 ### Fixed
