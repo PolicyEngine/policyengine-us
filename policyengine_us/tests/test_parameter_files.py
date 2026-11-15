@@ -1,3 +1,4 @@
+import re
 from datetime import date
 from pathlib import Path
 
@@ -31,6 +32,37 @@ SOI_LONG_TERM_CAPITAL_GAINS_ANCHORS = {
     date(2015, 1, 1): 733_313_255_000,
     date(2020, 1, 1): 1_063_500_316_000,
     date(2023, 1, 1): 971_279_947_000,
+}
+SOI_DIR = PARAMETERS_DIR / "calibration/gov/irs/soi"
+SOI_TABLE_1_4_FILE = re.compile(
+    r"https://www\.irs\.gov/pub/irs-soi/(\d{2})in14(?:ar|acg)\.xls"
+)
+# Values SOI did not publish. The 2018 Form 1040 combined IRA distributions
+# with pensions and annuities, so 2018 pensions are estimated from 2017 and
+# 2019 (each file says how). The taxable estimate also uses the 2018 table.
+SOI_ESTIMATED_VALUES = {
+    ("taxable_pension_income.yaml", 2018),
+    ("tax_exempt_pension_income.yaml", 2018),
+}
+# Values that were once keyed to the wrong tax year or misread from the table.
+# IRS SOI Publication 1304 Table 1.4, all returns, thousands of dollars:
+# partnership and S corporation net income less net loss (from tax year 2021
+# the table splits partnerships from S corporations), social security benefits
+# in total, and farm rental net income less net loss.
+SOI_CORRECTED_VALUES = {
+    "partnership_s_corp_income.yaml": {
+        # 21in14ar: 469_816_308 - 168_152_043 + 766_681_240 - 92_689_104
+        date(2021, 1, 1): 975_656_401_000,
+        # 22in14ar: 487_094_509 - 175_602_300 + 812_741_318 - 93_025_607
+        date(2022, 1, 1): 1_031_207_920_000,
+    },
+    "social_security.yaml": {
+        date(2020, 1, 1): 774_017_713_000,
+        date(2021, 1, 1): 791_161_174_000,
+    },
+    # 21in14ar: 6_186_997 - 631_042. The loss column's neighbour is the
+    # number of returns with a loss (72_972).
+    "farm_rent_income.yaml": {date(2021, 1, 1): 5_555_955_000},
 }
 PARAMETER_SCHEMA_KEYS = {
     "brackets",
@@ -163,9 +195,35 @@ def test_soi_long_term_capital_gains_uses_latest_publication_1304_anchor():
         assert values[period] == value
 
     assert max(values) >= date(2023, 1, 1)
-    assert parameter["metadata"]["reference"][0]["href"].endswith(
-        "publication-1304-basic-tables-part-1"
-    )
+    assert [reference["href"] for reference in parameter["metadata"]["reference"]] == [
+        f"https://www.irs.gov/pub/irs-soi/{period.year % 100:02d}in14acg.xls"
+        for period in sorted(values)
+    ]
+
+
+def test_soi_series_cite_the_table_for_each_tax_year():
+    """Each SOI series value is for the tax year of its date and cites that
+    year's Publication 1304 Table 1.4 or 1.4A file."""
+    for path in sorted(SOI_DIR.glob("*.yaml")):
+        parameter = yaml.safe_load(path.read_text())
+        if "values" not in parameter:
+            continue
+        years = {period.year for period in parameter["values"]}
+        cited = {
+            2000 + int(match[1])
+            for reference in parameter["metadata"]["reference"]
+            if (match := SOI_TABLE_1_4_FILE.fullmatch(reference["href"]))
+        }
+        estimated = {year for name, year in SOI_ESTIMATED_VALUES if name == path.name}
+        assert years - estimated <= cited, (path.name, sorted(years - cited))
+        assert cited <= years, (path.name, sorted(cited - years))
+
+
+def test_soi_corrected_values_hold_their_table_1_4_totals():
+    for filename, anchors in SOI_CORRECTED_VALUES.items():
+        values = yaml.safe_load((SOI_DIR / filename).read_text())["values"]
+        for period, value in anchors.items():
+            assert values[period] == value, (filename, period)
 
 
 def test_soi_agi_bands_are_keyed_to_their_table_1_1_tax_year():

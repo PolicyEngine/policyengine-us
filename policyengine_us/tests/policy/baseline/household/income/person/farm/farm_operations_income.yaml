@@ -1,0 +1,21 @@
+# farm_operations_income follows calibration.gov.irs.soi.farm_income_per_capita,
+# the IRS SOI total divided by population. An input dated in one year and read
+# in a later year is multiplied by the ratio of that index between the two
+# years.
+
+- name: A 2016 input read in 2018 grows with SOI farm net income less net loss per capita, inside the filled years, on a series of net losses.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    farm_operations_income:
+      2016: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, farm net income less net
+    # loss, over calibration.gov.census.populations.total:
+    #   2016: -17,666,030,000 / 328,964,000 = -53.70202
+    #         (https://www.irs.gov/pub/irs-soi/16in14ar.xls)
+    #   2018: -23,395,195,000 / 333,525,000 = -70.14525
+    #         (https://www.irs.gov/pub/irs-soi/18in14ar.xls)
+    # 10,000 x -70.14525 / -53.70202 = 13,061.94. With the old values this came
+    # to 9,863.25.
+    farm_operations_income: 13_061.94

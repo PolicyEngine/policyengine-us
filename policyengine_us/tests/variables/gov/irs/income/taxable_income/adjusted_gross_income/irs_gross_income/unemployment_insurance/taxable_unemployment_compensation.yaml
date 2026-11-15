@@ -1,4 +1,16 @@
-- name: Taxable UC allocated to spouse when only spouse received UC
+# Each person's taxable unemployment compensation is their own compensation
+# less the part IRC 85(c) excludes on the return it is reported on. The 2020
+# cases follow the 2020 Unemployment Compensation Exclusion Worksheet
+# (Instructions for Form 1040, rev. 4-2021, p. 88):
+#   lines 1-4: total income without unemployment compensation (Form 1040
+#              lines 1-7, Schedule 1 lines 1-6 and 8)
+#   line 5:    adjustments (Form 1040 line 10c)
+#   line 6:    modified AGI = line 4 - line 5
+#   line 7:    no exclusion when line 6 is $150,000 or more
+#   lines 8-9: compensation paid to you, and on a joint return to your
+#              spouse, each up to $10,200
+#   line 10:   exclusion = line 8 + line 9
+- name: Case 1, taxable compensation stays with the spouse who received it.
   period: 2025
   input:
     people:
@@ -27,7 +39,7 @@
   output:
     taxable_unemployment_compensation: [0, 19_000]
 
-- name: Taxable UC split in proportion to person-level UC
+- name: Case 2, outside 2020 each spouse's compensation is fully taxable.
   period: 2025
   input:
     people:
@@ -56,7 +68,7 @@
   output:
     taxable_unemployment_compensation: [5_000, 15_000]
 
-- name: Zero UC produces zero allocation
+- name: Case 3, no compensation means no taxable compensation.
   period: 2025
   input:
     people:
@@ -82,3 +94,339 @@
         state_code: CA
   output:
     taxable_unemployment_compensation: [0]
+
+- name: Case 4, modified AGI of exactly 150,000 without the compensation allows no exclusion.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 150_000
+        unemployment_compensation: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Worksheet line 1: Form 1040 line 5b pensions, 150,000; lines 2, 3 and
+    # 5: 0; line 6: 150,000. Line 7: 150,000 or more, so nothing is
+    # excluded. The compensation is not subtracted from line 6 again.
+    taxable_uc_agi: 150_000
+    taxable_unemployment_compensation: [8_000]
+    tax_exempt_unemployment_compensation: [0]
+    tax_unit_taxable_unemployment_compensation: 8_000
+    adjusted_gross_income: 158_000
+
+- name: Case 5, modified AGI one dollar under 150,000 allows the exclusion.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 149_999
+        unemployment_compensation: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Line 6: 149,999, under 150,000. Line 8: 8,000 (under 10,200). Line 10:
+    # 8,000, all of Schedule 1 line 7.
+    taxable_uc_agi: 149_999
+    taxable_unemployment_compensation: [0]
+    tax_exempt_unemployment_compensation: [8_000]
+    tax_unit_taxable_unemployment_compensation: 0
+    adjusted_gross_income: 149_999
+
+- name: Case 6, each spouse on a joint return excludes up to 10,200 of their own compensation.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+        unemployment_compensation: 20_000
+      person2:
+        age: 43
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # The example in the 2020 Form 1040 instructions (p. 87): "You were paid
+    # $20,000 of unemployment compensation and your spouse was paid $5,000.
+    # Report the $25,000 ... on line 7 and report $15,200 on line 8 as a
+    # negative amount." Line 6: 60,000. Line 8: min(20,000, 10,200) =
+    # 10,200. Line 9: min(5,000, 10,200) = 5,000. Line 10: 15,200.
+    filing_status: JOINT
+    taxable_uc_agi: 60_000
+    taxable_unemployment_compensation: [9_800, 0]
+    tax_exempt_unemployment_compensation: [10_200, 5_000]
+    tax_unit_taxable_unemployment_compensation: 9_800
+    adjusted_gross_income: 69_800
+
+- name: Case 7, two spouses over 10,200 each exclude 10,200.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        unemployment_compensation: 20_000
+      person2:
+        age: 43
+        unemployment_compensation: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Line 6: 0. Lines 8 and 9: 10,200 each. Line 10: 20,400 of 40,000.
+    taxable_uc_agi: 0
+    taxable_unemployment_compensation: [9_800, 9_800]
+    tax_exempt_unemployment_compensation: [10_200, 10_200]
+    tax_unit_taxable_unemployment_compensation: 19_600
+    adjusted_gross_income: 19_600
+
+- name: Case 8, a dependent's compensation does not use the filers' exclusion.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+      person2:
+        age: 43
+        unemployment_compensation: 8_000
+      person3:
+        age: 20
+        is_full_time_student: true
+        unemployment_compensation: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # The couple's worksheet: line 6, 30,000; line 8, 0; line 9, 8,000 (the
+    # spouse's own compensation); line 10, 8,000, so none of their 8,000 is
+    # taxable. The dependent's 4,000 is on the dependent's own return, where
+    # the dependent excludes all of it (own modified AGI 0).
+    is_tax_unit_dependent: [false, false, true]
+    taxable_uc_agi: 30_000
+    dependent_taxable_uc_agi: [0, 0, 0]
+    taxable_unemployment_compensation: [0, 0, 0]
+    tax_exempt_unemployment_compensation: [0, 8_000, 4_000]
+    tax_unit_taxable_unemployment_compensation: 0
+    adjusted_gross_income: 30_000
+
+- name: Case 9, a dependent excludes up to 10,200 on their own return.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+      person2:
+        age: 43
+      person3:
+        age: 20
+        is_full_time_student: true
+        unemployment_compensation: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # The dependent's own worksheet: line 6, 0; line 8, min(15,000, 10,200)
+    # = 10,200; 4,800 is taxable on the dependent's return. None of it is on
+    # the filers' return.
+    is_tax_unit_dependent: [false, false, true]
+    taxable_unemployment_compensation: [0, 0, 4_800]
+    tax_exempt_unemployment_compensation: [0, 0, 10_200]
+    tax_unit_taxable_unemployment_compensation: 0
+    adjusted_gross_income: 30_000
+
+- name: Case 10, a dependent with modified AGI of 150,000 excludes nothing.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+        unemployment_compensation: 5_000
+      person2:
+        age: 43
+      person3:
+        age: 20
+        is_full_time_student: true
+        dividend_income: 150_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # The dependent's own worksheet: line 1, Form 1040 line 3b dividends,
+    # 150,000; line 6, 150,000, so the dependent excludes nothing. The
+    # filers' worksheet: line 6, 30,000 (the dependent's dividends are on
+    # the dependent's return); line 8, 5,000; nothing taxable.
+    is_tax_unit_dependent: [false, false, true]
+    taxable_uc_agi: 30_000
+    dependent_taxable_uc_agi: [0, 0, 150_000]
+    taxable_unemployment_compensation: [0, 0, 5_000]
+    tax_exempt_unemployment_compensation: [5_000, 0, 0]
+    tax_unit_taxable_unemployment_compensation: 0
+    adjusted_gross_income: 30_000
+
+- name: Case 11, modified AGI counts Social Security made taxable by the full compensation.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 140_000
+        social_security_retirement: 20_000
+        unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # IRC 85(c)(2)(A): AGI after section 86. Social Security Benefits
+    # Worksheet (p. 31) line 3 includes the full compensation: 140,000 +
+    # 10,000 = 150,000; line 5: 150,000 + 10,000 (half the benefits) =
+    # 160,000, so 85% of the benefits, 17,000, is taxable. Exclusion
+    # worksheet line 1: 140,000 + 17,000 = 157,000 = line 6, 150,000 or
+    # more, so nothing is excluded.
+    tax_unit_taxable_social_security: 17_000
+    taxable_uc_agi: 157_000
+    taxable_unemployment_compensation: [10_000]
+    tax_unit_taxable_unemployment_compensation: 10_000
+    adjusted_gross_income: 167_000
+
+- name: Case 12, adjustments to income reduce modified AGI.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_400
+        early_withdrawal_penalty: 500
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Line 4: 150,400. Line 5: Schedule 1 line 17 penalty on early
+    # withdrawal of savings, 500. Line 6: 149,900, under 150,000. Line 8:
+    # 5,000.
+    taxable_uc_agi: 149_900
+    taxable_unemployment_compensation: [0]
+    adjusted_gross_income: 149_900
+
+- name: Case 13, the exclusion ends after 2020.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        unemployment_compensation: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxable_unemployment_compensation: [8_000]
+    tax_exempt_unemployment_compensation: [0]
+    tax_unit_taxable_unemployment_compensation: 8_000
+
+- name: Case 14, a net repayment is neither taxable nor excluded.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        unemployment_compensation: -500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # irs_gross_income counts positive amounts only, so a net repayment
+    # never reduces gross income and none of it is taxable. The exempt
+    # amount carries it, as states that subtract repayments read it.
+    taxable_unemployment_compensation: [0]
+    tax_exempt_unemployment_compensation: [-500]
+    adjusted_gross_income: 30_000
+
+- name: Case 15, a net repayment outside 2020 is not taxable either.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        unemployment_compensation: -500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxable_unemployment_compensation: [0]
+    tax_exempt_unemployment_compensation: [-500]
+    tax_unit_taxable_unemployment_compensation: 0
+    adjusted_gross_income: 30_000

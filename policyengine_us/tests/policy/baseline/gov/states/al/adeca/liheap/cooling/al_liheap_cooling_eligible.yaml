@@ -1,0 +1,152 @@
+# Source: ADECA FY2026 LIHEAP Policy Manual (pages 9, 16-17, 21), FY2026 plan sections 3.1-3.2,
+# and the PY 2026 Payment Assistance Chart effective May 15, 2026 (2026 guidelines).
+
+# One person: the cooling limit is 15,960 x 1.5 / 12 = $1,995 a month, or $23,940 a year.
+# $23,940 of wages is exactly $1,995 a month, so the limit is inclusive.
+- name: Case 1, income exactly at the cooling limit is eligible.
+  period: 2026
+  input:
+    state_code: AL
+    age: 40
+    employment_income_before_lsr: 23_940
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+  output:
+    al_liheap_cooling_income_limit: 23_940
+    al_liheap_cooling_eligible: true
+
+# $23,940.12 a year is $1,995.01 a month, one cent over the limit.
+- name: Case 2, one cent a month above the cooling limit is ineligible.
+  period: 2026
+  input:
+    state_code: AL
+    age: 40
+    employment_income_before_lsr: 23_940.12
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+  output:
+    al_liheap_cooling_eligible: false
+
+# $23,700 of wages is $1,975 a month: above the heating limit of 15,650 x 1.5 / 12 = $1,956
+# (2025 guidelines) but within the cooling limit of $1,995 (2026 guidelines).
+- name: Case 3, cooling uses the current year guidelines while heating uses the prior year.
+  period: 2026
+  input:
+    state_code: AL
+    age: 40
+    employment_income_before_lsr: 23_700
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    has_cooling_expense: true
+  output:
+    al_liheap_income_limit: 23_472
+    al_liheap_cooling_income_limit: 23_940
+    al_liheap_eligible: false
+    al_liheap_cooling_eligible: true
+
+# Part-time minimum wage: 20 hours x $7.25 x 52 weeks = $7,540 a year ($628.33 a month).
+# Regular Cooling has no heating-fuel requirement, so a home without heating and a gas-heated
+# home are both eligible.
+- name: Case 4, a home without heating and a gas-heated home are both cooling eligible.
+  period: 2026
+  input:
+    state_code: [AL, AL]
+    age: [45, 45]
+    employment_income_before_lsr: [7_540, 7_540]
+    heating_type: [NONE, NATURAL_GAS]
+    has_cooling_expense: [true, true]
+  output:
+    al_liheap_cooling_eligible: [true, true]
+
+# The same worker heats with gas and pays a $900 gas bill but has no cooling cost.
+- name: Case 5, a heating-eligible household without a cooling cost is not cooling eligible.
+  period: 2026
+  input:
+    state_code: AL
+    age: 45
+    employment_income_before_lsr: 7_540
+    heating_type: NATURAL_GAS
+    gas_expense: 900
+    has_cooling_expense: false
+  output:
+    al_liheap_eligible: true
+    al_liheap_cooling_eligible: false
+
+# Manual 5.3 and 6.1.3 make renters in nonsubsidized housing whose energy costs are
+# included in the rent eligible for Regular Assistance. Both renters pay the FY2026 HUD
+# Fair Market Rent for a one-bedroom unit in Jefferson County, $1,155 a month (x12 =
+# 13,860), which includes utilities, and report no separate cooling cost. The part-time
+# worker ($628.33 a month, band 1) receives $440 + $100 = $540 when unsubsidized; the
+# subsidized renter is not covered by the rent route.
+- name: Case 6, a nonsubsidized renter with energy costs in the rent is cooling eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL]
+    age: [45, 45]
+    employment_income_before_lsr: [7_540, 7_540]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    has_cooling_expense: [false, false]
+    tenant_pays_utilities: [false, false]
+    rent: [13_860, 13_860]
+    receives_housing_assistance: [false, true]
+    hud_utility_allowance: [0, 0]
+  output:
+    al_liheap_cooling_eligible: [true, false]
+    al_liheap_cooling: [540, 0]
+
+# Manual section 4 requires at least one citizen or qualified household member, as for
+# heating. An undocumented adult alone gives household size 0, so the unit is not eligible
+# although its $628.33 a month and its cooling cost would qualify.
+- name: Case 7, a unit with no qualified member is not cooling eligible.
+  period: 2026
+  input:
+    state_code: AL
+    age: 45
+    immigration_status: UNDOCUMENTED
+    employment_income_before_lsr: 7_540
+    heating_type: ELECTRICITY
+    has_cooling_expense: true
+  output:
+    al_liheap_household_size: 0
+    al_liheap_cooling_eligible: false
+
+# Two nonsubsidized units without a separate cooling cost, each missing one condition of the
+# rent route. Unit 1 has its utilities in the rent but pays no rent. Unit 2 pays the FY2026
+# HUD Fair Market Rent for a one-bedroom unit in Jefferson County, $1,155 a month (x12 =
+# 13,860), but pays its own utilities, the default.
+- name: Case 8, the rent route needs both utilities in the rent and a positive rent.
+  period: 2026
+  input:
+    state_code: [AL, AL]
+    age: [45, 45]
+    employment_income_before_lsr: [7_540, 7_540]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    has_cooling_expense: [false, false]
+    tenant_pays_utilities: [false, true]
+    rent: [0, 13_860]
+  output:
+    al_liheap_cooling_eligible: [false, false]
+
+# Case 6's worker in public housing, with no other housing assistance, energy costs in the
+# rent and no out-of-pocket cooling cost. Public housing is subsidized housing, and under
+# manual 6.1.1 a subsidized tenant who pays nothing out of pocket is not eligible. The rent
+# is the public housing tenant payment of 30% of adjusted income (24 CFR 5.628), which for a
+# single adult without deductions is 0.3 x 7,540 = 2,262.
+- name: Case 9, a public housing tenant with energy costs in the rent is not cooling eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    age: 45
+    employment_income_before_lsr: 7_540
+    heating_type: NATURAL_GAS
+    has_cooling_expense: false
+    tenant_pays_utilities: false
+    rent: 2_262
+    receives_housing_assistance: false
+    is_in_public_housing: true
+    hud_utility_allowance: 0
+  output:
+    al_liheap_cooling_eligible: false
+    al_liheap_cooling: 0
