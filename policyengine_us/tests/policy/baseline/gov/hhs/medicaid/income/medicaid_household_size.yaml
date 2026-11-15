@@ -1,8 +1,8 @@
-# Medicaid MAGI household size (42 CFR 435.603(b) and (f)). Outside California
-# a pregnant person counts herself plus her expected children only in her own
-# household; California (DHCS ACWDL 20-10, page 3) counts the unborn children of
-# every member of the applicant's MAGI household, see
-# ca_medicaid_household_pregnancies.
+# Medicaid MAGI household size (42 CFR 435.603(b) and (f)). A pregnant person
+# counts herself plus her expected children in her own household. In another
+# member's household she counts as the state elects (S10 of each state plan):
+# California and New Jersey count her expected children too; states not yet
+# researched count her as one person. See medicaid_household_pregnancies.
 - name: Case 1, Kansas joint filers with one child count the pregnancy only in the pregnant member's household.
   period: 2025
   input:
@@ -69,7 +69,7 @@
         state_code: CA
   output:
     # Tax household of 3 plus the 1 expected child for all three members.
-    ca_medicaid_household_pregnancies: [1, 1, 1]
+    medicaid_household_pregnancies: [1, 1, 1]
     medicaid_household_size: [4, 4, 4]
 
 - name: Case 3, Kansas single filer without a pregnancy is a household of one.
@@ -266,7 +266,7 @@
     tax_unit_is_filer: false
     medicaid_uses_non_filer_rules: [true, true, false]
     # Case 8's 3 members plus the 1 expected child, which California counts in
-    # every member's household (ca_medicaid_household_pregnancies).
+    # every member's household (medicaid_household_pregnancies).
     medicaid_household_size: [4, 4, 4]
 
 - name: Case 10, a non-filing adult and an 18-year-old spouse are each counted once.
@@ -381,3 +381,35 @@
     tax_unit_is_filer: false
     medicaid_uses_non_filer_rules: [true, true]
     medicaid_household_size: [2, 2]
+
+# New Jersey's S10 (SPA 13-0016-MM3, effective 2014-01-01) counts a pregnant
+# woman as herself plus the children she expects in every member's household.
+# 2026 guideline: $15,960 plus $5,680 for each additional person.
+- name: Case 14, a New Jersey husband counts his pregnant wife's expected child and qualifies for the adult group.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 37_701
+      person2:
+        age: 29
+        is_pregnant: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Before this election was modeled, person1's household was 2: 37,701 /
+    # 21,640 = 1.7422 of the guideline, above the 1.38 adult limit.
+    medicaid_household_pregnancies: [1, 1]
+    medicaid_household_size: [3, 3]
+    # 37,701 / 27,320 = 1.37998. The monthly adult limit for 3 is
+    # 27,320 x 1.38 / 12 = 3,141.80, rounded up to $3,142, and 37,701 / 12 =
+    # 3,141.75 is within it.
+    medicaid_income_level: [1.37998, 1.37998]
+    medicaid_category: [ADULT, PREGNANT]
