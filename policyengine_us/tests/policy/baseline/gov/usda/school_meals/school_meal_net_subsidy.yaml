@@ -164,7 +164,7 @@
     school_meal_tier: [FREE, REDUCED, PAID]
     # Free: (2.37 - 0.39 + 4.43 - 0.42) * 180 = 1,078.20.
     # Reduced: (2.07 - 0.39 + 4.03 - 0.42) * 180 = 952.20.
-    # Declining participation gives zero in every tier.
+    # Paid: no subsidy above the paid rate, so 0.
     school_meal_net_subsidy: [1078.2, 952.2, 0]
     free_school_meals: [1078.2, 0, 0]
     reduced_price_school_meals: [0, 952.2, 0]
@@ -182,7 +182,7 @@
     school_meal_tier: [FREE, REDUCED, PAID]
     # Free: (2.37 - 0.39 + 4.43 - 0.42) * 180 = 1,078.20.
     # Reduced: (2.07 - 0.39 + 4.03 - 0.42) * 180 = 952.20.
-    # Declining participation gives zero in every tier.
+    # Paid: no subsidy above the paid rate, so 0.
     school_meal_net_subsidy: [1078.2, 952.2, 0]
     free_school_meals: [1078.2, 0, 0]
     reduced_price_school_meals: [0, 952.2, 0]
@@ -198,8 +198,10 @@
     takes_up_school_meals_if_eligible: [false, false, false]
   output:
     school_meal_tier: [FREE, REDUCED, PAID]
-    # Free: (2.37 - 0.39 + 4.43 - 0.42) * 180 = 1,078.20.
-    # Reduced: (2.07 - 0.39 + 4.03 - 0.42) * 180 = 952.20.
+    # Declining participation removes the free amount:
+    # (2.37 - 0.39 + 4.43 - 0.42) * 180 = 1,078.20.
+    # Declining participation removes the reduced-price amount:
+    # (2.07 - 0.39 + 4.03 - 0.42) * 180 = 952.20.
     # Declining participation gives zero in every tier.
     school_meal_net_subsidy: [0, 0, 0]
     free_school_meals: [0, 0, 0]

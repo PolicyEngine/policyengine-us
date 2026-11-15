@@ -72,8 +72,7 @@ def _situation(rows, year):
 
 
 def _main_amounts(rows, year, breakfast_tier, lunch_tier):
-    # Preserve the annual arithmetic from main at 935b24ff4f022e0548876c0bd859195c517a23bb.
-    # Compute each meal separately to check the share-based benefit split.
+    # Recompute main's annual arithmetic per meal to check the share-based split.
     p = system.parameters(year).gov.usda.school_meals
     expected = {name: [] for name in BENEFITS}
     for (state, _, _, ages), breakfast, lunch in zip(rows, breakfast_tier, lunch_tier):
