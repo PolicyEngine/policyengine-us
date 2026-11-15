@@ -184,3 +184,72 @@
   output:
     is_federal_medicaid_immigration_status_eligible: false
     is_medicaid_immigration_status_eligible: false
+
+- name: Case 22, recent permanent resident on active duty in Texas stays exempt from the five-year bar after the October 2026 narrowing.
+  period: 2027
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    # 42 U.S.C. 1396b(v)(5)(B)(ii) keeps permanent residents; 8 U.S.C.
+    # 1613(b)(2)(B) still lifts their five-year bar.
+    is_federal_medicaid_immigration_status_eligible: true
+
+- name: Case 23, refugee on active duty in Texas fails the federal test after the October 2026 narrowing.
+  period: 2027
+  input:
+    immigration_status: REFUGEE
+    years_since_us_entry: 0
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    # 42 U.S.C. 1396b(v)(5) drops refugees; the military exemption only lifts
+    # the five-year bar and cannot restore the status.
+    is_federal_medicaid_immigration_status_eligible: false
+
+- name: Case 24, dependent child of an active duty parent in Alabama is exempt from the five-year bar until the dependent-child ages run out.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_military: true
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person3:
+        age: 19
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AL
+  output:
+    # 8 U.S.C. 1613(b)(2)(C). Alabama does not elect the lawfully residing
+    # option, so the 10-year-old passes only through the military exemption.
+    # The 19-year-old is not a full-time student or disabled, so is past the
+    # dependent-child ages the model borrows from 7 CFR 273.4(a)(6)(ii)(G)(3).
+    is_snap_alien_military_connected: [true, true, false]
+    is_federal_medicaid_immigration_status_eligible: [true, true, false]
