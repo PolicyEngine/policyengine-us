@@ -5285,15 +5285,16 @@ candidates:
     citation: Louisiana Revenue Ruling 18-001, December 21, 2018, pages 1 through 4
     url: https://dam.ldr.la.gov/lawspolicies/RR%2018-001%20Personal%20Exemptions.pdf
   readings:
-    statute: Legislators required taxpayers to claim the same exemptions as on their federal return in the introductory paragraph.
-      Congress zeroed a claimable filer's federal exemption amount under section 151(d)(2). One reading treats that as losing the
-      filer's exemption, allocates the child's exemption to Subsection A and leaves none for B. Another distinguishes
-      the amount from the count, uses the filer's exemption for A and claims the child's exemption under B.
+    statute: In the introductory paragraph of pre-2025 R.S. 47:294, legislators required taxpayers to claim the same
+      exemptions as on their federal return. Congress zeroed a claimable filer's federal exemption amount under section
+      151(d)(2). One reading treats that as losing the filer's exemption, allocates the child's exemption to Subsection A
+      and leaves none for B. Another distinguishes the amount from the count, uses the filer's exemption for A and claims
+      the child's exemption under B.
     other: >-
-      In its 2021-2023 Lines 6A and 6B instructions, LDR departs from the federal count "unless: you are listed as a dependent on
-      someone else’s return". LDR counts the filer on Line 6A even when someone else claims them, and federal
-      dependents on Line 6C. LDR subtracts one from that total in the single-filer table, leaving one additional
-      exemption for the child.
+      In its 2021-2024 Lines 6A and 6B instructions, LDR requires the federal number of exemptions unless "you are
+      listed as a dependent on someone else’s return" or another listed condition applies. LDR counts the filer on
+      Line 6A even when someone else claims them, and federal dependents on Line 6C. LDR subtracts one from that
+      total in its 2022-2024 single-filer tables, leaving one additional exemption for the child.
   example: A 2024 claimable single filer aged 20 with one child aged 4 and a refund-only claimant receives
     $1,000 for the child, $4,500 for the filer, and $5,500 in total exemptions, without blind or aged exemptions.
   pe_us:
@@ -5310,13 +5311,13 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10045
     - https://github.com/PolicyEngine/policyengine-us/pull/10833
   state: unreviewed
-  note: Retain main's agency tie-break reading pending project-lead confirmation. Legislators supplied filing-status
+  note: PE-US retains the agency tie-break reading pending project-lead confirmation. Legislators supplied filing-status
     amounts in A without identifying which exemptions satisfy A when they wrote B. Both statutory readings remain
     open. The cited instructions start in 2021, so this entry does not assess earlier years. The legislature replaced
     the exemptions from 2025 in Act 11 under section 6. For a single filer without blind, aged or adoption adjustments, LDR counts
     the filer and one federal dependent as two exemptions. LDR uses one for the personal allowance and adds
-    $1,000 for the child. Keep the formula and the existing filing-exception case unchanged. The joint-spouse role
-    follows main by analogy with the head; the cited Louisiana instructions do not resolve the claimable spouse's
+    $1,000 for the child. Keep the formula and the existing filing-exception case unchanged. PE-US treats the joint
+    spouse by analogy with the head; the cited Louisiana instructions do not resolve the claimable spouse's
     Line 6B exemption. LDR distinguished exemption counts from amounts for 151(d)(5) in Revenue Ruling 18-001,
     without addressing 151(d)(2) or this class. No cited LDR ruling or court holding resolves this class.
     Full-page official text captures accompany this entry under source_conflicts/sources/us-la/; Revenue Ruling
