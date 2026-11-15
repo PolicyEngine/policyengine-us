@@ -851,3 +851,75 @@
     is_ssi_spousal_deeming_applies: [true, false, false]
     ssi_income_deemed_from_ineligible_spouse: [11_760, 0, 0] # ($1,000 - $20) * 12
     ssi: [6_132, 0, 0] # ($1,491 - $980) * 12
+
+- name: A half-brother and a stepbrother named through the second parent slots get allocations
+  # The claimant's ids name her father, 10, who lives elsewhere, and her
+  # mother, 3. The half-brother's first id names the same mother, so he is
+  # the child 'of your parent' (416.1160(d)). The stepbrother's second id
+  # names the mother's husband, 4, so he is the child 'of your parent's
+  # spouse'. Allocations: 2 x ($1,491 - $994) = $994 a month, $11,928 a year.
+  # Spouse's unearned income after them: $1,000 - $994 = $6, not more than
+  # $497, so nothing is deemed (416.1163(d)(1)) and SSI is $994 a month.
+  # The mother and stepfather each hold both boys' allocations; neither is
+  # aged, blind or disabled, so nothing is deemed with them.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      claimant:
+        age: 30
+        is_ssi_disabled: true
+        person_id: 1
+        parent_1_id: 10
+        parent_2_id: 3
+        is_tax_unit_head: true
+      husband:
+        age: 32
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_unearned_income: 1_000 * 12
+      mother:
+        age: 55
+        person_id: 3
+        is_tax_unit_head: true
+      stepfather:
+        age: 57
+        person_id: 4
+        is_tax_unit_spouse: true
+      half_brother:
+        age: 15
+        person_id: 5
+        parent_1_id: 3
+        parent_2_id: 20
+        is_tax_unit_dependent: true
+      stepbrother:
+        age: 13
+        person_id: 6
+        parent_1_id: 30
+        parent_2_id: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      couple:
+        members: [claimant, husband]
+      parents:
+        members: [mother, stepfather, half_brother, stepbrother]
+    marital_units:
+      couple:
+        members: [claimant, husband]
+      parents:
+        members: [mother, stepfather]
+      half_brother_alone:
+        members: [half_brother]
+      stepbrother_alone:
+        members: [stepbrother]
+    households:
+      household:
+        members: [claimant, husband, mother, stepfather, half_brother, stepbrother]
+        state_code: TX
+  output:
+    is_ssi_ineligible_child: [false, false, false, false, true, true]
+    ssi_spousal_deeming_child_allocations: [11_928, 0, 11_928, 11_928, 0, 0] # $994 * 12
+    ssi_unearned_income_deemed_from_ineligible_spouse: [72, 0, 0, 0, 0, 0] # ($1,000 - $994) * 12
+    is_ssi_spousal_deeming_applies: [false, false, false, false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0, 0, 0, 0, 0]
+    ssi: [11_928, 0, 0, 0, 0, 0] # $994 * 12
