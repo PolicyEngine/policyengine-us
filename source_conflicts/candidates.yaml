@@ -8633,6 +8633,54 @@ candidates:
   state: unreviewed
   note: PE-US counts TANF under the handbook; obtain the plan URL, verify the anchor and General Assistance treatment,
     and do not infer a contrary handbook rule for strike pay.
+- id: us-nj:medicaid-cover-all-kids-immigration-status
+  program: medicaid
+  years:
+    from: 2023
+    type: calendar
+  question: Does New Jersey enroll children under 19 in NJ FamilyCare whatever their immigration status, as each
+    appropriations act from FY2023 authorizes, although N.J.S.A. 30:4J-11 and N.J.A.C. 10:78-3.2(a) still require
+    citizenship or an eligible immigration status?
+  sources:
+  - kind: statute
+    citation: P.L.2022, c.49 (FY2023 Appropriations Act), Division of Medical Assistance and Health Services language,
+      repeated in P.L.2023, c.74; P.L.2024, c.22; P.L.2025, c.74; and P.L.2026, c.27
+    url: https://pub.njleg.state.nj.us/bills/2022/AL22/49_.PDF#page=106
+  - kind: statute
+    citation: N.J.S.A. 30:4J-11, "qualified applicant" (a)(4), as amended by P.L.2008, c.38, section 3
+    url: https://pub.njleg.gov/bills/2008/PL08/38_.HTM
+  - kind: regulation
+    citation: N.J.A.C. 10:78-3.2(a)
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_78%20NJ%20FAMILYCARE.PDF#page=33
+  - kind: guidance
+    citation: New Jersey Department of Human Services, FY 2022-2023 Discussion Points, response 5
+    url: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2023/DHS_response_2023.pdf#page=12
+  readings:
+    statute: Each appropriations act from FY2023 through FY2027 authorizes payments "to enroll in NJ FamilyCare any
+      child who, except for immigration status, meets financial and other eligibility provisions of the program",
+      "notwithstanding the provisions of any law or regulation to the contrary". The Department of Human Services began
+      enrollment on January 1, 2023.
+    other: N.J.S.A. 30:4J-11 limits a qualified child applicant to one "who is a citizen of the United States, or has
+      been lawfully admitted for permanent residence into and remains lawfully present in the United States", and
+      N.J.A.C. 10:78-3.2(a) requires "a citizen of the United States, an alien lawfully admitted for permanent
+      residence, or an alien who can be classified as an eligible alien".
+  example: In 2024 an undocumented 12-year-old in a New Jersey family at 202% of the poverty guideline is eligible for
+    the CHIP plans of NJ FamilyCare under the appropriations acts, which PE-US follows, and ineligible under N.J.S.A.
+    30:4J-11 and N.J.A.C. 10:78-3.2(a).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/regardless_of_immigration_status/child_age_limit.yaml
+  state: ruled
+  note: PE-US gives New Jersey children under 19 a pass on the Medicaid and CHIP immigration tests from 2023
+    (child_age_limit.yaml, read in is_medicaid_immigration_status_eligible.py and is_chip_immigration_status_eligible.py).
+    The later appropriations acts displace the earlier statute and the regulation in their own words; the November
+    2026 ruling records the conflict anyway. Appropriations language lapses each fiscal year; the acts were checked
+    through FY2027, which ends June 30, 2027, and the model carries the age limit forward. P.L.2021, c.132, which the
+    Department of Human Services' Cover All Kids FAQ cites, has no immigration language. The Office of Legislative
+    Services' FY2023 analysis says no federal Medicaid or CHIP reimbursement is available for this group, so the
+    coverage is state-funded. The Medicaid-side immigration rules in N.J.A.C. Title 10 for children at Medicaid income
+    levels were not checked.
 - id: us-nj:school-meals-income-limit-carryforward
   program: school-meals
   years:
