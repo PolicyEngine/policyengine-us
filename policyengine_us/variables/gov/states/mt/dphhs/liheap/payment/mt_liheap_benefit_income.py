@@ -51,7 +51,7 @@ class mt_liheap_benefit_income(Variable):
         # The TANF payment standard for the assistance unit, rounded to whole
         # dollars as Appendix A prints it.
         monthly_tanf_standard = (
-            spm_unit("mt_tanf_payment_standard", period, options=[ADD]) / MONTHS_IN_YEAR
+            spm_unit("mt_tanf_payment_standard", period) / MONTHS_IN_YEAR
         )
         tanf_standard = where(
             spm_unit("tanf", period) > 0,

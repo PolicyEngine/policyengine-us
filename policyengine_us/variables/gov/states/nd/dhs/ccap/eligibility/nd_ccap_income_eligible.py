@@ -7,7 +7,10 @@ class nd_ccap_income_eligible(Variable):
     label = "North Dakota CCAP income eligible"
     definition_period = MONTH
     defined_for = StateCode.ND
-    reference = "https://www.nd.gov/dhs/policymanuals/40028/40028.htm"
+    reference = (
+        "https://www.nd.gov/dhs/policymanuals/40028/Content/400_28_25_15.htm",
+        "https://www.nd.gov/dhs/policymanuals/40028/Content/400_28_20_40.htm",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nd.dhs.ccap.income
@@ -22,8 +25,8 @@ class nd_ccap_income_eligible(Variable):
         initial_limit = monthly_smi * p.initial_smi_rate
         continuing_limit = monthly_smi * p.continuing_smi_rate
         income_limit = where(enrolled, continuing_limit, initial_limit)
-        # The CCAP Workforce Benefit waives the income limit (and copay) for
-        # eligible early-childhood workforce families. We don't track which
-        # families qualify for the Workforce Benefit at the moment, so this
-        # waiver is not modeled.
-        return countable_income <= income_limit
+        # North Dakota excludes all income while a caretaker qualifies for the
+        # Workforce Benefit, including at review (400-28-20-40). After that
+        # qualification ends, enrolled families face the ordinary 85% limit.
+        workforce = spm_unit("nd_ccap_workforce_benefit_eligible", period)
+        return (countable_income <= income_limit) | workforce

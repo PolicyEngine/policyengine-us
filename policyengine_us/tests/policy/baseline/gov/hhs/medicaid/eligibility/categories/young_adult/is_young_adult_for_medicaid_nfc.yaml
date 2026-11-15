@@ -1,0 +1,141 @@
+# NY DOH 13 OHIP/ADM-03, III.B.1(g): age 19 or 20, living with a parent,
+# 150% FPL plus the five-point MAGI disregard = effective 155%, from January 2014.
+# Annual expected monthly dollar ceilings are transcribed from NY GIS charts:
+# 2017:17ma005attach3.pdf; 2018:18ma004_attachment_3.pdf;
+# 2019:19ma06_attachment_iii.pdf; 2020:20ma02_att_iii.pdf;
+# 2021:21ma06_att3.pdf; 2022:22ma01_att1.pdf#page=3;
+# 2023:23ma02_att1.pdf#page=3; 2024:24ma01_att1.pdf#page=3;
+# 2025:25ma03_att1.pdf#page=3; 2026:26ma05_att1.pdf#page=3.
+# Category/residence tables are the corresponding Attachment IV (2017–2021)
+# and file page 4 (2022–2026). All are NY DOH originals at:
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/
+# The model stores annual flows. Tests annualize the published monthly ceilings
+# (monthly ceiling * 12), rather than substituting the chart's rounded annual column.
+- name: Case 1, NY tax dependent living in a different household cannot use parent residence
+    pathway.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 24_000, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      parent_home: {members: [person1], state_code: NY}
+      young_home: {members: [person2], state_code: NY}
+  output:
+    is_young_adult_for_medicaid_nfc: [false, false]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [24_000, 24_000]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 2, NY unrelated co-resident is not a parent.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 24_000, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 999}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    is_young_adult_for_medicaid_nfc: [false, false]
+    is_young_adult_for_medicaid: [false, false]
+- name: Case 3, NY unknown parent identities do not infer residence from tax roles.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 24_000, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    is_young_adult_for_medicaid_nfc: [false, false]
+- name: Case 4, NY nondependent adult child living with an identified parent can use the pathway.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 0, is_tax_unit_head: true, is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: false, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101, employment_income: 18_000}
+    tax_units:
+      parent_unit: {members: [person1]}
+      young_unit: {members: [person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [1, 1]
+    medicaid_household_income: [0, 18_000]
+    is_young_adult_for_medicaid_nfc: [false, true]
+    is_young_adult_for_medicaid: [false, true]
+- name: Case 5, CA young adult rules retain their existing residence treatment.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 24_000, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: CA}
+  output:
+    is_young_adult_for_medicaid_nfc: [false, true]
+    is_young_adult_for_medicaid: [false, false]
+- name: Case 6, DC young adult rules retain their existing residence treatment.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 24_000, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: DC}
+  output:
+    is_young_adult_for_medicaid_nfc: [false, true]
+    is_young_adult_for_medicaid: [false, true]

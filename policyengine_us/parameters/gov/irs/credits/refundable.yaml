@@ -7,7 +7,8 @@ values:
     - recovery_rebate_credit
     - refundable_payroll_tax_credit
     - claim_of_right_credit
-    # Currently, the premium tax credit is not included in the refundable tax credits.
+    # The premium tax credit is not in this list, so income_tax leaves it out;
+    # household_refundable_tax_credits counts it (premium_tax_credit_in_force).
   # Add CDCC in 2021.
   2021-01-01:
     - eitc
@@ -16,7 +17,8 @@ values:
     - recovery_rebate_credit
     - refundable_payroll_tax_credit
     - claim_of_right_credit
-    # Currently, the premium tax credit is not included in the refundable tax credits.
+    # The premium tax credit is not in this list, so income_tax leaves it out;
+    # household_refundable_tax_credits counts it (premium_tax_credit_in_force).
     - cdcc
   # Remove CDCC in 2022.
   2022-01-01:
@@ -26,7 +28,8 @@ values:
     - recovery_rebate_credit
     - refundable_payroll_tax_credit
     - claim_of_right_credit
-    # Currently, the premium tax credit is not included in the refundable tax credits.
+    # The premium tax credit is not in this list, so income_tax leaves it out;
+    # household_refundable_tax_credits counts it (premium_tax_credit_in_force).
 metadata:
   unit: list
   period: year
