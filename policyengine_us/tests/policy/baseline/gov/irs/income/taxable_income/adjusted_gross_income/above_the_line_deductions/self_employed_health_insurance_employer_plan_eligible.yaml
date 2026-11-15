@@ -389,7 +389,8 @@
     employer_contribution_to_health_insurance_premiums_category: ALL
   output:
     # ALL describes another employer's subsidized plan, not the corporation's
-    # own payment. Section 162(l)(2)(B) bars line 1; min(0, 60,000) = 0.
+    # own payment. Congress bars line 1 under section 162(l)(2)(B);
+    # min(0, 60,000) = 0.
     self_employed_health_insurance_employer_plan_eligible: true
     self_employed_health_insurance_premiums: 0
     self_employed_health_insurance_earned_income_limit: 60_000
@@ -409,7 +410,7 @@
   output:
     # Known input limitation: has_esi does not identify whose plan covers the
     # filer. The model bars line 1 even for the qualifying own-business plan,
-    # which Notice 2008-1 permits: base = 0; min(0, 60,000) = 0.
+    # which the IRS permits in Notice 2008-1: base = 0; min(0, 60,000) = 0.
     self_employed_health_insurance_employer_plan_eligible: true
     self_employed_health_insurance_premiums: 0
     self_employed_health_insurance_earned_income_limit: 60_000
