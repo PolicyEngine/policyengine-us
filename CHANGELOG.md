@@ -1,3 +1,10 @@
+## [2.137.0] - 2026-11-15
+
+### Added
+
+- Official source captures supporting ten ruled source-conflict candidates and the Maine EITC identification-number provision, with no model changes.
+
+
 ## [2.136.2] - 2026-11-15
 
 ### Fixed
