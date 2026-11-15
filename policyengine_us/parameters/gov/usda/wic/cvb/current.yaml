@@ -6,14 +6,12 @@ PREGNANT:
   2022-10-01: 44
   2023-10-01: 47
   2025-10-01: 48
-  2026-10-01: 48
 PREGNANT_SINGLETON:
   2018-01-01: 0
   2021-10-01: 43
   2022-10-01: 44
   2023-10-01: 47
   2025-10-01: 48
-  2026-10-01: 48
 PREGNANT_MULTIPLE_FETUSES:
   2018-01-01: 0
   2021-10-01: 47
@@ -50,14 +48,12 @@ POSTPARTUM:
   2022-10-01: 44
   2023-10-01: 47
   2025-10-01: 48
-  2026-10-01: 48
 POSTPARTUM_NON_BREASTFEEDING:
   2018-01-01: 0
   2021-10-01: 43
   2022-10-01: 44
   2023-10-01: 47
   2025-10-01: 48
-  2026-10-01: 48
 CHILD:
   2018-01-01: 0
   2021-10-01: 24
@@ -134,14 +130,12 @@ V:
   2022-10-01: 44
   2023-10-01: 47
   2025-10-01: 48
-  2026-10-01: 48
 VI:
   2018-01-01: 0
   2021-10-01: 43
   2022-10-01: 44
   2023-10-01: 47
   2025-10-01: 48
-  2026-10-01: 48
 VII:
   2018-01-01: 0
   2021-10-01: 47
@@ -156,8 +150,16 @@ metadata:
   unit: currency-USD
   period: month
   reference:
-    - title: Public Law 117-43, section 118
+    - title: Public Law 117-43, Division A, section 118 (first quarter of FY 2022)
       href: https://www.govinfo.gov/content/pkg/PLAW-117publ43/html/PLAW-117publ43.htm
+    - title: Public Law 117-70, Division A, section 101(2)
+      href: https://www.govinfo.gov/content/pkg/PLAW-117publ70/html/PLAW-117publ70.htm
+    - title: Public Law 117-103, Division A, section 787
+      href: https://www.govinfo.gov/content/pkg/PLAW-117publ103/html/PLAW-117publ103.htm
+    - title: Public Law 117-328, Division A, Title IV, WIC appropriation
+      href: https://www.govinfo.gov/content/pkg/PLAW-117publ328/html/PLAW-117publ328.htm
+    - title: "WIC Cash-Value Voucher Inflation Adjustments, 7 CFR 246.16(j)(2)-(5), 2025 edition #page 7-8"
+      href: https://www.govinfo.gov/content/pkg/CFR-2025-title7-vol4/pdf/CFR-2025-title7-vol4-sec246-16.pdf#page=7
     - title: WIC Food Packages Final Rule, 89 FR 28488, 28492-28493, 28530
       href: https://www.govinfo.gov/content/pkg/FR-2024-04-18/html/2024-07437.htm
     - title: WIC Cash-Value Voucher/Benefit Amounts for FY 2027, Policy Memorandum 2026-6

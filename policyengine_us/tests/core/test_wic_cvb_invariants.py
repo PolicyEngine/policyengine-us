@@ -198,6 +198,23 @@ def test_cvb_replacement_counts_current_benefit_once(wic_parameters, month, pack
     np.testing.assert_allclose(
         result - without_replacement + included, current, atol=1e-10
     )
+    # At fixed prices, subtract the embedded $8 child or $11 woman CVB:
+    # FY2022: (24 - 8, 43 - 11, 47 - 11) = (16, 32, 36).
+    # FY2023: (25 - 8, 44 - 11, 49 - 11) = (17, 33, 38).
+    # FY2027: (27 - 8, 48 - 11, 53 - 11) = (19, 37, 42).
+    gains = (
+        (16, 32, 36)
+        if month < "2022-10"
+        else (17, 33, 38)
+        if month < "2026-10"
+        else (19, 37, 42)
+    )
+    expected_gain = _expected_cvb(*gains)
+    np.testing.assert_allclose(
+        result - without_replacement,
+        [expected_gain[key] for key in packages],
+        atol=1e-10,
+    )
     zero_cvb = np.isin(packages, ZERO_CVB_KEYS)
     np.testing.assert_array_equal(current[zero_cvb], 0)
     np.testing.assert_array_equal(result[zero_cvb], without_replacement[zero_cvb])
@@ -210,9 +227,10 @@ def test_cvb_replacement_counts_current_benefit_once(wic_parameters, month, pack
 @given(
     boundary=st.sampled_from(
         [
-            ("2021-09", "2021-10"),
-            ("2022-09", "2022-10"),
-            ("2026-09", "2026-10"),
+            # At fixed prices, FY2022 replaces the embedded $8/$11/$11.
+            ("2021-09", "2021-10", (24 - 8, 43 - 11, 47 - 11)),
+            ("2022-09", "2022-10", (25 - 24, 44 - 43, 49 - 47)),
+            ("2026-09", "2026-10", (27 - 26, 48 - 48, 53 - 52)),
         ]
     ),
     packages=PACKAGE_VECTORS,
@@ -221,5 +239,11 @@ def test_new_cvb_dates_never_reduce_package_value(wic_parameters, boundary, pack
     previous = _calculate(wic_parameters, boundary[0], packages)
     current = _calculate(wic_parameters, boundary[1], packages)
     assert np.all(current >= previous)
+    expected_increase = _expected_cvb(*boundary[2])
+    np.testing.assert_allclose(
+        current - previous,
+        [expected_increase[key] for key in packages],
+        atol=1e-10,
+    )
     zero_cvb = np.isin(packages, ZERO_CVB_KEYS)
     np.testing.assert_array_equal(current[zero_cvb], previous[zero_cvb])
