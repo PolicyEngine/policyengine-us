@@ -1,0 +1,840 @@
+# NY DOH 13 OHIP/ADM-03, III.B.1(g): age 19 or 20, living with a parent,
+# 150% FPL plus the five-point MAGI disregard = effective 155%, from January 2014.
+# Annual expected monthly dollar ceilings are transcribed from NY GIS charts:
+# 2017:17ma005attach3.pdf; 2018:18ma004_attachment_3.pdf;
+# 2019:19ma06_attachment_iii.pdf; 2020:20ma02_att_iii.pdf;
+# 2021:21ma06_att3.pdf; 2022:22ma01_att1.pdf#page=3;
+# 2023:23ma02_att1.pdf#page=3; 2024:24ma01_att1.pdf#page=3;
+# 2025:25ma03_att1.pdf#page=3; 2026:26ma05_att1.pdf#page=3.
+# Category/residence tables are the corresponding Attachment IV (2017–2021)
+# and file page 4 (2022–2026). All are NY DOH originals at:
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/
+# The model stores annual flows. Tests annualize the published monthly ceilings
+# (monthly ceiling * 12), rather than substituting the chart's rounded annual column.
+- name: Case 1, NY co-resident nineteen-year-old qualifies above adult expansion limit in 2017.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 24_000, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [24_000, 24_000]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+    pays_aca_premium: [false, false]
+- name: Case 2, NY young adult income below published 2017 monthly ceiling of 2098 dollars.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 25175.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [25175.99, 25175.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 3, NY young adult income at published 2017 monthly ceiling of 2098 dollars.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 25_176, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [25_176, 25_176]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 4, NY young adult income above published 2017 monthly ceiling of 2098 dollars.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 25176.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [25176.01, 25176.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 5, NY young adult income below published 2018 monthly ceiling of 2127 dollars.
+  period: 2018
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 25523.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [25523.99, 25523.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 6, NY young adult income at published 2018 monthly ceiling of 2127 dollars.
+  period: 2018
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 25_524, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [25_524, 25_524]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 7, NY young adult income above published 2018 monthly ceiling of 2127 dollars.
+  period: 2018
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 25524.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [25524.01, 25524.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 8, NY young adult income below published 2019 monthly ceiling of 2185 dollars.
+  period: 2019
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 26219.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [26219.99, 26219.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 9, NY young adult income at published 2019 monthly ceiling of 2185 dollars.
+  period: 2019
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 26_220, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [26_220, 26_220]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 10, NY young adult income above published 2019 monthly ceiling of 2185 dollars.
+  period: 2019
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 26220.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [26220.01, 26220.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 11, NY young adult income below published 2020 monthly ceiling of 2227 dollars.
+  period: 2020
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 26723.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [26723.99, 26723.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 12, NY young adult income at published 2020 monthly ceiling of 2227 dollars.
+  period: 2020
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 26_724, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [26_724, 26_724]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 13, NY young adult income above published 2020 monthly ceiling of 2227 dollars.
+  period: 2020
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 26724.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [26724.01, 26724.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 14, NY young adult income below published 2021 monthly ceiling of 2251 dollars.
+  period: 2021
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 27011.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [27011.99, 27011.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 15, NY young adult income at published 2021 monthly ceiling of 2251 dollars.
+  period: 2021
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 27_012, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [27_012, 27_012]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 16, NY young adult income above published 2021 monthly ceiling of 2251 dollars.
+  period: 2021
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 27012.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [27012.01, 27012.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 17, NY young adult income below published 2022 monthly ceiling of 2366 dollars.
+  period: 2022
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 28391.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [28391.99, 28391.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 18, NY young adult income at published 2022 monthly ceiling of 2366 dollars.
+  period: 2022
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 28_392, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [28_392, 28_392]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 19, NY young adult income above published 2022 monthly ceiling of 2366 dollars.
+  period: 2022
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 28392.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [28392.01, 28392.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 20, NY young adult income below published 2023 monthly ceiling of 2548 dollars.
+  period: 2023
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 30575.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [30575.99, 30575.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 21, NY young adult income at published 2023 monthly ceiling of 2548 dollars.
+  period: 2023
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 30_576, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [30_576, 30_576]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 22, NY young adult income above published 2023 monthly ceiling of 2548 dollars.
+  period: 2023
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 30576.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [30576.01, 30576.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 23, NY young adult income below published 2024 monthly ceiling of 2641 dollars.
+  period: 2024
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 31691.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [31691.99, 31691.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 24, NY young adult income at published 2024 monthly ceiling of 2641 dollars.
+  period: 2024
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 31_692, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [31_692, 31_692]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 25, NY young adult income above published 2024 monthly ceiling of 2641 dollars.
+  period: 2024
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 31692.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [31692.01, 31692.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 26, NY young adult income below published 2025 monthly ceiling of 2732 dollars.
+  period: 2025
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 32783.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [32783.99, 32783.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 27, NY young adult income at published 2025 monthly ceiling of 2732 dollars.
+  period: 2025
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 32_784, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [32_784, 32_784]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 28, NY young adult income above published 2025 monthly ceiling of 2732 dollars.
+  period: 2025
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 32784.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [32784.01, 32784.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 29, NY young adult income below published 2026 monthly ceiling of 2796 dollars.
+  period: 2026
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 33551.99, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [33551.99, 33551.99]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 30, NY young adult income at published 2026 monthly ceiling of 2796 dollars.
+  period: 2026
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 33_552, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [33_552, 33_552]
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+    medicaid_enrolled: [false, true]
+- name: Case 31, NY young adult income above published 2026 monthly ceiling of 2796 dollars.
+  period: 2026
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 33552.01, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [33552.01, 33552.01]
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+    medicaid_enrolled: [false, false]
+- name: Case 32, NY age 18 respects child and young adult boundaries.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 24_000, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 18, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, OLDER_CHILD]
+    is_medicaid_eligible: [false, true]
+- name: Case 33, NY age 20 respects child and young adult boundaries.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 24_000, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 20, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    is_young_adult_for_medicaid: [false, true]
+    medicaid_category: [NONE, YOUNG_ADULT]
+    is_medicaid_eligible: [false, true]
+- name: Case 34, NY age 21 respects child and young adult boundaries.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 24_000, is_tax_unit_head: true,
+        is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 21, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    is_young_adult_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+- name: Case 35, NY zero income retains young adult eligibility.
+  period: 2017
+  input:
+    people:
+      person1: {person_id: 101, age: 45, employment_income: 0, is_tax_unit_head: true, is_medicaid_immigration_status_eligible: true}
+      person2: {person_id: 102, age: 19, is_tax_unit_dependent: true, is_medicaid_immigration_status_eligible: true,
+        takes_up_medicaid_if_eligible: true, parent_1_id: 101}
+    tax_units:
+      tax_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      unit1: {members: [person1]}
+      unit2: {members: [person2]}
+    households:
+      household: {members: [person1, person2], state_code: NY}
+  output:
+    is_young_adult_for_medicaid: [false, true]
+    is_medicaid_eligible: [true, true]

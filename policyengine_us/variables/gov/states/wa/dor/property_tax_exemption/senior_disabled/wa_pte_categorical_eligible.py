@@ -5,6 +5,12 @@ class wa_pte_categorical_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Categorically eligible for the Washington Senior Citizens and Disabled Persons Property Tax Exemption"
+    documentation = (
+        "The period is the property tax collection year. Interpret annual age "
+        "as age attained by December 31 of that year. RCW 84.36.381 requires "
+        "age 61 by December 31 of the preceding filing year, so the senior "
+        "pathway compares collection-year age with 62."
+    )
     definition_period = YEAR
     defined_for = StateCode.WA
     reference = (
@@ -15,7 +21,8 @@ class wa_pte_categorical_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wa.dor.property_tax_exemption.senior_disabled
-        # RCW 84.36.381(3)(a)(i): at or above the age threshold, or retired
+        # RCW 84.36.381(3)(a)(i): age 61 at filing-year end corresponds to
+        # age 62 at collection-year end. Alternatively, the claimant retired
         # from regular gainful employment by reason of disability at the time
         # of filing. Generic disability establishes neither.
         senior = person("age", period) >= p.age_threshold

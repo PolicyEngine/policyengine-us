@@ -23,6 +23,8 @@ values:
     # in 2021 and Form 1040 line 1h income from 2022.
     - taxable_strike_benefits
     - ia_other_additions
+    # IA 1040 line 13, gambling winnings, of the head and spouse.
+    - ia_gambling_winnings
 
 metadata:
   unit: list

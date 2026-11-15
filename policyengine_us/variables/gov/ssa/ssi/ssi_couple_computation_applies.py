@@ -30,6 +30,11 @@ class ssi_couple_computation_applies(Variable):
         # permanent, and PolicyEngine does not currently model intent to
         # return. We therefore scope this variable to the benefit-
         # computation rule that 416.414(b) applies in either case.
+        # NOTE: Without intent to return, the model also omits SSI's couple
+        # eligibility test during a temporary absence: eligibility subtracts
+        # the couple's combined countable income from the couple rate, and
+        # only then is each spouse paid on their own income
+        # (POMS SI 02005.050 B.3; PolicyEngine/policyengine-us#10851).
         arrangement = person("ssi_federal_living_arrangement", period)
         in_facility = (
             arrangement == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY

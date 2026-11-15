@@ -19,6 +19,8 @@ values:
     # law, the part that is not a gift), so PA income stays the same under a
     # federal reform that drops strike benefits or counts all of them.
     - strike_benefits_in_gross_income
+    # PA-40 Schedule T line 4: the cost of bets comes off the winnings.
+    - pa_gambling_loss_offset
 metadata:
   unit: currency-USD
   label: PA nontaxable income sources
@@ -36,3 +38,5 @@ metadata:
     # income, so this list subtracts the part of strike benefits it holds.
     - title: Pennsylvania Personal Income Tax Guide, Gross Compensation - income items never taxable as PA compensation
       href: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/gross-compensation.html#IncomeItemsNeverTaxablePA
+    - title: 2025 PA-40 Schedule T - Gambling and Lottery Winnings
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40t.pdf#page=1
