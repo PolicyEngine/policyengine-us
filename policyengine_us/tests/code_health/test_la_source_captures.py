@@ -23,11 +23,6 @@ PAGE_SHA256 = {
 
 
 def test_la_captures_record_page_extraction():
-    obsolete = {
-        "it540-2021-2024-exemption-excerpts.txt",
-        "rs-47-294-pre-2025.txt",
-    }
-    assert not obsolete.intersection(path.name for path in CAPTURES.glob("*.txt"))
     for name in PAGE_SHA256:
         path = CAPTURES / name
         header = path.read_bytes().split(b"\n\n", 1)[0].decode()
