@@ -1,3 +1,10 @@
+## [2.136.2] - 2026-11-15
+
+### Fixed
+
+- Correct Indiana's modeled 2015–2020 CHIP child income limit from 262% to 255% of the federal poverty guidelines.
+
+
 ## [2.136.1] - 2026-11-15
 
 ### Fixed
