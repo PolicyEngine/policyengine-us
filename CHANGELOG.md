@@ -1,3 +1,10 @@
+## [2.135.13] - 2026-11-15
+
+### Fixed
+
+- Correct Hawaii's 2018 federal poverty guideline increment for each additional person from $4,810 to $4,970.
+
+
 ## [2.135.12] - 2026-11-15
 
 ### Fixed
