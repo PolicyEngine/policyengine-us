@@ -1,3 +1,14 @@
+## [2.137.4] - 2026-11-15
+
+### Fixed
+
+- Apply the six-percent Rhode Island property tax relief rate at the admitted household-income ceiling.
+- Correct Massachusetts earned income tax credit match rates for 2015 through 2018 and preserve the 2019 and 2023 increases.
+- Correct Maine's property tax fairness credit cap for filers under age 65 to $750 for tax years 2018–2020.
+- Apply Maine's 50% property tax fairness credit excess rate before the age-based cap for tax years before 2018.
+- Apply Rhode Island’s 15% federal earned income tax credit match from 2017 through 2020, preserving the existing 2016, 2021 and 2024 rates and refundability.
+
+
 ## [2.137.3] - 2026-11-15
 
 ### Fixed
