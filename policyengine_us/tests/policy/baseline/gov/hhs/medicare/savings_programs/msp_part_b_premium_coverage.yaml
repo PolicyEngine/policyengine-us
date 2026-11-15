@@ -27,3 +27,13 @@
     base_part_b_premium: 2_220
   output:
     msp_part_b_premium_coverage: 0
+
+- name: MSP part B coverage pays the projected 2027 standard premium
+  period: 2027
+  input:
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: true
+    msp_asset_eligible: true
+  output:
+    msp_part_b_premium_coverage: 2_514  # $209.50 * 12 months

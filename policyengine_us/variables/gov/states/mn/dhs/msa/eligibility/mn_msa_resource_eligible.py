@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class mn_msa_resource_eligible(Variable):
@@ -25,5 +28,7 @@ class mn_msa_resource_eligible(Variable):
         p = parameters(period).gov.states.mn.dhs.msa.eligibility
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         countable_resources = person("ssi_countable_resources", period.this_year)
-        unit_resources = person.marital_unit.sum(countable_resources)
+        unit_resources = _ssi_couple_total(
+            person, period.this_year, countable_resources
+        )
         return receives_ssi | (unit_resources <= p.asset_limit.non_ssi_track)

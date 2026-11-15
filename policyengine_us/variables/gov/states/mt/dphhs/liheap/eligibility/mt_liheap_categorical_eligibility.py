@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class MTLIHEAPCategoricalEligibility(Enum):
@@ -55,7 +58,11 @@ class mt_liheap_categorical_eligibility(Variable):
             axis=0,
         )
         tanf_member = spm_unit.project(receives_tanf) & in_tanf_unit
-        spouse_of_ssi_recipient = person.marital_unit.any(receives_ssi)
+        # SSA considers only the co-resident spouse's income, so an unrelated
+        # adult left in a default marital unit is not covered.
+        spouse_of_ssi_recipient = (
+            _ssi_couple_total(person, period, receives_ssi.astype(int)) - receives_ssi
+        ) > 0
         ssi_recipient_child = receives_ssi & (person("age", period) < p.minor_child_age)
         # SSA considers a parent's income for a child's SSI. The head or spouse
         # of the SSI child's own tax unit stands in for the parent; an adult

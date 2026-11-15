@@ -8,7 +8,7 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=5"
+        "https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=4"
     )
     defined_for = StateCode.UT
 

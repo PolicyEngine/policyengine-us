@@ -254,3 +254,54 @@
     # Alone: (500 - 20) x 12 = 5,760. Deemed: 25,370 - 5,760 = 19,610.
     is_ssi_spousal_deeming_applies: [true, false]
     ssi_income_deemed_from_ineligible_spouse: [19_610, 0]
+
+- name: Spouse income is deemed within a couple heading a unit that includes an older parent (2025)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # At 78 she is not an ineligible child. Her son heads the unit with
+        # his wife, his partner in their marital unit, so she isn't the
+        # inferred spouse.
+        age: 78
+        social_security_retirement: 15_000
+      person2:
+        age: 50
+        employment_income_before_lsr: 30_000
+      person3:
+        age: 48
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+      person4:
+        # Ineligible child of the couple.
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    marital_units:
+      parent_marital_unit:
+        members: [person1]
+      couple:
+        members: [person2, person3]
+      child_marital_unit:
+        members: [person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    # No roles are supplied: the couple heads the tax unit ahead of the older
+    # parent, so person2 is the ineligible spouse of person3.
+    is_tax_unit_head: [false, true, false, false]
+    is_ssi_ineligible_spouse: [false, true, false, false]
+    is_ssi_ineligible_child: [false, false, false, true]
+    # Child allocation: (1,450 - 967) x 12 = 5,796.
+    # Deemed earnings: 30,000 - 5,796 = 24,204 > 5,796, so deeming applies.
+    is_ssi_spousal_deeming_applies: [false, false, true, false]
+    # Couple: (24,204 / 12 - 20 - 65) x 0.5 x 12 = (2,017 - 85) x 6 = 11,592.
+    # Alone: 0. Deemed: 11,592 - 0 = 11,592.
+    ssi_income_deemed_from_ineligible_spouse: [0, 0, 11_592, 0]

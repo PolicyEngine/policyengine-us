@@ -829,7 +829,7 @@
     ssi: [745.5, 745.5]
     ca_state_supplement_person: [32, 239.94]
 
-- name: Case 33, married parents who are their child's tax dependents take the individual share.
+- name: Case 33, married parents who are their child's tax dependents take the couple share.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -857,13 +857,11 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: true
   output:
-    # NOTE: a known limitation. The couple level is 607.83, or 303.92 each, but
-    # SSI's couple test excludes tax dependents, so SSI and the supplement both
-    # treat the parents as individuals. When SSI identifies couples by marriage
-    # (PR 10141), the head-or-spouse guards in CAPI, the supplement and its rates
-    # must go too, or these parents would get no supplement.
-    ssi: [0, 994, 994]
-    ca_state_supplement_person: [0, 239.94, 239.94]
+    # SSI pairs the parents through their marital unit, whatever their tax roles.
+    # Each takes half the couple's federal rate, 1,491 / 2 = 745.50, and half the
+    # couple's state level, 607.83 / 2 = 303.915, which SSA rounds up to 303.92.
+    ssi: [0, 745.5, 745.5]
+    ca_state_supplement_person: [0, 303.92, 303.92]
 
 - name: Case 34, dependent child of an aged couple with no marital units takes their own level.
   period: 2026-01
@@ -919,3 +917,89 @@
     # The 416.414(b)(3) split needs one spouse in the facility, so the parents
     # keep half of 607.83 rounded up, and the child takes the code J level.
     ca_state_supplement_person: [303.92, 303.92, 32]
+
+- name: Case 36, blind spouses who are both a third adult's tax dependents take the two-blind couple share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 100_000
+      person2:
+        age: 70
+        is_blind: true
+        is_tax_unit_dependent: true
+      person3:
+        age: 68
+        is_blind: true
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # The marriage makes a couple whatever the tax roles: SSI is
+    # 1,491 / 2 = 745.50 each.
+    ssi: [0, 745.5, 745.5]
+    # Two blind members take max(833.35, 607.83) = 833.35, or 416.675 each,
+    # which rounds up to 416.68. As individuals each would take 324.32.
+    ca_state_supplement_person: [0, 416.68, 416.68]
+
+- name: Case 37, 2025 citizen married to a CAPI spouse whom a third adult claims counts the spouse's income above the couple standard.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+      person2:
+        age: 68
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 39
+        pension_income: 18_000 # 1,500 a month
+      person3:
+        age: 40
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    tax_units:
+      citizen:
+        members: [person1]
+      third:
+        members: [person3, person2]
+    marital_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    spm_units:
+      couple:
+        members: [person1, person2]
+      third:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # (500 + 1,500 - 20) / 2 = 990 a month each, so the couple gets no SSI.
+    ssi_countable_income: [11_880, 11_880, 0] # 990 * 12
+    ssi: [0, 0, 0]
+    # The couple total is 1,980, so person1 counts
+    # max(480, 1,980 - (2,315.57 - 1,335.81)) = 1,000.24 a month and gets
+    # 1,335.81 - 1,000.24 = 335.57.
+    ca_state_supplement_person: [4_026.84, 0, 0] # 335.57 * 12

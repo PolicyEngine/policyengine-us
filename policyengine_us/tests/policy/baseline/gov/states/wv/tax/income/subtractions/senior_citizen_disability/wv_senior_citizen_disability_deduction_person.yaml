@@ -97,6 +97,9 @@
     adjusted_gross_income_person: 6_000
     salt_refund_income: 2_000
     wv_senior_citizen_disability_deduction_total_modifications: 1_000
+    # The case enters AGI directly. Federal taxable railroad benefits build on
+    # 401(k) limits that the model holds only from 2018.
+    taxable_railroad_benefits: 0
   output:
     # Available income = 6,000 - 2,000 - 1,000 = 3,000.
     # Remaining allowance = 8,000 - 1,000 = 7,000; min = 3,000.

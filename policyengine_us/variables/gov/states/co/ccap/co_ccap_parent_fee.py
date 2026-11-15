@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.co.ccap.co_ccap_parameter_instant import (
-    co_ccap_parameter_instant,
+from policyengine_us.variables.gov.states.co.ccap.co_ccap_parent_fee_arithmetic import (
+    drop_cents,
 )
 
 
@@ -8,41 +8,44 @@ class co_ccap_parent_fee(Variable):
     value_type = float
     entity = SPMUnit
     label = "Colorado Child Care Assistance Program parent fee"
+    documentation = (
+        "One monthly fee for the household, in whole dollars: the base fee "
+        "plus the fee for additional children, at 55% when every child in "
+        "care receives part-time care, and 20% lower when a provider rates in "
+        "the top three quality levels. Each step drops the cents, as the "
+        "Department's parent fee tool does."
+    )
     reference = (
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=41",
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=62",
+        # PDF pages 79, 81-85
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=79",
+        "https://drive.google.com/file/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/view",
     )
     unit = USD
     definition_period = MONTH
+    defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        instant_str = co_ccap_parameter_instant(period)
-        p = parameters(instant_str).gov.states.co.ccap
-        eligible_children = spm_unit("co_ccap_eligible_children", period)
-        base_parent_fee = spm_unit("co_ccap_base_parent_fee", period)
-        add_on_parent_fee = spm_unit("co_ccap_add_on_parent_fee", period)
+        p = parameters(period).gov.states.co.ccap
+        # Both come in whole dollars, which float32 stores exactly.
+        base_fee = spm_unit("co_ccap_base_parent_fee", period)
+        add_on_fee = spm_unit("co_ccap_add_on_parent_fee", period)
+        full_time_fee = np.asarray(base_fee + add_on_fee, dtype=np.float64)
 
-        # Childcare-hours-per-day also affects parent fee.
-        # Since each child may need different hours of childcare per day, we
-        # have to calculate parent fee one by one and sum them up.
         person = spm_unit.members
-        child_age_eligible = person("co_ccap_child_eligible", period)
-        childcare_hours_per_day = person("childcare_hours_per_day", period.this_year)
-        rate = p.parent_fee_rate_by_child_care_hours.calc(
-            childcare_hours_per_day, right=True
+        in_care = person("co_ccap_child_in_care", period)
+        part_time = person("co_ccap_child_in_part_time_care", period)
+        children_in_care = spm_unit("co_ccap_children_in_care", period)
+        all_part_time = (children_in_care > 0) & (
+            spm_unit.sum(in_care & ~part_time) == 0
         )
-        childs_parent_fee = spm_unit.project(base_parent_fee + add_on_parent_fee)
-        unrounded_non_discounted_fee = spm_unit.sum(
-            child_age_eligible * childs_parent_fee * rate
+        fee = where(
+            all_part_time,
+            drop_cents(full_time_fee * p.parent_fee.part_time.rate),
+            full_time_fee,
         )
 
-        non_discounted_fee = np.round(unrounded_non_discounted_fee, 2)
-        # Rating of child care facilities also affects parent fee.
-        # For households utilizing multiple child care providers, only one
-        # child care provider is required to be eligible for the reduced
-        # parent fee to apply.
+        # One provider in the top three quality levels is enough.
         rating = person("co_quality_rating_of_child_care_facility", period.this_year)
-        maximum_rating = spm_unit.max(rating * child_age_eligible)
-        discounted_rate = p.is_quality_rating_discounted.calc(maximum_rating)
-        unrounded = non_discounted_fee * discounted_rate
-        return np.round(unrounded, 2)
+        highest_rating = spm_unit.max(rating * in_care)
+        quality_factor = p.is_quality_rating_discounted.calc(highest_rating)
+        return where(children_in_care > 0, drop_cents(fee * quality_factor), 0)

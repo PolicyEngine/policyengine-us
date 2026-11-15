@@ -197,3 +197,81 @@
   output:
     mt_liheap_categorical_eligibility: SNAP
     mt_liheap_benefit_income: 24_000
+
+# Marital units omitted: everyone shares one default marital unit, and the
+# tax roles identify the spouses. A married couple who both receive SSI share
+# the FFY2026 couple standard: $1,450 x 12 = $17,400.
+- name: Case 7, a married couple both on SSI with marital units omitted uses the couple standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_head: true
+        ssi: 8_700
+      spouse:
+        age: 68
+        immigration_status: CITIZEN
+        is_tax_unit_spouse: true
+        ssi: 8_700
+    tax_units:
+      couple:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+    mt_liheap_benefit_income: 17_400
+
+# Appendix A 9.8: an unmarried SSI recipient living with others takes the
+# individual standard. With marital units omitted, the unrelated adult shares
+# the couple's default marital unit but is not a spouse, so the couple keeps
+# the couple standard and the outsider the individual one:
+# ($1,450 + $967) x 12 = $29,004. Counting all three recipients in one unit
+# would instead split the couple standard three ways: $17,400.
+- name: Case 8, an unrelated SSI recipient in a default marital unit keeps the individual standard.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_head: true
+        ssi: 8_700
+      spouse:
+        age: 68
+        immigration_status: CITIZEN
+        is_tax_unit_spouse: true
+        ssi: 8_700
+      outsider:
+        age: 72
+        immigration_status: CITIZEN
+        is_tax_unit_head: true
+        ssi: 11_604
+    tax_units:
+      couple:
+        members: [head, spouse]
+      outsider:
+        members: [outsider]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, outsider]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [head, spouse, outsider]
+        state_code: MT
+  output:
+    mt_liheap_categorical_eligibility: SSI_TANF
+    mt_liheap_benefit_income: 29_004

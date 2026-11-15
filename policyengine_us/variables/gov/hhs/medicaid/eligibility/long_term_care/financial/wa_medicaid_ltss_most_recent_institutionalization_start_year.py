@@ -1,0 +1,27 @@
+from policyengine_us.model_api import *
+
+
+class wa_medicaid_ltss_most_recent_institutionalization_start_year(Variable):
+    value_type = int
+    entity = Person
+    label = "Washington Medicaid LTSS most recent continuous institutionalization start year"
+    definition_period = MONTH
+    default_value = 2003
+    documentation = (
+        "Calendar year in which the most recent continuous period of "
+        "institutionalization began. Together with the corresponding start "
+        "month, this is the historical onset fact used by WAC "
+        "182-513-1355(2)-(4), rather than a caller-selected allocation regime. "
+        "The caller-facing default year/month is August 2003, matching "
+        "the YYYYMM value of the financial.wa.csra.snapshot_regime_start "
+        "parameter at introduction. This preserves the modern "
+        "floor/half/cap branch for existing callers who do not report history. "
+        "Supply the actual onset for legacy continuous periods, and replace "
+        "it after a break of at least 30 consecutive days. Repeat the onset "
+        "in each modeled month of the continuous period. The statutory "
+        "boundaries fall on the first day of a month, so no day input is needed."
+    )
+    reference = (
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1355",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1350",
+    )

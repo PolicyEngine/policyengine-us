@@ -54,6 +54,35 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         return form_7206_line_13(person, period)
 
 
+def form_7206_line_7(person, period, line_4, other_line_5_profits=0):
+    """Form 7206 line 7 for a business whose line 4 profit is line_4.
+
+    The part of the deductible part of self-employment tax (Schedule 1 line
+    15) attributable to the business. The self-employed retirement plan
+    limit uses the same split for its earned income (Pub. 560 step 2).
+    other_line_5_profits adds the profits of businesses that cannot
+    establish the plan but whose self-employment tax is in Schedule 1 line
+    15, such as the owners' draw reform's draw profits.
+    """
+    # Line 5: net profits of every business whose earnings are subject to
+    # self-employment tax, leaving out net losses.
+    line_5 = (
+        max_(0, person("total_self_employment_income", period))
+        + max_(0, person("farm_operations_income", period))
+        + max_(0, person("partnership_self_employment_net_earnings", period))
+        + other_line_5_profits
+    )
+    # Line 6: the business's share of line 5.
+    line_6 = np.divide(
+        line_4,
+        line_5,
+        out=np.zeros_like(line_5),
+        where=line_5 > 0,
+    )
+    # Line 7: that share of Schedule 1 line 15.
+    return person("self_employment_tax_ald_person", period) * line_6
+
+
 def form_7206_line_13(person, period, other_line_5_profits=0):
     """Form 7206 line 13 for the plan business.
 
@@ -68,24 +97,12 @@ def form_7206_line_13(person, period, other_line_5_profits=0):
     partnership_profit = max_(
         0, person("partnership_self_employment_net_earnings", period)
     )
-    # Line 5: net profits of every business whose earnings are subject to
-    # self-employment tax, leaving out net losses.
-    all_business_profits = (
-        schedule_c_profit + farm_profit + partnership_profit + other_line_5_profits
-    )
-    # Lines 6 and 7: each business takes the deductible part of
-    # self-employment tax (Schedule 1 line 15) in proportion to its share
-    # of line 5.
-    self_employment_tax_deduction = person("self_employment_tax_ald_person", period)
 
+    # Lines 5 to 7: each business takes the deductible part of
+    # self-employment tax (Schedule 1 line 15) in proportion to its share
+    # of the net profits of every business subject to self-employment tax.
     def attributable_self_employment_tax_deduction(profit):
-        share = np.divide(
-            profit,
-            all_business_profits,
-            out=np.zeros_like(all_business_profits),
-            where=all_business_profits > 0,
-        )
-        return self_employment_tax_deduction * share
+        return form_7206_line_7(person, period, profit, other_line_5_profits)
 
     # Lines 9 and 10: the SEP, SIMPLE and qualified plan deduction
     # (Schedule 1 line 16) is attributable to the Schedule C business.

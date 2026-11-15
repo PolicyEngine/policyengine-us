@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class mt_liheap_benefit_income(Variable):
@@ -30,8 +33,9 @@ class mt_liheap_benefit_income(Variable):
         p_ssi = parameters(ssi_date).gov.ssa.ssi.amount
         person = spm_unit.members
         receives_ssi = person("mt_liheap_receives_ssi", period)
-        # A married couple who both receive SSI share the couple standard.
-        marital_recipients = person.marital_unit.sum(receives_ssi)
+        # A married couple who both receive SSI share the couple standard;
+        # an unrelated recipient in the same default marital unit does not.
+        marital_recipients = _ssi_couple_total(person, period, receives_ssi.astype(int))
         couple = receives_ssi & (marital_recipients > 1)
         monthly_ssi_standard = where(
             couple,

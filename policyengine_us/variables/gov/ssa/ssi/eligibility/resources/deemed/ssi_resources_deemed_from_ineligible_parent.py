@@ -133,9 +133,9 @@ class ssi_resources_deemed_from_ineligible_parent(Variable):
         # the payment is ineligible 'for any reason': they are still deemed a
         # share, but do not count in the division. Neither variable reads the
         # resource test.
-        income_eligible = person(
-            "ssi_countable_income", period.this_year
-        ) / MONTHS_IN_YEAR < person("ssi_amount_if_eligible", period)
+        income_eligible = person("ssi_countable_income", period) < person(
+            "ssi_amount_if_eligible", period
+        )
         deemed = np.zeros(person.count)
         # SI 01330.200 B: 'equally divide' among eligible children; when a
         # child is ineligible 'divide ... among the remaining eligible children'.

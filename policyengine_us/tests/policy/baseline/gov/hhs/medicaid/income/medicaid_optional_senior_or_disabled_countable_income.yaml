@@ -742,6 +742,312 @@
     # disregard would leave 21,780, over the guideline.
     is_optional_senior_or_disabled_income_eligible: [true, true]
 
+# Omitted marital units form one default group. 22 CCR 50555.2(a) deducts
+# premiums paid for any person in the family, so a couple's budget takes the
+# spouses' and their dependents' premiums but not an unrelated adult's. The
+# unrelated adult heads their own tax unit; without that input they would be
+# read as a tax dependent, since is_tax_unit_head is supplied for the couple.
+- name: California excludes an unrelated adult's premiums from a couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 36_000
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 24_000
+        medicare_enrolled: false
+      third:
+        is_tax_unit_head: true
+        age: 67
+        pension_income: 12_000
+        health_insurance_premiums: 12_000
+        medicare_enrolled: false
+        ssi_federal_living_arrangement:
+          2026-01: MEDICAL_TREATMENT_FACILITY
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    families:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: CA
+  output:
+    ssi_couple_computation_applies:
+      2026-01: [true, true, false]
+    # (36,000 + 24,000 - 240) / 2; the third adult's 12,000 is not deducted.
+    medicaid_optional_senior_or_disabled_countable_income: [29_880, 29_880, 0]
+
+- name: California couple is not made eligible by an unrelated adult's premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 24_120
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 12_120
+        medicare_enrolled: false
+      third:
+        is_tax_unit_head: true
+        age: 50
+        pension_income: 15_000
+        health_insurance_premiums: 15_000
+        medicare_enrolled: false
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    families:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: CA
+  output:
+    # (24,120 + 12,120 - 240) / 2 = 18,000 each. The couple's 36,000 exceeds
+    # the 29,863.20 couple limit. Deducting the third adult's 15,000 would
+    # leave 10,500 each, and the 21,000 sum would pass the individual limit.
+    medicaid_optional_senior_or_disabled_countable_income: [18_000, 18_000, 0]
+    is_optional_senior_or_disabled_for_medicaid: [false, false, false]
+    # The 50-year-old third adult qualifies through the adult expansion group.
+    medicaid_category: [NONE, NONE, ADULT]
+
+- name: California deducts a dependent child's premiums from a couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 36_000
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 24_000
+        medicare_enrolled: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 12_000
+        medicare_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    ssi_couple_computation_applies:
+      2026-01: [true, true, false]
+    # (36,000 + 24,000 - 240 - 12,000) / 2, as on main.
+    medicaid_optional_senior_or_disabled_countable_income: [23_880, 23_880, 0]
+
+- name: California leaves a dependent child in their own marital unit out of a couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 36_000
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 24_000
+        medicare_enrolled: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 12_000
+        medicare_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    # (36,000 + 24,000 - 240) / 2 = 29,880 each, as on main: the child's
+    # explicit marital unit holds no spouse in the couple computation.
+    medicaid_optional_senior_or_disabled_countable_income: [29_880, 29_880, 0]
+
+- name: An unrelated adult with no tax role does not make a California couple eligible through their premiums.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 24_120
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 12_120
+        medicare_enrolled: false
+      third:
+        # No tax-role flag: once a situation sets the couple's roles, the
+        # third adult reads as a tax dependent of their own tax unit.
+        age: 50
+        pension_income: 15_000
+        health_insurance_premiums: 15_000
+        medicare_enrolled: false
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    families:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: CA
+  output:
+    is_tax_unit_dependent: [false, false, true]
+    # (24,120 + 12,120 - 240) / 2 = 18,000 each. The third adult shares no
+    # tax unit with the couple, so the reader does not deduct their 15,000 of
+    # premiums.
+    medicaid_optional_senior_or_disabled_countable_income: [18_000, 18_000, 0]
+    is_optional_senior_or_disabled_for_medicaid: [false, false, false]
+    medicaid_category: [NONE, NONE, ADULT]
+
+- name: California leaves another couple's dependent's premiums out of a couple budget.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 24_120
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 12_120
+        medicare_enrolled: false
+      head2:
+        age: 67
+        is_tax_unit_head: true
+        medicare_enrolled: false
+      spouse2:
+        age: 67
+        is_tax_unit_spouse: true
+        medicare_enrolled: false
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 15_000
+        medicare_enrolled: false
+    tax_units:
+      couple:
+        members: [head, spouse]
+      second:
+        members: [head2, spouse2, child]
+    households:
+      household:
+        members: [head, spouse, head2, spouse2, child]
+        state_code: CA
+  output:
+    # (24,120 + 12,120 - 240) / 2 = 18,000 each. The child shares no tax unit
+    # with the first couple, so the reader does not deduct their 15,000 of
+    # premiums from that couple's budget, and 36,000 exceeds 22,024.80.
+    medicaid_optional_senior_or_disabled_countable_income: [18_000, 18_000, 0, 0, 0]
+    # The second couple stays ineligible because the income reader sums the
+    # whole default unit, as on main.
+    is_optional_senior_or_disabled_for_medicaid: [false, false, false, false, false]
+
+- name: California counts a dependent couple's premiums once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 80_000
+        medicare_enrolled: false
+      dad:
+        age: 80
+        is_tax_unit_dependent: true
+        pension_income: 36_000
+        health_insurance_premiums: 6_000
+        medicare_enrolled: false
+      mom:
+        age: 78
+        is_tax_unit_dependent: true
+        pension_income: 24_000
+        health_insurance_premiums: 6_000
+        medicare_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [child, dad, mom]
+    marital_units:
+      child:
+        members: [child]
+      parents:
+        members: [dad, mom]
+    households:
+      household:
+        members: [child, dad, mom]
+        state_code: CA
+  output:
+    # (36,000 + 24,000 - 240 - 12,000) / 2; each premium counts once.
+    medicaid_optional_senior_or_disabled_countable_income: [0, 23_880, 23_880]
+
 - name: An aged permanent resident without 40 SSI quarters has their pension counted.
   period: 2025
   absolute_error_margin: 0.01

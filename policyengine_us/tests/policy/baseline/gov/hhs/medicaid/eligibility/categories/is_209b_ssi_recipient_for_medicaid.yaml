@@ -223,3 +223,75 @@
   output:
     # 16,800 combined is under the 17,892 couple standard.
     is_209b_ssi_recipient_for_medicaid: [true, true]
+
+- name: Case 19, Virginia couple's spend-down budget leaves out an unrelated adult's medical expenses when marital units are omitted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        pension_income: 8_870
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        pension_income: 8_870
+        medicare_enrolled: false
+      third:
+        age: 50
+        is_tax_unit_head: true
+        pension_income: 30_000
+        other_medical_expenses: 5_000
+        medicare_enrolled: false
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: VA
+  output:
+    ssi: [196, 196, 0]
+    # The couple's budget is 17,500, above 12,768 (0.80 x 15,960). Deducting
+    # the third adult's 5,000 would leave 12,500, under it.
+    is_209b_ssi_recipient_for_medicaid: [false, false, false]
+
+- name: Case 20, Connecticut unrelated adult's spend-down budget leaves out a couple's medical expenses when marital units are omitted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        other_medical_expenses: 500
+        medicare_enrolled: false
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        other_medical_expenses: 500
+        medicare_enrolled: false
+      third:
+        age: 67
+        is_tax_unit_head: true
+        employment_income: 22_800
+        medicare_enrolled: false
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: CT
+  output:
+    # (22,800 / 12 - 65) x 0.5 x 12 = 11,010.
+    medicaid_optional_senior_or_disabled_countable_income: [0, 0, 11_010]
+    # 11,010 > 10,214.40 (0.64 x 15,960). Deducting the couple's 1,000 would
+    # leave 10,010, under it.
+    is_209b_ssi_recipient_for_medicaid: [true, true, false]

@@ -121,6 +121,95 @@
     medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [7_992, 0, 0]
     medicaid_optional_senior_or_disabled_countable_income: [7_992, 0, 0]
 
+# Omitted marital units form one default group. Only the identified spouse's
+# income enters Missouri's gross-income deeming; other adults do not.
+- name: Missouri spouse deeming excludes an unrelated third adult's income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        ssi_unearned_income: 17_400
+      spouse:
+        age: 60
+        is_tax_unit_spouse: true
+        ssi_earned_income: 4_800
+      third:
+        age: 60
+        ssi_earned_income: 120_000
+        ssi_unearned_income: 120_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    families:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      third:
+        members: [third]
+    households:
+      household:
+        members: [head, spouse, third]
+        state_code: MO
+  output:
+    # The SSI spouse-status mask already excludes an unrelated singleton.
+    is_ssi_ineligible_spouse: [false, true, false]
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [2_004, 0, 0]
+
+- name: Missouri spouse deeming excludes another couple's ineligible spouse.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        ssi_unearned_income: 17_400
+      spouse:
+        age: 60
+        is_tax_unit_spouse: true
+        ssi_earned_income: 4_800
+      other_head:
+        age: 70
+        is_tax_unit_head: true
+      other_spouse:
+        age: 60
+        is_tax_unit_spouse: true
+        ssi_earned_income: 12_000
+        ssi_unearned_income: 12_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+      other_couple:
+        members: [other_head, other_spouse]
+    families:
+      couple:
+        members: [head, spouse]
+      other_couple:
+        members: [other_head, other_spouse]
+    spm_units:
+      couple:
+        members: [head, spouse]
+      other_couple:
+        members: [other_head, other_spouse]
+    households:
+      household:
+        members: [head, spouse, other_head, other_spouse]
+        state_code: MO
+  output:
+    is_ssi_ineligible_spouse: [false, true, false, true]
+    # First couple: floor((400 - 65) / 2 + 1,450 - 20) - 1,430 = 167
+    # monthly. Second: floor((1,000 - 65) / 2 + 1,000 - 20) = 1,447.
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [2_004, 0, 17_364, 0]
+
 - name: Spouse income is deemed to an aged permanent resident without 40 SSI quarters.
   period: 2025
   absolute_error_margin: 0.01

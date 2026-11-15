@@ -12,3 +12,11 @@
     vt_other_subtractions: 1_300
   output:
     vt_subtractions: 1_300
+
+- name: Case 3, vt_other_subtractions flows into vt_subtractions in 2021
+  period: 2021
+  input:
+    state_code: VT
+    vt_other_subtractions: 1_300
+  output:
+    vt_subtractions: 1_300

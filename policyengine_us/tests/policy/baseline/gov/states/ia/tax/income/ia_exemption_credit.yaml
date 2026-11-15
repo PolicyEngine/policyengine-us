@@ -47,3 +47,226 @@
         state_code: IA
   output:
     ia_exemption_credit: 180  # = 40*2 + 20*3 + 40*1
+
+
+- name: 2024 single filer who can be claimed as a dependent keeps the personal credit but gets no dependent credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: IA
+  output:
+    # Iowa Code 422.12(2)(a): $40 personal credit, kept "even if you are
+    # claimed"; IRC 152(b)(1) leaves the return no dependents.
+    ia_exemption_credit: 40
+
+- name: 2024 joint return with one claimable spouse keeps both personal credits but gets no dependent credit (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IA
+  output:
+    # $80 for a joint return; no $40 dependent credit (IRC 152(b)(1)).
+    ia_exemption_credit: 80
+
+- name: 2024 joint return with one claimable spouse keeps both personal credits but gets no dependent credit (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: IA
+  output:
+    ia_exemption_credit: 80
+
+- name: 2024 joint return with both spouses claimable keeps both personal credits but gets no dependent credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IA
+  output:
+    ia_exemption_credit: 80
+
+- name: 2024 joint return with no claimable spouse gets the dependent credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IA
+  output:
+    # $80 + $40 for the child = $120.
+    ia_exemption_credit: 120
+
+
+- name: 2024 single filer whose claimant meets the filing exception gets the dependent credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: IA
+  output:
+    # The would-be claimant meets the filing exception (Publication 501,
+    # Dependent Taxpayer Test), so the return keeps its dependents.
+    # $40 personal + $40 dependent.
+    ia_exemption_credit: 80
+
+- name: 2024 joint return whose claimable spouse's claimant meets the filing exception gets the dependent credit (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IA
+  output:
+    # The would-be claimant meets the filing exception (Publication 501,
+    # Dependent Taxpayer Test), so the return keeps its dependents.
+    # $80 + $40 = $120.
+    ia_exemption_credit: 120
+
+- name: 2024 joint return whose claimable spouse's claimant meets the filing exception gets the dependent credit (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: IA
+  output:
+    ia_exemption_credit: 120

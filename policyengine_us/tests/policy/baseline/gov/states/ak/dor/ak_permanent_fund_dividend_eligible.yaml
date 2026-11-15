@@ -1,0 +1,81 @@
+- name: Case 1, a citizen in Alaska qualifies under AS 43.23.005(a)(5)(A).
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: CITIZEN
+  output:
+    ak_permanent_fund_dividend_eligible: true
+
+- name: Case 2, a lawful permanent resident in Alaska qualifies under AS 43.23.005(a)(5)(B).
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    ak_permanent_fund_dividend_eligible: true
+
+- name: Case 3, a refugee in Alaska qualifies under AS 43.23.005(a)(5)(C).
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: REFUGEE
+  output:
+    ak_permanent_fund_dividend_eligible: true
+
+- name: Case 4, an asylee in Alaska qualifies under AS 43.23.005(a)(5)(D).
+  period: 2026
+  input:
+    state_code: AK
+    immigration_status: ASYLEE
+  output:
+    ak_permanent_fund_dividend_eligible: true
+
+- name: Case 5, people coded with statuses that PolicyEngine does not map to AS 43.23.005(a)(5) or 15 AAC 23.154(a) do not qualify, including PAROLED_ONE_YEAR, which does not say a parole runs indefinitely.
+  period: 2026
+  input:
+    people:
+      undocumented:
+        immigration_status: UNDOCUMENTED
+      daca:
+        immigration_status: DACA
+      tps:
+        immigration_status: TPS
+      paroled:
+        immigration_status: PAROLED_ONE_YEAR
+      deportation_withheld:
+        immigration_status: DEPORTATION_WITHHELD
+      cuban_haitian_entrant:
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+      conditional_entrant:
+        immigration_status: CONDITIONAL_ENTRANT
+    households:
+      household:
+        members:
+          [undocumented, daca, tps, paroled, deportation_withheld, cuban_haitian_entrant, conditional_entrant]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend_eligible: [false, false, false, false, false, false, false]
+
+- name: Case 6, a citizen outside Alaska does not qualify.
+  period: 2026
+  input:
+    state_code: WA
+    immigration_status: CITIZEN
+  output:
+    ak_permanent_fund_dividend_eligible: false
+
+- name: Case 7, PolicyEngine applies the status test in 2015, its first modeled dividend year.
+  period: 2015
+  input:
+    people:
+      citizen:
+        immigration_status: CITIZEN
+      undocumented:
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [citizen, undocumented]
+        state_code: AK
+  output:
+    ak_permanent_fund_dividend_eligible: [true, false]
+    ak_permanent_fund_dividend: [2_072, 0]

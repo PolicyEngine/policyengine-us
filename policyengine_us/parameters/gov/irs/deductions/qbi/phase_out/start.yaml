@@ -14,6 +14,8 @@ metadata:
       # Rounding rules: $50 for general filers, $25 for married filing separately
     - title: 26 CFR § 1.199A-1(b)(12)
       href: https://www.ecfr.gov/current/title-26/part-1/section-1.199A-1#p-1.199A-1(b)(12)
+    - title: 2027 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=17
     - title: 2026 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=22
     - title: 2025 IRS data release
@@ -56,6 +58,7 @@ HEAD_OF_HOUSEHOLD:
     2024-01-01: 191_950
     2025-01-01: 197_300
     2026-01-01: 201_750
+    2027-01-01: 208_300
 JOINT:
   metadata:
     uprating:
@@ -75,6 +78,7 @@ JOINT:
     2024-01-01: 383_900
     2025-01-01: 394_600
     2026-01-01: 403_500
+    2027-01-01: 416_600
 SEPARATE:
   metadata:
     uprating:
@@ -93,6 +97,7 @@ SEPARATE:
     2024-01-01: 191_950
     2025-01-01: 197_300
     2026-01-01: 201_775
+    2027-01-01: 208_325
 SINGLE:
   metadata:
     uprating:
@@ -111,6 +116,7 @@ SINGLE:
     2024-01-01: 191_950
     2025-01-01: 197_300
     2026-01-01: 201_750
+    2027-01-01: 208_300
 SURVIVING_SPOUSE:
   metadata:
     uprating:
@@ -131,3 +137,4 @@ SURVIVING_SPOUSE:
     2024-01-01: 191_950
     2025-01-01: 197_300
     2026-01-01: 201_750
+    2027-01-01: 208_300

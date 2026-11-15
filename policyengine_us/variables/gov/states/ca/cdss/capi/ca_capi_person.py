@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 from policyengine_us.variables.gov.states.ca.cdss.capi._ca_capi_ssi_ssp_standard import (
     ca_capi_couple_computation,
     ca_capi_spouse_ssi_ssp,
@@ -31,9 +34,7 @@ class ca_capi_person(Variable):
     def formula(person, period, parameters):
         # When only the California facility input separates a couple that SSI
         # computes jointly, ssi_countable_income holds half the couple's
-        # income; each spouse's own income counts (20 CFR 416.414(b)(3)). The
-        # same goes for a dependent who shares the couple's unit because the
-        # situation has no marital units.
+        # income; each spouse's own income counts (20 CFR 416.414(b)(3)).
         # NOTE: this own income leaves out in-kind support and the student
         # earned income exclusion, which SSI's joint computation would apply.
         separated = person(
@@ -71,12 +72,11 @@ class ca_capi_person(Variable):
         # can still pay such a spouse SSI that SSA would not (issue 10481).
         capi_eligible = person("ca_capi_eligible_person", period.this_year)
         joint = ca_capi_couple_computation(person, period)
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         couple_with_spouse = joint & ~(
-            person.marital_unit.sum(capi_eligible & head_or_spouse) > 1
+            _ssi_couple_total(person, period.this_year, capi_eligible.astype(int)) > 1
         )
         spouse_ssi_ssp = ca_capi_spouse_ssi_ssp(person, period)
-        couple_income = person.marital_unit.sum(countable_income * head_or_spouse)
+        couple_income = _ssi_couple_total(person, period.this_year, countable_income)
         # A spouse counts as an eligible spouse only while receiving SSI/SSP
         # (MPP 49-005(e)(3), 49-050.13). A spouse paid neither is an
         # ineligible spouse (MPP 49-005(i)(2)), whose income is deemed.
@@ -84,6 +84,16 @@ class ca_capi_person(Variable):
         mixed = couple_with_spouse & spouse_paid
         unpaid_spouse = couple_with_spouse & ~spouse_paid
         mixed_benefit = max_(payment_standard - couple_income - spouse_ssi_ssp, 0)
+        # Stored standards and payments use float32; couple income uses
+        # float64. Normalize cancellation within the stored standard's
+        # precision so an exhausted benefit cannot create income eligibility.
+        exhausted = np.isclose(
+            payment_standard,
+            couple_income + spouse_ssi_ssp,
+            rtol=np.finfo(payment_standard.dtype).eps,
+            atol=0,
+        )
+        mixed_benefit = where(exhausted, 0, mixed_benefit)
 
         # MPP 49-035.71 follows the SSI spouse-to-spouse deeming steps: the
         # federal and state parts are each the lesser of the individual and the

@@ -20,8 +20,8 @@ class hi_ccap_countable_income(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.hi.bessd.ccap
-        # Monthly gross income from all counted sources (HAR 17-798.3-10(b);
-        # identically 17-798.2-10(b) before August 6, 2021).
+        # Hawaii counts monthly gross income, including Hawaii TANF, under
+        # HAR 17-798.2-10(b) and its successor 17-798.3-10(b).
         gross = add(spm_unit, period, p.income.countable_income.sources)
         # HAR 17-798.3-11(8) (17-798.2-11(8) before August 6, 2021): exclude
         # the earnings of minor household members who are at least half-time

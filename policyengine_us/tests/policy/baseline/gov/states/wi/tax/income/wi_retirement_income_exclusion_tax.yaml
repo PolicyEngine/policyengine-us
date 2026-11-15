@@ -219,3 +219,28 @@
     # tax = 6,000 * 0.035 = 210.
     wi_retirement_income_exclusion_amount: 24_000
     wi_retirement_income_exclusion_tax: 210
+
+# $34,000 WI income - $24,000 exclusion - $4,450 dependent deduction
+# - $250 exemption = $5,300, taxed at 3.5% = $185.50. Pension and IRA both
+# qualify. The exemption is the age-65 $250 under Wis. Stat. 71.05(23)(b)3,
+# which tests only age; the $700 personal exemption stays at $0 as built.
+
+- name: 2025 claimable but unclaimed retiree uses the dependent deduction on the positive retirement exclusion
+    path
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    employment_income: 4000
+    taxable_pension_income: 20000
+    taxable_ira_distributions: 10000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+    claimable_as_dependent_on_another_return: true
+    claimed_as_dependent_on_another_return: false
+  output:
+    wi_retirement_income_exclusion_amount: 24000
+    wi_standard_deduction: 4450
+    wi_exemption: 250
+    wi_retirement_income_exclusion_tax: 185.50

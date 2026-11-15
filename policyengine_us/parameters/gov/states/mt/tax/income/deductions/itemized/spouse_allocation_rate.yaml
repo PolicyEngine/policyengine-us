@@ -1,13 +1,30 @@
-description: Share of tax unit itemized deductions allocated to each spouse when married filing separately on the same form. This is not a policy parameter but a mathematical representation of "divided equally".
+description: Montana itemized deductions paid jointly are split by this share between the spouses' columns when married couples file separately on the same form; this is a modeling convention, not a rate in law.
 values:
-  # 0.5 means each spouse gets 50% of joint deductions
+  # A modeling convention, not a rate in the law. On the same form (status
+  # 2a), ARM 42.15.524(3)(b) defers to the form, which lets the couple
+  # allocate payments from accounts both spouses own "in any proportional
+  # amount"; an equal division is required only on separate forms, absent a
+  # written agreement (ARM 42.15.524(3)(c)). Readers:
+  # - mt_non_medical_itemized_deductions_indiv and
+  #   mt_itemized_deductions_for_federal_itemization_indiv split the
+  #   charitable deduction equally by this rate;
+  # - mt_dependent_medical_expense_head_share uses it as the tie-break and
+  #   starting candidate for the tax-minimizing split of dependents' medical
+  #   bills;
+  # - mt_child_dependent_care_expense_deduction gives each spouse this share
+  #   of the deduction. There the equal split is the law's rule, not a
+  #   convention: each spouse enters one-half of Form 2441-M line 7.
+  # The federal rule for separate returns also treats payments from a joint
+  # account as paid equally.
   2021-01-01: 0.5
 metadata:
   label: Montana itemized deductions spouse allocation rate
   period: year
   unit: /1
   reference:
-    - title: Montana Administrative Rule 42.15.524 - Itemized Deductions of Married Taxpayers
-      href: https://rules.mt.gov/gateway/ruleno.asp?RN=42.15.524
-    - title: Montana Form 2 Instructions
-      href: https://revenue.mt.gov/publications/montana-form-2-individual-income-tax-return-forms-and-instructions-includes-form-2ec
+    - title: Montana Administrative Rule 42.15.524 - Itemized Deductions of Married Taxpayers (archived text, in effect until its repeal effective Jan. 25, 2025)
+      href: https://web.archive.org/web/20201030190413/http://www.mtrules.org/gateway/ruleno.asp?RN=42.15.524
+    - title: 2022 Montana Form 2 Instructions, Allocation of deductions
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=11
+    - title: IRS Publication 502, Separate returns
+      href: https://www.irs.gov/publications/p502

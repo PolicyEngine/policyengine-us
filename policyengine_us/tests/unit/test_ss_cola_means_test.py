@@ -1132,7 +1132,10 @@ def _assert_cached_outputs_equal(reference, actual):
 def test_means_test_off_preserves_downstream_dependency_closure(
     disabled_means_test_system, calculated
 ):
-    # Main 37dd5099ed7fad694419fb652eb3ba7bd14122ba supplies these literals.
+    # Main 37dd5099ed7fad694419fb652eb3ba7bd14122ba supplies these literals,
+    # except income tax and household net income: Rev. Proc. 2026-35 replaced
+    # the 2027 federal forecasts that main used, lowering this household's 2027
+    # income tax by $7 (main: 2,715 and 49,442.6015625).
     # Main cannot select the calculator as its public source, so the calculated
     # case checks its direct calculator channel against main below and retains
     # public downstream equality as supplemental disabled-policy coverage.
@@ -1140,10 +1143,10 @@ def test_means_test_off_preserves_downstream_dependency_closure(
         "social_security": 24_000,
         "taxable_social_security": 11_300,
         "adjusted_gross_income": 41_300,
-        "income_tax": 2_715,
+        "income_tax": 2_708,
         "net_investment_income_tax": 0,
         "medicare_part_b_premium": 0,
-        "household_net_income": 49_442.6015625,
+        "household_net_income": 49_449.6015625,
     }
     record = _calculator_record("worker") if calculated else _record()
     if not calculated:

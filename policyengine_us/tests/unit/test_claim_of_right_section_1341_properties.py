@@ -40,10 +40,12 @@ applies and otherwise is what it is with the deduction method fixed; and that
 its payment is the prior-year increase when the credit method applies and zero
 otherwise.
 
-Last, one itemizing household per state: the credit method reduces the federal
-tax deductible in Alabama, Missouri and Oregon, so their state taxes can rise.
-Other states' taxes stay unchanged for this household (no state input is
-supplied). The deduction method leaves Arizona's and Kansas's taxes unchanged.
+Last, one itemizing household per state: with the credit method fixed, the
+repayment reduces the federal tax deductible in Alabama, Missouri and Oregon, so
+their state taxes can rise; it lowers the tax of each state listed in
+STATES_WITH_RELIEF_UNDER_THE_CREDIT whose rule is in the model; and it leaves
+every other state's income tax unchanged (section 1341(b)(3)). With the
+deduction method fixed it leaves Arizona's and Kansas's taxes unchanged.
 """
 
 import gc
@@ -89,6 +91,28 @@ STATES = [
 # deduction: A.R.S. 43-1021(9) and K.S.A. 79-32,120(a).
 # California carries the federal deduction in Schedule CA column A.
 STATES_WITHOUT_THE_DEDUCTION = ["AZ", "KS"]
+# States whose own claim of right relief applies when federal tax is computed
+# with the section 1341 credit, and the variable that carries it. Under the
+# credit method these lower the household's state tax. A listed state whose
+# variable is not in the model yet must not change.
+STATES_WITH_RELIEF_UNDER_THE_CREDIT = {
+    # Ark. Code 26-51-457: a deduction whichever federal method applies.
+    "AR": "ar_claim_of_right_deduction",
+    # Act 56, SLH 2023: section 1341 computed on Hawaii tax, independently.
+    "HI": "hi_claim_of_right_credit",
+    # 35 ILCS 5/203(a)(2)(P): the deduction used to compute the federal credit.
+    "IL": "il_claim_of_right_subtraction",
+    # IC 6-3-1-3.5(a)(22).
+    "IN": "in_claim_of_right_deduction",
+    # M.G.L. c. 62, s. 3(B)(a)(14).
+    "MA": "ma_claim_of_right_deduction",
+    # N.J.S.A. 54A:5-2 and TAM 2011-7: an offset within the income category.
+    "NJ": "nj_claim_of_right_offset",
+    # R.C. 5747.01(A)(12).
+    "OH": "oh_claim_of_right_deduction",
+    # IT-140 Schedule M, IRC 1341 Repayments.
+    "WV": "wv_claim_of_right_subtraction",
+}
 BRANCHES = [
     "income_tax_if_claiming_claim_of_right_deduction",
     "income_tax_if_claiming_claim_of_right_credit",
@@ -304,8 +328,8 @@ def test_north_carolina_follows_the_federal_method(results, year):
     )
 
 
-def state_income_tax(year, repayment, method=None):
-    """State income tax of an itemizing single filer in each state."""
+def state_simulation(year, repayment, method=None):
+    """An itemizing single filer in each state."""
     situation = {"people": {}, "tax_units": {}, "households": {}}
     for i, state in enumerate(STATES):
         situation["people"][f"p{i}"] = {
@@ -326,20 +350,32 @@ def state_income_tax(year, repayment, method=None):
             "members": [f"p{i}"],
             "state_code": {year: state},
         }
-    simulation = Simulation(situation=situation)
+    return Simulation(situation=situation)
+
+
+def state_income_tax(simulation, year):
     return np.asarray(simulation.calculate("state_income_tax", year))
 
 
 def test_states_under_each_federal_method():
     # One year: each of these three simulations computes every state's tax.
     year = YEARS[0]
-    without_repayment = state_income_tax(year, 0)
-    with_credit = state_income_tax(year, 10_000, method=True)
+    without_repayment = state_income_tax(state_simulation(year, 0), year)
+    credit = state_simulation(year, 10_000, method=True)
+    with_credit = state_income_tax(credit, year)
+    variables = credit.tax_benefit_system.variables
+    relief = np.isin(
+        STATES,
+        [
+            state
+            for state, variable in STATES_WITH_RELIEF_UNDER_THE_CREDIT.items()
+            if variable in variables
+        ],
+    )
     federal_tax_deduction_states = np.isin(STATES, ["AL", "MO", "OR"])
+    unchanged = ~relief & ~federal_tax_deduction_states
     np.testing.assert_allclose(
-        with_credit[~federal_tax_deduction_states],
-        without_repayment[~federal_tax_deduction_states],
-        atol=TOLERANCE,
+        with_credit[unchanged], without_repayment[unchanged], atol=TOLERANCE
     )
     assert np.all(
         with_credit[federal_tax_deduction_states]
@@ -349,7 +385,12 @@ def test_states_under_each_federal_method():
         with_credit[federal_tax_deduction_states]
         > without_repayment[federal_tax_deduction_states] + TOLERANCE
     )
-    with_deduction = state_income_tax(year, 10_000, method=False)
+    assert np.all(with_credit[relief] < without_repayment[relief] - 1), (
+        "each listed state's own rule should lower its tax under the credit method"
+    )
+    with_deduction = state_income_tax(
+        state_simulation(year, 10_000, method=False), year
+    )
     assert np.any(np.abs(with_deduction - without_repayment) > 1), (
         "the deduction should reach the states that follow federal itemized deductions"
     )

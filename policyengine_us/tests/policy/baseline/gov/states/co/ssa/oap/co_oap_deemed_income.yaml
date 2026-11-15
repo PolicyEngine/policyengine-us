@@ -400,6 +400,8 @@
         members: [spouse, child]
         state_code: CO
   output:
+    # 3.533(A)(2)(c): the declared spouses still split the $20 disregard.
+    co_oap_own_countable_income: [0, 23_880, 0]
     co_oap_deemed_income: [5_652, 0, 0]
     co_oap: [6_732, 0, 0]
 
@@ -433,6 +435,8 @@
         members: [spouse]
         state_code: NY
   output:
+    # (1,000 - 65 - 10) / 2 * 12 = $5,550 for the spouse.
+    co_oap_own_countable_income: [0, 5_550]
     co_oap_deeming_exempt: [false, true]
     co_oap_deemed_income: [0, 0]
     co_oap: [12_384, 0]

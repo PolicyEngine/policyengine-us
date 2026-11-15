@@ -378,3 +378,39 @@
   output:
     ri_ssp_living_arrangement: [INDEPENDENT, RESIDENTIAL_CARE]
     ri_ssp: [39.92, 332]
+
+# R.I. Gen. Laws 40-6-27(a)(1)(i),(iii): living-alone state
+# standards are $79.38 per couple and $39.92 per individual.
+# $79.38 / 2 = $39.69; no federal one-third reduction applies.
+# https://webserver.rilegislature.gov/Statutes/TITLE40/40-6/40-6-27.htm
+# No marital units: only the head and spouse form the eligible couple.
+- name: RI couple rate excludes a third aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: RI
+  output:
+    ri_ssp: [39.69, 39.69, 39.92]

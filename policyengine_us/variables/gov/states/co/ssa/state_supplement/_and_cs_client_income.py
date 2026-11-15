@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states._spouses import state_is_married
 
 
 def and_cs_client_income(person, period, parameters):
@@ -21,8 +22,10 @@ def and_cs_client_income(person, period, parameters):
     unearned = person("ssi_unearned_income", period) + ism
     ssi = person("ssi", period)
     # 3.549(A)(2)(c)(1): a married client's $20 disregard is split with the
-    # spouse.
-    married = person.marital_unit.nb_persons() == 2
+    # spouse. As in Old Age Pension's 3.533(A)(2)(c), a declared spouse
+    # counts even when living apart, and a default marital unit counts only
+    # SSI's identified spouse, not a third adult.
+    married = state_is_married(person, period.this_year)
     disregard = where(married, p.unearned / 2, p.unearned)
     # 3.549(A)(2)(c)(2): a client whose only unearned income is SSI gets no
     # unearned income disregard; min_ gives 0 when there is no other

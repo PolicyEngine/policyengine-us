@@ -355,3 +355,35 @@
         state_code: NM
   output:
     nm_low_income_comprehensive_tax_rebate: 212
+
+- name: Military retired pay puts a couple, both 67, over the rebate's income limit.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        military_retirement_pay: 45_000
+        social_security_retirement: 15_000
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:
+    # NMSA 1978 § 7-2-2(L)(9), (11): modified gross income counts military
+    # retired pay. 45,000 + 30,000 Social Security = 75,000.
+    nm_modified_gross_income: 75_000
+    # Two federal exemptions plus two for each spouse 65 or older.
+    nm_low_income_comprehensive_tax_rebate_exemptions: 6
+    # 75,000 is above the six-exemption table's $36,000 limit. Without the
+    # military retired pay, modified gross income would be 30,000 and the
+    # rebate 149.
+    nm_low_income_comprehensive_tax_rebate: 0

@@ -110,10 +110,7 @@ def calculate(cases, values):
         "ssi_in_kind_support_and_maintenance",
         "ssi_couple_computation_applies",
     ):
-        period = YEAR if variable == "ssi_in_kind_support_and_maintenance" else PERIOD
-        values_ = np.asarray(simulation.calculate(variable, period))
-        if variable == "ssi_in_kind_support_and_maintenance":
-            values_ = values_ / 12
+        values_ = np.asarray(simulation.calculate(variable, PERIOD))
         results[variable] = dict(zip(names, values_))
     p = simulation.tax_benefit_system.parameters(PERIOD)
     return results, p
