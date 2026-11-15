@@ -1,8 +1,13 @@
-description: Maryland uses this indicator to determine whether the State Median Income base year is frozen for Child Care Scholarship income eligibility.
+description: Maryland uses this indicator to determine whether the State Median Income base year is frozen for the Child Care Scholarship initial income scale.
+# MSDE's scholarship page, captured October 9, 2026, still posts the Initial Income Scale
+# effective December 15, 2024 as the table for new applications: 75% of the federal
+# fiscal 2025 median, $94,026 a year for three. The model holds that median from October
+# 1, 2025, when HHS's fiscal 2026 estimates took effect; a new posted table adds a date here.
 values:
   2016-01-01: false
   2018-07-01: true
   2024-12-15: false
+  2025-10-01: true
 
 metadata:
   unit: bool
@@ -13,3 +18,5 @@ metadata:
       href: https://mgaleg.maryland.gov/meeting_material/2026/w&m%20-%20134146885147130127%20-%20Briefing%20materials.pdf#page=21
     - title: MSDE Jan 23, 2025 OCC Info Session - Dec 15, 2024 SMI unfreeze
       href: https://earlychildhood.marylandpublicschools.org/system/files/filedepot/3/january_2025_occ_info_session.pdf#page=7
+    - title: MSDE, Child Care Scholarship Program, Initial Income Scale effective December 15, 2024 (captured October 9, 2026)
+      href: https://web.archive.org/web/20261009215322/https://earlychildhood.marylandpublicschools.org/child-care-providers/child-care-scholarship-program

@@ -1,0 +1,101 @@
+# Procedure Letter 36, page 3: school age runs to under 15, or under 18 with special needs.
+
+- name: Infant qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccvp_eligible_child: true
+
+- name: A 13-year-old qualifies, past the Publicly Funded Child Care limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccvp_eligible_child: true
+
+- name: Just under 15 qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 14.99
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccvp_eligible_child: true
+
+- name: A 15-year-old does not qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccvp_eligible_child: false
+
+- name: Special-needs child just under 18 qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 17.99
+        immigration_status: CITIZEN
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccvp_eligible_child: true
+
+- name: Special-needs child at 18 does not qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        immigration_status: CITIZEN
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccvp_eligible_child: false
+
+- name: An undocumented child does not qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccvp_eligible_child: false

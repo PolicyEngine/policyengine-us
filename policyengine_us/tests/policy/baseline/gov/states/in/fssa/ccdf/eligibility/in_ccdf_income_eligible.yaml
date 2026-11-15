@@ -6,7 +6,8 @@
 # value takes effect 2026-04-05, so it is exercised with a 2027-01 period.
 
 # --- Applicant (get-on), 1.5 FPL era at 2026-01 ---
-# 2-person FPG 2026 = 21,640/yr; limit = 1.5 * 21,640 = 32,460/yr.
+# January 2026 still uses the 2025 guideline: 2-person FPG = 21,150/yr. The limit is
+# 1.5 * 21,150 / 12 = 2,643.75, printed as 2,644 a month, or 31,728 a year.
 
 - name: Case 1, applicant income below get-on limit, eligible.
   period: 2026-01
@@ -35,7 +36,7 @@
     people:
       person1:
         age: 35
-        employment_income: 32_460  # 1.5 * 21,640 FPG
+        employment_income: 31_728  # 12 * 2,644, the rounded limit
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -57,7 +58,7 @@
     people:
       person1:
         age: 35
-        employment_income: 33_000  # above 32,460 limit
+        employment_income: 33_000  # above 31,728 limit
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -183,12 +184,11 @@
     in_ccdf_income_eligible: false
 
 # --- 135% FPL applicant boundary at 2027-01 (1.35 era) ---
-# 2-person 2027 FPG = 22,147.39/yr; 135% = 29,898.98/yr. The 2027 FPG is a
-# CBO-CPI-forecast-uprated value that shifts when the actual 2027 guideline is
-# published, so these cases keep a comfortable margin on each side of the
-# limit rather than pinning the exact boundary (the inclusive <= boundary is
-# exercised at 2026 with the published FPG in Case 2). The ineligible income
-# stays below the 1.5-era limit (33,221), proving the 1.35 rate applies.
+# January 2027 still uses the 2026 guideline: 2-person FPG = 21,640/yr; 135% prints
+# as 2,435 a month, or 29,220 a year. These cases keep a comfortable margin on each
+# side of the limit (the inclusive <= boundary is exercised at 2026 in Case 2). The
+# ineligible income stays below the 1.5-era limit (32,460), proving the 1.35 rate
+# applies.
 
 - name: Case 9, applicant income below 135% FPL, eligible.
   period: 2027-01
@@ -196,7 +196,7 @@
     people:
       person1:
         age: 35
-        employment_income: 29_000  # comfortably below the ~29,899 limit
+        employment_income: 29_000  # comfortably below the 29,220 limit
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -217,7 +217,7 @@
     people:
       person1:
         age: 35
-        employment_income: 30_800  # above the ~29,899 limit, below 1.5 * FPG
+        employment_income: 30_800  # above the 29,220 limit, below 1.5 * FPG
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -233,11 +233,9 @@
     in_ccdf_income_eligible: false
 
 # --- 85% SMI enrolled boundary at 2026-01 ---
-# 2-person IN SMI = 6,427.06/mo; 85% = 5,462.99/mo -> 65,555.88/yr. The 2026
-# SMI is uprated from the 2025-10-01 actual (107,555/yr) by the CBO AGI
-# forecast, and reverts to the un-uprated base (85% = 62,166.79/yr) once an
-# actual 2026-10-01 value is added, so these cases keep a comfortable margin
-# below the un-uprated limit and above the uprated one.
+# January 2026 still reads FSSA's schedule effective March 23, 2025, which caps a
+# family of two at 85% of the October 2024 state median income (103,324 for four):
+# 103,324 * 0.68 * 0.85 / 12 = 4,976.77, printed as 4,977 a month, or 59,724 a year.
 
 - name: Case 11, enrolled income below 85% SMI, eligible.
   period: 2026-01
@@ -245,7 +243,7 @@
     people:
       person1:
         age: 35
-        employment_income: 60_000  # below 85% SMI under either basis
+        employment_income: 59_000  # below the 59,724 limit
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -266,7 +264,7 @@
     people:
       person1:
         age: 35
-        employment_income: 70_000  # above 85% SMI (65,556) but below 100% SMI
+        employment_income: 70_000  # above the 59,724 limit, below 100% of SMI (70,260)
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -343,3 +341,2980 @@
     # 5-person FPG 2026 = 38,680/yr; 150% limit = 58,020/yr (4,835/mo).
     # 3,333/mo < 4,835/mo -> eligible. A 2-person unit at this income fails.
     in_ccdf_income_eligible: true
+
+# Tops by family of three, from FSSA's fee schedules: 127% of the 2022 guideline ($2,437)
+# until March 12, 2023; 127% of the 2023 guideline ($2,631) until August 1, 2023, when the
+# rate rises to 150% ($3,108, OECOSL bulletin); 150% of the 2024 guideline ($3,228) from
+# March 31, 2024; of the 2025 guideline ($3,331) from March 23, 2025; then 135% of the
+# 2026 guideline ($3,074) from April 5, 2026. A monthly period reads each change from the
+# next month's first day.
+
+- name: New applicant of 3 at 2,437 dollars qualifies in 2023-03.
+  period: 2023-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 2_437
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 2,438 dollars doesn't qualify in 2023-03.
+  period: 2023-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 2_438
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 2,631 dollars qualifies in 2023-06.
+  period: 2023-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 2_631
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 2,632 dollars doesn't qualify in 2023-06.
+  period: 2023-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 2_632
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2023: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,108 dollars qualifies in 2024-03.
+  period: 2024-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_108
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,109 dollars doesn't qualify in 2024-03.
+  period: 2024-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_109
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,228 dollars qualifies in 2024-04.
+  period: 2024-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_228
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,229 dollars doesn't qualify in 2024-04.
+  period: 2024-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_229
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,228 dollars qualifies in 2025-03.
+  period: 2025-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_228
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,229 dollars doesn't qualify in 2025-03.
+  period: 2025-03
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_229
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,331 dollars qualifies in 2025-04.
+  period: 2025-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_331
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,332 dollars doesn't qualify in 2025-04.
+  period: 2025-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_332
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,331 dollars qualifies in 2026-04.
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_331
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,332 dollars doesn't qualify in 2026-04.
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_332
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 2 at 2,435 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        in_ccdf_countable_income: 2_435
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 2 at 2,436 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        in_ccdf_countable_income: 2_436
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 3 at 3,074 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_074
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 3 at 3,075 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        in_ccdf_countable_income: 3_075
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 4 at 3,713 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        in_ccdf_countable_income: 3_713
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 4 at 3,714 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        in_ccdf_countable_income: 3_714
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 5 at 4,352 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        in_ccdf_countable_income: 4_352
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 5 at 4,353 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        in_ccdf_countable_income: 4_353
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 6 at 4,991 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        in_ccdf_countable_income: 4_991
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 6 at 4,992 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        in_ccdf_countable_income: 4_992
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 7 at 5,630 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        in_ccdf_countable_income: 5_630
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 7 at 5,631 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        in_ccdf_countable_income: 5_631
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: New applicant of 8 at 6,269 dollars qualifies in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+      person8:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        in_ccdf_countable_income: 6_269
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: New applicant of 8 at 6,270 dollars doesn't qualify in 2026-05.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+      person8:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        in_ccdf_countable_income: 6_270
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: IN
+  output:
+    in_ccdf_income_eligible: false
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: FSSA's chart effective April 5, 2026 holds at every family size in May 2026.
+  period: 2026-05
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+      p23:
+        age:
+          2026: 30
+      p24:
+        age:
+          2026: 30
+      p25:
+        age:
+          2026: 30
+      p26:
+        age:
+          2026: 30
+      p27:
+        age:
+          2026: 30
+      p28:
+        age:
+          2026: 30
+      p29:
+        age:
+          2026: 30
+      p30:
+        age:
+          2026: 30
+      p31:
+        age:
+          2026: 30
+      p32:
+        age:
+          2026: 30
+      p33:
+        age:
+          2026: 30
+      p34:
+        age:
+          2026: 30
+      p35:
+        age:
+          2026: 30
+      p36:
+        age:
+          2026: 30
+      p37:
+        age:
+          2026: 30
+      p38:
+        age:
+          2026: 30
+      p39:
+        age:
+          2026: 30
+      p40:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        in_ccdf_countable_income: 1_796
+        is_in_ccdf_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        in_ccdf_countable_income: 1_797
+        is_in_ccdf_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 2_435
+        is_in_ccdf_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 2_436
+        is_in_ccdf_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 3_074
+        is_in_ccdf_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 3_075
+        is_in_ccdf_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 3_713
+        is_in_ccdf_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 3_714
+        is_in_ccdf_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 4_352
+        is_in_ccdf_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 4_353
+        is_in_ccdf_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 4_991
+        is_in_ccdf_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 4_992
+        is_in_ccdf_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 5_630
+        is_in_ccdf_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 5_631
+        is_in_ccdf_enrolled: false
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 6_269
+        is_in_ccdf_enrolled: false
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 6_270
+        is_in_ccdf_enrolled: false
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        in_ccdf_countable_income: 6_908
+        is_in_ccdf_enrolled: false
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        in_ccdf_countable_income: 6_909
+        is_in_ccdf_enrolled: false
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        in_ccdf_countable_income: 7_547
+        is_in_ccdf_enrolled: false
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        in_ccdf_countable_income: 7_548
+        is_in_ccdf_enrolled: false
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        in_ccdf_countable_income: 8_186
+        is_in_ccdf_enrolled: false
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        in_ccdf_countable_income: 8_187
+        is_in_ccdf_enrolled: false
+      u23:
+        members: [p23]
+        spm_unit_size:
+          2026: 12
+        in_ccdf_countable_income: 8_825
+        is_in_ccdf_enrolled: false
+      u24:
+        members: [p24]
+        spm_unit_size:
+          2026: 12
+        in_ccdf_countable_income: 8_826
+        is_in_ccdf_enrolled: false
+      u25:
+        members: [p25]
+        spm_unit_size:
+          2026: 13
+        in_ccdf_countable_income: 9_464
+        is_in_ccdf_enrolled: false
+      u26:
+        members: [p26]
+        spm_unit_size:
+          2026: 13
+        in_ccdf_countable_income: 9_465
+        is_in_ccdf_enrolled: false
+      u27:
+        members: [p27]
+        spm_unit_size:
+          2026: 14
+        in_ccdf_countable_income: 10_103
+        is_in_ccdf_enrolled: false
+      u28:
+        members: [p28]
+        spm_unit_size:
+          2026: 14
+        in_ccdf_countable_income: 10_104
+        is_in_ccdf_enrolled: false
+      u29:
+        members: [p29]
+        spm_unit_size:
+          2026: 15
+        in_ccdf_countable_income: 10_742
+        is_in_ccdf_enrolled: false
+      u30:
+        members: [p30]
+        spm_unit_size:
+          2026: 15
+        in_ccdf_countable_income: 10_743
+        is_in_ccdf_enrolled: false
+      u31:
+        members: [p31]
+        spm_unit_size:
+          2026: 16
+        in_ccdf_countable_income: 11_381
+        is_in_ccdf_enrolled: false
+      u32:
+        members: [p32]
+        spm_unit_size:
+          2026: 16
+        in_ccdf_countable_income: 11_382
+        is_in_ccdf_enrolled: false
+      u33:
+        members: [p33]
+        spm_unit_size:
+          2026: 17
+        in_ccdf_countable_income: 12_020
+        is_in_ccdf_enrolled: false
+      u34:
+        members: [p34]
+        spm_unit_size:
+          2026: 17
+        in_ccdf_countable_income: 12_021
+        is_in_ccdf_enrolled: false
+      u35:
+        members: [p35]
+        spm_unit_size:
+          2026: 18
+        in_ccdf_countable_income: 12_659
+        is_in_ccdf_enrolled: false
+      u36:
+        members: [p36]
+        spm_unit_size:
+          2026: 18
+        in_ccdf_countable_income: 12_660
+        is_in_ccdf_enrolled: false
+      u37:
+        members: [p37]
+        spm_unit_size:
+          2026: 19
+        in_ccdf_countable_income: 13_028
+        is_in_ccdf_enrolled: false
+      u38:
+        members: [p38]
+        spm_unit_size:
+          2026: 19
+        in_ccdf_countable_income: 13_029
+        is_in_ccdf_enrolled: false
+      u39:
+        members: [p39]
+        spm_unit_size:
+          2026: 20
+        in_ccdf_countable_income: 13_257
+        is_in_ccdf_enrolled: false
+      u40:
+        members: [p40]
+        spm_unit_size:
+          2026: 20
+        in_ccdf_countable_income: 13_258
+        is_in_ccdf_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: IN
+      h2:
+        members: [p2]
+        state_code:
+          2026: IN
+      h3:
+        members: [p3]
+        state_code:
+          2026: IN
+      h4:
+        members: [p4]
+        state_code:
+          2026: IN
+      h5:
+        members: [p5]
+        state_code:
+          2026: IN
+      h6:
+        members: [p6]
+        state_code:
+          2026: IN
+      h7:
+        members: [p7]
+        state_code:
+          2026: IN
+      h8:
+        members: [p8]
+        state_code:
+          2026: IN
+      h9:
+        members: [p9]
+        state_code:
+          2026: IN
+      h10:
+        members: [p10]
+        state_code:
+          2026: IN
+      h11:
+        members: [p11]
+        state_code:
+          2026: IN
+      h12:
+        members: [p12]
+        state_code:
+          2026: IN
+      h13:
+        members: [p13]
+        state_code:
+          2026: IN
+      h14:
+        members: [p14]
+        state_code:
+          2026: IN
+      h15:
+        members: [p15]
+        state_code:
+          2026: IN
+      h16:
+        members: [p16]
+        state_code:
+          2026: IN
+      h17:
+        members: [p17]
+        state_code:
+          2026: IN
+      h18:
+        members: [p18]
+        state_code:
+          2026: IN
+      h19:
+        members: [p19]
+        state_code:
+          2026: IN
+      h20:
+        members: [p20]
+        state_code:
+          2026: IN
+      h21:
+        members: [p21]
+        state_code:
+          2026: IN
+      h22:
+        members: [p22]
+        state_code:
+          2026: IN
+      h23:
+        members: [p23]
+        state_code:
+          2026: IN
+      h24:
+        members: [p24]
+        state_code:
+          2026: IN
+      h25:
+        members: [p25]
+        state_code:
+          2026: IN
+      h26:
+        members: [p26]
+        state_code:
+          2026: IN
+      h27:
+        members: [p27]
+        state_code:
+          2026: IN
+      h28:
+        members: [p28]
+        state_code:
+          2026: IN
+      h29:
+        members: [p29]
+        state_code:
+          2026: IN
+      h30:
+        members: [p30]
+        state_code:
+          2026: IN
+      h31:
+        members: [p31]
+        state_code:
+          2026: IN
+      h32:
+        members: [p32]
+        state_code:
+          2026: IN
+      h33:
+        members: [p33]
+        state_code:
+          2026: IN
+      h34:
+        members: [p34]
+        state_code:
+          2026: IN
+      h35:
+        members: [p35]
+        state_code:
+          2026: IN
+      h36:
+        members: [p36]
+        state_code:
+          2026: IN
+      h37:
+        members: [p37]
+        state_code:
+          2026: IN
+      h38:
+        members: [p38]
+        state_code:
+          2026: IN
+      h39:
+        members: [p39]
+        state_code:
+          2026: IN
+      h40:
+        members: [p40]
+        state_code:
+          2026: IN
+  output:
+    # 135% of the 2026 guideline, sizes 1 to 18. For 19 and 20 people the
+    # chart's cap binds instead: 85% of the October 2025 state median income,
+    # rounded up to the next dollar.
+    in_ccdf_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: FSSA's chart effective April 5, 2026 holds enrolled families at every family size in May 2026.
+  period: 2026-05
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+      p23:
+        age:
+          2026: 30
+      p24:
+        age:
+          2026: 30
+      p25:
+        age:
+          2026: 30
+      p26:
+        age:
+          2026: 30
+      p27:
+        age:
+          2026: 30
+      p28:
+        age:
+          2026: 30
+      p29:
+        age:
+          2026: 30
+      p30:
+        age:
+          2026: 30
+      p31:
+        age:
+          2026: 30
+      p32:
+        age:
+          2026: 30
+      p33:
+        age:
+          2026: 30
+      p34:
+        age:
+          2026: 30
+      p35:
+        age:
+          2026: 30
+      p36:
+        age:
+          2026: 30
+      p37:
+        age:
+          2026: 30
+      p38:
+        age:
+          2026: 30
+      p39:
+        age:
+          2026: 30
+      p40:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        in_ccdf_countable_income: 3_962
+        is_in_ccdf_enrolled: true
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        in_ccdf_countable_income: 3_963
+        is_in_ccdf_enrolled: true
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 5_181
+        is_in_ccdf_enrolled: true
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 5_182
+        is_in_ccdf_enrolled: true
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 6_400
+        is_in_ccdf_enrolled: true
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 6_401
+        is_in_ccdf_enrolled: true
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 7_619
+        is_in_ccdf_enrolled: true
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 7_620
+        is_in_ccdf_enrolled: true
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 8_838
+        is_in_ccdf_enrolled: true
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 8_839
+        is_in_ccdf_enrolled: true
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 10_057
+        is_in_ccdf_enrolled: true
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 10_058
+        is_in_ccdf_enrolled: true
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 10_285
+        is_in_ccdf_enrolled: true
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 10_286
+        is_in_ccdf_enrolled: true
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 10_514
+        is_in_ccdf_enrolled: true
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 10_515
+        is_in_ccdf_enrolled: true
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        in_ccdf_countable_income: 10_743
+        is_in_ccdf_enrolled: true
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        in_ccdf_countable_income: 10_744
+        is_in_ccdf_enrolled: true
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        in_ccdf_countable_income: 10_971
+        is_in_ccdf_enrolled: true
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        in_ccdf_countable_income: 10_972
+        is_in_ccdf_enrolled: true
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        in_ccdf_countable_income: 11_200
+        is_in_ccdf_enrolled: true
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        in_ccdf_countable_income: 11_201
+        is_in_ccdf_enrolled: true
+      u23:
+        members: [p23]
+        spm_unit_size:
+          2026: 12
+        in_ccdf_countable_income: 11_428
+        is_in_ccdf_enrolled: true
+      u24:
+        members: [p24]
+        spm_unit_size:
+          2026: 12
+        in_ccdf_countable_income: 11_429
+        is_in_ccdf_enrolled: true
+      u25:
+        members: [p25]
+        spm_unit_size:
+          2026: 13
+        in_ccdf_countable_income: 11_657
+        is_in_ccdf_enrolled: true
+      u26:
+        members: [p26]
+        spm_unit_size:
+          2026: 13
+        in_ccdf_countable_income: 11_658
+        is_in_ccdf_enrolled: true
+      u27:
+        members: [p27]
+        spm_unit_size:
+          2026: 14
+        in_ccdf_countable_income: 11_885
+        is_in_ccdf_enrolled: true
+      u28:
+        members: [p28]
+        spm_unit_size:
+          2026: 14
+        in_ccdf_countable_income: 11_886
+        is_in_ccdf_enrolled: true
+      u29:
+        members: [p29]
+        spm_unit_size:
+          2026: 15
+        in_ccdf_countable_income: 12_114
+        is_in_ccdf_enrolled: true
+      u30:
+        members: [p30]
+        spm_unit_size:
+          2026: 15
+        in_ccdf_countable_income: 12_115
+        is_in_ccdf_enrolled: true
+      u31:
+        members: [p31]
+        spm_unit_size:
+          2026: 16
+        in_ccdf_countable_income: 12_342
+        is_in_ccdf_enrolled: true
+      u32:
+        members: [p32]
+        spm_unit_size:
+          2026: 16
+        in_ccdf_countable_income: 12_343
+        is_in_ccdf_enrolled: true
+      u33:
+        members: [p33]
+        spm_unit_size:
+          2026: 17
+        in_ccdf_countable_income: 12_571
+        is_in_ccdf_enrolled: true
+      u34:
+        members: [p34]
+        spm_unit_size:
+          2026: 17
+        in_ccdf_countable_income: 12_572
+        is_in_ccdf_enrolled: true
+      u35:
+        members: [p35]
+        spm_unit_size:
+          2026: 18
+        in_ccdf_countable_income: 12_800
+        is_in_ccdf_enrolled: true
+      u36:
+        members: [p36]
+        spm_unit_size:
+          2026: 18
+        in_ccdf_countable_income: 12_801
+        is_in_ccdf_enrolled: true
+      u37:
+        members: [p37]
+        spm_unit_size:
+          2026: 19
+        in_ccdf_countable_income: 13_028
+        is_in_ccdf_enrolled: true
+      u38:
+        members: [p38]
+        spm_unit_size:
+          2026: 19
+        in_ccdf_countable_income: 13_029
+        is_in_ccdf_enrolled: true
+      u39:
+        members: [p39]
+        spm_unit_size:
+          2026: 20
+        in_ccdf_countable_income: 13_257
+        is_in_ccdf_enrolled: true
+      u40:
+        members: [p40]
+        spm_unit_size:
+          2026: 20
+        in_ccdf_countable_income: 13_258
+        is_in_ccdf_enrolled: true
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: IN
+      h2:
+        members: [p2]
+        state_code:
+          2026: IN
+      h3:
+        members: [p3]
+        state_code:
+          2026: IN
+      h4:
+        members: [p4]
+        state_code:
+          2026: IN
+      h5:
+        members: [p5]
+        state_code:
+          2026: IN
+      h6:
+        members: [p6]
+        state_code:
+          2026: IN
+      h7:
+        members: [p7]
+        state_code:
+          2026: IN
+      h8:
+        members: [p8]
+        state_code:
+          2026: IN
+      h9:
+        members: [p9]
+        state_code:
+          2026: IN
+      h10:
+        members: [p10]
+        state_code:
+          2026: IN
+      h11:
+        members: [p11]
+        state_code:
+          2026: IN
+      h12:
+        members: [p12]
+        state_code:
+          2026: IN
+      h13:
+        members: [p13]
+        state_code:
+          2026: IN
+      h14:
+        members: [p14]
+        state_code:
+          2026: IN
+      h15:
+        members: [p15]
+        state_code:
+          2026: IN
+      h16:
+        members: [p16]
+        state_code:
+          2026: IN
+      h17:
+        members: [p17]
+        state_code:
+          2026: IN
+      h18:
+        members: [p18]
+        state_code:
+          2026: IN
+      h19:
+        members: [p19]
+        state_code:
+          2026: IN
+      h20:
+        members: [p20]
+        state_code:
+          2026: IN
+      h21:
+        members: [p21]
+        state_code:
+          2026: IN
+      h22:
+        members: [p22]
+        state_code:
+          2026: IN
+      h23:
+        members: [p23]
+        state_code:
+          2026: IN
+      h24:
+        members: [p24]
+        state_code:
+          2026: IN
+      h25:
+        members: [p25]
+        state_code:
+          2026: IN
+      h26:
+        members: [p26]
+        state_code:
+          2026: IN
+      h27:
+        members: [p27]
+        state_code:
+          2026: IN
+      h28:
+        members: [p28]
+        state_code:
+          2026: IN
+      h29:
+        members: [p29]
+        state_code:
+          2026: IN
+      h30:
+        members: [p30]
+        state_code:
+          2026: IN
+      h31:
+        members: [p31]
+        state_code:
+          2026: IN
+      h32:
+        members: [p32]
+        state_code:
+          2026: IN
+      h33:
+        members: [p33]
+        state_code:
+          2026: IN
+      h34:
+        members: [p34]
+        state_code:
+          2026: IN
+      h35:
+        members: [p35]
+        state_code:
+          2026: IN
+      h36:
+        members: [p36]
+        state_code:
+          2026: IN
+      h37:
+        members: [p37]
+        state_code:
+          2026: IN
+      h38:
+        members: [p38]
+        state_code:
+          2026: IN
+      h39:
+        members: [p39]
+        state_code:
+          2026: IN
+      h40:
+        members: [p40]
+        state_code:
+          2026: IN
+  output:
+    # The Max SMI column, sizes 1 to 20: 85% of the October 2025 state median
+    # income, rounded up to the next dollar.
+    in_ccdf_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: FSSA's chart effective March 23, 2025 still holds at every family size in January 2026.
+  period: 2026-01
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+      p23:
+        age:
+          2026: 30
+      p24:
+        age:
+          2026: 30
+      p25:
+        age:
+          2026: 30
+      p26:
+        age:
+          2026: 30
+      p27:
+        age:
+          2026: 30
+      p28:
+        age:
+          2026: 30
+      p29:
+        age:
+          2026: 30
+      p30:
+        age:
+          2026: 30
+      p31:
+        age:
+          2026: 30
+      p32:
+        age:
+          2026: 30
+      p33:
+        age:
+          2026: 30
+      p34:
+        age:
+          2026: 30
+      p35:
+        age:
+          2026: 30
+      p36:
+        age:
+          2026: 30
+      p37:
+        age:
+          2026: 30
+      p38:
+        age:
+          2026: 30
+      p39:
+        age:
+          2026: 30
+      p40:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        in_ccdf_countable_income: 1_956
+        is_in_ccdf_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        in_ccdf_countable_income: 1_957
+        is_in_ccdf_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 2_644
+        is_in_ccdf_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 2_645
+        is_in_ccdf_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 3_331
+        is_in_ccdf_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 3_332
+        is_in_ccdf_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 4_019
+        is_in_ccdf_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 4_020
+        is_in_ccdf_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 4_706
+        is_in_ccdf_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 4_707
+        is_in_ccdf_enrolled: false
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 5_394
+        is_in_ccdf_enrolled: false
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 5_395
+        is_in_ccdf_enrolled: false
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 6_081
+        is_in_ccdf_enrolled: false
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 6_082
+        is_in_ccdf_enrolled: false
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 6_769
+        is_in_ccdf_enrolled: false
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 6_770
+        is_in_ccdf_enrolled: false
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        in_ccdf_countable_income: 7_456
+        is_in_ccdf_enrolled: false
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        in_ccdf_countable_income: 7_457
+        is_in_ccdf_enrolled: false
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        in_ccdf_countable_income: 8_144
+        is_in_ccdf_enrolled: false
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        in_ccdf_countable_income: 8_145
+        is_in_ccdf_enrolled: false
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        in_ccdf_countable_income: 8_831
+        is_in_ccdf_enrolled: false
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        in_ccdf_countable_income: 8_832
+        is_in_ccdf_enrolled: false
+      u23:
+        members: [p23]
+        spm_unit_size:
+          2026: 12
+        in_ccdf_countable_income: 9_519
+        is_in_ccdf_enrolled: false
+      u24:
+        members: [p24]
+        spm_unit_size:
+          2026: 12
+        in_ccdf_countable_income: 9_520
+        is_in_ccdf_enrolled: false
+      u25:
+        members: [p25]
+        spm_unit_size:
+          2026: 13
+        in_ccdf_countable_income: 10_206
+        is_in_ccdf_enrolled: false
+      u26:
+        members: [p26]
+        spm_unit_size:
+          2026: 13
+        in_ccdf_countable_income: 10_207
+        is_in_ccdf_enrolled: false
+      u27:
+        members: [p27]
+        spm_unit_size:
+          2026: 14
+        in_ccdf_countable_income: 10_894
+        is_in_ccdf_enrolled: false
+      u28:
+        members: [p28]
+        spm_unit_size:
+          2026: 14
+        in_ccdf_countable_income: 10_895
+        is_in_ccdf_enrolled: false
+      u29:
+        members: [p29]
+        spm_unit_size:
+          2026: 15
+        in_ccdf_countable_income: 11_581
+        is_in_ccdf_enrolled: false
+      u30:
+        members: [p30]
+        spm_unit_size:
+          2026: 15
+        in_ccdf_countable_income: 11_582
+        is_in_ccdf_enrolled: false
+      u31:
+        members: [p31]
+        spm_unit_size:
+          2026: 16
+        in_ccdf_countable_income: 11_857
+        is_in_ccdf_enrolled: false
+      u32:
+        members: [p32]
+        spm_unit_size:
+          2026: 16
+        in_ccdf_countable_income: 11_858
+        is_in_ccdf_enrolled: false
+      u33:
+        members: [p33]
+        spm_unit_size:
+          2026: 17
+        in_ccdf_countable_income: 12_076
+        is_in_ccdf_enrolled: false
+      u34:
+        members: [p34]
+        spm_unit_size:
+          2026: 17
+        in_ccdf_countable_income: 12_077
+        is_in_ccdf_enrolled: false
+      u35:
+        members: [p35]
+        spm_unit_size:
+          2026: 18
+        in_ccdf_countable_income: 12_296
+        is_in_ccdf_enrolled: false
+      u36:
+        members: [p36]
+        spm_unit_size:
+          2026: 18
+        in_ccdf_countable_income: 12_297
+        is_in_ccdf_enrolled: false
+      u37:
+        members: [p37]
+        spm_unit_size:
+          2026: 19
+        in_ccdf_countable_income: 12_516
+        is_in_ccdf_enrolled: false
+      u38:
+        members: [p38]
+        spm_unit_size:
+          2026: 19
+        in_ccdf_countable_income: 12_517
+        is_in_ccdf_enrolled: false
+      u39:
+        members: [p39]
+        spm_unit_size:
+          2026: 20
+        in_ccdf_countable_income: 12_735
+        is_in_ccdf_enrolled: false
+      u40:
+        members: [p40]
+        spm_unit_size:
+          2026: 20
+        in_ccdf_countable_income: 12_736
+        is_in_ccdf_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: IN
+      h2:
+        members: [p2]
+        state_code:
+          2026: IN
+      h3:
+        members: [p3]
+        state_code:
+          2026: IN
+      h4:
+        members: [p4]
+        state_code:
+          2026: IN
+      h5:
+        members: [p5]
+        state_code:
+          2026: IN
+      h6:
+        members: [p6]
+        state_code:
+          2026: IN
+      h7:
+        members: [p7]
+        state_code:
+          2026: IN
+      h8:
+        members: [p8]
+        state_code:
+          2026: IN
+      h9:
+        members: [p9]
+        state_code:
+          2026: IN
+      h10:
+        members: [p10]
+        state_code:
+          2026: IN
+      h11:
+        members: [p11]
+        state_code:
+          2026: IN
+      h12:
+        members: [p12]
+        state_code:
+          2026: IN
+      h13:
+        members: [p13]
+        state_code:
+          2026: IN
+      h14:
+        members: [p14]
+        state_code:
+          2026: IN
+      h15:
+        members: [p15]
+        state_code:
+          2026: IN
+      h16:
+        members: [p16]
+        state_code:
+          2026: IN
+      h17:
+        members: [p17]
+        state_code:
+          2026: IN
+      h18:
+        members: [p18]
+        state_code:
+          2026: IN
+      h19:
+        members: [p19]
+        state_code:
+          2026: IN
+      h20:
+        members: [p20]
+        state_code:
+          2026: IN
+      h21:
+        members: [p21]
+        state_code:
+          2026: IN
+      h22:
+        members: [p22]
+        state_code:
+          2026: IN
+      h23:
+        members: [p23]
+        state_code:
+          2026: IN
+      h24:
+        members: [p24]
+        state_code:
+          2026: IN
+      h25:
+        members: [p25]
+        state_code:
+          2026: IN
+      h26:
+        members: [p26]
+        state_code:
+          2026: IN
+      h27:
+        members: [p27]
+        state_code:
+          2026: IN
+      h28:
+        members: [p28]
+        state_code:
+          2026: IN
+      h29:
+        members: [p29]
+        state_code:
+          2026: IN
+      h30:
+        members: [p30]
+        state_code:
+          2026: IN
+      h31:
+        members: [p31]
+        state_code:
+          2026: IN
+      h32:
+        members: [p32]
+        state_code:
+          2026: IN
+      h33:
+        members: [p33]
+        state_code:
+          2026: IN
+      h34:
+        members: [p34]
+        state_code:
+          2026: IN
+      h35:
+        members: [p35]
+        state_code:
+          2026: IN
+      h36:
+        members: [p36]
+        state_code:
+          2026: IN
+      h37:
+        members: [p37]
+        state_code:
+          2026: IN
+      h38:
+        members: [p38]
+        state_code:
+          2026: IN
+      h39:
+        members: [p39]
+        state_code:
+          2026: IN
+      h40:
+        members: [p40]
+        state_code:
+          2026: IN
+  output:
+    # 150% of the 2025 guideline, sizes 1 to 15. From 16 people the chart's cap
+    # binds instead: 85% of the October 2024 state median income, rounded up
+    # to the next dollar.
+    in_ccdf_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: FSSA's chart effective March 23, 2025 still holds enrolled families at every family size in January 2026.
+  period: 2026-01
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+      p23:
+        age:
+          2026: 30
+      p24:
+        age:
+          2026: 30
+      p25:
+        age:
+          2026: 30
+      p26:
+        age:
+          2026: 30
+      p27:
+        age:
+          2026: 30
+      p28:
+        age:
+          2026: 30
+      p29:
+        age:
+          2026: 30
+      p30:
+        age:
+          2026: 30
+      p31:
+        age:
+          2026: 30
+      p32:
+        age:
+          2026: 30
+      p33:
+        age:
+          2026: 30
+      p34:
+        age:
+          2026: 30
+      p35:
+        age:
+          2026: 30
+      p36:
+        age:
+          2026: 30
+      p37:
+        age:
+          2026: 30
+      p38:
+        age:
+          2026: 30
+      p39:
+        age:
+          2026: 30
+      p40:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        in_ccdf_countable_income: 3_806
+        is_in_ccdf_enrolled: true
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        in_ccdf_countable_income: 3_807
+        is_in_ccdf_enrolled: true
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 4_977
+        is_in_ccdf_enrolled: true
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        in_ccdf_countable_income: 4_978
+        is_in_ccdf_enrolled: true
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 6_148
+        is_in_ccdf_enrolled: true
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        in_ccdf_countable_income: 6_149
+        is_in_ccdf_enrolled: true
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 7_319
+        is_in_ccdf_enrolled: true
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        in_ccdf_countable_income: 7_320
+        is_in_ccdf_enrolled: true
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 8_490
+        is_in_ccdf_enrolled: true
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        in_ccdf_countable_income: 8_491
+        is_in_ccdf_enrolled: true
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 9_661
+        is_in_ccdf_enrolled: true
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        in_ccdf_countable_income: 9_662
+        is_in_ccdf_enrolled: true
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 9_881
+        is_in_ccdf_enrolled: true
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        in_ccdf_countable_income: 9_882
+        is_in_ccdf_enrolled: true
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 10_100
+        is_in_ccdf_enrolled: true
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        in_ccdf_countable_income: 10_101
+        is_in_ccdf_enrolled: true
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        in_ccdf_countable_income: 10_320
+        is_in_ccdf_enrolled: true
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        in_ccdf_countable_income: 10_321
+        is_in_ccdf_enrolled: true
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        in_ccdf_countable_income: 10_540
+        is_in_ccdf_enrolled: true
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        in_ccdf_countable_income: 10_541
+        is_in_ccdf_enrolled: true
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        in_ccdf_countable_income: 10_759
+        is_in_ccdf_enrolled: true
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        in_ccdf_countable_income: 10_760
+        is_in_ccdf_enrolled: true
+      u23:
+        members: [p23]
+        spm_unit_size:
+          2026: 12
+        in_ccdf_countable_income: 10_979
+        is_in_ccdf_enrolled: true
+      u24:
+        members: [p24]
+        spm_unit_size:
+          2026: 12
+        in_ccdf_countable_income: 10_980
+        is_in_ccdf_enrolled: true
+      u25:
+        members: [p25]
+        spm_unit_size:
+          2026: 13
+        in_ccdf_countable_income: 11_198
+        is_in_ccdf_enrolled: true
+      u26:
+        members: [p26]
+        spm_unit_size:
+          2026: 13
+        in_ccdf_countable_income: 11_199
+        is_in_ccdf_enrolled: true
+      u27:
+        members: [p27]
+        spm_unit_size:
+          2026: 14
+        in_ccdf_countable_income: 11_418
+        is_in_ccdf_enrolled: true
+      u28:
+        members: [p28]
+        spm_unit_size:
+          2026: 14
+        in_ccdf_countable_income: 11_419
+        is_in_ccdf_enrolled: true
+      u29:
+        members: [p29]
+        spm_unit_size:
+          2026: 15
+        in_ccdf_countable_income: 11_637
+        is_in_ccdf_enrolled: true
+      u30:
+        members: [p30]
+        spm_unit_size:
+          2026: 15
+        in_ccdf_countable_income: 11_638
+        is_in_ccdf_enrolled: true
+      u31:
+        members: [p31]
+        spm_unit_size:
+          2026: 16
+        in_ccdf_countable_income: 11_857
+        is_in_ccdf_enrolled: true
+      u32:
+        members: [p32]
+        spm_unit_size:
+          2026: 16
+        in_ccdf_countable_income: 11_858
+        is_in_ccdf_enrolled: true
+      u33:
+        members: [p33]
+        spm_unit_size:
+          2026: 17
+        in_ccdf_countable_income: 12_076
+        is_in_ccdf_enrolled: true
+      u34:
+        members: [p34]
+        spm_unit_size:
+          2026: 17
+        in_ccdf_countable_income: 12_077
+        is_in_ccdf_enrolled: true
+      u35:
+        members: [p35]
+        spm_unit_size:
+          2026: 18
+        in_ccdf_countable_income: 12_296
+        is_in_ccdf_enrolled: true
+      u36:
+        members: [p36]
+        spm_unit_size:
+          2026: 18
+        in_ccdf_countable_income: 12_297
+        is_in_ccdf_enrolled: true
+      u37:
+        members: [p37]
+        spm_unit_size:
+          2026: 19
+        in_ccdf_countable_income: 12_516
+        is_in_ccdf_enrolled: true
+      u38:
+        members: [p38]
+        spm_unit_size:
+          2026: 19
+        in_ccdf_countable_income: 12_517
+        is_in_ccdf_enrolled: true
+      u39:
+        members: [p39]
+        spm_unit_size:
+          2026: 20
+        in_ccdf_countable_income: 12_735
+        is_in_ccdf_enrolled: true
+      u40:
+        members: [p40]
+        spm_unit_size:
+          2026: 20
+        in_ccdf_countable_income: 12_736
+        is_in_ccdf_enrolled: true
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: IN
+      h2:
+        members: [p2]
+        state_code:
+          2026: IN
+      h3:
+        members: [p3]
+        state_code:
+          2026: IN
+      h4:
+        members: [p4]
+        state_code:
+          2026: IN
+      h5:
+        members: [p5]
+        state_code:
+          2026: IN
+      h6:
+        members: [p6]
+        state_code:
+          2026: IN
+      h7:
+        members: [p7]
+        state_code:
+          2026: IN
+      h8:
+        members: [p8]
+        state_code:
+          2026: IN
+      h9:
+        members: [p9]
+        state_code:
+          2026: IN
+      h10:
+        members: [p10]
+        state_code:
+          2026: IN
+      h11:
+        members: [p11]
+        state_code:
+          2026: IN
+      h12:
+        members: [p12]
+        state_code:
+          2026: IN
+      h13:
+        members: [p13]
+        state_code:
+          2026: IN
+      h14:
+        members: [p14]
+        state_code:
+          2026: IN
+      h15:
+        members: [p15]
+        state_code:
+          2026: IN
+      h16:
+        members: [p16]
+        state_code:
+          2026: IN
+      h17:
+        members: [p17]
+        state_code:
+          2026: IN
+      h18:
+        members: [p18]
+        state_code:
+          2026: IN
+      h19:
+        members: [p19]
+        state_code:
+          2026: IN
+      h20:
+        members: [p20]
+        state_code:
+          2026: IN
+      h21:
+        members: [p21]
+        state_code:
+          2026: IN
+      h22:
+        members: [p22]
+        state_code:
+          2026: IN
+      h23:
+        members: [p23]
+        state_code:
+          2026: IN
+      h24:
+        members: [p24]
+        state_code:
+          2026: IN
+      h25:
+        members: [p25]
+        state_code:
+          2026: IN
+      h26:
+        members: [p26]
+        state_code:
+          2026: IN
+      h27:
+        members: [p27]
+        state_code:
+          2026: IN
+      h28:
+        members: [p28]
+        state_code:
+          2026: IN
+      h29:
+        members: [p29]
+        state_code:
+          2026: IN
+      h30:
+        members: [p30]
+        state_code:
+          2026: IN
+      h31:
+        members: [p31]
+        state_code:
+          2026: IN
+      h32:
+        members: [p32]
+        state_code:
+          2026: IN
+      h33:
+        members: [p33]
+        state_code:
+          2026: IN
+      h34:
+        members: [p34]
+        state_code:
+          2026: IN
+      h35:
+        members: [p35]
+        state_code:
+          2026: IN
+      h36:
+        members: [p36]
+        state_code:
+          2026: IN
+      h37:
+        members: [p37]
+        state_code:
+          2026: IN
+      h38:
+        members: [p38]
+        state_code:
+          2026: IN
+      h39:
+        members: [p39]
+        state_code:
+          2026: IN
+      h40:
+        members: [p40]
+        state_code:
+          2026: IN
+  output:
+    # The Max SMI column, sizes 1 to 20: 85% of the October 2024 state median
+    # income, rounded up to the next dollar.
+    in_ccdf_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: The CCDF plan's limits effective March 31, 2024 hold at every family size in June 2024.
+  period: 2024-06
+  input:
+    people:
+      p1:
+        age:
+          2024: 30
+      p2:
+        age:
+          2024: 30
+      p3:
+        age:
+          2024: 30
+      p4:
+        age:
+          2024: 30
+      p5:
+        age:
+          2024: 30
+      p6:
+        age:
+          2024: 30
+      p7:
+        age:
+          2024: 30
+      p8:
+        age:
+          2024: 30
+      p9:
+        age:
+          2024: 30
+      p10:
+        age:
+          2024: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2024: 1
+        in_ccdf_countable_income: 1_883
+        is_in_ccdf_enrolled: false
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2024: 1
+        in_ccdf_countable_income: 1_884
+        is_in_ccdf_enrolled: false
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2024: 2
+        in_ccdf_countable_income: 2_555
+        is_in_ccdf_enrolled: false
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2024: 2
+        in_ccdf_countable_income: 2_556
+        is_in_ccdf_enrolled: false
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2024: 3
+        in_ccdf_countable_income: 3_228
+        is_in_ccdf_enrolled: false
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2024: 3
+        in_ccdf_countable_income: 3_229
+        is_in_ccdf_enrolled: false
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2024: 4
+        in_ccdf_countable_income: 3_900
+        is_in_ccdf_enrolled: false
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2024: 4
+        in_ccdf_countable_income: 3_901
+        is_in_ccdf_enrolled: false
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2024: 5
+        in_ccdf_countable_income: 4_573
+        is_in_ccdf_enrolled: false
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2024: 5
+        in_ccdf_countable_income: 4_574
+        is_in_ccdf_enrolled: false
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2024: IN
+      h2:
+        members: [p2]
+        state_code:
+          2024: IN
+      h3:
+        members: [p3]
+        state_code:
+          2024: IN
+      h4:
+        members: [p4]
+        state_code:
+          2024: IN
+      h5:
+        members: [p5]
+        state_code:
+          2024: IN
+      h6:
+        members: [p6]
+        state_code:
+          2024: IN
+      h7:
+        members: [p7]
+        state_code:
+          2024: IN
+      h8:
+        members: [p8]
+        state_code:
+          2024: IN
+      h9:
+        members: [p9]
+        state_code:
+          2024: IN
+      h10:
+        members: [p10]
+        state_code:
+          2024: IN
+  output:
+    # 150% of the 2024 guideline, sizes 1 to 5.
+    in_ccdf_income_eligible: [true, false, true, false, true, false, true, false, true, false]

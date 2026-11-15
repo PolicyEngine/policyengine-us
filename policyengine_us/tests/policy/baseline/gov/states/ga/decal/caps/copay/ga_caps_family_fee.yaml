@@ -8,8 +8,8 @@
 # strict "above X%" semantics while single_amount brackets use "at or above".
 # Weekly fee = floor(annual_income * rate / 52)
 # Monthly fee = weekly_fee * 52 / 12
-# Fee waived (§ 9.5.1) for: minor parents (age <= 17),
-# children in DFCS custody, and income <= 10% FPL.
+# Fee waived (§ 9.5.1) for minor parents (age <= 17) and income <= 10% FPL. A child in
+# DFCS custody forms a family unit of one that owes no fee, which ga_caps pays apart.
 #
 # 2026 FPG family of 3: 15,960 + 5,680 * 2 = $27,320
 # 2026 FPG family of 2: 15,960 + 5,680 = $21,640
@@ -454,7 +454,7 @@
     # monthly fee = 20 * 52 / 12 = $86.67
     ga_caps_family_fee: 86.67
 
-- name: Case 19, child in DFCS custody waives the family fee.
+- name: Case 19, a child in DFCS custody leaves the family's unit, which still owes its fee.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -475,6 +475,9 @@
         members: [person1, person2, person3]
         state_code: GA
   output:
-    # Same income/family as Case 1 (fee would be $173.33),
-    # but child in DFCS custody triggers the § 9.5.1 waiver -> $0.
-    ga_caps_family_fee: 0
+    # The child in DFCS custody forms a family unit of one that owes no fee (CAPS/00-5,
+    # 5.4.1; Manual 9.5.1), so the family's own unit has two members.
+    # FPL ratio = 30,000 / 21,640 = 1.386 -> 7% rate
+    # weekly fee = floor(30,000 * 0.07 / 52) = floor(40.38) = $40
+    # monthly fee = 40 * 52 / 12 = $173.33
+    ga_caps_family_fee: 173.33

@@ -12,7 +12,7 @@
     people:
       person1:
         age: 35
-        employment_income: 22_720  # ~105% FPL -> copay factor 0.0116
+        employment_income: 22_720  # ~107% FPL -> copay factor 0.0116
       person2:
         age: 0.5
         is_tax_unit_dependent: true
@@ -65,7 +65,7 @@
     people:
       person1:
         age: 35
-        employment_income: 27_050  # ~125% FPL, factor 0.0163
+        employment_income: 27_050  # ~128% FPL, factor 0.0163
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -176,7 +176,7 @@
     people:
       person1:
         age: 35
-        employment_income: 22_720  # ~83% FPL (3-person) -> zero copay
+        employment_income: 22_720  # ~85% FPL (3-person) -> zero copay
       person2:
         age: 0.5  # infant
         is_tax_unit_dependent: true
@@ -198,6 +198,6 @@
   output:
     # Infant rate 374.4 * 52/12 = 1,622.40; school-age before/after 71.5 *
     # 52/12 = 309.83; combined rate = 1,932.23. Expenses 5,000/mo capped to
-    # 1,932.23. Copay: 3-person FPG 2026 = 27,320/yr; income 22,720 -> ratio
-    # ~0.83 < 100% FPL -> zero copay. Benefit = 1,932.23 - 0 = 1,932.23.
+    # 1,932.23. Copay: 3-person FPG in January 2026 = 26,650/yr; income 22,720 -> ratio
+    # ~0.85 < 100% FPL -> zero copay. Benefit = 1,932.23 - 0 = 1,932.23.
     in_ccdf: 1_932.23

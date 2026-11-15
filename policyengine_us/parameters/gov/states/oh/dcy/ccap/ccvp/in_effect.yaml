@@ -1,0 +1,19 @@
+description: Ohio uses this indicator to determine whether the modeled Child Care Choice Voucher Program rules apply.
+
+# DCY launched the voucher administratively in April 2024 (H.B. 96 final
+# analysis). The model starts it in November 2025, when the Procedure Letter 36
+# payment chart and the modeled Publicly Funded Child Care rules both begin.
+# This MONTH-period parameter is read at the month start.
+values:
+  2000-01-01: false
+  2025-11-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Ohio CCVP rules in effect
+  reference:
+    - title: DCY Procedure Letter 36, Child Care Choice Voucher Program (October 29, 2025)
+      href: https://dam.assets.ohio.gov/image/upload/childrenandyouth.ohio.gov/For%20Partners/Rules%20and%20Resources/2025/PL_36.pdf#page=2
+    - title: LSC Final Analysis of H.B. 96 (136th General Assembly), Section 423.190
+      href: https://www.lsc.ohio.gov/assets/legislation/136/hb96/en0/files/hb96-kid-bill-analysis-as-enacted-136th-general-assembly.pdf#page=10

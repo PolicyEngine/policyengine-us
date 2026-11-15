@@ -1,0 +1,199 @@
+# mo_ccs_funding_rate: SPMUnit, MONTH.
+# DESE's chart updated July 1, 2026 prints, for three on the 2025 guideline ($26,650):
+#   traditional up to $3,331, Transitional Level 1 $3,332 to $4,109, Level 2 $4,110 to $4,775.
+
+- name: July 2026, a family of three at the $3,331 traditional top keeps the full rate.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 3_331
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_funding_rate: 1
+
+- name: July 2026, a family of three at $3,332 enters Transitional Level 1.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 3_332
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_funding_rate: 0.8
+
+- name: July 2026, a family of three at the $4,109 Level 1 top keeps 80 percent.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 4_109
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    # 185% * 26_650 / 12 = 4_108.54, which the chart prints as $4,109.
+    mo_ccs_funding_rate: 0.8
+
+- name: July 2026, a family of three at $4,110 enters Transitional Level 2.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 4_110
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_funding_rate: 0.6
+
+- name: July 2026, a family of three at the $4,775 Level 2 top keeps 60 percent.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+      person2:
+        age:
+          2026: 5
+      person3:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mo_ccs_adjusted_income: 4_775
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_funding_rate: 0.6
+
+- name: July 2026, a family of one at the $2,413 Level 1 top keeps 80 percent.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mo_ccs_adjusted_income: 2_413
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: MO
+  output:
+    # 185% * 15_650 / 12 = 2_412.71, which the chart prints as $2,413.
+    mo_ccs_funding_rate: 0.8
+
+- name: July 2026, a family of one at $2,414 enters Transitional Level 2.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mo_ccs_adjusted_income: 2_414
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_funding_rate: 0.6
+
+- name: January 2025, a family of two above 215 percent reaches Transitional Level 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+      person2:
+        age:
+          2025: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_adjusted_income: 4_000
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2025: MO
+  output:
+    # Level 2 tops out at round(215% * 21_150 / 12) = $3,789 for two.
+    mo_ccs_funding_rate: 0.5

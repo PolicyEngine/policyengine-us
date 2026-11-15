@@ -1,0 +1,15 @@
+description: Ohio limits child eligibility to under this age under the Child Care Choice Voucher Program.
+
+# The voucher's school-age row runs to age 15, two years past the Publicly
+# Funded Child Care limit of 13. Its special-needs limit of 18 matches that
+# program, so eligibility/special_needs_child_age_limit.yaml serves both.
+values:
+  2025-11-01: 15
+
+metadata:
+  unit: year
+  period: year
+  label: Ohio CCVP child age limit
+  reference:
+    - title: DCY Procedure Letter 36, voucher payment rates, school age row (October 29, 2025)
+      href: https://dam.assets.ohio.gov/image/upload/childrenandyouth.ohio.gov/For%20Partners/Rules%20and%20Resources/2025/PL_36.pdf#page=3

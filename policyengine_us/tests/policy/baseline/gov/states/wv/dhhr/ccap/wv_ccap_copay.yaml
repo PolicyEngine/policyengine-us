@@ -3,7 +3,7 @@
 # Manual §6.4.3.2: fees are daily, charged for each child in care.
 # Manual §6.4.3.4: capped at the three youngest children.
 # CCDF Plan §3.1.1: total family fee capped at 7% of gross income.
-# 2025 FPG family of 2 monthly: $1_762.50.
+# Appendix A's 2024 FPG for a family of 2: $1_703.33 a month.
 
 - name: Case 1, income below 40% FPL pays zero copay.
   period: 2025-01
@@ -27,7 +27,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # FPL ratio = 500 / 1_762.50 = 0.2837 < 0.40 -> fee = $0/day.
+    # FPL ratio = 500 / 1_703.33 = 0.2935 < 0.40 -> fee = $0/day.
     wv_ccap_copay: 0
 
 - name: Case 2, mid-range income copay from Appendix A daily fee.
@@ -52,7 +52,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Monthly income $1_500; FPL ratio = 1_500 / 1_762.50 = 0.8511.
+    # Monthly income $1_500; FPL ratio = 1_500 / 1_703.33 = 0.8806.
     # Appendix A 2-person "90%" row daily fee = $4.25/child.
     # 1 eligible child × 22 monthly days.
     # copay = $4.25 × 22 × 1 = $93.50.
@@ -80,7 +80,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Monthly income $3_000; FPL ratio = 3_000 / 1_762.50 = 1.7021.
+    # Monthly income $3_000; FPL ratio = 3_000 / 1_703.33 = 1.7613.
     # Appendix A 2-person "180%" row daily fee = $8.75/child.
     # uncapped copay = $8.75 × 22 = $192.50.
     # 7% cap = $3_000 × 0.07 = $210. Cap does not bind for 2-person, 1-child.
@@ -156,7 +156,7 @@
         state_code: WV
   output:
     # Family size 12 defaults to the 11-person column.
-    # FPL ratio = 5_400 / 6_345.83 = 0.8511, so Appendix A 11-person "90%" row = $4.50/day.
+    # FPL ratio = 5_400 / 6_186.67 = 0.8729, so Appendix A 11-person "90%" row = $4.50/day.
     # 1 eligible child × 22 monthly days.
     # copay = $4.50 × 22 = $99.
     wv_ccap_copay: 99
@@ -192,9 +192,34 @@
         members: [person1, person2, person3, person4, person5]
         state_code: WV
   output:
-    # Family size 5, FPL ratio = 2_500 / 3_137.50 = 0.7968.
-    # Appendix A 5-person "80%" row daily fee = $2.25/child.
+    # Family size 5, FPL ratio = 2_500 / 3_048.33 = 0.8201.
+    # Appendix A 5-person "90%" row daily fee = $2.50/child.
     # 4 eligible children × 22 monthly days = 88 monthly days.
     # Three-child cap scales billed days by 3/4: 88 × 3/4 = 66.
-    # copay = $2.25 × 66 = $148.50.
-    wv_ccap_copay: 148.5
+    # copay = $2.50 × 66 = $165.
+    wv_ccap_copay: 165
+
+- name: A family of three at 3,000 dollars a month pays the 140 percent row in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  # FPL ratio = 3,000 / 2,151.67 = 1.394, Appendix A's row from $2,797.01 to $3,012,
+  # at $4.25 a day. 4.25 x 22 days = 93.50; the 7% cap of $210 doesn't bind.
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        childcare_attending_days_per_month: 22
+      person3:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wv_ccap_countable_income: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    wv_ccap_copay: 93.5

@@ -16,7 +16,7 @@ class mt_ccap_copay(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mt.dphhs.ccap.copayment
         gmi = spm_unit("mt_ccap_countable_income", period)
-        fpg = spm_unit("spm_unit_fpg", period)
+        fpg = spm_unit("mt_ccap_fpg", period)
         fpg_ratio = where(fpg > 0, gmi / fpg, 0)
 
         # Non-TANF families pay the greater of GMI times the sliding-scale

@@ -77,6 +77,8 @@ class id_iccp_copay_per_child(Variable):
         # families below 100% FPG; the 503 sub-condition limiting it to TAFI
         # families in non-employment activities is not tracked at the moment.
         tafi = person.spm_unit("is_tanf_enrolled", period)
+        # This test reads the current year's guideline, while the income limits
+        # read the guideline year of the department's posted table (id_iccp_fpg).
         fpg = person.spm_unit("spm_unit_fpg", period)
         below_tafi_fpl = income < fpg * p.tafi_exemption_fpl_rate
         tafi_exempt = tafi & below_tafi_fpl

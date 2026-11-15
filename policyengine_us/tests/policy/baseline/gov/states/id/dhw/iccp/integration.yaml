@@ -44,10 +44,11 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/month
-        spm_unit_fpg: 24_000  # initial limit 1.75 x 24,000 / 12 = 3,500/month
+        spm_unit_fpg: 24_000  # sets the copay bands; the income limit reads id_iccp_fpg
   output:
     id_iccp_eligible: true
-    # countable income 2,000/month <= 3,500/month initial limit
+    # countable income 2,000/month <= 2,292/month initial limit
+    # (130% x the 2025 guideline for two, 21,150 / 12, rounded up)
     # max benefit: CENTER, CLUSTER_3, FULL_TIME, PRESCHOOL = 1,089/month
     # copay (size 2, full-time): income 2,000 in 1,940-2,116 band = 50/month
     # id_iccp = min(2,000, 1,089) - 50 = 1,039/month
@@ -79,9 +80,11 @@
       spm_unit:
         members: [person1, person2, person3]
         spm_unit_pre_subsidy_childcare_expenses: 60_000  # 5,000/month
-        spm_unit_fpg: 30_000  # initial limit 1.75 x 30,000 / 12 = 4,375/month
+        spm_unit_fpg: 30_000  # sets the copay bands; the income limit reads id_iccp_fpg
   output:
     id_iccp_eligible: true
+    # countable income 2,000/month <= 2,888/month initial limit
+    # (130% x the 2025 guideline for three, 26,650 / 12, rounded up)
     # size 3, full-time, countable income 2,000 in first band (< 2,222) = 20/child
     id_iccp_copay_per_child: [0, 20, 20]
     id_iccp_copay: 40

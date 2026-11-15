@@ -1,8 +1,10 @@
 # GA CAPS Integration Tests
 #
-# Period: tests use 2026-01 intentionally. CAPS parameters are dated
-# 2026-03-02 (current Appendix C/D rates), and PolicyEngine backcasts the
-# first dated value, so a 2026-01 test exercises the current rules.
+# Period: tests use 2026-01 intentionally. The rate and fee parameters are
+# dated 2026-03-02 (current Appendix C/D rates), and PolicyEngine backcasts the
+# first dated value, so a 2026-01 test exercises the current payment rules. The
+# income limit for new applicants has its own history, and it reads 40% of state
+# median income in January 2026.
 # This avoids 2027-01 where FPG and SMI would be uprated rather than using
 # the published 2026 values cited in the inline calculation comments.
 #
@@ -12,10 +14,11 @@
 #   Family of 3: 27,320
 #   Family of 4: 33,000
 #
-# GA SMI 4-person at 2026-01: $116,773.19 (uprated)
-#   Family of 2: 116,773.19 * 0.68 = $79,405.77 -> 50% = $39,702.88
-#   Family of 3: 116,773.19 * 0.84 = $98,089.48 -> 50% = $49,044.74
-#   Family of 4: 116,773.19 * 1.00 = $116,773.19 -> 50% = $58,386.59
+# GA SMI 4-person at 2026-01 (October 2025 table): $110,736
+# New applicants in January 2026 face 40% of it, rounded up to the next dollar:
+#   Family of 2: 110,736 * 0.68 * 0.4 -> $30,121
+#   Family of 3: 110,736 * 0.84 * 0.4 -> $37,208
+#   Family of 4: 110,736 * 1.00 * 0.4 -> $44,295
 
 - name: Case 1, basic eligible family with Zone 1 center care.
   period: 2026-01
@@ -40,6 +43,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 11_000
     households:
       household:
@@ -52,7 +56,7 @@
     # Citizen -> immigration eligible
     ga_caps_eligible_child: [false, true]
 
-    # income 30,000 <= 39,702.88 (50% SMI for family of 2) -> income eligible
+    # income 30,000 <= 30,121 (40% SMI for family of 2) -> income eligible
     ga_caps_income_eligible: true
     is_ccdf_asset_eligible: true
     ga_caps_eligible: true
@@ -219,6 +223,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
       household:
@@ -226,7 +231,7 @@
         state_code: GA
         county_str: FULTON_COUNTY_GA
   output:
-    # income 40,000 > 39,702.88 (50% SMI for family of 2) -> ineligible
+    # income 40,000 > 30,121 (40% SMI for family of 2) -> ineligible
     ga_caps_income_eligible: false
     ga_caps_eligible: false
     ga_caps: 0
@@ -261,6 +266,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 10_000
     households:
       household:
@@ -272,8 +278,8 @@
     ga_caps_eligible_child: [false, true, true]
 
     # FPG family of 3: $27,320
-    # 50% SMI family of 3 = $49,044.74
-    # income 20,000 <= 49,044.74 -> eligible
+    # 40% SMI family of 3 = $37,208
+    # income 20,000 <= 37,208 -> eligible
     ga_caps_income_eligible: true
     ga_caps_eligible: true
 
@@ -325,6 +331,9 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        # Enrolled, so the 85% limit applies. New applicants face a lower limit in
+        # January 2026. Case 12 covers a disabled child as a priority group.
+        ga_caps_enrolled: true
         spm_unit_pre_subsidy_childcare_expenses: 7_000
     households:
       household:
@@ -336,7 +345,7 @@
     # disabled, age 15 <= 17 -> eligible child
     ga_caps_eligible_child: [false, true]
 
-    # income 35,000 <= 39,702.88 (50% SMI for family of 2) -> eligible
+    # enrolled: income 35,000 <= 64,006 (85% SMI for family of 2) -> eligible
     ga_caps_income_eligible: true
     ga_caps_eligible: true
 
@@ -394,7 +403,7 @@
     ga_caps: 0
 
 # 2026 FPG family of 5: 38,680; family of 6: 44,360
-# 50% SMI family of 5 = $67,728.45; family of 6 = $77,070.30
+# 40% SMI family of 5 = $51,382; family of 6 = $58,469
 
 - name: Case 8, large family of 6 at income threshold boundary.
   period: 2026-01
@@ -404,7 +413,7 @@
       person1:
         age: 40
         weekly_hours_worked_before_lsr: 40
-        employment_income: 73_085
+        employment_income: 58_469
         immigration_status: CITIZEN
       person2:
         age: 38
@@ -441,6 +450,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 20_000
     households:
       household:
@@ -455,8 +465,8 @@
     # person6 (14): age >= 13, not disabled -> ineligible
     ga_caps_eligible_child: [false, false, true, true, true, false]
 
-    # 50% SMI family of 6 = $77,070.30
-    # income 73,085 <= 77,070.30 -> eligible
+    # 40% SMI family of 6 = 110,736 * 1.32 * 0.4, rounded up = $58,469
+    # income 58,469 <= 58,469 -> eligible
     ga_caps_income_eligible: true
     ga_caps_eligible: true
 
@@ -471,20 +481,20 @@
 
     # === Family fee ===
     # FPG family of 6: $44,360
-    # FPL ratio = 73,085 / 44,360 = 1.648 -> 7% rate
-    # weekly fee = floor(73,085 * 0.07 / 52) = floor(98.38) = $98
-    # monthly fee = 98 * 52 / 12 = $424.67
-    ga_caps_family_fee: 424.67
+    # FPL ratio = 58,469 / 44,360 = 1.318 -> 7% rate
+    # weekly fee = floor(58,469 * 0.07 / 52) = floor(78.71) = $78
+    # monthly fee = 78 * 52 / 12 = $338.00
+    ga_caps_family_fee: 338
 
     # === Benefit ===
     # sum_max_weekly = 84 + 180 + 260 = $524
     # sum_max_monthly = $524 * 52/12 = $2,270.67
     # expenses_monthly = 20,000 / 12 = $1,666.67
     # base = min($1,666.67, $2,270.67) = $1,666.67
-    # net_base = max($1,666.67 - $424.67, 0) = $1,242.00
+    # net_base = max($1,666.67 - $338.00, 0) = $1,328.67
     # weighted_bonus_rate = (84*0 + 180*0.05 + 260*0.05) / 524 = 0.04198
-    # subsidy = $1,242.00 * 1.04198 = $1,294.14
-    ga_caps: 1_294.14
+    # subsidy = $1,328.67 * 1.04198 = $1,384.45
+    ga_caps: 1_384.45
 
 - name: Case 9, enrolled family between 50 and 85 percent SMI.
   period: 2026-01
@@ -520,7 +530,7 @@
     # === Eligibility ===
     ga_caps_eligible_child: [false, true]
     # enrolled: 50,000 <= 67,494.90 (85% SMI) -> eligible
-    # NOT eligible as new applicant: 50,000 > 39,702.88 (50% SMI)
+    # NOT eligible as new applicant: 50,000 > 30,121 (40% SMI)
     ga_caps_income_eligible: true
     ga_caps_eligible: true
 
@@ -547,14 +557,14 @@
     # subsidy = $784.33 * 1.10 = $862.77
     ga_caps: 862.77
 
-- name: Case 10, non-enrolled family at 50 percent SMI plus 1 dollar is ineligible.
+- name: Case 10, non-enrolled family at the 40 percent SMI limit plus 1 dollar is ineligible.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 35
-        employment_income: 39_703
+        employment_income: 30_122
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -569,6 +579,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
       household:
@@ -577,7 +588,7 @@
         county_str: FULTON_COUNTY_GA
   output:
     ga_caps_eligible_child: [false, true]
-    # 39,703 > 39,702.88 (50% SMI for family of 2) -> ineligible
+    # 30,122 > 30,121 (40% SMI for family of 2) -> ineligible
     ga_caps_income_eligible: false
     ga_caps_eligible: false
     ga_caps: 0
@@ -609,6 +620,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+        ga_caps_priority_group_eligible: true
         spm_unit_pre_subsidy_childcare_expenses: 10_000
     households:
       household:

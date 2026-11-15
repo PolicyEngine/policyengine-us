@@ -1,0 +1,18 @@
+description: Nevada sets family copayments as a percent of gross income under the Child Care and Development Program when this indicator is true.
+# The chart effective October 1, 2023 prints the percent-of-income schedule. Families
+# paid nothing until copayments returned on April 1, 2024, and the flat schedule replaced
+# this one on October 1, 2024.
+values:
+  2015-01-01: false
+  2024-04-01: true
+  2024-10-01: false
+
+metadata:
+  unit: bool
+  period: month
+  label: Nevada CCDP percent-of-income copayment schedule in effect
+  reference:
+    - title: Nevada DWSS, Changes to the Child Care and Development Subsidy Program (March 27, 2024)
+      href: https://nevadachildcare.netlify.app/static/200a0b5ae99f788e8c99d6f7824dc92b/Child-Care-Updates-Parents-.pdf#page=1
+    - title: Nevada DWSS, Copayment Webinar Questions and Answers (November 2024)
+      href: https://nevadachildcare.netlify.app/static/bba7e54af87b3b89e51dd500b42629bf/Copayment-Webinar-QA_FINAL_NOV24.pdf#page=3

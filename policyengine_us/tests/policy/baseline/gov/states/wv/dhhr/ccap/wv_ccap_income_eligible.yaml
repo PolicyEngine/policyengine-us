@@ -1,6 +1,6 @@
 # WV CCAP Income Eligibility Tests
 # Initial intake cap: 185% FPL (Manual §3.2.1, Appendix A)
-# 185% FPL for a 2-person family (2025) = $39,127.50/yr
+# Appendix A prints the 185% cap for a 2-person family at $3,151/mo, or $37,812/yr, on the 2024 FPG
 
 - name: Case 1, income below 185% FPL eligible.
   period: 2025-01
@@ -54,8 +54,8 @@
     people:
       person1:
         age: 30
-        # 2-person family: 185% FPL ≈ $39,127.50
-        employment_income: 39_000
+        # 2-person family: cap = $37,812/yr
+        employment_income: 37_800
       person2:
         age: 5
     tax_units:
@@ -97,3 +97,1011 @@
     # NOTE: we don't model "TANF children-only" cases (§3.2.1.4) that must
     # still meet the income test at the moment.
     wv_ccap_income_eligible: true
+
+# Appendix A's intake caps on the 2024 guideline, which the Bureau still linked on
+# November 5, 2026.
+
+- name: New applicant of 3 at 3,981 dollars qualifies in 2024-11.
+  period: 2024-11
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wv_ccap_countable_income: 3_981
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 3 at 3,982 dollars doesn't qualify in 2024-11.
+  period: 2024-11
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wv_ccap_countable_income: 3_982
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 3 at 3,981 dollars qualifies in 2025-06.
+  period: 2025-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wv_ccap_countable_income: 3_981
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 3 at 3,982 dollars doesn't qualify in 2025-06.
+  period: 2025-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wv_ccap_countable_income: 3_982
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 1 at 2,322 dollars qualifies in 2026-01.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wv_ccap_countable_income: 2_322
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 1 at 2,323 dollars doesn't qualify in 2026-01.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wv_ccap_countable_income: 2_323
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 2 at 3,151 dollars qualifies in 2026-01.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wv_ccap_countable_income: 3_151
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 2 at 3,152 dollars doesn't qualify in 2026-01.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wv_ccap_countable_income: 3_152
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 3 at 3,981 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wv_ccap_countable_income: 3_981
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 3 at 3,982 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wv_ccap_countable_income: 3_982
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 4 at 4,810 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        wv_ccap_countable_income: 4_810
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 4 at 4,811 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        wv_ccap_countable_income: 4_811
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 5 at 5,639 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        wv_ccap_countable_income: 5_639
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 5 at 5,640 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        wv_ccap_countable_income: 5_640
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 6 at 6,469 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        wv_ccap_countable_income: 6_469
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 6 at 6,470 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        wv_ccap_countable_income: 6_470
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 7 at 7,298 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        wv_ccap_countable_income: 7_298
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 7 at 7,299 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        wv_ccap_countable_income: 7_299
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 8 at 8,128 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+      person8:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        wv_ccap_countable_income: 8_128
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 8 at 8,129 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+      person8:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        wv_ccap_countable_income: 8_129
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: false
+
+- name: New applicant of 9 at 8,957 dollars qualifies in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+      person8:
+        age: 16
+      person9:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        wv_ccap_countable_income: 8_957
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: true
+
+- name: New applicant of 9 at 8,958 dollars doesn't qualify in 2026-06.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+      person4:
+        age: 9
+      person5:
+        age: 11
+      person6:
+        age: 13
+      person7:
+        age: 15
+      person8:
+        age: 16
+      person9:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        wv_ccap_countable_income: 8_958
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_income_eligible: false
+
+# Posted charts: each printed family size at its top passes and a dollar more
+# fails. Each case sets the unit's size directly and lists the outcomes in size
+# order, the top first.
+
+- name: Appendix A's FY 2024 scale holds at every family size in January 2026.
+  period: 2026-01
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+      p5:
+        age:
+          2026: 30
+      p6:
+        age:
+          2026: 30
+      p7:
+        age:
+          2026: 30
+      p8:
+        age:
+          2026: 30
+      p9:
+        age:
+          2026: 30
+      p10:
+        age:
+          2026: 30
+      p11:
+        age:
+          2026: 30
+      p12:
+        age:
+          2026: 30
+      p13:
+        age:
+          2026: 30
+      p14:
+        age:
+          2026: 30
+      p15:
+        age:
+          2026: 30
+      p16:
+        age:
+          2026: 30
+      p17:
+        age:
+          2026: 30
+      p18:
+        age:
+          2026: 30
+      p19:
+        age:
+          2026: 30
+      p20:
+        age:
+          2026: 30
+      p21:
+        age:
+          2026: 30
+      p22:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 1
+        wv_ccap_countable_income: 2_322
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 1
+        wv_ccap_countable_income: 2_323
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 2
+        wv_ccap_countable_income: 3_151
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 2
+        wv_ccap_countable_income: 3_152
+      u5:
+        members: [p5]
+        spm_unit_size:
+          2026: 3
+        wv_ccap_countable_income: 3_981
+      u6:
+        members: [p6]
+        spm_unit_size:
+          2026: 3
+        wv_ccap_countable_income: 3_982
+      u7:
+        members: [p7]
+        spm_unit_size:
+          2026: 4
+        wv_ccap_countable_income: 4_810
+      u8:
+        members: [p8]
+        spm_unit_size:
+          2026: 4
+        wv_ccap_countable_income: 4_811
+      u9:
+        members: [p9]
+        spm_unit_size:
+          2026: 5
+        wv_ccap_countable_income: 5_639
+      u10:
+        members: [p10]
+        spm_unit_size:
+          2026: 5
+        wv_ccap_countable_income: 5_640
+      u11:
+        members: [p11]
+        spm_unit_size:
+          2026: 6
+        wv_ccap_countable_income: 6_469
+      u12:
+        members: [p12]
+        spm_unit_size:
+          2026: 6
+        wv_ccap_countable_income: 6_470
+      u13:
+        members: [p13]
+        spm_unit_size:
+          2026: 7
+        wv_ccap_countable_income: 7_298
+      u14:
+        members: [p14]
+        spm_unit_size:
+          2026: 7
+        wv_ccap_countable_income: 7_299
+      u15:
+        members: [p15]
+        spm_unit_size:
+          2026: 8
+        wv_ccap_countable_income: 8_128
+      u16:
+        members: [p16]
+        spm_unit_size:
+          2026: 8
+        wv_ccap_countable_income: 8_129
+      u17:
+        members: [p17]
+        spm_unit_size:
+          2026: 9
+        wv_ccap_countable_income: 8_957
+      u18:
+        members: [p18]
+        spm_unit_size:
+          2026: 9
+        wv_ccap_countable_income: 8_958
+      u19:
+        members: [p19]
+        spm_unit_size:
+          2026: 10
+        wv_ccap_countable_income: 9_247
+      u20:
+        members: [p20]
+        spm_unit_size:
+          2026: 10
+        wv_ccap_countable_income: 9_248
+      u21:
+        members: [p21]
+        spm_unit_size:
+          2026: 11
+        wv_ccap_countable_income: 9_440
+      u22:
+        members: [p22]
+        spm_unit_size:
+          2026: 11
+        wv_ccap_countable_income: 9_441
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: WV
+      h2:
+        members: [p2]
+        state_code:
+          2026: WV
+      h3:
+        members: [p3]
+        state_code:
+          2026: WV
+      h4:
+        members: [p4]
+        state_code:
+          2026: WV
+      h5:
+        members: [p5]
+        state_code:
+          2026: WV
+      h6:
+        members: [p6]
+        state_code:
+          2026: WV
+      h7:
+        members: [p7]
+        state_code:
+          2026: WV
+      h8:
+        members: [p8]
+        state_code:
+          2026: WV
+      h9:
+        members: [p9]
+        state_code:
+          2026: WV
+      h10:
+        members: [p10]
+        state_code:
+          2026: WV
+      h11:
+        members: [p11]
+        state_code:
+          2026: WV
+      h12:
+        members: [p12]
+        state_code:
+          2026: WV
+      h13:
+        members: [p13]
+        state_code:
+          2026: WV
+      h14:
+        members: [p14]
+        state_code:
+          2026: WV
+      h15:
+        members: [p15]
+        state_code:
+          2026: WV
+      h16:
+        members: [p16]
+        state_code:
+          2026: WV
+      h17:
+        members: [p17]
+        state_code:
+          2026: WV
+      h18:
+        members: [p18]
+        state_code:
+          2026: WV
+      h19:
+        members: [p19]
+        state_code:
+          2026: WV
+      h20:
+        members: [p20]
+        state_code:
+          2026: WV
+      h21:
+        members: [p21]
+        state_code:
+          2026: WV
+      h22:
+        members: [p22]
+        state_code:
+          2026: WV
+  output:
+    # 185% of the 2024 guideline, sizes 1 to 9. For ten and eleven people the
+    # scale stops at 85% of the October 2024 state median income.
+    wv_ccap_income_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: Appendix A caps ten and eleven people at 85% of the October 2024 state median income in October 2024, when the scale starts.
+  period: 2024-10
+  input:
+    people:
+      p1:
+        age:
+          2024: 30
+      p2:
+        age:
+          2024: 30
+      p3:
+        age:
+          2024: 30
+      p4:
+        age:
+          2024: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2024: 10
+        wv_ccap_countable_income: 9_247
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2024: 10
+        wv_ccap_countable_income: 9_248
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2024: 11
+        wv_ccap_countable_income: 9_440
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2024: 11
+        wv_ccap_countable_income: 9_441
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2024: WV
+      h2:
+        members: [p2]
+        state_code:
+          2024: WV
+      h3:
+        members: [p3]
+        state_code:
+          2024: WV
+      h4:
+        members: [p4]
+        state_code:
+          2024: WV
+  output:
+    # $9,247 for ten people and $9,440 for eleven.
+    wv_ccap_income_eligible: [true, false, true, false]
+
+- name: Appendix A caps ten and eleven people at 85% of the October 2024 state median income in October 2025, after the next table starts.
+  period: 2025-10
+  input:
+    people:
+      p1:
+        age:
+          2025: 30
+      p2:
+        age:
+          2025: 30
+      p3:
+        age:
+          2025: 30
+      p4:
+        age:
+          2025: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2025: 10
+        wv_ccap_countable_income: 9_247
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2025: 10
+        wv_ccap_countable_income: 9_248
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2025: 11
+        wv_ccap_countable_income: 9_440
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2025: 11
+        wv_ccap_countable_income: 9_441
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2025: WV
+      h2:
+        members: [p2]
+        state_code:
+          2025: WV
+      h3:
+        members: [p3]
+        state_code:
+          2025: WV
+      h4:
+        members: [p4]
+        state_code:
+          2025: WV
+  output:
+    # $9,247 for ten people and $9,440 for eleven.
+    wv_ccap_income_eligible: [true, false, true, false]
+
+- name: Appendix A caps ten and eleven people at 85% of the October 2024 state median income in October 2026, after two more tables start.
+  period: 2026-10
+  input:
+    people:
+      p1:
+        age:
+          2026: 30
+      p2:
+        age:
+          2026: 30
+      p3:
+        age:
+          2026: 30
+      p4:
+        age:
+          2026: 30
+    spm_units:
+      u1:
+        members: [p1]
+        spm_unit_size:
+          2026: 10
+        wv_ccap_countable_income: 9_247
+      u2:
+        members: [p2]
+        spm_unit_size:
+          2026: 10
+        wv_ccap_countable_income: 9_248
+      u3:
+        members: [p3]
+        spm_unit_size:
+          2026: 11
+        wv_ccap_countable_income: 9_440
+      u4:
+        members: [p4]
+        spm_unit_size:
+          2026: 11
+        wv_ccap_countable_income: 9_441
+    households:
+      h1:
+        members: [p1]
+        state_code:
+          2026: WV
+      h2:
+        members: [p2]
+        state_code:
+          2026: WV
+      h3:
+        members: [p3]
+        state_code:
+          2026: WV
+      h4:
+        members: [p4]
+        state_code:
+          2026: WV
+  output:
+    # $9,247 for ten people and $9,440 for eleven.
+    wv_ccap_income_eligible: [true, false, true, false]

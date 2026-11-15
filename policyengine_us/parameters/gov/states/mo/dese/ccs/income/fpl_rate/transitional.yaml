@@ -1,6 +1,8 @@
 description: Missouri limits adjusted gross income to this multiple of the federal poverty guideline for existing families under the Child Care Subsidy program.
 values:
   2025-10-01: 2.42
+  # DESE removed Transitional Level 3 (216-242%) on July 1, 2026, leaving Level 2 at the top.
+  2026-07-01: 2.15
 
 metadata:
   unit: /1
@@ -17,3 +19,5 @@ metadata:
       href: https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-060
     - title: November 2025 Child Care Eligibility Income Guidelines and Sliding Fee Chart
       href: https://dese.mo.gov/sites/g/files/zuston521/files/media/pdf/2025/10/10.2025%20Income%20Eligibility%20Table%20%282%29.pdf#page=1
+    - title: November 2025 Child Care Eligibility Income Guidelines and Sliding Fee Chart, updated July 1, 2026 ("Transitional Level 3 removed July 1, 2026")
+      href: https://dese.mo.gov/sites/g/files/zuston521/files/media/pdf/2026/07/Income%20Elig%20_Updated%206.29.26.pdf#page=1

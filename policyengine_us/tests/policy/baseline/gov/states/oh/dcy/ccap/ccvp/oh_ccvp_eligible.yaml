@@ -1,0 +1,2318 @@
+# Ohio Child Care Choice Voucher Program eligibility.
+# Procedure Letter 36 (October 29, 2025), pages 3-4: income of 146-200% of poverty, all other
+# Publicly Funded Child Care conditions, and no family eligible for that program.
+# Procedure Letter 21, page 2, and Procedure Letter 45, page 2, print the monthly limits.
+# H.B. 96, Section 423.190, sets the same income conditions in law.
+
+- name: Family of three at the January 2026 Publicly Funded Child Care intake limit stays on that program.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_221
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Procedure Letter 21: 145% prints $3,221 for three.
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: One dollar over the January 2026 intake limit qualifies for the voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_222
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+    oh_ccvp_eligible: true
+
+- name: January 2026 voucher limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 4_442
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Procedure Letter 21: 200% prints $4,442 for three.
+    oh_ccvp_eligible: true
+
+- name: One dollar over the January 2026 voucher limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 4_443
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: September 2026 still reads the 2025 guideline.
+  period: 2026-09
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_222
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    oh_ccap_income_eligible: false
+    oh_ccvp_eligible: true
+
+- name: October 2026 moves the same family back to Publicly Funded Child Care.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_222
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    # Procedure Letter 45: 145% prints $3,302 for three from October 1, 2026.
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: October 2026 intake limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_302
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: One dollar over the October 2026 intake limit.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_303
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    oh_ccap_income_eligible: false
+    oh_ccvp_eligible: true
+
+- name: October 2026 voucher limit for three.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 4_554
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    # Procedure Letter 45: 200% prints $4,554 for three.
+    oh_ccvp_eligible: true
+
+- name: One dollar over the October 2026 voucher limit for three.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 4
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 4_555
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: October 2026 voucher limit for 2.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 3_607
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: One dollar over the October 2026 voucher limit for 2.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 3_608
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: October 2026 voucher limit for 4.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person4:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        oh_ccap_countable_income: 5_500
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: One dollar over the October 2026 voucher limit for 4.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person4:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        oh_ccap_countable_income: 5_501
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: October 2026 voucher limit for 8.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person4:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person5:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person6:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person7:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person8:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        oh_ccap_countable_income: 9_287
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: One dollar over the October 2026 voucher limit for 8.
+  period: 2026-10
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+      person2:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person3:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person4:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person5:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person6:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person7:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+      person8:
+        age:
+          2026: 2
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        oh_ccap_countable_income: 9_288
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: Enrolled Publicly Funded Child Care family keeps that program, not the voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_400
+        oh_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Procedure Letter 36: families eligible for Publicly Funded Child Care are not eligible for the voucher.
+    oh_ccap_eligible: true
+    oh_ccvp_eligible: false
+
+- name: Special-needs family at 150% stays on Publicly Funded Child Care.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        is_disabled: true
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_332
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Procedure Letter 21: 150% prints $3,332 for three.
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: Special-needs family one dollar over 150% qualifies for the voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        is_disabled: true
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_333
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+    oh_ccvp_eligible: true
+
+- name: Employed family in the transitional period stays on Publicly Funded Child Care at 150%.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        oh_ccap_owf_transitional: true
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_300
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+    oh_ccvp_eligible: false
+
+- name: Caretaker without a qualifying activity gets no voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: false
+    oh_ccvp_eligible: false
+
+- name: Full-time student caretaker qualifies for the voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: true
+    oh_ccvp_eligible: true
+
+- name: Assets at the federal limit pass.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        bank_account_assets: 1_000_000
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: Assets over the federal limit fail.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        bank_account_assets: 1_000_001
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: Homeless family goes to Publicly Funded Child Care whatever its income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+        is_homeless: true
+  output:
+    oh_ccap_eligible: true
+    oh_ccvp_eligible: false
+
+- name: Protective care family goes to Publicly Funded Child Care whatever its income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        receives_or_needs_protective_services: true
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_eligible: true
+    oh_ccvp_eligible: false
+
+- name: October 2025 precedes the modeled voucher.
+  period: 2025-10
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+        weekly_hours_worked_before_lsr:
+          2025: 40
+      person2:
+        age:
+          2025: 2
+        immigration_status:
+          2025: CITIZEN
+      person3:
+        age:
+          2025: 4
+        immigration_status:
+          2025: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: November 2025 starts the modeled voucher.
+  period: 2025-11
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+        weekly_hours_worked_before_lsr:
+          2025: 40
+      person2:
+        age:
+          2025: 2
+        immigration_status:
+          2025: CITIZEN
+      person3:
+        age:
+          2025: 4
+        immigration_status:
+          2025: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: OH
+  output:
+    oh_ccvp_eligible: true
+
+- name: A 14-year-old qualifies the family for the voucher but not for Publicly Funded Child Care.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 14
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: false
+    oh_ccvp_eligible: true
+
+- name: A 15-year-old does not qualify the family.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccvp_eligible: false
+
+- name: Below the intake limit a family with only a 14-year-old fails both programs.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 14
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_countable_income: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # H.B. 96, Section 423.190: the voucher serves families that fail the income conditions for Publicly Funded Child Care.
+    oh_ccap_income_eligible: true
+    oh_ccap_eligible: false
+    oh_ccvp_eligible: false
+
+- name: A family outside Ohio gets no voucher.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_countable_income: 3_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: PA
+  output:
+    oh_ccvp_eligible: false
+
+# Posted charts: a working parent with children of five at the voucher's printed top
+# qualifies and a dollar more fails, at each printed family size in size order.
+
+- name: Procedure Letter 21's voucher limits hold at every family size in January 2026.
+  period: 2026-01
+  input:
+    people:
+      p1_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p1_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p2_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p2_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p3_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p3_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p3_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p4_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p4_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p4_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p5_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p5_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p5_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p5_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p6_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p6_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p6_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p6_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p7_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p7_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p7_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p7_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p7_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p8_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p8_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p8_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p8_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p8_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p9_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p10_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p11_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_7:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p12_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_7:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p13_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_7:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_8:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p14_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_7:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_8:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      u1:
+        members: [p1_1, p1_2]
+        oh_ccap_countable_income: 3_525
+      u2:
+        members: [p2_1, p2_2]
+        oh_ccap_countable_income: 3_526
+      u3:
+        members: [p3_1, p3_2, p3_3]
+        oh_ccap_countable_income: 4_442
+      u4:
+        members: [p4_1, p4_2, p4_3]
+        oh_ccap_countable_income: 4_443
+      u5:
+        members: [p5_1, p5_2, p5_3, p5_4]
+        oh_ccap_countable_income: 5_359
+      u6:
+        members: [p6_1, p6_2, p6_3, p6_4]
+        oh_ccap_countable_income: 5_360
+      u7:
+        members: [p7_1, p7_2, p7_3, p7_4, p7_5]
+        oh_ccap_countable_income: 6_275
+      u8:
+        members: [p8_1, p8_2, p8_3, p8_4, p8_5]
+        oh_ccap_countable_income: 6_276
+      u9:
+        members: [p9_1, p9_2, p9_3, p9_4, p9_5, p9_6]
+        oh_ccap_countable_income: 7_192
+      u10:
+        members: [p10_1, p10_2, p10_3, p10_4, p10_5, p10_6]
+        oh_ccap_countable_income: 7_193
+      u11:
+        members: [p11_1, p11_2, p11_3, p11_4, p11_5, p11_6, p11_7]
+        oh_ccap_countable_income: 8_109
+      u12:
+        members: [p12_1, p12_2, p12_3, p12_4, p12_5, p12_6, p12_7]
+        oh_ccap_countable_income: 8_110
+      u13:
+        members: [p13_1, p13_2, p13_3, p13_4, p13_5, p13_6, p13_7, p13_8]
+        oh_ccap_countable_income: 9_025
+      u14:
+        members: [p14_1, p14_2, p14_3, p14_4, p14_5, p14_6, p14_7, p14_8]
+        oh_ccap_countable_income: 9_026
+    tax_units:
+      t1:
+        members: [p1_1, p1_2]
+      t2:
+        members: [p2_1, p2_2]
+      t3:
+        members: [p3_1, p3_2, p3_3]
+      t4:
+        members: [p4_1, p4_2, p4_3]
+      t5:
+        members: [p5_1, p5_2, p5_3, p5_4]
+      t6:
+        members: [p6_1, p6_2, p6_3, p6_4]
+      t7:
+        members: [p7_1, p7_2, p7_3, p7_4, p7_5]
+      t8:
+        members: [p8_1, p8_2, p8_3, p8_4, p8_5]
+      t9:
+        members: [p9_1, p9_2, p9_3, p9_4, p9_5, p9_6]
+      t10:
+        members: [p10_1, p10_2, p10_3, p10_4, p10_5, p10_6]
+      t11:
+        members: [p11_1, p11_2, p11_3, p11_4, p11_5, p11_6, p11_7]
+      t12:
+        members: [p12_1, p12_2, p12_3, p12_4, p12_5, p12_6, p12_7]
+      t13:
+        members: [p13_1, p13_2, p13_3, p13_4, p13_5, p13_6, p13_7, p13_8]
+      t14:
+        members: [p14_1, p14_2, p14_3, p14_4, p14_5, p14_6, p14_7, p14_8]
+    families:
+      f1:
+        members: [p1_1, p1_2]
+      f2:
+        members: [p2_1, p2_2]
+      f3:
+        members: [p3_1, p3_2, p3_3]
+      f4:
+        members: [p4_1, p4_2, p4_3]
+      f5:
+        members: [p5_1, p5_2, p5_3, p5_4]
+      f6:
+        members: [p6_1, p6_2, p6_3, p6_4]
+      f7:
+        members: [p7_1, p7_2, p7_3, p7_4, p7_5]
+      f8:
+        members: [p8_1, p8_2, p8_3, p8_4, p8_5]
+      f9:
+        members: [p9_1, p9_2, p9_3, p9_4, p9_5, p9_6]
+      f10:
+        members: [p10_1, p10_2, p10_3, p10_4, p10_5, p10_6]
+      f11:
+        members: [p11_1, p11_2, p11_3, p11_4, p11_5, p11_6, p11_7]
+      f12:
+        members: [p12_1, p12_2, p12_3, p12_4, p12_5, p12_6, p12_7]
+      f13:
+        members: [p13_1, p13_2, p13_3, p13_4, p13_5, p13_6, p13_7, p13_8]
+      f14:
+        members: [p14_1, p14_2, p14_3, p14_4, p14_5, p14_6, p14_7, p14_8]
+    marital_units:
+      m1_1:
+        members: [p1_1]
+      m1_2:
+        members: [p1_2]
+      m2_1:
+        members: [p2_1]
+      m2_2:
+        members: [p2_2]
+      m3_1:
+        members: [p3_1]
+      m3_2:
+        members: [p3_2]
+      m3_3:
+        members: [p3_3]
+      m4_1:
+        members: [p4_1]
+      m4_2:
+        members: [p4_2]
+      m4_3:
+        members: [p4_3]
+      m5_1:
+        members: [p5_1]
+      m5_2:
+        members: [p5_2]
+      m5_3:
+        members: [p5_3]
+      m5_4:
+        members: [p5_4]
+      m6_1:
+        members: [p6_1]
+      m6_2:
+        members: [p6_2]
+      m6_3:
+        members: [p6_3]
+      m6_4:
+        members: [p6_4]
+      m7_1:
+        members: [p7_1]
+      m7_2:
+        members: [p7_2]
+      m7_3:
+        members: [p7_3]
+      m7_4:
+        members: [p7_4]
+      m7_5:
+        members: [p7_5]
+      m8_1:
+        members: [p8_1]
+      m8_2:
+        members: [p8_2]
+      m8_3:
+        members: [p8_3]
+      m8_4:
+        members: [p8_4]
+      m8_5:
+        members: [p8_5]
+      m9_1:
+        members: [p9_1]
+      m9_2:
+        members: [p9_2]
+      m9_3:
+        members: [p9_3]
+      m9_4:
+        members: [p9_4]
+      m9_5:
+        members: [p9_5]
+      m9_6:
+        members: [p9_6]
+      m10_1:
+        members: [p10_1]
+      m10_2:
+        members: [p10_2]
+      m10_3:
+        members: [p10_3]
+      m10_4:
+        members: [p10_4]
+      m10_5:
+        members: [p10_5]
+      m10_6:
+        members: [p10_6]
+      m11_1:
+        members: [p11_1]
+      m11_2:
+        members: [p11_2]
+      m11_3:
+        members: [p11_3]
+      m11_4:
+        members: [p11_4]
+      m11_5:
+        members: [p11_5]
+      m11_6:
+        members: [p11_6]
+      m11_7:
+        members: [p11_7]
+      m12_1:
+        members: [p12_1]
+      m12_2:
+        members: [p12_2]
+      m12_3:
+        members: [p12_3]
+      m12_4:
+        members: [p12_4]
+      m12_5:
+        members: [p12_5]
+      m12_6:
+        members: [p12_6]
+      m12_7:
+        members: [p12_7]
+      m13_1:
+        members: [p13_1]
+      m13_2:
+        members: [p13_2]
+      m13_3:
+        members: [p13_3]
+      m13_4:
+        members: [p13_4]
+      m13_5:
+        members: [p13_5]
+      m13_6:
+        members: [p13_6]
+      m13_7:
+        members: [p13_7]
+      m13_8:
+        members: [p13_8]
+      m14_1:
+        members: [p14_1]
+      m14_2:
+        members: [p14_2]
+      m14_3:
+        members: [p14_3]
+      m14_4:
+        members: [p14_4]
+      m14_5:
+        members: [p14_5]
+      m14_6:
+        members: [p14_6]
+      m14_7:
+        members: [p14_7]
+      m14_8:
+        members: [p14_8]
+    households:
+      h1:
+        members: [p1_1, p1_2]
+        state_code:
+          2026: OH
+      h2:
+        members: [p2_1, p2_2]
+        state_code:
+          2026: OH
+      h3:
+        members: [p3_1, p3_2, p3_3]
+        state_code:
+          2026: OH
+      h4:
+        members: [p4_1, p4_2, p4_3]
+        state_code:
+          2026: OH
+      h5:
+        members: [p5_1, p5_2, p5_3, p5_4]
+        state_code:
+          2026: OH
+      h6:
+        members: [p6_1, p6_2, p6_3, p6_4]
+        state_code:
+          2026: OH
+      h7:
+        members: [p7_1, p7_2, p7_3, p7_4, p7_5]
+        state_code:
+          2026: OH
+      h8:
+        members: [p8_1, p8_2, p8_3, p8_4, p8_5]
+        state_code:
+          2026: OH
+      h9:
+        members: [p9_1, p9_2, p9_3, p9_4, p9_5, p9_6]
+        state_code:
+          2026: OH
+      h10:
+        members: [p10_1, p10_2, p10_3, p10_4, p10_5, p10_6]
+        state_code:
+          2026: OH
+      h11:
+        members: [p11_1, p11_2, p11_3, p11_4, p11_5, p11_6, p11_7]
+        state_code:
+          2026: OH
+      h12:
+        members: [p12_1, p12_2, p12_3, p12_4, p12_5, p12_6, p12_7]
+        state_code:
+          2026: OH
+      h13:
+        members: [p13_1, p13_2, p13_3, p13_4, p13_5, p13_6, p13_7, p13_8]
+        state_code:
+          2026: OH
+      h14:
+        members: [p14_1, p14_2, p14_3, p14_4, p14_5, p14_6, p14_7, p14_8]
+        state_code:
+          2026: OH
+  output:
+    # 200% of the 2025 guideline, rounded up, sizes 2 to 8.
+    oh_ccvp_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+
+- name: Procedure Letter 45's voucher limits hold at every family size in October 2026.
+  period: 2026-10
+  input:
+    people:
+      p1_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p1_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p2_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p2_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p3_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p3_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p3_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p4_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p4_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p4_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p5_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p5_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p5_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p5_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p6_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p6_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p6_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p6_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p7_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p7_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p7_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p7_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p7_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p8_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p8_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p8_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p8_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p8_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p9_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p9_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p10_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p10_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p11_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p11_7:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p12_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p12_7:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p13_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_7:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p13_8:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        immigration_status:
+          2026: CITIZEN
+      p14_2:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_3:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_4:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_5:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_6:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_7:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+      p14_8:
+        age:
+          2026: 5
+        immigration_status:
+          2026: CITIZEN
+    spm_units:
+      u1:
+        members: [p1_1, p1_2]
+        oh_ccap_countable_income: 3_607
+      u2:
+        members: [p2_1, p2_2]
+        oh_ccap_countable_income: 3_608
+      u3:
+        members: [p3_1, p3_2, p3_3]
+        oh_ccap_countable_income: 4_554
+      u4:
+        members: [p4_1, p4_2, p4_3]
+        oh_ccap_countable_income: 4_555
+      u5:
+        members: [p5_1, p5_2, p5_3, p5_4]
+        oh_ccap_countable_income: 5_500
+      u6:
+        members: [p6_1, p6_2, p6_3, p6_4]
+        oh_ccap_countable_income: 5_501
+      u7:
+        members: [p7_1, p7_2, p7_3, p7_4, p7_5]
+        oh_ccap_countable_income: 6_447
+      u8:
+        members: [p8_1, p8_2, p8_3, p8_4, p8_5]
+        oh_ccap_countable_income: 6_448
+      u9:
+        members: [p9_1, p9_2, p9_3, p9_4, p9_5, p9_6]
+        oh_ccap_countable_income: 7_394
+      u10:
+        members: [p10_1, p10_2, p10_3, p10_4, p10_5, p10_6]
+        oh_ccap_countable_income: 7_395
+      u11:
+        members: [p11_1, p11_2, p11_3, p11_4, p11_5, p11_6, p11_7]
+        oh_ccap_countable_income: 8_340
+      u12:
+        members: [p12_1, p12_2, p12_3, p12_4, p12_5, p12_6, p12_7]
+        oh_ccap_countable_income: 8_341
+      u13:
+        members: [p13_1, p13_2, p13_3, p13_4, p13_5, p13_6, p13_7, p13_8]
+        oh_ccap_countable_income: 9_287
+      u14:
+        members: [p14_1, p14_2, p14_3, p14_4, p14_5, p14_6, p14_7, p14_8]
+        oh_ccap_countable_income: 9_288
+    tax_units:
+      t1:
+        members: [p1_1, p1_2]
+      t2:
+        members: [p2_1, p2_2]
+      t3:
+        members: [p3_1, p3_2, p3_3]
+      t4:
+        members: [p4_1, p4_2, p4_3]
+      t5:
+        members: [p5_1, p5_2, p5_3, p5_4]
+      t6:
+        members: [p6_1, p6_2, p6_3, p6_4]
+      t7:
+        members: [p7_1, p7_2, p7_3, p7_4, p7_5]
+      t8:
+        members: [p8_1, p8_2, p8_3, p8_4, p8_5]
+      t9:
+        members: [p9_1, p9_2, p9_3, p9_4, p9_5, p9_6]
+      t10:
+        members: [p10_1, p10_2, p10_3, p10_4, p10_5, p10_6]
+      t11:
+        members: [p11_1, p11_2, p11_3, p11_4, p11_5, p11_6, p11_7]
+      t12:
+        members: [p12_1, p12_2, p12_3, p12_4, p12_5, p12_6, p12_7]
+      t13:
+        members: [p13_1, p13_2, p13_3, p13_4, p13_5, p13_6, p13_7, p13_8]
+      t14:
+        members: [p14_1, p14_2, p14_3, p14_4, p14_5, p14_6, p14_7, p14_8]
+    families:
+      f1:
+        members: [p1_1, p1_2]
+      f2:
+        members: [p2_1, p2_2]
+      f3:
+        members: [p3_1, p3_2, p3_3]
+      f4:
+        members: [p4_1, p4_2, p4_3]
+      f5:
+        members: [p5_1, p5_2, p5_3, p5_4]
+      f6:
+        members: [p6_1, p6_2, p6_3, p6_4]
+      f7:
+        members: [p7_1, p7_2, p7_3, p7_4, p7_5]
+      f8:
+        members: [p8_1, p8_2, p8_3, p8_4, p8_5]
+      f9:
+        members: [p9_1, p9_2, p9_3, p9_4, p9_5, p9_6]
+      f10:
+        members: [p10_1, p10_2, p10_3, p10_4, p10_5, p10_6]
+      f11:
+        members: [p11_1, p11_2, p11_3, p11_4, p11_5, p11_6, p11_7]
+      f12:
+        members: [p12_1, p12_2, p12_3, p12_4, p12_5, p12_6, p12_7]
+      f13:
+        members: [p13_1, p13_2, p13_3, p13_4, p13_5, p13_6, p13_7, p13_8]
+      f14:
+        members: [p14_1, p14_2, p14_3, p14_4, p14_5, p14_6, p14_7, p14_8]
+    marital_units:
+      m1_1:
+        members: [p1_1]
+      m1_2:
+        members: [p1_2]
+      m2_1:
+        members: [p2_1]
+      m2_2:
+        members: [p2_2]
+      m3_1:
+        members: [p3_1]
+      m3_2:
+        members: [p3_2]
+      m3_3:
+        members: [p3_3]
+      m4_1:
+        members: [p4_1]
+      m4_2:
+        members: [p4_2]
+      m4_3:
+        members: [p4_3]
+      m5_1:
+        members: [p5_1]
+      m5_2:
+        members: [p5_2]
+      m5_3:
+        members: [p5_3]
+      m5_4:
+        members: [p5_4]
+      m6_1:
+        members: [p6_1]
+      m6_2:
+        members: [p6_2]
+      m6_3:
+        members: [p6_3]
+      m6_4:
+        members: [p6_4]
+      m7_1:
+        members: [p7_1]
+      m7_2:
+        members: [p7_2]
+      m7_3:
+        members: [p7_3]
+      m7_4:
+        members: [p7_4]
+      m7_5:
+        members: [p7_5]
+      m8_1:
+        members: [p8_1]
+      m8_2:
+        members: [p8_2]
+      m8_3:
+        members: [p8_3]
+      m8_4:
+        members: [p8_4]
+      m8_5:
+        members: [p8_5]
+      m9_1:
+        members: [p9_1]
+      m9_2:
+        members: [p9_2]
+      m9_3:
+        members: [p9_3]
+      m9_4:
+        members: [p9_4]
+      m9_5:
+        members: [p9_5]
+      m9_6:
+        members: [p9_6]
+      m10_1:
+        members: [p10_1]
+      m10_2:
+        members: [p10_2]
+      m10_3:
+        members: [p10_3]
+      m10_4:
+        members: [p10_4]
+      m10_5:
+        members: [p10_5]
+      m10_6:
+        members: [p10_6]
+      m11_1:
+        members: [p11_1]
+      m11_2:
+        members: [p11_2]
+      m11_3:
+        members: [p11_3]
+      m11_4:
+        members: [p11_4]
+      m11_5:
+        members: [p11_5]
+      m11_6:
+        members: [p11_6]
+      m11_7:
+        members: [p11_7]
+      m12_1:
+        members: [p12_1]
+      m12_2:
+        members: [p12_2]
+      m12_3:
+        members: [p12_3]
+      m12_4:
+        members: [p12_4]
+      m12_5:
+        members: [p12_5]
+      m12_6:
+        members: [p12_6]
+      m12_7:
+        members: [p12_7]
+      m13_1:
+        members: [p13_1]
+      m13_2:
+        members: [p13_2]
+      m13_3:
+        members: [p13_3]
+      m13_4:
+        members: [p13_4]
+      m13_5:
+        members: [p13_5]
+      m13_6:
+        members: [p13_6]
+      m13_7:
+        members: [p13_7]
+      m13_8:
+        members: [p13_8]
+      m14_1:
+        members: [p14_1]
+      m14_2:
+        members: [p14_2]
+      m14_3:
+        members: [p14_3]
+      m14_4:
+        members: [p14_4]
+      m14_5:
+        members: [p14_5]
+      m14_6:
+        members: [p14_6]
+      m14_7:
+        members: [p14_7]
+      m14_8:
+        members: [p14_8]
+    households:
+      h1:
+        members: [p1_1, p1_2]
+        state_code:
+          2026: OH
+      h2:
+        members: [p2_1, p2_2]
+        state_code:
+          2026: OH
+      h3:
+        members: [p3_1, p3_2, p3_3]
+        state_code:
+          2026: OH
+      h4:
+        members: [p4_1, p4_2, p4_3]
+        state_code:
+          2026: OH
+      h5:
+        members: [p5_1, p5_2, p5_3, p5_4]
+        state_code:
+          2026: OH
+      h6:
+        members: [p6_1, p6_2, p6_3, p6_4]
+        state_code:
+          2026: OH
+      h7:
+        members: [p7_1, p7_2, p7_3, p7_4, p7_5]
+        state_code:
+          2026: OH
+      h8:
+        members: [p8_1, p8_2, p8_3, p8_4, p8_5]
+        state_code:
+          2026: OH
+      h9:
+        members: [p9_1, p9_2, p9_3, p9_4, p9_5, p9_6]
+        state_code:
+          2026: OH
+      h10:
+        members: [p10_1, p10_2, p10_3, p10_4, p10_5, p10_6]
+        state_code:
+          2026: OH
+      h11:
+        members: [p11_1, p11_2, p11_3, p11_4, p11_5, p11_6, p11_7]
+        state_code:
+          2026: OH
+      h12:
+        members: [p12_1, p12_2, p12_3, p12_4, p12_5, p12_6, p12_7]
+        state_code:
+          2026: OH
+      h13:
+        members: [p13_1, p13_2, p13_3, p13_4, p13_5, p13_6, p13_7, p13_8]
+        state_code:
+          2026: OH
+      h14:
+        members: [p14_1, p14_2, p14_3, p14_4, p14_5, p14_6, p14_7, p14_8]
+        state_code:
+          2026: OH
+  output:
+    # 200% of the 2026 guideline, rounded up, sizes 2 to 8.
+    oh_ccvp_eligible: [true, false, true, false, true, false, true, false, true, false, true, false, true, false]

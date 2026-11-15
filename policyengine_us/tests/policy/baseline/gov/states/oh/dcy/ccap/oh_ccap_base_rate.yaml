@@ -1,10 +1,10 @@
-# Tests for oh_ccap_base_rate (Person, MONTH, defined_for oh_ccap_eligible_child).
+# Tests for oh_ccap_base_rate (Person, MONTH, defined_for StateCode.OH).
 # 5180:6-1-10 Appendix A: maximum reimbursement ceilings keyed by county rate
 # category, age group, provider type, and time category. Hourly cells are
 # per-hour amounts applied to the child's authorized monthly hours; part-time
 # and full-time cells are weekly amounts converted to monthly (x 52 / 12).
-# Rates start 2025-11-01, so cases use period 2026. The parent (person1) is not
-# an eligible child, so its base rate is 0.
+# Rates start 2025-11-01, so cases use period 2026. The parent (person1) has no
+# care hours, so its base rate is 0.
 - name: Case 1, category 1 center infant full-time.
   period: 2026-01
   absolute_error_margin: 0.01

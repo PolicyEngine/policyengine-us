@@ -1,0 +1,17 @@
+description: Maryland uses this indicator to determine whether the State Median Income base year is frozen for the Child Care Scholarship continuation income scale.
+# The model gives continuing families the initial scale's frozen base years until MSDE's
+# Continuation Income Scale took effect on April 22, 2024: 85% of the federal fiscal 2025
+# median, $106,563 a year for three. MSDE's page still posts that scale in October 2026.
+values:
+  2016-01-01: false
+  2018-07-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Maryland CCS continuation SMI freeze in effect
+  reference:
+    - title: MSDE Child Care Scholarship Program Briefing (Feb 4, 2026), slide 21 - fiscal-year freeze schedule
+      href: https://mgaleg.maryland.gov/meeting_material/2026/w&m%20-%20134146885147130127%20-%20Briefing%20materials.pdf#page=21
+    - title: MSDE, Child Care Scholarship Program, Continuation Income Scale effective April 22, 2024 (captured October 9, 2026)
+      href: https://web.archive.org/web/20261009215322/https://earlychildhood.marylandpublicschools.org/child-care-providers/child-care-scholarship-program

@@ -1,0 +1,92 @@
+# The guideline year follows the department's posted tables: 2024 for applications
+# from January 13, 2025, 2025 from October 2025, and 2025 again through 2026 because
+# the page still showed that table on November 5, 2026.
+- name: Case 1, February 2025 uses the 2024 guideline.
+  period: 2025-02
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    # 25,820 / 12
+    id_iccp_fpg: 2_151.67
+
+- name: Case 2, October 2025 uses the 2025 guideline.
+  period: 2025-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    # 26,650 / 12
+    id_iccp_fpg: 2_220.83
+
+- name: Case 3, November 2026 still uses the 2025 guideline.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    id_iccp_fpg: 2_220.83
+
+- name: Case 4, dates before 2025 keep the current year's guideline.
+  period: 2024-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 4
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    id_iccp_fpg: 2_151.67

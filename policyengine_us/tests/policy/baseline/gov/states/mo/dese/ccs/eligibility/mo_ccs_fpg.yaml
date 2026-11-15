@@ -1,0 +1,87 @@
+# Tests for mo_ccs_fpg (SPMUnit, MONTH). DESE's chart updated July 1, 2026 prints the
+# 2025 guideline, and a lag of one holds it through 2026.
+- name: 2025-11 uses the 2025 guideline.
+  period: 2025-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: MO
+  output:
+    mo_ccs_fpg: 2_220.83
+
+- name: 2026-01 uses the 2025 guideline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    mo_ccs_fpg: 2_220.83
+
+- name: 2026-10 uses the 2025 guideline.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: MO
+  output:
+    mo_ccs_fpg: 2_220.83
+
+- name: 2027-01 uses the 2026 guideline.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    mo_ccs_fpg: 2_276.67

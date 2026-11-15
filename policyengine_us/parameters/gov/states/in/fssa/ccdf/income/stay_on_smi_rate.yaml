@@ -1,12 +1,20 @@
-description: Indiana limits continuing eligibility to families with income at or below this percentage of the state median income under the Child Care and Development Fund program.
+description: Indiana limits income to this share of the state median income under the Child Care and Development Fund program.
+# Enrolled families stay eligible up to this share. New applicants face the lower of
+# this share and the get-on share of the guideline; on the April 5, 2026 schedule this
+# share binds from 19 people ($13,028 a month). Each schedule rounds this limit up to
+# the next dollar.
 values:
   2023-08-01: 0.85
 
 metadata:
   unit: /1
   period: year
-  label: Indiana CCDF continuing income limit rate
+  label: Indiana CCDF state median income limit rate
   reference:
+    - title: "Indiana FSSA, CCDF Sliding Fee Schedule with copays, 2026 (effective April 5, 2026), Max SMI column #page 1-2"
+      href: https://www.in.gov/dA/7fc32972de/CCDFSlidingFeeSchedule_withCopays_2026.pdf#page=1
+    - title: Indiana CCDF State Plan FFY 2025-2027, Amendment 2, Section 2.2.4(a)(ii)
+      href: https://www.in.gov/dA/6307709ae5/ACF-118CCDFFFY2025-2027IndianaAmendment.pdf?language_id=1#page=22
     - title: Indiana CCDF Policy Manual, Change in Physical Custody Policy (income below 85% SMI)
       href: https://www.in.gov/fssa/carefinder/files/CCDF-Policy-Manual.pdf#page=10
     - title: Income to Stay On CCDF

@@ -1,0 +1,108 @@
+# Alabama CCSP monthly federal poverty guideline (SPMUnit, MONTH).
+# The fact sheets use the prior calendar year's guideline and one row for families
+# of eight or more.
+
+- name: A family of nine uses the eight-person guideline in June 2026.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+        is_tax_unit_dependent: true
+      person4:
+        age: 13
+        is_tax_unit_dependent: true
+      person5:
+        age: 11
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 7
+        is_tax_unit_dependent: true
+      person8:
+        age: 5
+        is_tax_unit_dependent: true
+      person9:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        # (15,650 + 7 x 5,500) / 12 = 4,512.50; the June 2026 fact sheet's >=8 row prints 0-4,513 dollars at 0-100% FPL.
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_fpg: 4_512.50
+
+- name: A family of three uses the prior year's guideline in June 2026.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # 26,650 / 12 = 2,220.83; the June 2026 fact sheet prints 0-2,221 dollars at 0-100% FPL.
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: AL
+  output:
+    al_ccsp_fpg: 2_220.83
+
+- name: A family of eight uses the 2023 guideline in January 2024.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 15
+        is_tax_unit_dependent: true
+      person4:
+        age: 13
+        is_tax_unit_dependent: true
+      person5:
+        age: 11
+        is_tax_unit_dependent: true
+      person6:
+        age: 9
+        is_tax_unit_dependent: true
+      person7:
+        age: 7
+        is_tax_unit_dependent: true
+      person8:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        # (14,580 + 7 x 5,140) / 12 = 4,213.33; the January 2024 fact sheet's >=8 row prints 0-4,213 dollars at 0-100% FPL.
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2024: AL
+  output:
+    al_ccsp_fpg: 4_213.33

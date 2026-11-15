@@ -1,0 +1,67 @@
+# Tests for wv_ccap_fpg (SPMUnit, MONTH). Appendix A prints the 2024 guideline, and the
+# Bureau still linked that scale on November 5, 2026.
+- name: 2024-11 uses the 2024 guideline.
+  period: 2024-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2024: WV
+  output:
+    wv_ccap_fpg: 2_151.67
+
+- name: 2025-06 uses the 2024 guideline.
+  period: 2025-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2025: WV
+  output:
+    wv_ccap_fpg: 2_151.67
+
+- name: 2026-11 uses the 2024 guideline.
+  period: 2026-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: WV
+  output:
+    wv_ccap_fpg: 2_151.67

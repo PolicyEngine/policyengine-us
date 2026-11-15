@@ -1,0 +1,20 @@
+description: West Virginia reads the state median income table from this many federal fiscal years before the program year under the Child Care Assistance Program.
+# Appendix A's sliding fee scale, created October 1, 2024, caps the largest families at
+# 85% of the October 2024 table ($9,247 a month for ten people). The Bureau's Child Care
+# Policy page still linked that scale on November 5, 2026, so the lag grows to keep the
+# October 2024 table. A new scale adds a date here. From October 2027 the lag of two
+# extrapolates: it reads the October 2025 table, which no scale prints.
+values:
+  2015-01-01: 0
+  2025-10-01: 1
+  2026-10-01: 2
+
+metadata:
+  unit: year
+  period: month
+  label: West Virginia CCAP state median income table year lag
+  reference:
+    - title: "WV Child Care Subsidy Appendix A, Sliding Fee Scale (FY 2024 Federal Poverty Level), ten- and eleven-person families #page 5-6"
+      href: https://bfa.wv.gov/media/6826/download?inline#page=5
+    - title: WV Bureau for Family Assistance, Child Care Policy
+      href: https://bfa.wv.gov/bfa-policy-and-plans/child-care-policy

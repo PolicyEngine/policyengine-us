@@ -1,0 +1,15 @@
+description: Georgia uses this indicator to determine whether families experiencing domestic violence form a priority group under the Childcare and Parent Services program.
+
+# The funding restriction started August 1, 2016 with seven groups. The funding Q&A
+# adds the homeless, domestic violence and very low income groups on October 1, 2016.
+values:
+  2015-01-01: false
+  2016-10-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Georgia CAPS domestic violence priority group in effect
+  reference:
+    - title: Georgia DECAL, Questions about CAPS Funding Restrictions (2016), three groups added October 1, 2016
+      href: https://www.decal.ga.gov/documents/attachments/fundingrestrictionsqa.pdf#page=1

@@ -1,9 +1,12 @@
 # GA CAPS family eligibility
-# Requires: eligible child, income eligible, activity eligible, asset eligible
+# Requires: eligible child, income eligible, activity eligible, asset eligible,
+# and a priority group or current enrollment
 #
-# GA SMI for 4-person household at 2026-01: $116,773.19 (uprated)
-# Family of 2: 116,773.19 * 0.68 = $79,405.77
-#   50% SMI = $39,702.88
+# GA SMI 4-person at 2026-01 (October 2025 table): $110,736
+# New applicants in January 2026 face 40% of it, rounded up to the next dollar:
+#   Family of 2: 110,736 * 0.68 * 0.4 -> $30,121
+#   Family of 3: 110,736 * 0.84 * 0.4 -> $37,208
+#   Family of 4: 110,736 * 1.00 * 0.4 -> $44,295
 
 - name: Case 1, eligible family with child under 13 and low income.
   period: 2026-01
@@ -24,6 +27,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
     households:
       household:
         members: [person1, person2]
@@ -31,7 +35,7 @@
   output:
     ga_caps_eligible: true
 
-- name: Case 2, ineligible due to income above 50 percent SMI.
+- name: Case 2, ineligible due to income above the initial limit.
   period: 2026-01
   input:
     people:
@@ -49,12 +53,13 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
     households:
       household:
         members: [person1, person2]
         state_code: GA
   output:
-    # income 40,000 > 39,702.88 (50% SMI for family of 2) -> ineligible
+    # income 40,000 > 30,121 (40% SMI for family of 2) -> ineligible
     ga_caps_eligible: false
 
 - name: Case 3, ineligible with no eligible child.
@@ -71,6 +76,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+        ga_caps_priority_group_eligible: true
     households:
       household:
         members: [person1]
@@ -97,6 +103,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
         spm_unit_assets: 1_500_000
     households:
       household:
@@ -123,6 +130,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
     households:
       household:
         members: [person1, person2]
@@ -150,6 +158,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        ga_caps_priority_group_eligible: true
     households:
       household:
         members: [person1, person2]

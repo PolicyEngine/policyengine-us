@@ -1,0 +1,17 @@
+description: Ohio uses this indicator to determine whether the Child Care Choice Voucher Program pays at the Publicly Funded Child Care payment rates.
+
+# H.B. 96, Section 423.190, requires the voucher to use those rates, without
+# the Step Up to Quality enhancement, not later than November 1, 2026. This
+# parameter uses that deadline because the DCY procedure letters we could read
+# name no other date.
+values:
+  2000-01-01: false
+  2026-11-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Ohio CCVP pays Publicly Funded Child Care rates
+  reference:
+    - title: LSC Final Analysis of H.B. 96 (136th General Assembly), Section 423.190
+      href: https://www.lsc.ohio.gov/assets/legislation/136/hb96/en0/files/hb96-kid-bill-analysis-as-enacted-136th-general-assembly.pdf#page=10

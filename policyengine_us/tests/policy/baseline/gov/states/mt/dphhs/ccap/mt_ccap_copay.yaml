@@ -2,7 +2,8 @@
 # Non-TANF: copay = max(gross_monthly_income * copay_rate.calc(fpg_ratio), $10).
 # TANF (is_tanf_enrolled): flat $10.
 # fpg_ratio = countable monthly income / monthly FPG.
-# 2026 FPG (contiguous), size 3 (1 parent + 2 children): 27,320 annual = 2,276.67/mo.
+# January 2026 uses the scale's 2025 FPG (contiguous), size 3 (1 parent + 2 children):
+# 26,650 annual = 2,220.83/mo.
 # Income inputs are annual; the MONTH formula reads the monthly portion.
 - name: Case 1, low income copay floors at the $10 minimum.
   period: 2026-01
@@ -11,7 +12,7 @@
     people:
       person1:
         weekly_hours_worked_before_lsr: 40
-        employment_income: 20_490  # 75% FPG; 0.5% of 1,707.50 = 8.54 < 10
+        employment_income: 20_490  # 77% FPG; 0.5% of 1,707.50 = 8.54 < 10
       person2:
         age: 4
       person3:
@@ -34,7 +35,7 @@
     people:
       person1:
         weekly_hours_worked_before_lsr: 40
-        employment_income: 27_320  # 100% FPG, ratio 1.0 -> 0.5%
+        employment_income: 26_650  # 100% FPG, ratio 1.0 -> 0.5%
       person2:
         age: 4
       person3:
@@ -48,17 +49,17 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 11.38  # 2,276.67 * 0.005 = 11.38
+    mt_ccap_copay: 11.10  # 2,220.83 * 0.005 = 11.10
 
 - name: Case 3, continuing recipient at 152% FPG pays the 3.5% copay.
   period: 2026-01
   absolute_error_margin: 0.1
-  # 41,520 annual (152% FPG) -> 3.5% tier; enrolled (eligible up to 185% FPG).
+  # 40,508 annual (152% FPG) -> 3.5% tier; enrolled (eligible up to 200% FPG).
   input:
     people:
       person1:
         weekly_hours_worked_before_lsr: 40
-        employment_income: 41_520  # 3,460/mo, 152% of size-3 FPG
+        employment_income: 40_508  # 3,375.67/mo, 152% of size-3 FPG
       person2:
         age: 4
       person3:
@@ -73,17 +74,17 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 121.1  # 3,460.00 * 0.035
+    mt_ccap_copay: 118.15  # 3,375.67 * 0.035
 
 - name: Case 4, continuing recipient at 182% FPG pays the 6.5% copay.
   period: 2026-01
   absolute_error_margin: 0.1
-  # 49,716 annual (182% FPG) -> 6.5% tier; enrolled (eligible up to 185% FPG).
+  # 48,503 annual (182% FPG) -> 6.5% tier; enrolled (eligible up to 200% FPG).
   input:
     people:
       person1:
         weekly_hours_worked_before_lsr: 40
-        employment_income: 49_716  # 4,143/mo, 182% of size-3 FPG
+        employment_income: 48_503  # 4,041.92/mo, 182% of size-3 FPG
       person2:
         age: 4
       person3:
@@ -98,17 +99,17 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 269.3  # 4,143.00 * 0.065
+    mt_ccap_copay: 262.72  # 4,041.92 * 0.065
 
 - name: Case 5, continuing recipient at 172% FPG pays the 5.5% copay.
   period: 2026-01
   absolute_error_margin: 0.1
-  # 46,992 annual (172% FPG) -> 5.5% tier; enrolled (eligible up to 185% FPG).
+  # 45,838 annual (172% FPG) -> 5.5% tier; enrolled (eligible up to 200% FPG).
   input:
     people:
       person1:
         weekly_hours_worked_before_lsr: 40
-        employment_income: 46_992  # 3,916/mo, 172% of size-3 FPG
+        employment_income: 45_838  # 3,819.83/mo, 172% of size-3 FPG
       person2:
         age: 4
       person3:
@@ -123,7 +124,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 215.38  # 3,916.00 * 0.055
+    mt_ccap_copay: 210.09  # 3,819.83 * 0.055
 
 - name: Case 6, TANF recipient pays the flat $10 copay regardless of income.
   period: 2026-01
@@ -149,7 +150,7 @@
     mt_ccap_copay: 10  # flat $10 for TANF, not the 119.53 scale amount
 
 # --- Edge cases: $10 floor exactly, zero income, and FPG-step bracket boundaries.
-# Size 3 monthly FPG = 27,320 / 12 = 2,276.67. Per the sliding scale footnote, each
+# Size 3 monthly FPG = 26,650 / 12 = 2,220.83. Per the sliding scale footnote, each
 # labeled % is the FLOOR of its tier: a family AT a step enters the higher tier and
 # just below stays in the lower tier (single_amount is "at or above threshold"). ---
 - name: Case 7, zero income copay floors at the $10 minimum.
@@ -179,7 +180,7 @@
 - name: Case 8, copay exactly at the $10 floor (scale amount equals the minimum).
   period: 2026-01
   absolute_error_margin: 0.1
-  # GMI 2,000/mo (24,000 annual, ~87.8% FPG) -> 0.5% bracket; 2,000 * 0.005 = 10 = minimum.
+  # GMI 2,000/mo (24,000 annual, ~90.1% FPG) -> 0.5% bracket; 2,000 * 0.005 = 10 = minimum.
   input:
     people:
       person1:
@@ -203,13 +204,13 @@
 - name: Case 9, just above 100% FPG stays in the 0.5% bracket (floor reading).
   period: 2026-01
   absolute_error_margin: 0.1
-  # ratio 28,140/27,320 = 1.03; floor keeps income below 105% in the 0.5% tier
+  # ratio 27,450/26,650 = 1.03; floor keeps income below 105% in the 0.5% tier
   # (a ceiling reading of the scale would instead charge 1.0% here).
   input:
     people:
       person1:
         weekly_hours_worked_before_lsr: 40
-        employment_income: 28_140  # 103% of size-3 FPG (2,345/mo)
+        employment_income: 27_450  # 103% of size-3 FPG (2,287.50/mo)
       person2:
         age: 4
       person3:
@@ -223,17 +224,17 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 11.73  # 2,345.00/mo * 0.005
+    mt_ccap_copay: 11.44  # 2,287.50/mo * 0.005
 
 - name: Case 10, above 105% FPG is in the 1.0% bracket.
   period: 2026-01
   absolute_error_margin: 0.1
-  # ratio 29,520/27,320 = 1.08; floor 1.0% tier runs 105% up to 115%.
+  # ratio 29,520/26,650 = 1.11; floor 1.0% tier runs 105% up to 115%.
   input:
     people:
       person1:
         weekly_hours_worked_before_lsr: 40
-        employment_income: 29_520  # 108% of size-3 FPG (2,460/mo)
+        employment_income: 29_520  # 111% of size-3 FPG (2,460/mo)
       person2:
         age: 4
       person3:
@@ -252,13 +253,13 @@
 - name: Case 11, just above 110% FPG stays in the 1.0% bracket (floor reading).
   period: 2026-01
   absolute_error_margin: 0.1
-  # ratio 30,600/27,320 = 1.12; floor keeps 110-115% in the 1.0% tier
+  # ratio 30,600/26,650 = 1.148; floor keeps 110-115% in the 1.0% tier
   # (a ceiling reading of the scale would instead charge 1.5% here).
   input:
     people:
       person1:
         weekly_hours_worked_before_lsr: 40
-        employment_income: 30_600  # 112% of size-3 FPG (2,550/mo)
+        employment_income: 30_600  # 114.8% of size-3 FPG (2,550/mo)
       person2:
         age: 4
       person3:
@@ -277,12 +278,12 @@
 - name: Case 12, above 115% FPG is in the 1.5% bracket.
   period: 2026-01
   absolute_error_margin: 0.1
-  # ratio 32,280/27,320 = 1.18; floor 1.5% tier runs 115% up to 125%.
+  # ratio 32,280/26,650 = 1.21; floor 1.5% tier runs 115% up to 125%.
   input:
     people:
       person1:
         weekly_hours_worked_before_lsr: 40
-        employment_income: 32_280  # 118% of size-3 FPG (2,690/mo)
+        employment_income: 32_280  # 121% of size-3 FPG (2,690/mo)
       person2:
         age: 4
       person3:
