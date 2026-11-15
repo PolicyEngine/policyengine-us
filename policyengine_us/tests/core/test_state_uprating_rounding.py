@@ -139,6 +139,7 @@ def test_ar_income_tax_bounds_round_to_nearest_100_after_last_published_year():
 
 def test_nm_low_income_rebate_amounts_round_to_whole_dollars():
     amount = SYSTEM.parameters.gov.states.nm.tax.income.rebates.low_income.amount
+    index = SYSTEM.parameters.gov.irs.uprating
     exemption_names = (
         "one_exemption",
         "two_exemptions",
@@ -149,17 +150,28 @@ def test_nm_low_income_rebate_amounts_round_to_whole_dollars():
     )
     projected_amounts = []
 
+    # New Mexico published its 2026 table in FYI-109, so 2027 is the first
+    # year the model projects.
     for exemption_name in exemption_names:
         scale = getattr(amount, exemption_name)
         for bracket in scale.brackets:
             uprating = bracket.amount.metadata.get("uprating")
             if isinstance(uprating, dict) and "rounding" in uprating:
-                projected_amounts.append(bracket.amount("2026-01-01"))
+                projected_amounts.append(bracket.amount("2027-01-01"))
 
     assert len(projected_amounts) == 121
     assert all(value == round(value) for value in projected_amounts)
-    assert amount.one_exemption.brackets[0].amount("2026-01-01") == 229
-    assert amount.five_exemptions.brackets[0].amount("2026-01-01") == 534
+    # FYI-109, 2026 table, modified gross income of $0 to $1,000: $230 for
+    # one exemption and $538 for five.
+    assert amount.one_exemption.brackets[0].amount("2026-01-01") == 230
+    assert amount.five_exemptions.brackets[0].amount("2026-01-01") == 538
+    # Expected 2027 values follow the loaded index from the published 2026
+    # amounts, so a CPI refresh moves them without breaking the test.
+    factor = index("2027-01-01") / index("2026-01-01")
+    assert amount.one_exemption.brackets[0].amount("2027-01-01") == round(230 * factor)
+    assert amount.five_exemptions.brackets[0].amount("2027-01-01") == round(
+        538 * factor
+    )
 
 
 def test_or_dependent_standard_deduction_uses_published_then_rounded_values():
