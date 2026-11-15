@@ -1,3 +1,10 @@
+## [2.136.0] - 2026-11-15
+
+### Added
+
+- Capture official sources for eleven ruled source conflicts, without changing model behavior.
+
+
 ## [2.135.18] - 2026-11-15
 
 ### Fixed
