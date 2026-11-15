@@ -16173,3 +16173,131 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
+- id: us-ut:medicaid-parent-standard-2018-cms-table
+  program: medicaid
+  years:
+    from: 2018
+    to: 2019
+    type: calendar
+  question: Does Utah use its 55% poverty-guideline parent standard or the 44% dollar-based standard CMS
+    reports in its April 2018 table?
+  sources:
+  - kind: plan
+    citation: Utah State Plan Amendment UT-16-0025-MM, S25, approved March 10, 2017, effective July 1,
+      2017
+    url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/UT/UT-16-0025.pdf#page=7
+  - kind: rulemaking
+    citation: Utah DAR File 41429, R414-303-4(3), proposed July 2017 amendment
+    url: https://rules.utah.gov/publicat/bulletin/2017/20170415/41429.htm
+  - kind: guidance
+    citation: CMS Medicaid and CHIP Eligibility Levels, April 2018, Utah Parent/Caretaker column
+    url: https://download.medicaid.gov/data/medicaid-and-chip-eligibility-levels.xy8t-auhk.csv
+  readings:
+    statute: Utah covers parents with countable income up to 55% of the poverty guideline under its CMS-approved
+      state plan and corresponding R414-303-4(3) amendment.
+    other: CMS reports a 44% parent standard and labels Utah's standard as a dollar amount in its April
+      2018 table.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: ruled
+  note: PolicyEngine applies Utah's amended regulation and adds the federal five-point disregard. CMS
+    approved the state plan on March 10, 2017, effective July 1, 2017. Annual calculations retain the
+    January 1 standard for 2019. The captures sit under source_conflicts/sources/us-ut/r414-303-4-2017-paragraph-3.txt
+    and source_conflicts/sources/us-ut/ut-16-0025-state-plan-p7.txt and source_conflicts/sources/us/cms-medicaid-eligibility-levels-2018-utah.txt.
+- id: us-va:medicaid-parent-lifc-manual-regulation-limits
+  program: medicaid
+  years:
+    from: 2018
+    to: 2020
+    type: calendar
+  question: Does Virginia apply its dated MAGI eligibility-manual LIFC schedules or the lower locality-group
+    amounts in 12VAC30-40-220?
+  sources:
+  - kind: regulation
+    citation: 12VAC30-40-220 A.1, locality-group income limits
+    url: https://law.lis.virginia.gov/admincode/title12/agency30/chapter40/section220/
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2017
+    url: https://www.dmas.virginia.gov/media/2249/transmittal-dmas-5-effective-07-1-2017.pdf#page=35
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2018
+    url: https://www.dmas.virginia.gov/media/2245/transmittal-dmas-9-effective-7-1-18-signed.pdf#page=34
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2019
+    url: https://www.dmas.virginia.gov/media/2258/tn-dmas-13-effective-7-1-2019.pdf#page=42
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2020
+    url: https://www.dmas.virginia.gov/media/2254/tn-dmas-17-effective-7-1-20.pdf#page=59
+  readings:
+    statute: No statute supplies these schedules here. The regulation sets monthly limits by household
+      size and locality group, with additions above eight people.
+    other: DMAS directs eligibility staff to use dated MAGI manual schedules, which set higher limits
+      and change each July.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/additional.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/additional.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/additional.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: ruled
+  note: 'PolicyEngine adopts the dated DMAS manual schedules for the 2018-2020 correction in issue 10793.
+    Annual calculations use the schedule effective on January 1. The regulation remains a conflicting
+    source; the agency manual does not establish a statutory override. The captures sit under source_conflicts/sources/us-va/:
+    12vac30-40-220-group-limits.txt and dmas-lifc-limits-2017-p35.txt, dmas-lifc-limits-2018-p34.txt,
+    dmas-lifc-limits-2019-p42.txt and dmas-lifc-limits-2020-p59.txt.'
+- id: us-ut:medicaid-adult-expansion-limit-january-2020
+  program: medicaid
+  years:
+    from: 2020
+    to: 2020
+    type: calendar
+  question: On January 1, 2020, does Utah cover adult expansion applicants with income up to 133% of the poverty
+    guideline, as CMS's December 2019 demonstration approval and Utah Code 26-18-3.9(5)(b) provide, or up to 95%,
+    as R414-312-6(3) still read until DAR 52479 amended it?
+  sources:
+  - kind: statute
+    citation: Utah Code 26-18-3.9(5)(b), as amended by S.B. 96 (2019 General Session), enrolled copy, lines 232-241
+    url: https://le.utah.gov/~2019/bills/sbillenr/SB0096.pdf#page=9
+  - kind: regulation
+    citation: Utah Admin. Code R414-312-6(3), DAR File No. 43798, effective August 29, 2019
+    url: https://rules.utah.gov/publicat/bull_pdf/2019/b20190701.pdf#page=95
+  - kind: rulemaking
+    citation: Utah DAR File No. 52479, proposed amendment to R414-312-6(3), Utah State Bulletin, February 1, 2020
+    url: https://rules.utah.gov/wp-content/uploads/b20200201.pdf#page=103
+  - kind: policy
+    citation: CMS approval of the Utah Primary Care Network section 1115 demonstration (amendment approved December 16,
+      2020), expenditure authority 10, Adult Expansion Population
+    url: https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=7
+  readings:
+    statute: Section 26-18-3.9(5)(b) expands Medicaid to the whole optional adult expansion population on the earlier
+      of the day CMS approves a waiver with the terms in Subsection (5)(a)(ii) or July 1, 2020. CMS approved the
+      amendment raising the Adult Expansion Population limit to 133% of the guideline on December 23, 2019, and its
+      expenditure authority 10 covers adults to 133% as of January 1, 2020.
+    other: R414-312-6(3) limited Adult Expansion Medicaid to countable income at or below 95% of the guideline until
+      DAR 52479, which may take effect on March 9, 2020, raised it to 133%.
+  example: A Utah parent of children aged 5 and 8 earning $25,000 in 2020 has income at 1.151 of the $21,720
+    guideline. The 1.38 limit admits up to $29,976 a year, and the 1.00 limit up to $21,720.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/adult/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: open
+  note: 'Annual calculations read January 1, so the 2020 Utah adult limit takes 1.38 (133% plus the five-point
+    disregard). The other reading gives 1.00. The Utah 2020 Index of Changes lists rule changes effective January
+    2, 2019 through January 1, 2020, and shows only DAR 43708 and DAR 43798 for R414-312 (https://rules.utah.gov/wp-content/uploads/2020-Index-of-Changes.pdf#page=31).
+    CMS gives the December 23, 2019 approval date in STC 55 (https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=50).
+    The statute reading assumes that approval meets Subsection (5)(b)(i). The YAML case "Utah parent earning 25,000.00
+    in 2020 qualifies only under the 1.38 adult limit" pins the reading. The captures sit under source_conflicts/sources/us-ut/:
+    ut-sb96-2019-enrolled-26-18-3-9-p8-9.txt, ut-bulletin-2019-07-01-dar-43798-p95.txt, ut-bulletin-2020-02-01-dar-52479-p103.txt
+    and cms-ut-pcn-approval-2020-12-16-p7.txt.'

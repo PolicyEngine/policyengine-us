@@ -1,0 +1,14 @@
+description: Tennessee uses its household-size dollar standards for parent and caretaker relative Medicaid in these years.
+# PolicyEngine turns this route on for 2018 through 2020 only; other years keep the national ratio.
+values:
+  2013-01-01: false
+  2018-01-01: true
+  2021-01-01: false
+metadata:
+  unit: bool
+  label: Tennessee historical Medicaid parent income schedule in effect
+  reference:
+    - title: Tennessee State Plan TN-14-0005-MM1, AFDC Income Standards, section H
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/TN/TN-14-0005.pdf#page=19
+    - title: Tennessee State Plan TN-21-0010, AFDC Income Standards, section H, effective October 1, 2021
+      href: https://www.tn.gov/content/dam/tn/tenncare/documents2/SSPPAFDCIncomeStandards.pdf#page=9
