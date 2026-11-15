@@ -1,1 +1,1 @@
-Fixed DC and Illinois LIHEAP payments and Louisiana's school readiness credit in simulations with multiple states or tax units.
+Fixed Louisiana's school readiness credit attribution in simulations with several tax units and bounded explicit DC and Illinois LIHEAP income keys to existing matrix rows.

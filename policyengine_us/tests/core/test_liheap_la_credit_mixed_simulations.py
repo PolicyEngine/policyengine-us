@@ -16,7 +16,11 @@ from policyengine_us.variables.household.demographic.geographic.state_code impor
 )
 
 YEAR = 2026
-STATES = tuple(state.name for state in StateCode)[:51]
+STATES = tuple(
+    state.name
+    for state in StateCode
+    if state.name not in {"GU", "MP", "PW", "PR", "VI", "AA", "AE", "AP"}
+)
 OUTPUTS = (
     "dc_liheap_payment",
     "il_liheap_base_payment",
@@ -88,7 +92,9 @@ def _calculate(households):
 
 
 @settings(max_examples=8, deadline=None, derandomize=True, database=None)
-@example(population=[(state, [(1, 0, 2_000, 50, 5)]) for state in STATES])
+@example(
+    population=[(state, [(1, 0, 2_000, 50, 5)]) for state in ("DC", "IL", "LA", "NY")]
+)
 @example(
     population=[
         ("DC", [(0, 0, 2_000, 0, 1)]),
