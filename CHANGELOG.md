@@ -1,3 +1,10 @@
+## [2.135.10] - 2026-11-15
+
+### Fixed
+
+- Correct Michigan's 2017 homestead property tax credit maximum to $1,200.
+
+
 ## [2.135.9] - 2026-11-15
 
 ### Fixed
