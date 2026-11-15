@@ -1,3 +1,10 @@
+## [2.137.3] - 2026-11-15
+
+### Fixed
+
+- Corrected SNAP gross and net income standards for October 2016 through September 2017 using HHS's published household-size table.
+
+
 ## [2.137.2] - 2026-11-15
 
 ### Fixed
