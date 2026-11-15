@@ -1,0 +1,22 @@
+description: Minnesota reduces its child and dependent care credit above this federal adjusted gross income threshold in 2017 through 2020.
+values:
+  2017-01-01: 50_000
+  2018-01-01: 50_990
+  2019-01-01: 52_230
+  2020-01-01: 53_100
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota CDCC historical phaseout threshold
+  reference:
+    - title: 2017 Minnesota Statutes 290.067, subdivision 1(h)
+      href: https://www.revisor.mn.gov/statutes/2017/cite/290.067#stat.290.067.1
+    - title: 2017 First Special Session chapter 1, article 1, sections 18 and 19
+      href: https://www.revisor.mn.gov/laws/2017/1/1/
+    - title: 2018 Schedule M1CD, Worksheet for Line 5
+      href: https://www.revenue.state.mn.us/sites/default/files/2018-11/m1cd_18.pdf#page=3
+    - title: 2019 Schedule M1CD, Worksheet for Line 3
+      href: https://www.revenue.state.mn.us/sites/default/files/2019-12/m1cd_19.pdf#page=3
+    - title: 2020 Schedule M1CD, Worksheet for Line 3
+      href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_20.pdf#page=3

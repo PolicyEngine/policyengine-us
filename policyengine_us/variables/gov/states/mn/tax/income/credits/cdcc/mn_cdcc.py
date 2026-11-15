@@ -1,6 +1,39 @@
 from policyengine_us.model_api import *
 
 
+def _calculate_mn_cdcc(tax_unit, period, p, phaseout_threshold):
+    dep_count = tax_unit("mn_cdcc_dependent_count", period)
+    # Minn. Stat. §290.067 computes the credit pursuant to IRC §21, whose
+    # employment-related expenses cover childcare plus care for a
+    # disabled adult qualifying individual (care_expenses).
+    childcare = tax_unit("tax_unit_childcare_expenses", period)
+    adult_care = add(tax_unit, period, ["care_expenses"])
+    expenses = childcare + adult_care
+    # ... cap expense by number of qualifying dependents
+    eligible_count = min_(dep_count, p.maximum_dependents)
+    maximum_eligible_expenses = min_(expenses, p.maximum_expense * eligible_count)
+    # ... cap expense by lower earnings of head and spouse if present
+    # Line 2
+    capped_expenses = min_(
+        maximum_eligible_expenses,
+        tax_unit("min_head_spouse_earned", period),
+    )
+    # calculate pre-phaseout credit amount
+    # Line 5
+    agi = tax_unit("adjusted_gross_income", period)
+    # Line 7
+    pre_phaseout_amount = capped_expenses * p.expense_fraction.calc(agi)
+    # calculate post-phaseout credit amount
+    # Line 8
+    phaseout_amount = tax_unit("mn_cdcc_phase_out", period)
+    smaller_of_expenses_and_reduced_credit = min_(pre_phaseout_amount, phaseout_amount)
+    return where(
+        agi > phaseout_threshold,
+        smaller_of_expenses_and_reduced_credit,
+        pre_phaseout_amount,
+    )
+
+
 class mn_cdcc(Variable):
     value_type = float
     entity = TaxUnit
@@ -8,6 +41,11 @@ class mn_cdcc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://www.revisor.mn.gov/statutes/2017/cite/290.067#stat.290.067.1",
+        "https://www.revisor.mn.gov/laws/2017/1/1/",
+        "https://www.revenue.state.mn.us/sites/default/files/2018-11/m1cd_18.pdf#page=3",
+        "https://www.revenue.state.mn.us/sites/default/files/2019-12/m1cd_19.pdf#page=3",
+        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_20.pdf#page=3",
         "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf",
     )
@@ -15,35 +53,12 @@ class mn_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mn.tax.income.credits.cdcc
-        dep_count = tax_unit("mn_cdcc_dependent_count", period)
-        # Minn. Stat. §290.067 computes the credit pursuant to IRC §21, whose
-        # employment-related expenses cover childcare plus care for a
-        # disabled adult qualifying individual (care_expenses).
-        childcare = tax_unit("tax_unit_childcare_expenses", period)
-        adult_care = add(tax_unit, period, ["care_expenses"])
-        expenses = childcare + adult_care
-        # ... cap expense by number of qualifying dependents
-        eligible_count = min_(dep_count, p.maximum_dependents)
-        maximum_eligible_expenses = min_(expenses, p.maximum_expense * eligible_count)
-        # ... cap expense by lower earnings of head and spouse if present
-        # Line 2
-        capped_expenses = min_(
-            maximum_eligible_expenses,
-            tax_unit("min_head_spouse_earned", period),
-        )
-        # calculate pre-phaseout credit amount
-        # Line 5
-        agi = tax_unit("adjusted_gross_income", period)
-        # Line 7
-        pre_phaseout_amount = capped_expenses * p.expense_fraction.calc(agi)
-        # calculate post-phaseout credit amount
-        # Line 8
-        phaseout_amount = tax_unit("mn_cdcc_phase_out", period)
-        smaller_of_expenses_and_reduced_credit = min_(
-            pre_phaseout_amount, phaseout_amount
-        )
-        return where(
-            agi > p.phaseout_threshold,
-            smaller_of_expenses_and_reduced_credit,
-            pre_phaseout_amount,
-        )
+        return _calculate_mn_cdcc(tax_unit, period, p, p.phaseout_threshold)
+
+    def formula_2017(tax_unit, period, parameters):
+        p = parameters(period).gov.states.mn.tax.income.credits.cdcc
+        return _calculate_mn_cdcc(tax_unit, period, p, p.historical_phaseout_threshold)
+
+    def formula_2021(tax_unit, period, parameters):
+        p = parameters(period).gov.states.mn.tax.income.credits.cdcc
+        return _calculate_mn_cdcc(tax_unit, period, p, p.phaseout_threshold)
