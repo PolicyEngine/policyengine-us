@@ -39,7 +39,7 @@ class uncapped_ssi_without_spousal_deeming(Variable):
         # Countable income adds income deemed from an ineligible spouse to the
         # person's own countable income; remove it.
         own_countable_income = person("ssi_countable_income", period) - person(
-            "ssi_income_deemed_from_ineligible_spouse", period
+            "ssi_income_deemed_from_ineligible_spouse_monthly", period
         )
         # SSA applies the regular individual PMV to this individual
         # computation (POMS SI 01320.150 B.1.b and SI 01320.400 C.2).

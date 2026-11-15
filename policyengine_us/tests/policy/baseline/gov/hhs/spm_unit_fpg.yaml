@@ -48,7 +48,7 @@
     spm_unit_size: 5
     state_group_str: AK
   output:
-    spm_unit_fpg: 14_840 + 4 * 5_200
+    spm_unit_fpg: 35_560  # HHS 2016 table, size 5.
 
 - name: Three-person SPM unit in 2016 in Hawaii
   period: 2016
@@ -56,4 +56,1759 @@
     spm_unit_size: 3
     state_group_str: HI
   output:
-    spm_unit_fpg: 13_670 + 2 * 4_780
+    spm_unit_fpg: 23_190  # HHS 2016 table, size 3.
+
+# Component sizes are explicit; these are not 30 real families of the stated size.
+# HHS 81 FR 4036-4037, PDF pages 1-2; IRS 2017 Form 8962 instructions pages 6-7.
+# https://www.govinfo.gov/content/pkg/FR-2016-01-25/pdf/2016-01450.pdf#page=1
+- name: The literal 2016 HHS tables and size-eight extensions agree for mixed tax and SPM
+    units.
+  period: 2016
+  input:
+    people:
+      component1:
+        age:
+          2016: 40
+      component2:
+        age:
+          2016: 40
+      component3:
+        age:
+          2016: 40
+      component4:
+        age:
+          2016: 40
+      component5:
+        age:
+          2016: 40
+      component6:
+        age:
+          2016: 40
+      component7:
+        age:
+          2016: 40
+      component8:
+        age:
+          2016: 40
+      component9:
+        age:
+          2016: 40
+      component10:
+        age:
+          2016: 40
+      component11:
+        age:
+          2016: 40
+      component12:
+        age:
+          2016: 40
+      component13:
+        age:
+          2016: 40
+      component14:
+        age:
+          2016: 40
+      component15:
+        age:
+          2016: 40
+      component16:
+        age:
+          2016: 40
+      component17:
+        age:
+          2016: 40
+      component18:
+        age:
+          2016: 40
+      component19:
+        age:
+          2016: 40
+      component20:
+        age:
+          2016: 40
+      component21:
+        age:
+          2016: 40
+      component22:
+        age:
+          2016: 40
+      component23:
+        age:
+          2016: 40
+      component24:
+        age:
+          2016: 40
+      component25:
+        age:
+          2016: 40
+      component26:
+        age:
+          2016: 40
+      component27:
+        age:
+          2016: 40
+      component28:
+        age:
+          2016: 40
+      component29:
+        age:
+          2016: 40
+      component30:
+        age:
+          2016: 40
+    tax_units:
+      tax_unit1:
+        members:
+        - component1
+        tax_unit_size:
+          2016: 1
+      tax_unit2:
+        members:
+        - component2
+        tax_unit_size:
+          2016: 2
+      tax_unit3:
+        members:
+        - component3
+        tax_unit_size:
+          2016: 3
+      tax_unit4:
+        members:
+        - component4
+        tax_unit_size:
+          2016: 4
+      tax_unit5:
+        members:
+        - component5
+        tax_unit_size:
+          2016: 5
+      tax_unit6:
+        members:
+        - component6
+        tax_unit_size:
+          2016: 6
+      tax_unit7:
+        members:
+        - component7
+        tax_unit_size:
+          2016: 7
+      tax_unit8:
+        members:
+        - component8
+        tax_unit_size:
+          2016: 8
+      tax_unit9:
+        members:
+        - component9
+        tax_unit_size:
+          2016: 9
+      tax_unit10:
+        members:
+        - component10
+        tax_unit_size:
+          2016: 11
+      tax_unit11:
+        members:
+        - component11
+        tax_unit_size:
+          2016: 1
+      tax_unit12:
+        members:
+        - component12
+        tax_unit_size:
+          2016: 2
+      tax_unit13:
+        members:
+        - component13
+        tax_unit_size:
+          2016: 3
+      tax_unit14:
+        members:
+        - component14
+        tax_unit_size:
+          2016: 4
+      tax_unit15:
+        members:
+        - component15
+        tax_unit_size:
+          2016: 5
+      tax_unit16:
+        members:
+        - component16
+        tax_unit_size:
+          2016: 6
+      tax_unit17:
+        members:
+        - component17
+        tax_unit_size:
+          2016: 7
+      tax_unit18:
+        members:
+        - component18
+        tax_unit_size:
+          2016: 8
+      tax_unit19:
+        members:
+        - component19
+        tax_unit_size:
+          2016: 9
+      tax_unit20:
+        members:
+        - component20
+        tax_unit_size:
+          2016: 11
+      tax_unit21:
+        members:
+        - component21
+        tax_unit_size:
+          2016: 1
+      tax_unit22:
+        members:
+        - component22
+        tax_unit_size:
+          2016: 2
+      tax_unit23:
+        members:
+        - component23
+        tax_unit_size:
+          2016: 3
+      tax_unit24:
+        members:
+        - component24
+        tax_unit_size:
+          2016: 4
+      tax_unit25:
+        members:
+        - component25
+        tax_unit_size:
+          2016: 5
+      tax_unit26:
+        members:
+        - component26
+        tax_unit_size:
+          2016: 6
+      tax_unit27:
+        members:
+        - component27
+        tax_unit_size:
+          2016: 7
+      tax_unit28:
+        members:
+        - component28
+        tax_unit_size:
+          2016: 8
+      tax_unit29:
+        members:
+        - component29
+        tax_unit_size:
+          2016: 9
+      tax_unit30:
+        members:
+        - component30
+        tax_unit_size:
+          2016: 11
+    spm_units:
+      spm_unit1:
+        members:
+        - component1
+        spm_unit_size:
+          2016: 1
+      spm_unit2:
+        members:
+        - component2
+        spm_unit_size:
+          2016: 2
+      spm_unit3:
+        members:
+        - component3
+        spm_unit_size:
+          2016: 3
+      spm_unit4:
+        members:
+        - component4
+        spm_unit_size:
+          2016: 4
+      spm_unit5:
+        members:
+        - component5
+        spm_unit_size:
+          2016: 5
+      spm_unit6:
+        members:
+        - component6
+        spm_unit_size:
+          2016: 6
+      spm_unit7:
+        members:
+        - component7
+        spm_unit_size:
+          2016: 7
+      spm_unit8:
+        members:
+        - component8
+        spm_unit_size:
+          2016: 8
+      spm_unit9:
+        members:
+        - component9
+        spm_unit_size:
+          2016: 9
+      spm_unit10:
+        members:
+        - component10
+        spm_unit_size:
+          2016: 11
+      spm_unit11:
+        members:
+        - component11
+        spm_unit_size:
+          2016: 1
+      spm_unit12:
+        members:
+        - component12
+        spm_unit_size:
+          2016: 2
+      spm_unit13:
+        members:
+        - component13
+        spm_unit_size:
+          2016: 3
+      spm_unit14:
+        members:
+        - component14
+        spm_unit_size:
+          2016: 4
+      spm_unit15:
+        members:
+        - component15
+        spm_unit_size:
+          2016: 5
+      spm_unit16:
+        members:
+        - component16
+        spm_unit_size:
+          2016: 6
+      spm_unit17:
+        members:
+        - component17
+        spm_unit_size:
+          2016: 7
+      spm_unit18:
+        members:
+        - component18
+        spm_unit_size:
+          2016: 8
+      spm_unit19:
+        members:
+        - component19
+        spm_unit_size:
+          2016: 9
+      spm_unit20:
+        members:
+        - component20
+        spm_unit_size:
+          2016: 11
+      spm_unit21:
+        members:
+        - component21
+        spm_unit_size:
+          2016: 1
+      spm_unit22:
+        members:
+        - component22
+        spm_unit_size:
+          2016: 2
+      spm_unit23:
+        members:
+        - component23
+        spm_unit_size:
+          2016: 3
+      spm_unit24:
+        members:
+        - component24
+        spm_unit_size:
+          2016: 4
+      spm_unit25:
+        members:
+        - component25
+        spm_unit_size:
+          2016: 5
+      spm_unit26:
+        members:
+        - component26
+        spm_unit_size:
+          2016: 6
+      spm_unit27:
+        members:
+        - component27
+        spm_unit_size:
+          2016: 7
+      spm_unit28:
+        members:
+        - component28
+        spm_unit_size:
+          2016: 8
+      spm_unit29:
+        members:
+        - component29
+        spm_unit_size:
+          2016: 9
+      spm_unit30:
+        members:
+        - component30
+        spm_unit_size:
+          2016: 11
+    households:
+      household1:
+        members:
+        - component1
+        state_code:
+          2016: TX
+      household2:
+        members:
+        - component2
+        state_code:
+          2016: TX
+      household3:
+        members:
+        - component3
+        state_code:
+          2016: TX
+      household4:
+        members:
+        - component4
+        state_code:
+          2016: TX
+      household5:
+        members:
+        - component5
+        state_code:
+          2016: TX
+      household6:
+        members:
+        - component6
+        state_code:
+          2016: TX
+      household7:
+        members:
+        - component7
+        state_code:
+          2016: TX
+      household8:
+        members:
+        - component8
+        state_code:
+          2016: TX
+      household9:
+        members:
+        - component9
+        state_code:
+          2016: TX
+      household10:
+        members:
+        - component10
+        state_code:
+          2016: TX
+      household11:
+        members:
+        - component11
+        state_code:
+          2016: AK
+      household12:
+        members:
+        - component12
+        state_code:
+          2016: AK
+      household13:
+        members:
+        - component13
+        state_code:
+          2016: AK
+      household14:
+        members:
+        - component14
+        state_code:
+          2016: AK
+      household15:
+        members:
+        - component15
+        state_code:
+          2016: AK
+      household16:
+        members:
+        - component16
+        state_code:
+          2016: AK
+      household17:
+        members:
+        - component17
+        state_code:
+          2016: AK
+      household18:
+        members:
+        - component18
+        state_code:
+          2016: AK
+      household19:
+        members:
+        - component19
+        state_code:
+          2016: AK
+      household20:
+        members:
+        - component20
+        state_code:
+          2016: AK
+      household21:
+        members:
+        - component21
+        state_code:
+          2016: HI
+      household22:
+        members:
+        - component22
+        state_code:
+          2016: HI
+      household23:
+        members:
+        - component23
+        state_code:
+          2016: HI
+      household24:
+        members:
+        - component24
+        state_code:
+          2016: HI
+      household25:
+        members:
+        - component25
+        state_code:
+          2016: HI
+      household26:
+        members:
+        - component26
+        state_code:
+          2016: HI
+      household27:
+        members:
+        - component27
+        state_code:
+          2016: HI
+      household28:
+        members:
+        - component28
+        state_code:
+          2016: HI
+      household29:
+        members:
+        - component29
+        state_code:
+          2016: HI
+      household30:
+        members:
+        - component30
+        state_code:
+          2016: HI
+  output:
+    tax_unit_fpg:
+    - 11880
+    - 16020
+    - 20160
+    - 24300
+    - 28440
+    - 32580
+    - 36730
+    - 40890
+    - 45050
+    - 53370
+    - 14840
+    - 20020
+    - 25200
+    - 30380
+    - 35560
+    - 40740
+    - 45920
+    - 51120
+    - 56320
+    - 66720
+    - 13670
+    - 18430
+    - 23190
+    - 27950
+    - 32710
+    - 37470
+    - 42230
+    - 47010
+    - 51790
+    - 61350
+    spm_unit_fpg:
+    - 11880
+    - 16020
+    - 20160
+    - 24300
+    - 28440
+    - 32580
+    - 36730
+    - 40890
+    - 45050
+    - 53370
+    - 14840
+    - 20020
+    - 25200
+    - 30380
+    - 35560
+    - 40740
+    - 45920
+    - 51120
+    - 56320
+    - 66720
+    - 13670
+    - 18430
+    - 23190
+    - 27950
+    - 32710
+    - 37470
+    - 42230
+    - 47010
+    - 51790
+    - 61350
+
+# These controls preserve canonical model outputs outside the 2016 override.
+# They do not independently certify those years, publication dates or agency adoption.
+- name: The exact-table override leaves 2015 and consecutive 2017 through 2026 guidelines
+    unchanged.
+  period: 2015
+  input:
+    people:
+      component1:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component2:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component3:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component4:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component5:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component6:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component7:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component8:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component9:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component10:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component11:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+      component12:
+        age:
+          2015: 40
+          2017: 40
+          2018: 40
+          2019: 40
+          2020: 40
+          2021: 40
+          2022: 40
+          2023: 40
+          2024: 40
+          2025: 40
+          2026: 40
+    tax_units:
+      tax_unit1:
+        members:
+        - component1
+        tax_unit_size:
+          2015: 1
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+      tax_unit2:
+        members:
+        - component2
+        tax_unit_size:
+          2015: 2
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+      tax_unit3:
+        members:
+        - component3
+        tax_unit_size:
+          2015: 8
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+      tax_unit4:
+        members:
+        - component4
+        tax_unit_size:
+          2015: 11
+          2017: 11
+          2018: 11
+          2019: 11
+          2020: 11
+          2021: 11
+          2022: 11
+          2023: 11
+          2024: 11
+          2025: 11
+          2026: 11
+      tax_unit5:
+        members:
+        - component5
+        tax_unit_size:
+          2015: 1
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+      tax_unit6:
+        members:
+        - component6
+        tax_unit_size:
+          2015: 2
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+      tax_unit7:
+        members:
+        - component7
+        tax_unit_size:
+          2015: 8
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+      tax_unit8:
+        members:
+        - component8
+        tax_unit_size:
+          2015: 11
+          2017: 11
+          2018: 11
+          2019: 11
+          2020: 11
+          2021: 11
+          2022: 11
+          2023: 11
+          2024: 11
+          2025: 11
+          2026: 11
+      tax_unit9:
+        members:
+        - component9
+        tax_unit_size:
+          2015: 1
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+      tax_unit10:
+        members:
+        - component10
+        tax_unit_size:
+          2015: 2
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+      tax_unit11:
+        members:
+        - component11
+        tax_unit_size:
+          2015: 8
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+      tax_unit12:
+        members:
+        - component12
+        tax_unit_size:
+          2015: 11
+          2017: 11
+          2018: 11
+          2019: 11
+          2020: 11
+          2021: 11
+          2022: 11
+          2023: 11
+          2024: 11
+          2025: 11
+          2026: 11
+    spm_units:
+      spm_unit1:
+        members:
+        - component1
+        spm_unit_size:
+          2015: 1
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+      spm_unit2:
+        members:
+        - component2
+        spm_unit_size:
+          2015: 2
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+      spm_unit3:
+        members:
+        - component3
+        spm_unit_size:
+          2015: 8
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+      spm_unit4:
+        members:
+        - component4
+        spm_unit_size:
+          2015: 11
+          2017: 11
+          2018: 11
+          2019: 11
+          2020: 11
+          2021: 11
+          2022: 11
+          2023: 11
+          2024: 11
+          2025: 11
+          2026: 11
+      spm_unit5:
+        members:
+        - component5
+        spm_unit_size:
+          2015: 1
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+      spm_unit6:
+        members:
+        - component6
+        spm_unit_size:
+          2015: 2
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+      spm_unit7:
+        members:
+        - component7
+        spm_unit_size:
+          2015: 8
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+      spm_unit8:
+        members:
+        - component8
+        spm_unit_size:
+          2015: 11
+          2017: 11
+          2018: 11
+          2019: 11
+          2020: 11
+          2021: 11
+          2022: 11
+          2023: 11
+          2024: 11
+          2025: 11
+          2026: 11
+      spm_unit9:
+        members:
+        - component9
+        spm_unit_size:
+          2015: 1
+          2017: 1
+          2018: 1
+          2019: 1
+          2020: 1
+          2021: 1
+          2022: 1
+          2023: 1
+          2024: 1
+          2025: 1
+          2026: 1
+      spm_unit10:
+        members:
+        - component10
+        spm_unit_size:
+          2015: 2
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+      spm_unit11:
+        members:
+        - component11
+        spm_unit_size:
+          2015: 8
+          2017: 8
+          2018: 8
+          2019: 8
+          2020: 8
+          2021: 8
+          2022: 8
+          2023: 8
+          2024: 8
+          2025: 8
+          2026: 8
+      spm_unit12:
+        members:
+        - component12
+        spm_unit_size:
+          2015: 11
+          2017: 11
+          2018: 11
+          2019: 11
+          2020: 11
+          2021: 11
+          2022: 11
+          2023: 11
+          2024: 11
+          2025: 11
+          2026: 11
+    households:
+      household1:
+        members:
+        - component1
+        state_code:
+          2015: TX
+          2017: TX
+          2018: TX
+          2019: TX
+          2020: TX
+          2021: TX
+          2022: TX
+          2023: TX
+          2024: TX
+          2025: TX
+          2026: TX
+      household2:
+        members:
+        - component2
+        state_code:
+          2015: TX
+          2017: TX
+          2018: TX
+          2019: TX
+          2020: TX
+          2021: TX
+          2022: TX
+          2023: TX
+          2024: TX
+          2025: TX
+          2026: TX
+      household3:
+        members:
+        - component3
+        state_code:
+          2015: TX
+          2017: TX
+          2018: TX
+          2019: TX
+          2020: TX
+          2021: TX
+          2022: TX
+          2023: TX
+          2024: TX
+          2025: TX
+          2026: TX
+      household4:
+        members:
+        - component4
+        state_code:
+          2015: TX
+          2017: TX
+          2018: TX
+          2019: TX
+          2020: TX
+          2021: TX
+          2022: TX
+          2023: TX
+          2024: TX
+          2025: TX
+          2026: TX
+      household5:
+        members:
+        - component5
+        state_code:
+          2015: AK
+          2017: AK
+          2018: AK
+          2019: AK
+          2020: AK
+          2021: AK
+          2022: AK
+          2023: AK
+          2024: AK
+          2025: AK
+          2026: AK
+      household6:
+        members:
+        - component6
+        state_code:
+          2015: AK
+          2017: AK
+          2018: AK
+          2019: AK
+          2020: AK
+          2021: AK
+          2022: AK
+          2023: AK
+          2024: AK
+          2025: AK
+          2026: AK
+      household7:
+        members:
+        - component7
+        state_code:
+          2015: AK
+          2017: AK
+          2018: AK
+          2019: AK
+          2020: AK
+          2021: AK
+          2022: AK
+          2023: AK
+          2024: AK
+          2025: AK
+          2026: AK
+      household8:
+        members:
+        - component8
+        state_code:
+          2015: AK
+          2017: AK
+          2018: AK
+          2019: AK
+          2020: AK
+          2021: AK
+          2022: AK
+          2023: AK
+          2024: AK
+          2025: AK
+          2026: AK
+      household9:
+        members:
+        - component9
+        state_code:
+          2015: HI
+          2017: HI
+          2018: HI
+          2019: HI
+          2020: HI
+          2021: HI
+          2022: HI
+          2023: HI
+          2024: HI
+          2025: HI
+          2026: HI
+      household10:
+        members:
+        - component10
+        state_code:
+          2015: HI
+          2017: HI
+          2018: HI
+          2019: HI
+          2020: HI
+          2021: HI
+          2022: HI
+          2023: HI
+          2024: HI
+          2025: HI
+          2026: HI
+      household11:
+        members:
+        - component11
+        state_code:
+          2015: HI
+          2017: HI
+          2018: HI
+          2019: HI
+          2020: HI
+          2021: HI
+          2022: HI
+          2023: HI
+          2024: HI
+          2025: HI
+          2026: HI
+      household12:
+        members:
+        - component12
+        state_code:
+          2015: HI
+          2017: HI
+          2018: HI
+          2019: HI
+          2020: HI
+          2021: HI
+          2022: HI
+          2023: HI
+          2024: HI
+          2025: HI
+          2026: HI
+  output:
+    tax_unit_fpg:
+      2015:
+      - 11770
+      - 15930
+      - 40890
+      - 53370
+      - 14720
+      - 19920
+      - 51120
+      - 66720
+      - 13550
+      - 18330
+      - 47010
+      - 61350
+      2017:
+      - 12060
+      - 16240
+      - 41320
+      - 53860
+      - 15060
+      - 20290
+      - 51670
+      - 67360
+      - 13860
+      - 18670
+      - 47530
+      - 61960
+      2018:
+      - 12140
+      - 16460
+      - 42380
+      - 55340
+      - 15180
+      - 20580
+      - 52980
+      - 69180
+      - 13960
+      - 18770
+      - 47630
+      - 62060
+      2019:
+      - 12490
+      - 16910
+      - 43430
+      - 56690
+      - 15600
+      - 21130
+      - 54310
+      - 70900
+      - 14380
+      - 19460
+      - 49940
+      - 65180
+      2020:
+      - 12760
+      - 17240
+      - 44120
+      - 57560
+      - 15950
+      - 21550
+      - 55150
+      - 71950
+      - 14680
+      - 19830
+      - 50730
+      - 66180
+      2021:
+      - 12880
+      - 17420
+      - 44660
+      - 58280
+      - 16090
+      - 21770
+      - 55850
+      - 72890
+      - 14820
+      - 20040
+      - 51360
+      - 67020
+      2022:
+      - 13590
+      - 18310
+      - 46630
+      - 60790
+      - 16990
+      - 22890
+      - 58290
+      - 75990
+      - 15630
+      - 21060
+      - 53640
+      - 69930
+      2023:
+      - 14580
+      - 19720
+      - 50560
+      - 65980
+      - 18210
+      - 24640
+      - 63220
+      - 82510
+      - 16770
+      - 22680
+      - 58140
+      - 75870
+      2024:
+      - 15060
+      - 20440
+      - 52720
+      - 68860
+      - 18810
+      - 25540
+      - 65920
+      - 86110
+      - 17310
+      - 23500
+      - 60640
+      - 79210
+      2025:
+      - 15650
+      - 21150
+      - 54150
+      - 70650
+      - 19550
+      - 26430
+      - 67710
+      - 88350
+      - 17990
+      - 24320
+      - 62300
+      - 81290
+      2026:
+      - 15960
+      - 21640
+      - 55720
+      - 72760
+      - 19950
+      - 27050
+      - 69650
+      - 90950
+      - 18360
+      - 24890
+      - 64070
+      - 83660
+    spm_unit_fpg:
+      2015:
+      - 11770
+      - 15930
+      - 40890
+      - 53370
+      - 14720
+      - 19920
+      - 51120
+      - 66720
+      - 13550
+      - 18330
+      - 47010
+      - 61350
+      2017:
+      - 12060
+      - 16240
+      - 41320
+      - 53860
+      - 15060
+      - 20290
+      - 51670
+      - 67360
+      - 13860
+      - 18670
+      - 47530
+      - 61960
+      2018:
+      - 12140
+      - 16460
+      - 42380
+      - 55340
+      - 15180
+      - 20580
+      - 52980
+      - 69180
+      - 13960
+      - 18770
+      - 47630
+      - 62060
+      2019:
+      - 12490
+      - 16910
+      - 43430
+      - 56690
+      - 15600
+      - 21130
+      - 54310
+      - 70900
+      - 14380
+      - 19460
+      - 49940
+      - 65180
+      2020:
+      - 12760
+      - 17240
+      - 44120
+      - 57560
+      - 15950
+      - 21550
+      - 55150
+      - 71950
+      - 14680
+      - 19830
+      - 50730
+      - 66180
+      2021:
+      - 12880
+      - 17420
+      - 44660
+      - 58280
+      - 16090
+      - 21770
+      - 55850
+      - 72890
+      - 14820
+      - 20040
+      - 51360
+      - 67020
+      2022:
+      - 13590
+      - 18310
+      - 46630
+      - 60790
+      - 16990
+      - 22890
+      - 58290
+      - 75990
+      - 15630
+      - 21060
+      - 53640
+      - 69930
+      2023:
+      - 14580
+      - 19720
+      - 50560
+      - 65980
+      - 18210
+      - 24640
+      - 63220
+      - 82510
+      - 16770
+      - 22680
+      - 58140
+      - 75870
+      2024:
+      - 15060
+      - 20440
+      - 52720
+      - 68860
+      - 18810
+      - 25540
+      - 65920
+      - 86110
+      - 17310
+      - 23500
+      - 60640
+      - 79210
+      2025:
+      - 15650
+      - 21150
+      - 54150
+      - 70650
+      - 19550
+      - 26430
+      - 67710
+      - 88350
+      - 17990
+      - 24320
+      - 62300
+      - 81290
+      2026:
+      - 15960
+      - 21640
+      - 55720
+      - 72760
+      - 19950
+      - 27050
+      - 69650
+      - 90950
+      - 18360
+      - 24890
+      - 64070
+      - 83660
+
+# Invalid-size inputs retain their legacy result; these are not HHS guidelines.
+- name: Nonpositive component sizes retain the legacy calculation.
+  period: 2016
+  input:
+    people:
+      component1:
+        age:
+          2016: 40
+      component2:
+        age:
+          2016: 40
+      component3:
+        age:
+          2016: 40
+      component4:
+        age:
+          2016: 40
+      component5:
+        age:
+          2016: 40
+      component6:
+        age:
+          2016: 40
+    tax_units:
+      tax_unit1:
+        members:
+        - component1
+        tax_unit_size:
+          2016: 0
+      tax_unit2:
+        members:
+        - component2
+        tax_unit_size:
+          2016: -1
+      tax_unit3:
+        members:
+        - component3
+        tax_unit_size:
+          2016: 0
+      tax_unit4:
+        members:
+        - component4
+        tax_unit_size:
+          2016: -1
+      tax_unit5:
+        members:
+        - component5
+        tax_unit_size:
+          2016: 0
+      tax_unit6:
+        members:
+        - component6
+        tax_unit_size:
+          2016: -1
+    spm_units:
+      spm_unit1:
+        members:
+        - component1
+        spm_unit_size:
+          2016: 0
+      spm_unit2:
+        members:
+        - component2
+        spm_unit_size:
+          2016: -1
+      spm_unit3:
+        members:
+        - component3
+        spm_unit_size:
+          2016: 0
+      spm_unit4:
+        members:
+        - component4
+        spm_unit_size:
+          2016: -1
+      spm_unit5:
+        members:
+        - component5
+        spm_unit_size:
+          2016: 0
+      spm_unit6:
+        members:
+        - component6
+        spm_unit_size:
+          2016: -1
+    households:
+      household1:
+        members:
+        - component1
+        state_code:
+          2016: TX
+      household2:
+        members:
+        - component2
+        state_code:
+          2016: TX
+      household3:
+        members:
+        - component3
+        state_code:
+          2016: AK
+      household4:
+        members:
+        - component4
+        state_code:
+          2016: AK
+      household5:
+        members:
+        - component5
+        state_code:
+          2016: HI
+      household6:
+        members:
+        - component6
+        state_code:
+          2016: HI
+  output:
+    tax_unit_fpg:
+    - 7720
+    - 3560
+    - 9640
+    - 4440
+    - 8890
+    - 4110
+    spm_unit_fpg:
+    - 7720
+    - 3560
+    - 9640
+    - 4440
+    - 8890
+    - 4110
+
+# Compatibility control for existing territory placeholders, not a claim that
+# HHS publishes zero-dollar guidelines for territories.
+- name: Mixed source geographies and territories preserve legacy placeholders.
+  period: 2016
+  input:
+    state_code: [TX, AK, HI, PR, GU, VI]
+    tax_unit_size: [3, 3, 3, 3, 3, 3]
+    spm_unit_size: [3, 3, 3, 3, 3, 3]
+  output:
+    tax_unit_fpg: [20160, 25200, 23190, 0, 0, 0]
+    spm_unit_fpg: [20160, 25200, 23190, 0, 0, 0]

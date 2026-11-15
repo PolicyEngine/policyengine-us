@@ -368,6 +368,54 @@ candidates:
   note: 'PE-US follows the statute and current rule: estate_income counts signed in Alabama gross income, so a beneficiary''s
     loss passes through (gross_income_sources.yaml, read by al_agi.py). estate_income does not separate trusts from
     estates. Identify booklet editions repeating the obsolete restriction.'
+- id: us-al:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Can Alabama's whole-dollar monthly LIHEAP limits pay a household whose income exceeds both 150% of the
+    poverty guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Alabama, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
+  - kind: manual
+    citation: ADECA FY2026 LIHEAP Policy Manual, Appendix D Payment Assistance Chart, PDF page 57
+    url: https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=57
+  - kind: guidance
+    citation: ADECA Payment Assistance Chart effective February 17, 2025 (cooling)
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/AL_BenefitMatrix_Cooling_2026.pdf
+  - kind: guidance
+    citation: ADECA LIHEAP Summarized Eligibility Requirements, Effective October 1, 2024 - February 16, 2025, page 1
+    url: https://adeca.alabama.gov/wp-content/uploads/LIHEAP-Summarized-Eligibility-Requirements.pdf#page=1
+  - kind: guidance
+    citation: HHS LIHEAP IM 2024-02 Attachment 4, Mandatory Use in LIHEAP for FY25, Alabama, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=1
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The charts round 150% of the monthly guideline to the nearest dollar, which puts the limit $3 or $6 a year
+      above the federal maximum at the large household sizes where 150% of the guideline is the greater amount.
+  example: In FY2026, ten people with $97,728 of countable income ($8,144 a month) are within the printed heating limit
+    and would be paid, but exceed the $97,725 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/al/adeca/liheap/eligibility/al_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10756
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Heating FY2026, on
+    the 2025 guidelines: sizes 10, 12 and 14 are $3 lower ($97,728 and $97,725 at 10); size 8 keeps the printed $81,228
+    because HHS''s 60% amount, $81,723, is the higher maximum. Heating FY2025, on the 2024 guidelines of the October 1, 2024
+    to February 16, 2025 chart, with HHS''s FY2025 amounts (LIHEAP IM 2024-02 Attachment 4): sizes 9, 11, 13 and 15 are
+    $6 lower ($87,156 and $87,150 at 9). Summer 2025 cooling, on the 2025 guidelines, with the same FY2025 amounts: sizes
+    8, 10, 12 and 14 are $3 lower ($81,228 and $81,225 at 8). The summer 2026 chart, on the 2026 guidelines, prints whole-dollar
+    amounts equal to 150% of the guideline, so nothing is lowered. Verify each later chart.'
 - id: us-al:liheap-insurance-payments
   program: liheap
   years:
@@ -453,6 +501,37 @@ candidates:
   note: 'PE-US follows the administrative code: Alabama''s age limit is 19 from 2014 with no student condition,
     and the file''s comment records the S25 conflict (age_limit.yaml). Verify overlapping effective dates and any
     conflict before the cited 2023 code, since the model applies 19 from 2014.'
+- id: us-ar:bound-rounding-ties-down
+  program: income-tax
+  years:
+    from: 2026
+    type: tax
+  question: Does the secretary round an exact $50 income tax bracket tie down or up to the nearest $100?
+  sources:
+  - kind: statute
+    citation: A.C.A. 26-51-201(d)(1), as amended by Act 532 of 2023, section 2
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT532.pdf#page=4
+  - kind: agency-practice
+    citation: Arkansas DFA 2022 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2022.pdf#page=1
+  - kind: agency-practice
+    citation: Arkansas DFA 2024 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1
+  readings:
+    statute: The General Assembly requires the secretary to round each bracket bound to the nearest $100 but
+      prescribes no direction for an exact $50 tie.
+    other: DFA rounds exact ties down, publishing $5,100 after $5,000 times 1.03 gives $5,150 and $25,700 after
+      $25,000 times 1.03 gives $25,750.
+  example: Rounding $25,750 down gives $25,700; rounding the tie up or to even gives $25,800.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/uprating_extensions.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10324
+  state: ruled
+  note: PolicyEngine follows DFA's tie-down practice where the General Assembly leaves the rounding direction
+    unspecified.
 - id: us-ar:casualty-loss-aggregate-agi-floor
   program: income-tax
   years:
@@ -583,6 +662,49 @@ candidates:
   state: ruled
   note: The October 2026 ruling leaves small repayments unmodelled; verify whether the fiscal notes establish a post-2013
     remedy.
+- id: us-ar:first-indexed-year-after-act-1-2026
+  program: income-tax
+  years:
+    from: 2026
+    type: tax
+  question: Does the secretary first index Act 1 of 2026's individual income-tax tables in 2026 or 2027?
+  sources:
+  - kind: statute
+    citation: A.C.A. 26-51-201(a)(5), as amended by Act 1 of 2026, section 1
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=3
+  - kind: statute
+    citation: A.C.A. 26-51-201(d)(1), as amended by Act 532 of 2023, section 2
+    url: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT532.pdf#page=4
+  - kind: agency-practice
+    citation: Arkansas DFA 2022 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2022.pdf#page=1
+  - kind: agency-practice
+    citation: Arkansas DFA 2023 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2023.pdf#page=1
+  - kind: agency-practice
+    citation: Arkansas DFA 2024 Indexed Tax Brackets
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1
+  - kind: guidance
+    citation: Arkansas DFA Withholding Tax Formula, effective January 1, 2026
+    url: https://www.dfa.arkansas.gov/wp-content/uploads/Withholding-Tax-Formula.pdf#page=1
+  readings:
+    statute: The General Assembly requires an adjustment for each calendar year under 26-51-201(a)(5) and (d)(1)
+      but names no first year for the tables Act 1 of 2026 enacts.
+    other: DFA indexed each newly enacted table in its first year on its 2022, 2023 and 2024 cards, but kept the
+      unindexed $5,600 and $94,700 bounds in its withholding formula effective January 1, 2026.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/uprating_extensions.py
+    - policyengine_us/parameters/gov/states/ar/tax/income/uprating.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10324
+  state: ruled
+  note: PolicyEngine settled this in November 2026 by indexing the tables from 2026, as DFA did for each newly
+    enacted table on its 2022 through 2024 cards. DFA published the withholding formula before BLS published CPI
+    through August 2026, which the secretary needs for the 2026 adjustment. PolicyEngine follows the cards until
+    DFA publishes a 2026 indexed card. It reads the same tables for Arkansas withholding, so it estimates 2026
+    withholding from the indexed bounds, not the formula's.
 - id: us-ar:gambling-loss-deduction-before-2015
   program: income-tax
   years:
@@ -669,12 +791,18 @@ candidates:
   - kind: guidance
     citation: ACF LIHEAP Clearinghouse 2025 Arkansas matrix
     url: https://liheapch.acf.gov/docs/2025/benefits-matricies/AR_BenefitMatrix_2025.pdf#page=1
+  - kind: plan
+    citation: Arkansas FY2025 LIHEAP State Plan, item 3.6, page 12
+    url: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=12
   readings:
     statute: No statute is supplied; AEO's FY2025 electric matrix uses $242, $288 and $344 at the lowest income
       band.
     other: The clearinghouse matrix uses $202, $240 and $287.
+    plan: Plan item 3.6 estimates FY2025 cooling benefits of $50 to $287; AEO's electric matrix, headed "20% OVER
+      BASE", pays the summer benefit at $60 to $344.
   example: Electric heating, household size 1-2 and income $0-$69 yields $242 under AEO's matrix versus $202 under
-    the clearinghouse matrix.
+    the clearinghouse matrix. In summer 2025, five people with no income receive $344 from AEO's matrix, above
+    plan item 3.6's $287 maximum.
   pe_us:
     follows: unknown
     code:
@@ -683,11 +811,15 @@ candidates:
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/natural_gas.yaml
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/other.yaml
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/propane.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/cooling/ar_liheap_cooling.py
     - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/payment/ar_liheap_matrix_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
+    - https://github.com/PolicyEngine/policyengine-us/pull/10744
   state: unreviewed
-  note: 'PE-US follows AEO''s matrix; verify the clearinghouse document''s effective year and possible mislabeling.'
+  note: 'PE-US follows AEO''s matrix for the winter and summer regular benefits; Wayback captures of AEO''s electric
+    matrix from 2024-12-06, 2025-06-15 and 2025-07-25 share one content digest, so it stayed posted through the summer
+    2025 season. Verify the clearinghouse document''s effective year and possible mislabeling.'
 - id: us-ar:liheap-gambling-and-capital-gains
   program: liheap
   years:
@@ -717,6 +849,50 @@ candidates:
   state: unreviewed
   note: 'PE-US follows Appendix F; verify whether its specific inclusions override the general exclusion of nonrecurring
     lump sums.'
+- id: us-ar:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Can Arkansas's whole-dollar monthly LIHEAP limits pay a household whose income exceeds both 150% of the
+    poverty guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Arkansas, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
+  - kind: guidance
+    citation: Arkansas FY2026 LIHEAP Income Eligibility Chart
+    url: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf
+  - kind: guidance
+    citation: Arkansas FY2025 LIHEAP Income Eligibility Chart
+    url: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2025.pdf
+  - kind: guidance
+    citation: HHS LIHEAP IM 2024-02 Attachment 4, Mandatory Use in LIHEAP for FY25, Arkansas, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=1
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The charts round each monthly limit to the nearest dollar and add a rounded amount for each member above 20,
+      which puts the limits above the federal maximum at several sizes.
+  example: In FY2026, three people with $45,504 of countable income ($3,792 a month) are within the printed limit and
+    would be paid, but exceed the $45,501 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/income/ar_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10744
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Printed and capped
+    annual limits: FY2026 size 2, $36,840 and $36,834; 3, $45,504 and $45,501; 7, $73,128 and $73,126; each even size
+    from 8 to 20, $3 lower ($81,228 and $81,225 at 8); 21, $188,484 and $188,475. FY2025, from HHS''s FY2025 amounts (LIHEAP IM 2024-02
+    Attachment 4): size 1, $27,012 and $27,011; 2,
+    $35,328 and $35,323; 4, $51,948 and $51,946; each odd size from 7 to 19, $6 lower ($71,016 and $71,010 at 7). Other
+    sizes keep the printed amount. Verify each later fiscal-year chart.'
 - id: us-ar:liheap-minor-and-student-earnings
   program: liheap
   years:
@@ -2099,6 +2275,44 @@ candidates:
     (aca_ptc_slcsp.py) less the federal credit. The regulation text is the amended version linked from the Division
     of Insurance''s adoption notice of September 29, 2025, effective November 30, 2025; its Section 2 sets standards
     for "including payments to carriers pursuant to" 10-16-1205(1)(b)(II).'
+- id: us-dc:eitc-joint-dependent-worksheet-omission
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does the childless EITC worksheet's omission of a joint-return dependency question override the federal
+    dependency condition that DC incorporates?
+  sources:
+  - kind: statute
+    citation: D.C. Code 47-1806.04(f)(1)(C)(i)
+    url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)(C)
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(1)(A)(ii)(III)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+  - kind: instructions
+    citation: 2025 IRS Publication 596, Rule 12, pages 17-18
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=17
+  - kind: worksheet
+    citation: 2025 D-40 booklet, childless EITC worksheet, Section A question 3, PDF page 24
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_D40_Book_082026_v1.pdf#page=24
+  readings:
+    statute: DC requires federal section 32 eligibility. A childless joint return fails the dependent condition
+      when either spouse can be claimed outside the federal filing exception.
+    other: The worksheet asks unmarried and married-but-not-joint filers whether they can be claimed. Reading its
+      omission as an exemption would allow a joint return with a dependent spouse.
+  example: A 2025 joint return with $1,000 wages and one claimable spouse receives $0 under the statute. Omitting
+    the dependency bar gives 7.65% times $1,000, or $76.50.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/dc/tax/income/credits/eitc/dc_eitc_without_qualifying_child.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: ruled
+  note: The statute supplies no joint-return exemption from the incorporated dependency condition. The worksheet
+    omission creates no separate statutory alternative. PE-US keeps the either-spouse bar and its federal filing
+    exception.
 - id: us-ct:abd-spouse-income-hearing-decision
   program: medicaid
   years:
@@ -2339,26 +2553,44 @@ candidates:
     than" (dc_liheap_eligible.py).
 - id: us-dc:schedule-h-claimable-unclaimed-claimant
   program: property-tax-credit
+  years:
+    from: 2021
+    to: 2026
+    type: tax
   question: Does the statutory dependent-claimant bar apply to a claimable but unclaimed filer or only to a filer
     actually claimed under the instructions?
   sources:
   - kind: statute
-    citation: D.C. Code 47-1806.06(k)
+    citation: D.C. Code 47-1806.06(b)(4), (k)
     url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.06
+  - kind: statute
+    citation: D.C. Code 47-1801.04(13), incorporating IRC 152
+    url: https://code.dccouncil.gov/us/dc/council/code/sections/47-1801.04#(13)
   - kind: instructions
-    citation: DC Schedule H instructions
-    url: null
+    citation: 2025 Schedule H instructions, eligibility and additional information, PDF page 4
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2025_Schedule_H_021226.pdf#page=4
+  - kind: instructions
+    citation: 2021 Schedule H instructions, eligibility, PDF page 4
+    url: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2021_SCHEDULE%20H.pdf#page=4
   readings:
-    statute: The PR interprets dependent as claimable and applies the statutory age exception.
-    other: Only an actual dependency claim triggers the bar.
+    statute: The claimant's IRC 152 dependent status triggers the bar, whether another taxpayer claims them or not.
+      The statutory exception permits a dependent aged 65 or older to claim.
+    other: The instructions require that the claimant not be claimed on another return, allowing an unclaimed
+      dependent under 65 to claim the credit.
+  example: A claimable but unclaimed adult aged 30 with $10,000 AGI and $10,000 rent receives $0 under the statute
+    versus $1,425 under the instructions' actual-claim wording in 2025.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/dc/tax/income/credits/dc_ptc.py
+    - policyengine_us/variables/gov/states/dc/tax/income/credits/dc_ptc_has_eligible_claimant.py
+    - policyengine_us/variables/gov/states/dc/tax/income/credits/dc_ptc_eligible_claimant.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10050
   state: ruled
-  note: 'The October 2026 statute-first ruling requires rechecking dependent; establish years and instruction text,
-    separately from the rent-pooling issue. Code not yet on main: dc_ptc, dc_ptc_has_eligible_claimant.'
+  note: The statutory dependent definition controls the actual-claim wording in the confirmed 2021, 2022 and 2025
+    instructions. The same statutory definition applies in 2026. The federal exception for claiming one's own
+    dependents does not remove the claimant's dependent status. Either eligible spouse may claim for the couple.
 - id: us-de:529-subtraction-exact-agi-limit
   program: income-tax
   years:
@@ -2874,6 +3106,48 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10562
   state: ruled
   note: The model has no Railway Labor Act status for this test, so the exclusion applies to every employee.
+- id: us-ga:liheap-cooling-benefit-amounts
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Does Georgia LIHEAP pay the FY2026 matrix cooling amounts ($500 at Level I, $400 at Level II, with no senior
+    maximum), although the PAMMS LIHEAP chapter sets benefits of $350 to $400 and gives seniors 60 and older the $400
+    maximum?
+  sources:
+  - kind: plan
+    citation: FY2026 Georgia LIHEAP State Plan section 3.6 and item 16.1
+    url: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=11
+  - kind: guidance
+    citation: FY2026 Georgia LIHEAP benefit matrix, step 2 (cooling benefit)
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/GA_BenefitMatrix_Heat-Cool_2026.pdf
+  - kind: manual
+    citation: Georgia PAMMS LIHEAP chapter 100, page 5
+    url: https://pamms.dhs.ga.gov/dfcs/_exports/liheap.pdf#page=5
+  - kind: manual
+    citation: Georgia LIHEAP Policy Manual, revised January 2022, section 101.4, page 5
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=5
+  readings:
+    statute: No statute is supplied. The FY2026 matrix pays $500 at Level I and $400 at Level II for every main
+      heating fuel, and plan item 16.1 (page 30) says the matrix was updated to remove the rule that households with a
+      member aged 60 or older receive the highest benefit regardless of income.
+    other: PAMMS page 5 offers benefits "at a minimum of $350 and maximum of $400", and households with seniors 60 and
+      older "will receive the maximum benefit amount of $400". The January 2022 manual (section 101.4) offers "a
+      minimum of $350 and maximum of $500" and gives households with seniors 60 and older the $500 maximum.
+  example: A one-person Level I household with a member aged 70 receives $500 of cooling under the FY2026 matrix and
+    $400 under PAMMS page 5.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ga/dfcs/liheap/cooling/amount.yaml
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/cooling/ga_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10746
+  state: ruled
+  note: 'Ruled 2026-11-13 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10746#issuecomment-6863978318. The FY2026 matrix and plan
+    item 16.1 control the cooling amounts over the PAMMS chapter (effective October 2020) and the January 2022 manual.
+    FY2027 has no posted matrix, so the FY2026 amounts carry forward.'
 - id: us-ga:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2897,16 +3171,17 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/ga/dfcs/liheap/eligibility/fpg_year_lag.yaml
     - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_income_limit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
+    - https://github.com/PolicyEngine/policyengine-us/pull/10746
   state: unreviewed
   note: 'PE-US follows the statute: income below 110% of the prior year''s poverty guideline, rounded to cents,
     qualifies even above the 60% SMI limit. The comment says the limit and the printed matrices fall below that
-    floor from size 16 in FY2025 and FY2026 and that Georgia''s plans assure the floor (ga_liheap_eligible.py, gov/hhs/liheap/fpg_floor.yaml,
+    floor from size 16 in FY2025 and FY2026 and that Georgia''s plans assure the floor (ga_liheap_income_eligible.py, gov/hhs/liheap/fpg_floor.yaml,
     eligibility/fpg_year_lag.yaml, ga_liheap_income_limit.py).'
 - id: us-ga:liheap-lawful-noncitizen-household-members
   program: liheap
@@ -2968,6 +3243,109 @@ candidates:
     disability benefits and workers'' compensation, and its comments record that the FY2025 and FY2026 plans leave
     those categories unchecked (income/sources/person.yaml, ga_liheap_income.py). Obtain the complete plan questions
     to verify categories and years.'
+- id: us-ga:low-income-credit-claimed-or-eligible-disjunction
+  program: income-tax
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does Georgia's 2010 amendment exclude a claimable but unclaimed filer from the low-income credit?
+  sources:
+  - kind: statute
+    citation: O.C.G.A. 48-7A-3(a), HB 1069 (2010) section 5, printed page 1172
+    url: https://dlg.usg.edu/record/dlg_ggpd_y-ga-bl407-b2010-bv-p1-bbk-p1-belec-p-btext
+  - kind: instructions
+    citation: 2025 IT-511, line 17 eligibility, page 17
+    url: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=17
+  - kind: guidance
+    citation: Georgia Department of Revenue, Low Income Tax Credit
+    url: https://dor.georgia.gov/low-income-tax-credit
+  readings:
+    statute: Georgia lawmakers added otherwise-eligible filers to the exclusion in 2010. Reading the conditions
+      as one exclusion gives that addition work and excludes claimable filers whom nobody claims.
+    other: A literal disjunction admits an unclaimed filer even when another taxpayer could claim them.
+  example: With $5,000 AGI and sufficient liability, a claimable but unclaimed single filer receives $0 under the
+    retained reading versus $26 under the literal disjunction.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ga/tax/income/credits/ga_low_income_credit_potential.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: ruled
+  note: Read the 2010 amendment to reach claimable filers whom nobody claims; a claimed filer nearly always already
+    could be claimed. DOR's 2025 IT-511 supports this reading. PE-US excludes the claimable filer and gives $0;
+    the literal disjunction gives $26.
+- id: us-ga:child-credit-dependent-filer-child
+  program: income-tax
+  years:
+    from: 2026
+    to: 2026
+    type: tax
+  question: Does Georgia's child credit reach the child of a filer whom another taxpayer can claim as a dependent?
+  sources:
+  - kind: statute
+    citation: O.C.G.A. 48-7-29.27(a), HB 136 (2025) section 1-2
+    url: https://gov.georgia.gov/document/2025-signed-legislation/hb-136/download#page=3
+  - kind: statute
+    citation: 26 U.S.C. 24(c)(1)-(2)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartA-sec24.htm
+  - kind: statute
+    citation: 26 U.S.C. 152(b)(1)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec152.htm
+  - kind: guidance
+    citation: Georgia Department of Revenue, Qualifying Child Credit
+    url: https://dor.georgia.gov/qualifying-child-credit
+  readings:
+    statute: Section 24(c)(2) excludes an individual who would not be a dependent once 152(b)(3)(A) loses its words
+      after "resident of the United States". Section 152(b)(1) still gives a dependent filer no dependents, so that
+      filer's child fails the test.
+    other: Paragraph (2)'s heading names noncitizens only. Read as a citizenship test alone, it leaves the child of
+      a dependent filer inside 24(c)(1).
+  example: In 2026, a single filer whom another taxpayer claims has one resident child aged 2 and $10,000 of Georgia
+    tax. The filer receives $0 under the first reading versus $250 under the second.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ga/tax/income/credits/ctc/ga_ctc_eligible_child.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: open
+  note: PE-US applies 152(b)(1) inside the 24(c)(2) test, with the federal filing exception, and gives $0. The
+    Department of Revenue's page repeats the 24(c) definition and addresses neither reading. Nobody has ruled on
+    this choice.
+- id: us-ga:surplus-refund-earned-income-loss-offset
+  program: income-tax
+  years:
+    from: 2021
+    to: 2021
+    type: tax
+  question: Does a filer whom another taxpayer claimed for 2021 have earned income for Georgia's HB 162 refund when
+    a business loss offsets the filer's wages?
+  sources:
+  - kind: statute
+    citation: O.C.G.A. 48-7-20.2(a)(1)(B), (a)(2), HB 162 (2023) section 1
+    url: https://gov.georgia.gov/document/2023-signed-legislation/hb-162/download#page=2
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(2)(A)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+  readings:
+    statute: Georgia lawmakers require that the individual "had earned income for the 2021 taxable year" and define
+      no netting. Positive wages or profit from any one source meet the condition.
+    other: Federal earned income under 32(c)(2)(A) adds wages to net earnings from self-employment, so a business
+      loss as large as the wages leaves no earned income.
+  example: A single filer whom another taxpayer claimed for 2021 has $1,000 of wages, a $1,000 business loss and
+    $600 of 2021 Georgia tax. The filer receives $250 under the first reading versus $0 under the second.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ga/tax/income/credits/ga_surplus_tax_rebate.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: open
+  note: PE-US counts positive wages, self-employment profit, farm profit or a partner's net earnings, each before
+    any loss from another source. The Georgia statute imports no federal definition of earned income, and no
+    Department of Revenue source for this refund addresses netting. Nobody has ruled on this choice.
 - id: us-ga:liheap-subsidized-renter-energy-burden
   program: liheap
   years:
@@ -3716,6 +4094,78 @@ candidates:
   state: ruled
   note: 'Code not yet on main: ia_ssa_smme_countable_income. Iowa determines SMME income according to SSI income
     criteria (6-B p.77), and 20 CFR 416.1112(c)(3) also has no marital test.'
+- id: us-id:grocery-credit-claimability-before-2023
+  program: income-tax
+  years:
+    from: 2015
+    to: 2022
+    type: tax
+  question: Does the prior regulation's personal-exemption condition exclude a claimable but unclaimed filer after
+    lawmakers removed the section 151 reference from the statute in 2019?
+  sources:
+  - kind: statute
+    citation: Idaho HB 17 (2019), section 1, removing the section 151 reference from 63-3024A(1)
+    url: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2019/legislation/H0017.pdf
+  - kind: regulation
+    citation: IDAPA 35.01.01.771.01.a, 2022 archive, PDF pages 125-126
+    url: https://files.dfm.idaho.gov/dfm-admin-website/rules/2022%20Archive/35/350101.pdf#page=125
+  - kind: statute
+    citation: Idaho Code 63-3024A(4), one credit for the same personal exemption
+    url: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3024A/
+  readings:
+    statute: From 2019, lawmakers grant a credit for the taxpayer and spouse without incorporating section 151.
+    other: The earlier regulation requires a permitted and claimed personal-exemption deduction, which may retain
+      the earlier dependent-filer restriction.
+  example: A claimable but unclaimed filer aged 30 with twelve qualifying months receives $100 in 2021 under the
+    per-taxpayer grant, versus $0 under the former regulation's exemption condition.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/credits/grocery/id_grocery_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: open
+  note: PE-US excludes a filer in every year only when another taxpayer claims them, under the limit of one
+    credit for the same personal exemption. Nobody has ruled whether the former regulation's exemption condition
+    also excluded a claimable but unclaimed filer from 2019 to 2022. Through 2018 the statute granted the credit
+    for each exemption that section 151 permitted, and that wording needs its own review.
+- id: us-id:grocery-credit-claimable-unclaimed-filer
+  program: income-tax
+  years:
+    from: 2023
+    to: 2026
+    type: tax
+  question: May a filer whom another taxpayer could claim, but does not claim, receive their own food tax credit?
+  sources:
+  - kind: statute
+    citation: Idaho Code 63-3024A(1)-(12), especially the taxpayer grant in (1) and duplicate-credit limit in (4)
+    url: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3024A/
+  - kind: regulation
+    citation: IDAPA 35.01.01.771, effective April 6, 2023, PDF page 107
+    url: https://adminrules.idaho.gov/rules/current/35/350101.pdf#page=107
+  - kind: instructions
+    citation: 2025 Form 40 instructions, line 43, PDF page 13
+    url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=13
+  - kind: form
+    citation: 2025 Form 40, line 12(c), PDF page 2
+    url: https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_03-02-2026.pdf#page=2
+  readings:
+    statute: Lawmakers grant the credit for the taxpayer and spouse. Subsection (4) bars duplicate credits for an
+      exemption, so an actually claimed filer gets no separate credit; claimability alone does not exclude a filer.
+    other: The form and instructions exclude anyone whom another taxpayer can claim, even without an actual claim.
+  example: An unclaimed but claimable single filer aged 30 with twelve qualifying months receives $155 in 2025
+    under the statute, versus $0 under the form and instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/credits/grocery/id_grocery_credit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10050
+  state: ruled
+  note: The statute supplies the per-taxpayer grant, and the current regulation adds no claimability restriction.
+    Follow the statute from 2023, when the regulation drops the personal-exemption deduction condition. A
+    separate item records the open question about the regulation in force before 2023. The dependent-child route
+    still applies IRC 152(b)(1), including the filing exception.
 - id: us-id:grocery-credit-claimable-spouse
   program: income-tax
   years:
@@ -3729,7 +4179,7 @@ candidates:
     citation: Idaho Code 63-3024A(1), (4)
     url: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3024A/
   - kind: worksheet
-    citation: Idaho grocery credit statute (with the per-person worksheet)
+    citation: 2025 Idaho Form 40 instructions, grocery credit eligibility and per-person worksheet, pages 13-14
     url: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=14
   - kind: form
     citation: Form 40 line 12(c)
@@ -3737,16 +4187,20 @@ candidates:
   readings:
     statute: Preserve the remaining spouse's per-person credit and any restored dependent's amount.
     other: Read the zero-credit instruction as barring the entire joint return.
-  example: For 2025, the remaining spouse receives $155 versus $0; a restored dependent child brings the statutory
-    amount to $310.
+  example: For 2025, an unclaimed spouse receives $155 when the other spouse is actually claimed, versus $0
+    under a whole-return exclusion.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/id/tax/income/credits/grocery/id_grocery_credit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10050
   state: ruled
-  note: 'Ruled statute-first in October 2026; confirm line 12(c)''s scope against the per-person statute and worksheet.
-    Code not yet on main: id_grocery_credit.'
+  note: Section 63-3024A grants amounts per taxpayer, spouse and dependent. The remaining unclaimed spouse keeps
+    $155. Form 40 line 12(c) has no joint-return exception, but its zero-credit direction cannot override the
+    per-person grant. If neither adult is actually claimed and the filing exception restores their child, the
+    three-person household receives $465. The separate items record individual eligibility from 2023 and the
+    earlier regulation.
 - id: us-id:liheap-heat-in-rent-fy2026
   program: liheap
   years:
@@ -4627,24 +5081,36 @@ candidates:
     the workbooks' reversed income points?
   sources:
   - kind: regulation
-    citation: 921 KAR 4:116 Section 4(1)(c)
+    citation: 921 KAR 4:116 Sections 4(1)(c) and 4(3)(c)2
     url: https://apps.legislature.ky.gov/law/kar/titles/921/004/116/
+  - kind: plan
+    citation: Kentucky FY2026 LIHEAP State Plan, item 3.4
+    url: https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=10
   - kind: calculator
-    citation: Kentucky FY2026 benefit workbook, rev benefit income range worksheet, cells E52-E55; FY2025 subsidy
-      benefits worksheet, cells E45-E48
+    citation: Kentucky FY2026 benefit workbook, rev benefit income range worksheet, cells E52-E55 (heating) and
+      K52-K55 (cooling); FY2025 subsidy benefits worksheet, cells E45-E48
     url: https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx
   readings:
-    statute: The lowest-income household receives the highest benefit.
-    other: Subsidized income points rise as 1, 2, 3 and 4 with income.
+    statute: The lowest-income household receives the highest benefit (Section 4(1)(c)), and for cooling plan item
+      3.4 says "The highest benefits are awarded to the lowest income household size". Section 4(3)(c)2's cooling
+      ceilings rise with income for subsidized housing ($100 up to 100% of poverty, $200 from 101% to 150%) and fall
+      for nonsubsidized housing ($400, then $300).
+    other: Subsidized income points rise as 1, 2, 3 and 4 with income, for heating and for cooling (cooling of $41,
+      $45, $51 and $56 for one person).
+  example: A one-person subsidized household in the lowest income band gets $41 of cooling under the workbook
+    (points 1 plus 1 plus 6 = 8, ceil(134 x 0.3)); under the regulation's ordering, with 4 income points, it would
+    get ceil(184 x 0.3) = $56.
   pe_us:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/states/ky/dcbs/liheap/payment/income_points/subsidized.yaml
     - policyengine_us/variables/gov/states/ky/dcbs/liheap/ky_liheap.py
-    prs: []
+    - policyengine_us/variables/gov/states/ky/dcbs/liheap/cooling/ky_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10752
   state: unreviewed
-  note: PE-US follows the workbooks; verify actual agency payments and reconcile FY2025-FY2026 ordering with the
-    regulation.
+  note: PE-US follows the workbooks for heating and cooling; verify actual agency payments and reconcile the
+    FY2025-FY2026 ordering with the regulation.
 - id: us-la:blind-deaf-disabled-additional-exemption
   program: income-tax
   years:
@@ -4774,21 +5240,26 @@ candidates:
   - kind: manual
     citation: Louisiana LIHEAP Service Delivery Guide (revised January 1, 2024), Section 4.1 C, PDF page 40
     url: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=40
+  - kind: manual
+    citation: Louisiana LIHEAP Service Delivery Guide (effective April 1, 2026), Section 4.1 C.1, PDF page 46
+    url: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=46
   - kind: plan
-    citation: FY2026 LIHEAP State Plan §2.3, page 9
+    citation: FY2026 LIHEAP State Plan §§2.3 and 3.3, pages 9 and 11
     url: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=9
   readings:
     statute: No statute is supplied; the guide exempts applicants 60 or older.
-    other: Plan 2.3 exempts applicants over 60.
+    other: Plan items 2.3 (heating) and 3.3 (cooling) exempt applicants over 60.
   example: A subsidized 60-year-old with a $1,500 bill and $1,800 allowance has a total energy cost of $1,500 and is
     eligible under the guide; under the plan it is -$300 and ineligible.
   pe_us:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/la/lhc/liheap/la_liheap_energy_cost.py
+    - policyengine_us/variables/gov/states/la/lhc/liheap/cooling/la_liheap_cooling_eligible.py
     - policyengine_us/parameters/gov/states/la/lhc/liheap/elderly_age.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10429
+    - https://github.com/PolicyEngine/policyengine-us/pull/10750
   state: ruled
   note: 'Ruled 2026-10-06: follow the manual over the plan.'
 - id: us-la:school-readiness-incapable-child
@@ -6155,6 +6626,70 @@ candidates:
     prs: []
   state: unreviewed
   note: Establish the guidance's statutory basis and reconcile M1SA with M1REF.
+- id: us-mn:wagering-losses-itemized-limitation-exclusion
+  program: income-tax
+  years:
+    from: 2019
+    to: 2025
+    type: tax
+  question: Does Minnesota exclude wagering losses from its itemized deduction limitation when Schedule M1SA protects only medical expenses, investment interest, and casualty losses?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0122, subd. 2(d)(3) and 8; subd. 2(c)(3) before 2023
+    url: https://www.revisor.mn.gov/statutes/cite/290.0122
+  - kind: statute
+    citation: 1Sp2019 c 6 art 1 s 16, subd. 2(c)(3), subd. 8, and effective date
+    url: https://www.revisor.mn.gov/laws/2019/1/6/#laws.1.16.0
+  - kind: statute
+    citation: 1Sp2021 c 14 art 1 s 7, subd. 8 and effective date
+    url: https://www.revisor.mn.gov/laws/2021/1/14/#laws.1.7.0
+  - kind: statute
+    citation: 2023 c 64 art 1 s 18, subd. 2(d)(3) and effective date
+    url: https://www.revisor.mn.gov/laws/2023/0/64/#laws.1.18.0
+  - kind: instructions
+    citation: 2019 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_19.pdf#page=7
+  - kind: instructions
+    citation: 2020 Schedule M1SA, line 24, PDF p. 7, and Worksheet for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_20.pdf#page=8
+  - kind: instructions
+    citation: 2021 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1sa_21.pdf#page=7
+  - kind: instructions
+    citation: 2022 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_22.pdf#page=7
+  - kind: instructions
+    citation: 2023 Schedule M1SA, line 24 and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-23.pdf#page=8
+  - kind: instructions
+    citation: 2024 Schedule M1SA, line 24 and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1sa-24.pdf#page=8
+  - kind: instructions
+    citation: 2025 Schedule M1SA, line 24, PDF p. 7, and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-25_0.pdf#page=8
+  - kind: instructions
+    citation: 2026 Schedule M1SA final draft dated November 4, 2026, line 26 and Worksheets A and B for Line 28, PDF p. 9
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-11/m1sa-26.pdf#page=9
+  readings:
+    statute: Taxpayers exclude all subdivision 8 losses, including wagering losses under IRC 165(d), from the deductions subject to the limitation.
+    other: Taxpayers enter gambling losses on line 24, but exclude only lines 4, 13, and 19 when computing the limitation, so they reduce gambling deductions with other unprotected deductions.
+  example: A 2023 filer with $2,000,000 of AGI, $50,000 of allowable wagering losses, and no other itemized deductions retains $50,000 under the statute. Under Worksheet B, the filer subtracts 80% of $50,000, or $40,000, and retains $10,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py
+    - policyengine_us/reforms/states/mn/walz/mn_walz_hf1938.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10070
+  state: ruled
+  note: >-
+    The Legislature enacted both the limitation exclusion and the wagering deduction for tax years beginning after December 31, 2018.
+    In 2021, the Legislature rewrote subdivision 8 while retaining wagering losses; that amendment took effect July 2, 2021.
+    In 2023, the Legislature moved the exclusion from paragraph (c)(3) to (d)(3), effective for tax years beginning after December 31, 2022.
+    We confirmed every final M1SA from 2019 through 2025; no year in that range remained unreachable.
+    The Department has published a 2026 final draft, which moves gambling losses to line 26 and protects only lines 4, 13, and 22 in the line 28 worksheets.
+    We exclude 2026 from the years above because the Department still labels that form a draft.
+    The baseline excludes wagering_losses_deduction at mn_itemized_deductions.py lines 68 and 71; the Walz reform does so at mn_walz_hf1938.py lines 136 and 139.
 - id: us-mo:claim-of-right-federal-tax-deduction
   program: income-tax
   years:
@@ -7619,8 +8154,9 @@ candidates:
       adoption assistance (IRC 137(a)); income of bona fide residents of Puerto Rico from sources there (IRC 933) and
       of American Samoa from sources there or from a business there (IRC 931(a), which reaches only a possession with
       an implementing agreement in effect, 26 CFR 1.931-1(c)(1), and which IRS Publication 570 applies only to
-      American Samoa); and alimony under a divorce or separation instrument executed after 2018, since Pub. L. 115-97
-      section 11051 repealed IRC 71 and 61(a)(8).
+      American Samoa); alimony under a divorce or separation instrument executed after 2018, since Pub. L. 115-97
+      section 11051 repealed IRC 71 and 61(a)(8); and gifts (IRC 102(a)), which take in the strike benefits a union
+      pays as a gift (IRS Publication 525).
     other: Item 10 lists pensions "including military pension and I.R.A.", salaries and wages, dividends and interest,
       and alimony as income. The application asks for income from salary and wages (line 5) and from interest (line
       6), and its instructions for lines 4 to 9 list most of the same sources. Neither leaves out the amounts federal
@@ -7636,6 +8172,7 @@ candidates:
     - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/market_income_components.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10697
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: ruled
   note: The statute names the exclusion, so it governs over the general lists, as in
     us-nd:renters-refund-insurance-proceeds. The definition also counts "other retirement benefits", but the exception
@@ -9403,6 +9940,41 @@ candidates:
   note: 'PE-US follows the regulation: earnings are excluded only for a tax-unit dependent under the age limit who
     attends K-12 school, with tax dependency standing in for parental control (ok_liheap_countable_earned_income.py,
     income/student_earned_income_age_limit.yaml). Verify whether the broader plan checkbox reflects actual practice.'
+- id: us-ok:liheap-cooling-income-boundary
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: federal-fiscal
+  question: Does net monthly income of exactly $700 receive Oklahoma's larger summer cooling payment, as Appendix
+    C-7-A's "$0 - $700" band says, although the state plan grants the larger benefit to incomes "under $700"?
+  sources:
+  - kind: regulation
+    citation: OAC 340:20-1-20(d) and OKDHS Appendix C-7-A, page 2 (Summer Cooling Program)
+    url: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf#page=2
+  - kind: plan
+    citation: FY2026 Oklahoma LIHEAP State Plan section 3.5, page 12 (repeated in the FY2025 plan, page 12, and the
+      FY2027 plan, page 16)
+    url: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=12
+  readings:
+    statute: No statute supplied; OAC 340:20-1-20(d) refers to Appendix C-7-A for the summer cooling benefit amounts.
+      Page 2 of the appendix pays the larger amount at net monthly income "$0 - $700" and the smaller amount at
+      "$701 - ineligible".
+    other: Plan section 3.5 says "The cooling program grants a larger benefit to households with net monthly incomes
+      under $700."
+  example: A one-person household with net monthly income of exactly $700 receives $500 under Appendix C-7-A and
+    $385 under the plan's wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ok/dhs/liheap/cooling/income_band.yaml
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/cooling/ok_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10748
+  state: ruled
+  note: 'Ruled 2026-11-13 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10748#issuecomment-6863978810. Follow Appendix C-7-A, which
+    the regulation names: net monthly income of $700 or less receives the larger amount and $701 or more the smaller
+    one (band threshold 701; test Case 2 pins both sides).'
 - id: us-ok:liheap-immigration-status-list
   program: liheap
   years:
@@ -9463,7 +10035,7 @@ candidates:
     code:
     - policyengine_us/parameters/gov/states/ok/dhs/liheap/income/sources/unearned.yaml
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_income_deductions.py
-    - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_income_eligible.py
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_gross_income.py
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_deemed_income.py
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_net_income.py
@@ -9474,7 +10046,7 @@ candidates:
     premiums enter the medical deduction only for USDA elderly or disabled members. Eligible members'' deductions
     come after the gross test, in the net income that sets the payment, while ineligible members'' deductions are
     applied before their income is deemed. The list''s comment records the plan checkbox and says the plan narrative
-    also uses gross income (income/sources/unearned.yaml, ok_liheap_income_deductions.py, ok_liheap_eligible.py,
+    also uses gross income (income/sources/unearned.yaml, ok_liheap_income_deductions.py, ok_liheap_income_eligible.py,
     ok_liheap_gross_income.py, ok_liheap_deemed_income.py, ok_liheap_net_income.py). Reconcile the checkbox and
     verify page references.'
 - id: us-ok:liheap-resource-test
@@ -9505,11 +10077,14 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/cooling/ok_liheap_cooling_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9970
+    - https://github.com/PolicyEngine/policyengine-us/pull/10748
   state: unreviewed
-  note: PE-US applies no resource test, and the comment records that the September 15, 2026 amendment removed both
-    provisions (ok_liheap_eligible.py). Verify agency practice while the rules were in force.
+  note: PE-US applies no resource test to winter heating or summer cooling (ok_liheap_eligible.py,
+    ok_liheap_cooling_eligible.py), and the heating comment records that the September 15, 2026 amendment removed
+    both provisions. Verify agency practice while the rules were in force.
 - id: us-ok:ssp-ineligible-child-allocation
   program: ssi-state-supplement
   years:
@@ -10696,7 +11271,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Is South Carolina's high energy burden supplement paid when energy costs equal 20% of income, as the FY2026
     plan reads, or only when the current bill is higher than 20% of income, as the 2024 guide and the matrix read?
@@ -10723,11 +11298,15 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/cooling/sc_liheap_cooling.py
     - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/burden_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
+    - https://github.com/PolicyEngine/policyengine-us/pull/10754
   state: unreviewed
-  note: PE-US follows the plan's inclusive test, with annual bills against annual income.
+  note: PE-US follows the plan's inclusive test, with annual bills against annual income. The cooling award (PR 10754)
+    applies the same annual test, so winter fuel bills count toward the cooling-season burden; the guides' current-month
+    test would count only the summer bill.
 
 - id: us-sc:liheap-income-floor-vs-smi-limit
   program: liheap
@@ -10763,7 +11342,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Is South Carolina's $175 low-income tier 30% of the full size-adjusted state median income, or 30% of the 60%
     income limit that OEO's guides call the SMI?
@@ -10792,9 +11371,11 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/cooling/sc_liheap_cooling.py
     - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/low_income_limit_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
+    - https://github.com/PolicyEngine/policyengine-us/pull/10754
   state: ruled
   note: 'Ruled 2026-11-03: use 30% of the 60% limit. The plan''s words allow either base, and OEO''s own texts define
     the SMI it means here, so the agency breaks the tie. The 2024 guide and the matrix use 70% of the same limit, a tier
@@ -10847,7 +11428,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Do South Carolina's itemized supplements look only at eligible members, with the award prorated, and are
     state-placed foster children left out of the household, as the 2024 guide provides where the FY2026 plan is silent?
@@ -10868,10 +11449,12 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/cooling/sc_liheap_cooling.py
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_household_size.py
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
+    - https://github.com/PolicyEngine/policyengine-us/pull/10754
   state: ruled
   note: 'Ruled 2026-11-02: follow the 2024 guide. The veteran supplement also looks only at eligible members, although
     the guide''s list does not name veterans, and the prorated award keeps its cents.'
@@ -10940,6 +11523,100 @@ candidates:
   note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
     section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
     member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-current-self-employment-loss-offset
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: When a South Carolina TANF benefit group member has a current net loss from self-employment or farming,
+    or from rent, a partnership or S corporation, capital, or a trust or estate, does the loss reduce the other income
+    the group counts, or does it count as zero?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(A), (B)(3), (B)(4), (C) and (E)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 sections 7.1, 7.7, 8.9, 8.12 and 8.16
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=102
+  - kind: instructions
+    citation: 2025 IRS Instructions for Schedule C, Line 31
+    url: https://www.irs.gov/pub/irs-prior/i1040sc--2025.pdf#page=14
+  readings:
+    statute: No statute is supplied. 114-1150(B)(3) defines self-employment earned income as "the total profit from
+      a business enterprise, farming, etc.", determined "using Internal Revenue Service methods", and Schedule C line
+      31 reports a net profit or a loss. On one reading that signed result carries through the disregard in section
+      8.16 C and the sum in 8.16 E, so a current loss reduces the other income the group counts.
+    other: Section 7.1 says "Income is money received by a BG member (s) from any source", and section 8.9 calls
+      self-employment income "the total profit from a business enterprise". On the other reading a loss is no income,
+      so it counts as zero and reduces nothing. Section 8.9 item 7 B bars "Net losses from previous providers" as a
+      business cost.
+  example: Adult A receives $1,000 a month of alimony and adult B has a $1,200 monthly self-employment loss, with
+    one child and a need standard of $1,110. In January 2026 the model halves the loss, counts 1,000 - 600 = $400 and
+    pays floor(710 x 0.4046) = $287. In May 2026 it sets the loss to zero, counts $1,000 and pays floor(110 x 0.4046)
+    = $44.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_earned_income_person.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_income.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_gross_income.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_gross_unearned_income.py
+    - policyengine_us/parameters/gov/states/sc/tanf/income/unearned/positive_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10184
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: open
+  note: Neither source names a current loss, an offset between members or a floor at zero, so both readings
+    interpret silent texts. The model applies each reading on a different path. In the months it gives the
+    fifty-percent disregard (January to April, a calendar proxy), sc_tanf_countable_earned_income_person.py halves a
+    self-employment or farm loss and sc_tanf_countable_income.py adds the negative result to the group's other income.
+    In the $100-disregard months (May to December) the same formula takes max(earned income - 100, 0), so the same
+    loss counts as zero. In May 2026 the example household counts $1,000 and receives $44, against $400 and $287 in
+    January. In every month sc_tanf_gross_income.py adds the whole signed loss for the gross income test, where the
+    example household has -$200. positive_sources.yaml counts capital gains, rental, farm rent, partnership and S
+    corporation, estate and miscellaneous income only when positive, citing section 7.1, and
+    sc_tanf_gross_unearned_income.py stops interest and dividends at zero. If B's loss came from a partnership, the
+    example household would count $1,000 and receive $44 in both months. Section 7.7 counts rent as self-employment
+    when the member manages the property 20 or more hours a week, and the model counts all rental_income as unearned.
+    integration.yaml Cases 35, 36 and 38 pin the January results and Case 39 the May result, and
+    sc_tanf_gross_unearned_income.yaml Cases 12, 13 and 15 to 18 pin the unearned floors. An answer should cover each
+    path and say whether a fifty-percent month counts half the loss or all of it. Counting all of it gives the example
+    household -$200 of countable income and the $449 payment standard.
+- id: us-sc:tanf-dependent-child-school-level
+  program: tanf
+  years:
+    from: 2025
+    type: federal-fiscal
+  question: Can an eighteen-year-old full-time primary-school student qualify as a South Carolina TANF dependent child,
+    or must the student attend secondary school or an equivalent level of vocational or technical training?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1130(E)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=204
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 4.10
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=75
+  readings:
+    statute: No statute is supplied; 114-1130(E) permits the extension from under eighteen to under nineteen only for
+      full-time students in secondary school or an equivalent level of vocational or technical training.
+    other: Section 4.10 permits full-time primary-school students, as well as secondary-school students, to receive
+      benefits until age nineteen.
+  example: An eighteen-year-old full-time primary-school student who does not head the household fails the regulation's
+    dependent-child age test and passes the manual's. An otherwise identical secondary-school student passes both.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_dependent_child.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: ruled
+  note: The regulation governs. The model uses is_in_secondary_school, which includes equivalent-level training, for
+    the under-nineteen extension. This entry addresses school level only; it does not resolve the manual's unmarried
+    condition or change the model's head-of-household inference. Volume 65, effective October 1, 2024, has the same
+    section 4.10 text as Volume 67 (https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=74), so
+    the difference dates from fiscal 2025 at the latest.
 - id: us-sc:tanf-gross-income-limit-cents
   program: tanf
   years:
@@ -12252,6 +12929,50 @@ candidates:
     a filer can be claimed, not whether one is, and either claimable spouse bars a joint return (va_refundable_eitc_if_claimed.py,
     va_non_refundable_eitc_if_claimed.py, va_low_income_tax_credit_eligible.py). Ruled in October 2026 to use claimability;
     verify the guidance and distinguish this wording conflict from mixed-spouse allocation.'
+- id: us-va:eap-cooling-subsidized-heat-in-rent
+  program: liheap
+  years:
+    from: 2023
+    to: 2027
+    type: federal-fiscal
+  question: Can a Virginia subsidized household whose heat is included in its rent, and which pays a separate cooling
+    cost, receive the Cooling Assistance electric bill payment, although 22VAC40-680-63(B)(1) applies all of the fuel
+    assistance criteria of 22VAC40-680-20, whose 20(B)(3)(a) makes such households ineligible?
+  sources:
+  - kind: regulation
+    citation: 22VAC40-680-63(B)(1)
+    url: https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section63/
+  - kind: regulation
+    citation: 22VAC40-680-20(B)(3)(a)
+    url: https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section20/
+  - kind: manual
+    citation: Virginia Energy Assistance Manual, Volume IX, Chapter J.3.a and J.3.f, PDF pages 120-121
+    url: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=120
+  - kind: plan
+    citation: Virginia FY2026 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=11
+  readings:
+    statute: No statute is supplied; 63(B)(1) requires a cooling household to "Meet all of the fuel assistance criteria
+      as set forth in 22VAC40-680-20", and 20(B)(3)(a) makes "Subsidized households whose total heating costs are
+      included in their rent" ineligible.
+    other: Manual J.3.a applies "All the criteria in Chapter B sections 6-8", which leave out the B.5.c.2 household-type
+      exclusions, and J.3.f says a household "may or may not be eligible for Cooling Assistance depending on their
+      living arrangement", limiting codes B and F to equipment and homeless households to a security deposit. Plan 3.3
+      restates the exclusion in cooling terms, "Subsidized households whose total cooling costs are included in their
+      rent are not eligible for cooling assistance."
+  example: One person aged 62 in public housing with $18,000 of Social Security, natural gas heat included in the rent,
+    a separate cooling cost and a $1,800 electric bill receives $365 in 2026 under the manual and plan, and $0 under
+    63(B)(1) and 20(B)(3)(a).
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/va/dss/eap/cooling/va_eap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10760
+  state: ruled
+  note: 'Ruled 2026-11-13 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10760#issuecomment-6863979262. Follow manual J.3.a and plan 3.3,
+    the current filing (22VAC40-680-63 dates from 2003): PE-US excludes a subsidized household only when its cooling is
+    in the rent, and va_eap_cooling_eligible.yaml Case 14 pins the reading.'
 - id: us-va:snap-child-support-exclusion
   program: snap
   years:
@@ -14020,7 +14741,7 @@ candidates:
 - id: us:dependent-deduction-worksheet-earned-income
   program: income-tax
   years:
-    from: 2024
+    from: 2010
     type: tax
   question: Where section 63(c)(5) leaves earned income undefined, should the dependent standard deduction use the
     Form 1040 worksheet's reported-income measure?
@@ -14045,13 +14766,17 @@ candidates:
     - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/basic_standard_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10272
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: unreviewed
   note: 'PE-US follows the worksheet: earned income is W-2 box 1 wages (after elective deferrals), earned disability
     benefits and Schedule 1 business and farm income, less the deductible part of self-employment tax, summed for
     the head and spouse and floored at zero; the Medicaid filing test and Oregon''s and Hawaii''s dependent deductions
     read the same measure (standard_deduction_worksheet_earned_income_person.py, standard_deduction_worksheet_earned_income.py,
     filing_requirement/dependent/earned_income_sources.yaml, basic_standard_deduction.py). Verify the line 15 subtraction
-    for partnership self-employment income, which the list leaves out.'
+    for partnership self-employment income, which the list leaves out. Strike or lockout benefits other than bona fide
+    gifts (Form 1040 line 1h, part of line 1z) joined the list from 2022 in PR 10727; us:strike-benefits-earned-income
+    records the earned income question. The list runs from 2010, when the worksheet already counted reported income
+    (Form 1040 lines 7, 12 and 18 minus line 27).'
 - id: us:education-benefits-joint-claimed-spouse
   program: income-tax
   years:
@@ -14788,6 +15513,68 @@ candidates:
   state: ruled
   note: Ruled October 2026; verify the worksheet version and whether claiming the rebate defeats the refund-only
     joint-return exception.
+- id: us:school-meals-head-start-categorical-basis
+  program: school-meals
+  years:
+    from: 2007
+    type: calendar
+  question: Does every child enrolled in a Head Start program qualify for free school meals (7 CFR 245.2), or only
+    a child whom the program enrolled on a determination under 42 U.S.C. 9840(a)(1)(B) (42 U.S.C.
+    1758(b)(12)(A)(iii))?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1758(b)(12)(A)(iii)
+    url: https://uscode.house.gov/us/usc/119-124/t42/s1758/#b-12-A-iii
+  - kind: statute
+    citation: 42 U.S.C. 9840(a)(1)(B), (a)(2) and (d)(1)
+    url: https://uscode.house.gov/us/usc/119-124/t42/s9840/#a-1-B
+  - kind: statute
+    citation: Pub. L. 118-47, div. D, title II, sections 238 and 239 (42 U.S.C. 9840 note)
+    url: https://uscode.house.gov/us/usc/119-124/t42/s9840/#miscellaneous-note
+  - kind: regulation
+    citation: 7 CFR 245.2, definitions of "Categorically eligible" and "Head Start child"
+    url: https://www.ecfr.gov/current/title-7/section-245.2
+  - kind: rulemaking
+    citation: 76 FR 22785, 22791 (April 25, 2011), interim rule, "Children Enrolled in Head Start Programs"
+    url: https://www.govinfo.gov/content/pkg/FR-2011-04-25/html/2011-9457.htm
+  readings:
+    statute: Congress makes a child automatically eligible when a Head Start program enrolls the child "on the basis
+      of a determination that the child meets the eligibility criteria prescribed under section 645(a)(1)(B) of the
+      Head Start Act". A child whom a program enrolls on any other basis gets no free meals through Head Start.
+    other: USDA defines a Head Start child as "a child enrolled as a participant in a Head Start program authorized
+      under the Head Start Act", with no condition on the basis of enrollment. Its definition of "Categorically
+      eligible" lists a Head Start child. In the preamble to the 2011 interim rule, USDA says section 29(c) of Pub.
+      L. 110-134 amended clause (iii) "to extend categorical eligibility for free meals and free milk to all Head
+      Start enrollees".
+  example: In is_school_meal_categorically_eligible.yaml, a five-year-old enrollee in a family at 300% of the
+    poverty guideline gets the free tier in 2026 and free meals worth (2.46 + 4.60 - 0.40 - 0.44) x 180 =
+    $1,119.60. If a program in a community of 1,000 or fewer people enrolled that child under its own criteria
+    (9840(a)(2)), the child would get the paid tier and $0 under the statute's reading.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/usda/school_meals/child_categorical_eligibility.yaml
+    - policyengine_us/variables/gov/usda/school_meals/is_school_meal_categorically_eligible.py
+    - policyengine_us/variables/household/demographic/person/is_enrolled_in_head_start.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10838
+  state: open
+  note: PE-US counts every Head Start enrollee as categorically eligible. child_categorical_eligibility.yaml lists
+    is_enrolled_in_head_start, and is_school_meal_categorically_eligible.py qualifies a person when that input is
+    true, with no income test. is_enrolled_in_head_start.py records enrollment in Head Start or Early Head Start.
+    The model has no input for the basis of enrollment, so the statute's reading would need one. Under 42 U.S.C.
+    9840(a)(1)(B), programs enroll children whose families have income below the poverty line or qualify for public
+    assistance, homeless children and, within the shares clause (iii) allows, children who meet neither test. A
+    program can also enroll a child outside (a)(1)(B). Under 9840(a)(2), a program in a community of 1,000 or fewer
+    people sets its own criteria. Under 9840(d)(1), a tribe that enrolls every low-income child in its community
+    may enroll children who do not meet the low-income criteria. Under Pub. L. 118-47, div. D, sections 238 and
+    239, enacted on March 23, 2024, a tribe or a migrant or seasonal program sets its own selection criteria.
+    Congress wrote the (a)(1)(B) basis into clause (iii) on December 12, 2007 (Pub. L. 110-134, section 29(c)(1)),
+    and the clause named the low-income criteria of section 645(a)(1)(A) before then. USDA added both 245.2
+    definitions in the interim rule, effective June 24, 2011. is_school_meal_categorically_eligible.yaml pins the
+    model's reading for an enrollee at high income and for an enrollee above the Head Start income limit. An answer
+    should say whether the model keeps counting every enrollee, or takes a new input for enrollment on the (a)(1)(B)
+    basis and counts only those children.
 - id: us:se-plan-step-2-multiple-businesses
   program: income-tax
   years:
@@ -15191,6 +15978,135 @@ candidates:
     2025 CFR editions carry the same sentence at 685.208(b)(2), so the question runs from the model's first
     minimum_payment value in 2016. Issue
     10567 reports the double minimum.
+- id: us:strike-benefits-earned-income
+  program: income-tax
+  years:
+    from: 2010
+    type: tax
+  question: Are taxable strike and lockout benefits a union pays earned income for the earned income credit, the
+    child and dependent care credit, the dependent standard deduction and filing test, the kiddie tax and the AMT child
+    exemption?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(2)(A)(i)
+    url: https://www.law.cornell.edu/uscode/text/26/32#c_2_A_i
+  - kind: guidance
+    citation: Publication 596 (2025), page 8, Strike and lockout benefits
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=8
+  - kind: guidance
+    citation: Publication 503 (2025), page 4, Earned income
+    url: https://www.irs.gov/pub/irs-prior/p503--2025.pdf#page=4
+  - kind: instructions
+    citation: Form 1040 instructions (2022), line 1h, and (2021), Standard Deduction Worksheet for Dependents footnote
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2022.pdf
+  - kind: statute
+    citation: 26 U.S.C. 911(d)(2), as used by 26 U.S.C. 1(g)(2)(A)(ii)(II) and 59(j)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/26/911#d_2
+  - kind: instructions
+    citation: Form 8615 instructions (2017), page 2, Earned income
+    url: https://www.irs.gov/pub/irs-prior/i8615--2017.pdf#page=2
+  - kind: instructions
+    citation: Form 8615 instructions (2022), page 3, Alternate Worksheet for Form 8615, Line 1, line D
+    url: https://www.irs.gov/pub/irs-prior/i8615--2022.pdf#page=3
+  - kind: instructions
+    citation: 2025 Schedule P (540) instructions, line 22, Exemption Worksheet line 8
+    url: https://www.ftb.ca.gov/forms/2025/2025-540-p-instructions.html
+  readings:
+    statute: Section 32(c)(2)(A)(i) counts wages, salaries, tips and other employee compensation includible in gross
+      income; neither it nor Treas. Reg. 1.32-2(c)(2) names strike benefits, which a union rather than an employer pays.
+      Section 911(d)(2) counts amounts received as compensation for personal services actually rendered, which strike
+      benefits are not.
+    other: Publication 596 makes taxable strike and lockout benefits generally earned income, and Publication 503 says
+      earned income includes strike benefits. The dependent worksheet counts Form 1040 line 1z, which takes strike
+      benefits through line 1h from 2022; the earlier instructions name no line for them, Publication 17 discusses
+      them under other income, and the worksheet then counted wages (Form 1040 line 7 through 2017, line 1 from 2018)
+      and the business and farm income lines. Publication 501 describes earned income as compensation for personal
+      services performed, and the filing test reads the same list as the worksheet. The Form 8615 instructions define
+      earned income as wages, tips and other payments received for personal services performed. In 2017 their one
+      sentence naming Form 1040 lines (7, 12 and 18) covers a child's trade or business in which capital is not an
+      income-producing factor. From 2022 the Alternate Worksheet for line 1 adds that earned income is "Generally" Form
+      1040 line 1z and Schedule 1 lines 3 and 6, which would hold taxable strike benefits; the model applies the
+      support test only through 2017. California's Schedule P worksheet uses the same personal services words.
+  example: A 2025 head of household with one child and $20,000 of taxable strike benefits and no other income gets the
+    $4,328 maximum earned income credit; with the benefits outside earned income the credit is zero.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eitc_earned_income.py
+    - policyengine_us/variables/gov/irs/income/adjusted_earnings.py
+    - policyengine_us/parameters/gov/irs/income/filing_requirement/dependent/earned_income_sources.yaml
+    - policyengine_us/variables/gov/irs/tax/federal_income/alternative_minimum_tax/exemption/amt_exemption.py
+    - policyengine_us/variables/gov/irs/tax/federal_income/alternative_minimum_tax/kiddie_tax/amt_kiddie_tax_applies.py
+    - policyengine_us/variables/gov/states/ca/tax/income/alternative_minimum_tax/exemption/ca_amt_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
+  state: unreviewed
+  note: 'PE-US follows the publications and forms: taxable_strike_benefits (strike_benefits less the
+    tax_exempt_strike_benefits gift part) counts from 2010 in eitc_earned_income (the EITC, and the refundable CTC
+    through ctc_phase_in_relevant_earnings) and in earnings_before_zero_floor (adjusted_earnings: the child and
+    dependent care credit, section 129, and the state dependent care credits and deductions and EITC-based credits
+    that adopt these federal measures, California''s dependent care credit included), and from 2022, when line 1h puts
+    it in line 1z, in the dependent earned income sources (standard deduction worksheet and filing test). The kiddie tax
+    support test and the AMT child exemption cap, which the model applies through 2017, follow section 911(d)(2) and
+    the 2017 Form 8615 definition and leave it out of adjusted_earnings; California''s AMT child exemption leaves it out
+    of the head''s earned income the same way. Payroll taxes do not read it.'
+- id: us-pa:tax-forgiveness-strike-benefits
+  program: income-tax
+  years:
+    from: 2004
+    type: tax
+  question: Does 72 P.S. 7301(o.2)(vi) leave the strike benefits a union pays out of Pennsylvania Tax Forgiveness
+    eligibility income?
+  sources:
+  - kind: statute
+    citation: 72 P.S. 7301(o.2)(vi) and 7301(d)(vi)
+    url: https://www.palegis.us/statutes/unconsolidated/law-information/view-statute?txtType=HTM&SessYr=1971&ActNum=0002.&ChapterNum=003.&SectionNum=001.&SubsectionNum=0
+  - kind: regulation
+    citation: 61 Pa. Code 101.1, poverty income (i)(F), (ii) and (iii), applied by 61 Pa. Code 123.3
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.1.html
+  - kind: regulation
+    citation: 61 Pa. Code 101.6(c)(9)
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
+  - kind: instructions
+    citation: 2025 PA-40 instructions, Schedule SP Section III, lines 5 and 10
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40in.pdf#page=38
+  - kind: guidance
+    citation: Pennsylvania Personal Income Tax Guide, Tax Forgiveness, eligibility income and its exclusions
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_taxforgiveness.pdf#page=5
+  - kind: guidance
+    citation: Pennsylvania Personal Income Tax Guide, Gross Compensation, nontaxable benefits
+    url: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/gross-compensation.html#NontaxableBenefits
+  readings:
+    statute: Poverty income is all moneys or property "received of whatever nature and from whatever source derived",
+      not including (vi) "payments made by employers or labor unions for programs covering hospitalization, sickness,
+      disability or death, supplemental unemployment benefits, strike benefits, Social Security and retirement". The
+      words do not say whether they mean payments into such a program or the benefits a striker receives from it.
+    other: The poverty income regulation, 61 Pa. Code 101.1 (i)(F), restates (vi) as "payments made by employers to
+      labor unions for programs covering" those benefits; its (ii) counts "gifts of cash or property" and "other income
+      not specified as 'Income Not Included'", and its (iii) list of income not included leaves strike benefits out.
+      61 Pa. Code 101.6(c)(9) reads the same words in the compensation definition as payments to a strike benefit plan.
+      The Tax Forgiveness guide repeats the statute's words in its exclusions, and its inclusions count gifts, cash
+      from persons outside the household and employee payments to a cafeteria plan for strike benefits. The 2025
+      Schedule SP counts gifts (line 5), payments received from persons outside the household and, as the guide does,
+      "Nontaxable payments to your employer's cafeteria plan for hospitalization, sickness, disability, or death,
+      supplemental unemployment, or strike benefits" (line 10), and its list of income not to include leaves strike
+      benefits out. Only the Gross Compensation guide's framing points
+      the other way. After quoting 7301(d)(vi) in its cafeteria plan section, it calls strike benefits nontaxable
+      "provided that the program does not discriminate".
+  example: A 2025 single filer with $5,000 of wages and $4,000 of strike benefits has eligibility income of $9,000 when
+    the benefits count and $5,000 when they do not.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/pa/tax/income/forgiveness/eligibility_income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
+  state: unreviewed
+  note: 'PE-US counts the whole union payment, gift part included, in eligibility income, following 61 Pa. Code 101.1,
+    the Tax Forgiveness guide and Schedule SP where the statute''s words leave the question open. PA taxable income
+    leaves strike benefits out under either reading: compensation is remuneration "received for services rendered"
+    (7301(d)), and the Gross Compensation guide lists strike benefits among income items never taxable as
+    compensation.'
 - id: us:student-loan-interest-joint-claimed-spouse
   program: income-tax
   years:
@@ -15454,3 +16370,131 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
+- id: us-ut:medicaid-parent-standard-2018-cms-table
+  program: medicaid
+  years:
+    from: 2018
+    to: 2019
+    type: calendar
+  question: Does Utah use its 55% poverty-guideline parent standard or the 44% dollar-based standard CMS
+    reports in its April 2018 table?
+  sources:
+  - kind: plan
+    citation: Utah State Plan Amendment UT-16-0025-MM, S25, approved March 10, 2017, effective July 1,
+      2017
+    url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/UT/UT-16-0025.pdf#page=7
+  - kind: rulemaking
+    citation: Utah DAR File 41429, R414-303-4(3), proposed July 2017 amendment
+    url: https://rules.utah.gov/publicat/bulletin/2017/20170415/41429.htm
+  - kind: guidance
+    citation: CMS Medicaid and CHIP Eligibility Levels, April 2018, Utah Parent/Caretaker column
+    url: https://download.medicaid.gov/data/medicaid-and-chip-eligibility-levels.xy8t-auhk.csv
+  readings:
+    statute: Utah covers parents with countable income up to 55% of the poverty guideline under its CMS-approved
+      state plan and corresponding R414-303-4(3) amendment.
+    other: CMS reports a 44% parent standard and labels Utah's standard as a dollar amount in its April
+      2018 table.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: ruled
+  note: PolicyEngine applies Utah's amended regulation and adds the federal five-point disregard. CMS
+    approved the state plan on March 10, 2017, effective July 1, 2017. Annual calculations retain the
+    January 1 standard for 2019. The captures sit under source_conflicts/sources/us-ut/r414-303-4-2017-paragraph-3.txt
+    and source_conflicts/sources/us-ut/ut-16-0025-state-plan-p7.txt and source_conflicts/sources/us/cms-medicaid-eligibility-levels-2018-utah.txt.
+- id: us-va:medicaid-parent-lifc-manual-regulation-limits
+  program: medicaid
+  years:
+    from: 2018
+    to: 2020
+    type: calendar
+  question: Does Virginia apply its dated MAGI eligibility-manual LIFC schedules or the lower locality-group
+    amounts in 12VAC30-40-220?
+  sources:
+  - kind: regulation
+    citation: 12VAC30-40-220 A.1, locality-group income limits
+    url: https://law.lis.virginia.gov/admincode/title12/agency30/chapter40/section220/
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2017
+    url: https://www.dmas.virginia.gov/media/2249/transmittal-dmas-5-effective-07-1-2017.pdf#page=35
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2018
+    url: https://www.dmas.virginia.gov/media/2245/transmittal-dmas-9-effective-7-1-18-signed.pdf#page=34
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2019
+    url: https://www.dmas.virginia.gov/media/2258/tn-dmas-13-effective-7-1-2019.pdf#page=42
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2020
+    url: https://www.dmas.virginia.gov/media/2254/tn-dmas-17-effective-7-1-20.pdf#page=59
+  readings:
+    statute: No statute supplies these schedules here. The regulation sets monthly limits by household
+      size and locality group, with additions above eight people.
+    other: DMAS directs eligibility staff to use dated MAGI manual schedules, which set higher limits
+      and change each July.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/additional.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/additional.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/additional.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: ruled
+  note: 'PolicyEngine adopts the dated DMAS manual schedules for the 2018-2020 correction in issue 10793.
+    Annual calculations use the schedule effective on January 1. The regulation remains a conflicting
+    source; the agency manual does not establish a statutory override. The captures sit under source_conflicts/sources/us-va/:
+    12vac30-40-220-group-limits.txt and dmas-lifc-limits-2017-p35.txt, dmas-lifc-limits-2018-p34.txt,
+    dmas-lifc-limits-2019-p42.txt and dmas-lifc-limits-2020-p59.txt.'
+- id: us-ut:medicaid-adult-expansion-limit-january-2020
+  program: medicaid
+  years:
+    from: 2020
+    to: 2020
+    type: calendar
+  question: On January 1, 2020, does Utah cover adult expansion applicants with income up to 133% of the poverty
+    guideline, as CMS's December 2019 demonstration approval and Utah Code 26-18-3.9(5)(b) provide, or up to 95%,
+    as R414-312-6(3) still read until DAR 52479 amended it?
+  sources:
+  - kind: statute
+    citation: Utah Code 26-18-3.9(5)(b), as amended by S.B. 96 (2019 General Session), enrolled copy, lines 232-241
+    url: https://le.utah.gov/~2019/bills/sbillenr/SB0096.pdf#page=9
+  - kind: regulation
+    citation: Utah Admin. Code R414-312-6(3), DAR File No. 43798, effective August 29, 2019
+    url: https://rules.utah.gov/publicat/bull_pdf/2019/b20190701.pdf#page=95
+  - kind: rulemaking
+    citation: Utah DAR File No. 52479, proposed amendment to R414-312-6(3), Utah State Bulletin, February 1, 2020
+    url: https://rules.utah.gov/wp-content/uploads/b20200201.pdf#page=103
+  - kind: policy
+    citation: CMS approval of the Utah Primary Care Network section 1115 demonstration (amendment approved December 16,
+      2020), expenditure authority 10, Adult Expansion Population
+    url: https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=7
+  readings:
+    statute: Section 26-18-3.9(5)(b) expands Medicaid to the whole optional adult expansion population on the earlier
+      of the day CMS approves a waiver with the terms in Subsection (5)(a)(ii) or July 1, 2020. CMS approved the
+      amendment raising the Adult Expansion Population limit to 133% of the guideline on December 23, 2019, and its
+      expenditure authority 10 covers adults to 133% as of January 1, 2020.
+    other: R414-312-6(3) limited Adult Expansion Medicaid to countable income at or below 95% of the guideline until
+      DAR 52479, which may take effect on March 9, 2020, raised it to 133%.
+  example: A Utah parent of children aged 5 and 8 earning $25,000 in 2020 has income at 1.151 of the $21,720
+    guideline. The 1.38 limit admits up to $29,976 a year, and the 1.00 limit up to $21,720.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/adult/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: open
+  note: 'Annual calculations read January 1, so the 2020 Utah adult limit takes 1.38 (133% plus the five-point
+    disregard). The other reading gives 1.00. The Utah 2020 Index of Changes lists rule changes effective January
+    2, 2019 through January 1, 2020, and shows only DAR 43708 and DAR 43798 for R414-312 (https://rules.utah.gov/wp-content/uploads/2020-Index-of-Changes.pdf#page=31).
+    CMS gives the December 23, 2019 approval date in STC 55 (https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=50).
+    The statute reading assumes that approval meets Subsection (5)(b)(i). The YAML case "Utah parent earning 25,000.00
+    in 2020 qualifies only under the 1.38 adult limit" pins the reading. The captures sit under source_conflicts/sources/us-ut/:
+    ut-sb96-2019-enrolled-26-18-3-9-p8-9.txt, ut-bulletin-2019-07-01-dar-43798-p95.txt, ut-bulletin-2020-02-01-dar-52479-p103.txt
+    and cms-ut-pcn-approval-2020-12-16-p7.txt.'

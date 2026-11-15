@@ -19,8 +19,9 @@ class ks_itemized_deductions(Variable):
         # K.S.A. 79-32,120(a) limits the Kansas itemized deduction to four
         # federal categories, each at a year-specific share. Other federal
         # itemized deductions (investment interest, casualty and theft losses,
-        # miscellaneous deductions) do not count. Property taxes are not limited
-        # by the federal cap on state and local taxes.
+        # wagering losses and miscellaneous deductions) do not count.
+        # Property taxes are not limited by the federal cap on state and
+        # local taxes.
         p = parameters(period).gov.states.ks.tax.income.deductions.itemized.rate
         charitable = tax_unit("charitable_deduction", period)
         medical = tax_unit("medical_expense_deduction", period)

@@ -5,9 +5,9 @@ thresholds "operative for federal tax year 2009" ($166,800, or $83,400 for a
 married individual filing separately). Act 35, SLH 2026 keeps section 68 "in
 the form that it existed as of December 31, 2024" for taxable years beginning
 after December 31, 2025, so the 3 percent and 80 percent rates and the section
-68(c) exclusions (medical expenses, investment interest, casualty losses) do
-not change in 2026. The Total Itemized Deductions Worksheet in the Form N-11
-instructions implements this.
+68(c) exclusions (medical expenses, investment interest, casualty losses,
+wagering losses) do not change in 2026. The Total Itemized Deductions
+Worksheet in the Form N-11 instructions implements this.
 
 Act 35 also conforms Hawaii to the section 224 deduction for qualified tips
 from 2026 (section 224(h) ends it after 2028).
@@ -47,7 +47,12 @@ SEPARATE_THRESHOLD = 83_400
 # Components of hi_total_itemized_deductions, split by whether section 68(c)
 # excludes them. Investment interest and mortgage interest are person inputs
 # that hi_interest_deduction adds up.
-EXCLUDED = ("hi_medical_expense_deduction", "hi_casualty_loss_deduction")
+EXCLUDED = (
+    "hi_medical_expense_deduction",
+    "hi_casualty_loss_deduction",
+    # Worksheet line 2d: gambling losses included in Worksheet A-6, line 30.
+    "wagering_losses_deduction",
+)
 EXCLUDED_PERSON = ("investment_interest_expense",)
 OTHER = ("hi_charitable_deduction", "hi_salt_deduction", "hi_misc_deduction")
 OTHER_PERSON = ("home_mortgage_interest",)

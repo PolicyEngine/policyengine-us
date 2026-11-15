@@ -1,0 +1,30 @@
+# Georgia LIHEAP income test shared by heating and cooling: income at or below 60% of state
+# median income (FY2026 plan sections 2.1 and 3.1), or below 110% of the poverty guideline
+# (42 U.S.C. 8624(b)(2)(B)). Income is entered directly to pin each boundary.
+
+# FY2026 size one: the matrix limit is 34_549 and is inclusive.
+- name: Case 1, the state median income limit is inclusive.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ga_liheap_income: [34_549, 34_549.01]
+  output:
+    ga_liheap_income_limit: [34_549, 34_549]
+    ga_liheap_income_eligible: [true, false]
+
+# FY2026 size 16: the printed limit is 107_634. FY2026 uses the 2025 guidelines, so the
+# floor is 1.1 x (15_650 + 15 x 5_500) = 1.1 x 98_150 = 107_965 (rounded to the cent).
+# 107_964.99 is below the floor; 107_965 is not "less than" it.
+- name: Case 2, the federal poverty floor is strict above the printed size 16 limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA]
+    ga_liheap_household_size: [16, 16]
+    ga_liheap_income: [107_964.99, 107_965]
+  output:
+    ga_liheap_income_limit: [107_634, 107_634]
+    ga_liheap_income_eligible: [true, false]
