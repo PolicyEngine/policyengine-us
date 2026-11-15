@@ -3,6 +3,8 @@ from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class spm_unit_fpg(Variable):
+    """Return the annual SPM-unit guideline, using the published table in 2016."""
+
     value_type = float
     entity = SPMUnit
     label = "SPM unit's federal poverty guideline"

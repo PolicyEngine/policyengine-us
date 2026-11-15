@@ -8,6 +8,10 @@ def fpg(unit_size, state_group, period, parameters, year_lag=0):
     Lag only the parameter date, preserving its month and day. Callers supply
     the current household size and apply any caps, policy rates, or rounding.
     The 2016 guideline year uses HHS's nonuniform household-size table.
+
+    Callers must supply string geography codes, such as CONTIGUOUS_US, AK,
+    and HI. EnumArray geography inputs remain unqualified for this lookup
+    and can bypass the table through the existing linear fallback.
     """
     guideline_date = instant(period).offset(-int(year_lag), "year")
     p_fpg = parameters(guideline_date).gov.hhs.fpg
@@ -50,6 +54,8 @@ def fpg(unit_size, state_group, period, parameters, year_lag=0):
 
 
 class tax_unit_fpg(Variable):
+    """Return the annual tax-unit guideline, using the published table in 2016."""
+
     value_type = float
     entity = TaxUnit
     label = "Tax unit's federal poverty guideline"
