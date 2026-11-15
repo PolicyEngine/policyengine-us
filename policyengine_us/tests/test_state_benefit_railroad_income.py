@@ -51,9 +51,10 @@ Invariants:
   named in a string. R5 follows those assignments once, in source order, and a
   name bound to two paths reads as both. A path passed as a function argument,
   read with getattr or a subscript, bound in a tuple, annotated, chained or
-  walrus assignment, built in a loop from a name the loop assigns further down,
-  or used in a nested function under the enclosing function's name passes
-  unseen.
+  walrus assignment, bound to a call or conditional expression, built in a loop
+  from a name the loop assigns further down, or used in a nested function under
+  the enclosing function's name passes unseen. R5 reads a path that continues
+  past a call, such as parameters.gov.x(period).y, only up to the call.
 """
 
 import ast
