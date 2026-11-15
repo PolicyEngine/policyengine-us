@@ -11,13 +11,14 @@ TY2015-2017 AR1000F (2015 booklet, form on #page=17, instructions on
 13 business income (Schedule C), 14 capital gains, 16 nonqualified IRA
 distributions and taxable annuities, 17A/17B employer pensions and qualified
 IRAs, where military retirement and disability retirement also go, 18 Schedule
-E (rents, royalties, partnerships, S corporations, estates and trusts), 19 Schedule F, 20 other income (Form AR-OI, including gambling winnings).
+E (rents, royalties, partnerships, S corporations, estates and trusts), 19 Schedule F, 20 other income (Form AR-OI, including gambling winnings and
+taxable strike benefits).
 
 TY2018+ AR1000F (2018 booklet, form on #page=15; 2022 and 2025 AR1000F,
 #page=2): 13 business income, 14 capital gains, 16 nonqualified IRA
 distributions, 17 military retirement (17A/17B on the 2018 form), 18A/18B
 employer pensions and qualified IRAs, 19 Schedule E, 20 Schedule F,
-21 unemployment, 22 other income.
+21 unemployment, 22 other income (Form AR-OI).
 
 The check reads the YAML text without importing the model, so it costs nothing.
 A new source must be added to EXPECTED_LINES after checking the form.
@@ -54,6 +55,7 @@ TY2015_2017 = {
     "farm_rent_income": "18",
     "farm_operations_income": "19",
     "gambling_winnings": "20",
+    "taxable_strike_benefits": "20",
     "ar_other_additions": "20",
 }
 
@@ -82,6 +84,7 @@ TY2018_ON = {
     "unemployment_compensation": "21",
     "total_unemployment_compensation": "21",
     "gambling_winnings": "22",
+    "taxable_strike_benefits": "22",
     "ar_other_additions": "22",
 }
 

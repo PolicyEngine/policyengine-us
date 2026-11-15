@@ -59,6 +59,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        dependent_care_assistance_qualified_expenses: 5_000
         filing_status: SEPARATE
     households:
       household:

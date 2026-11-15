@@ -48,7 +48,7 @@ class school_meal_tier(Variable):
     entity = SPMUnit
     definition_period = YEAR
     documentation = (
-        "School meal tier that applies to both breakfast and lunch: federal "
+        "Common SPM-unit tier for both breakfast and lunch: federal "
         "eligibility plus state coverage of both meals (universal free meals, "
         "reduced-price copay coverage and free-meal income limits above the "
         "federal limit). The federal free (130%) and reduced-price (185%) "
@@ -59,7 +59,9 @@ class school_meal_tier(Variable):
         "exactly. State policies that cover only one meal apply in "
         "school_meal_breakfast_tier and school_meal_lunch_tier. FREE "
         "describes no family charge; it does not change the student's "
-        "federal reimbursement category."
+        "federal reimbursement category. Child-specific categorical "
+        "eligibility applies in school_meal_child_breakfast_tier and "
+        "school_meal_child_lunch_tier."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1758#b_1_A",

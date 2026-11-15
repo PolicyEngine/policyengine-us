@@ -45,6 +45,9 @@
         state_code: HI
   output:
     hi_itemized_deductions_reduction: 0
+    # Worksheet line 8: income is not over 166,800, so the deduction is not
+    # limited and line 1 is entered.
+    hi_itemized_deductions: 10_000
 
 - name: Case 3, excluded deductions equal the total, no reduction.
   period: 2022
@@ -68,6 +71,10 @@
         state_code: HI
   output:
     hi_itemized_deductions_reduction: 0
+    # Worksheet line 4: the medical, investment interest and casualty
+    # deductions (300 + 200 + 400) are not less than the total, so the
+    # deduction is not limited and line 1 is entered.
+    hi_itemized_deductions: 900
 
 - name: Case 4, joint filer in 2026 uses the $166,800 threshold, not a joint federal amount.
   period: 2026
@@ -112,3 +119,41 @@
     hi_total_itemized_deductions: 30_000
   output:
     hi_itemized_deductions_reduction: 0
+
+- name: Case 8, gambling losses are outside the limitation (worksheet line 2d).
+  period: 2025
+  input:
+    tax_units:
+      tax_unit:
+        filing_status: SINGLE
+        wagering_losses_deduction: 4_000
+        hi_agi: 266_800
+        members: [person1]
+        hi_total_itemized_deductions: 10_000
+    people:
+      person1: {}
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Smaller of 80% x (10,000 - 4,000) = 4,800 and 3% x (266,800 - 166,800)
+    # = 3,000.
+    hi_itemized_deductions_reduction: 3_000
+    # 10,000 - 3,000 = 7,000.
+    hi_itemized_deductions: 7_000
+
+- name: Case 9, the 80% ceiling leaves out gambling losses.
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 1_000_000
+    wagering_losses_deduction: 4_000
+    hi_total_itemized_deductions: 10_000
+  output:
+    # Line 5: (10,000 - 4,000) * 80% = 4,800.
+    # Line 9: (1,000,000 - 166,800) * 3% = 24,996.
+    hi_itemized_deductions_reduction: 4_800
+    # 10,000 - 4,800 = 5,200.
+    hi_itemized_deductions: 5_200

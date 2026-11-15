@@ -20,7 +20,8 @@ class oh_owf_payment_standard(Variable):
         additional_person = max_(size - max_size, 0)
         additional_amount = additional_person * p.additional_person
 
-        # Base 2017 amounts adjusted by cumulative Social Security COLA
+        # Earlier schedules apply cumulative COLAs to 2017 base amounts;
+        # the 2026 published nominal amounts use a multiplier of 1.
         pre_cola_amount = p.amounts[table_size] + additional_amount
 
         return pre_cola_amount * p.cola_multiplier
