@@ -20,6 +20,10 @@
         members: [filer, child]
         state_code: LA
   output:
+    # 2021 IT-540 instructions, PDF p. 3, Lines 6A and 6C:
+    # https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf#page=3
+    # RR 18-001, PDF p. 2, quotes pre-2025 R.S. 47:294(A) and (B):
+    # https://dam.ldr.la.gov/lawspolicies/RR%2018-001%20Personal%20Exemptions.pdf#page=2
     # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
     # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
     # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
@@ -49,6 +53,10 @@
         members: [filer, child]
         state_code: LA
   output:
+    # 2022 IT-540 instructions, PDF p. 2, Lines 6A and 6C:
+    # https://dam.ldr.la.gov/taxforms/IT540iWEB(2022)D1.pdf#page=2
+    # 2022 Louisiana Tax Table, PDF p. 1, single or married filing separately:
+    # https://dam.ldr.la.gov/taxforms/IT540(2022)%20Tax%20Table.pdf#page=1
     # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
     # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
     # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
@@ -78,6 +86,10 @@
         members: [filer, child]
         state_code: LA
   output:
+    # 2023 IT-540 instructions, PDF p. 3, Lines 6A and 6C:
+    # https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=3
+    # 2023 Louisiana Tax Table, PDF p. 1, single or married filing separately:
+    # https://dam.ldr.la.gov/taxforms/IT540(2023)%20TT.pdf#page=1
     # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
     # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
     # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.
@@ -107,6 +119,9 @@
         members: [filer, child]
         state_code: LA
   output:
+    # 2024 IT-540 instructions, PDF pp. 3 and 18, Lines 6A/6C and single tax table:
+    # https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=3
+    # https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=18
     # LDR counts the filer on Line 6A and the federal dependent on Line 6C.
     # (1 filer + 1 child - 1 personal allowance) * $1,000 = $1,000.
     # $4,500 personal + $1,000 dependent + $0 blind + $0 aged = $5,500.

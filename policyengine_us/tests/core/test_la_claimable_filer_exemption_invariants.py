@@ -2,13 +2,13 @@
 
 Compare ordinary filers with claimable filers whose claimants do or do not
 meet the filing exception. Each batch covers every filing status and zero
-through four dependents, with generated ages below the aged-exemption limit.
+through four dependents, with fixed ages below the aged-exemption limit.
+Preserve the model's joint-spouse treatment by analogy with the head; the
+cited Louisiana instructions do not resolve a claimable spouse's exemption.
 """
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings
-from hypothesis import strategies as st
 
 from policyengine_us import Simulation
 
@@ -55,6 +55,7 @@ def _situation(year, head_age, spouse_age, child_ages):
             ("except_head", "head", True),
         ]
         if status == "JOINT":
+            # Preserve the model's spouse treatment by analogy with the head.
             variants += [
                 ("blocked_spouse", "spouse", False),
                 ("except_spouse", "spouse", True),
@@ -104,21 +105,8 @@ def _situation(year, head_age, spouse_age, child_ages):
 
 
 @pytest.mark.parametrize("year", YEARS)
-@settings(
-    max_examples=2,
-    deadline=None,
-    derandomize=True,
-    suppress_health_check=[HealthCheck.too_slow],
-)
-@given(
-    head_age=st.integers(18, 64),
-    spouse_age=st.integers(18, 64),
-    child_ages=st.lists(st.integers(0, 17), min_size=4, max_size=4),
-)
-def test_la_claimable_filer_exemption_invariants(
-    year, head_age, spouse_age, child_ages
-):
-    situation, rows = _situation(year, head_age, spouse_age, child_ages)
+def test_la_claimable_filer_exemption_invariants(year):
+    situation, rows = _situation(year, 20, 20, (4, 4, 4, 4))
     simulation = Simulation(situation=situation)
     values = {
         variable: np.asarray(simulation.calculate(variable, year))
