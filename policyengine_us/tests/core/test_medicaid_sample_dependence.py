@@ -61,16 +61,12 @@ def _spending(simulation):
     ).calibration.gov.hhs.medicaid.totals.spending.TX
 
 
-@pytest.mark.xfail(
-    strict=True,
-    raises=AssertionError,
-    reason="Household formulas infer the state average from unrelated households",
-)
 def test_adding_an_unrelated_household_preserves_medicaid_value():
     alone = _simulation([100], [1], dataset=False)
     together = _simulation([100, 300], [1, 1], dataset=False)
-    # The first person's index stays 100; adding a peer raises the inferred
-    # state average from 100 to 200 and halves the first person's value.
+    # Each singleton uses its own index: S*100/(E*100) = S/E.
+    # TX: 57,284,033,548 / 4,178,724 = 13,708.498945611148.
+    assert alone.calculate(VALUE, YEAR)[0] == pytest.approx(13_708.498945611148)
     assert together.calculate(VALUE, YEAR)[0] == pytest.approx(
         alone.calculate(VALUE, YEAR)[0]
     )

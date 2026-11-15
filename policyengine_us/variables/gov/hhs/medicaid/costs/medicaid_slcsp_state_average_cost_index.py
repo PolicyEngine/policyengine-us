@@ -12,18 +12,21 @@ class medicaid_slcsp_state_average_cost_index(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        state = person.household("state_code_str", period)
+        if person.simulation.is_over_dataset:
+            group = person.household("state_code_str", period)
+        else:
+            group = person.simulation.populations["household"].members_entity_id
         cost_index = person("medicaid_slcsp_cost_index", period)
         weight = person("person_weight", period)
         positive_index = cost_index > 0
-        state_weight = sum_by_state(weight * positive_index, state)
-        state_cost_index = sum_by_state(weight * cost_index * positive_index, state)
+        group_weight = sum_by_state(weight * positive_index, group)
+        group_cost_index = sum_by_state(weight * cost_index * positive_index, group)
 
-        # Fall back to 1 (not 0) when a state has no positive-index weight, so
-        # the household denominator stays strictly positive.
+        # Group dataset people by state and situation people by household.
+        # Retain the fallback of 1 when the group has no positive-index weight.
         return np.divide(
-            state_cost_index,
-            state_weight,
+            group_cost_index,
+            group_weight,
             out=np.ones_like(cost_index),
-            where=state_weight > 0,
+            where=group_weight > 0,
         )
