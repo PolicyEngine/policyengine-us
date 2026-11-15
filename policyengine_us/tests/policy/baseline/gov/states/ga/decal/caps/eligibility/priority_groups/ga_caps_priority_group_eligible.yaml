@@ -881,6 +881,110 @@
   output:
     ga_caps_priority_group_eligible: false
 
+- name: Very low income, November 2020, 50 percent of the 2020 guideline, at the limit.
+  period: 2020-11
+  input:
+    people:
+      person1:
+        age:
+          2020: 30
+      person2:
+        age:
+          2020: 5
+      person3:
+        age:
+          2020: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 905
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2020: GA
+  output:
+    # Appendix A effective October 1, 2020: 50% of the guidelines effective for CAPS
+    # March 1, 2020, $10,860 for three.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, November 2020, 50 percent of the 2020 guideline, over the limit.
+  period: 2020-11
+  input:
+    people:
+      person1:
+        age:
+          2020: 30
+      person2:
+        age:
+          2020: 5
+      person3:
+        age:
+          2020: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 905.09
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2020: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, February 2021, 50 percent of the 2020 guideline, at the limit.
+  period: 2021-02
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 905
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2021: GA
+  output:
+    # The October 1, 2020 chart still applies. The next chart takes up the 2021 guideline
+    # on March 1, 2021, so 50% of the 2020 guideline, $10,860 for three, applies until then.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, February 2021, 50 percent of the 2020 guideline, over the limit.
+  period: 2021-02
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+      person2:
+        age:
+          2021: 5
+      person3:
+        age:
+          2021: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 905.09
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2021: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
 - name: Very low income, November 2021, 150 percent for four, at the limit.
   period: 2021-11
   input:
@@ -992,6 +1096,51 @@
         members: [person1, person2, person3, person4]
         state_code:
           2021: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, January 2022, 150 percent of the 2021 guideline, at the limit.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_745
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Appendix A effective November 1, 2021: 150% of the guidelines effective for CAPS
+    # March 1, 2021, $32,940 for three. The next chart takes up the 2022 guideline on
+    # March 1, 2022.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, January 2022, 150 percent of the 2021 guideline, over the limit.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 2_745.09
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
   output:
     ga_caps_priority_group_eligible: false
 
@@ -1138,6 +1287,51 @@
         members: [person1, person2, person3]
         state_code:
           2023: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
+- name: Very low income, January 2024, 50 percent of the 2023 guideline, at the limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_035.83
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Appendix A effective October 1, 2023: 50% of the guidelines effective for CAPS
+    # March 1, 2023, $12,430 for three. The next chart takes up the 2024 guideline on
+    # March 1, 2024.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, January 2024, 50 percent of the 2023 guideline, over the limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 1_035.92
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
   output:
     ga_caps_priority_group_eligible: false
 
