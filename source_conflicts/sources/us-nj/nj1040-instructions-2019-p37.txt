@@ -1,6 +1,8 @@
 Source: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2019/1040i.pdf
 Physical PDF page 37, printed page 35; complete cached page text, retaining worksheet row context.
 Native source SHA256: 8d037447d3942b6112628d13048d573a56e9a2766a4c45c4d97b86e6c84bc633
+Original extraction command: unknown.
+Later verified reproduction: run Poppler pdftotext 26.09.0 with -layout -f 37 -l 37 and omit the terminal form feed.
 
                                                                     2019 Form NJ-1040                                                                   35
 
