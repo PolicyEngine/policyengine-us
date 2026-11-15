@@ -8,9 +8,12 @@ class ok_federal_eitc_demographic_eligible(Variable):
     definition_period = YEAR
     reference = (
         # Oklahoma Statutes 68 O.S. Section 2357.43
-        "https://law.justia.com/codes/oklahoma/title-68/section-68-2357-43/",
-        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=930",
+        # IRC 32(c)(1)(A)(ii), 2020 edition of the United States Code
+        "https://www.govinfo.gov/content/pkg/USCODE-2020-title26/html/USCODE-2020-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm",
         "https://www.irs.gov/pub/irs-prior/p596--2020.pdf#page=16",
+        "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18",
+        "https://www.irs.gov/pub/irs-prior/p4012--2021.pdf#page=61",
     )
     defined_for = StateCode.OK
     documentation = """
@@ -51,10 +54,14 @@ class ok_federal_eitc_demographic_eligible(Variable):
         meets_age_requirements = (age >= min_age) & (age <= max_age)
         is_filer_or_spouse = ~person("is_tax_unit_dependent", period)
         # IRC 32(c)(1)(A)(ii)(III), unchanged since 2020: without a
-        # qualifying child, the filer must not be a dependent of another
-        # taxpayer; on a joint return, "neither you nor your spouse can be
-        # claimed as a dependent by another person" (2020 Publication 596),
-        # unless the would-be claimant files only for a refund.
+        # qualifying child, neither filer may be a dependent of another
+        # taxpayer. As in the federal credit, a would-be claimant who has no
+        # filing requirement and files no return or only for a refund doesn't
+        # bar the credit. The IRS prints no such exception in Rule 12 of 2020
+        # Publication 596 and prints it in that rule from the 2022 edition. In
+        # its volunteer guide for 2020 returns, the IRS applies the exception
+        # to the question whether another taxpayer can claim the filer
+        # (Publication 4012, page C-3, note 5).
         dependent_elsewhere = tax_unit(
             "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )

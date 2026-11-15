@@ -343,8 +343,10 @@
         members: [person_a]
         state_code: OK
   output:
-    # The 2020 federal test lets the filer qualify under Publication 596's
-    # exception: 5% of $382.50.
+    # Under the frozen 2020 requirements, we read IRC 32(c)(1)(A)(ii)(III) as
+    # we do for the federal credit: a claimant who has no filing requirement
+    # and files only for a refund doesn't bar the filer.
+    # 5% of min($5,000 x 7.65%, $538) = 5% of $382.50 = $19.125.
     ok_federal_eitc_demographic_eligible: true
     ok_eitc: 19.125
 
