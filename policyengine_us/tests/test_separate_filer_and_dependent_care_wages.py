@@ -12,7 +12,10 @@
      exclusion <= employment income - benefits (IRC 129(b), Form 2441
      line 18 earned income leaves out line 12 benefits).
 
-Each example builds one simulation holding many tax units.
+Each example builds one simulation holding many tax units. Wage examples
+include an actual qualifying child and independently known $20,000 of
+incurred work-care costs, with no carryovers, forfeitures or disallowed
+public reimbursement; benefits do not establish those costs.
 """
 
 from hypothesis import HealthCheck, given, settings
@@ -104,19 +107,25 @@ def test_dependent_care_benefits_leave_wages_once(year, earners):
         benefits.append(benefit)
         people[f"p{i}"] = {
             "age": {year: 35},
+            "is_tax_unit_head": {year: True},
             "employment_income": {year: earner["wages"]},
             "dependent_care_employer_benefits": {year: benefit},
         }
+        people[f"child{i}"] = {
+            "age": {year: 5},
+            "is_tax_unit_dependent": {year: True},
+        }
         tax_units[f"t{i}"] = {
-            "members": [f"p{i}"],
+            "members": [f"p{i}", f"child{i}"],
+            "dependent_care_assistance_qualified_expenses": {year: 20_000},
             "filing_status": {year: earner["status"]},
         }
     sim = _simulate(year, people, tax_units)
-    wages = sim.calculate("employment_income", year)
-    box_1 = sim.calculate("irs_employment_income", year)
-    taxable = sim.calculate("taxable_dependent_care_benefits", year)
+    wages = sim.calculate("employment_income", year)[::2]
+    box_1 = sim.calculate("irs_employment_income", year)[::2]
+    taxable = sim.calculate("taxable_dependent_care_benefits", year)[::2]
     exclusion = sim.calculate("dependent_care_assistance_exclusion", year)
-    fica_wages = sim.calculate("payroll_tax_gross_wages", year)
+    fica_wages = sim.calculate("payroll_tax_gross_wages", year)[::2]
     for i, benefit in enumerate(benefits):
         assert box_1[i] == wages[i] - benefit
         assert fica_wages[i] == wages[i] - benefit

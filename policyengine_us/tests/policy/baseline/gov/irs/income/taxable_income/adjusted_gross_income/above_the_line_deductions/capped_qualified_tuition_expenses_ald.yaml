@@ -97,3 +97,127 @@
         state_code: TX
   output:
     capped_qualified_tuition_expenses_ald: 0
+
+# Form 1040 puts the eligible tuition deduction before AGI, once.
+# https://www.irs.gov/pub/irs-prior/f1040--2017.pdf
+# https://www.irs.gov/pub/irs-prior/f1040s1--2018.pdf
+
+- name: 2017 tuition reduces the wage-to-taxable-income chain exactly once.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      worker:
+        age: 35
+        employment_income: 40000
+        qualified_tuition_expenses: 4000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    capped_qualified_tuition_expenses_ald: 4000
+    above_the_line_deductions: 4000
+    adjusted_gross_income: 36000
+    standard_deduction: 6350
+    exemptions: 4050
+    taxable_income: 25600
+
+- name: 2018 tuition reduces the wage-to-taxable-income chain exactly once.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      worker:
+        age: 35
+        employment_income: 40000
+        qualified_tuition_expenses: 4000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    capped_qualified_tuition_expenses_ald: 4000
+    above_the_line_deductions: 4000
+    adjusted_gross_income: 36000
+    standard_deduction: 12000
+    exemptions: 0
+    taxable_income: 24000
+
+- name: 2019 tuition reduces the wage-to-taxable-income chain exactly once.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      worker:
+        age: 35
+        employment_income: 40000
+        qualified_tuition_expenses: 4000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    capped_qualified_tuition_expenses_ald: 4000
+    above_the_line_deductions: 4000
+    adjusted_gross_income: 36000
+    standard_deduction: 12200
+    exemptions: 0
+    taxable_income: 23800
+
+- name: 2020 tuition reduces the wage-to-taxable-income chain exactly once.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      worker:
+        age: 35
+        employment_income: 40000
+        qualified_tuition_expenses: 4000
+        is_eligible_for_american_opportunity_credit: false
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        aca_ptc: 0
+        state_sales_tax: 0
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    capped_qualified_tuition_expenses_ald: 4000
+    above_the_line_deductions: 4000
+    adjusted_gross_income: 36000
+    standard_deduction: 12400
+    exemptions: 0
+    taxable_income: 23600

@@ -56,8 +56,9 @@ first_person:
   VI:
     2024-01-01: 0
 additional_person:
-  # Calculated by subtracting a two-person household's line from a one-person's.
-  # This difference is always the same for larger households.
+  # HHS publishes these amounts for each additional person. In 2016, the
+  # difference between the first two rows does not define a uniform increment:
+  # use fpg_table for sizes 1-8 and these amounts for each person beyond eight.
   CONTIGUOUS_US:
     1992-01-01: 2_380
     2011-01-01: 3_820

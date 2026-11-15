@@ -5,6 +5,8 @@ metadata:
   rate_unit: /1
   label: Arkansas high-income tax table
   reference:
+  - title: A.C.A. § 26-51-201(d)(2), Act 1459 of 2013, § 2 (annual CPI-U indexing capped at three percent)
+    href: https://arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013%2FPublic%2F&file=1459.pdf&ddBienniumSession=2013%2F2013R#page=3
   - title: A.C.A. § 26-51-201(a)(4)(B), as amended by Act 1 of 2026 (1st Extraordinary Session), § 1
     href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=2
   - title: A.C.A. § 26-51-201(d)(1), as amended by Act 532 of 2023, § 2 (bracket amounts indexed annually, rounded to the nearest $100)
@@ -21,7 +23,7 @@ brackets:
         2026-01-01: 4_700
       metadata:
         uprating:
-          parameter: gov.irs.uprating
+          parameter: gov.states.ar.tax.income.uprating
           rounding:
             type: nearest
             interval: 100
