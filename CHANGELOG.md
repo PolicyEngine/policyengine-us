@@ -1,3 +1,10 @@
+## [2.134.0] - 2026-11-15
+
+### Added
+
+- Add Nebraska LIHEAP regular cooling assistance.
+
+
 ## [2.133.0] - 2026-11-15
 
 ### Added
