@@ -3,7 +3,7 @@
 YAML covers fixed policy cases. With explicit flags for each year, Hypothesis
 checks that changing one person's input changes only their payment for that
 year. Each example
-also compares all-true take-up with the payment before the take-up gate and
+also compares default and all-true take-up with the payment before the gate and
 recomputes eligibility after each change to detect any take-up dependency.
 """
 
@@ -100,8 +100,8 @@ def test_csfp_takeup_invariants(drawn, changed_year):
         assert eligibility_before[year][0]
         assert not eligibility_before[year][1:3].any()
         old_payments[year] = eligibility_before[year] * amount
-        assert not np.asarray(simulation.calculate(TAKEUP, year)).any()
-        np.testing.assert_array_equal(default_benefit, np.zeros(len(rows)))
+        assert np.asarray(simulation.calculate(TAKEUP, year)).all()
+        np.testing.assert_array_equal(default_benefit, old_payments[year])
 
     for year in YEARS:
         amount = simulation.tax_benefit_system.parameters(year).gov.usda.csfp.amount

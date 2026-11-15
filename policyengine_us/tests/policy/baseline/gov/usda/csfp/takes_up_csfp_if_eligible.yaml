@@ -7,14 +7,14 @@
     # $601 times eligibility times take-up gives [601, 0, 0, 0].
     commodity_supplemental_food_program: [601, 0, 0, 0]
 
-- name: CSFP requires an explicit take-up input
+- name: CSFP preserves payments when take-up is omitted
   period: 2025
   input:
     commodity_supplemental_food_program_eligible: true
   output:
-    takes_up_csfp_if_eligible: false
-    # $601 times the default false take-up flag gives $0.
-    commodity_supplemental_food_program: 0
+    takes_up_csfp_if_eligible: true
+    # $601 times the default true take-up flag gives $601.
+    commodity_supplemental_food_program: 601
 
 - name: Declining CSFP leaves eligibility unchanged
   period: 2025
