@@ -1407,6 +1407,8 @@
       - 18670
       - 47530
       - 61960
+      # HHS publishes $13,960 plus $4,970 per additional person for Hawaii in 2018.
+      # https://www.govinfo.gov/content/pkg/FR-2018-01-18/pdf/2018-00814.pdf#page=2
       2018:
       - 12140
       - 16460
@@ -1417,9 +1419,9 @@
       - 52980
       - 69180
       - 13960
-      - 18770
-      - 47630
-      - 62060
+      - 18930
+      - 48750
+      - 63660
       2019:
       - 12490
       - 16910
@@ -1561,9 +1563,9 @@
       - 52980
       - 69180
       - 13960
-      - 18770
-      - 47630
-      - 62060
+      - 18930
+      - 48750
+      - 63660
       2019:
       - 12490
       - 16910
@@ -1812,3 +1814,106 @@
   output:
     tax_unit_fpg: [20160, 25200, 23190, 0, 0, 0]
     spm_unit_fpg: [20160, 25200, 23190, 0, 0, 0]
+
+# HHS 83 FR 2643, Hawaii table and additional-person clause (PDF page 2).
+# Annual guideline amount only; program-specific adoption dates remain unchanged.
+# https://www.govinfo.gov/content/pkg/FR-2018-01-18/pdf/2018-00814.pdf#page=2
+- name: Case 13, a two-person Hawaii unit uses the 2018 published guideline.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    spm_unit_fpg: 18_930
+
+# HHS 83 FR 2643, Hawaii table and additional-person clause (PDF page 2).
+# Inputs specify component sizes independently of the one-person memberships.
+# These records do not describe complete families or establish program eligibility.
+# Sizes 1, 2, 3 and 8 use published rows; size 11 is 48_750 + 3 * 4_970.
+# https://www.govinfo.gov/content/pkg/FR-2018-01-18/pdf/2018-00814.pdf#page=2
+- name: Case 14, the 2018 Hawaii guideline matches published rows and larger-family increments.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2018: 40
+      person2:
+        age:
+          2018: 40
+      person3:
+        age:
+          2018: 40
+      person4:
+        age:
+          2018: 40
+      person5:
+        age:
+          2018: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+      tax_unit5:
+        members: [person5]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        spm_unit_size:
+          2018: 1
+      spm_unit2:
+        members: [person2]
+        spm_unit_size:
+          2018: 2
+      spm_unit3:
+        members: [person3]
+        spm_unit_size:
+          2018: 3
+      spm_unit4:
+        members: [person4]
+        spm_unit_size:
+          2018: 8
+      spm_unit5:
+        members: [person5]
+        spm_unit_size:
+          2018: 11
+    households:
+      household1:
+        members: [person1]
+        state_code:
+          2018: HI
+      household2:
+        members: [person2]
+        state_code:
+          2018: HI
+      household3:
+        members: [person3]
+        state_code:
+          2018: HI
+      household4:
+        members: [person4]
+        state_code:
+          2018: HI
+      household5:
+        members: [person5]
+        state_code:
+          2018: HI
+  output:
+    spm_unit_fpg: [13_960, 18_930, 23_900, 48_750, 63_660]
