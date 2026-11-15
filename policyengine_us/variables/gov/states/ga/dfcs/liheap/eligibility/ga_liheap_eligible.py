@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 from policyengine_us.variables.gov.states.ga.dfcs.liheap.eligibility._ga_liheap_housing import (
     ga_liheap_has_direct_payment_route,
     ga_liheap_has_electric_vendor_route,
@@ -24,21 +23,8 @@ class ga_liheap_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ga.dfcs.liheap.eligibility
-        p_hhs = parameters(period).gov.hhs.liheap
         size = spm_unit("ga_liheap_household_size", period)
-        income = spm_unit("ga_liheap_income", period)
-        limit = spm_unit("ga_liheap_income_limit", period)
-        # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
-        # of the poverty guideline. The 60% SMI limit falls below that floor from
-        # household size 16 in FY2025 and FY2026. The printed matrices do too: size
-        # 16 prints $102,926 in FY2025 (floor $105,336) and $107,634 in FY2026
-        # (floor $107,965). Georgia assures the floor (FY2025 and FY2026 plans,
-        # page 43), so the floor governs; the limit keeps the printed table.
-        state_group = spm_unit.household("state_group_str", period)
-        guideline = fpg(size, state_group, period, parameters, year_lag=p.fpg_year_lag)
-        floor = np.round(guideline * p_hhs.fpg_floor, 2)
-        income_eligible = (income <= limit) | (income < floor)
+        income_eligible = spm_unit("ga_liheap_income_eligible", period)
         heating_type = spm_unit("heating_type", period)
         heating_expense = spm_unit("heating_expense", period)
         # Explicit heating responsibility can qualify with no current bill.
