@@ -3,9 +3,7 @@ from policyengine_us.variables.gov.irs.income.dependent_gross_income import (
     DEPENDENT_GROSS_INCOME_SOURCE_OVERRIDES,
 )
 
-# Gross income sources whose losses loss_ald deducts from gross income
-# (limited_business_loss: Schedule C, F and E items, estate and trust
-# losses included).
+# Gross income sources whose losses loss_ald deducts from gross income.
 BUSINESS_LOSS_SOURCES = [
     "self_employment_income",
     "sstb_self_employment_income",

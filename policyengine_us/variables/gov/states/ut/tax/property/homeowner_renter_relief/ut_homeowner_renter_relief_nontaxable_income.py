@@ -35,9 +35,10 @@ class ut_homeowner_renter_relief_nontaxable_income(Variable):
         taxable_unemployment_compensation = person(
             "taxable_unemployment_compensation", period
         )
-        # A dependent's adjusted gross income already counts all of their
-        # unemployment compensation, so none of it is added here.
-        nontaxable_unemployment_compensation = ~is_dependent * max_(
+        # The compensation federal adjusted gross income leaves out (the IRC
+        # 85(c) exclusion of 2020), for dependents, whose own return excludes
+        # it (dependent_adjusted_gross_income), and filers alike.
+        nontaxable_unemployment_compensation = max_(
             0,
             total_unemployment_compensation - taxable_unemployment_compensation,
         )
