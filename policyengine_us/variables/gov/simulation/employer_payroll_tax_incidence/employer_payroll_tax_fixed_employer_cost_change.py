@@ -1,3 +1,5 @@
+from typing import NamedTuple, Optional
+
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.irs.tax.payroll.payroll_tax_gross_wages import (
     payroll_tax_gross_wages as default_payroll_tax_gross_wages,
@@ -271,6 +273,74 @@ def payroll_wage_exclusions(person, period, system, rule):
     return exclusions
 
 
+class PayrollWageDefinition(NamedTuple):
+    """Everything that sets which pay a system's payroll wages leave out.
+
+    Two systems with equal definitions leave out the same pay for everyone
+    (``payroll_wage_exclusions``): the rule, the FICA pre-tax list (``None``
+    when abolished) and, under the tax-exempt rule, whether tips and overtime
+    premiums are exempt.
+    """
+
+    rule: str
+    fica_pre_tax_contributions: Optional[tuple]
+    payroll_tax_exempt: tuple
+
+
+def payroll_wage_definition(system, period):
+    """The payroll wage definition of ``system`` in ``period``."""
+    rule = payroll_wage_rule(system, period)
+    gov = system.parameters(period).gov
+    fica = None
+    if not abolishes(gov, ["fica_pre_tax_contributions"]):
+        fica = tuple(gov.irs.gross_income.fica_pre_tax_contributions)
+    exempt = ()
+    if rule == TAX_EXEMPT_WAGE_RULE:
+        p = gov.contrib.tax_exempt
+        exempt = (
+            bool(p.tip_income.payroll_tax_exempt),
+            bool(p.overtime.payroll_tax_exempt),
+        )
+    return PayrollWageDefinition(rule, fica, exempt)
+
+
+class EmployerCostSchedule(NamedTuple):
+    """Federal employer taxes as (rate, base) pairs, on payroll wages."""
+
+    components: list
+    wage_definition: PayrollWageDefinition
+
+
+def employer_cost_schedules(baseline_system, reform_system, period, state_code):
+    """The baseline and reform schedules the employer's cost is held across.
+
+    The baseline's taxable maximum is the reform's copy of the current-law
+    cap, ``gov.contrib.ssa.owners_draw.current_law_cap``: policy reforms leave
+    it alone, while scenario reforms extend it with the live cap.
+    """
+    reform_gov = reform_system.parameters(period).gov
+    baseline = EmployerCostSchedule(
+        federal_employer_payroll_tax_components(
+            baseline_system.parameters(period).gov,
+            state_code,
+            cap=reform_gov.contrib.ssa.owners_draw.current_law_cap,
+        ),
+        payroll_wage_definition(baseline_system, period),
+    )
+    reform = EmployerCostSchedule(
+        federal_employer_payroll_tax_components(reform_gov, state_code),
+        payroll_wage_definition(reform_system, period),
+    )
+    return baseline, reform
+
+
+def schedules_match(first, second):
+    """Whether two schedules give every worker the same employer cost."""
+    return first.wage_definition == second.wage_definition and components_match(
+        first.components, second.components
+    )
+
+
 class employer_payroll_tax_fixed_employer_cost_change(Variable):
     value_type = float
     entity = Person
@@ -294,7 +364,14 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         "economic assumptions extend it with the live cap, so a scenario is "
         "not read as a tax change. The cost leaves out state and local "
         "employer payroll taxes, which change with the new wage where they "
-        "apply to it. Zero without a reform "
+        "apply to it. Like the employer tax variables, it applies the taxable "
+        "maximum and the federal unemployment wage base per person rather "
+        "than per employer, and to all pay, including at employers exempt "
+        "from federal unemployment tax and in public employment outside "
+        "Social Security. CBO's secondary earnings threshold belongs in the "
+        "reform a simulation is built with: the tax on earnings above it is "
+        "a structural reform chosen at construction, while this variable "
+        "reads the threshold each period. Zero without a reform "
         "(including a simulation built on a reformed tax-benefit system "
         "without one, which has no baseline), for a person with no pay, and "
         "when the reform leaves the federal employer taxes and the payroll "
@@ -322,21 +399,13 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
             return 0
         baseline_system = baseline.tax_benefit_system
         reform_system = person.simulation.tax_benefit_system
-        reform_gov = parameters(period).gov
-        state_code = person.household("state_code", period)
-        baseline_components = federal_employer_payroll_tax_components(
-            baseline_system.parameters(period).gov,
-            state_code,
-            cap=reform_gov.contrib.ssa.owners_draw.current_law_cap,
+        baseline_schedule, reform_schedule = employer_cost_schedules(
+            baseline_system,
+            reform_system,
+            period,
+            person.household("state_code", period),
         )
-        reform_components = federal_employer_payroll_tax_components(
-            reform_gov, state_code
-        )
-        baseline_rule = payroll_wage_rule(baseline_system, period)
-        reform_rule = payroll_wage_rule(reform_system, period)
-        if baseline_rule == reform_rule and components_match(
-            baseline_components, reform_components
-        ):
+        if schedules_match(baseline_schedule, reform_schedule):
             return 0
         # Pay before this change, as payroll_tax_gross_wages reads it from
         # employment_income.
@@ -345,9 +414,16 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         )
         return fixed_employer_cost_wage_change(
             pay,
-            payroll_wage_exclusions(person, period, baseline_system, baseline_rule),
-            payroll_wage_exclusions(person, period, reform_system, reform_rule),
-            baseline_components,
-            reform_components,
+            payroll_wage_exclusions(
+                person,
+                period,
+                baseline_system,
+                baseline_schedule.wage_definition.rule,
+            ),
+            payroll_wage_exclusions(
+                person, period, reform_system, reform_schedule.wage_definition.rule
+            ),
+            baseline_schedule.components,
+            reform_schedule.components,
             share,
         )

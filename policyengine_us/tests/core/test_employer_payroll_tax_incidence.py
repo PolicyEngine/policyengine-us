@@ -9,7 +9,9 @@ continuous, piecewise linear and increasing in payroll wages w, so:
    whose cost under the schedule equals the target, for any target of zero or
    more; a brute-force bisection agrees; and an unchanged schedule returns the
    same wages, so a reform that leaves employer taxes alone moves no wages.
-   It reproduces the after-offset wages in JCT's three worked examples.
+   Schedules are drawn free-form and in the model's own shapes, including
+   CBO's negative component. It reproduces the after-offset wages in JCT's
+   three worked examples.
 2. Monotonicity: raising any rate weakly lowers the wage at a given cost.
 3. Conservation: under a reform with the default employee share of 1, every
    worker's federal employer cost in the reformed simulation equals the
@@ -21,7 +23,9 @@ continuous, piecewise linear and increasing in payroll wages w, so:
 5. No reform, no change: zero in a simulation without a reform, for anyone
    without payroll wages, and under a scenario that only extends current law
    (the Trustees' economic assumptions move the taxable maximum in both the
-   baseline cost and the reform).
+   baseline cost and the reform). The schedules the formula compares stay
+   equal under employee-side reforms and before a reform starts, and differ
+   when the FICA pre-tax list or its abolition changes payroll wages.
 6. Marginal wedge: in a branch that raises earnings, wages rise by
    (1 + m_b) / (1 + m_r) per dollar, where m is the federal employer rate at
    the margin, so marginal tax rates measured in a reform carry the employer
@@ -62,10 +66,13 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
 from policyengine_us.variables.gov.simulation.employer_payroll_tax_incidence.employer_payroll_tax_fixed_employer_cost_change import (
     DEFAULT_WAGE_RULE,
     TAX_EXEMPT_WAGE_RULE,
+    components_match,
+    employer_cost_schedules,
     employer_payroll_tax_from_components,
     federal_employer_payroll_tax_components,
     fixed_employer_cost_wage_change,
     payroll_wage_rule,
+    schedules_match,
     wages_at_employer_cost,
 )
 from policyengine_us.variables.household.marginal_tax_rate_helpers import (
@@ -114,8 +121,42 @@ DONUT = [(0.062, 184_500.0), (0.0145, np.inf), (0.062, np.inf), (-0.062, 250_000
 DONUT_COSTS = [0.0, 100_000.0, 210_000.0, 260_000.0, 300_000.0, 2e6]
 
 
+@st.composite
+def model_schedules(draw):
+    """Schedules shaped like federal_employer_payroll_tax_components builds.
+
+    Social Security to the cap, uncapped Medicare, federal unemployment to its
+    base and, when CBO's threshold or the cap is finite, Social Security again
+    above max(threshold, cap): an uncapped component and a negative one. A
+    threshold below the cap leaves Social Security uncapped; one drawn as a
+    gap above the cap leaves a donut between them.
+    """
+    social_security = draw(st.floats(min_value=0.01, max_value=0.6))
+    cap = draw(BASES)
+    components = [
+        (social_security, cap),
+        (draw(RATES), np.inf),
+        (draw(RATES), draw(BASES)),
+    ]
+    threshold = draw(
+        st.one_of(
+            BASES,
+            st.floats(min_value=1, max_value=1e6).map(lambda gap: cap + gap),
+        )
+    )
+    secondary = max(threshold, cap)
+    if np.isfinite(secondary):
+        components += [(social_security, np.inf), (-social_security, secondary)]
+    return components
+
+
+# Free-form schedules of nonnegative rates, and the model's own shapes, which
+# have a negative rate under CBO's option.
+SCHEDULES = st.one_of(COMPONENTS, model_schedules())
+
+
 @PURE_SETTINGS
-@given(COMPONENTS, COSTS)
+@given(SCHEDULES, COSTS)
 # 7,577.50 is the cost of wages at the federal unemployment base, a kink.
 @example([(0.062, 184_500.0), (0.0145, np.inf), (0.006, 7_000.0)], [0.0, 7_577.5])
 @example(DONUT, DONUT_COSTS)
@@ -128,7 +169,7 @@ def test_inverse_recovers_the_cost(components, costs):
 
 
 @PURE_SETTINGS
-@given(COMPONENTS, COSTS)
+@given(SCHEDULES, COSTS)
 def test_same_schedule_returns_the_same_wages(components, wages):
     """Without a change in the schedule there is no change in wages."""
     cost = employer_cost(wages, components)
@@ -138,7 +179,7 @@ def test_same_schedule_returns_the_same_wages(components, wages):
 
 
 @PURE_SETTINGS
-@given(COMPONENTS, COSTS)
+@given(SCHEDULES, COSTS)
 @example(DONUT, DONUT_COSTS)
 def test_inverse_matches_bisection(components, costs):
     wages = wages_at_employer_cost(costs, components)
@@ -148,7 +189,7 @@ def test_inverse_matches_bisection(components, costs):
 
 @PURE_SETTINGS
 @given(
-    COMPONENTS.filter(len),
+    SCHEDULES.filter(len),
     st.data(),
     st.floats(min_value=0, max_value=0.5, allow_nan=False),
     COSTS,
@@ -212,7 +253,7 @@ def outlay(pay, exclusions, components):
 
 
 @PURE_SETTINGS
-@given(PAYS, EXCLUSIONS, EXCLUSIONS, COMPONENTS, COMPONENTS)
+@given(PAYS, EXCLUSIONS, EXCLUSIONS, SCHEDULES, SCHEDULES)
 @example([30_000.0, -5_000.0], 0.0, 45_000.0, DONUT, DONUT)
 def test_change_holds_the_outlay(pay, baseline_x, reform_x, baseline, reform):
     """At a share of 1 the reform's outlay equals the baseline's, for any pay.
@@ -237,8 +278,8 @@ def test_change_holds_the_outlay(pay, baseline_x, reform_x, baseline, reform):
     PAYS,
     EXCLUSIONS,
     EXCLUSIONS,
-    COMPONENTS,
-    COMPONENTS,
+    SCHEDULES,
+    SCHEDULES,
     st.floats(min_value=0, max_value=5, allow_nan=False),
 )
 def test_share_scales_the_change_and_the_floor_binds_only_above_1(
@@ -264,7 +305,7 @@ def test_share_scales_the_change_and_the_floor_binds_only_above_1(
 
 
 @PURE_SETTINGS
-@given(PAYS, EXCLUSIONS, COMPONENTS)
+@given(PAYS, EXCLUSIONS, SCHEDULES)
 def test_same_schedule_and_definition_change_nothing(pay, exclusions, components):
     np.testing.assert_allclose(
         fixed_employer_cost_wage_change(
@@ -298,6 +339,61 @@ def test_current_law_cap_copy_matches_the_cap(year):
         gov.irs.payroll.social_security.cap
     )
     assert payroll_wage_rule(system, year) == DEFAULT_WAGE_RULE
+
+
+def test_schedules_differ_only_when_the_employer_cost_does():
+    """The zero shortcut in the formula compares what sets employer cost.
+
+    From 2027, employee Social Security and Medicare rates, the Additional
+    Medicare Tax and the employee share change; none is an employer tax, so
+    the schedules stay equal, as they do in 2026 before the reform starts.
+    Dropping premiums from the FICA pre-tax list (2028 only) or abolishing
+    that list (2029 only) changes payroll wages without moving a rate or a
+    base; raising the employer Medicare rate (from 2030) changes a rate.
+    """
+    later = "2027-01-01.2100-12-31"
+    current_list = system.parameters(
+        2028
+    ).gov.irs.gross_income.fica_pre_tax_contributions
+    reform = Reform.from_dict(
+        {
+            f"{PAYROLL}.social_security.rate.employee": {later: 0.072},
+            f"{PAYROLL}.medicare.rate.employee": {later: 0.0245},
+            f"{PAYROLL}.medicare.additional.rate": {later: 0.019},
+            SHARE: {later: 0.5},
+            "gov.irs.gross_income.fica_pre_tax_contributions": {
+                "2028-01-01.2028-12-31": [
+                    item
+                    for item in current_list
+                    if item != "pre_tax_health_insurance_premiums"
+                ]
+            },
+            "gov.abolitions.fica_pre_tax_contributions": {
+                "2029-01-01.2029-12-31": True
+            },
+            f"{PAYROLL}.medicare.rate.employer": {"2030-01-01.2100-12-31": 0.0245},
+        },
+        country_id="us",
+    )
+    reformed = reform(system)
+    states = np.array(["TX", "CA"])
+    # Year: (same payroll wage definition, same tax components).
+    expected = {
+        2026: (True, True),
+        2027: (True, True),
+        2028: (False, True),
+        2029: (False, True),
+        2030: (True, False),
+    }
+    for year, (same_definition, same_components) in expected.items():
+        baseline, policy = employer_cost_schedules(system, reformed, year, states)
+        assert (baseline.wage_definition == policy.wage_definition) is same_definition
+        assert (
+            components_match(baseline.components, policy.components) is same_components
+        )
+        assert schedules_match(baseline, policy) is (
+            same_definition and same_components
+        )
 
 
 # A worker at each side of the FUTA base and the Social Security cap, a worker
