@@ -514,3 +514,78 @@
   output:
     medicaid_category: ADULT
     is_aca_ptc_eligible: false
+
+# In 2026, $20,000 / $15,960 = 1.253 FPL, below the 1.38 adult limit.
+# ACA uses the prior-year guideline: floor(100 * 20,000 / 15,650) / 100
+# = 1.27, above its 1.00 income floor (26 USC 36B(c)(1)(A)). Adults
+# eligible for Medicaid cannot claim PTCs (26 USC 36B(c)(2)(B)(i)).
+# https://uscode.house.gov/us/usc/119-136/t26/s36B/
+- name: A childless adult above the PTC income floor qualifies for Medicaid in KY in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 20_000
+    state_code: KY
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: A childless adult above the PTC income floor qualifies for Medicaid in VA in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 20_000
+    state_code: VA
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: A childless adult above the PTC income floor qualifies for Medicaid in ME in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 20_000
+    state_code: ME
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: A childless adult above the PTC income floor qualifies for Medicaid in ID in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 20_000
+    state_code: ID
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: A childless adult above the PTC income floor qualifies for Medicaid in UT in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 20_000
+    state_code: UT
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: A childless adult above the PTC income floor qualifies for Medicaid in NE in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 20_000
+    state_code: NE
+  output:
+    medicaid_category: ADULT
+    is_aca_ptc_eligible: false
+
+- name: A childless adult above the PTC income floor in TX qualifies for PTC without Medicaid in 2026.
+  period: 2026
+  input:
+    age: 30
+    employment_income: 20_000
+    state_code: TX
+  output:
+    medicaid_category: NONE
+    is_aca_ptc_eligible: true
