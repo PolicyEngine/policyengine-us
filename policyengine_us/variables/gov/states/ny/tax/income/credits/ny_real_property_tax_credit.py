@@ -70,8 +70,17 @@ class ny_real_property_tax_credit(Variable):
         # the credit at line 22. The form applies the cap to adjusted rent (net
         # of heat, gas, electricity, furnishings, and board); PolicyEngine has
         # only gross rent, so the cap is applied to gross rent.
-        property_market_value = tax_unit(
-            "ny_real_property_tax_credit_property_market_value", period
+        property_claimant = person("is_tax_unit_head", period) | (
+            person("is_tax_unit_spouse", period)
+            & person.tax_unit("tax_unit_is_joint", period)
+        )
+        primary_residence_lower_bound = tax_unit.sum(
+            where(property_claimant, person("primary_residence_value", period), 0)
+        )
+        # Ownership shares provide a lower bound and overlap the full total.
+        property_market_value = max_(
+            tax_unit("ny_real_property_tax_credit_property_market_value", period),
+            primary_residence_lower_bound,
         )
         meets_value_conditions = (property_market_value <= rptc.max_property_value) & (
             rent <= rptc.max_rent
