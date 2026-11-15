@@ -1,3 +1,10 @@
+## [2.135.3] - 2026-11-15
+
+### Fixed
+
+- Fix Arkansas income-tax indexing projections and Kentucky's 2021 dependent care credit conformity.
+
+
 ## [2.135.2] - 2026-11-15
 
 ### Fixed
