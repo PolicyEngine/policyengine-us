@@ -46,3 +46,93 @@
     sc_income_tax_before_non_refundable_credits: 1000000
   output:
     sc_eitc: 1041.7
+
+- name: Case 7, 2017 SC EITC is zero before enactment.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    # Known annual federal award and SC liability isolate the state component.
+    # They do not establish full federal eligibility or historical SC tax law.
+    state_code: SC
+    eitc: 1_000
+    sc_income_tax_before_non_refundable_credits: 1_000
+    sc_cdcc_potential: 0
+  output:
+    # Act40(2017) section16(C) applies the credit to tax years after2017.
+    # https://www.scstatehouse.gov/sess122_2017-2018/bills/3516.htm
+    sc_eitc_potential: 0
+    sc_eitc: 0
+
+- name: Case 8, 2015 SC EITC is zero before enactment.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    # Independent annual federal-award/SC-liability component premises only.
+    state_code: SC
+    eitc: 1_000
+    sc_income_tax_before_non_refundable_credits: 1_000
+    sc_cdcc_potential: 0
+  output:
+    # Act40(2017) section16(C): the new credit applies after tax year2017.
+    sc_eitc_potential: 0
+    sc_eitc: 0
+
+- name: Case 9, 2016 SC EITC is zero before enactment.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    # Independent annual federal-award/SC-liability component premises only.
+    state_code: SC
+    eitc: 1_000
+    sc_income_tax_before_non_refundable_credits: 1_000
+    sc_cdcc_potential: 0
+  output:
+    # Act40(2017) section16(C): the new credit applies after tax year2017.
+    sc_eitc_potential: 0
+    sc_eitc: 0
+
+- name: Case 10, 2018 SC EITC respects the federal award and remaining tax.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    # Independently known federal awards, SC liabilities and prior-credit amounts.
+    # These isolate state-credit composition, not complete federal/SC entitlement.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 40, is_tax_unit_head: true}
+      person4: {age: 6, is_tax_unit_dependent: true}
+      person5: {age: 40, is_tax_unit_head: true}
+      person6: {age: 6, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 0
+        sc_income_tax_before_non_refundable_credits: 100
+        sc_cdcc_potential: 0
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 1_000
+        sc_income_tax_before_non_refundable_credits: 0
+        sc_cdcc_potential: 0
+      tax_unit3:
+        members: [person5, person6]
+        eitc: 1_000
+        sc_income_tax_before_non_refundable_credits: 100
+        sc_cdcc_potential: 50
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: SC
+      household2:
+        members: [person3, person4]
+        state_code: SC
+      household3:
+        members: [person5, person6]
+        state_code: SC
+  output:
+    # Act40 section16(A)-(B)/2018TC60: federal award *20.83%, nonrefundable.
+    # Row3 leaves100-50=50 of tax after the independently known prior CDCC.
+    sc_eitc_potential: [0, 208.3, 208.3]
+    sc_cdcc: [0, 0, 50]
+    sc_eitc: [0, 0, 50]
