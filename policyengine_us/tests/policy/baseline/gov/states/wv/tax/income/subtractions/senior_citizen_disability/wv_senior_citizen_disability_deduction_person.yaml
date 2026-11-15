@@ -164,7 +164,7 @@
         members: [head, spouse]
         state_code: WV
   output:
-    # Section 11-21-12a allows the contribution in addition to both
+    # Filers deduct the contribution in addition to both
     # senior modifications: 6,000 + 6,000 + 2,000 = 14,000.
     wv_529_plan_deduction: 2_000
     wv_senior_citizen_disability_deduction_person: [6_000, 6_000]

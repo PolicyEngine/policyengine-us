@@ -2,8 +2,8 @@
 
 Eligible residents cap income after excluding modified income receipts at
 $8,000, then subtract their own Schedule M lines 29-34 modifications.
-Section 11-21-12a lets them deduct college-savings contributions in addition
-to the section 11-21-12(c) modifications. The properties check receipt
+They deduct college-savings contributions in addition to the section
+11-21-12(c) modifications under section 11-21-12a. The properties check receipt
 conservation, spouse isolation and contribution independence.
 
 Fresh two- or four-person simulations reuse the package's reference model;
