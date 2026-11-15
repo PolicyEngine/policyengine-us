@@ -1,7 +1,7 @@
 """State and county benefit programs count Railroad Retirement Act benefits as income.
 
-Each row names an income list or variable, the rule that covers railroad
-retirement benefits, and the variable that reads the list. A rule covers the
+Each row names a state, the variable that totals a program's income, and the
+rule that covers railroad retirement benefits there. A rule covers the
 benefits by naming railroad retirement, by listing pensions, annuities,
 retirement benefits or federal benefits as income, or by defining income as
 everything outside its exclusions.
@@ -25,7 +25,9 @@ Invariants:
   written out in full, so a name built with an f-string or concatenation, or a
   scalar parameter, passes unseen. So does a module that names Social Security in
   one top-level list and railroad benefits in another, since R3 reads a
-  module's top level as one scope.
+  module's top level as one scope. A scope that names a railroad amount passes
+  even if it reads the amount only as a yes-or-no test, so R1 rows cover the two
+  LIHEAP programs that do that and count the benefits through their lists.
 - R4: no two entries of a parameter list or variable adds list hold the same
   railroad dollars. The total, the tier 1 amount, the taxable total and each
   part map to the taxable and tax-free tier 1 benefits and the taxable and
@@ -35,16 +37,20 @@ Invariants:
   without railroad benefits, each federal variable that adds such a list or
   reads it in a formula, and each federal variable whose own code names a
   Social Security amount and no railroad amount, as R3 checks state code. It
-  then follows those variables through up to two more formulas that name no
-  railroad amount. Each source that state or county code reads must appear in
-  FEDERAL_GAPS, and the test fails on an entry once its source counts railroad
-  benefits or no state or county code reads it. A new reader of a source
-  already in FEDERAL_GAPS passes. A third formula step would reach further
-  eligibility tests and benefit amounts, such as is_snap_eligible and aca_ptc,
-  and R5 doesn't follow it. R5 reads a parameter path written out in code, or
-  built through names assigned in the same module or function, or named in a
-  string. A path passed as a function argument or read with getattr passes
-  unseen.
+  then takes up to two more steps. Each step adds the federal variables that
+  name no railroad amount and either name a variable already found or add or
+  read a federal list that holds one and no railroad amount, as irs_gross_income
+  adds taxable_social_security through the gross income list. Each source that
+  state or county code outside the tax code reads must appear in FEDERAL_GAPS,
+  and the test fails on an entry once its source counts railroad benefits or no
+  such code reads it. A new reader of a source already in FEDERAL_GAPS passes.
+  A third step would reach further eligibility tests and amounts, such as
+  is_snap_eligible, is_aca_ptc_eligible and medicaid_enrolled, and R5 doesn't
+  take it. R5 reads a parameter path written out in code, built through names
+  assigned in the same module or function, or named in a string. A path passed
+  as a function argument, read with getattr or a subscript, bound in a tuple
+  assignment, or used in a nested function under the enclosing function's name
+  passes unseen.
 """
 
 import ast
@@ -152,9 +158,11 @@ ALREADY_COUNTED = [
     ("IN", "in_eap_income", "EAP income list"),
     ("KY", "ky_liheap_income", "LIHEAP income list"),
     ("LA", "la_liheap_countable_income", "LIHEAP income list"),
+    ("MO", "mo_liheap_countable_income_person", "LIHEAP income list"),
     ("MT", "mt_liheap_countable_income", "LIHEAP income list"),
     ("NV", "nv_liheap_countable_income", "LIHEAP income list"),
     ("OH", "oh_liheap_countable_income", "HEAP income list"),
+    ("PA", "pa_liheap_income", "LIHEAP income list"),
     ("SD", "sd_liheap_countable_income", "LIEAP income list"),
     ("TN", "tn_liheap_countable_income", "LIHEAP income list"),
     ("WA", "wa_liheap_countable_income", "LIHEAP income list"),
@@ -175,6 +183,7 @@ BASE_INPUTS = {
     "hi_ccap_countable_income": WAGES_ABOVE_AID_LIMITS,
     "ks_liheap_countable_unearned_income": WAGES_ABOVE_AID_LIMITS,
     "la_general_relief_gross_income": WAGES_ABOVE_AID_LIMITS,
+    "pa_liheap_income": WAGES_ABOVE_AID_LIMITS,
     "wa_eceap_family_income": WAGES_ABOVE_AID_LIMITS,
 }
 
@@ -285,50 +294,44 @@ SOCIAL_SECURITY = {
     "tax_exempt_social_security",
 }
 
-# Each railroad amount and the dollars it holds: the taxable and tax-free tier 1
-# social security equivalent benefits, and the taxable and tax-free rest of the
-# annuity. PolicyEngine/policyengine-us#10696 splits railroad_benefits into the
-# tier 1 amount and the two parts of the rest, and defines the tax amounts.
+# Each railroad amount and the dollars it holds: the filers' taxable tier 1
+# social security equivalent benefits, a dependent's taxable tier 1 benefits,
+# the tax-free tier 1 benefits, and the taxable and tax-free rest of the annuity.
+# PolicyEngine/policyengine-us#10696 splits railroad_benefits into the tier 1
+# amount and the two parts of the rest, and defines the tax amounts. A
+# dependent's own return taxes the dependent's tier 1 benefits, and the tax unit's
+# tax-free tier 1 amount takes out only the filers' taxable part, so it holds a
+# dependent's taxable tier 1 dollars too. PolicyEngine/policyengine-us#10722 adds
+# the filers' tax-free tier 1 amount, which leaves dependents out.
 TIER_1_TAXABLE = "taxable_railroad_social_security_equivalent_benefits"
+TIER_1_DEPENDENT = "dependent_taxable_railroad_social_security_equivalent_benefits"
 TIER_1_TAX_FREE = "tax_exempt_railroad_social_security_equivalent_benefits"
 REST_TAXABLE = "taxable_railroad_pension_benefits"
 REST_TAX_FREE = "tax_exempt_railroad_pension_benefits"
+TIER_1 = {TIER_1_TAXABLE, TIER_1_DEPENDENT, TIER_1_TAX_FREE}
 RAILROAD_DOLLARS = {
-    "railroad_benefits": {
-        TIER_1_TAXABLE,
-        TIER_1_TAX_FREE,
-        REST_TAXABLE,
-        REST_TAX_FREE,
-    },
-    "railroad_social_security_equivalent_benefits": {
-        TIER_1_TAXABLE,
-        TIER_1_TAX_FREE,
-    },
-    "tax_unit_railroad_social_security_equivalent_benefits": {
-        TIER_1_TAXABLE,
-        TIER_1_TAX_FREE,
-    },
+    "railroad_benefits": TIER_1 | {REST_TAXABLE, REST_TAX_FREE},
+    "railroad_social_security_equivalent_benefits": TIER_1,
+    "tax_unit_railroad_social_security_equivalent_benefits": TIER_1,
     "tax_unit_railroad_social_security_equivalent_benefits_for_taxability": {
         TIER_1_TAXABLE,
         TIER_1_TAX_FREE,
     },
     "taxable_railroad_benefits": {TIER_1_TAXABLE, REST_TAXABLE},
     "tax_unit_taxable_railroad_social_security_equivalent_benefits": {TIER_1_TAXABLE},
+    "filer_tax_exempt_railroad_social_security_equivalent_benefits": {TIER_1_TAX_FREE},
     TIER_1_TAXABLE: {TIER_1_TAXABLE},
-    TIER_1_TAX_FREE: {TIER_1_TAX_FREE},
+    TIER_1_DEPENDENT: {TIER_1_DEPENDENT},
+    TIER_1_TAX_FREE: {TIER_1_TAX_FREE, TIER_1_DEPENDENT},
     REST_TAXABLE: {REST_TAXABLE},
     REST_TAX_FREE: {REST_TAX_FREE},
 }
-# A dependent's own return taxes the dependent's tier 1 benefits, so this amount
-# and the filers' taxable tier 1 amount hold different people's dollars.
-RAILROAD = set(RAILROAD_DOLLARS) | {
-    "dependent_taxable_railroad_social_security_equivalent_benefits"
-}
+RAILROAD = set(RAILROAD_DOLLARS)
 
 SIGNAL = (
-    "Reads receipt of a benefit as a yes-or-no test, not an income amount. "
-    "railroad_benefits doesn't separate disability annuities, so it can't stand "
-    "in for Social Security disability in a disability test."
+    "Reads receipt of Social Security disability as a yes-or-no test, not an "
+    "income amount. railroad_benefits doesn't separate disability annuities, so "
+    "it can't stand in for receipt of Social Security disability."
 )
 SOCIAL_SECURITY_ONLY = "The rule or list covers Social Security benefits alone."
 DISABILITY_ONLY = (
@@ -382,7 +385,7 @@ NO_RAILROAD_INCOME = {
     _STATE_CODE + "hi/dhs/liheap/hi_liheap_points.py": SIGNAL,
     _STATE_CODE + "il/hfs/hbwd/eligibility/il_hbwd_disability_eligible.py": SIGNAL,
     _STATE_CODE + "in/ihcda/eap/in_eap.py": SIGNAL,
-    _STATE_CODE + "la/lhc/liheap/la_liheap.py": SIGNAL,
+    _STATE_CODE + "la/lhc/liheap/la_liheap_matrix_amount.py": SIGNAL,
     _STATE_CODE + "ms/dom/wd/eligibility/ms_wd_disability_eligible.py": SIGNAL,
     _STATE_CODE + "nm/hca/liheap/nm_liheap.py": SIGNAL,
     _STATE_CODE + "pa/dhs/liheap/payment/pa_liheap_supplement.py": SIGNAL,
@@ -524,8 +527,9 @@ def test_no_list_holds_railroad_benefits_twice():
 
 
 # Federal totals, lists and tests that state and county programs read. Each one
-# counts Social Security, or tests for Social Security disability, and leaves
-# railroad benefits out, so the programs that read it leave them out too.
+# counts Social Security, tests for Social Security disability, or turns on such
+# a total or test, and leaves railroad benefits out, so the programs that read it
+# leave them out too.
 FEDERAL_GAPS = {
     # Issue PolicyEngine/policyengine-us#10551 covers the TANF, SNAP and school
     # meals lists. Under 7 CFR 273.9(b)(2)(ii), state SNAP agencies count
@@ -535,6 +539,15 @@ FEDERAL_GAPS = {
     "tanf_gross_unearned_income": "TANF baseline list: 64 TANF variables in 37 states",
     "gov.usda.snap.income.sources.unearned": "SNAP unearned list: Nebraska LIHEAP",
     "school_meal_fpg_ratio": "School meals list: Texas CSFP, California CVRP",
+    # Under IRC 86(d)(1)(B), a tier 1 benefit is a Social Security benefit, so
+    # its taxable part belongs in gross income. On main, the gross income list
+    # counts taxable_social_security and no railroad amount.
+    # PolicyEngine/policyengine-us#10696 adds the taxable railroad amounts.
+    "irs_gross_income": "Gross income: DC, IL, MA energy aid; IL IHWAP, I-PASS, SCRETD",
+    "adjusted_gross_income": "AGI: CA CVRP normal rebate, WA exemption income",
+    "adjusted_gross_income_person": "Person AGI: IL FPP, IL BAP",
+    "charitable_contributions_ald": "Charitable deduction: CA CVRP normal rebate",
+    "tax_unit_is_filer": "Filing requirement: NM premium help",
     # Under IRC 36B(d)(2)(B)(iii), taxpayers add to AGI the untaxed share of
     # "social security benefits (as defined in section 86(d))", tier 1 included.
     # On main, neither adjusted_gross_income nor the MAGI additions list counts
@@ -542,9 +555,20 @@ FEDERAL_GAPS = {
     # amounts to AGI and the tax-free tier 1 amount to the additions list.
     "medicaid_magi": "MAGI: Colorado CHP+, Healthy Michigan, Montana HELP",
     "tax_unit_medicaid_income_level": "MAGI ratio: 17 CHIP premiums, IN HIP, MI, MT",
+    # CA CCHIP and RI postpartum coverage also reach medicaid_income_level
+    # through medicaid_income_eligible, a helper in its module.
     "medicaid_income_level": "MAGI ratio: AR, CO, IL, MS, OR and WA programs",
     "aca_magi": "ACA MAGI: CA, MD, NM and VT premium help",
     "aca_magi_fraction": "ACA MAGI ratio: premium help in nine states",
+    # These take ACA MAGI, or Medicare eligibility through ACA's list of
+    # coverage that rules out the credit.
+    "aca_ptc": "ACA PTC: premium help in nine states",
+    "aca_ptc_slcsp": "ACA benchmark premium: premium help in eight states",
+    "aca_required_contribution_percentage": "ACA contribution share: VT",
+    "files_return_for_aca_ptc": "ACA filing test: CA, MD and NM premium help",
+    "is_aca_coverage_family_member": "ACA coverage family: NM premium help",
+    "is_aca_marketplace_enrollee": "Marketplace enrollment: WA Cascade Care",
+    "pays_aca_premium": "ACA premium payer: NJ NJHPS",
     # Under 7 U.S.C. 2012(j)(7), SNAP agencies treat a railroad disability
     # annuitant as disabled, and railroad_benefits doesn't separate disability
     # annuities from the others.
@@ -560,6 +584,11 @@ FEDERAL_GAPS = {
     "medicare_part_b_premium": "Part B premium: energy aid in 28 states, WA exemption",
     "is_adult_for_medicaid": "Medicaid adult test: MS HMW other coverage",
     "is_medicaid_eligible": "Medicaid test: CA CCHIP, CO CHP+",
+    # The list holds medicare_enrolled.
+    "gov.hhs.chip.disqualifying_health_coverage": "CHIP coverage list: RI",
+    "has_chip_disqualifying_health_coverage": "CHIP coverage test: CA CCHIP",
+    # It counts railroad benefits through SSI's unearned income list, and its
+    # Part B premium deduction takes the Medicare gap.
     "medicaid_optional_senior_or_disabled_countable_income": "MS HMW income",
 }
 # Formulas R5 follows past each federal variable it starts from.
