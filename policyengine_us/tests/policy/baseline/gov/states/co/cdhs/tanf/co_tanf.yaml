@@ -79,9 +79,15 @@
     co_tanf: 0
 
 # Historical grant schedule: original 9 CCR 2503-6, effective September 1, 2018,
-# section 3.606.2.F/P and 3.606.3.A, PDF pages 57 and 60-61:
-# https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=7731
-# These families derive demographics, income eligibility and cash from wages.
+# sections 3.606.2.F/M/N/P and 3.606.3.A, PDF pages 57 and 59-61:
+# https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=7731#page=57
+# These grant-date controls retain the existing income-eligibility route.
+# The $6,000-wage results do not establish historical income eligibility:
+# section 3.606.2.M states a gross-income test, while N applies a $90 disregard.
+# Gross wages of $500/month exceed the $421 need standard; after $90, $410 < $421.
+# Later CCR 10019 section 3.606.1.H expressly applies disregards. That wording
+# alone does not establish earlier operation; these controls retain current code.
+# https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10019#page=52
 
 - name: Case 8, 2019 applicant wages of 0 use the published September 2018 grant.
   period: 2019
@@ -113,8 +119,9 @@
     co_tanf_income_eligible: true
     co_tanf_eligible: true
     # Monthly grant $508; subtract 33% of wages only if income-eligible.
-    # Equality at $6,132 preserves the existing route only. Applicant/reporting
-    # paragraph contexts are a separate source question, not certified here.
+    # CCR 7731 section 3.606.2.N excludes equality for applicants, supporting
+    # strict < in these 2019 controls. Equality wording from March 2022 onward
+    # remains a separate source question.
     co_tanf: 6_096
 
 - name: Case 9, 2019 applicant wages of 6000 use the published September 2018 grant.
@@ -147,8 +154,9 @@
     co_tanf_income_eligible: true
     co_tanf_eligible: true
     # Monthly grant $508; subtract 33% of wages only if income-eligible.
-    # Equality at $6,132 preserves the existing route only. Applicant/reporting
-    # paragraph contexts are a separate source question, not certified here.
+    # CCR 7731 section 3.606.2.N excludes equality for applicants, supporting
+    # strict < in these 2019 controls. Equality wording from March 2022 onward
+    # remains a separate source question.
     co_tanf: 4_116
 
 - name: Case 10, 2019 applicant wages of 6132 use the published September 2018 grant.
@@ -181,8 +189,9 @@
     co_tanf_income_eligible: false
     co_tanf_eligible: false
     # Monthly grant $508; subtract 33% of wages only if income-eligible.
-    # Equality at $6,132 preserves the existing route only. Applicant/reporting
-    # paragraph contexts are a separate source question, not certified here.
+    # CCR 7731 section 3.606.2.N excludes equality for applicants, supporting
+    # strict < in these 2019 controls. Equality wording from March 2022 onward
+    # remains a separate source question.
     co_tanf: 0
 
 # Consecutive January snapshots retain the existing YEAR model convention.
