@@ -1,0 +1,18 @@
+description: New York limits combined differentials to this fraction of the lesser of actual cost and the applicable market rate unless OCFS grants a waiver.
+# OCFS raised the limit from 25% to 35% in a rule effective December 24,
+# 2025. The monthly model first reads the higher limit in January 2026.
+values:
+  2024-10-01: 0.25
+  2025-12-24: 0.35
+metadata:
+  unit: /1
+  label: New York CCAP maximum differential
+  reference:
+    - title: 24-OCFS-LCM-22, differential payment rates
+      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=10
+    - title: NYS Register, March 12, 2025, I.D. No. CFS-10-25-00002-P
+      href: https://dos.ny.gov/system/files/documents/2025/03/031225.pdf#page=7
+    - title: NYS Register, December 24, 2025, I.D. No. CFS-10-25-00002-A
+      href: https://dos.ny.gov/system/files/documents/2025/12/december-24-2025-vol.xlvii-issue-51.pdf#page=7
+    - title: 18 NYCRR 415.9
+      href: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-415.9

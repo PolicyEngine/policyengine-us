@@ -2,22 +2,24 @@
 
 HUD publishes one Excel file per fiscal year on huduser.gov (browse to
 ``Datasets > Fair Market Rents`` and download ``FYXX_FMRs.xlsx``). The
-sheet structure is stable year to year: one row per FMR area, with
-columns for each bedroom count and a 5-digit county FIPS.
+sheet has one row per FMR area, five bedroom columns, and either a
+five-digit county FIPS or a longer HUD area code. Historical column aliases
+include ``fips2010``, ``state_alpha``, and ``fmr0`` through ``fmr4``.
 
-Dependency: ``python-calamine`` (``pip install python-calamine``). HUD's
+Refresh dependency: ``python-calamine==0.9.1``. HUD's
 workbooks ship with malformed metadata timestamps that openpyxl rejects;
 calamine reads them cleanly. Not a runtime dependency of the model — only
 needed when refreshing the bundled CSV.
 
 Usage:
-    python -m policyengine_us.tools.convert_hud_fmr_xlsx \
+    uv run --with python-calamine==0.9.1 \
+        python -m policyengine_us.tools.convert_hud_fmr_xlsx \
         --input ~/Downloads/FY25_FMRs.xlsx \
         --year 2025 \
         --output policyengine_us/parameters/gov/hud/fmr/fair_market_rents.csv
 
 The script merges into the existing CSV (de-duplicates on
-``(state, county_fips, year, bedrooms)``) so re-running across multiple
+``(state, hud_fmr_area_code, year, bedrooms)``) so re-running across multiple
 year files appends rather than overwrites.
 """
 

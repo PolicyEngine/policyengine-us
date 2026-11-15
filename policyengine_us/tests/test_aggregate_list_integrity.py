@@ -36,6 +36,7 @@ AGGREGATE_LISTS = [
     "gov/states/household/state_eitcs.yaml",
     "gov/states/household/state_cdccs.yaml",
     "gov/hhs/ccdf/child_care_subsidy_programs.yaml",
+    "gov/hhs/liheap/regular_payments.yaml",
     "gov/household/household_state_benefits.yaml",
     "gov/states/household/state_property_tax_refunds.yaml",
 ]
@@ -172,6 +173,65 @@ def test_no_silent_removals_between_year_blocks(list_path):
             "prior members forward, or record an intentional removal in "
             "ALLOWED_REMOVALS in this test."
         )
+
+
+LIHEAP_PAYMENTS = "gov/hhs/liheap/regular_payments.yaml"
+
+# Registry payment variables that reach the national LIHEAP total through
+# other list entries, or not at all. Every other registry payment variable must
+# be in the list itself.
+LIHEAP_PAYMENT_STAND_INS = {
+    # il_liheap also counts crisis assistance; its regular part is summed.
+    "il_liheap": {"il_liheap_regular_heating"},
+    # California's three regular components are exclusive by eligibility.
+    "ca_liheap_utility_heating": {
+        "ca_liheap_utility_heating",
+        "ca_liheap_covered_liquid_heating",
+        "ca_liheap_wood_heating",
+    },
+    # The Home Heating Credit already counts as a refundable state credit.
+    "mi_home_heating_credit": set(),
+}
+
+
+def test_liheap_total_sums_every_registered_state_payment(variables):
+    """A state payment in the registry must reach the national total.
+
+    The LIHEAP registry entry names one variable per state implementation.
+    Each one that is a dollar amount belongs in the list `liheap` sums, or its
+    stand-ins in LIHEAP_PAYMENT_STAND_INS do, so a new state payment, or a list
+    line deleted or swapped by mistake, cannot drop a state from the total
+    unnoticed. A registry variable that a stand-in replaces must stay out of
+    the list, so it is not counted twice. Eligibility flags carry no amount.
+    """
+    programs = yaml.safe_load((PACKAGE / "programs.yaml").read_text())["programs"]
+    liheap = next(program for program in programs if program["id"] == "liheap")
+    payments = {
+        implementation["variable"]
+        for implementation in liheap["state_implementations"]
+        if variables[implementation["variable"]].value_type is float
+    }
+    listed = members_of(LIHEAP_PAYMENTS)
+    missing = sorted(
+        entry
+        for payment in payments
+        for entry in LIHEAP_PAYMENT_STAND_INS.get(payment, {payment})
+        if entry not in listed
+    )
+    assert not missing, (
+        f"{LIHEAP_PAYMENTS} lacks these state payments from the LIHEAP "
+        f"registry entry: {missing}. Add each to the list, or record what "
+        "stands in for it in LIHEAP_PAYMENT_STAND_INS in this test."
+    )
+    double_counted = sorted(
+        payment
+        for payment, stand_ins in LIHEAP_PAYMENT_STAND_INS.items()
+        if payment not in stand_ins and payment in listed
+    )
+    assert not double_counted, (
+        f"{LIHEAP_PAYMENTS} lists {double_counted}, which "
+        "LIHEAP_PAYMENT_STAND_INS replaces or leaves out on purpose."
+    )
 
 
 # --- Reform-side copies of the benefit aggregates -------------------------
@@ -326,6 +386,7 @@ HOUSEHOLD_TAX_TOTALS = {
     "local_occupational_tax",
     "household_refundable_tax_credits",
     "income_tax_refundable_credits_in_force",
+    "premium_tax_credit_in_force",
     "federal_income_tax_in_force",
     "household_refundable_state_tax_credits",
     "household_refundable_local_tax_credits",
