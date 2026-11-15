@@ -1,3 +1,10 @@
+## [2.128.0] - 2026-11-15
+
+### Added
+
+- Add Georgia LIHEAP regular cooling assistance.
+
+
 ## [2.127.0] - 2026-11-15
 
 ### Added
