@@ -334,3 +334,28 @@
     # Alaska, two people = 14,580 + 5,080 = 19,660.
     # https://www.irs.gov/pub/irs-prior/i8962--2015.pdf#page=7
     aca_fpg: 19_660
+
+- name: Coverage in 2016 uses coverage-year residence when the household supplies no earlier state
+  period: 2016
+  input:
+    aca_tax_family_size: 2
+    state_code: AK
+  output:
+    # IRS 2016 Form 8962 line 4 uses 2016 residence and the 2015 table:
+    # Alaska, two people = 14,720 + 5,200 = 19,920.
+    # https://www.irs.gov/pub/irs-prior/i8962--2016.pdf#page=6
+    aca_fpg: 19_920
+
+- name: Coverage in 2017 uses current residence with the 2016 guideline
+  period: 2017
+  input:
+    aca_tax_family_size: 2
+    state_code:
+      2016: TX
+      2017: AK
+  output:
+    # IRS 2017 Form 8962 line 4 uses 2017 residence and the 2016 table:
+    # Alaska, two people = 20,020 (Table 1-2). HHS listed 20,020 for two
+    # people in 2016, 20 below 14,840 + 5,200.
+    # https://www.irs.gov/pub/irs-prior/i8962--2017.pdf#page=7
+    aca_fpg: 20_020

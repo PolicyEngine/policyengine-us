@@ -643,6 +643,74 @@
     is_aca_ptc_eligible: true
     aca_ptc: 3298.174398
 
+- name: An Alaska adult who supplies only 2016 residence receives the 2016 credit on Alaska's poverty line.
+  period: 2016
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 36800.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+        slcsp_rating_area: 1
+  output:
+    # IRS 2016 Form 8962 line 4 uses 2016 residence and the 2015 table:
+    # Alaska, one person = 14,720 (Table 1-2).
+    # https://www.irs.gov/pub/irs-prior/i8962--2016.pdf#page=6
+    # Line 5: floor(36,800 / 14,720 * 100) / 100 = 2.50, so the rate is 8.18%.
+    # Benchmark = 424 * 299 / 481 * 1.6706 * 12 = 5,283.791741.
+    # Credit = 5,283.791741 - 36,800 * 0.0818 = 5,283.791741 - 3,010.24
+    # = 2,273.551741.
+    aca_fpg: 14_720
+    aca_magi_fraction: 2.5
+    slcsp: 5283.791741
+    is_aca_ptc_eligible: true
+    aca_ptc: 2273.551741
+
+- name: An Alaska adult who supplies only 2017 residence receives the 2017 credit on Alaska's poverty line.
+  period: 2017
+  absolute_error_margin: 0.02
+  input:
+    people:
+      adult:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      unit:
+        members: [adult]
+        aca_magi: 37100.0
+        aca_ptc_below_fpl_immigration_exception: false
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+        slcsp_rating_area: 1
+  output:
+    # IRS 2017 Form 8962 line 4 uses 2017 residence and the 2016 table:
+    # Alaska, one person = 14,840 (Table 1-2).
+    # https://www.irs.gov/pub/irs-prior/i8962--2017.pdf#page=7
+    # Line 5: floor(37,100 / 14,840 * 100) / 100 = 2.50, so the rate is 8.21%.
+    # Benchmark = 424 * 359 / 481 * 1.6706 * 12 = 6,344.084398.
+    # Credit = 6,344.084398 - 37,100 * 0.0821 = 6,344.084398 - 3,045.91
+    # = 3,298.174398.
+    aca_fpg: 14_840
+    aca_magi_fraction: 2.5
+    slcsp: 6344.084398
+    is_aca_ptc_eligible: true
+    aca_ptc: 3298.174398
+
 - name: Income above 400 percent receives no credit in 2014.
   period: 2014
   input:
