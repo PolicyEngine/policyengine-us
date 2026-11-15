@@ -368,6 +368,54 @@ candidates:
   note: 'PE-US follows the statute and current rule: estate_income counts signed in Alabama gross income, so a beneficiary''s
     loss passes through (gross_income_sources.yaml, read by al_agi.py). estate_income does not separate trusts from
     estates. Identify booklet editions repeating the obsolete restriction.'
+- id: us-al:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Can Alabama's whole-dollar monthly LIHEAP limits pay a household whose income exceeds both 150% of the
+    poverty guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Alabama, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
+  - kind: manual
+    citation: ADECA FY2026 LIHEAP Policy Manual, Appendix D Payment Assistance Chart, PDF page 57
+    url: https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=57
+  - kind: guidance
+    citation: ADECA Payment Assistance Chart effective February 17, 2025 (cooling)
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/AL_BenefitMatrix_Cooling_2026.pdf
+  - kind: guidance
+    citation: ADECA LIHEAP Summarized Eligibility Requirements, Effective October 1, 2024 - February 16, 2025, page 1
+    url: https://adeca.alabama.gov/wp-content/uploads/LIHEAP-Summarized-Eligibility-Requirements.pdf#page=1
+  - kind: guidance
+    citation: HHS LIHEAP IM 2024-02 Attachment 4, Mandatory Use in LIHEAP for FY25, Alabama, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=1
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The charts round 150% of the monthly guideline to the nearest dollar, which puts the limit $3 or $6 a year
+      above the federal maximum at the large household sizes where 150% of the guideline is the greater amount.
+  example: In FY2026, ten people with $97,728 of countable income ($8,144 a month) are within the printed heating limit
+    and would be paid, but exceed the $97,725 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/al/adeca/liheap/eligibility/al_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10756
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Heating FY2026, on
+    the 2025 guidelines: sizes 10, 12 and 14 are $3 lower ($97,728 and $97,725 at 10); size 8 keeps the printed $81,228
+    because HHS''s 60% amount, $81,723, is the higher maximum. Heating FY2025, on the 2024 guidelines of the October 1, 2024
+    to February 16, 2025 chart, with HHS''s FY2025 amounts (LIHEAP IM 2024-02 Attachment 4): sizes 9, 11, 13 and 15 are
+    $6 lower ($87,156 and $87,150 at 9). Summer 2025 cooling, on the 2025 guidelines, with the same FY2025 amounts: sizes
+    8, 10, 12 and 14 are $3 lower ($81,228 and $81,225 at 8). The summer 2026 chart, on the 2026 guidelines, prints whole-dollar
+    amounts equal to 150% of the guideline, so nothing is lowered. Verify each later chart.'
 - id: us-al:liheap-insurance-payments
   program: liheap
   years:
@@ -669,12 +717,18 @@ candidates:
   - kind: guidance
     citation: ACF LIHEAP Clearinghouse 2025 Arkansas matrix
     url: https://liheapch.acf.gov/docs/2025/benefits-matricies/AR_BenefitMatrix_2025.pdf#page=1
+  - kind: plan
+    citation: Arkansas FY2025 LIHEAP State Plan, item 3.6, page 12
+    url: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=12
   readings:
     statute: No statute is supplied; AEO's FY2025 electric matrix uses $242, $288 and $344 at the lowest income
       band.
     other: The clearinghouse matrix uses $202, $240 and $287.
+    plan: Plan item 3.6 estimates FY2025 cooling benefits of $50 to $287; AEO's electric matrix, headed "20% OVER
+      BASE", pays the summer benefit at $60 to $344.
   example: Electric heating, household size 1-2 and income $0-$69 yields $242 under AEO's matrix versus $202 under
-    the clearinghouse matrix.
+    the clearinghouse matrix. In summer 2025, five people with no income receive $344 from AEO's matrix, above
+    plan item 3.6's $287 maximum.
   pe_us:
     follows: unknown
     code:
@@ -683,11 +737,15 @@ candidates:
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/natural_gas.yaml
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/other.yaml
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/propane.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/cooling/ar_liheap_cooling.py
     - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/payment/ar_liheap_matrix_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
+    - https://github.com/PolicyEngine/policyengine-us/pull/10744
   state: unreviewed
-  note: 'PE-US follows AEO''s matrix; verify the clearinghouse document''s effective year and possible mislabeling.'
+  note: 'PE-US follows AEO''s matrix for the winter and summer regular benefits; Wayback captures of AEO''s electric
+    matrix from 2024-12-06, 2025-06-15 and 2025-07-25 share one content digest, so it stayed posted through the summer
+    2025 season. Verify the clearinghouse document''s effective year and possible mislabeling.'
 - id: us-ar:liheap-gambling-and-capital-gains
   program: liheap
   years:
@@ -717,6 +775,50 @@ candidates:
   state: unreviewed
   note: 'PE-US follows Appendix F; verify whether its specific inclusions override the general exclusion of nonrecurring
     lump sums.'
+- id: us-ar:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Can Arkansas's whole-dollar monthly LIHEAP limits pay a household whose income exceeds both 150% of the
+    poverty guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Arkansas, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
+  - kind: guidance
+    citation: Arkansas FY2026 LIHEAP Income Eligibility Chart
+    url: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf
+  - kind: guidance
+    citation: Arkansas FY2025 LIHEAP Income Eligibility Chart
+    url: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2025.pdf
+  - kind: guidance
+    citation: HHS LIHEAP IM 2024-02 Attachment 4, Mandatory Use in LIHEAP for FY25, Arkansas, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=1
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The charts round each monthly limit to the nearest dollar and add a rounded amount for each member above 20,
+      which puts the limits above the federal maximum at several sizes.
+  example: In FY2026, three people with $45,504 of countable income ($3,792 a month) are within the printed limit and
+    would be paid, but exceed the $45,501 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/income/ar_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10744
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Printed and capped
+    annual limits: FY2026 size 2, $36,840 and $36,834; 3, $45,504 and $45,501; 7, $73,128 and $73,126; each even size
+    from 8 to 20, $3 lower ($81,228 and $81,225 at 8); 21, $188,484 and $188,475. FY2025, from HHS''s FY2025 amounts (LIHEAP IM 2024-02
+    Attachment 4): size 1, $27,012 and $27,011; 2,
+    $35,328 and $35,323; 4, $51,948 and $51,946; each odd size from 7 to 19, $6 lower ($71,016 and $71,010 at 7). Other
+    sizes keep the printed amount. Verify each later fiscal-year chart.'
 - id: us-ar:liheap-minor-and-student-earnings
   program: liheap
   years:
@@ -2874,6 +2976,48 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10562
   state: ruled
   note: The model has no Railway Labor Act status for this test, so the exclusion applies to every employee.
+- id: us-ga:liheap-cooling-benefit-amounts
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Does Georgia LIHEAP pay the FY2026 matrix cooling amounts ($500 at Level I, $400 at Level II, with no senior
+    maximum), although the PAMMS LIHEAP chapter sets benefits of $350 to $400 and gives seniors 60 and older the $400
+    maximum?
+  sources:
+  - kind: plan
+    citation: FY2026 Georgia LIHEAP State Plan section 3.6 and item 16.1
+    url: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=11
+  - kind: guidance
+    citation: FY2026 Georgia LIHEAP benefit matrix, step 2 (cooling benefit)
+    url: https://liheapch.acf.gov/docs/2026/benefits-matricies/GA_BenefitMatrix_Heat-Cool_2026.pdf
+  - kind: manual
+    citation: Georgia PAMMS LIHEAP chapter 100, page 5
+    url: https://pamms.dhs.ga.gov/dfcs/_exports/liheap.pdf#page=5
+  - kind: manual
+    citation: Georgia LIHEAP Policy Manual, revised January 2022, section 101.4, page 5
+    url: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=5
+  readings:
+    statute: No statute is supplied. The FY2026 matrix pays $500 at Level I and $400 at Level II for every main
+      heating fuel, and plan item 16.1 (page 30) says the matrix was updated to remove the rule that households with a
+      member aged 60 or older receive the highest benefit regardless of income.
+    other: PAMMS page 5 offers benefits "at a minimum of $350 and maximum of $400", and households with seniors 60 and
+      older "will receive the maximum benefit amount of $400". The January 2022 manual (section 101.4) offers "a
+      minimum of $350 and maximum of $500" and gives households with seniors 60 and older the $500 maximum.
+  example: A one-person Level I household with a member aged 70 receives $500 of cooling under the FY2026 matrix and
+    $400 under PAMMS page 5.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/ga/dfcs/liheap/cooling/amount.yaml
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/cooling/ga_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10746
+  state: ruled
+  note: 'Ruled 2026-11-13 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10746#issuecomment-6863978318. The FY2026 matrix and plan
+    item 16.1 control the cooling amounts over the PAMMS chapter (effective October 2020) and the January 2022 manual.
+    FY2027 has no posted matrix, so the FY2026 amounts carry forward.'
 - id: us-ga:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2897,16 +3041,17 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/ga/dfcs/liheap/eligibility/fpg_year_lag.yaml
     - policyengine_us/variables/gov/states/ga/dfcs/liheap/eligibility/ga_liheap_income_limit.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9968
+    - https://github.com/PolicyEngine/policyengine-us/pull/10746
   state: unreviewed
   note: 'PE-US follows the statute: income below 110% of the prior year''s poverty guideline, rounded to cents,
     qualifies even above the 60% SMI limit. The comment says the limit and the printed matrices fall below that
-    floor from size 16 in FY2025 and FY2026 and that Georgia''s plans assure the floor (ga_liheap_eligible.py, gov/hhs/liheap/fpg_floor.yaml,
+    floor from size 16 in FY2025 and FY2026 and that Georgia''s plans assure the floor (ga_liheap_income_eligible.py, gov/hhs/liheap/fpg_floor.yaml,
     eligibility/fpg_year_lag.yaml, ga_liheap_income_limit.py).'
 - id: us-ga:liheap-lawful-noncitizen-household-members
   program: liheap
@@ -4627,24 +4772,36 @@ candidates:
     the workbooks' reversed income points?
   sources:
   - kind: regulation
-    citation: 921 KAR 4:116 Section 4(1)(c)
+    citation: 921 KAR 4:116 Sections 4(1)(c) and 4(3)(c)2
     url: https://apps.legislature.ky.gov/law/kar/titles/921/004/116/
+  - kind: plan
+    citation: Kentucky FY2026 LIHEAP State Plan, item 3.4
+    url: https://liheapch.acf.gov/docs/2026/state-plans/KY_Plan_2026.pdf#page=10
   - kind: calculator
-    citation: Kentucky FY2026 benefit workbook, rev benefit income range worksheet, cells E52-E55; FY2025 subsidy
-      benefits worksheet, cells E45-E48
+    citation: Kentucky FY2026 benefit workbook, rev benefit income range worksheet, cells E52-E55 (heating) and
+      K52-K55 (cooling); FY2025 subsidy benefits worksheet, cells E45-E48
     url: https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx
   readings:
-    statute: The lowest-income household receives the highest benefit.
-    other: Subsidized income points rise as 1, 2, 3 and 4 with income.
+    statute: The lowest-income household receives the highest benefit (Section 4(1)(c)), and for cooling plan item
+      3.4 says "The highest benefits are awarded to the lowest income household size". Section 4(3)(c)2's cooling
+      ceilings rise with income for subsidized housing ($100 up to 100% of poverty, $200 from 101% to 150%) and fall
+      for nonsubsidized housing ($400, then $300).
+    other: Subsidized income points rise as 1, 2, 3 and 4 with income, for heating and for cooling (cooling of $41,
+      $45, $51 and $56 for one person).
+  example: A one-person subsidized household in the lowest income band gets $41 of cooling under the workbook
+    (points 1 plus 1 plus 6 = 8, ceil(134 x 0.3)); under the regulation's ordering, with 4 income points, it would
+    get ceil(184 x 0.3) = $56.
   pe_us:
     follows: unknown
     code:
     - policyengine_us/parameters/gov/states/ky/dcbs/liheap/payment/income_points/subsidized.yaml
     - policyengine_us/variables/gov/states/ky/dcbs/liheap/ky_liheap.py
-    prs: []
+    - policyengine_us/variables/gov/states/ky/dcbs/liheap/cooling/ky_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10752
   state: unreviewed
-  note: PE-US follows the workbooks; verify actual agency payments and reconcile FY2025-FY2026 ordering with the
-    regulation.
+  note: PE-US follows the workbooks for heating and cooling; verify actual agency payments and reconcile the
+    FY2025-FY2026 ordering with the regulation.
 - id: us-la:blind-deaf-disabled-additional-exemption
   program: income-tax
   years:
@@ -4774,21 +4931,26 @@ candidates:
   - kind: manual
     citation: Louisiana LIHEAP Service Delivery Guide (revised January 1, 2024), Section 4.1 C, PDF page 40
     url: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=40
+  - kind: manual
+    citation: Louisiana LIHEAP Service Delivery Guide (effective April 1, 2026), Section 4.1 C.1, PDF page 46
+    url: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=46
   - kind: plan
-    citation: FY2026 LIHEAP State Plan §2.3, page 9
+    citation: FY2026 LIHEAP State Plan §§2.3 and 3.3, pages 9 and 11
     url: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=9
   readings:
     statute: No statute is supplied; the guide exempts applicants 60 or older.
-    other: Plan 2.3 exempts applicants over 60.
+    other: Plan items 2.3 (heating) and 3.3 (cooling) exempt applicants over 60.
   example: A subsidized 60-year-old with a $1,500 bill and $1,800 allowance has a total energy cost of $1,500 and is
     eligible under the guide; under the plan it is -$300 and ineligible.
   pe_us:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/la/lhc/liheap/la_liheap_energy_cost.py
+    - policyengine_us/variables/gov/states/la/lhc/liheap/cooling/la_liheap_cooling_eligible.py
     - policyengine_us/parameters/gov/states/la/lhc/liheap/elderly_age.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10429
+    - https://github.com/PolicyEngine/policyengine-us/pull/10750
   state: ruled
   note: 'Ruled 2026-10-06: follow the manual over the plan.'
 - id: us-la:school-readiness-incapable-child
@@ -6155,6 +6317,70 @@ candidates:
     prs: []
   state: unreviewed
   note: Establish the guidance's statutory basis and reconcile M1SA with M1REF.
+- id: us-mn:wagering-losses-itemized-limitation-exclusion
+  program: income-tax
+  years:
+    from: 2019
+    to: 2025
+    type: tax
+  question: Does Minnesota exclude wagering losses from its itemized deduction limitation when Schedule M1SA protects only medical expenses, investment interest, and casualty losses?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0122, subd. 2(d)(3) and 8; subd. 2(c)(3) before 2023
+    url: https://www.revisor.mn.gov/statutes/cite/290.0122
+  - kind: statute
+    citation: 1Sp2019 c 6 art 1 s 16, subd. 2(c)(3), subd. 8, and effective date
+    url: https://www.revisor.mn.gov/laws/2019/1/6/#laws.1.16.0
+  - kind: statute
+    citation: 1Sp2021 c 14 art 1 s 7, subd. 8 and effective date
+    url: https://www.revisor.mn.gov/laws/2021/1/14/#laws.1.7.0
+  - kind: statute
+    citation: 2023 c 64 art 1 s 18, subd. 2(d)(3) and effective date
+    url: https://www.revisor.mn.gov/laws/2023/0/64/#laws.1.18.0
+  - kind: instructions
+    citation: 2019 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_19.pdf#page=7
+  - kind: instructions
+    citation: 2020 Schedule M1SA, line 24, PDF p. 7, and Worksheet for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_20.pdf#page=8
+  - kind: instructions
+    citation: 2021 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1sa_21.pdf#page=7
+  - kind: instructions
+    citation: 2022 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_22.pdf#page=7
+  - kind: instructions
+    citation: 2023 Schedule M1SA, line 24 and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-23.pdf#page=8
+  - kind: instructions
+    citation: 2024 Schedule M1SA, line 24 and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1sa-24.pdf#page=8
+  - kind: instructions
+    citation: 2025 Schedule M1SA, line 24, PDF p. 7, and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-25_0.pdf#page=8
+  - kind: instructions
+    citation: 2026 Schedule M1SA final draft dated November 4, 2026, line 26 and Worksheets A and B for Line 28, PDF p. 9
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-11/m1sa-26.pdf#page=9
+  readings:
+    statute: Taxpayers exclude all subdivision 8 losses, including wagering losses under IRC 165(d), from the deductions subject to the limitation.
+    other: Taxpayers enter gambling losses on line 24, but exclude only lines 4, 13, and 19 when computing the limitation, so they reduce gambling deductions with other unprotected deductions.
+  example: A 2023 filer with $2,000,000 of AGI, $50,000 of allowable wagering losses, and no other itemized deductions retains $50,000 under the statute. Under Worksheet B, the filer subtracts 80% of $50,000, or $40,000, and retains $10,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py
+    - policyengine_us/reforms/states/mn/walz/mn_walz_hf1938.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10070
+  state: ruled
+  note: >-
+    The Legislature enacted both the limitation exclusion and the wagering deduction for tax years beginning after December 31, 2018.
+    In 2021, the Legislature rewrote subdivision 8 while retaining wagering losses; that amendment took effect July 2, 2021.
+    In 2023, the Legislature moved the exclusion from paragraph (c)(3) to (d)(3), effective for tax years beginning after December 31, 2022.
+    We confirmed every final M1SA from 2019 through 2025; no year in that range remained unreachable.
+    The Department has published a 2026 final draft, which moves gambling losses to line 26 and protects only lines 4, 13, and 22 in the line 28 worksheets.
+    We exclude 2026 from the years above because the Department still labels that form a draft.
+    The baseline excludes wagering_losses_deduction at mn_itemized_deductions.py lines 68 and 71; the Walz reform does so at mn_walz_hf1938.py lines 136 and 139.
 - id: us-mo:claim-of-right-federal-tax-deduction
   program: income-tax
   years:
@@ -9403,6 +9629,41 @@ candidates:
   note: 'PE-US follows the regulation: earnings are excluded only for a tax-unit dependent under the age limit who
     attends K-12 school, with tax dependency standing in for parental control (ok_liheap_countable_earned_income.py,
     income/student_earned_income_age_limit.yaml). Verify whether the broader plan checkbox reflects actual practice.'
+- id: us-ok:liheap-cooling-income-boundary
+  program: liheap
+  years:
+    from: 2025
+    to: 2027
+    type: federal-fiscal
+  question: Does net monthly income of exactly $700 receive Oklahoma's larger summer cooling payment, as Appendix
+    C-7-A's "$0 - $700" band says, although the state plan grants the larger benefit to incomes "under $700"?
+  sources:
+  - kind: regulation
+    citation: OAC 340:20-1-20(d) and OKDHS Appendix C-7-A, page 2 (Summer Cooling Program)
+    url: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf#page=2
+  - kind: plan
+    citation: FY2026 Oklahoma LIHEAP State Plan section 3.5, page 12 (repeated in the FY2025 plan, page 12, and the
+      FY2027 plan, page 16)
+    url: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=12
+  readings:
+    statute: No statute supplied; OAC 340:20-1-20(d) refers to Appendix C-7-A for the summer cooling benefit amounts.
+      Page 2 of the appendix pays the larger amount at net monthly income "$0 - $700" and the smaller amount at
+      "$701 - ineligible".
+    other: Plan section 3.5 says "The cooling program grants a larger benefit to households with net monthly incomes
+      under $700."
+  example: A one-person household with net monthly income of exactly $700 receives $500 under Appendix C-7-A and
+    $385 under the plan's wording.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ok/dhs/liheap/cooling/income_band.yaml
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/cooling/ok_liheap_cooling.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10748
+  state: ruled
+  note: 'Ruled 2026-11-13 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10748#issuecomment-6863978810. Follow Appendix C-7-A, which
+    the regulation names: net monthly income of $700 or less receives the larger amount and $701 or more the smaller
+    one (band threshold 701; test Case 2 pins both sides).'
 - id: us-ok:liheap-immigration-status-list
   program: liheap
   years:
@@ -9463,7 +9724,7 @@ candidates:
     code:
     - policyengine_us/parameters/gov/states/ok/dhs/liheap/income/sources/unearned.yaml
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_income_deductions.py
-    - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_income_eligible.py
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_gross_income.py
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_deemed_income.py
     - policyengine_us/variables/gov/states/ok/dhs/liheap/income/ok_liheap_net_income.py
@@ -9474,7 +9735,7 @@ candidates:
     premiums enter the medical deduction only for USDA elderly or disabled members. Eligible members'' deductions
     come after the gross test, in the net income that sets the payment, while ineligible members'' deductions are
     applied before their income is deemed. The list''s comment records the plan checkbox and says the plan narrative
-    also uses gross income (income/sources/unearned.yaml, ok_liheap_income_deductions.py, ok_liheap_eligible.py,
+    also uses gross income (income/sources/unearned.yaml, ok_liheap_income_deductions.py, ok_liheap_income_eligible.py,
     ok_liheap_gross_income.py, ok_liheap_deemed_income.py, ok_liheap_net_income.py). Reconcile the checkbox and
     verify page references.'
 - id: us-ok:liheap-resource-test
@@ -9505,11 +9766,14 @@ candidates:
     follows: unknown
     code:
     - policyengine_us/variables/gov/states/ok/dhs/liheap/eligibility/ok_liheap_eligible.py
+    - policyengine_us/variables/gov/states/ok/dhs/liheap/cooling/ok_liheap_cooling_eligible.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9970
+    - https://github.com/PolicyEngine/policyengine-us/pull/10748
   state: unreviewed
-  note: PE-US applies no resource test, and the comment records that the September 15, 2026 amendment removed both
-    provisions (ok_liheap_eligible.py). Verify agency practice while the rules were in force.
+  note: PE-US applies no resource test to winter heating or summer cooling (ok_liheap_eligible.py,
+    ok_liheap_cooling_eligible.py), and the heating comment records that the September 15, 2026 amendment removed
+    both provisions. Verify agency practice while the rules were in force.
 - id: us-ok:ssp-ineligible-child-allocation
   program: ssi-state-supplement
   years:
@@ -10696,7 +10960,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Is South Carolina's high energy burden supplement paid when energy costs equal 20% of income, as the FY2026
     plan reads, or only when the current bill is higher than 20% of income, as the 2024 guide and the matrix read?
@@ -10723,11 +10987,15 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/cooling/sc_liheap_cooling.py
     - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/burden_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
+    - https://github.com/PolicyEngine/policyengine-us/pull/10754
   state: unreviewed
-  note: PE-US follows the plan's inclusive test, with annual bills against annual income.
+  note: PE-US follows the plan's inclusive test, with annual bills against annual income. The cooling award (PR 10754)
+    applies the same annual test, so winter fuel bills count toward the cooling-season burden; the guides' current-month
+    test would count only the summer bill.
 
 - id: us-sc:liheap-income-floor-vs-smi-limit
   program: liheap
@@ -10763,7 +11031,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Is South Carolina's $175 low-income tier 30% of the full size-adjusted state median income, or 30% of the 60%
     income limit that OEO's guides call the SMI?
@@ -10792,9 +11060,11 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/cooling/sc_liheap_cooling.py
     - policyengine_us/parameters/gov/states/sc/oeo/liheap/payment/low_income_limit_rate.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
+    - https://github.com/PolicyEngine/policyengine-us/pull/10754
   state: ruled
   note: 'Ruled 2026-11-03: use 30% of the 60% limit. The plan''s words allow either base, and OEO''s own texts define
     the SMI it means here, so the agency breaks the tie. The 2024 guide and the matrix use 70% of the same limit, a tier
@@ -10847,7 +11117,7 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
   question: Do South Carolina's itemized supplements look only at eligible members, with the award prorated, and are
     state-placed foster children left out of the household, as the 2024 guide provides where the FY2026 plan is silent?
@@ -10868,10 +11138,12 @@ candidates:
     follows: gap-fill
     code:
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap.py
+    - policyengine_us/variables/gov/states/sc/oeo/liheap/cooling/sc_liheap_cooling.py
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_household_size.py
     - policyengine_us/variables/gov/states/sc/oeo/liheap/sc_liheap_countable_income.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10616
+    - https://github.com/PolicyEngine/policyengine-us/pull/10754
   state: ruled
   note: 'Ruled 2026-11-02: follow the 2024 guide. The veteran supplement also looks only at eligible members, although
     the guide''s list does not name veterans, and the prorated award keeps its cents.'
@@ -10940,6 +11212,100 @@ candidates:
   note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
     section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
     member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-current-self-employment-loss-offset
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: When a South Carolina TANF benefit group member has a current net loss from self-employment or farming,
+    or from rent, a partnership or S corporation, capital, or a trust or estate, does the loss reduce the other income
+    the group counts, or does it count as zero?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(A), (B)(3), (B)(4), (C) and (E)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 sections 7.1, 7.7, 8.9, 8.12 and 8.16
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=102
+  - kind: instructions
+    citation: 2025 IRS Instructions for Schedule C, Line 31
+    url: https://www.irs.gov/pub/irs-prior/i1040sc--2025.pdf#page=14
+  readings:
+    statute: No statute is supplied. 114-1150(B)(3) defines self-employment earned income as "the total profit from
+      a business enterprise, farming, etc.", determined "using Internal Revenue Service methods", and Schedule C line
+      31 reports a net profit or a loss. On one reading that signed result carries through the disregard in section
+      8.16 C and the sum in 8.16 E, so a current loss reduces the other income the group counts.
+    other: Section 7.1 says "Income is money received by a BG member (s) from any source", and section 8.9 calls
+      self-employment income "the total profit from a business enterprise". On the other reading a loss is no income,
+      so it counts as zero and reduces nothing. Section 8.9 item 7 B bars "Net losses from previous providers" as a
+      business cost.
+  example: Adult A receives $1,000 a month of alimony and adult B has a $1,200 monthly self-employment loss, with
+    one child and a need standard of $1,110. In January 2026 the model halves the loss, counts 1,000 - 600 = $400 and
+    pays floor(710 x 0.4046) = $287. In May 2026 it sets the loss to zero, counts $1,000 and pays floor(110 x 0.4046)
+    = $44.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_earned_income_person.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_income.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_gross_income.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_gross_unearned_income.py
+    - policyengine_us/parameters/gov/states/sc/tanf/income/unearned/positive_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10184
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: open
+  note: Neither source names a current loss, an offset between members or a floor at zero, so both readings
+    interpret silent texts. The model applies each reading on a different path. In the months it gives the
+    fifty-percent disregard (January to April, a calendar proxy), sc_tanf_countable_earned_income_person.py halves a
+    self-employment or farm loss and sc_tanf_countable_income.py adds the negative result to the group's other income.
+    In the $100-disregard months (May to December) the same formula takes max(earned income - 100, 0), so the same
+    loss counts as zero. In May 2026 the example household counts $1,000 and receives $44, against $400 and $287 in
+    January. In every month sc_tanf_gross_income.py adds the whole signed loss for the gross income test, where the
+    example household has -$200. positive_sources.yaml counts capital gains, rental, farm rent, partnership and S
+    corporation, estate and miscellaneous income only when positive, citing section 7.1, and
+    sc_tanf_gross_unearned_income.py stops interest and dividends at zero. If B's loss came from a partnership, the
+    example household would count $1,000 and receive $44 in both months. Section 7.7 counts rent as self-employment
+    when the member manages the property 20 or more hours a week, and the model counts all rental_income as unearned.
+    integration.yaml Cases 35, 36 and 38 pin the January results and Case 39 the May result, and
+    sc_tanf_gross_unearned_income.yaml Cases 12, 13 and 15 to 18 pin the unearned floors. An answer should cover each
+    path and say whether a fifty-percent month counts half the loss or all of it. Counting all of it gives the example
+    household -$200 of countable income and the $449 payment standard.
+- id: us-sc:tanf-dependent-child-school-level
+  program: tanf
+  years:
+    from: 2025
+    type: federal-fiscal
+  question: Can an eighteen-year-old full-time primary-school student qualify as a South Carolina TANF dependent child,
+    or must the student attend secondary school or an equivalent level of vocational or technical training?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1130(E)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=204
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 4.10
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=75
+  readings:
+    statute: No statute is supplied; 114-1130(E) permits the extension from under eighteen to under nineteen only for
+      full-time students in secondary school or an equivalent level of vocational or technical training.
+    other: Section 4.10 permits full-time primary-school students, as well as secondary-school students, to receive
+      benefits until age nineteen.
+  example: An eighteen-year-old full-time primary-school student who does not head the household fails the regulation's
+    dependent-child age test and passes the manual's. An otherwise identical secondary-school student passes both.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_dependent_child.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: ruled
+  note: The regulation governs. The model uses is_in_secondary_school, which includes equivalent-level training, for
+    the under-nineteen extension. This entry addresses school level only; it does not resolve the manual's unmarried
+    condition or change the model's head-of-household inference. Volume 65, effective October 1, 2024, has the same
+    section 4.10 text as Volume 67 (https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=74), so
+    the difference dates from fiscal 2025 at the latest.
 - id: us-sc:tanf-gross-income-limit-cents
   program: tanf
   years:
@@ -12252,6 +12618,50 @@ candidates:
     a filer can be claimed, not whether one is, and either claimable spouse bars a joint return (va_refundable_eitc_if_claimed.py,
     va_non_refundable_eitc_if_claimed.py, va_low_income_tax_credit_eligible.py). Ruled in October 2026 to use claimability;
     verify the guidance and distinguish this wording conflict from mixed-spouse allocation.'
+- id: us-va:eap-cooling-subsidized-heat-in-rent
+  program: liheap
+  years:
+    from: 2023
+    to: 2027
+    type: federal-fiscal
+  question: Can a Virginia subsidized household whose heat is included in its rent, and which pays a separate cooling
+    cost, receive the Cooling Assistance electric bill payment, although 22VAC40-680-63(B)(1) applies all of the fuel
+    assistance criteria of 22VAC40-680-20, whose 20(B)(3)(a) makes such households ineligible?
+  sources:
+  - kind: regulation
+    citation: 22VAC40-680-63(B)(1)
+    url: https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section63/
+  - kind: regulation
+    citation: 22VAC40-680-20(B)(3)(a)
+    url: https://law.lis.virginia.gov/admincode/title22/agency40/chapter680/section20/
+  - kind: manual
+    citation: Virginia Energy Assistance Manual, Volume IX, Chapter J.3.a and J.3.f, PDF pages 120-121
+    url: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=120
+  - kind: plan
+    citation: Virginia FY2026 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2026/state-plans/VA_Plan_2026.pdf#page=11
+  readings:
+    statute: No statute is supplied; 63(B)(1) requires a cooling household to "Meet all of the fuel assistance criteria
+      as set forth in 22VAC40-680-20", and 20(B)(3)(a) makes "Subsidized households whose total heating costs are
+      included in their rent" ineligible.
+    other: Manual J.3.a applies "All the criteria in Chapter B sections 6-8", which leave out the B.5.c.2 household-type
+      exclusions, and J.3.f says a household "may or may not be eligible for Cooling Assistance depending on their
+      living arrangement", limiting codes B and F to equipment and homeless households to a security deposit. Plan 3.3
+      restates the exclusion in cooling terms, "Subsidized households whose total cooling costs are included in their
+      rent are not eligible for cooling assistance."
+  example: One person aged 62 in public housing with $18,000 of Social Security, natural gas heat included in the rent,
+    a separate cooling cost and a $1,800 electric bill receives $365 in 2026 under the manual and plan, and $0 under
+    63(B)(1) and 20(B)(3)(a).
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/states/va/dss/eap/cooling/va_eap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10760
+  state: ruled
+  note: 'Ruled 2026-11-13 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10760#issuecomment-6863979262. Follow manual J.3.a and plan 3.3,
+    the current filing (22VAC40-680-63 dates from 2003): PE-US excludes a subsidized household only when its cooling is
+    in the rent, and va_eap_cooling_eligible.yaml Case 14 pins the reading.'
 - id: us-va:snap-child-support-exclusion
   program: snap
   years:
@@ -12834,7 +13244,7 @@ candidates:
     type: program
     note: property tax collection year (taxes levied for collection in that year)
   question: Before collection year 2016, does RCW 84.36.381(3)(b)'s "one hundred percent service-connected disability
-    as provided in 42 U.S.C. Sec. 423(d)(1)(A)" mean a disability wholly connected to service under Social Security's
+    as provided in 42 U.S.C. Sec. 423 (d)(1)(A)" mean a disability wholly connected to service under Social Security's
     definition, or a 100% VA rating?
   sources:
   - kind: statute
@@ -12846,6 +13256,9 @@ candidates:
   - kind: statute
     citation: 42 U.S.C. 423(d)(1)(A) (Social Security Act 223(d)(1)(A))
     url: https://www.ssa.gov/OP_Home/ssact/title02/0223.htm
+  - kind: statute
+    citation: 42 U.S.C. 423(a), (d)(1)(A), 2004 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2004-title42/pdf/USCODE-2004-title42-chap7-subchapII-sec423.pdf#page=1
   readings:
     statute: A disability that meets Social Security's definition in 42 U.S.C. 423(d)(1)(A) and is wholly connected
       to service; the cross-reference names that definition, and the 2016 amendment's move to VA-rating language marks
@@ -12865,7 +13278,8 @@ candidates:
   note: PolicyEngine ruled on 2026-10-21 for the Social Security reading. The model has no service-connection input,
     so wa_pte_wholly_service_connected_disability defaults to is_disabled (or is_fully_disabled_service_connected_veteran)
     as an overridable proxy, read together with is_veteran in wa_pte_categorical_eligible; it over-includes a veteran
-    whose disability is not service-connected.
+    whose disability is not service-connected. SSDI receipt requires insured status and an application under
+    42 U.S.C. 423(a); Washington imports only the disability definition.
 - id: us-wi:age-65-exemption-claimable-filer
   program: income-tax
   years:
