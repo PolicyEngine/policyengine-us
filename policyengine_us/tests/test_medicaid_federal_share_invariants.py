@@ -1,11 +1,13 @@
 """Property tests: Medicaid federal share for enrollees without federal status.
 
-42 U.S.C. 1396b(v)(1) bars Title XIX payment for medical assistance to anyone
-who fails the federal immigration test, apart from emergency services under
-(v)(2) and the lawfully residing children and pregnant people option under
-(v)(4). is_federal_medicaid_immigration_status_eligible applies that test,
-including (v)(4); is_medicaid_immigration_status_eligible also counts
-state-funded coverage. https://www.law.cornell.edu/uscode/text/42/1396b#v
+Title XIX pays for medical assistance to noncitizens only within 42 U.S.C.
+1396b(v)(1) and (5) and the qualified-noncitizen rules and five-year bar of
+8 U.S.C. 1611 and 1613, apart from emergency services under (v)(2) and the
+lawfully residing children and pregnant people option under (v)(4).
+is_federal_medicaid_immigration_status_eligible applies that test, including
+(v)(4); is_medicaid_immigration_status_eligible also counts state-funded
+coverage. https://www.law.cornell.edu/uscode/text/42/1396b#v and
+https://www.law.cornell.edu/uscode/text/8/1613
 
 For every generated person:
 

@@ -283,9 +283,10 @@
     medicaid_enrolled: [true, true, true, true]
     medicaid_federal_share: [0.9, 0.9, 0.5501, 0.5501]
 
-# 42 U.S.C. 1396b(v)(1) bars Title XIX payment for anyone who fails the federal
-# immigration test, apart from emergency services under (v)(2) and the lawfully
-# residing children and pregnant people option under (v)(4). California covers
+# Title XIX pays for noncitizens only within 42 U.S.C. 1396b(v)(1) and (5) and
+# the qualified-noncitizen rules and five-year bar of 8 U.S.C. 1611 and 1613,
+# apart from emergency services under (v)(2) and the lawfully residing children
+# and pregnant people option under (v)(4). California covers
 # undocumented, DACA and TPS residents and former foster youth regardless of
 # immigration status, and uses state funds where federal participation is
 # unavailable (Cal. Welf. & Inst. Code § 14007.8(a), (b)(3) and (f)(2)).
@@ -293,6 +294,7 @@
 # foster care group (42 CFR 435.150) and keep a match, as does a TPS child
 # under California's lawfully residing election. FY2025 FMAP: CA 50%.
 # https://www.law.cornell.edu/uscode/text/42/1396b#v
+# https://www.law.cornell.edu/uscode/text/8/1613
 # https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.8.&lawCode=WIC
 # https://www.ecfr.gov/current/title-42/section-435.150
 - name: California state-funded Medi-Cal and former foster youth coverage get no federal share without federal immigration status.
@@ -443,3 +445,72 @@
     is_federal_medicaid_immigration_status_eligible: [false, true]
     medicaid_enrolled: [true, true]
     medicaid_federal_share: [0, 0.9]
+
+# 8 U.S.C. 1613(b)(2) exempts a qualified noncitizen on active duty, a veteran,
+# and their spouse from the five-year bar, and 8 U.S.C. 1612(b)(2)(C) protects
+# their Medicaid eligibility. They meet the federal test and keep the match. A
+# permanent resident inside the bar without that connection reaches Medicaid
+# only through Illinois Health Benefits for Immigrants and gets no federal
+# share. Expansion adults get the 90% expansion FMAP.
+# https://www.law.cornell.edu/uscode/text/8/1613#b_2
+# https://www.law.cornell.edu/uscode/text/8/1612#b_2_C
+- name: Military-connected permanent residents inside the five-year bar keep the federal share in Illinois.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 3
+        is_military: true
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person2:
+        age: 50
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 3
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person3:
+        age: 50
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 3
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+      person4:
+        age: 50
+        immigration_status: CITIZEN
+        is_veteran: true
+        medicaid_category: ADULT
+        medicaid_household_size: 1
+        medicaid_income_level: 1
+        takes_up_medicaid_if_eligible: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3, person4]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    is_federal_medicaid_immigration_status_eligible: [true, false, true, true]
+    il_hbi_eligible: [false, true, false, false]
+    medicaid_enrolled: [true, true, true, true]
+    medicaid_federal_share: [0.9, 0, 0.9, 0.9]

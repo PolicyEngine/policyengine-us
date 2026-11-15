@@ -147,3 +147,40 @@
     state_code: TX
   output:
     is_medicaid_immigration_status_eligible: false
+
+- name: Case 19, recent permanent resident on active duty in Texas is exempt from the five-year bar.
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    # 8 U.S.C. 1613(b)(2)(B) and 1612(b)(2)(C)
+    is_federal_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 20, recent permanent resident veteran in Texas is exempt from the five-year bar.
+  period: 2025
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_veteran: true
+    age: 30
+    state_code: TX
+  output:
+    # 8 U.S.C. 1613(b)(2)(A)
+    is_federal_medicaid_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 21, temporary protected status adult on active duty in Texas is not eligible, since the military exemption applies only to qualified noncitizens.
+  period: 2025
+  input:
+    immigration_status: TPS
+    is_military: true
+    age: 30
+    state_code: TX
+  output:
+    is_federal_medicaid_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false

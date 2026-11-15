@@ -11,8 +11,16 @@ class medicaid_federal_share(Variable):
         "adults (42 U.S.C. 1396d(y)) and the state's regular FMAP for all "
         "other enrollment groups (42 U.S.C. 1396d(b)). Title XIX pays only "
         "for an enrollee in a Medicaid group who meets the federal "
-        "immigration test, which includes the lawfully residing option for "
-        "children and pregnant people (42 U.S.C. 1396b(v)(1) and (4)). Every "
+        "immigration test. 42 U.S.C. 1396b(v)(1) bars payment for "
+        "noncitizens who are neither permanent residents nor permanently "
+        "residing under color of law. 8 U.S.C. 1611 and 1613 limit federal "
+        "benefits to qualified noncitizens and bar most of them for five "
+        "years after entry, with exemptions that include veterans, active "
+        "duty members and their families. From October 1, 2026, 42 U.S.C. "
+        "1396b(v)(5) limits payment to citizens, permanent residents, Cuban "
+        "and Haitian entrants and Compact of Free Association migrants. The "
+        "lawfully residing option for children and pregnant people (42 "
+        "U.S.C. 1396b(v)(4)) is an exception to these limits. Every "
         "other enrollee reaches Medicaid only through state-funded coverage "
         "and gets no federal share. That coverage includes state coverage "
         "regardless of immigration status (California's state-funded "
@@ -33,6 +41,8 @@ class medicaid_federal_share(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396d",
         "https://www.law.cornell.edu/uscode/text/42/1396b#v",
+        "https://www.law.cornell.edu/uscode/text/8/1611",
+        "https://www.law.cornell.edu/uscode/text/8/1613",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.8.&lawCode=WIC",
         "https://www.ilga.gov/Documents/legislation/ilcs/documents/030500050K12-4.35.htm",
         "https://webserver.rilegislature.gov/Statutes/TITLE42/42-12.3/42-12.3-3.htm",
@@ -47,10 +57,12 @@ class medicaid_federal_share(Variable):
         regular_fmap = p.fmap[state]
         category = person("medicaid_category", period)
         categories = category.possible_values
-        # 42 U.S.C. 1396b(v)(1) bars Title XIX payment for an enrollee who
-        # fails the federal immigration test, apart from emergency services.
-        # is_medicaid_immigration_status_eligible also counts state-funded
-        # coverage, so the federal test is used here.
+        # Title XIX pays for a noncitizen only within 42 U.S.C. 1396b(v)(1)
+        # and (5) and 8 U.S.C. 1611 and 1613, apart from emergency services
+        # under (v)(2) and the lawfully residing option under (v)(4).
+        # is_federal_medicaid_immigration_status_eligible applies those
+        # limits, (v)(4) included; is_medicaid_immigration_status_eligible
+        # also counts state-funded coverage.
         federally_matched_route = (category != categories.NONE) & person(
             "is_federal_medicaid_immigration_status_eligible", period
         )
