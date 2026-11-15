@@ -30,6 +30,7 @@ class is_ssi_spousal_deeming_applies_monthly(Variable):
         if supplied is not None:
             return supplied
 
+        # NOTE: We do not model 416.1163(f)(5) (issue 10455).
         # Get spouse's deemed income (after child allocations)
         spouse_deemed_income = add(
             person,

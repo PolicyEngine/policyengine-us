@@ -8,7 +8,8 @@ class ok_ssp_ineligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.OK
     reference = (
-        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-2",
+        # OAC 340:15-1-2, as proposed in OKDHS circulation WF 22-15.
+        "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/okdhs-pdf-library/policy/proposed-policy/2022-perms/22-15%20Circulation.pdf#page=7",
         "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-6",
     )
     documentation = (

@@ -9,7 +9,8 @@ class ok_ssp_spouse_child_allocation(Variable):
     unit = USD
     reference = (
         "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-5",
-        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-2",
+        # OAC 340:15-1-2, as proposed in OKDHS circulation WF 22-15.
+        "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/okdhs-pdf-library/policy/proposed-policy/2022-perms/22-15%20Circulation.pdf#page=7",
     )
     documentation = (
         "The total allocation for the family's unmarried SSI-ineligible children "
