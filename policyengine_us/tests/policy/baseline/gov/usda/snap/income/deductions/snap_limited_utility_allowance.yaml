@@ -277,3 +277,119 @@
       2017-01: 332
       2017-09: 332
       2017-10: 342
+
+# Stored-amount component: the allowance type is supplied explicitly.
+# WA deemed-SUA and LUA-activation routing flags remain unchanged.
+# January 2018-2026 amounts preserve existing encoded history;
+# these are monthly January snapshots, not annual disbursements.
+- name: Case 22, Washington stored LUA amounts preserve January snapshots from 2017 through
+    2026.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2017: WA
+      2018: WA
+      2019: WA
+      2020: WA
+      2021: WA
+      2022: WA
+      2023: WA
+      2024: WA
+      2025: WA
+      2026: WA
+    snap_utility_allowance_type:
+      2017: LUA
+      2018: LUA
+      2019: LUA
+      2020: LUA
+      2021: LUA
+      2022: LUA
+      2023: LUA
+      2024: LUA
+      2025: LUA
+      2026: LUA
+  output:
+    snap_limited_utility_allowance:
+      2017-01: 319
+      2018-01: 328
+      2019-01: 336
+      2020-01: 343
+      2021-01: 352
+      2022-01: 361
+      2023-01: 365
+      2024-01: 383
+      2025-01: 396
+      2026-01: 406
+
+# WSR 16-20-058 starts FY2017 on October 1, 2016; WSR 17-20-048
+# starts the preserved successor on October 1, 2017. The prior
+# zero is an unchanged placeholder, not a September 2016 law claim.
+# Categories are explicit components, not household routing tests.
+- name: Case 23, Washington stored LUA boundaries preserve flat amounts and category isolation.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2016:
+      - WA
+      - WA
+      - WA
+      - WA
+      - WA
+      - WA
+      2017:
+      - WA
+      - WA
+      - WA
+      - WA
+      - WA
+      - WA
+    snap_utility_allowance_type:
+      2016: &id001
+      - LUA
+      - LUA
+      - LUA
+      - SUA
+      - IUA
+      - NONE
+      2017: *id001
+    spm_unit_size:
+      2016:
+      - 1
+      - 4
+      - 10
+      - 4
+      - 4
+      - 4
+      2017:
+      - 1
+      - 4
+      - 10
+      - 4
+      - 4
+      - 4
+  output:
+    snap_limited_utility_allowance:
+      2016-09:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      2016-10: &id002
+      - 319
+      - 319
+      - 319
+      - 0
+      - 0
+      - 0
+      2017-09: *id002
+      2017-10:
+      - 328
+      - 328
+      - 328
+      - 0
+      - 0
+      - 0

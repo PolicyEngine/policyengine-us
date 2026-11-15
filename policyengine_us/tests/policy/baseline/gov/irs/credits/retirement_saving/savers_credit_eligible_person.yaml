@@ -39,3 +39,14 @@
     claimable_as_dependent_on_another_return: true
   output:
     savers_credit_eligible_person: false
+
+- name: Case 1, 2017 eligibility uses age eighteen and excludes students and claimed dependents.
+  # IRS Form 8880 (2017), eligibility box and page 2 Who Can Take This Credit.
+  period: 2017
+  input:
+    age: [17, 18, 25, 25]
+    is_tax_unit_head_or_spouse: [true, true, true, true]
+    is_full_time_student: [false, false, true, false]
+    claimed_as_dependent_on_another_return: [false, false, false, true]
+  output:
+    savers_credit_eligible_person: [false, true, false, false]
