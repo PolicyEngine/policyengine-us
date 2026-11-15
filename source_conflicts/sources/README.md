@@ -11,5 +11,10 @@ When a site serves bot-check scripts, capture the page as pandoc text and includ
 a `Source:` URL line and an extraction line. This removes scripts that can expose
 the fetching machine's address or visitor tokens.
 
+The privacy check rejects bot-manager markers and base64 tokens whose entire
+decoded value matches `UUID$IPv4`. The decoded-token check covers IPv4 only;
+it does not detect IPv6 addresses or payloads with extra decoded bytes. Inspect
+extracted text for visitor data before committing it.
+
 Do not edit a capture after an entry pins it: add a new file instead, and move the
 entry's snapshot to it.

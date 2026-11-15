@@ -976,6 +976,7 @@ BOT_MANAGER_MARKERS = (
     b"shieldsquare",
     b"stormcaster",
     b"__cf_chl",
+    b"_cf_chl_opt",
     b"cf_clearance",
     b"incap_ses",
     b"visid_incap",
@@ -1034,6 +1035,16 @@ def test_source_captures_are_public():
 @pytest.mark.parametrize("uppercase", [False, True])
 def test_source_capture_bot_manager_markers(marker, uppercase):
     raw = b"<script>" + (marker.upper() if uppercase else marker) + b"</script>"
+    assert _source_capture_problems(raw, "capture.html") == [
+        "capture.html contains a bot-manager marker"
+    ]
+
+
+@pytest.mark.parametrize("uppercase", [False, True])
+def test_source_capture_cloudflare_challenge_options(uppercase):
+    raw = b"window._cf_chl_opt = {};"
+    if uppercase:
+        raw = raw.upper()
     assert _source_capture_problems(raw, "capture.html") == [
         "capture.html contains a bot-manager marker"
     ]
