@@ -1052,11 +1052,28 @@ def test_source_capture_radware_token():
     ]
 
 
+@pytest.mark.parametrize(
+    ("address", "unpadded_length", "padded_length"),
+    [
+        # IANA reserves the boundary addresses for special purposes:
+        # https://www.iana.org/assignments/iana-ipv4-special-registry/
+        # 36 + 1 + 7 = 44 bytes; 4 * ceil(44 / 3) = 60, minus one "=" = 59.
+        pytest.param(b"0.0.0.0", 59, 60, id="shortest"),
+        # 36 + 1 + 12 = 49 bytes; 4 * ceil(49 / 3) = 68, minus two "=" = 66.
+        pytest.param(b"203.0.113.42", 66, 68, id="documentation"),
+        # 36 + 1 + 15 = 52 bytes; 4 * ceil(52 / 3) = 72, minus two "=" = 70.
+        pytest.param(b"255.255.255.255", 70, 72, id="longest"),
+    ],
+)
 @pytest.mark.parametrize("padded", [False, True], ids=["unpadded", "padded"])
-def test_source_capture_encoded_visitor_without_marker(padded):
-    encoded = base64.b64encode(CAPTURE_EXAMPLE)
+def test_source_capture_encoded_visitor_without_marker(
+    address, unpadded_length, padded_length, padded
+):
+    decoded = CAPTURE_EXAMPLE.rsplit(b"$", 1)[0] + b"$" + address
+    encoded = base64.b64encode(decoded)
     if not padded:
         encoded = encoded.rstrip(b"=")
+    assert len(encoded) == (padded_length if padded else unpadded_length)
     assert _source_capture_problems(b'"' + encoded + b'"', "capture.txt") == [
         "capture.txt contains a base64 UUID-dollar-IPv4 token"
     ]
