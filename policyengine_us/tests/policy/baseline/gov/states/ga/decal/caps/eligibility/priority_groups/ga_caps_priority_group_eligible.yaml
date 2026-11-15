@@ -881,6 +881,58 @@
   output:
     ga_caps_priority_group_eligible: false
 
+- name: Very low income, February 2020, 50 percent of the 2019 guideline, at the limit.
+  period: 2020-02
+  input:
+    people:
+      person1:
+        age:
+          2020: 30
+      person2:
+        age:
+          2020: 5
+      person3:
+        age:
+          2020: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 888.75
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2020: GA
+  output:
+    # The October 1, 2020 chart dates the 2020 guideline for CAPS from March 1, 2020, so
+    # 50% of the 2019 guideline, $10,665 for three, applies until then.
+    ga_caps_priority_group_eligible: true
+
+- name: Very low income, February 2020, 50 percent of the 2019 guideline, over the limit.
+  period: 2020-02
+  input:
+    people:
+      person1:
+        age:
+          2020: 30
+      person2:
+        age:
+          2020: 5
+      person3:
+        age:
+          2020: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_countable_income: 888.84
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2020: GA
+  output:
+    ga_caps_priority_group_eligible: false
+
 - name: Very low income, November 2020, 50 percent of the 2020 guideline, at the limit.
   period: 2020-11
   input:
