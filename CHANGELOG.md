@@ -1,3 +1,10 @@
+## [2.136.1] - 2026-11-15
+
+### Fixed
+
+- Corrected WIC annual income limits from July 2016 through June 2017 using HHS's published household-size table.
+
+
 ## [2.136.0] - 2026-11-15
 
 ### Added
