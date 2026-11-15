@@ -1,0 +1,60 @@
+- name: Case 1, qualified rent includes heat.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 6_000
+    wi_property_tax_credit_rent_without_heat: 0
+  output:
+    wi_property_tax_credit_rent_constituting_property_taxes: 1_200
+
+- name: Case 2, qualified rent excludes heat.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 0
+    wi_property_tax_credit_rent_without_heat: 6_000
+  output:
+    wi_property_tax_credit_rent_constituting_property_taxes: 1_500
+
+- name: Case 3, mixed annual rent is counted once despite a generic rent amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    rent: 12_000
+    wi_property_tax_credit_rent_with_heat: 3_000
+    wi_property_tax_credit_rent_without_heat: 3_000
+  output:
+    wi_property_tax_credit_rent_constituting_property_taxes: 1_350
+
+- name: Case 4, unclassified rent retains the legacy approximation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    rent: 6_000
+  output:
+    wi_property_tax_credit_rent_constituting_property_taxes: 1_200
+
+- name: Case 5, a partial classification retains the legacy approximation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    rent: 6_000
+    wi_property_tax_credit_rent_without_heat: 2_000
+  output:
+    wi_property_tax_credit_rent_constituting_property_taxes: 1_200
+
+- name: Case 6, explicit zero qualified rent overrides generic rent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    rent: 6_000
+    wi_property_tax_credit_rent_with_heat: 0
+    wi_property_tax_credit_rent_without_heat: 0
+  output:
+    wi_property_tax_credit_rent_constituting_property_taxes: 0

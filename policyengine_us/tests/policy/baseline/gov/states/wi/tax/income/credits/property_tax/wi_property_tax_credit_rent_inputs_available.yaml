@@ -1,0 +1,77 @@
+- name: Case 1, generic positive rent alone has unknown heat classification.
+  period: 2025
+  input:
+    state_code: WI
+    rent: 6_000
+  output:
+    wi_property_tax_credit_rent_inputs_available: false
+
+- name: Case 2, complete mixed rent classification is available.
+  period: 2025
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 3_000
+    wi_property_tax_credit_rent_without_heat: 3_000
+  output:
+    wi_property_tax_credit_rent_inputs_available: true
+
+- name: Case 3, a known zero in both categories is available.
+  period: 2025
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 0
+    wi_property_tax_credit_rent_without_heat: 0
+  output:
+    wi_property_tax_credit_rent_inputs_available: true
+
+- name: Case 4, the existing zero generic rent default needs no heat allocation.
+  period: 2025
+  input:
+    state_code: WI
+    real_estate_taxes: 1_000
+  output:
+    wi_property_tax_credit_rent_inputs_available: true
+
+- name: Case 5, a partial positive split is unavailable even with zero generic rent.
+  period: 2025
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 3_000
+  output:
+    wi_property_tax_credit_rent_inputs_available: false
+
+- name: Case 6, a partial zero split is still unavailable.
+  period: 2025
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 0
+  output:
+    wi_property_tax_credit_rent_inputs_available: false
+
+- name: Case 7, one member with an incomplete classification makes the tax unit unavailable.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        wi_property_tax_credit_rent_with_heat: 3_000
+        wi_property_tax_credit_rent_without_heat: 0
+      person2:
+        age: 38
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        rent: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_property_tax_credit_rent_inputs_available: false
