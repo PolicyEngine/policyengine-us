@@ -70,15 +70,16 @@ REST_CORE_HEAVY_TESTS := $(TESTS)/core/test_ssi_resource_deeming_invariants.py \
 	$(TESTS)/test_federal_credit_limit_order.py \
 	$(TESTS)/test_pinned_branch_credit_dependents.py \
 	$(TESTS)/test_pinned_tbs_sharing.py
-# Supplied-record calculator API checks load no national dataset. Keep each
-# file in a separate process so retained reform trees are released on exit.
+# Run supplied-record calculator API checks without a national dataset.
+# Release retained reform trees between the calculator and history groups.
 # Local macOS/Python 3.13.9, four numeric threads: peak RSS 2.98 GiB
 # through 13 cases before the 1,800-second cap; the previous complete
 # 18-case run recorded 3.06 GiB. CI reports the complete 20-case process.
 REST_SS_CALCULATOR_ENGINE_TESTS := $(TESTS)/unit/test_ss_calculator_engine.py
-# Local macOS/Python 3.13.9, four numeric threads: all eight cases passed
-# with 2.45 GiB peak RSS, below the ~10 GB per-process target above.
-REST_SS_CALCULATOR_DIFFERENTIAL_TESTS := $(TESTS)/unit/test_ss_calculator_differential.py
+# Compare calculator-off models and generated reported amounts together;
+# exclude both files from core through REST_LISTED_TESTS.
+REST_SS_CALCULATOR_DIFFERENTIAL_TESTS := $(TESTS)/unit/test_ss_calculator_differential.py \
+	$(TESTS)/core/test_ss_calculator_reference_invariants.py
 # History ingress/dated-policy and optional-route differential checks retain
 # reform trees. Keep each file in its own process on the existing Rest shards.
 # Local elapsed time and memory measurements are recorded in the PR.

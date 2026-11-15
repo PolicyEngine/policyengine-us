@@ -875,7 +875,7 @@ programs:
         full_name: New York Child Care Assistance Program
         variable: ny_ccap
         parameter_prefix: gov.states.ny.ocfs.ccap
-        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes, the 18 NYCRR 415.1(b) age extensions for special needs and court supervision, and the statutory family-share exceptions. The model prices excess periods for a sixth or seventh day of care, and for each day of care at or above the daily maximum hours, at the applicable daily or part-day rate under 24-OCFS-LCM-22. Without a county or county FIPS input, the model places a New York household in Albany County, in county group 2. That placement overstates rates for households in the 38 group 3 counties and understates them in New York City and the five group 1 counties. An UNKNOWN county falls to group 3, the lowest-rate group. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because OCFS sets market rates by duration of care; expenses alone yield no benefit. OCFS dropped hourly market rates on June 1, 2022 (22-OCFS-LCM-14); 18 NYCRR 415.9 and 24-OCFS-LCM-22 set weekly, daily and part-day rates only. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), safety net assistance as public assistance for the family-share exception, preventive services as distinct from protective services, public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction), the required-work-activity condition on the 415.2(a)(1) guarantee of care to public-assistance families (public assistance enrollment alone satisfies the reason-for-care test), and the child-only assistance unit exception to the family share
+        notes: PolicyEngine models New York income eligibility, market rates, payment differentials, the special-needs rate, New York City enhanced informal and group rates, and the family share. It includes the categorical routes for foster care, protective services and preventive care with district approval under Title XX. It applies public assistance activity conditions and the 18 NYCRR 415.1(b) age extensions for special needs and court supervision. It also applies the statutory family share exceptions for public assistance, preventive care and child-only units. The model prices excess periods for a sixth or seventh day of care, and for each day of care at or above the daily maximum hours, at the applicable daily or part-day rate under 24-OCFS-LCM-22. Without a county or county FIPS input, the model places a New York household in Albany County, in county group 2. That placement overstates rates for households in the 38 group 3 counties and understates them in New York City and the five group 1 counties. An UNKNOWN county falls to group 3, the lowest-rate group. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because OCFS sets market rates by duration of care; expenses alone yield no benefit. OCFS dropped hourly market rates on June 1, 2022 (22-OCFS-LCM-14); 18 NYCRR 415.9 and 24-OCFS-LCM-22 set weekly, daily and part-day rates only. Outside its New York City and Monroe County rates, the model uses state defaults for district choices, with the minimum for mandatory differentials (5%, then 10% from April 1, 2025, under Social Services Law 410-x(10)) and zero for optional ones. The combined limit rises from 25% to 35% on December 24, 2025. Not modeled - the optional differentials for QUALITYstarsNY and the auto-injector initiative that OCFS added on December 24, 2025, Monroe County's 75% enhanced informal rate, and public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction)
       - state: OR
         status: complete
         name: Oregon ERDC
@@ -965,7 +965,7 @@ programs:
         full_name: North Dakota Child Care Assistance Program
         variable: nd_ccap
         parameter_prefix: gov.states.nd.dhs.ccap
-        notes: Models the initial (75% of SMI) and continuing (85% of SMI) income limits, the SMI-band co-payment schedule with the 30%-of-SMI and TANF waivers, and the federal family-share ceiling. Not modeled - the CCAP Workforce Benefit income-limit and co-payment waiver for early-childhood workforce families, and the Diversion and Crossroads co-payment waivers
+        notes: Models the initial (75% of SMI) and continuing (85% of SMI) income limits, the SMI-band co-payment schedule with the 30%-of-SMI and TANF waivers, and the federal family-share ceiling. Also models the Workforce Benefit income-limit and co-payment waiver, Crossroads, Diversion and ARSEN co-payment waivers, and TANF and Diversion co-payment exceptions. From October 2026, when a child who receives SSI in a TANF or Diversion family attends care, the model charges one family co-payment that also covers that child's siblings in care. Not modeled - the income-requirement exemption for TANF and Diversion families, the co-payment waiver they keep after TANF or Diversion closes, Workforce Benefit eligibility for households outside North Dakota, and provider registration fees
       - state: NM
         status: complete
         name: New Mexico CCAP
@@ -984,7 +984,7 @@ programs:
         full_name: South Dakota Child Care Assistance
         variable: sd_cca
         parameter_prefix: gov.states.sd.dss.cca
-        notes: Models the weekly region-based rate schedule effective 2026-08-03 with the billed-expense cap and co-payment, the income and asset tests, the citizen or lawful-permanent-resident child test, and the reason-for-care test. For a child under court supervision or incapable of self-care, the model applies South Dakota's age extension, which raises the age limit from under 13 to under 18, or under 19 while in school. The model pays no benefit before August 2026 because it lacks the earlier hourly county-based schedule.
+        notes: Models the hourly county-based rate schedule effective 2024-07-01 and the weekly region-based rate schedule effective 2026-08-03 with the billed-expense cap and co-payment, the income and asset tests, the citizen or lawful-permanent-resident child test, and the reason-for-care test. For a child under court supervision or incapable of self-care, the model applies South Dakota's age extension, which raises the age limit from under 13 to under 18, or under 19 while in school. The model pays no benefit before July 2024 because earlier rates remain unsourced. When callers omit county, the model uses Aurora County, which can overstate or understate hourly rates. For an unrecognized county, the model uses the lowest hourly rate for each provider type and age group, which can understate rates. The model uses reported care hours for authorized need and leaves out negotiated special-needs rates above the published ceiling. Before August 2026, the model applies the special-needs ceiling only when the caller records DSS approval; from August 2026, it treats a disabled child as having special needs.
       - state: UT
         status: complete
         name: Utah CCAP
@@ -1061,7 +1061,15 @@ programs:
         full_name: Arkansas Low Income Home Energy Assistance Program
         variable: ar_liheap
         parameter_prefix: gov.states.ar.ee.aeo.liheap
-        notes: FY2025-FY2026 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no FY2026 manual was found), and other years are unverified. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2025-FY2026 regular heating matrices and income limits are checked; income rules follow the FFY 2025 manual (no FY2026 manual was found), and other years are unverified. Summer cooling is the separate Arkansas LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
+      - state: AR
+        status: partial
+        name: Arkansas LIHEAP cooling
+        full_name: Arkansas Low Income Home Energy Assistance Program summer regular cooling assistance
+        variable: ar_liheap_cooling
+        parameter_prefix: gov.states.ar.ee.aeo.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 summer regular benefit from the Electricity matrix, paid once per summer on the electric bill or, for unsubsidized renters, through utilities included in rent; the planned FY2027 increase has no posted matrix. Summer crisis and equipment are out of scope.
       - state: AZ
         status: partial
         name: Arizona LIHEAP
@@ -1154,7 +1162,14 @@ programs:
         variable: de_liheap
         parameter_prefix: gov.states.de.dhss.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Crisis, cooling, weatherization and equipment assistance are out of scope.
+        notes: FY2026 regular heating matrix and the subsidized-housing flat award. Summer cooling eligibility is the separate Delaware LIHEAP cooling entry; crisis, weatherization and equipment assistance are out of scope.
+      - state: DE
+        status: partial
+        name: Delaware LIHEAP cooling
+        full_name: Delaware Summer Cooling Assistance Program electric benefit
+        variable: de_liheap_cooling_eligible
+        parameter_prefix: gov.states.de.dhss.liheap.cooling
+        notes: Eligibility only for the flat summer electric benefit, for LIHEAP households that buy their heating or pass the income test with a cooling cost, with a member 60 or older, under 6 or disabled; no amount is modeled because the state divides available funds equally. The State may extend it to every applicant (as HHS data show for FY2023-FY2024; FY2025 served 88 households) and no 2026 decision was found; the breathing-condition route, air conditioners, crisis and weatherization are out of scope.
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
@@ -2203,6 +2218,18 @@ programs:
     coverage: CA
     variable: ca_fera
     parameter_prefix: gov.states.ca.cpuc.fera
+
+  - id: hi_tdi
+    name: Hawaii Temporary Disability Insurance
+    full_name: Hawaii Temporary Disability Insurance employee contribution
+    category: Taxes
+    agency: Hawaii Department of Labor and Industrial Relations
+    status: partial
+    coverage: HI
+    variable: hi_employee_temporary_disability_insurance_contribution
+    parameter_prefix: gov.states.hi.tax.payroll.temporary_disability_insurance
+    verified_start_year: 2004
+    notes: Models the employee contribution as the HRS 392-43(a) limit times the employer's deduction share, which defaults to 1; benefits and employer costs are out of scope.
 
   - id: il_fpp
     name: Illinois Family Planning Program

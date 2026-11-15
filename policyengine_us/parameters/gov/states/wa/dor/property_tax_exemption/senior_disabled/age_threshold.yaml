@@ -1,7 +1,8 @@
-description: Washington sets this minimum age threshold for claimants under the Senior Citizens and Disabled Persons Property Tax Exemption program.
+description: Washington qualifies senior claimants for its senior citizens and disabled persons property tax exemption at this minimum age at collection-year end.
 values:
+  # RCW 84.36.381 requires age 61 by December 31 of the filing year.
+  # Taxes come due in the following year: 61 + 1 = 62 at collection-year end.
   2008-01-01: 62
-  2020-01-01: 61
 
 metadata:
   unit: year
@@ -12,7 +13,13 @@ metadata:
       href: https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.381
     - title: WAC 458-16A-130(2)(a)
       href: https://app.leg.wa.gov/WAC/default.aspx?cite=458-16A-130
-    - title: ESHB 1105, Chapter 332, Laws of 2019 (lowered age from 62 to 61 effective 2020)
-      href: https://lawfilesext.leg.wa.gov/biennium/2019-20/Pdf/Bills/Session%20Laws/House/1105-S2.SL.pdf
+    - title: "2008 c 6 s 706 (2SHB 3104), RCW 84.36.381 #page 84-85"
+      href: https://lawfilesext.leg.wa.gov/biennium/2007-08/Pdf/Bills/Session%20Laws/House/3104-S2.SL.pdf#page=84
+    - title: "2015 3rd sp.s. c 30 ss 2, 4 (SSB 5186) #page 3-4,6"
+      href: https://lawfilesext.leg.wa.gov/biennium/2015-16/Pdf/Bills/Session%20Laws/Senate/5186-S.SL.pdf#page=3
+    - title: "2019 c 453 ss 1, 9 (ESSB 5160) #page 2-3,13"
+      href: https://lawfilesext.leg.wa.gov/biennium/2019-20/Pdf/Bills/Session%20Laws/Senate/5160-S.SL.pdf#page=2
+    - title: "2025 c 200 ss 1, 3 (EHB 1106) #page 2-3,5"
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Session%20Laws/House/1106.SL.pdf#page=2
     - title: Washington DOR Property Tax Exemption for Senior Citizens and People with Disabilities (PT0017)
-      href: https://dor.wa.gov/sites/default/files/2022-02/PTExemption_Senior.pdf
+      href: https://dor.wa.gov/sites/default/files/2022-02/PTExemption_Senior.pdf#page=1

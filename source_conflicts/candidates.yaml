@@ -669,12 +669,18 @@ candidates:
   - kind: guidance
     citation: ACF LIHEAP Clearinghouse 2025 Arkansas matrix
     url: https://liheapch.acf.gov/docs/2025/benefits-matricies/AR_BenefitMatrix_2025.pdf#page=1
+  - kind: plan
+    citation: Arkansas FY2025 LIHEAP State Plan, item 3.6, page 12
+    url: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=12
   readings:
     statute: No statute is supplied; AEO's FY2025 electric matrix uses $242, $288 and $344 at the lowest income
       band.
     other: The clearinghouse matrix uses $202, $240 and $287.
+    plan: Plan item 3.6 estimates FY2025 cooling benefits of $50 to $287; AEO's electric matrix, headed "20% OVER
+      BASE", pays the summer benefit at $60 to $344.
   example: Electric heating, household size 1-2 and income $0-$69 yields $242 under AEO's matrix versus $202 under
-    the clearinghouse matrix.
+    the clearinghouse matrix. In summer 2025, five people with no income receive $344 from AEO's matrix, above
+    plan item 3.6's $287 maximum.
   pe_us:
     follows: unknown
     code:
@@ -683,11 +689,15 @@ candidates:
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/natural_gas.yaml
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/other.yaml
     - policyengine_us/parameters/gov/states/ar/ee/aeo/liheap/payment/matrix/propane.yaml
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/cooling/ar_liheap_cooling.py
     - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/payment/ar_liheap_matrix_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
+    - https://github.com/PolicyEngine/policyengine-us/pull/10744
   state: unreviewed
-  note: 'PE-US follows AEO''s matrix; verify the clearinghouse document''s effective year and possible mislabeling.'
+  note: 'PE-US follows AEO''s matrix for the winter and summer regular benefits; Wayback captures of AEO''s electric
+    matrix from 2024-12-06, 2025-06-15 and 2025-07-25 share one content digest, so it stayed posted through the summer
+    2025 season. Verify the clearinghouse document''s effective year and possible mislabeling.'
 - id: us-ar:liheap-gambling-and-capital-gains
   program: liheap
   years:
@@ -717,6 +727,50 @@ candidates:
   state: unreviewed
   note: 'PE-US follows Appendix F; verify whether its specific inclusions override the general exclusion of nonrecurring
     lump sums.'
+- id: us-ar:liheap-income-limit-above-federal-ceiling
+  program: liheap
+  years:
+    from: 2025
+    to: 2026
+    type: federal-fiscal
+  question: Can Arkansas's whole-dollar monthly LIHEAP limits pay a household whose income exceeds both 150% of the
+    poverty guideline and HHS's 60% state median income amount?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 8624(b)(2)(B)
+    url: https://www.law.cornell.edu/uscode/text/42/8624#b_2_B
+  - kind: guidance
+    citation: HHS LIHEAP IM 2025-02 Attachment 4, Mandatory Use in LIHEAP for FY26, Arkansas, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=1
+  - kind: guidance
+    citation: Arkansas FY2026 LIHEAP Income Eligibility Chart
+    url: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf
+  - kind: guidance
+    citation: Arkansas FY2025 LIHEAP Income Eligibility Chart
+    url: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2025.pdf
+  - kind: guidance
+    citation: HHS LIHEAP IM 2024-02 Attachment 4, Mandatory Use in LIHEAP for FY25, Arkansas, pages 1 and 4
+    url: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=1
+  readings:
+    statute: Payments go only to households whose income does not exceed the greater of 150% of the poverty guideline
+      and 60% of the state median income that HHS publishes and adjusts for household size.
+    other: The charts round each monthly limit to the nearest dollar and add a rounded amount for each member above 20,
+      which puts the limits above the federal maximum at several sizes.
+  example: In FY2026, three people with $45,504 of countable income ($3,792 a month) are within the printed limit and
+    would be paid, but exceed the $45,501 federal maximum and receive $0 in the PR.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ar/ee/aeo/liheap/income/ar_liheap_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10744
+  state: ruled
+  note: 'Ruled under the 2026-10-19 statute-first rule. The PR stops each limit at the federal maximum. Printed and capped
+    annual limits: FY2026 size 2, $36,840 and $36,834; 3, $45,504 and $45,501; 7, $73,128 and $73,126; each even size
+    from 8 to 20, $3 lower ($81,228 and $81,225 at 8); 21, $188,484 and $188,475. FY2025, from HHS''s FY2025 amounts (LIHEAP IM 2024-02
+    Attachment 4): size 1, $27,012 and $27,011; 2,
+    $35,328 and $35,323; 4, $51,948 and $51,946; each odd size from 7 to 19, $6 lower ($71,016 and $71,010 at 7). Other
+    sizes keep the printed amount. Verify each later fiscal-year chart.'
 - id: us-ar:liheap-minor-and-student-earnings
   program: liheap
   years:
@@ -2070,24 +2124,35 @@ candidates:
     enrollee?
   sources:
   - kind: statute
-    citation: C.R.S. 10-16-1205(1)(b)(II)
-    url: null
+    citation: C.R.S. 10-16-1205(1)(b)(II) (2024), PDF page 1002
+    url: https://content.leg.colorado.gov/sites/default/files/images/olls/crs2024-title-10.pdf#page=1002
   - kind: regulation
-    citation: Colorado Reg 4-2-78 §4C
-    url: null
+    citation: Colorado Amended Regulation 4-2-78 (3 CCR 702-4) §4C, effective November 30, 2025, PDF page 2
+    url: https://drive.google.com/file/d/1GkpvQTauvS4hr97_CSfkSEQCnoYjqrJI/view#page=2
   readings:
-    statute: A claimable spouse who does not receive the premium tax credit is excluded.
-    other: A claimable spouse remains in the eligible-enrollee count and subsidy cap.
+    statute: 'The enterprise uses its money "To provide payments to carriers to increase the affordability of health
+      insurance on the individual market for Coloradans who receive the premium tax credit", so a claimable spouse,
+      who receives no credit, is excluded.'
+    other: 'An "Eligible enrollee" is "an individual enrolled in a Qualified Health Plan, whose household income is
+      no greater than 400% of the Federal Poverty Level", so a claimable spouse remains in the eligible-enrollee count
+      and subsidy cap.'
   example: A joint couple aged 30 with one claimable spouse and 2026 MAGI of $23,475 receives $960 under the statute
     versus $1,308 under the regulation.
   pe_us:
     follows: statute
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/co/doi/premium_assistance/co_premium_assistance.py
+    - policyengine_us/variables/gov/aca/eligibility/is_aca_ptc_eligible_before_premium.py
+    - policyengine_us/variables/gov/aca/slspc/aca_ptc_slcsp.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10041
   state: ruled
-  note: 'Ruled in October 2026 to follow the statute; verify the applicable regulation version. Code not yet on
-    main: co premium assistance formula, aca_ptc_slcsp.'
+  note: 'Ruled in October 2026 to follow the statute. The code is in PR 10041, not yet on main.
+    co_premium_assistance.py counts the members eligible for the federal credit, which requires tax-family
+    membership (is_aca_ptc_eligible_before_premium.py), and caps the subsidy at the coverage family''s benchmark
+    (aca_ptc_slcsp.py) less the federal credit. The regulation text is the amended version linked from the Division
+    of Insurance''s adoption notice of September 29, 2025, effective November 30, 2025; its Section 2 sets standards
+    for "including payments to carriers pursuant to" 10-16-1205(1)(b)(II).'
 - id: us-ct:abd-spouse-income-hearing-decision
   program: medicaid
   years:
@@ -2442,6 +2507,45 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-cooling-heating-bill
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does the Delaware Summer Cooling Assistance electric benefit need a purchased source of heating or cooling,
+    as the manual's SCAP chart provides (plan item 3.3 sets no different cooling policy for renters), or responsibility
+    for a heating bill, as manual section 415 provides?
+  sources:
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, SCAP eligibility chart (final, 2/24/2015), PDF page 100
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=100
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, item 3.3, PDF page 12
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=12
+  - kind: plan
+    citation: Delaware FY2027 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=11
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, section 415, PDF page 32
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=32
+  readings:
+    statute: No statute is supplied; the SCAP chart's LIHEAP eligibility is "Purchase Source of Heating or Cooling", and
+      plan 3.3 sets no different cooling policy for subsidized renters or renters with utilities in the rent.
+    other: Section 415 says "applicants must be responsible for paying a heating bill in order to receive assistance for
+      heating, crisis and cooling electric".
+  example: One person aged 70 in public housing with $14,000 of Social Security, heat in the rent and a cooling cost is
+    eligible under the chart and the plan, and ineligible under section 415.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/cooling/de_liheap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10762
+  state: ruled
+  note: 'Ruled 2026-11-12 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/10762#issuecomment-6837369871. Follow the plan and the SCAP chart.
+    us-de:liheap-plan-income-checklist follows the manual over the plan''s checklist; here the manual itself is split
+    between section 415 and its own chart, and the plan sides with the chart.'
 - id: us-de:liheap-income-floor-vs-smi-limit
   program: liheap
   years:
@@ -2465,13 +2569,14 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_eligible.py
+    - policyengine_us/variables/gov/states/de/dhss/liheap/eligibility/de_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/de/dhss/liheap/eligibility/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10612
+    - https://github.com/PolicyEngine/policyengine-us/pull/10762
   state: unreviewed
-  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_eligible.py).
+  note: PE-US applies the floor, rounded to cents with the statute's strict "less than" (de_liheap_income_eligible.py).
 - id: us-de:liheap-plan-income-checklist
   program: liheap
   years:
@@ -3289,6 +3394,101 @@ candidates:
     prs: []
   state: unreviewed
   note: PE-US follows state rules; verify their effective text throughout the historical periods.
+- id: us-hi:tdi-wage-base-rounded-average
+  program: hi-tdi
+  years:
+    from: 2004
+    type: calendar
+  question: Does Hawaii's temporary disability insurance maximum weekly wage base start from the State's average annual
+    wage rounded to the nearest hundred dollars, as HRS 383-61(b) computes it, or from the average before rounding, as
+    DLIR's yearly notices do?
+  sources:
+  - kind: statute
+    citation: HRS 392-43(b)(2), which takes one fifty-second of the average annual wage determined pursuant to section
+      383-61(b), times 1.21
+    url: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0043.htm
+  - kind: statute
+    citation: HRS 383-61(b), which computes the average annual wage and rounds it to the nearest hundred dollars
+    url: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0061.htm
+  - kind: agency-practice
+    citation: Hawaii DLIR Disability Compensation Division, 2026 maximum weekly wage base notice (and each notice from
+      2003 to 2025), dividing the unrounded average by 52
+    url: https://labor.hawaii.gov/dcd/files/2025/12/2026-Maximum-Weekly-Wage-Base.pdf
+  - kind: agency-practice
+    citation: Hawaii DLIR Unemployment Insurance Division, taxable wage bases for 2003 to 2026 (this page from 2020, the
+      December 2019 trust fund evaluation before), each the same average rounded to the nearest hundred dollars, except
+      2010 and 2011, at 90% of the average rounded again to $100, which fits either reading, and the fixed $13,000 of 2008
+      and 2009
+    url: https://labor.hawaii.gov/ui/tax-rate-schedule-and-weekly-benefit-amount/
+  readings:
+    statute: HRS 383-61(b) sets out how to compute the average annual wage, and the computation ends by rounding to the
+      nearest hundred dollars. HRS 392-43(b)(2) takes the average as that subsection determines it, so the base is the
+      rounded average times 1.21 / 52. DLIR's own determination under 383-61(b), the unemployment insurance wage base,
+      is the rounded figure.
+    other: DLIR's temporary disability insurance notices divide the average before rounding by 52 and multiply by 1.21,
+      so each published base runs from 1.15 below to 0.84 above the statutory one.
+  example: For 2026, the notice's average of $64,471.82 gives a published base of $1,500.21; rounded to $64,500 it gives
+    $1,500.87. A worker paid $100,000 contributes 0.5% of 52 weeks at the base, $390.23 under the statute against $390.05
+    under the notice.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/hi/tax/payroll/temporary_disability_insurance/maximum_weekly_wage_base.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10677
+  state: ruled
+  note: Definitions control, and the text settles the reading, so the agency-breaks-ties principle doesn't reach it. The
+    same reading of HRS 383-61(b) decides us-hi:ui-taxable-wage-base-2010-rounding (PolicyEngine/policyengine-us#10770).
+    Within the formula the parameter rounds once to the cent, because HRS 392-43(b)(2) sets no intermediate rounding.
+    Short excerpts are in source_conflicts/sources/us-hi/.
+- id: us-hi:tdi-wages-salary-reductions
+  program: hi-tdi
+  years:
+    from: 2004
+    type: calendar
+  question: Do amounts an employer pays into a retirement or medical plan out of an employee's salary count as wages for
+    Hawaii's temporary disability insurance contribution, and do dependent care benefits?
+  sources:
+  - kind: statute
+    citation: HRS 392-3 (wages), adopting HRS 383-11(1)(A), (1)(C), (4)(A) and (5)
+    url: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0011.htm
+  - kind: regulation
+    citation: HAR 12-11-1, which takes wages from HRS 392-3
+    url: https://labor.hawaii.gov/dcd/files/2012/11/TDI-Admin-Rules.pdf#page=5
+  - kind: regulation
+    citation: HAR 12-11-47(a), on pay in kind given rather than deducted from money wages
+    url: https://labor.hawaii.gov/dcd/files/2012/11/TDI-Admin-Rules.pdf#page=17
+  - kind: guidance
+    citation: Hawaii DLIR Unemployment Insurance Division, Handbook for Employers, on the wages that chapter 383 reaches
+    url: https://labor.hawaii.gov/ui/test-handbook-for-employers/
+  - kind: statute
+    citation: IRC 3306(b)(5)(D), (b)(5)(G), (b)(13) and (r)(1), the federal comparison
+    url: https://www.law.cornell.edu/uscode/text/26/3306
+  readings:
+    statute: A salary-reduction amount the employer pays under a medical or retirement plan, or to a section 401(a) trust,
+      is a listed payment, so it falls outside wages. HRS 383-11(5) limits one paragraph to payments without a deduction
+      from pay, and paragraphs (1) and (4) carry no such limit. The list names no dependent care payment, so those benefits
+      stay in wages.
+    other: The federal payroll wage base keeps 401(k) deferrals in through IRC 3306(r)(1)(A) and 403(b) salary reductions
+      in through 3306(b)(5)(D), and takes cafeteria-plan amounts and dependent care out through 3306(b)(5)(G) and (b)(13).
+      Hawaii enacted none of these. A second alternative treats every salary reduction as the employee's own remuneration,
+      so all of it stays in wages. The rules address pay in kind but name no plan contribution or salary reduction. The
+      handbook lists payments to welfare plans among its exclusions but doesn't address salary reductions.
+  example: In 2026, $60,000 of salary with a $4,000 traditional 401(k) deferral gives a $280 contribution under the statute,
+    versus $300 on the federal base. $60,000 with $5,000 of dependent care benefits gives $300, versus $275 on the federal
+    base.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/hi/tax/payroll/temporary_disability_insurance/excluded_payments.yaml
+    - policyengine_us/variables/gov/states/hi/tax/payroll/temporary_disability_insurance/hi_temporary_disability_insurance_wages.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10677
+  state: ruled
+  note: The code follows the statute's text because we found no agency reading of salary reductions in the temporary
+    disability rules, the unemployment insurance rules (HAR 12-5) or the employer handbook. A published agency reading
+    would reopen this under the agency-breaks-ties principle if the text leaves the question open. Short excerpts are
+    in source_conflicts/sources/us-hi/.
 - id: us-ia:alternate-tax-claimed-spouse
   program: income-tax
   years:
@@ -6061,6 +6261,70 @@ candidates:
     prs: []
   state: unreviewed
   note: Establish the guidance's statutory basis and reconcile M1SA with M1REF.
+- id: us-mn:wagering-losses-itemized-limitation-exclusion
+  program: income-tax
+  years:
+    from: 2019
+    to: 2025
+    type: tax
+  question: Does Minnesota exclude wagering losses from its itemized deduction limitation when Schedule M1SA protects only medical expenses, investment interest, and casualty losses?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.0122, subd. 2(d)(3) and 8; subd. 2(c)(3) before 2023
+    url: https://www.revisor.mn.gov/statutes/cite/290.0122
+  - kind: statute
+    citation: 1Sp2019 c 6 art 1 s 16, subd. 2(c)(3), subd. 8, and effective date
+    url: https://www.revisor.mn.gov/laws/2019/1/6/#laws.1.16.0
+  - kind: statute
+    citation: 1Sp2021 c 14 art 1 s 7, subd. 8 and effective date
+    url: https://www.revisor.mn.gov/laws/2021/1/14/#laws.1.7.0
+  - kind: statute
+    citation: 2023 c 64 art 1 s 18, subd. 2(d)(3) and effective date
+    url: https://www.revisor.mn.gov/laws/2023/0/64/#laws.1.18.0
+  - kind: instructions
+    citation: 2019 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_19.pdf#page=7
+  - kind: instructions
+    citation: 2020 Schedule M1SA, line 24, PDF p. 7, and Worksheet for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_20.pdf#page=8
+  - kind: instructions
+    citation: 2021 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1sa_21.pdf#page=7
+  - kind: instructions
+    citation: 2022 Schedule M1SA, line 24 and Worksheet for Line 26, PDF p. 7
+    url: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_22.pdf#page=7
+  - kind: instructions
+    citation: 2023 Schedule M1SA, line 24 and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-23.pdf#page=8
+  - kind: instructions
+    citation: 2024 Schedule M1SA, line 24 and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1sa-24.pdf#page=8
+  - kind: instructions
+    citation: 2025 Schedule M1SA, line 24, PDF p. 7, and Worksheets A and B for Line 26, PDF p. 8
+    url: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-25_0.pdf#page=8
+  - kind: instructions
+    citation: 2026 Schedule M1SA final draft dated November 4, 2026, line 26 and Worksheets A and B for Line 28, PDF p. 9
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-11/m1sa-26.pdf#page=9
+  readings:
+    statute: Taxpayers exclude all subdivision 8 losses, including wagering losses under IRC 165(d), from the deductions subject to the limitation.
+    other: Taxpayers enter gambling losses on line 24, but exclude only lines 4, 13, and 19 when computing the limitation, so they reduce gambling deductions with other unprotected deductions.
+  example: A 2023 filer with $2,000,000 of AGI, $50,000 of allowable wagering losses, and no other itemized deductions retains $50,000 under the statute. Under Worksheet B, the filer subtracts 80% of $50,000, or $40,000, and retains $10,000.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py
+    - policyengine_us/reforms/states/mn/walz/mn_walz_hf1938.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10070
+  state: ruled
+  note: >-
+    The Legislature enacted both the limitation exclusion and the wagering deduction for tax years beginning after December 31, 2018.
+    In 2021, the Legislature rewrote subdivision 8 while retaining wagering losses; that amendment took effect July 2, 2021.
+    In 2023, the Legislature moved the exclusion from paragraph (c)(3) to (d)(3), effective for tax years beginning after December 31, 2022.
+    We confirmed every final M1SA from 2019 through 2025; no year in that range remained unreachable.
+    The Department has published a 2026 final draft, which moves gambling losses to line 26 and protects only lines 4, 13, and 22 in the line 28 worksheets.
+    We exclude 2026 from the years above because the Department still labels that form a draft.
+    The baseline excludes wagering_losses_deduction at mn_itemized_deductions.py lines 68 and 71; the Walz reform does so at mn_walz_hf1938.py lines 136 and 139.
 - id: us-mo:claim-of-right-federal-tax-deduction
   program: income-tax
   years:
@@ -7174,6 +7438,55 @@ candidates:
     Montana AGI (Itemized Deductions Schedule line 1b), and from 2024 the federal floor on federal AGI applies (mt_medical_expense_deduction_joint.py,
     itemized/state_specific_deduction_applies.yaml); the joint standard deduction also uses pooled Montana AGI (mt_standard_deduction_joint.py).
     Verify the incorporated federal provision against the form''s AGI choice.'
+- id: us-mt:surviving-spouse-standard-deduction
+  program: income-tax
+  years:
+    from: 2018
+    to: 2020
+    type: tax
+  question: Does a federal qualifying widow or widower receive Montana's single standard deduction under the
+    federal head-of-household eligibility condition, or the doubled deduction through the department's head-of-household
+    instructions?
+  sources:
+  - kind: statute
+    citation: MCA 15-30-2132(1), 2017
+    url: https://mca.legmt.gov/bills/2017/mca/title_0150/chapter_0300/part_0210/section_0320/0150-0300-0210-0320.html
+  - kind: statute
+    citation: MCA 15-30-2132(1), 2019
+    url: https://mca.legmt.gov/bills/2019/mca/title_0150/chapter_0300/part_0210/section_0320/0150-0300-0210-0320.html
+  - kind: statute
+    citation: 26 USC 2(b)(1), 2017 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2017-title26/html/USCODE-2017-title26-subtitleA-chap1-subchapA-partI-sec2.htm
+  - kind: instructions
+    citation: 2018 Montana Form 2 instructions, Head of Household, PDF page 11
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2018_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=11
+  - kind: instructions
+    citation: 2019 Montana Form 2 instructions, Head of Household, PDF page 10
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2019_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=10
+  - kind: instructions
+    citation: 2020 Montana Form 2 instructions, Head of Household, PDF page 10
+    url: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2020_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=10
+  readings:
+    statute: A surviving spouse under 26 USC 2(a) cannot qualify for federal head-of-household filing under
+      2(b)(1). Montana therefore applies the single standard deduction unless the taxpayer files a married
+      joint return.
+    other: The department generally permits federal qualifying widows and widowers to use Montana head-of-household
+      filing, giving them twice the single standard deduction limits.
+  example: A 2018 federal qualifying widow with Montana AGI of $100,000 receives a $4,580 standard deduction
+    under the statute and $9,160 under the head-of-household reading.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/mt/tax/income/deductions/standard/cap.yaml
+    - policyengine_us/parameters/gov/states/mt/tax/income/deductions/standard/floor.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10847
+  state: ruled
+  note: PolicyEngine retains single standard deduction limits for SURVIVING_SPOUSE in 2018-2020. The 2017
+    booklet does not contain the qualifying-widow allowance. The operative excerpts and context summaries
+    are captured under source_conflicts/sources/us-mt/ in the surviving-spouse files. The historical YAML
+    cases compare the single and doubled limits at both deduction boundaries. Federal-tax and senior-interest
+    limits do not differ between single and head-of-household filing.
 - id: us-nc:lieap-gross-versus-net-income
   program: liheap
   years:
@@ -10797,6 +11110,100 @@ candidates:
   note: The regulation governs. The model deducts each payer's support from that payer's earned income after the
     section 8.12 disregards, then unearned income, never below zero. Because 114-1140(L) covers any budget group
     member, a dependent child's support comes off the child's unearned income.
+- id: us-sc:tanf-current-self-employment-loss-offset
+  program: tanf
+  years:
+    from: 2026
+    type: federal-fiscal
+  question: When a South Carolina TANF benefit group member has a current net loss from self-employment or farming,
+    or from rent, a partnership or S corporation, capital, or a trust or estate, does the loss reduce the other income
+    the group counts, or does it count as zero?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1150(A), (B)(3), (B)(4), (C) and (E)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=217
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 sections 7.1, 7.7, 8.9, 8.12 and 8.16
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=102
+  - kind: instructions
+    citation: 2025 IRS Instructions for Schedule C, Line 31
+    url: https://www.irs.gov/pub/irs-prior/i1040sc--2025.pdf#page=14
+  readings:
+    statute: No statute is supplied. 114-1150(B)(3) defines self-employment earned income as "the total profit from
+      a business enterprise, farming, etc.", determined "using Internal Revenue Service methods", and Schedule C line
+      31 reports a net profit or a loss. On one reading that signed result carries through the disregard in section
+      8.16 C and the sum in 8.16 E, so a current loss reduces the other income the group counts.
+    other: Section 7.1 says "Income is money received by a BG member (s) from any source", and section 8.9 calls
+      self-employment income "the total profit from a business enterprise". On the other reading a loss is no income,
+      so it counts as zero and reduces nothing. Section 8.9 item 7 B bars "Net losses from previous providers" as a
+      business cost.
+  example: Adult A receives $1,000 a month of alimony and adult B has a $1,200 monthly self-employment loss, with
+    one child and a need standard of $1,110. In January 2026 the model halves the loss, counts 1,000 - 600 = $400 and
+    pays floor(710 x 0.4046) = $287. In May 2026 it sets the loss to zero, counts $1,000 and pays floor(110 x 0.4046)
+    = $44.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_earned_income_person.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_countable_income.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_gross_income.py
+    - policyengine_us/variables/gov/states/sc/tanf/income/sc_tanf_gross_unearned_income.py
+    - policyengine_us/parameters/gov/states/sc/tanf/income/unearned/positive_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10184
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: open
+  note: Neither source names a current loss, an offset between members or a floor at zero, so both readings
+    interpret silent texts. The model applies each reading on a different path. In the months it gives the
+    fifty-percent disregard (January to April, a calendar proxy), sc_tanf_countable_earned_income_person.py halves a
+    self-employment or farm loss and sc_tanf_countable_income.py adds the negative result to the group's other income.
+    In the $100-disregard months (May to December) the same formula takes max(earned income - 100, 0), so the same
+    loss counts as zero. In May 2026 the example household counts $1,000 and receives $44, against $400 and $287 in
+    January. In every month sc_tanf_gross_income.py adds the whole signed loss for the gross income test, where the
+    example household has -$200. positive_sources.yaml counts capital gains, rental, farm rent, partnership and S
+    corporation, estate and miscellaneous income only when positive, citing section 7.1, and
+    sc_tanf_gross_unearned_income.py stops interest and dividends at zero. If B's loss came from a partnership, the
+    example household would count $1,000 and receive $44 in both months. Section 7.7 counts rent as self-employment
+    when the member manages the property 20 or more hours a week, and the model counts all rental_income as unearned.
+    integration.yaml Cases 35, 36 and 38 pin the January results and Case 39 the May result, and
+    sc_tanf_gross_unearned_income.yaml Cases 12, 13 and 15 to 18 pin the unearned floors. An answer should cover each
+    path and say whether a fifty-percent month counts half the loss or all of it. Counting all of it gives the example
+    household -$200 of countable income and the $449 payment standard.
+- id: us-sc:tanf-dependent-child-school-level
+  program: tanf
+  years:
+    from: 2025
+    type: federal-fiscal
+  question: Can an eighteen-year-old full-time primary-school student qualify as a South Carolina TANF dependent child,
+    or must the student attend secondary school or an equivalent level of vocational or technical training?
+  sources:
+  - kind: regulation
+    citation: S.C. Code Regs. 114-1130(E)
+    url: https://www.scstatehouse.gov/coderegs/Chapter%20114.pdf#page=204
+  - kind: manual
+    citation: SC DSS TANF Policy Manual Vol. 67 section 4.10
+    url: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=75
+  readings:
+    statute: No statute is supplied; 114-1130(E) permits the extension from under eighteen to under nineteen only for
+      full-time students in secondary school or an equivalent level of vocational or technical training.
+    other: Section 4.10 permits full-time primary-school students, as well as secondary-school students, to receive
+      benefits until age nineteen.
+  example: An eighteen-year-old full-time primary-school student who does not head the household fails the regulation's
+    dependent-child age test and passes the manual's. An otherwise identical secondary-school student passes both.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sc/tanf/sc_tanf_dependent_child.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10581
+    - https://github.com/PolicyEngine/policyengine-us/pull/10829
+  state: ruled
+  note: The regulation governs. The model uses is_in_secondary_school, which includes equivalent-level training, for
+    the under-nineteen extension. This entry addresses school level only; it does not resolve the manual's unmarried
+    condition or change the model's head-of-household inference. Volume 65, effective October 1, 2024, has the same
+    section 4.10 text as Volume 67 (https://dss.sc.gov/media/ojqddxsk/tanf-policy-manual-volume-65.pdf#page=74), so
+    the difference dates from fiscal 2025 at the latest.
 - id: us-sc:tanf-gross-income-limit-cents
   program: tanf
   years:
@@ -11713,32 +12120,43 @@ candidates:
 - id: us-tx:msp-spouse-deeming-allowance
   program: medicare-savings-programs
   years:
-    from: 2026
+    from: 2025
     type: calendar
   question: When Texas deems an ineligible spouse's income for the Medicare Savings Programs, is the deeming threshold,
     and each ineligible child's allocation, MEPD Appendix XXIX's program-specific living allowance ($474 for QMB, $568
-    for SLMB and $639 for QI-1 in 2026) or SSI's $497 difference between the couple and individual benefit rates?
+    for SLMB and $639 for QI-1 in 2026; $458, $550 and $619 in 2025) or SSI's difference between the couple and
+    individual benefit rates ($497 in 2026; $483 in 2025)?
   sources:
   - kind: statute
     citation: 42 U.S.C. 1396d(p)(1)(B)
     url: https://www.law.cornell.edu/uscode/text/42/1396d
+  - kind: statute
+    citation: 42 U.S.C. 1396a(r)(2)(A)
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#r_2
   - kind: regulation
     citation: 20 CFR 416.1163(b)(1) and (d)
     url: https://www.law.cornell.edu/cfr/text/20/416.1163
   - kind: manual
     citation: Texas MEPD Handbook, Appendix XXIX (Rev. 26-2)
     url: https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxix-special-deeming-eligibility-test-spouse-spouse
+  - kind: manual
+    citation: Texas MEPD Handbook, Revision 25-2 (archived), Appendix XXIX
+    url: https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-25-2.pdf#page=488
   readings:
     statute: 'Section 1396d(p)(1)(B) measures income "as determined under section 1382a of this title for purposes of
       the supplemental security income program". 20 CFR 416.1163(b)(1) sets each ineligible child''s allocation at "the
       difference between the Federal benefit rate for an eligible couple and the Federal benefit rate for an eligible
       individual", and (d) deems nothing from a spouse whose income after allocations "is not more than" that
-      difference: $1,491 - $994 = $497 a month in 2026, the same for every program.'
+      difference: $1,491 - $994 = $497 a month in 2026 and $1,450 - $967 = $483 in 2025, the same for every program.
+      Section 1396a(r)(2)(A) says the methodology for individuals "under section 1396d(p) of this title may be less
+      restrictive, and shall be no more restrictive, than the methodology" of the supplemental security income program
+      for aged, blind or disabled groups.'
     other: 'Appendix XXIX (Rev. 26-2, information effective March 1, 2026) gives a "Program-Specific Living Allowance
       Allocation: Community MEPD $497,CAS $497, QMB $474,SLMB $568, QI-1 $639", deducts it for each ineligible child
       (step 3), deems nothing when the spouse''s remaining income "is no more than the program- specific living
       allowance" (step 4a), and tells the worker to "re-budget for SLMB or QI-1 if applicable" when an applicant who
-      passes the QMB pretest fails QMB in the deeming test (step 8).'
+      passes the QMB pretest fails QMB in the deeming test (step 8). Revision 25-2 (information effective March 1,
+      2025) has the same steps with 2025 amounts: "Community MEPD $483, CAS $483, QMB $458, SLMB $550, QI-1 $619".'
   example: A Texas applicant, 68, on Medicare with $1,340 a month and a spouse, 50, with $497 a month is QMB under the
     regulation, because $497 is not more than $497, so nothing is deemed and $1,320 is within the one-person $1,330.
     Under Appendix XXIX, $497 is above $474, so it is deemed for QMB, and $1,340 + $497 - $20 = $1,817 is above the
@@ -12680,7 +13098,7 @@ candidates:
     type: program
     note: property tax collection year (taxes levied for collection in that year)
   question: Before collection year 2016, does RCW 84.36.381(3)(b)'s "one hundred percent service-connected disability
-    as provided in 42 U.S.C. Sec. 423(d)(1)(A)" mean a disability wholly connected to service under Social Security's
+    as provided in 42 U.S.C. Sec. 423 (d)(1)(A)" mean a disability wholly connected to service under Social Security's
     definition, or a 100% VA rating?
   sources:
   - kind: statute
@@ -12692,6 +13110,9 @@ candidates:
   - kind: statute
     citation: 42 U.S.C. 423(d)(1)(A) (Social Security Act 223(d)(1)(A))
     url: https://www.ssa.gov/OP_Home/ssact/title02/0223.htm
+  - kind: statute
+    citation: 42 U.S.C. 423(a), (d)(1)(A), 2004 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2004-title42/pdf/USCODE-2004-title42-chap7-subchapII-sec423.pdf#page=1
   readings:
     statute: A disability that meets Social Security's definition in 42 U.S.C. 423(d)(1)(A) and is wholly connected
       to service; the cross-reference names that definition, and the 2016 amendment's move to VA-rating language marks
@@ -12711,7 +13132,8 @@ candidates:
   note: PolicyEngine ruled on 2026-10-21 for the Social Security reading. The model has no service-connection input,
     so wa_pte_wholly_service_connected_disability defaults to is_disabled (or is_fully_disabled_service_connected_veteran)
     as an overridable proxy, read together with is_veteran in wa_pte_categorical_eligible; it over-includes a veteran
-    whose disability is not service-connected.
+    whose disability is not service-connected. SSDI receipt requires insured status and an application under
+    42 U.S.C. 423(a); Washington imports only the disability definition.
 - id: us-wi:age-65-exemption-claimable-filer
   program: income-tax
   years:
@@ -14022,6 +14444,48 @@ candidates:
     zero and kept apart from the passive basket, so these royalties count although Worksheet 1 line 8 reads only Schedule
     E line 23b. Where rental real estate goes is a separate reading (us:eitc-rental-real-estate-basket). Register the
     entry and add the marker once #10297 is on main.
+- id: us:exchange-tax-filer-claimable-spouse
+  program: premium-tax-credit
+  years:
+    from: 2014
+    type: tax
+  question: When another taxpayer can claim one spouse on a joint return, is the other spouse eligible for advance
+    payments of the premium tax credit, as for the annual credit, or is the couple not an Exchange "tax filer", so
+    that neither spouse is?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 36B(c)(1)(D)
+    url: https://www.law.cornell.edu/uscode/text/26/36B#c_1_D
+  - kind: regulation
+    citation: 26 CFR 1.36B-1(d)(2)
+    url: https://www.ecfr.gov/current/title-26/section-1.36B-1
+  - kind: regulation
+    citation: 45 CFR 155.300(a), "Tax filer"
+    url: https://www.ecfr.gov/current/title-45/section-155.300
+  readings:
+    statute: '"No credit shall be allowed under this section to any individual with respect to whom a deduction under
+      section 151 is allowable to another taxpayer", and the family is "the taxpayer, including both spouses in the
+      case of a joint return, except for individuals who qualify as a dependent of another taxpayer under section
+      152", so only the claimable spouse leaves the family and the other spouse stays eligible.'
+    other: 'A tax filer is "an individual, or a married couple, who indicates that he, she or they expects" "That no
+      other taxpayer will be able to claim him, her or them as a tax dependent for the benefit year". Read as either
+      spouse, a couple with one claimable spouse is not a tax filer, and the Exchange finds neither spouse eligible
+      for advance payments.'
+  example: A 2026 joint couple aged 30 with one claimable spouse, MAGI of $23,475 and a $500 monthly benchmark for
+    each spouse has a $5,016.40 credit for the other spouse. Under the couple reading none of it is paid in advance,
+    and a state program that requires advance-payment eligibility pays nothing.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/aca/eligibility/is_aca_tax_family_member.py
+    - policyengine_us/variables/gov/aca/eligibility/is_aca_ptc_eligible_before_premium.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10041
+  state: unreviewed
+  note: 'PE-US applies the per-spouse rule of 26 CFR 1.36B-1(d)(2) and Form 8962 line 1 to both the annual credit and
+    advance-payment eligibility, so the state premium programs that require advance-payment eligibility follow it
+    too. 45 CFR 155.305(f)(1)(ii) refers to "a member of the tax filer''s family within the meaning of 26 CFR
+    1.36B-1(d)". Reading 3 of the PR 10041 description; not yet put to the project lead. The code is not yet on main.'
 - id: us:filing-chart-a-blindness-and-equality
   program: income-tax
   years:
@@ -14172,7 +14636,7 @@ candidates:
   state: unreviewed
   note: 'PE-US follows IRS practice: projections after the published limits use 12-month windows ending March 31,
     except the 2016 C-CPI-U-to-CPI ratio, which keeps the window ending August 31, and the docstring says these
-    windows reproduce every published 2019-2027 limit (get_hsa_cola and extend_hsa_contribution_limits in uprating_extensions.py,
+    windows reproduce every published 2019-2027 limit (get_hsa_cola and set_hsa_c_cpi_u_index in uprating_extensions.py,
     limit/self_only.yaml, limit/family.yaml). The statute-first rule requires changing conflicting projections;
     verify the statutory window substitution first, and preserve the distinction from published limits fixed through
     2027.'
@@ -14270,6 +14734,51 @@ candidates:
     Massachusetts, Maryland, Michigan, Nebraska, Vermont and Wisconsin in medically needy. The stricter result arises
     only in a narrow band, for example a spouse''s income between $473 and $497 a month against poverty-level
     standards. Ruled by the project lead, 2026-11-10: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6812820779'
+- id: us:long-term-care-premium-index-adjustment
+  program: income-tax
+  years:
+    from: 2018
+    type: tax
+  question: Which adjustment prescribed under section 213(d)(10)(B)(ii), if any, explains the published long-term care
+    premium limits, and does it support the model's August-2016 medical-component conversion beyond the stated IRS tables?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 213(d)(10)(A)-(B)
+    url: https://uscode.house.gov/us/usc/119-120/t26/s213/
+  - kind: statute
+    citation: 26 U.S.C. 1(f)(3)(B), (4), (6)
+    url: https://uscode.house.gov/us/usc/119-120/t26/s1/
+  - kind: guidance
+    citation: Rev. Proc. 2017-58, section 3.26
+    url: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=17
+  - kind: guidance
+    citation: Rev. Proc. 2026-35, section 3.29
+    url: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=17
+  readings:
+    statute: Section 213(d)(10)(B) compares the preceding August's medical C-CPI-U with the August-1996 medical CPI
+      multiplied by section 1(f)(3)(B)'s all-items 2016 conversion, and rounds the increase to the nearest $10.
+      The Secretary, in consultation with the Secretary of Health and Human Services, must prescribe a replacement
+      adjustment if the Secretary determines it more appropriate; that adjustment replaces the default.
+    other: The IRS gives annual limits in the revenue procedures. Those tables establish the stated amounts but do
+      not identify the model's medical-component August-2016 conversion or its future growth method as a prescribed adjustment.
+    unresolved: The model's conversion reproduces the five 2027 limits, while the back-test records differences in
+      earlier years. That agreement does not establish which exact adjustment the Secretary prescribed, if any,
+      or which conversion, window and publication vintage should govern projections beyond the stated tables.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/irs/indexing/medical_care_c_cpi_u.yaml
+    - policyengine_us/parameters/uprating_extensions.py
+    - policyengine_us/parameters/gov/irs/deductions/itemized/medical/long_term_care_premium_limit.yaml
+    - policyengine_us/tests/core/test_base_mode_uprating.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10783
+  state: open
+  note: The model retains the stated annual IRS limits. It normalizes the index with the medical components'
+    August-2016 ratio and projects future growth with CBO's calendar-year unchained medical CPI, two distinct
+    modeling assumptions. The back-test also covers years before 2018; those differences may need separate explanations.
+    The applicable agency prescription remains unresolved, with no confirmed incorrect IRS or model outcome.
+    This entry changes no parameter values and leaves the full-country, all-parameter, Trustees-parity and full-CI merge holds in force.
 - id: us:mortgage-interest-limit-ratio-rounding
   program: income-tax
   years:
@@ -14779,6 +15288,79 @@ candidates:
     which counts any SSI receipt among the benefits in gov.usda.disabled_programs (is_snap_alien_waiting_period_exempt.py,
     is_usda_disabled.py, disabled_programs.yaml). The statute-first rule requires revising the any-SSI exemption
     if the narrower reading holds; first check the cross-referenced disability definition and the preamble''s scope.'
+- id: us:ssi-parent-allowance-state-supplement
+  program: ssi
+  years:
+    from: 2026
+    type: calendar
+  question: When a lone aged, blind or disabled parent, or two such parents on a joint claim, are ineligible because of
+    excess income, is the parents' allowance before deeming to a child the Federal benefit rate alone, or the Federal
+    benefit rate plus the federally administered State supplement?
+  sources:
+  - kind: regulation
+    citation: 20 CFR 416.1165(d)(3)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1165
+  - kind: regulation
+    citation: 20 CFR 416.1166
+    url: https://www.law.cornell.edu/cfr/text/20/416.1166
+  - kind: manual
+    citation: POMS SI 01320.630 B.1
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320630
+  readings:
+    statute: '416.1165(d)(3) subtracts "(i) The Federal benefit rate for the month for a couple if both parents live with
+      you; or (ii) The Federal benefit rate for the month for an individual if only one parent lives with you." The
+      section names a State supplement only in (e)(3), for the child''s own benefit. 416.1166 adds that "For the purpose
+      of this section, SSI benefits include any federally administered State supplement", which covers a parent with an
+      ineligible spouse.'
+    other: 'POMS SI 01320.630 B.1, for parents who filed for SSI and are ineligible because of excess income: "Only the
+      countable income in excess of what is required to reduce the parents'' FBR and any Federally-administered State
+      supplement to zero is available for deeming."'
+  example: In California in 2026, a lone disabled parent with a $60,000 pension and a disabled child deems 59,760 - 11,928
+    = $47,832 a year under the regulation and 59,760 - (11,928 + 239.94 x 12) = $44,952.72 under the POMS. In the model
+    the readings differ only in California, New Jersey and Vermont, whose federally administered supplements reach a
+    parent at home in every category; under the POMS reading, Nevada's and Iowa's supplements at home would also count
+    for some parents.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/ssi_ineligible_parent_allocation.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10630
+  state: ruled
+  note: "Follows the POMS, which avoids a jump in deemed income where a parent's income passes the federal rate plus the
+    supplement. Ruled by the project lead, 2026-11-12: https://github.com/PolicyEngine/policyengine-us/pull/10630#issuecomment-6840530008.
+    2026 is the year checked; the POMS text is TN 49 (10/2024)."
+- id: us:ssi-parental-child-allocation-order
+  program: ssi
+  years:
+    from: 2026
+    to: 2026
+    type: calendar
+  question: For a parent ineligible because of excess income, does the ineligible-child allocation come off the parent's
+    income before the income exclusions and the parent allocation, or off the excess over the parent's benefit rate?
+  sources:
+  - kind: regulation
+    citation: 20 CFR 416.1165(b), (d)
+    url: https://www.law.cornell.edu/cfr/text/20/416.1165
+  - kind: manual
+    citation: POMS SI 01320.630 B.1-2
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501320630
+  readings:
+    statute: 416.1165(b) says "We next deduct an allocation for each ineligible child in the household", and only then
+      does 416.1165(d) apply the $20, the $65 plus one-half and the benefit rate.
+    other: 'SI 01320.630 B.2 says "From the amount in excess of what is required to reduce the individual''s (parent)
+      or couple''s (both parents) payment to zero, subtract an allocation for each ineligible child."'
+  example: In 2026 an aged parent with $4,000 of monthly wages, a disabled child and a non-disabled child deems $8,580
+    a year under the regulation and $5,598 under the POMS order. The orders differ only when the allocation falls on
+    earned income.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_parent/ssi_unearned_income_deemed_from_ineligible_parent.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10630
+  state: ruled
+  note: "Keeps the regulation's order. Ruled by the project lead, 2026-11-02: https://github.com/PolicyEngine/policyengine-us/pull/10630#issuecomment-6840530008"
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:
@@ -15098,3 +15680,41 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10053
   state: ruled
   note: Neither source prescribes a fallback when residence data are missing. Keep the existing false default.
+- id: us-sd:cca-hourly-private-pay-cap
+  program: ccdf
+  years:
+    from: 2024
+    to: 2026
+    type: calendar
+    note: The hourly schedule applies from July 2024 through July 2026.
+  question: Does South Dakota cap hourly child care assistance at the provider's public charge when the state reimbursement ceiling exceeds that charge?
+  sources:
+  - kind: regulation
+    citation: ARSD 67:47:01:15, last amended September 12, 2016
+    url: https://sdlegislature.gov/Rules/Administrative/67:47:01:15
+  - kind: regulation
+    citation: ARSD 67:47:01:16, last amended January 18, 1993
+    url: https://sdlegislature.gov/Rules/Administrative/67:47:01:16
+  - kind: manual
+    citation: Child Care Provider Reimbursement Guide, pages 3, 7 and 18
+    url: https://dss.sd.gov/docs/childcare/assistance/regulated_manual.pdf
+  - kind: guidance
+    citation: Family Child Care maximum reimbursement rates, effective July 1, 2024, page 1
+    url: https://dss.sd.gov/docs/childcare/assistance/Reimbursement_Rates/Family_Child_Care.pdf
+  - kind: plan
+    citation: FFY 2025-2027 CCDF State Plan, initial plan certified September 24, 2024, sections 4.3.3 and 4.4.2, pages 60-63
+    url: https://dss.sd.gov/docs/childcare/state_plan/2025-2027/2025-2027_State_Plan_original.pdf
+  - kind: plan
+    citation: FFY 2025-2027 CCDF State Plan, Amendment 1 approved July 9, 2025, sections 4.3.3 and 4.4.2, pages 60-63
+    url: https://dss.sd.gov/docs/childcare/state_plan/2025-2027/Amendment_1.pdf
+  readings:
+    statute: No statute supplied; providers bill their usual public charge under ARSD 67:47:01:15. DSS pays at most actual allowable costs less the household contribution under section 67:47:01:16. DSS caps reimbursement at the public hourly charge or the provider's weekly bill in its provider guide. DSS applies that ceiling to the infant and toddler enhancement on its family rate sheet.
+    other: DSS checked no when asked whether it reduces payments if the private charge falls below its reimbursement ceiling. DSS also caps the infant and toddler enhancement at the public charge and describes hourly payments before its future weekly system in the same plan.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/sd/dss/cca/sd_cca.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10815
+  state: ruled
+  note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.

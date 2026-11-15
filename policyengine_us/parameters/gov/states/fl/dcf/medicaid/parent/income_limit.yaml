@@ -1,0 +1,101 @@
+description: Florida uses this monthly adult income standard plus the standard disregard for parents and caretakers under Medicaid.
+metadata:
+  propagate_metadata_to_children: true
+amount:
+  description: Florida limits parent and caretaker income to this monthly dollar standard before the conditional five-point disregard under Medicaid.
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Florida Medicaid parent income standard including standard disregard
+    breakdown:
+      - range(1, 25)
+    breakdown_label:
+      - Household size
+    reference:
+      - title: Florida DCF ESS Policy Manual Appendix A-7, adult standard plus standard disregard (MNIL identity)
+        href: https://ffic.myflfamilies.com/manual/essfiles/30446.pdf
+  1:
+    2014-01-01: 289
+  2:
+    2014-01-01: 387
+  3:
+    2014-01-01: 486
+  4:
+    2014-01-01: 585
+  5:
+    2014-01-01: 684
+  6:
+    2014-01-01: 783
+  7:
+    2014-01-01: 882
+  8:
+    2014-01-01: 981
+  9:
+    2014-01-01: 1_079
+  10:
+    2014-01-01: 1_179
+  11:
+    2014-01-01: 1_279
+  12:
+    2014-01-01: 1_379
+  13:
+    2014-01-01: 1_479
+  14:
+    2014-01-01: 1_579
+  15:
+    2014-01-01: 1_679
+  16:
+    2014-01-01: 1_779
+  17:
+    2014-01-01: 1_879
+  18:
+    2014-01-01: 1_979
+  19:
+    2014-01-01: 2_079
+  20:
+    2014-01-01: 2_179
+  21:
+    2014-01-01: 2_279
+  22:
+    2014-01-01: 2_379
+  23:
+    2014-01-01: 2_479
+  24:
+    2014-01-01: 2_579
+additional_person:
+  description: Florida increases the parent and caretaker monthly dollar standard by this amount for each person above the published table under Medicaid.
+  values:
+    2014-01-01: 100
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Florida Medicaid parent income standard additional person
+    reference:
+      - title: Florida DCF ESS Policy Manual Appendix A-7, additional person MNIL amount
+        href: https://ffic.myflfamilies.com/manual/essfiles/30446.pdf
+max_household_size:
+  description: Florida publishes this maximum household size in the parent and caretaker monthly dollar standard table under Medicaid.
+  values:
+    2014-01-01: 24
+  metadata:
+    unit: person
+    period: year
+    label: Florida Medicaid parent income standard maximum listed household size
+    reference:
+      - title: Florida DCF ESS Policy Manual Appendix A-7, family size column
+        href: https://ffic.myflfamilies.com/manual/essfiles/30446.pdf
+fpl_disregard:
+  description: Florida applies this share of the federal poverty guideline as a conditional income disregard under Medicaid.
+  values:
+    2014-01-01: 0.05
+  metadata:
+    unit: /1
+    period: year
+    label: Florida Medicaid parent FPL disregard
+    reference:
+      - title: Florida DCF ESS Policy Manual Appendix A-7, MAGI disregard
+        href: https://ffic.myflfamilies.com/manual/essfiles/30446.pdf
+      - title: Florida DCF ESS Policy Manual 2630.0108, budget computation
+        href: https://ffic.myflfamilies.com/manual/2600.pdf#page=37
+      - title: 42 CFR 435.603(d)(4), five-point MAGI disregard effective January 1, 2014
+        href: https://www.law.cornell.edu/cfr/text/42/435.603#d_4
