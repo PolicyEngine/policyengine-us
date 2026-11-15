@@ -13,3 +13,329 @@
     eitc: 0
   output:
     de_refundable_eitc_if_claimed: 0
+
+- name: Case 3, 2017 Delaware has no refundable earned income credit option.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Independently known eligible annual federal EITC for this parent and child.
+        # The award is feasible for a one-child tax unit; eligibility is not derived here.
+        eitc: 1_000
+    spm_units:
+      spm_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Title 30, section 1117(a)(1)-(2): only the 20% nonrefundable route before 2022.
+    # https://delcode.delaware.gov/title30/Title30.pdf#page=50
+    # Known federal credit 1,000 x refundable match 0 = 0.
+    de_refundable_eitc_if_claimed: 0
+
+- name: Case 4, 2015 Delaware refundable earned income credit match.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    # Three independent parent/qualifying-child tax units with known annual federal
+    # EITC components. Federal eligibility and entitlement are not calculated here.
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person4:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person6:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 0
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 100
+      tax_unit3:
+        members: [person5, person6]
+        eitc: 1_000
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+      spm_unit3: {members: [person5, person6]}
+    families:
+      family1: {members: [person1, person2]}
+      family2: {members: [person3, person4]}
+      family3: {members: [person5, person6]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+      marital_unit3: {members: [person3]}
+      marital_unit4: {members: [person4]}
+      marital_unit5: {members: [person5]}
+      marital_unit6: {members: [person6]}
+    households:
+      household1: {members: [person1, person2], state_code: DE}
+      household2: {members: [person3, person4], state_code: DE}
+      household3: {members: [person5, person6], state_code: DE}
+  output:
+    # Title 30, section 1117(a)(1)-(2): refundable option starts in tax year 2022.
+    # https://delcode.delaware.gov/title30/Title30.pdf#page=50
+    # Known federal [0, 100, 1,000] x 0 = [0, 0, 0].
+    de_refundable_eitc_if_claimed: [0, 0, 0]
+
+- name: Case 5, 2020 Delaware refundable earned income credit match.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    # Three independent parent/qualifying-child tax units with known annual federal
+    # EITC components. Federal eligibility and entitlement are not calculated here.
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person4:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person6:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 0
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 100
+      tax_unit3:
+        members: [person5, person6]
+        eitc: 1_000
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+      spm_unit3: {members: [person5, person6]}
+    families:
+      family1: {members: [person1, person2]}
+      family2: {members: [person3, person4]}
+      family3: {members: [person5, person6]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+      marital_unit3: {members: [person3]}
+      marital_unit4: {members: [person4]}
+      marital_unit5: {members: [person5]}
+      marital_unit6: {members: [person6]}
+    households:
+      household1: {members: [person1, person2], state_code: DE}
+      household2: {members: [person3, person4], state_code: DE}
+      household3: {members: [person5, person6], state_code: DE}
+  output:
+    # Title 30, section 1117(a)(1)-(2): refundable option starts in tax year 2022.
+    # https://delcode.delaware.gov/title30/Title30.pdf#page=50
+    # Known federal [0, 100, 1,000] x 0 = [0, 0, 0].
+    de_refundable_eitc_if_claimed: [0, 0, 0]
+
+- name: Case 6, 2021 Delaware refundable earned income credit match.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    # Three independent parent/qualifying-child tax units with known annual federal
+    # EITC components. Federal eligibility and entitlement are not calculated here.
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person4:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person6:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 0
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 100
+      tax_unit3:
+        members: [person5, person6]
+        eitc: 1_000
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+      spm_unit3: {members: [person5, person6]}
+    families:
+      family1: {members: [person1, person2]}
+      family2: {members: [person3, person4]}
+      family3: {members: [person5, person6]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+      marital_unit3: {members: [person3]}
+      marital_unit4: {members: [person4]}
+      marital_unit5: {members: [person5]}
+      marital_unit6: {members: [person6]}
+    households:
+      household1: {members: [person1, person2], state_code: DE}
+      household2: {members: [person3, person4], state_code: DE}
+      household3: {members: [person5, person6], state_code: DE}
+  output:
+    # Title 30, section 1117(a)(1)-(2): refundable option starts in tax year 2022.
+    # https://delcode.delaware.gov/title30/Title30.pdf#page=50
+    # Known federal [0, 100, 1,000] x 0 = [0, 0, 0].
+    de_refundable_eitc_if_claimed: [0, 0, 0]
+
+- name: Case 7, 2022 Delaware refundable earned income credit match.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    # Three independent parent/qualifying-child tax units with known annual federal
+    # EITC components. Federal eligibility and entitlement are not calculated here.
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person4:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person6:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        eitc: 0
+      tax_unit2:
+        members: [person3, person4]
+        eitc: 100
+      tax_unit3:
+        members: [person5, person6]
+        eitc: 1_000
+    spm_units:
+      spm_unit1: {members: [person1, person2]}
+      spm_unit2: {members: [person3, person4]}
+      spm_unit3: {members: [person5, person6]}
+    families:
+      family1: {members: [person1, person2]}
+      family2: {members: [person3, person4]}
+      family3: {members: [person5, person6]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+      marital_unit3: {members: [person3]}
+      marital_unit4: {members: [person4]}
+      marital_unit5: {members: [person5]}
+      marital_unit6: {members: [person6]}
+    households:
+      household1: {members: [person1, person2], state_code: DE}
+      household2: {members: [person3, person4], state_code: DE}
+      household3: {members: [person5, person6], state_code: DE}
+  output:
+    # Title 30, section 1117(a)(1)-(2): refundable option starts in tax year 2022.
+    # https://delcode.delaware.gov/title30/Title30.pdf#page=50
+    # Known federal [0, 100, 1,000] x 0.045 = [0, 4.5, 45].
+    de_refundable_eitc_if_claimed: [0, 4.5, 45]

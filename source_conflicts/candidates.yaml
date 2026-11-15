@@ -15864,3 +15864,33 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
+- id: us-de:eitc-refundable-option-start-year
+  program: income-tax
+  years:
+    from: 2021
+    to: 2022
+    type: tax
+  question: Does Delaware first offer the refundable earned income tax credit option in tax year 2021 or 2022?
+  sources:
+  - kind: statute
+    citation: 30 Del. C. 1117(a)(1) and (a)(2), Title 30 PDF page 50
+    url: https://delcode.delaware.gov/title30/Title30.pdf#page=50
+  - kind: statute
+    citation: 83 Del. Laws, chapter 118 (HB 16), sections 1 and 2
+    url: https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=412704
+  - kind: guidance
+    citation: Official HB 16 bill detail, effective December 1, 2022, and Finance notice tooltip
+    url: https://www.legis.delaware.gov/BillDetail?legislationId=48193
+  - kind: instructions
+    citation: 2021 Delaware resident income tax instructions, line 33, PDF page 9
+    url: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf#page=9
+  readings:
+    statute: The 20% credit remains nonrefundable before tax year 2022. From tax year 2022, a filer may choose that liability-limited credit or a refundable credit equal to 4.5% of federal earned income tax credit.
+    other: The 2021 resident instructions permit the 4.5% refundable alternative on a 2021 return.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/de/tax/income/credits/eitc/refundable.yaml
+    prs: []
+  state: ruled
+  note: The act keys applicability to January 1 of the contingency year; the official effective-date record and codified statute identify 2022. Preserve the nonrefundable alternative and existing election mechanics. The contrary instruction passage has a two-line document-reader transcript; native PDF bytes and full-page verification remain unavailable.
