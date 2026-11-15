@@ -3842,10 +3842,13 @@
           2025: false
           2026: false
 
-# Appendix A-3 literal COE-075 Limit+5% Disregard columns,2017–26.
-# The source ceiling includes the MAGI disregard once; no extra5%.
-# March1tables are used throughout YEAR comparisons, not actualJanuary law.
-# Real wages/membership derive the pipeline; adult FC is entity-indexed.
+# Appendix A-3 literal COE-075 Limit + 5% Disregard columns, 2017-2026.
+# https://medicaid.ms.gov/wp-content/uploads/2026/03/Appendix-A-3-MAGI-Income-Limits.-2014-to-present.pdf#page=1
+# The source ceiling includes the MAGI disregard once; add no extra 5%.
+# Annual model comparisons apply each year's March 1 table throughout the year.
+# January/February legal eligibility timing remains outside these comparisons.
+# Actual wages and family membership derive the eligibility pipeline.
+# The adult full-coverage output follows the person's entity index.
 - name: Mississippi size-2 parent at the inclusive published combined monthly ceiling under the annual
     table convention, 2017 through 2026.
   period: 2017

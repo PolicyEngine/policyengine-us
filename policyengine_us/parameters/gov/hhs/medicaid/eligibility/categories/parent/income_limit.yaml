@@ -177,15 +177,18 @@ MO:
 MS:
   2018-01-01: 0.28
   2021-01-01: 0.26
+  # Legacy ratios below serve the Mississippi fallback for household sizes
+  # above 20 and periods outside 2017-2026, including 2027 onward. Sizes 1-20
+  # in 2017-2026 use the separate Mississippi dollar-table route.
   # COE-075 for a household of three, disregard included (MS DOM Appendix
   # A-3): $492/month = $5,904/year in the table effective March 1, 2024, and
   # $495/month = $5,940/year in the table effective March 1, 2025.
-  # $5,904 / $25,820 = 0.229 and $5,940 / $26,650 = 0.223. The State Set
-  # Income Limit is exactly $384 in every table from 2020 to 2026; each
-  # year's figure is $384 plus that year's 5% disregard. The variable is
-  # annual and reads the January 1 value, so each entry applies that year's
-  # March table to the whole year, although in January and February 2024
-  # the 2023 table's $488 (0.227) still applied.
+  # $5,904 / $25,820 = 0.229 and $5,940 / $26,650 = 0.223. Every table from
+  # 2020 to 2026 lists a $384 State Set Income Limit; the combined column
+  # adds that year's 5% disregard. Within 2017-2026,
+  # annual comparisons use each year's March table throughout the modeled year.
+  # These fallback ratios do not establish legal ceilings above size 20 or
+  # from 2027 onward; January/February legal timing also remains unqualified.
   2024-01-01: 0.229
   2025-01-01: 0.223
   # $498/month = $5,976/year, disregard included (MS DOM, eff. 2026-03-01)

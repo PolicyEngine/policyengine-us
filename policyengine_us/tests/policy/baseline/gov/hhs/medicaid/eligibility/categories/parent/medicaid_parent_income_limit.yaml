@@ -564,11 +564,12 @@
     medicaid_parent_income_limit: 1.38
   absolute_error_margin: 0.0001
 
-# Appendix A-3 COE-075 combined Limit+5% column, physical pages1–10.
+# Appendix A-3 COE-075 combined Limit + 5% column, physical pages 1-10.
 # https://medicaid.ms.gov/wp-content/uploads/2026/03/Appendix-A-3-MAGI-Income-Limits.-2014-to-present.pdf
-# Each March1table is explicit; YEAR comparisons use that year's table.
+# Annual model comparisons use that year's March 1 table throughout the year.
+# January/February legal eligibility timing remains outside these comparisons.
 # Table components use explicit MAGI sizes, not eligibility households.
-# Above20/before2017 controls preserve behavior, not legal certification.
+# Controls above size 20 or outside 2017-2026 preserve the existing fallback.
 - name: Mississippi literal COE-075 combined dollar-table components at sizes 1 through 20 for each annual
     comparison period 2017 through 2026.
   period: 2017
