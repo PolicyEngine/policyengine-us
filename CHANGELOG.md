@@ -1,3 +1,14 @@
+## [2.137.1] - 2026-11-15
+
+### Fixed
+
+- Return zero Idaho child tax credit before its first tax year in 2018.
+- Return zero Maine dependent exemption credit for tax years before 2018.
+- Correct Oregon earned income credit match rates for tax years 2015–2019, including the young-dependent premium beginning in 2017.
+- Return zero South Carolina earned income tax credit before its first tax year in 2018.
+- Supply the count of qualifying individuals in the remaining 2021 Kentucky dependent care credit tests.
+
+
 ## [2.137.0] - 2026-11-15
 
 ### Added
