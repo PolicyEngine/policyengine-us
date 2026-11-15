@@ -65,3 +65,86 @@
     state_code: AR
   output:
     ar_medicaid_work_requirement_eligible: true
+
+# Arkansas Works' medically-frail exemption includes disability determined
+# under Social Security criteria (42 CFR 440.315(f)). Generic disability
+# inputs need not be populated for the SSI-criteria determination to apply.
+- name: Case 6, Arkansas 2018 SSI-criteria disability exempts the applicant.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    medicaid_income_level: 0.9
+    monthly_hours_worked: 0
+    state_code: AR
+    is_disabled: false
+    is_blind: false
+    is_incapable_of_self_care: false
+    meets_ssi_disability_criteria: true
+  output:
+    ar_medicaid_work_requirement_subject: true
+    ar_medicaid_work_requirement_eligible: true
+
+- name: Case 7, Arkansas 2018 caregiver of an adult SSI-disabled dependent is exempt.
+  period: 2018
+  input:
+    people:
+      caregiver:
+        age: 40
+        medicaid_category: ADULT
+        medicaid_income_level: 0.9
+        monthly_hours_worked: 0
+        is_tax_unit_head_or_spouse: true
+        is_disabled: false
+        is_blind: false
+        is_incapable_of_self_care: false
+        meets_ssi_disability_criteria: false
+      dependent:
+        age: 25
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_incapable_of_self_care: false
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [caregiver, dependent]
+    households:
+      household:
+        members: [caregiver, dependent]
+        state_code: AR
+  output:
+    ar_medicaid_work_requirement_subject: [true, false]
+    ar_medicaid_work_requirement_eligible: [true, true]
+
+- name: Case 8, Arkansas 2018 an adult dependent without disability does not exempt the caregiver.
+  period: 2018
+  input:
+    people:
+      caregiver:
+        age: 40
+        medicaid_category: ADULT
+        medicaid_income_level: 0.9
+        monthly_hours_worked: 0
+        is_tax_unit_head_or_spouse: true
+        is_disabled: false
+        is_blind: false
+        is_incapable_of_self_care: false
+        meets_ssi_disability_criteria: false
+      dependent:
+        age: 25
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_incapable_of_self_care: false
+        meets_ssi_disability_criteria: false
+    tax_units:
+      tax_unit:
+        members: [caregiver, dependent]
+    households:
+      household:
+        members: [caregiver, dependent]
+        state_code: AR
+  output:
+    ar_medicaid_work_requirement_subject: [true, false]
+    ar_medicaid_work_requirement_eligible: [false, true]
