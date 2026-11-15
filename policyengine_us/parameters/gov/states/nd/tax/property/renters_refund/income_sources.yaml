@@ -7,15 +7,19 @@ values:
     # NDCC 57-02-08.1(5)(c) counts "any county, state, or federal public
     # assistance benefits". The IRS leaves general assistance, SSI and TANF out
     # of gross income under its general welfare exclusion, which rests on IRS
-    # rulings, not a statute or regulation, so no federal or state law
-    # excludes them from income. SNAP (7 U.S.C. 2017(b)) and LIHEAP, including
-    # nd_liheap (42 U.S.C. 8624(f)(1)), stay out because federal law excludes
-    # them from income for any purpose under state law. Item 11 of the Tax
-    # Commissioner's guideline, the second reference below, lists TANF among
-    # items that are not income; candidate us-nd:renters-refund-tanf records
-    # why the statute governs.
+    # rulings, not a statute or regulation, and no federal or state statute or
+    # regulation excludes them from income. SNAP (7 U.S.C. 2017(b)) and LIHEAP,
+    # including nd_liheap (42 U.S.C. 8624(f)(1)), stay out because federal law
+    # excludes them from income for any purpose under state law. Item 11 of the
+    # Tax Commissioner's guideline, the second reference below, lists TANF among
+    # items that are not income; candidate us-nd:renters-refund-tanf records why
+    # the statute governs.
     - general_assistance
     - ssi
+    # The statute counts the income of the applicant and the applicant's
+    # dependents. The model gives each member of an SPM unit an equal share of
+    # its TANF, so a renter who shares an SPM unit with a TANF family that is
+    # not the renter's dependent counts part of that family's TANF.
     - tanf
 metadata:
   unit: list
