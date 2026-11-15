@@ -1,9 +1,9 @@
 """Check Utah's taxpayer credit across deductions and federal tax elections.
 
-Utah Code 59-10-1018 removes state or local income tax from the federal
-itemized total. From 2018 through 2025, claimants subtract the income tax
-paid and reported, up to $10,000. Before 2018 and from 2026, claimants
-subtract only the income tax allowed in their federal itemized deductions.
+Claimants remove state or local income tax from their federal itemized
+total under Utah Code 59-10-1018. From 2018 through 2025, they subtract
+the income tax paid and reported, up to $10,000. Before 2018 and from 2026,
+they subtract only income tax allowed in their federal itemized deductions.
 
 The draws vary medical deductions, the SALT phase-down, all five filing
 statuses, and supplied federal itemized totals after a reduction of up to
@@ -167,8 +167,8 @@ def _unit(**overrides):
     + [
         # Total: $6,000 charity + $4,000 medical + $10,000 income tax = $20,000.
         # Supplied reduction: 20% x $20,000 = $4,000; federal total = $16,000.
-        # The 2017 worksheet excludes medical: $20,000 - $4,000 = $16,000.
-        # Income tax loses $4,000 x ($10,000 / $16,000) = $2,500.
+        # Exclude medical in 2017: $20,000 - $4,000 = $16,000.
+        # Allocate $4,000 x ($10,000 / $16,000) = $2,500 to income tax.
         # Utah base: $16,000 - ($10,000 - $2,500) = $8,500.
         _unit(
             real_estate=0,
@@ -198,7 +198,7 @@ def _unit(**overrides):
             magi=300_000,
         ),
         # The same $20,000 total and $4,000 reduction as the 2017 example.
-        # In 2026, income tax loses $4,000 x ($10,000 / $20,000) = $2,000.
+        # In 2026, allocate $4,000 x ($10,000 / $20,000) = $2,000 to income tax.
         # Utah base: $16,000 - ($10,000 - $2,000) = $8,000.
         _unit(
             real_estate=0,
@@ -234,8 +234,8 @@ def test_utah_credit_base_respects_dated_income_tax_subtraction(year, units):
         real_estate = np.array([unit["real_estate"] for unit in paired])
         deducted_income = np.maximum(0, salt - real_estate)
         # Allocate dollars lost to section 68 across the subject deductions.
-        # The 2017 worksheet protects medical deductions; the replacement
-        # section 68 includes every category from 2026.
+        # In 2017, filers exclude medical deductions from this pool.
+        # From 2026, filers include every category in the pool.
         medical = np.array([unit["medical"] for unit in paired])
         subject = reconstructed - medical if year == 2017 else reconstructed
         reduction = reconstructed - effective
