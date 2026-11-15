@@ -1,3 +1,10 @@
+## [2.137.2] - 2026-11-15
+
+### Fixed
+
+- Correct Ohio Works First initial-income eligibility to include the poverty-guideline boundary and use the exact 2016 household-size table at the existing July cutover.
+
+
 ## [2.137.1] - 2026-11-15
 
 ### Fixed
