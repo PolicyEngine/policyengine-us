@@ -1013,3 +1013,95 @@
     is_ssi_ineligible_parent: [false, false, false]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
     ssi: [0, 0, 11_928]
+
+# A disabled parent with no cash income receives shelter support from outside the
+# household, and the spouse earns 24,000. While the spouse's income is deemed, SSA
+# values that support at 1,491 / 6 + 10 = 258.50 a month and counts it with the
+# couple's unearned income (POMS SI 01320.150 B.1.a), so one 20 exclusion applies:
+# (258.50 - 20) + (2,000 - 65) / 2 = 1,206, and the deemed amount is 1,206 - 238.50 =
+# 967.50 a month, or 11,610 a year. The parent's SSI is (1,491 - 1,206) x 12 = 3,420.
+# The ineligible-parent test leaves out in-kind support: (24,000 - 240 - 780) / 2 =
+# 11,490 is within 17,892, so the parent stays eligible, and 20 CFR 416.1166(e)(1)
+# deems nothing to the disabled child, whose SSI is 994 x 12 = 11,928.
+- name: Case 28, disabled parent with shelter support and an earning spouse stays eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 24_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [false, true, false]
+    ssi_in_kind_support_and_maintenance: [3_102, 0, 0]
+    ssi_income_deemed_from_ineligible_spouse: [11_610, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi: [3_420, 0, 11_928]
+
+# A supplied annual deemed amount decides the parent's test. The spouse earns 12,000,
+# which would deem (12,000 - 240 - 780) / 2 = 5,490, but the supplied 18,000 exceeds
+# the couple rate of 1,491 x 12 = 17,892, so both parents are ineligible parents. The
+# parents' 5,490 after exclusions falls short of the couple rate that 20 CFR
+# 416.1165(d)(3)(i) allocates to them, so nothing is deemed to the child, whose SSI is
+# 11,928. The parent's countable income of 18,000 / 12 = 1,500 a month exceeds 1,491,
+# so the parent's SSI is 0.
+- name: Case 29, supplied annual spousal deemed income decides the parent's income test.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        meets_ssi_disability_criteria: true
+        ssi_income_deemed_from_ineligible_spouse: 18_000
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 12_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    is_ssi_ineligible_parent: [true, true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi: [0, 0, 11_928]
