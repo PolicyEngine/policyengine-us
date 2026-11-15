@@ -1,3 +1,19 @@
+## [2.135.5] - 2026-11-15
+
+### Fixed
+
+- Restore Colorado Works grant amounts from September 2018 and date the 2022 payment increase to July 1.
+- Count strike and lockout benefits other than gifts in federal gross income and as earned income, and carry them through the state income tax bases that list federal income sources, except Pennsylvania's, which leaves them out of taxable income and counts them in Tax Forgiveness eligibility income; Utah, Montana and Arizona property relief now count only the gift part as nontaxable income, and North Dakota's renter's refund leaves it out. Leave strike benefits out of the kiddie tax support test and the federal and California AMT child exemptions. Count an adult dependent's own adjusted gross income in Utah homeowner's and renter's relief household income, and leave out the income of a parent or grandparent of the claimant or spouse.
+- Use the published 2016 HHS household-size poverty guideline tables in the shared FPG helper and public tax-unit and SPM-unit guideline variables.
+
+
+## [2.135.4] - 2026-11-15
+
+### Fixed
+
+- Corrected Medicaid parent income limits for Utah, Tennessee and Virginia in 2018–2020 using state percentage and household-size dollar standards. Started the Medicaid adult group in Virginia on January 1, 2019, and in Utah on April 1, 2019 at 95% of the poverty guideline, rising to 133% on January 1, 2020.
+
+
 ## [2.135.3] - 2026-11-15
 
 ### Fixed

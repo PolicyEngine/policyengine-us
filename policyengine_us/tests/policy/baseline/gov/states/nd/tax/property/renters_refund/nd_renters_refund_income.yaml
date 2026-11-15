@@ -327,6 +327,20 @@
     # executed after 2018 (IRS Topic 452).
     nd_renters_refund_income: 10_000
 
+- name: North Dakota leaves out the strike benefits a union paid as a gift.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 20_000
+    strike_benefits: 6_000
+    tax_exempt_strike_benefits: 1_000
+  output:
+    # IRC 102(a) leaves the 1,000 gift out of gross income (Publication 525
+    # (2025), page 36), so 20,000 + 6,000 - 1,000.
+    nd_renters_refund_income: 25_000
+
 - name: North Dakota counts alimony under a divorce instrument executed before 2019.
   period: 2026
   absolute_error_margin: 0.01

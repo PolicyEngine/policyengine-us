@@ -12,8 +12,8 @@ H all alimony received.
 
 Hypothesis draws Arizona homes of one to three tax units, each with a head, an
 optional spouse and an optional dependent, and with wages, Arizona and
-other-state unemployment, strike benefits, alimony (taxable or not), rent and
-property tax. Each example builds one simulation that holds the drawn homes
+other-state unemployment, strike benefits (some of them gifts), alimony
+(taxable or not), rent and property tax. Each example builds one simulation that holds the drawn homes
 and the variants the properties compare them with, so few simulations run:
 
 1. Every tax unit in a home sees the same household income, the sum of the
@@ -23,11 +23,12 @@ and the variants the properties compare them with, so few simulations run:
 2. At most one tax unit per home has a positive credit.
 3. The claimant's credit is at least what any other eligible tax unit in the
    home would get as claimant.
-4. In a one-tax-unit home, household income equals the tax unit's income
-   before this change (federal AGI plus dependents' gross income, here wages,
-   all unemployment and taxable alimony), plus strike benefits and nontaxable
-   alimony, minus Arizona unemployment. Other-state unemployment was already
-   in the earlier income, as part of all unemployment, so it stays.
+4. In a one-tax-unit home, household income equals the tax unit's federal
+   AGI plus dependents' gross income (here wages, all unemployment, taxable
+   alimony and strike benefits other than gifts), plus strike benefits
+   received as gifts and nontaxable alimony, minus Arizona unemployment.
+   Other-state unemployment is already in federal AGI, as part of all
+   unemployment, so it stays.
 5. Raising a co-resident's wages never raises the home's total credit. Every
    member of a home of two or more lives with others and uses Table 2, which
    never rises with income (checked first).
@@ -69,6 +70,7 @@ SMALL = st.sampled_from([True, True, False]).flatmap(
 @st.composite
 def _person(draw, adult: bool) -> dict:
     unemployment = draw(SMALL)
+    strike = draw(SMALL)
     return {
         "age": draw(st.integers(60, 85) if adult else st.integers(5, 17)),
         "employment_income": draw(MONEY if adult else SMALL),
@@ -77,7 +79,11 @@ def _person(draw, adult: bool) -> dict:
         "az_other_state_unemployment_compensation": round(
             unemployment * draw(st.sampled_from([0, 0.5, 1])), 2
         ),
-        "strike_benefits": draw(SMALL),
+        "strike_benefits": strike,
+        # The part of the strike benefits the union meant as a gift.
+        "tax_exempt_strike_benefits": round(
+            strike * draw(st.sampled_from([0, 0, 0.5, 1])), 2
+        ),
         "alimony_income": draw(SMALL),
         # 2010 is before the TCJA cutoff (taxable), 2020 after it (not).
         "divorce_year": draw(st.sampled_from([2010, 2020])),
@@ -151,22 +157,29 @@ def _changed(homes: list, change) -> list:
     return copied
 
 
-def _reference_unit_income(unit: dict) -> float:
-    """The tax unit's income before this change: wages, all unemployment and
-    taxable alimony of every member (federal AGI for the filers, gross income
-    for a dependent; no other income or deductions are drawn)."""
-    return sum(
+def _taxable(v: dict) -> float:
+    """A person's federal gross income here: wages, all unemployment, taxable
+    alimony and strike benefits other than gifts."""
+    return (
         v["employment_income"]
         + v["unemployment_compensation"]
         + (v["alimony_income"] if v["divorce_year"] < 2019 else 0)
-        for _, v in unit["members"]
+        + v["strike_benefits"]
+        - v["tax_exempt_strike_benefits"]
     )
 
 
+def _reference_unit_income(unit: dict) -> float:
+    """Federal AGI for the filers plus gross income for a dependent (no other
+    income or deductions are drawn)."""
+    return sum(_taxable(v) for _, v in unit["members"])
+
+
 def _added(unit: dict) -> float:
-    """Strike benefits and nontaxable alimony."""
+    """Strike benefits received as gifts and nontaxable alimony."""
     return sum(
-        v["strike_benefits"] + (v["alimony_income"] if v["divorce_year"] >= 2019 else 0)
+        v["tax_exempt_strike_benefits"]
+        + (v["alimony_income"] if v["divorce_year"] >= 2019 else 0)
         for _, v in unit["members"]
     )
 
@@ -271,7 +284,7 @@ def test_household_income_and_one_claimant(homes, raise_by, uc):
     base = slice(0, n)
     base_units = [unit for home in homes for unit in home]
     base_unit_home = unit_home[unit_home < n]
-    # 4. One-tax-unit homes: the earlier income plus the added items, less
+    # 4. One-tax-unit homes: federal gross income plus the added items, less
     # Arizona unemployment (the drawn unemployment less its other-state part).
     for h, home in enumerate(homes):
         if len(home) == 1:
@@ -284,13 +297,7 @@ def test_household_income_and_one_claimant(homes, raise_by, uc):
             expected = _reference_unit_income(unit) + _added(unit) - arizona_uc
             assert abs(household_income[h] - expected) < 0.01
             # The reference matches the model's federal AGI for the filers.
-            filers = sum(
-                v["employment_income"]
-                + v["unemployment_compensation"]
-                + (v["alimony_income"] if v["divorce_year"] < 2019 else 0)
-                for r, v in unit["members"]
-                if r != "dependent"
-            )
+            filers = sum(_taxable(v) for r, v in unit["members"] if r != "dependent")
             unit_index = base_units.index(unit)
             agi = sim.calculate("adjusted_gross_income", YEAR)[unit_index]
             assert abs(agi - filers) < 0.01

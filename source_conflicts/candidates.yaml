@@ -8154,8 +8154,9 @@ candidates:
       adoption assistance (IRC 137(a)); income of bona fide residents of Puerto Rico from sources there (IRC 933) and
       of American Samoa from sources there or from a business there (IRC 931(a), which reaches only a possession with
       an implementing agreement in effect, 26 CFR 1.931-1(c)(1), and which IRS Publication 570 applies only to
-      American Samoa); and alimony under a divorce or separation instrument executed after 2018, since Pub. L. 115-97
-      section 11051 repealed IRC 71 and 61(a)(8).
+      American Samoa); alimony under a divorce or separation instrument executed after 2018, since Pub. L. 115-97
+      section 11051 repealed IRC 71 and 61(a)(8); and gifts (IRC 102(a)), which take in the strike benefits a union
+      pays as a gift (IRS Publication 525).
     other: Item 10 lists pensions "including military pension and I.R.A.", salaries and wages, dividends and interest,
       and alimony as income. The application asks for income from salary and wages (line 5) and from interest (line
       6), and its instructions for lines 4 to 9 list most of the same sources. Neither leaves out the amounts federal
@@ -8171,6 +8172,7 @@ candidates:
     - policyengine_us/parameters/gov/states/nd/tax/property/renters_refund/market_income_components.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10697
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: ruled
   note: The statute names the exclusion, so it governs over the general lists, as in
     us-nd:renters-refund-insurance-proceeds. The definition also counts "other retirement benefits", but the exception
@@ -14739,7 +14741,7 @@ candidates:
 - id: us:dependent-deduction-worksheet-earned-income
   program: income-tax
   years:
-    from: 2024
+    from: 2010
     type: tax
   question: Where section 63(c)(5) leaves earned income undefined, should the dependent standard deduction use the
     Form 1040 worksheet's reported-income measure?
@@ -14764,13 +14766,17 @@ candidates:
     - policyengine_us/variables/gov/irs/income/taxable_income/deductions/standard_deduction/basic_standard_deduction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10272
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
   state: unreviewed
   note: 'PE-US follows the worksheet: earned income is W-2 box 1 wages (after elective deferrals), earned disability
     benefits and Schedule 1 business and farm income, less the deductible part of self-employment tax, summed for
     the head and spouse and floored at zero; the Medicaid filing test and Oregon''s and Hawaii''s dependent deductions
     read the same measure (standard_deduction_worksheet_earned_income_person.py, standard_deduction_worksheet_earned_income.py,
     filing_requirement/dependent/earned_income_sources.yaml, basic_standard_deduction.py). Verify the line 15 subtraction
-    for partnership self-employment income, which the list leaves out.'
+    for partnership self-employment income, which the list leaves out. Strike or lockout benefits other than bona fide
+    gifts (Form 1040 line 1h, part of line 1z) joined the list from 2022 in PR 10727; us:strike-benefits-earned-income
+    records the earned income question. The list runs from 2010, when the worksheet already counted reported income
+    (Form 1040 lines 7, 12 and 18 minus line 27).'
 - id: us:education-benefits-joint-claimed-spouse
   program: income-tax
   years:
@@ -15507,6 +15513,68 @@ candidates:
   state: ruled
   note: Ruled October 2026; verify the worksheet version and whether claiming the rebate defeats the refund-only
     joint-return exception.
+- id: us:school-meals-head-start-categorical-basis
+  program: school-meals
+  years:
+    from: 2007
+    type: calendar
+  question: Does every child enrolled in a Head Start program qualify for free school meals (7 CFR 245.2), or only
+    a child whom the program enrolled on a determination under 42 U.S.C. 9840(a)(1)(B) (42 U.S.C.
+    1758(b)(12)(A)(iii))?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1758(b)(12)(A)(iii)
+    url: https://uscode.house.gov/us/usc/119-124/t42/s1758/#b-12-A-iii
+  - kind: statute
+    citation: 42 U.S.C. 9840(a)(1)(B), (a)(2) and (d)(1)
+    url: https://uscode.house.gov/us/usc/119-124/t42/s9840/#a-1-B
+  - kind: statute
+    citation: Pub. L. 118-47, div. D, title II, sections 238 and 239 (42 U.S.C. 9840 note)
+    url: https://uscode.house.gov/us/usc/119-124/t42/s9840/#miscellaneous-note
+  - kind: regulation
+    citation: 7 CFR 245.2, definitions of "Categorically eligible" and "Head Start child"
+    url: https://www.ecfr.gov/current/title-7/section-245.2
+  - kind: rulemaking
+    citation: 76 FR 22785, 22791 (April 25, 2011), interim rule, "Children Enrolled in Head Start Programs"
+    url: https://www.govinfo.gov/content/pkg/FR-2011-04-25/html/2011-9457.htm
+  readings:
+    statute: Congress makes a child automatically eligible when a Head Start program enrolls the child "on the basis
+      of a determination that the child meets the eligibility criteria prescribed under section 645(a)(1)(B) of the
+      Head Start Act". A child whom a program enrolls on any other basis gets no free meals through Head Start.
+    other: USDA defines a Head Start child as "a child enrolled as a participant in a Head Start program authorized
+      under the Head Start Act", with no condition on the basis of enrollment. Its definition of "Categorically
+      eligible" lists a Head Start child. In the preamble to the 2011 interim rule, USDA says section 29(c) of Pub.
+      L. 110-134 amended clause (iii) "to extend categorical eligibility for free meals and free milk to all Head
+      Start enrollees".
+  example: In is_school_meal_categorically_eligible.yaml, a five-year-old enrollee in a family at 300% of the
+    poverty guideline gets the free tier in 2026 and free meals worth (2.46 + 4.60 - 0.40 - 0.44) x 180 =
+    $1,119.60. If a program in a community of 1,000 or fewer people enrolled that child under its own criteria
+    (9840(a)(2)), the child would get the paid tier and $0 under the statute's reading.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/usda/school_meals/child_categorical_eligibility.yaml
+    - policyengine_us/variables/gov/usda/school_meals/is_school_meal_categorically_eligible.py
+    - policyengine_us/variables/household/demographic/person/is_enrolled_in_head_start.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10838
+  state: open
+  note: PE-US counts every Head Start enrollee as categorically eligible. child_categorical_eligibility.yaml lists
+    is_enrolled_in_head_start, and is_school_meal_categorically_eligible.py qualifies a person when that input is
+    true, with no income test. is_enrolled_in_head_start.py records enrollment in Head Start or Early Head Start.
+    The model has no input for the basis of enrollment, so the statute's reading would need one. Under 42 U.S.C.
+    9840(a)(1)(B), programs enroll children whose families have income below the poverty line or qualify for public
+    assistance, homeless children and, within the shares clause (iii) allows, children who meet neither test. A
+    program can also enroll a child outside (a)(1)(B). Under 9840(a)(2), a program in a community of 1,000 or fewer
+    people sets its own criteria. Under 9840(d)(1), a tribe that enrolls every low-income child in its community
+    may enroll children who do not meet the low-income criteria. Under Pub. L. 118-47, div. D, sections 238 and
+    239, enacted on March 23, 2024, a tribe or a migrant or seasonal program sets its own selection criteria.
+    Congress wrote the (a)(1)(B) basis into clause (iii) on December 12, 2007 (Pub. L. 110-134, section 29(c)(1)),
+    and the clause named the low-income criteria of section 645(a)(1)(A) before then. USDA added both 245.2
+    definitions in the interim rule, effective June 24, 2011. is_school_meal_categorically_eligible.yaml pins the
+    model's reading for an enrollee at high income and for an enrollee above the Head Start income limit. An answer
+    should say whether the model keeps counting every enrollee, or takes a new input for enrollment on the (a)(1)(B)
+    basis and counts only those children.
 - id: us:se-plan-step-2-multiple-businesses
   program: income-tax
   years:
@@ -15937,6 +16005,135 @@ candidates:
     2025 CFR editions carry the same sentence at 685.208(b)(2), so the question runs from the model's first
     minimum_payment value in 2016. Issue
     10567 reports the double minimum.
+- id: us:strike-benefits-earned-income
+  program: income-tax
+  years:
+    from: 2010
+    type: tax
+  question: Are taxable strike and lockout benefits a union pays earned income for the earned income credit, the
+    child and dependent care credit, the dependent standard deduction and filing test, the kiddie tax and the AMT child
+    exemption?
+  sources:
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(2)(A)(i)
+    url: https://www.law.cornell.edu/uscode/text/26/32#c_2_A_i
+  - kind: guidance
+    citation: Publication 596 (2025), page 8, Strike and lockout benefits
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=8
+  - kind: guidance
+    citation: Publication 503 (2025), page 4, Earned income
+    url: https://www.irs.gov/pub/irs-prior/p503--2025.pdf#page=4
+  - kind: instructions
+    citation: Form 1040 instructions (2022), line 1h, and (2021), Standard Deduction Worksheet for Dependents footnote
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2022.pdf
+  - kind: statute
+    citation: 26 U.S.C. 911(d)(2), as used by 26 U.S.C. 1(g)(2)(A)(ii)(II) and 59(j)(1)(A)
+    url: https://www.law.cornell.edu/uscode/text/26/911#d_2
+  - kind: instructions
+    citation: Form 8615 instructions (2017), page 2, Earned income
+    url: https://www.irs.gov/pub/irs-prior/i8615--2017.pdf#page=2
+  - kind: instructions
+    citation: Form 8615 instructions (2022), page 3, Alternate Worksheet for Form 8615, Line 1, line D
+    url: https://www.irs.gov/pub/irs-prior/i8615--2022.pdf#page=3
+  - kind: instructions
+    citation: 2025 Schedule P (540) instructions, line 22, Exemption Worksheet line 8
+    url: https://www.ftb.ca.gov/forms/2025/2025-540-p-instructions.html
+  readings:
+    statute: Section 32(c)(2)(A)(i) counts wages, salaries, tips and other employee compensation includible in gross
+      income; neither it nor Treas. Reg. 1.32-2(c)(2) names strike benefits, which a union rather than an employer pays.
+      Section 911(d)(2) counts amounts received as compensation for personal services actually rendered, which strike
+      benefits are not.
+    other: Publication 596 makes taxable strike and lockout benefits generally earned income, and Publication 503 says
+      earned income includes strike benefits. The dependent worksheet counts Form 1040 line 1z, which takes strike
+      benefits through line 1h from 2022; the earlier instructions name no line for them, Publication 17 discusses
+      them under other income, and the worksheet then counted wages (Form 1040 line 7 through 2017, line 1 from 2018)
+      and the business and farm income lines. Publication 501 describes earned income as compensation for personal
+      services performed, and the filing test reads the same list as the worksheet. The Form 8615 instructions define
+      earned income as wages, tips and other payments received for personal services performed. In 2017 their one
+      sentence naming Form 1040 lines (7, 12 and 18) covers a child's trade or business in which capital is not an
+      income-producing factor. From 2022 the Alternate Worksheet for line 1 adds that earned income is "Generally" Form
+      1040 line 1z and Schedule 1 lines 3 and 6, which would hold taxable strike benefits; the model applies the
+      support test only through 2017. California's Schedule P worksheet uses the same personal services words.
+  example: A 2025 head of household with one child and $20,000 of taxable strike benefits and no other income gets the
+    $4,328 maximum earned income credit; with the benefits outside earned income the credit is zero.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/irs/credits/earned_income/eitc_earned_income.py
+    - policyengine_us/variables/gov/irs/income/adjusted_earnings.py
+    - policyengine_us/parameters/gov/irs/income/filing_requirement/dependent/earned_income_sources.yaml
+    - policyengine_us/variables/gov/irs/tax/federal_income/alternative_minimum_tax/exemption/amt_exemption.py
+    - policyengine_us/variables/gov/irs/tax/federal_income/alternative_minimum_tax/kiddie_tax/amt_kiddie_tax_applies.py
+    - policyengine_us/variables/gov/states/ca/tax/income/alternative_minimum_tax/exemption/ca_amt_exemption.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
+  state: unreviewed
+  note: 'PE-US follows the publications and forms: taxable_strike_benefits (strike_benefits less the
+    tax_exempt_strike_benefits gift part) counts from 2010 in eitc_earned_income (the EITC, and the refundable CTC
+    through ctc_phase_in_relevant_earnings) and in earnings_before_zero_floor (adjusted_earnings: the child and
+    dependent care credit, section 129, and the state dependent care credits and deductions and EITC-based credits
+    that adopt these federal measures, California''s dependent care credit included), and from 2022, when line 1h puts
+    it in line 1z, in the dependent earned income sources (standard deduction worksheet and filing test). The kiddie tax
+    support test and the AMT child exemption cap, which the model applies through 2017, follow section 911(d)(2) and
+    the 2017 Form 8615 definition and leave it out of adjusted_earnings; California''s AMT child exemption leaves it out
+    of the head''s earned income the same way. Payroll taxes do not read it.'
+- id: us-pa:tax-forgiveness-strike-benefits
+  program: income-tax
+  years:
+    from: 2004
+    type: tax
+  question: Does 72 P.S. 7301(o.2)(vi) leave the strike benefits a union pays out of Pennsylvania Tax Forgiveness
+    eligibility income?
+  sources:
+  - kind: statute
+    citation: 72 P.S. 7301(o.2)(vi) and 7301(d)(vi)
+    url: https://www.palegis.us/statutes/unconsolidated/law-information/view-statute?txtType=HTM&SessYr=1971&ActNum=0002.&ChapterNum=003.&SectionNum=001.&SubsectionNum=0
+  - kind: regulation
+    citation: 61 Pa. Code 101.1, poverty income (i)(F), (ii) and (iii), applied by 61 Pa. Code 123.3
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.1.html
+  - kind: regulation
+    citation: 61 Pa. Code 101.6(c)(9)
+    url: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
+  - kind: instructions
+    citation: 2025 PA-40 instructions, Schedule SP Section III, lines 5 and 10
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40in.pdf#page=38
+  - kind: guidance
+    citation: Pennsylvania Personal Income Tax Guide, Tax Forgiveness, eligibility income and its exclusions
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/papersonalincometaxguide/documents/pitguide_taxforgiveness.pdf#page=5
+  - kind: guidance
+    citation: Pennsylvania Personal Income Tax Guide, Gross Compensation, nontaxable benefits
+    url: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/gross-compensation.html#NontaxableBenefits
+  readings:
+    statute: Poverty income is all moneys or property "received of whatever nature and from whatever source derived",
+      not including (vi) "payments made by employers or labor unions for programs covering hospitalization, sickness,
+      disability or death, supplemental unemployment benefits, strike benefits, Social Security and retirement". The
+      words do not say whether they mean payments into such a program or the benefits a striker receives from it.
+    other: The poverty income regulation, 61 Pa. Code 101.1 (i)(F), restates (vi) as "payments made by employers to
+      labor unions for programs covering" those benefits; its (ii) counts "gifts of cash or property" and "other income
+      not specified as 'Income Not Included'", and its (iii) list of income not included leaves strike benefits out.
+      61 Pa. Code 101.6(c)(9) reads the same words in the compensation definition as payments to a strike benefit plan.
+      The Tax Forgiveness guide repeats the statute's words in its exclusions, and its inclusions count gifts, cash
+      from persons outside the household and employee payments to a cafeteria plan for strike benefits. The 2025
+      Schedule SP counts gifts (line 5), payments received from persons outside the household and, as the guide does,
+      "Nontaxable payments to your employer's cafeteria plan for hospitalization, sickness, disability, or death,
+      supplemental unemployment, or strike benefits" (line 10), and its list of income not to include leaves strike
+      benefits out. Only the Gross Compensation guide's framing points
+      the other way. After quoting 7301(d)(vi) in its cafeteria plan section, it calls strike benefits nontaxable
+      "provided that the program does not discriminate".
+  example: A 2025 single filer with $5,000 of wages and $4,000 of strike benefits has eligibility income of $9,000 when
+    the benefits count and $5,000 when they do not.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/states/pa/tax/income/forgiveness/eligibility_income_sources.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10727
+  state: unreviewed
+  note: 'PE-US counts the whole union payment, gift part included, in eligibility income, following 61 Pa. Code 101.1,
+    the Tax Forgiveness guide and Schedule SP where the statute''s words leave the question open. PA taxable income
+    leaves strike benefits out under either reading: compensation is remuneration "received for services rendered"
+    (7301(d)), and the Gross Compensation guide lists strike benefits among income items never taxable as
+    compensation.'
 - id: us:student-loan-interest-joint-claimed-spouse
   program: income-tax
   years:
@@ -16244,3 +16441,131 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10146
   state: ruled
   note: Follows the statute. A child definition narrower than SSI's removes allocations and so makes ineligible some people whom SSI's method finds eligible, which 42 USC 1396a(r)(2)(B) and 42 CFR 435.601(d)(3) bar outside 209(b) states. So the model does not apply New York's or Wisconsin's narrower manual definitions, and it can show eligibility those manuals would deny. Missouri (children under 18) and Virginia (children under 21 who are not blind or disabled), which POMS SI 01715.020 lists as 209(b) states, keep their manual child definitions under 42 USC 1396a(f). Their January 1, 1972 state plans are unchecked.
+- id: us-ut:medicaid-parent-standard-2018-cms-table
+  program: medicaid
+  years:
+    from: 2018
+    to: 2019
+    type: calendar
+  question: Does Utah use its 55% poverty-guideline parent standard or the 44% dollar-based standard CMS
+    reports in its April 2018 table?
+  sources:
+  - kind: plan
+    citation: Utah State Plan Amendment UT-16-0025-MM, S25, approved March 10, 2017, effective July 1,
+      2017
+    url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/UT/UT-16-0025.pdf#page=7
+  - kind: rulemaking
+    citation: Utah DAR File 41429, R414-303-4(3), proposed July 2017 amendment
+    url: https://rules.utah.gov/publicat/bulletin/2017/20170415/41429.htm
+  - kind: guidance
+    citation: CMS Medicaid and CHIP Eligibility Levels, April 2018, Utah Parent/Caretaker column
+    url: https://download.medicaid.gov/data/medicaid-and-chip-eligibility-levels.xy8t-auhk.csv
+  readings:
+    statute: Utah covers parents with countable income up to 55% of the poverty guideline under its CMS-approved
+      state plan and corresponding R414-303-4(3) amendment.
+    other: CMS reports a 44% parent standard and labels Utah's standard as a dollar amount in its April
+      2018 table.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: ruled
+  note: PolicyEngine applies Utah's amended regulation and adds the federal five-point disregard. CMS
+    approved the state plan on March 10, 2017, effective July 1, 2017. Annual calculations retain the
+    January 1 standard for 2019. The captures sit under source_conflicts/sources/us-ut/r414-303-4-2017-paragraph-3.txt
+    and source_conflicts/sources/us-ut/ut-16-0025-state-plan-p7.txt and source_conflicts/sources/us/cms-medicaid-eligibility-levels-2018-utah.txt.
+- id: us-va:medicaid-parent-lifc-manual-regulation-limits
+  program: medicaid
+  years:
+    from: 2018
+    to: 2020
+    type: calendar
+  question: Does Virginia apply its dated MAGI eligibility-manual LIFC schedules or the lower locality-group
+    amounts in 12VAC30-40-220?
+  sources:
+  - kind: regulation
+    citation: 12VAC30-40-220 A.1, locality-group income limits
+    url: https://law.lis.virginia.gov/admincode/title12/agency30/chapter40/section220/
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2017
+    url: https://www.dmas.virginia.gov/media/2249/transmittal-dmas-5-effective-07-1-2017.pdf#page=35
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2018
+    url: https://www.dmas.virginia.gov/media/2245/transmittal-dmas-9-effective-7-1-18-signed.pdf#page=34
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2019
+    url: https://www.dmas.virginia.gov/media/2258/tn-dmas-13-effective-7-1-2019.pdf#page=42
+  - kind: manual
+    citation: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3, July 2020
+    url: https://www.dmas.virginia.gov/media/2254/tn-dmas-17-effective-7-1-20.pdf#page=59
+  readings:
+    statute: No statute supplies these schedules here. The regulation sets monthly limits by household
+      size and locality group, with additions above eight people.
+    other: DMAS directs eligibility staff to use dated MAGI manual schedules, which set higher limits
+      and change each July.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/additional.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/additional.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/main.yaml
+    - policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/additional.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: ruled
+  note: 'PolicyEngine adopts the dated DMAS manual schedules for the 2018-2020 correction in issue 10793.
+    Annual calculations use the schedule effective on January 1. The regulation remains a conflicting
+    source; the agency manual does not establish a statutory override. The captures sit under source_conflicts/sources/us-va/:
+    12vac30-40-220-group-limits.txt and dmas-lifc-limits-2017-p35.txt, dmas-lifc-limits-2018-p34.txt,
+    dmas-lifc-limits-2019-p42.txt and dmas-lifc-limits-2020-p59.txt.'
+- id: us-ut:medicaid-adult-expansion-limit-january-2020
+  program: medicaid
+  years:
+    from: 2020
+    to: 2020
+    type: calendar
+  question: On January 1, 2020, does Utah cover adult expansion applicants with income up to 133% of the poverty
+    guideline, as CMS's December 2019 demonstration approval and Utah Code 26-18-3.9(5)(b) provide, or up to 95%,
+    as R414-312-6(3) still read until DAR 52479 amended it?
+  sources:
+  - kind: statute
+    citation: Utah Code 26-18-3.9(5)(b), as amended by S.B. 96 (2019 General Session), enrolled copy, lines 232-241
+    url: https://le.utah.gov/~2019/bills/sbillenr/SB0096.pdf#page=9
+  - kind: regulation
+    citation: Utah Admin. Code R414-312-6(3), DAR File No. 43798, effective August 29, 2019
+    url: https://rules.utah.gov/publicat/bull_pdf/2019/b20190701.pdf#page=95
+  - kind: rulemaking
+    citation: Utah DAR File No. 52479, proposed amendment to R414-312-6(3), Utah State Bulletin, February 1, 2020
+    url: https://rules.utah.gov/wp-content/uploads/b20200201.pdf#page=103
+  - kind: policy
+    citation: CMS approval of the Utah Primary Care Network section 1115 demonstration (amendment approved December 16,
+      2020), expenditure authority 10, Adult Expansion Population
+    url: https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=7
+  readings:
+    statute: Section 26-18-3.9(5)(b) expands Medicaid to the whole optional adult expansion population on the earlier
+      of the day CMS approves a waiver with the terms in Subsection (5)(a)(ii) or July 1, 2020. CMS approved the
+      amendment raising the Adult Expansion Population limit to 133% of the guideline on December 23, 2019, and its
+      expenditure authority 10 covers adults to 133% as of January 1, 2020.
+    other: R414-312-6(3) limited Adult Expansion Medicaid to countable income at or below 95% of the guideline until
+      DAR 52479, which may take effect on March 9, 2020, raised it to 133%.
+  example: A Utah parent of children aged 5 and 8 earning $25,000 in 2020 has income at 1.151 of the $21,720
+    guideline. The 1.38 limit admits up to $29,976 a year, and the 1.00 limit up to $21,720.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/adult/income_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10874
+  state: open
+  note: 'Annual calculations read January 1, so the 2020 Utah adult limit takes 1.38 (133% plus the five-point
+    disregard). The other reading gives 1.00. The Utah 2020 Index of Changes lists rule changes effective January
+    2, 2019 through January 1, 2020, and shows only DAR 43708 and DAR 43798 for R414-312 (https://rules.utah.gov/wp-content/uploads/2020-Index-of-Changes.pdf#page=31).
+    CMS gives the December 23, 2019 approval date in STC 55 (https://www.medicaid.gov/sites/default/files/2020-12/ut-primary-care-network-ca.pdf#page=50).
+    The statute reading assumes that approval meets Subsection (5)(b)(i). The YAML case "Utah parent earning 25,000.00
+    in 2020 qualifies only under the 1.38 adult limit" pins the reading. The captures sit under source_conflicts/sources/us-ut/:
+    ut-sb96-2019-enrolled-26-18-3-9-p8-9.txt, ut-bulletin-2019-07-01-dar-43798-p95.txt, ut-bulletin-2020-02-01-dar-52479-p103.txt
+    and cms-ut-pcn-approval-2020-12-16-p7.txt.'
