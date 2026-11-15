@@ -1,75 +1,156 @@
 description: Federal deduction from AGI if not itemizing.
 
+# Which 1(f)(3) index. These amounts, like the CTC's, project on
+# gov.irs.uprating, the index the tax brackets and other chained IRS amounts
+# use. Its window ends in July, not August as 1(f)(4) has it (#9105); open
+# #9621 moves it, and these projections with it. The dependent amounts and
+# the educator cap project on gov.irs.indexing.c_cpi_u instead: the
+# dependent amounts' base years (1987, 1997) predate gov.irs.uprating's
+# 2010 start, and that index reproduces get_irs_cola, which the dependent
+# and educator projections used before. It reads the August window but, for
+# projected years, CBO's calendar-year points, about 0.7% high (#9608). On
+# the shipped C-CPI-U series, gov.irs.uprating runs 0.6% below
+# gov.irs.indexing.c_cpi_u in 2028 and 1.0% below in 2029 and 2030, so from
+# the 2024 base these amounts grow 0.4% to 0.9% less: $16,950 single in
+# 2028 and $17,550 in 2030, against $17,000 and $17,700 on the other index.
+
 SINGLE:
-  2015-01-01: 6_300
-  2016-01-01: 6_300
-  2017-01-01: 6_350
-  2018-01-01: 12_000
-  2019-01-01: 12_200
-  2020-01-01: 12_400
-  2021-01-01: 12_550
-  2022-01-01: 12_950
-  2023-01-01: 13_850
-  2024-01-01: 14_600
-  2025-01-01: 15_750
-  2026-01-01: 16_100
-  2027-01-01: 16_600
+  values:
+    2015-01-01: 6_300
+    2016-01-01: 6_300
+    2017-01-01: 6_350
+    2018-01-01: 12_000
+    2019-01-01: 12_200
+    2020-01-01: 12_400
+    2021-01-01: 12_550
+    2022-01-01: 12_950
+    2023-01-01: 13_850
+    2024-01-01: 14_600
+    2025-01-01: 15_750
+    2026-01-01: 16_100
+    2027-01-01: 16_600
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      # 26 U.S.C. 63(c)(7)(B)(ii): the $15,750 that (7)(A)(ii) puts in
+      # 63(c)(2)(C), plus its 1(f)(3) cost-of-living increase with calendar
+      # year 2024 as the base year, rounded down to a multiple of $50. The
+      # index's 2025 value covers calendar year 2024.
+      base:
+        period: 2025
+        value: 15_750
+        floor: true
+      rounding:
+        type: downwards
+        interval: 50
 JOINT:
-  2015-01-01: 12_600
-  2016-01-01: 12_600
-  2017-01-01: 12_700
-  2018-01-01: 24_000
-  2019-01-01: 24_400
-  2020-01-01: 24_800
-  2021-01-01: 25_100
-  2022-01-01: 25_900
-  2023-01-01: 27_700
-  2024-01-01: 29_200
-  2025-01-01: 31_500
-  2026-01-01: 32_200
-  2027-01-01: 33_200
+  values:
+    2015-01-01: 12_600
+    2016-01-01: 12_600
+    2017-01-01: 12_700
+    2018-01-01: 24_000
+    2019-01-01: 24_400
+    2020-01-01: 24_800
+    2021-01-01: 25_100
+    2022-01-01: 25_900
+    2023-01-01: 27_700
+    2024-01-01: 29_200
+    2025-01-01: 31_500
+    2026-01-01: 32_200
+    2027-01-01: 33_200
+  metadata:
+    uprating:
+      # 26 U.S.C. 63(c)(2)(A): 200 percent of the 63(c)(2)(C) amount, so each
+      # projected year doubles the single amount; 63(c)(7)(B)(ii) indexes
+      # only the $23,625 and $15,750 amounts. Rounding to $100 clears float
+      # error from the ratio.
+      parameter: gov.irs.deductions.standard.amount.SINGLE
+      rounding:
+        type: nearest
+        interval: 100
 SEPARATE:
-  2015-01-01: 6_300
-  2016-01-01: 6_300
-  2017-01-01: 6_350
-  2018-01-01: 12_000
-  2019-01-01: 12_200
-  2020-01-01: 12_400
-  2021-01-01: 12_550
-  2022-01-01: 12_950
-  2023-01-01: 13_850
-  2024-01-01: 14_600
-  2025-01-01: 15_750
-  2026-01-01: 16_100
-  2027-01-01: 16_600
+  values:
+    2015-01-01: 6_300
+    2016-01-01: 6_300
+    2017-01-01: 6_350
+    2018-01-01: 12_000
+    2019-01-01: 12_200
+    2020-01-01: 12_400
+    2021-01-01: 12_550
+    2022-01-01: 12_950
+    2023-01-01: 13_850
+    2024-01-01: 14_600
+    2025-01-01: 15_750
+    2026-01-01: 16_100
+    2027-01-01: 16_600
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      # 26 U.S.C. 63(c)(7)(B)(ii): the $15,750 that (7)(A)(ii) puts in
+      # 63(c)(2)(C), plus its 1(f)(3) cost-of-living increase with calendar
+      # year 2024 as the base year, rounded down to a multiple of $50. The
+      # index's 2025 value covers calendar year 2024.
+      base:
+        period: 2025
+        value: 15_750
+        floor: true
+      rounding:
+        type: downwards
+        interval: 50
 HEAD_OF_HOUSEHOLD:
-  2015-01-01: 9_250
-  2016-01-01: 9_300
-  2017-01-01: 9_350
-  2018-01-01: 18_000
-  2019-01-01: 18_350
-  2020-01-01: 18_650
-  2021-01-01: 18_800
-  2022-01-01: 19_400
-  2023-01-01: 20_800
-  2024-01-01: 21_900
-  2025-01-01: 23_625
-  2026-01-01: 24_150
-  2027-01-01: 24_925
+  values:
+    2015-01-01: 9_250
+    2016-01-01: 9_300
+    2017-01-01: 9_350
+    2018-01-01: 18_000
+    2019-01-01: 18_350
+    2020-01-01: 18_650
+    2021-01-01: 18_800
+    2022-01-01: 19_400
+    2023-01-01: 20_800
+    2024-01-01: 21_900
+    2025-01-01: 23_625
+    2026-01-01: 24_150
+    2027-01-01: 24_925
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      # 26 U.S.C. 63(c)(7)(B)(ii): the $23,625 that (7)(A)(i) puts in
+      # 63(c)(2)(B), plus its 1(f)(3) cost-of-living increase with calendar
+      # year 2024 as the base year, rounded down to a multiple of $50. The
+      # index's 2025 value covers calendar year 2024.
+      base:
+        period: 2025
+        value: 23_625
+        floor: true
+      rounding:
+        type: downwards
+        interval: 50
 SURVIVING_SPOUSE:
-  2015-01-01: 12_600
-  2016-01-01: 12_600
-  2017-01-01: 12_700
-  2018-01-01: 24_000
-  2019-01-01: 24_400
-  2020-01-01: 24_800
-  2021-01-01: 25_100
-  2022-01-01: 25_900
-  2023-01-01: 27_700
-  2024-01-01: 29_200
-  2025-01-01: 31_500
-  2026-01-01: 32_200
-  2027-01-01: 33_200
+  values:
+    2015-01-01: 12_600
+    2016-01-01: 12_600
+    2017-01-01: 12_700
+    2018-01-01: 24_000
+    2019-01-01: 24_400
+    2020-01-01: 24_800
+    2021-01-01: 25_100
+    2022-01-01: 25_900
+    2023-01-01: 27_700
+    2024-01-01: 29_200
+    2025-01-01: 31_500
+    2026-01-01: 32_200
+    2027-01-01: 33_200
+  metadata:
+    uprating:
+      # 26 U.S.C. 63(c)(2)(A): 200 percent of the 63(c)(2)(C) amount, so each
+      # projected year doubles the single amount; 63(c)(7)(B)(ii) indexes
+      # only the $23,625 and $15,750 amounts. Rounding to $100 clears float
+      # error from the ratio.
+      parameter: gov.irs.deductions.standard.amount.SINGLE
+      rounding:
+        type: nearest
+        interval: 100
 metadata:
   unit: currency-USD
   label: Standard deduction
@@ -110,8 +191,3 @@ metadata:
     - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
       # 1. Tax Parameters.
       href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50

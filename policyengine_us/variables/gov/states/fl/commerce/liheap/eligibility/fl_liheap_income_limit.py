@@ -8,7 +8,7 @@ class fl_liheap_income_limit(Variable):
     entity = SPMUnit
     definition_period = YEAR
     unit = USD
-    label = "Florida LIHEAP annual heating maximum income value before rounding"
+    label = "Florida LIHEAP annual home energy maximum income value before rounding"
     defined_for = StateCode.FL
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=8",

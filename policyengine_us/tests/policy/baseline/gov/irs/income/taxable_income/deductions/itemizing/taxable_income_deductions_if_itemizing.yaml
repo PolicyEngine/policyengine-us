@@ -1,12 +1,11 @@
-- name: Integration test, reduction of itemized deductions but not QBID or wagering losses
+- name: Integration test, reduction of itemized deductions but not QBID
   period: 2024
   input:
     total_itemized_taxable_income_deductions: 1_000
     itemized_taxable_income_deductions_reduction: 2_000
     qualified_business_income_deduction: 1_000
-    wagering_losses_deduction: 500
   output: 
-    taxable_income_deductions_if_itemizing: 1_500
+    taxable_income_deductions_if_itemizing: 1_000
 
 - name: Integration test, some itemized deductions over reduction threshold
   period: 2024
@@ -14,6 +13,18 @@
     total_itemized_taxable_income_deductions: 3_000
     itemized_taxable_income_deductions_reduction: 2_000
     qualified_business_income_deduction: 1_000
-    wagering_losses_deduction: 500
   output: 
-    taxable_income_deductions_if_itemizing: 2_500
+    taxable_income_deductions_if_itemizing: 2_000
+
+- name: Wagering losses are part of the itemized deductions total, not a separate deduction.
+  period: 2024
+  input:
+    wagering_losses_deduction: 500
+    charitable_deduction: 3_000
+    qualified_business_income_deduction: 1_000
+  output:
+    total_itemized_taxable_income_deductions: 3_500
+    itemized_taxable_income_deductions: 3_500
+    # 3,500 of itemized deductions and 1,000 of QBID; the wagering losses
+    # are not added a second time.
+    taxable_income_deductions_if_itemizing: 4_500

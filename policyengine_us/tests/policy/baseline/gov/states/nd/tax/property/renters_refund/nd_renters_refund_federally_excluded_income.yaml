@@ -1,0 +1,76 @@
+- name: Each part of market income that federal law excludes leaves once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    traditional_403b_contributions: 1_000
+    pre_tax_health_insurance_premiums: 3_000
+    health_savings_account_payroll_contributions: 2_000
+    dependent_care_employer_benefits: 5_000
+    taxable_interest_income: 700
+    tax_exempt_interest_income: 1_500
+    taxable_private_pension_income: 9_000
+    tax_exempt_private_pension_income: 2_500
+    tax_exempt_401k_distributions: 3_000
+    taxable_401k_distributions: 4_000
+    disability_benefits: 8_000
+    tax_exempt_disability_benefits: 3_500
+    alimony_income: 6_000
+    divorce_year: 2021
+  output:
+    # Payroll deductions 4,000 + 1,000 + 3,000 + 2,000 + 5,000 = 15,000,
+    # all within their limits, plus 1,500 + 2,500 + 3,000 + 3,500 + 6,000.
+    nd_renters_refund_federally_excluded_income: 31_500
+
+- name: Taxable amounts stay in income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 30_000
+    taxable_interest_income: 1_000
+    taxable_private_pension_income: 5_000
+    taxable_ira_distributions: 2_000
+    disability_benefits: 4_000
+    alimony_income: 6_000
+    divorce_year: 2015
+    strike_benefits: 1_000
+    military_retirement_pay: 10_000
+  output:
+    nd_renters_refund_federally_excluded_income: 0
+
+- name: A tax-exempt amount leaves only up to the reported total of its source.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    interest_income: 3_000
+    tax_exempt_interest_income: 5_000
+  output:
+    market_income: 3_000
+    nd_renters_refund_federally_excluded_income: 3_000
+
+- name: A source reported only as a total counts in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    pension_income: 12_000
+  output:
+    nd_renters_refund_federally_excluded_income: 0
+
+- name: The exclusion applies only in North Dakota.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: SD
+    tax_exempt_interest_income: 5_000
+  output:
+    nd_renters_refund_federally_excluded_income: 0

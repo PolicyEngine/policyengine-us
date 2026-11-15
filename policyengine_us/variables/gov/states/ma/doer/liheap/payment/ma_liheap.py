@@ -5,6 +5,7 @@ class ma_liheap(Variable):
     value_type = float
     entity = SPMUnit
     label = "Massachusetts LIHEAP payment"
+    unit = USD
     definition_period = YEAR
     defined_for = "ma_liheap_eligible"
     reference = "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"

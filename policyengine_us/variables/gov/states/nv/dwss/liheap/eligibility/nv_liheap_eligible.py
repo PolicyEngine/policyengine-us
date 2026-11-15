@@ -13,10 +13,10 @@ class nv_liheap_eligible(Variable):
         "https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=31",
         # PDF pages 31, 34, 43, 60-61
         "https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=31",
-        # PDF pages 5, 8
-        "https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=5",
-        # PDF pages 5, 8
-        "https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/fy-2027-low-income-home-energy-assistance-program-liheap-state-plan.pdf#page=5",
+        # PDF pages 4-5, 8
+        "https://liheapch.acf.gov/docs/2026/state-plans/NV_Plan_2026.pdf#page=4",
+        # PDF pages 4-5, 8
+        "https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/fy-2027-low-income-home-energy-assistance-program-liheap-state-plan.pdf#page=4",
     )
 
     def formula(spm_unit, period, parameters):
@@ -30,23 +30,28 @@ class nv_liheap_eligible(Variable):
         income_eligible = income <= limit
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         heating_type = spm_unit("heating_type", period)
-        types = heating_type.possible_values
-        # A home without heat has no heating cost. An unspecified fuel
-        # qualifies only when heat is included in the rent.
-        fuel_qualifies = (heating_type != types.NONE) & (
-            heat_in_rent | (heating_type != types.UNSPECIFIED)
+        # heating_type is a required input: any known fuel or NONE qualifies,
+        # and an unspecified fuel qualifies only when heat is included in the
+        # rent. Every household is assumed to have the active Nevada energy
+        # account that Section 500 requires, so no heating bill, electricity
+        # bill or cooling cost is needed. A credit on low or no energy costs
+        # pays the minimum (Section 803 V).
+        heating_type_reported = heat_in_rent | (
+            heating_type != heating_type.possible_values.UNSPECIFIED
         )
-        # Heat included in unsubsidized rent qualifies even without a bill,
-        # and the minimum benefit then applies. Subsidized or public housing
-        # tenants whose heat is included in the rent qualify only with an
-        # energy burden, a separately billed energy cost. The Section 42-only
-        # housing exception, roomers and boarders, master meters and solar
-        # vendor credits have no inputs.
+        # Subsidized or public housing tenants whose utilities are all included
+        # in the rent qualify only with an energy burden, a separately billed
+        # energy cost (Sections 501 I, 503 and 803 V.3). Heat in the rent or a
+        # tenant who does not pay utilities marks utilities in the rent; a home
+        # without heating can only use the latter. The Section 42-only housing
+        # exception, roomers and boarders, master meters and solar vendor
+        # credits have no inputs.
+        utilities_in_rent = heat_in_rent | ~spm_unit.household(
+            "tenant_pays_utilities", period
+        )
         subsidized = spm_unit("receives_housing_assistance", period) | (
             spm_unit.household("is_in_public_housing", period)
         )
         energy_burden = spm_unit("nv_liheap_energy_cost", period) > 0
-        rent_responsible = ~subsidized | energy_burden
-        direct_responsible = spm_unit("has_heating_expense", period)
-        responsible = where(heat_in_rent, rent_responsible, direct_responsible)
-        return (size > 0) & income_eligible & fuel_qualifies & responsible
+        housing_eligible = ~(utilities_in_rent & subsidized) | energy_burden
+        return (size > 0) & income_eligible & heating_type_reported & housing_eligible

@@ -1,6 +1,6 @@
 description: California limits its Young Child Tax Credit for filers with zero or negative earned income to those whose net losses, and whose wages, do not exceed this value.
 values:
-  2021-01-01: 0
+  2019-01-01: 0
   2022-01-01: 32_490
   2023-01-01: 33_497
   2024-01-01: 34_602
@@ -12,6 +12,8 @@ metadata:
   uprating: gov.states.ca.cpi
   label: California Young Child Tax Credit loss threshold
   reference:
+    - title: Instructions for 2019 CalEITC Form 3514, Step 8
+      href: https://www.ftb.ca.gov/forms/2019/2019-3514-instructions.html
     # The law specifies $30,000, indexed to inflation from 2022 onward.
     # It does not specify the base year, so we use specific values from
     # the forms.

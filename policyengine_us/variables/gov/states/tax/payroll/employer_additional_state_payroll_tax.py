@@ -23,8 +23,8 @@ class employer_additional_state_payroll_tax(Variable):
         "Employer-side state payroll taxes and payroll-funded contributions "
         "other than state unemployment insurance, including any part of a "
         "permitted employee premium the employer does not deduct "
-        "(employer_state_payroll_premium_deduction_share). The New York PFL "
-        "and DBL employer costs are not modeled."
+        "(employer_state_payroll_premium_deduction_share). Hawaii TDI and the "
+        "New York PFL and DBL employer costs are not modeled."
     )
     definition_period = YEAR
     unit = USD
