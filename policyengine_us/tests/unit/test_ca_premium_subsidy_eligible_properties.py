@@ -7,8 +7,11 @@ in the Final 2027 Design. The bounds below are transcribed from those
 Designs, not read from the parameters, and are evaluated in exact rational
 arithmetic.
 
-The model divides nonnegative ACA MAGI by the prior-year poverty guideline.
-It must not use aca_magi_fraction for the band: that fraction truncates to
+The model divides nonnegative ACA MAGI by aca_fpg: the prior-year poverty
+guideline for the section 36B tax family (Form 8962 line 4), defined for the
+tax year. These tests supply aca_fpg for the tax year directly.
+
+The model must not use aca_magi_fraction for the band: that fraction truncates to
 whole percentages, so every income from 165.00% to 165.99% of the guideline
 becomes 1.65 and would pass an "at or below 165 percent" test (in PY2027,
 200.00% to 200.99% becomes 2.00). FTB 3849 Table 1-2, for the predecessor
@@ -78,7 +81,7 @@ def model_eligible(year, incomes, guidelines):
     sim.set_input("is_aca_ptc_eligible", year, np.ones(n, dtype=bool))
     sim.set_input("files_return_for_aca_ptc", year, np.ones(n, dtype=bool))
     sim.set_input("aca_magi", year, np.asarray(incomes, dtype=float))
-    sim.set_input("tax_unit_fpg", year - 1, np.asarray(guidelines, dtype=float))
+    sim.set_input("aca_fpg", year, np.asarray(guidelines, dtype=float))
     return sim.calculate("ca_premium_subsidy_eligible", year)
 
 

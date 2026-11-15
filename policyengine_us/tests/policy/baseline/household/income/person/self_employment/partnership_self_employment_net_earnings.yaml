@@ -1,0 +1,21 @@
+# partnership_self_employment_net_earnings follows
+# calibration.gov.irs.soi.self_employment_income_per_capita, the IRS SOI total
+# divided by population. An input dated in one year and read in a later year is
+# multiplied by the ratio of that index between the two years.
+
+- name: A 2016 input read in 2019 grows with SOI business or profession net income per capita, inside the filled years.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    partnership_self_employment_net_earnings:
+      2016: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, business or profession
+    # net income, over calibration.gov.census.populations.total:
+    #   2016: 389,078,638,000 / 328,964,000 = 1,182.739
+    #         (https://www.irs.gov/pub/irs-soi/16in14ar.xls)
+    #   2019: 442,854,286,000 / 335,329,000 = 1,320.656
+    #         (https://www.irs.gov/pub/irs-soi/19in14ar.xls)
+    # 10,000 x 1,320.656 / 1,182.739 = 11,166.08. With the old values this came
+    # to 9,810.19.
+    partnership_self_employment_net_earnings: 11_166.08
