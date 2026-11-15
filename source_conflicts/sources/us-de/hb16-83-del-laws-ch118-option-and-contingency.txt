@@ -1,6 +1,7 @@
 Source: https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=412704
-83 Del. Laws, chapter 118 (HB 16), physical page 1. Two operative excerpts from pdftotext reading-order output; line breaks preserved. Underline and strike-through formatting do not survive text extraction; the selected provisions contain the new option and its contingency.
+83 Del. Laws, chapter 118 (HB 16), physical page 1. Two operative excerpts retain their line breaks. Underline and strike-through formatting do not survive text extraction; the selected provisions contain the new option and its contingency.
 Native PDF SHA-256: c416140a3ce4f1356b6c8da62b5c06346d2d333560c725fca5c20fca1fb5f934
+Verified reproduction: run pdftotext -layout -f 1 -l 1 and retain the selected paragraphs with their line breaks.
 
               (2) For any tax year beginning on or after January 1, [of the year in which the contingency under
     Section 2 of this Act is fulfilled], an individual who is a resident of this State may receive a credit against the

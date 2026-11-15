@@ -1,6 +1,7 @@
 Source: https://delcode.delaware.gov/title30/Title30.pdf#page=50
-Physical PDF page 50 (printed page 48), section 1117. Excerpt from pdftotext reading-order output; original line breaks preserved.
+Physical PDF page 50 (printed page 48), section 1117. The excerpt retains its line breaks.
 Native PDF SHA-256: e0b3e3b86ff3dee41fe58bcc8ca9e7e19d18d2525279201679eff0f7db5ab9aa
+Verified reproduction: run pdftotext -layout -f 50 -l 50 and retain the selected paragraphs with their line breaks.
 
 § 1117. Earned income tax credit.
      (a) (1) For any tax year beginning before January 1, 2022, an individual who is a resident of this State may receive a nonrefundable
