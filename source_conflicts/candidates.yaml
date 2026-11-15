@@ -8676,6 +8676,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/hhs/medicaid/eligibility/regardless_of_immigration_status/child_age_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10987
   state: ruled
   note: PE-US gives New Jersey children under 19 a pass on the Medicaid and CHIP immigration tests from 2023
     (child_age_limit.yaml, read in is_medicaid_immigration_status_eligible.py and is_chip_immigration_status_eligible.py).
