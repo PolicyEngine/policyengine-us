@@ -95,6 +95,9 @@ GROSS_INCOME_IN_RESOURCES = {
     # employment_income holds these benefits: irs_employment_income subtracts
     # them, and the part above the IRC 129 exclusion returns here.
     "taxable_dependent_care_benefits": "employment_income",
+    # strike_benefits holds the whole union payment, the gift part included;
+    # gross income takes the part that is not a gift.
+    "taxable_strike_benefits": "strike_benefits",
     "self_employment_income": "self_employment_income",
     "sstb_self_employment_income": "sstb_self_employment_income",
     "partnership_s_corp_income": "partnership_s_corp_income",
