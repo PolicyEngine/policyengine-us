@@ -16222,8 +16222,17 @@ candidates:
   - kind: manual
     citation: POMS SI 01715.020
     url: https://secure.ssa.gov/poms.nsf/lnx/0501715020
+  - kind: regulation
+    citation: 42 CFR 435.602(b)
+    url: https://www.ecfr.gov/current/title-42/section-435.602#p-435.602(b)
+  - kind: regulation
+    citation: 20 CFR 416.1160(d) and 416.1856
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)
+  - kind: guidance
+    citation: CMS State Medicaid Manual 3240.4
+    url: https://www.cms.gov/regulations-and-guidance/guidance/manuals/downloads/p45_03.zip
   readings:
-    statute: Non-209(b) states preserve SSI child allocations in optional aged, blind or disabled budgets when narrower child definitions would make their methodologies more restrictive than SSI.
+    statute: Non-209(b) states allocate for every child SSI does, because a narrower child definition removes allocations and so makes ineligible some people whom SSI's method finds eligible, a more restrictive methodology that 42 USC 1396a(r)(2) and 42 CFR 435.601(d)(2)-(3) bar.
     other: State child definitions exclusively govern allocations, including New York's under-18 limit and Wisconsin's minor or dependent-18 limit and nonblind, nondisabled requirement.
   pe_us:
     follows: statute
@@ -16233,5 +16242,5 @@ candidates:
     - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/deeming/ineligible_child_requires_nonblind_nondisabled.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10146
-  state: unreviewed
-  note: Missouri (children under 18) and Virginia (children under 21 who are not blind or disabled), which POMS SI 01715.020 lists as 209(b) states, keep their manual child definitions for parental allocations. Every other state uses SSI's child scope. We have not checked Missouri's and Virginia's 1972 state plans for these definitions. The project lead has not ruled on this reading.
+  state: ruled
+  note: Follows the statute. A child definition narrower than SSI's removes allocations and so makes ineligible some people whom SSI's method finds eligible, which 42 USC 1396a(r)(2)(B) and 42 CFR 435.601(d)(3) bar outside 209(b) states. So the model does not apply New York's or Wisconsin's narrower manual definitions, and it can show eligibility those manuals would deny. Missouri (children under 18) and Virginia (children under 21 who are not blind or disabled), which POMS SI 01715.020 lists as 209(b) states, keep their manual child definitions under 42 USC 1396a(f). Their January 1, 1972 state plans are unchecked.
