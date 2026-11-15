@@ -15891,6 +15891,7 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/de/tax/income/credits/eitc/refundable.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10960
   state: ruled
   note: The act keys applicability to January 1 of the contingency year; the official effective-date record and codified statute identify 2022. Preserve the nonrefundable alternative and existing election mechanics. The contrary instruction passage has a two-line document-reader transcript; native PDF bytes and full-page verification remain unavailable.
