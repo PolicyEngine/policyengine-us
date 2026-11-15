@@ -1,3 +1,14 @@
+## [2.135.12] - 2026-11-15
+
+### Fixed
+
+- Restore published New York HEAP income eligibility and Tier I thresholds at listed household sizes for FY2017–FY2023.
+- Restore Washington's FY2017 SNAP utility allowance amounts.
+- Correct Massachusetts Senior Circuit Breaker income, credit, and assessed property limits for 2017 through 2020.
+- Correct Ohio Works First payment standards from January 2026 using the official monthly schedule.
+- Update South Dakota TANF parent-unit payment standards effective July 1, 2026.
+
+
 ## [2.135.11] - 2026-11-15
 
 ### Fixed
