@@ -48,10 +48,12 @@ Invariants:
   is_snap_eligible, is_aca_ptc_eligible and medicaid_enrolled, and R5 doesn't
   take it. R5 reads a parameter path written out in code, built through names
   that a plain assignment to one name binds in the same module or function, or
-  named in a string. A name bound to two paths reads as both. A path passed as
-  a function argument, read with getattr or a subscript, bound in a tuple,
-  annotated, chained or walrus assignment, or used in a nested function under
-  the enclosing function's name passes unseen.
+  named in a string. R5 follows those assignments once, in source order, and a
+  name bound to two paths reads as both. A path passed as a function argument,
+  read with getattr or a subscript, bound in a tuple, annotated, chained or
+  walrus assignment, built in a loop from a name the loop assigns further down,
+  or used in a nested function under the enclosing function's name passes
+  unseen.
 """
 
 import ast
@@ -644,25 +646,23 @@ def scope_paths(scope, outer):
     """The parameter paths a scope reads, through the names it assigns paths to."""
     aliases = {name: set(paths) for name, paths in outer.items()}
     nodes = list(scope_nodes(scope))
-    assignments = [
-        (node.targets[0].id, node.value)
-        for node in nodes
-        if isinstance(node, ast.Assign)
-        and len(node.targets) == 1
-        and isinstance(node.targets[0], ast.Name)
-    ]
-    # Each pass carries a path one assignment further, so a chain of n
-    # assignments resolves in n passes. The cap ends a name assigned from its
-    # own attribute, such as `p = p.income`, which grows a longer path each pass.
-    for _ in assignments:
-        grew = False
-        for name, value in assignments:
-            new = parameter_paths(value, aliases) - aliases.get(name, set())
-            if new:
-                aliases.setdefault(name, set()).update(new)
-                grew = True
-        if not grew:
-            break
+    assignments = sorted(
+        (
+            node
+            for node in nodes
+            if isinstance(node, ast.Assign)
+            and len(node.targets) == 1
+            and isinstance(node.targets[0], ast.Name)
+        ),
+        key=lambda node: (node.lineno, node.col_offset),
+    )
+    # One pass in source order gives each name every path assigned to it up to
+    # that line. A name assigned from its own attribute, such as
+    # `p = p.income`, gains its new paths once, so the pass always ends.
+    for node in assignments:
+        aliases.setdefault(node.targets[0].id, set()).update(
+            parameter_paths(node.value, aliases)
+        )
     paths = set()
     for node in nodes:
         if isinstance(node, ast.Attribute):
