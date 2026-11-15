@@ -1,3 +1,10 @@
+## [2.126.0] - 2026-11-15
+
+### Added
+
+- Added New York CCAP payment differentials, including the 10% statutory minimum from April 2025 and the 35% combined limit from December 2025, the special-needs market rate, and New York City enhanced informal and legally exempt group rates.
+
+
 ## [2.125.2] - 2026-11-14
 
 ### Fixed
