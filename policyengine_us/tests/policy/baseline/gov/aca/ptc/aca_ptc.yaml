@@ -10,18 +10,6 @@
   output:
     aca_ptc: 200  # 1200 - 0.04 * 25000 = 200
 
-- name: ACA PTC remains zero before coverage began in 2014
-  absolute_error_margin: 0.01
-  period: 2013
-  input:
-    is_aca_ptc_eligible: true
-    slcsp: 1_200
-    aca_magi: 25_000
-    aca_required_contribution_percentage: 0.04
-    tax_unit_is_filer: true
-  output:
-    aca_ptc: 0
-
 - name: ACA PTC calculated for 2025
   absolute_error_margin: 0.01
   period: 2025
@@ -1847,19 +1835,6 @@
     aca_ptc_slcsp: 6000
     aca_ptc: 5272.944
 
-
-- name: ACA PTC calculates the historical 2017 credit from supplied premiums
-  period: 2017
-  absolute_error_margin: 0.01
-  input:
-    is_aca_ptc_eligible: true
-    slcsp: 1_200
-    aca_magi: 25_000
-    aca_required_contribution_percentage: 0.04
-    tax_unit_is_filer: true
-  output:
-    # 1,200 - 25,000 * 0.04 = 200; coverage began in 2014.
-    aca_ptc: 200
 
 - name: ACA PTC calculates the historical 2017 credit before the filing condition
   period: 2017

@@ -109,8 +109,10 @@ def build(tax_unit_inputs, years):
         people[person] = {
             "age": {year: 40 for year in years},
             "is_aca_ptc_eligible": {year: True for year in years},
-            "is_aca_marketplace_enrollee": {year: True for year in years},
         }
+        if 2014 in years:
+            # The model cannot derive Marketplace enrollment before 2015.
+            people[person]["is_aca_marketplace_enrollee"] = {2014: True}
         tax_units[f"tax_unit_{index}"] = {
             "members": members,
             "filing_status": {year: "SINGLE" for year in years},
