@@ -53,10 +53,10 @@ class amt_exemption(Variable):
         # treats traditional elective deferrals as not made available to the
         # employee. The 2017 Form 8615 instructions, for the same children
         # and the same 911(d)(2) definition, count "wages, tips, and other
-        # payments received for personal services performed", and where they
-        # total Form 1040 lines (for a child whose trade or business uses no
-        # capital) they start from line 7, taxable wages. So the cap uses
-        # adjusted_earnings, which leaves out pre-tax payroll deductions.
+        # payments received for personal services performed", and where
+        # capital is not an income-producing factor they total lines 7, 12
+        # and 18 of Form 1040, starting from line 7, taxable wages. So the cap
+        # uses adjusted_earnings, which leaves out pre-tax payroll deductions.
         # IRC 59(j)(1)(A) counts the child's own earned income, and a covered
         # filer never files jointly, so the cap reads only the head's earnings.
         # Strike benefits, which adjusted_earnings counts for the child and

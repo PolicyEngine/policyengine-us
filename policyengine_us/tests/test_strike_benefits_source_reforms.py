@@ -200,14 +200,25 @@ def _household_situation():
     return {"people": people, "tax_units": tax_units, "households": households}
 
 
+# Part of the household's strike benefits in federal gross income, per
+# scenario: the head's and the dependent's benefits less their gifts under
+# current law, none under the exclusion, all of them when listed whole.
+HOUSEHOLD_IN_GROSS_INCOME = {
+    "current law": STRIKE - GIFT + DEPENDENT_STRIKE - DEPENDENT_GIFT,
+    "federal exclusion": 0,
+    "whole amount in gross income": STRIKE + DEPENDENT_STRIKE,
+}
+
+
 @pytest.fixture(scope="module", params=list(SCENARIOS))
 def household_scenario(request):
     reform, _ = SCENARIOS[request.param]
-    return Simulation(situation=_household_situation(), reform=reform)
+    sim = Simulation(situation=_household_situation(), reform=reform)
+    return sim, HOUSEHOLD_IN_GROSS_INCOME[request.param]
 
 
 def test_adult_dependents_strike_benefits_count_once(household_scenario):
-    sim = household_scenario
+    sim, household_in_gross_income = household_scenario
     expected = HEAD_WAGES + STRIKE + DEPENDENT_WAGES + DEPENDENT_STRIKE
     for variable, state in [
         ("ut_homeowner_renter_relief_household_income", "UT"),
@@ -225,8 +236,9 @@ def test_adult_dependents_strike_benefits_count_once(household_scenario):
         )
     )
     north_dakota = dict(zip(STATES, sim.calculate("nd_renters_refund_income", YEAR)))
+    assert in_gross_income["ND"] == pytest.approx(household_in_gross_income)
     assert north_dakota["ND"] == pytest.approx(
-        HEAD_WAGES + DEPENDENT_WAGES + in_gross_income["ND"]
+        HEAD_WAGES + DEPENDENT_WAGES + household_in_gross_income
     )
 
 
