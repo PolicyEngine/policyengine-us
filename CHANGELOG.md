@@ -1,3 +1,109 @@
+## [2.135.3] - 2026-11-15
+
+### Fixed
+
+- Fix Arkansas income-tax indexing projections and Kentucky's 2021 dependent care credit conformity.
+
+
+## [2.135.2] - 2026-11-15
+
+### Fixed
+
+- Apply District of Columbia, Georgia and Idaho rules for filers who can be claimed as dependents. Bar a dependent under 65 from claiming the DC property tax credit, and count the couple's whole rent and the home's whole tax bill in the claim. Deny DC's EITC without a qualifying child when another taxpayer can claim a filer, and remove the expired 2026 child tax credit amount. Exclude claimable filers' children from Georgia's child credit outside the filing exception while allowing otherwise qualifying children with ITINs. Apply Georgia's dependent exemption and low income credit exclusions, and count positive earnings before offsetting losses for its surplus refund. Exclude Idaho filers whom another taxpayer claims from the food tax credit, and apply the dependent care deduction and rebate rules. Exclude nonqualifying child-only daycare even when a disabled adult qualifies for care.
+
+
+## [2.135.1] - 2026-11-15
+
+### Fixed
+
+- Count each month's SSI in-kind support and maintenance in Maryland PAA income and in California's supplement for a couple with one SSI and one CAPI spouse. Read each month's SSI couple status and income deemed from an ineligible spouse in Maryland PAA income.
+
+
+## [2.135.0] - 2026-11-15
+
+### Added
+
+- Add Virginia Energy Assistance Program cooling assistance electric bill payment.
+
+
+## [2.134.0] - 2026-11-15
+
+### Added
+
+- Add Nebraska LIHEAP regular cooling assistance.
+
+
+## [2.133.0] - 2026-11-15
+
+### Added
+
+- Add Alabama LIHEAP regular cooling assistance.
+
+### Fixed
+
+- Stop Alabama LIHEAP income limits at the federal maximum, the greater of HHS's 60% state median income amount and 150% of the poverty guideline.
+
+
+## [2.132.0] - 2026-11-15
+
+### Added
+
+- Add South Carolina LIHEAP regular cooling assistance (the cooling-season nonemergency award).
+
+
+## [2.131.0] - 2026-11-15
+
+### Added
+
+- Add Kentucky LIHEAP regular cooling assistance (the one-time electric cooling subsidy).
+
+
+## [2.130.0] - 2026-11-15
+
+### Added
+
+- Add Louisiana LIHEAP regular cooling assistance, paid once each program year from the same benefit matrix as heating.
+
+
+## [2.129.0] - 2026-11-15
+
+### Added
+
+- Add Oklahoma LIHEAP regular summer cooling assistance, the Appendix C-7-A flat payment by household size and net monthly income.
+
+
+## [2.128.0] - 2026-11-15
+
+### Added
+
+- Add Georgia LIHEAP regular cooling assistance.
+
+
+## [2.127.0] - 2026-11-15
+
+### Added
+
+- Add Arkansas LIHEAP summer regular cooling assistance.
+
+### Fixed
+
+- Stop Arkansas LIHEAP income limits at the federal maximum, the greater of HHS's 60% state median income amount and 150% of the poverty guideline.
+
+
+## [2.126.0] - 2026-11-15
+
+### Added
+
+- Added New York CCAP payment differentials, including the 10% statutory minimum from April 2025 and the 35% combined limit from December 2025, the special-needs market rate, and New York City enhanced informal and legally exempt group rates.
+
+
+## [2.125.2] - 2026-11-14
+
+### Fixed
+
+- Count gambling winnings in federal gross income, limit the wagering losses deduction to 90% of losses from 2026 and to the head's and spouse's gambling, treat it as a Schedule A itemized deduction, and align the states that tax gambling winnings or build on federal itemized deductions. Count the winnings in market income too, so household and SPM net income hold the winnings whose tax they subtract.
+
+
 ## [2.125.1] - 2026-11-14
 
 ### Changed
