@@ -343,3 +343,999 @@
     # income threshold: 48,300 * 0.10 = 4,830
     # credit: min(6,000 - 4,830, 2,820) = 1,170
     ma_senior_circuit_breaker: 1_170
+
+# DOR TIR-17-8 sections II-IV: native tax-year income/property/credit limits.
+# https://www.mass.gov/technical-information-release/tir-17-8-annual-update-of-real-estate-tax-credit-for-certain-persons-age-65-and-older
+# Component financial boundaries: independently known SCB total income;
+# Income aggregation has separate tests; its model formula is unchanged.
+# All adults are resident nondependent homeowners; the principal home and
+# associated land do not exceed one acre. Net eligible property tax is 15,000.
+# Joint cases include both spouses. HOH cases include a dependent grandchild
+# who lives in the home all year; the head pays over half the home costs.
+# First 9 units: SINGLE/HOH/JOINT income ceiling minus 1/at/plus 1,
+# with 700,000 assessment. Last 3: SINGLE income 40,000, assessment V-1/V/V+1.
+# 15,000 -10% of the largest ceiling in this year (86,000)
+# exceeds the 1,080 cap; property cases have 11,000 excess.
+# Ceilings are inclusive: at/below returns the annual cap; above returns 0.
+# These hypothetical component cases do not certify every SCB eligibility rule.
+- name: Case 13, 2017 historical income and property boundaries.
+  period: 2_017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person2:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person3:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person4:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person5:
+        age: 16
+        is_tax_unit_dependent: true
+      person6:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person7:
+        age: 16
+        is_tax_unit_dependent: true
+      person8:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person9:
+        age: 16
+        is_tax_unit_dependent: true
+      person10:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person11:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person12:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person13:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person14:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person15:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person16:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 746_999
+      person17:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 747_000
+      person18:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 747_001
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        filing_status: SINGLE
+        ma_scb_total_income: 56_999
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+        ma_scb_total_income: 57_000
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+        ma_scb_total_income: 57_001
+      tax_unit4:
+        members:
+        - person4
+        - person5
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 71_999
+      tax_unit5:
+        members:
+        - person6
+        - person7
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 72_000
+      tax_unit6:
+        members:
+        - person8
+        - person9
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 72_001
+      tax_unit7:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+        ma_scb_total_income: 85_999
+      tax_unit8:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+        ma_scb_total_income: 86_000
+      tax_unit9:
+        members:
+        - person14
+        - person15
+        filing_status: JOINT
+        ma_scb_total_income: 86_001
+      tax_unit10:
+        members:
+        - person16
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+      tax_unit11:
+        members:
+        - person17
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+      tax_unit12:
+        members:
+        - person18
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: MA
+      household2:
+        members:
+        - person2
+        state_code: MA
+      household3:
+        members:
+        - person3
+        state_code: MA
+      household4:
+        members:
+        - person4
+        - person5
+        state_code: MA
+      household5:
+        members:
+        - person6
+        - person7
+        state_code: MA
+      household6:
+        members:
+        - person8
+        - person9
+        state_code: MA
+      household7:
+        members:
+        - person10
+        - person11
+        state_code: MA
+      household8:
+        members:
+        - person12
+        - person13
+        state_code: MA
+      household9:
+        members:
+        - person14
+        - person15
+        state_code: MA
+      household10:
+        members:
+        - person16
+        state_code: MA
+      household11:
+        members:
+        - person17
+        state_code: MA
+      household12:
+        members:
+        - person18
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker:
+    - 1_080
+    - 1_080
+    - 0
+    - 1_080
+    - 1_080
+    - 0
+    - 1_080
+    - 1_080
+    - 0
+    - 1_080
+    - 1_080
+    - 0
+
+# DOR TIR-18-10 sections II-IV: native tax-year income/property/credit limits.
+# https://www.mass.gov/technical-information-release/tir-18-10-annual-update-of-real-estate-tax-credit-for-certain-persons-age-65-and-older
+# Component financial boundaries: independently known SCB total income;
+# Income aggregation has separate tests; its model formula is unchanged.
+# All adults are resident nondependent homeowners; the principal home and
+# associated land do not exceed one acre. Net eligible property tax is 15,000.
+# Joint cases include both spouses. HOH cases include a dependent grandchild
+# who lives in the home all year; the head pays over half the home costs.
+# First 9 units: SINGLE/HOH/JOINT income ceiling minus 1/at/plus 1,
+# with 700,000 assessment. Last 3: SINGLE income 40,000, assessment V-1/V/V+1.
+# 15,000 -10% of the largest ceiling in this year (88,000)
+# exceeds the 1,100 cap; property cases have 11,000 excess.
+# Ceilings are inclusive: at/below returns the annual cap; above returns 0.
+# These hypothetical component cases do not certify every SCB eligibility rule.
+- name: Case 14, 2018 historical income and property boundaries.
+  period: 2_018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person2:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person3:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person4:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person5:
+        age: 16
+        is_tax_unit_dependent: true
+      person6:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person7:
+        age: 16
+        is_tax_unit_dependent: true
+      person8:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person9:
+        age: 16
+        is_tax_unit_dependent: true
+      person10:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person11:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person12:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person13:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person14:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person15:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person16:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 777_999
+      person17:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 778_000
+      person18:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 778_001
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        filing_status: SINGLE
+        ma_scb_total_income: 57_999
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+        ma_scb_total_income: 58_000
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+        ma_scb_total_income: 58_001
+      tax_unit4:
+        members:
+        - person4
+        - person5
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 72_999
+      tax_unit5:
+        members:
+        - person6
+        - person7
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 73_000
+      tax_unit6:
+        members:
+        - person8
+        - person9
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 73_001
+      tax_unit7:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+        ma_scb_total_income: 87_999
+      tax_unit8:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+        ma_scb_total_income: 88_000
+      tax_unit9:
+        members:
+        - person14
+        - person15
+        filing_status: JOINT
+        ma_scb_total_income: 88_001
+      tax_unit10:
+        members:
+        - person16
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+      tax_unit11:
+        members:
+        - person17
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+      tax_unit12:
+        members:
+        - person18
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: MA
+      household2:
+        members:
+        - person2
+        state_code: MA
+      household3:
+        members:
+        - person3
+        state_code: MA
+      household4:
+        members:
+        - person4
+        - person5
+        state_code: MA
+      household5:
+        members:
+        - person6
+        - person7
+        state_code: MA
+      household6:
+        members:
+        - person8
+        - person9
+        state_code: MA
+      household7:
+        members:
+        - person10
+        - person11
+        state_code: MA
+      household8:
+        members:
+        - person12
+        - person13
+        state_code: MA
+      household9:
+        members:
+        - person14
+        - person15
+        state_code: MA
+      household10:
+        members:
+        - person16
+        state_code: MA
+      household11:
+        members:
+        - person17
+        state_code: MA
+      household12:
+        members:
+        - person18
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker:
+    - 1_100
+    - 1_100
+    - 0
+    - 1_100
+    - 1_100
+    - 0
+    - 1_100
+    - 1_100
+    - 0
+    - 1_100
+    - 1_100
+    - 0
+
+# DOR TIR-19-13 sections II-IV: native tax-year income/property/credit limits.
+# https://www.mass.gov/technical-information-release/tir-19-13-annual-update-of-real-estate-tax-credit-for-certain-persons-age-65-and-older
+# Component financial boundaries: independently known SCB total income;
+# Income aggregation has separate tests; its model formula is unchanged.
+# All adults are resident nondependent homeowners; the principal home and
+# associated land do not exceed one acre. Net eligible property tax is 15,000.
+# Joint cases include both spouses. HOH cases include a dependent grandchild
+# who lives in the home all year; the head pays over half the home costs.
+# First 9 units: SINGLE/HOH/JOINT income ceiling minus 1/at/plus 1,
+# with 700,000 assessment. Last 3: SINGLE income 40,000, assessment V-1/V/V+1.
+# 15,000 -10% of the largest ceiling in this year (90,000)
+# exceeds the 1,130 cap; property cases have 11,000 excess.
+# Ceilings are inclusive: at/below returns the annual cap; above returns 0.
+# These hypothetical component cases do not certify every SCB eligibility rule.
+- name: Case 15, 2019 historical income and property boundaries.
+  period: 2_019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person2:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person3:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person4:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person5:
+        age: 16
+        is_tax_unit_dependent: true
+      person6:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person7:
+        age: 16
+        is_tax_unit_dependent: true
+      person8:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person9:
+        age: 16
+        is_tax_unit_dependent: true
+      person10:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person11:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person12:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person13:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person14:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person15:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person16:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 807_999
+      person17:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 808_000
+      person18:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 808_001
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        filing_status: SINGLE
+        ma_scb_total_income: 59_999
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+        ma_scb_total_income: 60_000
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+        ma_scb_total_income: 60_001
+      tax_unit4:
+        members:
+        - person4
+        - person5
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 74_999
+      tax_unit5:
+        members:
+        - person6
+        - person7
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 75_000
+      tax_unit6:
+        members:
+        - person8
+        - person9
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 75_001
+      tax_unit7:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+        ma_scb_total_income: 89_999
+      tax_unit8:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+        ma_scb_total_income: 90_000
+      tax_unit9:
+        members:
+        - person14
+        - person15
+        filing_status: JOINT
+        ma_scb_total_income: 90_001
+      tax_unit10:
+        members:
+        - person16
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+      tax_unit11:
+        members:
+        - person17
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+      tax_unit12:
+        members:
+        - person18
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: MA
+      household2:
+        members:
+        - person2
+        state_code: MA
+      household3:
+        members:
+        - person3
+        state_code: MA
+      household4:
+        members:
+        - person4
+        - person5
+        state_code: MA
+      household5:
+        members:
+        - person6
+        - person7
+        state_code: MA
+      household6:
+        members:
+        - person8
+        - person9
+        state_code: MA
+      household7:
+        members:
+        - person10
+        - person11
+        state_code: MA
+      household8:
+        members:
+        - person12
+        - person13
+        state_code: MA
+      household9:
+        members:
+        - person14
+        - person15
+        state_code: MA
+      household10:
+        members:
+        - person16
+        state_code: MA
+      household11:
+        members:
+        - person17
+        state_code: MA
+      household12:
+        members:
+        - person18
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker:
+    - 1_130
+    - 1_130
+    - 0
+    - 1_130
+    - 1_130
+    - 0
+    - 1_130
+    - 1_130
+    - 0
+    - 1_130
+    - 1_130
+    - 0
+
+# DOR TIR-20-14 sections II-IV: native tax-year income/property/credit limits.
+# https://www.mass.gov/technical-information-release/tir-20-14-annual-update-of-real-estate-tax-credit-for-certain-persons-age-65-and-older
+# Component financial boundaries: independently known SCB total income;
+# Income aggregation has separate tests; its model formula is unchanged.
+# All adults are resident nondependent homeowners; the principal home and
+# associated land do not exceed one acre. Net eligible property tax is 15,000.
+# Joint cases include both spouses. HOH cases include a dependent grandchild
+# who lives in the home all year; the head pays over half the home costs.
+# First 9 units: SINGLE/HOH/JOINT income ceiling minus 1/at/plus 1,
+# with 700,000 assessment. Last 3: SINGLE income 40,000, assessment V-1/V/V+1.
+# 15,000 -10% of the largest ceiling in this year (92,000)
+# exceeds the 1,150 cap; property cases have 11,000 excess.
+# Ceilings are inclusive: at/below returns the annual cap; above returns 0.
+# These hypothetical component cases do not certify every SCB eligibility rule.
+- name: Case 16, 2020 historical income and property boundaries.
+  period: 2_020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person2:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person3:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person4:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person5:
+        age: 16
+        is_tax_unit_dependent: true
+      person6:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person7:
+        age: 16
+        is_tax_unit_dependent: true
+      person8:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person9:
+        age: 16
+        is_tax_unit_dependent: true
+      person10:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person11:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person12:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person13:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person14:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 700_000
+      person15:
+        age: 68
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person16:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 847_999
+      person17:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 848_000
+      person18:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        real_estate_taxes: 15_000
+        assessed_property_value: 848_001
+    tax_units:
+      tax_unit1:
+        members:
+        - person1
+        filing_status: SINGLE
+        ma_scb_total_income: 60_999
+      tax_unit2:
+        members:
+        - person2
+        filing_status: SINGLE
+        ma_scb_total_income: 61_000
+      tax_unit3:
+        members:
+        - person3
+        filing_status: SINGLE
+        ma_scb_total_income: 61_001
+      tax_unit4:
+        members:
+        - person4
+        - person5
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 75_999
+      tax_unit5:
+        members:
+        - person6
+        - person7
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 76_000
+      tax_unit6:
+        members:
+        - person8
+        - person9
+        filing_status: HEAD_OF_HOUSEHOLD
+        ma_scb_total_income: 76_001
+      tax_unit7:
+        members:
+        - person10
+        - person11
+        filing_status: JOINT
+        ma_scb_total_income: 91_999
+      tax_unit8:
+        members:
+        - person12
+        - person13
+        filing_status: JOINT
+        ma_scb_total_income: 92_000
+      tax_unit9:
+        members:
+        - person14
+        - person15
+        filing_status: JOINT
+        ma_scb_total_income: 92_001
+      tax_unit10:
+        members:
+        - person16
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+      tax_unit11:
+        members:
+        - person17
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+      tax_unit12:
+        members:
+        - person18
+        filing_status: SINGLE
+        ma_scb_total_income: 40_000
+    households:
+      household1:
+        members:
+        - person1
+        state_code: MA
+      household2:
+        members:
+        - person2
+        state_code: MA
+      household3:
+        members:
+        - person3
+        state_code: MA
+      household4:
+        members:
+        - person4
+        - person5
+        state_code: MA
+      household5:
+        members:
+        - person6
+        - person7
+        state_code: MA
+      household6:
+        members:
+        - person8
+        - person9
+        state_code: MA
+      household7:
+        members:
+        - person10
+        - person11
+        state_code: MA
+      household8:
+        members:
+        - person12
+        - person13
+        state_code: MA
+      household9:
+        members:
+        - person14
+        - person15
+        state_code: MA
+      household10:
+        members:
+        - person16
+        state_code: MA
+      household11:
+        members:
+        - person17
+        state_code: MA
+      household12:
+        members:
+        - person18
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker:
+    - 1_150
+    - 1_150
+    - 0
+    - 1_150
+    - 1_150
+    - 0
+    - 1_150
+    - 1_150
+    - 0
+    - 1_150
+    - 1_150
+    - 0

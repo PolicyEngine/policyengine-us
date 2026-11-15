@@ -183,3 +183,176 @@
         state_code: DC
   output:
     dc_kccatc: 800
+
+
+- name: 2025 single filer who can be claimed as a dependent, no keep child care affordable credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [filer, child]
+        state_code: DC
+  output:
+    # 47-1806.15(d)(1): the child must be claimed as a dependent on
+    # the federal and District returns; a return with a claimable
+    # filer has no dependents.
+    dc_kccatc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no keep child care affordable credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DC
+  output:
+    dc_kccatc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no keep child care affordable credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: DC
+  output:
+    dc_kccatc: 0
+
+- name: 2025 joint return with both spouses claimable as dependents, no keep child care affordable credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DC
+  output:
+    dc_kccatc: 0
+
+- name: 2025 joint return with neither spouse claimable, no keep child care affordable credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DC
+  output:
+    # min(2,000, 1,200)
+    dc_kccatc: 1_200
+
+- name: 2025 two returns in one household, only the return whose filer can be claimed loses the keep child care affordable credit
+  period: 2025
+  input:
+    people:
+      parent_claimed:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+      child_a:
+        age: 2
+      parent:
+        age: 30
+        employment_income: 5_000
+      child_b:
+        age: 2
+    tax_units:
+      claimed_return:
+        members: [parent_claimed, child_a]
+        tax_unit_childcare_expenses: 2_000
+      other_return:
+        members: [parent, child_b]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [parent_claimed, child_a, parent, child_b]
+        state_code: DC
+  output:
+    dc_kccatc: [0, 1_200]
