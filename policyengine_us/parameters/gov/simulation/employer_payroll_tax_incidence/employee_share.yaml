@@ -1,0 +1,22 @@
+description: Share of the fixed-employer-cost wage change from a reform to federal employer payroll taxes that falls on the worker's wages in the same year.
+documentation: >-
+  When a reform changes the employer Social Security rate or taxable maximum,
+  the employer Medicare rate, or the federal unemployment tax rate or wage
+  base, wages move so that each worker's payroll wages plus federal employer
+  payroll taxes stay at their baseline amount, and this share of that wage
+  change applies. At 1, the default, the employer's cost is unchanged and
+  workers bear the whole change. This follows the Joint Committee on
+  Taxation's convention of holding total compensation fixed, except that JCT
+  splits the change between taxable and nontaxable compensation in
+  proportion, while the model puts all of it on wages. At 0, wages do not
+  respond. The model does not allocate any share not passed to
+  wages. State and local employer payroll taxes are held at their baseline
+  schedules.
+values:
+  2000-01-01: 1
+metadata:
+  unit: /1
+  label: employee share of employer payroll tax change
+  reference:
+    - title: Joint Committee on Taxation, The Income and Payroll Tax Offset to Changes in Payroll Tax Revenues (JCX-89-16)
+      href: https://www.jct.gov/getattachment/df6ad7a8-d3f8-4f39-b465-1cbe5b077d20/x-89-16-4962.pdf#page=8
