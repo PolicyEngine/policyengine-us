@@ -13,4 +13,6 @@ class ca_la_infant_supplement_eligible_person(Variable):
     defined_for = StateCode.CA
 
     def formula(person, period, parameters):
-        return person("ca_foster_care_minor_dependent", period)
+        foster_eligible = person("ca_foster_care_minor_dependent", period)
+        own_children = person("own_children_in_household", period.this_year)
+        return foster_eligible & (own_children > 0)

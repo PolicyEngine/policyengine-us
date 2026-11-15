@@ -1,4 +1,4 @@
-"""Check every California county and preserve the original LA calculations."""
+"""Check foster parent payment eligibility and amounts in every California county."""
 
 import numpy as np
 from hypothesis import HealthCheck, given, settings
@@ -37,7 +37,7 @@ def _boundary_cases():
             "children": 1,
             "in_foster_care": True,
             "group_home": False,
-            "pregnancy_month": 6,
+            "pregnancy_month": 7,
             **overrides,
         }
 
@@ -45,6 +45,7 @@ def _boundary_cases():
         case(pregnancy_month=None),
         case(pregnancy_month=5),
         case(pregnancy_month=6),
+        case(pregnancy_month=7),
         case(pregnancy_month=9),
         case(pregnancy_month=10),
         case(age=21),
@@ -52,8 +53,8 @@ def _boundary_cases():
         case(children=0),
         case(group_home=True),
         case(group_home=True, children=3),
-        # The original household calculation also counts a parent under 18.
         case(age=17, children=0),
+        case(age=17, children=1),
         case(age=17, children=0, in_foster_care=False),
     ]
 
@@ -68,6 +69,7 @@ def _situation(cases):
             parent_indices.append(len(people))
             parent = {
                 "age": {year: case["age"] for year in YEARS},
+                "own_children_in_household": {year: case["children"] for year in YEARS},
                 "is_in_foster_care": {
                     f"{year}-01": case["in_foster_care"] for year in YEARS
                 },
@@ -99,30 +101,40 @@ def _situation(cases):
     )
 
 
-def _original_la_amounts(cases):
-    """Compute main's LA outcomes without reading the relocated parameters."""
-    infant, expectant, foster_eligible, expectant_eligible = [], [], [], []
+def _reference_amounts(cases):
+    """Apply ACL 21-123 and ACL 16-57 to the 2024 household inputs."""
+    infant, expectant, foster_eligible, infant_eligible, expectant_eligible = (
+        [],
+        [],
+        [],
+        [],
+        [],
+    )
     for case in cases:
         eligible = case["in_foster_care"] and case["age"] < 21
         pregnancy_month = case["pregnancy_month"] or 0
-        pregnant_eligible = eligible and 6 <= pregnancy_month <= 9
-        children = case["children"] + (case["age"] < 18)
+        pregnant_eligible = eligible and 7 <= pregnancy_month <= 9
+        children = case["children"]
+        # In 2024, pay $900 or $1,379 per own child for one eligible month.
         infant.append((1_379 if case["group_home"] else 900) * children * eligible)
         expectant.append(900 * pregnant_eligible)
         foster_eligible.append(eligible)
+        infant_eligible.append(eligible and children > 0)
         expectant_eligible.append(pregnant_eligible)
-    return infant, expectant, foster_eligible, expectant_eligible
+    return infant, expectant, foster_eligible, infant_eligible, expectant_eligible
 
 
 def _check_invariants(cases):
     situation, parent_indices = _situation(cases)
     simulation = Simulation(situation=situation)
-    infant, expectant, foster_eligible, pregnant_eligible = _original_la_amounts(cases)
+    infant, expectant, foster_eligible, infant_eligible, pregnant_eligible = (
+        _reference_amounts(cases)
+    )
     expected = {
         "ca_la_infant_supplement": infant,
         "ca_la_expectant_parent_payment": expectant,
         "ca_foster_care_minor_dependent": foster_eligible,
-        "ca_la_infant_supplement_eligible_person": foster_eligible,
+        "ca_la_infant_supplement_eligible_person": infant_eligible,
         "ca_la_expectant_parent_payment_eligible": pregnant_eligible,
     }
     for year in YEARS:
@@ -139,7 +151,7 @@ def _check_invariants(cases):
             )
             # California payments and eligibility never extend to Nevada.
             np.testing.assert_array_equal(result[:, -1], 0)
-            # LA retains main's age, placement, timing, child count and amounts.
+            # LA follows the same source-derived calculation as other counties.
             np.testing.assert_array_equal(result[:, LA_INDEX], la_expected)
 
             if variable in PAYMENTS:

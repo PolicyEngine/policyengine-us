@@ -15,9 +15,9 @@
 - name: San Diego foster parent receives the home-based expectant rate
   period: 2024-01
   input:
-    state_code: CA
-    county_str: SAN_DIEGO_COUNTY_CA
-    age: 20
+    state_code: {2024: CA}
+    county_str: {2024: SAN_DIEGO_COUNTY_CA}
+    age: {2024: 20}
     is_in_foster_care: true
     is_in_foster_care_group_home: true
     current_pregnancy_month: 9
@@ -27,10 +27,82 @@
 - name: Nevada foster parent receives no California expectant payment
   period: 2024-01
   input:
-    state_code: NV
-    county_str: CLARK_COUNTY_NV
-    age: 20
+    state_code: {2024: NV}
+    county_str: {2024: CLARK_COUNTY_NV}
+    age: {2024: 20}
     is_in_foster_care: true
     current_pregnancy_month: 7
   output:
     ca_la_expectant_parent_payment: 0  # California residence fails, so $900 * 0.
+
+
+- name: Home-based expectant parent payment in 2019-03
+  period: 2019-03
+  input:
+    state_code: {2019: CA}
+    county_str: {2019: FRESNO_COUNTY_CA}
+    age: {2019: 19}
+    is_in_foster_care: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment: 0  # $0 * 1 month; program starts January 2022.
+
+
+- name: Home-based expectant parent payment in 2021-12
+  period: 2021-12
+  input:
+    state_code: {2021: CA}
+    county_str: {2021: FRESNO_COUNTY_CA}
+    age: {2021: 19}
+    is_in_foster_care: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment: 0  # $0 * 1 month; program starts January 2022.
+
+
+- name: Home-based expectant parent payment in 2022-01
+  period: 2022-01
+  input:
+    state_code: {2022: CA}
+    county_str: {2022: FRESNO_COUNTY_CA}
+    age: {2022: 19}
+    is_in_foster_care: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment: 900  # $900 * 1 month; program starts January 2022.
+
+
+- name: Home-based expectant parent payment in 2026-06
+  period: 2026-06
+  input:
+    state_code: {2026: CA}
+    county_str: {2026: FRESNO_COUNTY_CA}
+    age: {2026: 19}
+    is_in_foster_care: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment: 900  # $900 * 1 month; program starts January 2022.
+
+
+- name: Home-based expectant parent payment in 2026-07
+  period: 2026-07
+  input:
+    state_code: {2026: CA}
+    county_str: {2026: FRESNO_COUNTY_CA}
+    age: {2026: 19}
+    is_in_foster_care: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment: 932  # $932 * 1 month; program starts January 2022.
+
+
+- name: Home-based expectant parent payment in 2026-08
+  period: 2026-08
+  input:
+    state_code: {2026: CA}
+    county_str: {2026: FRESNO_COUNTY_CA}
+    age: {2026: 19}
+    is_in_foster_care: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment: 932  # $932 * 1 month; program starts January 2022.

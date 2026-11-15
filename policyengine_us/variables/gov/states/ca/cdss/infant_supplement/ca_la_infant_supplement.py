@@ -15,9 +15,8 @@ class ca_la_infant_supplement(Variable):
     def formula(household, period, parameters):
         p = parameters(period).gov.states.ca.cdss.infant_supplement
         person = household.members
-        is_in_group_home = household.any(person("is_in_foster_care_group_home", period))
-        base_amount = where(is_in_group_home, p.amount.group_home, p.amount.base)
-        children = add(household, period, ["is_child"])
+        is_in_group_home = person("is_in_foster_care_group_home", period)
+        amount = where(is_in_group_home, p.amount.group_home, p.amount.base)
+        own_children = person("own_children_in_household", period.this_year)
         eligible_person = person("ca_la_infant_supplement_eligible_person", period)
-        eligible_person_present = household.any(eligible_person)
-        return base_amount * children * eligible_person_present
+        return household.sum(amount * own_children * eligible_person)

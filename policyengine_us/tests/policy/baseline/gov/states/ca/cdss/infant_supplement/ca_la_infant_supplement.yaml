@@ -4,6 +4,7 @@
     people:
       person1:
         ca_la_infant_supplement_eligible_person: true
+        own_children_in_household: 1
         is_in_foster_care_group_home: false
       person2:
         is_child: true
@@ -21,6 +22,7 @@
     people:
       parent:
         age: 20
+        own_children_in_household: 2
         is_in_foster_care: true
       first_child:
         age: 0
@@ -40,6 +42,7 @@
     people:
       parent:
         age: 20
+        own_children_in_household: 1
         is_in_foster_care: true
         is_in_foster_care_group_home: true
       child:
@@ -58,6 +61,7 @@
     people:
       parent:
         age: 20
+        own_children_in_household: 1
         is_in_foster_care: false
       child:
         age: 0
@@ -75,6 +79,7 @@
     people:
       parent:
         age: 20
+        own_children_in_household: 1
         is_in_foster_care: true
       child:
         age: 0
@@ -92,6 +97,7 @@
     people:
       person1:
         ca_la_infant_supplement_eligible_person: true
+        own_children_in_household: 1
         is_in_foster_care_group_home: true
       person2:
         is_child: true
@@ -110,6 +116,7 @@
     people:
       person1:
         ca_la_infant_supplement_eligible_person: true
+        own_children_in_household: 0
         is_in_foster_care_group_home: true
       person2:
         is_child: false
@@ -121,7 +128,7 @@
   output:
     ca_la_infant_supplement: 0
 
-- name: Ineligible household with no infant, in group home
+- name: Ineligible household with one child, in group home
   period: 2024
   input:
     people:
@@ -138,7 +145,7 @@
   output:
     ca_la_infant_supplement: 0
 
-- name: Integration test, eligible caretaker but no eligible infant
+- name: Foster youth without own children receives no supplement
   period: 2024
   input:
     people:
@@ -149,6 +156,7 @@
         other_medical_expenses: 1_332
         rent: 1_332
         is_in_foster_care: true
+        own_children_in_household: 0
         is_tax_unit_head_or_spouse: true
       person2:
         is_child: false
@@ -160,7 +168,7 @@
   output:
     ca_la_infant_supplement: 0
 
-- name: Integration test, eligible caretaker but no eligible infant
+- name: Foster parent receives the supplement for one own child
   period: 2024
   input:
     people:
@@ -171,6 +179,7 @@
         other_medical_expenses: 1_332
         rent: 1_332
         is_in_foster_care: true
+        own_children_in_household: 1
         is_tax_unit_head_or_spouse: true
       person2:
         is_child: true
@@ -181,3 +190,249 @@
         county_str: LOS_ANGELES_COUNTY_CA
   output:
     ca_la_infant_supplement: 10_800  # 12 months * $900 * one child.
+
+
+- name: Fresno resource family receives no supplement for a foster youth who is not a parent
+  period: 2024
+  input:
+    people:
+      caregiver:
+        age: 40
+      foster_youth:
+        age: 10
+        is_in_foster_care: true
+        own_children_in_household: 0
+      first_child:
+        age: 5
+      second_child:
+        age: 8
+    households:
+      household:
+        members: [caregiver, foster_youth, first_child, second_child]
+        state_code: CA
+        county_str: FRESNO_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 0  # No qualifying parent's own children: $900 * 0 * 12.
+
+- name: Childless minor foster youth receives no infant supplement
+  period: 2024
+  input:
+    age: 17
+    is_in_foster_care: true
+    own_children_in_household: 0
+    state_code: CA
+    county_str: FRESNO_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 0  # $900 * 0 own children * 12 months.
+
+- name: Minor foster parent receives payment for their own child alone
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 17
+        is_in_foster_care: true
+        own_children_in_household: 1
+      child:
+        age: 0
+      unrelated_child:
+        age: 8
+    households:
+      household:
+        members: [parent, child, unrelated_child]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 10_800  # $900 * 1 own child * 12 months.
+
+- name: Unrelated group home resident does not change a foster parent's rate
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 20
+        is_in_foster_care: true
+        own_children_in_household: 1
+      child:
+        age: 0
+      unrelated_resident:
+        age: 20
+        is_in_foster_care_group_home: true
+    households:
+      household:
+        members: [parent, child, unrelated_resident]
+        state_code: CA
+        county_str: FRESNO_COUNTY_CA
+  output:
+    ca_la_infant_supplement: 10_800  # Home-based parent: $900 * 1 * 12.
+
+- name: Infant supplement rate in 2026-06 with group home false
+  period: 2026-06
+  input:
+    people:
+      parent:
+        age: {2026: 20}
+        own_children_in_household: {2026: 1}
+        is_in_foster_care: true
+        is_in_foster_care_group_home: false
+      child:
+        age: {2026: 0}
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2026: CA}
+        county_str: {2026: FRESNO_COUNTY_CA}
+  output:
+    ca_la_infant_supplement: 900  # $900 * 1 own child * 1 month.
+
+- name: Infant supplement rate in 2026-07 with group home false
+  period: 2026-07
+  input:
+    people:
+      parent:
+        age: {2026: 20}
+        own_children_in_household: {2026: 1}
+        is_in_foster_care: true
+        is_in_foster_care_group_home: false
+      child:
+        age: {2026: 0}
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2026: CA}
+        county_str: {2026: FRESNO_COUNTY_CA}
+  output:
+    ca_la_infant_supplement: 932  # $932 * 1 own child * 1 month.
+
+- name: Infant supplement rate in 2026-08 with group home true
+  period: 2026-08
+  input:
+    people:
+      parent:
+        age: {2026: 20}
+        own_children_in_household: {2026: 1}
+        is_in_foster_care: true
+        is_in_foster_care_group_home: true
+      child:
+        age: {2026: 0}
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2026: CA}
+        county_str: {2026: FRESNO_COUNTY_CA}
+  output:
+    ca_la_infant_supplement: 1429  # $1,429 * 1 own child * 1 month.
+
+- name: Foster parents receive rates for their own placements and children
+  period: 2024-01
+  input:
+    people:
+      home_based_parent:
+        age: {2024: 19}
+        is_in_foster_care: true
+        own_children_in_household: {2024: 1}
+      group_home_parent:
+        age: {2024: 20}
+        is_in_foster_care: true
+        is_in_foster_care_group_home: true
+        own_children_in_household: {2024: 2}
+      first_child:
+        age: {2024: 0}
+      second_child:
+        age: {2024: 1}
+      third_child:
+        age: {2024: 2}
+    households:
+      household:
+        members: [home_based_parent, group_home_parent, first_child, second_child, third_child]
+        state_code: {2024: CA}
+        county_str: {2024: FRESNO_COUNTY_CA}
+  output:
+    ca_la_infant_supplement: 3_658  # $900 * 1 + $1,379 * 2 for one month.
+
+- name: Foster parent aged 21 receives no infant supplement
+  period: 2024-01
+  input:
+    age: {2024: 21}
+    own_children_in_household: {2024: 1}
+    is_in_foster_care: true
+    state_code: {2024: CA}
+    county_str: {2024: FRESNO_COUNTY_CA}
+  output:
+    ca_la_infant_supplement: 0  # Age 21 fails foster eligibility: $900 * 0.
+
+- name: Home-based infant supplement before the July 2016 increase
+  period: 2016-06
+  input:
+    people:
+      parent:
+        age: {2016: 19}
+        own_children_in_household: {2016: 1}
+        is_in_foster_care: true
+        is_in_foster_care_group_home: false
+      child:
+        age: {2016: 0}
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2016: CA}
+        county_str: {2016: FRESNO_COUNTY_CA}
+  output:
+    ca_la_infant_supplement: 411  # $411 * 1 own child * 1 month.
+
+- name: Home-based infant supplement after the July 2016 increase
+  period: 2016-07
+  input:
+    people:
+      parent:
+        age: {2016: 19}
+        own_children_in_household: {2016: 1}
+        is_in_foster_care: true
+        is_in_foster_care_group_home: false
+      child:
+        age: {2016: 0}
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2016: CA}
+        county_str: {2016: FRESNO_COUNTY_CA}
+  output:
+    ca_la_infant_supplement: 900  # $900 * 1 own child * 1 month.
+
+- name: Group home infant supplement before the July 2016 increase
+  period: 2016-06
+  input:
+    people:
+      parent:
+        age: {2016: 19}
+        own_children_in_household: {2016: 1}
+        is_in_foster_care: true
+        is_in_foster_care_group_home: true
+      child:
+        age: {2016: 0}
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2016: CA}
+        county_str: {2016: FRESNO_COUNTY_CA}
+  output:
+    ca_la_infant_supplement: 890  # $890 * 1 own child * 1 month.
+
+- name: Home-based infant supplement in June 2015
+  period: 2015-06
+  input:
+    people:
+      parent:
+        age: {2015: 19}
+        own_children_in_household: {2015: 1}
+        is_in_foster_care: true
+        is_in_foster_care_group_home: false
+      child:
+        age: {2015: 0}
+    households:
+      household:
+        members: [parent, child]
+        state_code: {2015: CA}
+        county_str: {2015: FRESNO_COUNTY_CA}
+  output:
+    ca_la_infant_supplement: 411  # $411 * 1 own child * 1 month.

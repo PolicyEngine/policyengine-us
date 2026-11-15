@@ -1,6 +1,8 @@
-description: The California Department of Social Services provides the following Infant Supplement amount for filers in group homes or STRTP placements. 
+description: The California Department of Social Services provides this monthly infant supplement amount for eligible parents in group homes or short-term residential therapeutic placements.
 values:
-  2022-01-01: 1_379
+  2015-01-01: 890
+  2016-07-01: 1_379
+  2026-07-01: 1_429
 metadata:
   unit: currency-USD
   period: month
@@ -8,7 +10,9 @@ metadata:
   reference:
     - title: California Welfare and Institutions Code, Section 11465
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11465.
+    - title: California Department of Social Services All County Letter 15-58
+      href: https://www.cdss.ca.gov/lettersnotices/EntRes/getinfo/acl/2015/15-58.pdf#page=6
     - title: California Department of Social Services All County Letter 16-57
-      href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2016/16-57.pdf#page=6
-    - title: Los Angeles County Department of Children and Family Services Teen Parenting
-      href: https://dcfs.lacounty.gov/youth/teen-parenting/
+      href: https://www.cdss.ca.gov/lettersnotices/EntRes/getinfo/acl/2016/16-57.pdf#page=6
+    - title: California Department of Social Services All County Letter 26-44
+      href: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-44.pdf#page=5

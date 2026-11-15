@@ -1,18 +1,20 @@
-- name: Eligible person,
+- name: Foster parent qualifies in Los Angeles
   period: 2022
   input:
     state_code: CA
     county_str: LOS_ANGELES_COUNTY_CA
     ca_foster_care_minor_dependent: true
+    own_children_in_household: 1
   output:
     ca_la_infant_supplement_eligible_person: true
 
-- name: Eligible foster youth in Fresno County
+- name: Foster parent qualifies in Fresno County
   period: 2023
   input:
     state_code: CA
     county_str: FRESNO_COUNTY_CA
     ca_foster_care_minor_dependent: true
+    own_children_in_household: 1
   output:
     ca_la_infant_supplement_eligible_person: true
 
@@ -22,5 +24,17 @@
     state_code: CA
     county_str: LOS_ANGELES_COUNTY_CA
     ca_foster_care_minor_dependent: false
+  output:
+    ca_la_infant_supplement_eligible_person: false
+
+
+- name: Foster youth without own children does not qualify for the infant supplement
+  period: 2024
+  input:
+    state_code: CA
+    county_str: FRESNO_COUNTY_CA
+    age: 17
+    is_in_foster_care: true
+    own_children_in_household: 0
   output:
     ca_la_infant_supplement_eligible_person: false

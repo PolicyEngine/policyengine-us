@@ -1,1 +1,1 @@
-Applied the California infant supplement and expectant parent payment statewide while preserving their public variable names.
+Apply the California infant supplement and expectant parent payment statewide while preserving their public variable names. Count eligible parents' own children, correct pregnancy timing and historical rates, and apply July 2026 amounts. Move parameters from `gov.local.ca.la.dss.*` to `gov.states.ca.cdss.*`.
