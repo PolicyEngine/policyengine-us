@@ -50,7 +50,7 @@ class mt_non_medical_itemized_deductions_indiv(Variable):
                 "mt_misc_deductions",
                 "mt_misc_deductions_subject_to_floor_indiv",
                 "mt_child_dependent_care_expense_deduction",
-                "mt_salt_deduction",
+                "mt_salt_deduction_indiv",
                 "mt_federal_income_tax_deduction_indiv",
             ],
         )
