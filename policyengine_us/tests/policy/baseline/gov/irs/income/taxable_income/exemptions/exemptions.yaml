@@ -23,7 +23,7 @@
   output:
     exemptions: [1_000, 1_000, 980]
 
-# CBO's January 2025 CSV gives the 2032 head-of-household threshold as $421,200:
+# CBO gives the 2032 head-of-household threshold as $421,200 in its January 2025 CSV:
 # https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/budget/tax_parameters/annual_cy_2025-01.csv
 # At $421,200, excess AGI = $0; at $423,700, excess AGI / $2,500 = 1 step.
 # $1,000 * (1 - 1 * 0.02) = $980 after one full step.
