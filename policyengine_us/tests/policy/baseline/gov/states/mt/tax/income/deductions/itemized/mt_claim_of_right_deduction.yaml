@@ -584,7 +584,7 @@
     mt_misc_deductions: [0, 5_000]
     mt_misc_deductions_subject_to_floor_joint: 800
 
-- name: Wagering losses are included in the 2024 full federal itemized amount and ceiling.
+- name: In 2024 the full federal itemized amount sets the ceiling on the Montana addback.
   period: 2024
   input:
     state_code: MT
@@ -592,8 +592,7 @@
     mt_additions: 0
     mt_subtractions: 0
     tax_unit_itemizes: true
-    itemized_taxable_income_deductions: 16_000
-    wagering_losses_deduction: 4_000
+    itemized_taxable_income_deductions: 20_000
     standard_deduction: 14_600
     salt_deduction: 6_000
     state_withheld_income_tax: 6_000
