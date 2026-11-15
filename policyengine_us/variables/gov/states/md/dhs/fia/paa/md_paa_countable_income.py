@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_income,
+)
 
 
 class md_paa_countable_income(Variable):
@@ -23,19 +26,21 @@ class md_paa_countable_income(Variable):
         # exclusions, but it must count income for every PAA eligibility
         # pathway. Using ssi_countable_income would zero out SSDI-only
         # recipients unless an input also marks them as SSI-disabled.
-        earned = person("ssi_marital_earned_income", period)
+        # NOTE: this annual formula applies one couple status to the whole
+        # year (both_eligible below), so it combines the spouses' annual
+        # income by that same status. ssi_marital_earned_income and
+        # ssi_marital_unearned_income are monthly and follow each month's
+        # status; their annual totals would not match it in a year with a
+        # part-year facility stay.
+        earned = _ssi_couple_income(person, period, "ssi_earned_income")
         student_exclusion = person(
             "ssi_blind_or_disabled_working_student_exclusion", period
         )
         adjusted_earned = max_(earned - student_exclusion, 0)
-        unearned = add(
-            person,
-            period,
-            [
-                "ssi_marital_unearned_income",
-                "ssi_unearned_income_deemed_from_ineligible_parent",
-                "ssi_in_kind_support_and_maintenance",
-            ],
+        unearned = (
+            _ssi_couple_income(person, period, "ssi_unearned_income")
+            + person("ssi_unearned_income_deemed_from_ineligible_parent", period)
+            + person("ssi_in_kind_support_and_maintenance", period)
         )
         personal_countable = _apply_ssi_exclusions(
             adjusted_earned,

@@ -13,6 +13,8 @@ values:
     # third-party insurer payments, and disability distributions (61 Pa.
     # Code 101.6(c)(1)). Regular sick leave pay is in employment income.
     - taxable_disability_benefits
+    # PA-40 Schedule T line 4: the cost of bets comes off the winnings.
+    - pa_gambling_loss_offset
 metadata:
   unit: currency-USD
   label: PA nontaxable income sources
@@ -23,3 +25,5 @@ metadata:
       href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
     - title: "2024 Pennsylvania PIT Return Instructions (PA-40 IN), nontaxable sick pay and disability benefits and Code 3 disability distributions #page 8,13"
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2024/2024_pa-40in.pdf#page=8
+    - title: 2025 PA-40 Schedule T - Gambling and Lottery Winnings
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40t.pdf#page=1

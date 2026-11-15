@@ -25,7 +25,7 @@ class pa_liheap_supplement(Variable):
         disability_assistance = (
             (spm_unit.members("social_security_disability", period) > 0)
             | (spm_unit.members("disability_benefits", period) > 0)
-            | ((spm_unit.members("ssi", period, options=[ADD]) > 0) & disabled_or_blind)
+            | ((spm_unit.members("ssi", period) > 0) & disabled_or_blind)
         )
         # Aggregate veterans benefits do not identify disability assistance.
         # A disability flag alone does not establish the required cash receipt.

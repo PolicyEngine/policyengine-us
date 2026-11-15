@@ -134,3 +134,20 @@
     # L1 = 130,000 - 30,000 = 100,000; L4 = 80,000; L8 = 2,734.50.
     # Reduction = min(80,000, 2,734.50) = 2,734.50 (same as without tuition).
     ny_itemized_deductions_phase_out: 2_734.50
+
+- name: Gambling losses are not subject to the New York overall limitation.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 1_000_000
+    gambling_winnings: 50_000
+    gambling_losses: 50_000
+    ny_itemized_deductions_phase_out_applies: true
+    ny_salt_deduction: 0
+    state_code: NY
+  output:
+    ny_wagering_losses_deduction: 50_000
+    ny_itemized_deductions_max: 50_000
+    # Worksheet line 1 equals line 2 (gambling losses), so nothing is limited.
+    ny_itemized_deductions_phase_out: 0

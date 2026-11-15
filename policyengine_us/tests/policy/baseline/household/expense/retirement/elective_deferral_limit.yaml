@@ -119,3 +119,104 @@
   output:
     elective_deferral_limit: 32_500
     traditional_401k_contributions: 32_500
+
+# The expected values below come from the IRS cost-of-living table, 402(g)(1)
+# and 414(v)(2)(B)(i), https://www.irs.gov/pub/irs-tege/cola-table.pdf.
+
+- name: Case 11, the 2004 limit applies.
+  period: 2004
+  input:
+    age: 40
+    traditional_401k_contributions_desired: 20_000
+  output:
+    elective_deferral_limit: 13_000
+    traditional_401k_contributions: 13_000
+
+- name: Case 12, the 2004 limit adds the 2004 catch-up.
+  period: 2004
+  input:
+    age: 55
+    traditional_401k_contributions_desired: 20_000
+  output:
+    # 13,000 + 3,000 = 16,000.
+    elective_deferral_limit: 16_000
+    traditional_401k_contributions: 16_000
+
+- name: Case 13, the 2009 limit applies.
+  period: 2009
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 16_500
+
+- name: Case 14, the 2014 limit adds the 2014 catch-up.
+  period: 2014
+  input:
+    age: 55
+  output:
+    # 17,500 + 5,500 = 23,000.
+    elective_deferral_limit: 23_000
+
+- name: Case 15, the 2017 limit applies.
+  period: 2017
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 18_000
+
+- name: Case 16, the 2017 limit adds the 2017 catch-up.
+  period: 2017
+  input:
+    age: 55
+  output:
+    # 18,000 + 6,000 = 24,000.
+    elective_deferral_limit: 24_000
+
+- name: Case 17, the limit rises to 18,500 in 2018.
+  period: 2018
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 18_500
+
+- name: Case 18, the limit rises to 14,000 in 2005.
+  period: 2005
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 14_000
+
+- name: Case 19, the limit rises to 15,000 in 2006.
+  period: 2006
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 15_000
+
+- name: Case 20, the limit rises to 15,500 in 2007.
+  period: 2007
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 15_500
+
+- name: Case 21, the limit rises to 17,000 in 2012.
+  period: 2012
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 17_000
+
+- name: Case 22, the limit rises to 17,500 in 2013.
+  period: 2013
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 17_500
+
+- name: Case 23, the limit rises to 18,000 in 2015.
+  period: 2015
+  input:
+    age: 40
+  output:
+    elective_deferral_limit: 18_000

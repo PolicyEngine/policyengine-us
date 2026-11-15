@@ -8,6 +8,7 @@ class ny_heap_tier_one(Variable):
     label = "New York HEAP Tier I status"
     defined_for = StateCode.NY
     reference = (
+        "https://liheapch.acf.gov/docs/NY_Plan_2017.pdf#page=9",
         "https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=10",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx",
     )
@@ -16,7 +17,11 @@ class ny_heap_tier_one(Variable):
         p = parameters(period).gov.states.ny.otda.heap.payment
         threshold = (
             np.floor(
-                spm_unit("ny_heap_fpg", period) * p.tier_one_fpg_rate / MONTHS_IN_YEAR
+                # Keep an exact monthly dollar from falling below the integer
+                # before floor: float32 can turn 11,880 * 1.3 / 12 into 1,286.9999.
+                spm_unit("ny_heap_fpg", period).astype(np.float64)
+                * p.tier_one_fpg_rate
+                / MONTHS_IN_YEAR
             )
             * MONTHS_IN_YEAR
         )
