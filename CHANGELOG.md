@@ -1,3 +1,10 @@
+## [2.135.17] - 2026-11-15
+
+### Changed
+
+- Record Colorado's open AMT deduction addback question and test current results for itemizers and standard deduction filers.
+
+
 ## [2.135.16] - 2026-11-15
 
 ### Fixed
