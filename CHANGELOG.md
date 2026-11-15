@@ -1,3 +1,10 @@
+## [2.131.0] - 2026-11-15
+
+### Added
+
+- Add Kentucky LIHEAP regular cooling assistance (the one-time electric cooling subsidy).
+
+
 ## [2.130.0] - 2026-11-15
 
 ### Added
