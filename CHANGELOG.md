@@ -1,3 +1,10 @@
+## [2.135.16] - 2026-11-15
+
+### Fixed
+
+- Correct Mississippi Medicaid parent and caretaker income limits by household size for 2017–2026 using the published monthly standards including one MAGI disregard.
+
+
 ## [2.135.15] - 2026-11-15
 
 ### Fixed
