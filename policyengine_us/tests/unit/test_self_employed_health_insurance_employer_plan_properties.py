@@ -1,13 +1,14 @@
 """Properties of the employer-plan bar on the self-employed health insurance deduction.
 
 26 U.S.C. 162(l)(2)(B) and Form 7206 line 1 leave out premiums for any month
-the taxpayer is eligible for a subsidized plan of their own or their spouse's
-employer. The model treats annual eligibility as full-year eligibility. For
+the taxpayer can join a subsidized plan of an employer of the taxpayer, their
+spouse, a dependent or a child under 27. The model covers the taxpayer's and
+spouse's employers and treats annual eligibility as full-year eligibility. For
 the head and spouse, ESI, an offer or an employer contribution of SOME or ALL
-counts as access through their own or their spouse's employer. Either filer's flags
-bar both filers on a joint return. For tax unit dependents, only an employer
-contribution of SOME or ALL counts; ESI and offer flags can describe a
-parent's employer plan.
+counts as access through their own or their spouse's employer. Either filer's
+flags bar both filers on a joint return. For tax unit dependents, only an
+employer contribution of SOME or ALL counts; ESI and offer flags can describe
+a parent's employer plan.
 
 Each batch places every drawn tax unit twice, once as drawn and once with every
 coverage flag cleared, and runs as one vectorized baseline simulation. For

@@ -11,7 +11,8 @@ class self_employed_health_insurance_premiums(Variable):
         "health_insurance_premiums input. It excludes pretax payroll "
         "deductions and employer-paid premiums, except eligible payments or "
         "reimbursements from the person's own partnership or S corporation "
-        "in which they own more than 2% (Notice 2008-1). Enter those "
+        "in which they own more than 2% (Notice 2008-1 for S corporations; "
+        "the Form 7206 instructions for partners). Enter those "
         "payments in health_insurance_premiums, without recording them as "
         "employer contributions of SOME or ALL. Pretax payroll payments "
         "belong only in pre_tax_health_insurance_premiums; the pretax and "
@@ -30,6 +31,8 @@ class self_employed_health_insurance_premiums(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/162#l",
         "https://www.irs.gov/pub/irs-prior/f7206--2025.pdf#page=1",  # Line 1
+        # Plans established under a partnership or an S corporation
+        "https://www.irs.gov/pub/irs-prior/i7206--2025.pdf#page=1",
         # PDF pages 3-4
         "https://www.irs.gov/pub/irs-drop/n-08-01.pdf#page=3",
     )

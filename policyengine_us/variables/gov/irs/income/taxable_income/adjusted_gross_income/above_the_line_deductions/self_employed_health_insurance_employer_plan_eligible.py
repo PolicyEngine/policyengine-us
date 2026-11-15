@@ -23,8 +23,9 @@ class self_employed_health_insurance_employer_plan_eligible(Variable):
         "the dependent, because the model reads it as their own employer's "
         "contribution. A qualifying plan established by the person's own "
         "partnership, or S corporation in which they own more than 2%, does "
-        "not trigger the statutory employer-plan bar (sections 162(l)(5) "
-        "and 1372(a); Notice 2008-1). Enter that business's eligible premium "
+        "not trigger the statutory employer-plan bar (sections 162(l)(5) and "
+        "1372(a) and Notice 2008-1 for S corporations; the Form 7206 "
+        "instructions for partners). Enter that business's eligible premium "
         "payments or reimbursements in health_insurance_premiums, without "
         "recording those payments as employer contributions of SOME or ALL. "
         "Setting has_esi or offered_aca_disqualifying_esi for that plan still "
@@ -58,6 +59,8 @@ class self_employed_health_insurance_employer_plan_eligible(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/162#l_2_B",
         "https://www.irs.gov/pub/irs-prior/f7206--2025.pdf#page=1",  # Line 1, first bullet
+        # Plans established under a partnership or an S corporation
+        "https://www.irs.gov/pub/irs-prior/i7206--2025.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/i7206--2025.pdf#page=2",  # Other coverage
         "https://www.irs.gov/pub/irs-prior/i1040gi--2022.pdf#page=88",  # Line 17, before Form 7206
         "https://www.ecfr.gov/current/title-26/section-1.36B-2#p-1.36B-2(c)(3)(i)(A)",
