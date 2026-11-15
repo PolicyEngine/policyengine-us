@@ -55,6 +55,30 @@
     market_income: 3_000
     nd_renters_refund_federally_excluded_income: 3_000
 
+- name: Strike benefits a union paid as a gift leave income, and the rest stays.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    strike_benefits: 6_000
+    tax_exempt_strike_benefits: 1_000
+  output:
+    # IRC 102(a) leaves the gift out of gross income (Publication 525 (2025),
+    # page 36); the other 5,000 is in it.
+    nd_renters_refund_federally_excluded_income: 1_000
+
+- name: A gift part above the strike benefits received leaves only what was received.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    state_code: ND
+    strike_benefits: 2_000
+    tax_exempt_strike_benefits: 5_000
+  output:
+    nd_renters_refund_federally_excluded_income: 2_000
+
 - name: A source reported only as a total counts in full.
   period: 2026
   absolute_error_margin: 0.01

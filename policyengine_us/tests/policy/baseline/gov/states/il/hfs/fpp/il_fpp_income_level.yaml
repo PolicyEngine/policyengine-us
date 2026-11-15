@@ -49,3 +49,16 @@
     # Before: [27_000, 17_000].
     adjusted_gross_income_person: [24_000, 20_000]
     il_fpp_income_level: [1.1742, 0.9785]
+
+# This component exercises the shared FPG helper's scalar-size call through
+# an existing consumer. It does not assert that IL FPP operated in 2016.
+# HHS 81 FR 4036: the contiguous two-person guideline is $16,020.
+- name: A scalar household-size parameter uses the literal 2016 guideline.
+  period: 2016
+  input:
+    state_code: IL
+    age: 40
+    employment_income: 16_020
+  output:
+    adjusted_gross_income_person: 16_020
+    il_fpp_income_level: 1.0

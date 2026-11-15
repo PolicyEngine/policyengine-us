@@ -1,4 +1,4 @@
-- name: Case 1, person aged 61 (at threshold) is categorically eligible by age.
+- name: Case 1, a person aged 61 in the collection year misses the filing-year age requirement.
   period: 2024
   input:
     people:
@@ -16,7 +16,8 @@
         members: [person1]
         state_code: WA
   output:
-    wa_pte_categorical_eligible: true
+    # 61 - 1 = 60 at the preceding filing-year deadline; 60 < 61.
+    wa_pte_categorical_eligible: false
 
 - name: Case 2, person under age threshold retired by reason of disability is categorically eligible.
   period: 2024
@@ -80,7 +81,7 @@
   output:
     wa_pte_categorical_eligible: true
 
-- name: Case 5, 2019 person aged 61 is ineligible (pre-2020 threshold was 62).
+- name: Case 5, a person aged 61 in collection year 2019 does not qualify by age.
   period: 2019
   input:
     people:
@@ -98,11 +99,10 @@
         members: [person1]
         state_code: WA
   output:
-    # Pre-2020 the WA age threshold was 62 (RCW 84.36.381(3)(a)(i) before
-    # ESHB 1105 took effect 2020-01-01). 61 < 62 -> not categorically eligible.
+    # 61 - 1 = 60 on December 31, 2018; 60 < the filing-year minimum of 61.
     wa_pte_categorical_eligible: false
 
-- name: Case 6, 2019 person aged 62 is categorically eligible at the pre-2020 threshold.
+- name: Case 6, a person aged 62 in collection year 2019 qualifies by age.
   period: 2019
   input:
     people:
@@ -120,10 +120,10 @@
         members: [person1]
         state_code: WA
   output:
-    # Pre-2020 threshold was 62; age 62 >= 62 -> categorically eligible.
+    # 62 - 1 = 61 on December 31, 2018; 61 meets the filing-year minimum.
     wa_pte_categorical_eligible: true
 
-- name: Case 7, 2024 person aged 60 is ineligible (2020+ threshold is 61).
+- name: Case 7, a person aged 60 in collection year 2024 does not qualify by age.
   period: 2024
   input:
     people:
@@ -141,11 +141,11 @@
         members: [person1]
         state_code: WA
   output:
-    # ESHB 1105 lowered the age threshold to 61 effective 2020-01-01.
-    # 60 < 61 -> not categorically eligible.
+    # 60 - 1 = 59 on December 31, 2023; 59 < the filing-year minimum of 61.
     wa_pte_categorical_eligible: false
 
-# RCW 84.36.381(3)(a): the claimant must be (i) 61 or older, or retired from
+# RCW 84.36.381(3)(a): the claimant must be (i) 61 or older at filing-year
+# end (62 at collection-year end), or retired from
 # regular gainful employment by reason of disability, or (ii) a veteran
 # entitled to and receiving VA compensation at a qualifying service-connected
 # rating. Generic disability (is_disabled) establishes neither pathway.
@@ -169,7 +169,7 @@
     wa_pte_income_eligible: true
     wa_pte_tier: 1
   output:
-    # 45 < 61 and neither statutory disability pathway holds. Before this fix
+    # 45 - 1 = 44 < 61 and neither statutory disability pathway holds. Before this fix
     # the model awarded 5,000 x 0.30 + 300,000 x (5,000 x 0.70 / 500,000)
     # = 3,600.
     wa_pte_categorical_eligible: false
@@ -381,7 +381,8 @@
         members: [person1, person2, person3, person4]
         state_code: WA
   output:
-    wa_pte_categorical_eligible: [true, false, true, true]
+    # The first person was 61 - 1 = 60 at filing-year end.
+    wa_pte_categorical_eligible: [false, false, true, true]
 
 - name: Case 22, by default a person receiving Social Security disability benefits is retired by reason of disability.
   period: 2024
@@ -472,3 +473,175 @@
   output:
     wa_pte_receives_va_disability_compensation: false
     wa_pte_categorical_eligible: false
+
+- name: Case 30, collection year 2008 uses age at the preceding filing-year deadline.
+  period: 2008
+  input:
+    people:
+      younger:
+        age: 61
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+      older:
+        age: 62
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+    households:
+      household:
+        members: [younger, older]
+        state_code: WA
+  output:
+    # Collection-year ages minus one: [60, 61] at December 31, 2007.
+    # Compare each filing-year age with 61: [false, true].
+    wa_pte_categorical_eligible: [false, true]
+
+- name: Case 31, collection year 2015 uses age at the preceding filing-year deadline.
+  period: 2015
+  input:
+    people:
+      younger:
+        age: 61
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+      older:
+        age: 62
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+    households:
+      household:
+        members: [younger, older]
+        state_code: WA
+  output:
+    # Collection-year ages minus one: [60, 61] at December 31, 2014.
+    # Compare each filing-year age with 61: [false, true].
+    wa_pte_categorical_eligible: [false, true]
+
+- name: Case 32, collection year 2016 uses age at the preceding filing-year deadline.
+  period: 2016
+  input:
+    people:
+      younger:
+        age: 61
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+      older:
+        age: 62
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+    households:
+      household:
+        members: [younger, older]
+        state_code: WA
+  output:
+    # Collection-year ages minus one: [60, 61] at December 31, 2015.
+    # Compare each filing-year age with 61: [false, true].
+    wa_pte_categorical_eligible: [false, true]
+
+- name: Case 33, collection year 2019 uses age at the preceding filing-year deadline.
+  period: 2019
+  input:
+    people:
+      younger:
+        age: 61
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+      older:
+        age: 62
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+    households:
+      household:
+        members: [younger, older]
+        state_code: WA
+  output:
+    # Collection-year ages minus one: [60, 61] at December 31, 2018.
+    # Compare each filing-year age with 61: [false, true].
+    wa_pte_categorical_eligible: [false, true]
+
+- name: Case 34, collection year 2020 uses age at the preceding filing-year deadline.
+  period: 2020
+  input:
+    people:
+      younger:
+        age: 61
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+      older:
+        age: 62
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+    households:
+      household:
+        members: [younger, older]
+        state_code: WA
+  output:
+    # Collection-year ages minus one: [60, 61] at December 31, 2019.
+    # Compare each filing-year age with 61: [false, true].
+    wa_pte_categorical_eligible: [false, true]
+
+- name: Case 35, collection year 2026 uses age at the preceding filing-year deadline.
+  period: 2026
+  input:
+    people:
+      younger:
+        age: 61
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+      older:
+        age: 62
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+    households:
+      household:
+        members: [younger, older]
+        state_code: WA
+  output:
+    # Collection-year ages minus one: [60, 61] at December 31, 2025.
+    # Compare each filing-year age with 61: [false, true].
+    wa_pte_categorical_eligible: [false, true]
+
+- name: Case 36, collection year 2027 uses age at the preceding filing-year deadline.
+  period: 2027
+  input:
+    people:
+      younger:
+        age: 61
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+      older:
+        age: 62
+        is_veteran: false
+        wa_pte_retired_due_to_disability: false
+    households:
+      household:
+        members: [younger, older]
+        state_code: WA
+  output:
+    # Collection-year ages minus one: [60, 61] at December 31, 2026.
+    # Compare each filing-year age with 61: [false, true].
+    wa_pte_categorical_eligible: [false, true]
+
+- name: Case 37, an 80 percent veteran first qualifies in collection year 2020.
+  period: 2020
+  input:
+    state_code:
+      2019: WA
+      2020: WA
+    age:
+      2019: 45
+      2020: 46
+    is_veteran:
+      2019: true
+      2020: true
+    wa_pte_receives_va_disability_compensation:
+      2019: true
+      2020: true
+    wa_pte_va_service_connected_rating:
+      2019: 0.8
+      2020: 0.8
+  output:
+    # 0.8 < 1 and no total rating in 2019; 0.8 >= 0.8 in 2020.
+    # 2019 c 453 s 9 applies the new route to taxes collected from 2020.
+    wa_pte_categorical_eligible:
+      2019: false
+      2020: true

@@ -1,0 +1,21 @@
+# non_qualified_dividend_income follows
+# calibration.gov.irs.soi.non_qualified_dividend_income_per_capita, the IRS SOI
+# total divided by population. An input dated in one year and read in a later
+# year is multiplied by the ratio of that index between the two years.
+
+- name: A 2016 input read in 2019 grows with SOI ordinary less qualified dividends per capita, inside the filled years.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    non_qualified_dividend_income:
+      2016: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, ordinary less qualified
+    # dividends, over calibration.gov.census.populations.total:
+    #   2016: 52,031,360,000 / 328,964,000 = 158.1673
+    #         (https://www.irs.gov/pub/irs-soi/16in14ar.xls)
+    #   2019: 83,600,037,000 / 335,329,000 = 249.3075
+    #         (https://www.irs.gov/pub/irs-soi/19in14ar.xls)
+    # 10,000 x 249.3075 / 158.1673 = 15,762.26. With the old values this came to
+    # 9,810.19.
+    non_qualified_dividend_income: 15_762.26
