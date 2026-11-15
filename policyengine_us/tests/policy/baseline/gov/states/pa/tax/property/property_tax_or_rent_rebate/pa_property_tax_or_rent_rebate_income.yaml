@@ -63,8 +63,6 @@
         age: 65
         ssi: 2_000
         pa_ssp: 0
-        # Line 5: Railroad Retirement Tier 1 benefits. None of the $10,000
-        # is taxable federally (provisional income $5,000).
         railroad_social_security_equivalent_benefits: 10_000
     tax_units:
       tax_unit:
@@ -329,6 +327,6 @@
     adjusted_gross_income: 39_600
     # Taxpayer Relief Act section 1303, "Income" (2): 50% of railroad
     # retirement benefits. The 39,600 of railroad benefits in federal AGI
-    # comes out, and half of 20,000 + 30,000 + 2,000 goes in:
+    # comes out, and half of 52,000 (20,000 + 30,000 + 2,000) goes in:
     # 39,600 - 39,600 + 26,000 = 26,000.
     pa_property_tax_or_rent_rebate_income: 26_000

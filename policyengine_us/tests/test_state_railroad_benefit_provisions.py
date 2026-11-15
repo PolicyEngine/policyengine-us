@@ -245,7 +245,7 @@ def by_tax_unit(simulation, variable, year):
     return simulation.calculate(variable, year, map_to="tax_unit").astype(float)
 
 
-@settings(max_examples=8, deadline=None)
+@settings(max_examples=8, deadline=None, derandomize=True)
 @given(
     age=ages,
     earnings=wages,
@@ -288,7 +288,7 @@ def test_s1_s2_swapping_title_ii_for_tier_1(
                 assert abs(change) <= allowed, (state, change)
 
 
-@settings(max_examples=15, deadline=None)
+@settings(max_examples=15, deadline=None, derandomize=True)
 @given(
     age=ages,
     earnings=wages,
@@ -317,7 +317,7 @@ def test_s3_income_tests_count_tier_1_like_title_ii(
         assert abs(tier_1 - title_ii) <= allowed, (state, variable, title_ii, tier_1)
 
 
-@settings(max_examples=15, deadline=None)
+@settings(max_examples=15, deadline=None, derandomize=True)
 @given(
     age=st.sampled_from((67, 72)),
     pension=st.one_of(
@@ -355,7 +355,7 @@ def test_s4_pension_caps_shrink_alike(age, pension, amount, joint, tier_2, tax_f
             assert tier_1 < neither - allowed, (state, tier_1, neither)
 
 
-@settings(max_examples=25, deadline=None)
+@settings(max_examples=25, deadline=None, derandomize=True)
 @given(
     age=ages,
     earnings=wages,
@@ -396,7 +396,7 @@ def test_s5_minnesota_subtraction_bounds(
     assert subtraction[0] + taxable_tier_1[0] >= subtraction[1] - allowed
 
 
-@settings(max_examples=8, deadline=None)
+@settings(max_examples=8, deadline=None, derandomize=True)
 @given(
     age=ages,
     earnings=wages,
@@ -446,7 +446,7 @@ def test_s6_railroad_benefits_never_lower_state_bases(
         assert after >= before - allowed, (state, before, after)
 
 
-@settings(max_examples=25, deadline=None)
+@settings(max_examples=25, deadline=None, derandomize=True)
 @given(
     age=ages,
     earnings=wages,
@@ -526,7 +526,7 @@ def schedule_m1m_line_12_2025(
     return max(step_28, step_29)
 
 
-@settings(max_examples=40, deadline=None)
+@settings(max_examples=40, deadline=None, derandomize=True)
 @given(
     status=st.sampled_from(sorted(M1M_2025)),
     age=ages,
