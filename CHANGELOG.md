@@ -1,3 +1,157 @@
+## [2.135.7] - 2026-11-15
+
+### Fixed
+
+- Correct 2017 personal-exemption phase-outs, tuition deduction accounting, CTC identification, retirement limits and Saver's Credit histories. Apply inclusive Saver's Credit bands to fractional AGI, enforce the pre-2020 traditional IRA age limit, cap federal and California dependent-care exclusions by independently supplied qualified expenses, and prevent expense reuse in the care credit. Keep the employer-assistance expense input independent of modeled childcare subsidies to avoid an adjusted-gross-income cycle, and document the zero default for unreported costs. Add annual federal tax reference cases for 2017–2026. Existing callers that report positive `dependent_care_employer_benefits` must also supply independently known `dependent_care_assistance_qualified_expenses`. If callers omit qualified costs, the model uses zero, excludes none of the employer benefits, and treats all reported benefits as taxable. Earlier calculations could exclude benefits under the dollar and earnings limits without this independent expense input.
+
+
+## [2.135.6] - 2026-11-15
+
+### Fixed
+
+- Limited Head Start, foster care, migrant, runaway and child-level homeless school-meal eligibility to each qualifying child, and required Head Start enrollment. Counted current foster care from October 2010 in place of past foster care, and added an is_homeless_child input and a child_categorical_eligibility parameter list.
+
+
+## [2.135.5] - 2026-11-15
+
+### Fixed
+
+- Restore Colorado Works grant amounts from September 2018 and date the 2022 payment increase to July 1.
+- Count strike and lockout benefits other than gifts in federal gross income and as earned income, and carry them through the state income tax bases that list federal income sources, except Pennsylvania's, which leaves them out of taxable income and counts them in Tax Forgiveness eligibility income; Utah, Montana and Arizona property relief now count only the gift part as nontaxable income, and North Dakota's renter's refund leaves it out. Leave strike benefits out of the kiddie tax support test and the federal and California AMT child exemptions. Count an adult dependent's own adjusted gross income in Utah homeowner's and renter's relief household income, and leave out the income of a parent or grandparent of the claimant or spouse.
+- Use the published 2016 HHS household-size poverty guideline tables in the shared FPG helper and public tax-unit and SPM-unit guideline variables.
+
+
+## [2.135.4] - 2026-11-15
+
+### Fixed
+
+- Corrected Medicaid parent income limits for Utah, Tennessee and Virginia in 2018–2020 using state percentage and household-size dollar standards. Started the Medicaid adult group in Virginia on January 1, 2019, and in Utah on April 1, 2019 at 95% of the poverty guideline, rising to 133% on January 1, 2020.
+
+
+## [2.135.3] - 2026-11-15
+
+### Fixed
+
+- Fix Arkansas income-tax indexing projections and Kentucky's 2021 dependent care credit conformity.
+
+
+## [2.135.2] - 2026-11-15
+
+### Fixed
+
+- Apply District of Columbia, Georgia and Idaho rules for filers who can be claimed as dependents. Bar a dependent under 65 from claiming the DC property tax credit, and count the couple's whole rent and the home's whole tax bill in the claim. Deny DC's EITC without a qualifying child when another taxpayer can claim a filer, and remove the expired 2026 child tax credit amount. Exclude claimable filers' children from Georgia's child credit outside the filing exception while allowing otherwise qualifying children with ITINs. Apply Georgia's dependent exemption and low income credit exclusions, and count positive earnings before offsetting losses for its surplus refund. Exclude Idaho filers whom another taxpayer claims from the food tax credit, and apply the dependent care deduction and rebate rules. Exclude nonqualifying child-only daycare even when a disabled adult qualifies for care.
+
+
+## [2.135.1] - 2026-11-15
+
+### Fixed
+
+- Count each month's SSI in-kind support and maintenance in Maryland PAA income and in California's supplement for a couple with one SSI and one CAPI spouse. Read each month's SSI couple status and income deemed from an ineligible spouse in Maryland PAA income.
+
+
+## [2.135.0] - 2026-11-15
+
+### Added
+
+- Add Virginia Energy Assistance Program cooling assistance electric bill payment.
+
+
+## [2.134.0] - 2026-11-15
+
+### Added
+
+- Add Nebraska LIHEAP regular cooling assistance.
+
+
+## [2.133.0] - 2026-11-15
+
+### Added
+
+- Add Alabama LIHEAP regular cooling assistance.
+
+### Fixed
+
+- Stop Alabama LIHEAP income limits at the federal maximum, the greater of HHS's 60% state median income amount and 150% of the poverty guideline.
+
+
+## [2.132.0] - 2026-11-15
+
+### Added
+
+- Add South Carolina LIHEAP regular cooling assistance (the cooling-season nonemergency award).
+
+
+## [2.131.0] - 2026-11-15
+
+### Added
+
+- Add Kentucky LIHEAP regular cooling assistance (the one-time electric cooling subsidy).
+
+
+## [2.130.0] - 2026-11-15
+
+### Added
+
+- Add Louisiana LIHEAP regular cooling assistance, paid once each program year from the same benefit matrix as heating.
+
+
+## [2.129.0] - 2026-11-15
+
+### Added
+
+- Add Oklahoma LIHEAP regular summer cooling assistance, the Appendix C-7-A flat payment by household size and net monthly income.
+
+
+## [2.128.0] - 2026-11-15
+
+### Added
+
+- Add Georgia LIHEAP regular cooling assistance.
+
+
+## [2.127.0] - 2026-11-15
+
+### Added
+
+- Add Arkansas LIHEAP summer regular cooling assistance.
+
+### Fixed
+
+- Stop Arkansas LIHEAP income limits at the federal maximum, the greater of HHS's 60% state median income amount and 150% of the poverty guideline.
+
+
+## [2.126.0] - 2026-11-15
+
+### Added
+
+- Added New York CCAP payment differentials, including the 10% statutory minimum from April 2025 and the 35% combined limit from December 2025, the special-needs market rate, and New York City enhanced informal and legally exempt group rates.
+
+
+## [2.125.2] - 2026-11-14
+
+### Fixed
+
+- Count gambling winnings in federal gross income, limit the wagering losses deduction to 90% of losses from 2026 and to the head's and spouse's gambling, treat it as a Schedule A itemized deduction, and align the states that tax gambling winnings or build on federal itemized deductions. Count the winnings in market income too, so household and SPM net income hold the winnings whose tax they subtract.
+
+
+## [2.125.1] - 2026-11-14
+
+### Changed
+
+- Added South Carolina TANF gross-limit, school-level and current-loss tests, recorded the school-level reading and the open current-loss question as source-conflict candidates, and refreshed manual and regulation references.
+
+
+## [2.125.0] - 2026-11-14
+
+### Added
+
+- Added a monthly variable for SSI income deemed from an ineligible spouse and preserved annual inputs.
+
+### Fixed
+
+- Applied SSI's general income exclusion once across a couple's income, including the claimant's in-kind support, and preserved monthly support changes under spousal deeming.
+
+
 ## [2.124.6] - 2026-11-14
 
 ### Fixed

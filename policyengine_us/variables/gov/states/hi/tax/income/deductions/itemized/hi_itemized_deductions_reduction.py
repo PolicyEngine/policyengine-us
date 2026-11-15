@@ -22,8 +22,8 @@ class hi_itemized_deductions_reduction(Variable):
         p = parameters(period).gov.states.hi.tax.income.deductions.itemized
         total_deductions = tax_unit("hi_total_itemized_deductions", period)
         # Lines 2 to 5: 80% of the deductions other than medical expenses,
-        # investment interest and casualty losses. If those deductions are not
-        # less than the total, the deduction is not limited.
+        # investment interest, casualty losses and gambling losses. If those
+        # deductions are not less than the total, the deduction is not limited.
         excluded_deductions = add(tax_unit, period, p.limitation.excluded_deductions)
         limited_deductions = max_(0, total_deductions - excluded_deductions)
         deduction_based_reduction = (

@@ -1,12 +1,13 @@
 description: Hawaii excludes these deductions from the itemized deductions that the 80 percent ceiling of the overall limitation on itemized deductions applies to.
 values:
   # Section 68(c) excludes medical expenses, investment interest, and
-  # casualty, theft and wagering losses. PolicyEngine's Hawaii itemized
-  # deductions do not include wagering losses.
+  # casualty, theft and wagering losses (worksheet lines 2a to 2d).
   2021-01-01:
     - hi_medical_expense_deduction
     - investment_interest_expense
     - hi_casualty_loss_deduction
+    # Line 2d: gambling losses included in Worksheet A-6, line 30.
+    - wagering_losses_deduction
 metadata:
   unit: list
   period: year

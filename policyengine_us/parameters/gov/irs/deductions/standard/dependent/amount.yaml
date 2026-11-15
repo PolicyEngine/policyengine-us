@@ -1,5 +1,6 @@
 description: The basic standard deduction of a filer who can be claimed as a dependent is limited to the greater of this amount or earned income plus the earned income addition.
 values:
+  2017-01-01: 1_050
   2018-01-01: 1_050
   2019-01-01: 1_100
   2022-01-01: 1_150
@@ -37,6 +38,8 @@ metadata:
       type: downwards
       interval: 50
   reference:
+    - title: 2017 Form 1040 instructions, Standard Deduction Worksheet for Dependents
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2017.pdf#page=39
     - title: 26 U.S. Code § 63(c)(4)-(5)
       href: https://www.law.cornell.edu/uscode/text/26/63#c_4
     - title: 26 U.S. Code § 1(f)(3)-(7)
