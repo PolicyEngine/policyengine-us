@@ -9406,6 +9406,57 @@ candidates:
   note: The model follows the rules and does not require SSI take-up (NOTE in oh_rss.py); integration.yaml Cases
     3 and 13 pin it. Because 5119.41(B) makes eligibility depend on the rules, (A) may describe the program rather
     than add a condition.
+- id: us-ok:eitc-2020-rules-claimant-filing-exception
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Oklahoma's credit uses the federal EITC requirements in effect for 2020. Does a childless filer whom
+    another person could claim qualify when that person has no filing requirement and files no return or files only
+    for a refund?
+  sources:
+  - kind: statute
+    citation: 68 O.S. 2357.43
+    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=930
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(1)(A)(ii)(III)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2020-title26/html/USCODE-2020-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+  - kind: guidance
+    citation: IRS Publication 596 (2020), Rule 12, PDF p. 16
+    url: https://www.irs.gov/pub/irs-prior/p596--2020.pdf#page=16
+  - kind: instructions
+    citation: 2020 Form 1040 instructions, EIC Step 4, question 6, PDF p. 43
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=43
+  - kind: guidance
+    citation: IRS Publication 596 (2025), Rule 12, PDF p. 18
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18
+  - kind: manual
+    citation: IRS Publication 4012 (2020 returns), page C-3, note 5
+    url: https://www.irs.gov/pub/irs-prior/p4012--2021.pdf#page=61
+  - kind: manual
+    citation: IRS Publication 4491 (2020 returns), page 5-1
+    url: https://www.irs.gov/pub/irs-prior/p4491--2020.pdf#page=67
+  readings:
+    statute: Congress has not changed the words of IRC 32(c)(1)(A)(ii)(III), the frozen requirement, since 2020.
+      A would-be claimant who has no filing requirement and files no return or only for a refund does not bar the
+      credit. The IRS prints that reading in Publication 596 from 2022, and PE-US applies it to the federal credit
+      in every year.
+    other: The IRS prints no such exception in Rule 12 of the 2020 Publication 596 or in question 6 of the 2020
+      Form 1040 EIC steps, so a filer whom someone else can claim cannot take the credit.
+  example: In 2025, a single childless filer aged 30 has $5,000 of wages. A parent who has no filing requirement
+    and files only for a refund could claim the filer. The filer gets $19.125 (5% of $382.50) under the statute
+    reading and $0 under the 2020 publication.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ok/tax/income/credits/eitc/federal_credit/eligible/ok_federal_eitc_demographic_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10043
+  state: ruled
+  note: PE-US applies the federal helper with the claimant filing exception, as eitc_demographic_eligible does in
+    every year. In its volunteer materials for 2020 returns, the IRS applied the exception to the question whether
+    another taxpayer can claim the filer (Publication 4012, page C-3, note 5; Publication 4491, page 5-1). We pin
+    a filer whose claimant meets the exception ($19.125) and a claimable filer whose claimant does not ($0) in ok_eitc.yaml.
 - id: us-ok:liheap-child-earnings
   program: liheap
   years:
