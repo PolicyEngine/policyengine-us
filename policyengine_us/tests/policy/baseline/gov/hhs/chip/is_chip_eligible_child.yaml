@@ -415,3 +415,310 @@
     state_code: GA
   output:
     is_chip_eligible_child: false
+
+# Indiana IDOI Navigator Manual, January 2017, pages 104 and 108:
+# raw 250% FPL plus a conditional 5 percentage point disregard gives 255%.
+# https://www.in.gov/idoi/files/NavManV3.0.pdf#page=104
+# MACPAC December 2017 Exhibit 35, printed page 103, corroborates raw 250%.
+# This component stipulates the other eligibility gates; it does not test
+# complete entitlement, Medicaid classification, enrollment or health value.
+# 256% is deliberately away from the unqualified exact dollar-rounding edge.
+- name: Case 23, Indiana child at 256 percent FPL exceeds the 2017 CHIP income limit.
+  period: 2017
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# Exhibit 35 specifies separate CHIP from birth through age 18.
+# IDOI pages 104/108 give the conditional 255% financial comparison.
+# Distinct two-person units stipulate no Medicaid eligibility or other coverage.
+# Age 19 exclusions concern this child category only, not overall health coverage.
+- name: Case 24, Indiana CHIP child age boundaries straddle 255 percent FPL in 2017.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person2:
+        age: 0
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person4:
+        age: 0
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person5:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person6:
+        age: 18
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person7:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person8:
+        age: 18
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person9:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person10:
+        age: 19
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person11:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person12:
+        age: 19
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+      tax_unit3:
+        members: [person5, person6]
+      tax_unit4:
+        members: [person7, person8]
+      tax_unit5:
+        members: [person9, person10]
+      tax_unit6:
+        members: [person11, person12]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+      spm_unit4:
+        members: [person7, person8]
+      spm_unit5:
+        members: [person9, person10]
+      spm_unit6:
+        members: [person11, person12]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: IN
+      household2:
+        members: [person3, person4]
+        state_code: IN
+      household3:
+        members: [person5, person6]
+        state_code: IN
+      household4:
+        members: [person7, person8]
+        state_code: IN
+      household5:
+        members: [person9, person10]
+        state_code: IN
+      household6:
+        members: [person11, person12]
+        state_code: IN
+  output:
+    is_chip_eligible_child: [false, true, false, false, false, true, false, false, false, false, false, false]
+
+# The ongoing IDOI rule and MACPAC April 2018 snapshot support this year.
+# At 256%, subtracting 5 percentage points still leaves 251%, above 250%.
+- name: Case 25, Indiana child at 256 percent FPL exceeds the 2018 CHIP income limit.
+  period: 2018
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# The ongoing IDOI rule and MACPAC April 2019 snapshot support this year.
+# At 256%, subtracting 5 percentage points still leaves 251%, above 250%.
+- name: Case 26, Indiana child at 256 percent FPL exceeds the 2019 CHIP income limit.
+  period: 2019
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# The ongoing IDOI rule and MACPAC April 2020 snapshot support this year.
+# At 256%, subtracting 5 percentage points still leaves 251%, above 250%.
+- name: Case 27, Indiana child at 256 percent FPL exceeds the 2020 CHIP income limit.
+  period: 2020
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# The July 2021 MACPAC snapshot also reports raw 250% FPL.
+# This right-side year control retains the existing route and 255% comparison.
+- name: Case 28, Indiana retains the 2021 CHIP financial boundary.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person4:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: IN
+      household2:
+        members: [person3, person4]
+        state_code: IN
+  output:
+    is_chip_eligible_child: [false, true, false, false]
+
+# Preservation control only: retain the a29 pre-2017 consumer route.
+# Its existing 262% comparison admits this stipulated 256% input.
+# This is not a source-derived assertion about correct 2015 or 2016 law.
+- name: Case 29, Indiana retains its existing pre-window 2015 component behavior.
+  period: 2015
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: true
+
+# Preservation control only: retain the a29 pre-2017 consumer route.
+# Its existing 262% comparison admits this stipulated 256% input.
+# This is not a source-derived assertion about correct 2015 or 2016 law.
+- name: Case 30, Indiana retains its existing pre-window 2016 component behavior.
+  period: 2016
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: true
+
+# MACPAC January 2017 Exhibit 35 reports Texas separate CHIP raw 201%.
+# Even with the conditional 5 percentage point disregard, 210% exceeds 206%.
+# This state control rejects an accidental Indiana override applied everywhere.
+- name: Case 31, Texas retains its 2017 CHIP income limit.
+  period: 2017
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.10
+    state_code: TX
+  output:
+    is_chip_eligible_child: false

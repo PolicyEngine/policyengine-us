@@ -10,6 +10,7 @@ class is_chip_eligible_child(Variable):
     label = "Child eligible for CHIP"
     documentation = (
         "Determines if a child is eligible for the Children's Health Insurance Program"
+        " with Indiana's historical income limit for 2017 through 2020."
     )
     definition_period = YEAR
     reference = (
@@ -21,6 +22,8 @@ class is_chip_eligible_child(Variable):
         "https://www.law.cornell.edu/cfr/text/45/155.20",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=28",
+        # PDF pages 104, 108.
+        "https://www.in.gov/idoi/files/NavManV3.0.pdf#page=104",
     )
 
     def formula(person, period, parameters):
@@ -35,6 +38,13 @@ class is_chip_eligible_child(Variable):
 
         # Check if state offers CHIP program for children
         income_limit = p.income_limit[state_code]
+        # Scope the historical Indiana limit without changing other years or states.
+        if 2017 <= period.start.year <= 2020:
+            income_limit = where(
+                state_code == StateCode.IN,
+                p.income_limit_indiana_2017_2020,
+                income_limit,
+            )
         state_has_chip = income_limit > 0
 
         # Check immigration status eligibility
