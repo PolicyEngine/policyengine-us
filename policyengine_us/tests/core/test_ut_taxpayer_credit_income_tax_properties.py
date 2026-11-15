@@ -5,9 +5,10 @@ itemized total. From 2018 through 2025, claimants subtract the income tax
 paid and reported, up to $10,000. Before 2018 and from 2026, claimants
 subtract only the income tax allowed in their federal itemized deductions.
 
-The draws vary the SALT phase-down, all five filing statuses, and supplied
-federal itemized totals after a reduction of up to 80%. Each simulation
-holds every drawn unit twice, with the second unit electing sales tax.
+The draws vary medical deductions, the SALT phase-down, all five filing
+statuses, and supplied federal itemized totals after a reduction of up to
+80%. Each simulation holds every drawn unit twice, with the second unit
+electing sales tax.
 
 1. Sales-tax electors keep their supplied federal itemized total. When no
    positive total enters the simulation, they keep non-SALT deductions plus
@@ -45,6 +46,7 @@ UNIT = st.fixed_dictionaries(
     {
         "filing_status": st.sampled_from(FILING_STATUSES),
         "charitable": AMOUNT,
+        "medical": AMOUNT,
         "real_estate": AMOUNT,
         "income_tax": AMOUNT,
         "sales_tax": AMOUNT,
@@ -82,7 +84,12 @@ def _salt(unit, year):
 
 
 def _reconstructed(unit, year):
-    return unit["charitable"] + unit["extra_itemized"] + _salt(unit, year)
+    return (
+        unit["charitable"]
+        + unit["medical"]
+        + unit["extra_itemized"]
+        + _salt(unit, year)
+    )
 
 
 def _itemized(unit, year):
@@ -109,7 +116,7 @@ def _situation(year, units):
             "tax_unit_itemizes": {period: True},
             "charitable_deduction": {period: unit["charitable"]},
             "interest_deduction": {period: unit["extra_itemized"]},
-            "medical_expense_deduction": {period: 0},
+            "medical_expense_deduction": {period: unit["medical"]},
             "casualty_loss_deduction": {period: 0},
             "misc_deduction": {period: 0},
             "agi_plus_section_911_931_933_exclusions": {period: unit["magi"]},
@@ -132,6 +139,7 @@ def _unit(**overrides):
     return {
         "filing_status": "JOINT",
         "charitable": 6_000,
+        "medical": 0,
         "real_estate": 4_000,
         "income_tax": 9_000,
         "sales_tax": 2_000,
@@ -153,7 +161,24 @@ def _unit(**overrides):
     year=st.sampled_from(YEARS),
     units=st.lists(UNIT, min_size=4, max_size=12),
 )
-@example(year=2017, units=[_unit(filing_status=s) for s in FILING_STATUSES])
+@example(
+    year=2017,
+    units=[_unit(filing_status=s) for s in FILING_STATUSES]
+    + [
+        # Total: $6,000 charity + $4,000 medical + $10,000 income tax = $20,000.
+        # Supplied reduction: 20% x $20,000 = $4,000; federal total = $16,000.
+        # The 2017 worksheet excludes medical: $20,000 - $4,000 = $16,000.
+        # Income tax loses $4,000 x ($10,000 / $16,000) = $2,500.
+        # Utah base: $16,000 - ($10,000 - $2,500) = $8,500.
+        _unit(
+            real_estate=0,
+            income_tax=10_000,
+            medical=4_000,
+            section_68_cut=20,
+            expected_base=8_500,
+        ),
+    ],
+)
 @example(year=2018, units=[_unit(real_estate=10_000, income_tax=8_000)])
 @example(year=2024, units=[_unit(real_estate=10_000, income_tax=8_000)])
 @example(
@@ -172,12 +197,25 @@ def _unit(**overrides):
             income_tax=20_000,
             magi=300_000,
         ),
+        # The same $20,000 total and $4,000 reduction as the 2017 example.
+        # In 2026, income tax loses $4,000 x ($10,000 / $20,000) = $2,000.
+        # Utah base: $16,000 - ($10,000 - $2,000) = $8,000.
+        _unit(
+            real_estate=0,
+            income_tax=10_000,
+            medical=4_000,
+            section_68_cut=20,
+            expected_base=8_000,
+        ),
     ],
 )
-def test_utah_credit_base_keeps_sales_tax(year, units):
+def test_utah_credit_base_respects_dated_income_tax_subtraction(year, units):
     paired = units + [_with_sales_election(unit) for unit in units]
     sim = Simulation(situation=_situation(year, paired))
     base = sim.calculate("ut_federal_deductions_for_taxpayer_credit", year)
+    for i, unit in enumerate(units):
+        if "expected_base" in unit:
+            assert np.isclose(base[i], unit["expected_base"], rtol=1e-6, atol=0.03)
     itemized = np.array([_itemized(unit, year) for unit in paired])
     salt = np.array([_salt(unit, year) for unit in paired])
     reconstructed = np.array([_reconstructed(unit, year) for unit in paired])
@@ -195,15 +233,24 @@ def test_utah_credit_base_keeps_sales_tax(year, units):
     else:
         real_estate = np.array([unit["real_estate"] for unit in paired])
         deducted_income = np.maximum(0, salt - real_estate)
-        # The draws contain no section 68(c) protected deductions, so each
-        # dollar of the income-tax deduction retains the same fraction.
-        retained = np.divide(
-            itemized,
-            reconstructed,
-            out=np.ones_like(itemized, dtype=float),
-            where=(itemized > 0) & (reconstructed > 0),
+        # Allocate dollars lost to section 68 across the subject deductions.
+        # The 2017 worksheet protects medical deductions; the replacement
+        # section 68 includes every category from 2026.
+        medical = np.array([unit["medical"] for unit in paired])
+        subject = reconstructed - medical if year == 2017 else reconstructed
+        reduction = reconstructed - effective
+        loss_fraction = np.minimum(
+            1,
+            np.divide(
+                reduction,
+                subject,
+                out=np.zeros_like(reduction, dtype=float),
+                where=subject > 0,
+            ),
         )
-        excluded_income = np.minimum(raw_income, deducted_income * retained)
+        excluded_income = np.minimum(
+            np.minimum(raw_income, deducted_income * (1 - loss_fraction)), effective
+        )
     expected_income_base = effective - excluded_income
     lower_bound = effective - 10_000 if 2018 <= year <= 2025 else 0
     assert np.all(
