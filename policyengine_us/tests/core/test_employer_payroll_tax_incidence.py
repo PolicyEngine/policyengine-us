@@ -333,10 +333,10 @@ def test_unknown_payroll_wage_definition_raises():
 
 @pytest.mark.parametrize("year", [2026, 2035, 2060])
 def test_current_law_cap_copy_matches_the_cap(year):
-    """The baseline cost reads the copy, so it must equal the live cap."""
+    """The baseline cost reads its copy, so it must equal the live cap."""
     gov = system.parameters(year).gov
-    assert gov.contrib.ssa.owners_draw.current_law_cap == pytest.approx(
-        gov.irs.payroll.social_security.cap
+    assert gov.simulation.employer_payroll_tax_incidence.current_law_cap == (
+        pytest.approx(gov.irs.payroll.social_security.cap)
     )
     assert payroll_wage_rule(system, year) == DEFAULT_WAGE_RULE
 
@@ -344,9 +344,11 @@ def test_current_law_cap_copy_matches_the_cap(year):
 def test_schedules_differ_only_when_the_employer_cost_does():
     """The zero shortcut in the formula compares what sets employer cost.
 
-    From 2027, employee Social Security and Medicare rates, the Additional
-    Medicare Tax and the employee share change; none is an employer tax, so
-    the schedules stay equal, as they do in 2026 before the reform starts.
+    In 2026 the reform edits only the owners' draw copy of the current-law
+    cap, which is not the copy the baseline cost reads. From 2027, employee
+    Social Security and Medicare rates, the Additional Medicare Tax and the
+    employee share change; none is an employer tax, so the schedules stay
+    equal.
     Dropping premiums from the FICA pre-tax list (2028 only) or abolishing
     that list (2029 only) changes payroll wages without moving a rate or a
     base; raising the employer Medicare rate (from 2030) changes a rate.
@@ -357,6 +359,9 @@ def test_schedules_differ_only_when_the_employer_cost_does():
     ).gov.irs.gross_income.fica_pre_tax_contributions
     reform = Reform.from_dict(
         {
+            "gov.contrib.ssa.owners_draw.current_law_cap": {
+                "2026-01-01.2026-12-31": 250_000
+            },
             f"{PAYROLL}.social_security.rate.employee": {later: 0.072},
             f"{PAYROLL}.medicare.rate.employee": {later: 0.0245},
             f"{PAYROLL}.medicare.additional.rate": {later: 0.019},

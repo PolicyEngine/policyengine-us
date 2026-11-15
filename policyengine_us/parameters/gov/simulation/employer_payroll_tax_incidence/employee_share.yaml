@@ -22,9 +22,10 @@ documentation: >-
   where r is the reformed federal employer rate on that segment and n is
   nontaxable compensation per dollar of wages. The baseline cost uses the
   current-law taxable maximum in
-  gov.contrib.ssa.owners_draw.current_law_cap, which scenario reforms such
-  as the Trustees' economic assumptions extend along with the cap itself, so
-  a scenario alone moves no wages. The cost
+  gov.simulation.employer_payroll_tax_incidence.current_law_cap, a copy of
+  the cap taken before reforms apply, which scenario reforms such as the
+  Trustees' economic assumptions extend along with the cap itself, so a
+  scenario alone moves no wages. The cost
   leaves out state and local employer payroll taxes, which change with the
   new wages where they apply to them; several state paid leave programs
   also follow a reform to the federal taxable maximum.

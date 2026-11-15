@@ -5,6 +5,7 @@ from typing import Any
 from policyengine_core.periods import instant
 
 from policyengine_us.parameters.uprating_extensions import (
+    CURRENT_LAW_PAYROLL_CAP_COPIES,
     extend_social_security_payroll_cap,
     extend_social_security_wage_indexed_parameters,
 )
@@ -201,19 +202,19 @@ def apply_trustees_2025_economic_assumptions(
         last_projected_year=2035,
         end_year=end_year,
     )
-    # Extend the owners' draw copy on the same rule from its own values, not
-    # from the live cap, so a policy reform's cap can't become the copy's
+    # Extend each current-law copy on the same rule from its own values, not
+    # from the live cap, so a policy reform's cap can't become a copy's
     # no-decrease floor when the reform set runs again.
-    current_law_cap = parameters.gov.contrib.ssa.owners_draw.current_law_cap
-    extend_social_security_payroll_cap(
-        parameters,
-        last_projected_year=2035,
-        end_year=end_year,
-        cap=current_law_cap,
-    )
+    for path in CURRENT_LAW_PAYROLL_CAP_COPIES:
+        extend_social_security_payroll_cap(
+            parameters,
+            last_projected_year=2035,
+            end_year=end_year,
+            cap=parameters.get_child(path),
+        )
     # Extend the benefit wage base on the same rule from its own values
     # through 2035. The rule reads the wage base's 1994 base, its value for
-    # the year before and the NAWI, but neither the live cap nor the copy, so
+    # the year before and the NAWI, but neither the live cap nor a copy, so
     # a reform that changes only one of those doesn't move the wage base when
     # the reform set runs again. A reform that means to move it sets the wage
     # base itself.

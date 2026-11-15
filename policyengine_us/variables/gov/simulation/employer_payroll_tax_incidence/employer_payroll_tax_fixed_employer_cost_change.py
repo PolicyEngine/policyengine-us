@@ -315,15 +315,17 @@ def employer_cost_schedules(baseline_system, reform_system, period, state_code):
     """The baseline and reform schedules the employer's cost is held across.
 
     The baseline's taxable maximum is the reform's copy of the current-law
-    cap, ``gov.contrib.ssa.owners_draw.current_law_cap``: policy reforms leave
-    it alone, while scenario reforms extend it with the live cap.
+    cap, ``gov.simulation.employer_payroll_tax_incidence.current_law_cap``:
+    policy reforms leave it alone, while scenario reforms extend it with the
+    live cap. It is this variable's own copy, so a policy that edits the
+    owners' draw copy moves no wages.
     """
     reform_gov = reform_system.parameters(period).gov
     baseline = EmployerCostSchedule(
         federal_employer_payroll_tax_components(
             baseline_system.parameters(period).gov,
             state_code,
-            cap=reform_gov.contrib.ssa.owners_draw.current_law_cap,
+            cap=reform_gov.simulation.employer_payroll_tax_incidence.current_law_cap,
         ),
         payroll_wage_definition(baseline_system, period),
     )
@@ -359,10 +361,10 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         "bring it to that cost, and "
         "gov.simulation.employer_payroll_tax_incidence.employee_share of the "
         "difference applies. The current-law taxable maximum is the reform's "
-        "copy in gov.contrib.ssa.owners_draw.current_law_cap: policy reforms "
-        "leave it alone, while scenario reforms such as the Trustees' "
-        "economic assumptions extend it with the live cap, so a scenario is "
-        "not read as a tax change. The cost leaves out state and local "
+        "copy in gov.simulation.employer_payroll_tax_incidence.current_law_cap: "
+        "policy reforms leave it alone, while scenario reforms such as the "
+        "Trustees' economic assumptions extend it with the live cap, so a "
+        "scenario is not read as a tax change. The cost leaves out state and local "
         "employer payroll taxes, which change with the new wage where they "
         "apply to it. Like the employer tax variables, it applies the taxable "
         "maximum and the federal unemployment wage base per person rather "

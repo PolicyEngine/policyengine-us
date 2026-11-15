@@ -1379,6 +1379,21 @@ def round_social_security_amount(amount: float, increment: int) -> float:
     return (floored + 1) * increment
 
 
+# Copies of the payroll cap that ``system.py`` takes after building current law
+# and before applying reforms, so policy reforms leave them at current law.
+# Each has its own reader, so a policy that edits one copy leaves the others
+# alone. A scenario reform that extends the cap on other economic assumptions
+# extends each copy too, from the copy's own values.
+CURRENT_LAW_PAYROLL_CAP_COPIES = {
+    "gov.contrib.ssa.owners_draw.current_law_cap": (
+        "Current-law OASDI cap preserved for owners' draw"
+    ),
+    "gov.simulation.employer_payroll_tax_incidence.current_law_cap": (
+        "Current-law OASDI cap the employer payroll tax response holds cost at"
+    ),
+}
+
+
 def extend_social_security_payroll_cap(
     parameters: ParameterNode,
     last_projected_year: int,
