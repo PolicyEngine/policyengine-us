@@ -13,8 +13,9 @@ continuous, piecewise linear and increasing in payroll wages w, so:
 2. Monotonicity: raising any rate weakly lowers the wage at a given cost.
 3. Conservation: under a reform with the default employee share of 1, every
    worker's federal employer cost in the reformed simulation equals the
-   baseline's, across the FUTA base and the Social Security cap, with and
-   without FICA pre-tax deductions, and in a FUTA credit reduction state.
+   baseline's, across the FUTA base, the Social Security cap and CBO's
+   secondary earnings threshold, with and without FICA pre-tax deductions,
+   and in a FUTA credit reduction state.
 4. Share: with an employee share of one half, the model's change is half the
    change the inverse gives (a differential test of model against inverse).
 5. No reform, no change: zero in a simulation without a reform and for anyone
@@ -84,9 +85,16 @@ def bisect_wages(cost, components):
     return (low + high) / 2
 
 
+# CBO's secondary threshold: Social Security tax below the cap and above
+# $250,000, so a negative component cancels the uncapped one in the donut.
+DONUT = [(0.062, 184_500.0), (0.0145, np.inf), (0.062, np.inf), (-0.062, 250_000.0)]
+DONUT_COSTS = [0.0, 100_000.0, 210_000.0, 260_000.0, 300_000.0, 2e6]
+
+
 @PURE_SETTINGS
 @given(COMPONENTS, COSTS)
 @example([(0.062, 184_500.0), (0.0145, np.inf), (0.006, 7_000.0)], [0.0, 7_042.0])
+@example(DONUT, DONUT_COSTS)
 def test_inverse_recovers_the_cost(components, costs):
     wages = wages_at_employer_cost(costs, components)
     assert np.all(wages >= 0)
@@ -107,6 +115,7 @@ def test_same_schedule_returns_the_same_wages(components, wages):
 
 @PURE_SETTINGS
 @given(COMPONENTS, COSTS)
+@example(DONUT, DONUT_COSTS)
 def test_inverse_matches_bisection(components, costs):
     wages = wages_at_employer_cost(costs, components)
     expected = [bisect_wages(cost, components) for cost in costs]
@@ -212,12 +221,15 @@ def federal_employer_cost(simulation):
     )
 
 
-# Reform A raises every federal employer tax and moves both bases, at the
-# default employee share of 1. Reform B removes the Social Security cap, cuts
-# the employer rates and passes half the change to wages.
+# Reform A raises every federal employer tax, moves both bases and turns on
+# CBO's secondary threshold above the new cap, at the default employee share
+# of 1. Reform B removes the Social Security cap, cuts the employer rates and
+# passes half the change to wages.
+SECONDARY_THRESHOLD = "gov.contrib.cbo.payroll.secondary_earnings_threshold"
 RAISE = {
     f"{PAYROLL}.social_security.rate.employer": 0.162,
-    f"{PAYROLL}.social_security.cap": 400_000,
+    f"{PAYROLL}.social_security.cap": 200_000,
+    SECONDARY_THRESHOLD: 300_000,
     f"{PAYROLL}.medicare.rate.employer": 0.2145,
     f"{PAYROLL}.federal_unemployment.effective_rate": 0.01,
     f"{PAYROLL}.federal_unemployment.taxable_wage_base": 15_000,
@@ -259,6 +271,13 @@ def test_reform_holds_federal_employer_cost(raised):
         rtol=1e-6,
     )
     np.testing.assert_array_equal(baseline.calculate(CHANGE, YEAR), 0)
+    # CBO's option is live: the top earner's new wages stay above the
+    # secondary threshold and pay Social Security tax there, so their cost
+    # crosses the donut between the cap and the threshold.
+    taxable = raised.calculate("taxable_earnings_for_social_security", YEAR)
+    wages = raised.calculate("payroll_tax_gross_wages", YEAR)
+    top = PAY.index(1_000_000)
+    assert taxable[top] == pytest.approx(200_000 + wages[top] - 300_000, rel=1e-6)
 
 
 def test_change_is_the_share_of_the_fixed_cost_change(half_cut):
@@ -270,8 +289,7 @@ def test_change_is_the_share_of_the_fixed_cost_change(half_cut):
     components = {}
     for name, current in (("baseline", baseline), ("reform", half_cut)):
         components[name] = federal_employer_payroll_tax_components(
-            current.tax_benefit_system.parameters(YEAR).gov.irs.payroll,
-            state_code,
+            current.tax_benefit_system.parameters(YEAR).gov, state_code
         )
     cost = wages + employer_payroll_tax_from_components(wages, components["baseline"])
     expected = 0.5 * (wages_at_employer_cost(cost, components["reform"]) - wages)

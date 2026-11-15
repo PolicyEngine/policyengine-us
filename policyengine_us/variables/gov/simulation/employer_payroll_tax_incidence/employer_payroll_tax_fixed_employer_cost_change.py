@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-def federal_employer_payroll_tax_components(payroll, state_code):
+def federal_employer_payroll_tax_components(gov, state_code):
     """Federal employer payroll taxes on payroll wages, as (rate, base) pairs.
 
     Each tax is ``rate * min(wages, base)``, as in
@@ -10,16 +10,24 @@ def federal_employer_payroll_tax_components(payroll, state_code):
     uncapped Medicare tax. The federal unemployment rate varies by state
     through its credit reduction, so it is an array.
 
+    A finite ``gov.contrib.cbo.payroll.secondary_earnings_threshold`` turns on
+    CBO's option to tax earnings above a second threshold as well as below the
+    cap, which taxes ``rate * max(0, wages - threshold)`` more, with the
+    threshold at least the cap. That is ``rate * wages - rate * min(wages,
+    threshold)``, so it adds an uncapped component and a negative one.
+
     Args:
-        payroll: The ``gov.irs.payroll`` parameter node for one period.
+        gov: The ``gov`` parameter node for one period.
         state_code: Each person's state code.
 
     Returns:
         A list of (rate, base) pairs.
     """
+    payroll = gov.irs.payroll
+    social_security = payroll.social_security
     federal_unemployment = payroll.federal_unemployment
-    return [
-        (payroll.social_security.rate.employer, payroll.social_security.cap),
+    components = [
+        (social_security.rate.employer, social_security.cap),
         (payroll.medicare.rate.employer, np.inf),
         (
             federal_unemployment.effective_rate
@@ -27,6 +35,15 @@ def federal_employer_payroll_tax_components(payroll, state_code):
             federal_unemployment.taxable_wage_base,
         ),
     ]
+    secondary_threshold = max(
+        gov.contrib.cbo.payroll.secondary_earnings_threshold, social_security.cap
+    )
+    if np.isfinite(secondary_threshold):
+        components += [
+            (social_security.rate.employer, np.inf),
+            (-social_security.rate.employer, secondary_threshold),
+        ]
+    return components
 
 
 def employer_payroll_tax_from_components(wages, components):
@@ -109,8 +126,9 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
     documentation = (
         "The change in wages that holds the employer's cost of each worker "
         "fixed when a reform changes federal employer payroll taxes: the "
-        "employer Social Security rate or taxable maximum, the employer "
-        "Medicare rate, or the federal unemployment tax rate or wage base. "
+        "employer Social Security rate, taxable maximum or CBO secondary "
+        "earnings threshold, the employer Medicare rate, or the federal "
+        "unemployment tax rate or wage base. "
         "The baseline cost is the worker's payroll wages plus the baseline "
         "federal employer taxes on them. The reformed wage is the one whose "
         "payroll wages plus reformed federal employer taxes equal that cost, "
@@ -137,11 +155,10 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
             return 0
         state_code = person.household("state_code", period)
         baseline_components = federal_employer_payroll_tax_components(
-            baseline.tax_benefit_system.parameters(period).gov.irs.payroll,
-            state_code,
+            baseline.tax_benefit_system.parameters(period).gov, state_code
         )
         reform_components = federal_employer_payroll_tax_components(
-            parameters(period).gov.irs.payroll, state_code
+            parameters(period).gov, state_code
         )
         if components_match(baseline_components, reform_components):
             return 0
