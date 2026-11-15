@@ -270,7 +270,7 @@
     wv_senior_citizen_disability_deduction_person: [4_000, 8_000]
 
 # W. Va. Code sections 11-21-12(c)(9) and 11-21-12a: filers deduct contribution
-# payments separately, and box (c) excludes only income receipts.
+# payments separately from their senior modifications.
 - name: A senior's contribution does not reduce the senior modification.
   period: 2025
   input:
@@ -348,3 +348,20 @@
     # min(9,000, 8,000) = 8,000. Excluding the contribution from the base would
     # give min(9,000 - 2,000, 8,000) = 7,000.
     wv_senior_citizen_disability_deduction_person: 8_000
+
+- name: A senior deducts a contribution in full and pays no tax on negative state AGI.
+  period: 2025
+  input:
+    state_code: WV
+    age: 66
+    employment_income: 6_000
+    investment_in_529_plan_indv: 2_000
+  output:
+    # 6,000 - (6,000 + 2,000) = -2,000; taxable income floors at zero.
+    adjusted_gross_income: 6_000
+    wv_senior_citizen_disability_deduction_person: 6_000
+    wv_529_plan_deduction: 2_000
+    wv_subtractions: 8_000
+    wv_agi: -2_000
+    wv_taxable_income: 0
+    wv_income_tax_before_refundable_credits: 0

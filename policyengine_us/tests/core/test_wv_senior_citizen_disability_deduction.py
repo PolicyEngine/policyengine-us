@@ -1,17 +1,10 @@
-"""Hypothesis coverage of Schedule M's person-level subtraction limits.
+"""Check person-level subtraction limits and contribution independence.
 
-The 2025 IT-140 Schedule M line 47, boxes (c) and (d), first caps the income
-remaining after the modified income receipts on lines 35-46 at $8,000, then
-subtracts the person's own lines 29-34 modifications. These properties
-exercise combinations that the worked YAML examples do not enumerate,
-using the real model and independent
-conservation and spouse-isolation checks.
-
-Only income receipts enter the excluded Schedule M amounts. Section
-11-21-12a independently authorizes the line 39 contribution deduction in
-addition to the section 11-21-12(c) modifications. Contributions are outside the income-conservation property below; their
-independence from the senior modification is covered by the variable YAML
-tests.
+Eligible residents cap income after excluding modified income receipts at
+$8,000, then subtract their own Schedule M lines 29-34 modifications.
+Section 11-21-12a lets them deduct college-savings contributions in addition
+to the section 11-21-12(c) modifications. The properties check receipt
+conservation, spouse isolation and contribution independence.
 
 Fresh two- or four-person simulations reuse the package's reference model;
 they do not share simulation caches, mutate parameters, or load datasets.
@@ -169,3 +162,22 @@ def test_changing_one_spouses_excluded_amount_preserves_the_others_modification(
     other_person = 1 - changed_person
     assert deduction[other_person] == deduction[2 + other_person]
     assert deduction[2 + changed_person] <= deduction[changed_person]
+
+
+@PROPERTY_SETTINGS
+@given(
+    couple=COUPLE,
+    contributor=st.integers(min_value=0, max_value=1),
+    contribution=st.integers(min_value=1, max_value=20_000),
+)
+@example(couple=LOW_INCOME_COUPLE, contributor=0, contribution=2_000)
+@example(couple=LOW_INCOME_COUPLE, contributor=1, contribution=2_000)
+def test_contributions_preserve_both_spouses_senior_modifications(
+    couple, contributor, contribution
+):
+    simulation = _simulation(couple, couple)
+    contributions = np.zeros(4)
+    contributions[2 + contributor] = contribution
+    simulation.set_input("investment_in_529_plan_indv", YEAR, contributions)
+    deduction = simulation.calculate(DEDUCTION, YEAR)
+    np.testing.assert_array_equal(deduction[:2], deduction[2:])

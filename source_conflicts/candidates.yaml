@@ -13952,6 +13952,15 @@ candidates:
   - kind: form
     citation: 2025 Schedule M, line 39 and line 47 box (c), PDF p. 6
     url: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=6
+  - kind: statute
+    citation: West Virginia 2000 HB4679, section 11-21-12a, PDF p. 3
+    url: https://code.wvlegislature.gov/signed_bills/2000/2000-RS-HB4679-SUB%20ENR_signed.pdf#page=3
+  - kind: statute
+    citation: West Virginia 2013 SB65, section 11-21-12(c)(8), PDF pp. 6-7
+    url: https://code.wvlegislature.gov/signed_bills/2013/2013-RS-SB65-ENR_signed.pdf#page=6
+  - kind: form
+    citation: 2014 Schedule M, line 47 and line 52 box (a), PDF p. 9
+    url: https://tax.wv.gov/Documents/TaxForms/2014/it140.booklet.pdf#page=9
   readings:
     statute: Section 12a's deduction adds to the subsection (c) modifications, and (c)(9)(ii) limits the senior
       modification only by the modifications under (c)(1), (2) and (5)-(8), so a contribution doesn't reduce it.
@@ -13964,11 +13973,14 @@ candidates:
     - policyengine_us/parameters/gov/states/wv/tax/income/subtractions/senior_citizen_disability_deduction/excluded_income_sources.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10673
-  state: open
-  note: 'This PR follows the statute for line 39 and keeps the section 12a contribution deduction apart from the
-    income receipts on lines 36 and 38 that the senior cap excludes. Main follows the registered
-    us-wv:senior-disability-modification-income-base reading, which excludes all of Schedule M lines 35 to 46, line 39
-    included. This PR keeps the existing marker, vendored register and pin.'
+  state: ruled
+  note: 'PolicyEngine follows section 12a for contributions and preserves the receipt exclusions under the registered
+    us-wv:senior-disability-modification-income-base reading. Section 12a expressly permits the additional deduction,
+    so the canon against double deductions does not offset the contribution against the senior modification.
+    The annual model deducts current-year contributions in full without tracking the optional five-tax-year election.
+    The 2014 boundary preserves verified model coverage; HB4679 already included the additional deduction in 2000,
+    and SB65 retained the senior modification under subdivision (c)(8) in 2013. The existing marker, register and pin
+    remain until a follow-up registers this contribution-specific ruling after merge.'
 - id: us-wv:senior-modification-excluded-line-range
   program: income-tax
   years:
