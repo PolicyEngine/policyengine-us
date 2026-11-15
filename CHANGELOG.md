@@ -1,3 +1,14 @@
+## [2.127.0] - 2026-11-15
+
+### Added
+
+- Add Arkansas LIHEAP summer regular cooling assistance.
+
+### Fixed
+
+- Stop Arkansas LIHEAP income limits at the federal maximum, the greater of HHS's 60% state median income amount and 150% of the poverty guideline.
+
+
 ## [2.126.0] - 2026-11-15
 
 ### Added
