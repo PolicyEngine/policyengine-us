@@ -2,6 +2,8 @@ from policyengine_us.model_api import *
 from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
 from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
+FIRST_PTC_GUIDELINE_YEAR = 2013
+
 
 class aca_fpg(Variable):
     value_type = float
@@ -11,35 +13,33 @@ class aca_fpg(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/36B#d_3",
+        "https://www.govinfo.gov/content/pkg/USCODE-2014-title26/pdf/USCODE-2014-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec36B.pdf#page=4",
+        "https://www.irs.gov/pub/irs-prior/i8962--2014.pdf#page=6",
+        "https://www.irs.gov/pub/irs-prior/i8962--2015.pdf#page=7",
         # Line 1 (tax family size) and line 4 (poverty line).
         "https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=8",
     )
     documentation = (
         "Form 8962 line 4: the prior year's poverty guideline for the tax "
-        "year's tax family size on line 1 (aca_tax_family_size). The former "
-        "lookup, tax_unit_fpg for the prior year, also took the household "
-        "size from the prior year; the size now comes from the tax year, as "
-        "line 1 requires, which differs only when a prior-year size is "
-        "supplied. A return on which every head and spouse can be claimed "
-        "elsewhere has no tax family and no applicable taxpayer; as a "
-        "numerical convention, not a legal rule, it keeps the guideline for "
-        "the whole tax unit, so readers that are not about the credit see "
-        "the same value as before. For the first modeled year, the year "
-        "before precedes the model, so the tax year's guideline stands in."
+        "year's tax family size on line 1 (aca_tax_family_size). The 2013 "
+        "guidelines support coverage from 2014. Coverage in 2014 and 2015 "
+        "uses residence in the coverage year; later years retain the "
+        "existing prior-year residence lookup. A return with no tax family "
+        "uses the whole tax unit's size as a numerical convention."
     )
 
     def formula(tax_unit, period, parameters):
         family_size = tax_unit("aca_tax_family_size", period)
         size = where(family_size > 0, family_size, tax_unit("tax_unit_size", period))
-        # The guideline year lags the tax year (26 U.S.C. 36B(d)(3)(B)), and
-        # the state group is read for the guideline year. For the first
-        # modeled year, the year before precedes the model, so the tax year's
-        # guideline stands in and nothing is computed for an unmodeled year.
-        # For that one year the line uses a later guideline than
-        # 36B(d)(3)(B) calls for.
+        # Lag the guideline date without lowering the wider model's floor.
         guideline_period = period.last_year
-        if guideline_period.start.year < FIRST_MODELED_YEAR:
+        if guideline_period.start.year < FIRST_PTC_GUIDELINE_YEAR:
             guideline_period = period
-        state_group = tax_unit.household("state_group_str", guideline_period)
+        state_period = guideline_period
+        if state_period.start.year < FIRST_MODELED_YEAR:
+            # Form 8962 line 4 uses coverage-year residence. Historical
+            # households need not supply geography for an earlier year.
+            state_period = period
+        state_group = tax_unit.household("state_group_str", state_period)
         year_lag = period.start.year - guideline_period.start.year
         return fpg(size, state_group, period, parameters, year_lag=year_lag)

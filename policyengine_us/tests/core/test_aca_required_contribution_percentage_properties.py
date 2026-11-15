@@ -109,9 +109,11 @@ def build(tax_unit_inputs, years):
         people[person] = {
             "age": {year: 40 for year in years},
             "is_aca_ptc_eligible": {year: True for year in years},
+            "is_aca_marketplace_enrollee": {year: True for year in years},
         }
         tax_units[f"tax_unit_{index}"] = {
             "members": members,
+            "filing_status": {year: "SINGLE" for year in years},
             **{name: {year: value for year in years} for name, value in inputs.items()},
         }
         households[f"household_{index}"] = {
@@ -227,6 +229,7 @@ def test_required_contribution_rises_with_income(incomes, slcsp):
             # Property 4.
             assert (np.diff(contribution) >= -1e-6).all(), year
             assert (np.diff(credit[within]) <= 1e-6).all(), year
+            clear_parameter_caches(simulation.tax_benefit_system)
     finally:
         del simulation
         gc.collect()

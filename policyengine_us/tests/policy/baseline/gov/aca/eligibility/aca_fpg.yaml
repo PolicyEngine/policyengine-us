@@ -278,3 +278,59 @@
     # have used the supplied 2024 size of 2 (20,440).
     aca_tax_family_size: 3
     aca_fpg: 25_820
+
+- name: A 2015 Alaska joint return uses the prior guideline with coverage-year household inputs
+  period: 2015
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 40
+        takes_up_ak_permanent_fund_dividend_if_eligible: false
+        employment_income: 49_150
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      spouse:
+        age: 40
+        takes_up_ak_permanent_fund_dividend_if_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AK
+  output:
+    # IRS 2015 Form 8962 line 4, Table 1-2: 14,580 + 5,080 = 19,660.
+    # Line 5: floor(49,150 / 19,660 * 100) / 100 = 2.50.
+    # https://www.irs.gov/pub/irs-prior/i8962--2015.pdf#page=7
+    aca_fpg: 19_660
+    aca_magi: 49_150
+    aca_tax_family_size: 2
+    aca_magi_fraction: 2.5
+
+- name: A 2014 Alaska return uses the 2013 guideline for its tax family
+  period: 2014
+  input:
+    aca_tax_family_size: 2
+    state_code: AK
+  output:
+    # IRS 2014 Form 8962 line 4, Table 1-2: 14,350 + 5,030 = 19,380.
+    # https://www.irs.gov/pub/irs-prior/i8962--2014.pdf#page=6
+    aca_fpg: 19_380
+
+- name: Coverage in 2015 uses current residence with the 2014 guideline
+  period: 2015
+  input:
+    aca_tax_family_size: 2
+    state_code:
+      2014: TX
+      2015: AK
+  output:
+    # IRS 2015 Form 8962 line 4 uses 2015 residence and the 2014 table:
+    # Alaska, two people = 14,580 + 5,080 = 19,660.
+    # https://www.irs.gov/pub/irs-prior/i8962--2015.pdf#page=7
+    aca_fpg: 19_660
