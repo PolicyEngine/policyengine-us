@@ -47,8 +47,9 @@ class va_eap_countable_income(Variable):
         # offset other income.
         unearned = 0
         for source in p.income.sources.unearned:
-            # ADD sums the MONTH-defined ssi and va_ag over the year.
-            unearned = unearned + max_(person(source, period, options=[ADD]), 0)
+            # Reading the MONTH-defined ssi and va_ag over the year sums
+            # their months.
+            unearned = unearned + max_(person(source, period), 0)
         # TANF the household receives: the take-up-gated aggregate, which
         # includes va_tanf.
         tanf = spm_unit("tanf", period)

@@ -1,0 +1,14 @@
+description: The IRS increases the health savings account contribution limits by the change in this C-CPI-U, which holds for each tax year the index for the calendar year before it under 26 U.S.C. 223(g)(1), averaged over the 12 months ending March 31.
+values:
+  # Computed in parameters/uprating_extensions.py (set_hsa_c_cpi_u_index):
+  # for 1998, the 223(g)(1) denominator for calendar year 1997
+  # (get_hsa_cola_denominator); from calendar year 2017, the C-CPI-U
+  # averaged over the 12 months ending March 31; for calendar years 1998
+  # to 2016, the CPI-U over the same months on the denominator's scale.
+  1998-01-01: 1
+metadata:
+  unit: /1
+  label: C-CPI-U for HSA contribution limit indexing
+  reference:
+    - title: 26 U.S. Code § 223(g)(1) - Cost-of-living adjustment
+      href: https://www.law.cornell.edu/uscode/text/26/223#g_1

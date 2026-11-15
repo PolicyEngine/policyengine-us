@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_couple_budget_total,
-    _ssi_couple_total,
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    couple_budget_total,
+    spouses_split_by_facility,
 )
 
 
@@ -44,28 +44,37 @@ class is_medically_needy_for_medicaid(Variable):
         # the individual or the married couple, plus parents for a child,
         # not the tax filing unit.
         marital_unit = person.marital_unit
-        # 42 CFR 435.831(d) deducts expenses of financially responsible
-        # relatives. For a child these are the ineligible parents whose
-        # income SSI deems (20 CFR 416.1165); split their expenses among the
-        # eligible children as the deemed income is split, so that an
-        # expense is deducted once.
-        tax_unit = person.tax_unit
-        eligible_child = is_aged_blind_or_disabled & person("is_child", period)
-        parental_expenses = tax_unit.sum(
-            medical_expenses * person("is_ssi_ineligible_parent", period)
+        parental_expense_share = person(
+            "medicaid_parental_medical_expense_share", period
         )
-        eligible_children = tax_unit.sum(eligible_child)
-        parental_expense_share = where(
-            eligible_child, parental_expenses / max_(eligible_children, 1), 0
+        uses_couple_standard = person(
+            "medicaid_medically_needy_uses_couple_standard", period
         )
-        budget = personal_income - medical_expenses - parental_expense_share
-        # A couple's budget leaves out an unrelated member of a default marital
+        # 42 CFR 435.831(d) also deducts a spouse's expenses when the spouse's
+        # income is not counted, unless a facility splits the couple. A
+        # couple's totals leave out an unrelated member of a default marital
         # unit, whose income ssi_countable_income also leaves out, and that
         # member's own budget leaves out the couple.
-        income = where(
-            person("ssi_couple_computation_applies", period),
-            _ssi_couple_budget_total(person, period, budget),
-            _ssi_couple_total(person, period, budget),
+        expenses = where(
+            spouses_split_by_facility(person, period),
+            medical_expenses,
+            couple_budget_total(person, period, medical_expenses),
+        )
+        unit_income = personal_income + person(
+            "medicaid_medically_needy_income_from_spouse", period
+        )
+        income = (
+            where(
+                uses_couple_standard,
+                couple_budget_total(person, period, unit_income),
+                unit_income,
+            )
+            - expenses
+            - where(
+                uses_couple_standard,
+                couple_budget_total(person, period, parental_expense_share),
+                parental_expense_share,
+            )
         )
         assets = marital_unit.sum(personal_assets)
         ma = parameters(period).gov.hhs.medicaid

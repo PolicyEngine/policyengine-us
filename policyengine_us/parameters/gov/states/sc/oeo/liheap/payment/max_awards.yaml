@@ -1,0 +1,17 @@
+description: South Carolina limits the number of awards per program year to this amount under the Low Income Home Energy Assistance Program.
+# The limit also counts crisis assistance, which is not modeled, so here it
+# limits the heating and cooling awards.
+values:
+  2025-10-01: 2
+  2026-10-01: 1
+metadata:
+  unit: int
+  period: year
+  label: South Carolina LIHEAP maximum awards per program year
+  reference:
+    - title: South Carolina FY2026 LIHEAP Detailed Model Plan, item 11.5
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=26
+    - title: "South Carolina draft 2026 and 2024 LIHEAP Administrative Guides, Section 3A, Frequency of LIHEAP Services #page 310,536"
+      href: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20South%20Carolina%20LIHEAP%20Model%20Plan%20w%20Attachments.pdf#page=310
+    - title: "South Carolina FY2027 LIHEAP Detailed Model Plan, items 1.1 and 11.5 #page 4,26"
+      href: https://liheapch.acf.gov/docs/2027/state-plans/SC_Plan_2027.pdf#page=4

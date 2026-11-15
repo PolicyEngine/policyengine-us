@@ -193,3 +193,74 @@
     is_medically_needy_for_medicaid: true
     medicaid_category: MEDICALLY_NEEDY
     is_medicaid_eligible: true
+
+# 20 CFR 416.1163(d)(1): with nothing to deem, the applicant is tested alone.
+# 17,040 - 240 = 16,800 is above West Virginia's 12 x 994 = 11,928.
+- name: Case 15, West Virginia senior with a spouse who has no income is above the one-person limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 17_040
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    medicaid_category: [NONE, ADULT]
+    is_medicaid_eligible: [false, true]
+
+# AHCCCS MA611 tests the couple: 16,800 is within 21,640 and above the one-person 15,960.
+- name: Case 16, Arizona senior with a spouse who has no income is within the couple limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 17_040
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    medicaid_category: [SENIOR_OR_DISABLED, ADULT]
+    is_medicaid_eligible: [true, true]
+
+# 210-RICR-40-05-1 1.11.2: a group of two whether or not the spouse applies.
+# 16,800 is within 21,640 and above the one-person 15,960.
+- name: Case 17, Rhode Island senior with a spouse who has no income is within the couple limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 17_040
+      person2:
+        is_tax_unit_spouse: true
+        age: 50
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    medicaid_category: [SENIOR_OR_DISABLED, ADULT]
+    is_medicaid_eligible: [true, true]

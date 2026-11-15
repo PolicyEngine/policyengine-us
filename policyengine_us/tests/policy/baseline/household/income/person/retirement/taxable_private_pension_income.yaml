@@ -1,0 +1,24 @@
+# taxable_private_pension_income follows
+# calibration.gov.irs.soi.taxable_pension_income_per_capita, the IRS SOI total
+# divided by population. An input dated in one year and read in a later year is
+# multiplied by the ratio of that index between the two years.
+
+- name: A 2017 input read in 2018 grows with SOI pensions and annuities, taxable per capita, into the 2018 estimate.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    taxable_private_pension_income:
+      2017: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, pensions and annuities,
+    # taxable (2018 is the estimate: the 2018 combined taxable IRA, pension and
+    # annuity total times the mean pension share of that total in 2017 and 2019,
+    # as the parameter file says), over
+    # calibration.gov.census.populations.total:
+    #   2017: 729,187,412,000 / 331,211,000 = 2,201.580
+    #         (https://www.irs.gov/pub/irs-soi/17in14ar.xls)
+    #   2018: 774,661,125,000 / 333,525,000 = 2,322.648
+    #         (estimate)
+    # 10,000 x 2,322.648 / 2,201.580 = 10,549.91. With the old values this came
+    # to 9,930.62.
+    taxable_private_pension_income: 10_549.91
