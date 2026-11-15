@@ -21,8 +21,6 @@ class is_chip_eligible_child(Variable):
         "https://www.law.cornell.edu/cfr/text/45/155.20",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=28",
-        # PDF pages 104, 108.
-        "https://www.in.gov/idoi/files/NavManV3.0.pdf#page=104",
     )
 
     def formula(person, period, parameters):
