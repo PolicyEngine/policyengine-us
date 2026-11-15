@@ -8667,7 +8667,8 @@ candidates:
     code:
     - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/limit/rounds_monthly_limit_down.yaml
     - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/medicaid_optional_senior_or_disabled_income_limit.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10985
   state: ruled
   note: 'PE-US rounds New Jersey''s monthly limit down to the whole dollar for both unit sizes (rounds_monthly_limit_down.yaml,
     applied in medicaid_optional_senior_or_disabled_income_limit.py), giving $21,636 a year for a couple in 2026,
