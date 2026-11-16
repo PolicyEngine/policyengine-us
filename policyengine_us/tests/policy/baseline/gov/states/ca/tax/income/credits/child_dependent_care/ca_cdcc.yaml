@@ -499,6 +499,10 @@
     tax_units:
       tax_unit:
         members: [head, child]
+        # Independently known current-year work-care costs for these
+        # qualifying individuals, net of disallowed public reimbursement,
+        # before employer exclusion; no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 2_500
         tax_unit_childcare_expenses: 2_500
     households:
       household:

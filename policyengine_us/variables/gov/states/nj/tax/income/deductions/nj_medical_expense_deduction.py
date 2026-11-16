@@ -16,7 +16,10 @@ class nj_medical_expense_deduction(Variable):
         "regardless of who is covered. Each dependent's exclusion is limited "
         "to that dependent's own medical premiums. A dependent aggregate ALD "
         "override must identify the corresponding person ALDs for exclusion; "
-        "the total alone does not establish which person paid the premiums."
+        "the total alone does not establish which person paid the premiums. "
+        "A supplied subtotal loses the dependents' deducted premiums once: "
+        "the formula takes out only those that the applied exclusion supplied "
+        "with the subtotal does not already cover."
     )
     reference = (
         "https://pub.njleg.gov/bills/9899/PL99/222_.HTM",
@@ -36,20 +39,33 @@ class nj_medical_expense_deduction(Variable):
         # C.54A:3-3 excludes premiums counted by the separate SE deduction
         # under C.54A:3-5, including a dependent's deduction on their own
         # return.
-        # The federal base already excludes the filers' deduction and the
-        # long-term care part (Form 7206 line 2) of each dependent's own
-        # deduction. Remove the medical part (line 1) of each dependent's
-        # deduction (the deduction less its long-term care part), limited to
-        # that person's own paid medical premiums.
-        person = tax_unit.members
-        dependent_medical_part = min_(
-            person("self_employed_health_insurance_ald_excluded_premiums", period),
-            max_(0, person("self_employed_health_insurance_ald_person", period))
-            - person("self_employed_health_insurance_ald_long_term_care_part", period),
-        )
-        excluded_dependent_premiums = tax_unit.sum(
-            dependent_medical_part * person("is_tax_unit_dependent", period)
-        )
+        # The computed federal base excludes each dependent's deduction.
+        # Supplied subtotals retain the separate state medical exclusion,
+        # less the dependents' premiums that the exclusion supplied with the
+        # subtotal already covers: the part of that exclusion above the
+        # filers' own, up to the dependents' computed exclusion.
+        excluded_dependent_premiums = 0
+        if has_input_for_period(
+            tax_unit.simulation, "itemized_medical_expenses", period
+        ):
+            dependent_exclusion = tax_unit(
+                "itemized_medical_expenses_excluded_dependent_premiums", period
+            )
+            filer_exclusion = add(
+                tax_unit,
+                period,
+                [
+                    "itemized_medical_expenses_excluded_premiums",
+                    "itemized_medical_expenses_excluded_long_term_care_premiums",
+                ],
+            )
+            supplied_exclusion = max_(
+                0, tax_unit("itemized_medical_expenses_applied_exclusion", period)
+            )
+            already_excluded = min_(
+                dependent_exclusion, max_(0, supplied_exclusion - filer_exclusion)
+            )
+            excluded_dependent_premiums = dependent_exclusion - already_excluded
         # New Jersey includes salary-reduction cafeteria-plan premiums in
         # taxable wages (TB-39(R)), so these employee-paid premiums also
         # qualify for the medical expense deduction. The separate payroll

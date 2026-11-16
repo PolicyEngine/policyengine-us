@@ -652,3 +652,182 @@
     filing_status: JOINT
   output:
     basic_standard_deduction: 33_200
+- name: Case 1, a 2017 dependent with no earned income receives the $1,050 floor.
+  # 2017 Form 1040 instructions, PDF page 39, dependent worksheet line 1.
+  period: 2017
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1_050
+
+- name: Case 2, the 2017 dependent floor still applies at $700 of earned income.
+  period: 2017
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 700
+  output:
+    basic_standard_deduction: 1_050
+
+- name: Case 3, a 2017 dependent adds $350 above the $700 worksheet boundary.
+  period: 2017
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 701
+  output:
+    basic_standard_deduction: 1_051
+
+- name: Case 4, a 2017 single dependent cannot exceed the $6,350 regular deduction.
+  # min(6,350, max(1,050, 6,001 + 350)) = 6,350.
+  period: 2017
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 6_001
+  output:
+    basic_standard_deduction: 6_350
+
+# Annual dependent worksheet histories, checked against dated IRS guidance.
+
+- name: Contiguous history, 2018 dependent deduction floor.
+  # https://www.irs.gov/irb/2018-10_IRB, Rev. Proc. 2018-18 section 3.14(2).
+  period: 2018
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1050
+
+- name: Contiguous history, 2018 dependent earned-income addition.
+  # https://www.irs.gov/irb/2018-10_IRB, Rev. Proc. 2018-18 section 3.14(2).
+  period: 2018
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 3_000
+  output:
+    basic_standard_deduction: 3_350
+
+- name: Contiguous history, 2019 dependent deduction floor.
+  # https://www.irs.gov/pub/irs-drop/rp-18-57.pdf, section 3.16(2).
+  period: 2019
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1100
+
+- name: Contiguous history, 2019 dependent earned-income addition.
+  # https://www.irs.gov/pub/irs-drop/rp-18-57.pdf, section 3.16(2).
+  period: 2019
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 3_000
+  output:
+    basic_standard_deduction: 3_350
+
+- name: Contiguous history, 2020 dependent deduction floor.
+  # https://www.irs.gov/pub/irs-drop/rp-19-44.pdf, section 3.16(2).
+  period: 2020
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1100
+
+- name: Contiguous history, 2020 dependent earned-income addition.
+  # https://www.irs.gov/pub/irs-drop/rp-19-44.pdf, section 3.16(2).
+  period: 2020
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 3_000
+  output:
+    basic_standard_deduction: 3_350
+
+- name: Contiguous history, 2021 dependent deduction floor.
+  # https://www.irs.gov/pub/irs-drop/rp-20-45.pdf, section 3.16(2).
+  period: 2021
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1100
+
+- name: Contiguous history, 2021 dependent earned-income addition.
+  # https://www.irs.gov/pub/irs-drop/rp-20-45.pdf, section 3.16(2).
+  period: 2021
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 3_000
+  output:
+    basic_standard_deduction: 3_350
+
+- name: Contiguous history, 2022 dependent deduction floor.
+  # https://www.irs.gov/pub/irs-drop/rp-21-45.pdf, section 3.15(2).
+  period: 2022
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1150
+
+- name: Contiguous history, 2022 dependent earned-income addition.
+  # https://www.irs.gov/pub/irs-drop/rp-21-45.pdf, section 3.15(2).
+  period: 2022
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 3_000
+  output:
+    basic_standard_deduction: 3_400
+
+- name: Contiguous history, 2023 dependent deduction floor.
+  # https://www.irs.gov/irm/part3/irm_03-011-006r, standard deduction table.
+  period: 2023
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1250
+
+- name: Contiguous history, 2024 dependent deduction floor.
+  # https://www.irs.gov/irm/part3/irm_03-011-006r, standard deduction table.
+  period: 2024
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1300
+
+- name: Contiguous history, 2025 dependent deduction floor.
+  # https://www.irs.gov/irm/part3/irm_03-011-006r, standard deduction table.
+  period: 2025
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1350
+
+- name: Contiguous history, 2026 dependent deduction floor.
+  # https://www.irs.gov/pub/irs-drop/rp-25-32.pdf, dependent standard deduction.
+  period: 2026
+  input:
+    filing_status: SINGLE
+    head_or_spouse_is_dependent_elsewhere: true
+    standard_deduction_worksheet_earned_income: 0
+  output:
+    basic_standard_deduction: 1350

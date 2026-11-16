@@ -1,23 +1,56 @@
 description: New York provides this base annual direct heating payment by primary heating fuel under the Home Energy Assistance Program.
+# Dates identify FFY schedules under the annual model convention.
+# The December 2022 revision changes the base; earlier-award supplements are
+# not added again to the revised regular benefit.
 ELECTRICITY:
+  2016-10-01: 350
+  2022-10-01: 400
+  2022-12-11: 500
   2023-10-01: 400
 NATURAL_GAS:
+  2016-10-01: 350
+  2022-10-01: 400
+  2022-12-11: 500
   2023-10-01: 400
 FUEL_OIL:
+  2016-10-01: 575
+  2017-10-01: 675
+  2022-10-01: 900
+  2022-12-11: 1050
   2023-10-01: 900
 KEROSENE:
+  2016-10-01: 575
+  2017-10-01: 675
+  2022-10-01: 900
+  2022-12-11: 1050
   2023-10-01: 900
 PROPANE:
+  2016-10-01: 575
+  2017-10-01: 675
+  2022-10-01: 900
+  2022-12-11: 1050
   2023-10-01: 900
 WOOD:
+  2016-10-01: 525
+  2022-10-01: 635
+  2022-12-11: 685
   2023-10-01: 635
 COAL:
+  2016-10-01: 525
+  2022-10-01: 635
+  2022-12-11: 685
   2023-10-01: 635
 # The matrix's "other fuels" row covers fuels outside the named utility and
 # delivered-fuel groups; the model places solar there.
 OTHER:
+  2016-10-01: 525
+  2022-10-01: 635
+  2022-12-11: 685
   2023-10-01: 635
 SOLAR:
+  2016-10-01: 525
+  2022-10-01: 635
+  2022-12-11: 685
   2023-10-01: 635
 # No matrix row: an unknown fuel pays nothing. See #9754 for the default fuel.
 UNSPECIFIED:
@@ -31,6 +64,22 @@ metadata:
   breakdown:
   - heating_type
   reference:
+  - title: FY2017 accepted LIHEAP State Plan, Attachment 1, regular benefit matrix, PDF page 54
+    href: https://liheapch.acf.gov/docs/NY_Plan_2017.pdf#page=54
+  - title: 2017-2018 HEAP Desk Guide, regular benefits, PDF page 2
+    href: https://otda.ny.gov/policy/directives/2017/LCM/17-LCM-14-Attachment-2.pdf#page=2
+  - title: 2018-2019 HEAP Direct Heating Regular Base Benefit Levels
+    href: https://liheapch.acf.gov/docs/NY_BenefitsMatrix_2019.pdf#page=1
+  - title: 2019-2020 HEAP Direct Heating Regular Base Benefit Levels
+    href: https://liheapch.acf.gov/docs/NY_BenefitsMatrix_2020.pdf#page=1
+  - title: 2020-2021 HEAP Direct Heating Regular Base Benefit Levels
+    href: https://liheapch.acf.gov/docs/NY_BenefitsMatrix_2021.pdf#page=1
+  - title: 2021-2022 HEAP Desk Guide, regular benefits, PDF page 2
+    href: https://otda.ny.gov/policy/directives/2021/LCM/21-LCM-18-Attachment-4.pdf#page=2
+  - title: 2022-2023 HEAP initial regular benefit matrix
+    href: https://liheapch.acf.gov/docs/2023/benefits-matricies/NY_BenefitMatrix_2023.pdf#page=1
+  - title: 22 TA DC105, regular heater benefit increase effective December 11, 2022
+    href: https://otda.ny.gov/policy/gis/2022/22DC105.pdf#page=1
   - title: 2023-2024 HEAP Direct Heating Regular Base Benefit Levels
     href: https://liheapch.acf.gov/docs/2024/benefits-matricies/NY_BenefitMatrix_2024.pdf#page=1
   - title: 2024-2025 HEAP Direct Heating Regular Base Benefit Levels

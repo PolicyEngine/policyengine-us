@@ -2,7 +2,8 @@
   period: 2019
   input:
     takes_up_csfp_if_eligible: true
-    school_meal_fpg_ratio: 1.3
+    csfp_countable_income: 13_000
+    spm_unit_fpg: 10_000
     age: 59
   output:
     commodity_supplemental_food_program: 0
@@ -11,7 +12,8 @@
   period: 2019
   input:
     takes_up_csfp_if_eligible: true
-    school_meal_fpg_ratio: 1.31
+    csfp_countable_income: 13_100
+    spm_unit_fpg: 10_000
     age: 60
   output:
     commodity_supplemental_food_program: 0
@@ -20,7 +22,8 @@
   period: 2019
   input:
     takes_up_csfp_if_eligible: true
-    school_meal_fpg_ratio: 1.30
+    csfp_countable_income: 13_000
+    spm_unit_fpg: 10_000
     age: 60
   output:
     commodity_supplemental_food_program: 330
@@ -29,7 +32,8 @@
   period: 2024
   input:
     takes_up_csfp_if_eligible: true
-    school_meal_fpg_ratio: 1.30
+    csfp_countable_income: 13_000
+    spm_unit_fpg: 10_000
     age: 60
   output:
     commodity_supplemental_food_program: 531
@@ -38,7 +42,8 @@
   period: 2025
   input:
     takes_up_csfp_if_eligible: true
-    school_meal_fpg_ratio: 1.50
+    csfp_countable_income: 15_000
+    spm_unit_fpg: 10_000
     age: 60
   output:
     commodity_supplemental_food_program: 601
@@ -47,7 +52,8 @@
   period: 2026
   input:
     takes_up_csfp_if_eligible: true
-    school_meal_fpg_ratio: 1.50
+    csfp_countable_income: 15_000
+    spm_unit_fpg: 10_000
     age: 60
   output:
     commodity_supplemental_food_program: 651

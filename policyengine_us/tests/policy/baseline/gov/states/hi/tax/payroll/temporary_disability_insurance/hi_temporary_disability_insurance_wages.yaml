@@ -1,0 +1,195 @@
+# HRS 392-3 counts all remuneration and leaves out the payments HRS 383-11 lists.
+# The expected values below subtract those payments by hand.
+
+- name: Hawaii wages leave out a traditional 401(k) deferral.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    state_code: HI
+  output:
+    # HRS 383-11(4)(A): 60,000 - 4,000 = 56,000.
+    hi_temporary_disability_insurance_wages: 56_000
+    # The federal base keeps the deferral.
+    payroll_tax_gross_wages: 60_000
+
+- name: Hawaii wages leave out a Roth 401(k) deferral.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    roth_401k_contributions: 4_000
+    state_code: HI
+  output:
+    # HRS 383-11(4)(A) sets no income tax condition: 60,000 - 4,000 = 56,000.
+    hi_temporary_disability_insurance_wages: 56_000
+
+- name: Hawaii wages leave out traditional and Roth 403(b) deferrals.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    traditional_403b_contributions: 3_000
+    roth_403b_contributions: 1_000
+    state_code: HI
+  output:
+    # HRS 383-11(1)(A): 60,000 - 3,000 - 1,000 = 56,000.
+    hi_temporary_disability_insurance_wages: 56_000
+
+- name: Hawaii wages leave out pre-tax health premiums and payroll HSA contributions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 3_000
+    health_savings_account_payroll_contributions: 2_000
+    state_code: HI
+  output:
+    # HRS 383-11(1)(C): 60,000 - 3,000 - 2,000 = 55,000.
+    hi_temporary_disability_insurance_wages: 55_000
+
+- name: Hawaii wages keep dependent care benefits, which HRS 383-11 does not list.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    dependent_care_employer_benefits: 5_000
+    state_code: HI
+  output:
+    hi_temporary_disability_insurance_wages: 60_000
+    # The federal base removes them: 60,000 - 5,000 = 55,000.
+    payroll_tax_gross_wages: 55_000
+
+- name: Hawaii wages leave out only the deferral the 2026 limit allows.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 100_000
+    traditional_401k_contributions_desired: 30_000
+    state_code: HI
+  output:
+    # The 2026 limit under age 50 is 24,500: 100,000 - 24,500 = 75,500.
+    traditional_401k_contributions: 24_500
+    hi_temporary_disability_insurance_wages: 75_500
+
+- name: Hawaii wages leave out deferrals in 2004, the first year the model holds a limit.
+  period: 2004
+  absolute_error_margin: 0.01
+  input:
+    age: 55
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    state_code: HI
+  output:
+    # 60,000 - 4,000 = 56,000.
+    hi_temporary_disability_insurance_wages: 56_000
+
+- name: Hawaii wages leave out only the deferral the 2004 limit allows.
+  period: 2004
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 100_000
+    traditional_401k_contributions_desired: 30_000
+    state_code: HI
+  output:
+    # The 2004 limit under age 50 is 13,000: 100,000 - 13,000 = 87,000.
+    traditional_401k_contributions: 13_000
+    hi_temporary_disability_insurance_wages: 87_000
+
+- name: Hawaii wages leave out deferrals in 2014.
+  period: 2014
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    state_code: HI
+  output:
+    # 60,000 - 4,000 = 56,000.
+    hi_temporary_disability_insurance_wages: 56_000
+
+- name: Hawaii wages keep deferrals in 2003, before the model holds a limit.
+  period: 2003
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    traditional_401k_contributions: 4_000
+    state_code: HI
+  output:
+    hi_temporary_disability_insurance_wages: 60_000
+
+- name: Hawaii wages leave out military basic pay.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    military_basic_pay: 60_000
+    state_code: HI
+  output:
+    # HRS 392-5(6): 60,000 - 60,000 = 0.
+    hi_temporary_disability_insurance_wages: 0
+
+- name: Hawaii wages keep a service member's civilian pay.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 70_000
+    military_basic_pay: 60_000
+    state_code: HI
+  output:
+    # 70,000 - 60,000 = 10,000.
+    hi_temporary_disability_insurance_wages: 10_000
+
+- name: Hawaii wages leave out premiums in 2004.
+  period: 2004
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 3_000
+    state_code: HI
+  output:
+    # 60,000 - 3,000 = 57,000.
+    hi_temporary_disability_insurance_wages: 57_000
+
+- name: Hawaii wages leave out premiums, HSA contributions and military basic pay in 2003.
+  period: 2003
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    pre_tax_health_insurance_premiums: 3_000
+    health_savings_account_payroll_contributions: 2_000
+    military_basic_pay: 10_000
+    state_code: HI
+  output:
+    # 50,000 - 3,000 - 2,000 - 10,000 = 35,000.
+    hi_temporary_disability_insurance_wages: 35_000
+
+- name: Hawaii wages stop at zero when excluded payments exceed pay.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 3_000
+    pre_tax_health_insurance_premiums: 5_000
+    state_code: HI
+  output:
+    hi_temporary_disability_insurance_wages: 0
+
+- name: Hawaii wages stop at zero for negative employment income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: -5_000
+    state_code: HI
+  output:
+    hi_temporary_disability_insurance_wages: 0
+
+- name: Hawaii wages do not apply in other states.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 60_000
+    state_code: NV
+  output:
+    hi_temporary_disability_insurance_wages: 0

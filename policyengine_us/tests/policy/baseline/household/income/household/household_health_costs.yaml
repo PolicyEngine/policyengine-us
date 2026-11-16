@@ -14,16 +14,27 @@
   output:
     household_health_costs: 360
 
-- name: Household health costs include Marketplace net premium when health benefits are included in net income.
+- name: Household health costs include the whole Marketplace premium when health benefits are included in net income.
   period: 2024
   input:
     gov.simulation.include_health_benefits_in_net_income: true
     chip_premium: 360
-    marketplace_net_premium: 2_000
+    selected_marketplace_plan_premium_proxy: 2_000
   output:
     household_health_costs: 2_360
 
-- name: Household health costs include computed unsubsidized Marketplace net premium.
+- name: The premium tax credit doesn't lower household health costs, since net income counts it as a refundable credit.
+  period: 2026
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    chip_premium: 0
+    selected_marketplace_plan_premium_proxy: 5_000
+    aca_ptc: 1_000
+  output:
+    marketplace_net_premium: 4_000
+    household_health_costs: 5_000
+
+- name: Household health costs include a computed unsubsidized Marketplace premium.
   absolute_error_margin: 0.01
   period: 2026
   input:

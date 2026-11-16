@@ -7,6 +7,8 @@ metadata:
   unit: currency-USD
   label: Montana Child and Dependent Care Expense Deduction cap
   reference:
+  - title: 2017 Montana Form 2 instructions, line 19, child and dependent care expenses
+    href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=30
   - title: Mont. Code Ann. § 15-30-2131(1)(c)(iv)
     href: https://mca.legmt.gov/bills/2019/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
   - title: 2021 Montana Form 2441-M, line 2
@@ -16,18 +18,18 @@ metadata:
 
 brackets:
   - threshold:
-      2021-01-01: 0
+      2017-01-01: 0
     amount:
-      2021-01-01: 0
+      2017-01-01: 0
   - threshold:
-      2021-01-01: 1
+      2017-01-01: 1
     amount:
-      2021-01-01: 2_400
+      2017-01-01: 2_400
   - threshold:
-      2021-01-01: 2
+      2017-01-01: 2
     amount:
-      2021-01-01: 3_600
+      2017-01-01: 3_600
   - threshold:
-      2021-01-01: 3
+      2017-01-01: 3
     amount:
-      2021-01-01: 4_800
+      2017-01-01: 4_800
