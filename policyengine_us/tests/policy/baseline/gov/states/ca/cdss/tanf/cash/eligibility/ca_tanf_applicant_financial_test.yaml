@@ -1,11 +1,11 @@
-- name: Applicants that have countable income less than or equal to income limit pass the financial test.
+- name: Ordinary applicants with countable income exactly at the income limit fail the financial test.
   period: 2023
   input:
     state_code: CA
     ca_tanf_countable_income_applicant: 2_000
     ca_tanf_income_limit: 2_000
   output:
-    ca_tanf_applicant_financial_test: true
+    ca_tanf_applicant_financial_test: false
 
 - name: Applicants that have countable income greater than income limit do not pass the financial test.
   period: 2023
@@ -36,7 +36,7 @@
   output:
     ca_tanf_applicant_financial_test: false
 
-- name: Case 3, income exactly at limit passes (uses <=).
+- name: Case 3, income exactly at the limit fails the ordinary applicant test.
   period: 2025
   absolute_error_margin: 0.1
   input:
@@ -44,4 +44,143 @@
     ca_tanf_countable_income_applicant: 10_788
     ca_tanf_income_limit: 10_788
   output:
+    ca_tanf_applicant_financial_test: false
+
+# Conditional ordinary-new-applicant examples, excluding adding-persons and the
+# special subsidized-employment reapplication rules in EAS 44-207.111/.25.
+# January 2023 is the budget snapshot for the existing YEAR interface. Monetary
+# annual outputs below are 12 times that frozen monthly budget; they do not
+# establish actual January-December 2023 entitlement or a new proration rule.
+# ACL 22-39 p4: Region 1, AU 2 MBSAC $1,324 (July 2022-June 2023).
+# ACL 22-60 p7: Region 1, non-exempt AU 2 MAP $895 (from October 2022).
+# ACL 21-130 pp3-4: applicant $450 per worker; recipient $600 then 50%.
+# https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2022/22-39.pdf#page=4
+# https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2022/ACL%2022-60.pdf#page=7
+# https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2021/21-130.pdf#page=3
+- name: Case 6, an ordinary new applicant at MBSAC receives zero cash.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 21_288
+        self_employment_income: 0
+        is_disabled: false
+        immigration_status: CITIZEN
+        assessed_property_value: 0
+        ssi: 0
+        receives_ssi: false
+        ca_in_home_supportive_services: 0
+        ca_state_disability_insurance: 0
+        workers_compensation: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        employment_income: 0
+        self_employment_income: 0
+        is_disabled: false
+        immigration_status: CITIZEN
+        assessed_property_value: 0
+        ssi: 0
+        receives_ssi: false
+        ca_in_home_supportive_services: 0
+        ca_state_disability_insurance: 0
+        workers_compensation: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Current January enrollment is an explicit administrative fact.
+        # The ordinary-new-applicant history above is stipulated separately.
+        is_tanf_enrolled:
+          2023-01: false
+        spm_unit_cash_assets: 0
+        ca_tanf_db_unearned_income: 0
+        ca_tanf_other_unearned_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_tanf: 0
+    is_demographic_tanf_eligible: true
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+    ca_tanf_resources_eligible: true
+    ca_tanf_earned_income: 21_288
+    ca_tanf_income_limit: 15_888
+    ca_tanf_countable_income_applicant: 15_888
+    ca_tanf_countable_income_recipient: 7_044
+    ca_tanf_maximum_payment: 10_740
+    ca_tanf_applicant_financial_test: false
+    ca_tanf_recipient_financial_test: true
+    ca_tanf_financial_eligible: false
+    ca_tanf_eligible: false
+
+- name: Case 7, an ordinary new applicant below MBSAC passes both financial tests.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 21_264
+        self_employment_income: 0
+        is_disabled: false
+        immigration_status: CITIZEN
+        assessed_property_value: 0
+        ssi: 0
+        receives_ssi: false
+        ca_in_home_supportive_services: 0
+        ca_state_disability_insurance: 0
+        workers_compensation: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        employment_income: 0
+        self_employment_income: 0
+        is_disabled: false
+        immigration_status: CITIZEN
+        assessed_property_value: 0
+        ssi: 0
+        receives_ssi: false
+        ca_in_home_supportive_services: 0
+        ca_state_disability_insurance: 0
+        workers_compensation: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Current January enrollment is an explicit administrative fact.
+        # The ordinary-new-applicant history above is stipulated separately.
+        is_tanf_enrolled:
+          2023-01: false
+        spm_unit_cash_assets: 0
+        ca_tanf_db_unearned_income: 0
+        ca_tanf_other_unearned_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    ca_tanf: 3_708
+    is_demographic_tanf_eligible: true
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+    ca_tanf_resources_eligible: true
+    ca_tanf_earned_income: 21_264
+    ca_tanf_income_limit: 15_888
+    ca_tanf_countable_income_applicant: 15_864
+    ca_tanf_countable_income_recipient: 7_032
+    ca_tanf_maximum_payment: 10_740
     ca_tanf_applicant_financial_test: true
+    ca_tanf_recipient_financial_test: true
+    ca_tanf_financial_eligible: true
+    ca_tanf_eligible: true
