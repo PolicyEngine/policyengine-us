@@ -251,3 +251,120 @@
   output:
     # $350 x .50 = $175.
     ks_cdcc: 175
+
+# Historical state component only: cdcc supplies an already-allowed $600
+# federal credit, rather than $600 of care expenses or a federal eligibility claim.
+# 2012 HB2117 section 40 repealed the former credit from 2013-01-01.
+# https://www.kslegislature.gov/li_2012/b2011_12/measures/documents/hb2117_enrolled.pdf#page=32
+# 2017 SB30 new section 1 starts the restored credit in tax year 2018.
+# https://www.kslegislature.gov/li_2018/b2017_18/measures/documents/sb30_enrolled.pdf#page=2
+# K.S.A. 79-32,111c(a): 25% in 2020-23; 50% from tax year 2024.
+# https://www.ksrevisor.gov/statutes/chapters/ch79/079_032_0111c.html
+
+- name: Case 10, Kansas child and dependent care credit component in 2017.
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 0  # No credit before the 2018 restoration.
+
+- name: Case 11, Kansas child and dependent care credit component in 2015.
+  absolute_error_margin: 0.01
+  period: 2015
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 0  # The 2013 repeal remains in force.
+
+- name: Case 12, Kansas child and dependent care credit component in 2016.
+  absolute_error_margin: 0.01
+  period: 2016
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 0  # The 2013 repeal remains in force.
+
+- name: Case 13, Kansas child and dependent care credit component in 2018.
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 75  # $600 allowed federal credit x 12.5%.
+
+- name: Case 14, Kansas child and dependent care credit component in 2019.
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 112.5  # $600 allowed federal credit x 18.75%.
+
+- name: Case 15, Kansas child and dependent care credit component in 2020.
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 150  # $600 allowed federal credit x 25%.
+
+- name: Case 16, Kansas child and dependent care credit component in 2021.
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 150  # $600 allowed federal credit x 25%.
+
+- name: Case 17, Kansas child and dependent care credit component in 2022.
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 150  # $600 allowed federal credit x 25%.
+
+- name: Case 18, Kansas child and dependent care credit component in 2023.
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 150  # $600 allowed federal credit x 25%.
+
+- name: Case 19, Kansas child and dependent care credit component in 2024.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 300  # $600 allowed federal credit x 50%.
+
+- name: Case 20, Kansas child and dependent care credit component in 2025.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 300  # $600 allowed federal credit x 50%.
+
+- name: Case 21, Kansas child and dependent care credit component in 2026.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: KS
+    cdcc: 600
+  output:
+    ks_cdcc: 300  # $600 allowed federal credit x 50%.

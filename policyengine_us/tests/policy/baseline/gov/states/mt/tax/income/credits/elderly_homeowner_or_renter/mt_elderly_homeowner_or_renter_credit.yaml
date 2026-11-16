@@ -753,24 +753,27 @@
         members: [person1, person2]
         state_name: MT
   output:
-    # Both siblings are 62 or older and file their own returns. Line 18
-    # gross household income = 10_000 + 15_000 = 25_000 for each; line 20 =
-    # 25_000 - 12_600 = 12_400; line 21 = 0.05; line 22 = 620.
-    # person1: line 25 = 4_800 x 0.15 = 720; line 27 = 720 - 620 = 100.
-    # person2: line 25 = 7_200 x 0.15 = 1_080; line 27 = 1_080 - 620 = 460.
-    # Line 29 = 100% (under 35_000). "Only one claimant per household in a
-    # claim period ... is entitled to relief" (§ 15-30-2341(1)); the
+    # Both siblings are 62 or older and file their own returns. Siblings
+    # are not an SSI couple, so person1 receives individual SSI of
+    # 943 x 12 - (10_000 - 20 x 12) = 1_556, which counts as gross household
+    # income ("SSI payments"). Line 18 gross household income = 10_000 +
+    # 1_556 + 15_000 = 26_556 for each; line 20 = 26_556 - 12_600 = 13_956;
+    # line 21 = 0.05; line 22 = 697.80.
+    # person1: line 25 = 4_800 x 0.15 = 720; line 27 = 720 - 697.80 = 22.20.
+    # person2: line 25 = 7_200 x 0.15 = 1_080; line 27 = 1_080 - 697.80 =
+    # 382.20. Line 29 = 100% (under 35_000). "Only one claimant per household
+    # in a claim period ... is entitled to relief" (§ 15-30-2341(1)); the
     # household claims through person2, whose credit is larger. Before the
-    # limit both were paid, 560 in total.
-    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [100, 460]
+    # limit both were paid, 404.40 in total.
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [22.20, 382.20]
     mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
-    mt_elderly_homeowner_or_renter_credit: [0, 460]
-    mt_refundable_credits: [0, 460]
-    taxsim_state_property_tax_credit: [0, 460]
+    mt_elderly_homeowner_or_renter_credit: [0, 382.20]
+    mt_refundable_credits: [0, 382.20]
+    taxsim_state_property_tax_credit: [0, 382.20]
     # 2024 Form 2, PDF p. 1: federal standard deduction 16,550 plus
     # old-age subtraction 5,500 exceeds either pension. Tax before
     # refundable credits is zero, so only person2 receives a refund.
-    mt_income_tax: [0, -460]
+    mt_income_tax: [0, -382.20]
 
 - name: 2024 Schedule 2EC, one eligible tax unit and one younger household member who files separately
   period: 2024
@@ -797,9 +800,10 @@
   output:
     # Same household as above, but person2 is under 62 and cannot be a
     # claimant (§ 15-30-2338(1)(a)), even though their rent is larger.
-    # Line 22 = 620; person1's line 27 = 720 - 620 = 100.
+    # person1 receives the same 1_556 of SSI, so line 22 = 697.80; person1's
+    # line 27 = 720 - 697.80 = 22.20.
     mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, false]
-    mt_elderly_homeowner_or_renter_credit: [100, 0]
+    mt_elderly_homeowner_or_renter_credit: [22.20, 0]
 
 - name: 2025 Schedule 2EC, a joint couple who both qualify make one claim
   period: 2025
@@ -1140,18 +1144,20 @@
         state_code: MT
   output:
     # Schedule 2EC line 8 counts the federal refundable credits each person
-    # received, plus actual elderly-credit and rebate receipts. Person amounts:
-    # 10_000 + 500 + 60 + 20 = 10_580; 15_000 + 300 + 40 + 80 = 15_420.
-    # Line 18 = 26_000; line 22 = (26_000 - 12_600) * .05 = 670.
+    # received, plus actual elderly-credit and rebate receipts. person1, not
+    # part of an SSI couple, also receives SSI of 943 x 12 - (10_000 -
+    # 20 x 12) = 1_556. Person amounts: 10_000 + 1_556 + 500 + 60 + 20 =
+    # 12_136; 15_000 + 300 + 40 + 80 = 15_420.
+    # Line 18 = 27_556; line 22 = (27_556 - 12_600) * .05 = 747.80.
     # Line 25 rent equivalents = [4_800, 7_200] * .15 = [720, 1_080].
-    # Line 27 = [720, 1_080] - 670 = [50, 410], both below the 1_150 cap.
-    # Line 29 = 100% below 35_000. Only the larger 410 claim is paid;
-    # without the 1_000 of federal credits/receipts, it would be 460.
-    mt_elderly_homeowner_or_renter_credit_gross_household_income: [10_580, 15_420]
-    mt_elderly_homeowner_or_renter_credit_net_household_income: [670, 670]
-    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [50, 410]
+    # Line 27 = [720, 1_080] - 747.80 = [0, 332.20], below the 1_150 cap.
+    # Line 29 = 100% below 35_000. Only the larger 332.20 claim is paid;
+    # without the 1_000 of federal credits/receipts, it would be 382.20.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [12_136, 15_420]
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [747.80, 747.80]
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [0, 332.20]
     mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
-    mt_elderly_homeowner_or_renter_credit: [0, 410]
+    mt_elderly_homeowner_or_renter_credit: [0, 332.20]
 
 - name: 2024 Schedule 2EC, a household member's netted capital loss does not raise the credit
   period: 2024

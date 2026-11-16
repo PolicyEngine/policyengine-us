@@ -416,11 +416,654 @@
   output:
     is_chip_eligible_child: false
 
+# Indiana IDOI Navigator Manual, January 2017, pages 104 and 108:
+# raw 250% FPL plus a conditional 5 percentage point disregard gives 255%.
+# https://www.in.gov/idoi/files/NavManV3.0.pdf#page=104
+# MACPAC December 2017 Exhibit 35, printed page 103, corroborates raw 250%.
+# This component stipulates the other eligibility gates; it does not test
+# complete entitlement, Medicaid classification, enrollment or health value.
+# 256% is deliberately away from the unqualified exact dollar-rounding edge.
+- name: Case 23, Indiana child at 256 percent FPL exceeds the 2017 CHIP income limit.
+  period: 2017
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# Exhibit 35 specifies separate CHIP from birth through age 18.
+# IDOI pages 104/108 give the conditional 255% financial comparison.
+# Distinct two-person units stipulate no Medicaid eligibility or other coverage.
+# Age 19 exclusions concern this child category only, not overall health coverage.
+- name: Case 24, Indiana CHIP child age boundaries straddle 255 percent FPL in 2017.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person2:
+        age: 0
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person4:
+        age: 0
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person5:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person6:
+        age: 18
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person7:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person8:
+        age: 18
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person9:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person10:
+        age: 19
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person11:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person12:
+        age: 19
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+      tax_unit3:
+        members: [person5, person6]
+      tax_unit4:
+        members: [person7, person8]
+      tax_unit5:
+        members: [person9, person10]
+      tax_unit6:
+        members: [person11, person12]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+      spm_unit4:
+        members: [person7, person8]
+      spm_unit5:
+        members: [person9, person10]
+      spm_unit6:
+        members: [person11, person12]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: IN
+      household2:
+        members: [person3, person4]
+        state_code: IN
+      household3:
+        members: [person5, person6]
+        state_code: IN
+      household4:
+        members: [person7, person8]
+        state_code: IN
+      household5:
+        members: [person9, person10]
+        state_code: IN
+      household6:
+        members: [person11, person12]
+        state_code: IN
+  output:
+    is_chip_eligible_child: [false, true, false, false, false, true, false, false, false, false, false, false]
+
+# The ongoing IDOI rule and MACPAC April 2018 snapshot support this year.
+# At 256%, subtracting 5 percentage points still leaves 251%, above 250%.
+- name: Case 25, Indiana child at 256 percent FPL exceeds the 2018 CHIP income limit.
+  period: 2018
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# The ongoing IDOI rule and MACPAC April 2019 snapshot support this year.
+# At 256%, subtracting 5 percentage points still leaves 251%, above 250%.
+- name: Case 26, Indiana child at 256 percent FPL exceeds the 2019 CHIP income limit.
+  period: 2019
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# The ongoing IDOI rule and MACPAC April 2020 snapshot support this year.
+# At 256%, subtracting 5 percentage points still leaves 251%, above 250%.
+- name: Case 27, Indiana child at 256 percent FPL exceeds the 2020 CHIP income limit.
+  period: 2020
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# The July 2021 MACPAC snapshot also reports raw 250% FPL.
+# This right-side year control retains the existing route and 255% comparison.
+- name: Case 28, Indiana retains the 2021 CHIP financial boundary.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.54
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+      person4:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 2
+        medicaid_income_level: 2.56
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: IN
+      household2:
+        members: [person3, person4]
+        state_code: IN
+  output:
+    is_chip_eligible_child: [false, true, false, false]
+
+# IDOI Navigator Manual, physical pages 104 and 108: MAGI applies to CHIP
+# effective January 1, 2014, with a conditional five percentage point disregard.
+# The effective 255% start follows that dated methodology and the unchanged
+# raw 250% standard; it is not an enactment-date claim. Other gates are given.
+# https://www.in.gov/idoi/files/NavManV3.0.pdf#page=104
+- name: Case 29, Indiana child at 256 percent FPL exceeds the 2015 CHIP income limit.
+  period: 2015
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# IDOI Navigator Manual, physical pages 104 and 108: MAGI applies to CHIP
+# effective January 1, 2014, with a conditional five percentage point disregard.
+# The effective 255% start follows that dated methodology and the unchanged
+# raw 250% standard; it is not an enactment-date claim. Other gates are given.
+# https://www.in.gov/idoi/files/NavManV3.0.pdf#page=104
+- name: Case 30, Indiana child at 256 percent FPL exceeds the 2016 CHIP income limit.
+  period: 2016
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.56
+    state_code: IN
+  output:
+    is_chip_eligible_child: false
+
+# MACPAC January 2017 Exhibit 35 reports Texas separate CHIP raw 201%.
+# Even with the conditional 5 percentage point disregard, 210% exceeds 206%.
+# This state control rejects an accidental Indiana override applied everywhere.
+- name: Case 31, Texas retains its 2017 CHIP income limit.
+  period: 2017
+  input:
+    age: 8
+    immigration_status: CITIZEN
+    is_medicaid_eligible: false
+    has_chip_disqualifying_health_coverage: false
+    medicaid_household_size: 1
+    medicaid_income_level: 2.10
+    state_code: TX
+  output:
+    is_chip_eligible_child: false
+
+# Financial component only: supplied MAGI ratios, household sizes and other
+# eligibility gates do not establish complete CHIP entitlement.
+# The 260% ceiling is an explicit hypothetical reform, not an enacted rule.
+# Indiana 254% and 256% fall below it; unchanged Texas 206% excludes 210%.
+# This targets the existing generic IN key and detects an ignored reform.
+- name: Case 32, Indiana generic income-limit reform applies in 2017.
+  period: 2017
+  input:
+    gov.hhs.chip.child.income_limit.IN: 2.60
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.54
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.56
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.10
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: IN
+      household2:
+        members: [person2]
+        state_code: IN
+      household3:
+        members: [person3]
+        state_code: TX
+  output:
+    is_chip_eligible_child: [true, true, false]
+
+# Financial component only: supplied MAGI ratios, household sizes and other
+# eligibility gates do not establish complete CHIP entitlement.
+# The 260% ceiling is an explicit hypothetical reform, not an enacted rule.
+# Indiana 254% and 256% fall below it; unchanged Texas 206% excludes 210%.
+# This targets the existing generic IN key and detects an ignored reform.
+- name: Case 33, Indiana generic income-limit reform applies in 2018.
+  period: 2018
+  input:
+    gov.hhs.chip.child.income_limit.IN: 2.60
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.54
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.56
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.10
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: IN
+      household2:
+        members: [person2]
+        state_code: IN
+      household3:
+        members: [person3]
+        state_code: TX
+  output:
+    is_chip_eligible_child: [true, true, false]
+
+# Financial component only: supplied MAGI ratios, household sizes and other
+# eligibility gates do not establish complete CHIP entitlement.
+# The 260% ceiling is an explicit hypothetical reform, not an enacted rule.
+# Indiana 254% and 256% fall below it; unchanged Texas 206% excludes 210%.
+# This targets the existing generic IN key and detects an ignored reform.
+- name: Case 34, Indiana generic income-limit reform applies in 2019.
+  period: 2019
+  input:
+    gov.hhs.chip.child.income_limit.IN: 2.60
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.54
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.56
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.10
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: IN
+      household2:
+        members: [person2]
+        state_code: IN
+      household3:
+        members: [person3]
+        state_code: TX
+  output:
+    is_chip_eligible_child: [true, true, false]
+
+# Financial component only: supplied MAGI ratios, household sizes and other
+# eligibility gates do not establish complete CHIP entitlement.
+# The 260% ceiling is an explicit hypothetical reform, not an enacted rule.
+# Indiana 254% and 256% fall below it; unchanged Texas 206% excludes 210%.
+# This targets the existing generic IN key and detects an ignored reform.
+- name: Case 35, Indiana generic income-limit reform applies in 2020.
+  period: 2020
+  input:
+    gov.hhs.chip.child.income_limit.IN: 2.60
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.54
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.56
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.10
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: IN
+      household2:
+        members: [person2]
+        state_code: IN
+      household3:
+        members: [person3]
+        state_code: TX
+  output:
+    is_chip_eligible_child: [true, true, false]
+
+# Financial component only: supplied MAGI ratios, household sizes and other
+# eligibility gates do not establish complete CHIP entitlement.
+# Preserve the existing 2021 parameter value of 255% in this later-year control;
+# this does not certify all 2026 Indiana rules or state-specific dollar rounding.
+- name: Case 36, Indiana retains the existing 2026 financial boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.54
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.56
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: IN
+      household2:
+        members: [person2]
+        state_code: IN
+  output:
+    is_chip_eligible_child: [true, false]
+
+# Financial component only: supplied MAGI ratios, household sizes and other
+# eligibility gates do not establish complete CHIP entitlement.
+# The 260% ceiling is an explicit hypothetical reform, not an enacted rule.
+# Indiana 254% and 256% fall below it; unchanged Texas 206% excludes 210%.
+# This targets the existing generic IN key and detects an ignored reform.
+- name: Case 37, Indiana generic income-limit reform applies in 2026.
+  period: 2026
+  input:
+    gov.hhs.chip.child.income_limit.IN: 2.60
+    people:
+      person1:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.54
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.56
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        has_chip_disqualifying_health_coverage: false
+        medicaid_household_size: 1
+        medicaid_income_level: 2.10
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+    households:
+      household1:
+        members: [person1]
+        state_code: IN
+      household2:
+        members: [person2]
+        state_code: IN
+      household3:
+        members: [person3]
+        state_code: TX
+  output:
+    is_chip_eligible_child: [true, true, false]
+
 # New Jersey Cover All Kids. Two parents each work full time (2,080 hours) at
 # New Jersey's 2024 minimum wage of $15.13 an hour. Family income is above the
 # 147% Medicaid limit for older children and below New Jersey's 355% CHIP limit,
 # so both children get CHIP whatever their immigration status.
-- name: Case 23, New Jersey undocumented child and citizen child both receive CHIP in 2024.
+- name: Case 38, New Jersey undocumented child and citizen child both receive CHIP in 2024.
   period: 2024
   absolute_error_margin: 0.01
   input:
