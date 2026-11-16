@@ -1,3 +1,10 @@
+## [2.138.1] - 2026-11-16
+
+### Fixed
+
+- Updated WIC cash-value benefits for fiscal years 2022, 2023, and 2027 and replaced the voucher embedded in 2018 package values from October 2021.
+
+
 ## [2.138.0] - 2026-11-16
 
 ### Added
