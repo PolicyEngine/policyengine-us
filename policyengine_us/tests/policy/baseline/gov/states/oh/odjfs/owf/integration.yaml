@@ -188,3 +188,39 @@
     # Must have at least one minor child or be pregnant
     oh_owf_eligible: false
     oh_owf: 0
+
+- name: Case 7, continuing recipient receives January 2026 payment after earned income disregard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr:
+          2026: 18_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # Observed continuing participation, not a derived eligibility override.
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Constant actual wages of $1,500 each month; timely reporting and full-month
+    # eligibility; no other income, dependent-care deductions, or sanctions.
+    # Nonfinancial/time-limit conditions are held, not newly modeled here.
+    # OAC 5101:1-23-20(H)(2)(b), (I): ($1,500 - $250) x 50% = $625.
+    # ACT 297: $640 standard; OAC 5101:1-23-40(A), (E): $640 - $625 = $15,
+    # which exceeds the $10 minimum-payment threshold.
+    oh_owf: 15
+    oh_owf_countable_income: 625
+    oh_owf_payment_standard: 640
+    oh_owf_income_eligible: true
+    oh_owf_eligible: true

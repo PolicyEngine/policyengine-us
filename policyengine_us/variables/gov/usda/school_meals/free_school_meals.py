@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.usda.school_meals.school_meal_daily_subsidy import (
+    school_meal_daily_rate,
+)
 
 
 class free_school_meals(Variable):
@@ -18,26 +21,11 @@ class free_school_meals(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        # Split the net subsidy by each meal's value above the paid rate, so
-        # each meal counts here only when its own tier is FREE.
-        state_group = spm_unit.household("state_group_str", period)
-        breakfast_tier = spm_unit("school_meal_breakfast_tier", period)
-        lunch_tier = spm_unit("school_meal_lunch_tier", period)
-        p_amount = parameters(period).gov.usda.school_meals.amount
-        breakfast_value = (
-            p_amount.sbp[state_group][breakfast_tier.decode_to_str()]
-            - p_amount.sbp[state_group]["PAID"]
+        # Weight each school child's free meals by their value above paid.
+        free_value = school_meal_daily_rate(
+            spm_unit, period, parameters, net=True, tier="FREE"
         )
-        lunch_value = (
-            p_amount.nslp[state_group][lunch_tier.decode_to_str()]
-            - p_amount.nslp[state_group]["PAID"]
-        )
-        free_breakfast = breakfast_tier == breakfast_tier.possible_values.FREE
-        free_lunch = lunch_tier == lunch_tier.possible_values.FREE
-        free_value = where(free_breakfast, breakfast_value, 0) + where(
-            free_lunch, lunch_value, 0
-        )
-        total_value = breakfast_value + lunch_value
+        total_value = school_meal_daily_rate(spm_unit, period, parameters, net=True)
         free_share = np.divide(
             free_value,
             total_value,

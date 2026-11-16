@@ -12,8 +12,8 @@ class mt_itemized_deductions_for_federal_itemization_joint(Variable):
         # 2021 Form 2 line 9 includes qualified mortgage insurance premiums
         # allowed on the federal return, after the federal AGI phase-out.
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
-        "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2131/",
-        # MT Code § 15-30-2131 (2022) (1)
+        "https://mca.legmt.gov/bills/2022/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html",
+        # MCA § 15-30-2131(1) (2021)
         "https://mca.legmt.gov/bills/2019/mca/title_0150/chapter_0300/part_0210/section_0010/0150-0300-0210-0010.html",
         # MCA 15-30-2101: "Internal Revenue Code" means the IRC as amended
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=38",
@@ -48,6 +48,7 @@ class mt_itemized_deductions_for_federal_itemization_joint(Variable):
             period,
             [
                 "mt_misc_deductions",
+                "mt_casualty_loss_deduction_joint",
                 "mt_misc_deductions_subject_to_floor_joint",
                 "mt_child_dependent_care_expense_deduction_joint",
                 "mt_medical_expense_deduction_joint",

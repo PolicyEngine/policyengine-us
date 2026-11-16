@@ -35,6 +35,10 @@
       tax_unit:
         members: [parent1, parent2, child1, child2]
         filing_status: JOINT
+        # Independently known current-year work-care costs for these
+        # qualifying individuals, net of disallowed public reimbursement,
+        # before employer exclusion; no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 20_000
         tax_unit_childcare_expenses: 20_000
     households:
       household:

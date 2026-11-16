@@ -62,7 +62,7 @@
 
 # An aged SSI recipient (Social Security 600/month; SSI (994-(600-20))x12=4968) lives with a
 # working adult son. The State's Medicaid buy-in pays Part B for an SSI recipient, so no premium is netted.
-# 40000x0.8=32000 + 4968 + 7200 = 44168; MCI 3680.67 rounds to 3681; x12=44172 > 36840 two-person limit.
+# 40000x0.8=32000 + 4968 + 7200 = 44168; MCI 3680.67 rounds to 3681; x12=44172 > 36834 two-person limit.
 - name: Case 5, SSI receipt does not waive the ordinary income ceiling.
   period: 2026
   input:
@@ -93,8 +93,12 @@
     ar_liheap_eligible: false
 
 # Boundary: FY2025 plan 2.1 (p8) and chart set size 7 at 150% FPG: 47340x1.5/12=5917.50 -> 5918
-# (annual 71016). MCI 5900 (70800) and 5918 (71016) are eligible; 5919 (71028) is not.
-# 60% SMI would have given 5844 and denied MCI 5900.
+# (annual 71016). 60% SMI would have given 5844 and denied MCI 5900. 42 U.S.C. 8624(b)(2)(B)
+# stops the limit at the greater of HHS's FY2025 60% amount for seven (70127) and 150% of the
+# 2024 guideline (47340x1.5=71010), so the limit is 71010. MCI 5900 (70800) is eligible; 5918
+# (71016) and 5919 (71028) are not.
+# Was [true, true, false], now [true, false, false]: the federal cap of 42 U.S.C. 8624(b)(2)(B)
+# lowers the size-seven limit from the chart's 71016 to 71010.
 - name: Case 6, FY2025 size seven households use the poverty guideline limit.
   period: 2025
   input:
@@ -104,7 +108,7 @@
     ar_liheap_household_size: [7, 7, 7]
     ar_liheap_countable_income: [70_800, 71_016, 71_028]
   output:
-    ar_liheap_eligible: [true, true, false]
+    ar_liheap_eligible: [true, false, false]
 
 # FY2026 plan item 2.3 (p10): a household has an energy burden if it pays utilities
 # directly; one whose utilities are reimbursed through an allowance is not eligible unless
