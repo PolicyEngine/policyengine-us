@@ -15420,13 +15420,20 @@ candidates:
     follows: conflicting-source
     code:
     - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/adult/meets_medicaid_adult_group_child_coverage_requirement.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11012
   state: ruled
-  note: The project lead ruled on 2026-11-15 to follow 42 CFR 435.119(c) and the state plan S32 page over 42 U.S.C.
-    1396a(k)(3), so every child under the age limit who lacks Medicaid, CHIP, Marketplace or other minimum essential
-    coverage bars the parent or caretaker relative from the adult group. The readings differ only for an uninsured
-    child who is not eligible for Medicaid, such as an undocumented child above a state's age limit for coverage
-    regardless of immigration status, or a CHIP-eligible child whose family does not take up CHIP.
+  ruling:
+    by: PolicyEngine
+    date: '2026-11-15'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/11012#issuecomment-6927858400
+  note: 'Ruled 2026-11-15 by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/11012#issuecomment-6927858400. PE-US follows 42 CFR
+    435.119(c) and the state plan S32 page over 42 U.S.C. 1396a(k)(3), so every child under the age limit who lacks
+    Medicaid, CHIP, Marketplace or other minimum essential coverage bars the parent or caretaker relative from the
+    adult group. The readings differ only for an uninsured child who is not eligible for Medicaid, such as an
+    undocumented child above a state''s age limit for coverage regardless of immigration status, or a CHIP-eligible
+    child whose family does not take up CHIP.'
 - id: us:long-term-care-premium-index-adjustment
   program: income-tax
   years:
