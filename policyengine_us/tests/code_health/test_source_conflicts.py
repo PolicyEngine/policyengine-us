@@ -892,6 +892,35 @@ def test_candidate_fields():
     assert not problems, "\n".join(problems)
 
 
+def test_co_amt_duplication_candidate_requires_a_ruling():
+    global_id = "us-co:dr0104amt-line-2-duplication-bar"
+    _, entries = _load()
+    if global_id in entries:
+        return
+
+    candidate = next(item for item in _candidates() if item["id"] == global_id)
+    assert candidate["state"] == "open"
+    assert candidate["pe_us"]["follows"] == "unknown"
+
+
+def test_co_amt_capture_preserves_the_instruction_and_page_context():
+    capture = (FOLDER / "sources/us-co/dr0104amt-instructions-2025-p1.txt").read_text(
+        encoding="utf-8"
+    )
+    assert capture.startswith(
+        "Source: https://tax.colorado.gov/sites/tax/files/documents/"
+        "DR0104AMT_2025.pdf#page=1\n"
+    )
+    text = " ".join(capture.split())
+    assert "Instructions for Alternative Minimum Tax" in text
+    assert re.search(
+        r"\bdo not enter\b[^.]*\bline 2 or line 4\b[^.]*\bduplicates\b"
+        r"[^.]*\bfederal alternative minimum taxable income\.",
+        text,
+    )
+    assert text.endswith("the DR 0104AMT.")
+
+
 def _year_problems(years) -> list[str]:
     if not isinstance(years, dict):
         return [
