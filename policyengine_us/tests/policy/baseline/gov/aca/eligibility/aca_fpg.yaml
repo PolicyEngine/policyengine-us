@@ -359,3 +359,27 @@
     # people in 2016, 20 below 14,840 + 5,200.
     # https://www.irs.gov/pub/irs-prior/i8962--2017.pdf#page=7
     aca_fpg: 20_020
+
+- name: A 2015 Guam return reads the zero placeholder at the 2014 guideline date
+  period: 2015
+  input:
+    aca_tax_family_size: 1
+    state_code: GU
+  output:
+    # HHS left its 2014 guidelines "not defined for Puerto Rico or other
+    # outlying jurisdictions" (79 FR 3594), and the guideline parameter holds
+    # a zero placeholder for Guam: 0 + 0 * (1 - 1) = 0.
+    # https://www.govinfo.gov/content/pkg/FR-2014-01-22/pdf/2014-01303.pdf#page=2
+    aca_fpg: 0
+
+- name: A 2014 Puerto Rico return reads the zero placeholder at the 2013 guideline date
+  period: 2014
+  input:
+    aca_tax_family_size: 2
+    state_code: PR
+  output:
+    # HHS left its 2013 guidelines "not defined for Puerto Rico or other
+    # outlying jurisdictions" (78 FR 5183), and the guideline parameter holds
+    # a zero placeholder for Puerto Rico: 0 + 0 * (2 - 1) = 0.
+    # https://www.govinfo.gov/content/pkg/FR-2013-01-24/pdf/2013-01422.pdf#page=2
+    aca_fpg: 0
