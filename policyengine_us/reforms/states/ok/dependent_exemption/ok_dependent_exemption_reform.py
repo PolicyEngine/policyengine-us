@@ -15,7 +15,13 @@ def create_ok_dependent_exemption() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            # Publication 501 excepts a return whose would-be claimant files only
+            # for a refund.
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
 
             # Apply age limit if in effect
             if p.age_limit.in_effect:
@@ -49,7 +55,11 @@ def create_ok_dependent_exemption() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependent_exemptions = tax_unit(
                 "ok_eligible_dependents_count", period
@@ -67,9 +77,16 @@ def create_ok_dependent_exemption() -> Reform:
         def formula(tax_unit, period, parameters):
             p_base = parameters(period).gov.states.ok.tax.income.exemptions
 
-            # Personal exemptions exclude the dependent portion.
+            # Personal exemptions exclude the dependent portion, which
+            # ok_count_exemptions counts only when no filer can be claimed as
+            # a dependent (IRC 152(b)(1)).
             total_exemptions_count = tax_unit("ok_count_exemptions", period)
-            dependents = tax_unit("tax_unit_dependents", period)
+            filer_is_dependent = tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
+            dependents = where(
+                filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)
+            )
             older_dependents = tax_unit("ok_older_dependents_count", period)
             personal_exemptions_count = (
                 total_exemptions_count - dependents + older_dependents

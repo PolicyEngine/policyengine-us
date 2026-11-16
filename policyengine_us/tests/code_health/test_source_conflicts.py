@@ -43,6 +43,9 @@ checked on every run:
    .git or .github). The file is public: its raw text (comments and keys
    included) and every parsed value and key (escapes, binary, sets) carry no
    decision-queue ids, session ids, local paths or email addresses.
+6. No file under ``source_conflicts/sources/`` contains a bot-manager marker
+   in its raw bytes, or a base64 token that decodes to UUID + "$" + IPv4 in
+   its raw bytes or after one round of percent-decoding.
 
 These are structural checks: they tie markers, the register and the backlog
 together; they do not judge whether code follows a statute. rulespec-us's own
@@ -53,6 +56,8 @@ the entry.
 
 from __future__ import annotations
 
+import base64
+import binascii
 import functools
 import hashlib
 import io
@@ -60,7 +65,9 @@ import re
 import subprocess
 import tokenize
 from collections import Counter
+from ipaddress import IPv4Address
 from pathlib import Path
+from urllib.parse import quote, unquote_to_bytes
 
 import pytest
 import yaml
@@ -70,6 +77,7 @@ FOLDER = REPO_ROOT / "source_conflicts"
 REGISTER = FOLDER / "known-source-conflicts.yaml"
 PIN = FOLDER / "pin.yaml"
 CANDIDATES = FOLDER / "candidates.yaml"
+SOURCES = FOLDER / "sources"
 THIS_REPO = "PolicyEngine/policyengine-us"
 SCANNED = (
     "policyengine_us/variables",
@@ -181,8 +189,11 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/variables/gov/states/mn/dcyf/mfip/income/earned/mn_mfip_dependent_care_deduction.py": 1,
     "policyengine_us/variables/gov/states/mn/tax/income/deductions/mn_itemized_deductions.py": 1,
     "policyengine_us/variables/gov/states/mo/dese/ccs/eligibility/mo_ccs_income_eligible.py": 1,
+    "policyengine_us/variables/gov/states/nd/tax/income/subtractions/nd_stillborn_subtraction.py": 1,
+    "policyengine_us/variables/gov/states/nj/tax/income/credits/eitc/nj_childless_eitc_age_eligible.py": 1,
     "policyengine_us/variables/gov/states/nm/tax/income/exemptions/nm_medical_expense_exemption.py": 1,
     "policyengine_us/variables/gov/states/ny/tax/income/credits/ny_household_credit_potential.py": 2,
+    "policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible.py": 1,
     "policyengine_us/variables/gov/states/sc/tax/income/subtractions/retirement/sc_retirement_deduction_survivors.py": 1,
     "policyengine_us/variables/gov/states/vt/tax/income/credits/cdcc/vt_low_income_cdcc_eligible.py": 1,
     "policyengine_us/variables/gov/territories/pr/tax/income/pr_agi.py": 1,
@@ -998,6 +1009,243 @@ def test_candidates_are_public():
         CANDIDATES.read_text(encoding="utf-8"), "candidates.yaml"
     )
     assert not problems, "\n".join(problems)
+
+
+BOT_MANAGER_MARKERS = (
+    b"__uzdbm",
+    b"perfdrive",
+    b"radware",
+    b"shieldsquare",
+    b"stormcaster",
+    b"__cf_chl",
+    b"_cf_chl_opt",
+    b"cf_clearance",
+    b"incap_ses",
+    b"visid_incap",
+    b"datadome",
+    b"px-captcha",
+)
+# A UUID, dollar and IPv4 occupy 44 to 52 bytes, or 59 to 70 base64
+# characters before padding. Hex digits, "-", "$" and "." encode only to
+# letters and digits, so "+" and "/" end a token like any other byte. Match
+# whole tokens so longer data URIs stay out.
+CAPTURE_BASE64_RE = re.compile(
+    rb"(?<![A-Za-z0-9])[A-Za-z0-9]{59,70}={0,2}(?![A-Za-z0-9=])"
+)
+CAPTURE_VISITOR_RE = re.compile(
+    rb"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+    rb"\$([0-9]{1,3}(?:\.[0-9]{1,3}){3})",
+    re.IGNORECASE,
+)
+
+
+def _contains_visitor_token(text: bytes) -> bool:
+    for match in CAPTURE_BASE64_RE.finditer(text):
+        token = match.group()
+        try:
+            decoded = base64.b64decode(token + b"=" * (-len(token) % 4), validate=True)
+        except binascii.Error:
+            continue
+        visitor = CAPTURE_VISITOR_RE.fullmatch(decoded)
+        if visitor is None:
+            continue
+        try:
+            IPv4Address(visitor[1].decode("ascii"))
+        except ValueError:
+            continue
+        return True
+    return False
+
+
+def _source_capture_problems(raw: bytes, name: str) -> list[str]:
+    """Report match kinds without exposing captured tokens or addresses."""
+
+    problems = []
+    lowered = raw.lower()
+    if any(marker in lowered for marker in BOT_MANAGER_MARKERS):
+        problems.append(f"{name} contains a bot-manager marker")
+    # Decode percent escapes once, so an escaped "/" or "=" beside a token
+    # ends it as the plain character would.
+    texts = (raw, unquote_to_bytes(raw)) if b"%" in raw else (raw,)
+    if any(_contains_visitor_token(text) for text in texts):
+        problems.append(f"{name} contains a base64 UUID-dollar-IPv4 token")
+    return problems
+
+
+def test_source_captures_are_public():
+    problems = []
+    for path in sorted(SOURCES.rglob("*")):
+        if path.is_file():
+            problems.extend(
+                _source_capture_problems(path.read_bytes(), _relative(path))
+            )
+    if problems:
+        pytest.fail("\n".join(problems), pytrace=False)
+
+
+@pytest.mark.parametrize("marker", BOT_MANAGER_MARKERS)
+@pytest.mark.parametrize("uppercase", [False, True])
+def test_source_capture_bot_manager_markers(marker, uppercase):
+    raw = b"<script>" + (marker.upper() if uppercase else marker) + b"</script>"
+    assert _source_capture_problems(raw, "capture.html") == [
+        "capture.html contains a bot-manager marker"
+    ]
+
+
+@pytest.mark.parametrize("uppercase", [False, True])
+def test_source_capture_cloudflare_challenge_options(uppercase):
+    raw = b"window._cf_chl_opt = {};"
+    if uppercase:
+        raw = raw.upper()
+    assert _source_capture_problems(raw, "capture.html") == [
+        "capture.html contains a bot-manager marker"
+    ]
+
+
+# RFC 5737 reserves this address block for documentation.
+CAPTURE_EXAMPLE = b"00000000-0000-4000-8000-000000000001$203.0.113.42"
+# Page text that can surround a token, from quotes and scripts to query
+# strings, URL paths, JSON-escaped and percent-encoded URLs and either end of
+# a line.
+CAPTURE_CONTEXTS = {
+    "quoted": lambda token: b'"' + token + b'"',
+    "script": lambda token: b'<script>const value = "' + token + b'";</script>',
+    "url-path": lambda token: b"/a/" + token + b"/b",
+    "url-path-end": lambda token: b"/a/" + token,
+    "query-string": lambda token: b"/p?t=" + token + b"&x=1",
+    "after-plus": lambda token: b"+" + token,
+    "before-plus": lambda token: token + b"+",
+    "escaped-slash": lambda token: b'"\\/' + token + b'"',
+    "json-escaped-url": lambda token: (
+        b'"https:\\/\\/example.gov\\/a\\/' + token + b'\\/b"'
+    ),
+    # quote() escapes "/", ":", "?", "=" and "&", so "%2F" or "%3D" sits
+    # beside the token and any padding becomes "%3D".
+    "percent-encoded-url": lambda token: quote(
+        b"https://example.gov/a/" + token + b"/b", safe=""
+    ).encode("ascii"),
+    "percent-encoded-query": lambda token: quote(
+        b"https://example.gov/p?t=" + token + b"&x=1", safe=""
+    ).encode("ascii"),
+    "line-start": lambda token: b"first line\n" + token + b" rest\nlast line",
+    "line-end": lambda token: b"first line\nstart " + token + b"\nlast line",
+}
+
+
+def _capture_token(address: bytes, padded: bool) -> bytes:
+    encoded = base64.b64encode(CAPTURE_EXAMPLE.rsplit(b"$", 1)[0] + b"$" + address)
+    return encoded if padded else encoded.rstrip(b"=")
+
+
+def test_source_capture_radware_token():
+    encoded = base64.b64encode(CAPTURE_EXAMPLE)
+    raw = b'<script>window.__uzdbm_2 = "' + encoded + b'";</script>'
+    assert _source_capture_problems(raw, "capture.html") == [
+        "capture.html contains a bot-manager marker",
+        "capture.html contains a base64 UUID-dollar-IPv4 token",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("address", "unpadded_length", "padded_length"),
+    [
+        # IANA reserves the boundary addresses for special purposes:
+        # https://www.iana.org/assignments/iana-ipv4-special-registry/
+        # 36 + 1 + 7 = 44 bytes; 4 * ceil(44 / 3) = 60, minus one "=" = 59.
+        pytest.param(b"0.0.0.0", 59, 60, id="shortest"),
+        # 36 + 1 + 12 = 49 bytes; 4 * ceil(49 / 3) = 68, minus two "=" = 66.
+        pytest.param(b"203.0.113.42", 66, 68, id="documentation"),
+        # 36 + 1 + 15 = 52 bytes; 4 * ceil(52 / 3) = 72, minus two "=" = 70.
+        pytest.param(b"255.255.255.255", 70, 72, id="longest"),
+    ],
+)
+@pytest.mark.parametrize("padded", [False, True], ids=["unpadded", "padded"])
+@pytest.mark.parametrize("context", CAPTURE_CONTEXTS)
+def test_source_capture_encoded_visitor_without_marker(
+    address, unpadded_length, padded_length, padded, context
+):
+    encoded = _capture_token(address, padded)
+    assert len(encoded) == (padded_length if padded else unpadded_length)
+    raw = CAPTURE_CONTEXTS[context](encoded)
+    assert _source_capture_problems(raw, "capture.txt") == [
+        "capture.txt contains a base64 UUID-dollar-IPv4 token"
+    ]
+
+
+@pytest.mark.parametrize(
+    ("address", "start", "stop", "length"),
+    [
+        # The shortest token loses its last character: 59 - 1 = 58, below
+        # the window.
+        pytest.param(b"0.0.0.0", 0, -1, 58, id="shortest-minus-last"),
+        # The longest token loses its first character: 70 - 1 = 69, and
+        # 69 mod 4 = 1 leaves no valid base64 length.
+        pytest.param(b"255.255.255.255", 1, None, 69, id="longest-minus-first"),
+    ],
+)
+@pytest.mark.parametrize("context", CAPTURE_CONTEXTS)
+def test_source_capture_near_miss_passes(address, start, stop, length, context):
+    near_miss = _capture_token(address, padded=False)[start:stop]
+    assert len(near_miss) == length
+    raw = CAPTURE_CONTEXTS[context](near_miss)
+    assert _source_capture_problems(raw, "capture.txt") == []
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        b"",
+        b'<link href="/styles.css?v=203.0.113.42">',
+        b"IDAPA 16.03.04.100; COMAR 10.09.24.08",
+        b"window.monsido = {token: 'public-site-id'};",
+        b"data:image/svg+xml;base64,"
+        + base64.b64encode(b'<svg><path d="M203.0.113.42"/></svg>'),
+        base64.b64encode(b"203.0.113.42"),
+        base64.b64encode(CAPTURE_EXAMPLE.replace(b"$", b":")),
+        base64.b64encode(CAPTURE_EXAMPLE.replace(b"4000", b"zzzz")),
+        base64.b64encode(CAPTURE_EXAMPLE.replace(b".42", b".256")),
+        base64.b64encode(b"prefix" + CAPTURE_EXAMPLE),
+        base64.b64encode(CAPTURE_EXAMPLE + b"suffix"),
+        base64.b64encode(b"\xff" * 45),
+        b"A" * 61,
+    ],
+    ids=[
+        "empty",
+        "css-version",
+        "citations",
+        "monsido-token",
+        "svg-data-uri",
+        "encoded-address-alone",
+        "wrong-delimiter",
+        "invalid-uuid",
+        "invalid-octet",
+        "decoded-prefix",
+        "decoded-suffix",
+        "non-ascii",
+        "invalid-padding",
+    ],
+)
+def test_source_capture_benign_content(raw):
+    assert _source_capture_problems(raw, "capture.html") == []
+
+
+def test_source_capture_guard_reports_only_path_and_kind(tmp_path, monkeypatch):
+    monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
+    monkeypatch.setitem(globals(), "SOURCES", tmp_path / "sources")
+    path = tmp_path / "sources" / "nested" / "capture.bin"
+    path.parent.mkdir(parents=True)
+    encoded = base64.b64encode(CAPTURE_EXAMPLE)
+    path.write_bytes(b'\xff__uzdbm="' + encoded + b'"')
+    with pytest.raises(pytest.fail.Exception) as failure:
+        test_source_captures_are_public()
+    message = str(failure.value)
+    assert message == (
+        "sources/nested/capture.bin contains a bot-manager marker\n"
+        "sources/nested/capture.bin contains a base64 UUID-dollar-IPv4 token"
+    )
+    assert encoded.decode("ascii") not in message
+    assert CAPTURE_EXAMPLE.decode("ascii") not in message
+    assert CAPTURE_EXAMPLE.split(b"$")[1].decode("ascii") not in message
 
 
 @pytest.mark.parametrize(
