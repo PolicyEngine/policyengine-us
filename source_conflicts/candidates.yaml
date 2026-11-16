@@ -17028,3 +17028,33 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10002
   state: open
   note: PE-US applies the election for 2017 and does not model which taxes the federal return claimed (mt_salt_deduction.py, mt_salt_deduction_indiv.py). A ruling is needed on line 8's tie to the federal return and on adding line 9 to line 8.
+
+- id: us-ca:renter-credit-2016-joint-income-limit
+  program: income-tax
+  years:
+    from: 2016
+    to: 2016
+    type: tax
+  question: Does the 2016 joint, head-of-household and surviving-spouse renter-credit
+    income limit follow the statutory twice-single rule at $78,124 or the FTB booklet at $78,125?
+  sources:
+  - kind: statute
+    citation: RTC 17053.5(j)(4), existing prior-law text in SB 1005 as introduced February 10, 2016, section 74, PDF pp.103-104
+    url: https://www.leginfo.ca.gov/pub/15-16/bill/sen/sb_1001-1050/sb_1005_bill_20160210_introduced.pdf#page=104
+  - kind: form
+    citation: 2016 Form 540 booklet, Nonrefundable Renter's Credit Qualification Record, question 2, PDF p.21
+    url: https://www.ftb.ca.gov/forms/2016/16_540bk.pdf#page=21
+  readings:
+    statute: RTC 17053.5(j)(4) doubles the single amount. Twice $39,062 equals $78,124.
+    other: The FTB booklet gives $78,125 for joint, head-of-household and qualifying widow(er) returns.
+  example: An otherwise qualified joint renter with $78,125 California AGI and enough
+    tax gets $0 under the statutory threshold or $120 under the booklet threshold.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/ca/tax/income/credits/renter/income_cap.yaml
+    prs: []
+  state: ruled
+  note: The introduced bill leaves paragraph (j)(4) unchanged in its existing-law markup.
+    Chaptered SB 1005 section 125 expressly describes the act as technical and nonsubstantive.
+    This entry records the 2016 threshold only; the existing 2025 choice remains unchanged.
