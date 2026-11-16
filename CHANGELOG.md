@@ -1,3 +1,58 @@
+## [2.137.9] - 2026-11-16
+
+### Fixed
+
+- Build omitted household marital units from explicit couples, supplied tax roles, a married family or joint and separate filing statuses, and otherwise pair the head and spouse the tax-role fallback infers, instead of putting everyone in one marital unit.
+
+
+## [2.137.8] - 2026-11-16
+
+### Fixed
+
+- Use Wyoming's published Family Care monthly dollar standards for household sizes one through four in annual 2017–2026 Medicaid parent calculations.
+
+
+## [2.137.7] - 2026-11-16
+
+### Fixed
+
+- Include New York’s 2015–2017 and Maryland’s 2020 child tax credits in state child tax credit reporting.
+- Set the Kansas child and dependent care credit match to zero for 2015–2017.
+
+
+## [2.137.6] - 2026-11-16
+
+### Fixed
+
+- Route Maine's 2015–2017 personal exemption deduction through federal exemptions.
+- Correct New Jersey’s ordinary retirement-income exclusion cutoff for 2017–2020, with source-supported 2015–2016 coverage through existing parameter backdating, while preserving the partial exclusion bands from 2021.
+
+
+## [2.137.5] - 2026-11-15
+
+### Fixed
+
+- Started the Medicaid adult group in Maine on July 2, 2018, in Idaho on January 1, 2020 and in Nebraska on October 1, 2020.
+
+
+## [2.137.4] - 2026-11-15
+
+### Fixed
+
+- Apply the six-percent Rhode Island property tax relief rate at the admitted household-income ceiling.
+- Correct Massachusetts earned income tax credit match rates for 2015 through 2018 and preserve the 2019 and 2023 increases.
+- Correct Maine's property tax fairness credit cap for filers under age 65 to $750 for tax years 2018–2020.
+- Apply Maine's 50% property tax fairness credit excess rate before the age-based cap for tax years before 2018.
+- Apply Rhode Island’s 15% federal earned income tax credit match from 2017 through 2020, preserving the existing 2016, 2021 and 2024 rates and refundability.
+
+
+## [2.137.3] - 2026-11-15
+
+### Fixed
+
+- Corrected SNAP gross and net income standards for October 2016 through September 2017 using HHS's published household-size table.
+
+
 ## [2.137.2] - 2026-11-15
 
 ### Fixed

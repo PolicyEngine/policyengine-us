@@ -270,6 +270,10 @@ MS_FPG = {
     2026: (15_960, 5_680),
 }
 
+# Wyoming Medicaid SFY2018 report p95 and SFY2025 report p103.
+# Family Care monthly standards before the five-point MAGI disregard.
+WY_MONTHLY = (529, 737, 873, 999)
+
 GROUPS = ("GROUP_I", "GROUP_II", "GROUP_III")
 
 
@@ -402,6 +406,10 @@ def test_parent_limits_outside_historical_correction_equal_existing_routes(year,
         first, additional = MS_FPG[year]
         guideline = first + (size - 1) * additional
         expected[states.index("MS")] = MS_MONTHLY[year][size - 1] * 12 / guideline
+    if year in MS_FPG and 1 <= size <= 4:
+        first, additional = MS_FPG[year]
+        guideline = first + (size - 1) * additional
+        expected[states.index("WY")] = WY_MONTHLY[size - 1] * 12 / guideline + 0.05
     if year < 2018:
         # Keep Utah's existing 0.49 input before the historical correction.
         expected[states.index("UT")] = 0.49
