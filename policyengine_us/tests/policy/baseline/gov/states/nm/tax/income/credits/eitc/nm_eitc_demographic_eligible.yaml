@@ -533,3 +533,614 @@
         state_code: NM
   output:
     nm_eitc_demographic_eligible: true
+
+# Childless minimum-age component only: IRC 32(c)(1)(A)(ii)(II),
+# Publication 596 (2017), physical page 16; HB 291 (2021), Section 2(B)
+# physical page 6 and Section 4 physical page 7 (tax years 2021 onward).
+# Separate filers have no qualifying child and cannot be claimed elsewhere.
+# These cases do not establish full credit, SSN, upper-age or income eligibility.
+
+- name: Case 26, 2017 childless lower-age boundaries.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, false, false, true]
+
+- name: Case 27, 2018 childless lower-age boundaries.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, false, false, true]
+
+- name: Case 28, 2019 childless lower-age boundaries.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, false, false, true]
+
+- name: Case 29, 2020 childless lower-age boundaries.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, false, false, true]
+
+- name: Case 30, 2021 childless lower-age boundaries.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, true, true, true]
+
+- name: Case 31, 2022 childless lower-age boundaries.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, true, true, true]
+
+- name: Case 32, 2023 childless lower-age boundaries.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, true, true, true]
+
+- name: Case 33, 2024 childless lower-age boundaries.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, true, true, true]
+
+- name: Case 34, 2025 childless lower-age boundaries.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, true, true, true]
+
+- name: Case 35, 2026 childless lower-age boundaries.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person3:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person4:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [false, true, true, true]
+
+- name: Case 36, 2017 childless joint filers aged 24 and 25.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
+
+- name: Case 37, 2017 childless joint filers aged 24 and 24.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 24
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: false
+
+- name: Case 38, 2021 childless joint filers aged 17 and 18.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
