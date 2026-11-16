@@ -984,9 +984,11 @@ BOT_MANAGER_MARKERS = (
     b"px-captcha",
 )
 # A UUID, dollar and IPv4 occupy 44 to 52 bytes, or 59 to 70 base64
-# characters before padding. Match whole tokens so longer data URIs stay out.
+# characters before padding. Hex digits, "-", "$" and "." encode only to
+# letters and digits, so "+" and "/" end a token like any other byte. Match
+# whole tokens so longer data URIs stay out.
 CAPTURE_BASE64_RE = re.compile(
-    rb"(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{59,70}={0,2}(?![A-Za-z0-9+/=])"
+    rb"(?<![A-Za-z0-9])[A-Za-z0-9]{59,70}={0,2}(?![A-Za-z0-9=])"
 )
 CAPTURE_VISITOR_RE = re.compile(
     rb"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
@@ -1052,6 +1054,27 @@ def test_source_capture_cloudflare_challenge_options(uppercase):
 
 # RFC 5737 reserves this address block for documentation.
 CAPTURE_EXAMPLE = b"00000000-0000-4000-8000-000000000001$203.0.113.42"
+# Page text that can surround a token, from quotes and scripts to URL paths,
+# JSON-escaped URLs and either end of a line.
+CAPTURE_CONTEXTS = {
+    "quoted": lambda token: b'"' + token + b'"',
+    "script": lambda token: b'<script>const value = "' + token + b'";</script>',
+    "url-path": lambda token: b"/a/" + token + b"/b",
+    "url-path-end": lambda token: b"/a/" + token,
+    "after-plus": lambda token: b"+" + token,
+    "before-plus": lambda token: token + b"+",
+    "escaped-slash": lambda token: b'"\\/' + token + b'"',
+    "json-escaped-url": lambda token: (
+        b'"https:\\/\\/example.gov\\/a\\/' + token + b'\\/b"'
+    ),
+    "line-start": lambda token: b"first line\n" + token + b" rest\nlast line",
+    "line-end": lambda token: b"first line\nstart " + token + b"\nlast line",
+}
+
+
+def _capture_token(address: bytes, padded: bool) -> bytes:
+    encoded = base64.b64encode(CAPTURE_EXAMPLE.rsplit(b"$", 1)[0] + b"$" + address)
+    return encoded if padded else encoded.rstrip(b"=")
 
 
 def test_source_capture_radware_token():
@@ -1077,17 +1100,35 @@ def test_source_capture_radware_token():
     ],
 )
 @pytest.mark.parametrize("padded", [False, True], ids=["unpadded", "padded"])
+@pytest.mark.parametrize("context", CAPTURE_CONTEXTS)
 def test_source_capture_encoded_visitor_without_marker(
-    address, unpadded_length, padded_length, padded
+    address, unpadded_length, padded_length, padded, context
 ):
-    decoded = CAPTURE_EXAMPLE.rsplit(b"$", 1)[0] + b"$" + address
-    encoded = base64.b64encode(decoded)
-    if not padded:
-        encoded = encoded.rstrip(b"=")
+    encoded = _capture_token(address, padded)
     assert len(encoded) == (padded_length if padded else unpadded_length)
-    assert _source_capture_problems(b'"' + encoded + b'"', "capture.txt") == [
+    raw = CAPTURE_CONTEXTS[context](encoded)
+    assert _source_capture_problems(raw, "capture.txt") == [
         "capture.txt contains a base64 UUID-dollar-IPv4 token"
     ]
+
+
+@pytest.mark.parametrize(
+    ("address", "start", "stop", "length"),
+    [
+        # The shortest token loses its last character: 59 - 1 = 58, below
+        # the window.
+        pytest.param(b"0.0.0.0", 0, -1, 58, id="shortest-minus-last"),
+        # The longest token loses its first character: 70 - 1 = 69, and
+        # 69 mod 4 = 1 leaves no valid base64 length.
+        pytest.param(b"255.255.255.255", 1, None, 69, id="longest-minus-first"),
+    ],
+)
+@pytest.mark.parametrize("context", CAPTURE_CONTEXTS)
+def test_source_capture_near_miss_passes(address, start, stop, length, context):
+    near_miss = _capture_token(address, padded=False)[start:stop]
+    assert len(near_miss) == length
+    raw = CAPTURE_CONTEXTS[context](near_miss)
+    assert _source_capture_problems(raw, "capture.txt") == []
 
 
 @pytest.mark.parametrize(

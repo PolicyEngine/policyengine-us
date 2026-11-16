@@ -24,10 +24,10 @@ TOKEN_PROBLEM = f"{CAPTURE_NAME} contains a base64 UUID-dollar-IPv4 token"
     last_octet=st.integers(min_value=0, max_value=255),
     padded=st.booleans(),
     uppercase=st.booleans(),
-    html=st.booleans(),
+    context=st.sampled_from(list(guard.CAPTURE_CONTEXTS)),
 )
 def test_encoded_visitor_tokens_fail_without_disclosing_values(
-    identifier, last_octet, padded, uppercase, html
+    identifier, last_octet, padded, uppercase, context
 ):
     uuid_text = str(identifier)
     if uppercase:
@@ -37,11 +37,7 @@ def test_encoded_visitor_tokens_fail_without_disclosing_values(
     token = base64.b64encode(decoded)
     if not padded:
         token = token.rstrip(b"=")
-    raw = (
-        b'<script>const value = "' + token + b'";</script>'
-        if html
-        else b'"' + token + b'"'
-    )
+    raw = guard.CAPTURE_CONTEXTS[context](token)
 
     problems = guard._source_capture_problems(raw, CAPTURE_NAME)
 
