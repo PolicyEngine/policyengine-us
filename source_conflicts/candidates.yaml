@@ -8882,12 +8882,12 @@ candidates:
 - id: us-nj:medicaid-abd-income-limit-rounding
   program: medicaid
   years:
-    from: 2026
+    from: 2018
     to: 2026
     type: calendar
-  question: Is New Jersey's 2026 monthly Medicaid income limit for an aged, blind or disabled couple the $1,803 that
-    N.J.A.C. 10:72-4.1(a) gives by rounding 1/12 of the poverty guideline down, or the $1,804 that Medicaid
-    Communication 26-03 prints?
+  question: Is New Jersey's monthly Medicaid income standard for aged, blind and disabled people 1/12 of the poverty
+    guideline rounded down, as N.J.A.C. 10:72-4.1(a) says, or rounded up, as each year's DMAHS income-standards chart
+    prints?
   sources:
   - kind: statute
     citation: 42 U.S.C. 1396a(m)(2)(A)
@@ -8896,18 +8896,53 @@ candidates:
     citation: N.J.A.C. 10:72-4.1(a) and (d)
     url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-72-4-1
   - kind: guidance
-    citation: NJ DMAHS Medicaid Communication 26-03, Income Eligibility Standards Effective January 1, 2026 (February
-      26, 2026), chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    citation: NJ DMAHS Medicaid Communication 18-01, Income Eligibility Standards Effective January 1, 2018 (February 1, 2018),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2018/18-01_Income_Eligibility_Standards_Effective_1-1-2018.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 19-03, Income Eligibility Standards Effective January 1, 2019 (February 4, 2019),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2019/19-03_Income_Eligibility_Standards_Effective_1-1-19.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 20-02, Income Eligibility Standards Effective January 1, 2020 (February 19, 2020),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2020/20-02_2020_Income_Eligibility_Standards_Effective_1-1-2020.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 21-02, Income Eligibility Standards Effective January 1, 2021 (March 5, 2021),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2021/21-02_Income_Standards_Effective_1-1-2021.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 22-02, Income Eligibility Standards Effective January 1, 2022 (February 25, 2022),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2022/22-02%20Income%20Standards%20Effective1.1.%202022.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 23-02, Income Eligibility Standards Effective January 1, 2023 (February 22, 2023),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2023/23-02%20Income%20Eligibility%20Standards.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 24-02, Income Eligibility Standards Effective January 1, 2024 (March 1, 2024),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2024/24-02_Income_Eligibility_Standards_Effective_1-1-2024.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 25-03, Income Eligibility Standards Effective January 1, 2025 (February 28, 2025),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2025/25-03%20Income%20Eligibility%20Standards%20Effective%20January%201,%202025.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 26-03, Income Eligibility Standards Effective January 1, 2026 (February 26, 2026),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
     url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2026/26-03_Income_Eligibility_Standards_Effective_January-1-2026.pdf#page=3
   readings:
-    statute: The statute caps the income level at "not more than 100 percent" of the poverty line, $1,803.33 a month
-      for two people in 2026. The regulation sets the monthly standard at 1/12 of the annual guideline "rounded down
-      to the next whole dollar amount for household unit sizes of one and two", $1,803, and income must be "equal
-      to or less than the income limit" (4.1(d)).
-    other: The chart prints $1,804 a month for two people, 1/12 of the $21,640 guideline rounded up, above the
-      statutory cap. Its one-person amount, $1,330, is exact.
-  example: In 2026, an aged couple with $1,803.50 of combined countable income a month ($21,642 a year) is over the
-    regulation's $1,803 limit and the statute's $1,803.33 cap, but within the chart's $1,804.
+    statute: The statute caps the income level at "not more than 100 percent" of the poverty line. The regulation sets
+      the monthly standard at 1/12 of the annual guideline "rounded down to the next whole dollar amount for household
+      unit sizes of one and two", and income must be "equal to or less than the income limit" (4.1(d)). In 2026 the
+      standards are $1,330 for one person and $1,803 for two.
+    other: Each chart prints 1/12 of the guideline rounded up. For two people it prints $1,372, $1,410, $1,437, $1,452,
+      $1,526, $1,644, $1,704, $1,763 and $1,804 (2018 to 2026); the regulation gives $1 less in each year. For one
+      person it prints $1,012, $1,041, $1,064, $1,074 and $1,133 (2018 to 2022) and $1,305 (2025), again $1 above
+      the regulation. Each of these amounts exceeds 100 percent of that year's guideline. The one-person amounts for
+      2023, 2024 and 2026 ($1,215, $1,255 and $1,330) divide exactly, and the readings agree there.
+  example: In 2025, a single aged person with $1,304.50 of countable income a month ($15,654 a year) is over the
+    regulation's $1,304 standard and the statute's $1,304.17 cap, but within the chart's $1,305.
   pe_us:
     follows: statute
     code:
@@ -8916,12 +8951,15 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10985
   state: ruled
-  note: 'PE-US rounds New Jersey''s monthly limit down to the whole dollar for both unit sizes (rounds_monthly_limit_down.yaml,
-    applied in medicaid_optional_senior_or_disabled_income_limit.py), giving $21,636 a year for a couple in 2026,
-    and admits income equal to the limit. The regulation''s amount stays within the statute''s cap and the chart''s
-    does not. Ruled by the project lead, 2026-11-15. Pinning cases: the New Jersey cases in medicaid_optional_senior_or_disabled_income_limit.yaml
-    (2026 couple, 2025 single) and is_optional_senior_or_disabled_income_eligible.yaml (2026 couple at the limit
-    and one dollar over). Charts for other years were not checked.'
+  note: 'PE-US rounds New Jersey''s monthly standard down to the whole dollar for both unit sizes (rounds_monthly_limit_down.yaml,
+    applied in medicaid_optional_senior_or_disabled_income_limit.py) and admits income equal to the standard. The
+    statute-first rule decides the conflict: 42 U.S.C. 1396a(m)(2)(A) and N.J.A.C. 10:72-4.1(a) agree in every year,
+    and every chart amount that differs exceeds the statute''s cap. All nine charts from 2018 to 2026 were checked.
+    The corpus holds the 2026 chart; page 3 of the 2018 to 2025 charts is captured under source_conflicts/sources/us-nj/.
+    The model applies New Jersey''s 2018 values back to 2015, and the 2015 to 2017 charts were not checked. Pinning
+    cases: the New Jersey cases in medicaid_optional_senior_or_disabled_income_limit.yaml (2026 couple, 2025 single,
+    2021 couple) and is_optional_senior_or_disabled_income_eligible.yaml (2026 couple at the limit and one dollar
+    over).'
 - id: us-nj:school-meals-income-limit-carryforward
   program: school-meals
   years:
