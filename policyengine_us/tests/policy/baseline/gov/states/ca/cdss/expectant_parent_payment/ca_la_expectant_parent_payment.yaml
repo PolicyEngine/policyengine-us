@@ -106,3 +106,42 @@
     current_pregnancy_month: 8
   output:
     ca_la_expectant_parent_payment: 932  # $932 * 1 month; program starts January 2022.
+
+
+- name: Group home expectant parent payment in 2021-12
+  period: 2021-12
+  input:
+    state_code: {2021: CA}
+    county_str: {2021: FRESNO_COUNTY_CA}
+    age: {2021: 19}
+    is_in_foster_care: true
+    is_in_foster_care_group_home: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment: 0  # $0 * 1 month; program starts January 2022.
+
+
+- name: Group home expectant parent payment in 2026-06
+  period: 2026-06
+  input:
+    state_code: {2026: CA}
+    county_str: {2026: FRESNO_COUNTY_CA}
+    age: {2026: 19}
+    is_in_foster_care: true
+    is_in_foster_care_group_home: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment: 900  # $900 * 1 month; every placement receives $900 before July 2026.
+
+
+- name: Group home expectant parent payment in 2026-07
+  period: 2026-07
+  input:
+    state_code: {2026: CA}
+    county_str: {2026: FRESNO_COUNTY_CA}
+    age: {2026: 19}
+    is_in_foster_care: true
+    is_in_foster_care_group_home: true
+    current_pregnancy_month: 8
+  output:
+    ca_la_expectant_parent_payment: 1_429  # $1,429 * 1 month; group home rate from July 2026.
