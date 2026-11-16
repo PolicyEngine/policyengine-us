@@ -15454,33 +15454,21 @@ candidates:
 - id: us-nj:cdcc-statutory-income-ceilings
   program: child-and-dependent-care-credit
   years:
-    from: 2018
+    from: 2021
     to: 2021
     type: tax
-  question: "Do the statutory New Jersey taxable-income ceilings include exactly $60,000 in 2018–2020 and $150,000 in 2021 despite the final worksheet and-over row?"
+  question: "Does New Jersey's 2021 child and dependent care credit include taxable income of exactly $150,000, where Worksheet J lists both a 10% band through $150,000 and a not-eligible row starting at $150,000?"
   sources:
-  - kind: instructions
-    citation: "2018 NJ-1040 instructions, Worksheet J, physical page 38 (printed 36)"
-    url: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2018/1040i.pdf
-  - kind: instructions
-    citation: "2019 NJ-1040 instructions, Worksheet J, physical page 37 (printed 35)"
-    url: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2019/1040i.pdf
-  - kind: instructions
-    citation: "2020 NJ-1040 instructions, Worksheet J, physical page 36 (printed 34)"
-    url: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2020/1040i.pdf
   - kind: instructions
     citation: "2021 NJ-1040 instructions, Worksheet J, physical page 44 (printed 42)"
     url: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf
   - kind: statute
-    citation: "P.L.2018 c.45, full sections 5 and 12"
-    url: https://pub.njleg.state.nj.us/Bills/2018/PL18/45_.HTM
-  - kind: statute
     citation: "P.L.2021 c.308, complete act (sections 1 and 2)"
     url: https://pub.njleg.state.nj.us/Bills/2020/PL21/308_.HTM
   readings:
-    statute: "Include $60,000 in 2018–2020 and $150,000 in 2021 in the final 10% band; apply the other statutory upper-inclusive bands."
-    other: "The 2018–2020 worksheet final row says $60,000 and over not eligible; the 2021 row says $150,000 and over not eligible, excluding the exact endpoint."
-  example: "With an independently known federal child and dependent care credit of $1,000, the statutory final band yields $100 at New Jersey taxable income $60,000 in 2018 and $150,000 in 2021; the worksheet final row yields zero."
+    statute: "Include exactly $150,000 in the final 10% band: section 1 says $150,000 or less and over $120,000 but not over $150,000; the instructions' eligibility text also says $150,000 or less."
+    other: "Worksheet J lists both over $120,000 but not over $150,000 at 10% and $150,000 and over as not eligible. Its final row also covers the exact $150,000 endpoint."
+  example: "With an independently known federal child and dependent care credit of $1,000 and New Jersey taxable income of exactly $150,000 in 2021, the statute gives $100; the worksheet's final row gives zero."
   pe_us:
     follows: statute
     code:
@@ -15489,4 +15477,4 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10943
   state: ruled
-  note: "PolicyEngine follows the enacted statute under CONTRIBUTING.md. This candidate records the model reading pending shared-register registration. The source archive retains the complete statute and worksheet context."
+  note: "PolicyEngine follows the enacted statute under CONTRIBUTING.md. This candidate records the 2021 overlap pending shared-register registration. The 2018-2020 Worksheet J tables agree with P.L.2018 c.45 at exactly $60,000; their final row applies only over $60,000. The 2022 and later worksheets were not checked. The source archive retains the complete statute and worksheet context."

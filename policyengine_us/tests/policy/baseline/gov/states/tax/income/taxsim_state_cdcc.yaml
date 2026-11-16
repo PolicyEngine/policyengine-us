@@ -31,3 +31,364 @@
         state_code: OH
   output:
     taxsim_state_cdcc: 0
+
+
+- name: Case 3, 2017 NJ CDCC component reporting preserves liability treatment.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    # Known allowed federal credit and precredit tax isolate composition.
+    # These inputs do not derive full entitlement or bracket-schedule tax.
+    # NJ AGI is above the filing threshold; other refundable credits are zero.
+    # The report sums configured components; raw NJ credit can exceed tax used.
+    # P.L.2018 c.45 sections 5 and 12; P.L.2021 c.308 sections 1 and 2.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 0
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 200
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+  output:
+    nj_cdcc: [0, 0, 0]
+    nj_non_refundable_credits: [0, 0, 0]
+    nj_refundable_credits: [0, 0, 0]
+    nj_income_tax_before_refundable_credits: [0, 50, 200]
+    nj_income_tax: [0, 50, 200]
+    taxsim_state_cdcc: [0, 0, 0]
+    state_cdcc: [0, 0, 0]
+
+- name: Case 4, 2018 NJ CDCC component reporting preserves liability treatment.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    # Known allowed federal credit and precredit tax isolate composition.
+    # These inputs do not derive full entitlement or bracket-schedule tax.
+    # NJ AGI is above the filing threshold; other refundable credits are zero.
+    # The report sums configured components; raw NJ credit can exceed tax used.
+    # P.L.2018 c.45 sections 5 and 12; P.L.2021 c.308 sections 1 and 2.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 0
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 200
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+  output:
+    nj_cdcc: [100, 100, 100]
+    nj_non_refundable_credits: [100, 100, 100]
+    nj_refundable_credits: [0, 0, 0]
+    nj_income_tax_before_refundable_credits: [0, 0, 100]
+    nj_income_tax: [0, 0, 100]
+    taxsim_state_cdcc: [100, 100, 100]
+    state_cdcc: [100, 100, 100]
+
+- name: Case 5, 2019 NJ CDCC component reporting preserves liability treatment.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    # Known allowed federal credit and precredit tax isolate composition.
+    # These inputs do not derive full entitlement or bracket-schedule tax.
+    # NJ AGI is above the filing threshold; other refundable credits are zero.
+    # The report sums configured components; raw NJ credit can exceed tax used.
+    # P.L.2018 c.45 sections 5 and 12; P.L.2021 c.308 sections 1 and 2.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 0
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 200
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+  output:
+    nj_cdcc: [100, 100, 100]
+    nj_non_refundable_credits: [100, 100, 100]
+    nj_refundable_credits: [0, 0, 0]
+    nj_income_tax_before_refundable_credits: [0, 0, 100]
+    nj_income_tax: [0, 0, 100]
+    taxsim_state_cdcc: [100, 100, 100]
+    state_cdcc: [100, 100, 100]
+
+- name: Case 6, 2020 NJ CDCC component reporting preserves liability treatment.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    # Known allowed federal credit and precredit tax isolate composition.
+    # These inputs do not derive full entitlement or bracket-schedule tax.
+    # NJ AGI is above the filing threshold; other refundable credits are zero.
+    # The report sums configured components; raw NJ credit can exceed tax used.
+    # P.L.2018 c.45 sections 5 and 12; P.L.2021 c.308 sections 1 and 2.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 0
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 60_000
+        nj_agi: 60_000
+        nj_main_income_tax: 200
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+  output:
+    nj_cdcc: [100, 100, 100]
+    nj_non_refundable_credits: [100, 100, 100]
+    nj_refundable_credits: [0, 0, 0]
+    nj_income_tax_before_refundable_credits: [0, 0, 100]
+    nj_income_tax: [0, 0, 100]
+    taxsim_state_cdcc: [100, 100, 100]
+    state_cdcc: [100, 100, 100]
+
+- name: Case 7, 2021 NJ CDCC component reporting preserves liability treatment.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    # Known allowed federal credit and precredit tax isolate composition.
+    # These inputs do not derive full entitlement or bracket-schedule tax.
+    # NJ AGI is above the filing threshold; other refundable credits are zero.
+    # The report sums configured components; raw NJ credit can exceed tax used.
+    # P.L.2018 c.45 sections 5 and 12; P.L.2021 c.308 sections 1 and 2.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+      person7: {age: 40, is_tax_unit_head: true}
+      person8: {age: 6, is_tax_unit_dependent: true}
+      person9: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 150_000
+        nj_agi: 150_000
+        nj_main_income_tax: 0
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 150_000
+        nj_agi: 150_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit3:
+        members: [person7, person8, person9]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 150_000
+        nj_agi: 150_000
+        nj_main_income_tax: 200
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+      household3:
+        members: [person7, person8, person9]
+        state_code: NJ
+  output:
+    nj_cdcc: [100, 100, 100]
+    nj_non_refundable_credits: [0, 0, 0]
+    nj_refundable_credits: [100, 100, 100]
+    nj_income_tax_before_refundable_credits: [0, 50, 200]
+    nj_income_tax: [-100, -50, 100]
+    taxsim_state_cdcc: [100, 100, 100]
+    state_cdcc: [100, 100, 100]
