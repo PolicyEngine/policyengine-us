@@ -33,7 +33,8 @@ def create_ma_commonwealth_credit() -> Reform:
       the lower threshold)
 
     Qualifying children need a Social Security number, as under the federal
-    EITC, unless the itin_eligible switch also accepts an ITIN.
+    EITC. The itin_eligible switch (default false) is a variant for
+    comparison that also counts qualifying children with an ITIN.
 
     Tax units without qualifying children keep the existing EITC match.
     """

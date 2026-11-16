@@ -1,4 +1,4 @@
-description: Massachusetts counts qualifying children with an individual taxpayer identification number toward the Commonwealth Credit if this is true; otherwise each qualifying child needs a Social Security number, as under the federal EITC.
+description: Massachusetts counts qualifying children with an individual taxpayer identification number toward the Commonwealth Credit if this is true; otherwise each qualifying child needs a Social Security number valid for employment, as under the federal EITC.
 
 values:
   0000-01-01: false
@@ -6,4 +6,9 @@ values:
 metadata:
   unit: bool
   period: year
-  label: Massachusetts Commonwealth Credit ITIN eligibility
+  label: Massachusetts Commonwealth Credit qualifying child ITIN eligibility
+  reference:
+    - title: 26 U.S. Code § 32(c)(3)(D), (m)
+      href: https://www.law.cornell.edu/uscode/text/26/32
+    - title: Massachusetts Child and Family Tax Credit, SSN/ITIN Not Available for Qualifying Individual(s)
+      href: https://www.mass.gov/info-details/massachusetts-child-and-family-tax-credit
