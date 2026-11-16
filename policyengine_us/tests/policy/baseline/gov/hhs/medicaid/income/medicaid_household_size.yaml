@@ -348,21 +348,27 @@
         members: [person1, person2]
         state_code: NJ
   output:
-    # Without marital units or roles, the model takes the 18-year-old as the
-    # parent's spouse, so the return is joint and $31,000 is below the joint
-    # filing threshold: both use the non-filer rules. Main counted the
-    # 18-year-old as both spouse and member under 19, giving the parent 3.
+    # The model builds the omitted marital units by the tax-role rules: the
+    # 18-year-old, under 19 and younger than the parent, gets their own and is
+    # the parent's dependent. $31,000 is above the head of household filing
+    # threshold, so both use the parent's tax household of 2 (42 CFR
+    # 435.603(f)(1)-(2)). Before those units were built, the model took the
+    # 18-year-old as the spouse, and the non-filer rules counted them twice,
+    # giving the parent 3.
+    medicaid_uses_non_filer_rules: [false, false]
     medicaid_household_size: [2, 2]
 
-- name: Case 13, an 18-year-old taken as the spouse on a head of household return counts once as the parent's child.
+- name: Case 13, an 18-year-old in the spouse role on a head of household return counts once as the parent's child.
   period: 2026
   input:
     people:
       person1:
         age: 45
         own_children_in_household: 1
+        is_tax_unit_head: true
       person2:
         age: 18
+        is_tax_unit_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -372,9 +378,9 @@
         members: [person1, person2]
         state_code: NJ
   output:
-    # The model still takes the 18-year-old as the tax unit spouse, but the
-    # supplied filing status isn't joint, so neither is counted as the other's
-    # spouse. With no income neither files. The 18-year-old is the parent's
+    # The 18-year-old is input as the tax unit spouse, but the supplied filing
+    # status isn't joint, so neither is counted as the other's spouse. With no
+    # income neither files. The 18-year-old is the parent's
     # child under 19 (435.603(f)(3)(ii)) and the parent is the 18-year-old's
     # parent ((f)(3)(iii)).
     is_tax_unit_spouse: [false, true]

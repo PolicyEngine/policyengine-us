@@ -331,7 +331,8 @@
 
 # A Household API partner reported this household (issue 9562): a New Jersey
 # parent and an 18-year-old child with no relationship or tax-role inputs. The
-# model takes the 18-year-old as the parent's spouse, and neither files.
+# model builds the omitted marital units, so the 18-year-old is the parent's
+# dependent, and the parent files.
 - name: New Jersey parent of an 18-year-old with no role inputs is above the adult group limit
   period: 2026
   absolute_error_margin: 0.001
@@ -350,7 +351,8 @@
     # Household of 2 (medicaid_household_size Case 12). 2026 guideline for 2:
     # 15,960 + 5,680 = 21,640, and 31,000 / 21,640 = 1.4325. The 138% limit is
     # 21,640 x 1.38 / 12 = 2,488.60, rounded up to 2,489 a month, a 1.3802
-    # ratio. Counting the 18-year-old twice gave 3 and 31,000 / 27,320 =
-    # 1.1347, inside the limit. The 18-year-old is under the adult age range.
+    # ratio. Before those units were built, the model took the 18-year-old as
+    # the spouse and counted them twice: 3, and 31,000 / 27,320 = 1.1347,
+    # inside the limit. The 18-year-old is under the adult age range.
     medicaid_income_level: [1.4325, 1.4325]
     is_adult_for_medicaid: [false, false]

@@ -554,7 +554,7 @@
     # The child's married parents are netted before the floor: 700.
     medicaid_household_income: [700, 700, 700]
 
-- name: Non-filer membership counts each income once for an 18-year-old taken as the spouse on a head of household return.
+- name: Non-filer membership counts each income once for an 18-year-old in the spouse role on a head of household return.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -562,10 +562,12 @@
       parent:
         age: 45
         own_children_in_household: 1
+        is_tax_unit_head: true
         medicaid_household_income_member: 1_200
         medicaid_uses_non_filer_rules: true
       child:
         age: 18
+        is_tax_unit_spouse: true
         medicaid_household_income_member: 400
         medicaid_uses_non_filer_rules: true
     tax_units:
@@ -577,9 +579,9 @@
         members: [parent, child]
         state_code: NJ
   output:
-    # The model takes the 18-year-old as the tax unit spouse, but the return
-    # isn't joint, so neither is the other's spouse, as in
-    # medicaid_household_size. The parent's household has the 18-year-old as
-    # a child under 19, and the 18-year-old's has the parent: 1,200 + 400 =
-    # 1,600 for both. Main gave 2,000 and 2,800.
+    # The 18-year-old is input as the tax unit spouse, but the return isn't
+    # joint, so neither is the other's spouse, as in medicaid_household_size.
+    # The parent's household has the 18-year-old as a child under 19, and the
+    # 18-year-old's has the parent: 1,200 + 400 = 1,600 for both. Main gave
+    # 2,000 and 2,800.
     medicaid_household_income: [1_600, 1_600]
