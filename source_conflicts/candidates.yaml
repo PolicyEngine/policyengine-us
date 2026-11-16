@@ -8925,10 +8925,15 @@ candidates:
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10987
   state: ruled
-  note: PE-US gives New Jersey children under 19 a pass on the Medicaid and CHIP immigration tests from 2023
-    (child_age_limit.yaml, read in is_medicaid_immigration_status_eligible.py and is_chip_immigration_status_eligible.py).
-    The later appropriations acts displace the earlier statute and regulations in their own words; the November
-    2026 ruling records the conflict anyway. Appropriations language lapses each fiscal year; the acts were checked
+  ruling:
+    by: PolicyEngine
+    date: '2026-11-15'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10987#issuecomment-6927857659
+  note: Ruled 2026-11-15 by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10987#issuecomment-6927857659. PE-US gives New Jersey
+    children under 19 a pass on the Medicaid and CHIP immigration tests from 2023 (child_age_limit.yaml, read in
+    is_medicaid_immigration_status_eligible.py and is_chip_immigration_status_eligible.py). The later appropriations
+    acts displace the earlier statute and regulations in their own words. Appropriations language lapses each fiscal year; the acts were checked
     through FY2027, which ends June 30, 2027, and the model carries the age limit forward. P.L.2021, c.132, which the
     Department of Human Services' Cover All Kids FAQ cites, has no immigration language. The Office of Legislative
     Services' FY2023 analysis says no federal Medicaid or CHIP reimbursement is available for this group, so the

@@ -176,3 +176,12 @@
     state_code: NJ
   output:
     is_medicaid_immigration_status_eligible: true
+
+- name: Case 22, undocumented 8-year-old in New Jersey is eligible from January 1, 2023.
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NJ
+  output:
+    is_medicaid_immigration_status_eligible: true

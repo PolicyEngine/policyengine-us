@@ -369,3 +369,15 @@
     state_code: NJ
   output:
     is_chip_immigration_status_eligible: true
+
+# The CHIP pregnancy path has no age cap of its own, so this pins the under-19
+# limit for a pregnant undocumented 19-year-old.
+- name: Case 18, undocumented pregnant 19-year-old in New Jersey is past the under-19 age limit for CHIP.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 19
+    is_pregnant: true
+    state_code: NJ
+  output:
+    is_chip_immigration_status_eligible: false
