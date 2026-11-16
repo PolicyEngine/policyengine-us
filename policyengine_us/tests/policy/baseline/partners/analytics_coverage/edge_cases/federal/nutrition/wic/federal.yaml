@@ -179,7 +179,7 @@
         is_wic_eligible: false
       child1:
         # CHILD_24_59_MONTHS package: (33.65 - 8) x 16.14865 + 26 x 12 = 726.21.
-        wic: 726.21
+        wic: 729.21
         is_wic_eligible: true
 - name: wic_child_income_above_limit_ineligible (federal)
   period: 2026
@@ -312,7 +312,7 @@
         # meets_wic_categorical_eligibility, so the child gets the full
         # CHILD_24_59_MONTHS package: (33.65 - 8) x 16.14865 + 26 x 12
         # = 726.21.
-        wic: 726.21
+        wic: 729.21
         is_wic_eligible: true
 - name: wic_pregnant_twins_current_pregnancies_2 (federal)
   period: 2026
@@ -364,7 +364,7 @@
       head:
         # PREGNANT_MULTIPLE_FETUSES package carries the higher $52/mo CVB:
         # (39.12 - 11) x 16.14865 + 52 x 12 = 454.10 + 624 = 1,078.10.
-        wic: 1078.10
+        wic: 1081.10
         is_wic_eligible: true
 - name: wic_pregnant_negative_self_employment_income (federal)
   period: 2026
@@ -522,7 +522,7 @@
       head:
         # Default (partial) breastfeeding: PARTIALLY_BREASTFEEDING package
         # (39.12 - 11) x 16.14865 + 52 x 12 CVB = 454.10 + 624 = 1,078.10.
-        wic: 1078.10
+        wic: 1081.10
         is_wic_eligible: true
       child1:
         # Default INFANT_AVERAGE package: 138.64 x 16.14865 uprating sum
@@ -646,7 +646,7 @@
         # FULLY_BREASTFEEDING package (7 CFR 246.10(e)(7)(i)) - the largest
         # maternal package: (48.92 - 11) x 16.14865 + 52 x 12 CVB
         # = 612.36 + 624 = 1,236.36.
-        wic: 1236.36
+        wic: 1239.36
         is_wic_eligible: true
       child1:
         # Fully breastfed infants under 6 months remain enrolled and
@@ -773,7 +773,7 @@
         # (33.64 - 8) x 16.14865 + 26 x 12 CVB = 414.05 + 312 = 726.05
         # (differs from the age-4 CHILD_24_59_MONTHS value by the 0.01
         # base-cost split in the 2018 package data).
-        wic: 726.05
+        wic: 729.05
         is_wic_eligible: true
 - name: wic_child_age_4 (federal)
   period: 2026
@@ -830,7 +830,7 @@
       child1:
         # Last eligible child year, CHILD_24_59_MONTHS package:
         # (33.65 - 8) x 16.14865 + 26 x 12 CVB = 414.21 + 312 = 726.21.
-        wic: 726.21
+        wic: 729.21
         is_wic_eligible: true
 - name: wic_child_age_5_no_longer_eligible (federal)
   period: 2026
