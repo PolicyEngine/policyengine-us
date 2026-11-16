@@ -8,7 +8,9 @@
 # Issue 10775: a Household API partner reported this household (an adult
 # with $3,600 of employment income caring for a child in foster care) in
 # New Jersey for 2026; the adult got the adult group, not the parent and
-# caretaker relative group.
+# caretaker relative group. $3,600 / $21,640 (2026 poverty guideline for
+# two) = 16.6%, at or below New Jersey's 0.34 parent limit and 1.47
+# older-child limit, so the adult is PARENT and the 8-year-old OLDER_CHILD.
 - name: Case 1, New Jersey counts an unrelated adult caring for a foster child as a caretaker.
   period: 2026
   input:
@@ -30,6 +32,7 @@
         state_code: NJ
   output:
     is_parent_for_medicaid_nfc: [true, false]
+    medicaid_category: [PARENT, OLDER_CHILD]
 
 # A grandmother is a caretaker relative by blood under 42 CFR 435.4 in
 # every state; in New Jersey the any-adult election also lifts the foster
@@ -80,3 +83,28 @@
         state_code: NJ
   output:
     is_parent_for_medicaid_nfc: [true, false]
+
+# The student option needs full-time attendance in secondary school or
+# equivalent training: an 18-year-old who has left school is not a
+# dependent child, so the parent is not a caretaker. Full-time work at
+# New Jersey's 2026 minimum wage of $15.92 (2,080 x 15.92).
+- name: Case 4, New Jersey does not count an 18-year-old who is not a student as a dependent child.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 33_113.6
+      non_student:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, non_student]
+    households:
+      household:
+        members: [parent, non_student]
+        state_code: NJ
+  output:
+    is_parent_for_medicaid_nfc: [false, false]

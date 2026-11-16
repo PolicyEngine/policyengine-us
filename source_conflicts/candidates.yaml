@@ -8898,6 +8898,9 @@ candidates:
     citation: 'N.J.A.C. 10:69-1.5 ("Caretaker relative", "Dependent child", "Parent-person") and 10:69-3.10(a)1 #page
       9-10,12,64'
     url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_69%20AFDC-RELATED%20MEDICAID.PDF#page=9
+  - kind: regulation
+    citation: N.J.A.C. 10:78-1.1(a), NJ FamilyCare program outline
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_78%20NJ%20FAMILYCARE.PDF#page=4
   readings:
     statute: No statute is supplied; 42 CFR 435.4 paragraph (3) lets a state include "an adult with whom the child is
       living and who assumes primary responsibility for the dependent child's care", and S25 checks that option.
@@ -8912,15 +8915,23 @@ candidates:
     code:
     - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/caretaker_relative/any_adult_option.yaml
     - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/parent/is_parent_for_medicaid_nfc.py
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10984
   state: ruled
-  note: The project lead ruled on 2026-11-15 to follow S25 over N.J.A.C. 10:69. A state elects the 42 CFR 435.4
-    paragraph (3) option through its state plan, and S25 is the federally approved description of New Jersey's parent
-    and caretaker relative group. N.J.A.C. 10:69 also keeps the AFDC-C and AFDC-F segments and the deprivation test
-    (10:69-3.15), which S25 removes for this group and the model already leaves out for New Jersey, so the chapter still
-    carries rules the plan has replaced. Its own "Caretaker relative" definition ("the legally responsible adult or
-    adults residing with the children") names no relationship. A relative caring for a foster child, such as a
-    grandmother, is a caretaker under both texts. No later New Jersey amendment replaces S25.
+  ruling:
+    by: PolicyEngine
+    date: '2026-11-15'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10984#issuecomment-6927855962
+  note: 'Ruled 2026-11-15 by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10984#issuecomment-6927855962. Follow S25 over N.J.A.C. 10:69.
+    A state elects the 42 CFR 435.4 paragraph (3) option through its state plan, and S25 is the federally approved
+    description of New Jersey''s parent and caretaker relative group. N.J.A.C. 10:69 also keeps the AFDC-C and AFDC-F
+    segments and the deprivation test (10:69-3.15), which S25 removes for this group and the model leaves out for New
+    Jersey from 2014, so the chapter still carries rules the plan has replaced. Its own "Caretaker relative" definition
+    ("the legally responsible adult or adults residing with the children") names no relationship, and N.J.A.C.
+    10:78-1.1(a) (NJ FamilyCare) covers "parents, caretakers and caretaker relatives", naming caretakers apart from
+    caretaker relatives. A relative caring for a foster child, such as a grandmother, is a caretaker under both texts.
+    No later New Jersey amendment replaces S25.'
 - id: us-nj:school-meals-income-limit-carryforward
   program: school-meals
   years:
