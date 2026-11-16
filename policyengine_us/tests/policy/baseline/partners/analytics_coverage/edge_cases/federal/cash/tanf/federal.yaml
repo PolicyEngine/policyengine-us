@@ -1,8 +1,8 @@
 # TANF partner edge cases (federal wrapper; all cases exercise tx_tanf, matching
 # MyFriendBen TX traffic). All households: Dallas County, TX.
-# 2026 TX TANF parameters (2025-10-01 entries, constant through CY2026):
-#   Payment standard: with-2nd-parent size 3 = 418/mo; w/o-2nd-parent size 2 = 331,
-#     size 3 = 382; non-caretaker size 1 = 130.
+# 2026 TX TANF payment standards, Jan-Sep -> Oct-Dec:
+#   With-2nd-parent size 3: 418 -> 425/mo; w/o-2nd-parent size 2: 331 -> 336;
+#   w/o-2nd-parent size 3: 382 -> 388; non-caretaker size 1: 130 -> 132.
 #   Budgetary needs (1994-03-01, frozen): with-2nd size 3 = 824; w/o-2nd size 2 = 650,
 #     size 3 = 751; non-caretaker size 1 = 256. Recognizable needs = 25% of budgetary.
 #   Deductions/disregards: $120/mo work expense; applicant disregard 33% of net earnings;
@@ -62,9 +62,9 @@
   output:
     spm_units:
       spm_unit:
-        # Max grant, caretaker-with-second-parent size 3: 418/mo x 12 = 5_016.
-        tx_tanf: 5_016.0
-        tanf: 5_016.0
+        # Max grant, caretaker-with-second-parent size 3: 9 x 418 + 3 x 425 = 5_037.
+        tx_tanf: 5_037.0
+        tanf: 5_037.0
 - name: tanf_two_parent_partial_grant_income_just_below_cliff (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -121,9 +121,9 @@
         # Mid-phase-out partial grant. Monthly earnings 5_087 / 12 = 423.92;
         # minus $120 work expense = 303.92; applicant countable = 303.92 x (1 - 0.33)
         # = 203.62 < recognizable needs 206 (0.25 x 824) -> eligible.
-        # Grant = (418 - 203.62) x 12 = 2_572.51.
-        tx_tanf: 2_572.51
-        tanf: 2_572.51
+        # Grant uses 9 months at 418 and 3 at 425, less unchanged countable income: 2_593.51.
+        tx_tanf: 2_593.51
+        tanf: 2_593.51
 - name: tanf_two_parent_income_just_above_cliff (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -237,10 +237,10 @@
   output:
     spm_units:
       spm_unit:
-        # Max grant, caretaker-WITHOUT-second-parent size 3: 382/mo x 12 = 4_584.
+        # Max grant, caretaker-WITHOUT-second-parent size 3: 9 x 382 + 3 x 388 = 4_602.
         # Pins the single-parent payment-standard column.
-        tx_tanf: 4_584.0
-        tanf: 4_584.0
+        tx_tanf: 4_602.0
+        tanf: 4_602.0
 - name: tanf_single_parent_child_support_deduction (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -289,9 +289,9 @@
       spm_unit:
         # Unearned income path. Child support 1_800 / 12 = 150/mo; minus $75/mo
         # deduction -> countable unearned 75 < recognizable needs 162.50 (0.25 x 650).
-        # Grant = (331 - 75) x 12 = 3_072 (w/o-second-parent size 2 standard).
-        tx_tanf: 3_072.0
-        tanf: 3_072.0
+        # Grant = 9 x (331 - 75) + 3 x (336 - 75) = 3_087 (w/o-second-parent size 2).
+        tx_tanf: 3_087.0
+        tanf: 3_087.0
 - name: tanf_child_age_18_not_student_ineligible (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -391,9 +391,9 @@
   output:
     spm_units:
       spm_unit:
-        # Max grant, w/o-second-parent size 2: 331/mo x 12 = 3_972.
-        tx_tanf: 3_972.0
-        tanf: 3_972.0
+        # Max grant, w/o-second-parent size 2: 9 x 331 + 3 x 336 = 3_987.
+        tx_tanf: 3_987.0
+        tanf: 3_987.0
 - name: tanf_continuing_recipient_90_percent_disregard (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -443,11 +443,11 @@
         # Continuing-recipient path (recognizable-needs test only, 90% disregard).
         # Monthly earnings 15_840 / 12 = 1_320; minus $120 work expense = 1_200;
         # disregard = min(0.9 x 1_200, 1_400) = 1_080; countable = 120 <
-        # recognizable needs 162.50 -> eligible. Grant = (331 - 120) x 12 = 2_532.
+        # recognizable needs 162.50 -> eligible. Grant = 9 x (331 - 120) + 3 x (336 - 120) = 2_547.
         # An APPLICANT with identical earnings would be ineligible
         # (countable 1_200 x 0.67 = 804 > 162.50), pinning the enrolled-path split.
-        tx_tanf: 2_532.0
-        tanf: 2_532.0
+        tx_tanf: 2_547.0
+        tanf: 2_547.0
 - name: tanf_resources_at_1000_limit_vehicle_exemption (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -505,9 +505,9 @@
       spm_unit:
         # Inclusive resource boundary: countable resources = 500 cash +
         # max(5_150 vehicle - 4_650 exemption, 0) = 1_000 <= 1_000 limit -> still
-        # eligible; zero income -> max grant 418/mo x 12 = 5_016.
-        tx_tanf: 5_016.0
-        tanf: 5_016.0
+        # eligible; zero income -> max grant 9 x 418 + 3 x 425 = 5_037.
+        tx_tanf: 5_037.0
+        tanf: 5_037.0
 - name: tanf_resources_above_1000_limit_ineligible (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -613,9 +613,9 @@
     spm_units:
       spm_unit:
         # NON_CARETAKER payment standard, certified-group size 1 (child only):
-        # 130/mo x 12 = 1_560.
-        tx_tanf: 1_560.0
-        tanf: 1_560.0
+        # 9 x 130 + 3 x 132 = 1_566.
+        tx_tanf: 1_566.0
+        tanf: 1_566.0
 - name: tanf_ssi_child_excluded_no_eligible_child (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -786,6 +786,6 @@
     spm_units:
       spm_unit:
         # Countable earned income floors at 0, so the grant equals (not exceeds)
-        # the size-3 with-second-parent maximum: 418/mo x 12 = 5_016.
-        tx_tanf: 5_016.0
-        tanf: 5_016.0
+        # the size-3 with-second-parent maximum: 9 x 418 + 3 x 425 = 5_037.
+        tx_tanf: 5_037.0
+        tanf: 5_037.0
