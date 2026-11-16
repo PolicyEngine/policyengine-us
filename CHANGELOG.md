@@ -1,3 +1,10 @@
+## [2.137.8] - 2026-11-16
+
+### Fixed
+
+- Use Wyoming's published Family Care monthly dollar standards for household sizes one through four in annual 2017–2026 Medicaid parent calculations.
+
+
 ## [2.137.7] - 2026-11-16
 
 ### Fixed
