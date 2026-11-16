@@ -1,0 +1,198 @@
+# IRS 2017 Form 1040 instructions, PDF page 41, Deduction for Exemptions
+# Worksheet lines 2-9: $4,050 per exemption, reduced 2% for each $2,500
+# ($1,250 MFS) or fraction by which AGI exceeds the filing-status threshold.
+# https://www.irs.gov/pub/irs-prior/i1040gi--2017.pdf#page=41
+
+- name: Case 1, single filer exactly at the 2017 phaseout threshold.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 261_500
+    exemptions_count: 1
+  output:
+    exemptions: 4_050
+
+- name: Case 2, the first dollar above the 2017 threshold takes one full step.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 261_501
+    exemptions_count: 1
+  output:
+    exemptions: 3_969 # 4,050 * (1 - 0.02).
+
+- name: Case 3, exactly one 2017 phaseout step retains 98 percent.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 264_000
+    exemptions_count: 1
+  output:
+    exemptions: 3_969
+
+- name: Case 4, one dollar into the second 2017 step retains 96 percent.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 264_001
+    exemptions_count: 1
+  output:
+    exemptions: 3_888
+
+- name: Case 5, separate filers round the first partial 1250 dollar step up.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SEPARATE
+    adjusted_gross_income: 156_901
+    exemptions_count: 1
+  output:
+    exemptions: 3_969
+
+- name: Case 6, separate filers round a partial second step up.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SEPARATE
+    adjusted_gross_income: 158_151
+    exemptions_count: 1
+  output:
+    exemptions: 3_888
+
+- name: Case 7, a joint return reduces both exemptions by the first full step.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 313_801
+    exemptions_count: 2
+  output:
+    exemptions: 7_938 # 8,100 * 0.98.
+
+- name: Case 8, the head of household threshold rounds a partial step up.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 287_651
+    exemptions_count: 2
+  output:
+    exemptions: 7_938
+
+- name: Case 9, the surviving spouse threshold rounds a partial step up.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income: 313_801
+    exemptions_count: 2
+  output:
+    exemptions: 7_938
+
+- name: Case 10, exactly 49 steps retain the final two percent.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 384_000
+    exemptions_count: 1
+  output:
+    exemptions: 81
+
+- name: Case 11, a fraction of the fiftieth step removes the exemption.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 384_001
+    exemptions_count: 1
+  output:
+    exemptions: 0
+
+- name: Case 12, negative AGI preserves the full 2017 exemption.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: -1_000
+    exemptions_count: 1
+  output:
+    exemptions: 4_050
+
+- name: Case 13, the exemption deduction remains suspended in 2018.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 50_000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Case 14, the exemption deduction remains suspended in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 50_000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2019.
+  period: 2019
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2020.
+  period: 2020
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2021.
+  period: 2021
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2022.
+  period: 2022
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2023.
+  period: 2023
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2024.
+  period: 2024
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0
+
+- name: Personal exemptions remain suspended in 2025.
+  period: 2025
+  input:
+    adjusted_gross_income: 50000
+    exemptions_count: 2
+  output:
+    exemptions: 0

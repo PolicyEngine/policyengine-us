@@ -11,7 +11,8 @@ class ia_other_additions(Variable):
     documentation = (
         "Iowa other additions to taxable income reported on Form IA 1040 from 2023, "
         "Schedule 1, Line 11, Column A; before 2023, IA 1040 Line 14, entered as a positive amount, "
-        "excluding miscellaneous income, which PolicyEngine already includes."
+        "excluding miscellaneous income and strike benefits, which PolicyEngine "
+        "already includes."
     )
     # PDF pages 69-71 and 20-22
     reference = (

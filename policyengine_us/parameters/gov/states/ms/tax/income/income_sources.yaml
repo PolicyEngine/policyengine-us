@@ -2,6 +2,10 @@ description: Mississippi counts these income sources toward adjusted gross incom
 values:
   2021-01-01:
     - irs_employment_income # Wages, salaries, tips, etc.
+    # Line 38 also includes "strike and lockout benefits paid by a union
+    # from union dues ... unless the facts clearly show that such benefits
+    # were intended as a gift" (2022 and 2025 instructions, page 10).
+    - taxable_strike_benefits
     - self_employment_income
     - sstb_self_employment_income
     - partnership_s_corp_income
