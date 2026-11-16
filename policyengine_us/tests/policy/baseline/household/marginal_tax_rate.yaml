@@ -172,6 +172,9 @@
 # twelve-month index sum (November and December carry October forward).
 # The child's WIC value is (33.65 - 8) * 4_002.716 / 247.867 + 26 * 12
 # = 726.212725, increasing each prior net-income fixture by 2.484935.
+# ACT 297 sets the 2026 three-person OWF payment standard at $640/month.
+# Against the prior coded schedule, TANF rises $205.40/year and SNAP falls
+# $5/month, raising both low-wage net-income endpoints by $145.40.
 
 - name: Ohio parent earning $6,000 while on Ohio Works First, OH-6000-base
   absolute_error_margin: 0.01
@@ -198,9 +201,9 @@
         members: [parent, child1, child2]
         state_code: OH
   output:
-    tanf: 5_974.60
+    tanf: 6_180
     wic: [0, 726.21, 0]
-    household_net_income: 23_297.41
+    household_net_income: 23_442.81
 
 - name: Ohio parent earning $7,000 while on Ohio Works First, OH-6000-alt
   absolute_error_margin: 0.01
@@ -227,9 +230,9 @@
         members: [parent, child1, child2]
         state_code: OH
   output:
-    tanf: 5_474.60
+    tanf: 5_680
     wic: [0, 726.21, 0]
-    household_net_income: 24_177.91
+    household_net_income: 24_323.31
 
 - name: Ohio Works First phase-out enters the marginal tax rate, OH-6000-mtr
   absolute_error_margin: 0.0001
@@ -256,7 +259,7 @@
         members: [parent, child1, child2]
         state_code: OH
   output:
-    # 1 - (24_177.91 - 23_297.41) / 1_000
+    # 1 - (24_323.31 - 23_442.81) / 1_000
     marginal_tax_rate: [0.1195, 0, 0]
 
 - name: Ohio parent earning $28,000, OH-28000-base

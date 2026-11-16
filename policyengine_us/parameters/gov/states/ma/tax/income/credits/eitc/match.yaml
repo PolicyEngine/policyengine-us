@@ -1,11 +1,23 @@
 description: Massachusetts matches this fraction of the federal earned income credit.
 values:
-  2001-01-01: 0.3
+  2001-01-01: 0.15
+  2016-01-01: 0.23
+  2019-01-01: 0.3
   2023-01-01: 0.4
 metadata:
   unit: /1
   label: Massachusetts EITC match
   reference:
+    - title: Massachusetts FY2018 Tax Expenditure Budget, item 1.605
+      href: https://budget.digital.mass.gov/bb/h1/fy18h1/tax_18/items/htax1605.htm
+    - title: Massachusetts Acts of 2015, Chapter 52, sections 1 and 5
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2015/Chapter52
+    - title: Form 1 2017 Massachusetts Resident Income Tax instructions, line 42
+      href: https://www.mass.gov/files/documents/2018/01/18/dor-2017-inc-form-1-inst.pdf#page=16
+    - title: Massachusetts Acts of 2018, Chapter 154, sections 30 and 111
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2018/Chapter154
+    - title: Massachusetts TIR 18-13, section I.A
+      href: https://www.mass.gov/technical-information-release/tir-18-13-tax-provisions-in-the-fiscal-year-2019-budget-and-an-act-relative-to-economic-development-in-the-commonwealth
     - title: Mass. General Laws c.62 § 6(h)(1)  
       href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6
     - title: Form 1 2022 Massachusetts Resident Income Tax (line 43)

@@ -18,6 +18,7 @@
       tax_unit:
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 16_000
         tax_unit_childcare_expenses: 16_000
     households:
       household:
@@ -50,6 +51,7 @@
       tax_unit:
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 16_000
         tax_unit_childcare_expenses: 16_000
     households:
       household:
@@ -79,6 +81,7 @@
       tax_unit:
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:

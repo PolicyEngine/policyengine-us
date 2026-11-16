@@ -13,13 +13,19 @@ class ca_dependent_care_assistance_exclusion(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://www.ftb.ca.gov/forms/2017/17_3506.pdf#page=2",
         "https://www.ftb.ca.gov/forms/2021/2021-3506.pdf#page=2",
+        "https://www.ftb.ca.gov/forms/2025/2025-3506.pdf#page=2",
         "https://www.ftb.ca.gov/forms/2021/2021-3506-instructions.html",
-        "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9632",
+        # P.L. 117-2 section 9632 and P.L. 119-21 section 70404.
+        "https://www.ftb.ca.gov/about-ftb/data-reports-plans/summary-of-federal-income-tax-changes/index.html#PL-117-2-9632",
     )
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
+        benefits = add(tax_unit, period, ["dependent_care_employer_benefits"])
+        if not np.any(benefits > 0):
+            return np.zeros_like(benefits)
         p = parameters(period).gov.states.ca.tax.income.credits.child_dependent_care
         # FTB 3506 Part IV lines 13-26 repeat Form 2441 Part III, except that
         # line 22 keeps California's own $5,000 ($2,500) cap: California did
@@ -37,26 +43,20 @@ class ca_dependent_care_assistance_exclusion(Variable):
             p.dependent_care_assistance_cap["SINGLE"],
             p.dependent_care_assistance_cap[filing_status],
         )
-        # The federal exclusion is the lesser of the benefits, the federal cap
-        # and the earned-income limit. Capping it at the California amount
-        # gives line 26 whenever the federal cap is at least California's,
-        # as it is for every filer in 2021.
-        federal_exclusion = tax_unit("dependent_care_assistance_exclusion", period)
-        # The federal IRC 129(b) earned-income limit leaves out payroll HSA
-        # contributions, which California taxes. Where California's earned
-        # income is higher, let the exclusion rise by the difference, up to
-        # the benefits. This equals the lesser of the benefits, the cap and
-        # California earned income, because the federal cap is at least
-        # California's.
-        increase = max_(
-            tax_unit("ca_cdcc_min_head_spouse_earned", period)
-            - tax_unit("min_head_spouse_earned", period),
+        # FTB 3506 lines 17-18 limit benefits to independently known
+        # qualified costs; lines 19-21 apply California earned income.
+        # California taxes payroll HSA contributions, so its earnings may
+        # exceed federal earnings, but never override the expense ceiling.
+        qualified_expenses = where(
+            tax_unit("count_cdcc_eligible", period) > 0,
+            tax_unit("dependent_care_assistance_qualified_expenses", period),
             0,
         )
-        benefits = add(tax_unit, period, ["dependent_care_employer_benefits"])
-        exclusion = where(
-            increase > 0,
-            min_(benefits, federal_exclusion + increase),
-            federal_exclusion,
+        earned_income_limit = tax_unit("ca_cdcc_min_head_spouse_earned", period)
+        return max_(
+            min_(
+                benefits,
+                min_(qualified_expenses, min_(dollar_cap, earned_income_limit)),
+            ),
+            0,
         )
-        return min_(exclusion, dollar_cap)
