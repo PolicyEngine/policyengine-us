@@ -155,7 +155,31 @@
     az_property_tax_credit_unemployment: 1_000
     az_property_tax_credit_household_income: 1_000
 
-- name: Strike benefits left out of federal gross income are household income
+- name: Strike benefits a union meant as gifts are household income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        strike_benefits: 2_000
+        tax_exempt_strike_benefits: 2_000
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 0
+    # ARS 43-1072(H)(6)(c); Form 140PTC line I.
+    az_property_tax_credit_nontaxable_income: 2_000
+    az_property_tax_credit_household_income: 2_000
+    # Table 1, 1,951 - 2,050 -> 435.
+    az_property_tax_credit: 435
+
+- name: Strike benefits in federal gross income count once
   period: 2025
   input:
     people:
@@ -171,9 +195,10 @@
         members: [head]
         state_code: AZ
   output:
-    adjusted_gross_income: 0
-    # ARS 43-1072(H)(6)(c); Form 140PTC line I.
-    az_property_tax_credit_nontaxable_income: 2_000
+    # Publication 525: strike benefits other than gifts are income, so
+    # adjusted gross income holds them and line I adds nothing.
+    adjusted_gross_income: 2_000
+    az_property_tax_credit_nontaxable_income: 0
     az_property_tax_credit_household_income: 2_000
     # Table 1, 1,951 - 2,050 -> 435.
     az_property_tax_credit: 435
@@ -236,6 +261,7 @@
         age: 17
         is_tax_unit_dependent: true
         strike_benefits: 1_000
+        tax_exempt_strike_benefits: 1_000
         alimony_income: 500
         divorce_year: 2020
     tax_units:
@@ -247,6 +273,34 @@
         state_code: AZ
   output:
     az_property_tax_credit_nontaxable_income: [0, 1_500]
+    az_property_tax_credit_household_income: 1_500
+    # Table 2, 0 - 2,500 -> 502.
+    az_property_tax_credit: 502
+
+- name: A dependent's taxable strike benefits count once
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        rent: 6_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        strike_benefits: 1_000
+        alimony_income: 500
+        divorce_year: 2020
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # The dependent's federal gross income holds the $1,000 of strike
+    # benefits; line H adds the $500 of alimony.
+    az_property_tax_credit_nontaxable_income: [0, 500]
     az_property_tax_credit_household_income: 1_500
     # Table 2, 0 - 2,500 -> 502.
     az_property_tax_credit: 502

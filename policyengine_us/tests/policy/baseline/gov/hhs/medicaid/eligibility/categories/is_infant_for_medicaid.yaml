@@ -92,3 +92,175 @@
     medicaid_income_level: 2.66
   output:
     is_infant_for_medicaid: true
+
+# GIS 17 MA/005 attachments 3-4, effective January 1, 2017:
+# an infant in a household of two qualifies through $3,018/month (223% FPL,
+# with the five-point MAGI disregard already included).
+- name: Case 11, New York infant at the published 2017 monthly income ceiling.
+  period: 2017
+  input:
+    state_code: NY
+    age: 0
+    medicaid_household_size: 2
+    medicaid_household_income: 36_216
+  output:
+    is_infant_for_medicaid_fc: true
+    is_infant_for_medicaid: true
+
+- name: Case 12, New York infant one dollar above the published 2017 monthly income ceiling.
+  period: 2017
+  input:
+    state_code: NY
+    age: 0
+    medicaid_household_size: 2
+    medicaid_household_income: 36_228
+  output:
+    is_infant_for_medicaid_fc: false
+    is_infant_for_medicaid: false
+
+# New York annual MAGI tables, 2017–2026:
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/17ma005attach3.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/18ma004_attachment_3.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/19ma06_attachment_iii.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/20ma02_att_iii.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/21ma06_att3.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/22ma01_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/23ma02_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/24ma01_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/25ma03_att1.pdf
+# https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/26ma05_att1.pdf
+# Published GIS size-two monthly limits; at/one dollar above each ceiling.
+- name: Case 13, New York infant published monthly ceilings hold in every year from 2017 through
+    2026.
+  period: 2017
+  input:
+    people:
+      person1:
+        age:
+          2017: 0
+          2018: 0
+          2019: 0
+          2020: 0
+          2021: 0
+          2022: 0
+          2023: 0
+          2024: 0
+          2025: 0
+          2026: 0
+        medicaid_household_size:
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+        medicaid_household_income:
+          2017: 36_216
+          2018: 36_708
+          2019: 37_716
+          2020: 38_448
+          2021: 38_856
+          2022: 40_836
+          2023: 43_980
+          2024: 45_588
+          2025: 47_172
+          2026: 48_264
+      person2:
+        age:
+          2017: 0
+          2018: 0
+          2019: 0
+          2020: 0
+          2021: 0
+          2022: 0
+          2023: 0
+          2024: 0
+          2025: 0
+          2026: 0
+        medicaid_household_size:
+          2017: 2
+          2018: 2
+          2019: 2
+          2020: 2
+          2021: 2
+          2022: 2
+          2023: 2
+          2024: 2
+          2025: 2
+          2026: 2
+        medicaid_household_income:
+          2017: 36_228
+          2018: 36_720
+          2019: 37_728
+          2020: 38_460
+          2021: 38_868
+          2022: 40_848
+          2023: 43_992
+          2024: 45_600
+          2025: 47_184
+          2026: 48_276
+    households:
+      household1:
+        members:
+        - person1
+        state_code:
+          2017: NY
+          2018: NY
+          2019: NY
+          2020: NY
+          2021: NY
+          2022: NY
+          2023: NY
+          2024: NY
+          2025: NY
+          2026: NY
+      household2:
+        members:
+        - person2
+        state_code:
+          2017: NY
+          2018: NY
+          2019: NY
+          2020: NY
+          2021: NY
+          2022: NY
+          2023: NY
+          2024: NY
+          2025: NY
+          2026: NY
+  output:
+    is_infant_for_medicaid:
+      2017:
+      - true
+      - false
+      2018:
+      - true
+      - false
+      2019:
+      - true
+      - false
+      2020:
+      - true
+      - false
+      2021:
+      - true
+      - false
+      2022:
+      - true
+      - false
+      2023:
+      - true
+      - false
+      2024:
+      - true
+      - false
+      2025:
+      - true
+      - false
+      2026:
+      - true
+      - false

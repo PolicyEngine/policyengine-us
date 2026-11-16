@@ -6,7 +6,9 @@ class ca_liheap_utility_heating(Variable):
     entity = SPMUnit
     definition_period = YEAR
     unit = USD
-    label = "California LIHEAP regular gas or electric utility heating benefit"
+    label = (
+        "California LIHEAP regular gas or electric utility heating or cooling benefit"
+    )
     defined_for = "ca_liheap_utility_eligible"
     # PDF pages 182-184
     reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=182"

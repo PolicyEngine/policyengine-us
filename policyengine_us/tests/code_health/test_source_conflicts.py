@@ -128,6 +128,13 @@ CONFLICT_COMMENT_RE = re.compile(
 # or raise its line here in the same PR, and the line goes when the marker lands
 # (CONTRIBUTING.md, "Source conflicts"). A lower count must be recorded here too.
 KNOWN_UNMARKED: dict[str, int] = {
+    "policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/income_limit.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/main.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group1/additional.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/main.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group2/additional.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/main.yaml": 1,
+    "policyengine_us/parameters/gov/states/va/dmas/medicaid/lifc/income_limit/group3/additional.yaml": 1,
     "policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_indiv.py": 1,
     "policyengine_us/variables/gov/states/ar/tax/income/deductions/standard/ar_standard_deduction_joint.py": 1,
     "policyengine_us/variables/gov/states/ar/tax/income/low_income/ar_low_income_tax_joint.py": 1,
@@ -139,6 +146,7 @@ KNOWN_UNMARKED: dict[str, int] = {
     "policyengine_us/parameters/gov/irs/credits/residential_clean_energy/fuel_cell_cap_per_kw.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/hce_salary_threshold.yaml": 1,
     "policyengine_us/parameters/gov/irs/income/exemption/overtime/salary_basis_threshold.yaml": 1,
+    "policyengine_us/parameters/gov/irs/indexing/medical_care_c_cpi_u.yaml": 1,
     "policyengine_us/parameters/gov/states/ar/ade/oec/sra/rates/no_copay_smi_threshold.yaml": 1,
     "policyengine_us/parameters/gov/states/ca/cpuc/income_sources.yaml": 1,
     "policyengine_us/parameters/gov/states/ca/hbex/premium_subsidy/fpl_limit.yaml": 1,
@@ -889,6 +897,35 @@ def test_candidate_fields():
                     f"{label}: prs must be PolicyEngine/policyengine-us pull request URLs: {pr}"
                 )
     assert not problems, "\n".join(problems)
+
+
+def test_co_amt_duplication_candidate_requires_a_ruling():
+    global_id = "us-co:dr0104amt-line-2-duplication-bar"
+    _, entries = _load()
+    if global_id in entries:
+        return
+
+    candidate = next(item for item in _candidates() if item["id"] == global_id)
+    assert candidate["state"] == "open"
+    assert candidate["pe_us"]["follows"] == "unknown"
+
+
+def test_co_amt_capture_preserves_the_instruction_and_page_context():
+    capture = (FOLDER / "sources/us-co/dr0104amt-instructions-2025-p1.txt").read_text(
+        encoding="utf-8"
+    )
+    assert capture.startswith(
+        "Source: https://tax.colorado.gov/sites/tax/files/documents/"
+        "DR0104AMT_2025.pdf#page=1\n"
+    )
+    text = " ".join(capture.split())
+    assert "Instructions for Alternative Minimum Tax" in text
+    assert re.search(
+        r"\bdo not enter\b[^.]*\bline 2 or line 4\b[^.]*\bduplicates\b"
+        r"[^.]*\bfederal alternative minimum taxable income\.",
+        text,
+    )
+    assert text.endswith("the DR 0104AMT.")
 
 
 def _year_problems(years) -> list[str]:

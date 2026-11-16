@@ -72,13 +72,13 @@
         # CA AGI 40,000 hits the 43% bracket (binding at the 40k threshold):
         # ca_cdcc = 1,110 x 0.43 = 477.30.
         ca_cdcc: 477.3
-        # CA HOH taxable = 40,000 - 11,670.63 = 28,329.37;
-        # tax = 1% x 22,675.50 + 2% x (28,329.37 - 22,675.50) = 226.76 + 113.08
-        # = 339.83.
-        ca_income_tax_before_credits: 339.83
-        # Exemptions (156.47 personal + 485.76 dependent) + ca_cdcc 477.30
-        # = 1,119.53 > 345.01 liability.
-        ca_non_refundable_credits: 1_119.53
+        # CA HOH taxable = 40,000 - 11,800 = 28,200;
+        # tax = 1% x 22,927 + 2% x (28,200 - 22,927) = 229.27 + 105.46
+        # = 334.73.
+        ca_income_tax_before_credits: 334.73
+        # Exemptions (158 personal + 491 dependent) + ca_cdcc 477.30
+        # = 1,126.30 > 334.73 liability.
+        ca_non_refundable_credits: 1_126.30
         # Credit stack exceeds liability -> capped at 0 (liability-limited).
         ca_income_tax_before_refundable_credits: 0.0
 - name: ca_cdcc_hoh_74000_fully_usable (ca)
@@ -148,14 +148,14 @@
         cdcc: 1_050.0
         # CA AGI 74,000 -> 34% bracket: ca_cdcc = 1,050 x 0.34 = 357.00.
         ca_cdcc: 357.0
-        # CA HOH taxable = 74,000 - 11,670.63 = 62,329.37; tax = 1% x 22,675.50
-        # + 2% x (53,720.48 - 22,675.50) + 4% x (62,329.37 - 53,720.48)
-        # = 226.76 + 620.90 + 344.36 = 1,192.01.
-        ca_income_tax_before_credits: 1_192.01
-        # Exemptions 642.23 + ca_cdcc 357.00 = 999.23 < 1,192.01 liability.
-        ca_non_refundable_credits: 999.23
-        # 1,192.01 - 999.23 = 192.78 > 0: the CDCC is fully usable.
-        ca_income_tax_before_refundable_credits: 192.78
+        # CA HOH taxable = 74,000 - 11,800 = 62,200; tax = 1% x 22,927
+        # + 2% x (54,316 - 22,927) + 4% x (62,200 - 54,316)
+        # = 229.27 + 627.78 + 315.36 = 1,172.41.
+        ca_income_tax_before_credits: 1_172.41
+        # Exemptions 649.00 + ca_cdcc 357.00 = 1,006.00 < 1,172.41 liability.
+        ca_non_refundable_credits: 1_006.0
+        # 1,172.41 - 1,006.00 = 166.41 > 0: the CDCC is fully usable.
+        ca_income_tax_before_refundable_credits: 166.41
 - name: ca_cdcc_agi_100000_zero_match_rate (ca)
   period: 2026
   absolute_error_margin: 0.1

@@ -18,6 +18,9 @@
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
         # Qualified expenses at least equal to the benefits (Form 2441 line 16).
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:
@@ -48,6 +51,9 @@
       tax_unit:
         members: [head, child]
         filing_status: SEPARATE
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:
@@ -82,6 +88,9 @@
       tax_unit:
         members: [head, spouse, child]
         filing_status: JOINT
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 6_000
         tax_unit_childcare_expenses: 6_000
     households:
       household:
@@ -112,6 +121,9 @@
       tax_unit:
         members: [head, child]
         filing_status: HEAD_OF_HOUSEHOLD
+        # Independently known current-year work-care costs, before employer
+        # exclusion; no carryovers, forfeitures or disallowed reimbursement.
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:
@@ -142,18 +154,27 @@
       tax_unit:
         members: [head, child]
         filing_status: SINGLE
+        # Isolated positive-expense component override: test the separate
+        # qualifying-person gate, not whether this child's costs qualify.
+        # IRC 152(b)(1) bars this child from qualifying for this return.
+        dependent_care_assistance_qualified_expenses: 5_000
         tax_unit_childcare_expenses: 5_000
     households:
       household:
         members: [head, child]
         state_code: TX
   output:
-    # Box 1 $1,000; exclusion min($5,000, $5,000, $1,000) = $1,000; line 1e
-    # $4,000. Earned income is line 1z, $5,000; unearned income is $0.
-    standard_deduction_worksheet_earned_income_person: [5_000, 0]
-    # max($1,300, $5,000 + $450) = $5,450 (Rev. Proc. 2023-34).
-    basic_standard_deduction: 5_450
-    # Taxable income $5,000 - $5,450 < 0. Refundable credits are left out:
+    # IRC 129(e)(1) adopts 21(b)(2). The ordinary-child branch of 21(b)(1)(A)
+    # requires a dependent, which 152(b)(1) bars for this claimable filer.
+    # Only the disabled-person branch of 21(b)(1)(B) disregards that bar.
+    # Thus no exclusion applies: box 1 $1,000 plus taxable benefits $5,000.
+    count_cdcc_eligible: 0
+    dependent_care_assistance_exclusion: 0
+    taxable_dependent_care_benefits: [5_000, 0]
+    standard_deduction_worksheet_earned_income_person: [6_000, 0]
+    # max($1,300, $6,000 + $450) = $6,450 (Rev. Proc. 2023-34).
+    basic_standard_deduction: 6_450
+    # Taxable income $6,000 - $6,450 < 0. Refundable credits are left out:
     # the model's EITC doesn't test whether the filer is claimable.
     income_tax_before_refundable_credits: 0
     tax_unit_is_required_to_file: false

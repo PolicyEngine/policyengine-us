@@ -34,7 +34,7 @@ class mt_liheap_countable_income(Variable):
         # method are not modeled.
         income = 0
         for source in p.sources.earned + p.sources.unearned:
-            income = income + max_(person(source, period, options=[ADD]), 0)
+            income = income + max_(person(source, period), 0)
         # ARM 37.70.407(1)(d): the dependents and survivors benefits that
         # continue for full-time students aged 18 to 22 are excluded.
         age = person("age", period)

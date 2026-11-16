@@ -135,17 +135,18 @@
 
 # 2024 Federal benefit rates: $943 individual, $1,415 couple; the deeming
 # threshold is their difference, $472. The spouse in each case below earns
-# $500 a month, so deeming applies, and the model deems
-# ($500 - $20 - $65) / 2 = $207.50.
+# $500 a month, so deeming applies. While food counts as ISM, the
+# claimant uses the general exclusion on ISM and spouse wages contribute
+# ($500 - $65) / 2 = $217.50. Without ISM, wages contribute $207.50.
 # Under 20 CFR 416.420(a) a payment counts food from its second prior income
 # month, and food stops counting on September 30, 2024 (89 FR 21199).
-# SI 01320.400 C.2 computes the individual amount from that budget month, so
-# the limit follows each month's PMV status.
+# Under SI 01320.400 C.2, SSA uses that budget month for the individual
+# computation, including that month's PMV status.
 # Individual PMV: $943 / 3 + $20 = $334.33; less the $20 general exclusion,
 # $314.33 counts, which leaves $943 - $314.33 = $628.67.
 # The model's deeming computation counts the deemed PMV, $1,415 / 6 + $10 =
-# $245.83, less $20, plus $207.50: $1,415 - $433.33 = $981.67, so the lesser
-# is the individual limit.
+# $245.83, less $20, plus $217.50: $1,415 - $443.33 = $971.67.
+# The individual computation still gives the lesser payment.
 # Core stores a plain yearly input in a month case for the year that starts
 # that month, so we key age, earnings and state to 2024 in the month cases.
 

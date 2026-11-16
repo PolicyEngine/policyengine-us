@@ -1,0 +1,22 @@
+# "All income is subject to Alabama income tax unless specifically
+# exempted by state law" (2025 Form 40 booklet, page 7). Strike benefits
+# are not on the booklet's list of income not to report.
+
+- name: 2025, strike benefits are Alabama gross income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        strike_benefits: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: AL
+  output:
+    al_agi: 60_000
