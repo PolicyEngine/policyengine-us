@@ -1,3 +1,10 @@
+## [2.139.1] - 2026-11-16
+
+### Fixed
+
+- Removed premiums deducted by dependents as self-employed health insurance from their parents' Schedule A medical expenses.
+
+
 ## [2.139.0] - 2026-11-16
 
 ### Added
