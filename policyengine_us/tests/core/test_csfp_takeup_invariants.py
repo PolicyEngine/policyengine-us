@@ -17,6 +17,8 @@ YEARS = (2019, 2024, 2025, 2026)
 BENEFIT = "commodity_supplemental_food_program"
 ELIGIBILITY = "commodity_supplemental_food_program_eligible"
 TAKEUP = "takes_up_csfp_if_eligible"
+# Each SPM unit's poverty guideline; income equals the drawn ratio times it.
+GUIDELINE = 10_000
 
 people = st.tuples(
     st.integers(0, 100),
@@ -41,9 +43,12 @@ def _simulation(rows):
         }
         for name, units in groups.items():
             units[f"{name}_{i}"] = {"members": [person]}
-        groups["spm_units"][f"spm_units_{i}"]["school_meal_fpg_ratio"] = {
-            year: ratio for year in YEARS
-        }
+        # Eligibility divides csfp_countable_income by spm_unit_fpg, so a ratio
+        # of 1.3 gives 13,000 / 10,000 = 1.3 and the anchor's 100.0 gives
+        # 1,000,000 / 10,000 = 100.
+        spm_unit = groups["spm_units"][f"spm_units_{i}"]
+        spm_unit["csfp_countable_income"] = {year: ratio * GUIDELINE for year in YEARS}
+        spm_unit["spm_unit_fpg"] = {year: GUIDELINE for year in YEARS}
     # Share a household so a household-wide take-up gate would fail.
     household = {
         "members": list(persons),

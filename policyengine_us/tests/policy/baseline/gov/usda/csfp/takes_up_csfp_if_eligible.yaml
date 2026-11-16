@@ -20,9 +20,12 @@
   period: 2025
   input:
     age: 60
-    school_meal_fpg_ratio: 1.50
+    csfp_countable_income: 15_000
+    spm_unit_fpg: 10_000
     takes_up_csfp_if_eligible: false
   output:
+    # Age 60 meets the minimum of 60, and 15,000 / 10,000 = 1.5 meets the
+    # 2025 limit of 1.5.
     commodity_supplemental_food_program_eligible: true
     # $601 times false gives $0 despite eligibility.
     commodity_supplemental_food_program: 0
@@ -31,9 +34,12 @@
   period: 2025
   input:
     age: 59
-    school_meal_fpg_ratio: 1.50
+    csfp_countable_income: 15_000
+    spm_unit_fpg: 10_000
     takes_up_csfp_if_eligible: true
   output:
+    # 15,000 / 10,000 = 1.5 meets the 2025 limit of 1.5, and age 59 falls
+    # short of the minimum of 60.
     commodity_supplemental_food_program_eligible: false
     # An ineligible person receives $0 even when take-up equals true.
     commodity_supplemental_food_program: 0
