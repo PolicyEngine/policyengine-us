@@ -1,3 +1,52 @@
+## [2.139.1] - 2026-11-16
+
+### Fixed
+
+- Removed premiums deducted by dependents as self-employed health insurance from their parents' Schedule A medical expenses.
+
+
+## [2.139.0] - 2026-11-16
+
+### Added
+
+- Added source capture checks and capture guidance to prevent publishing visitor bot-check tokens.
+
+
+## [2.138.4] - 2026-11-16
+
+### Fixed
+
+- Apply the federal dependent test and refund-only filing exception to New Jersey, Ohio, Oklahoma and Pennsylvania dependent counts, and to New Jersey's and Oklahoma's childless EITC. Exclude dependents' Ohio medical expenses when another taxpayer can claim a filer, retaining the head's and spouse's expenses. Remove Oklahoma's regular exemption for a claimable filer and retain its special and blind exemptions. Deny Pennsylvania tax forgiveness to a filer whom another taxpayer can claim, and keep the other spouse's forgiveness on their own tax. Document that North Dakota's stillborn subtraction has no dependency condition. Limit Ohio tuition credits to dependents and New Jersey and Oklahoma childless EITC age tests to filers, regardless of claimability.
+
+
+## [2.138.3] - 2026-11-16
+
+### Fixed
+
+- Corrected school meal income exclusions, business loss floors, and recurring state cash supplements while separating CSFP and CVRP income calculations.
+
+
+## [2.138.2] - 2026-11-16
+
+### Fixed
+
+- The premium tax credit's poverty line (aca_fpg) uses the state of residence in the coverage year, so Alaska and Hawaii households use their own guidelines when the state is supplied only for the coverage year. Households in Puerto Rico, Guam and the Virgin Islands, which have no poverty guideline and no Exchange, are not Marketplace enrollees, pay no Marketplace premium and are not eligible for the credit.
+
+
+## [2.138.1] - 2026-11-16
+
+### Fixed
+
+- Updated WIC cash-value benefits for fiscal years 2022, 2023, and 2027 and replaced the voucher embedded in 2018 package values from October 2021.
+
+
+## [2.138.0] - 2026-11-16
+
+### Added
+
+- Recorded Louisiana's 2021–2024 exemption treatment for claimable filers whose claimants meet the filing exception.
+
+
 ## [2.137.9] - 2026-11-16
 
 ### Fixed

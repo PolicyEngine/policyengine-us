@@ -5245,6 +5245,83 @@ candidates:
     CPI-U change rounded to one decimal and double the rounded single deduction for joint, head of household and
     surviving spouse filers (standard/amount.yaml, retirement/cap.yaml, extend_la_cpi_u_indexed_amounts in uprating_extensions.py).
     Verify that the bulletin permissibly fills the indexing and rounding gaps for both provisions.'
+- id: us-la:dependent-exemption-of-a-claimable-filer-with-filing-exception
+  program: income-tax
+  years:
+    from: 2021
+    to: 2024
+    type: tax
+  question: Does a claimable filer whose claimant meets the refund-only filing exception receive the additional
+    dependent exemption, or does the child's exemption first satisfy the personal exemption requirement?
+  sources:
+  - kind: statute
+    citation: Pre-2025 La. R.S. 47:294, introductory paragraph and Subsections A and B; Act 11 of 2024 Third Extraordinary Session, pages 7 and 161
+    url: https://www.legis.la.gov/legis/ViewDocument.aspx?d=1391656#page=7
+  - kind: statute
+    citation: 26 U.S.C. 151(b), (c), (d)(2) and (d)(5), 2024 edition
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/pdf/USCODE-2024-title26-subtitleA-chap1-subchapB-partV-sec151.pdf
+  - kind: instructions
+    citation: 2021 IT-540 instructions, Lines 6A through 6D, PDF page 3
+    url: https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf#page=3
+  - kind: instructions
+    citation: 2022 IT-540 instructions, Lines 6A through 6F, PDF page 2
+    url: https://dam.ldr.la.gov/taxforms/IT540iWEB(2022)D1.pdf#page=2
+  - kind: instructions
+    citation: 2023 IT-540 instructions, Lines 6A through 6F, PDF page 3
+    url: https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=3
+  - kind: instructions
+    citation: 2022 Louisiana Tax Table, single and married-separate filers, PDF page 1
+    url: https://dam.ldr.la.gov/taxforms/IT540(2022)%20Tax%20Table.pdf#page=1
+  - kind: instructions
+    citation: 2023 Louisiana Tax Table, single and married-separate filers, PDF page 1
+    url: https://dam.ldr.la.gov/taxforms/IT540(2023)%20TT.pdf#page=1
+  - kind: instructions
+    citation: 2024 IT-540 instructions, Lines 6A through 6F and single-filer tax table, PDF pages 3 and 18
+    url: https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=3
+  - kind: guidance
+    citation: IRS Publication 501 (2024), Dependent Taxpayer Test, PDF page 11
+    url: https://www.irs.gov/pub/irs-prior/p501--2024.pdf#page=11
+  - kind: guidance
+    citation: Louisiana Revenue Ruling 18-001, December 21, 2018, pages 1 through 4
+    url: https://dam.ldr.la.gov/lawspolicies/RR%2018-001%20Personal%20Exemptions.pdf
+  readings:
+    statute: In the introductory paragraph of pre-2025 R.S. 47:294, legislators required taxpayers to claim the same
+      exemptions as on their federal return. Congress zeroed a claimable filer's federal exemption amount under section
+      151(d)(2). One reading treats that as losing the filer's exemption, allocates the child's exemption to Subsection A
+      and leaves none for B. Another distinguishes the amount from the count, uses the filer's exemption for A and claims
+      the child's exemption under B.
+    other: >-
+      In its 2021-2024 Lines 6A and 6B instructions, LDR requires the federal number of exemptions unless "you are
+      listed as a dependent on someone else’s return" or another listed condition applies. LDR counts the filer on
+      Line 6A even when someone else claims them, and federal dependents on Line 6C. LDR subtracts one from that
+      total in its 2022-2024 single-filer tables, leaving one additional exemption for the child.
+  example: A 2024 claimable single filer aged 20 with one child aged 4 and a refund-only claimant receives
+    $1,000 for the child, $4,500 for the filer, and $5,500 in total exemptions, without blind or aged exemptions.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/la/tax/income/exemptions/personal/la_dependents_exemption.py
+    - policyengine_us/variables/gov/states/la/tax/income/exemptions/personal/la_personal_exemption.py
+    - policyengine_us/variables/gov/states/la/tax/income/exemptions/la_exemptions.py
+    - policyengine_us/parameters/gov/states/la/tax/income/exemptions/dependent.yaml
+    - policyengine_us/tests/policy/baseline/gov/states/la/tax/income/exemptions/personal/la_dependents_exemption.yaml
+    - policyengine_us/tests/policy/baseline/gov/states/la/tax/income/exemptions/personal/la_claimable_filer_exemptions.yaml
+    - policyengine_us/tests/core/test_la_claimable_filer_exemption_invariants.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10045
+    - https://github.com/PolicyEngine/policyengine-us/pull/10833
+  state: unreviewed
+  note: PE-US retains the agency tie-break reading pending project-lead confirmation. Legislators supplied filing-status
+    amounts in A without identifying which exemptions satisfy A when they wrote B. Both statutory readings remain
+    open. The cited instructions start in 2021, so this entry does not assess earlier years. The legislature replaced
+    the exemptions from 2025 in Act 11 under section 6. For a single filer without blind, aged or adoption adjustments, LDR counts
+    the filer and one federal dependent as two exemptions. LDR uses one for the personal allowance and adds
+    $1,000 for the child. Keep the formula and the existing filing-exception case unchanged. PE-US treats the joint
+    spouse by analogy with the head; the cited Louisiana instructions do not resolve the claimable spouse's
+    Line 6B exemption. LDR distinguished exemption counts from amounts for 151(d)(5) in Revenue Ruling 18-001,
+    without addressing 151(d)(2) or this class. No cited LDR ruling or court holding resolves this class.
+    Full-page official text captures accompany this entry under source_conflicts/sources/us-la/; Revenue Ruling
+    18-001 page 2 quotes the pre-2025 statute without Act 11's strikethrough extraction ambiguity.
 - id: us-la:liheap-plan-income-checklist
   program: liheap
   years:
@@ -8440,8 +8517,7 @@ candidates:
 - id: us-nd:stillborn-subtraction-dependency-condition
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Does the stillborn-child subtraction require federal dependent eligibility under the form when the statute
     allows it for each stillbirth?
@@ -8453,17 +8529,18 @@ candidates:
     citation: 2025 Schedule ND-1SA line 8, p. 2
     url: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2025-iit/28710-schedule-nd-1sa-2025.pdf#page=2
   readings:
-    statute: The subtraction applies for each birth resulting in stillbirth without the added dependency condition.
+    statute: A filer subtracts an allowance for each birth resulting in stillbirth without a dependency condition.
     other: The filer must have been eligible to claim the child federally.
-  example: A claimable filer receives $5,241 under the statutory reading versus $0 under the form.
+  example: In 2025, a claimable filer receives $5,241 under the statutory reading versus $0 under the form.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nd/tax/income/subtractions/nd_stillborn_subtraction.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
-  state: open
-  note: 'The statute-first rule requires removing the form''s added dependency condition if confirmed; the requested
-    decision remains open. Code not yet on main: nd_stillborn_subtraction.'
+  state: ruled
+  note: PE-US counts tax_unit_stillborn_children without a dependency test, following section 57-38-30.3(2)(p).
+    The 2021 to 2024 schedules carry the same condition on page 2 (line 5 in 2021 and 2022, line 8 from 2023).
 - id: us-ne:claim-of-right-obsolete-revenue-ruling
   program: income-tax
   years:
@@ -8626,6 +8703,39 @@ candidates:
     wait, and the NOTE records AAM 305.13''s contrary rule (nh_ssp_eligible.py, immigration/permanent_resident_qualifying_quarters.yaml).
     The quarters come from snap_alien_qualifying_quarters, which defaults to 0. The manual may rest on 8 U.S.C.
     1624, which lets a State restrict general cash public assistance; whether the adult categories are that is unsettled.'
+- id: us-nj:childless-eitc-listed-as-dependent
+  program: income-tax
+  years:
+    from: 2021
+    type: tax
+  question: Can a childless New Jersey filer outside the federal EITC ages claim the NJEITC when another return lists
+    the filer as a dependent but the filer meets the federal dependency test?
+  sources:
+  - kind: statute
+    citation: N.J.S.A. 54A:4-7a.(4), as amended by P.L.2021, c.130
+    url: https://pub.njleg.state.nj.us/Bills/2020/PL21/130_.HTM
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(1)(A)(ii)(III)
+    url: https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii
+  - kind: instructions
+    citation: 2025 Form NJ-1040 instructions, line 58
+    url: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=44
+  readings:
+    statute: The filer must meet every federal EITC qualification except the minimum or maximum age. The federal
+      test bars a filer for whom another taxpayer may deduct an exemption, and neither provision asks whether
+      another return lists the filer.
+    other: The filer must also not be listed as a dependent on another tax return.
+  example: In 2025, a single childless filer aged 20 with $5,000 of wages, listed by a claimant who files only for a
+    refund, gets $259.60 under the statute and $0 under the instructions.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/nj/tax/income/credits/eitc/nj_childless_eitc_age_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10043
+  state: ruled
+  note: PE-US applies the federal dependency test with Publication 596's claimant filing exception and no listing
+    test. The 2021 to 2024 instructions carry the same sentence (line 57 in 2021, line 58 from 2022).
 - id: us-nj:claim-of-right-same-category-offset
   program: income-tax
   years:
@@ -10046,6 +10156,57 @@ candidates:
   note: The model follows the rules and does not require SSI take-up (NOTE in oh_rss.py); integration.yaml Cases
     3 and 13 pin it. Because 5119.41(B) makes eligibility depend on the rules, (A) may describe the program rather
     than add a condition.
+- id: us-ok:eitc-2020-rules-claimant-filing-exception
+  program: income-tax
+  years:
+    from: 2022
+    type: tax
+  question: Oklahoma's credit uses the federal EITC requirements in effect for 2020. Does a childless filer whom
+    another person could claim qualify when that person has no filing requirement and files no return or files only
+    for a refund?
+  sources:
+  - kind: statute
+    citation: 68 O.S. 2357.43
+    url: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os68.pdf#page=930
+  - kind: statute
+    citation: 26 U.S.C. 32(c)(1)(A)(ii)(III)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2020-title26/html/USCODE-2020-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+  - kind: guidance
+    citation: IRS Publication 596 (2020), Rule 12, PDF p. 16
+    url: https://www.irs.gov/pub/irs-prior/p596--2020.pdf#page=16
+  - kind: instructions
+    citation: 2020 Form 1040 instructions, EIC Step 4, question 6, PDF p. 43
+    url: https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf#page=43
+  - kind: guidance
+    citation: IRS Publication 596 (2025), Rule 12, PDF p. 18
+    url: https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18
+  - kind: manual
+    citation: IRS Publication 4012 (2020 returns), page C-3, note 5
+    url: https://www.irs.gov/pub/irs-prior/p4012--2021.pdf#page=61
+  - kind: manual
+    citation: IRS Publication 4491 (2020 returns), page 5-1
+    url: https://www.irs.gov/pub/irs-prior/p4491--2020.pdf#page=67
+  readings:
+    statute: Congress has not changed the words of IRC 32(c)(1)(A)(ii)(III), the frozen requirement, since 2020.
+      A would-be claimant who has no filing requirement and files no return or only for a refund does not bar the
+      credit. The IRS prints that reading in Publication 596 from 2022, and PE-US applies it to the federal credit
+      in every year.
+    other: The IRS prints no such exception in Rule 12 of the 2020 Publication 596 or in question 6 of the 2020
+      Form 1040 EIC steps, so a filer whom someone else can claim cannot take the credit.
+  example: In 2025, a single childless filer aged 30 has $5,000 of wages. A parent who has no filing requirement
+    and files only for a refund could claim the filer. The filer gets $19.125 (5% of $382.50) under the statute
+    reading and $0 under the 2020 publication.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ok/tax/income/credits/eitc/federal_credit/eligible/ok_federal_eitc_demographic_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10043
+  state: ruled
+  note: PE-US applies the federal helper with the claimant filing exception, as eitc_demographic_eligible does in
+    every year. In its volunteer materials for 2020 returns, the IRS applied the exception to the question whether
+    another taxpayer can claim the filer (Publication 4012, page C-3, note 5; Publication 4491, page 5-1). We pin
+    a filer whose claimant meets the exception ($19.125) and a claimable filer whose claimant does not ($0) in ok_eitc.yaml.
 - id: us-ok:liheap-child-earnings
   program: liheap
   years:
@@ -10827,61 +10988,96 @@ candidates:
 - id: us-pa:tax-forgiveness-dependent-parent-exception
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
   question: Can a dependent child claim tax forgiveness when the claiming parent qualifies despite the statute's
     dependent exclusion?
   sources:
   - kind: statute
-    citation: Tax Reform Code 301(c.2)
+    citation: Tax Reform Code sections 301(c.2) and 304, PDF pages 112, 127-128
     url: https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/1971/0/0002..PDF#page=112
   - kind: form
-    citation: 2025 PA-40 Schedule SP, pp. 3-5
-    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=3
+    citation: 2021 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2022 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2022/2022_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2023 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2023/2023_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2024 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2024/2024_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2025 PA-40 Schedule SP, pp. 1 and 3
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=1
   readings:
-    statute: A dependent cannot be a claimant.
-    other: A dependent child may qualify when the claiming parent qualifies.
+    statute: A filer who can be claimed as a dependent cannot claim forgiveness, even without an actual claim or
+      when a parent qualifies.
+    other: A dependent child may qualify when the claiming parent qualifies; Schedule SP asks about an actual
+      federal claim.
   pe_us:
-    follows: conflicting-source
-    code: []
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible.py
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible_share.py
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
-  state: open
-  note: 'The statute-first rule requires removing the form''s dependent-child exception if confirmed; the requested
-    decision remains open. Code not yet on main: pa_tax_forgiveness_eligible, pa_tax_forgiveness_parent_qualifies,
-    pa_tax_forgiveness_amount.'
+  state: ruled
+  note: PE-US excludes a claimable head or spouse even if no one claims them and has no parent-qualification input.
+    Each year's Schedule SP from 2021 to 2025 asks the same two eligibility questions on page 1 and prints the
+    same dependent-child note on page 3.
 - id: us-pa:tax-forgiveness-one-claimed-spouse-table
   program: income-tax
   years:
-    from: 2025
-    to: 2025
+    from: 2021
     type: tax
-  question: Which tax-forgiveness table and allocation apply when one spouse is claimed elsewhere and the other
+  question: Which tax-forgiveness table and allocation apply when one spouse can be claimed elsewhere and the other
     qualifies?
   sources:
   - kind: statute
-    citation: Tax Reform Code 301(c.2)
+    citation: Tax Reform Code sections 301(c.2) and 304, PDF pages 112, 127-128
     url: https://www.legis.state.pa.us/WU01/LI/LI/US/PDF/1971/0/0002..PDF#page=112
   - kind: form
-    citation: 2025 PA-40 Schedule SP, pp. 3-5
-    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=3
+    citation: 2021 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2022 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2022/2022_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2023 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2023/2023_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2024 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2024/2024_pa-40sp.pdf#page=1
+  - kind: form
+    citation: 2025 PA-40 Schedule SP, pp. 1 and 5
+    url: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40sp.pdf#page=1
   - kind: guidance
     citation: PA Personal Income Tax Guide, Tax Forgiveness
     url: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/tax-forgiveness
   readings:
-    statute: The statute does not specify the table for this mixed-spouse case.
-    other: Schedule SP supplies married treatment; the guide's classification of married-separate claimants points
-      to the single table.
-  example: The supplied case with $3,000 income for each spouse gives $92.10 under Schedule SP.
+    statute: A claimable spouse cannot claim forgiveness. The General Assembly does not specify how the other
+      spouse allocates forgiveness.
+    other: An eligible spouse claims forgiveness on their own tax, using both spouses' eligibility income and the
+      married table under Schedule SP.
+  example: In 2025, with $3,000 income per spouse, the eligible spouse receives $92.10 under Schedule SP.
   pe_us:
     follows: gap-fill
-    code: []
+    code:
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_eligible_share.py
+    - policyengine_us/variables/gov/states/pa/tax/income/forgiveness/pa_tax_forgiveness_amount.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10043
-  state: open
-  note: 'PE-US follows Schedule SP''s gap-fill; reconcile it with the guide''s single-claimant category. Code not
-    yet on main: pa_tax_forgiveness_eligible_share, pa_tax_forgiveness_amount.'
+  state: ruled
+  note: PE-US excludes the claimable spouse and allocates forgiveness to the eligible spouse's own tax. Both
+    spouses contribute eligibility income, and the eligible spouse uses the married table. The PIT guide excludes
+    dependent spouses as claimants. Each year's Schedule SP from 2021 to 2025 prints the same line 3c on page 1 and
+    the same separate-filing rule on page 5. PE-US also applies the married table to a joint tax unit whose
+    spouses lived apart for the last six months of the year, where section 304(d)(1) treats a claimant who files
+    a separate return and lives apart as unmarried. In 2025, with $8,000 for the eligible spouse and $1,000 for the
+    claimable spouse, PE-US forgives $245.60 and the unmarried table gives $98.24.
 - id: us-pr:eitc-minimum-age-gap-fill
   program: income-tax
   years:
@@ -16308,6 +16504,45 @@ candidates:
     statute-first rule after resolving the two statutory clauses. Code not yet on main: surviving_spouse_eligible,
     is_child_dependent.'
 
+- id: us:school-meal-state-ssi-supplements
+  program: school-meals
+  years:
+    from: 2009
+    type: calendar
+  question: Should school meal income include state SSI supplements despite USDA's adoption of Social Security Act income exclusions?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1382a(a), (b)(6), (b)(9) and (b)(23)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXVI-partA-sec1382a.htm
+  - kind: regulation
+    citation: 7 CFR 245.6(a)(5)(ii)
+    url: https://www.ecfr.gov/current/title-7/section-245.6#p-245.6(a)(5)(ii)
+  - kind: guidance
+    citation: 91 FR 17932, 17933, Definition of Income
+    url: https://www.govinfo.gov/content/pkg/FR-2026-04-09/html/2026-06842.htm
+  - kind: manual
+    citation: USDA Eligibility Manual for School Meals, June 29, 2017, pages 26, 29 and 30
+    url: https://opi.mt.gov/Portals/182/Page%20Files/School%20Nutrition/Meal%20Eligibility/Forms%20and%20Policy/2017eligibilitymanual.pdf
+  readings:
+    statute: Congress limits section 1382a's income definition to SSI's statutory subchapter. Section 1382a(b)(6) excludes
+      need-based state assistance for SSI without directing school meal administrators to exclude it. School meal
+      administrators count welfare and other cash income under 7 CFR 245.6(a)(5)(ii).
+    other: Read the Manual's page 30 adoption of Social Security Act exclusions as importing section 1382a(b)(6) into
+      school meals. Under that reading, administrators exclude need-based state SSI supplements. Page 26's regular state
+      cash assistance category can cover payments that do not depend on need.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/parameters/gov/usda/school_meals/income/state_supplement_sources.yaml
+    - policyengine_us/variables/gov/usda/school_meals/school_meal_countable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10873
+  state: open
+  note: PolicyEngine counts each modeled state SSI supplement as regular cash assistance from State or local
+    governments, a category on page 26 of the Manual. Page 30's adoption of Social Security Act exclusions supports a
+    competing reading that excludes need-based supplements under section 1382a(b)(6). Congress also excludes some
+    dividends, interest and child support for SSI under section 1382a(b)(9) and (23), and the code counts those sources
+    for school meals, as USDA does. The USDA sources name no state SSI supplement.
 - id: us-ar:low-income-table-dependent-definition
   program: income-tax
   years:
