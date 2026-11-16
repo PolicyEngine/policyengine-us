@@ -18,7 +18,7 @@ and no further `=` after it. It scans the raw bytes and the bytes after one roun
 of percent-decoding, so it finds tokens in quotes, query strings, URL paths,
 JSON-escaped and percent-encoded URLs, and at either end of a line. It misses
 IPv6 addresses, payloads with extra decoded bytes, and tokens joined to other
-letters or digits, as after a `/` escape or in a URL percent-encoded twice.
+letters or digits, as after a `\u002F` escape or in a URL percent-encoded twice.
 Inspect extracted text for visitor data before committing it.
 
 Do not edit a capture after an entry pins it: add a new file instead, and move the
