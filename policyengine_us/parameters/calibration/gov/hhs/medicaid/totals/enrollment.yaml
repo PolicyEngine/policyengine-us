@@ -24,6 +24,10 @@ metadata:
 # on the last day of January YYYY. It pairs with federal fiscal year YYYY
 # spending in spending.yaml; later years reuse the latest pair. The count
 # includes CHIP enrollees, and the spending covers Medicaid only.
+# The 2024-01-01 values are the "Jan 2024" table in the January 2024 capture,
+# which opens on a later month.
+# North Carolina's 2020-2023 values don't match KFF's January counts
+# (January 2023: 2,300,597 here, 2,417,024 at KFF).
 AK:
   2020-01-01: 223_963
   2021-01-01: 241_410

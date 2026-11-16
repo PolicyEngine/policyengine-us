@@ -74,3 +74,22 @@
     # enrollment (1,753,610).
     medicaid_cost_if_enrolled: 11_537.67
     medicaid: 11_537.67
+
+- name: Case 5, a lone New Jersey adult in 2024 uses FY2024 spending and January 2024 enrollment.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: true
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # The FY2024 pair starts in 2024: $23,426,076,809 / 2,030,400 = $11,537.67.
+    # Main read the 2023 pair here (2,222,936 enrollees), $10,191.88.
+    medicaid_cost_if_enrolled: 11_537.67
+    medicaid: 11_537.67
