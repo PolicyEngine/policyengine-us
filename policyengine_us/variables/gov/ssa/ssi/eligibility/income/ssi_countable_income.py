@@ -74,7 +74,9 @@ class ssi_countable_income(Variable):
         both_eligible = person("ssi_couple_computation_applies", period)
 
         # Add spousal deemed income (only relevant when one spouse is ineligible)
-        spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
+        spousal_deemed = person(
+            "ssi_income_deemed_from_ineligible_spouse_monthly", period
+        )
 
         # People who are not aged, blind, or disabled have no countable income
         # of their own; a spouse's income is deemed to the other spouse

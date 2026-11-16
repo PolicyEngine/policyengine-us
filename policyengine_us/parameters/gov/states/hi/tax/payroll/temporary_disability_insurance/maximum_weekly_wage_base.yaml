@@ -1,0 +1,91 @@
+description: Hawaii counts weekly wages up to this amount toward the employee temporary disability insurance contribution.
+values:
+  # Zero marks years before the first notice read (2004), not a law without a
+  # wage base. HRS 392-43(b)(2) sets the base at one fifty-second of the State's
+  # average annual wage as HRS 383-61(b) determines it for the preceding year,
+  # times 1.21, and HRS 383-61(b) computes that average rounded to the nearest
+  # hundred dollars. Each value takes the average from that year's DLIR notice,
+  # rounds it to $100, multiplies by 1.21 / 52 and rounds once to the cent. For
+  # 2026, 64,471.82 rounds to 64,500, and 64,500 * 1.21 / 52 = 1,500.87. DLIR's
+  # notices use the average before rounding (1,500.21 for 2026), so the values
+  # here run from 0.84 below to 1.15 above the published bases.
+  0000-01-01: 0
+  2004-01-01: 721.35
+  2005-01-01: 751.60
+  2006-01-01: 791.15
+  2007-01-01: 821.40
+  2008-01-01: 842.35
+  2009-01-01: 877.25
+  2010-01-01: 902.85
+  2011-01-01: 884.23
+  2012-01-01: 902.85
+  2013-01-01: 921.46
+  2014-01-01: 940.08
+  2015-01-01: 951.71
+  2016-01-01: 981.96
+  2017-01-01: 1_023.85
+  2018-01-01: 1_068.06
+  2019-01-01: 1_089.00
+  2020-01-01: 1_119.25
+  2021-01-01: 1_102.96
+  2022-01-01: 1_200.69
+  2023-01-01: 1_319.37
+  2024-01-01: 1_375.21
+  2025-01-01: 1_442.69
+  2026-01-01: 1_500.87
+
+metadata:
+  period: week
+  unit: currency-USD
+  label: Hawaii TDI maximum weekly wage base
+  reference:
+    - title: Hawaii Revised Statutes Section 392-43(b)(2)
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0392/HRS_0392-0043.htm
+    - title: Hawaii Revised Statutes Section 383-61(b)
+      href: https://data.capitol.hawaii.gov/hrscurrent/Vol07_Ch0346-0398/HRS0383/HRS_0383-0061.htm
+    - title: Hawaii DLIR, 2004 maximum weekly wage base notice
+      href: https://web.archive.org/web/20050226051453/http://hawaii.gov:80/labor/dcd/pdf/TDI/2004%20TDI%20Wage%20Base.pdf#page=1
+    - title: Hawaii DLIR, 2005 maximum weekly wage base notice
+      href: https://web.archive.org/web/20050226052914/http://hawaii.gov:80/labor/dcd/pdf/general/2005_WAGE_BASE.pdf#page=1
+    - title: Hawaii DLIR, 2006 maximum weekly wage base notice
+      href: https://web.archive.org/web/20060227223955/http://hawaii.gov:80/labor/dcd/pdf/general/2006_WAGE_BASE.pdf#page=1
+    - title: Hawaii DLIR, 2007 maximum weekly wage base notice
+      href: https://web.archive.org/web/20080719002041/http://hawaii.gov/labor/dcd/PDF/general/2007_Wage_Base_12-1-06.pdf#page=1
+    - title: Hawaii DLIR, 2008 maximum weekly wage base notice
+      href: https://web.archive.org/web/20080724052848/http://hawaii.gov/labor/dcd/PDF/general/WAGE%20BASE-2008%20%28PDF%29.pdf#page=1
+    - title: Hawaii DLIR, 2009 maximum weekly wage base notice
+      href: https://web.archive.org/web/20121025001236/http://hawaii.gov/labor/dcd/PDF/general/2009%20Wage%20Base.pdf#page=1
+    - title: Hawaii DLIR, 2010 maximum weekly wage base notice
+      href: https://web.archive.org/web/20101215215838/http://hawaii.gov/labor/dcd/PDF/general/2010%20Wage%20Base.pdf#page=1
+    - title: Hawaii DLIR, 2011 maximum weekly wage base notice
+      href: https://web.archive.org/web/20101215215837/http://hawaii.gov/labor/dcd/PDF/general/2011%20Wage%20Base.pdf#page=1
+    - title: Hawaii DLIR, 2012 maximum weekly wage base notice
+      href: https://web.archive.org/web/20121024102028/http://hawaii.gov/labor/dcd/PDF/general/2012%20Wage%20Base.pdf#page=1
+    - title: Hawaii DLIR, 2013 maximum weekly wage base notice
+      href: https://web.archive.org/web/20141030021517/http://labor.hawaii.gov/dcd/files/2013/01/Old-Wage-Base.pdf#page=1
+    - title: Hawaii DLIR, 2014 maximum weekly wage base notice
+      href: https://web.archive.org/web/20141030011206/http://labor.hawaii.gov/dcd/files/2013/01/New-Wage-Base.pdf#page=1
+    - title: Hawaii DLIR, 2015 maximum weekly wage base notice
+      href: https://web.archive.org/web/20160824005208/http://labor.hawaii.gov:80/dcd/files/2013/01/2015-Wage-Base.pdf#page=1
+    - title: Hawaii DLIR, 2016 maximum weekly wage base notice
+      href: https://web.archive.org/web/20160706000230/http://labor.hawaii.gov:80/dcd/files/2014/11/2016.pdf#page=1
+    - title: Hawaii DLIR, 2017 maximum weekly wage base notice
+      href: https://web.archive.org/web/20171101222709/https://labor.hawaii.gov/dcd/files/2013/01/17Wbase.pdf#page=1
+    - title: Hawaii DLIR, 2018 maximum weekly wage base notice
+      href: https://labor.hawaii.gov/dcd/files/2017/11/2018.pdf#page=1
+    - title: Hawaii DLIR, 2019 maximum weekly wage base notice
+      href: https://labor.hawaii.gov/dcd/files/2018/11/2019wagebase.pdf#page=1
+    - title: Hawaii DLIR, 2020 maximum weekly wage base notice
+      href: https://web.archive.org/web/20201017202041/https://labor.hawaii.gov/dcd/files/2019/11/newWBA.pdf#page=1
+    - title: Hawaii DLIR, 2021 maximum weekly wage base notice
+      href: https://web.archive.org/web/20201204141806/https://labor.hawaii.gov/dcd/files/2019/11/newWBA.pdf#page=1
+    - title: Hawaii DLIR, 2022 maximum weekly wage base notice
+      href: https://web.archive.org/web/20220819164238/https://labor.hawaii.gov/dcd/files/2019/11/newWBA.pdf#page=1
+    - title: Hawaii DLIR, 2023 maximum weekly wage base notice
+      href: https://web.archive.org/web/20230306111219/https://labor.hawaii.gov/dcd/files/2019/11/newWBA.pdf#page=1
+    - title: Hawaii DLIR, 2024 maximum weekly wage base notice
+      href: https://labor.hawaii.gov/dcd/files/2023/11/2024-Max-Weekly-Wage-Base-Weekly-Benefit-Amount.pdf#page=1
+    - title: Hawaii DLIR, 2025 maximum weekly wage base notice
+      href: https://labor.hawaii.gov/dcd/files/2023/05/2025-Max-Weekly-Wage-Base-Rev-2025.03.pdf#page=1
+    - title: Hawaii DLIR, 2026 maximum weekly wage base notice
+      href: https://labor.hawaii.gov/dcd/files/2025/12/2026-Maximum-Weekly-Wage-Base.pdf#page=1

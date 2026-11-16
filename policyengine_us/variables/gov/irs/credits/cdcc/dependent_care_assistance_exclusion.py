@@ -20,7 +20,9 @@ class dependent_care_assistance_exclusion(Variable):
         # ARPA section 9632 temporarily increased the cap for 2021.
         "https://www.govinfo.gov/content/pkg/PLAW-117publ2/pdf/PLAW-117publ2.pdf#page=158",
         # Form 2441 Part III lines 12-26 compute the excluded benefit.
+        "https://www.irs.gov/pub/irs-prior/f2441--2017.pdf#page=2",
         "https://www.irs.gov/pub/irs-prior/f2441--2021.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/f2441--2025.pdf#page=2",
         "https://www.irs.gov/instructions/i2441",
     )
 
@@ -28,6 +30,8 @@ class dependent_care_assistance_exclusion(Variable):
         # Total employer-provided dependent care benefits (Form 2441 line 12,
         # W-2 box 10).
         benefits = add(tax_unit, period, ["dependent_care_employer_benefits"])
+        if not np.any(benefits > 0):
+            return np.zeros_like(benefits)
         p = parameters(period).gov.irs.gross_income.dependent_care_assistance_programs
         # Section 129(a)(2)(A) dollar cap by filing status (Form 2441 line 21;
         # $5,000, $2,500 MFS; $10,500 / $5,250 for 2021 under section
@@ -48,4 +52,17 @@ class dependent_care_assistance_exclusion(Variable):
         # min_head_spouse_earned returns the taxpayer's earnings when unmarried
         # and the lesser of the two when married filing jointly.
         earned_income_limit = tax_unit("min_head_spouse_earned", period)
-        return min_(benefits, min_(dollar_cap, earned_income_limit))
+        # Form 2441 line 16 is independent of the modeled net childcare bill:
+        # state subsidies can depend on AGI, which includes taxable benefits.
+        qualified_expenses = where(
+            tax_unit("count_cdcc_eligible", period) > 0,
+            tax_unit("dependent_care_assistance_qualified_expenses", period),
+            0,
+        )
+        return max_(
+            min_(
+                benefits,
+                min_(qualified_expenses, min_(dollar_cap, earned_income_limit)),
+            ),
+            0,
+        )

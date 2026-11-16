@@ -14,9 +14,9 @@ class hi_claim_of_right_deduction(Variable):
         "67(b)(9)) unless Hawaii tax is computed with the claim of right "
         "credit. Otherwise the repayment is a miscellaneous itemized "
         "deduction above two percent of Hawaii adjusted gross income while "
-        "Hawaii allows those (through 2025). The floor applies to the "
-        "repayment alone, because Hawaii's itemized list omits the other "
-        "miscellaneous expenses the model has."
+        "Hawaii allows those (through 2025). The hi_misc_deduction variable "
+        "adds the allowance for other miscellaneous expenses after pooling "
+        "them with the repayment under one two percent floor."
     )
     definition_period = YEAR
     reference = (

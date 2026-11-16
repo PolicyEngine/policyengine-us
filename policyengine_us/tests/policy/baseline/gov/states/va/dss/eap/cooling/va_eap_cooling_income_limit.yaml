@@ -1,0 +1,32 @@
+# Virginia EAP cooling assistance income limit: the Fuel Assistance formula,
+# floor(150% of the guideline / 12) for sizes 1-20 plus a floored increment per
+# member over 20, annualized x 12, but with the guideline of the cooling
+# season's own year (VA FY2026 benefit matrix note: the 2025 limits "were used
+# for Cooling Assistance in June of 2025"). WYDaily (June 15, 2026) reports
+# 2026 cooling limits of $1,995 a month for one person and $4,125 for four.
+
+- name: Case 1, 2026 limits use the 2026 guideline, and zero outside Virginia.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [VA, VA, VA, VA, MD]
+    va_eap_household_size: [1, 2, 4, 21, 1]
+  output:
+    # 2026 guideline 15,960 + 5,680 per added person, x 1.5 / 12:
+    # size 1 = 1,995; size 2 = 21,640 x 1.5 / 12 = 2,705;
+    # size 4 = 33,000 x 1.5 / 12 = 4,125;
+    # size 20 = 123,880 x 1.5 / 12 = 15,485, plus floor(5,680 x 1.5 / 12) =
+    # 710 for the 21st member = 16,195. Annual = monthly x 12.
+    va_eap_cooling_income_limit: [23_940, 32_460, 49_500, 194_340, 0]
+
+- name: Case 2, 2025 limits use the 2025 guideline.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [VA, VA]
+    va_eap_household_size: [1, 4]
+  output:
+    # The published monthly limits used in June 2025: size 1
+    # floor(15,650 x 1.5 / 12) = floor(1,956.25) = 1,956; size 4
+    # floor(32,150 x 1.5 / 12) = floor(4,018.75) = 4,018. Annual = x 12.
+    va_eap_cooling_income_limit: [23_472, 48_216]

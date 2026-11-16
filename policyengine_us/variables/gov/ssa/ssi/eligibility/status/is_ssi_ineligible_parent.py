@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_spouse._deemed_income_without_ism import (
+    ssi_income_deemed_from_ineligible_spouse_without_ism,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_established_spouse_indices,
 )
@@ -43,13 +46,16 @@ class is_ssi_ineligible_parent(Variable):
         unearned = person("ssi_unearned_income", period)
         # A joint claim tests the couple's income. Otherwise 416.1163(d)(2) adds
         # what remains of an ineligible spouse's income after the allocations
-        # for ineligible children in 416.1163(b).
+        # for ineligible children in 416.1163(b). Like the parent's own income,
+        # the deemed amount leaves out in-kind support and maintenance.
         countable_income = _apply_ssi_exclusions(
             where(joint_claim, person.marital_unit.sum(earned), earned),
             where(joint_claim, person.marital_unit.sum(unearned), unearned),
             parameters,
             period,
-        ) + person("ssi_income_deemed_from_ineligible_spouse", period)
+        ) + ssi_income_deemed_from_ineligible_spouse_without_ism(
+            person, period, parameters
+        )
         p = parameters(period).gov.ssa.ssi
         benefit_rate = where(
             joint_claim | person("is_ssi_spousal_deeming_applies", period),

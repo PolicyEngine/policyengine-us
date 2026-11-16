@@ -29,10 +29,13 @@ The implementation follows these steps according to the regulations:
 4. **Calculate combined countable income** (§416.1163(d)(2))
 
    - Combine the eligible individual's and ineligible spouse's incomes
-   - Apply all appropriate income exclusions to the combined income
+   - Count the eligible individual's in-kind support and maintenance (ISM) as unearned income, valued at one-sixth of the couple FBR plus $10 at most ([POMS SI 01320.150 B.1.a](https://secure.ssa.gov/poms.nsf/lnx/0501320150))
+   - Apply all appropriate income exclusions to the combined income, including one $20 general exclusion ([SI 01320.400 B.1.e](https://secure.ssa.gov/poms.nsf/lnx/0501320400))
 
 5. **Calculate deemed income amount**
    - The deemed amount is the difference between the combined countable income and the individual's countable income
+   - `ssi_income_deemed_from_ineligible_spouse_monthly` computes it each month, with the individual's ISM in both budgets, and `ssi_income_deemed_from_ineligible_spouse` sums the months
+   - `is_ssi_ineligible_parent` tests a parent's own income without ISM, so it reads a deemed amount without ISM (`_deemed_income_without_ism.py`)
 
 6. **Limit the benefit to the amount without deeming** (§416.1163(e)(2))
    - We compare the couple computation with the individual Federal benefit rate less the individual's own countable income (`uncapped_ssi_without_spousal_deeming`) and apply the lesser amount in `uncapped_ssi` before the zero floor.

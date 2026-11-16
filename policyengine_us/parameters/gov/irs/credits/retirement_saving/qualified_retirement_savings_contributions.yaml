@@ -1,5 +1,13 @@
 description: The IRA sums the following elements as qualified retirement savings contributions when computing the saver's credit.  
 values:
+  2017-01-01:
+    - traditional_ira_contributions
+    - roth_ira_contributions
+    - traditional_401k_contributions
+    - traditional_403b_contributions
+    - roth_401k_contributions
+    - roth_403b_contributions
+    - self_employed_pension_contributions
   2018-01-01:
     - traditional_ira_contributions
     - roth_ira_contributions
@@ -30,6 +38,10 @@ metadata:
   period: year 
   label: Saver's Credit qualified retirement savings contributions
   reference:
+    - title: "2017 Form 8880 #page 1-2"
+      href: https://www.irs.gov/pub/irs-prior/f8880--2017.pdf#page=1
+    - title: Public Law 115-97, section 11024(b)-(c)
+      href: https://www.govinfo.gov/content/pkg/PLAW-115publ97/pdf/PLAW-115publ97.pdf#page=24
     - title: 26 U.S. Code § 25B - (d)
       href: https://www.law.cornell.edu/uscode/text/26/25B#d_1
     - title: Public Law 119-21, ABLE contributions in the saver's credit

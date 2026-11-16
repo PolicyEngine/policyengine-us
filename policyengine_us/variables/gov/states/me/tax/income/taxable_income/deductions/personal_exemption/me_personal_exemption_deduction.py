@@ -8,6 +8,11 @@ class me_personal_exemption_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        # P.L. 2017, c. 474, Part B, sections 6 and 7.
+        "https://www.mainelegislature.org/legis/bills/bills_128th/chapters/"
+        "PUBLIC474.asp",
+        "https://www.govinfo.gov/content/pkg/USCODE-2017-title26/html/"
+        "USCODE-2017-title26-subtitleA-chap1-subchapB-partV-sec151.htm",
         "https://www.mainelegislature.org/legis/statutes/36/title36sec5126-A.html",
         # Form 1040ME instructions, line 13: a filer who may be claimed as a
         # dependent has no exemption; on a joint return each spouse is
@@ -16,7 +21,10 @@ class me_personal_exemption_deduction(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
+    def formula_2015(tax_unit, period, parameters):
+        return tax_unit("exemptions", period)
+
+    def formula_2018(tax_unit, period, parameters):
         # First get their Maine AGI.
         me_agi = tax_unit("me_agi", period)
 

@@ -94,3 +94,18 @@
   output:
     ga_exemptions: 4_000
     ga_dependent_exemption: 4_000
+
+- name: GA dependent exemption reform at its defaults keeps no dependent exemption for a filer who can be claimed
+  period: 2025
+  reforms: policyengine_us.reforms.states.ga.dependent_exemption.ga_dependent_exemption_reform.ga_dependent_exemption_reform
+  input:
+    gov.contrib.states.ga.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 20, employment_income: 10_000, claimed_as_dependent_on_another_return: true}
+      child1: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1]}}
+    households: {household: {members: [parent, child1], state_name: GA}}
+  # As in the baseline: a return with a claimable filer has no dependents (IRC 152(b)(1)).
+  output:
+    ga_exemptions: 0
+    ga_dependent_exemption: 0
