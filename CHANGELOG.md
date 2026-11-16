@@ -1,3 +1,10 @@
+## [2.140.2] - 2026-11-16
+
+### Fixed
+
+- Fixed Louisiana's school readiness credit attribution in simulations with several tax units and bounded explicit DC and Illinois LIHEAP income keys to existing matrix rows.
+
+
 ## [2.140.1] - 2026-11-16
 
 ### Fixed
