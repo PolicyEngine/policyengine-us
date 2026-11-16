@@ -1,3 +1,10 @@
+## [2.138.0] - 2026-11-16
+
+### Added
+
+- Recorded Louisiana's 2021–2024 exemption treatment for claimable filers whose claimants meet the filing exception.
+
+
 ## [2.137.9] - 2026-11-16
 
 ### Fixed
