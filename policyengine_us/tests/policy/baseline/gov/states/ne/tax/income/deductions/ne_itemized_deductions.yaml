@@ -1,4 +1,11 @@
+# Neb. Rev. Stat. 77-2716.01(4) and Form 1040N lines 7-9: federal itemized
+# deductions (Schedule A line 17) minus the income taxes on Schedule A line 5a,
+# in full, before the federal SALT cap. Nothing is removed when line 5a holds
+# sales taxes.
+
 - name: Unit test 1
+  # Federal: 2,000 + 24,000 + 10,000 capped SALT = 36,000. Income taxes (5,000)
+  # exceed sales taxes (0), so all 5,000 is removed: 36,000 - 5,000 = 31,000.
   period: 2021
   input:
     filing_status: JOINT
@@ -6,11 +13,17 @@
     deductible_interest_expense: 24_000
     salt_deduction: 10_000
     real_estate_taxes: 9_000
+    state_withheld_income_tax: 5_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
     state_code: NE
   output:
-    ne_itemized_deductions: 2_000 + 24_000 + 9_000
+    ne_itemized_deductions: 31_000
 
 - name: Unit test 2
+  # Federal: 3,000 + 7,000 + 10,000 capped SALT = 20,000. Income taxes (5,000)
+  # exceed sales taxes (0): 20,000 - 5,000 = 15,000.
   period: 2022
   input:
     filing_status: JOINT
@@ -18,6 +31,129 @@
     deductible_interest_expense: 7_000
     salt_deduction: 10_000
     real_estate_taxes: 6_000
+    state_withheld_income_tax: 5_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
     state_code: NE
   output:
-    ne_itemized_deductions: 3_000 + 7_000 + 6_000
+    ne_itemized_deductions: 15_000
+
+- name: Sales taxes on Schedule A line 5a stay in the Nebraska deduction
+  # Federal: 15,000 interest + 8,000 SALT = 23,000. Sales taxes (3,000) exceed
+  # income taxes (1,000), so line 5a holds sales taxes and Nebraska removes
+  # nothing: 23,000.
+  period: 2023
+  input:
+    filing_status: SINGLE
+    deductible_interest_expense: 15_000
+    salt_deduction: 8_000
+    real_estate_taxes: 5_000
+    state_withheld_income_tax: 1_000
+    local_income_tax: 0
+    state_sales_tax: 3_000
+    local_sales_tax: 0
+    state_code: NE
+  output:
+    ne_itemized_deductions: 23_000
+
+- name: Income taxes on Schedule A line 5a are removed when the cap does not bind
+  # Federal: 15,000 interest + 7,000 SALT (2,000 income taxes + 5,000 real
+  # estate taxes) = 22,000. Nebraska: 22,000 - 2,000 = 20,000.
+  period: 2023
+  input:
+    filing_status: SINGLE
+    deductible_interest_expense: 15_000
+    salt_deduction: 7_000
+    real_estate_taxes: 5_000
+    state_withheld_income_tax: 2_000
+    local_income_tax: 0
+    state_sales_tax: 500
+    local_sales_tax: 0
+    state_code: NE
+  output:
+    ne_itemized_deductions: 20_000
+
+- name: Income taxes above the federal SALT cap are removed in full, floored at zero
+  # 2025, single, AGI 700,000. Federal SALT cap: 40,000 - 30% x (700,000 -
+  # 500,000) = -20,000, floored at 10,000. Schedule A line 5a: 35,000 income
+  # taxes; SALT deduction min(35,000 + 30,000, 10,000) = 10,000. Federal
+  # itemized: 10,000 + 20,000 mortgage interest = 30,000 (above the 15,750
+  # federal standard deduction, so the filer itemizes).
+  # Nebraska: 30,000 - 35,000 = -5,000, floored at 0. Taxable income takes the
+  # larger 8,600 standard deduction: 700,000 - 8,600 = 691,400.
+  period: 2025
+  input:
+    filing_status: SINGLE
+    employment_income: 700_000
+    real_estate_taxes: 30_000
+    deductible_mortgage_interest: 20_000
+    state_withheld_income_tax: 35_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: NE
+  output:
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 30_000
+    ne_itemized_deductions: 0
+    ne_taxable_income: 691_400
+
+- name: A binding SALT cap does not shield income taxes below the cap
+  # 2024, single. SALT: min(8,000 income taxes + 5,000 real estate taxes,
+  # 10,000) = 10,000. Federal itemized: 10,000 + 15,000 mortgage interest =
+  # 25,000. Nebraska removes all 8,000 of income taxes: 25,000 - 8,000 =
+  # 17,000.
+  period: 2024
+  input:
+    filing_status: SINGLE
+    employment_income: 100_000
+    real_estate_taxes: 5_000
+    deductible_mortgage_interest: 15_000
+    state_withheld_income_tax: 8_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: NE
+  output:
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 25_000
+    ne_itemized_deductions: 17_000
+
+- name: Income taxes above the cap and above real estate taxes are removed in full
+  # Federal: 15,000 interest + 10,000 capped SALT = 25,000. Income taxes
+  # (12,000) exceed sales taxes (1,000): 25,000 - 12,000 = 13,000.
+  period: 2023
+  input:
+    filing_status: SINGLE
+    deductible_interest_expense: 15_000
+    salt_deduction: 10_000
+    real_estate_taxes: 4_000
+    state_withheld_income_tax: 12_000
+    local_income_tax: 0
+    state_sales_tax: 1_000
+    local_sales_tax: 0
+    state_code: NE
+  output:
+    ne_itemized_deductions: 13_000
+
+- name: Income taxes equal to sales taxes count as sales taxes, so nothing is removed
+  # Income taxes 3,000 = sales taxes 2,000 + 1,000. Line 5a holds 3,000 either
+  # way; a tie counts as sales taxes. SALT: 3,000 + 5,000 real estate taxes =
+  # 8,000. Federal itemized: 8,000 + 15,000 mortgage interest = 23,000.
+  # Nebraska removes nothing: 23,000.
+  period: 2023
+  input:
+    filing_status: SINGLE
+    employment_income: 100_000
+    real_estate_taxes: 5_000
+    deductible_mortgage_interest: 15_000
+    state_withheld_income_tax: 3_000
+    local_income_tax: 0
+    state_sales_tax: 2_000
+    local_sales_tax: 1_000
+    state_code: NE
+  output:
+    salt_deduction: 8_000
+    itemized_taxable_income_deductions: 23_000
+    ne_itemized_deductions: 23_000

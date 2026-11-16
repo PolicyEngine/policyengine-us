@@ -1,0 +1,1 @@
+New Jersey now weighs the change in its refundable child tax credit and child and dependent care credit when choosing between the property tax deduction and the $50 credit, and Nebraska itemized deductions now subtract the full state and local income taxes on Schedule A line 5a from federal itemized deductions, before the federal SALT cap, under Neb. Rev. Stat. 77-2716.01(4).
