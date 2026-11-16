@@ -3,7 +3,7 @@
 # the same $22,000 adult is eligible in 2026 but ineligible in 2025 because
 # the FPG changed (1.38 x 15,960 = 22,024.80 in 2026 vs 1.38 x 15,650 =
 # 21,597 in 2025).
-# CO Medicaid per capita: $12,959,433,815 / 1,185,011 enrolled = $10,936.13.
+# CO Medicaid per capita: $13,918,870,460 / 1,385,822 enrolled = $10,043.76.
 - name: medicaid_adult_below_138pct_fpl_expansion (co)
   period: 2026
   absolute_error_margin: 0.1
@@ -52,8 +52,8 @@
         msp_eligible: false
         # Expansion state: 22,000 / 15,960 = 1.378 FPL < 1.38 -> ADULT
         # (the identical household is ineligible in the TX baseline).
-        # Single enrollee: medicaid = CO per capita 10,936.13.
-        medicaid: 10_936.13
+        # Single enrollee: medicaid = CO per capita 10,043.76.
+        medicaid: 10_043.76
         is_medicaid_eligible: true
         medicaid_category: 4  # ADULT
         chip: 0.0
