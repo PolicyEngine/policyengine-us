@@ -1,3 +1,18 @@
+## [2.140.1] - 2026-11-16
+
+### Fixed
+
+- Corrected Utah's taxpayer credit income-tax subtraction by year and retained the federal itemized deduction limits.
+- Fixed Nebraska's school readiness credit lookup for household members without a worker classification and updated the 2025 classification amounts.
+
+
+## [2.140.0] - 2026-11-16
+
+### Added
+
+- Added a school-meal take-up input with a true default to preserve existing benefit amounts.
+
+
 ## [2.139.1] - 2026-11-16
 
 ### Fixed
