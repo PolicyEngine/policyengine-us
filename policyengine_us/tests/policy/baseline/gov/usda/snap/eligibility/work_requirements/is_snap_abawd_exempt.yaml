@@ -304,3 +304,22 @@
         state_code: TX
   output:
     is_snap_abawd_exempt: true
+
+- name: Case 18, pre-HR1 youth aged 20 in extended foster care is exempt as a former foster youth.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 20
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 7 CFR 273.24(c)(9) includes "those who remain in extended foster care".
+    # was_in_foster_care defaults from the current placement.
+    is_snap_abawd_exempt: true
