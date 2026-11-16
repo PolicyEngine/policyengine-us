@@ -3,9 +3,11 @@
 Separation under 26 U.S.C. 7703 concerns the filer's own marriage, so only
 the head's or the would-be spouse's `is_separated` can leave a tax unit
 without a spouse. The would-be spouse is the oldest head-or-spouse candidate
-other than the head; candidates are adults not input as dependents (every
-adult when all are). These situations omit marital units, so head and
-spouse selection follows age order. Core breaks equal-age ties by member order.
+other than the head who fails the qualifying child age test against them;
+candidates are adults not input as dependents (every adult when all are).
+These situations omit marital units, so the model builds them by the same
+rules and head and spouse selection follows age order. Core breaks equal-age
+ties by member order.
 
 Hypothesis draws batches of tax units of one to five people, with tied ages,
 children, separated members and, in turn, no role inputs, input dependent
