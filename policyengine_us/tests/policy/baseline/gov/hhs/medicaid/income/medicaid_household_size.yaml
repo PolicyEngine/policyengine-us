@@ -387,3 +387,40 @@
     tax_unit_is_filer: false
     medicaid_uses_non_filer_rules: [true, true]
     medicaid_household_size: [2, 2]
+
+- name: Case 14, a marital unit that also lists the child leaves the cohabiting spouse unidentified and counts each member once.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        own_children_in_household: 1
+      person2:
+        age: 35
+        own_children_in_household: 1
+      person3:
+        age: 1
+    marital_units:
+      marital_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit1:
+        members: [person1, person3]
+        cohabitating_spouses: true
+      tax_unit2:
+        members: [person2]
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # A parent's separate-return spouse is the other member of their marital
+    # unit, which here also lists the child, so no member is identified as the
+    # spouse. Each parent counts self, the cohabiting spouse once through the
+    # spouse count, and the child once as a member under 19. Taking the last
+    # member as the spouse would drop the child and give each parent 2. The
+    # child, claimed by one parent while living with both, uses the non-filer
+    # rules: self and both parents.
+    medicaid_uses_non_filer_rules: [true, true, true]
+    medicaid_household_size: [3, 3, 3]

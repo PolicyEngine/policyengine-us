@@ -585,3 +585,91 @@
     # 18-year-old's has the parent: 1,200 + 400 = 1,600 for both. Main gave
     # 2,000 and 2,800.
     medicaid_household_income: [1_600, 1_600]
+
+- name: Non-filer membership counts each income once for married 18-year-old parents on separate returns without the cohabiting flag.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 18
+        own_children_in_household: 1
+        medicaid_household_income_member: 1_200
+        medicaid_uses_non_filer_rules: true
+      parent2:
+        age: 18
+        own_children_in_household: 1
+        medicaid_household_income_member: 2_300
+        medicaid_uses_non_filer_rules: true
+      child:
+        age: 1
+        medicaid_household_income_member: 400
+        medicaid_uses_non_filer_rules: true
+    marital_units:
+      couple:
+        members: [parent1, parent2]
+      child_unit:
+        members: [child]
+    tax_units:
+      return1:
+        members: [parent1, child]
+      return2:
+        members: [parent2]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: CA
+  output:
+    # Without a joint return or the cohabiting flag, neither parent is the
+    # other's identified spouse, so each is the other's relative parent. The
+    # applicant's own amount is netted out of the couple first:
+    # 1,200 + (3,500 - 1,200) + 400 = 3,900, and 2,300 + 1,200 + 400 = 3,900.
+    medicaid_household_size: [3, 3, 3]
+    medicaid_household_income: [3_900, 3_900, 3_900]
+
+- name: Non-filer membership nets each income once when the whole household is listed as one marital unit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandmother:
+        age: 45
+        own_children_in_household: 1
+        medicaid_household_income_member: 0
+        medicaid_uses_non_filer_rules: false
+      parent1:
+        age: 18
+        own_children_in_household: 1
+        is_tax_unit_head: true
+        medicaid_household_income_member: 1_200
+        medicaid_uses_non_filer_rules: true
+      parent2:
+        age: 18
+        own_children_in_household: 1
+        is_tax_unit_spouse: true
+        medicaid_household_income_member: 2_300
+        medicaid_uses_non_filer_rules: true
+      child:
+        age: 1
+        medicaid_household_income_member: 400
+        medicaid_uses_non_filer_rules: true
+    marital_units:
+      household_unit:
+        members: [grandmother, parent1, parent2, child]
+    tax_units:
+      grandmother_unit:
+        members: [grandmother]
+      parents:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [grandmother, parent1, parent2, child]
+        state_code: CA
+  output:
+    # The joint-return spouse shares the listed marital unit with the
+    # grandmother, parent1's parent. A parent's netted share of that unit
+    # leaves out both the applicant and the spouse, so the grandmother adds
+    # her own 0: 1,200 + 2,300 + 0 + 400 = 3,900 for each parent. The child
+    # adds the unit's three parents netted together: 400 + 3,500 = 3,900. The
+    # grandmother's own household is her tax household, with no income.
+    medicaid_household_income: [0, 3_900, 3_900, 3_900]
