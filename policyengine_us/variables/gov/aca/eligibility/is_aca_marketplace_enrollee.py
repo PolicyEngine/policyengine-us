@@ -9,12 +9,21 @@ class is_aca_marketplace_enrollee(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/45/155.305#a",
         "https://www.law.cornell.edu/uscode/text/26/36B#c_1",
+        # The credit's plans are those enrolled in through an Exchange
+        # established by a State (36B(c)(2)(A)); "State" means the 50 States
+        # and the District of Columbia (42 U.S.C. 18024(d)).
+        "https://www.law.cornell.edu/uscode/text/26/36B#c_2_A",
+        "https://www.law.cornell.edu/uscode/text/42/18024#d",
     )
     documentation = (
         "Whether a person is enrolled in a Marketplace plan: the TIN, "
         "immigration-status, other-minimum-essential-coverage and Medicaid "
         "coverage-gap conditions of pays_aca_premium, without its premium "
-        "condition. A child beyond the three oldest is enrolled but pays no "
+        "condition, outside Puerto Rico, Guam and the Virgin Islands, which "
+        "have no Exchange. A supplied pays_aca_premium of true still marks an "
+        "enrollee there, as it does for every other condition; the credit "
+        "stays 0, because the territories' infinite income fraction fails "
+        "the income test. A child beyond the three oldest is enrolled but pays no "
         "age-rated premium (45 CFR 147.102(c)(1)); pays_aca_premium is this "
         "variable restricted to those who pay one. So a supplied "
         "pays_aca_premium of true also marks an enrollee."
@@ -54,7 +63,22 @@ class is_aca_marketplace_enrollee(Variable):
             & ~below_fpl_exception
         )
 
-        enrolled = is_status_eligible & is_coverage_eligible & ~in_coverage_gap
+        # Puerto Rico, Guam and the Virgin Islands have no Exchange: 36B(c)(2)(A)
+        # counts plans enrolled in through an Exchange established by a State,
+        # and 42 U.S.C. 18024(d) defines a State as the 50 States and the
+        # District of Columbia. So nobody in them enrolls in a Marketplace
+        # plan.
+        state_group = person.household("state_group", period)
+        groups = state_group.possible_values
+        has_exchange = (
+            (state_group != groups.GU)
+            & (state_group != groups.PR)
+            & (state_group != groups.VI)
+        )
+
+        enrolled = (
+            is_status_eligible & is_coverage_eligible & ~in_coverage_gap & has_exchange
+        )
         # Everyone who pays an age-rated premium is an enrollee, so a supplied
         # pays_aca_premium of true marks one. The formula of pays_aca_premium
         # reads this variable, so only a supplied value is read.
