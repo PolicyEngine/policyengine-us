@@ -1,3 +1,10 @@
+## [2.140.0] - 2026-11-16
+
+### Added
+
+- Added a school-meal take-up input with a true default to preserve existing benefit amounts.
+
+
 ## [2.139.1] - 2026-11-16
 
 ### Fixed
