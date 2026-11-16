@@ -1,3 +1,24 @@
+## [2.138.2] - 2026-11-16
+
+### Fixed
+
+- The premium tax credit's poverty line (aca_fpg) uses the state of residence in the coverage year, so Alaska and Hawaii households use their own guidelines when the state is supplied only for the coverage year. Households in Puerto Rico, Guam and the Virgin Islands, which have no poverty guideline and no Exchange, are not Marketplace enrollees, pay no Marketplace premium and are not eligible for the credit.
+
+
+## [2.138.1] - 2026-11-16
+
+### Fixed
+
+- Updated WIC cash-value benefits for fiscal years 2022, 2023, and 2027 and replaced the voucher embedded in 2018 package values from October 2021.
+
+
+## [2.138.0] - 2026-11-16
+
+### Added
+
+- Recorded Louisiana's 2021–2024 exemption treatment for claimable filers whose claimants meet the filing exception.
+
+
 ## [2.137.9] - 2026-11-16
 
 ### Fixed
