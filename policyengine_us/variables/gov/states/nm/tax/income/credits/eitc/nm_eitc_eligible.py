@@ -15,4 +15,12 @@ class nm_eitc_eligible(Variable):
         investment_income_eligible = tax_unit("eitc_investment_income_eligible", period)
         demographic_eligible = tax_unit("nm_eitc_demographic_eligible", period)
         marital_eligible = tax_unit("eitc_marital_eligible", period)
-        return demographic_eligible & investment_income_eligible & marital_eligible
+        eligible = demographic_eligible & investment_income_eligible & marital_eligible
+        p = parameters(period).gov.states.nm.tax.income.credits.eitc.eligibility
+        if p.filer_ssn_required:
+            # The helper checks card categories only, not issuance timing,
+            # return inclusion or ITIN validity.
+            return eligible & tax_unit(
+                "filer_meets_eitc_identification_requirements", period
+            )
+        return eligible
