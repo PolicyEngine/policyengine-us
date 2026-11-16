@@ -20,7 +20,7 @@ class medicaid_medically_needy_income_limit(Variable):
         state = person.household("state_code_str", period)
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
         # the individual or the married couple, not the tax filing unit.
-        is_couple = person.marital_unit.nb_persons() == 2
+        is_couple = person("medicaid_medically_needy_uses_couple_standard", period)
         # Some states apply the one-person limit to a couple.
         same_limit = p.couple_uses_individual_limit[state].astype(bool)
         uses_couple_limit = is_couple & ~same_limit

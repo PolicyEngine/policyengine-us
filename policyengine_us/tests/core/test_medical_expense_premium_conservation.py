@@ -370,7 +370,7 @@ DEPENDENT_ELSEWHERE_STATE_CASES = [
 
 
 def _state_simulation(cases, reference_system, with_se_deduction):
-    people, tax_units, households, marital_units = {}, {}, {}, {}
+    people, tax_units, spm_units, households, marital_units = {}, {}, {}, {}, {}
     expectations = {
         "nd_renters_refund_income": [],
         "nm_medical_expense_credit": [],
@@ -432,6 +432,10 @@ def _state_simulation(cases, reference_system, with_se_deduction):
                     ),
                     "employment_income": case["income"] if person_index == 0 else 0,
                     "medicare_enrolled": False,
+                    # NDCC 57-02-08.1(5)(c) also counts public assistance. These
+                    # households receive none, so the ND expectation tests the
+                    # medical base alone.
+                    "ssi": 0,
                     premium_variable: premiums[position],
                     "other_medical_expenses": other[position],
                 }
@@ -451,6 +455,7 @@ def _state_simulation(cases, reference_system, with_se_deduction):
             if supplied:
                 tax_unit["itemized_medical_expenses"] = {PERIOD: case["subtotal"]}
             tax_units[unit_name] = tax_unit
+            spm_units[unit_name] = {"members": names, "tanf": {PERIOD: 0}}
             households[unit_name] = {"members": names, "state_code": {PERIOD: state}}
             accounting["main_base"].append(main_base)
             accounting["gross"].append(gross)
@@ -478,6 +483,7 @@ def _state_simulation(cases, reference_system, with_se_deduction):
         situation={
             "people": people,
             "tax_units": tax_units,
+            "spm_units": spm_units,
             "households": households,
             "marital_units": marital_units,
         },

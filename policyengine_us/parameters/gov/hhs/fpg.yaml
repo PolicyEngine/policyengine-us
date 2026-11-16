@@ -56,8 +56,9 @@ first_person:
   VI:
     2024-01-01: 0
 additional_person:
-  # Calculated by subtracting a two-person household's line from a one-person's.
-  # This difference is always the same for larger households.
+  # HHS publishes these amounts for each additional person. In 2016, the
+  # difference between the first two rows does not define a uniform increment:
+  # use fpg_table for sizes 1-8 and these amounts for each person beyond eight.
   CONTIGUOUS_US:
     1992-01-01: 2_380
     2011-01-01: 3_820
@@ -94,7 +95,7 @@ additional_person:
     2015-01-01: 4_780
     2016-01-01: 4_780
     2017-01-01: 4_810
-    2018-01-01: 4_810
+    2018-01-01: 4_970
     2019-01-01: 5_080
     2020-01-01: 5_150
     2021-01-01: 5_220
@@ -124,6 +125,8 @@ metadata:
       href: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/prior-hhs-poverty-guidelines-federal-register-references
     - title: Poverty Guidelines
       href: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines
+    - title: Annual Update of the HHS Poverty Guidelines, 83 FR 2642-2644
+      href: https://www.govinfo.gov/content/pkg/FR-2018-01-18/pdf/2018-00814.pdf#page=2
   period: year
   label: Federal poverty guidelines
   breakdown:

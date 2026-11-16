@@ -4,7 +4,7 @@ values:
     - mt_disability_income_exclusion_person
     - mt_unemployment_compensation_subtraction
     - mt_other_subtractions
-  2021-01-01:
+  2017-01-01:
     - mt_interest_exemption_person
     - us_govt_interest_person
     - mt_tuition_subtraction_person
@@ -44,6 +44,12 @@ metadata:
   period: year
   label: Montana adjusted gross income subtractions
   reference:
+    - title: 2017 Montana Form 2 instructions, Schedule II, lines 1 and 6
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=21
+    - title: 2017 Montana Form 2 instructions, Schedule II, line 12
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=23
+    - title: 2017 Montana Form 2 instructions, Schedule II, line 20
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=25
     - title: 2021 Montana Form 2 | Montana Subtractions Schedule
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=24
     - title: 2022 Montana Form 2 | Montana Subtractions Schedule

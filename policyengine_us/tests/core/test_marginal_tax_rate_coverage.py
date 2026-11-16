@@ -179,6 +179,7 @@ def test_raising_the_cap_only_adds_people(mtr_by_cap, variable):
 # wages less the $14,600 standard deduction ($75,400, $45,400, $15,400), so a
 # $1,000 raise is taxed at 22%, 12% and 12%, plus 7.65% employee payroll tax.
 # Nobody crosses a bracket or payroll threshold, and Texas has no income tax.
+# Each has employer coverage, so no premium tax credit phases out with a raise.
 ROOMMATE_WAGES = (90_000, 60_000, 30_000)
 ROOMMATE_RATES = {
     "marginal_tax_rate": (0.2965, 0.1965, 0.1965),
@@ -193,7 +194,11 @@ def test_roommates_match_hand_computed_rates(cap):
     names = [f"roommate{i}" for i in range(len(ROOMMATE_WAGES))]
     situation = {
         "people": {
-            name: {"age": {YEAR: 40 - 5 * i}, "employment_income": {YEAR: wages}}
+            name: {
+                "age": {YEAR: 40 - 5 * i},
+                "employment_income": {YEAR: wages},
+                "has_esi": {YEAR: True},
+            }
             for i, (name, wages) in enumerate(zip(names, ROOMMATE_WAGES))
         },
         "tax_units": {f"{name}_tax_unit": {"members": [name]} for name in names},

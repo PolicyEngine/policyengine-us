@@ -1,6 +1,8 @@
 """Regression coverage for state parameter uprating and rounding."""
 
-from math import isinf
+from decimal import ROUND_HALF_DOWN, Decimal
+from fractions import Fraction
+from math import floor, isinf
 
 import pytest
 
@@ -11,14 +13,22 @@ def _thresholds(scale, period, bracket_indexes=(1, 2, 3)):
     return tuple(scale.brackets[index].threshold(period) for index in bracket_indexes)
 
 
-def test_ar_income_tax_bounds_round_to_nearest_100_after_last_published_year():
+def _nearest_100_half_down(amount):
+    # Independent of round_ar_income_tax_bound: decimal half-down rounding
+    # after rounding the float product to the cent.
+    cents = Decimal(str(round(amount, 2)))
+    return int((cents / 100).quantize(Decimal(1), rounding=ROUND_HALF_DOWN) * 100)
+
+
+def test_ar_income_tax_bounds_round_to_nearest_100_from_2026():
     # A.C.A. 26-51-201(d)(1): bracket amounts are indexed "rounding to the
-    # nearest one hundred dollars ($100)". Expected values follow the loaded
-    # index, so a CPI refresh moves them without breaking the test.
+    # nearest one hundred dollars ($100)"; DFA rounded exact $50 ties down.
+    # PolicyEngine selects 2026 for the first adjustment. Each annual step
+    # adjusts the preceding rounded bound, starting from Act 1's tables.
     main = SYSTEM.parameters.gov.states.ar.tax.income.rates.main
-    uprating = SYSTEM.parameters.gov.irs.uprating
+    uprating = SYSTEM.parameters.gov.states.ar.tax.income.uprating
     high_income = main.high_income
-    bounds_2026 = {
+    act_1_of_2026 = {
         "rate": (main.rate, (1, 2, 3, 4), (5_600, 11_200, 16_000, 26_400)),
         "high-income threshold": (None, None, (94_700,)),
         "(B) 2% row top": (high_income.rate, (1,), (4_700,)),
@@ -28,22 +38,28 @@ def test_ar_income_tax_bounds_round_to_nearest_100_after_last_published_year():
             tuple(range(94_700, 97_601, 100)),
         ),
     }
+    previous = {name: bases for name, (_, _, bases) in act_1_of_2026.items()}
     differs_from_rounding_down = False
-    for year in range(2027, 2036):
+    for year in range(2026, 2036):
         period = f"{year}-01-01"
-        factor = uprating(period) / uprating("2026-01-01")
-        for name, (scale, indexes, bases) in bounds_2026.items():
+        factor = uprating(period) / uprating(f"{year - 1}-01-01")
+        for name, (scale, indexes, bases) in act_1_of_2026.items():
             if scale is None:
                 loaded = (high_income.threshold(period),)
             else:
                 loaded = _thresholds(scale, period, indexes)
-            expected = tuple(round(base * factor / 100) * 100 for base in bases)
+            expected = tuple(
+                _nearest_100_half_down(bound * factor) for bound in previous[name]
+            )
             assert loaded == expected, (year, name)
-            rounded_down = tuple(base * factor // 100 * 100 for base in bases)
+            rounded_down = tuple(
+                bound * factor // 100 * 100 for bound in previous[name]
+            )
             differs_from_rounding_down |= loaded != rounded_down
+            previous[name] = expected
         assert isinf(main.rate.brackets[5].threshold(period))
         assert isinf(main.rate.brackets[6].threshold(period))
-    # With 2027's factor, 5,600 x 1.0298 = 5,766.9 rounds up to 5,800.
+    # In 2026, 3% takes $5,600 to $5,768, rounded to $5,800.
     assert differs_from_rounding_down
 
 
@@ -279,26 +295,30 @@ def test_az_standard_deduction_is_indexed_like_the_federal_basic_amount(status):
     # equal the federal ones in every later year. A parent-level uprating key
     # used to leave Arizona at its 2025 amounts from 2026 on. 2027 is the
     # federal amount in Rev. Proc. 2026-35 sec. 3.15(1). After 2027 this checks
-    # the model's projection, which uprates the rounded 2027 amount.
+    # the model's projection: 26 U.S.C. 63(c)(7)(B)(ii) adds to the 2025 amount
+    # its cost-of-living increase since calendar year 2024 (the index's 2025
+    # value), rounded down to a multiple of $50.
     arizona = getattr(
         SYSTEM.parameters.gov.states.az.tax.income.deductions.standard.amount, status
     )
     federal = getattr(SYSTEM.parameters.gov.irs.deductions.standard.amount, status)
     uprating = SYSTEM.parameters.gov.irs.uprating
-    base_2027 = arizona("2027-01-01")
-    previous = arizona("2025-01-01")
-    for year in range(2025, 2036):
+    base = arizona("2025-01-01")
+    previous = base
+    for year in range(2025, 2101):
         period = f"{year}-01-01"
         amount = arizona(period)
         assert amount == federal(period), (status, year)
         assert amount >= previous, (status, year)
         previous = amount
         if year > 2027:
-            # 26 U.S.C. 63(c)(7)(B)(ii): round increases down to a multiple
-            # of $50.
-            factor = uprating(period) / uprating("2027-01-01")
-            assert amount == base_2027 * factor // 50 * 50, (status, year)
-    assert arizona("2035-01-01") > base_2027
+            increase = Fraction(base) * (
+                Fraction(repr(uprating(period)))
+                / Fraction(repr(uprating("2025-01-01")))
+                - 1
+            )
+            assert amount == base + floor(increase / 50) * 50, (status, year)
+    assert arizona("2035-01-01") > arizona("2027-01-01")
 
 
 def test_az_joint_standard_deduction_is_twice_the_single_amount():
@@ -306,6 +326,10 @@ def test_az_joint_standard_deduction_is_twice_the_single_amount():
     # return is 200% of the single amount, so the Arizona joint amount,
     # indexed in the same manner, is twice the Arizona single amount.
     amount = SYSTEM.parameters.gov.states.az.tax.income.deductions.standard.amount
-    for year in range(2025, 2036):
+    assert amount.JOINT.metadata["uprating"] == {
+        "parameter": "gov.states.az.tax.income.deductions.standard.amount.SINGLE",
+        "rounding": {"type": "nearest", "interval": 100},
+    }
+    for year in range(2025, 2101):
         period = f"{year}-01-01"
         assert amount.JOINT(period) == 2 * amount.SINGLE(period), year

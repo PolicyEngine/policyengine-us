@@ -21,6 +21,7 @@ class ny_itemized_deductions_max(Variable):
     - Medical expenses deductible above 10% of AGI (not the 7.5% floor)
     - Miscellaneous deductions still allowed with 2% AGI floor
     - Casualty losses not limited to federally declared disasters
+    - Gambling losses up to winnings, without the 90% limit from 2026
     - Mortgage interest under the pre-TCJA acquisition and home equity
       debt limits (ny_interest_deduction)
     - NY-specific college tuition deduction addition per § 615(d)
@@ -35,6 +36,7 @@ class ny_itemized_deductions_max(Variable):
         "ny_salt_deduction",
         "ny_misc_deduction",
         "ny_casualty_loss_deduction",
+        "ny_wagering_losses_deduction",
         # NY-specific addition per Tax Law § 615(d)
         "ny_college_tuition_deduction",
     ]

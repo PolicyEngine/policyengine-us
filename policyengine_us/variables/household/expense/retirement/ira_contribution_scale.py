@@ -33,7 +33,10 @@ class ira_contribution_scale(Variable):
             ("roth_ira_contributions", "roth_ira_contributions_desired"),
         ):
             if supplied[name] is None:
-                generated_desired = generated_desired + person(desired, period)
+                amount = person(desired, period)
+                if name == "traditional_ira_contributions":
+                    amount = amount * person("traditional_ira_age_eligible", period)
+                generated_desired = generated_desired + amount
             else:
                 supplied_own = supplied_own + max_(supplied[name], 0)
         available = max_(person("ira_contribution_limit", period) - supplied_own, 0)

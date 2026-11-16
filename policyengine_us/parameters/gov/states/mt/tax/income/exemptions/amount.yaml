@@ -1,10 +1,22 @@
 description: Montana deducts this amount for each eligible exemption when computing taxable income.
 values:
+  2017-01-01: 2_400
+  2018-01-01: 2_440
+  2019-01-01: 2_510
+  2020-01-01: 2_560
   2021-01-01: 2_580
   2022-01-01: 2_710
   2023-01-01: 2_960
 metadata:
   reference:
+    - title: 2017 Montana Form 2 instructions, personal exemptions
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2017_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=11
+    - title: 2018 Montana Form 2 instructions, personal exemptions
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2018_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=13
+    - title: 2019 Montana Form 2 instructions, personal exemptions
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2019_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=14
+    - title: 2020 Montana Form 2 instructions, personal exemptions
+      href: https://revenuefiles.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2020_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=13
     - title: "Montana Tax Form 2021 | Exemptions | Line 16"
       href: https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1
     - title: "Montana Tax Form 2022 | Exemptions | Line 16"
