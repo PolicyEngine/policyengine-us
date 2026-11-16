@@ -755,3 +755,189 @@
         state_code: TX
   output:
     tip_income_deduction: 4_000
+
+# Annual history: P.L. 119-21 sections 70201(j) and 70202(h) apply after 2024.
+
+- name: 2017 tip deduction follows its statutory effective date.
+  period: 2017
+  input:
+    people:
+      worker:
+        age: 40
+        tip_income: 10000
+        ssn_card_type: CITIZEN
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        adjusted_gross_income: 60000
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    tip_income_deduction: 0
+
+- name: 2018 tip deduction follows its statutory effective date.
+  period: 2018
+  input:
+    people:
+      worker:
+        age: 40
+        tip_income: 10000
+        ssn_card_type: CITIZEN
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        adjusted_gross_income: 60000
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    tip_income_deduction: 0
+
+- name: 2019 tip deduction follows its statutory effective date.
+  period: 2019
+  input:
+    people:
+      worker:
+        age: 40
+        tip_income: 10000
+        ssn_card_type: CITIZEN
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        adjusted_gross_income: 60000
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    tip_income_deduction: 0
+
+- name: 2020 tip deduction follows its statutory effective date.
+  period: 2020
+  input:
+    people:
+      worker:
+        age: 40
+        tip_income: 10000
+        ssn_card_type: CITIZEN
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        adjusted_gross_income: 60000
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    tip_income_deduction: 0
+
+- name: 2021 tip deduction follows its statutory effective date.
+  period: 2021
+  input:
+    people:
+      worker:
+        age: 40
+        tip_income: 10000
+        ssn_card_type: CITIZEN
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        adjusted_gross_income: 60000
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    tip_income_deduction: 0
+
+- name: 2022 tip deduction follows its statutory effective date.
+  period: 2022
+  input:
+    people:
+      worker:
+        age: 40
+        tip_income: 10000
+        ssn_card_type: CITIZEN
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        adjusted_gross_income: 60000
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    tip_income_deduction: 0
+
+- name: 2023 tip deduction follows its statutory effective date.
+  period: 2023
+  input:
+    people:
+      worker:
+        age: 40
+        tip_income: 10000
+        ssn_card_type: CITIZEN
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        adjusted_gross_income: 60000
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    tip_income_deduction: 0
+
+- name: 2026 tip deduction follows its statutory effective date.
+  period: 2026
+  input:
+    people:
+      worker:
+        age: 40
+        tip_income: 10000
+        ssn_card_type: CITIZEN
+        treasury_tipped_occupation_code: 102
+    tax_units:
+      unit:
+        members:
+        - worker
+        filing_status: SINGLE
+        adjusted_gross_income: 60000
+    households:
+      household:
+        members:
+        - worker
+        state_code: TX
+  output:
+    tip_income_deduction: 10000

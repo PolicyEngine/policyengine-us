@@ -1,5 +1,6 @@
 description: The US limits annual additions to a defined contribution plan to this amount.
 values:
+  2017-01-01: 54_000
   2018-01-01: 55_000
   2019-01-01: 56_000
   2020-01-01: 57_000
@@ -19,6 +20,8 @@ metadata:
       type: downwards
       interval: 1000
   reference:
+  - title: IRS Notice 2016-62
+    href: https://www.irs.gov/pub/irs-drop/n-16-62.pdf#page=1
   - title: 26 U.S. Code § 415 - Limitations on benefits and contributions under qualified plans
     href: https://www.law.cornell.edu/uscode/text/26/415
   - title: Cost-of-Living Adjustments for Retirement Items
