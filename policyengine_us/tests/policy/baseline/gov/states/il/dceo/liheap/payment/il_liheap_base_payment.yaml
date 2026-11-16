@@ -488,3 +488,66 @@
     # the canonical heating_type (gas bill 2_000): min(840, 2_000) = 840
     il_liheap_heating_type: ALL_ELECTRIC
     il_liheap_base_payment: 840
+
+- name: An Illinois household receives its base payment alone.
+  period: 2026
+  input:
+    state_code: IL
+    age: 40
+    irs_gross_income: 0
+    heating_expense_person: 2_000
+  output:
+    # All-electric, bracket 1, size 1: min(910, 2_000) = 910.
+    il_liheap_income_bracket: 1
+    il_liheap_base_payment: 910
+
+- name: An Illinois household retains its base payment beside households in other states.
+  period: 2026
+  input:
+    state_code: [IL, NY, DC]
+    age: [40, 40, 40]
+    irs_gross_income: [0, 0, 0]
+    heating_expense_person: [2_000, 2_000, 2_000]
+  output:
+    # Illinois receives min(910, 2_000) = 910; the state mask zeroes NY and DC.
+    il_liheap_income_bracket: [1, 0, 0]
+    il_liheap_base_payment: [910, 0, 0]
+
+- name: An over-income Illinois household retains its base amount alone.
+  period: 2026
+  input:
+    state_code: IL
+    age: 40
+    irs_gross_income: 100_000
+    heating_expense_person: 2_000
+  output:
+    # The base formula has no income eligibility mask: bracket 4, size 1
+    # gives min(325, 2_000) = 325, while the total benefit remains zero.
+    il_liheap_income_bracket: 4
+    il_liheap_base_payment: 325
+    il_liheap: 0
+
+- name: An over-income Illinois household retains its base amount beside a New York household.
+  period: 2026
+  input:
+    state_code: [IL, NY]
+    age: [40, 40]
+    irs_gross_income: [100_000, 0]
+    heating_expense_person: [2_000, 2_000]
+  output:
+    # Illinois retains min(325, 2_000) = 325; NY receives zero.
+    # Neither household qualifies for the Illinois total benefit.
+    il_liheap_income_bracket: [4, 0]
+    il_liheap_base_payment: [325, 0]
+    il_liheap: [0, 0]
+
+- name: Illinois bounds matrix keys and preserves both endpoint rows.
+  period: 2026
+  input:
+    state_code: [IL, IL, IL, IL]
+    il_liheap_income_bracket: [0, 1, 4, 5]
+    heating_expense_person: [2_000, 2_000, 2_000, 2_000]
+  output:
+    # Clip brackets to [1, 1, 4, 4]; all-electric, size 1 pays
+    # min(910, 2_000) = 910 at bracket 1 and min(325, 2_000) = 325 at 4.
+    il_liheap_base_payment: [910, 910, 325, 325]
