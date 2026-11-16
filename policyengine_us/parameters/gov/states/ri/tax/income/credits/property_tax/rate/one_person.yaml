@@ -9,6 +9,18 @@ metadata:
     - title: Property Tax Relief R.I. Gen. Laws § 44-33-9 Computation of credit.
       href: https://webserver.rilegislature.gov/Statutes/TITLE44/44-33/44-33-9.htm
     # the credit shall be increased, at a minimum, to the maximum amount to the nearest five dollars ($5.00) increment
+    - title: 2015 Form RI-1040H Rhode Island Property Tax Relief Claim
+      href: https://tax.ri.gov/forms/2015/Income/2015%201040H_mmm.pdf#page=3
+    - title: 2016 Form RI-1040H Rhode Island Property Tax Relief Claim
+      href: https://tax.ri.gov/forms/2016/Income/2016%201040H_h.pdf#page=3
+    - title: 2017 Form RI-1040H Rhode Island Property Tax Relief Claim
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/forms/2017/Income/2017-1040H_m.pdf#page=3
+    - title: 2018 Form RI-1040H Rhode Island Property Tax Relief Claim
+      href: https://tax.ri.gov/forms/2018/Income/2018%20RI-1040H_m.pdf#page=3
+    - title: 2019 Form RI-1040H Rhode Island Property Tax Relief Claim
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/forms/2019/Income/2019-RI-1040H_m.pdf#page=3
+    - title: 2020 Form RI-1040H Rhode Island Property Tax Relief Claim
+      href: https://tax.ri.gov/forms/2020/Income/2020%20RI-1040H_w.pdf#page=3
     - title: 2021 Form RI-1040H Rhode Island Property Tax Relief Claim
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-1040h_w.pdf#page=3
     - title: 2022 Form RI-1040H Rhode Island Property Tax Relief Claim
@@ -80,5 +92,6 @@ brackets:
           rounding:
             type: downwards
             interval: 5
+    # The highest admitted income band still uses the six-percent rate.
     amount:
-      2021-01-01: 0
+      2021-01-01: 0.06
