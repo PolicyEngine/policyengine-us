@@ -3,8 +3,8 @@ description: Rhode Island provides this enhancement with a primary heating grant
 # as an unverified estimate. DHS's FFY2027 filing (Docket 26-34-GE, October 2,
 # 2026, page 2) gives one additional credit to accounts receiving a 2027 primary
 # benefit but leaves the amount to DHS, so $350 in FY2027 is an unverified estimate.
-# It is not part of the federal fuel matrix or a crisis/cooling grant. Provider and
-# actual federal-grant account routing are input limits.
+# Block Island and Clear River electric accounts are excluded in the formula.
+# Actual federal-grant account routing remains assumed from the payment route.
 values:
   2025-10-01: 350
 
