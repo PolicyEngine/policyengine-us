@@ -44,8 +44,8 @@ checked on every run:
    included) and every parsed value and key (escapes, binary, sets) carry no
    decision-queue ids, session ids, local paths or email addresses.
 6. No file under ``source_conflicts/sources/`` contains a bot-manager marker
-   or a base64 token that decodes to UUID + "$" + IPv4, in its raw bytes or
-   after one round of percent-decoding.
+   in its raw bytes, or a base64 token that decodes to UUID + "$" + IPv4 in
+   its raw bytes or after one round of percent-decoding.
 
 These are structural checks: they tie markers, the register and the backlog
 together; they do not judge whether code follows a statute. rulespec-us's own
