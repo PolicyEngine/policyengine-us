@@ -3,8 +3,9 @@
 # - IL adopted the ACA expansion, so the $22,000 adult is covered through
 #   the last adult age (64).
 # - At 65 the adult category ends and IL's optional senior pathway takes
-#   over (income limit 1.00 FPL with a $25/month disregard; asset limit
-#   $17,500 since 2024 vs $2,000 in most states).
+#   over for the $18,000 senior case (income limit 1.00 FPL, with income
+#   counted under IL's AABD rules; asset limit $17,500 since 2024 vs $2,000
+#   in most states).
 # IL Medicaid per capita: $32,282,765,114 / 3,243,413 enrolled = $9,953.33.
 - name: medicaid_adult_age_64_last_adult_age_expansion (il)
   period: 2026
@@ -78,7 +79,11 @@
         is_disabled: false
         is_pregnant: false
         immigration_status_str: CITIZEN
-        employment_income_before_lsr: 22_000
+        # $18,000 rather than the age-64 case's $22,000: IL counts $22,000 of
+        # wages as about 18,791.79 a year, over its 1.00 FPL standard (89 Ill.
+        # Adm. Code 120.20), so at that income the senior pathway needs a
+        # spenddown (120.10(d)).
+        employment_income_before_lsr: 18_000
         is_medicare_eligible: true
         # Pin 0 quarters so QMB covers the full Part A premium; the model
         # defaults to 40 (premium-free Part A) when quarters are not sent.
@@ -118,10 +123,12 @@
         msp: 9_214.8
         msp_eligible: true
         # Age boundary pin: at 65 the ADULT expansion category ends and the
-        # optional senior pathway takes over. Countable income
-        # (22,000 - 300 IL disregard - 780 earned-income exclusion) / 2 =
-        # 10,460 < 15,960 (IL 1.00 FPL limit), and $5,000 resources pass
-        # IL's $17,500 asset limit (they would fail TX's $2,000).
+        # optional senior pathway takes over. IL's countable income: 18,000
+        # - 300 ($25/month exemption) - 600 ($20 + half of the next $60 of
+        # earnings a month) - 1,116 Social Security tax - 746.21 estimated IL
+        # withholding = 15,237.79 <= 15,960 (IL 1.00 FPL limit; 89 Ill. Adm.
+        # Code 120.20, 120.362, 120.370(a)), and $5,000 resources pass IL's
+        # $17,500 asset limit (they would fail TX's $2,000).
         # Single enrollee: medicaid = IL per capita 9,953.33.
         medicaid: 9_953.33
         is_medicaid_eligible: true
