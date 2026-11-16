@@ -1,3 +1,10 @@
+## [2.138.3] - 2026-11-16
+
+### Fixed
+
+- Corrected school meal income exclusions, business loss floors, and recurring state cash supplements while separating CSFP and CVRP income calculations.
+
+
 ## [2.138.2] - 2026-11-16
 
 ### Fixed
