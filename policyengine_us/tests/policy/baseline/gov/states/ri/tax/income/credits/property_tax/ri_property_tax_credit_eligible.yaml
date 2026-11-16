@@ -406,3 +406,178 @@
     # not disabled, so the household has no claimant.
     ri_property_tax_credit_eligible: false
     ri_property_tax_credit: 0
+
+# 2025 RI-1040H, Part 1E and physical page 3: household income is
+# $40,730.00 or less. These fractional cases preserve the existing raw
+# engine precision; they do not assert a rule for rounding a filed return.
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/2026-01/2025%201040H_w.pdf
+- name: Case 18, one-person raw income one cent below the inclusive ceiling qualifies.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 4_000
+        rent: 0
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_property_tax_household_income: 40_729.99
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: true
+
+- name: Case 19, one-person raw income at the inclusive ceiling qualifies.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 4_000
+        rent: 0
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_property_tax_household_income: 40_730
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: true
+
+- name: Case 20, one-person raw income one cent above the ceiling does not qualify.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 4_000
+        rent: 0
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_property_tax_household_income: 40_730.01
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: false
+
+- name: Case 21, one-person raw income fifty cents above the ceiling is not rounded down.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 4_000
+        rent: 0
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_property_tax_household_income: 40_730.50
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: false
+
+- name: Case 22, one-person raw income at the next whole dollar does not qualify.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 4_000
+        rent: 0
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ri_property_tax_household_income: 40_731
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: false
+
+- name: Case 23, joint household raw income at the same inclusive ceiling qualifies.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 4_000
+        rent: 0
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 40
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ri_property_tax_household_income: 40_730
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: true
+
+- name: Case 24, joint household raw income one cent above the ceiling does not qualify.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 4_000
+        rent: 0
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 40
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ri_property_tax_household_income: 40_730.01
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: false
