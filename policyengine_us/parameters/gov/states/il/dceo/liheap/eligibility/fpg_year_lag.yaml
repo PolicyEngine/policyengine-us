@@ -1,0 +1,11 @@
+description: Illinois uses federal poverty guidelines from this many calendar years before the benefit year for provider-related income limits under the Low Income Home Energy Assistance Program.
+# Annual model year 2027 represents PY2027 and uses the published 2026 guideline.
+values:
+  2026-10-01: 1
+metadata:
+  unit: year
+  period: year
+  label: Illinois LIHEAP provider income-limit guideline lag
+  reference:
+    - title: Illinois DCEO PY2027 application and income eligibility
+      href: https://dceo.illinois.gov/communityservices/utilitybillassistance/howtoapply.html

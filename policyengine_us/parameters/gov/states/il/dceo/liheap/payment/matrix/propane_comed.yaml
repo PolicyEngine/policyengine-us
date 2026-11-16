@@ -1,0 +1,64 @@
+# Preserve printed TOTAL cells, including discrepancies from component sums.
+description: Illinois provides these propane comed heating-payment amounts under the Low Income Home Energy Assistance Program.
+1:
+  1:
+    '2025-10-01': 1461
+  2:
+    '2025-10-01': 1516
+  3:
+    '2025-10-01': 1572
+  4:
+    '2025-10-01': 1627
+  5:
+    '2025-10-01': 1693
+  6:
+    '2025-10-01': 1751
+2:
+  1:
+    '2025-10-01': 631
+  2:
+    '2025-10-01': 661
+  3:
+    '2025-10-01': 717
+  4:
+    '2025-10-01': 772
+  5:
+    '2025-10-01': 802
+  6:
+    '2025-10-01': 858
+3:
+  1:
+    '2025-10-01': 445
+  2:
+    '2025-10-01': 461
+  3:
+    '2025-10-01': 471
+  4:
+    '2025-10-01': 481
+  5:
+    '2025-10-01': 492
+  6:
+    '2025-10-01': 522
+4:
+  1:
+    '2025-10-01': 335
+  2:
+    '2025-10-01': 360
+  3:
+    '2025-10-01': 393
+  4:
+    '2025-10-01': 426
+  5:
+    '2025-10-01': 461
+  6:
+    '2025-10-01': 484
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Illinois LIHEAP propane comed payment
+  reference:
+  - title: 'Illinois FY2026 provider-related heating benefit matrices #page 1-2'
+    href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=1
+  - title: 'Illinois PY2027 final benefit matrix #page 1-2'
+    href: https://ilvalley-edc.org/wp-content/uploads/2026/06/2027-LIHEAP-Benefit-Matrix-FINAL-20260616.pdf#page=1
