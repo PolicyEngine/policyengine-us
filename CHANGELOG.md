@@ -1,3 +1,10 @@
+## [2.137.9] - 2026-11-16
+
+### Fixed
+
+- Build omitted household marital units from explicit couples, supplied tax roles, a married family or joint and separate filing statuses, and otherwise pair the head and spouse the tax-role fallback infers, instead of putting everyone in one marital unit.
+
+
 ## [2.137.8] - 2026-11-16
 
 ### Fixed
