@@ -8,6 +8,7 @@ class reduced_price_school_meals(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
+    defined_for = "takes_up_school_meals_if_eligible"
     label = "reduced price school meals"
     unit = USD
     documentation = (
