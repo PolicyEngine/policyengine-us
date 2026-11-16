@@ -360,26 +360,57 @@
     # https://www.irs.gov/pub/irs-prior/i8962--2017.pdf#page=7
     aca_fpg: 20_020
 
-- name: A 2015 Guam return reads the zero placeholder at the 2014 guideline date
+- name: A 2015 Guam return has a poverty line of zero
   period: 2015
   input:
     aca_tax_family_size: 1
     state_code: GU
   output:
     # HHS left its 2014 guidelines "not defined for Puerto Rico or other
-    # outlying jurisdictions" (79 FR 3594), and the guideline parameter holds
-    # a zero placeholder for Guam: 0 + 0 * (1 - 1) = 0.
+    # outlying jurisdictions" (79 FR 3594), and gov.hhs.fpg holds no Guam
+    # value at the 2014 date. aca_fpg looks Guam up under the 48 states'
+    # 2014 guideline, 11,670 + 4,060 * (1 - 1) = 11,670, and returns 0.
     # https://www.govinfo.gov/content/pkg/FR-2014-01-22/pdf/2014-01303.pdf#page=2
     aca_fpg: 0
 
-- name: A 2014 Puerto Rico return reads the zero placeholder at the 2013 guideline date
+- name: A 2014 Puerto Rico return has a poverty line of zero
   period: 2014
   input:
     aca_tax_family_size: 2
     state_code: PR
   output:
     # HHS left its 2013 guidelines "not defined for Puerto Rico or other
-    # outlying jurisdictions" (78 FR 5183), and the guideline parameter holds
-    # a zero placeholder for Puerto Rico: 0 + 0 * (2 - 1) = 0.
+    # outlying jurisdictions" (78 FR 5183), and gov.hhs.fpg holds no Puerto
+    # Rico value at the 2013 date. aca_fpg looks Puerto Rico up under the 48
+    # states' 2013 guideline, 11,490 + 4,020 * (2 - 1) = 15,510, and
+    # returns 0.
     # https://www.govinfo.gov/content/pkg/FR-2013-01-24/pdf/2013-01422.pdf#page=2
+    aca_fpg: 0
+
+- name: A 2015 Virgin Islands return has a poverty line of zero
+  period: 2015
+  input:
+    aca_tax_family_size: 3
+    state_code: VI
+  output:
+    # HHS published 2014 guidelines for the 48 states and the District of
+    # Columbia, Alaska and Hawaii, and left them "not defined for Puerto Rico
+    # or other outlying jurisdictions" (79 FR 3594). aca_fpg looks the Virgin
+    # Islands up under the 48 states' 2014 guideline,
+    # 11,670 + 4,060 * (3 - 1) = 19,790, and returns 0.
+    # https://www.govinfo.gov/content/pkg/FR-2014-01-22/pdf/2014-01303.pdf#page=2
+    aca_fpg: 0
+
+- name: A 2017 Puerto Rico return has a poverty line of zero
+  period: 2017
+  input:
+    aca_tax_family_size: 2
+    state_code: PR
+  output:
+    # HHS left its 2016 guidelines "not defined for Puerto Rico or other
+    # outlying jurisdictions" (81 FR 4037). aca_fpg looks Puerto Rico up
+    # under the 48 states' 2016 table, 16,020 for two people, and returns 0.
+    # The Puerto Rico placeholders in gov.hhs.fpg, which the model backdates
+    # to 2015, give the same result: 0 + 0 * (2 - 1) = 0.
+    # https://www.govinfo.gov/content/pkg/FR-2016-01-25/pdf/2016-01450.pdf#page=2
     aca_fpg: 0

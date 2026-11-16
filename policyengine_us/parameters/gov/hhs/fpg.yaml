@@ -55,18 +55,11 @@ first_person:
   # Poverty guidelines do not apply to these areas, but we include them for
   # completeness and to avoid errors arising from uprating and breakdown
   # metadata fields.
-  # aca_fpg reads this parameter at 2013 and 2014 dates for 2014 and 2015
-  # coverage, so the placeholders start in 2013. Keep the 2024 entries,
-  # because uprating starts at the last dated value and
-  # gov.hhs.fpg_uprating has no value before 2022.
   GU:
-    2013-01-01: 0
     2024-01-01: 0
   PR:
-    2013-01-01: 0
     2024-01-01: 0
   VI:
-    2013-01-01: 0
     2024-01-01: 0
 additional_person:
   # HHS publishes these amounts for each additional person. In 2016, the
@@ -125,13 +118,10 @@ additional_person:
     2026-01-01: 6_530
   # Add placeholders for Guam, Puerto Rico, and the Virgin Islands.
   GU:
-    2013-01-01: 0
     2024-01-01: 0
   PR:
-    2013-01-01: 0
     2024-01-01: 0
   VI:
-    2013-01-01: 0
     2024-01-01: 0
 
 metadata:
