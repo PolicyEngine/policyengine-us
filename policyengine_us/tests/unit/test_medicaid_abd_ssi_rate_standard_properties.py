@@ -174,6 +174,9 @@ def test_below_only_states_match_their_rules(year):
 def test_state_standard_states_match_their_rules(year):
     flags = limit_parameters(year).uses_state_standard
     assert states_where(flags) == STATE_STANDARD_STATES
+    # The rounding list used by the poverty-guideline test below.
+    rounds_down = limit_parameters(year).rounds_monthly_limit_down
+    assert states_where(rounds_down) == ROUNDS_DOWN_STATES
 
 
 @pytest.mark.parametrize("couple", [False, True])
