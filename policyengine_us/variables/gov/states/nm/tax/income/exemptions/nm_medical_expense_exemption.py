@@ -24,6 +24,9 @@ class nm_medical_expense_exemption(Variable):
         "included in AGI. Premium inputs use payer attribution: each person "
         "reports premiums that person paid, including family coverage regardless "
         "of whom it covers. "
+        "With a computed subtotal, a supplied applied exclusion covers the "
+        "filers' premiums only, so the model also restores the dependents' "
+        "computed medical exclusion, as Montana does."
     )
 
     def formula(tax_unit, period, parameters):
@@ -42,6 +45,19 @@ class nm_medical_expense_exemption(Variable):
                 "itemized_medical_expenses_applied_exclusion",
             ],
         )
+        # PIT-ADJ line 18 counts costs "for the care of any combination of
+        # you, your spouse, or your dependents". A supplied exclusion beside a
+        # computed subtotal covers the filers only, so restore the
+        # dependents' computed exclusion as well, as Montana does.
+        simulation = tax_unit.simulation
+        if not has_input_for_period(
+            simulation, "itemized_medical_expenses", period
+        ) and has_input_for_period(
+            simulation, "itemized_medical_expenses_applied_exclusion", period
+        ):
+            medical_expense = medical_expense + tax_unit(
+                "itemized_medical_expenses_excluded_dependent_premiums", period
+            )
         # NMSA 7-2-5.9(A) allows the exemption to "any individual sixty-five
         # years of age or older" for expenses paid "for that individual or
         # for the individual's spouse or dependent", and PIT-ADJ line 18 asks

@@ -1,0 +1,20 @@
+description: >-
+  PolicyEngine counts each person's net income from these business, rental and
+  pass-through sources for school meals, and treats a person's net loss in any
+  one source as zero. The nonfarm self-employment total combines both kinds of
+  Schedule C income, and net rental income combines property and farm rent.
+values:
+  2009-01-01:
+    - total_self_employment_income
+    - school_meal_net_rental_income
+    - farm_operations_income
+    - partnership_s_corp_income
+    - estate_income
+metadata:
+  reference:
+    - title: "USDA Eligibility Manual for School Meals #page 27-29"
+      href: https://opi.mt.gov/Portals/182/Page%20Files/School%20Nutrition/Meal%20Eligibility/Forms%20and%20Policy/2017eligibilitymanual.pdf#page=27
+    - title: USDA Child Nutrition Programs income eligibility guidelines, 91 FR 17932
+      href: https://www.govinfo.gov/content/pkg/FR-2026-04-09/html/2026-06842.htm
+    - title: IRS 2024 Schedule K-1 (Form 1041) beneficiary instructions, boxes 5 through 8
+      href: https://www.irs.gov/pub/irs-prior/i1041sk1--2024.pdf#page=2

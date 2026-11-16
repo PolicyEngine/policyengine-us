@@ -16,13 +16,13 @@ class nd_renters_refund_income(Variable):
     documentation = (
         "Renter refund income: the listed income sources, less the parts of "
         "market income that federal law excludes and the unreimbursed medical "
-        "costs actually paid, and at least zero. The excluded parts are those "
-        "of each person's market income components "
-        "(nd_renters_refund_federally_excluded_income) and the federal "
-        "exclusions the model deducts above the line (excluded_deductions), "
-        "each of which comes out of the tax unit's income that holds it, or, "
-        "for income from Puerto Rico and American Samoa, out of market income "
-        "before losses. Social security counts in full. "
+        "costs actually paid, and at least zero. The model removes excluded "
+        "parts of each person's market income components "
+        "(nd_renters_refund_federally_excluded_income) and federal exclusions "
+        "deducted above the line (excluded_deductions). It subtracts each "
+        "exclusion from the tax unit's income that holds it. For Puerto Rico "
+        "and American Samoa income, it subtracts the exclusion from market "
+        "income before losses. Social security counts in full. "
         "The paid-cost base restores the self-employed premiums excluded from "
         "the federal subtotal: by the federal formula, or as supplied with a "
         "caller's subtotal in itemized_medical_expenses_applied_exclusion. A "
@@ -30,6 +30,9 @@ class nd_renters_refund_income(Variable):
         "including when components are supplied. Premium inputs use payer "
         "attribution: each person reports premiums that person paid, including "
         "family coverage regardless of whom it covers."
+        " With a computed subtotal, a supplied applied exclusion covers the "
+        "filers' premiums only, so the model also restores the dependents' "
+        "computed medical exclusion, as Montana does."
     )
 
     def formula(tax_unit, period, parameters):
@@ -99,6 +102,20 @@ class nd_renters_refund_income(Variable):
                 "itemized_medical_expenses_applied_exclusion",
             ],
         )
+        # NDCC 57-02-08.1(5)(c) takes out of income the medical expenses "paid
+        # during the year by the applicant or the applicant's dependent". A
+        # supplied exclusion beside a computed subtotal covers the filers
+        # only, so restore the dependents' computed exclusion as well, as
+        # Montana does.
+        simulation = tax_unit.simulation
+        if not has_input_for_period(
+            simulation, "itemized_medical_expenses", period
+        ) and has_input_for_period(
+            simulation, "itemized_medical_expenses_applied_exclusion", period
+        ):
+            medical_expenses = medical_expenses + tax_unit(
+                "itemized_medical_expenses_excluded_dependent_premiums", period
+            )
         return max_(
             add(tax_unit, period, p.income_sources)
             - person_exclusions
