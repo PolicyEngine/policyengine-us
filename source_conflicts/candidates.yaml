@@ -8666,6 +8666,7 @@ candidates:
     code:
     - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/caretaker_relative/any_adult_option.yaml
     - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/parent/is_parent_for_medicaid_nfc.py
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/parent/is_child_of_medicaid_caretaker.py
     prs: []
   state: ruled
   note: The project lead ruled on 2026-11-15 to follow S25 over N.J.A.C. 10:69. A state elects the 42 CFR 435.4
@@ -15237,6 +15238,59 @@ candidates:
     Massachusetts, Maryland, Michigan, Nebraska, Vermont and Wisconsin in medically needy. The stricter result arises
     only in a narrow band, for example a spouse''s income between $473 and $497 a month against poverty-level
     standards. Ruled by the project lead, 2026-11-10: https://github.com/PolicyEngine/policyengine-us/pull/10640#issuecomment-6812820779'
+- id: us:medicaid-adult-group-child-coverage-requirement
+  program: medicaid
+  years:
+    from: 2014
+    type: calendar
+  question: Does a parent or caretaker relative lose the Medicaid adult group when a child under the state's age limit
+    has no coverage and is eligible for none of Medicaid, CHIP or the Marketplace, as the regulation and the state plan
+    read, or only when the uninsured child is eligible for Medicaid, as the statute reads?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(k)(3)
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#k_3
+  - kind: regulation
+    citation: 42 CFR 435.119(c)
+    url: https://www.law.cornell.edu/cfr/text/42/435.119#c
+  - kind: plan
+    citation: New Jersey approved state plan S32 (NJ-13-0011-MM1), approved 02/28/2014, effective 01/01/2014
+    url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=16
+  - kind: rulemaking
+    citation: 'CMS final rule, Medicaid Program; Eligibility Changes Under the Affordable Care Act of 2010, 77 FR 17144
+      (March 23, 2012), response on 42 CFR 435.119(c) at 17146-17147 #page 3-4'
+    url: https://www.govinfo.gov/content/pkg/FR-2012-03-23/pdf/2012-6560.pdf#page=3
+  readings:
+    statute: 'If an adult group individual "is the parent of a child who is under 19 years of age (or such higher age as
+      the State may have elected) who is eligible for medical assistance under the State plan or under a waiver of such
+      plan ..., the individual may not be enrolled under the State plan unless the individual''s child is enrolled
+      under the State plan or under a waiver of the plan or is enrolled in other health insurance coverage."'
+    regulation: '42 CFR 435.119(c)(1): "A State may not provide Medicaid under this section to a parent or other
+      caretaker relative living with a dependent child if the child is under the age specified in paragraph (c)(2) of
+      this section, unless such child is receiving benefits under Medicaid, the Children''s Health Insurance Program
+      under subchapter D of this chapter, or otherwise is enrolled in minimum essential coverage as defined in § 435.4
+      of this part." New Jersey''s S32 page: "Parents or other caretaker relatives living with a child under the age
+      specified below are not covered unless the child is receiving benefits under Medicaid, CHIP or through the
+      Exchange, or otherwise enrolled in minimum essential coverage". CMS called the rule "consistent with the
+      statutory requirements at sections 1902(k)(3)" and wrote that "if a child''s pending application is denied for
+      all insurance affordability programs ... the child must be enrolled in other minimum essential coverage for the
+      custodial parent or other caretaker relative to be covered". The project lead ruled on 2026-11-15 to follow
+      this reading.'
+  example: A New Jersey parent earning $24,000 in 2026, 111% of the two-person poverty guideline, lives with an
+    undocumented, uninsured 19-year-old full-time student who is eligible for none of Medicaid, CHIP or the
+    Marketplace. Under the regulation and S32 the parent is not in the adult group; under the statute, which reaches
+    only a Medicaid-eligible child, the parent is.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/adult/meets_medicaid_adult_group_child_coverage_requirement.py
+    prs: []
+  state: ruled
+  note: The project lead ruled on 2026-11-15 to follow 42 CFR 435.119(c) and the state plan S32 page over 42 U.S.C.
+    1396a(k)(3), so every child under the age limit who lacks Medicaid, CHIP, Marketplace or other minimum essential
+    coverage bars the parent or caretaker relative from the adult group. The readings differ only for an uninsured
+    child who is not eligible for Medicaid, such as an undocumented child above a state's age limit for coverage
+    regardless of immigration status, or a CHIP-eligible child whose family does not take up CHIP.
 - id: us:long-term-care-premium-index-adjustment
   program: income-tax
   years:

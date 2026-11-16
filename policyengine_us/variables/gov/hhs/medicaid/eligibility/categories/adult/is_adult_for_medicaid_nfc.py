@@ -40,4 +40,9 @@ class is_adult_for_medicaid_nfc(Variable):
             add(person, period, ["receives_ssi"]) > 0
         )
         ssi_excluded = ssi_mandatorily_covered | (excludes_all_ssi & receives_ssi)
-        return age_eligible & ~medicare_eligible & ~ssi_excluded
+        # 42 CFR 435.119(c): a parent or caretaker relative of a child under
+        # the state's age limit needs the child to have coverage.
+        meets_child_coverage = person(
+            "meets_medicaid_adult_group_child_coverage_requirement", period
+        )
+        return age_eligible & ~medicare_eligible & ~ssi_excluded & meets_child_coverage
