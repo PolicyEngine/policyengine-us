@@ -482,7 +482,7 @@
     people:
       parent:
         age: 40
-        employment_income: 40_000
+        employment_income_before_lsr: 40_000 # TANF formulas read wages here, so the family gets no TANF.
         other_medical_expenses: 2_000
       dependent:
         age: 17
@@ -508,7 +508,7 @@
     people:
       parent:
         age: 40
-        employment_income: 40_000
+        employment_income_before_lsr: 40_000 # TANF formulas read wages here, so the family gets no TANF.
         other_medical_expenses: 2_000
       dependent:
         age: 17
