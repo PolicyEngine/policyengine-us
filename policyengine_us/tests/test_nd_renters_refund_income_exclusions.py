@@ -397,7 +397,7 @@ def shared_sources(draw):
     return kept
 
 
-@settings(max_examples=12, deadline=None)
+@settings(max_examples=12, deadline=None, derandomize=True)
 @given(households=st.lists(shared_sources(), min_size=1, max_size=12))
 @example(
     households=[
@@ -458,7 +458,7 @@ def any_sources(draw):
     return inputs
 
 
-@settings(max_examples=12, deadline=None)
+@settings(max_examples=12, deadline=None, derandomize=True)
 @given(households=st.lists(any_sources(), min_size=1, max_size=6))
 def test_each_excluded_part_lies_within_its_component(households):
     # Each household as drawn; then each partly excluded source alone, so a
@@ -522,7 +522,7 @@ SHIFTS = [
 ]
 
 
-@settings(max_examples=12, deadline=None)
+@settings(max_examples=12, deadline=None, derandomize=True)
 @given(
     taxable=st.integers(min_value=1, max_value=60_000),
     exempt=st.integers(min_value=0, max_value=60_000),

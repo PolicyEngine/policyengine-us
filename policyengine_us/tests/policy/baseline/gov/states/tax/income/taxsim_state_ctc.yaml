@@ -143,3 +143,284 @@
         state_code: MN
   output:
     taxsim_state_ctc: 0
+
+- name: Case 9, 2020 Maryland child tax credit appears in state reporting.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 16
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        # Known child-with-disability classification under Education Article 8-401.
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Independently known annual federal AGI and federal child-credit component.
+        # These premises do not establish complete federal credit eligibility.
+        adjusted_gross_income: 6_000
+        ctc: 0
+    spm_units:
+      spm_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # 2021 Maryland Laws chapter 40, section 2, applies to tax years 2020-2022.
+    # Tax-General 10-751(b)-(d): one qualifying child x 500 - federal credit 0 = 500.
+    # https://mgaleg.maryland.gov/2021RS/Chapters_noln/CH_40_sb0218t.pdf#page=5
+    md_ctc: 500
+    taxsim_state_ctc: 500
+
+- name: Case 10, 2017 New York Empire State child credit appears in state reporting.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Independently known lawful annual New York credit component.
+        # This case exercises reporting, not New York or federal entitlement.
+        ny_ctc: 100
+    spm_units:
+      spm_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Official 2017 IT-213, lines 15-16, permits a 100-per-child minimum.
+    # https://www.tax.ny.gov/pdf/2017/inc/it213_2017_fill_in.pdf#page=2
+    # Include the known raw credit once in the declared state-CTC reporting sum.
+    taxsim_state_ctc: 100
+
+- name: Case 11, 2015 New York Empire State child credit appears in state reporting.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Independently known lawful annual New York credit component.
+        # This case exercises reporting, not New York or federal entitlement.
+        ny_ctc: 100
+    spm_units:
+      spm_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Official 2015 IT-213 instructions confirm the credit was available.
+    # https://www.tax.ny.gov/pdf/2015/inc/it213i_2015.pdf#page=1
+    # Include the known raw credit once in the declared state-CTC reporting sum.
+    taxsim_state_ctc: 100
+
+- name: Case 12, 2016 New York Empire State child credit appears in state reporting.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Independently known lawful annual New York credit component.
+        # This case exercises reporting, not New York or federal entitlement.
+        ny_ctc: 100
+    spm_units:
+      spm_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # Official 2016 IT-213 instructions confirm the credit was available.
+    # https://www.tax.ny.gov/pdf/2016/inc/it213i_2016.pdf#page=1
+    # Include the known raw credit once in the declared state-CTC reporting sum.
+    taxsim_state_ctc: 100
+
+- name: Case 13, 2018 New York Empire State child credit appears in state reporting.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Independently known lawful annual New York credit component.
+        # This case exercises reporting, not New York or federal entitlement.
+        ny_ctc: 100
+    spm_units:
+      spm_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # The existing reporting registry includes ny_ctc from 2018.
+    # This is a control on that reporting contract, not a calculation of entitlement.
+    # Include the known raw credit once in the declared state-CTC reporting sum.
+    taxsim_state_ctc: 100
+
+- name: Case 14, 2019 Maryland child tax credit appears in state reporting.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 16
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        # Known child-with-disability classification under Education Article 8-401.
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Independently known annual federal AGI and federal child-credit component.
+        # These premises do not establish complete federal credit eligibility.
+        adjusted_gross_income: 6_000
+        ctc: 0
+    spm_units:
+      spm_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # 2021 Maryland Laws chapter 40, section 2, first applies to tax year 2020.
+    # The 2019 raw credit and its reporting contribution therefore remain zero.
+    # https://mgaleg.maryland.gov/2021RS/Chapters_noln/CH_40_sb0218t.pdf#page=5
+    md_ctc: 0
+    taxsim_state_ctc: 0
+
+- name: Case 15, 2021 Maryland child tax credit appears in state reporting.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimable_as_dependent_on_another_return: false
+      person2:
+        age: 16
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        # Known child-with-disability classification under Education Article 8-401.
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        # Independently known annual federal AGI and federal child-credit component.
+        # These premises do not establish complete federal credit eligibility.
+        adjusted_gross_income: 6_000
+        ctc: 0
+    spm_units:
+      spm_unit: {members: [person1, person2]}
+    families:
+      family: {members: [person1, person2]}
+    marital_units:
+      marital_unit1: {members: [person1]}
+      marital_unit2: {members: [person2]}
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # 2021 Maryland Laws chapter 40, section 2, applies to tax years 2020-2022.
+    # Existing 2021 reporting: one qualifying child x 500 - federal credit 0 = 500.
+    # https://mgaleg.maryland.gov/2021RS/Chapters_noln/CH_40_sb0218t.pdf#page=5
+    md_ctc: 500
+    taxsim_state_ctc: 500
