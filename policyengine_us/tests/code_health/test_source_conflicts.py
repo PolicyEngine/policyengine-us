@@ -44,7 +44,8 @@ checked on every run:
    included) and every parsed value and key (escapes, binary, sets) carry no
    decision-queue ids, session ids, local paths or email addresses.
 6. No file under ``source_conflicts/sources/`` contains a bot-manager marker
-   or a base64 token that decodes to UUID + "$" + IPv4.
+   or a base64 token that decodes to UUID + "$" + IPv4, in its raw bytes or
+   after one round of percent-decoding.
 
 These are structural checks: they tie markers, the register and the backlog
 together; they do not judge whether code follows a statute. rulespec-us's own
@@ -66,6 +67,7 @@ import tokenize
 from collections import Counter
 from ipaddress import IPv4Address
 from pathlib import Path
+from urllib.parse import quote, unquote_to_bytes
 
 import pytest
 import yaml
@@ -997,14 +999,8 @@ CAPTURE_VISITOR_RE = re.compile(
 )
 
 
-def _source_capture_problems(raw: bytes, name: str) -> list[str]:
-    """Report match kinds without exposing captured tokens or addresses."""
-
-    problems = []
-    lowered = raw.lower()
-    if any(marker in lowered for marker in BOT_MANAGER_MARKERS):
-        problems.append(f"{name} contains a bot-manager marker")
-    for match in CAPTURE_BASE64_RE.finditer(raw):
+def _contains_visitor_token(text: bytes) -> bool:
+    for match in CAPTURE_BASE64_RE.finditer(text):
         token = match.group()
         try:
             decoded = base64.b64decode(token + b"=" * (-len(token) % 4), validate=True)
@@ -1017,8 +1013,22 @@ def _source_capture_problems(raw: bytes, name: str) -> list[str]:
             IPv4Address(visitor[1].decode("ascii"))
         except ValueError:
             continue
+        return True
+    return False
+
+
+def _source_capture_problems(raw: bytes, name: str) -> list[str]:
+    """Report match kinds without exposing captured tokens or addresses."""
+
+    problems = []
+    lowered = raw.lower()
+    if any(marker in lowered for marker in BOT_MANAGER_MARKERS):
+        problems.append(f"{name} contains a bot-manager marker")
+    # Decode percent escapes once, so an escaped "/" or "=" beside a token
+    # ends it as the plain character would.
+    texts = (raw, unquote_to_bytes(raw)) if b"%" in raw else (raw,)
+    if any(_contains_visitor_token(text) for text in texts):
         problems.append(f"{name} contains a base64 UUID-dollar-IPv4 token")
-        break
     return problems
 
 
@@ -1055,7 +1065,7 @@ def test_source_capture_cloudflare_challenge_options(uppercase):
 # RFC 5737 reserves this address block for documentation.
 CAPTURE_EXAMPLE = b"00000000-0000-4000-8000-000000000001$203.0.113.42"
 # Page text that can surround a token, from quotes and scripts to URL paths,
-# JSON-escaped URLs and either end of a line.
+# JSON-escaped and percent-encoded URLs and either end of a line.
 CAPTURE_CONTEXTS = {
     "quoted": lambda token: b'"' + token + b'"',
     "script": lambda token: b'<script>const value = "' + token + b'";</script>',
@@ -1067,6 +1077,14 @@ CAPTURE_CONTEXTS = {
     "json-escaped-url": lambda token: (
         b'"https:\\/\\/example.gov\\/a\\/' + token + b'\\/b"'
     ),
+    # quote() escapes "/", ":", "?", "=" and "&", so "%2F" or "%3D" sits
+    # beside the token and any padding becomes "%3D".
+    "percent-encoded-url": lambda token: quote(
+        b"https://example.gov/a/" + token + b"/b", safe=""
+    ).encode("ascii"),
+    "percent-encoded-query": lambda token: quote(
+        b"https://example.gov/p?t=" + token + b"&x=1", safe=""
+    ).encode("ascii"),
     "line-start": lambda token: b"first line\n" + token + b" rest\nlast line",
     "line-end": lambda token: b"first line\nstart " + token + b"\nlast line",
 }
