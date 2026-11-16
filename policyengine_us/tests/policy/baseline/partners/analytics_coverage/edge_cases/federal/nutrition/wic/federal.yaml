@@ -5,7 +5,8 @@
 # Benefit math (wic.py): annual wic = sum over months of
 #   (2018 package base - 2018 embedded CVB) x monthly CPI-U uprating
 #   + current CVB (gov/usda/wic/cvb/current, $48 pregnant/postpartum,
-#     $52 breastfeeding, $26 child from 2025-10-01; infants $0).
+#     $52 breastfeeding, $26 child from 2025-10-01; $53 breastfeeding,
+#     $27 child from 2026-10-01; infants $0).
 # The 2026 monthly CPI-U indices total 4002.716, relative to the January
 # 2018 index of 247.867: an uprating-factor sum of 16.14865.
 # Source: https://data.bls.gov/timeseries/CUUR0000SA0 (through October 2026).
@@ -178,7 +179,8 @@
         wic: 0.0
         is_wic_eligible: false
       child1:
-        # CHILD_24_59_MONTHS package: (33.65 - 8) x 16.14865 + 26 x 12 = 726.21.
+        # CHILD_24_59_MONTHS package: (33.65 - 8) x 16.14865 + 26 x 9
+        # + 27 x 3 = 729.21.
         wic: 729.21
         is_wic_eligible: true
 - name: wic_child_income_above_limit_ineligible (federal)
@@ -310,8 +312,8 @@
       child1:
         # ...but SNAP receipt in the SPM unit satisfies
         # meets_wic_categorical_eligibility, so the child gets the full
-        # CHILD_24_59_MONTHS package: (33.65 - 8) x 16.14865 + 26 x 12
-        # = 726.21.
+        # CHILD_24_59_MONTHS package: (33.65 - 8) x 16.14865 + 26 x 9
+        # + 27 x 3 = 729.21.
         wic: 729.21
         is_wic_eligible: true
 - name: wic_pregnant_twins_current_pregnancies_2 (federal)
@@ -362,8 +364,9 @@
         meets_wic_income_test: true
     people:
       head:
-        # PREGNANT_MULTIPLE_FETUSES package carries the higher $52/mo CVB:
-        # (39.12 - 11) x 16.14865 + 52 x 12 = 454.10 + 624 = 1,078.10.
+        # PREGNANT_MULTIPLE_FETUSES package carries the higher $52/mo CVB
+        # ($53/mo from October 2026):
+        # (39.12 - 11) x 16.14865 + 52 x 9 + 53 x 3 = 454.10 + 627 = 1,081.10.
         wic: 1081.10
         is_wic_eligible: true
 - name: wic_pregnant_negative_self_employment_income (federal)
@@ -521,7 +524,8 @@
     people:
       head:
         # Default (partial) breastfeeding: PARTIALLY_BREASTFEEDING package
-        # (39.12 - 11) x 16.14865 + 52 x 12 CVB = 454.10 + 624 = 1,078.10.
+        # (39.12 - 11) x 16.14865 + 52 x 9 + 53 x 3 CVB = 454.10 + 627
+        # = 1,081.10.
         wic: 1081.10
         is_wic_eligible: true
       child1:
@@ -644,8 +648,8 @@
     people:
       head:
         # FULLY_BREASTFEEDING package (7 CFR 246.10(e)(7)(i)) - the largest
-        # maternal package: (48.92 - 11) x 16.14865 + 52 x 12 CVB
-        # = 612.36 + 624 = 1,236.36.
+        # maternal package: (48.92 - 11) x 16.14865 + 52 x 9 + 53 x 3 CVB
+        # = 612.36 + 627 = 1,239.36.
         wic: 1239.36
         is_wic_eligible: true
       child1:
@@ -770,7 +774,7 @@
         is_wic_eligible: false
       child1:
         # First eligible child year, CHILD_12_23_MONTHS package:
-        # (33.64 - 8) x 16.14865 + 26 x 12 CVB = 414.05 + 312 = 726.05
+        # (33.64 - 8) x 16.14865 + 26 x 9 + 27 x 3 CVB = 414.05 + 315 = 729.05
         # (differs from the age-4 CHILD_24_59_MONTHS value by the 0.01
         # base-cost split in the 2018 package data).
         wic: 729.05
@@ -829,7 +833,7 @@
         is_wic_eligible: false
       child1:
         # Last eligible child year, CHILD_24_59_MONTHS package:
-        # (33.65 - 8) x 16.14865 + 26 x 12 CVB = 414.21 + 312 = 726.21.
+        # (33.65 - 8) x 16.14865 + 26 x 9 + 27 x 3 CVB = 414.21 + 315 = 729.21.
         wic: 729.21
         is_wic_eligible: true
 - name: wic_child_age_5_no_longer_eligible (federal)
