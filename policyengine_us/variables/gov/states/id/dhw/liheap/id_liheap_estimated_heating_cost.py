@@ -20,6 +20,28 @@ class id_liheap_estimated_heating_cost(Variable):
         # No Idaho source names solar or kerosene. As in heating_expense, solar
         # reads as electric and kerosene as the chart's oil.
         lookup_area = clip(area, 1, 3)
+        electric_provider = spm_unit("electricity_provider", period)
+        gas_provider = spm_unit("natural_gas_provider", period)
+        electric_providers = electric_provider.possible_values
+        # As with the payment chart, blank historical combinations retain
+        # the existing representative estimate instead of asserting zero cost.
+        electric_cost = select(
+            [
+                (electric_provider == electric_providers.AVISTA) & (area < 3),
+                (electric_provider == electric_providers.ROCKY_MOUNTAIN_POWER)
+                & (area > 1),
+            ],
+            [
+                p.electricity_avista[min_(lookup_area, 2)],
+                p.electricity_rocky_mountain[max_(lookup_area, 2)],
+            ],
+            default=p.electricity[lookup_area],
+        )
+        gas_cost = where(
+            (gas_provider == gas_provider.possible_values.AVISTA) & (area < 3),
+            p.natural_gas_avista[min_(lookup_area, 2)],
+            p.natural_gas[lookup_area],
+        )
         cost = select(
             [
                 (heating == types.ELECTRICITY) | (heating == types.SOLAR),
@@ -30,8 +52,8 @@ class id_liheap_estimated_heating_cost(Variable):
                 (heating == types.COAL) | (heating == types.WOOD),
             ],
             [
-                p.electricity[lookup_area],
-                p.natural_gas[lookup_area],
+                electric_cost,
+                gas_cost,
                 p.oil_or_propane[lookup_area],
                 p.coal_or_wood[lookup_area],
             ],

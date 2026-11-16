@@ -323,3 +323,268 @@
     id_aabd: 636
     id_liheap_countable_income: 12_564
     id_liheap: 367
+
+# FY2026 chart, provider columns; low/medium/high using PY2007 costs.
+- name: Named Avista electric provider selects each published burden and area cell.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    county:
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    heating_type:
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    electricity_provider:
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    id_liheap_countable_income:
+    - 40000
+    - 20000
+    - 4000
+    - 40000
+    - 20000
+    - 4000
+    id_liheap_income_eligible:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+  output:
+    id_liheap:
+    - 322
+    - 335
+    - 348
+    - 371
+    - 387
+    - 402
+
+# FY2026 chart, provider columns; low/medium/high using PY2007 costs.
+- name: Named Rocky Mountain Power electric provider selects each published burden and area cell.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    county:
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    heating_type:
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    - ELECTRICITY
+    electricity_provider:
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    - ROCKY_MOUNTAIN_POWER
+    id_liheap_countable_income:
+    - 40000
+    - 20000
+    - 4000
+    - 40000
+    - 20000
+    - 4000
+    id_liheap_income_eligible:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+  output:
+    id_liheap:
+    - 407
+    - 424
+    - 441
+    - 461
+    - 481
+    - 500
+
+# FY2026 chart, provider columns; low/medium/high using PY2007 costs.
+- name: Named Avista gas provider selects each published burden and area cell.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    - ID
+    county:
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    - BANNOCK_COUNTY_ID
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    natural_gas_provider:
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    - AVISTA
+    id_liheap_countable_income:
+    - 40000
+    - 14000
+    - 4000
+    - 40000
+    - 14000
+    - 4000
+    id_liheap_income_eligible:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+    - true
+    - true
+    - true
+    - true
+  output:
+    id_liheap:
+    - 168
+    - 176
+    - 183
+    - 194
+    - 203
+    - 211
+
+# 1335/24000 < 6%, whereas 1450/24000 >= 6%.
+- name: Provider-specific cost changes the burden group before the benefit lookup.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    county:
+    - ADA_COUNTY_ID
+    - ADA_COUNTY_ID
+    heating_type:
+    - ELECTRICITY
+    - ELECTRICITY
+    electricity_provider:
+    - IDAHO_POWER
+    - AVISTA
+    id_liheap_countable_income:
+    - 24000
+    - 24000
+    id_liheap_income_eligible:
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+  output:
+    id_liheap_estimated_heating_cost:
+    - 1335
+    - 1450
+    id_liheap:
+    - 328
+    - 335
+
+# These are fallback estimates, not published awards for the blank cells.
+- name: Unpublished provider area combinations retain the documented representative estimate.
+  period: 2026
+  input:
+    state_code:
+    - ID
+    - ID
+    - ID
+    county:
+    - ADA_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    - BEAR_LAKE_COUNTY_ID
+    heating_type:
+    - ELECTRICITY
+    - ELECTRICITY
+    - NATURAL_GAS
+    electricity_provider:
+    - ROCKY_MOUNTAIN_POWER
+    - AVISTA
+    - UNSPECIFIED
+    natural_gas_provider:
+    - UNSPECIFIED
+    - UNSPECIFIED
+    - AVISTA
+    id_liheap_countable_income:
+    - 4000
+    - 4000
+    - 4000
+    id_liheap_income_eligible:
+    - true
+    - true
+    - true
+    has_heating_expense:
+    - true
+    - true
+    - true
+  output:
+    id_liheap_estimated_heating_cost:
+    - 1335
+    - 1605
+    - 1207
+    id_liheap:
+    - 355
+    - 464
+    - 173

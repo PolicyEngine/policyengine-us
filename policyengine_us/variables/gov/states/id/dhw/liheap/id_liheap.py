@@ -31,6 +31,30 @@ class id_liheap(Variable):
         area = clip(spm_unit("id_liheap_heating_area", period), 1, 3)
         heating = spm_unit("heating_type", period)
         types = heating.possible_values
+        electric_provider = spm_unit("electricity_provider", period)
+        gas_provider = spm_unit("natural_gas_provider", period)
+        electric_providers = electric_provider.possible_values
+        # The chart leaves Avista Area III and Rocky Mountain Area I blank.
+        # Retain the representative-column estimate for those combinations,
+        # unspecified companies and unlisted smaller utilities.
+        avista_electric = (electric_provider == electric_providers.AVISTA) & (area < 3)
+        rocky_mountain = (
+            electric_provider == electric_providers.ROCKY_MOUNTAIN_POWER
+        ) & (area > 1)
+        electric_amount = select(
+            [avista_electric, rocky_mountain],
+            [
+                p.matrix.electricity_avista[min_(area, 2)][burden_group],
+                p.matrix.electricity_rocky_mountain[max_(area, 2)][burden_group],
+            ],
+            default=p.matrix.electricity[area][burden_group],
+        )
+        avista_gas = (gas_provider == gas_provider.possible_values.AVISTA) & (area < 3)
+        gas_amount = where(
+            avista_gas,
+            p.matrix.natural_gas_avista[min_(area, 2)][burden_group],
+            p.matrix.natural_gas[area][burden_group],
+        )
         chart_amount = select(
             [
                 (heating == types.ELECTRICITY) | (heating == types.SOLAR),
@@ -41,8 +65,8 @@ class id_liheap(Variable):
                 (heating == types.COAL) | (heating == types.WOOD),
             ],
             [
-                p.matrix.electricity[area][burden_group],
-                p.matrix.natural_gas[area][burden_group],
+                electric_amount,
+                gas_amount,
                 p.matrix.oil_or_propane[area][burden_group],
                 p.matrix.coal_or_wood[area][burden_group],
             ],
