@@ -9,6 +9,11 @@ metadata:
     - title: N.J.A.C. 10:72-4.1(a) - Income eligibility limits ("rounded down to the next whole dollar amount for household unit sizes of one and two")
       href: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-72-4-1
 
+# Sourced values only: New Jersey (N.J.A.C. 10:72-4.1(a)). Every other
+# state's false is an unverified default, not a finding that the state
+# keeps cents; those states use the unrounded share of the annual
+# guideline pending a source. Missouri rounds its monthly limit up, which
+# the formula applies separately from this parameter.
 AK:
   2018-01-01: false
 AL:
