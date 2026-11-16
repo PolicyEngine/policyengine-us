@@ -36,14 +36,11 @@ metadata:
 # verified non-elections: they apply the federal under-18 floor pending a
 # source. In Medicaid-expansion states the impact is limited to category
 # assignment, since parents there qualify for the adult group regardless.
-# The formula's is_full_time_student proxy is broader than the 42 CFR
-# 435.4 option (a full-time student in secondary school or equivalent
-# vocational or technical training): it also captures full-time college
-# students. The strict is_in_secondary_school input is not required
-# because nothing populates it - it has no formula and the dataset
-# maps no CPS column to it - so requiring it would deny the option
-# wherever that obscure input is left unset and zero it out in
-# microsimulation, where only college enrollment carries signal at 18.
+# The option reaches only an 18-year-old full-time student in secondary
+# school or equivalent vocational or technical training (42 CFR 435.4),
+# so the formula excludes college students. Until the dataset imputes
+# is_in_secondary_school, microsimulation applies the option only where
+# that input is set.
 AK:
   2014-01-01: false
 # Moot: Alabama's S25 leaves the option unchecked, and its current

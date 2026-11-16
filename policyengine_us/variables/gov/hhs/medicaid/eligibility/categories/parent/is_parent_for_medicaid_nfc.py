@@ -31,23 +31,29 @@ class is_parent_for_medicaid_nfc(Variable):
         # A dependent child is under the state's age limit (the 42 CFR
         # 435.4 under-18 floor; Georgia and Kansas operate under-19 rules)
         # or, in states electing the 42 CFR 435.4 student option per their
-        # state plan S25 page or manual, an 18-year-old full-time student
-        # under the student age limit. The is_full_time_student proxy is
-        # broader than the regulation's "full-time student in a secondary
-        # school (or ... vocational or technical training)" - it also
-        # captures full-time college students. It is not gated on
-        # is_in_secondary_school because nothing populates that input (no
-        # formula, no dataset mapping), so the gate would deny the option
-        # in any household that does not set an input most users never
-        # see; at age 18 only college enrollment carries microdata
-        # signal, so even this proxy fires on the wrong group there -
-        # both resolve once the dataset maps CPS secondary enrollment.
+        # state plan S25 page or manual, an 18-year-old "full-time student
+        # in a secondary school (or equivalent vocational or technical
+        # training)" under the student age limit; college enrollment does
+        # not qualify. As in sc_tanf_dependent_child and
+        # mo_tanf_dependent_child, is_in_secondary_school marks the
+        # student, with attendance standing in for full-time enrollment.
+        # A full-time student who is not in college also counts, so
+        # callers who set the generic is_full_time_student (or
+        # is_in_k12_school) still reach the option. Enrollment under the
+        # age limit stands in for the expectation of finishing before 19.
         age = person("age", period)
         dc = p.dependent_child
-        is_student = person("is_full_time_student", period)
+        in_secondary_school = person("is_in_secondary_school", period)
+        is_full_time_student = person("is_full_time_student", period)
+        is_college_student = person("is_full_time_college_student", period)
+        attends_secondary_school = in_secondary_school | (
+            is_full_time_student & ~is_college_student
+        )
         elects_student_option = dc.student_option[state].astype(bool)
         age_qualifies = (age < dc.age_limit[state]) | (
-            elects_student_option & is_student & (age < dc.student_age_limit)
+            elects_student_option
+            & attends_secondary_school
+            & (age < dc.student_age_limit)
         )
         # Foster children are excluded as a proxy: an unrelated foster
         # parent may claim the child as a tax dependent yet is not a
