@@ -17053,7 +17053,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/ca/tax/income/credits/renter/income_cap.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11041
   state: ruled
   note: The introduced bill leaves paragraph (j)(4) unchanged in its existing-law markup.
     Chaptered SB 1005 section 125 expressly describes the act as technical and nonsubstantive.
