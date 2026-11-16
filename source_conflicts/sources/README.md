@@ -12,9 +12,14 @@ a `Source:` URL line and an extraction line. This removes scripts that can expos
 the fetching machine's address or visitor tokens.
 
 The privacy check rejects bot-manager markers and base64 tokens whose entire
-decoded value matches `UUID$IPv4`. The decoded-token check covers IPv4 only;
-it does not detect IPv6 addresses or payloads with extra decoded bytes. Inspect
-extracted text for visitor data before committing it.
+decoded value matches `UUID$IPv4`. It decodes each run of 59 to 70 letters and
+digits, with up to two `=` of padding, that has no letter or digit on either side
+and no further `=` after it. It scans the raw bytes and the bytes after one round
+of percent-decoding, so it finds tokens in quotes, query strings, URL paths,
+JSON-escaped and percent-encoded URLs, and at either end of a line. It misses
+IPv6 addresses, payloads with extra decoded bytes, and tokens joined to other
+letters or digits, as after a `/` escape or in a URL percent-encoded twice.
+Inspect extracted text for visitor data before committing it.
 
 Do not edit a capture after an entry pins it: add a new file instead, and move the
 entry's snapshot to it.

@@ -1064,13 +1064,15 @@ def test_source_capture_cloudflare_challenge_options(uppercase):
 
 # RFC 5737 reserves this address block for documentation.
 CAPTURE_EXAMPLE = b"00000000-0000-4000-8000-000000000001$203.0.113.42"
-# Page text that can surround a token, from quotes and scripts to URL paths,
-# JSON-escaped and percent-encoded URLs and either end of a line.
+# Page text that can surround a token, from quotes and scripts to query
+# strings, URL paths, JSON-escaped and percent-encoded URLs and either end of
+# a line.
 CAPTURE_CONTEXTS = {
     "quoted": lambda token: b'"' + token + b'"',
     "script": lambda token: b'<script>const value = "' + token + b'";</script>',
     "url-path": lambda token: b"/a/" + token + b"/b",
     "url-path-end": lambda token: b"/a/" + token,
+    "query-string": lambda token: b"/p?t=" + token + b"&x=1",
     "after-plus": lambda token: b"+" + token,
     "before-plus": lambda token: token + b"+",
     "escaped-slash": lambda token: b'"\\/' + token + b'"',
