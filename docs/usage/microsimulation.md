@@ -91,6 +91,9 @@ Known limitations, which callers avoid by supplying `marital_units`:
 - A lone true `is_tax_unit_spouse` input on the oldest adult makes that person
   both head and spouse in the role formulas, as on main; the fourth step pairs
   them with the next adult.
+- A lone true `is_tax_unit_spouse` input skips the fourth step's separation
+  check: the fourth step pairs that person with the oldest other adult even
+  when that adult is separated.
 - Marital units follow the years the inputs are dated for, while the role
   formulas run again in any year without a role input. So a calculation for
   another year can give roles the units don't match. For example, a

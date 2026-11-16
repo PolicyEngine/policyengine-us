@@ -286,6 +286,8 @@ def _fallback_pairs(people, **groups):
             },
             [],
         ),
+        # So does a separated head.
+        ({"first": {"age": 45, "is_separated": True}, "second": {"age": 43}}, []),
         # Another member's separation doesn't stop the couple.
         (
             {
