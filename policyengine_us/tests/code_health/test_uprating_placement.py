@@ -1,6 +1,10 @@
+import pytest
 import yaml
 
+from policyengine_core.parameters import Parameter, ParameterNode
+from policyengine_core.parameters.operations import propagate_parameter_metadata
 from policyengine_us.model_api import REPO
+from policyengine_us.system import system
 
 
 PARAMETERS_ROOT = REPO / "parameters"
@@ -92,3 +96,68 @@ def test_no_uprating_block_is_a_sibling_of_values():
         "        parameter: ...\n"
         "Offending nodes:\n" + "\n".join(violations)
     )
+
+
+def _find_unapplied_breakdown_uprating(root):
+    """Find parent uprating that reaches no metadata on some scalar leaves."""
+    violations = {}
+    for node in root.get_descendants():
+        if not isinstance(node, ParameterNode):
+            continue
+        if not node.metadata.get("breakdown"):
+            continue
+        if node.metadata.get("uprating") is None:
+            continue
+        missing = [
+            leaf.name
+            for leaf in node.get_descendants()
+            if isinstance(leaf, Parameter) and leaf.metadata.get("uprating") is None
+        ]
+        if missing:
+            violations[node.name] = missing
+    return violations
+
+
+def test_parent_uprating_reaches_breakdown_leaves():
+    violations = _find_unapplied_breakdown_uprating(system.parameters)
+    assert not violations, (
+        "The built parameter system omits uprating from leaves below parents "
+        "that declare both breakdown and uprating metadata. Add uprating to "
+        "each leaf, enable metadata propagation, or remove unsupported parent "
+        "uprating:\n"
+        + "\n".join(
+            f"{parent}: {', '.join(leaves)}"
+            for parent, leaves in sorted(violations.items())
+        )
+    )
+
+
+@pytest.mark.parametrize(
+    "propagation, leaf_uprating, missing",
+    [
+        (None, (), ("SINGLE", "JOINT")),
+        (True, (), ()),
+        (False, (), ("SINGLE", "JOINT")),
+        (False, ("SINGLE", "JOINT"), ()),
+        (False, ("SINGLE",), ("JOINT",)),
+    ],
+)
+def test_detect_unapplied_parent_uprating(propagation, leaf_uprating, missing):
+    metadata = {
+        "breakdown": ["filing_status"],
+        "uprating": "price_index",
+    }
+    if propagation is not None:
+        metadata["propagate_metadata_to_children"] = propagation
+    threshold = {"metadata": metadata}
+    for status in ("SINGLE", "JOINT"):
+        threshold[status] = {"values": {"2024-01-01": 100}}
+        if status in leaf_uprating:
+            threshold[status]["metadata"] = {"uprating": "price_index"}
+    root = ParameterNode("", data={"threshold": threshold})
+    propagate_parameter_metadata(root)
+
+    expected = (
+        {"threshold": [f"threshold.{status}" for status in missing]} if missing else {}
+    )
+    assert _find_unapplied_breakdown_uprating(root) == expected
