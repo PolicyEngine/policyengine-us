@@ -1144,3 +1144,714 @@
         state_code: NM
   output:
     nm_eitc_demographic_eligible: true
+
+# Fractional upper-age demographic component only. IRC 32(c)(1)(A)(ii)(II)
+# and IRS Publication 596 (2017), Rule 11, physical page 16: under age 65;
+# either spouse may meet that age test. Supplied ages describe tax-year close.
+# https://www.irs.gov/pub/irs-prior/p596--2017.pdf#page=16
+# IRC 32(n)(2) removes the upper age only for tax years beginning in 2021.
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title26/html/USCODE-2021-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec32.htm
+# These Boolean cases do not establish DOB, deceased-filer, identification,
+# income, full-return or population eligibility. No output is supplied as input.
+
+- name: Case 39, 2017 childless upper-age boundaries.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 40, 2018 childless upper-age boundaries.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 41, 2019 childless upper-age boundaries.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 42, 2020 childless upper-age boundaries.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 43, 2021 childless upper-age boundaries.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, true, true]
+
+- name: Case 44, 2022 childless upper-age boundaries.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 45, 2023 childless upper-age boundaries.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 46, 2024 childless upper-age boundaries.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 47, 2025 childless upper-age boundaries.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 48, 2026 childless upper-age boundaries.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+      tax_unit3:
+        members: [person3]
+        filing_status: SINGLE
+      tax_unit4:
+        members: [person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1]
+        state_code: NM
+      household2:
+        members: [person2]
+        state_code: NM
+      household3:
+        members: [person3]
+        state_code: NM
+      household4:
+        members: [person4]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 49, 2017 joint upper-age symmetry and dependent-filer gate.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 65.5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person3:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 64.5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person5:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person6:
+        age: 65.5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person7:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person8:
+        age: 65.5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: JOINT
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: JOINT
+      tax_unit3:
+        members: [person5, person6]
+        filing_status: JOINT
+      tax_unit4:
+        members: [person7, person8]
+        filing_status: JOINT
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: NM
+      household2:
+        members: [person3, person4]
+        state_code: NM
+      household3:
+        members: [person5, person6]
+        state_code: NM
+      household4:
+        members: [person7, person8]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: [true, true, false, false]
+
+- name: Case 50, 2017 qualifying-child route and childless dependent-filer exclusion.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 65.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+        is_eitc_qualifying_child: true
+        is_tax_unit_dependent: true
+      person3:
+        age: 64.5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: false
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: false
+        is_eitc_qualifying_child: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: SINGLE
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: NM
+      household2:
+        members: [person3, person4]
+        state_code: NM
+  # Qualifying-child true/false is a supplied upstream component premise;
+  # child count derives from age. The false child may fail a residency test.
+  output:
+    nm_eitc_demographic_eligible: [true, false]

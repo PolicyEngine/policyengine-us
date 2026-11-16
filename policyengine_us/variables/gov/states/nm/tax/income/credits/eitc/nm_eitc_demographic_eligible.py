@@ -32,7 +32,9 @@ class nm_eitc_demographic_eligible(Variable):
             period
         )
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
-        meets_age_requirements = (age >= min_age) & (age <= max_age)
+        # IRC 32(c)(1)(A)(ii)(II) requires an age under 65 in completed years.
+        # The maximum parameter removes the cap for 2021 under IRC 32(n)(2).
+        meets_age_requirements = (age >= min_age) & (np.floor(age) <= max_age)
         # NMSA 7-2-18.15 takes the federal credit's eligibility rules apart
         # from the age and identification exceptions. As federally (IRC
         # 32(c)(1)(A)(ii)(II)), the age test applies to the filers, not to
