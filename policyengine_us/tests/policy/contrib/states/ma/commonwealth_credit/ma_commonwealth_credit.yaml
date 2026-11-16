@@ -479,13 +479,13 @@
     # 0.4 x 314 = 125.60.
     ma_eitc: 125.6
 
-- name: A child with an ITIN counts when the credit accepts an ITIN in 2025
+- name: A child with an ITIN counts when the credit accepts an ITIN or MATIN in 2025
   period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
   input:
     gov.contrib.states.ma.commonwealth_credit.in_effect: true
-    gov.contrib.states.ma.commonwealth_credit.itin_eligible: true
+    gov.contrib.states.ma.commonwealth_credit.itin_or_matin_eligible: true
     people:
       head:
         is_tax_unit_head: true
@@ -515,13 +515,13 @@
     # The Commonwealth Credit replaces the match.
     ma_eitc: 0
 
-- name: A child with a Social Security number still counts when the credit accepts an ITIN in 2025
+- name: A child with a Social Security number still counts when the credit accepts an ITIN or MATIN in 2025
   period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
   input:
     gov.contrib.states.ma.commonwealth_credit.in_effect: true
-    gov.contrib.states.ma.commonwealth_credit.itin_eligible: true
+    gov.contrib.states.ma.commonwealth_credit.itin_or_matin_eligible: true
     people:
       head:
         is_tax_unit_head: true
@@ -548,13 +548,13 @@
     # The Commonwealth Credit replaces the 0.4 x 3,000 = 1,200 match.
     ma_eitc: 0
 
-- name: A child with neither a Social Security number nor an ITIN does not count when the credit accepts an ITIN in 2025
+- name: A child with neither a Social Security number nor an ITIN counts through a MATIN when the credit accepts an ITIN or MATIN in 2025
   period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
   input:
     gov.contrib.states.ma.commonwealth_credit.in_effect: true
-    gov.contrib.states.ma.commonwealth_credit.itin_eligible: true
+    gov.contrib.states.ma.commonwealth_credit.itin_or_matin_eligible: true
     people:
       head:
         is_tax_unit_head: true
@@ -577,17 +577,19 @@
         state_code: MA
         members: [head, child]
   output:
-    ma_commonwealth_credit: 0
-    # 0.4 x 314 = 125.60.
-    ma_eitc: 125.6
+    # The child can be claimed with a Massachusetts alternative taxpayer
+    # identification number, as under the Child and Family Tax Credit.
+    ma_commonwealth_credit: 1_800
+    # The Commonwealth Credit replaces the match.
+    ma_eitc: 0
 
-- name: Children with a Social Security number and an ITIN both count, and a child with neither does not, when the credit accepts an ITIN in 2025
+- name: Children with a Social Security number, an ITIN, or neither all count when the credit accepts an ITIN or MATIN in 2025
   period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
   input:
     gov.contrib.states.ma.commonwealth_credit.in_effect: true
-    gov.contrib.states.ma.commonwealth_credit.itin_eligible: true
+    gov.contrib.states.ma.commonwealth_credit.itin_or_matin_eligible: true
     people:
       head:
         is_tax_unit_head: true
@@ -621,6 +623,6 @@
   output:
     # Only the child with a Social Security number counts for the federal EITC.
     eitc_child_count: 1
-    # Two Commonwealth Credit children: the two-child maximum of 3,000.
-    ma_commonwealth_credit: 3_000
+    # Three Commonwealth Credit children: the three-child maximum of 3,300.
+    ma_commonwealth_credit: 3_300
     ma_eitc: 0

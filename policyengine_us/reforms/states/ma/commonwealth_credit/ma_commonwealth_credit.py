@@ -5,18 +5,17 @@ from policyengine_core.periods import instant
 
 def _qualifying_children(tax_unit, period, p):
     """Number of children who count toward the Commonwealth Credit."""
-    if not p.itin_eligible:
+    if not p.itin_or_matin_eligible:
         # The federal EITC count, which requires each qualifying child to
         # have a Social Security number valid for employment (IRC
         # 32(c)(3)(D) and 32(m)).
         return tax_unit("eitc_child_count", period)
-    # The same qualifying-child test, with an ITIN accepted in place of a
-    # Social Security number.
-    person = tax_unit.members
-    qualifying_child = person("is_eitc_qualifying_child", period) & person(
-        "has_tin", period
-    )
-    return tax_unit.sum(qualifying_child)
+    # The Child and Family Tax Credit rule: a qualifying child may have a
+    # Social Security number or an ITIN, and a child with neither can be
+    # claimed with a Massachusetts alternative taxpayer identification
+    # number (MATIN), which DOR issues once it verifies the child. Every
+    # qualifying child therefore counts.
+    return tax_unit.sum(tax_unit.members("is_eitc_qualifying_child", period))
 
 
 def create_ma_commonwealth_credit() -> Reform:
@@ -33,8 +32,9 @@ def create_ma_commonwealth_credit() -> Reform:
       the lower threshold)
 
     Qualifying children need a Social Security number, as under the federal
-    EITC. The itin_eligible switch (default false) is a variant for
-    comparison that also counts qualifying children with an ITIN.
+    EITC. The itin_or_matin_eligible switch (default false) is a variant for
+    comparison that applies the Child and Family Tax Credit's rule instead,
+    counting qualifying children with an ITIN or a MATIN.
 
     Tax units without qualifying children keep the existing EITC match.
     """
