@@ -31,13 +31,15 @@
     spm_units:
       unit1:
         members: [person1, person2, person3]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 0
       unit2:
         members: [person4]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 0
@@ -78,13 +80,15 @@
     spm_units:
       unit1:
         members: [person1, person2, person3]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 0
       unit2:
         members: [person4]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 0
@@ -125,13 +129,15 @@
     spm_units:
       unit1:
         members: [person1, person2, person3]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 1_200
         receives_snap: false
         fdpir: 0
       unit2:
         members: [person4]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 0
@@ -172,13 +178,15 @@
     spm_units:
       unit1:
         members: [person1, person2, person3]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: true
         fdpir: 0
       unit2:
         members: [person4]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 0
@@ -219,13 +227,15 @@
     spm_units:
       unit1:
         members: [person1, person2, person3]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 1_200
       unit2:
         members: [person4]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 0
@@ -266,13 +276,15 @@
     spm_units:
       unit1:
         members: [person1, person2, person3]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 0
       unit2:
         members: [person4]
-        school_meal_fpg_ratio: 2
+        csfp_countable_income: 20_000
+        spm_unit_fpg: 10_000
         snap: 0
         receives_snap: false
         fdpir: 0
@@ -290,7 +302,8 @@
   period: 2026
   input:
     age: 60
-    school_meal_fpg_ratio: 1.5
+    csfp_countable_income: 15_000
+    spm_unit_fpg: 10_000
     state_code: KS
     county_str: SEDGWICK_COUNTY_KS
     ssi: 0
@@ -307,7 +320,8 @@
   period: 2026
   input:
     age: 68
-    school_meal_fpg_ratio: 1.51
+    csfp_countable_income: 15_100
+    spm_unit_fpg: 10_000
     state_code: KS
     county_str: SEDGWICK_COUNTY_KS
     ssi: 0
@@ -324,7 +338,8 @@
   period: 2026
   input:
     age: 68
-    school_meal_fpg_ratio: 2
+    csfp_countable_income: 20_000
+    spm_unit_fpg: 10_000
     state_code: KS
     county_str: ALLEN_COUNTY_KS
     ssi: 0
@@ -341,7 +356,8 @@
   period: 2026
   input:
     age: 59
-    school_meal_fpg_ratio: 2
+    csfp_countable_income: 20_000
+    spm_unit_fpg: 10_000
     state_code: KS
     county_str: SEDGWICK_COUNTY_KS
     ssi: 0
@@ -358,7 +374,8 @@
   period: 2026
   input:
     age: 68
-    school_meal_fpg_ratio: 2
+    csfp_countable_income: 20_000
+    spm_unit_fpg: 10_000
     state_code: MO
     county_str: JACKSON_COUNTY_MO
     ssi: 0
@@ -375,7 +392,8 @@
   period: 2024
   input:
     age: 68
-    school_meal_fpg_ratio: 2
+    csfp_countable_income: 20_000
+    spm_unit_fpg: 10_000
     state_code: KS
     county_str: SEDGWICK_COUNTY_KS
     ssi: 0
@@ -392,7 +410,8 @@
   period: 2025
   input:
     age: 68
-    school_meal_fpg_ratio: 2
+    csfp_countable_income: 20_000
+    spm_unit_fpg: 10_000
     state_code: KS
     county_str: SEDGWICK_COUNTY_KS
     ssi: 0
@@ -432,7 +451,7 @@
         state_code: KS
         county_str: SEDGWICK_COUNTY_KS
   output:
-    school_meal_countable_income: 43_800
+    csfp_countable_income: 43_800
     ks_dcf_csfp_categorically_eligible: [true, false]
     commodity_supplemental_food_program_eligible: [true, false]
     commodity_supplemental_food_program: [651, 0]
@@ -471,7 +490,7 @@
     # 2026 SSI federal benefit rate: 994 * 12 = 11,928.
     ssi: [11_928, 0]
     # 33,000 wages + 11,928 SSI.
-    school_meal_countable_income: 44_928
+    csfp_countable_income: 44_928
     ks_dcf_csfp_categorically_eligible: [true, false]
     commodity_supplemental_food_program_eligible: [true, false]
     commodity_supplemental_food_program: [651, 0]
@@ -480,7 +499,8 @@
   period: 2026
   input:
     age: 68
-    school_meal_fpg_ratio: 2
+    csfp_countable_income: 20_000
+    spm_unit_fpg: 10_000
     state_code: KS
     county_str: SEDGWICK_COUNTY_KS
     ssi: 0
