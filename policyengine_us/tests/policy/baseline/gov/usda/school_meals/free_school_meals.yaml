@@ -256,3 +256,14 @@
     is_in_k12_school: [true, true, true, true, true, true]
   output:
     free_school_meals: [621.00, 1_256.40, 621.00, 498.60, 1_008.00, 498.60]
+
+- name: Take-up gates free school meals even with a supplied net subsidy.
+  period: 2025
+  input:
+    school_meal_breakfast_tier: [FREE, FREE]
+    school_meal_lunch_tier: [FREE, FREE]
+    school_meal_net_subsidy: [100, 100]
+    takes_up_school_meals_if_eligible: [true, false]
+  output:
+    # Both meals use the same tier, so its share of the net subsidy is one.
+    free_school_meals: [100, 0]
