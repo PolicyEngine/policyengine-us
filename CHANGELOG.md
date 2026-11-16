@@ -1,3 +1,10 @@
+## [2.139.0] - 2026-11-16
+
+### Added
+
+- Added source capture checks and capture guidance to prevent publishing visitor bot-check tokens.
+
+
 ## [2.138.4] - 2026-11-16
 
 ### Fixed
