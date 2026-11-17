@@ -347,3 +347,76 @@
         state_code: KY
   output:
     ky_ccap_income_eligible: false
+
+- name: Case 17, a family of three qualifies at the July 2022 income limit.
+  period: 2022
+  input:
+    people:
+      person1:
+        employment_income: 55_476
+      person2:
+        age: 4
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # DCC-113 R.10/22 sets the inclusive three-person limit at $4,623.
+    ky_ccap_countable_income:
+      2022-07: 4_623
+    ky_ccap_income_eligible:
+      2022-07: true
+
+- name: Case 18, July 2022 begins the lower modeled limit for a family of three.
+  period: 2022
+  input:
+    people:
+      person1:
+        employment_income: 55_488
+      person2:
+        age: 4
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    ky_ccap_countable_income:
+      2022-07: 4_624
+    ky_ccap_income_eligible:
+      # Pin the model's existing pre-July fallback.
+      2022-06: true
+      # DCC-113 R.10/22 sets the three-person limit at $4,623.
+      2022-07: false
+
+- name: Case 19, October 2023 raises the limit for a family of three.
+  period: 2023
+  input:
+    people:
+      person1:
+        employment_income: 55_488
+      person2:
+        age: 4
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # DCC-113 raises the limit from $4,623 to $5,210.
+    ky_ccap_income_eligible:
+      2023-09: false
+      2023-10: true
