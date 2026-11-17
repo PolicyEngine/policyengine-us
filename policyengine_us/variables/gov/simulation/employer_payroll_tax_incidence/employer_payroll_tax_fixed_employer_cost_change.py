@@ -1,5 +1,7 @@
 from typing import NamedTuple
 
+import pandas as pd
+
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.irs.tax.payroll.payroll_tax_gross_wages import (
     payroll_tax_gross_wages as default_payroll_tax_gross_wages,
@@ -252,22 +254,90 @@ def payroll_wage_rule(system, period):
     )
 
 
-def payroll_wage_exclusions(person, period, rule):
-    """Pay that a simulation's payroll wages leave out, for each person.
+FICA_PRE_TAX_LIST = "gov.irs.gross_income.fica_pre_tax_contributions"
+# Abolishing the total zeroes it even where it is supplied, which an empty
+# list does not, so the two are told apart.
+FICA_PRE_TAX_ABOLISHED = "abolished"
 
-    ``person`` is the person population of the simulation whose payroll wages
-    these are: the reform simulation's for reform wages, its baseline's for
-    baseline wages. Each calculates its own fica_pre_tax_contributions, the
-    total its payroll_tax_gross_wages reads, so an input to that total, a
-    reform to the list it adds, to its formula or to its abolition switch,
-    and neutralizing it each apply to the side they belong to. Under the
-    tax-exempt rule, the tips and overtime premiums that simulation's system
-    exempts are left out too.
+
+def fica_pre_tax_list(system, period):
+    """The contributions ``system`` adds into fica_pre_tax_contributions.
+
+    FICA_PRE_TAX_ABOLISHED when it abolishes the total, and None when it
+    calculates the total another way: neutralized, or with a formula a
+    structural reform gave it.
     """
-    exclusions = person("fica_pre_tax_contributions", period)
+    variable = system.get_variable("fica_pre_tax_contributions")
+    if (
+        variable.is_neutralized
+        or variable.formulas
+        or variable.subtracts
+        or variable.adds != FICA_PRE_TAX_LIST
+    ):
+        return None
+    gov = system.parameters(period).gov
+    if abolishes(gov, ["fica_pre_tax_contributions"]):
+        return FICA_PRE_TAX_ABOLISHED
+    return tuple(gov.irs.gross_income.fica_pre_tax_contributions)
+
+
+def for_each_person(person, baseline_person, values):
+    """``values`` of the baseline's people, for each of ``person``'s people.
+
+    People are matched by ID. A branch shares its ancestor's baseline, which
+    keeps the ancestor's people when the branch is subsampled.
+    """
+    ids = np.asarray(person.ids)
+    baseline_ids = np.asarray(baseline_person.ids)
+    if np.array_equal(ids, baseline_ids):
+        return values
+    index = pd.Index(baseline_ids).get_indexer(ids)
+    if np.any(index < 0):
+        raise NotImplementedError(
+            "employer_payroll_tax_fixed_employer_cost_change needs the "
+            "baseline's FICA pre-tax contributions, but the baseline "
+            "simulation lacks some of this simulation's people."
+        )
+    return np.asarray(values)[index]
+
+
+def fica_pre_tax_totals(person, period, baseline):
+    """Each side's fica_pre_tax_contributions, as (baseline, reform).
+
+    The reform's is this simulation's own total, so a supplied total and the
+    reform's definition of the total apply. When both systems add the same
+    list, or both abolish the total, the baseline's is the same calculation
+    on the same inputs, so it is the reform's too. Otherwise the baseline
+    simulation calculates it under its own definition, which a list change,
+    neutralizing the total or a formula for it leaves alone. That simulation
+    holds the inputs this one was built with (or rebuilt with, by
+    ``subsample``). A formula for the total that reads employment_income is
+    not supported: this variable is part of employment_income, so core
+    raises a CycleError.
+    """
+    reform_total = person("fica_pre_tax_contributions", period)
+    reform_list = fica_pre_tax_list(person.simulation.tax_benefit_system, period)
+    if reform_list is not None and reform_list == fica_pre_tax_list(
+        baseline.tax_benefit_system, period
+    ):
+        return reform_total, reform_total
+    baseline_person = baseline.populations["person"]
+    baseline_total = baseline_person("fica_pre_tax_contributions", period)
+    return for_each_person(person, baseline_person, baseline_total), reform_total
+
+
+def payroll_wage_exclusions(person, period, system, rule, fica_pre_tax_total):
+    """Pay that ``system``'s payroll wages leave out, for each person.
+
+    ``fica_pre_tax_total`` is that side's fica_pre_tax_contributions
+    (``fica_pre_tax_totals``). Under the tax-exempt rule, the tips and
+    overtime premiums that ``system`` exempts are left out too; they are
+    inputs, read from this simulation.
+    """
+    exclusions = fica_pre_tax_total
     if rule == TAX_EXEMPT_WAGE_RULE:
         exclusions = exclusions + payroll_tax_exempt_income(
-            person, period, person.simulation.tax_benefit_system.parameters
+            person, period, system.parameters
         )
     return exclusions
 
@@ -330,13 +400,17 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
         "policy reforms leave it alone, while scenario reforms such as the "
         "Trustees' economic assumptions extend it with the live cap, so a "
         "scenario is not read as a tax change. Each side's payroll wages "
-        "leave out what that side's simulation calculates for "
-        "fica_pre_tax_contributions and, under the tax-exempt reform, exempt "
-        "tips and overtime, so inputs to them and structural reforms to them "
-        "apply. The baseline side reads the baseline simulation, which has "
-        "the inputs the simulation was built with: an input set on the "
-        "reform simulation afterwards, which the baseline never sees, counts "
-        "as a change to payroll wages. A simulation that supplies "
+        "leave out its fica_pre_tax_contributions and, under the tax-exempt "
+        "reform, exempt tips and overtime. The reform side's total is this "
+        "simulation's, so a supplied total applies. When the reform defines "
+        "the total as the baseline does (the same list, or both abolished), "
+        "the baseline side uses the same total; when it changes the "
+        "definition (another list, abolition, neutralizing the total, or a "
+        "formula for it), the baseline side reads the baseline simulation, "
+        "matched by person ID, which holds the inputs the simulation was "
+        "built with, or rebuilt with by subsample. A formula for the total "
+        "that reads employment_income is not supported: core raises a "
+        "CycleError. A simulation that supplies "
         "payroll_tax_gross_wages itself fixes payroll wages, so employer "
         "taxes do not follow the new wage. The cost leaves out state and local "
         "employer payroll taxes, which change with the new wage where they "
@@ -379,11 +453,20 @@ class employer_payroll_tax_fixed_employer_cost_change(Variable):
             period,
             person.household("state_code", period),
         )
+        baseline_fica, reform_fica = fica_pre_tax_totals(person, period, baseline)
         baseline_exclusions = payroll_wage_exclusions(
-            baseline.populations["person"], period, baseline_schedule.wage_rule
+            person,
+            period,
+            baseline.tax_benefit_system,
+            baseline_schedule.wage_rule,
+            baseline_fica,
         )
         reform_exclusions = payroll_wage_exclusions(
-            person, period, reform_schedule.wage_rule
+            person,
+            period,
+            person.simulation.tax_benefit_system,
+            reform_schedule.wage_rule,
+            reform_fica,
         )
         # Payroll wages are max(0, pay - exclusions) under every rule, so
         # equal components and equal exclusions give each worker the same

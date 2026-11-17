@@ -28,6 +28,9 @@ continuous, piecewise linear and increasing in payroll wages w, so:
    payroll wage exclusions it compares are each simulation's own
    fica_pre_tax_contributions, so a supplied total counts in both, and
    neutralizing or abolishing it moves pay with the components unchanged.
+   A branch that was subsampled matches its ancestor's baseline by person
+   ID, and a formula for the total that reads employment income is refused
+   with core's CycleError.
 6. Marginal wedge: in a branch that raises earnings, wages rise by
    (1 + m_b) / (1 + m_r) per dollar, where m is the federal employer rate at
    the margin, so marginal tax rates measured in a reform carry the employer
@@ -47,15 +50,20 @@ after them, so at most one is held at a time.
 """
 
 import gc
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
 from hypothesis import example, given, settings
 from hypothesis import strategies as st
+from policyengine_core.errors import CycleError
+from policyengine_core.periods import YEAR as YEAR_PERIOD
 from policyengine_core.periods import period as make_period
 from policyengine_core.reforms import Reform
+from policyengine_core.variables import Variable
 
 from policyengine_us import Simulation
+from policyengine_us.entities import Person
 from policyengine_us.reforms.ssa.trustees_2026 import (
     trustees_2026_economic_assumptions_reform,
 )
@@ -67,11 +75,13 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
 )
 from policyengine_us.variables.gov.simulation.employer_payroll_tax_incidence.employer_payroll_tax_fixed_employer_cost_change import (
     DEFAULT_WAGE_RULE,
+    FICA_PRE_TAX_ABOLISHED,
     TAX_EXEMPT_WAGE_RULE,
     components_match,
     employer_cost_schedules,
     employer_payroll_tax_from_components,
     federal_employer_payroll_tax_components,
+    fica_pre_tax_list,
     fixed_employer_cost_wage_change,
     payroll_wage_rule,
     wages_at_employer_cost,
@@ -818,6 +828,124 @@ def test_removing_the_fica_total_lowers_pay(removal):
             rtol=1e-6,
             atol=0.05,
         )
+    finally:
+        del simulation
+        gc.collect()
+
+
+class fica_pre_tax_contributions(Variable):
+    """A total that reads employment income, which the response can't solve."""
+
+    value_type = float
+    entity = Person
+    definition_period = YEAR_PERIOD
+
+    def formula(person, period, parameters):
+        return 0.1 * person("employment_income", period)
+
+
+class ProportionalFicaTotal(Reform):
+    def apply(self):
+        self.update_variable(fica_pre_tax_contributions)
+
+
+def test_fica_pre_tax_list_says_how_a_system_defines_the_total():
+    """Equal lists let the baseline reuse the reform's total; others don't."""
+    current_list = tuple(
+        system.parameters(YEAR).gov.irs.gross_income.fica_pre_tax_contributions
+    )
+    assert "pre_tax_health_insurance_premiums" in current_list
+    assert fica_pre_tax_list(system, YEAR) == current_list
+    abolished = Reform.from_dict(
+        {"gov.abolitions.fica_pre_tax_contributions": {DATES: True}},
+        country_id="us",
+    )(system)
+    assert fica_pre_tax_list(abolished, YEAR) == FICA_PRE_TAX_ABOLISHED
+    assert fica_pre_tax_list(NeutralizeFicaTotal(system), YEAR) is None
+    assert fica_pre_tax_list(ProportionalFicaTotal(system), YEAR) is None
+
+
+def test_a_total_that_reads_employment_income_is_refused():
+    """The total would depend on the wage this variable sets: a cycle."""
+    simulation = Simulation(
+        situation=small_situation(YEAR, [{"employment_income": 60_000}], ["TX"]),
+        reform=ProportionalFicaTotal,
+    )
+    try:
+        with pytest.raises(CycleError):
+            simulation.calculate("employment_income", YEAR)
+    finally:
+        del simulation
+        gc.collect()
+
+
+def numbered_situation(year, people, states):
+    """small_situation with numeric IDs, which subsample's rebuild needs."""
+    members = {
+        str(i): {"age": {year: 40}, **{k: {year: v} for k, v in person.items()}}
+        for i, person in enumerate(people)
+    }
+    units = {
+        entity: {str(i): {"members": [str(i)]} for i in range(len(people))}
+        for entity in ("tax_units", "spm_units", "families", "marital_units")
+    }
+    households = {
+        str(i): {"members": [str(i)], "state_code": {year: state}}
+        for i, state in enumerate(states)
+    }
+    return {"people": members, **units, "households": households}
+
+
+# Pay after the change for each worker below, by person ID, when the total
+# is neutralized: (pay * 1.0765 - 0.0765 * premiums) / 1.0765.
+SAMPLED_PEOPLE = [
+    {"employment_income": 60_000, "pre_tax_health_insurance_premiums": 6_000},
+    {"employment_income": 80_000, "pre_tax_health_insurance_premiums": 12_000},
+]
+NEUTRALIZED_PAY = {"0": 59_573.62, "1": 79_147.24}
+
+
+@pytest.mark.parametrize("removal", ["employee_rate", "neutralized"])
+def test_a_subsampled_branch_matches_its_baseline_by_person(removal):
+    """A branch keeps its ancestor's baseline, with all of its people.
+
+    Subsampling the branch to one of two households leaves that baseline at
+    two people. An employee-only reform defines the FICA pre-tax total as
+    the baseline does, so the change is zero without reading the baseline.
+    Neutralizing the total does not, so the baseline's total is read, for
+    the person the sample kept.
+    """
+    if removal == "employee_rate":
+        reform = Reform.from_dict(
+            {f"{PAYROLL}.medicare.rate.employee": {DATES: 0.0245}}, country_id="us"
+        )
+    else:
+        reform = NeutralizeFicaTotal
+    simulation = Simulation(
+        situation=numbered_situation(YEAR, SAMPLED_PEOPLE, ["TX", "TX"]),
+        reform=reform,
+    )
+    try:
+        # What a household simulation lacks for subsample: array IDs and the
+        # dataset's period and name.
+        for current in (simulation, simulation.baseline):
+            for population in current.populations.values():
+                population.ids = np.asarray(population.ids)
+        simulation.dataset = SimpleNamespace(time_period=YEAR, name="sampled")
+        simulation.set_input("household_weight", YEAR, [1.0, 1.0])
+        branch = simulation.get_branch("sampled")
+        branch.subsample(n=1, seed="sampled", time_period=YEAR)
+        assert branch.persons.count == 1
+        assert branch.baseline.persons.count == 2
+        kept = str(branch.persons.ids[0])
+        pay = branch.calculate("employment_income", YEAR)
+        if removal == "employee_rate":
+            np.testing.assert_array_equal(branch.calculate(CHANGE, YEAR), 0)
+            np.testing.assert_array_equal(
+                pay, [SAMPLED_PEOPLE[int(kept)]["employment_income"]]
+            )
+        else:
+            np.testing.assert_allclose(pay, [NEUTRALIZED_PAY[kept]], atol=0.02)
     finally:
         del simulation
         gc.collect()
