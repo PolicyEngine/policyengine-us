@@ -1,0 +1,17 @@
+description: Vermont uses these monthly Chittenden County rents before applying the Renter Credit maximum.
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: month
+  breakdown:
+    - list(range(3, 5))
+  breakdown_labels:
+    - Bedrooms
+  label: Vermont RC uncapped Chittenden County fair market rent
+  reference:
+    - title: HUD FY2025 Fair Market Rent Schedule, Burlington-South Burlington MSA
+      href: https://www.huduser.gov/portal/datasets/fmr/fmr2025/FY2025_FMR_Schedule.pdf#page=51
+3:
+  2025-01-01: 2_491
+4:
+  2025-01-01: 2_567
