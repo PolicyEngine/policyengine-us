@@ -1,7 +1,7 @@
 # North Carolina Medicaid expansion case (output differs from the
 # federal.yaml TX non-expansion baseline; NC adopted the expansion on
 # 2023-12-01, so this also pins the newest expansion state in the suite).
-# NC Medicaid per capita: $19,443,040,982 / 2,776,584 enrolled = $7,002.50.
+# NC Medicaid per capita: $28,802,680,042 / 2,681,619 enrolled = $10,740.78.
 - name: medicaid_adult_below_138pct_fpl_expansion (nc)
   period: 2026
   absolute_error_margin: 0.1
@@ -49,8 +49,8 @@
         msp: 0.0
         msp_eligible: false
         # Expansion state: 22,000 / 15,960 = 1.378 FPL < 1.38 -> ADULT.
-        # Single enrollee: medicaid = NC per capita 7,002.50.
-        medicaid: 7_002.5
+        # Single enrollee: medicaid = NC per capita 10,740.78.
+        medicaid: 10_740.78
         is_medicaid_eligible: true
         medicaid_category: 4  # ADULT
         chip: 0.0

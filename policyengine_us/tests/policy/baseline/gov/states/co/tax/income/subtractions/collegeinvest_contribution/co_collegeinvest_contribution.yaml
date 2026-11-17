@@ -37,3 +37,62 @@
   output:
     co_collegeinvest_subtraction: 25_000
     # below capped amount
+
+# Colorado DOR publishes 2026 limits of $26,200 and $39,200.
+# Subtract min(contribution, filing-status limit), including at either side.
+- name: Single filers subtract contributions up to the published 2026 limit
+  period: 2026
+  input:
+    investment_in_529_plan: [26_199, 26_200, 26_201]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    state_code: [CO, CO, CO]
+  output:
+    co_collegeinvest_subtraction: [26_199, 26_200, 26_200]
+
+- name: Joint filers subtract contributions up to the published 2026 limit
+  period: 2026
+  input:
+    investment_in_529_plan: [39_199, 39_200, 39_201]
+    filing_status: [JOINT, JOINT, JOINT]
+    state_code: [CO, CO, CO]
+  output:
+    co_collegeinvest_subtraction: [39_199, 39_200, 39_200]
+
+- name: Other filing statuses use the published 2026 single limit
+  period: 2026
+  input:
+    investment_in_529_plan: [50_000, 50_000, 50_000]
+    filing_status: [SEPARATE, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE]
+    state_code: [CO, CO, CO]
+  output:
+    co_collegeinvest_subtraction: [26_200, 26_200, 26_200]
+
+# Project the 2026 actuals with the existing IRS inflation proxy:
+# 26,200 * 181.97958333333335 / 176.71308333333332 = 26,980.8267 -> 27,000.
+# 39,200 * the same ratio = 40,368.2598 -> 40,400 (nearest $100).
+- name: Single filers use the projected cap after the last published year
+  period: 2027
+  input:
+    investment_in_529_plan: [26_999, 27_000, 27_001]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    state_code: [CO, CO, CO]
+  output:
+    co_collegeinvest_subtraction: [26_999, 27_000, 27_000]
+
+- name: Joint filers use the projected cap after the last published year
+  period: 2027
+  input:
+    investment_in_529_plan: [40_399, 40_400, 40_401]
+    filing_status: [JOINT, JOINT, JOINT]
+    state_code: [CO, CO, CO]
+  output:
+    co_collegeinvest_subtraction: [40_399, 40_400, 40_400]
+
+- name: Other states do not receive Colorado's subtraction
+  period: 2027
+  input:
+    investment_in_529_plan: 50_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    co_collegeinvest_subtraction: 0

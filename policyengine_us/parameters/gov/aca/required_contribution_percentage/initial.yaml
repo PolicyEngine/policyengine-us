@@ -4,6 +4,14 @@ metadata:
   period: year
   label: ACA contribution percentage - initial rate per bracket
   reference:
+    - title: 26 U.S.C. 36B(b)(3)(A) - Original 2014 applicable percentages
+      href: https://www.govinfo.gov/content/pkg/USCODE-2014-title26/pdf/USCODE-2014-title26-subtitleA-chap1-subchapA-partIV-subpartC-sec36B.pdf#page=1
+    - title: IRS Revenue Procedure 2014-37 section 5.01 - Applicable percentages for 2015
+      href: https://www.irs.gov/pub/irs-irbs/irb14-33.pdf#page=38
+    - title: IRS Revenue Procedure 2014-62 section 2.01 - Applicable percentages for 2016
+      href: https://www.irs.gov/pub/irs-drop/rp-14-62.pdf#page=2
+    - title: IRS Revenue Procedure 2016-24 section 2.01 - Applicable percentages for 2017
+      href: https://www.irs.gov/pub/irs-drop/rp-16-24.pdf#page=2
     - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
       href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
     - title: IRS Revenue Procedure 2017-36 - Applicable percentage table for 2018
@@ -17,14 +25,34 @@ metadata:
     - title: IRS Revenue Procedure 2026-26 - Applicable percentage table for 2027
       href: https://www.irs.gov/pub/irs-drop/rp-26-26.pdf#page=3
 values:
-  # Original ACA: 6 brackets
+  2014-01-01:
+    - 0.02
+    - 0.03
+    - 0.04
+    - 0.063
+    - 0.0805
+    - 0.095
   2015-01-01:
-    - 0.02    # 0-133%: flat 2%
-    - 0.03    # 133-150%
-    - 0.04    # 150-200%
-    - 0.063   # 200-250%
-    - 0.0805  # 250-300%
-    - 0.095   # 300-400%: flat 9.5%
+    - 0.0201
+    - 0.0302
+    - 0.0402
+    - 0.0634
+    - 0.081
+    - 0.0956
+  2016-01-01:
+    - 0.0203
+    - 0.0305
+    - 0.0407
+    - 0.0641
+    - 0.0818
+    - 0.0966
+  2017-01-01:
+    - 0.0204
+    - 0.0306
+    - 0.0408
+    - 0.0643
+    - 0.0821
+    - 0.0969
   2018-01-01:
     - 0.0201
     - 0.0302

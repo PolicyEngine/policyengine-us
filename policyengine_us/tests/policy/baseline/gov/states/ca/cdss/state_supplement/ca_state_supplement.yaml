@@ -866,7 +866,7 @@
   output:
     ca_capi_eligible_person: [false, true]
     # Couple PMV = 1,415 / 3 + 20 = 491.666667 for the recipient.
-    ssi_in_kind_support_and_maintenance: [491.666667, 0]
+    ssi_in_kind_support_and_maintenance_monthly: [491.666667, 0]
     # SSI = 1,415 / 2 - (491.666667 - 20) / 2 = 471.666667.
     ssi: [471.666667, 0]
     # Own income = 491.666667 - 20 = 471.666667.
@@ -905,7 +905,7 @@
   output:
     ca_capi_eligible_person: [false, true]
     # November uses September food; the January arithmetic still applies.
-    ssi_in_kind_support_and_maintenance: [491.666667, 0]
+    ssi_in_kind_support_and_maintenance_monthly: [491.666667, 0]
     ssi: [471.666667, 0]
     ca_state_supplement_person: [239.61, 0]
 
@@ -941,7 +941,7 @@
   output:
     ca_capi_eligible_person: [false, true]
     # October food no longer counts; SSI = 1,415 / 2 = 707.50.
-    ssi_in_kind_support_and_maintenance: [0, 0]
+    ssi_in_kind_support_and_maintenance_monthly: [0, 0]
     ssi: [707.50, 0]
     # SSP = 1,182.94 - 707.50 - 0 = 475.44.
     ca_state_supplement_person: [475.44, 0]

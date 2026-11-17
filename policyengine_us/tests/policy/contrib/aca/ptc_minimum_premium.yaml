@@ -199,6 +199,69 @@
     used_aca_ptc: 2_940  # min(5,940, 3,000 - 60)
     marketplace_net_premium: 60  # 3,000 - 2,940
 
+- name: An inactive minimum premium preserves the historical credit in 2014
+  period: 2014
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    filing_status: SINGLE
+    is_aca_marketplace_enrollee: true
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    selected_marketplace_plan_premium_proxy: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 9585.0  # 12,000 - 30,000 * 0.0805.
+
+- name: An inactive minimum premium preserves the historical credit in 2017
+  period: 2017
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    selected_marketplace_plan_premium_proxy: 12_000
+    aca_magi: 30_000
+    aca_magi_fraction: 2.50
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 9537.0  # 12,000 - 30,000 * 0.0821.
+
+- name: The historical minimum-premium path floors supplied negative MAGI in 2014
+  period: 2014
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    filing_status: SINGLE
+    is_aca_marketplace_enrollee: true
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    selected_marketplace_plan_premium_proxy: 12_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 12_000
+
+- name: The historical minimum-premium path floors supplied negative MAGI in 2017
+  period: 2017
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 12_000
+    selected_marketplace_plan_premium_proxy: 13_000
+    aca_magi: -1_000
+    aca_magi_fraction: 0
+    tax_unit_is_filer: true
+  output:
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 12_000
 - name: A claimable spouse's benchmark and premium stay out of the credit
   # 26 U.S.C. 36B(c)(1)(D): the spouse who can be claimed on another return is
   # outside the tax family, so the credit uses the other spouse's benchmark.
@@ -349,3 +412,148 @@
     aca_ptc_coverage_family_premium: 4_000
     aca_ptc: 5_940
     used_aca_ptc: 3_940
+
+- name: A claimable spouse stays outside the historical 2015 benchmark and premium
+  # 26 U.S.C. 36B(c)(1)(D): the spouse who can be claimed on another return is
+  # outside the tax family, so the credit uses the other spouse's benchmark.
+  # 150% of the 2014 poverty guideline for one, 4.02% contribution:
+  # 6,000 - 0.0402 * 17,505 = 5,296.299, below the enrolled premium less the
+  # minimum (6,000 - 60), so the minimum does not bind.
+  period: 2015
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 17_505
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        # Annual base: adults cost 6,000.
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6_000
+    aca_ptc_minimum_premium: 60
+    aca_ptc: 5_296.299
+    # The whole policy costs 12,000; the coverage family's share is
+    # 6,000 / (6,000 + 6,000), so 6,000, and the credit fits under 6,000 - 60.
+    aca_ptc_coverage_family_premium: 6_000
+    used_aca_ptc: 5_296.299
+
+- name: A claimable spouse stays outside the historical 2017 minimum-premium cap
+  # The household above with no required contribution. The credit is capped
+  # at the coverage family's enrolled premium less the minimum:
+  # 6,000 - 60 = 5,940. The whole policy's premium (12,000) would give 6,000.
+  period: 2017
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    gov.contrib.aca.minimum_premium.in_effect: true
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        aca_required_contribution_percentage: 0
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        slcsp_age_0: 6000
+  output:
+    aca_tax_family_size: 1
+    aca_ptc_slcsp: 6_000
+    aca_ptc_coverage_family_premium: 6_000
+    aca_ptc: 5_940
+    used_aca_ptc: 5_940
+
+- name: A claimable spouse stays outside the historical 2014 benchmark
+  period: 2014
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.aca.aca_ptc_minimum_premium.aca_ptc_minimum_premium
+  input:
+    people:
+      person_a:
+        age: 30
+        is_aca_marketplace_enrollee: true
+        is_aca_ptc_eligible: false
+        is_aca_tax_family_member: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_aca_marketplace_enrollee: true
+        is_aca_ptc_eligible: true
+        is_aca_tax_family_member: true
+        slcsp_age_curve_multiplier: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 17_235
+        aca_magi_fraction: 1.5
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+        slcsp_age_0: 6_000
+  output:
+    # 26 CFR 1.36B-3(f): price the one-person coverage family separately.
+    # 2014 statutory rate at 150% FPL = 4%; 17,235 * 0.04 = 689.4.
+    # Credit = 6,000 - 689.4 = 5,310.6; the minimum remains inactive.
+    # https://www.govinfo.gov/content/pkg/CFR-2014-title26-vol1/pdf/CFR-2014-title26-vol1-sec1-36B-3.pdf#page=2
+    aca_ptc_slcsp: 6_000
+    aca_ptc_minimum_premium: 0
+    aca_ptc: 5_310.6

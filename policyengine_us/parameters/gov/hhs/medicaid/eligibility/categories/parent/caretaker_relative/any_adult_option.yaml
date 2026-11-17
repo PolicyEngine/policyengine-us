@@ -1,0 +1,126 @@
+description: Whether the state elects the federal option to count any adult who lives with a dependent child and assumes primary responsibility for the child's care as a caretaker relative for the Medicaid parent and other caretaker relative category.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid parent category caretaker relative any-adult option
+  breakdown:
+    - state_code
+  reference:
+    - title: 42 CFR 435.4 - definition of caretaker relative, paragraph (3)
+      href: https://www.law.cornell.edu/cfr/text/42/435.4
+    - title: New Jersey approved state plan S25 (NJ-13-0011-MM1), any-adult caretaker option checked
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=31
+# Sourced elections only. States marked false without a comment are not
+# verified non-elections: their state plan S25 pages have not been
+# reviewed for this option, and the formula keeps excluding foster
+# children there as a proxy for an unrelated foster placement.
+AK:
+  2014-01-01: false
+AL:
+  2014-01-01: false
+AR:
+  2014-01-01: false
+AZ:
+  2014-01-01: false
+CA:
+  2014-01-01: false
+CO:
+  2014-01-01: false
+CT:
+  2014-01-01: false
+DC:
+  2014-01-01: false
+DE:
+  2014-01-01: false
+FL:
+  2014-01-01: false
+GA:
+  2014-01-01: false
+HI:
+  2014-01-01: false
+IA:
+  2014-01-01: false
+ID:
+  2014-01-01: false
+IL:
+  2014-01-01: false
+IN:
+  2014-01-01: false
+KS:
+  2014-01-01: false
+KY:
+  2014-01-01: false
+LA:
+  2014-01-01: false
+MA:
+  2014-01-01: false
+MD:
+  2014-01-01: false
+ME:
+  2014-01-01: false
+MI:
+  2014-01-01: false
+MN:
+  2014-01-01: false
+MO:
+  2014-01-01: false
+MS:
+  2014-01-01: false
+MT:
+  2014-01-01: false
+NC:
+  2014-01-01: false
+ND:
+  2014-01-01: false
+NE:
+  2014-01-01: false
+NH:
+  2014-01-01: false
+# Sourced: New Jersey's approved S25 checks "The definition of caretaker
+# relative includes any adult with whom the child is living and who
+# assumes primary responsibility for the dependent child's care"
+# (NJ-13-0011-MM1, approved 02/28/2014, effective 01/01/2014; no later
+# New Jersey amendment replaces the page). N.J.A.C. 10:69, readopted in
+# 2024 for AFDC-related Medicaid, still confines the parent role to
+# listed relatives (10:69-1.5 "Dependent child" and "Parent-person";
+# 10:69-3.10(a)1); this file follows the approved state plan.
+NJ:
+  2014-01-01: true
+NM:
+  2014-01-01: false
+NV:
+  2014-01-01: false
+NY:
+  2014-01-01: false
+OH:
+  2014-01-01: false
+OK:
+  2014-01-01: false
+OR:
+  2014-01-01: false
+PA:
+  2014-01-01: false
+RI:
+  2014-01-01: false
+SC:
+  2014-01-01: false
+SD:
+  2014-01-01: false
+TN:
+  2014-01-01: false
+TX:
+  2014-01-01: false
+UT:
+  2014-01-01: false
+VA:
+  2014-01-01: false
+VT:
+  2014-01-01: false
+WA:
+  2014-01-01: false
+WI:
+  2014-01-01: false
+WV:
+  2014-01-01: false
+WY:
+  2014-01-01: false
