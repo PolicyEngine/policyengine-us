@@ -20,6 +20,9 @@ Rules shared by every formula that reads the links:
 - Input that breaks the contract gets a defined, member-order-free fallback,
   not a legal identity: an id that matches two members of one group
   resolves to neither, so it acts as an absent parent.
+- An id that names a parent outside the simulation must be unique to that
+  parent and the same for each of their children, because the SSI spousal
+  allocation compares ids to find siblings.
 - A person is a parent when own_children_in_household is positive or when a
   co-resident person's id names them. Neither source erases the other.
 - A household has links when any member has a nonzero id. Formulas keep

@@ -64,3 +64,12 @@
   output:
     ar_medicaid_work_requirement_eligible: true
     is_medicaid_ineligible_due_to_work_requirement: false
+
+- name: Inactive work requirements need no Medicaid category in 2014
+  period: 2014
+  input:
+    age: 40
+    state_code: TX
+  output:
+    # Both applicability flags are false: False OR False = False.
+    is_medicaid_ineligible_due_to_work_requirement: false

@@ -9,16 +9,6 @@ values:
   2025-01-01: 1_350
   2026-01-01: 1_350
   2027-01-01: 1_400
-  # CBO forecast.
-  2028-01-01: 1_450
-  2029-01-01: 1_450
-  2030-01-01: 1_500
-  2031-01-01: 1_500
-  2032-01-01: 1_550
-  2033-01-01: 1_600
-  2034-01-01: 1_600
-  2035-01-01: 1_650
-  2036-01-01: 1_700
 metadata:
   unit: currency-USD
   period: year
@@ -27,8 +17,8 @@ metadata:
     # 26 U.S.C. 63(c)(4)(B)(i): the statutory $500 plus its 1(f)(3)
     # cost-of-living increase with calendar year 1987 as the base year,
     # rounded down to a multiple of $50 under 1(f)(7)(A). The index's 1988
-    # value covers calendar year 1987. Base mode adds values only after
-    # CBO's, above.
+    # value covers calendar year 1987. Base mode adds values only after the
+    # last IRS value, above.
     parameter: gov.irs.indexing.c_cpi_u
     base:
       period: 1988
@@ -62,5 +52,3 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=13
     - title: Rev. Proc. 2018-57, sec. 3.16(2) (tax year 2019)
       href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=16
-    - title: CBO Tax Parameters and Effective Marginal Tax Rates, Feb 2026, sheet 1, row 68 (dependent filers, unearned), tax years 2027-2036
-      href: https://www.cbo.gov/system/files/2026-02/53724-2026-02-Tax-Parameters.xlsx

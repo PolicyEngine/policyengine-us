@@ -1,3 +1,120 @@
+## [2.145.1] - 2026-11-17
+
+### Fixed
+
+- Correct IRS September–August inflation windows, keep published amounts, and extend the last observed window at CBO's projected tax-year growth rates. Index Vermont and Wisconsin amounts on their own unchained CPI-U schedules, add Vermont's preliminary 2026 brackets, and preserve CBO calendar forecast anchors. Update observed chained CPI-U through August 2026. Store the amounts that Arizona, Arkansas, DC, Massachusetts, Michigan, Minnesota, Missouri, New Mexico, Oregon, Utah and Virginia have published for parameters that follow the index.
+
+
+## [2.145.0] - 2026-11-17
+
+### Added
+
+- New Jersey Medicaid and CHIP cover children under 19 regardless of immigration status from 2023 (Cover All Kids).
+
+
+## [2.144.6] - 2026-11-17
+
+### Fixed
+
+- New Jersey Medicaid parent and caretaker relative group now counts any adult caring for a foster child and the parent of an 18-year-old full-time secondary student, per New Jersey's approved state plan.
+
+
+## [2.144.5] - 2026-11-17
+
+### Fixed
+
+- Pair each year's Medicaid spending with the same year's enrollment when valuing Medicaid per enrollee, adding FY2024 KFF spending and January 2024 enrollment.
+
+
+## [2.144.4] - 2026-11-17
+
+### Fixed
+
+- Correct Minnesota's 2017–2020 child and dependent care credit phaseout thresholds.
+
+
+## [2.144.3] - 2026-11-17
+
+### Fixed
+
+- Start Delaware's refundable earned income tax credit option in tax year 2022.
+
+
+## [2.144.2] - 2026-11-17
+
+### Fixed
+
+- Limit SSI ineligible-child allocations to the co-resident children 20 CFR 416.1160(d) names: in spousal deeming, the couple's children and the claimant's siblings and step-siblings; in parental deeming, the parents' children. Count students under 22 (21 before June 16, 2008) as children, and leave out married children and household heads. Compute SSI and Medicaid deeming budgets month by month, including the student earned-income exclusion, and apply New Hampshire's and Oklahoma's allocation-child rules and Missouri's and Virginia's Medicaid child definitions.
+
+
+## [2.144.1] - 2026-11-17
+
+### Fixed
+
+- Apply Minnesota's 1% charitable contribution floor from 2026. Cap Minnesota's deduction for combined real estate and personal property taxes at $10,000 ($5,000 for married filing separately) from 2019, in place of the federal SALT cap. Keep the federal charitable deduction in Minnesota AMT.
+
+
+## [2.144.0] - 2026-11-17
+
+### Added
+
+- Counted Family Assistance, Safety Net Assistance payments and adult state SSI supplements in New York child care assistance income, and waived the family share for families that take up Family Assistance.
+
+### Fixed
+
+- Counted New York children's SSI and state supplements in child care assistance income before October 1, 2023, when OCFS began excluding them.
+
+
+## [2.143.0] - 2026-11-17
+
+### Added
+
+- Add an `itin_or_matin_eligible` switch to the Massachusetts Commonwealth Credit reform, which counts qualifying children without a Social Security number, as the Child and Family Tax Credit does.
+
+
+## [2.142.2] - 2026-11-17
+
+### Fixed
+
+- Apply the California infant supplement and expectant parent payment statewide while preserving their public variable names. Count eligible parents' own children, correct pregnancy timing and historical rates, and apply July 2026 amounts, including the group home expectant parent payment rate. Move parameters from `gov.local.ca.la.dss.*` to `gov.states.ca.cdss.*`, and split the expectant parent payment amount into `amount.base` and `amount.group_home`. Define `is_in_foster_care_group_home` as true for a qualifying group home or a short-term residential therapeutic program.
+
+
+## [2.142.1] - 2026-11-17
+
+### Fixed
+
+- Leave out of the self-employed health insurance deduction the premiums of a person who, or whose spouse on a joint return, is eligible for a subsidized employer health plan (26 U.S.C. 162(l)(2)(B), Form 7206 line 1).
+
+
+## [2.142.0] - 2026-11-17
+
+### Added
+
+- Add an annual CSFP take-up input that defaults to true and lets callers decline payments without changing eligibility.
+
+
+## [2.141.0] - 2026-11-17
+
+### Added
+
+- Added premium tax credit calculations for 2014–2017 with annual applicable percentages and estimated historical benchmark premiums.
+
+
+## [2.140.3] - 2026-11-16
+
+### Fixed
+
+- Activated filing-status parameter uprating for Colorado's CollegeInvest subtraction, legacy personal exemption phaseout thresholds, and the Biden FY2025 capital gains proposal, and added Colorado's published 2026 limits.
+  Corrected the 2032 head-of-household exemption phaseout threshold to match CBO's January 2025 forecast.
+
+
+## [2.140.2] - 2026-11-16
+
+### Fixed
+
+- Fixed Louisiana's school readiness credit attribution in simulations with several tax units and bounded explicit DC and Illinois LIHEAP income keys to existing matrix rows.
+
+
 ## [2.140.1] - 2026-11-16
 
 ### Fixed

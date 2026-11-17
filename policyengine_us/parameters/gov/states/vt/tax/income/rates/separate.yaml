@@ -5,6 +5,8 @@ metadata:
   rate_unit: /1
   label: Vermont income tax rates separate filers
   reference:
+    - title: 2026 Preliminary Vermont Tax Rates (estimated tax instructions, not final schedule)
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-114-Instr-2026.pdf#page=2
       # Law does not specify inflation adjusted thresholds for each year
     - title: Vermont §5822. Tax on income of individuals, estates, and trusts
       href: https://legislature.vermont.gov/statutes/section/32/151/05822
@@ -17,7 +19,7 @@ metadata:
     - title: Vermont 2024 Income Tax Return Booklet Forms and Instructions
       href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2024.pdf#page=1
     - title: Vermont 2025 Income Tax Rate Schedules
-      href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2025.pdf#page=1
+      href: https://tax.vermont.gov/sites/tax/files/documents/TaxRateSched-2025.pdf#page=1
 brackets:
   - threshold:
       2021-01-01: 0
@@ -30,12 +32,9 @@ brackets:
         2023-01-01: 37_925
         2024-01-01: 39_975
         2025-01-01: 41_250
+        2026-01-01: 42_350
       metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 50
+        uprating: null
     rate:
       2022-01-01: 0.066
   - threshold:
@@ -45,12 +44,9 @@ brackets:
         2023-01-01: 91_700
         2024-01-01: 96_650
         2025-01-01: 99_725
+        2026-01-01: 102_375
       metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 50
+        uprating: null
     rate:
       2022-01-01: 0.076
   - threshold:
@@ -60,11 +56,8 @@ brackets:
         2023-01-01: 139_725
         2024-01-01: 147_300
         2025-01-01: 152_000
+        2026-01-01: 156_025
       metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 50
+        uprating: null
     rate:
       2022-01-01: 0.0875
