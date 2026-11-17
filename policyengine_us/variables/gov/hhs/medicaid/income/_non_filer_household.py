@@ -175,7 +175,7 @@ def medicaid_non_filer_member_sum(person, period, values):
     spouse, (ii) the individual's children under the age limit and (iii) for
     an individual under the age limit, their parents and their siblings under
     the age limit. Each pair of co-residents is tested once, so each member
-    counts once in size, income and California pregnancies.
+    counts once in size, income and expected children.
 
     Links identify parents, children and siblings. Parents are
     medicaid_parent_indices: the co-resident parents the ids name, plus the

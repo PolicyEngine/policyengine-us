@@ -1,4 +1,7 @@
-# DHCS ACWDL 20-10, pp. 3-5; MAGI Household Size Flowchart, steps 7-8.
+# 42 CFR 435.603(b): a pregnant woman counts every expected child in her own
+# household; California counts them in every member's household too (S10, SPA
+# 13-0023-MM; DHCS ACWDL 20-10, pp. 3-5; MAGI Household Size Flowchart, steps
+# 7-8).
 - name: Case 1, joint filers and dependent count twins once in each household.
   period: 2025
   input:
@@ -33,7 +36,7 @@
   output:
     # Tax household of 3 plus the 2 expected children.
     medicaid_household_size: [5, 5, 5]
-    ca_medicaid_household_pregnancies: [2, 2, 2]
+    medicaid_household_pregnancies: [2, 2, 2]
 
 - name: Case 2, a pregnant dependent counts for both parents and the dependent.
   period: 2025
@@ -68,7 +71,7 @@
         county_str: SANTA_CLARA_COUNTY_CA
   output:
     medicaid_household_size: [4, 4, 4]
-    ca_medicaid_household_pregnancies: [1, 1, 1]
+    medicaid_household_pregnancies: [1, 1, 1]
 
 - name: Case 3, all expected children count across multiple pregnant members.
   period: 2025
@@ -105,7 +108,7 @@
   output:
     # 3 members plus 1 + 2 expected children.
     medicaid_household_size: [6, 6, 6]
-    ca_medicaid_household_pregnancies: [3, 3, 3]
+    medicaid_household_pregnancies: [3, 3, 3]
 
 - name: Case 4, separately filing unmarried parents with a pregnancy.
   period: 2025
@@ -154,7 +157,7 @@
     # child lives with both parents, so the non-filer rule counts the child,
     # both parents and person2's unborn child.
     medicaid_household_size: [2, 2, 4]
-    ca_medicaid_household_pregnancies: [0, 1, 1]
+    medicaid_household_pregnancies: [0, 1, 1]
 
 - name: Case 5, separately filing married parents with a pregnancy.
   period: 2025
@@ -201,7 +204,7 @@
     # spouse + her unborn child; person2 counts herself, the spouse and the
     # unborn child.
     medicaid_household_size: [4, 3, 4]
-    ca_medicaid_household_pregnancies: [1, 1, 1]
+    medicaid_household_pregnancies: [1, 1, 1]
 
 - name: Case 6, an unrelated pregnant roommate is not counted.
   period: 2025
@@ -245,7 +248,7 @@
         county_str: SANTA_CLARA_COUNTY_CA
   output:
     medicaid_household_size: [2, 2, 2]
-    ca_medicaid_household_pregnancies: [0, 1, 0]
+    medicaid_household_pregnancies: [0, 1, 0]
 
 - name: Case 7, a known externally claimed pregnant dependent is counted without doubling her pregnancy.
   period: 2025
@@ -285,9 +288,9 @@
   output:
     # Claimant plus the claimed dependent plus her unborn child.
     medicaid_household_size: [3, 3]
-    ca_medicaid_household_pregnancies: [1, 1]
+    medicaid_household_pregnancies: [1, 1]
 
-- name: Case 8, non-California pregnancy household treatment is preserved.
+- name: Case 8, Kansas counts the pregnancy only in the pregnant member's household.
   period: 2025
   input:
     people:
@@ -318,14 +321,15 @@
         members: [person1, person2, person3]
         state_code: KS
   output:
-    # Outside California only the pregnant member's own household grows.
+    # Kansas's election is not yet researched and keeps 0: only the pregnant
+    # member's own household grows.
     medicaid_household_size: [3, 4, 3]
-    ca_medicaid_household_pregnancies: [0, 0, 0]
+    medicaid_household_pregnancies: [0, 1, 0]
 
 # ACWDL 20-10, p. 5, non-filer rule for a child: the child, the child's
 # children, the child's parents in the home and siblings. A pregnant teen mother
-# is both a child-age member and a parent, so the union sum counts her one
-# pregnancy once for herself and for her baby.
+# is both a child-age member and a parent, so her one pregnancy counts once for
+# herself and for her baby.
 - name: Case 9, a pregnant teen mother claimed on another return counts her pregnancy once for herself and her baby.
   period: 2025
   input:
@@ -373,16 +377,16 @@
   output:
     medicaid_uses_non_filer_rules: [false, true, true]
     # person1 follows her own return (no pregnancy in it); person2 and person3
-    # sum pregnancies once over the union of child-age members and parents.
-    ca_medicaid_household_pregnancies: [0, 1, 1]
+    # count each member of their non-filer households once.
+    medicaid_household_pregnancies: [0, 1, 1]
     # Eligibility is not asserted: under DHCS non-filer rules (Box C) the
     # infant's household is the infant and the teen mother, not the grandmother,
     # and the model's current composition for the infant is a follow-up.
 
 # ACWDL 20-10, p. 5, non-filer rule for a child: both 18-year-old parents are
 # child-age members (under 19) and parents, and each is the other's spouse.
-# The wife's pregnancy is already inside the union sum for the husband, so the
-# spouse channel must not add it again; every member counts it exactly once.
+# The wife is the husband's spouse and a child-age parent, so her pregnancy
+# counts once, not once for each role; every member counts it exactly once.
 - name: Case 10, married non-filing 18-year-old parents count the wife's pregnancy once for each member.
   period: 2025
   input:
@@ -422,7 +426,33 @@
     # the same unit with both parents present, so no tax-dependent exception
     # applies and the child follows the parents' tax household (one pregnancy).
     medicaid_uses_non_filer_rules: [true, true, false]
-    # person1: wife's pregnancy via the (child | is_parent) union only, not
-    # again through the spouse channel; person2: her own pregnancy once;
-    # person3: the tax household sum over the unit.
-    ca_medicaid_household_pregnancies: [1, 1, 1]
+    # person1: the wife's pregnancy once, as his spouse and not again as a
+    # parent; person2: her own pregnancy once; person3: the tax household sum
+    # over the unit.
+    medicaid_household_pregnancies: [1, 1, 1]
+
+# 42 CFR 435.603(b)'s middle option counts a pregnant woman as 2 people in the
+# other members' households, however many children she expects. No researched
+# state elects it, so the case sets New Jersey's value to 1.
+- name: Case 11, a state counting a pregnant member as herself plus one adds one child for twins.
+  period: 2026
+  input:
+    gov.hhs.medicaid.household.pregnant_member_expected_children_cap.NJ: 1
+    people:
+      person1:
+        age: 30
+        employment_income: 37_701
+      person2:
+        age: 29
+        current_pregnancies: 2
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # person1 counts his wife as 2 people; she counts herself plus both twins.
+    medicaid_household_pregnancies: [1, 2]
+    medicaid_household_size: [3, 4]
