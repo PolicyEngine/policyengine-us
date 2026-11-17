@@ -1,3 +1,10 @@
+## [2.144.3] - 2026-11-17
+
+### Fixed
+
+- Start Delaware's refundable earned income tax credit option in tax year 2022.
+
+
 ## [2.144.2] - 2026-11-17
 
 ### Fixed
