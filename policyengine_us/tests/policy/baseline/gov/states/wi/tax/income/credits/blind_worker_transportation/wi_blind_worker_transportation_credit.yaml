@@ -1,0 +1,314 @@
+# Independent source-derived cases; approved shared contract 2ead16da46986b3aa3230b4c274d1ed1ac213b282bbf98291111a7045503e51b.
+# Wis. Stat. 71.07(11), chapter 71 PDF pages 56 and 58; 2025 Form 1 instructions pages 17-18.
+# Supplied expenses are already source-qualified net payments; this file does not classify receipts.
+
+- name: "Case 1, standard applied amount is zero before onset."
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+        wi_income_tax_before_credits: 3000
+        wi_itemized_deduction_credit_potential: 0
+        wi_childcare_expense_credit_potential: 0
+        wi_property_tax_credit_potential: 0
+        wi_married_couple_credit_potential: 0
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit: 0
+    wi_blind_worker_transportation_credit_potential: 0
+
+- name: "Case 2, 2024 standard path applies the new credit."
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+        wi_income_tax_before_credits: 1000
+        wi_itemized_deduction_credit_potential: 0
+        wi_childcare_expense_credit_potential: 0
+        wi_property_tax_credit_potential: 0
+        wi_married_couple_credit_potential: 0
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit: 500
+    wi_non_refundable_credits: 500
+
+- name: "Case 3, earlier credits consume liability before transportation."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+        wi_income_tax_before_credits: 300
+        wi_itemized_deduction_credit_potential: 40
+        wi_childcare_expense_credit_potential: 60
+        wi_property_tax_credit_potential: 300
+        wi_married_couple_credit_potential: 500
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_itemized_deduction_credit: 40
+    wi_childcare_expense_credit: 60
+    wi_blind_worker_transportation_credit: 200
+    wi_property_tax_credit: 0
+    wi_married_couple_credit: 0
+    wi_non_refundable_credits: 300
+
+- name: "Case 4, transportation precedes school property and married couple credits."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+        wi_income_tax_before_credits: 1000
+        wi_itemized_deduction_credit_potential: 100
+        wi_childcare_expense_credit_potential: 200
+        wi_property_tax_credit_potential: 300
+        wi_married_couple_credit_potential: 200
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_itemized_deduction_credit: 100
+    wi_childcare_expense_credit: 200
+    wi_blind_worker_transportation_credit: 500
+    wi_property_tax_credit: 200
+    wi_married_couple_credit: 0
+    wi_non_refundable_credits: 1000
+
+- name: "Case 5, no liability produces no refundable transportation payment."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+        wi_income_tax_before_credits: 0
+        wi_itemized_deduction_credit_potential: 0
+        wi_childcare_expense_credit_potential: 0
+        wi_property_tax_credit_potential: 0
+        wi_married_couple_credit_potential: 0
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_potential: 500
+    wi_blind_worker_transportation_credit: 0
+    wi_non_refundable_credits: 0
+
+- name: "Case 6, joint liability caps the sum of claimant credits once."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        tax_unit_role_input: "HEAD"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+      person2:
+        age: 38
+        tax_unit_role_input: "SPOUSE"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+        filing_status: "JOINT"
+        wi_income_tax_before_credits: 2000
+        wi_itemized_deduction_credit_potential: 0
+        wi_childcare_expense_credit_potential: 0
+        wi_property_tax_credit_potential: 0
+        wi_married_couple_credit_potential: 0
+    marital_units:
+      marital_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_potential: 3000
+    wi_blind_worker_transportation_credit: 2000
+    wi_non_refundable_credits: 2000
+
+- name: "Case 7, natural wage only household has independently sourced final tax."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+        employment_income: 200000
+        taxable_ira_distributions: 0
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    filing_status: "SINGLE"
+    wi_agi: 200000
+    wi_standard_deduction: 0
+    wi_exemption: 700
+    wi_taxable_income: 199300
+    wi_income_tax_before_credits: 9976.46
+    wi_blind_worker_transportation_credit_person: 500
+    wi_blind_worker_transportation_credit_potential: 500
+    wi_blind_worker_transportation_credit: 500
+    wi_non_refundable_credits: 500
+    wi_income_tax: 9476.46
+  absolute_error_margin: 0.01
+
+- name: "Case 8, natural older claimant keeps credits when the standard path is lower."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 67
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+        employment_income: 200000
+        taxable_ira_distributions: 24000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    filing_status: "SINGLE"
+    wi_agi: 224000
+    wi_standard_deduction: 0
+    wi_exemption: 950
+    wi_taxable_income: 223050
+    wi_income_tax_before_credits: 11235.21
+    wi_retirement_income_exclusion_amount: 24000
+    wi_retirement_income_exclusion_tax: 9963.21
+    wi_blind_worker_transportation_credit_person: 1500
+    wi_blind_worker_transportation_credit_potential: 1500
+    wi_blind_worker_transportation_credit: 1500
+    wi_non_refundable_credits: 1500
+    wi_income_tax: 9735.21
+  absolute_error_margin: 0.01
+
+- name: "Case 9, standard path credit remains inspectable when retirement path is selected."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 67
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+        employment_income: 200000
+        taxable_ira_distributions: 24000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    filing_status: "SINGLE"
+    wi_agi: 224000
+    wi_standard_deduction: 0
+    wi_exemption: 950
+    wi_taxable_income: 223050
+    wi_income_tax_before_credits: 11235.21
+    wi_retirement_income_exclusion_amount: 24000
+    wi_retirement_income_exclusion_tax: 9963.21
+    wi_blind_worker_transportation_credit_person: 500
+    wi_blind_worker_transportation_credit_potential: 500
+    wi_blind_worker_transportation_credit: 500
+    wi_non_refundable_credits: 500
+    wi_income_tax: 9963.21
+  absolute_error_margin: 0.01
+
+- name: "Case 10, natural larger transport credit prevents retirement exclusion election."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 67
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+        employment_income: 200000
+        taxable_ira_distributions: 24000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_retirement_income_exclusion_elected: false
+
+- name: "Case 11, natural smaller transport credit leaves retirement exclusion preferable."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 67
+        is_blind: true
+        tax_unit_role_input: "HEAD"
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+        employment_income: 200000
+        taxable_ira_distributions: 24000
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "WI"
+  output:
+    wi_retirement_income_exclusion_elected: true

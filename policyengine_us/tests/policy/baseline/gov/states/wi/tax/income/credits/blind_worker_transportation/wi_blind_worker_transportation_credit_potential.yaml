@@ -1,0 +1,163 @@
+# Independent source-derived cases; approved shared contract 2ead16da46986b3aa3230b4c274d1ed1ac213b282bbf98291111a7045503e51b.
+# Wis. Stat. 71.07(11), chapter 71 PDF pages 56 and 58; 2025 Form 1 instructions pages 17-18.
+# Supplied expenses are already source-qualified net payments; this file does not classify receipts.
+
+- name: "Case 1, each joint claimant has a separate cap."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        tax_unit_role_input: "HEAD"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+      person2:
+        age: 38
+        tax_unit_role_input: "SPOUSE"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+        filing_status: "JOINT"
+    marital_units:
+      marital_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: [1500, 1500]
+    wi_blind_worker_transportation_credit_potential: 3000
+
+- name: "Case 2, a high spender cannot use a spouses unused cap."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        tax_unit_role_input: "HEAD"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 5000
+      person2:
+        age: 38
+        tax_unit_role_input: "SPOUSE"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 1000
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+        filing_status: "JOINT"
+    marital_units:
+      marital_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: [1500, 500]
+    wi_blind_worker_transportation_credit_potential: 2000
+
+- name: "Case 3, an unused spouse cap is not transferable."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        tax_unit_role_input: "HEAD"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 6000
+      person2:
+        age: 38
+        tax_unit_role_input: "SPOUSE"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+        filing_status: "JOINT"
+    marital_units:
+      marital_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: [1500, 0]
+    wi_blind_worker_transportation_credit_potential: 1500
+
+- name: "Case 4, separate filers retain their own full claimant caps."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        tax_unit_role_input: "HEAD"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+      person2:
+        age: 38
+        tax_unit_role_input: "HEAD"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit1:
+        members: ["person1"]
+        filing_status: "SEPARATE"
+      tax_unit2:
+        members: ["person2"]
+        filing_status: "SEPARATE"
+    marital_units:
+      marital_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: [1500, 1500]
+    wi_blind_worker_transportation_credit_potential: [1500, 1500]
+
+- name: "Case 5, neither a dependent nor another tax unit leaks into the claimant total."
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        tax_unit_role_input: "HEAD"
+        is_blind: false
+        wi_blind_worker_qualifying_transportation_expenses: 0
+      person2:
+        age: 19
+        tax_unit_role_input: "DEPENDENT"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+      person3:
+        age: 35
+        tax_unit_role_input: "HEAD"
+        is_blind: true
+        wi_blind_worker_qualifying_transportation_expenses: 3000
+    tax_units:
+      tax_unit1:
+        members: ["person1", "person2"]
+        filing_status: "SINGLE"
+      tax_unit2:
+        members: ["person3"]
+        filing_status: "SINGLE"
+    marital_units:
+      marital_unit1:
+        members: ["person1"]
+      marital_unit2:
+        members: ["person2"]
+      marital_unit3:
+        members: ["person3"]
+    households:
+      household:
+        members: ["person1", "person2", "person3"]
+        state_code: "WI"
+  output:
+    wi_blind_worker_transportation_credit_person: [0, 0, 1500]
+    wi_blind_worker_transportation_credit_potential: [0, 1500]
