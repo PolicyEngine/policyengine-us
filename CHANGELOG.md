@@ -1,3 +1,10 @@
+## [2.144.2] - 2026-11-17
+
+### Fixed
+
+- Limit SSI ineligible-child allocations to the co-resident children 20 CFR 416.1160(d) names: in spousal deeming, the couple's children and the claimant's siblings and step-siblings; in parental deeming, the parents' children. Count students under 22 (21 before June 16, 2008) as children, and leave out married children and household heads. Compute SSI and Medicaid deeming budgets month by month, including the student earned-income exclusion, and apply New Hampshire's and Oklahoma's allocation-child rules and Missouri's and Virginia's Medicaid child definitions.
+
+
 ## [2.144.1] - 2026-11-17
 
 ### Fixed
