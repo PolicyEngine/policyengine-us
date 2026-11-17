@@ -11,6 +11,36 @@
 # unreviewed.
 version: 1
 candidates:
+- id: us-ca:expectant-parent-payment-residential-rate
+  program: foster-care
+  years:
+    from: 2022
+    type: calendar
+  question: Does California pay an expectant parent in a group home or short-term residential therapeutic program the home-based infant supplement amount or the residential infant supplement amount?
+  sources:
+  - kind: statute
+    citation: California Welfare and Institutions Code section 11465, subdivisions (d)(2) and (e)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11465.
+  - kind: guidance
+    citation: CDSS All County Letter 21-123, page two (PDF page 3)
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2021/21-123.pdf#page=3
+  - kind: guidance
+    citation: CDSS All County Letter 26-44, pages two and four (PDF pages 3 and 5)
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-44.pdf#page=5
+  readings:
+    statute: From January 2022, subdivision (e)(1) adds to a pregnant minor's or nonminor dependent's rate "the amount that would otherwise be paid under this section to cover the care and supervision of a child, if born." Subdivision (d)(2) sets that amount at the group home or short-term residential therapeutic program infant supplement rate in those placements. Subdivision (e)(3) sets the lump sum before automation at three times the monthly amount paid under subdivision (a).
+    other: ACL 21-123 directs counties to pay the home-based infant supplement amount in every placement from January 2022. ACL 26-44 lists $932 for home-based placements and $1,429 for short-term residential therapeutic programs under its combined infant supplement and expectant parent payment heading from July 2026.
+  example: In March 2024 an eligible expectant parent in a group home receives $900 under ACL 21-123 or $1,379 under the residential reading of subdivision (e)(1), a difference of $479 per month. From July 2026 the two readings give $932 and $1,429, a difference of $497 per month.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/ca/cdss/expectant_parent_payment/amount/base.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/expectant_parent_payment/amount/group_home.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/expectant_parent_payment/ca_la_expectant_parent_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10836
+  state: open
+  note: PolicyEngine pays $900 in every placement from January 2022 through June 2026, as ACL 21-123 directs. From July 2026 it pays $1,429 in group homes and short-term residential therapeutic programs. ACL 26-44 lists that amount for short-term residential therapeutic programs and no amount for group homes. PolicyEngine applies it to group homes as an interpretation of subdivision (d)(2). PolicyEngine has recorded no ruling.
 - id: us-ak:hap-general-relief-assistance
   program: liheap
   years:
