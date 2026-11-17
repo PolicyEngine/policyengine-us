@@ -1,3 +1,10 @@
+## [2.144.5] - 2026-11-17
+
+### Fixed
+
+- Pair each year's Medicaid spending with the same year's enrollment when valuing Medicaid per enrollee, adding FY2024 KFF spending and January 2024 enrollment.
+
+
 ## [2.144.4] - 2026-11-17
 
 ### Fixed
