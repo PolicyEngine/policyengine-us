@@ -120,10 +120,10 @@
         msp: 9_214.8
         msp_eligible: true
         # SSI recipient -> categorically Medicaid-eligible (TX is a 1634 state).
-        # Dollar value = TX total Medicaid spending ($57.284B, calibration
+        # Dollar value = TX total Medicaid spending ($50.975B, calibration
         # .gov.hhs.medicaid.totals.spending) allocated by the person's SLCSP-age-rated
-        # cost index / state denominator (medicaid_cost_if_enrolled) = 13,708.50.
-        medicaid: 13_708.5
+        # cost index / state denominator (medicaid_cost_if_enrolled) = 11,867.90.
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0.0
         # Medicare/Medicaid coverage: not PTC-eligible.
@@ -185,8 +185,8 @@
         msp: 0.0
         msp_eligible: false
         # SSI recipient -> categorically Medicaid-eligible (TX 1634 state); same
-        # calibration allocation as the aged case (AGED_DISABLED group) = 13,708.50.
-        medicaid: 13_708.5
+        # calibration allocation as the aged case (AGED_DISABLED group) = 11,867.90.
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         chip: 0.0
         is_aca_ptc_eligible: false
@@ -286,9 +286,9 @@
         msp: 0.0
         msp_eligible: false
         # Children at 75.1% FPL are below the TX child Medicaid limits: eligible.
-        # Dollar value = TX total Medicaid spending ($57.284B) allocated by the child's
-        # SLCSP-based cost index (medicaid_cost_if_enrolled) = 11,805.12 per child.
-        medicaid: 11_805.12
+        # Dollar value = TX total Medicaid spending ($50.975B) allocated by the child's
+        # SLCSP-based cost index (medicaid_cost_if_enrolled) = 10,220.08 per child.
+        medicaid: 10_220.08
         is_medicaid_eligible: true
         chip: 0.0
         is_aca_ptc_eligible: false
@@ -298,7 +298,7 @@
         is_ssi_aged: false
         msp: 0.0
         msp_eligible: false
-        medicaid: 11_805.12
+        medicaid: 10_220.08
         is_medicaid_eligible: true
         chip: 0.0
         is_aca_ptc_eligible: false
