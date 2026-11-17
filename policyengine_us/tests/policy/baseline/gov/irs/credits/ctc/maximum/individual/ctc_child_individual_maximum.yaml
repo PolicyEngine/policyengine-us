@@ -60,3 +60,83 @@
         members: [head, child]
   output:
     ctc_child_individual_maximum: [0, 0]
+
+# 2017 Publication 972, PDF pages 2-3: $1,000 under age 17, with a child
+# SSN/ITIN/ATIN and a filer SSN/ITIN. The other child tests are supplied here
+# through tax-unit dependency; this case isolates age and identification.
+- name: Case 1, the 2017 child amount accepts an ITIN and excludes age 17 or a missing TIN.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_tin: true
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_tin: true
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+        has_tin: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:
+    filer_meets_child_ctc_identification_requirements: true
+    ctc_qualifying_child: [false, true, false, false]
+    ctc_child_individual_maximum: [0, 1_000, 0, 0]
+    ctc_maximum: 1_000
+
+- name: Case 2, a 2017 filer without any TIN cannot claim a child's credit.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_tin: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    filer_meets_child_ctc_identification_requirements: false
+    ctc_child_individual_maximum: [0, 0]
+    ctc_maximum: 0
+
+# Section 24(h)(7) starts in 2018; the filer SSN rule starts in 2025.
+- name: Case 3, a 2018 ITIN filer can claim the child amount for a child with an eligible SSN.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_tin: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    filer_meets_child_ctc_identification_requirements: true
+    ctc_child_individual_maximum: [0, 2_000]

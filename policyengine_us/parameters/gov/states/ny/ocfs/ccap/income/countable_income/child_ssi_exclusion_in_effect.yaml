@@ -1,0 +1,22 @@
+description: New York excludes the SSI and state supplemental payments of children in the child care services unit from Child Care Assistance Program income if this is true.
+# Before October 1, 2023, OCFS counted SSI, including State supplemental
+# payments, for every member of the unit under 404.5(b)(5)(vi). OCFS added
+# the child exclusion from October 1, 2023 through emergency rule
+# CFS-42-23-00002-EP and adopted it permanently on June 12, 2024.
+values:
+  2021-10-01: false
+  2023-10-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: New York CCAP child SSI exclusion in effect
+  reference:
+    - title: 18 NYCRR 404.5(b)(5)(vi), OCFS compilation current as of November 24, 2021
+      href: https://web.archive.org/web/20220529152858id_/https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10
+    - title: NYS Register, October 18, 2023, CFS-42-23-00002-EP, effective October 1, 2023
+      href: https://dos.ny.gov/system/files/documents/2023/10/101823.pdf#page=7
+    - title: "18 NYCRR 404.5(b)(5)(vi) and (b)(6)(xxi), OCFS compilation current as of October 1, 2023 #page 10,12"
+      href: https://web.archive.org/web/20240522174247id_/https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10
+    - title: NYS Register, June 12, 2024, CFS-42-23-00002-A, permanent adoption effective June 12, 2024
+      href: https://dos.ny.gov/system/files/documents/2024/06/061224.pdf#page=7

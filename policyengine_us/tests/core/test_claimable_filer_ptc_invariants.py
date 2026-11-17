@@ -31,8 +31,8 @@ premium cases:
    on a return with a head or spouse where neither can be claimed,
    `aca_ptc_slcsp` = `slcsp`,
    `aca_magi` = `medicaid_magi`, `aca_tax_family_size` = `tax_unit_size` and
-   `aca_fpg` = `tax_unit_fpg` for the prior year (these simulations supply no
-   prior-year size, so the two sizes agree). A unit with neither a head nor a
+   `aca_fpg` = the prior year's guideline for the coverage year's tax family
+   size and state group (Form 8962 lines 1 and 4). A unit with neither a head nor a
    spouse is filed by its oldest member, so a claimable minor changes it.
 3. Monotonicity, for the drawn couples in every year and the seeded
    population: marking another filer as claimable never raises the tax
@@ -50,6 +50,7 @@ from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 from policyengine_us.tests.core.test_dependent_elsewhere_head_spouse_swap_invariance import (
     CLAIM_PATTERNS,
     TOLERANCE,
@@ -343,9 +344,14 @@ def _identities(sim, year):
     np.testing.assert_array_equal(
         size[unclaimed], _calc(sim, "tax_unit_size", year)[unclaimed]
     )
+    # Form 8962 lines 1 and 4: the prior year's guideline for the coverage
+    # year's tax family size and state of residence (26 CFR 1.36B-1(h)).
+    state_group = sim.populations["tax_unit"].household("state_group_str", str(year))
+    expected_fpg = fpg(
+        size, state_group, str(year - 1), sim.tax_benefit_system.parameters
+    )
     np.testing.assert_allclose(
-        _calc(sim, "aca_fpg", year)[unclaimed],
-        _calc(sim, "tax_unit_fpg", year - 1)[unclaimed],
+        _calc(sim, "aca_fpg", year)[unclaimed], expected_fpg[unclaimed]
     )
 
 

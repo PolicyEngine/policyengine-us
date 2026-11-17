@@ -798,3 +798,57 @@
     medicaid_optional_senior_or_disabled_income_limit: [21_640, 21_640, 15_960]
     medicaid_optional_senior_or_disabled_countable_income: [9_760, 0, 19_760]
     is_optional_senior_or_disabled_income_eligible: [true, true, false]
+
+# New Jersey's 2026 couple limit is 1,803 a month, 21,636 a year: 1/12 of the
+# 21,640 guideline rounded down to the whole dollar (N.J.A.C. 10:72-4.1(a)).
+# Income "equal to or less than the income limit" qualifies (4.1(d)).
+- name: Threshold case, New Jersey couple with countable income exactly at the 2026 couple limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 10_818
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 10_818
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 10,818 + 10,818 = 21,636, equal to the limit.
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+- name: Threshold case, New Jersey couple one dollar over the 2026 couple limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 10_818
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 10_819
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 10,818 + 10,819 = 21,637, over the 21,636 limit though under the
+    # unrounded 21,640.
+    is_optional_senior_or_disabled_income_eligible: [false, false]

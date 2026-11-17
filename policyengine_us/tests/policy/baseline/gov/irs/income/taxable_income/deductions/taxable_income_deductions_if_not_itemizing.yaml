@@ -1,0 +1,29 @@
+# 2017 Form 1040 deducts tuition and fees at line 34 before AGI, while
+# line 40 includes the standard deduction. Form 1040 has no second tuition
+# deduction after AGI. https://www.irs.gov/pub/irs-prior/f1040--2017.pdf
+# The 2018 Schedule 1 likewise takes tuition and fees before Form 1040 AGI.
+# https://www.irs.gov/pub/irs-prior/f1040s1--2018.pdf
+
+- name: Case 1, 2017 tuition and fees are not deducted again after AGI.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    standard_deduction: 6_350
+    tuition_and_fees_deduction: 4_000
+    qualified_business_income_deduction: 0
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+  output:
+    taxable_income_deductions_if_not_itemizing: 6_350
+
+- name: Case 2, 2018 tuition and fees remain an above the line deduction.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    standard_deduction: 12_000
+    tuition_and_fees_deduction: 4_000
+    qualified_business_income_deduction: 0
+    tip_income_deduction: 0
+    overtime_income_deduction: 0
+  output:
+    taxable_income_deductions_if_not_itemizing: 12_000

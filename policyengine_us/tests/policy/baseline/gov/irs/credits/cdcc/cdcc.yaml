@@ -172,6 +172,10 @@
       tax_unit:
         members: [parent1, parent2, child1, child2]
         filing_status: JOINT
+        # Independently known qualifying work-care costs for these children,
+        # net of disallowed public reimbursement, before employer exclusion;
+        # no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 6_000
         tax_unit_childcare_expenses: 6_000
   output:
     # Form 2441 Part III: $5,000 excluded under section 129.
@@ -197,6 +201,10 @@
       tax_unit:
         members: [parent1, child1]
         filing_status: HEAD_OF_HOUSEHOLD
+        # Independently known qualifying work-care costs for these children,
+        # net of disallowed public reimbursement, before employer exclusion;
+        # no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 6_000
         tax_unit_childcare_expenses: 6_000
   output:
     dependent_care_assistance_exclusion: 5_000
@@ -256,6 +264,10 @@
       tax_unit:
         members: [parent1, parent2, child1, child2]
         filing_status: JOINT
+        # Independently known qualifying work-care costs for these children,
+        # net of disallowed public reimbursement, before employer exclusion;
+        # no carryovers or forfeitures.
+        dependent_care_assistance_qualified_expenses: 20_000
         tax_unit_childcare_expenses: 20_000
   output:
     # Form 2441 Part III: min($9,000, $10,500 cap, $40,000) = $9,000.
