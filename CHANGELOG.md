@@ -1,3 +1,10 @@
+## [2.142.0] - 2026-11-17
+
+### Added
+
+- Add an annual CSFP take-up input that defaults to true and lets callers decline payments without changing eligibility.
+
+
 ## [2.141.0] - 2026-11-17
 
 ### Added
