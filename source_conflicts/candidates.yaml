@@ -8994,6 +8994,59 @@ candidates:
   state: unreviewed
   note: PE-US counts TANF under the handbook; obtain the plan URL, verify the anchor and General Assistance treatment,
     and do not infer a contrary handbook rule for strike pay.
+- id: us-nj:medicaid-caretaker-relative-any-adult
+  program: medicaid
+  years:
+    from: 2014
+    type: calendar
+  question: Is an adult who lives with and cares for an unrelated child, such as a foster child, a caretaker relative
+    for New Jersey's parent and caretaker relative group, as the approved state plan elects, or only a listed relative,
+    as N.J.A.C. 10:69 reads?
+  sources:
+  - kind: plan
+    citation: New Jersey approved state plan S25 (NJ-13-0011-MM1), approved 02/28/2014, effective 01/01/2014
+    url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=31
+  - kind: regulation
+    citation: 42 CFR 435.4, caretaker relative, paragraph (3)
+    url: https://www.law.cornell.edu/cfr/text/42/435.4
+  - kind: regulation
+    citation: 'N.J.A.C. 10:69-1.5 ("Caretaker relative", "Dependent child", "Parent-person") and 10:69-3.10(a)1 #page
+      9-10,12,64'
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_69%20AFDC-RELATED%20MEDICAID.PDF#page=9
+  - kind: regulation
+    citation: N.J.A.C. 10:78-1.1(a), NJ FamilyCare program outline
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_78%20NJ%20FAMILYCARE.PDF#page=4
+  readings:
+    statute: No statute is supplied; 42 CFR 435.4 paragraph (3) lets a state include "an adult with whom the child is
+      living and who assumes primary responsibility for the dependent child's care", and S25 checks that option.
+    other: N.J.A.C. 10:69, readopted effective July 15, 2024, defines a dependent child as one living "with a parent or
+      other enumerated relative" and limits a parent-person to listed relatives (grandparents, siblings, step-relatives,
+      aunts, uncles, first cousins, nephews and nieces).
+  example: A New Jersey adult earning $3,600 a year who lives with and cares for an unrelated 8-year-old foster child is
+    a caretaker relative under S25, and so in the parent group; under N.J.A.C. 10:69 the adult has no parent role and
+    falls to the adult group.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/caretaker_relative/any_adult_option.yaml
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/parent/is_parent_for_medicaid_nfc.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10984
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-11-15'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10984#issuecomment-6927855962
+  note: 'Ruled 2026-11-15 by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10984#issuecomment-6927855962. Follow S25 over N.J.A.C. 10:69.
+    A state elects the 42 CFR 435.4 paragraph (3) option through its state plan, and S25 is the federally approved
+    description of New Jersey''s parent and caretaker relative group. N.J.A.C. 10:69 also keeps the AFDC-C and AFDC-F
+    segments and the deprivation test (10:69-3.15), which S25 removes for this group and the model leaves out for New
+    Jersey from 2014, so the chapter still carries rules the plan has replaced. Its own "Caretaker relative" definition
+    ("the legally responsible adult or adults residing with the children") names no relationship, and N.J.A.C.
+    10:78-1.1(a) (NJ FamilyCare) covers "parents, caretakers and caretaker relatives", naming caretakers apart from
+    caretaker relatives. A relative caring for a foster child, such as a grandmother, is a caretaker under both texts.
+    No later New Jersey amendment replaces S25.'
 - id: us-nj:school-meals-income-limit-carryforward
   program: school-meals
   years:
