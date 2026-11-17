@@ -320,3 +320,18 @@
     acp:
       2024-01: 134 / 12
       2024-06: 134 / 12
+
+# The FCC combines December 31 through January 31 discounts under January 2022's
+# cap (DA 21-1654, paragraphs 7-8). Stipulate ACP qualification and compute both
+# cash outputs; EBB ineligibility cannot create a 2021 ACP funding month.
+- name: "Case 19, An otherwise qualified household without EBB has no 2021 ACP funding month."
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: false
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 0
