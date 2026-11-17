@@ -1,3 +1,10 @@
+## [2.145.0] - 2026-11-17
+
+### Added
+
+- New Jersey Medicaid and CHIP cover children under 19 regardless of immigration status from 2023 (Cover All Kids).
+
+
 ## [2.144.6] - 2026-11-17
 
 ### Fixed
