@@ -69,3 +69,38 @@
     filing_status: JOINT
   output:
     nm_property_tax_rebate: 120
+
+- name: Zero modified gross income uses the first liability bracket
+  period: 2025
+  input:
+    state_code: NM
+    age_head: 65
+    filing_status: SINGLE
+    real_estate_taxes: 100
+  output:
+    # NMSA 7-2-18(H), $0 through $1,000: $100 paid less $20 liability.
+    nm_modified_gross_income: 0
+    nm_property_tax_rebate_eligible: true
+    nm_property_tax_rebate: 80
+
+- name: Exactly $1,000 stays in the first liability bracket
+  period: 2025
+  input:
+    state_code: NM
+    age_head: 65
+    filing_status: SINGLE
+    nm_modified_gross_income: 1_000
+    real_estate_taxes: 100
+  output:
+    nm_property_tax_rebate: 80
+
+- name: Income above $1,000 uses the second liability bracket
+  period: 2025
+  input:
+    state_code: NM
+    age_head: 65
+    filing_status: SINGLE
+    nm_modified_gross_income: 1_001
+    real_estate_taxes: 100
+  output:
+    nm_property_tax_rebate: 75
