@@ -13,3 +13,17 @@
     state_fips: 6
   output:
     slcsp_family_tier_applies: FALSE
+
+- name: Marketplace premiums distinguish family tiers from age curves in 2014.
+  period: 2014-01
+  input:
+    state_code: [TX, NJ, NY, VT]
+  output:
+    slcsp_family_tier_applies: [false, false, true, true]
+
+- name: Marketplace premiums retain their family tier states in 2018.
+  period: 2018-01
+  input:
+    state_code: [TX, NJ, NY, VT]
+  output:
+    slcsp_family_tier_applies: [false, false, true, true]

@@ -121,6 +121,10 @@ def _situation(cases, year):
         unit = {
             "members": members,
             "is_tanf_enrolled": {month: family["tanf"]},
+            # These families enter no earnings, so PolicyEngine would compute
+            # a Family Assistance grant and waive the share. Set the grant to
+            # zero, so only reported enrollment marks Family Assistance receipt.
+            "ny_tanf": {month: 0},
             "meets_ccdf_activity_test": {year: family["fallback"]},
             "ny_ccap_countable_income": {year: 12 * family["income"]},
             "spm_unit_fpg": {year: 12 * family["fpg"]},

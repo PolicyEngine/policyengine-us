@@ -2,7 +2,7 @@
 # Dollar pins derive from the calibration per-capita model:
 #   medicaid_person = (state spending / state enrollment)
 #                     x (person SLCSP age index / household average index)
-# TX per capita: $57,284,033,548 / 4,178,724 enrolled = $13,708.50.
+# TX per capita: $50,974,507,372 / 4,295,157 enrolled = $11,867.90.
 # 2026 contiguous-US FPG: 1p $15,960; 2p $21,640; 3p $27,320 (gov/hhs/fpg.yaml).
 - name: medicaid_pregnant_adult (federal)
   period: 2026
@@ -52,8 +52,8 @@
         msp_eligible: false
         # Pregnancy adds the unborn child to the Medicaid household:
         # 20,000 / 21,640 (2p FPG) = 0.92 FPL < TX pregnant limit 2.03 -> eligible.
-        # Single enrollee, so index ratio = 1: medicaid = TX per capita 13,708.50.
-        medicaid: 13_708.5
+        # Single enrollee, so index ratio = 1: medicaid = TX per capita 11,867.90.
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         medicaid_category: 6  # PREGNANT
         chip: 0.0
@@ -188,8 +188,8 @@
         msp_eligible: false
         # Zero income (0.00 FPL <= TX parent limit 0.19) -> PARENT.
         # Household avg SLCSP index = (661.32 + 648.32 + 4 x 414.00) / 6 = 494.27;
-        # 13,708.50 x 661.32 / 494.27 = 18,341.53.
-        medicaid: 18_341.53
+        # 11,867.90 x 661.32 / 494.27 = 15,878.87.
+        medicaid: 15_878.87
         is_medicaid_eligible: true
         medicaid_category: 5  # PARENT
         chip: 0.0
@@ -200,8 +200,8 @@
         is_ssi_aged: false
         msp: 0.0
         msp_eligible: false
-        # 13,708.50 x 648.32 / 494.27 = 17,980.99.
-        medicaid: 17_980.99
+        # 11,867.90 x 648.32 / 494.27 = 15,566.74.
+        medicaid: 15_566.74
         is_medicaid_eligible: true
         medicaid_category: 5  # PARENT
         chip: 0.0
@@ -213,8 +213,8 @@
         msp: 0.0
         msp_eligible: false
         # Age 0 < infant age bound 1 (age_range/other) -> INFANT.
-        # 13,708.50 x 414.00 / 494.27 = 11,482.12.
-        medicaid: 11_482.12
+        # 11,867.90 x 414.00 / 494.27 = 9,940.45.
+        medicaid: 9_940.45
         is_medicaid_eligible: true
         medicaid_category: 0  # INFANT
         chip: 0.0
@@ -226,7 +226,7 @@
         msp: 0.0
         msp_eligible: false
         # Age 1 is past the infant bound and inside the 1-5 young child span.
-        medicaid: 11_482.12
+        medicaid: 9_940.45
         is_medicaid_eligible: true
         medicaid_category: 1  # YOUNG_CHILD
         chip: 0.0
@@ -238,7 +238,7 @@
         msp: 0.0
         msp_eligible: false
         # Age 5 is the last young child age.
-        medicaid: 11_482.12
+        medicaid: 9_940.45
         is_medicaid_eligible: true
         medicaid_category: 1  # YOUNG_CHILD
         chip: 0.0
@@ -250,7 +250,7 @@
         msp: 0.0
         msp_eligible: false
         # Age 6 is the first older child age (6-18 span).
-        medicaid: 11_482.12
+        medicaid: 9_940.45
         is_medicaid_eligible: true
         medicaid_category: 2  # OLDER_CHILD
         chip: 0.0
@@ -356,8 +356,8 @@
         msp: 0.0
         msp_eligible: false
         # Household avg index = (661.32 + 648.32 + 494.11 + 509.26) / 4 = 578.25;
-        # 13,708.50 x 661.32 / 578.25 = 15,677.79.
-        medicaid: 15_677.79
+        # 11,867.90 x 661.32 / 578.25 = 13,572.79.
+        medicaid: 13_572.79
         is_medicaid_eligible: true
         medicaid_category: 5  # PARENT
         chip: 0.0
@@ -368,8 +368,8 @@
         is_ssi_aged: false
         msp: 0.0
         msp_eligible: false
-        # 13,708.50 x 648.32 / 578.25 = 15,369.61.
-        medicaid: 15_369.61
+        # 11,867.90 x 648.32 / 578.25 = 13,305.99.
+        medicaid: 13_305.99
         is_medicaid_eligible: true
         medicaid_category: 5  # PARENT
         chip: 0.0
@@ -380,8 +380,8 @@
         is_ssi_aged: false
         msp: 0.0
         msp_eligible: false
-        # Age 18 is the last older child age: 13,708.50 x 494.11 / 578.25 = 11,713.69.
-        medicaid: 11_713.69
+        # Age 18 is the last older child age: 11,867.90 x 494.11 / 578.25 = 10,140.93.
+        medicaid: 10_140.93
         is_medicaid_eligible: true
         medicaid_category: 2  # OLDER_CHILD
         chip: 0.0
@@ -482,8 +482,8 @@
         msp: 0.0
         msp_eligible: false
         # 0.185 FPL < TX young child limit 1.49:
-        # 13,708.50 x 414.00 / 537.66 = 10,555.55.
-        medicaid: 10_555.55
+        # 11,867.90 x 414.00 / 537.66 = 9,138.29.
+        medicaid: 9_138.29
         is_medicaid_eligible: true
         medicaid_category: 1  # YOUNG_CHILD
         chip: 0.0
@@ -556,8 +556,8 @@
         msp_eligible: false
         # 3,000 / 21,640 (2p FPG) = 0.139 FPL <= TX parent limit 0.151 -> PARENT.
         # Household avg index = (661.32 + 414.00) / 2 = 537.66; per-capita cost
-        # 13,708.50 x 661.32 / 537.66 = 16,861.44.
-        medicaid: 16_861.44
+        # 11,867.90 x 661.32 / 537.66 = 14,597.51.
+        medicaid: 14_597.51
         is_medicaid_eligible: true
         medicaid_category: 5  # PARENT
         chip: 0.0
@@ -569,8 +569,8 @@
         msp: 0.0
         msp_eligible: false
         # 0.139 FPL < TX young child limit 1.49:
-        # 13,708.50 x 414.00 / 537.66 = 10,555.55.
-        medicaid: 10_555.55
+        # 11,867.90 x 414.00 / 537.66 = 9,138.29.
+        medicaid: 9_138.29
         is_medicaid_eligible: true
         medicaid_category: 1  # YOUNG_CHILD
         chip: 0.0
@@ -656,8 +656,8 @@
         msp_eligible: false
         # Child amount is unchanged from the below-limit case because the
         # allocation denominator averages over all household members:
-        # 13,708.50 x 414.00 / 537.66 = 10,555.55.
-        medicaid: 10_555.55
+        # 11,867.90 x 414.00 / 537.66 = 9,138.29.
+        medicaid: 9_138.29
         is_medicaid_eligible: true
         medicaid_category: 1  # YOUNG_CHILD
         chip: 0.0
@@ -776,8 +776,8 @@
         msp_eligible: false
         # TX is a Section 1634 state, so SSI receipt confers Medicaid
         # automatically; SSI_RECIPIENT tops the 42 CFR 435 hierarchy.
-        # Single enrollee: medicaid = TX per capita 13,708.50.
-        medicaid: 13_708.5
+        # Single enrollee: medicaid = TX per capita 11,867.90.
+        medicaid: 11_867.90
         is_medicaid_eligible: true
         medicaid_category: 7  # SSI_RECIPIENT
         chip: 0.0

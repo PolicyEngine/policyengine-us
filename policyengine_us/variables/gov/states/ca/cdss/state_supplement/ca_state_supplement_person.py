@@ -81,22 +81,19 @@ class ca_state_supplement_person(Variable):
             & (_ssi_couple_total(person, period.this_year, fails_test.astype(int)) > 0)
         )
         earned = max_(
-            person("ssi_earned_income", period.this_year)
-            - person(
-                "ssi_blind_or_disabled_working_student_exclusion", period.this_year
-            ),
+            person("ssi_earned_income", period)
+            - person("ssi_blind_or_disabled_working_student_exclusion", period),
             0,
         )
         # NOTE: in-kind support uses the couple's presumed maximum value here,
         # because SSI still treats the pair as a couple.
-        ism = person("ssi_in_kind_support_and_maintenance", period)
-        unearned = (
-            person("ssi_unearned_income", period.this_year) / MONTHS_IN_YEAR + ism
-        )
+        ism = person("ssi_in_kind_support_and_maintenance_monthly", period)
+        unearned = person("ssi_unearned_income", period) + ism
+        # Apply exclusions to the current month before computing its supplement.
         own_countable_income = _apply_ssi_exclusions_monthly(
-            earned / MONTHS_IN_YEAR, unearned, parameters, period
+            earned, unearned, parameters, period
         )
-        ssi_countable_income = person("ssi_countable_income", period)
+        ssi_countable_income = person("ssi_countable_income_monthly", period)
         couple_income = _ssi_couple_total(
             person, period.this_year, ssi_countable_income
         )
