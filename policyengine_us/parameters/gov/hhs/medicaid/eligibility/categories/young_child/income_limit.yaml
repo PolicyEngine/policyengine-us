@@ -5,6 +5,8 @@ metadata:
   breakdown:
   - state_code
   reference:
+    - title: Ohio Admin. Code 5160:1-4-02(D)(2), effective January 1, 2017
+      href: https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5160/1/4/5160%241-4-02_20170101.pdf#page=3
     - title: New York GIS 17 MA/005, MAGI income standards effective January 1, 2017
       href: https://healthweb-back.health.ny.gov/health_care/medicaid/publications/docs/gis/17ma005attach3.pdf#page=1
     - title: New York GIS 17 MA/005, Medicaid eligibility categories
@@ -113,6 +115,8 @@ NY:
   2017-01-01: 1.54
   2018-01-01: 1.54
 OH:
+  # For children without other coverage, including the five-point disregard.
+  2017-01-01: 2.11
   2018-01-01: 2.11
 OK:
   2018-01-01: 2.10

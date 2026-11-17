@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income.medicaid_income_level import (
-    medicaid_income_eligible,
+    medicaid_child_income_eligible,
 )
 
 
@@ -22,4 +22,4 @@ class is_young_child_for_medicaid_fc(Variable):
         ma = parameters(period).gov.hhs.medicaid.eligibility.categories.young_child
         state = person.household("state_code_str", period)
         income_limit = ma.income_limit[state]
-        return medicaid_income_eligible(person, period, parameters, income_limit)
+        return medicaid_child_income_eligible(person, period, parameters, income_limit)

@@ -1,0 +1,18 @@
+description: Recorded employer and individual insurance and modeled Medicare enrollment used in Ohio's Medicaid child income test.
+values:
+  0000-01-01:
+    - has_esi
+    - has_marketplace_health_coverage_at_interview
+    - has_non_marketplace_direct_purchase_health_coverage_at_interview
+    - medicare_enrolled
+metadata:
+  unit: list
+  period: year
+  label: Ohio Medicaid other creditable coverage sources
+  reference:
+    - title: Ohio Admin. Code 5160:1-1-01(B)(10), effective September 1, 2017
+      href: https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5160/1/1/5160%241-1-01_20170901.pdf#page=3
+    - title: Ohio Admin. Code 5160:1-1-01(B)(12)
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-1-01
+    - title: Ohio Medicaid state plan amendment OH-13-0025, S54
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/OH/OH-13-0025-MM.pdf#page=34
