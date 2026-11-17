@@ -9,6 +9,7 @@ class oh_uninsured_unreimbursed_medical_care_expenses(Variable):
     definition_period = YEAR
     reference = (
         "https://codes.ohio.gov/ohio-revised-code/section-5747.01",  # R.C. 5747.01(A)(10)(a)
+        "https://uscode.house.gov/us/usc/t26/s152/",  # IRC 152(b)(1)
         "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=25",  # Line 44, pp. 25-26
         "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=41",  # Worksheet line 1
     )
@@ -20,6 +21,14 @@ class oh_uninsured_unreimbursed_medical_care_expenses(Variable):
         employer_plan_eligible = person.tax_unit(
             "oh_employer_subsidized_health_plan_eligible", period
         )
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        eligible_person = (
+            person("is_tax_unit_head_or_spouse", period) | ~filer_is_dependent
+        )
         # Line 1: premiums paid while eligible for neither Medicare nor an
         # employer-paid plan. Otherwise they go on line 3.
-        return premiums * ~(medicare_eligible | employer_plan_eligible)
+        return (
+            eligible_person * premiums * ~(medicare_eligible | employer_plan_eligible)
+        )

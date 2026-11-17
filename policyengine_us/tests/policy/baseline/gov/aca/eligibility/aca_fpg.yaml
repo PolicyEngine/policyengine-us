@@ -278,3 +278,139 @@
     # have used the supplied 2024 size of 2 (20,440).
     aca_tax_family_size: 3
     aca_fpg: 25_820
+
+- name: A 2015 Alaska joint return uses the prior guideline with coverage-year household inputs
+  period: 2015
+  absolute_error_margin: 0.001
+  input:
+    people:
+      head:
+        age: 40
+        takes_up_ak_permanent_fund_dividend_if_eligible: false
+        employment_income: 49_150
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      spouse:
+        age: 40
+        takes_up_ak_permanent_fund_dividend_if_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AK
+  output:
+    # IRS 2015 Form 8962 line 4, Table 1-2: 14,580 + 5,080 = 19,660.
+    # Line 5: floor(49,150 / 19,660 * 100) / 100 = 2.50.
+    # https://www.irs.gov/pub/irs-prior/i8962--2015.pdf#page=7
+    aca_fpg: 19_660
+    aca_magi: 49_150
+    aca_tax_family_size: 2
+    aca_magi_fraction: 2.5
+
+- name: A 2014 Alaska return uses the 2013 guideline for its tax family
+  period: 2014
+  input:
+    aca_tax_family_size: 2
+    state_code: AK
+  output:
+    # IRS 2014 Form 8962 line 4, Table 1-2: 14,350 + 5,030 = 19,380.
+    # https://www.irs.gov/pub/irs-prior/i8962--2014.pdf#page=6
+    aca_fpg: 19_380
+
+- name: Coverage in 2015 uses current residence with the 2014 guideline
+  period: 2015
+  input:
+    aca_tax_family_size: 2
+    state_code:
+      2014: TX
+      2015: AK
+  output:
+    # IRS 2015 Form 8962 line 4 uses 2015 residence and the 2014 table:
+    # Alaska, two people = 14,580 + 5,080 = 19,660.
+    # https://www.irs.gov/pub/irs-prior/i8962--2015.pdf#page=7
+    aca_fpg: 19_660
+
+- name: Coverage in 2016 uses coverage-year residence when the household supplies no earlier state
+  period: 2016
+  input:
+    aca_tax_family_size: 2
+    state_code: AK
+  output:
+    # IRS 2016 Form 8962 line 4 uses 2016 residence and the 2015 table:
+    # Alaska, two people = 14,720 + 5,200 = 19,920.
+    # https://www.irs.gov/pub/irs-prior/i8962--2016.pdf#page=6
+    aca_fpg: 19_920
+
+- name: Coverage in 2017 uses current residence with the 2016 guideline
+  period: 2017
+  input:
+    aca_tax_family_size: 2
+    state_code:
+      2016: TX
+      2017: AK
+  output:
+    # IRS 2017 Form 8962 line 4 uses 2017 residence and the 2016 table:
+    # Alaska, two people = 20,020 (Table 1-2). HHS listed 20,020 for two
+    # people in 2016, 20 below 14,840 + 5,200.
+    # https://www.irs.gov/pub/irs-prior/i8962--2017.pdf#page=7
+    aca_fpg: 20_020
+
+- name: A 2015 Guam return has a poverty line of zero
+  period: 2015
+  input:
+    aca_tax_family_size: 1
+    state_code: GU
+  output:
+    # HHS left its 2014 guidelines "not defined for Puerto Rico or other
+    # outlying jurisdictions" (79 FR 3594), and gov.hhs.fpg holds no Guam
+    # value at the 2014 date. aca_fpg looks Guam up under the 48 states'
+    # 2014 guideline, 11,670 + 4,060 * (1 - 1) = 11,670, and returns 0.
+    # https://www.govinfo.gov/content/pkg/FR-2014-01-22/pdf/2014-01303.pdf#page=2
+    aca_fpg: 0
+
+- name: A 2014 Puerto Rico return has a poverty line of zero
+  period: 2014
+  input:
+    aca_tax_family_size: 2
+    state_code: PR
+  output:
+    # HHS left its 2013 guidelines "not defined for Puerto Rico or other
+    # outlying jurisdictions" (78 FR 5183), and gov.hhs.fpg holds no Puerto
+    # Rico value at the 2013 date. aca_fpg looks Puerto Rico up under the 48
+    # states' 2013 guideline, 11,490 + 4,020 * (2 - 1) = 15,510, and
+    # returns 0.
+    # https://www.govinfo.gov/content/pkg/FR-2013-01-24/pdf/2013-01422.pdf#page=2
+    aca_fpg: 0
+
+- name: A 2015 Virgin Islands return has a poverty line of zero
+  period: 2015
+  input:
+    aca_tax_family_size: 3
+    state_code: VI
+  output:
+    # HHS published 2014 guidelines for the 48 states and the District of
+    # Columbia, Alaska and Hawaii, and left them "not defined for Puerto Rico
+    # or other outlying jurisdictions" (79 FR 3594). aca_fpg looks the Virgin
+    # Islands up under the 48 states' 2014 guideline,
+    # 11,670 + 4,060 * (3 - 1) = 19,790, and returns 0.
+    # https://www.govinfo.gov/content/pkg/FR-2014-01-22/pdf/2014-01303.pdf#page=2
+    aca_fpg: 0
+
+- name: A 2017 Puerto Rico return has a poverty line of zero
+  period: 2017
+  input:
+    aca_tax_family_size: 2
+    state_code: PR
+  output:
+    # HHS left its 2016 guidelines "not defined for Puerto Rico or other
+    # outlying jurisdictions" (81 FR 4037). aca_fpg looks Puerto Rico up
+    # under the 48 states' 2016 table, 16,020 for two people, and returns 0.
+    # The Puerto Rico placeholders in gov.hhs.fpg, which the model backdates
+    # to 2015, give the same result: 0 + 0 * (2 - 1) = 0.
+    # https://www.govinfo.gov/content/pkg/FR-2016-01-25/pdf/2016-01450.pdf#page=2
+    aca_fpg: 0

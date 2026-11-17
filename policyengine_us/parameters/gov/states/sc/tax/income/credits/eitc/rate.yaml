@@ -1,5 +1,6 @@
 description: South Carolina matches the federal EITC at this rate.
 values:
+  2015-01-01: 0
   2018-01-01: 0.2083
   2019-01-01: 0.4167
   2020-01-01: 0.625
@@ -10,6 +11,10 @@ metadata:
   unit: /1
   label: South Carolina EITC Rate
   reference:
+  - title: South Carolina Act No. 40 of 2017, Section 16
+    href: https://www.scstatehouse.gov/sess122_2017-2018/bills/3516.htm
+  - title: South Carolina Schedule TC-60 2018
+    href: https://dor.sc.gov/sites/dor/files/forms/TC60_2018.pdf#page=1
   - title: SC 1040 tax form instructions (2025)
     href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=17
   - title: South Carolina Schedule TC-60 2021 (2021)
