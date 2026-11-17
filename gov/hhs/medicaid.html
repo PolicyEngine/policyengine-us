@@ -333,154 +333,206 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="medicaid">
 <h1>Medicaid<a class="headerlink" href="#medicaid" title="Link to this heading">¶</a></h1>
-<section id="overview">
-<h2>1  Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
-<p>PolicyEngine simulates Medicaid eligibility, enrollment, and spending for every individual in its micro‑simulation population. The model applies statutory and regulatory rules to  household‑level data, assigns each enrollee to a mutually‑exclusive <strong>MACPAC</strong> category, and assigns a per‑capita costs.</p>
+<p>PolicyEngine determines Medicaid eligibility and enrollment for each person and gives each enrollee a dollar value, <code class="docutils literal notranslate"><span class="pre">medicaid</span></code>. The value is the enrollee’s share of their state’s total Medicaid spending. A cost index sets each enrollee’s share. The index uses the Affordable Care Act (ACA) benchmark premium: the second-lowest-cost silver plan (SLCSP) premium for the enrollee’s age and rating area or, in New York and Vermont, for their family tier. The value doesn’t vary by eligibility group.</p>
+<section id="eligibility-and-enrollment">
+<h2>Eligibility and enrollment<a class="headerlink" href="#eligibility-and-enrollment" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">medicaid_category</span></code> (<code class="docutils literal notranslate"><span class="pre">policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/medicaid_category.py</span></code>) assigns each person the first coverage category they meet, in this order:</p>
+<ol class="arabic simple">
+<li><p>SSI recipient</p></li>
+<li><p>Infant, young child or older child</p></li>
+<li><p>Pregnant</p></li>
+<li><p>Parent or caretaker relative</p></li>
+<li><p>Young adult (ages 19-20)</p></li>
+<li><p>Adult (the ACA expansion group)</p></li>
+<li><p>Optional senior or disabled</p></li>
+<li><p>Medically needy</p></li>
+<li><p>Working disabled Buy-In</p></li>
+<li><p>Section 1115 minimum essential coverage adult</p></li>
+<li><p>Healthier Mississippi Waiver</p></li>
+</ol>
+<p>42 CFR 435.119(b)(4) excludes people otherwise eligible for and enrolled in mandatory coverage. The model prioritizes mandatory categories before the adult expansion group.</p>
+<p><code class="docutils literal notranslate"><span class="pre">is_medicaid_eligible</span></code> (<code class="docutils literal notranslate"><span class="pre">policyengine_us/variables/gov/hhs/medicaid/eligibility/is_medicaid_eligible.py</span></code>) requires a category and an eligible immigration status. Where federal or Arkansas work requirements apply, it also requires the person to meet them. It also counts people eligible for California’s Former Foster Youth Program (<code class="docutils literal notranslate"><span class="pre">ca_ffyp_eligible</span></code>), Illinois’s Health Benefits for Immigrants (<code class="docutils literal notranslate"><span class="pre">il_hbi_eligible</span></code>) and Rhode Island’s state-funded postpartum coverage (<code class="docutils literal notranslate"><span class="pre">ri_medicaid_state_funded_postpartum_eligible</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">medicaid_enrolled</span></code> marks an eligible person as enrolled when <code class="docutils literal notranslate"><span class="pre">takes_up_medicaid_if_eligible</span></code> is true, except for Rhode Island postpartum enrollees who take up CHIP postpartum coverage. <code class="docutils literal notranslate"><span class="pre">takes_up_medicaid_if_eligible</span></code> is an input that defaults to true, so household calculations enroll every eligible person. In population runs, the microdata supply it.</p>
 </section>
-<section id="key-data-inputs">
-<h2>2  Key Data Inputs<a class="headerlink" href="#key-data-inputs" title="Link to this heading">¶</a></h2>
+<section id="value-per-enrollee">
+<h2>Value per enrollee<a class="headerlink" href="#value-per-enrollee" title="Link to this heading">¶</a></h2>
+<p>Three variables carry the value:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">medicaid</span></code> adds <code class="docutils literal notranslate"><span class="pre">medicaid_cost</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">medicaid_cost</span></code> equals <code class="docutils literal notranslate"><span class="pre">medicaid_cost_if_enrolled</span></code> for people with <code class="docutils literal notranslate"><span class="pre">medicaid_enrolled</span></code> and 0 for everyone else.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">medicaid_cost_if_enrolled</span></code> (<code class="docutils literal notranslate"><span class="pre">policyengine_us/variables/gov/hhs/medicaid/costs/medicaid_cost_if_enrolled.py</span></code>) computes the value for person <span class="math notranslate nohighlight">\(i\)</span> in state <span class="math notranslate nohighlight">\(s\)</span>:</p></li>
+</ul>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[
+\text{value}_i = S_s \times \frac{c_i}{D_s}
+\]</div>
+</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(S_s\)</span> is the state’s total Medicaid spending (<code class="docutils literal notranslate"><span class="pre">calibration.gov.hhs.medicaid.totals.spending</span></code>);</p></li>
+<li><p><span class="math notranslate nohighlight">\(c_i\)</span> is the person’s cost index (<code class="docutils literal notranslate"><span class="pre">medicaid_slcsp_cost_index_filled</span></code>);</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_s\)</span> is the state denominator (<code class="docutils literal notranslate"><span class="pre">medicaid_slcsp_state_denominator</span></code>).</p></li>
+</ul>
+<p>The value is 0 when <span class="math notranslate nohighlight">\(D_s\)</span> is 0.</p>
+<section id="cost-index">
+<h3>Cost index<a class="headerlink" href="#cost-index" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">medicaid_slcsp_cost_index</span></code> reads the January SLCSP premium for the household’s rating area, normalized to an enrollee aged 0 (<code class="docutils literal notranslate"><span class="pre">slcsp_age_0</span></code>). The <a class="reference internal" href="aca.html"><span class="std std-doc">ACA page</span></a> describes the rating areas, age curves and family tiers.</p>
+<p>In every state except New York and Vermont, the index equals that premium times the ACA age-curve factor for the person’s age in January (<code class="docutils literal notranslate"><span class="pre">slcsp_age_curve_multiplier</span></code>). Alabama, DC, Massachusetts, Minnesota, Mississippi, Oregon and Utah use their own curves, and the other 42 states use the federal default curve. From 2018, the default curve gives an enrollee aged 64 or older 3.92 times the index of a child under 15 in the same rating area.</p>
+<p>New York and Vermont rate premiums by family tier. <code class="docutils literal notranslate"><span class="pre">medicaid_slcsp_family_tier_category</span></code> groups the Medicaid enrollees in each tax unit into one of these tiers:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>Source</p></th>
-<th class="head"><p>Vintage</p></th>
-<th class="head"><p>Key variables</p></th>
+<tr class="row-odd"><th class="head"><p>Tier</p></th>
+<th class="head text-right"><p>New York factor</p></th>
+<th class="head text-right"><p>Vermont factor</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Enhanced CPS ASEC</p></td>
-<td><p>2024 micro‑data</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">age</span></code>, <code class="docutils literal notranslate"><span class="pre">state</span></code>, household income, disability status, SSI receipt</p></td>
+<tr class="row-even"><td><p>One adult</p></td>
+<td class="text-right"><p>1.00</p></td>
+<td class="text-right"><p>1.00</p></td>
 </tr>
-<tr class="row-odd"><td><p>MACPAC Exhibit 21</p></td>
-<td><p>Published Dec 2024 (data year 2022)</p></td>
-<td><p>Enrollment &amp; per‑capita spending by eligibility group</p></td>
+<tr class="row-odd"><td><p>Two adults</p></td>
+<td class="text-right"><p>2.00</p></td>
+<td class="text-right"><p>2.00</p></td>
 </tr>
-<tr class="row-even"><td><p>MACPAC projections</p></td>
-<td><p>April 2024 release</p></td>
-<td><p>National Medicaid spending &amp; enrollment totals</p></td>
+<tr class="row-even"><td><p>One adult with one or more children</p></td>
+<td class="text-right"><p>1.70</p></td>
+<td class="text-right"><p>1.93</p></td>
+</tr>
+<tr class="row-odd"><td><p>Two adults with one or more children</p></td>
+<td class="text-right"><p>2.85</p></td>
+<td class="text-right"><p>2.81</p></td>
+</tr>
+<tr class="row-even"><td><p>Children only</p></td>
+<td class="text-right"><p>0.412</p></td>
+<td class="text-right"><p>Age-rated</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Additional parameters (e.g. <strong>Federal Poverty Guidelines</strong>, FMAP) come from CMS and FNS administrative releases bundled with PolicyEngine.</p>
+<p><code class="docutils literal notranslate"><span class="pre">medicaid_slcsp_family_tier_multiplier</span></code> multiplies a New York tier factor by 1.05 when one of the tax unit’s enrollees is a tax dependent aged 26 to 29. The parameter’s first value is dated 2023-01-01; the model backfills that value to 2015. The multiplier then adds the one-adult factor for each enrolled adult beyond two. <code class="docutils literal notranslate"><span class="pre">medicaid_slcsp_family_tier_person_share</span></code> multiplies the age-0 premium by the factor and splits the result evenly among the tax unit’s enrollees. <code class="docutils literal notranslate"><span class="pre">is_medicaid_slcsp_dependent_child</span></code> counts as a child anyone aged 20 or younger, a tax dependent under 26 and, in New York, a tax dependent aged 26 to 29. A Vermont tax unit whose only enrollees are children gets the age-rated index, which in Vermont equals the age-0 premium at every age.</p>
+<p>Where the index is 0, <code class="docutils literal notranslate"><span class="pre">medicaid_slcsp_cost_index_filled</span></code> substitutes the state average (<code class="docutils literal notranslate"><span class="pre">medicaid_slcsp_state_average_cost_index</span></code>): the person-weighted mean of the positive indices among the simulation’s people in that state.</p>
 </section>
-<section id="eligibility-determination">
-<h2>3  Eligibility Determination<a class="headerlink" href="#eligibility-determination" title="Link to this heading">¶</a></h2>
-<p>For each person <span class="math notranslate nohighlight">\(p\)</span> in period <span class="math notranslate nohighlight">\(t\)</span> (calendar year):</p>
-<ol class="arabic simple">
-<li><p><strong>Financial test</strong> – compare household <em>modified income</em> to the relevant FPL threshold for the individual’s state, age, pregnancy, and parent/caretaker status.</p></li>
-<li><p><strong>Categorical tests</strong>:</p>
+<section id="state-spending-and-enrollment">
+<h3>State spending and enrollment<a class="headerlink" href="#state-spending-and-enrollment" title="Link to this heading">¶</a></h3>
+<p>Two parameter files under <code class="docutils literal notranslate"><span class="pre">policyengine_us/parameters/calibration/gov/hhs/medicaid/totals/</span></code> supply the state totals:</p>
 <ul class="simple">
-<li><p><strong>SSI‑linked</strong> — aged 65+, blind, or meeting SSA disability criteria.</p></li>
-<li><p><strong>Blindness &amp; disability</strong> — uses CPS ASEC disability flags and SSI receipt as a proxy where SRDI data are unavailable.</p></li>
-<li><p><strong>Expansion adult</strong> — aged 19–64 <em>and</em> in a Medicaid‑expansion state, income ≤ 138 % FPL, not otherwise mandatory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spending.yaml</span></code> holds total Medicaid spending in each state for federal fiscal years 2020 to 2024. The file cites KFF for fiscal years 2020, 2023 and 2024 and MACPAC for fiscal years 2021 and 2022.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enrollment.yaml</span></code> stores January Medicaid and CHIP enrollment inputs sourced from KFF for 2020 to 2024. North Carolina’s 2020 to 2023 inputs are known not to match KFF’s January counts.</p></li>
 </ul>
-</li>
-<li><p><strong>Residency &amp; immigration filters</strong> — five‑year bar, lawfully‑present exemptions, refugees, etc.</p></li>
-</ol>
-<p>The implementation lives in <code class="docutils literal notranslate"><span class="pre">is_medicaid_eligible</span></code> (<code class="docutils literal notranslate"><span class="pre">policyengine_us/variables/gov/hhs/medicaid/eligibility.py</span></code>), which aggregates the sub‑tests and returns a Boolean array.</p>
-</section>
-<section id="mapping-to-macpac-eligibility-groups">
-<h2>4  Mapping to MACPAC Eligibility Groups<a class="headerlink" href="#mapping-to-macpac-eligibility-groups" title="Link to this heading">¶</a></h2>
+<p>Each January 1 entry pairs that federal fiscal year’s spending with that year’s enrollment input. The table below sums the model inputs, including the historical North Carolina discrepancy. Years after 2024 reuse the 2024 pair with no growth factor.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>MACPAC group</p></th>
-<th class="head"><p>PolicyEngine mapping logic</p></th>
+<tr class="row-odd"><th class="head"><p>Year</p></th>
+<th class="head text-right"><p>Spending, all states</p></th>
+<th class="head text-right"><p>Enrollment, all states</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Child</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">age</span> <span class="pre">&lt;</span> <span class="pre">19</span></code></p></td>
+<tr class="row-even"><td><p>2020</p></td>
+<td class="text-right"><p>$661.5 billion</p></td>
+<td class="text-right"><p>71.4 million</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>New adult group</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">is_medicaid_eligible</span> <span class="pre">&amp;</span> <span class="pre">expansion_state</span> <span class="pre">&amp;</span> <span class="pre">19</span> <span class="pre">≤</span> <span class="pre">age</span> <span class="pre">≤</span> <span class="pre">64</span> <span class="pre">&amp;</span> <span class="pre">not</span> <span class="pre">parent/caretaker</span></code></p></td>
+<tr class="row-odd"><td><p>2021</p></td>
+<td class="text-right"><p>$744.5 billion</p></td>
+<td class="text-right"><p>80.8 million</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Other adult</strong></p></td>
-<td><p>Parent/caretaker adults (pre‑ACA mandatory &amp; optional parents)</p></td>
+<tr class="row-even"><td><p>2022</p></td>
+<td class="text-right"><p>$818.3 billion</p></td>
+<td class="text-right"><p>87.2 million</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Disabled</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">is_disabled</span> <span class="pre">OR</span> <span class="pre">receives_ssi</span></code> (under 65)</p></td>
+<tr class="row-odd"><td><p>2023</p></td>
+<td class="text-right"><p>$880.0 billion</p></td>
+<td class="text-right"><p>93.3 million</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Aged</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">age</span> <span class="pre">≥</span> <span class="pre">65</span></code> and not captured above</p></td>
+<tr class="row-even"><td><p>2024 and later</p></td>
+<td class="text-right"><p>$918.7 billion</p></td>
+<td class="text-right"><p>84.9 million</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Each person’s categorical assignment is produced by the <code class="docutils literal notranslate"><span class="pre">medicaid_group</span></code> variable (a fast NumPy <code class="docutils literal notranslate"><span class="pre">Enum</span></code>).</p>
 </section>
-<section id="percapita-cost-parameters">
-<h2>5  Per‑Capita Cost Parameters<a class="headerlink" href="#percapita-cost-parameters" title="Link to this heading">¶</a></h2>
-<p>MACPAC’s July 2024 release supplies the most recent nationally‑consistent spending per enrollee (FY 2022, <strong>inflated to 2024 dollars</strong> using the CMS price index):</p>
+<section id="state-denominator">
+<h3>State denominator<a class="headerlink" href="#state-denominator" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">medicaid_slcsp_state_denominator</span></code> computes <span class="math notranslate nohighlight">\(D_s\)</span> in one of two ways.</p>
+<p><strong>Population runs.</strong> Over a dataset, <span class="math notranslate nohighlight">\(D_s\)</span> sums person weight times cost index over the state’s Medicaid enrollees. The weighted values of a state’s enrollees then add up to <span class="math notranslate nohighlight">\(S_s\)</span>. A reform simulation keeps the baseline denominator but recomputes cost indices. In New York and Vermont, enrolling another family member can reduce existing enrollees’ shares of a fixed tier premium, so additional enrollment need not raise total spending.</p>
+<p><strong>Household calculations.</strong> A household calculation has no population to sum, so <span class="math notranslate nohighlight">\(D_s\)</span> equals the state’s January enrollment times the state average index. For a single household, the state average index covers the household’s own members. A lone enrollee therefore receives the state’s spending divided by its enrollment. When every member of a household enrolls, their values average that amount and differ in proportion to their indices.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>Group</p></th>
-<th class="head text-right"><p>Per‑capita cost (USD, CY 2024)</p></th>
+<tr class="row-odd"><th class="head"><p>State</p></th>
+<th class="head text-right"><p>FY2024 spending</p></th>
+<th class="head text-right"><p>January 2024 enrollment</p></th>
+<th class="head text-right"><p>Lone enrollee, 2024 and later</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Child</p></td>
-<td class="text-right"><p>$3,540</p></td>
+<tr class="row-even"><td><p>California</p></td>
+<td class="text-right"><p>$150,413,664,949</p></td>
+<td class="text-right"><p>13,836,944</p></td>
+<td class="text-right"><p>$10,870.44</p></td>
 </tr>
-<tr class="row-odd"><td><p>New adult</p></td>
-<td class="text-right"><p>$7,055</p></td>
+<tr class="row-odd"><td><p>New Jersey</p></td>
+<td class="text-right"><p>$23,426,076,809</p></td>
+<td class="text-right"><p>2,030,400</p></td>
+<td class="text-right"><p>$11,537.67</p></td>
 </tr>
-<tr class="row-even"><td><p>Other adult</p></td>
-<td class="text-right"><p>$5,007</p></td>
+<tr class="row-even"><td><p>New York</p></td>
+<td class="text-right"><p>$96,024,580,523</p></td>
+<td class="text-right"><p>7,115,535</p></td>
+<td class="text-right"><p>$13,495.06</p></td>
 </tr>
-<tr class="row-odd"><td><p>Disabled</p></td>
-<td class="text-right"><p>$21,298</p></td>
-</tr>
-<tr class="row-even"><td><p>Aged</p></td>
-<td class="text-right"><p>$21,298</p></td>
+<tr class="row-odd"><td><p>Texas</p></td>
+<td class="text-right"><p>$50,974,507,372</p></td>
+<td class="text-right"><p>4,295,157</p></td>
+<td class="text-right"><p>$11,867.90</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><em>MACPAC reports <strong>Aged</strong> and <strong>Disabled</strong> separately; PolicyEngine combines them for simplicity.</em></p>
-<p>The YAML parameter files live under
-<code class="docutils literal notranslate"><span class="pre">policyengine_us/parameters/calibration/gov/hhs/medicaid/totals/per_capita/</span></code>.</p>
+<p>Across the 50 states and DC, the lone-enrollee value for 2024 and later ranges from <span class="math notranslate nohighlight">\(6,673.73 in Hawaii to \)</span>14,975.49 in DC, with a median of $10,983.60.</p>
 </section>
-<section id="simulating-takeup-and-enrollment">
-<h2>6  Simulating Take‑Up and Enrollment<a class="headerlink" href="#simulating-takeup-and-enrollment" title="Link to this heading">¶</a></h2>
-<p>Eligibility does <strong>not</strong> guarantee participation. For each eligibility group, PolicyEngine:</p>
-<ol class="arabic simple">
-<li><p>Draws a reproducible pseudo‑random seed <code class="docutils literal notranslate"><span class="pre">medicaid_take_up_seed</span></code>.</p></li>
-<li><p>Compares the seed to an externally‑sourced take‑up probability (e.g. 93 % for children, 82 % for disabled adults).</p></li>
-</ol>
-<p>This yields a binary flag <code class="docutils literal notranslate"><span class="pre">is_medicaid_enrolled</span></code>, which—together with <code class="docutils literal notranslate"><span class="pre">medicaid_group</span></code>—feeds spending calculations.</p>
+<section id="federal-and-state-shares">
+<h3>Federal and state shares<a class="headerlink" href="#federal-and-state-shares" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">medicaid_federal_cost</span></code> multiplies <code class="docutils literal notranslate"><span class="pre">medicaid_cost</span></code> by <code class="docutils literal notranslate"><span class="pre">medicaid_federal_share</span></code>, and <code class="docutils literal notranslate"><span class="pre">medicaid_state_cost</span></code> takes the remainder. <code class="docutils literal notranslate"><span class="pre">medicaid_federal_share</span></code> applies the expansion FMAP (<code class="docutils literal notranslate"><span class="pre">gov.hhs.medicaid.cost_share.expansion_fmap</span></code>, 42 U.S.C. 1396d(y)) to the adult expansion category and the state’s regular FMAP (<code class="docutils literal notranslate"><span class="pre">gov.hhs.medicaid.cost_share.fmap</span></code>, 42 U.S.C. 1396d(b)) to every other category. It applies 0 to people with no category. It also applies 0 to Rhode Island state-funded postpartum enrollees unless they have a category and an eligible immigration status.</p>
 </section>
-<section id="calibration-to-2024-national-totals">
-<h2>7  Calibration to 2024 National Totals<a class="headerlink" href="#calibration-to-2024-national-totals" title="Link to this heading">¶</a></h2>
-<p>State‑level CMS‑64 data lag by roughly two years, so PolicyEngine calibrates to <strong>national</strong> 2024 aggregates.</p>
+<section id="net-income">
+<h3>Net income<a class="headerlink" href="#net-income" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">household_health_benefits</span></code> lists <code class="docutils literal notranslate"><span class="pre">medicaid_cost</span></code>, so Medicaid counts toward <code class="docutils literal notranslate"><span class="pre">household_benefits</span></code> and net income only when <code class="docutils literal notranslate"><span class="pre">gov.simulation.include_health_benefits_in_net_income</span></code> is true. That parameter defaults to false.</p>
+</section>
+</section>
+<section id="eligibility-group-files">
+<h2>Eligibility-group files<a class="headerlink" href="#eligibility-group-files" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">medicaid_group</span></code> maps <code class="docutils literal notranslate"><span class="pre">medicaid_category</span></code> to five spending groups: child, non-expansion adult, expansion adult, aged or disabled, and none. No formula reads <code class="docutils literal notranslate"><span class="pre">medicaid_group</span></code>.</p>
+<p>MACPAC eligibility-group files sit under <code class="docutils literal notranslate"><span class="pre">policyengine_us/parameters/calibration/gov/hhs/medicaid/</span></code>: spending in <code class="docutils literal notranslate"><span class="pre">spending/by_eligibility_group/</span></code> and enrollment in <code class="docutils literal notranslate"><span class="pre">enrollment/</span></code>. Their values are dated 2022, except expansion-adult spending, which is dated 2023. Only Oregon’s and Washington’s programs read them:</p>
 <ul class="simple">
-<li><p><strong>Target</strong>: CMS National Health Expenditure (NHE) projects <strong>$826 billion</strong> in total Medicaid spending for CY 2024.</p></li>
-<li><p><strong>Target</strong>: MACPAC reports <strong>72,429,055</strong> full‑benefit enrollees in CY 2024.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">or_healthier_oregon_cost_if_enrolled</span></code> divides Oregon’s group spending by its group enrollment. Where a group’s enrollment is 0, it uses the national per-enrollee amount for that group in <code class="docutils literal notranslate"><span class="pre">totals/per_capita.yaml</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wa_apple_health_cost_if_enrolled</span></code> divides Washington’s child and expansion-adult spending by the matching enrollment.</p></li>
 </ul>
 </section>
-<section id="known-limitations-roadmap">
-<h2>8  Known Limitations &amp; Roadmap<a class="headerlink" href="#known-limitations-roadmap" title="Link to this heading">¶</a></h2>
+<section id="known-limits">
+<h2>Known limits<a class="headerlink" href="#known-limits" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p><strong>Long‑term services &amp; supports (LTSS)</strong> – currently embedded in per‑capita costs rather than modeled separately.</p></li>
-<li><p><strong>Non‑citizen eligibility complexity</strong> – point‑in‑time CPS immigration variables only approximate five‑year‑bar exceptions.</p></li>
-<li><p><strong>Dynamic macro feedback</strong> – behavioral changes (e.g. employer insurance offer) are not yet endogenously simulated.</p></li>
+<li><p>The cost index varies only by age, rating area and, in New York and Vermont, family tier. It has no term for disability or for other coverage. For a given age and rating area, and the same enrolled family composition in New York and Vermont, the index is unchanged by whether someone qualifies through SSI or the adult expansion group or also has employer coverage.</p></li>
+<li><p>No age curve rises after age 64. An enrollee aged 90 gets the same index as one aged 64 in the same rating area.</p></li>
+<li><p>Household calculations divide spending that covers Medicaid only by enrollment counts that include CHIP enrollees.</p></li>
+<li><p>Spending and enrollment for 2025 and later repeat the fiscal year 2024 and January 2024 values, so state totals don’t grow after 2024.</p></li>
+<li><p>The MACPAC eligibility-group files affect only Oregon’s and Washington’s programs.</p></li>
 </ul>
-<p>Planned improvements:</p>
-<ol class="arabic simple">
-<li><p>Incorporate CMS‑64 state files on a rolling basis.</p></li>
-<li><p>Add person‑level LTSS flags from NHIS.</p></li>
-</ol>
 </section>
 <section id="references">
-<h2>9  References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
-<li><p>MACPAC. <strong>MACStats: Medicaid and CHIP Data Book</strong>, Exhibits 14 &amp; 36. July 2024.</p></li>
-<li><p>Centers for Medicare &amp; Medicaid Services. <strong>National Health Expenditure Projections 2024 – 2033</strong>. April 2024.</p></li>
-<li><p>U.S. Census Bureau. <strong>Current Population Survey, Annual Social and Economic Supplement (ASEC) 2024</strong>.</p></li>
+<li><p>KFF. <a class="reference external" href="https://web.archive.org/web/20261104084733/https://www.kff.org/medicaid/state-indicator/total-medicaid-spending/?currentTimeframe=0&amp;amp;sortModel=%7B%22colId%22%3A%22Location%22%2C%22sort%22%3A%22asc%22%7D">Total Medicaid Spending, FY 2024</a>. Archived November 4, 2026.</p></li>
+<li><p>KFF. <a class="reference external" href="https://web.archive.org/web/20261026192300/https://www.kff.org/medicaid/state-indicator/medicaid-and-chip-monthly-enrollment/">Medicaid and CHIP Monthly Enrollment, January 2024</a>. Archived October 26, 2026.</p></li>
+<li><p>42 CFR 435.119. <a class="reference external" href="https://www.ecfr.gov/current/title-42/section-435.119">Coverage for individuals age 19 or older and under age 65 at or below 133 percent FPL</a>.</p></li>
+<li><p>42 U.S.C. 1396d. <a class="reference external" href="https://www.law.cornell.edu/uscode/text/42/1396d">Definitions</a>.</p></li>
 </ol>
+<p><code class="docutils literal notranslate"><span class="pre">spending.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">enrollment.yaml</span></code> cite the source for each earlier year.</p>
 </section>
 </section>
 
@@ -541,15 +593,18 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Medicaid</a><ul>
-<li><a class="reference internal" href="#overview">1  Overview</a></li>
-<li><a class="reference internal" href="#key-data-inputs">2  Key Data Inputs</a></li>
-<li><a class="reference internal" href="#eligibility-determination">3  Eligibility Determination</a></li>
-<li><a class="reference internal" href="#mapping-to-macpac-eligibility-groups">4  Mapping to MACPAC Eligibility Groups</a></li>
-<li><a class="reference internal" href="#percapita-cost-parameters">5  Per‑Capita Cost Parameters</a></li>
-<li><a class="reference internal" href="#simulating-takeup-and-enrollment">6  Simulating Take‑Up and Enrollment</a></li>
-<li><a class="reference internal" href="#calibration-to-2024-national-totals">7  Calibration to 2024 National Totals</a></li>
-<li><a class="reference internal" href="#known-limitations-roadmap">8  Known Limitations &amp; Roadmap</a></li>
-<li><a class="reference internal" href="#references">9  References</a></li>
+<li><a class="reference internal" href="#eligibility-and-enrollment">Eligibility and enrollment</a></li>
+<li><a class="reference internal" href="#value-per-enrollee">Value per enrollee</a><ul>
+<li><a class="reference internal" href="#cost-index">Cost index</a></li>
+<li><a class="reference internal" href="#state-spending-and-enrollment">State spending and enrollment</a></li>
+<li><a class="reference internal" href="#state-denominator">State denominator</a></li>
+<li><a class="reference internal" href="#federal-and-state-shares">Federal and state shares</a></li>
+<li><a class="reference internal" href="#net-income">Net income</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#eligibility-group-files">Eligibility-group files</a></li>
+<li><a class="reference internal" href="#known-limits">Known limits</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 </ul>
