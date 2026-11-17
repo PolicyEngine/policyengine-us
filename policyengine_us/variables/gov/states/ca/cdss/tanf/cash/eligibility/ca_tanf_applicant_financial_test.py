@@ -9,7 +9,7 @@ class ca_tanf_applicant_financial_test(Variable):
     defined_for = StateCode.CA
     reference = (
         # AB 74 (2013), section 38(a), amending WIC 11450.12(a).
-        "https://www.leginfo.ca.gov/pub/13-14/bill/asm/ab_0051-0100/ab_74_bill_20130627_chaptered.htm",
+        "https://www.leginfo.ca.gov/pub/13-14/bill/asm/ab_0051-0100/ab_74_bill_20130627_chaptered.html",
         # MPP 44-207.11.
         "https://cdss.ca.gov/ord/entres/getinfo/pdf/11EAS.pdf#page=11",
         "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2021/21-130.pdf?ver=2021-12-03-084106-333#page=3",
