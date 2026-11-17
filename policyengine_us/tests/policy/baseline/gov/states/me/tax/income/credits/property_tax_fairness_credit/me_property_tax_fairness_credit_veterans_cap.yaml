@@ -8,16 +8,18 @@
     filing_status: SINGLE
     me_property_tax_fairness_credit_base_cap: 100
     veterans_benefits: 0
+    is_va_100_percent_permanent_service_connected_disabled_veteran: true
   output:
     me_property_tax_fairness_credit_veterans_cap: 0
 
-- name: Single filer, head is veteran - gets veterans cap match in 2024
+- name: Single filer, head is a qualifying veteran - gets veterans cap match in 2024
   period: 2024
   input:
     state_code: ME
     filing_status: SINGLE
     me_property_tax_fairness_credit_base_cap: 1_000
-    veterans_benefits: 1_000  # Any positive amount makes them a veteran
+    veterans_benefits: 1_000
+    is_va_100_percent_permanent_service_connected_disabled_veteran: true
   output:
     me_property_tax_fairness_credit_veterans_cap: 1_000  # Base cap * 1.0 match
 
@@ -38,6 +40,7 @@
     filing_status: SINGLE
     me_property_tax_fairness_credit_base_cap: 0
     veterans_benefits: 1_000
+    is_va_100_percent_permanent_service_connected_disabled_veteran: true
   output:
     me_property_tax_fairness_credit_veterans_cap: 0
 
@@ -48,5 +51,160 @@
     filing_status: SINGLE
     me_property_tax_fairness_credit_base_cap: 5_000
     veterans_benefits: 1_000
+    is_va_100_percent_permanent_service_connected_disabled_veteran: true
   output:
     me_property_tax_fairness_credit_veterans_cap: 5_000  # Base cap * 1.0 match
+
+# 36 MRSA 5219-KK(2-E): actual VA 100% permanent service-connected rating.
+# General veteran status, VA payments, and the two broader disability flags
+# do not establish that exact fact. The 2025 Schedule PTFC, lines 14/14a,
+# matches the ordinary credit once for the claimant or jointly filing spouse.
+- name: Case 6, general veteran status and VA payments do not establish qualification.
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 1_000
+    is_veteran: true
+    veterans_benefits: 1_000
+    is_va_100_percent_permanent_service_connected_disabled_veteran: false
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 0
+
+- name: Case 7, both coarse disability flags do not establish the exact VA rating.
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 1_000
+    is_veteran: true
+    veterans_benefits: 1_000
+    # Permanent TDIU at a lower actual rating can satisfy both broad flags.
+    # A temporary service-connected rating plus a separate permanent pension
+    # can also satisfy them without Maine's exact service-connected fact.
+    is_fully_disabled_service_connected_veteran: true
+    is_permanently_disabled_veteran: true
+    is_va_100_percent_permanent_service_connected_disabled_veteran: false
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 0
+
+- name: Case 8, exact qualification suffices with zero VA payments and no supplied coarse flags.
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 1_000
+    # The precise fact already includes the required service history.
+    # No separate general-veteran or coarse disability input is supplied.
+    veterans_benefits: 0
+    is_va_100_percent_permanent_service_connected_disabled_veteran: true
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 1_000
+
+- name: Case 9, an omitted exact fact defaults false despite veteran status and payments.
+  period: 2025
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 1_000
+    is_veteran: true
+    veterans_benefits: 1_000
+  output:
+    is_va_100_percent_permanent_service_connected_disabled_veteran: false
+    me_property_tax_fairness_credit_veterans_cap: 0
+
+- name: Case 10, a qualifying spouse alone provides one match.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_va_100_percent_permanent_service_connected_disabled_veteran: false
+      person2:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        veterans_benefits: 0
+        is_va_100_percent_permanent_service_connected_disabled_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        me_property_tax_fairness_credit_base_cap: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 1_000
+
+- name: Case 11, two qualifying spouses still provide only one match.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_va_100_percent_permanent_service_connected_disabled_veteran: true
+      person2:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_va_100_percent_permanent_service_connected_disabled_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        me_property_tax_fairness_credit_base_cap: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 1_000
+
+- name: Case 12, a qualifying adult dependent does not provide the filers a match.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        age: 68
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person3:
+        # An adult disabled veteran supported by parents can be a dependent.
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        veterans_benefits: 0
+        is_va_100_percent_permanent_service_connected_disabled_veteran: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        me_property_tax_fairness_credit_base_cap: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ME
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 0
+
+- name: Case 13, the first effective tax year provides the match to a qualifying filer.
+  period: 2023
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 1_000
+    veterans_benefits: 0
+    is_va_100_percent_permanent_service_connected_disabled_veteran: true
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 1_000
