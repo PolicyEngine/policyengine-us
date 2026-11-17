@@ -146,3 +146,9 @@ def test_known_unresolved_references_are_still_unresolved(system):
         "These KNOWN_UNRESOLVED keys now resolve or no longer exist; "
         f"delete them: {stale}"
     )
+
+
+def test_aca_historical_estimates_do_not_extend_verified_coverage():
+    # Historical premium estimates and supplied 2014 inputs do not verify
+    # ordinary household calculations for those years.
+    assert ENTRIES_BY_LABEL["aca_subsidies"]["verified_start_year"] == 2024

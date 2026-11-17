@@ -216,3 +216,47 @@
     slcsp_rating_area: 19
   output:
     slcsp_age_0: 245
+
+- name: Alaska rating area 1 scales the 2018 benchmark back to 2014.
+  period: 2014-01
+  absolute_error_margin: 0.0001
+  input:
+    state_code: AK
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 240.64864865  # 424 * 273 / 481.
+
+- name: Alaska rating area 1 scales the 2018 benchmark back to 2015.
+  period: 2015-01
+  absolute_error_margin: 0.0001
+  input:
+    state_code: AK
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 243.29313929  # 424 * 276 / 481.
+
+- name: Alaska rating area 1 scales the 2018 benchmark back to 2016.
+  period: 2016-01
+  absolute_error_margin: 0.0001
+  input:
+    state_code: AK
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 263.56756757  # 424 * 299 / 481.
+
+- name: Alaska rating area 1 scales the 2018 benchmark back to 2017.
+  period: 2017-01
+  absolute_error_margin: 0.0001
+  input:
+    state_code: AK
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 316.45738046  # 424 * 359 / 481.
+
+- name: An unknown rating area yields no benchmark in 2014.
+  period: 2014-01
+  input:
+    state_code: AK
+    slcsp_rating_area: 0
+  output:
+    slcsp_age_0: 0
