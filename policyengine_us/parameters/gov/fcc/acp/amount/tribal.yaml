@@ -1,6 +1,9 @@
 description: Maximum monthly Affordable Connectivity Program (ACP) amount for Tribal lands
 values:
+  2015-01-01: 0
   2022-01-01: 75
+  # Conditional public reimbursement for May; see the FCC README.
+  2024-05-01: 35
   2024-06-01: 0
 metadata:
   unit: currency-USD
@@ -11,3 +14,13 @@ metadata:
       href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim
     - title: Federal Communications Commission, Release 399712A1
       href: https://docs.fcc.gov/public/attachments/DOC-399712A1.pdf
+    - title: "47 USC 1752, 2021 edition, section 60502(b) effective-date and transition notes"
+      href: https://www.govinfo.gov/content/pkg/USCODE-2021-title47/html/USCODE-2021-title47-chap16.htm
+    - title: "FCC DA 21-1654, paragraphs 7-8, first ACP billing month and legacy transition"
+      href: https://docs.fcc.gov/public/attachments/DA-21-1654A1.pdf#page=3
+    - title: "FCC 22-2, footnote 22, March 2022 transition limit"
+      href: https://docs.fcc.gov/public/attachments/FCC-22-2A1.pdf#page=5
+    - title: "FCC DA 24-195, pages 1-3, April funding and conditional May reimbursement"
+      href: https://docs.fcc.gov/public/attachments/DA-24-195A1.pdf#page=1
+    - title: "FCC DA 24-342, pages 1-2, May 2024 reimbursement ceilings"
+      href: https://docs.fcc.gov/public/attachments/DA-24-342A1.pdf#page=1

@@ -1,0 +1,322 @@
+# Regular service subsidy capacity for otherwise qualified households.
+# These component premises hold annual qualification and Tribal status fixed.
+# Assume uniform nonnegative annual post-Lifeline cost / 12 and funded
+# billing-month caps; YEAR outputs do not establish actual receipt.
+# Legacy controls assume statutory qualification plus pre-cutoff provider/NLAD
+# enrollment and continuing eligibility/use. May 2024 assumes provider election
+# and a continuing enrolled household. Enhanced benefits in high-cost areas
+# and device benefits fall outside these regular service controls.
+# Sources:
+# https://docs.fcc.gov/public/attachments/FCC-22-2A1.pdf#page=3
+# https://docs.fcc.gov/public/attachments/DA-21-1524A1.pdf#page=4
+# https://docs.fcc.gov/public/attachments/DA-21-1654A1.pdf#page=3
+# https://docs.fcc.gov/public/attachments/DA-24-195A1.pdf#page=1
+# https://docs.fcc.gov/public/attachments/DA-24-342A1.pdf#page=1
+# https://www.govinfo.gov/content/pkg/USCODE-2021-title47/html/USCODE-2021-title47-chap16.htm
+
+# No legacy qualification premise; B/12 = 100; 12 × 30 = 360.
+- name: "Case 1, A new non-Tribal household receives twelve 2022 ACP funding months."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: false
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 360
+
+# No legacy qualification premise; B/12 = 100; 12 × 75 = 900.
+- name: "Case 2, A new Tribal household receives twelve 2022 ACP funding months."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: false
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 900
+
+# EBB funded months 0; ACP 12 × 30 = 360.
+- name: "Case 3, A regular non-Tribal household retains the full 2023 ACP maximum."
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 360
+
+# EBB funded months 0; ACP 12 × 75 = 900.
+- name: "Case 4, A Tribal household retains the full 2023 ACP maximum."
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 900
+
+# B/12 = 20; 12 × 20 = 240.
+- name: "Case 5, ACP covers a lower uniform service cost throughout 2023."
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 240
+  output:
+    ebb: 0
+    acp: 240
+
+# B/12 = 100; Jan–Apr 4 × 30 = 120; May 14; Jun–Dec 0; total 134.
+- name: "Case 6, A non-Tribal household has four full and one partial 2024 funding month."
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 134
+
+# B/12 = 100; Jan–Apr 4 × 75 = 300; May 35; total 335.
+- name: "Case 7, A Tribal household has four full and one partial 2024 funding month."
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 335
+
+# B/12 = 10; four full months × 10 plus May 10 = 50, not annual 120.
+- name: "Case 8, ACP covers only five months of a ten-dollar uniform 2024 cost."
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 120
+  output:
+    ebb: 0
+    acp: 50
+
+# B/12 = 20; Jan–Apr 4 × 20 = 80; May 14; total 94.
+- name: "Case 9, The May cap binds below a twenty-dollar non-Tribal monthly cost."
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 240
+  output:
+    ebb: 0
+    acp: 94
+
+# B/12 = 20; Jan–Apr 4 × 20 plus May 20 = 100.
+- name: "Case 10, A lower Tribal monthly cost binds in every funded 2024 month."
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 240
+  output:
+    ebb: 0
+    acp: 100
+
+# B/12 = 50; Jan–Apr 4 × 50 = 200; May 35; total 235.
+- name: "Case 11, The May Tribal cap binds below a fifty-dollar monthly cost."
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 600
+  output:
+    ebb: 0
+    acp: 235
+
+# No funded EBB or ACP month after May 2024.
+- name: "Case 12, The closed funding calendar provides no 2025 subsidy."
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 0
+
+# No funded EBB or ACP month after May 2024.
+- name: "Case 13, The closed funding calendar provides no 2026 Tribal subsidy."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb: 0
+    acp: 0
+
+# Stipulate FPG 10000/Lifeline 0/other income 0; wages 10000 − pre-tax contributions 0 =
+# IRS earnings 10000; gross 10000; FCC ratio 10000/10000 = 1; fixed qualifications plus
+# legacy flag; B 240/12 = 20; EBB 2 × 20 = 40 and ACP 10 × 20 = 200.
+# This conditional integration does not assert that 10000 equals the historical 2022 FPG
+# or compute Lifeline payment. Other qualification/gross-income components are explicit
+# zero premises. Both legacy statutory/FCC conditions and continuing use are assumed by
+# the supplied flag.
+- name: "Case 14, Conditional annual earnings qualify a legacy household for both components."
+  period: 2022
+  input:
+    age: 30
+    state_code: "PA"
+    is_on_tribal_land: false
+    is_tax_unit_dependent: false
+    employment_income: 10_000
+    pre_tax_contributions: 0
+    spm_unit_fpg: 10_000
+    broadband_cost: 240
+    lifeline: 0
+    enrolled_in_ebb: true
+    snap: 0
+    receives_snap: false
+    ssi: 0
+    receives_ssi: false
+    medicaid_enrolled: false
+    receives_housing_assistance: false
+    head_start: 0
+    fdpir: 0
+    tanf: 0
+    receives_tanf: false
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    pell_grant: 0
+    experienced_covid_income_loss: false
+    wic: 0
+    receives_wic: false
+    taxable_dependent_care_benefits: 0
+    taxable_strike_benefits: 0
+    self_employment_income: 0
+    sstb_self_employment_income: 0
+    partnership_s_corp_income: 0
+    farm_operations_income: 0
+    farm_rent_income: 0
+    other_net_gain_gross_income: 0
+    capital_gains: 0
+    non_sch_d_capital_gains: 0
+    taxable_interest_income: 0
+    rental_income: 0
+    dividend_income: 0
+    taxable_pension_income: 0
+    taxable_disability_benefits: 0
+    debt_relief: 0
+    estate_income: 0
+    taxable_unemployment_compensation: 0
+    taxable_social_security: 0
+    illicit_income: 0
+    taxable_retirement_distributions: 0
+    taxable_roth_conversions: 0
+    miscellaneous_income: 0
+    gambling_winnings: 0
+    ak_permanent_fund_dividend: 0
+    taxable_alimony_income: 0
+    salt_refund_income: 0
+    military_retirement_income: 0
+  output:
+    irs_employment_income: 10_000
+    irs_gross_income: 10_000
+    fcc_fpg_ratio: 1
+    is_lifeline_income_eligible: true
+    is_lifeline_eligible: true
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    broadband_cost_after_lifeline: 240
+    ebb: 40
+    acp: 200
+
+# Only funded legacy Jan–Feb slots suppress ACP; ten remaining months × 30 = 300.
+# Forced EBB 1 is a reported/compatibility proxy, not a computed or legally certified
+# EBB payment. EBB is not asserted and no joint conservation claim applies.
+- name: "Case 15, A forced annual EBB proxy suppresses ACP only in funded EBB months in 2022."
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+    ebb: 1
+  output:
+    acp: 300
+
+# No funded EBB slot exists; all 12 ACP months × 30 = 360 despite the forced proxy.
+# Forced EBB 1 is a reported/compatibility proxy, not a computed or legally certified
+# EBB payment. EBB is not asserted and no joint conservation claim applies.
+- name: "Case 16, A forced annual EBB proxy suppresses ACP only in funded EBB months in 2023."
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+    ebb: 1
+  output:
+    acp: 360
+
+# No funded EBB slot exists; 4 × 30 + 14 = 134 despite the forced proxy.
+# Forced EBB 1 is a reported/compatibility proxy, not a computed or legally certified
+# EBB payment. EBB is not asserted and no joint conservation claim applies.
+- name: "Case 17, A forced annual EBB proxy suppresses ACP only in funded EBB months in 2024."
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+    ebb: 1
+  output:
+    acp: 134
+
+# Annual computed ACP 134 divided by 12 for either requested month; June 11.166... is
+# Core annual output conversion, not a June funded payment.
+# YEAR flow requests use annual output conversion. Requested months do not reconstruct
+# actual monthly receipts.
+- name: "Case 18, Monthly requests divide the annual output and do not report actual monthly receipt."
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_ebb_eligible: true
+    is_acp_eligible: true
+    is_on_tribal_land: false
+    broadband_cost_after_lifeline: 1_200
+  output:
+    ebb:
+      2024-01: 0
+      2024-06: 0
+    acp:
+      2024-01: 134 / 12
+      2024-06: 134 / 12

@@ -39,8 +39,6 @@ class is_acp_eligible(Variable):
         )
 
         fpg_eligible = spm_unit("fcc_fpg_ratio", period) <= fcc.acp.fpg_limit
-        # Cannot be simultaneously enrolled in Emergency Broadband Benefit.
-        ebb_enrolled = spm_unit("ebb", period) > 0
-        return (
-            categorically_eligible | fpg_eligible | lifeline_categorically_eligible
-        ) & ~ebb_enrolled
+        # Annual qualification does not exclude EBB; the payment formula
+        # applies the exclusion within funded EBB months.
+        return categorically_eligible | fpg_eligible | lifeline_categorically_eligible

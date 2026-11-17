@@ -1,6 +1,5 @@
-# NB: Cannot currently test the variable when previous enrollment was not
-# required, since that was only the case from 2021-05-12 to 2021-12-31, and
-# tests operate as of January 1 of a given year.
+# This file checks annual qualification and the existing enrollment condition.
+# The history/ebb.yaml cases check funded months within each annual amount.
 
 - name: Family with no qualifications is ineligible
   period: 2022

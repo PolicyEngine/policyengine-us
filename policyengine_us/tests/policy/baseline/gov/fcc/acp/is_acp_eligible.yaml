@@ -110,12 +110,12 @@
   output:
     is_acp_eligible: true
 
-- name: Family with EBB is ineligible
+- name: Family with EBB keeps its annual ACP qualification
   period: 2022
   input:
     ebb: 1
   output:
-    is_acp_eligible: false
+    is_acp_eligible: true
 
 - name: Family reporting WIC receipt with a zero modeled benefit is eligible if income is above 200% of FPG
   period: 2022
