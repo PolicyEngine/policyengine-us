@@ -18,7 +18,7 @@ PolicyEngine determines Medicaid eligibility and enrollment for each person and 
 10. Section 1115 minimum essential coverage adult
 11. Healthier Mississippi Waiver
 
-The adult group comes after the other mandatory groups because 42 CFR 435.119 limits it to people not otherwise eligible for mandatory coverage.
+42 CFR 435.119(b)(4) excludes people otherwise eligible for and enrolled in mandatory coverage. The model prioritizes mandatory categories before the adult expansion group.
 
 `is_medicaid_eligible` (`policyengine_us/variables/gov/hhs/medicaid/eligibility/is_medicaid_eligible.py`) requires a category and an eligible immigration status. Where federal or Arkansas work requirements apply, it also requires the person to meet them. It also counts people eligible for California's Former Foster Youth Program (`ca_ffyp_eligible`), Illinois's Health Benefits for Immigrants (`il_hbi_eligible`) and Rhode Island's state-funded postpartum coverage (`ri_medicaid_state_funded_postpartum_eligible`).
 
@@ -60,7 +60,7 @@ New York and Vermont rate premiums by family tier. `medicaid_slcsp_family_tier_c
 | Two adults with one or more children | 2.85 | 2.81 |
 | Children only | 0.412 | Age-rated |
 
-From 2023, `medicaid_slcsp_family_tier_multiplier` multiplies a New York tier factor by 1.05 when one of the tax unit's enrollees is a tax dependent aged 26 to 29. It then adds the one-adult factor for each enrolled adult beyond two. `medicaid_slcsp_family_tier_person_share` multiplies the age-0 premium by the factor and splits the result evenly among the tax unit's enrollees. `is_medicaid_slcsp_dependent_child` counts as a child anyone aged 20 or younger, a tax dependent under 26 and, in New York, a tax dependent aged 26 to 29. A Vermont tax unit whose only enrollees are children gets the age-rated index, which in Vermont equals the age-0 premium at every age.
+`medicaid_slcsp_family_tier_multiplier` multiplies a New York tier factor by 1.05 when one of the tax unit's enrollees is a tax dependent aged 26 to 29. The parameter's first value is dated 2023-01-01; the model backfills that value to 2015. The multiplier then adds the one-adult factor for each enrolled adult beyond two. `medicaid_slcsp_family_tier_person_share` multiplies the age-0 premium by the factor and splits the result evenly among the tax unit's enrollees. `is_medicaid_slcsp_dependent_child` counts as a child anyone aged 20 or younger, a tax dependent under 26 and, in New York, a tax dependent aged 26 to 29. A Vermont tax unit whose only enrollees are children gets the age-rated index, which in Vermont equals the age-0 premium at every age.
 
 Where the index is 0, `medicaid_slcsp_cost_index_filled` substitutes the state average (`medicaid_slcsp_state_average_cost_index`): the person-weighted mean of the positive indices among the simulation's people in that state.
 
@@ -69,9 +69,9 @@ Where the index is 0, `medicaid_slcsp_cost_index_filled` substitutes the state a
 Two parameter files under `policyengine_us/parameters/calibration/gov/hhs/medicaid/totals/` supply the state totals:
 
 - `spending.yaml` holds total Medicaid spending in each state for federal fiscal years 2020 to 2024. The file cites KFF for fiscal years 2020, 2023 and 2024 and MACPAC for fiscal years 2021 and 2022.
-- `enrollment.yaml` holds KFF's count of people enrolled in Medicaid or CHIP on the last day of January, 2020 to 2024.
+- `enrollment.yaml` stores January Medicaid and CHIP enrollment inputs sourced from KFF for 2020 to 2024. North Carolina's 2020 to 2023 inputs are known not to match KFF's January counts.
 
-Each entry dated January 1 of a year pairs that federal fiscal year's spending with that January's enrollment. Years after 2024 reuse the 2024 pair with no growth factor.
+Each January 1 entry pairs that federal fiscal year's spending with that year's enrollment input. The table below sums the model inputs, including the historical North Carolina discrepancy. Years after 2024 reuse the 2024 pair with no growth factor.
 
 | Year | Spending, all states | Enrollment, all states |
 |------|---------------------:|-----------------------:|
@@ -85,7 +85,7 @@ Each entry dated January 1 of a year pairs that federal fiscal year's spending w
 
 `medicaid_slcsp_state_denominator` computes $D_s$ in one of two ways.
 
-**Population runs.** Over a dataset, $D_s$ sums person weight times cost index over the state's Medicaid enrollees. The weighted values of a state's enrollees then add up to $S_s$. A reform simulation keeps the baseline denominator, so a reform that adds enrollees adds their values at the baseline rate and raises total spending.
+**Population runs.** Over a dataset, $D_s$ sums person weight times cost index over the state's Medicaid enrollees. The weighted values of a state's enrollees then add up to $S_s$. A reform simulation keeps the baseline denominator but recomputes cost indices. In New York and Vermont, enrolling another family member can reduce existing enrollees' shares of a fixed tier premium, so additional enrollment need not raise total spending.
 
 **Household calculations.** A household calculation has no population to sum, so $D_s$ equals the state's January enrollment times the state average index. For a single household, the state average index covers the household's own members. A lone enrollee therefore receives the state's spending divided by its enrollment. When every member of a household enrolls, their values average that amount and differ in proportion to their indices.
 
@@ -117,7 +117,7 @@ MACPAC eligibility-group files sit under `policyengine_us/parameters/calibration
 
 ## Known limits
 
-- The cost index varies only by age, rating area and, in New York and Vermont, family tier. It has no term for disability or for other coverage. Two enrollees of the same age in the same rating area get the same index whether they qualify through SSI or the adult expansion group, and whether or not they also have employer coverage.
+- The cost index varies only by age, rating area and, in New York and Vermont, family tier. It has no term for disability or for other coverage. For a given age and rating area, and the same enrolled family composition in New York and Vermont, the index is unchanged by whether someone qualifies through SSI or the adult expansion group or also has employer coverage.
 - No age curve rises after age 64. An enrollee aged 90 gets the same index as one aged 64 in the same rating area.
 - Household calculations divide spending that covers Medicaid only by enrollment counts that include CHIP enrollees.
 - Spending and enrollment for 2025 and later repeat the fiscal year 2024 and January 2024 values, so state totals don't grow after 2024.
