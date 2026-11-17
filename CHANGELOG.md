@@ -1,3 +1,10 @@
+## [2.145.1] - 2026-11-17
+
+### Fixed
+
+- Correct IRS September–August inflation windows, keep published amounts, and extend the last observed window at CBO's projected tax-year growth rates. Index Vermont and Wisconsin amounts on their own unchained CPI-U schedules, add Vermont's preliminary 2026 brackets, and preserve CBO calendar forecast anchors. Update observed chained CPI-U through August 2026. Store the amounts that Arizona, Arkansas, DC, Massachusetts, Michigan, Minnesota, Missouri, New Mexico, Oregon, Utah and Virginia have published for parameters that follow the index.
+
+
 ## [2.145.0] - 2026-11-17
 
 ### Added
