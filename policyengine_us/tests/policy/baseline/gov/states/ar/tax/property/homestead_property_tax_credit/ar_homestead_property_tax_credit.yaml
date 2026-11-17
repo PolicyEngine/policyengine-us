@@ -1,0 +1,117 @@
+# Independent source-derived expectations; never obtained from model output.
+# Sources: official Acts330/2025 pp1-2;174/2026 pp1-2;1268/2005 p2.
+
+# Act330/2025 sections1-2: assessment2025 maximum600.
+# Credit=min(L,600); qualified remainder=L-credit; total bill=B-credit.
+- name: "Case 1, assessment 2025 credit preserves cents and leaves nonqualifying charges payable."
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR]
+    ar_homestead_property_tax_credit_qualified_property_taxes: [0, 50, 599.99, 600, 600.01, 1_200]
+    ar_homestead_property_tax_credit_property_in_arkansas: [true, true, true, true, true, true]
+    ar_homestead_property_tax_credit_homestead_qualified: [true, true, true, true, true, true]
+    ar_homestead_property_tax_credit_registered: [true, true, true, true, true, true]
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: [false, false, false, false, false, false]
+    ar_homestead_property_tax_credit_claimant: [true, true, true, true, true, true]
+    ar_homestead_property_tax_credit_facts_available: [true, true, true, true, true, true]
+    ar_homestead_property_tax_credit_bill_before_credit: [80, 200, 679.99, 680, 680.01, 1_280]
+  output:
+    ar_homestead_property_tax_credit: [0, 50, 599.99, 600, 600, 600]
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: [0, 0, 0, 0, 0.01, 600]
+    ar_homestead_property_tax_credit_bill_after_credit: [80, 150, 80, 80, 80.01, 680]
+
+# Act174/2026 sections1-2: assessment2026 maximum675, not2025.
+# This is the assessment year; generic calendar-year tax payments do not select the cap.
+- name: "Case 2, assessment 2026 uses the later 675 maximum on bills ordinarily collected in 2027."
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [AR, AR, AR, AR]
+    ar_homestead_property_tax_credit_qualified_property_taxes: [674.99, 675, 675.01, 1_200]
+    ar_homestead_property_tax_credit_property_in_arkansas: [true, true, true, true]
+    ar_homestead_property_tax_credit_homestead_qualified: [true, true, true, true]
+    ar_homestead_property_tax_credit_registered: [true, true, true, true]
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: [false, false, false, false]
+    ar_homestead_property_tax_credit_claimant: [true, true, true, true]
+    ar_homestead_property_tax_credit_facts_available: [true, true, true, true]
+    ar_homestead_property_tax_credit_bill_before_credit: [754.99, 755, 755.01, 1_280]
+  output:
+    ar_homestead_property_tax_credit: [674.99, 675, 675, 675]
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: [0, 0, 0.01, 525]
+    ar_homestead_property_tax_credit_bill_after_credit: [80, 80, 80.01, 605]
+
+# Same actual parcel facts, different generic paid-tax expense: min(1200,600)=600 in both rows.
+# Generic payments may relate to another assessment year and remain separate source facts.
+- name: "Case 3, generic taxes paid in 2025 do not replace the assessment 2025 precredit parcel liability."
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    state_code: [AR, AR]
+    ar_homestead_property_tax_credit_qualified_property_taxes: [1_200, 1_200]
+    ar_homestead_property_tax_credit_property_in_arkansas: [true, true]
+    ar_homestead_property_tax_credit_homestead_qualified: [true, true]
+    ar_homestead_property_tax_credit_registered: [true, true]
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: [false, false]
+    ar_homestead_property_tax_credit_claimant: [true, true]
+    ar_homestead_property_tax_credit_facts_available: [true, true]
+    ar_homestead_property_tax_credit_bill_before_credit: [1_280, 1_280]
+    real_estate_taxes: [100, 9_000]
+    employment_income: [50_000, 50_000]
+    age: [40, 40]
+  output:
+    ar_homestead_property_tax_credit: [600, 600]
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: [600, 600]
+    ar_homestead_property_tax_credit_bill_after_credit: [680, 680]
+
+# Explicit hypothetical reform; enacted2025 cap remains600 in the other cases.
+# Raising M to800 yields min(L,800), proving the input does not hide the original600 cap.
+- name: "Case 4, a hypothetical 800 cap uses full untruncated qualified liability."
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    state_code: [AR, AR, AR, AR]
+    ar_homestead_property_tax_credit_qualified_property_taxes: [0, 600, 800, 1_200]
+    ar_homestead_property_tax_credit_property_in_arkansas: [true, true, true, true]
+    ar_homestead_property_tax_credit_homestead_qualified: [true, true, true, true]
+    ar_homestead_property_tax_credit_registered: [true, true, true, true]
+    ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: [false, false, false, false]
+    ar_homestead_property_tax_credit_claimant: [true, true, true, true]
+    ar_homestead_property_tax_credit_facts_available: [true, true, true, true]
+    ar_homestead_property_tax_credit_bill_before_credit: [80, 680, 880, 1_280]
+    gov.states.ar.tax.property.homestead_property_tax_credit.maximum: 800
+  output:
+    ar_homestead_property_tax_credit: [0, 600, 800, 800]
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: [0, 0, 0, 400]
+    ar_homestead_property_tax_credit_bill_after_credit: [80, 80, 80, 480]
+
+# Act1268/2005 section1, current26-26-1118(b)(4)-(5): parcel retains qualified-year credit.
+# County qualification/registration are verified; current household is in Oklahoma and rents.
+- name: "Case 5, an established Arkansas parcel credit survives current outside state residence."
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_homestead_property_tax_credit_qualified_property_taxes: 1_200
+        ar_homestead_property_tax_credit_property_in_arkansas: true
+        ar_homestead_property_tax_credit_homestead_qualified: true
+        ar_homestead_property_tax_credit_registered: true
+        ar_homestead_property_tax_credit_claims_disabled_veteran_exemption: false
+        ar_homestead_property_tax_credit_claimant: true
+        ar_homestead_property_tax_credit_facts_available: true
+        ar_homestead_property_tax_credit_bill_before_credit: 1_280
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+        tenure_type: RENTED
+  output:
+    ar_homestead_property_tax_credit: 600
+    ar_homestead_property_tax_credit_qualified_tax_after_credit: 600
+    ar_homestead_property_tax_credit_bill_after_credit: 680

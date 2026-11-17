@@ -211,6 +211,8 @@ PROPERTY_TAX_CREDITS_IN_INCOME_TAX = {
 # instead of paying cash. Neither net income total subtracts property tax, so
 # neither counts them.
 PROPERTY_TAX_BILL_REDUCTIONS = {
+    "ar_homestead_property_tax_credit": "Ark. Code 26-26-1118(a)(1)(A): reduces "
+    "real property taxes assessed on the homestead",
     "dc_senior_disabled_property_tax_relief": "D.C. Code 47-863(b)(1): a "
     "deduction in computing real property tax liability",
     "in_blind_disabled_property_tax_credit": "IC 6-1.1-51.3-0.5: applied to "
