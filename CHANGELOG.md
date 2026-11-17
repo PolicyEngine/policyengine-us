@@ -1,3 +1,10 @@
+## [2.144.4] - 2026-11-17
+
+### Fixed
+
+- Correct Minnesota's 2017–2020 child and dependent care credit phaseout thresholds.
+
+
 ## [2.144.3] - 2026-11-17
 
 ### Fixed
