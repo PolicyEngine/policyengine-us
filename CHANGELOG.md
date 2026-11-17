@@ -1,3 +1,10 @@
+## [2.145.4] - 2026-11-17
+
+### Fixed
+
+- Count a pregnant member's expected children in the other members' Medicaid household size where the state elects it under 42 CFR 435.603(b), now New Jersey as well as California, and pair a California non-filer's spouse only on a joint return.
+
+
 ## [2.145.3] - 2026-11-17
 
 ### Fixed
