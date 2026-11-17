@@ -23,6 +23,8 @@ values:
     - dividend_income
     - interest_income
     - rental_income
+    # 404.5(b)(5)(vi): public assistance, including home relief.
+    - ny_safety_net_assistance
     # 404.5(b)(5)(vii): pensions and annuities. PolicyEngine records military
     # retirement separately from pension_income.
     - pension_income
@@ -37,10 +39,14 @@ values:
     # 404.5(b)(5)(xii): veterans' pensions.
     - veterans_benefits
     #
-    # Counted but not listed here because the amount depends on who receives
-    # it — see ny_ccap_countable_income:
-    # - ssi, countable in full under 404.5(b)(5)(vi) except for the SSI of any
-    #   child in the child care services unit, which 404.5(b)(6)(xxi) excludes.
+    # Counted separately in ny_ccap_countable_income:
+    # - ny_ccap_family_assistance, the ny_tanf grant the family takes up.
+    #   The New York grant avoids other states' dependent care deductions in
+    #   the federal TANF aggregate, which reach CCAP through child care
+    #   subsidies.
+    # - ssi and ny_ssp under 404.5(b)(5)(vi). From October 1, 2023, OCFS
+    #   excludes both payments for children in the unit under
+    #   404.5(b)(6)(xxi); see child_ssi_exclusion_in_effect.
     #
     # Excluded sources, so simply not listed:
     # - capital_gains, excluded by 404.5(b)(6)(viii), and proceeds from the
@@ -53,17 +59,6 @@ values:
     #   and 404.5(b)(5) is a closed enumeration.
     # - gi_cash_assistance, illicit_income and miscellaneous_income, none of
     #   which appear in the 404.5(b)(5) enumeration.
-    # - tanf and other public assistance. These are countable under
-    #   404.5(b)(5)(vi), but counting them closes a circular dependency:
-    #   ny_ccap_countable_income -> tanf -> childcare_expenses ->
-    #   child_care_subsidies -> ny_ccap -> ny_ccap_countable_income. The same
-    #   hazard is documented in
-    #   gov/states/in/fssa/ccdf/income/sources.yaml. Omitting them understates
-    #   countable income for public-assistance households, which is partly
-    #   offset because 415.3(e)(1) exempts those households from the family
-    #   share entirely.
-    # - state supplementary payments to SSI recipients, countable under
-    #   404.5(b)(5)(vi). PolicyEngine has no state supplement variable.
 
 metadata:
   unit: list
