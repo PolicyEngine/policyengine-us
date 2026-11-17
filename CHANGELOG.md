@@ -1,3 +1,14 @@
+## [2.144.0] - 2026-11-17
+
+### Added
+
+- Counted Family Assistance, Safety Net Assistance payments and adult state SSI supplements in New York child care assistance income, and waived the family share for families that take up Family Assistance.
+
+### Fixed
+
+- Counted New York children's SSI and state supplements in child care assistance income before October 1, 2023, when OCFS began excluding them.
+
+
 ## [2.143.0] - 2026-11-17
 
 ### Added
