@@ -1,3 +1,10 @@
+## [2.143.0] - 2026-11-17
+
+### Added
+
+- Add an `itin_or_matin_eligible` switch to the Massachusetts Commonwealth Credit reform, which counts qualifying children without a Social Security number, as the Child and Family Tax Credit does.
+
+
 ## [2.142.2] - 2026-11-17
 
 ### Fixed
