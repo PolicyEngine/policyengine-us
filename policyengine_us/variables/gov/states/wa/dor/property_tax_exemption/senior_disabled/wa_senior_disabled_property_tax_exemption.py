@@ -1,6 +1,29 @@
 from policyengine_us.model_api import *
 
 
+def regular_exempt_assessed_value(assessed_value, tier, benefit):
+    # RCW 84.36.381(5)(b) sets a floor and percentage for tiers 1 and 2,
+    # and an additional valuation cap for tier 2.
+    tier_1_exempt_value = min_(
+        max_(
+            benefit.tier_1.dollar_floor,
+            assessed_value * benefit.tier_1.valuation_pct,
+        ),
+        assessed_value,
+    )
+    tier_2_exempt_value = min_(
+        min_(
+            max_(
+                benefit.tier_2.dollar_floor,
+                assessed_value * benefit.tier_2.valuation_pct,
+            ),
+            benefit.tier_2.valuation_cap,
+        ),
+        assessed_value,
+    )
+    return select([tier == 1, tier == 2], [tier_1_exempt_value, tier_2_exempt_value])
+
+
 class wa_senior_disabled_property_tax_exemption(Variable):
     value_type = float
     entity = TaxUnit
@@ -35,35 +58,10 @@ class wa_senior_disabled_property_tax_exemption(Variable):
             regular_taxes / max_(assessed_value, 1),
             0,
         )
-        # RCW 84.36.381(5)(b)(i): tier 2 exempts regular taxes on the greater
-        # of dollar_floor or valuation_pct of valuation, capped at valuation_cap.
-        tier_2_exempt_value = min_(
-            min_(
-                max_(
-                    p.tier_2.dollar_floor,
-                    assessed_value * p.tier_2.valuation_pct,
-                ),
-                p.tier_2.valuation_cap,
-            ),
-            assessed_value,
-        )
-        tier_2_extra = tier_2_exempt_value * regular_rate
-        # RCW 84.36.381(5)(b)(ii): tier 1 exempts regular taxes on the greater
-        # of dollar_floor or valuation_pct of valuation, with no upper cap.
-        tier_1_exempt_value = min_(
-            max_(
-                p.tier_1.dollar_floor,
-                assessed_value * p.tier_1.valuation_pct,
-            ),
-            assessed_value,
-        )
-        tier_1_extra = tier_1_exempt_value * regular_rate
+        exempt_value = regular_exempt_assessed_value(assessed_value, tier, p)
+        tier_1_or_2 = (tier == 1) | (tier == 2)
         return select(
-            [tier == 1, tier == 2, tier == 3],
-            [
-                full_exempt + tier_1_extra,
-                full_exempt + tier_2_extra,
-                full_exempt,
-            ],
+            [tier_1_or_2, tier == 3],
+            [full_exempt + exempt_value * regular_rate, full_exempt],
             default=0,
         )

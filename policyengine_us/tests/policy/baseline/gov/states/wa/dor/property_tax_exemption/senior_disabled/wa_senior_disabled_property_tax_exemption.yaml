@@ -492,3 +492,19 @@
     # exemption = tier_3_exempt_share * real_estate_taxes
     #           = 0.45 * 5,000 = 2,250
     wa_senior_disabled_property_tax_exemption: 2_250
+
+- name: Case 19, a 2025 caller using the original inputs keeps the legacy bill estimate.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    county: KING_COUNTY_WA
+    age: 62
+    real_estate_taxes: 2_000
+    assessed_property_value: 200_000
+    wa_pte_combined_disposable_income: 60_000
+  output:
+    wa_pte_tier: 1
+    # The existing approximation exempts 30% of the bill, plus 60% of
+    # the 70% regular share. It uses the original input fields.
+    wa_senior_disabled_property_tax_exemption: 1_440
