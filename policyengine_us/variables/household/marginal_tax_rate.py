@@ -14,7 +14,8 @@ class marginal_tax_rate(Variable):
         " changes federal employer payroll taxes, an added dollar of pay"
         " becomes the wages its baseline cost to the employer buys"
         " (employer_payroll_tax_fixed_employer_cost_change), so the rate is"
-        " per dollar of baseline employer cost rather than per dollar of wages."
+        " per dollar of pay before the employer payroll tax wage adjustment"
+        " rather than per dollar of the wages it becomes."
     )
     entity = Person
     definition_period = YEAR

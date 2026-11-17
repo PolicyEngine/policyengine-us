@@ -23,9 +23,11 @@ continuous, piecewise linear and increasing in payroll wages w, so:
 5. No reform, no change: zero in a simulation without a reform, for anyone
    without payroll wages, and under a scenario that only extends current law
    (the Trustees' economic assumptions move the taxable maximum in both the
-   baseline cost and the reform). The schedules the formula compares stay
-   equal under employee-side reforms and before a reform starts, and differ
-   when the FICA pre-tax list or its abolition changes payroll wages.
+   baseline cost and the reform). The tax components the formula compares
+   stay equal under employee-side reforms and before a reform starts. The
+   payroll wage exclusions it compares are each simulation's own
+   fica_pre_tax_contributions, so a supplied total counts in both, and
+   neutralizing or abolishing it moves pay with the components unchanged.
 6. Marginal wedge: in a branch that raises earnings, wages rise by
    (1 + m_b) / (1 + m_r) per dollar, where m is the federal employer rate at
    the margin, so marginal tax rates measured in a reform carry the employer
@@ -72,7 +74,6 @@ from policyengine_us.variables.gov.simulation.employer_payroll_tax_incidence.emp
     federal_employer_payroll_tax_components,
     fixed_employer_cost_wage_change,
     payroll_wage_rule,
-    schedules_match,
     wages_at_employer_cost,
 )
 from policyengine_us.variables.household.marginal_tax_rate_helpers import (
@@ -342,16 +343,19 @@ def test_current_law_cap_copy_matches_the_cap(year):
 
 
 def test_schedules_differ_only_when_the_employer_cost_does():
-    """The zero shortcut in the formula compares what sets employer cost.
+    """The zero shortcut in the formula compares the employer tax components.
 
     In 2026 the reform edits only the owners' draw copy of the current-law
     cap, which is not the copy the baseline cost reads. From 2027, employee
     Social Security and Medicare rates, the Additional Medicare Tax and the
-    employee share change; none is an employer tax, so the schedules stay
-    equal.
-    Dropping premiums from the FICA pre-tax list (2028 only) or abolishing
-    that list (2029 only) changes payroll wages without moving a rate or a
-    base; raising the employer Medicare rate (from 2030) changes a rate.
+    employee share change; none is an employer tax, so the components stay
+    equal. Dropping premiums from the FICA pre-tax list (2028 only) or
+    abolishing the total (2029 only) changes payroll wages without moving a
+    rate or a base, so the components match and the payroll wage rule stays
+    the default: the formula sees these changes in each simulation's
+    exclusions instead (test_abolitions_and_deduction_lists_hold_the_outlay,
+    test_removing_the_fica_total_lowers_pay). Raising the employer Medicare
+    rate (from 2030) changes a component.
     """
     later = "2027-01-01.2100-12-31"
     current_list = system.parameters(
@@ -382,22 +386,13 @@ def test_schedules_differ_only_when_the_employer_cost_does():
     )
     reformed = reform(system)
     states = np.array(["TX", "CA"])
-    # Year: (same payroll wage definition, same tax components).
-    expected = {
-        2026: (True, True),
-        2027: (True, True),
-        2028: (False, True),
-        2029: (False, True),
-        2030: (True, False),
-    }
-    for year, (same_definition, same_components) in expected.items():
+    # Year: whether the tax components match.
+    expected = {2026: True, 2027: True, 2028: True, 2029: True, 2030: False}
+    for year, same_components in expected.items():
         baseline, policy = employer_cost_schedules(system, reformed, year, states)
-        assert (baseline.wage_definition == policy.wage_definition) is same_definition
+        assert baseline.wage_rule == policy.wage_rule == DEFAULT_WAGE_RULE
         assert (
             components_match(baseline.components, policy.components) is same_components
-        )
-        assert schedules_match(baseline, policy) is (
-            same_definition and same_components
         )
 
 
@@ -710,12 +705,130 @@ def test_abolitions_and_deduction_lists_hold_the_outlay():
         gc.collect()
 
 
+EMPLOYER_TAXES = (
+    "employer_social_security_tax",
+    "employer_medicare_tax",
+    "employer_federal_unemployment_tax",
+)
+
+
+def simulated_outlay(simulation, year):
+    """Pay plus federal employer tax, as ``simulation`` calculates them.
+
+    A reform simulation without a labor supply response starts its change
+    from the pay its baseline has, so the baseline's own value of this is the
+    outlay the change holds.
+    """
+    return sum(
+        simulation.calculate(variable, year).astype(np.float64)
+        for variable in ("employment_income", *EMPLOYER_TAXES)
+    )
+
+
+def test_a_supplied_fica_total_sets_payroll_wages():
+    """Payroll wages leave out fica_pre_tax_contributions as supplied.
+
+    The first worker supplies a $6,000 total. A situation that supplies the
+    total for one person supplies it for everyone, so the second worker's is
+    zero. With employer Medicare at 11.45%, the first keeps the $64,173
+    baseline outlay ($54,000 of payroll wages) at pay of
+    (64,173 - 42 + 0.1765 * 6,000) / 1.1765 = $55,410.11, and the second
+    keeps $64,632 at (64,632 - 42) / 1.1765 = $54,900.13.
+    """
+    states = ["TX"] * 2
+    people = [
+        {"employment_income": 60_000, "fica_pre_tax_contributions": 6_000},
+        {"employment_income": 60_000},
+    ]
+    reform = Reform.from_dict(
+        {f"{PAYROLL}.medicare.rate.employer": {DATES: 0.1145}}, country_id="us"
+    )
+    simulation = Simulation(
+        situation=small_situation(YEAR, people, states), reform=reform
+    )
+    try:
+        baseline_outlay = simulated_outlay(simulation.baseline, YEAR)
+        np.testing.assert_allclose(baseline_outlay, [64_173, 64_632])
+        np.testing.assert_allclose(
+            simulation.calculate("employment_income", YEAR),
+            [55_410.11, 54_900.13],
+            atol=0.02,
+        )
+        np.testing.assert_allclose(
+            simulated_outlay(simulation, YEAR), baseline_outlay, rtol=1e-6, atol=0.05
+        )
+    finally:
+        del simulation
+        gc.collect()
+
+
+class NeutralizeFicaTotal(Reform):
+    def apply(self):
+        self.neutralize_variable("fica_pre_tax_contributions")
+
+
+@pytest.mark.parametrize("removal", ["neutralized", "abolished"])
+def test_removing_the_fica_total_lowers_pay(removal):
+    """No FICA pre-tax deductions, with every employer rate and base unchanged.
+
+    Neutralizing fica_pre_tax_contributions (a structural reform) or
+    abolishing it leaves the tax components equal, so only the exclusions
+    show the employer's cost changed. The premium payer's payroll wages
+    become all of pay, which falls from $60,000 to keep the $64,173 outlay:
+    (64,173 - 42) / 1.0765 = $59,573.62. The other worker's pay stays.
+    """
+    states = ["TX", "TX"]
+    people = [
+        {"employment_income": 60_000, "pre_tax_health_insurance_premiums": 6_000},
+        {"employment_income": 60_000},
+    ]
+    if removal == "neutralized":
+        reform = NeutralizeFicaTotal
+    else:
+        reform = Reform.from_dict(
+            {"gov.abolitions.fica_pre_tax_contributions": {DATES: True}},
+            country_id="us",
+        )
+    simulation = Simulation(
+        situation=small_situation(YEAR, people, states), reform=reform
+    )
+    try:
+        baseline, policy = employer_cost_schedules(
+            simulation.baseline.tax_benefit_system,
+            simulation.tax_benefit_system,
+            YEAR,
+            np.array(states),
+        )
+        assert components_match(baseline.components, policy.components)
+        np.testing.assert_array_equal(
+            simulation.baseline.calculate("fica_pre_tax_contributions", YEAR),
+            [6_000, 0],
+        )
+        np.testing.assert_array_equal(
+            simulation.calculate("fica_pre_tax_contributions", YEAR), [0, 0]
+        )
+        np.testing.assert_allclose(
+            simulation.calculate("employment_income", YEAR),
+            [59_573.62, 60_000],
+            atol=0.02,
+        )
+        np.testing.assert_allclose(
+            simulated_outlay(simulation, YEAR),
+            simulated_outlay(simulation.baseline, YEAR),
+            rtol=1e-6,
+            atol=0.05,
+        )
+    finally:
+        del simulation
+        gc.collect()
+
+
 def test_exempting_tips_from_payroll_tax_raises_tipped_pay():
     """With rates unchanged, exempt tips save the employer its tax on them.
 
-    The schedules match, so the change comes from the payroll wage definition
-    alone: tipped workers' pay rises by the employer's saving, and others'
-    does not move.
+    The tax components match, so the change comes from the payroll wage
+    exclusions alone: tipped workers' pay rises by the employer's saving, and
+    others' does not move.
     """
     states = ["TX", "TX", "CA"]
     people = [
