@@ -1,0 +1,1 @@
+Leave out of the self-employed health insurance deduction the premiums of a person who, or whose spouse on a joint return, is eligible for a subsidized employer health plan (26 U.S.C. 162(l)(2)(B), Form 7206 line 1).
