@@ -1,6 +1,7 @@
-description: South Dakota has a sourced hourly Child Care Assistance reimbursement schedule for periods when this indicator applies.
+description: The model uses this indicator to enable hourly South Dakota Child Care Assistance payment calculations.
 
-# The model pays no hourly benefit before the earliest sourced schedule.
+# Historical hourly ceilings start in July 2020. Payment calculations start
+# in July 2024 and use the modeled authorized-hours rules.
 values:
   2015-01-01: false
   2024-07-01: true

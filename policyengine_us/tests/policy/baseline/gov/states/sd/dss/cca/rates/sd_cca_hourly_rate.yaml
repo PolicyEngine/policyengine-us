@@ -1,4 +1,4 @@
-# DSS published these maximum hourly rates effective July 1, 2024.
+# DSS published the 2024 maximum hourly rates effective July 1.
 # The family sheet computes $3.80 * 1.25 = $4.75 for a qualifying infant.
 # DSS caps ordinary approved special needs care at $6.80 per hour.
 # Each case establishes an approved activity; the formulas determine eligibility.
@@ -514,3 +514,125 @@
         county_str: MINNEHAHA_COUNTY_SD
   output:
     sd_cca_hourly_rate: 0
+
+- name: The Minnehaha center infant ceiling starts with the July 2020 chart.
+  period: 2020
+  absolute_error_margin: 0.0001
+  input:
+    age: 2
+    state_code: SD
+    county_str: MINNEHAHA_COUNTY_SD
+    meets_ccdf_activity_test: true
+  output:
+    sd_cca_hourly_rate:
+      2020-06: 0
+      2020-07: 4.2
+
+- name: The Minnehaha center infant ceiling changes in July 2022.
+  period: 2022
+  absolute_error_margin: 0.0001
+  input:
+    age: 2
+    state_code: SD
+    county_str: MINNEHAHA_COUNTY_SD
+    meets_ccdf_activity_test: true
+  output:
+    sd_cca_hourly_rate:
+      2022-06: 4.2
+      2022-07: 4.9
+
+- name: The Minnehaha center infant ceiling changes in July 2024.
+  period: 2024
+  absolute_error_margin: 0.0001
+  input:
+    age: 2
+    state_code: SD
+    county_str: MINNEHAHA_COUNTY_SD
+    meets_ccdf_activity_test: true
+  output:
+    sd_cca_hourly_rate:
+      2024-06: 4.9
+      2024-07: 6
+
+- name: DSS applies the published July 2020 provider ceilings in Pennington County.
+  period: 2020-07
+  absolute_error_margin: 0.0001
+  input:
+    age:
+      2020: [2, 2, 7, 4, 4]
+    state_code:
+      2020: [SD, SD, SD, SD, SD]
+    county_str:
+      2020:
+        - PENNINGTON_COUNTY_SD
+        - PENNINGTON_COUNTY_SD
+        - PENNINGTON_COUNTY_SD
+        - PENNINGTON_COUNTY_SD
+        - PENNINGTON_COUNTY_SD
+    meets_ccdf_activity_test:
+      2020: [true, true, true, true, true]
+    sd_cca_provider_type:
+      - FAMILY_DAY_CARE
+      - LICENSED_CENTER
+      - BEFORE_AFTER_SCHOOL
+      - INFORMAL
+      - INFORMAL
+    sd_cca_specialized_infant_toddler_rate_eligible: [true, false, false, false, false]
+    sd_cca_special_needs_rate_approved: [false, false, false, false, true]
+  output:
+    # The 2020 family chart shows $3 × 1.25 = $3.75 for a
+    # qualifying infant. The state plan sets the $5.15 approved ceiling.
+    sd_cca_hourly_rate: [3.75, 3.95, 3.7, 1.9, 5.15]
+
+- name: DSS applies the published July 2022 provider and age ceilings in Minnehaha County.
+  period: 2022-07
+  absolute_error_margin: 0.0001
+  input:
+    age:
+      2022: [2, 3, 6, 2, 3, 7, 4, 4]
+    state_code:
+      2022: [SD, SD, SD, SD, SD, SD, SD, SD]
+    county_str:
+      2022:
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+    meets_ccdf_activity_test:
+      2022: [true, true, true, true, true, true, true, true]
+    sd_cca_provider_type:
+      - LICENSED_CENTER
+      - LICENSED_CENTER
+      - LICENSED_CENTER
+      - FAMILY_DAY_CARE
+      - FAMILY_DAY_CARE
+      - BEFORE_AFTER_SCHOOL
+      - INFORMAL
+      - INFORMAL
+    sd_cca_specialized_infant_toddler_rate_eligible: [false, false, false, true, true, false, false, false]
+    sd_cca_special_needs_rate_approved: [false, false, false, false, false, false, false, true]
+  output:
+    # The family chart's stated 25% increase gives $4 from the $3.20 base.
+    # The updated state plan sets the $5.80 approved special-needs ceiling.
+    sd_cca_hourly_rate: [4.9, 4.3, 4.2, 4, 3.1, 4.6, 2.1, 5.8]
+
+- name: The model uses the historical age-band minimum when it cannot match the county.
+  period: 2022-07
+  absolute_error_margin: 0.0001
+  input:
+    age:
+      2022: 3
+    state_code:
+      2022: SD
+    county_str:
+      2022: NOT_A_COUNTY
+    meets_ccdf_activity_test:
+      2022: true
+    sd_cca_provider_type: FAMILY_DAY_CARE
+  output:
+    # Brown and several other counties publish this minimum for ages 3–5.
+    sd_cca_hourly_rate: 2.65

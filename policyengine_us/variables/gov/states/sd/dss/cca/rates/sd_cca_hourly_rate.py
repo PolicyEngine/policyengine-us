@@ -9,7 +9,7 @@ class sd_cca_hourly_rate(Variable):
     entity = Person
     unit = USD
     label = "South Dakota CCA hourly maximum reimbursement rate per child"
-    documentation = "Computes the hourly ceiling from the July 2024 county rate sheets, including approved special-needs care and qualified specialized infant and toddler care."
+    documentation = "Computes the hourly ceiling from the county rate schedules effective July 2020, July 2022, and July 2024, including approved special-needs care and specialized infant and toddler care."
     definition_period = MONTH
     defined_for = "sd_cca_eligible_child"
     reference = (
@@ -17,9 +17,11 @@ class sd_cca_hourly_rate(Variable):
         "https://dss.sd.gov/docs/childcare/assistance/Reimbursement_Rates/Center_Care.pdf",
         "https://dss.sd.gov/docs/childcare/assistance/Reimbursement_Rates/Before_After_School_Programs.pdf",
         "https://dss.sd.gov/docs/childcare/assistance/Reimbursement_Rates/Relative_In-Home_and_Informal_Care.pdf",
+        "https://web.archive.org/web/20200728230558id_/https://dss.sd.gov/docs/childcare/assistance/Group_Family_Center_Care_Chart.pdf#page=1",
+        "https://web.archive.org/web/20220727091434id_/https://dss.sd.gov/docs/childcare/assistance/Group_Family_Center_Care_Chart.pdf#page=1",
     )
 
-    def formula_2024_07_01(person, period, parameters):
+    def formula_2020_07_01(person, period, parameters):
         p = parameters(period).gov.states.sd.dss.cca.rates.hourly
         county = person.household("county_str", period.this_year)
         county = where(np.isin(county, p.counties), county, "UNKNOWN")
@@ -42,6 +44,8 @@ class sd_cca_hourly_rate(Variable):
             p.specialized_infant_toddler_multiplier,
             1,
         )
+        # The 2020 and 2022 charts share this schedule across group family
+        # child care and centers.
         center_rate = p.licensed_center[county][age_group]
         base_rate = select(
             [
