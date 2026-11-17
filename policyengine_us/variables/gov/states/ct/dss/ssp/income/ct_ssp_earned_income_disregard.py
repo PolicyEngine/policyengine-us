@@ -20,7 +20,7 @@ class ct_ssp_earned_income_disregard(Variable):
             period,
             [
                 "ssi_earned_income",
-                "ssi_earned_income_deemed_from_ineligible_spouse",
+                "ssi_earned_income_deemed_from_ineligible_spouse_monthly",
             ],
         )
         is_blind = person("is_blind", period.this_year)

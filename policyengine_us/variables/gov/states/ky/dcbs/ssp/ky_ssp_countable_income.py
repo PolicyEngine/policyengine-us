@@ -28,8 +28,10 @@ class ky_ssp_countable_income(Variable):
         )
         unearned = (
             person("ssi_marital_unearned_income", period)
-            + person("ssi_unearned_income_deemed_from_ineligible_parent", period)
-            + person("ssi_in_kind_support_and_maintenance", period)
+            + person(
+                "ssi_unearned_income_deemed_from_ineligible_parent_monthly", period
+            )
+            + person("ssi_in_kind_support_and_maintenance_monthly", period)
         )
         p = parameters(period).gov.ssa.ssi.income.exclusions
         countable_earned = max_(earned - p.earned, 0) * (1 - p.earned_share)

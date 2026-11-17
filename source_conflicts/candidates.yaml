@@ -16430,30 +16430,57 @@ candidates:
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:
-    from: 2026
-    to: 2026
+    from: 1987
     type: calendar
   question: Does the regulation's ineligible-child definition include the claimant's siblings in spouse-to-spouse
     deeming, or does POMS limit it to the couple's children?
   sources:
   - kind: regulation
     citation: 20 CFR 416.1160(d)
-    url: null
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)
+  - kind: regulation
+    citation: 20 CFR 416.1163(b)
+    url: https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)
+  - kind: regulation
+    citation: 20 CFR 416.1160(c)(2)
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(c)(2)
+  - kind: regulation
+    citation: 20 CFR 416.1101
+    url: https://www.ecfr.gov/current/title-20/section-416.1101
+  - kind: regulation
+    citation: 20 CFR 416.1132(a)
+    url: https://www.ecfr.gov/current/title-20/section-416.1132#p-416.1132(a)
+  - kind: rulemaking
+    citation: 52 FR 8883 (March 20, 1987)
+    url: https://www.govinfo.gov/content/pkg/FR-1987-03-20/pdf/FR-1987-03-20.pdf
   - kind: manual
-    citation: POMS SI 01310.115 A.3; POMS SI 01310.140 A
+    citation: POMS SI 01310.115 A.3
     url: https://secure.ssa.gov/poms.nsf/lnx/0501310115
+  - kind: manual
+    citation: POMS SI 01310.140 A
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501310140
   readings:
-    statute: The full regulatory definition would include the claimant's own siblings.
-    other: POMS limits spouse-to-spouse deeming to the children of either member of the couple.
+    statute: 416.1160(d) defines an ineligible child to include the natural or adopted child of the claimant's parent
+      or of that parent's spouse, and 416.1160(c)(2) and 416.1163(b) apply that definition in spouse-to-spouse deeming,
+      so the claimant's co-resident siblings and step-siblings receive allocations whether or not the parent lives there.
+    other: POMS SI 01310.140 A forms the spouse-to-spouse deeming household from the couple and the children of either
+      member, so only those children receive allocations.
+  example: In 2026 a claimant with no income, whose spouse has $1,000 of monthly unearned income and whose 15-year-old
+    brother lives with them, gets $994 a month of SSI with the brother's $497 allocation and $511 without it.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_spousal_deeming_child_allocations.py
     - policyengine_us/variables/gov/ssa/ssi/eligibility/status/is_ssi_ineligible_child.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10146
-  state: unreviewed
-  note: 'The open PR follows POMS rather than the broader regulatory reading; no statutory comparison or specific
-    ruling is supplied. Code not yet on main: ssi_spousal_deeming_child_allocations, ssi_ineligible_child_allocation.'
+  state: ruled
+  note: Follows the regulation. 416.1160(d) defines an ineligible child once for all deeming, 416.1160(c)(2) applies it
+    to spouse deemors, "you" is the claimant (416.1101), and a household is a place of residence (416.1132(a)). The
+    claimant's co-resident siblings, half-siblings and step-siblings get allocations; the spouse's siblings do not.
+    POMS SI 01310.140 A lists only the couple's children and is not followed. The code finds a sibling through a parent
+    id the claimant and the child share, and a step-sibling when the claimant's parent and that parent's spouse both
+    live in the household. It applies this scope in every year; the 1987 final rule is the earliest text checked.
 - id: us:standard-plan-minimum-consolidated
   program: student-loans
   years:
@@ -16952,6 +16979,50 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
+- id: us:medicaid-parental-child-allocation-ssi-floor
+  program: medicaid
+  years:
+    from: 2015
+    type: calendar
+  question: May a non-209(b) state exclude a child from optional aged, blind or disabled Medicaid parental allocations when SSI includes the child?
+  sources:
+  - kind: statute
+    citation: 42 USC 1396a(r)(2)(A)-(B)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXIX-sec1396a.htm
+  - kind: regulation
+    citation: 42 CFR 435.601(d)(2)-(3)
+    url: https://www.ecfr.gov/current/title-42/section-435.601#p-435.601(d)(2)
+  - kind: manual
+    citation: New York Medicaid Reference Guide, Allocation, printed page 233
+    url: https://healthweb-back.health.ny.gov/health_care/medicaid/reference/mrg/income.pdf#page=136
+  - kind: manual
+    citation: Wisconsin Medicaid Eligibility Handbook 15.1.2
+    url: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm
+  - kind: manual
+    citation: POMS SI 01715.020
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501715020
+  - kind: regulation
+    citation: 42 CFR 435.602(b)
+    url: https://www.ecfr.gov/current/title-42/section-435.602#p-435.602(b)
+  - kind: regulation
+    citation: 20 CFR 416.1160(d) and 416.1856
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)
+  - kind: guidance
+    citation: CMS State Medicaid Manual 3240.4
+    url: https://www.cms.gov/regulations-and-guidance/guidance/manuals/downloads/p45_03.zip
+  readings:
+    statute: Non-209(b) states allocate for every child SSI does, because a narrower child definition removes allocations and so makes ineligible some people whom SSI's method finds eligible, a more restrictive methodology that 42 USC 1396a(r)(2) and 42 CFR 435.601(d)(2)-(3) bar.
+    other: State child definitions exclusively govern allocations, including New York's under-18 limit and Wisconsin's minor or dependent-18 limit and nonblind, nondisabled requirement.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/deemed/from_ineligible_parent/medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent_monthly.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/deeming/ineligible_child_age_limit.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/deeming/ineligible_child_requires_nonblind_nondisabled.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10146
+  state: ruled
+  note: Follows the statute. A child definition narrower than SSI's removes allocations and so makes ineligible some people whom SSI's method finds eligible, which 42 USC 1396a(r)(2)(B) and 42 CFR 435.601(d)(3) bar outside 209(b) states. So the model does not apply New York's or Wisconsin's narrower manual definitions, and it can show eligibility those manuals would deny. Missouri (children under 18) and Virginia (children under 21 who are not blind or disabled), which POMS SI 01715.020 lists as 209(b) states, keep their manual child definitions under 42 USC 1396a(f). Their January 1, 1972 state plans are unchecked.
 - id: us-ut:medicaid-parent-standard-2018-cms-table
   program: medicaid
   years:

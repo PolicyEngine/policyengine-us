@@ -32,19 +32,21 @@ class ssi_income_deemed_from_ineligible_spouse_monthly(Variable):
         if supplied is not None:
             return supplied / MONTHS_IN_YEAR
 
-        deeming_applies = person("is_ssi_spousal_deeming_applies", period.this_year)
+        # Each month takes its own deeming status and the spouse's income
+        # that remains after that month's allocations for ineligible children.
+        deeming_applies = person("is_ssi_spousal_deeming_applies_monthly", period)
         spouse_earned = person(
-            "ssi_earned_income_deemed_from_ineligible_spouse", period
+            "ssi_earned_income_deemed_from_ineligible_spouse_monthly", period
         )
         spouse_unearned = person(
-            "ssi_unearned_income_deemed_from_ineligible_spouse", period
+            "ssi_unearned_income_deemed_from_ineligible_spouse_monthly", period
         )
         individual_earned = person("ssi_earned_income", period)
         # SSA counts claimant ISM in combined unearned income under
         # SI 01320.150 B.1.a. Include it in both budgets so their difference
         # adds no second general exclusion when ssi_countable_income counts ISM.
         individual_unearned = person("ssi_unearned_income", period) + person(
-            "ssi_in_kind_support_and_maintenance", period
+            "ssi_in_kind_support_and_maintenance_monthly", period
         )
         alone_countable = _apply_ssi_exclusions_monthly(
             individual_earned, individual_unearned, parameters, period
