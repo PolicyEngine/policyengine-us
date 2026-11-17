@@ -1,0 +1,23 @@
+# Independent source expectations: Wis. Stat.71.07(6e), 2025 Form1 instructions pp13,27-30.
+# Evidence and approved SHAREDv3 ten-input/six-output contract: wi/independent-test-design.md and scope-approved.md.
+
+# Statute(c)2 and Form1 pp18/27 apply family-wide for the same taxable year.
+# Unknown own dollars/status do not erase an independently valid spouse claim. Contradictory record is unavailable, not priority-adjudicated.
+- name: Case 1, own active election or a valid counterpart claim blocks alternatives without an amount gate.
+  period: 2025
+  input:
+    state_code: [WI, WI, WI, WI, WI, WI, WI]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [0, -1, 3_000, 3_000, -1, 3_000, 3_000]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, NOT_ELIGIBLE, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_elected: [true, true, false, false, true, true, true]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false, false, false, false, true]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, NOT_CLAIMED, VALID_CLAIM, VALID_CLAIM, VALID_CLAIM, VALID_CLAIM]
+    wi_veterans_property_tax_credit_facts_available: [true, true, true, true, false, true, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false, false, false, false, false]
+    age: [35, 35, 35, 35, 35, 35, 35]
+    filing_status: [SINGLE, SINGLE, SINGLE, SEPARATE, SEPARATE, SEPARATE, SEPARATE]
+  output:
+    wi_veterans_property_tax_credit_incompatible_credits_disallowed: [true, true, false, true, true, true, false]

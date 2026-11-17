@@ -203,6 +203,8 @@ PROPERTY_TAX_CREDITS_IN_INCOME_TAX = {
     "refundable.yaml",
     "wi_property_tax_credit": "parameters/gov/states/wi/tax/income/credits/"
     "non_refundable.yaml",
+    "wi_veterans_property_tax_credit": "parameters/gov/states/wi/tax/income/credits/"
+    "refundable.yaml",
     "wv_homestead_excess_property_tax_credit": "parameters/gov/states/wv/tax/"
     "income/credits/refundable.yaml",
 }

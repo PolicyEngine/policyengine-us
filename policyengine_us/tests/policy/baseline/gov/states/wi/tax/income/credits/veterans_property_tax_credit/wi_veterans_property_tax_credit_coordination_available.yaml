@@ -1,0 +1,22 @@
+# Independent source expectations: Wis. Stat.71.07(6e), 2025 Form1 instructions pp13,27-30.
+# Evidence and approved SHAREDv3 ten-input/six-output contract: wi/independent-test-design.md and scope-approved.md.
+
+# Rows: missing own facts; own no claim+known no counterpart claim; unknown counterpart; own active claim proves prohibition; valid counterpart alone; contradiction.
+- name: Case 1, proof of a prohibition differs from verified absence and missing counterpart facts.
+  period: 2025
+  input:
+    state_code: [WI, WI, WI, WI, WI, WI]
+    wi_veterans_property_tax_credit_qualified_property_taxes: [3_000, 3_000, 3_000, 3_000, -1, 3_000]
+    wi_veterans_property_tax_credit_claimant_type: [ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN, ELIGIBLE_VETERAN]
+    wi_veterans_property_tax_credit_wdva_verified: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_property_qualified: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_claim_permitted: [true, true, true, true, true, true]
+    wi_veterans_property_tax_credit_elected: [true, false, false, true, true, true]
+    wi_veterans_property_tax_credit_incompatible_credit_claimed: [false, false, false, false, false, true]
+    wi_veterans_property_tax_credit_spouse_claim_status: [NOT_CLAIMED, NOT_CLAIMED, UNKNOWN, UNKNOWN, VALID_CLAIM, VALID_CLAIM]
+    wi_veterans_property_tax_credit_facts_available: [false, true, true, true, false, true]
+    wi_veterans_property_tax_credit_retirement_income_exclusion_claimed: [false, false, false, false, false, false]
+    age: [35, 35, 35, 35, 35, 35]
+    filing_status: [SINGLE, SINGLE, SEPARATE, SEPARATE, SEPARATE, SEPARATE]
+  output:
+    wi_veterans_property_tax_credit_coordination_available: [false, true, false, true, true, false]
