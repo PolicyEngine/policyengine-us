@@ -43,8 +43,9 @@ from policyengine_core.parameters.operations.get_parameter import get_parameter
 from policyengine_core.parameters.operations.uprate_parameters import project_from_base
 
 from policyengine_us.parameters.uprating_extensions import (
-    get_average_for_12_months_ending_august,
+    get_cpi_u_average_for_12_months_ending_august,
     get_irs_cola,
+    get_irs_cpi,
 )
 from policyengine_us.system import system
 
@@ -462,11 +463,11 @@ def test_joint_standard_deduction_is_twice_the_single_amount_in_every_year():
 
 
 # Back-test: the printed amounts against the statute's formula, on the
-# model's price series and the statute's own window (the C-CPI-U averaged
-# over the 12 months ending August 31, 1(f)(4) and (6)), not
-# gov.irs.uprating, whose window ends in July (#9105). A year whose window
-# the series does not fully observe is skipped: the window helper carries
-# the last observation flat, which the IRS never does.
+# model's price series and the statute's window (the C-CPI-U averaged over
+# the 12 months ending August 31, 1(f)(4) and (6)). A year whose window the
+# series does not fully observe is skipped: the window helper gives a month
+# with no observation the last value published before it, which the IRS
+# never does.
 
 CHAINED = PARAMETERS.gov.bls.cpi.c_cpi_u
 CHAINED_MONTHS = {value.instant_str for value in CHAINED.values_list}
@@ -489,7 +490,7 @@ def _window_observed(year):
 
 def test_back_test_skips_only_the_unobserved_windows():
     """2026 reads Sep 2024-Aug 2025, all observed. c_cpi_u.yaml holds no
-    October 2025 value and ends at June 2026, inside the 2027 window."""
+    October 2025 value, a month of the 2027 window."""
     assert all(_window_observed(year) for year in range(2013, 2027))
     assert not _window_observed(2027)
 
@@ -506,8 +507,8 @@ def _statutory_cola(year, base_year):
     """
     if base_year <= 2016:
         return get_irs_cola(PARAMETERS, year, base_year)
-    numerator = get_average_for_12_months_ending_august(CHAINED, year - 1)
-    denominator = get_average_for_12_months_ending_august(CHAINED, base_year)
+    numerator = get_irs_cpi(PARAMETERS, year - 1)
+    denominator = get_irs_cpi(PARAMETERS, base_year)
     return max(numerator / denominator - 1, 0)
 
 
@@ -657,10 +658,9 @@ def test_earned_income_addition_before_tcja_follows_the_cpi_u():
     $250 plus that increase rounded down to $50 in every year, and agree
     with ``base.value`` at the 1998 base period."""
     addition = PARAMETERS.gov.irs.deductions.standard.dependent.additional_earned_income
-    cpi_u = PARAMETERS.gov.bls.cpi.cpi_u
-    base = get_average_for_12_months_ending_august(cpi_u, 1997)
+    base = get_cpi_u_average_for_12_months_ending_august(PARAMETERS, 1997)
     for year in range(1998, 2018):
-        numerator = get_average_for_12_months_ending_august(cpi_u, year - 1)
+        numerator = get_cpi_u_average_for_12_months_ending_august(PARAMETERS, year - 1)
         cola = max(numerator / base - 1, 0)
         assert addition(f"{year}-01-01") == 250 + _down(250 * cola, 50), year
     assert addition("1997-01-01") is None
