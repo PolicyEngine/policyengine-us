@@ -1,1 +1,1 @@
-Exclude Block Island and Clear River electric accounts from Rhode Island's LIHEAP utility enhancement while preserving their federal heating grants.
+Apply Rhode Island LIHEAP enhancement provider exclusions and the $400 FY2027 enhancement.
