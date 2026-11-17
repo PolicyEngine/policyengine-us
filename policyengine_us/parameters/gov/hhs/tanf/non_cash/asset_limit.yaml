@@ -99,6 +99,12 @@ RI: # *
   2015-10-01: .inf
 SC: # *
   2015-10-01: .inf
+TN:
+  2015-10-01: -.inf # Non-BBCE.
+  # Tenn. Comp. R. & Regs. 1240-01-14-.15(2): categorically eligible
+  # "regardless of whether the requirements in chapters 1240-01-03 and/or
+  # 1240-01-04 are met"; 7 CFR 273.2(j)(2) deems the resource test met.
+  2026-04-15: .inf
 TX:
   2015-10-01: 5_000 # Excludes 1 vehicle up to $15,000 & includes excess vehicle value.
 UT:
@@ -124,6 +130,8 @@ metadata:
   unit: currency-USD
   period: year
   reference:
+    - title: Tenn. Comp. R. & Regs. 1240-01-14-.15(2), Expanded Categorical Eligibility (effective April 15, 2026)
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-14.20260415.pdf#page=12
     - title: USDA Broad-based Categorical Eligibility
       href: https://www.fns.usda.gov/snap/broad-based-categorical-eligibility
     - title: USDA ERS SNAP Policy Database (bbce_asset/bbce_a_amt columns, Jan 1996 - Dec 2020)

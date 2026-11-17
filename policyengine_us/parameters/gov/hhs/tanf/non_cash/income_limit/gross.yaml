@@ -123,6 +123,12 @@ SD:
   2015-10-01: -.inf  # Non-BBCE.
 TN:
   2015-10-01: -.inf # Non-BBCE
+  # Tenn. Comp. R. & Regs. 1240-01-14-.15(2), amendments effective April 15,
+  # 2026: "Expanded Categorical Eligibility" for households with a member who
+  # receives or is authorized to receive non-cash or in-kind TANF services,
+  # with "a gross monthly income at or below 200% of the Federal poverty level
+  # and a net monthly income at or below 100% of the Federal poverty level."
+  2026-04-15: 2
 TX:
   2015-10-01: 1.65
 UT:
@@ -155,6 +161,8 @@ metadata:
   period: year
   label: SNAP BBCE gross income limit
   reference:
+    - title: Tenn. Comp. R. & Regs. 1240-01-14-.15(2), Expanded Categorical Eligibility (effective April 15, 2026)
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-14.20260415.pdf#page=12
     - title: USDA Broad-Based Categorical Eligibility (BBCE)
       href: https://www.fns.usda.gov/snap/broad-based-categorical-eligibility
     - title: USDA ERS SNAP Policy Database (bbce_inclmt column, Jan 1996 - Dec 2020)

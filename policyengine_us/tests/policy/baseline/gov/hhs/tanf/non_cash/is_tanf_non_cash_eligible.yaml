@@ -2,3 +2,85 @@
   period: 2022
   output:
     is_tanf_non_cash_eligible: true
+
+# Tennessee adopted expanded categorical eligibility in Tenn. Comp. R. &
+# Regs. 1240-01-14-.15(2), effective April 15, 2026: gross income at or
+# below 200% of the poverty level and net income at or below 100%. The
+# parameter change applies from the first full month, May 2026. Monthly
+# boundaries are asserted by keying the output by month within a
+# whole-year period; annual inputs are spread evenly over the months.
+- name: TN one-person household under 200% gross and 100% net is eligible from May 2026
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    # Keep the member in the SNAP unit whatever the work rules give.
+    is_snap_excluded_member: false
+    state_code: TN
+    snap_gross_test_income: 31_200  # 2,600 a month
+    snap_net_income: 15_600  # 1,300 a month
+  output:
+    tanf_non_cash_gross_income_limit:
+      # 200% x 15,650 / 12 = 2,608.33 through September; 200% x 15,960 / 12
+      # = 2,660 from October.
+      2026-05: 2_608.33
+      2026-10: 2_660
+    meets_tanf_non_cash_gross_income_test:
+      2026-04: false
+      2026-05: true
+    meets_tanf_non_cash_net_income_test:
+      2026-05: true
+    meets_tanf_non_cash_asset_test:
+      2026-04: false
+      2026-05: true
+    is_tanf_non_cash_eligible:
+      2026-01: false
+      2026-04: false
+      2026-05: true
+      2026-12: true
+
+- name: TN household over 200% gross is not eligible
+  period: 2026
+  input:
+    age: 30
+    is_snap_excluded_member: false
+    state_code: TN
+    snap_gross_test_income: 31_440  # 2,620 a month
+    snap_net_income: 15_600
+  output:
+    is_tanf_non_cash_eligible:
+      2026-05: false
+      2026-09: false
+
+- name: TN household over the 100% net standard is not eligible
+  period: 2026
+  input:
+    age: 30
+    is_snap_excluded_member: false
+    state_code: TN
+    snap_gross_test_income: 31_200
+    snap_net_income: 16_800  # 1,400 a month; the net standard for one is 1,305
+  output:
+    meets_tanf_non_cash_gross_income_test:
+      2026-05: true
+    meets_tanf_non_cash_net_income_test:
+      2026-05: false
+    is_tanf_non_cash_eligible:
+      2026-05: false
+
+- name: TN elderly household uses the same 200% standard
+  period: 2026
+  input:
+    age: 70
+    is_snap_excluded_member: false
+    state_code: TN
+    snap_gross_test_income: 31_200
+    snap_net_income: 15_600
+  output:
+    is_tanf_non_cash_hheod:
+      2026-05: true
+    meets_tanf_non_cash_gross_income_test:
+      2026-04: false
+      2026-05: true
+    is_tanf_non_cash_eligible:
+      2026-05: true

@@ -89,6 +89,10 @@ RI:
   2015-10-01: true
 SC:
   2015-10-01: false
+TN:
+  # Tenn. Comp. R. & Regs. 1240-01-14-.15(2)(a): net monthly income at or
+  # below 100% of the Federal poverty level.
+  2026-04-15: true
 TX:
   2015-10-01: false
 VA:
@@ -109,6 +113,8 @@ metadata:
   period: year
   label: SNAP net income limit for non-elderly/disabled BBCE households
   reference:
+    - title: Tenn. Comp. R. & Regs. 1240-01-14-.15(2), Expanded Categorical Eligibility (effective April 15, 2026)
+      href: https://publications.tnsosfiles.com/rules/1240/1240-01/1240-01-14.20260415.pdf#page=12
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_inclmt column, Jan 1996 - Dec 2020)
