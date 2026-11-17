@@ -53,7 +53,7 @@ class fl_oss(Variable):
         provider_rate = person("fl_oss_provider_rate", period)
         # total_needs = recognized cost of care + personal needs allowance.
         total_needs = provider_rate + p.pna
-        countable_income = person("ssi_countable_income", period)
+        countable_income = person("ssi_countable_income_monthly", period)
         max_oss = person("fl_oss_max_oss", period)
         # Deficit (2640.0131.04 Step 2), floored at $0 and capped by the
         # Appendix A-12 Maximum OSS Payment.

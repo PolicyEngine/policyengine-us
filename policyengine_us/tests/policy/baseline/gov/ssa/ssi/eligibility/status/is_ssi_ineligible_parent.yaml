@@ -1105,3 +1105,174 @@
     is_ssi_ineligible_parent: [true, true, false]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
     ssi: [0, 0, 11_928]
+
+# The couple's 19-year-old student earns 2,000 a month. The student exclusion
+# (2,410 a month, 9,730 a year) covers January to April and 1,730 of May, so the
+# allocation is 497 through April, 497 - 270 = 227 in May and 0 from June. The
+# spouse's 520 pension leaves 23, 293 and 520: spousal deeming applies from June,
+# when 520 exceeds 1,491 - 994 = 497, and the monthly budgets deem 520 x 7 = 3,640.
+# Over the year the remaining spouse income, 23 x 4 + 293 + 520 x 7 = 4,025, stays
+# within 497 x 12 = 5,964, so the year's test deems nothing and uses the individual
+# rate: 13,440 - 240 = 13,200 exceeds 994 x 12 = 11,928 and the parent is flagged.
+# December's status alone would test 13,200 against 1,491 x 12 = 17,892 and leave
+# the parent unflagged. Month by month the parent has no SSI: 1,100 exceeds 994
+# through May, and 1,620 exceeds 1,491 from June.
+- name: Case 30, parent whose spouse is deemed only from June is tested on the year's comparison.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 13_440
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 2
+        taxable_pension_income: 6_240
+      person3:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income_before_lsr: 24_000
+      person4:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    is_ssi_spousal_deeming_applies_monthly:
+      2026-05: [false, false, false, false]
+      2026-06: [true, false, false, false]
+      2026-12: [true, false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [3_640, 0, 0, 0]
+    is_ssi_ineligible_parent: [true, true, false, false]
+
+# Vermont, where the couple's at-home supplement (105.80 a month) exceeds the
+# individual's (55.68). The student earns 900 a month, so the exclusion covers
+# January to October and 730 of November: the allocation is 497 through October,
+# 497 - 170 = 327 in November and 0 in December. The spouse's 560 pension leaves
+# 63, 233 and 560, so deeming applies in December alone, and that month's budget
+# deems 560. Over the year the remaining spouse income, 63 x 10 + 233 + 560 =
+# 1,423, stays within 5,964, so the year's test deems nothing and uses the
+# individual rates: 12,848.16 - 240 = 12,608.16 exceeds (994 + 55.68) x 12 =
+# 12,596.16 and the parent is flagged. December's status would raise the limit to
+# 11,928 + 105.80 x 12 = 13,197.60 through the supplement, or to 17,892 + 668.16 =
+# 18,560.16 through the federal rate. Month by month the parent has no SSI:
+# 1,050.68 exceeds 1,049.68 through November, and 1,610.68 exceeds
+# 1,491 + 105.80 = 1,596.80 in December.
+- name: Case 31, Vermont parent whose spouse is deemed only in December is tested on the year's individual supplement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 12_848.16
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 2
+        taxable_pension_income: 6_720
+      person3:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income_before_lsr: 10_800
+      person4:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VT
+  output:
+    is_ssi_spousal_deeming_applies_monthly:
+      2026-11: [false, false, false, false]
+      2026-12: [true, false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [560, 0, 0, 0]
+    is_ssi_ineligible_parent: [true, true, false, false]
+
+# The household of Case 30, with a parent's pension of 900 a month. The spouse's
+# remaining income is again 23, 293 and 520, so the monthly budgets deem 520 x 7 =
+# 3,640 from June, and the year's 4,025 stays within 5,964. The year's test deems
+# nothing: 10,800 - 240 = 10,560 is within 994 x 12 = 11,928, so the parent stays
+# eligible. A test that deemed on December's status would add the year's
+# difference, (10,800 + 4,025 - 240) - 10,560 = 4,025, reach 14,585 and flag the
+# parent. Month by month the parent has SSI: 994 - 880 = 114 through May, and from
+# June the lesser of 1,491 - (900 + 520 - 20) = 91 and 114.
+- name: Case 32, parent whose spouse is deemed only from June has no deemed income in the year's test.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        meets_ssi_disability_criteria: true
+        taxable_pension_income: 10_800
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+        own_children_in_household: 2
+        taxable_pension_income: 6_240
+      person3:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income_before_lsr: 24_000
+      person4:
+        age: 10
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    is_ssi_spousal_deeming_applies_monthly:
+      2026-05: [false, false, false, false]
+      2026-06: [true, false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [3_640, 0, 0, 0]
+    is_ssi_ineligible_parent: [false, true, false, false]

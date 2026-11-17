@@ -118,10 +118,10 @@ def compute_charitable_deduction(
     )
 
 
-def charitable_deduction_given_contribution_base(
+def charitable_deduction_before_floor_given_contribution_base(
     tax_unit, period, parameters, positive_agi
 ):
-    """Apply charitable deduction ceilings and the floor to the contribution base."""
+    """Apply charitable deduction ceilings to the contribution base."""
     # 26 U.S. Code § 170(b)(1) defines charitable deduction limits and their
     # interactions, calculated sequentially per IRS Publication 526, Worksheet 2:
     #   (G) Cash to 50% limit orgs: 60% AGI (post-TCJA; 50% pre-2018; 100% 2020-2021)
@@ -154,7 +154,7 @@ def charitable_deduction_given_contribution_base(
 
     p = parameters(period).gov.irs.deductions.itemized.charity
 
-    total_allowed = compute_charitable_deduction(
+    return compute_charitable_deduction(
         cash_50=cash_50,
         cash_non_50=cash_non_50,
         ordinary_50=ordinary_50,
@@ -170,6 +170,17 @@ def charitable_deduction_given_contribution_base(
         non_50_pct_cash_add_back=p.ceiling.non_50_pct_cash_add_back,
         qualified_cash_election=p.qualified_cash_election,
     )
+
+
+def charitable_deduction_given_contribution_base(
+    tax_unit, period, parameters, positive_agi
+):
+    """Apply charitable deduction ceilings and the floor to the contribution base."""
+    # Keep the raw helper result until the federal floor to preserve rounding.
+    total_allowed = charitable_deduction_before_floor_given_contribution_base(
+        tax_unit, period, parameters, positive_agi
+    )
+    p = parameters(period).gov.irs.deductions.itemized.charity
 
     # 2026+ floor under IRC § 170(b)(1)(I) (P.L. 119-21):
     # Applies to contributions otherwise allowable (after ceilings).

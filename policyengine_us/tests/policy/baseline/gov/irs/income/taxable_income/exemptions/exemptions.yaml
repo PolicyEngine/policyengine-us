@@ -196,3 +196,80 @@
     exemptions_count: 2
   output:
     exemptions: 0
+
+# Congress keeps personal exemptions suspended after 2017.
+- name: Personal exemptions remain zero under current law after 2035
+  period: 2036
+  input:
+    exemptions_count: [1, 1, 1, 1, 1]
+    adjusted_gross_income: [0, 414_199, 414_200, 414_201, 1_000_000]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+  output:
+    exemptions: [0, 0, 0, 0, 0]
+
+# Isolate the legacy threshold in a counterfactual with a $1,000 exemption.
+# 406,200 * 217.05 / 212.85 = 414,215.22199, rounded down to $50 = 414,200.
+# Filers lose 2% for each $2,500, or fraction of $2,500, of AGI above the
+# threshold (IRC 151(d)(3)(B)): $1 and $2,500 above it each make one step.
+# One step phases out 2% * $1,000 = $20.
+- name: A restored exemption uses the projected single phaseout threshold
+  period: 2036
+  absolute_error_margin: 0.001
+  input:
+    gov.irs.income.exemption.suspended: false
+    gov.irs.income.exemption.amount: 1_000
+    exemptions_count: [1, 1, 1, 1]
+    adjusted_gross_income: [414_199, 414_200, 414_201, 416_700]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE]
+  output:
+    exemptions: [1_000, 1_000, 980, 980]
+
+# CBO gives the 2032 head-of-household threshold as $421,200 in its January 2025 CSV:
+# https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/budget/tax_parameters/annual_cy_2025-01.csv
+# At $421,200, excess AGI = $0. At $421,201, $1 / $2,500 rounds up to 1 step;
+# at $423,700, $2,500 / $2,500 = 1 step.
+# $1,000 * (1 - 1 * 0.02) = $980 after one step.
+- name: A restored exemption uses CBO's 2032 head-of-household threshold
+  period: 2032
+  absolute_error_margin: 0.001
+  input:
+    gov.irs.income.exemption.suspended: false
+    gov.irs.income.exemption.amount: 1_000
+    exemptions_count: [1, 1, 1, 1]
+    adjusted_gross_income: [421_199, 421_200, 421_201, 423_700]
+    filing_status: [HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD, HEAD_OF_HOUSEHOLD]
+  output:
+    exemptions: [1_000, 1_000, 980, 980]
+
+# 243,700 * 217.05 / 212.85 = 248,508.73855 -> 248,500 (down to $25).
+# Separate filers lose 2% for each $1,250, or fraction of $1,250, above the
+# threshold: $1 and $1,250 above it each phase out 2% * $1,000 = $20.
+- name: A restored exemption uses half the joint threshold for separate filers
+  period: 2036
+  absolute_error_margin: 0.001
+  input:
+    gov.irs.income.exemption.suspended: false
+    gov.irs.income.exemption.amount: 1_000
+    exemptions_count: [1, 1, 1, 1]
+    adjusted_gross_income: [248_499, 248_500, 248_501, 249_750]
+    filing_status: [SEPARATE, SEPARATE, SEPARATE, SEPARATE]
+  output:
+    exemptions: [1_000, 1_000, 980, 980]
+
+# 487,400 * (217.05 / 212.85)^3 = 516,825.49806 in 2038.
+# Round down to $50 = $516,800; rounding to nearest would give $516,850.
+# At $516,801, ($516,801 - $516,800) / $2,500 rounds up to 1 step, so the
+# exemption falls to $1,000 * (1 - 1 * 0.02) = $980. A $516,850 threshold
+# would leave $1,000.
+# At $519,300, ($519,300 - $516,800) / $2,500 = 1 step: $980.
+- name: A restored exemption rounds the projected joint threshold down
+  period: 2038
+  absolute_error_margin: 0.001
+  input:
+    gov.irs.income.exemption.suspended: false
+    gov.irs.income.exemption.amount: 1_000
+    exemptions_count: [1, 1, 1, 1]
+    adjusted_gross_income: [516_799, 516_800, 516_801, 519_300]
+    filing_status: [JOINT, JOINT, JOINT, JOINT]
+  output:
+    exemptions: [1_000, 1_000, 980, 980]

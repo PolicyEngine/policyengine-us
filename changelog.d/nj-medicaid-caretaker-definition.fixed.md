@@ -1,1 +1,0 @@
-New Jersey Medicaid parent and caretaker relative group now counts any adult caring for a foster child and the parent of an 18-year-old full-time secondary student, per New Jersey's approved state plan.

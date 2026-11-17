@@ -8,12 +8,21 @@ of the deductions the reduction is computed on.
 Every tax unit in a grid of states, filing statuses, incomes and deductions
 shares one simulation per year. Each unit has twins that differ only in their
 investment interest, and one that differs only in having no income. With the
-deduction inputs set directly, income changes only the reduction, so the
-no-income twin carries the pre-limitation total. For every unit:
+deduction inputs set directly, income changes only the reduction and, in
+Minnesota from 2026, the charitable deduction: the Legislature allows
+contributions over 1% of the contribution base (Minn. Stat. 290.0122, subd.
+4(a)). The no-income twin therefore carries the total before the reduction
+and before that floor. For every unit:
 
-1. The deduction lies between 0 and its pre-limitation total.
-2. The reduction (pre-limitation total less the deduction) does not change
-   with investment interest, since investment interest is never reduced.
+1. The deduction lies between 0 and its no-income total.
+2. The no-income total less the deduction does not change with investment
+   interest, since investment interest is never reduced. With no income, a
+   Minnesota unit deducts T. With income, it deducts T - F - R, where F is
+   the part of its gifts under the 1% floor and R is the reduction. The twin
+   without investment interest has the same gifts and income, so the same F,
+   and a difference of F + R'. F cancels, and the check compares R with R'.
+3. With no income, a gift raises the deduction by its full amount, so the
+   gift units differ from the others in both states and years.
 """
 
 from itertools import product
@@ -53,6 +62,8 @@ def _simulation(year):
             "filing_status": {period: status},
             "adjusted_gross_income": {period: agi},
             "charitable_deduction": {period: charity},
+            # From 2026, Minnesota applies its floor to this amount.
+            "charitable_deduction_before_floor": {period: charity},
             "ca_charitable_deduction": {period: charity},
             "medical_expense_deduction": {period: medical},
         }
@@ -92,3 +103,9 @@ def test_itemized_limitation_invariants(year):
         k = _index(state, status, 0, charity, medical, (0, 0))
         reduction_without = deduction[state][k] - deduction[state][j]
         assert pre - value == pytest.approx(reduction_without, abs=0.01), label
+
+        # 3. With no income, a gift raises the deduction by its full amount.
+        no_gift = _index(state, status, 0, 0, medical, investment)
+        assert pre - deduction[state][no_gift] == pytest.approx(charity, abs=0.01), (
+            label
+        )
