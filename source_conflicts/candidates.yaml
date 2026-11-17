@@ -17377,3 +17377,29 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10002
   state: open
   note: PE-US applies the election for 2017 and does not model which taxes the federal return claimed (mt_salt_deduction.py, mt_salt_deduction_indiv.py). A ruling is needed on line 8's tie to the federal return and on adding line 9 to line 8.
+- id: us-wi:school-property-credit-lookup-tables
+  program: school-property-tax-credit
+  years:
+    from: 2025
+    to: 2025
+    type: tax
+  question: Does the school property tax credit use the statutory percentage of actual qualified expenses or the filing instructions' lookup tables?
+  sources:
+  - kind: statute
+    citation: Wis. Stat. 71.07(9)(a)4 and (b), official chapter 71, PDF page 52
+    url: https://docs.legis.wisconsin.gov/statutes/statutes/71.pdf#page=52
+  - kind: instructions
+    citation: 2025 Form 1 instructions, lines 16a and 16b, PDF pages 18-20
+    url: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=18
+  readings:
+    statute: Apply 12 percent to qualified property taxes plus 20 percent of qualified rent with heat and 25 percent without heat, subject to the statutory ceiling and tax liability.
+    other: Use the instructions' owner and renter lookup tables, whose expense bands can differ from the exact statutory percentage.
+  example: With ample liability and no prior credits, $1,000 of owner taxes gives $120 under the statute and $122 in the table; $6,000 of rent including heat gives $144 under the statute and $145 in the table.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/wi/tax/income/credits/property_tax/wi_property_tax_credit_potential.py
+    - policyengine_us/parameters/gov/states/wi/tax/income/credits/property_tax/rate.yaml
+    prs: []
+  state: ruled
+  note: The exact percentage is retained under the statute-first rule. Section 71.06(3) authorizes taxable-income tax tables before credits, not school-credit expense tables. Relevant official text and rows are captured in source_conflicts/sources/us-wi/school-property-credit-statute-2025.txt and school-property-credit-instructions-2025.txt. Source-derived cases are in the variable-named school-credit potential YAML file. Registration and markers follow the post-merge process in CONTRIBUTING.md; no unregistered marker is added here.

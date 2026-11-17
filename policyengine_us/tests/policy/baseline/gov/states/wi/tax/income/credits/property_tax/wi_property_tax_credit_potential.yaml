@@ -1,0 +1,71 @@
+# Wis. Stat. 71.07(9)(a)4 and (b): 20%/25% rent shares and a 12% credit.
+- name: Case 1, mixed rent and owner taxes use the statutory amounts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    real_estate_taxes: 500
+    wi_property_tax_credit_rent_with_heat: 2_000
+    wi_property_tax_credit_rent_without_heat: 2_000
+  output:
+    wi_property_tax_credit_potential: 168
+
+- name: Case 2, heat-excluded rent reaches the exact ordinary credit cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 0
+    wi_property_tax_credit_rent_without_heat: 10_000
+  output:
+    wi_property_tax_credit_potential: 300
+
+- name: Case 3, higher qualified expenses cannot exceed the existing cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 0
+    wi_property_tax_credit_rent_without_heat: 20_000
+  output:
+    wi_property_tax_credit_potential: 300
+
+- name: Case 4, heat-excluded rent was already distinguished in 2021.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 0
+    wi_property_tax_credit_rent_without_heat: 6_000
+  output:
+    wi_property_tax_credit_potential: 180
+
+- name: Case 5, owner taxes retain the exact statutory percentage.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    real_estate_taxes: 1_000
+    rent: 0
+  output:
+    wi_property_tax_credit_potential: 120
+
+- name: Case 6, heat-included rent retains the exact statutory percentage.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    wi_property_tax_credit_rent_with_heat: 6_000
+    wi_property_tax_credit_rent_without_heat: 0
+  output:
+    wi_property_tax_credit_potential: 144
+
+- name: Case 7, explicit Wisconsin splits do not create another state's credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    wi_property_tax_credit_rent_with_heat: 0
+    wi_property_tax_credit_rent_without_heat: 6_000
+  output:
+    wi_property_tax_credit_potential: 0

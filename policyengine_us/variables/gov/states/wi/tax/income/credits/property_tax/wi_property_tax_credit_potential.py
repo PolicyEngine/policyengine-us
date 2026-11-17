@@ -17,8 +17,10 @@ class wi_property_tax_credit_potential(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        rent = add(tax_unit, period, ["rent"])
+        rent_property_taxes = tax_unit(
+            "wi_property_tax_credit_rent_constituting_property_taxes", period
+        )
         ptax = add(tax_unit, period, ["real_estate_taxes"])
         p = parameters(period).gov.states.wi.tax.income.credits.property_tax
-        proptax = ptax + rent * p.rent_fraction
+        proptax = ptax + rent_property_taxes
         return min_(p.max, proptax * p.rate)
