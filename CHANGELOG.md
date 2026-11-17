@@ -1,3 +1,10 @@
+## [2.145.3] - 2026-11-17
+
+### Fixed
+
+- New Jersey's Medicaid pathway for aged, blind and disabled people now counts resources equal to the $4,000 and $6,000 limits as within them and rounds the monthly income limit down to the whole dollar.
+
+
 ## [2.145.2] - 2026-11-17
 
 ### Fixed
