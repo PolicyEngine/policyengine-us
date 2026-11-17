@@ -1,3 +1,10 @@
+## [2.141.0] - 2026-11-17
+
+### Added
+
+- Added premium tax credit calculations for 2014–2017 with annual applicable percentages and estimated historical benchmark premiums.
+
+
 ## [2.140.3] - 2026-11-16
 
 ### Fixed
