@@ -14,7 +14,8 @@ class id_liheap_estimated_heating_cost(Variable):
         area = spm_unit("id_liheap_heating_area", period)
         heating = spm_unit("heating_type", period)
         types = heating.possible_values
-        p = parameters(period).gov.states.id.dhw.liheap.payment.estimated_heating_costs
+        payment = parameters(period).gov.states.id.dhw.liheap.payment
+        p = payment.estimated_heating_costs
         # PY2007 nine-month cost proxy; FY2026 applicability is unconfirmed.
         # Safe lookup leaves unknown areas unassigned after fuel selection.
         # No Idaho source names solar or kerosene. As in heating_expense, solar
@@ -23,16 +24,19 @@ class id_liheap_estimated_heating_cost(Variable):
         electric_provider = spm_unit("electricity_provider", period)
         gas_provider = spm_unit("natural_gas_provider", period)
         electric_providers = electric_provider.possible_values
+        northern_electric = np.isin(
+            electric_provider.decode_to_str(), payment.northern_electric_providers
+        )
         # As with the payment chart, blank historical combinations retain
         # the existing representative estimate instead of asserting zero cost.
         electric_cost = select(
             [
-                (electric_provider == electric_providers.AVISTA) & (area < 3),
+                northern_electric & (area < 3),
                 (electric_provider == electric_providers.ROCKY_MOUNTAIN_POWER)
                 & (area > 1),
             ],
             [
-                p.electricity_avista[min_(lookup_area, 2)],
+                p.electricity_northern[min_(lookup_area, 2)],
                 p.electricity_rocky_mountain[max_(lookup_area, 2)],
             ],
             default=p.electricity[lookup_area],

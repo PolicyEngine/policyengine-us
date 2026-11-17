@@ -35,16 +35,18 @@ class id_liheap(Variable):
         gas_provider = spm_unit("natural_gas_provider", period)
         electric_providers = electric_provider.possible_values
         # The chart leaves Avista Area III and Rocky Mountain Area I blank.
-        # Retain the representative-column estimate for those combinations,
-        # unspecified companies and unlisted smaller utilities.
-        avista_electric = (electric_provider == electric_providers.AVISTA) & (area < 3)
+        # Retain the representative-column estimate for unpublished area
+        # combinations, unspecified companies and unlisted smaller utilities.
+        northern_electric = np.isin(
+            electric_provider.decode_to_str(), p.northern_electric_providers
+        ) & (area < 3)
         rocky_mountain = (
             electric_provider == electric_providers.ROCKY_MOUNTAIN_POWER
         ) & (area > 1)
         electric_amount = select(
-            [avista_electric, rocky_mountain],
+            [northern_electric, rocky_mountain],
             [
-                p.matrix.electricity_avista[min_(area, 2)][burden_group],
+                p.matrix.electricity_northern[min_(area, 2)][burden_group],
                 p.matrix.electricity_rocky_mountain[max_(area, 2)][burden_group],
             ],
             default=p.matrix.electricity[area][burden_group],

@@ -6,7 +6,8 @@ description: Idaho uses these estimated heating-season costs by fuel and heating
 # Preserve the published amounts without inflation or a twelve-month uplift.
 # Unspecified/unlisted providers use Idaho Power & Southern Utilities for
 # electricity and the complete Intermountain Gas column for natural gas.
-# Avista and Rocky Mountain Power use their historical provider columns.
+# Named northern utilities and Rocky Mountain Power use their historical
+# provider columns. Northern membership follows northern_electric_providers.
 # The old rent-cost column and old benefit percentages are not used.
 oil_or_propane:
   1:
@@ -41,7 +42,7 @@ natural_gas_avista:
     2025-10-01: 875
   2:
     2025-10-01: 1_200
-electricity_avista:
+electricity_northern:
   1:
     2025-10-01: 1_450
   2:
