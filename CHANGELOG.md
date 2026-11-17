@@ -1,3 +1,10 @@
+## [2.144.1] - 2026-11-17
+
+### Fixed
+
+- Apply Minnesota's 1% charitable contribution floor from 2026. Cap Minnesota's deduction for combined real estate and personal property taxes at $10,000 ($5,000 for married filing separately) from 2019, in place of the federal SALT cap. Keep the federal charitable deduction in Minnesota AMT.
+
+
 ## [2.144.0] - 2026-11-17
 
 ### Added
