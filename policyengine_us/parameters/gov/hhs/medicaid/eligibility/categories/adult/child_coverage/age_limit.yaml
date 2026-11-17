@@ -1,0 +1,123 @@
+description: Medicaid denies adult group coverage to a parent or other caretaker relative living with a child younger than this age, unless the child has Medicaid, Children's Health Insurance Program, Marketplace or other minimum essential coverage.
+metadata:
+  unit: year
+  period: year
+  label: Medicaid adult group child coverage requirement age limit
+  breakdown:
+    - state_code
+  reference:
+    - title: 42 CFR 435.119(c) - coverage for dependent children
+      href: https://www.law.cornell.edu/cfr/text/42/435.119#c
+    - title: Colorado approved state plan S32 (CO-13-0045-MM1), under age 19 selected
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/CO/CO-13-0045-MM1.pdf#page=30
+    - title: New Jersey approved state plan S32 (NJ-13-0011-MM1), under age 21 selected
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=16
+# 42 CFR 435.119(c)(2) sets the age at under 19, unless the state covered
+# individuals under 20 or 21 under 42 CFR 435.222 on March 23, 2010, in
+# which case the higher age applies. Colorado and New Jersey are sourced
+# from their state plan S32 pages. The other states carry the federal
+# default of 19 and are not yet researched.
+AK:
+  2014-01-01: 19
+AL:
+  2014-01-01: 19
+AR:
+  2014-01-01: 19
+AZ:
+  2014-01-01: 19
+CA:
+  2014-01-01: 19
+# Sourced: Colorado's S32 page selects "Under age 19".
+CO:
+  2014-01-01: 19
+CT:
+  2014-01-01: 19
+DC:
+  2014-01-01: 19
+DE:
+  2014-01-01: 19
+FL:
+  2014-01-01: 19
+GA:
+  2014-01-01: 19
+HI:
+  2014-01-01: 19
+IA:
+  2014-01-01: 19
+ID:
+  2014-01-01: 19
+IL:
+  2014-01-01: 19
+IN:
+  2014-01-01: 19
+KS:
+  2014-01-01: 19
+KY:
+  2014-01-01: 19
+LA:
+  2014-01-01: 19
+MA:
+  2014-01-01: 19
+MD:
+  2014-01-01: 19
+ME:
+  2014-01-01: 19
+MI:
+  2014-01-01: 19
+MN:
+  2014-01-01: 19
+MO:
+  2014-01-01: 19
+MS:
+  2014-01-01: 19
+MT:
+  2014-01-01: 19
+NC:
+  2014-01-01: 19
+ND:
+  2014-01-01: 19
+NE:
+  2014-01-01: 19
+NH:
+  2014-01-01: 19
+# Sourced: New Jersey's S32 page selects "Under age 21".
+NJ:
+  2014-01-01: 21
+NM:
+  2014-01-01: 19
+NV:
+  2014-01-01: 19
+NY:
+  2014-01-01: 19
+OH:
+  2014-01-01: 19
+OK:
+  2014-01-01: 19
+OR:
+  2014-01-01: 19
+PA:
+  2014-01-01: 19
+RI:
+  2014-01-01: 19
+SC:
+  2014-01-01: 19
+SD:
+  2014-01-01: 19
+TN:
+  2014-01-01: 19
+TX:
+  2014-01-01: 19
+UT:
+  2014-01-01: 19
+VA:
+  2014-01-01: 19
+VT:
+  2014-01-01: 19
+WA:
+  2014-01-01: 19
+WI:
+  2014-01-01: 19
+WV:
+  2014-01-01: 19
+WY:
+  2014-01-01: 19
