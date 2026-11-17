@@ -23,8 +23,8 @@ class mn_itemized_deductions(Variable):
         #   itemized or standard deduction.
         # ... calculate pre-limitation itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
-        capped_property_taxes = tax_unit("capped_property_taxes", period)
-        mn_itm_deds = itm_deds_less_salt + capped_property_taxes
+        property_taxes = tax_unit("mn_property_tax_deduction", period)
+        mn_itm_deds = itm_deds_less_salt + property_taxes
         # ... calculate itemized deductions offset
         p = parameters(period).gov.states.mn.tax.income.deductions.itemized
         exempt_deds = add(

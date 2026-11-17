@@ -1,0 +1,66 @@
+# 2025 M1SA lines 5–8 combine net eligible real estate tax and personal
+# property tax and apply the filing-status cap. Line 26 produces no
+# reduction at the adjusted gross incomes used here.
+# https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-25_0.pdf
+# https://www.revisor.mn.gov/statutes/2025/cite/290.0122#stat.290.0122.3
+- name: Case 1, single filer combines property taxes under the Minnesota cap.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: [MN, MN, MN, MN, WI]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+    adjusted_gross_income: [50_000, 50_000, 50_000, 50_000, 50_000]
+    real_estate_taxes: [6_000, 6_000, 6_000, 0, 6_000]
+    mn_personal_property_taxes: [3_999, 4_000, 4_001, 0, 0]
+  output:
+    # The first three rows put $9,999/$10,000/$10,001 on M1SA line 7.
+    # The fourth claims no eligible taxes and the fifth lives in Wisconsin.
+    mn_property_tax_deduction: [9_999, 10_000, 10_000, 0, 0]
+    mn_itemized_deductions: [9_999, 10_000, 10_000, 0, 0]
+
+- name: Case 2, real estate taxes alone use the Minnesota cap with the new input omitted.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: MN
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    real_estate_taxes: 12_000
+  output:
+    # Without personal property tax, line 8 is still the lesser of the
+    # $12,000 on line 5 and the Minnesota $10,000 cap.
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 10_000
+
+- name: Case 3, married separate filers use the $5,000 combined property tax cap.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: [MN, MN, MN]
+    filing_status: [SEPARATE, SEPARATE, SEPARATE]
+    adjusted_gross_income: [50_000, 50_000, 50_000]
+    real_estate_taxes: [3_000, 3_000, 3_000]
+    mn_personal_property_taxes: [1_999, 2_000, 2_001]
+  output:
+    # M1SA line 7 holds $4,999/$5,000/$5,001, and line 8 caps the amount.
+    mn_property_tax_deduction: [4_999, 5_000, 5_000]
+    mn_itemized_deductions: [4_999, 5_000, 5_000]
+
+- name: Case 4, the existing aggregate retains qualifying mortgage interest and property tax.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: MN
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    real_estate_taxes: 3_500
+    home_mortgage_interest: 10_000
+    first_home_mortgage_balance: 200_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # The debt solely financed acquisition of the home. Section 290.0122
+    # subd. 5 allows the $10,000 reported interest at that balance. The
+    # total on M1SA line 27 includes $3,500 from line 8 and $10,000 from
+    # line 14. This result also applies to the pre-backport aggregate.
+    mn_property_tax_deduction: 3_500
+    mn_itemized_deductions: 13_500
