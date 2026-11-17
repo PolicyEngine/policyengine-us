@@ -1,3 +1,10 @@
+## [2.145.6] - 2026-11-17
+
+### Fixed
+
+- Corrected the Medicaid documentation page, which still described per-group per-capita costs, to describe the current valuation: state spending allocated by an ACA benchmark-premium cost index, the paired spending and enrollment years, and the method's known limits.
+
+
 ## [2.145.5] - 2026-11-17
 
 ### Fixed
