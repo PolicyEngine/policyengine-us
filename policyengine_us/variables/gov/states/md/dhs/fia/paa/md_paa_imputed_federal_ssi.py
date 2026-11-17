@@ -61,7 +61,7 @@ class md_paa_imputed_federal_ssi(Variable):
         )
         couple_ssi = p.couple * vtr_factor - (countable_income + deemed_income)
         deeming = (
-            person("is_ssi_spousal_deeming_applies", period.this_year)
+            person("is_ssi_spousal_deeming_applies_monthly", period)
             & ~in_medical_facility
         )
         reported_ssi = max_(

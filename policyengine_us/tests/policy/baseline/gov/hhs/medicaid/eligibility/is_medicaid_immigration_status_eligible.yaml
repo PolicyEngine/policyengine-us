@@ -147,3 +147,41 @@
     state_code: TX
   output:
     is_medicaid_immigration_status_eligible: false
+
+# New Jersey has covered children under 19 regardless of immigration status
+# since January 1, 2023 (Cover All Kids), under its appropriations acts.
+- name: Case 19, undocumented 8-year-old in New Jersey is eligible in 2024.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NJ
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 20, undocumented 19-year-old in New Jersey is past the under-19 age limit.
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 19
+    state_code: NJ
+  output:
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 21, DACA 17-year-old in New Jersey is eligible in 2024.
+  period: 2024
+  input:
+    immigration_status: DACA
+    age: 17
+    state_code: NJ
+  output:
+    is_medicaid_immigration_status_eligible: true
+
+- name: Case 22, undocumented 8-year-old in New Jersey is eligible from January 1, 2023.
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NJ
+  output:
+    is_medicaid_immigration_status_eligible: true

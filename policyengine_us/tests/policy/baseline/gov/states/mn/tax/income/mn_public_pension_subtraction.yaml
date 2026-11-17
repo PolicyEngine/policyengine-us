@@ -210,3 +210,16 @@
   output:
     adjusted_gross_income: 90_000
     mn_public_pension_subtraction: 7_000
+
+# 2026 joint cap: $27,690, from the Minnesota DOR Tax Year 2026
+# Inflation-Adjusted Amounts, 290.0132 Subd. 34 (page 2). AGI of $100,000
+# sits below the 2026 joint reduction start of $110,780, so the full cap applies.
+- name: MN public pension subtraction 2026 joint below threshold
+  period: 2026
+  input:
+    filing_status: JOINT
+    taxable_public_pension_income: 30_000
+    state_code: MN
+    adjusted_gross_income: 100_000
+  output:
+    mn_public_pension_subtraction: 27_690

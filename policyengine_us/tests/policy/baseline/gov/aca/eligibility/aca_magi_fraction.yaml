@@ -1,6 +1,6 @@
 # ACA MAGI as a fraction of the poverty guideline, floored to two decimals.
 # 26 U.S.C. 36B(d)(3)(B) measures income against the guideline for the year
-# before the coverage year. The model's guidelines start in 2015.
+# before the coverage year. Explicit guidelines support coverage from 2014.
 
 - name: Coverage in 2016 uses the 2015 guideline.
   # 30,000 / 11,770 = 2.5488, floored to 2.54. The 2016 guideline (11,880)
@@ -21,10 +21,10 @@
   output:
     aca_magi_fraction: 2.54
 
-- name: Coverage in 2015, the first modeled year, uses the coverage year's guideline.
-  # The year before is not modeled, so the 2015 guideline stands in for the
-  # 2014 guideline the statute calls for: 30,000 / 11,770 = 2.5488, floored
-  # to 2.54.
+- name: Coverage in 2015 uses the 2014 guideline.
+  # IRS 2015 Form 8962 line 4 uses 11,670 for one person in the contiguous
+  # states: floor(30,000 / 11,670 * 100) / 100 = 2.57.
+  # https://www.irs.gov/pub/irs-prior/i8962--2015.pdf#page=7
   period: 2015
   input:
     people:
@@ -39,7 +39,7 @@
         members: [person1]
         state_code: TX
   output:
-    aca_magi_fraction: 2.54
+    aca_magi_fraction: 2.57
 
 - name: Coverage in 2026 in Alaska uses Alaska's 2025 guideline.
   # 30,000 / 19,550 = 1.5345, floored to 1.53. The contiguous states'

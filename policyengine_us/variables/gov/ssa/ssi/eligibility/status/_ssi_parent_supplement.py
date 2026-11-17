@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_spouse._ssi_annual_spousal_deeming import (
+    ssi_budget_spousal_deeming_applies,
+)
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
     _ssi_couple_total,
 )
@@ -112,7 +115,8 @@ def _ssi_parent_supplement_level(person, period, parameters):
     """
     individual, couple = _ssi_parent_supplement_rates(person, period, parameters)
     joint = person("ssi_claim_is_joint", period)
-    deeming = person("is_ssi_spousal_deeming_applies", period)
+    # The level covers the year, so it takes the year's deeming comparison.
+    deeming = ssi_budget_spousal_deeming_applies(person, period, parameters)
     monthly = select(
         [joint, deeming],
         [couple, max_(couple, individual)],

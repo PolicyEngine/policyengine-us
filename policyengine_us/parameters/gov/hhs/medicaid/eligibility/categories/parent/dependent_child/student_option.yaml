@@ -18,6 +18,10 @@ metadata:
       href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/MS/MS-13-0019-MM1.pdf#page=13
     - title: Mississippi Eligibility Manual Chapter 101 § 101.02.01 - dependent child under age 18
       href: https://medicaid.ms.gov/wp-content/uploads/2017/10/Chapter-101.pdf#page=8
+    - title: New Jersey approved state plan S25 (NJ-13-0011-MM1), student option checked
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=31
+    - title: N.J.A.C. 10:69-3.13(a) - child "under age 19 and a full-time student in a secondary school, or in the equivalent level of vocational or technical training"
+      href: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_69%20AFDC-RELATED%20MEDICAID.PDF#page=69
     - title: South Carolina approved state plan S25 (SC-13-0014-MM1), student option checked
       href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/SC/SC-13-0014-MM1.pdf#page=14
     - title: Tennessee approved state plan S25 (TN-21-0010), student option checked
@@ -122,8 +126,13 @@ NE:
   2014-01-01: false
 NH:
   2014-01-01: false
+# Sourced: New Jersey's approved S25 checks the student option
+# (NJ-13-0011-MM1, effective 01/01/2014), and N.J.A.C. 10:69-3.13(a)
+# covers a child "under age 19 and a full-time student in a secondary
+# school, or in the equivalent level of vocational or technical
+# training" who is expected to complete the program before turning 19.
 NJ:
-  2014-01-01: false
+  2014-01-01: true
 NM:
   2014-01-01: false
 NV:

@@ -68,8 +68,9 @@
     co_collegeinvest_subtraction: [26_200, 26_200, 26_200]
 
 # Project the 2026 actuals with the existing IRS inflation proxy:
-# 26,200 * 181.97958333333335 / 176.71308333333332 = 26,980.8267 -> 27,000.
-# 39,200 * the same ratio = 40,368.2598 -> 40,400 (nearest $100).
+# 26,200 * 2,190.008 / 2,125.365 = 26,996.8733 -> 27,000, where 2,190.008 and
+# 2,125.365 sum the 12 months behind the 2027 and 2026 index values.
+# 39,200 * the same ratio = 40,392.2684 -> 40,400 (nearest $100).
 - name: Single filers use the projected cap after the last published year
   period: 2027
   input:

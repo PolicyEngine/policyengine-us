@@ -361,8 +361,8 @@
   output:
     # The 2027 thresholds are gov.irs.uprating projections from the 2026 base,
     # rounded down to $50:
-    #   tier 1 = floor(250,000 * 181.979583 / 176.713083 / 50) * 50 = 257,450
-    # 255,000 < 257,450, so the surcharge is 0. An unindexed threshold would
+    #   tier 1 = floor(250,000 * 182.500667 / 177.113750 / 50) * 50 = 257,600
+    # 255,000 < 257,600, so the surcharge is 0. An unindexed threshold would
     # give 0.02 * (255,000 - 250,000) = 100.
     vt_fair_share_surcharge: 0
 
@@ -386,13 +386,13 @@
         state_code: VT
   output:
     # The 2027 thresholds are gov.irs.uprating projections from the 2026 base,
-    # rounded down to $50 (ratio 181.979583 / 176.713083 = 1.0298025):
-    #   tier 1 = floor(257,450.64 / 50) * 50 = 257,450
-    #   tier 2 = floor(514,901.27 / 50) * 50 = 514,900
-    # 0.02 * (514,900 - 257,450) + 0.08 * (600,000 - 514,900)
-    # = 0.02 * 257,450 + 0.08 * 85,100 = 5,149 + 6,808 = 11,957
+    # rounded down to $50 (ratio 182.500667 / 177.113750 = 1.0304150):
+    #   tier 1 = floor(257,603.75 / 50) * 50 = 257,600
+    #   tier 2 = floor(515,207.51 / 50) * 50 = 515,200
+    # 0.02 * (515,200 - 257,600) + 0.08 * (600,000 - 515,200)
+    # = 0.02 * 257,600 + 0.08 * 84,800 = 5,152 + 6,784 = 11,936
     # Recompute if gov.bls.cpi.c_cpi_u is refreshed.
-    vt_fair_share_surcharge: 11_957
+    vt_fair_share_surcharge: 11_936
 
 - name: Case 17, Clawback option leaves the 2% band below $500,000 unchanged.
   period: 2026

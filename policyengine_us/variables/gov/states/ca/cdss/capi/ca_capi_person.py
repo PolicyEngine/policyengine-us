@@ -50,7 +50,7 @@ class ca_capi_person(Variable):
             / MONTHS_IN_YEAR
         )
         countable_income = where(
-            separated, own_alone, person("ssi_countable_income", period)
+            separated, own_alone, person("ca_capi_countable_income", period)
         )
         payment_standard = person("ca_capi_payment_standard", period)
         deemed_income = person(
@@ -122,7 +122,7 @@ class ca_capi_person(Variable):
         p = parameters(period).gov.states.ca.cdss.capi.payment_standard_offset
         deemed_benefit = max_(federal + supplement - p.single, 0)
         deeming = (
-            (person("is_ssi_spousal_deeming_applies", period.this_year) & ~joint)
+            (person("is_ssi_spousal_deeming_applies_monthly", period) & ~joint)
             | unpaid_spouse
         ) & ~medical_facility
         return select(

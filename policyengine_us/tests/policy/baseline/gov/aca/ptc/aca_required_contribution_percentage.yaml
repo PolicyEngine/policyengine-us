@@ -327,3 +327,99 @@
     aca_magi_fraction: 4.01
   output:
     aca_required_contribution_percentage: 0
+
+# Each row approaches a table boundary from one whole percentage point below
+# and above. Within each tier: initial + (fraction - lower) / (upper - lower)
+# * (final - initial). Above 400 percent, the applicable percentage is zero.
+
+- name: ACA contribution percentages follow the 2014 table on both sides of every boundary.
+  # 26 U.S.C. 36B(b)(3)(A)(i).
+  period: 2014
+  absolute_error_margin: 0.000001
+  input:
+    aca_magi_fraction: [
+      1.32, 1.33, 1.34,  # 133 percent FPL.
+      1.49, 1.50, 1.51,  # 150 percent FPL.
+      1.99, 2.00, 2.01,  # 200 percent FPL.
+      2.49, 2.50, 2.51,  # 250 percent FPL.
+      2.99, 3.00, 3.01,  # 300 percent FPL.
+      3.99, 4.00, 4.01,  # 400 percent FPL.
+    ]
+  output:
+    aca_required_contribution_percentage: [
+      0.02, 0.03, 0.0305882353,
+      0.0394117647, 0.04, 0.04046,
+      0.06254, 0.063, 0.06335,
+      0.08015, 0.0805, 0.08079,
+      0.09471, 0.095, 0.095,
+      0.095, 0.095, 0,
+    ]
+
+- name: ACA contribution percentages follow the 2015 table on both sides of every boundary.
+  # Rev. Proc. 2014-37 section 5.01.
+  period: 2015
+  absolute_error_margin: 0.000001
+  input:
+    aca_magi_fraction: [
+      1.32, 1.33, 1.34,  # 133 percent FPL.
+      1.49, 1.50, 1.51,  # 150 percent FPL.
+      1.99, 2.00, 2.01,  # 200 percent FPL.
+      2.49, 2.50, 2.51,  # 250 percent FPL.
+      2.99, 3.00, 3.01,  # 300 percent FPL.
+      3.99, 4.00, 4.01,  # 400 percent FPL.
+    ]
+  output:
+    aca_required_contribution_percentage: [
+      0.0201, 0.0302, 0.0307882353,
+      0.0396117647, 0.0402, 0.040664,
+      0.062936, 0.0634, 0.063752,
+      0.080648, 0.081, 0.081292,
+      0.095308, 0.0956, 0.0956,
+      0.0956, 0.0956, 0,
+    ]
+
+- name: ACA contribution percentages follow the 2016 table on both sides of every boundary.
+  # Rev. Proc. 2014-62 section 2.01.
+  period: 2016
+  absolute_error_margin: 0.000001
+  input:
+    aca_magi_fraction: [
+      1.32, 1.33, 1.34,  # 133 percent FPL.
+      1.49, 1.50, 1.51,  # 150 percent FPL.
+      1.99, 2.00, 2.01,  # 200 percent FPL.
+      2.49, 2.50, 2.51,  # 250 percent FPL.
+      2.99, 3.00, 3.01,  # 300 percent FPL.
+      3.99, 4.00, 4.01,  # 400 percent FPL.
+    ]
+  output:
+    aca_required_contribution_percentage: [
+      0.0203, 0.0305, 0.0311,
+      0.0401, 0.0407, 0.041168,
+      0.063632, 0.0641, 0.064454,
+      0.081446, 0.0818, 0.082096,
+      0.096304, 0.0966, 0.0966,
+      0.0966, 0.0966, 0,
+    ]
+
+- name: ACA contribution percentages follow the 2017 table on both sides of every boundary.
+  # Rev. Proc. 2016-24 section 2.01.
+  period: 2017
+  absolute_error_margin: 0.000001
+  input:
+    aca_magi_fraction: [
+      1.32, 1.33, 1.34,  # 133 percent FPL.
+      1.49, 1.50, 1.51,  # 150 percent FPL.
+      1.99, 2.00, 2.01,  # 200 percent FPL.
+      2.49, 2.50, 2.51,  # 250 percent FPL.
+      2.99, 3.00, 3.01,  # 300 percent FPL.
+      3.99, 4.00, 4.01,  # 400 percent FPL.
+    ]
+  output:
+    aca_required_contribution_percentage: [
+      0.0204, 0.0306, 0.0312,
+      0.0402, 0.0408, 0.04127,
+      0.06383, 0.0643, 0.064656,
+      0.081744, 0.0821, 0.082396,
+      0.096604, 0.0969, 0.0969,
+      0.0969, 0.0969, 0,
+    ]

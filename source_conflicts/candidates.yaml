@@ -11,6 +11,36 @@
 # unreviewed.
 version: 1
 candidates:
+- id: us-ca:expectant-parent-payment-residential-rate
+  program: foster-care
+  years:
+    from: 2022
+    type: calendar
+  question: Does California pay an expectant parent in a group home or short-term residential therapeutic program the home-based infant supplement amount or the residential infant supplement amount?
+  sources:
+  - kind: statute
+    citation: California Welfare and Institutions Code section 11465, subdivisions (d)(2) and (e)
+    url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11465.
+  - kind: guidance
+    citation: CDSS All County Letter 21-123, page two (PDF page 3)
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2021/21-123.pdf#page=3
+  - kind: guidance
+    citation: CDSS All County Letter 26-44, pages two and four (PDF pages 3 and 5)
+    url: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-44.pdf#page=5
+  readings:
+    statute: From January 2022, subdivision (e)(1) adds to a pregnant minor's or nonminor dependent's rate "the amount that would otherwise be paid under this section to cover the care and supervision of a child, if born." Subdivision (d)(2) sets that amount at the group home or short-term residential therapeutic program infant supplement rate in those placements. Subdivision (e)(3) sets the lump sum before automation at three times the monthly amount paid under subdivision (a).
+    other: ACL 21-123 directs counties to pay the home-based infant supplement amount in every placement from January 2022. ACL 26-44 lists $932 for home-based placements and $1,429 for short-term residential therapeutic programs under its combined infant supplement and expectant parent payment heading from July 2026.
+  example: In March 2024 an eligible expectant parent in a group home receives $900 under ACL 21-123 or $1,379 under the residential reading of subdivision (e)(1), a difference of $479 per month. From July 2026 the two readings give $932 and $1,429, a difference of $497 per month.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/ca/cdss/expectant_parent_payment/amount/base.yaml
+    - policyengine_us/parameters/gov/states/ca/cdss/expectant_parent_payment/amount/group_home.yaml
+    - policyengine_us/variables/gov/states/ca/cdss/expectant_parent_payment/ca_la_expectant_parent_payment.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10836
+  state: open
+  note: PolicyEngine pays $900 in every placement from January 2022 through June 2026, as ACL 21-123 directs. From July 2026 it pays $1,429 in group homes and short-term residential therapeutic programs. ACL 26-44 lists that amount for short-term residential therapeutic programs and no amount for group homes. PolicyEngine applies it to group homes as an interpretation of subdivision (d)(2). PolicyEngine has recorded no ruling.
 - id: us-ak:hap-general-relief-assistance
   program: liheap
   years:
@@ -2640,6 +2670,37 @@ candidates:
   note: The statutory dependent definition controls the actual-claim wording in the confirmed 2021, 2022 and 2025
     instructions. The same statutory definition applies in 2026. The federal exception for claiming one's own
     dependents does not remove the claimant's dependent status. Either eligible spouse may claim for the couple.
+- id: us-de:eitc-refundable-option-start-year
+  program: income-tax
+  years:
+    from: 2021
+    to: 2022
+    type: tax
+  question: Does Delaware first offer the refundable earned income tax credit option in tax year 2021 or 2022?
+  sources:
+  - kind: statute
+    citation: 30 Del. C. 1117(a)(1) and (a)(2), Title 30 PDF page 50
+    url: https://delcode.delaware.gov/title30/Title30.pdf#page=50
+  - kind: statute
+    citation: 83 Del. Laws, chapter 118 (HB 16), sections 1 and 2
+    url: https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=412704
+  - kind: guidance
+    citation: Official HB 16 bill detail, effective December 1, 2022, and Finance notice tooltip
+    url: https://www.legis.delaware.gov/BillDetail?legislationId=48193
+  - kind: instructions
+    citation: 2021 Delaware resident income tax instructions, line 33, PDF page 9
+    url: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf#page=9
+  readings:
+    statute: The 20% credit remains nonrefundable before tax year 2022. From tax year 2022, a filer may choose that liability-limited credit or a refundable credit equal to 4.5% of federal earned income tax credit.
+    other: The 2021 resident instructions permit the 4.5% refundable alternative on a 2021 return.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/de/tax/income/credits/eitc/refundable.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10960
+  state: ruled
+  note: The act keys applicability to January 1 of the contingency year; the official effective-date record and codified statute identify 2022. Preserve the nonrefundable alternative and existing election mechanics. The contrary instruction passage has a two-line document-reader transcript; native PDF bytes and full-page verification remain unavailable.
 - id: us-de:529-subtraction-exact-agi-limit
   program: income-tax
   years:
@@ -6816,6 +6877,60 @@ candidates:
     The Department has published a 2026 final draft, which moves gambling losses to line 26 and protects only lines 4, 13, and 22 in the line 28 worksheets.
     We exclude 2026 from the years above because the Department still labels that form a draft.
     The baseline excludes wagering_losses_deduction at mn_itemized_deductions.py lines 68 and 71; the Walz reform does so at mn_walz_hf1938.py lines 136 and 139.
+- id: us-mn:amt-charitable-contribution-floor
+  program: income-tax
+  years:
+    from: 2026
+    type: tax
+  question: >-
+    Does a Minnesota itemizer subtract the federal section 170 charitable
+    deduction when computing alternative minimum taxable income, or the
+    Minnesota charitable amount that draft Schedule M1MT takes from M1SA?
+  sources:
+  - kind: statute
+    citation: Minn. Stat. 290.091, subd. 2(a)(2)(i)
+    url: https://www.revisor.mn.gov/statutes/cite/290.091#stat.290.091.2
+  - kind: statute
+    citation: Minn. Stat. 290.0122, subd. 4(a); Laws 2026, ch. 128, art. 1, sec. 4
+    url: https://www.revisor.mn.gov/statutes/cite/290.0122#stat.290.0122.4
+  - kind: statute
+    citation: Public Law 119-21, section 70425(a)(1) and (c)
+    url: https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm
+  - kind: form
+    citation: 2026 Schedule M1MT, line 11, final draft October 1, 2026
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-10/m1mt-26.pdf#page=1
+  - kind: form
+    citation: 2026 Schedule M1SA, lines 18-21, final draft November 4, 2026
+    url: https://www.revenue.state.mn.us/sites/default/files/2026-11/m1sa-26.pdf#page=1
+  readings:
+    statute: >-
+      Preserve the federal section 170 charitable deduction in Minnesota
+      alternative minimum taxable income, including the federal 0.5% floor
+      from 2026. Section 290.091 does not substitute Minnesota's charitable
+      amount for that federal deduction.
+    other: >-
+      Subtract Minnesota's charitable amount from M1SA line 21, including
+      Minnesota's 1% floor from 2026, as draft M1MT line 11 directs.
+  example: >-
+    An itemizer with $100,000 of adjusted gross income and $4,000 of current-year
+    gifts deducts $3,500 federally and $3,000 in Minnesota. With no other
+    adjustments, the filer computes $96,500 of alternative minimum taxable
+    income under the statute and $97,000 under draft M1MT.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/mn/tax/income/amt/mn_amt_taxable_income.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10872
+  state: ruled
+  note: >-
+    Follow the statute under CONTRIBUTING.md's statute-first principle. Preserve
+    the federal charitable_deduction in Minnesota AMT. Capture the relevant
+    statutory and draft-form text under source_conflicts/sources/us-mn before
+    registering the ruling after merge. The draft M1SA adds prior-year
+    carryovers after its floor; the example uses only current-year gifts.
+    The conflict ends if the department takes the federal section 170 amount
+    on line 11 of its final 2026 Schedule M1MT.
 - id: us-mo:claim-of-right-federal-tax-deduction
   program: income-tax
   years:
@@ -8879,6 +8994,201 @@ candidates:
   state: unreviewed
   note: PE-US counts TANF under the handbook; obtain the plan URL, verify the anchor and General Assistance treatment,
     and do not infer a contrary handbook rule for strike pay.
+- id: us-nj:medicaid-abd-income-limit-rounding
+  program: medicaid
+  years:
+    from: 2018
+    to: 2026
+    type: calendar
+  question: Is New Jersey's monthly Medicaid income standard for aged, blind and disabled people 1/12 of the poverty
+    guideline rounded down, as N.J.A.C. 10:72-4.1(a) says, or rounded up, as each year's DMAHS income-standards chart
+    prints?
+  sources:
+  - kind: statute
+    citation: 42 U.S.C. 1396a(m)(2)(A)
+    url: https://www.law.cornell.edu/uscode/text/42/1396a#m_2_A
+  - kind: regulation
+    citation: N.J.A.C. 10:72-4.1(a) and (d)
+    url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-10-72-4-1
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 18-01, Income Eligibility Standards Effective January 1, 2018 (February 1, 2018),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2018/18-01_Income_Eligibility_Standards_Effective_1-1-2018.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 19-03, Income Eligibility Standards Effective January 1, 2019 (February 4, 2019),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2019/19-03_Income_Eligibility_Standards_Effective_1-1-19.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 20-02, Income Eligibility Standards Effective January 1, 2020 (February 19, 2020),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2020/20-02_2020_Income_Eligibility_Standards_Effective_1-1-2020.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 21-02, Income Eligibility Standards Effective January 1, 2021 (March 5, 2021),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2021/21-02_Income_Standards_Effective_1-1-2021.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 22-02, Income Eligibility Standards Effective January 1, 2022 (February 25, 2022),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2022/22-02%20Income%20Standards%20Effective1.1.%202022.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 23-02, Income Eligibility Standards Effective January 1, 2023 (February 22, 2023),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2023/23-02%20Income%20Eligibility%20Standards.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 24-02, Income Eligibility Standards Effective January 1, 2024 (March 1, 2024),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2024/24-02_Income_Eligibility_Standards_Effective_1-1-2024.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 25-03, Income Eligibility Standards Effective January 1, 2025 (February 28, 2025),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2025/25-03%20Income%20Eligibility%20Standards%20Effective%20January%201,%202025.pdf#page=3
+  - kind: guidance
+    citation: NJ DMAHS Medicaid Communication 26-03, Income Eligibility Standards Effective January 1, 2026 (February 26, 2026),
+      chart column "New Jersey Care... Special Medicaid Programs - A, 100% FPL"
+    url: https://www.nj.gov/humanservices/dmahs/documents/providers-stakeholders/resources/medicaid/2026/26-03_Income_Eligibility_Standards_Effective_January-1-2026.pdf#page=3
+  readings:
+    statute: The statute caps the income level at "not more than 100 percent" of the poverty line. The regulation sets
+      the monthly standard at 1/12 of the annual guideline "rounded down to the next whole dollar amount for household
+      unit sizes of one and two", and income must be "equal to or less than the income limit" (4.1(d)). In 2026 the
+      standards are $1,330 for one person and $1,803 for two.
+    other: Each chart prints 1/12 of the guideline rounded up. For two people it prints $1,372, $1,410, $1,437, $1,452,
+      $1,526, $1,644, $1,704, $1,763 and $1,804 (2018 to 2026); the regulation gives $1 less in each year. For one
+      person it prints $1,012, $1,041, $1,064, $1,074 and $1,133 (2018 to 2022) and $1,305 (2025), again $1 above
+      the regulation. Each of these amounts exceeds 100 percent of that year's guideline. The one-person amounts for
+      2023, 2024 and 2026 ($1,215, $1,255 and $1,330) divide exactly, and the readings agree there.
+  example: In 2025, a single aged person with $1,304.50 of countable income a month ($15,654 a year) is over the
+    regulation's $1,304 standard and the statute's $1,304.17 cap, but within the chart's $1,305.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/limit/rounds_monthly_limit_down.yaml
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/medicaid_optional_senior_or_disabled_income_limit.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10985
+  state: ruled
+  note: 'PE-US rounds New Jersey''s monthly standard down to the whole dollar for both unit sizes (rounds_monthly_limit_down.yaml,
+    applied in medicaid_optional_senior_or_disabled_income_limit.py) and admits income equal to the standard. The
+    statute-first rule decides the conflict: 42 U.S.C. 1396a(m)(2)(A) and N.J.A.C. 10:72-4.1(a) agree in every year,
+    and every chart amount that differs exceeds the statute''s cap. All nine charts from 2018 to 2026 were checked.
+    The corpus holds the 2026 chart; page 3 of the 2018 to 2025 charts is captured under source_conflicts/sources/us-nj/.
+    The model applies New Jersey''s 2018 values back to 2015, and the 2015 to 2017 charts were not checked. Pinning
+    cases: the New Jersey cases in medicaid_optional_senior_or_disabled_income_limit.yaml (2026 couple, 2025 single,
+    2021 couple) and is_optional_senior_or_disabled_income_eligible.yaml (2026 couple at the limit and one dollar
+    over).'
+- id: us-nj:medicaid-caretaker-relative-any-adult
+  program: medicaid
+  years:
+    from: 2014
+    type: calendar
+  question: Is an adult who lives with and cares for an unrelated child, such as a foster child, a caretaker relative
+    for New Jersey's parent and caretaker relative group, as the approved state plan elects, or only a listed relative,
+    as N.J.A.C. 10:69 reads?
+  sources:
+  - kind: plan
+    citation: New Jersey approved state plan S25 (NJ-13-0011-MM1), approved 02/28/2014, effective 01/01/2014
+    url: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=31
+  - kind: regulation
+    citation: 42 CFR 435.4, caretaker relative, paragraph (3)
+    url: https://www.law.cornell.edu/cfr/text/42/435.4
+  - kind: regulation
+    citation: 'N.J.A.C. 10:69-1.5 ("Caretaker relative", "Dependent child", "Parent-person") and 10:69-3.10(a)1 #page
+      9-10,12,64'
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_69%20AFDC-RELATED%20MEDICAID.PDF#page=9
+  - kind: regulation
+    citation: N.J.A.C. 10:78-1.1(a), NJ FamilyCare program outline
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_78%20NJ%20FAMILYCARE.PDF#page=4
+  readings:
+    statute: No statute is supplied; 42 CFR 435.4 paragraph (3) lets a state include "an adult with whom the child is
+      living and who assumes primary responsibility for the dependent child's care", and S25 checks that option.
+    other: N.J.A.C. 10:69, readopted effective July 15, 2024, defines a dependent child as one living "with a parent or
+      other enumerated relative" and limits a parent-person to listed relatives (grandparents, siblings, step-relatives,
+      aunts, uncles, first cousins, nephews and nieces).
+  example: A New Jersey adult earning $3,600 a year who lives with and cares for an unrelated 8-year-old foster child is
+    a caretaker relative under S25, and so in the parent group; under N.J.A.C. 10:69 the adult has no parent role and
+    falls to the adult group.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/parent/caretaker_relative/any_adult_option.yaml
+    - policyengine_us/variables/gov/hhs/medicaid/eligibility/categories/parent/is_parent_for_medicaid_nfc.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10984
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-11-15'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10984#issuecomment-6927855962
+  note: 'Ruled 2026-11-15 by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10984#issuecomment-6927855962. Follow S25 over N.J.A.C. 10:69.
+    A state elects the 42 CFR 435.4 paragraph (3) option through its state plan, and S25 is the federally approved
+    description of New Jersey''s parent and caretaker relative group. N.J.A.C. 10:69 also keeps the AFDC-C and AFDC-F
+    segments and the deprivation test (10:69-3.15), which S25 removes for this group and the model leaves out for New
+    Jersey from 2014, so the chapter still carries rules the plan has replaced. Its own "Caretaker relative" definition
+    ("the legally responsible adult or adults residing with the children") names no relationship, and N.J.A.C.
+    10:78-1.1(a) (NJ FamilyCare) covers "parents, caretakers and caretaker relatives", naming caretakers apart from
+    caretaker relatives. A relative caring for a foster child, such as a grandmother, is a caretaker under both texts.
+    No later New Jersey amendment replaces S25.'
+- id: us-nj:medicaid-cover-all-kids-immigration-status
+  program: medicaid
+  years:
+    from: 2023
+    type: calendar
+  question: Does New Jersey enroll children under 19 in NJ FamilyCare whatever their immigration status, as each
+    appropriations act from FY2023 authorizes, although N.J.S.A. 30:4J-11 and N.J.A.C. 10:78-3.2(a) and 10:79-3.2(a)
+    still require citizenship or an eligible immigration status?
+  sources:
+  - kind: statute
+    citation: P.L.2022, c.49 (FY2023 Appropriations Act), Division of Medical Assistance and Health Services language,
+      repeated in P.L.2023, c.74; P.L.2024, c.22; P.L.2025, c.74; and P.L.2026, c.27
+    url: https://pub.njleg.state.nj.us/bills/2022/AL22/49_.PDF#page=106
+  - kind: statute
+    citation: N.J.S.A. 30:4J-11, "qualified applicant" (a)(4), as amended by P.L.2008, c.38, section 3
+    url: https://pub.njleg.gov/bills/2008/PL08/38_.HTM
+  - kind: regulation
+    citation: N.J.A.C. 10:78-3.2(a)
+    url: https://nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_78%20NJ%20FAMILYCARE.PDF#page=33
+  - kind: regulation
+    citation: N.J.A.C. 10:79-3.2(a)
+    url: https://www.nj.gov/humanservices/notices/documents/rules-and-regulations/NJAC%2010_79%20NJ%20FAMILYCARE-CHILDRENS%20PROGRAM.pdf#page=30
+  - kind: guidance
+    citation: New Jersey Department of Human Services, FY 2022-2023 Discussion Points, response 5
+    url: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2023/DHS_response_2023.pdf#page=12
+  readings:
+    statute: Each appropriations act from FY2023 through FY2027 authorizes payments "to enroll in NJ FamilyCare any
+      child who, except for immigration status, meets financial and other eligibility provisions of the program",
+      "notwithstanding the provisions of any law or regulation to the contrary". The Department of Human Services began
+      enrollment on January 1, 2023.
+    other: N.J.S.A. 30:4J-11 limits a qualified child applicant to one "who is a citizen of the United States, or has
+      been lawfully admitted for permanent residence into and remains lawfully present in the United States", and
+      N.J.A.C. 10:78-3.2(a) requires "a citizen of the United States, an alien lawfully admitted for permanent
+      residence, or an alien who can be classified as an eligible alien". For the NJ FamilyCare-Children's Program,
+      N.J.A.C. 10:79-3.2(a) says "an individual must be a citizen of the United States, or an eligible alien in
+      accordance with this chapter".
+  example: In 2024 an undocumented 12-year-old in a New Jersey family at 202% of the poverty guideline is eligible for
+    the CHIP plans of NJ FamilyCare under the appropriations acts, which PE-US follows, and ineligible under N.J.S.A.
+    30:4J-11 and N.J.A.C. 10:79-3.2(a).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/regardless_of_immigration_status/child_age_limit.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10987
+  state: ruled
+  ruling:
+    by: PolicyEngine
+    date: '2026-11-15'
+    record: https://github.com/PolicyEngine/policyengine-us/pull/10987#issuecomment-6927857659
+  note: Ruled 2026-11-15 by the project lead; the ruling record is
+    https://github.com/PolicyEngine/policyengine-us/pull/10987#issuecomment-6927857659. PE-US gives New Jersey
+    children under 19 a pass on the Medicaid and CHIP immigration tests from 2023 (child_age_limit.yaml, read in
+    is_medicaid_immigration_status_eligible.py and is_chip_immigration_status_eligible.py). The later appropriations
+    acts displace the earlier statute and regulations in their own words. Appropriations language lapses each fiscal year; the acts were checked
+    through FY2027, which ends June 30, 2027, and the model carries the age limit forward. P.L.2021, c.132, which the
+    Department of Human Services' Cover All Kids FAQ cites, has no immigration language. The Office of Legislative
+    Services' FY2023 analysis says no federal Medicaid or CHIP reimbursement is available for this group, so the
+    coverage is state-funded. N.J.A.C. 10:79 governs the NJ FamilyCare-Children's Program under N.J.S.A. 30:4D and
+    P.L.1997, c.272, so its citizenship rule reaches children at Medicaid and CHIP income levels. Both chapters were
+    read as published through 57 N.J.R. (June 16, 2025).
 - id: us-nj:school-meals-income-limit-carryforward
   program: school-meals
   years:
@@ -9738,6 +10048,55 @@ candidates:
     living alone with no income nothing instead of $87. New York has administered its own supplement since October
     1, 2014. Whether a state regulation that departs from the statute's text binds as a Treasury regulation would
     is not yet ruled.
+- id: us-ny:ccap-child-ssi-state-supplement-exclusion
+  program: child-care-assistance
+  years:
+    from: 2023
+    type: calendar
+  question: Does New York exclude children's SSI and state supplements from child care assistance income from October
+    1, 2023, while LII still reproduces the earlier text without the child exclusion?
+  sources:
+  - kind: regulation
+    citation: OCFS compilation of 18 NYCRR 404.5(b)(5)(vi) and (b)(6)(xxi), current October 1, 2023, pages 10-12
+    url: https://web.archive.org/web/20240522174247id_/https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10
+  - kind: regulation
+    citation: OCFS compilation of 18 NYCRR 404.5(b)(5)(vi) and (b)(6), current November 24, 2021, pages 10-12
+    url: https://web.archive.org/web/20220529152858id_/https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10
+  - kind: regulation
+    citation: LII reproduction of 18 NYCRR 404.5, retrieved November 13, 2026
+    url: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-404.5
+  - kind: rulemaking
+    citation: New York State Register, October 18, 2023, CFS-42-23-00002-EP, printed page 1
+    url: https://dos.ny.gov/system/files/documents/2023/10/101823.pdf#page=7
+  - kind: rulemaking
+    citation: New York State Register, February 28, 2024, CFS-42-23-00002-ERP, printed pages 1-2
+    url: https://dos.ny.gov/system/files/documents/2024/02/022824.pdf#page=7
+  - kind: rulemaking
+    citation: New York State Register, June 12, 2024, CFS-42-23-00002-A, printed page 1
+    url: https://dos.ny.gov/system/files/documents/2024/06/061224.pdf#page=7
+  readings:
+    statute: No statute supplied; from October 1, 2023, OCFS excludes children's SSI, including state supplemental
+      payments, from child care assistance income under 404.5(b)(5)(vi) and (b)(6)(xxi).
+    other: LII still reproduces the text in force before October 1, 2023, which matches OCFS's November 24, 2021
+      compilation. Under that text, OCFS counts SSI and State supplemental payments for every member, and the exclusions
+      end at paragraph (xx).
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/states/ny/ocfs/ccap/ny_ccap_countable_income.py
+    - policyengine_us/parameters/gov/states/ny/ocfs/ccap/income/countable_income/child_ssi_exclusion_in_effect.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10827
+  state: unreviewed
+  note: OCFS put the child exclusion into effect on October 1, 2023 through emergency rule CFS-42-23-00002-EP, whose
+    notice says OCFS "further proposes to exclude Supplemental Security Income, including state supplemental payments,
+    received by any child(ren)". Before then, OCFS counted children's SSI and supplements under 404.5(b)(5)(vi). OCFS
+    retained the exclusion in the February 2024 revised rule and adopted it permanently, without further changes,
+    effective June 12, 2024. LII's notes list the 2024 emergency amendments, but its text omits them. PolicyEngine
+    counts children's payments before October 1, 2023 and excludes them from that date. The captures under
+    source_conflicts/sources/us-ny/ preserve both OCFS compilations, LII's text and the three rulemaking notices. We
+    could not reach OCFS's live copy in November 2026, so the current text rests on the archived October 2023
+    compilation and the June 2024 adoption notice.
 - id: us-oh:heap-2026-2027-large-household-smi-amounts
   program: liheap
   years:
@@ -16298,30 +16657,57 @@ candidates:
 - id: us:ssi-spousal-deeming-child-scope
   program: ssi
   years:
-    from: 2026
-    to: 2026
+    from: 1987
     type: calendar
   question: Does the regulation's ineligible-child definition include the claimant's siblings in spouse-to-spouse
     deeming, or does POMS limit it to the couple's children?
   sources:
   - kind: regulation
     citation: 20 CFR 416.1160(d)
-    url: null
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)
+  - kind: regulation
+    citation: 20 CFR 416.1163(b)
+    url: https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)
+  - kind: regulation
+    citation: 20 CFR 416.1160(c)(2)
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(c)(2)
+  - kind: regulation
+    citation: 20 CFR 416.1101
+    url: https://www.ecfr.gov/current/title-20/section-416.1101
+  - kind: regulation
+    citation: 20 CFR 416.1132(a)
+    url: https://www.ecfr.gov/current/title-20/section-416.1132#p-416.1132(a)
+  - kind: rulemaking
+    citation: 52 FR 8883 (March 20, 1987)
+    url: https://www.govinfo.gov/content/pkg/FR-1987-03-20/pdf/FR-1987-03-20.pdf
   - kind: manual
-    citation: POMS SI 01310.115 A.3; POMS SI 01310.140 A
+    citation: POMS SI 01310.115 A.3
     url: https://secure.ssa.gov/poms.nsf/lnx/0501310115
+  - kind: manual
+    citation: POMS SI 01310.140 A
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501310140
   readings:
-    statute: The full regulatory definition would include the claimant's own siblings.
-    other: POMS limits spouse-to-spouse deeming to the children of either member of the couple.
+    statute: 416.1160(d) defines an ineligible child to include the natural or adopted child of the claimant's parent
+      or of that parent's spouse, and 416.1160(c)(2) and 416.1163(b) apply that definition in spouse-to-spouse deeming,
+      so the claimant's co-resident siblings and step-siblings receive allocations whether or not the parent lives there.
+    other: POMS SI 01310.140 A forms the spouse-to-spouse deeming household from the couple and the children of either
+      member, so only those children receive allocations.
+  example: In 2026 a claimant with no income, whose spouse has $1,000 of monthly unearned income and whose 15-year-old
+    brother lives with them, gets $994 a month of SSI with the brother's $497 allocation and $511 without it.
   pe_us:
-    follows: unknown
+    follows: statute
     code:
+    - policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_spousal_deeming_child_allocations.py
     - policyengine_us/variables/gov/ssa/ssi/eligibility/status/is_ssi_ineligible_child.py
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10146
-  state: unreviewed
-  note: 'The open PR follows POMS rather than the broader regulatory reading; no statutory comparison or specific
-    ruling is supplied. Code not yet on main: ssi_spousal_deeming_child_allocations, ssi_ineligible_child_allocation.'
+  state: ruled
+  note: Follows the regulation. 416.1160(d) defines an ineligible child once for all deeming, 416.1160(c)(2) applies it
+    to spouse deemors, "you" is the claimant (416.1101), and a household is a place of residence (416.1132(a)). The
+    claimant's co-resident siblings, half-siblings and step-siblings get allocations; the spouse's siblings do not.
+    POMS SI 01310.140 A lists only the couple's children and is not followed. The code finds a sibling through a parent
+    id the claimant and the child share, and a step-sibling when the claimant's parent and that parent's spouse both
+    live in the household. It applies this scope in every year; the 1987 final rule is the earliest text checked.
 - id: us:standard-plan-minimum-consolidated
   program: student-loans
   years:
@@ -16820,6 +17206,50 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10815
   state: ruled
   note: Follow the regulation and operational payment instructions over the plan's checkbox. The model caps summed hourly ceilings at the family's billed expenses because it records expenses for the SPM unit rather than separately for each child or provider.
+- id: us:medicaid-parental-child-allocation-ssi-floor
+  program: medicaid
+  years:
+    from: 2015
+    type: calendar
+  question: May a non-209(b) state exclude a child from optional aged, blind or disabled Medicaid parental allocations when SSI includes the child?
+  sources:
+  - kind: statute
+    citation: 42 USC 1396a(r)(2)(A)-(B)
+    url: https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXIX-sec1396a.htm
+  - kind: regulation
+    citation: 42 CFR 435.601(d)(2)-(3)
+    url: https://www.ecfr.gov/current/title-42/section-435.601#p-435.601(d)(2)
+  - kind: manual
+    citation: New York Medicaid Reference Guide, Allocation, printed page 233
+    url: https://healthweb-back.health.ny.gov/health_care/medicaid/reference/mrg/income.pdf#page=136
+  - kind: manual
+    citation: Wisconsin Medicaid Eligibility Handbook 15.1.2
+    url: https://www.emhandbooks.wisconsin.gov/meh-ebd/policy_files/15/15.1.htm
+  - kind: manual
+    citation: POMS SI 01715.020
+    url: https://secure.ssa.gov/poms.nsf/lnx/0501715020
+  - kind: regulation
+    citation: 42 CFR 435.602(b)
+    url: https://www.ecfr.gov/current/title-42/section-435.602#p-435.602(b)
+  - kind: regulation
+    citation: 20 CFR 416.1160(d) and 416.1856
+    url: https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)
+  - kind: guidance
+    citation: CMS State Medicaid Manual 3240.4
+    url: https://www.cms.gov/regulations-and-guidance/guidance/manuals/downloads/p45_03.zip
+  readings:
+    statute: Non-209(b) states allocate for every child SSI does, because a narrower child definition removes allocations and so makes ineligible some people whom SSI's method finds eligible, a more restrictive methodology that 42 USC 1396a(r)(2) and 42 CFR 435.601(d)(2)-(3) bar.
+    other: State child definitions exclusively govern allocations, including New York's under-18 limit and Wisconsin's minor or dependent-18 limit and nonblind, nondisabled requirement.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/variables/gov/hhs/medicaid/income/deemed/from_ineligible_parent/medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent_monthly.py
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/deeming/ineligible_child_age_limit.yaml
+    - policyengine_us/parameters/gov/hhs/medicaid/eligibility/categories/senior_or_disabled/income/deeming/ineligible_child_requires_nonblind_nondisabled.yaml
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/10146
+  state: ruled
+  note: Follows the statute. A child definition narrower than SSI's removes allocations and so makes ineligible some people whom SSI's method finds eligible, which 42 USC 1396a(r)(2)(B) and 42 CFR 435.601(d)(3) bar outside 209(b) states. So the model does not apply New York's or Wisconsin's narrower manual definitions, and it can show eligibility those manuals would deny. Missouri (children under 18) and Virginia (children under 21 who are not blind or disabled), which POMS SI 01715.020 lists as 209(b) states, keep their manual child definitions under 42 USC 1396a(f). Their January 1, 1972 state plans are unchecked.
 - id: us-ut:medicaid-parent-standard-2018-cms-table
   program: medicaid
   years:

@@ -25,7 +25,10 @@ class is_parent_for_medicaid_nfc(Variable):
         # The model assigns tax-unit dependency from living arrangements
         # rather than actual filing, so non-filer caretakers are captured;
         # kinship itself is not encoded, so an unrelated filer who claims a
-        # child is indistinguishable from a caretaker relative.
+        # child is indistinguishable from a caretaker relative. That matches
+        # the definition in states electing the 42 CFR 435.4 paragraph (3)
+        # option to include any adult who lives with the child and assumes
+        # primary responsibility for the child's care.
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         is_dependent = person("is_tax_unit_dependent", period)
         # A dependent child is under the state's age limit (the 42 CFR
@@ -55,14 +58,20 @@ class is_parent_for_medicaid_nfc(Variable):
             & attends_secondary_school
             & (age < dc.student_age_limit)
         )
-        # Foster children are excluded as a proxy: an unrelated foster
-        # parent may claim the child as a tax dependent yet is not a
-        # relative by blood, adoption, or marriage. This also excludes
-        # kinship foster caregivers, whose blood relationship legally
-        # survives the foster placement - a known limitation, since the
-        # model cannot distinguish the two placements.
+        # In states electing the 42 CFR 435.4 paragraph (3) any-adult
+        # option on their state plan S25 page, a foster child makes the
+        # adult caring for the child a caretaker, whether or not the adult
+        # is a relative. Elsewhere foster children are excluded as a proxy:
+        # an unrelated foster parent may claim the child as a tax dependent
+        # yet is not a relative by blood, adoption, or marriage. Outside
+        # electing states this also excludes kinship foster caregivers,
+        # whose blood relationship legally survives the foster placement -
+        # a known limitation, since the model cannot distinguish the two
+        # placements.
         in_foster_care = add(person, period, ["is_in_foster_care"]) > 0
-        is_dependent_child = is_dependent & age_qualifies & ~in_foster_care
+        elects_any_adult = p.caretaker_relative.any_adult_option[state].astype(bool)
+        excluded_foster_child = in_foster_care & ~elects_any_adult
+        is_dependent_child = is_dependent & age_qualifies & ~excluded_foster_child
         has_dependent_child_in_tax_unit = person.tax_unit.sum(is_dependent_child) > 0
 
         # A person claimed as a tax dependent is not the caretaker filer,
