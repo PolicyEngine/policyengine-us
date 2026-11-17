@@ -1,3 +1,10 @@
+## [2.145.5] - 2026-11-17
+
+### Fixed
+
+- Require a parent's or caretaker relative's children under the state's age limit (New Jersey 21, otherwise 19) to have Medicaid, CHIP, Marketplace or other coverage for the Medicaid adult group, per 42 CFR 435.119(c).
+
+
 ## [2.145.4] - 2026-11-17
 
 ### Fixed
