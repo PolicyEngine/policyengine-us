@@ -515,7 +515,103 @@
   output:
     sd_cca_hourly_rate: 0
 
-- name: The Minnehaha center infant ceiling starts with the July 2020 chart.
+- name: The Minnehaha center infant ceiling starts with the June 2016 chart.
+  period: 2016
+  absolute_error_margin: 0.0001
+  input:
+    age: 2
+    state_code: SD
+    county_str: MINNEHAHA_COUNTY_SD
+    meets_ccdf_activity_test: true
+  output:
+    sd_cca_hourly_rate:
+      2016-05: 0
+      2016-06: 3.95
+
+- name: DSS applies the June 2016 provider ceilings in Minnehaha County in 2017.
+  period: 2017-07
+  absolute_error_margin: 0.0001
+  input:
+    age:
+      2017: [2, 3, 6, 2, 7, 4, 4]
+    state_code:
+      2017: [SD, SD, SD, SD, SD, SD, SD]
+    county_str:
+      2017:
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+    meets_ccdf_activity_test:
+      2017: [true, true, true, true, true, true, true]
+    sd_cca_provider_type:
+      - LICENSED_CENTER
+      - LICENSED_CENTER
+      - LICENSED_CENTER
+      - FAMILY_DAY_CARE
+      - BEFORE_AFTER_SCHOOL
+      - INFORMAL
+      - INFORMAL
+    sd_cca_specialized_infant_toddler_rate_eligible: [false, false, false, true, false, false, false]
+    sd_cca_special_needs_rate_approved: [false, false, false, false, false, false, true]
+  output:
+    # The 2016 family sheet allows $2.85 × 1.25 = $3.5625.
+    # The FFY 2016–2018 plan states the $4.75 standard special-needs ceiling.
+    sd_cca_hourly_rate: [3.95, 3.55, 3.7, 3.5625, 3.3, 1.75, 4.75]
+
+- name: The June 16, 2018 center and special-needs ceilings first apply in the July monthly lookup.
+  period: 2018
+  absolute_error_margin: 0.0001
+  input:
+    age: [2, 2]
+    state_code: [SD, SD]
+    county_str: [MINNEHAHA_COUNTY_SD, MINNEHAHA_COUNTY_SD]
+    meets_ccdf_activity_test: [true, true]
+    sd_cca_special_needs_rate_approved:
+      2018-06: [false, true]
+      2018-07: [false, true]
+  output:
+    # The June 16 chart and FFY 2019–2021 plan section 4.6.2(c) specify $5.
+    sd_cca_hourly_rate:
+      2018-06: [3.95, 4.75]
+      2018-07: [4.05, 5]
+
+- name: DSS applies the June 2018 provider ceilings in Minnehaha County in July.
+  period: 2018-07
+  absolute_error_margin: 0.0001
+  input:
+    age:
+      2018: [2, 3, 7, 4, 4, 6]
+    state_code:
+      2018: [SD, SD, SD, SD, SD, SD]
+    county_str:
+      2018:
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - MINNEHAHA_COUNTY_SD
+        - NOT_A_COUNTY
+    meets_ccdf_activity_test:
+      2018: [true, true, true, true, true, true]
+    sd_cca_provider_type:
+      - FAMILY_DAY_CARE
+      - FAMILY_DAY_CARE
+      - BEFORE_AFTER_SCHOOL
+      - INFORMAL
+      - INFORMAL
+      - LICENSED_CENTER
+    sd_cca_specialized_infant_toddler_rate_eligible: [true, true, false, false, false, false]
+    sd_cca_special_needs_rate_approved: [false, false, false, false, true, false]
+  output:
+    # The qualifying family rate is $3 × 1.25 and the center age-band
+    # minimum is $2.55, as published for Brookings and several other counties.
+    sd_cca_hourly_rate: [3.75, 2.85, 3.7, 1.9, 5, 2.55]
+
+- name: The Minnehaha center infant ceiling changes with the July 2020 chart.
   period: 2020
   absolute_error_margin: 0.0001
   input:
@@ -525,7 +621,7 @@
     meets_ccdf_activity_test: true
   output:
     sd_cca_hourly_rate:
-      2020-06: 0
+      2020-06: 4.05
       2020-07: 4.2
 
 - name: The Minnehaha center infant ceiling changes in July 2022.

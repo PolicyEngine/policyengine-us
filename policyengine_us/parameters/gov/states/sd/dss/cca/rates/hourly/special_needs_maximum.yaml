@@ -1,7 +1,10 @@
 description: South Dakota reimburses approved special-needs child care at up to this hourly maximum under the Child Care Assistance program.
-# The state plans specify the ceiling and the informal provider guides
-# describe applying for enhanced reimbursement.
+# The charts and plans specify standard ceilings. The informal provider
+# guides describe DSS approval for enhanced reimbursement.
 values:
+  2016-06-01: 4.75
+  # Candidate: us-sd:cca-hourly-special-needs-2018
+  2018-06-16: 5
   2020-07-01: 5.15
   2022-07-01: 5.8
   2024-07-01: 6.8
@@ -12,6 +15,14 @@ metadata:
   unit: currency-USD
   label: South Dakota CCA hourly special-needs maximum
   reference:
+    - title: South Dakota FFY 2016-2018 Child Care and Development Fund State Plan, Section 4.3.2
+      href: https://web.archive.org/web/20170131155227id_/https://dss.sd.gov/docs/childcare/ccs_state_plan_2016.pdf#page=105
+    - title: South Dakota group family and center care reimbursement rates, effective June 16, 2018
+      href: https://web.archive.org/web/20180716151353id_/http://dss.sd.gov/docs/childcare/assistance/childcare_center_rate_chart.pdf#page=1
+    - title: South Dakota FFY 2019-2021 Child Care and Development Fund State Plan, Section 4.6.2(c)
+      href: https://web.archive.org/web/20191103203951id_/http://dss.sd.gov/docs/childcare/ccs_state_plan.pdf#page=150
+    - title: South Dakota unregulated child care provider reimbursement guide, October 2016
+      href: https://web.archive.org/web/20170201152738id_/http://dss.sd.gov/docs/childcare/assistance/UnRegManualupdated.pdf#page=14
     - title: South Dakota FFY 2022-2024 Child Care and Development Fund State Plan, Section 4.3.3
       href: https://web.archive.org/web/20220323014108id_/https://dss.sd.gov/docs/childcare/state_plan/2022-2024_State_Plan.pdf#page=144
     - title: South Dakota updated FFY 2022-2024 Child Care and Development Fund State Plan, Section 4.3.3
