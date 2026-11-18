@@ -1,3 +1,10 @@
+## [2.145.7] - 2026-11-18
+
+### Fixed
+
+- Archive New Jersey child and dependent care credit source excerpts for reproducible historical income-boundary checks.
+
+
 ## [2.145.6] - 2026-11-17
 
 ### Fixed
