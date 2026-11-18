@@ -14,7 +14,7 @@ metadata:
       href: https://pub.njleg.gov/bills/2020/AL20/61_.HTM
     - title: Get Covered NJ - New Jersey Health Plan Savings
       href: https://www.nj.gov/getcoverednj/financialhelp/premiums/
-    - title: NJ DOBI 2027 Rate Filing Requirements, section 7 (plan year 2026 subsidy amounts by FPL range)
+    - title: NJ DOBI 2027 Rate Filing Requirements, Section 2, item 7 (plan year 2026 subsidy amounts by FPL range)
       href: https://www.nj.gov/dobi/division_insurance/ihcseh/ratefilings/2027RateFilingRequirements.pdf#page=4
 
 brackets:
@@ -36,7 +36,7 @@ brackets:
   # values and confirms PY2026 currency, so both are carried. The Get Covered NJ
   # URL is a secondary (anchorless) corroborating reference, not a value source.
   # Bands are lower-inclusive / upper-exclusive, as DOBI's 2027 Rate Filing
-  # Requirements (section 7) tabulate "the subsidy amounts from plan year 2026":
+  # Requirements (Section 2, item 7) tabulate "the subsidy amounts from plan year 2026":
   # "Less than 150% FPL" $20, "At least 150% FPL but less than 200% FPL" $40, ...,
   # "At least 550% FPL but less than or equal to 600% FPL" $50, "Above 600% FPL"
   # $0. Each threshold is therefore the band's lower edge, and a household exactly

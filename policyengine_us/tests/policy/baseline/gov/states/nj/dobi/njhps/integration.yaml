@@ -1,7 +1,7 @@
 # Integration tests for New Jersey Health Plan Savings (NJHPS).
 #
-# These exercise the full chain: the exact ratio of ACA MAGI to the prior-year
-# guideline (eligibility band) and aca_magi_fraction (PMPM band) ->
+# These exercise the full chain: the exact ratio of ACA MAGI to aca_fpg
+# (eligibility band) and aca_magi_fraction (PMPM band) ->
 # nj_njhps_member_eligible (per-person non-income enrollee gate) ->
 # nj_njhps_eligible (in_effect + band + at least one member) ->
 # nj_njhps (per-member build-up capped by SLCSP - APTC).
@@ -68,8 +68,7 @@
       tax_unit:
         members: [person1, person2, person3, person4]
         aca_magi: 30_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 20_000
         aca_ptc: 8_000
     households:
@@ -100,8 +99,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 50_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 7_000
         aca_ptc: 0
     households:
@@ -131,8 +129,7 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 22_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_200
     households:
@@ -161,8 +158,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 12_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 4_000
     households:
@@ -191,8 +187,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         filing_status: SEPARATE
         slcsp: 9_000
         aca_ptc: 4_000
@@ -223,8 +218,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 60_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 0
     households:
@@ -259,8 +253,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 40_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 9_500
     households:
@@ -292,8 +285,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 40_100
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 0
     households:
@@ -325,8 +317,7 @@
       tax_unit:
         members: [person1, person2, person3, person4]
         aca_magi: 30_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 20_000
         aca_ptc: 8_000
     households:
