@@ -1,0 +1,20 @@
+description: Riverside County uses the poverty guidelines from this many years before the model year for the federal income floor under the Low Income Home Energy Assistance Program.
+# HHS makes each January's guidelines mandatory for LIHEAP from the next
+# October 1, so model period 2025 (FY2025) uses the 2024 guidelines and 2026
+# (FY2026) the 2025 guidelines. The county's own limit uses state median
+# income.
+values:
+  2021-10-01: 1
+metadata:
+  unit: year
+  period: year
+  label: Riverside County LIHEAP poverty guideline year lag
+  reference:
+    - title: LIHEAP Information Memoranda, annual poverty guideline memoranda
+      href: https://acf.gov/ocs/policy-guidance/liheap-information-memoranda
+    - title: LIHEAP IM 2024-02, Attachment 2, poverty guidelines for mandatory use in FY25
+      href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att2FPGTables_States.pdf#page=1
+    - title: LIHEAP IM 2025-02, Attachment 2, poverty guidelines for mandatory use in FY26
+      href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_FPGSte-Table_Att2.pdf#page=1
+    - title: LIHEAP IM 2026-01, poverty guidelines for optional use in FY26 and mandatory use in FY27
+      href: https://acf.gov/ocs/policy-guidance/liheap-im2026-01-federal-poverty-guidelines-fpg-and-state-median-income-smi

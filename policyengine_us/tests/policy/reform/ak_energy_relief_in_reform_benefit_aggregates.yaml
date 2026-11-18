@@ -1,0 +1,60 @@
+# Alaska's energy relief must reach both benefit aggregates under the reforms
+# that replace household_benefits and spm_unit_benefits with their own lists.
+# Two adults at $500,000 of employment income so no other benefit fires and each
+# aggregate isolates the $298.17 a person paid in 2024.
+#
+# This lives under tests/policy/reform for the reason the Trump dividend cases do:
+# stacked reforms stall the congress structural batch.
+
+- name: Under ECPA, Alaska energy relief counts in both benefit aggregates.
+  period: 2024
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    people:
+      adult_one:
+        age: 40
+        employment_income: 500_000
+      adult_two:
+        age: 38
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult_one, adult_two]
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+    households:
+      household:
+        members: [adult_one, adult_two]
+        state_code: AK
+  output:
+    household_benefits: 596.34
+    spm_unit_benefits: 596.34
+
+- name: Under BOOST, Alaska energy relief counts in both benefit aggregates.
+  period: 2024
+  reforms: policyengine_us.reforms.congress.tlaib.boost.boost_middle_class_tax_credit.boost_middle_class_tax_credit
+  input:
+    gov.contrib.harris.lift.middle_class_tax_credit.in_effect: true
+    gov.contrib.congress.tlaib.boost.middle_class_tax_credit.administered_through_ssa: false
+    people:
+      adult_one:
+        age: 40
+        employment_income: 500_000
+      adult_two:
+        age: 38
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult_one, adult_two]
+    spm_units:
+      spm_unit:
+        members: [adult_one, adult_two]
+    households:
+      household:
+        members: [adult_one, adult_two]
+        state_code: AK
+  output:
+    household_benefits: 596.34
+    spm_unit_benefits: 596.34

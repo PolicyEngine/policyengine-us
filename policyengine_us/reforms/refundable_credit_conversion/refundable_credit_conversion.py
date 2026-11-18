@@ -54,10 +54,12 @@ def create_refundable_credit_conversion() -> Reform:
             else:
                 taxpayer_amount = 0
 
-            # Reuses the baseline `ctc_qualifying_children` variable so
-            # the same eligibility rules as the federal CTC apply (per
-            # IRC §24(c)). Hoisted so the per-other-dependent branch can
-            # reuse the same count.
+            # Reuses the baseline `ctc_qualifying_children` variable, the
+            # children for whom the federal CTC is allowed (IRC §24(c), (e)
+            # and (h)(7)); a child whose filer fails the filer
+            # identification test counts as an other dependent below.
+            # Hoisted so the per-other-dependent branch can reuse the same
+            # count.
             ctc_count = tax_unit("ctc_qualifying_children", period)
             if p.credit.use_ctc_dependent_credit:
                 ctc_dependent_amount = ctc_count * p.credit.per_ctc_dependent

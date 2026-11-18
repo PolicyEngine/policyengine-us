@@ -185,3 +185,44 @@
     # receives nothing. §9(2) couple combining applies only "if both are
     # eligible" — here only person1 is SSP-eligible.
     ky_ssp: [1_610, 0]
+
+# 921 KAR 2:015 Section 9(1)(c): the caretaker standard is $1,606 for an eligible couple both receiving care, or $803 per spouse, and $1,056 for an individual. No countable income reduces these standards.
+# https://apps.legislature.ky.gov/law/kar/titles/921/002/015/
+- name: Kentucky recognizes a caretaker couple alongside another aged adult
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2026: 70
+        is_tax_unit_head:
+          2026: true
+        ky_ssp_category: CARETAKER
+        ky_ssp_care_receivers: BOTH
+      wife:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+        ky_ssp_category: CARETAKER
+        ky_ssp_care_receivers: BOTH
+      third_adult:
+        age:
+          2026: 70
+        is_tax_unit_dependent:
+          2026: true
+        ky_ssp_category: CARETAKER
+        ky_ssp_care_receivers: BOTH
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2026: KY
+  output:
+    ky_ssp_claim_type: [COUPLE_BOTH_ELIGIBLE, COUPLE_BOTH_ELIGIBLE, INDIVIDUAL]
+    ky_ssp_payment_standard: [803, 803, 1056]
+    ky_ssp: [803, 803, 1056]

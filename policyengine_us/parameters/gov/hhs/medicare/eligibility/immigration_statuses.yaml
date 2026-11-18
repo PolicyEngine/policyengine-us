@@ -1,0 +1,42 @@
+description: The United States limits eligibility to these immigration statuses under the Medicare program.
+
+# 42 USC 1395mmm(a) limits Medicare to citizens and nationals, permanent residents,
+# Cuban and Haitian entrants, and Compact of Free Association residents. Nationals
+# and Compact residents have no immigration_status value.
+# 42 USC 1395mmm(b)(1) applies that limit on January 4, 2027 to people already
+# entitled or enrolled on July 4, 2025. A YEAR variable reads parameters at January 1,
+# so the list is dated January 1, 2027; a January 4 date would not apply until 2028.
+# 42 USC 1395mmm(a) bars new entrants from July 4, 2025 at once. No input records
+# enrollment on July 4, 2025, so the model treats everyone as grandfathered through
+# 2026, which overstates eligibility for those new entrants.
+# The earlier list is the lawful presence limit in 8 USC 1611(b)(3), applied backward
+# to the start of Medicare as an approximation.
+values:
+  1966-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+    - DACA
+    - TPS
+
+  2027-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - CUBAN_HAITIAN_ENTRANT
+
+metadata:
+  unit: list
+  period: year
+  label: Medicare eligible immigration statuses
+  reference:
+    - title: 42 U.S. Code § 1395mmm - Limiting Medicare coverage of certain individuals
+      href: https://www.law.cornell.edu/uscode/text/42/1395mmm
+    - title: "Public Law 119-21, section 71201 #page 249-250"
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=249
+    - title: 8 U.S. Code § 1611(b)(3)
+      href: https://www.law.cornell.edu/uscode/text/8/1611#b_3

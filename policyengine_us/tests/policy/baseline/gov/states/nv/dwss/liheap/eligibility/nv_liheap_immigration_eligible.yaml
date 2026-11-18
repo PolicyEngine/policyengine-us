@@ -1,0 +1,45 @@
+# EAP Manual 302 A admits citizens and qualified non-citizens. 302 C bars a qualified
+# non-citizen for five years after entry unless the person is under 18 (I), a refugee,
+# asylee, non-citizen whose deportation is withheld or Cuban/Haitian entrant (VI), a
+# veteran, active duty member or their spouse or dependent child (VII), or a permanent
+# resident with 40 qualifying quarters (VIII). Each entry below is a separate one-person
+# household.
+
+- name: Case 1, two years after entry only citizens and bar-exempt qualified statuses are eligible.
+  period: 2026
+  input:
+    state_code: [NV, NV, NV, NV, NV, NV, NV, NV, NV, NV, NV]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, LEGAL_PERMANENT_RESIDENT, REFUGEE, ASYLEE, DEPORTATION_WITHHELD,
+      CUBAN_HAITIAN_ENTRANT, CONDITIONAL_ENTRANT, PAROLED_ONE_YEAR, UNDOCUMENTED, DACA, TPS]
+    years_since_us_entry: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+  output:
+    # Permanent residents, conditional entrants and parolees are barred (302 C);
+    # undocumented, DACA and TPS are not qualified statuses (302 A).
+    nv_liheap_immigration_eligible: [true, false, true, true, true, true, false, false, false, false, false]
+
+- name: Case 2, the bar ends five years after entry.
+  period: 2026
+  input:
+    state_code: [NV, NV]
+    age: [40, 40]
+    immigration_status: [LEGAL_PERMANENT_RESIDENT, LEGAL_PERMANENT_RESIDENT]
+    years_since_us_entry: [4, 5]
+  output:
+    nv_liheap_immigration_eligible: [false, true]
+
+- name: Case 3, age, quarters and military exemptions apply within the bar.
+  period: 2026
+  input:
+    state_code: [NV, NV, NV, NV, NV]
+    age: [17, 18, 40, 40, 40]
+    immigration_status: [LEGAL_PERMANENT_RESIDENT, LEGAL_PERMANENT_RESIDENT, LEGAL_PERMANENT_RESIDENT,
+      PAROLED_ONE_YEAR, LEGAL_PERMANENT_RESIDENT]
+    years_since_us_entry: [2, 2, 2, 2, 2]
+    snap_alien_qualifying_quarters: [0, 0, 40, 40, 0]
+    is_veteran: [false, false, false, false, true]
+  output:
+    # Under 18 (I) -> true; 18 -> false; permanent resident with 40 quarters (VIII) ->
+    # true; the quarters exemption covers permanent residents only -> false; veteran (VII)
+    # -> true.
+    nv_liheap_immigration_eligible: [true, false, true, false, true]

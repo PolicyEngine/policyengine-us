@@ -1,0 +1,12 @@
+description: California truncates the energy burden ratio to this increment under the Low Income Home Energy Assistance Program.
+# A ratio increment of 0.0001 is 0.01 percentage point (one basis point).
+values:
+  2025-10-01: 0.0001
+
+metadata:
+  unit: /1
+  period: year
+  label: California LIHEAP energy burden ratio truncation increment
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=283

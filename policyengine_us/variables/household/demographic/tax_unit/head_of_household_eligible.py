@@ -42,12 +42,21 @@ class head_of_household_eligible(Variable):
         # IRC 7703(b)(1) further requires the taxpayer to file a separate
         # return: a JOINT filer who is separated cannot claim HoH because
         # the joint return forecloses the "considered unmarried" path.
-        treated_unmarried_qualifies = tax_unit.sum(is_qualifying_child) > 0
+        # IRC 7703(b)(1) needs a child in the home for more than half the year,
+        # and 7703(b)(3) needs the spouse out of the household for the last
+        # six months.
+        resident_child = is_qualifying_child & person(
+            "eitc_child_lived_with_taxpayer_more_than_half_year", period
+        )
+        treated_unmarried_qualifies = tax_unit.sum(resident_child) > 0
+        lived_apart = tax_unit("eitc_spouses_lived_apart_last_six_months", period)
         surviving_spouse = tax_unit("surviving_spouse_eligible", period)
         unmarried_qualifies = has_qualifying_person & ~married & ~is_separated
         # ~married masks the JOINT-with-is_separated=true case: a JOINT
         # filer cannot use IRC 7703(b)(1) because they have not filed a
         # separate return. MFS filers (spouse in a different tax unit) have
         # married=false and continue to qualify via this branch.
-        separated_qualifies = treated_unmarried_qualifies & is_separated & ~married
+        separated_qualifies = (
+            treated_unmarried_qualifies & is_separated & ~married & lived_apart
+        )
         return (unmarried_qualifies | separated_qualifies) & ~surviving_spouse

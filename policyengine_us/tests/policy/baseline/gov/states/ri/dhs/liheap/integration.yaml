@@ -1,0 +1,263 @@
+# Sources for the expected values in this file:
+# - FY2026 Grant Amounts and Income Eligibility (one page; rows A-I and the income
+#   table): https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf
+# - DHS LIHEAP Manual (2019), sections II.B, III and III.E-III.H (pages 5-6, 12, 14-21):
+#   https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=5
+# - FY2026 application instructions, Appendix H, page 2 (full-time students):
+#   https://dhs.ri.gov/media/9671/download?language=en#page=2
+# - DHS response to Division data request 1-1 (the $350 enhancement):
+#   https://ripuc.ri.gov/sites/g/files/xkgbur841/files/2025-10/25-38-GE%20-%20LIHEAP%20Enhancement%20-%20DPUC%20Data%20Requests%20Set%201%20%2810-9-25%29%20DHS%20Response.pdf#page=1
+# Wages use the 2026 Rhode Island minimum wage, $16 an hour (R.I. DLT). Band tops are
+# the 2025 guideline (15,650 + 5,500 per additional person) times 75%, 100%, 125% and
+# 150%, rounded half up to the dollar. These match the matrix income table except the
+# size-two 125% cell, which repeats 31,725 (payment/ri_liheap_income_band.yaml Case 2).
+
+# A retiree aged 72 who lives alone and receives only federal SSI, the 2026 individual
+# federal benefit rate of $994 a month (SSA, SSI Federal Payment Amounts): 994 x 12 =
+# 11,928. Her income is below the poverty guideline, so the Medicare Savings Program
+# pays her Part B premium. She heats with electricity billed in her own name.
+- name: Case 1, an elderly SSI recipient with her own electric heating bill receives the row B electric grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 11_928
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_500
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+        is_in_public_housing: false
+  output:
+    # She pays her own primary heating bill (manual III.A, page 12).
+    has_heating_expense: true
+    # A citizen counts in the size (manual page 12).
+    ri_liheap_household_size: 1
+    # SSI counts as fixed income (manual page 15): 11,928.
+    ri_liheap_income: 11_928
+    # Matrix, 60% SMI annual, one person.
+    ri_liheap_income_limit: 42_252
+    # 11,738 (75%) < 11,928 <= 15,650 (100%): row B.
+    ri_liheap_income_band: 2
+    ri_liheap_eligible: true
+    # Row B Electric 357 + 350 enhancement = 707.
+    ri_liheap_base_payment: 707
+    ri_liheap: 707
+
+# A single parent aged 34 working full time at the minimum wage (16 x 40 x 52 = 33,280)
+# with two school-age children, no child care costs, no RI Works and no SSI. Natural gas
+# heat is billed in the parent's name.
+- name: Case 2, a working single parent with two children receives the row C natural gas grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 33_280
+      person2:
+        age: 9
+        immigration_status: CITIZEN
+        ssi: 0
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+        is_in_public_housing: false
+  output:
+    has_heating_expense: true
+    ri_liheap_household_size: 3
+    # Wages count gross (manual page 14); the children have no income.
+    ri_liheap_income: 33_280
+    # Matrix, 60% SMI annual, three people.
+    ri_liheap_income_limit: 68_253
+    # Size 3 guideline 26,650: 26,650 (100%) < 33,280 <= 33,313 (125%, 33,312.50
+    # rounded half up): row C.
+    ri_liheap_income_band: 3
+    ri_liheap_eligible: true
+    # Row C Natural Gas 192 + 350 enhancement = 542.
+    ri_liheap_base_payment: 542
+    ri_liheap: 542
+
+# Two parents (one full time at the minimum wage, 33,280; one 20 hours a week, 16 x 20 x
+# 52 = 16,640), a 20-year-old full-time college student working 10 hours a week (16 x 10
+# x 52 = 8,320) and a 15-year-old. They buy their own fuel oil.
+- name: Case 3, a family of four with a full-time college student receives the row E delivered fuel grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 46
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 33_280
+      person2:
+        age: 44
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 16_640
+      person3:
+        age: 20
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 8_320
+      person4:
+        age: 15
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2_400
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: RI
+        is_in_public_housing: false
+  output:
+    has_heating_expense: true
+    ri_liheap_household_size: 4
+    # The student's 8,320 is excluded (Appendix H, page 2): 33,280 + 16,640 = 49,920.
+    ri_liheap_income: 49_920
+    # Matrix, 60% SMI annual, four people.
+    ri_liheap_income_limit: 81_254
+    # Size 4 guideline 32,150: 49,920 > 48,225 (150%): row E.
+    ri_liheap_income_band: 5
+    ri_liheap_eligible: true
+    # Row E Deliverables 657; delivered fuel gets no utility enhancement.
+    ri_liheap_base_payment: 657
+    ri_liheap: 657
+
+# A public housing tenant aged 58 working 20 hours a week at the minimum wage (16,640)
+# whose rent includes heat. He does not know the building's fuel (UNSPECIFIED) and pays
+# his own electric bill.
+- name: Case 4, a public housing tenant with heat in rent and his own electric bill receives the row I grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 58
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 16_640
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+        heating_type: UNSPECIFIED
+        pre_subsidy_electricity_expense: 900
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+        is_in_public_housing: true
+  output:
+    # Heat is paid through rent, not a bill of his own.
+    has_heating_expense: false
+    ri_liheap_household_size: 1
+    ri_liheap_income: 16_640
+    ri_liheap_income_limit: 42_252
+    # 15,650 (100%) < 16,640 <= 19,563 (125%): band 3, which the heat-in-rent rows do
+    # not use.
+    ri_liheap_income_band: 3
+    # Subsidized renters need a utility burden (manual II.B, page 6); his electric bill
+    # is one.
+    ri_liheap_eligible: true
+    # Row I (subsidized housing, secondary electric) 50 + 350 enhancement = 400.
+    ri_liheap_base_payment: 400
+    ri_liheap: 400
+
+# Two adults aged 30 and 29, each working full time at the minimum wage (33,280 each),
+# with natural gas heat billed in their names.
+- name: Case 5, a working couple above the two-person income limit receives nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 33_280
+      person2:
+        age: 29
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 33_280
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+        is_in_public_housing: false
+  output:
+    has_heating_expense: true
+    ri_liheap_household_size: 2
+    # 33,280 + 33,280 = 66,560.
+    ri_liheap_income: 66_560
+    ri_liheap_income_limit: 55_252
+    # Size 2 guideline 21,150: 66,560 > 31,725 (150%): row E.
+    ri_liheap_income_band: 5
+    # 66,560 > 55,252, and above the federal floor 1.1 x 21,150 = 23,265.
+    ri_liheap_eligible: false
+    # The base payment does not apply eligibility: row E Natural Gas 159 + 350 = 509.
+    ri_liheap_base_payment: 509
+    ri_liheap: 0

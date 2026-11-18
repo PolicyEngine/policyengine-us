@@ -10,11 +10,12 @@ values:
     # Plan Section 17.4 lists the DCBS State Supplementation award letter as
     # income documentation.
     - ky_ssp
-    # Military retirement pay is a separate input from the pension inputs that
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
     # in one or the other.
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
     # Plan Section 17.4 lists Railroad Retirement records.
     - railroad_benefits
     - retirement_distributions

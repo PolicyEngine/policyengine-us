@@ -45,8 +45,8 @@
 # T1c: uprating. primary_residence_value carries uprating = gov.bls.cpi.cpi_u.
 # Enter a 2024 market value; read the derived assessed value in 2025. WA has a
 # 1.0 assessment ratio, isolating the CPI-U uprating factor.
-# CPI-U(2025-01-01) / CPI-U(2024-01-01) = 319.086 / 309.794 = 1.0299941.
-# 100_000 * 1.0299941 = 102_999.41, asserted with a $1 margin.
+# CPI-U(2025-01-01) / CPI-U(2024-01-01) = 317.671 / 308.417 = 1.0300048.
+# 100_000 * 1.0300048 = 103_000.48, asserted with a $1 margin.
 - name: Case 6, primary residence value uprates by CPI-U from prior year.
   period: 2025
   absolute_error_margin: 1
@@ -55,7 +55,7 @@
       2024: 100_000
     state_code: WA
   output:
-    assessed_property_value: 102_999
+    assessed_property_value: 103_000
 
 # T3: two-person household, both holding a share of the residence. The variable
 # is Person-level, so each share is assessed independently at the Michigan 0.5

@@ -19,19 +19,9 @@ class ca_sbd_general_relief_receives_other_cash_assistance(Variable):
         # "any other cash assistance program" bar.
         # SSI is person-level, so only the individual recipient is barred.
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
-        # SSP is computed at the SPM-unit level, so unit receipt is projected
-        # down and intersected with the person-level categorical flag
-        # (mirroring the SF CAAP CAPI bar): only the aged, blind, or disabled
-        # member an SSP-only payment serves is barred, not the whole unit.
-        # ca_state_supplement is an ungated computed entitlement (it grows
-        # when SSI take-up is declined, since no federal SSI is netted out),
-        # so the SSI take-up flag stands in for actual SSP receipt —
-        # declined take-up lifts the bar, matching the ssi arm.
-        receives_ssp = (
-            person("ca_state_supplement_eligible_person", period)
-            & (person.spm_unit("ca_state_supplement", period) > 0)
-            & person("takes_up_ssi_if_eligible", period.this_year)
-        )
+        # SSP is person-level too, so only the member an SSP-only payment serves
+        # is barred. It follows SSI take-up, so declined take-up lifts the bar.
+        receives_ssp = person("ca_state_supplement_person", period) > 0
         # CAPI pays SSI-equivalent cash to aged, blind, or disabled
         # immigrants barred from federal SSI by immigration status. Like
         # SSP it is computed at the SPM-unit level, so unit receipt is

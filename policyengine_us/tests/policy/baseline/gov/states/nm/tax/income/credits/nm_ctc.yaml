@@ -212,3 +212,16 @@
   output:
     # NMSA 7-2-18.34(G): each may claim "only one-half"; 637 / 2.
     nm_ctc: 318.5
+
+# TRD FYI-109, 2026 Inflation Adjustments, page 3: AGI of $0 to $25,000
+# gives $656 per qualifying child.
+- name: New Mexico 2026 child income tax credit, two children, AGI of $20,000
+  period: 2026
+  input:
+    state_code: NM
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 20_000
+    nm_ctc_qualifying_children: 2
+  output:
+    # 2 x 656 = 1,312
+    nm_ctc: 1_312

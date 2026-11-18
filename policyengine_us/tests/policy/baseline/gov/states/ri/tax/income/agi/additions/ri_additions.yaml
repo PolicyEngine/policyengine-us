@@ -77,3 +77,33 @@
         state_code: RI
   output:
     ri_additions: 10_000
+
+- name: Case 4, a filer above the 2020 cutoff does not add back a dependent's excluded compensation.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 150_001
+        unemployment_compensation: 8_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: RI
+  output:
+    # The parent excludes nothing above the 150,000 cutoff. The child
+    # excludes their own 10,000; it never enters the parent's RI return.
+    taxable_uc_agi: 150_001
+    taxable_unemployment_compensation: [8_000, 0]
+    tax_exempt_unemployment_compensation: [0, 10_000]
+    adjusted_gross_income: 158_001
+    ri_additions: 0
+    ri_agi: 158_001

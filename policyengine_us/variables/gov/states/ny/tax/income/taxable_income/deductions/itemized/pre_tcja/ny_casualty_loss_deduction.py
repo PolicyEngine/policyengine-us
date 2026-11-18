@@ -24,6 +24,7 @@ class ny_casualty_loss_deduction(Variable):
         # (not limited to federally declared disasters like federal post-2017)
         loss = add(tax_unit, period, ["casualty_loss"])
         p = parameters(period).gov.irs.deductions.itemized.casualty
-        positive_agi = tax_unit("positive_agi", period)
+        # IT-196 line 17: 10% of recomputed federal AGI (IT-201 line 19a).
+        positive_agi = max_(0, tax_unit("ny_recomputed_federal_agi", period))
         # Apply the 10% AGI floor (pre-TCJA rule)
         return max_(0, loss - positive_agi * p.floor)

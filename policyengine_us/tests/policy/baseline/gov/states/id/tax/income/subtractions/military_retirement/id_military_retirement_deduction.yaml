@@ -88,6 +88,7 @@
     people:
       person1:
         is_tax_unit_head_or_spouse: true
+        is_surviving_spouse: true
         military_retirement_pay_survivors: 25_000
         age: 65
     tax_units:
@@ -101,3 +102,85 @@
   output:
     id_military_retirement_deduction: 25_000
 
+- name: Idaho military retirement deduction excludes a non-spouse survivor.
+  period: 2025
+  input:
+    state_code: ID
+    age: 65
+    is_surviving_spouse: false
+    military_retirement_pay_survivors: 25_000
+  output:
+    id_military_retirement_deduction: 0
+
+- name: Idaho military retirement deduction keeps own pay when non-spouse survivor benefits are present.
+  period: 2025
+  input:
+    state_code: ID
+    age: 65
+    is_surviving_spouse: false
+    military_retirement_pay: 30_000
+    military_retirement_pay_survivors: 25_000
+  output:
+    id_military_retirement_deduction: 30_000
+
+- name: Idaho military survivor deduction excludes a remarried survivor filing separately.
+  period: 2025
+  input:
+    people:
+      survivor:
+        is_surviving_spouse: true
+        military_retirement_pay_survivors: 25_000
+      new_spouse: {}
+    families:
+      family:
+        members: [survivor, new_spouse]
+    marital_units:
+      couple:
+        members: [survivor, new_spouse]
+    tax_units:
+      survivor_return:
+        members: [survivor]
+        filing_status: SEPARATE
+      spouse_return:
+        members: [new_spouse]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [survivor, new_spouse]
+        state_code: ID
+  output:
+    id_military_retirement_deduction: [0, 0]
+
+- name: Idaho unmarried widow remains eligible when a married adult child shares the family.
+  period: 2025
+  input:
+    people:
+      survivor:
+        age: 65
+        is_surviving_spouse: true
+        military_retirement_pay_survivors: 25_000
+      adult_child:
+        age: 40
+      child_spouse:
+        age: 40
+    families:
+      family:
+        members: [survivor, adult_child, child_spouse]
+    marital_units:
+      widow:
+        members: [survivor]
+      couple:
+        members: [adult_child, child_spouse]
+    tax_units:
+      survivor_return:
+        members: [survivor]
+        filing_status: SINGLE
+      child_return:
+        members: [adult_child, child_spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [survivor, adult_child, child_spouse]
+        state_code: ID
+  output:
+    id_military_retirement_deduction: [25_000, 0]

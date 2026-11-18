@@ -1,0 +1,59 @@
+- name: Rhode Island does not subtract a nonspouse survivor annuity on the survivor's own return.
+  period: 2024
+  input:
+    state_code: RI
+    age: 20
+    is_surviving_spouse: false
+    employment_income: 40_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    adjusted_gross_income: 50_000
+    ri_military_retirement_subtraction: 0
+    ri_subtractions: 0
+    ri_agi: 50_000
+
+- name: Rhode Island subtracts surviving spouse annuities starting in 2023.
+  period: 2023
+  input:
+    state_code: RI
+    age: 50
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    ri_military_retirement_subtraction: 10_000
+    ri_subtractions: 10_000
+
+- name: Rhode Island subtracts own military retirement pay without surviving spouse status.
+  period: 2024
+  input:
+    state_code: RI
+    age: 60
+    is_surviving_spouse: false
+    military_retirement_pay: 20_000
+  output:
+    ri_military_retirement_subtraction: 20_000
+    ri_subtractions: 20_000
+
+- name: Rhode Island's separate military subtraction is unavailable before 2023.
+  period: 2022
+  input:
+    state_code: RI
+    age: 50
+    is_surviving_spouse: true
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    ri_military_retirement_subtraction: 0
+    ri_subtractions: 0
+
+- name: Rhode Island keeps own retirement pay separate from a nonspouse survivor annuity.
+  period: 2025
+  input:
+    state_code: RI
+    age: 60
+    is_surviving_spouse: false
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    ri_military_retirement_subtraction: 20_000
+    ri_subtractions: 20_000

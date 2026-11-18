@@ -8,11 +8,15 @@ class nh_fanf_income_eligible(Variable):
     definition_period = MONTH
     reference = (
         "https://gc.nh.gov/rsa/html/xii/167/167-77-g.htm",
-        "https://www.dhhs.nh.gov/fam_htm/newfam.htm",
+        "https://gc.nh.gov/rsa/html/xii/167/167-79.htm",
+        "https://gc.nh.gov/rules/state_agencies/he-w600.html",
+        "https://www.dhhs.nh.gov/fam_htm/html/611_01_computing_eligibility_fam.htm",
     )
     defined_for = StateCode.NH
 
     def formula(spm_unit, period, parameters):
-        countable_income = spm_unit("nh_fanf_countable_income", period)
+        countable_income = spm_unit("nh_fanf_countable_income_for_eligibility", period)
         payment_standard = spm_unit("nh_fanf_payment_standard", period)
-        return countable_income <= payment_standard
+        # RSA 167:79 III(e) and FAM 611.01: net income must be less than
+        # the payment standard.
+        return countable_income < payment_standard

@@ -33,3 +33,25 @@
     # insurance deduction is left out too: it is on the child's own return.
     ma_part_b_gross_income: 40_000
     ma_part_b_agi: 40_000
+
+- name: The 2020 federal charitable deduction for non-itemizers does not reduce Part B AGI
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # Massachusetts follows Code 62(a) as in effect on January 1, 2005, so
+    # it does not adopt 62(a)(22) (TIR 20-9, B(6)).
+    adjusted_gross_income: 39_700
+    ma_part_b_agi: 40_000

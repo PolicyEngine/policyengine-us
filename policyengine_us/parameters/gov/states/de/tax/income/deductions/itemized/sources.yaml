@@ -5,6 +5,8 @@ values:
     - charitable_deduction
     - interest_deduction
     - casualty_loss_deduction
+    # PIT-RSA line 16, other itemized deductions permitted under federal law.
+    - wagering_losses_deduction
 metadata:
   unit: list
   period: year
@@ -14,6 +16,6 @@ metadata:
       href: https://revenuefiles.delaware.gov/2022/TY22_PIT-RSA_2022-02_PaperInteractive.pdf
     - title: Code of Delaware. Title30. CHAPTER 11. Personal Income Tax, § 1109
       href: https://delcode.delaware.gov/title30/c011/sc02/index.html
-    - title: 2025 Delaware Individual Income Tax Return Instructions
+    - title: "2025 Delaware Individual Income Tax Return Instructions #page 7,12"
       href: https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=7
     

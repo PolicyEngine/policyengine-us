@@ -122,3 +122,53 @@
     # row ACF LIHEAP IM 2025-02 Attachment 4 (page 5) prints. $135,931 is over the
     # limit although it is below 200% of the eleven-person guideline ($141,300).
     md_meap_eligible: [true, false]
+
+- name: Case 8, federal 110% poverty floor above the 60% state median income limit at size 29.
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_150, 1_150, 1_150, 1_150, 1_150]
+    md_meap_household_size: [29, 29, 29, 29, 28]
+    md_meap_countable_income: [185_864, 186_614.99, 186_615, 186_616, 183_091]
+    md_meap_categorically_eligible: [false, false, false, false, false]
+  output:
+    # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+    # of the poverty guideline. FY26 uses the 2025 guidelines (md_meap_fpg):
+    # 15,650 + 5,500 x 28 = 169,650 for 29 people, and 110% is 186,615. The
+    # 60% SMI limit for 29 people is 185,864.
+    # Household 1 is at the 60% SMI limit: eligible.
+    # Household 2 is one cent below the floor: eligible.
+    # Household 3 is exactly at the floor, which is not below 110%: not eligible.
+    # Household 4 is above the floor: not eligible.
+    # Household 5 has 28 people, whose 183,090 limit exceeds the 180,565 floor
+    # (110% of 164,150), so the limit still applies: not eligible.
+    md_meap_eligible: [true, true, false, false, false]
+
+- name: Case 9, the floor uses the poverty guidelines from the year before the model year.
+  period: 2026
+  input:
+    state_code: MD
+    heating_type: NATURAL_GAS
+    gas_expense: 1_150
+    md_meap_household_size: 29
+    md_meap_countable_income: 190_000
+    md_meap_categorically_eligible: false
+  output:
+    # FY26 uses the 2025 guidelines, so the floor is 186,615. The 2026
+    # guidelines would give 110% x (15,960 + 5,680 x 28) = 192,500.
+    md_meap_eligible: false
+
+- name: Case 10, FY25 uses the 2024 poverty guidelines for the floor.
+  period: 2025
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_150, 1_150]
+    md_meap_household_size: [29, 29]
+    md_meap_countable_income: [182_269.99, 182_270]
+    md_meap_categorically_eligible: [false, false]
+  output:
+    # 110% x (15,060 + 5,380 x 28) = 182,270 for 29 people, above the 179,993
+    # FY25 60% SMI limit.
+    md_meap_eligible: [true, false]

@@ -16,7 +16,7 @@ class weekly_snap_work_program_hours(Variable):
         "ABAWD work-activity threshold, alone or combined with hours of "
         "employment (7 CFR 273.24(a)(1)(i)-(iii)). Survey data does not "
         "capture this input, so it defaults to zero; see "
-        "PolicyEngine/populace#249 for the companion data issue."
+        "PolicyEngine/microcosm#249 for the companion data issue."
     )
     definition_period = YEAR
     reference = (

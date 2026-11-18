@@ -80,7 +80,7 @@
         ssi_claim_is_joint: false
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
-        ssi_countable_income: 120
+        ssi_countable_income: {2025: 120}
     households:
       household:
         members: [person1]
@@ -106,7 +106,7 @@
         is_ssi_aged_blind_disabled: true
         is_medicaid_eligible: false
         ssi: 750
-        ssi_countable_income: 2_400
+        ssi_countable_income: {2025: 2_400}
         in_resides_in_licensed_residential_facility: true
     households:
       household:

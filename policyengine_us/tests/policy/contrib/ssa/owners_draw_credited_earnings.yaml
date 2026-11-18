@@ -1,0 +1,193 @@
+# Where overridden, synthetic caps are fixed in both the ordinary tax parameter
+# and the captured current-law room parameter.
+# Unless overridden, q = 1 - 0.5 * (0.124 + 0.029) = 0.9235.
+# Policy cases are grouped to retain at most five cached reform combinations.
+- name: Disabling benefit credit leaves draw taxes unchanged
+  period: 2036
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.benefit_credit: false
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 150_000
+  output:
+    owners_draw_net_earnings: 138_525
+    owners_draw_oasdi_base: 138_525
+    owners_draw_oasdi_tax: 17_177.10
+    owners_draw_credited_earnings: 0
+
+
+- name: An explicit zero phase-in share produces no draw
+  period: 2027
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 0
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 150_000
+  output:
+    owners_draw_gross: 0
+    owners_draw_net_earnings: 0
+    owners_draw_oasdi_tax: 0
+
+
+- name: A configurable linear phase-in starts at one quarter in its new start year
+  period: 2030
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_years: 4
+    gov.contrib.ssa.owners_draw.start_year: 2030
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    s_corp_income: 100_000
+  output:
+    owners_draw_gross: 25_000
+    owners_draw_net_earnings: 23_087.50
+    owners_draw_oasdi_tax: 2_862.85
+
+
+- name: Disabling benefit credit removes the draw from AIME and leaves taxes unchanged
+  period: 2036
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.benefit_credit: false
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    age: 62
+    s_corp_income: 150_000
+  output:
+    owners_draw_credited_earnings: 0
+    ss_aime: 0
+    owners_draw_oasdi_tax: 17_177.10
+
+
+- name: Default AIME lookback skips inactive draw years before the reporting floor exists
+  period: 2027
+  absolute_error_margin: 0.001
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.in_effect: true
+    age: 62
+    s_corp_income: 100_000
+    # Explicit zero labor history isolates the draw from historical labor-
+    # response parameter coverage, while retaining the default 45-year lookback.
+    employment_income: &zero_labor_history
+      1982: 0
+      1983: 0
+      1984: 0
+      1985: 0
+      1986: 0
+      1987: 0
+      1988: 0
+      1989: 0
+      1990: 0
+      1991: 0
+      1992: 0
+      1993: 0
+      1994: 0
+      1995: 0
+      1996: 0
+      1997: 0
+      1998: 0
+      1999: 0
+      2000: 0
+      2001: 0
+      2002: 0
+      2003: 0
+      2004: 0
+      2005: 0
+      2006: 0
+      2007: 0
+      2008: 0
+      2009: 0
+      2010: 0
+      2011: 0
+      2012: 0
+      2013: 0
+      2014: 0
+      2015: 0
+      2016: 0
+      2017: 0
+      2018: 0
+      2019: 0
+      2020: 0
+      2021: 0
+      2022: 0
+      2023: 0
+      2024: 0
+      2025: 0
+      2026: 0
+      2027: 0
+    total_self_employment_income: *zero_labor_history
+  output:
+    owners_draw_gross:
+      2012: 0
+      2027: 10_000
+    owners_draw_net_earnings: 9_235
+    owners_draw_credited_earnings: 9_235
+    owners_draw_oasdi_tax: 1_145.14
+    # Default 10% phase-in: 100,000 * .1 * .9235 = 9,235.
+    # Only the current year has earnings, after age-60 indexing: 9,235 / 420.
+    ss_aime: 21.98809524
+
+
+- name: Joint active NIIT excludes only the actual OASDI taxed owners draw
+  period: 2027
+  # One float32 rounding step near the active base is $0.03125.
+  absolute_error_margin: 0.05
+  reforms:
+    - policyengine_us.reforms.ssa.owners_draw.owners_draw
+    - policyengine_us.reforms.congress.s770.section_8.section_8
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.contrib.congress.s770.section_8.active_business.in_effect: true
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    people:
+      room:
+        age: 45
+        payroll_tax_gross_wages: 100_000
+        s_corp_income: 400_000
+      no_room:
+        age: 45
+        payroll_tax_gross_wages: 250_000
+        s_corp_income: 400_000
+    tax_units:
+      room:
+        members: [room]
+        filing_status: SINGLE
+        niit_magi: 1_000_000
+        net_investment_income: 0
+      no_room:
+        members: [no_room]
+        filing_status: SINGLE
+        niit_magi: 1_000_000
+        net_investment_income: 0
+    households:
+      household:
+        members: [room, no_room]
+        state_code: TX
+  output:
+    owners_draw_gross: [400_000, 400_000]
+    owners_draw_net_earnings: [369_400, 369_400]
+    owners_draw_oasdi_base: [100_000, 0]
+    # Benefit credit uses adjusted draw earnings independently of OASDI room.
+    owners_draw_credited_earnings: [369_400, 369_400]
+    # Default q=.9235: 100,000 / .9235 = 108,283.7033 of gross profits.
+    owners_draw_niit_exclusion: [108_283.7033, 0]
+    s770_active_business_income: [291_716.2967, 400_000]
+    s770_active_taxable_base: [291_716.2967, 400_000]
+    s770_active_business_income_tax: [47_258.0401, 64_800]

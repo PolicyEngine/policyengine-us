@@ -15,3 +15,4 @@ class ky_additions(Variable):
         "https://taxsim.nber.org/historical_state_tax_forms/KY/2021/Form%20740%20Packet%20Instructions-2021.pdf#page=27",
     )
     defined_for = StateCode.KY
+    adds = ["ky_other_additions"]

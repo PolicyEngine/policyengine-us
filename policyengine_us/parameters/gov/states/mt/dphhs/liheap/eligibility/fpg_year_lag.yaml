@@ -1,0 +1,16 @@
+description: Montana uses federal poverty guidelines from this many years before the modeled benefit year under the Low Income Home Energy Assistance Program.
+# Model year 2026 is the 2025-2026 heating season and uses the 2025
+# guidelines ($21,150 for two people); model year 2027 uses the 2026
+# guidelines ($21,640 for two people). The same guidelines set the percent of
+# poverty for the benefit multiplier.
+values:
+  2025-10-01: 1
+metadata:
+  unit: year
+  period: year
+  label: Montana LIHEAP federal poverty guideline year lag
+  reference:
+    - title: "Montana LIHEAP Policy Manual 2025-2026, sections 3.20 and 9.3 #page 57,123-124"
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=57
+    - title: "Montana LIHEAP Policy Manual 2026-2027, sections 3.20, 9.3 and 9.7 #page 58,125-128"
+      href: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=58

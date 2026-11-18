@@ -18,12 +18,32 @@
   output:
     co_sales_tax_refund_eligible: false
 
-- name: Age eligible
+- name: Turns 18 during the year, not age eligible
   period: 2022
   input:
     people:
       head:
         age: 18
+        is_tax_unit_head: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund_eligible: false
+
+- name: Age eligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 19
         is_tax_unit_head: true
         irs_employment_income: 0
     tax_units:
@@ -87,11 +107,11 @@
   input:
     people:
       head:
-        age: 18
+        age: 19
         is_tax_unit_head: true
         irs_employment_income: 0
       spouse:
-        age: 18
+        age: 19
         is_tax_unit_spouse: true
         irs_employment_income: 0
     tax_units:

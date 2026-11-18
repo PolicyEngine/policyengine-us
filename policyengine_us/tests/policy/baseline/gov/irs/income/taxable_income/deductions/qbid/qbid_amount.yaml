@@ -318,3 +318,152 @@
     # non-SSTB QBI is zero. With no SSTB allocable wages, the SSTB component
     # is limited by the zero wage/property cap during phase-in.
     qbid_amount: 5_000
+
+# Qualifying surviving spouse. Section 199A(e)(2) doubles the threshold, and
+# sections 199A(b)(3)(B) and (d)(3) double the phase-in range, only "in the
+# case of a joint return". A surviving spouse does not file a joint return, so
+# the IRS lists them under "all other returns" (Rev. Proc. 2024-40 section
+# 3.27, Rev. Proc. 2025-32 section 4.26) and the Form 8995 instructions name
+# them with the single amounts. These cases use $100,000 of non-SSTB QBI and
+# $8,000 of W-2 wages: tentative deduction $20,000, W-2 cap 50% x $8,000 =
+# $4,000, so the reduction is the phase-in fraction of $16,000.
+- name: Surviving spouse at the 2025 threshold gets the full deduction
+  period: 2025
+  input:
+    qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 8_000
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 197_300
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # 2025 threshold for all other returns is $197,300 (not the joint $394,600).
+    # Taxable income equals the threshold, so no reduction: 20% x 100k = 20,000.
+    qbid_amount: 20_000
+
+- name: Surviving spouse one dollar above the 2025 threshold
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 8_000
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 197_301
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # Phase-in fraction = 1 / 50,000 = 0.00002.
+    # Deduction = 20,000 - 0.00002 x (20,000 - 4,000) = 19,999.68.
+    qbid_amount: 19_999.68
+
+- name: Surviving spouse at the middle of the 2025 phase-in range
+  period: 2025
+  input:
+    qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 8_000
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 222_300
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # Phase-in fraction = (222,300 - 197,300) / 50,000 = 0.5.
+    # Deduction = 20,000 - 0.5 x 16,000 = 12,000.
+    qbid_amount: 12_000
+
+- name: Surviving spouse at the end of the 2025 phase-in range
+  period: 2025
+  input:
+    qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 8_000
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 247_300
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # The phase-in range ends at $247,300 for all other returns, so the W-2
+    # limit applies in full: min(20,000, 4,000) = 4,000.
+    qbid_amount: 4_000
+
+- name: Surviving spouse SSTB at the end of the 2025 phase-in range
+  period: 2025
+  input:
+    qualified_business_income: 0
+    sstb_qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 0
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 247_300
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # Section 199A(d)(3): the applicable percentage is 1 - 50,000 / 50,000 = 0,
+    # so none of the SSTB's income is qualified business income.
+    qbid_amount: 0
+
+- name: Surviving spouse one dollar above the 2026 threshold
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 8_000
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 201_751
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # 2026 threshold for all other returns is $201,750 and the phase-in range
+    # is $75,000 (Public Law 119-21 section 70105(a)).
+    # Phase-in fraction = 1 / 75,000.
+    # Deduction = 20,000 - 16,000 / 75,000 = 19,999.79.
+    qbid_amount: 19_999.79
+
+- name: Surviving spouse at the end of the 2026 phase-in range
+  period: 2026
+  input:
+    qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 8_000
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 276_750
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # 201,750 + 75,000 = 276,750 (Rev. Proc. 2025-32 section 4.26), so the
+    # W-2 limit applies in full: 4,000.
+    qbid_amount: 4_000
+
+- name: Surviving spouse at the middle of the 2018 phase-in range
+  period: 2018
+  input:
+    qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 8_000
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 182_500
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # 2018 statutory threshold $157,500 and range $50,000 (2018 Pub. 535).
+    # Phase-in fraction = (182,500 - 157,500) / 50,000 = 0.5.
+    # Deduction = 20,000 - 0.5 x 16,000 = 12,000.
+    qbid_amount: 12_000
+
+- name: Surviving spouse at the end of the 2019 phase-in range
+  period: 2019
+  input:
+    qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 8_000
+    unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 210_700
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SURVIVING_SPOUSE
+  output:
+    # 2019 threshold $160,700 for everyone but joint and separate returns
+    # (2019 Form 8995 instructions), so the range ends at $210,700: 4,000.
+    qbid_amount: 4_000

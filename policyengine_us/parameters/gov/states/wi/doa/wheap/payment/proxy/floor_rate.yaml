@@ -1,0 +1,14 @@
+description: Wisconsin bases the regular heating benefit on at least this share of the heat proxy amount under the Home Energy Assistance Program.
+# The same share applies when heat is included in rent or no heating cost is
+# reported.
+values:
+  2025-10-01: 0.75
+metadata:
+  unit: /1
+  period: year
+  label: Wisconsin WHEAP heat proxy floor rate
+  reference:
+    - title: "Wisconsin PY26 WHEAP Manual, section 2.3.1 items 2-5 #page 26-27"
+      href: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=26
+    - title: Wisconsin HE+ Benefit Calculator FFY2026, Computation!C31, C34 and C35
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx

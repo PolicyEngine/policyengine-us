@@ -25,16 +25,11 @@ class mi_household_resources(Variable):
         "taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/"
         "MI-1040CR-7-Book.pdf?rev=e4ba4fedc63942e48442037517312d4a"
         "&hash=AF396E577B1932DF55BFD7F22D7EF06A#page=8",
-        # 2025 MI-1040 book: "Total Household Resources" (page 26) and
-        # MI-1040CR lines 14 to 17 (page 31) and 18 to 31 (pages 32 and 33).
+        # 2025 MI-1040 book: "Total Household Resources" (pages 26 and 27)
+        # and MI-1040CR lines 14 to 17 (page 31) and 18 to 31 (pages 32 and 33).
+        # PDF pages 26-27, 31-33.
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=26",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=31",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=32",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=33",
     )
 
     def formula(tax_unit, period, parameters):
@@ -60,6 +55,16 @@ class mi_household_resources(Variable):
             "farm_rent_income",
         }
 
+        # MCL 206.510(1): income does not include "(a) The first $300.00 of
+        # gifts in cash or kind from nongovernmental sources" or "(b) The
+        # first $300.00 received from awards, prizes, lottery, bingo, or
+        # other gambling winnings". The MI-1040CR enters gambling winnings
+        # "over $300" on line 20 and "the value over $300 in gifts" on line
+        # 24 (2025 MI-1040 book, page 32), one amount for the claimant and
+        # spouse, so the exclusion applies once to their total.
+        winnings_sources = {"gambling_winnings"}
+        gift_sources = {"financial_assistance"}
+
         # MCL 206.508(3): "'Household' means a claimant and spouse", and
         # (4) counts "all income received by all persons of a household".
         # The MI-1040CR says "Include all taxable and nontaxable income you
@@ -69,15 +74,28 @@ class mi_household_resources(Variable):
         # irs_gross_income. A tax-unit-level source (other_net_gain,
         # filer_loss_limited_net_capital_gains) already describes the
         # filer's return.
-        # The sources in household_resources_all_members are amounts the
-        # claimant receives for others in the household (lines 21, 22 and
-        # 27), so they are summed over every member. So is a source defined
-        # for a larger group than the tax unit, such as tanf for the SPM
-        # unit: add gives the tax unit its members' shares.
+        # That includes Social Security, SSI and railroad retirement
+        # benefits (line 21). The beneficiary receives them: a claimant who
+        # is a minor child's or dependent adult's representative payee holds
+        # the benefit for the beneficiary, who is not a person of the
+        # household. Revenue Administrative Bulletin 2015-18 also counts
+        # benefits "received by the taxpayer, the taxpayer's spouse or minor
+        # children", and the line 21 instructions include "amounts received
+        # for minor children or other dependent adults who live with you";
+        # the statute's definition of household governs both.
+        # The sources in household_resources_all_members are payments made
+        # to the claimant for the household: child support and foster care
+        # payments (line 22) and public assistance grants (line 27), whose
+        # records may sit on the child they are paid for. They are summed
+        # over every member. So is a source defined for a larger group than
+        # the tax unit, such as tanf for the SPM unit: add gives the tax unit
+        # its members' shares.
         all_members = p.household_resources_all_members
 
         business_income = 0
         rental_income = 0
+        winnings = 0
+        gifts = 0
         other_income = 0
         for source in p.household_resources:
             entity = tax_unit.entity.get_variable(source).entity
@@ -90,9 +108,19 @@ class mi_household_resources(Variable):
                 business_income += amount
             elif source in rental_sources:
                 rental_income += amount
+            elif source in winnings_sources:
+                winnings += amount
+            elif source in gift_sources:
+                gifts += amount
             else:
                 other_income += amount
-        total = other_income + max_(business_income, 0) + max_(rental_income, 0)
+        total = (
+            other_income
+            + max_(business_income, 0)
+            + max_(rental_income, 0)
+            + max_(winnings - p.household_resources_gambling_exclusion, 0)
+            + max_(gifts - p.household_resources_gift_exclusion, 0)
+        )
 
         # Line 30: "Enter total adjustments from your U.S. Form 1040,
         # Schedule 1." These are the Schedule 1 Part II adjustments, counted
@@ -117,19 +145,58 @@ class mi_household_resources(Variable):
         # does. A tax-unit-level adjustment already describes the filer's return,
         # including educator_expense_ald, capped per eligible educator.
         ald = parameters(period).gov.irs.ald
-        adjustments = tax_unit_non_dep_add(
-            tax_unit,
-            period,
-            [
-                deduction
-                for deduction in p.household_resources_adjustments
-                if deduction in ald.deductions
-            ],
-        )
+        deductions = [
+            deduction
+            for deduction in p.household_resources_adjustments
+            if deduction in ald.deductions
+        ]
+        adjustments = tax_unit_non_dep_add(tax_unit, period, deductions)
         # Line 31: "insurance premiums you paid for yourself and your
         # family". MCL 206.510(1) lets a person deduct "the amount that
         # person paid in premiums ... for that insurance plan for the
-        # person's family". A premium on any member's record is read as one
-        # the claimant or spouse paid for the family's coverage.
-        health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
-        return max_(0, total - adjustments - health_insurance_premiums)
+        # person's family". health_insurance_premiums records the premiums
+        # each person paid, so the claimant's and spouse's amounts, which
+        # may include family coverage they bought, come off. A premium a
+        # dependent paid is not one the claimant or spouse paid.
+        premiums = tax_unit_non_dep_add(tax_unit, period, ["health_insurance_premiums"])
+        # "Do not include any insurance premiums deducted on lines 21 or 30"
+        # (2025 MI-1040 book, page 33). Line 30 includes the self-employed
+        # health insurance deduction (Schedule 1 line 17). Its medical part
+        # (Form 7206 line 1) took premiums that are in
+        # health_insurance_premiums, so those leave line 31 and each premium
+        # dollar is subtracted once. Its long-term care part (line 2) took
+        # long-term care premiums, which line 31 does not hold, so it takes
+        # nothing off line 31: the head's and spouse's deduction less the
+        # long-term care parts of their own deductions comes off.
+        # A supplied tax-unit deduction is assumed to cover premiums also
+        # represented in health_insurance_premiums, apart from the long-term
+        # care part the person amounts show it reached after their medical
+        # parts. The aggregate inputs do not
+        # identify the overlap if the deducted plan's premiums are omitted.
+        # Line 21 nets out Medicare premiums withheld from Social Security or
+        # railroad retirement benefits (MCL 206.510(1)(h)). Here line 21 has
+        # gross benefits and line 31 the premiums, which subtracts them once
+        # as well.
+        person = tax_unit.members
+        filer = not_(person("is_tax_unit_dependent", period))
+        own_deduction = max_(
+            0, person("self_employed_health_insurance_ald_person", period)
+        )
+        own_long_term_care_part = person(
+            "self_employed_health_insurance_ald_long_term_care_part", period
+        )
+        medical_parts = tax_unit.sum((own_deduction - own_long_term_care_part) * filer)
+        return_deduction = max_(
+            0, tax_unit("self_employed_health_insurance_ald", period)
+        )
+        long_term_care_taken = min_(
+            tax_unit.sum(own_long_term_care_part * filer),
+            max_(0, return_deduction - medical_parts),
+        )
+        premiums_on_line_30 = (
+            return_deduction - long_term_care_taken
+            if "self_employed_health_insurance_ald" in deductions
+            else 0
+        )
+        line_31 = max_(premiums - premiums_on_line_30, 0)
+        return max_(0, total - adjustments - line_31)

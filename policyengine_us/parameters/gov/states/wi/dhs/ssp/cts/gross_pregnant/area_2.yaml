@@ -1,0 +1,62 @@
+description: Wisconsin limits the monthly gross income of an assistance group with a pregnant woman to these amounts, which include one pregnancy allowance, by group size in Area II counties under the Caretaker Supplement program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Wisconsin CTS Area II gross income limits with pregnancy allowance
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  reference:
+    - title: "Caretaker Supplement Handbook 5.2.2 #page 62-63"
+      href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=62
+
+brackets:
+  - threshold:
+      2026-01-01: 1
+    amount:
+      2026-01-01: 689
+  - threshold:
+      2026-01-01: 2
+    amount:
+      2026-01-01: 1_118
+  - threshold:
+      2026-01-01: 3
+    amount:
+      2026-01-01: 1_290
+  - threshold:
+      2026-01-01: 4
+    amount:
+      2026-01-01: 1_517
+  - threshold:
+      2026-01-01: 5
+    amount:
+      2026-01-01: 1_725
+  - threshold:
+      2026-01-01: 6
+    amount:
+      2026-01-01: 1_850
+  - threshold:
+      2026-01-01: 7
+    amount:
+      2026-01-01: 1_995
+  - threshold:
+      2026-01-01: 8
+    amount:
+      2026-01-01: 2_108
+  - threshold:
+      2026-01-01: 9
+    amount:
+      2026-01-01: 2_198
+  - threshold:
+      2026-01-01: 10
+    amount:
+      2026-01-01: 2_246
+  - threshold:
+      2026-01-01: 11
+    amount:
+      2026-01-01: 2_293
+  - threshold:
+      2026-01-01: 12
+    amount:
+      2026-01-01: 2_339

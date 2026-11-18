@@ -12,6 +12,7 @@ values:
     - id_retirement_benefits_deduction # (15)
     - id_529_plan_subtraction # Idaho Code 63-3022(n)
     - id_health_insurance_premiums_subtraction # Idaho Code 63-3022P
+    - id_other_subtractions
   2025-01-01:
     - salt_refund_income # (2)
     - us_govt_interest # (3)(a)
@@ -25,6 +26,7 @@ values:
     - id_military_retirement_deduction # (15) per HB 40
     - id_529_plan_subtraction # Idaho Code 63-3022(n)
     - id_health_insurance_premiums_subtraction # Idaho Code 63-3022P
+    - id_other_subtractions
 
 
 metadata:

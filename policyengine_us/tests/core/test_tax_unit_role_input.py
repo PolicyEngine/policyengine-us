@@ -1,6 +1,6 @@
 """Tax-unit roles supplied by a population dataset.
 
-The Populace US build's tax-unit constructor (microunit, called from
+The Microcosm US build's tax-unit constructor (microunit, called from
 microcosm-frame) assigns every person a role - HEAD, SPOUSE or DEPENDENT - and
 writes it to the person column ``tax_unit_role_input``. The role variables use
 it when supplied and fall back to age ordering when not.
@@ -42,7 +42,7 @@ def _situation(people: dict) -> dict:
 
 
 def test_supplied_input_carries_the_producers_column_name_and_values():
-    """The role variable must match the column the Populace build writes.
+    """The role variable must match the column the Microcosm build writes.
 
     The loader sets a dataset column only when a variable has its exact name,
     and encodes a string column by Enum member name, so a renamed variable or
@@ -93,7 +93,7 @@ def _dataset(
     filing_status_column: list | None = None,
     empty_tax_units: int = 0,
 ) -> USSingleYearDataset:
-    """Three tax units in one household, with Populace-style string columns.
+    """Three tax units in one household, with Microcosm-style string columns.
 
     1. A couple headed by a 30-year-old reference person with a 60-year-old
        spouse, and their 20-year-old full-time student.
@@ -111,7 +111,8 @@ def _dataset(
             "person_tax_unit_id": tax_unit_of,
             "person_spm_unit_id": np.ones(6, dtype=int),
             "person_family_id": np.ones(6, dtype=int),
-            "person_marital_unit_id": np.arange(1, 7),
+            # The couple shares a marital unit; everyone else has their own.
+            "person_marital_unit_id": [1, 1, 2, 3, 4, 5],
             "age": np.asarray(ages, dtype=float),
             "is_full_time_student": [False, False, True, False, False, True],
         }
@@ -131,7 +132,7 @@ def _dataset(
         tax_unit=tax_unit,
         spm_unit=pd.DataFrame({"spm_unit_id": [1]}),
         family=pd.DataFrame({"family_id": [1]}),
-        marital_unit=pd.DataFrame({"marital_unit_id": np.arange(1, 7)}),
+        marital_unit=pd.DataFrame({"marital_unit_id": np.arange(1, 6)}),
         time_period=YEAR,
     )
 
@@ -197,13 +198,15 @@ def test_a_tax_unit_without_members_falls_back_rather_than_raising():
 def test_dataset_without_supplied_columns_keeps_age_ordering():
     """The same people without the columns: the oldest adult heads each unit.
 
-    The 60-year-old heads the couple, the 16-year-old heads nothing, and the
-    student becomes the parent's spouse, so both multi-person units file
-    jointly - the behaviour the supplied roles exist to correct.
+    The 60-year-old heads the couple instead of the reference person - the
+    behaviour the supplied roles exist to correct - and the 16-year-old heads
+    nothing. The parent's 21-year-old student has their own marital unit and
+    meets the qualifying child age test, so they are a dependent and the
+    parent files as head of household.
     """
     simulation = Microsimulation(dataset=_dataset(False), dataset_end_year=YEAR)
     heads, spouses, dependents, statuses = _roles_and_statuses(simulation, YEAR)
     assert heads == [False, True, False, False, True, False]
-    assert spouses == [True, False, False, False, False, True]
-    assert dependents == [False, False, True, True, False, False]
-    assert statuses == ["JOINT", "HEAD_OF_HOUSEHOLD", "JOINT"]
+    assert spouses == [True, False, False, False, False, False]
+    assert dependents == [False, False, True, True, False, True]
+    assert statuses == ["JOINT", "HEAD_OF_HOUSEHOLD", "HEAD_OF_HOUSEHOLD"]

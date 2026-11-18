@@ -1,7 +1,6 @@
 from policyengine_us.model_api import *
 
 
-# Note that right now this variable is only used for MA CCFA.
 class pfml_benefits(Variable):
     value_type = float
     entity = Person

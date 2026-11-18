@@ -1,0 +1,47 @@
+- name: Default is zero.
+  period: 2024
+  output:
+    social_security_taxable_self_employment_income: 0
+
+- name: Self-employment earnings below the remaining cap are fully taxable.
+  period: 2024
+  input:
+    payroll_tax_gross_wages: 100_000
+    taxable_self_employment_income: 50_000
+  output:
+    social_security_taxable_self_employment_income: 50_000
+
+- name: Self-employment earnings fill the remaining current-law cap.
+  period: 2024
+  input:
+    payroll_tax_gross_wages: 100_000
+    taxable_self_employment_income: 100_000
+  output:
+    # The 168,600 cap leaves 68,600 after wages.
+    social_security_taxable_self_employment_income: 68_600
+
+- name: Wages at the current-law cap leave no taxable self-employment earnings.
+  period: 2024
+  input:
+    payroll_tax_gross_wages: 168_600
+    taxable_self_employment_income: 50_000
+  output:
+    social_security_taxable_self_employment_income: 0
+
+- name: Wages above the current-law cap leave no taxable self-employment earnings.
+  period: 2024
+  input:
+    payroll_tax_gross_wages: 400_000
+    taxable_self_employment_income: 50_000
+  output:
+    taxable_earnings_for_social_security: 168_600
+    social_security_taxable_self_employment_income: 0
+
+- name: A reform or direct input exceeding the cap cannot make self-employment tax negative.
+  period: 2024
+  input:
+    taxable_earnings_for_social_security: 400_000
+    taxable_self_employment_income: 50_000
+  output:
+    social_security_taxable_self_employment_income: 0
+    self_employment_social_security_tax: 0

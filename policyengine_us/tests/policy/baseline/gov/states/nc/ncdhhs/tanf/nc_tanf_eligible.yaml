@@ -24,3 +24,13 @@
     nc_tanf_income_eligible: true
   output:
     nc_tanf_eligible: false
+
+- name: Demographic and income eligible, but resources above the limit.
+  period: 2024
+  input:
+    state_code: NC
+    nc_demographic_tanf_eligible: true
+    nc_tanf_income_eligible: true
+    nc_tanf_resources_eligible: false
+  output:
+    nc_tanf_eligible: false

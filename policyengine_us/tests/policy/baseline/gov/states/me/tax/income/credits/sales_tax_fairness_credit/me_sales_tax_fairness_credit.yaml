@@ -2,7 +2,7 @@
   period: 2022
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 1
     filing_status: SEPARATE
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
@@ -12,7 +12,7 @@
   period: 2022
   input:
     me_sales_tax_fairness_credit_eligible: false
-    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 1
     filing_status: SINGLE
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
@@ -22,7 +22,7 @@
   period: 2022
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
     filing_status: JOINT
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
@@ -32,7 +32,7 @@
   period: 2022
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 4
+    me_fairness_credit_qualifying_children: 4
     filing_status: JOINT
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
@@ -42,7 +42,7 @@
   period: 2022
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 4
+    me_fairness_credit_qualifying_children: 4
     filing_status: JOINT
     me_sales_and_property_tax_fairness_credit_income: 51_700
   output:
@@ -52,7 +52,7 @@
   period: 2022
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 3
+    me_fairness_credit_qualifying_children: 3
     filing_status: SINGLE
     me_sales_and_property_tax_fairness_credit_income: 25_350
   output:
@@ -62,7 +62,7 @@
   period: 2022
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 3
+    me_fairness_credit_qualifying_children: 3
     filing_status: SINGLE
     me_sales_and_property_tax_fairness_credit_income: 50_000
   output:
@@ -72,7 +72,7 @@
   period: 2025
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 2
+    me_fairness_credit_qualifying_children: 2
     filing_status: JOINT
     me_sales_and_property_tax_fairness_credit_income: 52_630
   output:
@@ -85,7 +85,7 @@
   period: 2025
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
     filing_status: JOINT
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
@@ -95,7 +95,7 @@
   period: 2025
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
     filing_status: HEAD_OF_HOUSEHOLD
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
@@ -105,7 +105,7 @@
   period: 2025
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
     filing_status: SURVIVING_SPOUSE
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
@@ -115,7 +115,7 @@
   period: 2025
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 1
+    me_fairness_credit_qualifying_children: 1
     filing_status: JOINT
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
@@ -125,7 +125,7 @@
   period: 2025
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
     filing_status: SINGLE
     me_sales_and_property_tax_fairness_credit_income: 0
   output:
@@ -138,7 +138,7 @@
   period: 2024
   input:
     me_sales_tax_fairness_credit_eligible: true
-    ctc_qualifying_children: 0
+    me_fairness_credit_qualifying_children: 0
     filing_status: JOINT
     me_sales_and_property_tax_fairness_credit_income: 0
   output:

@@ -1,0 +1,21 @@
+description: California reduces the alternative minimum tax exemption by this share of alternative minimum taxable income above the phase-out threshold.
+values:
+  2021-01-01: 0.25
+
+metadata:
+  period: year
+  unit: /1
+  label: California AMT exemption phase-out rate
+  reference:
+    # California applies IRC 55 as it read on January 1, 2015, so the 50% rate
+    # that P.L. 119-21 added in IRC 55(d)(4)(A)(ii)(IV) from 2026 does not apply.
+    - title: Cal. Rev. & Tax. Code § 17062.1 (IRC alternative minimum tax as it read on January 1, 2015)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17062.1
+    - title: Cal. Rev. & Tax. Code § 17062(b)(6) (replaces only the IRC 55(d)(3) phase-out thresholds)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17062
+    - title: 26 U.S.C. § 55(d)(3) (2014 edition) - 25 percent of alternative minimum taxable income above the threshold
+      href: https://www.govinfo.gov/content/pkg/USCODE-2014-title26/html/USCODE-2014-title26-subtitleA-chap1-subchapA-partVI-sec55.htm
+    - title: 2021 Instructions for Schedule P (540), Line 21 worksheet line 4 and Line 22 Exemption Worksheet line 5
+      href: https://www.ftb.ca.gov/forms/2021/2021-540-p-instructions.html
+    - title: 2025 Instructions for Schedule P (540), Line 21 worksheet line 4 and Line 22 Exemption Worksheet line 5
+      href: https://www.ftb.ca.gov/forms/2025/2025-540-p-instructions.html

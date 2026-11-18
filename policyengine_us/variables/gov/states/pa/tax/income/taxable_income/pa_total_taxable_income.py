@@ -17,10 +17,11 @@ class pa_total_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         us_gross_income = add(tax_unit, period, ["irs_gross_income"])
+        other_additions = tax_unit("pa_other_additions", period)
         p = parameters(period).gov.states.pa.tax.income
         sources = p.nontaxable_income_sources
         # The sources are amounts in federal gross income, which leaves out
         # dependents' income; dependents file their own PA return, so only
         # the head's and spouse's amounts are subtracted.
         pa_nontaxable_income = tax_unit_non_dep_add(tax_unit, period, sources)
-        return max_(0, us_gross_income - pa_nontaxable_income)
+        return max_(0, us_gross_income + other_additions - pa_nontaxable_income)

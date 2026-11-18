@@ -1,11 +1,14 @@
 # P.L. 119-21 grants Alaska preferential waiver authority (150% of the
 # national average unemployment threshold and good-faith exemptions)
-# per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). Alaska adopts the HR1
-# ABAWD rules statewide from 2025-11-01 (its delayed-adoption date, the
-# same as Hawaii), so the new Alaska Native/Indian exception is in effect
-# from that date everywhere in Alaska, including the Municipality of
-# Anchorage. Two Alaska-specific overlays are modeled SEPARATELY rather
-# than by deferring this statewide toggle:
+# per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). Section 10102 has no
+# later effective date, and USDA's implementation memorandum applies the
+# amended exceptions from enactment, 2025-07-04, so the HR1 rules,
+# including the new Alaska Native/Indian exception, are in effect from
+# that date everywhere in Alaska, including the Municipality of Anchorage.
+# Alaska's good-faith exemption starts 2025-11-01 and no authority for a
+# statewide delay before it was found; the model follows the statute. Two
+# Alaska-specific overlays are modeled SEPARATELY rather than by deferring
+# this statewide toggle:
 #   1. The waived geography (29 boroughs/census areas outside Anchorage
 #      through 2026-10-31, Anchorage excluded, cleared 2026-11-01) is
 #      carried by the abawd waived_counties parameter. FNS waived 20 of
@@ -17,10 +20,10 @@
 #      keep during the good-faith window (2025-11-01 through 2026-10-31)
 #      are carried by the good_faith_exemption parameters and applied on
 #      top of the post-HR1 exception set.
-# Keeping this toggle at 2025-11-01 (rather than deferring it to
-# 2026-11-01) preserves HR1's new Alaska Native/Indian exception and adds
-# only the approved temporary categories during the window, instead of
-# restoring the entire pre-HR1 exception set statewide. Under
+# Keeping this toggle on (rather than deferring it to 2026-11-01) preserves
+# HR1's new Alaska Native/Indian exception and adds only the approved
+# temporary categories during the window, instead of restoring the entire
+# pre-HR1 exception set statewide. Under
 # 7 U.S.C. 2015(o)(7)(D)(i) (as amended by HR1) a good-faith exemption,
 # once granted, expires no later than 2028-12-31 and may not be renewed
 # beyond that date.
@@ -29,7 +32,7 @@ description: Alaska implements the HR1 changes to Able-Bodied Adult Without Depe
 
 values:
   0000-01-01: false
-  2025-11-01: true
+  2025-07-04: true
 
 metadata:
   unit: bool
@@ -42,5 +45,7 @@ metadata:
       href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title7-section2015&num=0&edition=prelim
     - title: Public Law 119-21, Section 10102(c) - Exemption for noncontiguous States
       href: https://www.congress.gov/119/bills/hr1/BILLS-119hr1enr.pdf#page=12
+    - title: USDA FNS, SNAP Provisions of the One Big Beautiful Bill Act of 2025, ABAWD Exceptions Implementation (effective upon enactment, July 4, 2025)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-abawd-exceptions-implementation.pdf#page=4
     - title: USDA FNS SNAP Provisions of the One Big Beautiful Bill Act of 2025, ABAWD Waivers Implementation Memorandum (October 3, 2025)
       href: https://www.fns.usda.gov/snap/obbb-ABAWD-Waivers-Implementation-Memo

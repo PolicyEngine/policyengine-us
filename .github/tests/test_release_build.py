@@ -60,7 +60,7 @@ class WorkflowTests(unittest.TestCase):
         for expected in (
             "runs-on: ubuntu-24.04",
             'python-version: "3.14.7"',
-            'version: "0.12.13"',
+            'version: "0.13.4"',
             "uv sync --locked --extra dev",
             "uv run --no-sync make",
             "python .github/release_build.py",
