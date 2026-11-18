@@ -1,0 +1,14 @@
+description: A scenario applies the IRS Notice 2025-69 enforcement transition to tips from a listed occupation, without imposing the specified service trade or business exclusion. The statutory baseline keeps the exclusion.
+
+values:
+  0000-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Qualified tips administrative transition relief
+  reference:
+    - title: 26 U.S.C. 224(d)(2)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/224#d_2_B
+    - title: "IRS Notice 2025-69, Part III.A.1 through A.2 #page 15-16,18"
+      href: https://www.irs.gov/pub/irs-drop/n-25-69.pdf#page=15
