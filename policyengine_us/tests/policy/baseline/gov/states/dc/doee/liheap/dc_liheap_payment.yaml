@@ -680,3 +680,46 @@
     dc_liheap_income_level: [10, 0]
     dc_liheap_eligible: [false, false]
     dc_liheap_payment: [0, 0]
+
+- name: FY2027 single-family electricity rows, with levels 8 to 10 on the $30,000 row.
+  period: 2027
+  input:
+    state_code: [DC, DC, DC, DC, DC]
+    dc_liheap_eligible: [true, true, true, true, true]
+    dc_liheap_income_level: [1, 3, 7, 8, 10]
+    dc_liheap_housing_type: [SINGLE_FAMILY, SINGLE_FAMILY, SINGLE_FAMILY, SINGLE_FAMILY, SINGLE_FAMILY]
+    heating_expense_person: [2_000, 2_000, 2_000, 2_000, 2_000]
+  output:
+    # FY 2027 table, SF size 1, Electric: row 0 pays 1_522, row 10000 pays 697 and
+    # row 30000, the last row, pays 250. Income above $35,000 (levels 8 to 10)
+    # still uses the $30,000 row: min(250, 2_000) = 250.
+    dc_liheap_payment: [1_522, 697, 250, 250, 250]
+
+- name: FY2027 multi-family gas rows for a four-person household.
+  period: 2027
+  input:
+    state_code: [DC, DC, DC]
+    dc_liheap_eligible: [true, true, true]
+    dc_liheap_income_level: [3, 5, 6]
+    dc_liheap_housing_type: [MULTI_FAMILY, MULTI_FAMILY, MULTI_FAMILY]
+    spm_unit_size: [4, 4, 4]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [2_000, 2_000, 2_000]
+  output:
+    # FY 2027 table, MF size 4, Gas: rows 10000, 20000 and 25000 pay 1_800, 987
+    # and 537, each below the 2_000 bill.
+    dc_liheap_payment: [1_800, 987, 537]
+
+- name: FY2027 heat in rent pays the flat 250.
+  period: 2027
+  input:
+    state_code: DC
+    dc_liheap_eligible: true
+    dc_liheap_income_level: 2
+    dc_liheap_housing_type: MULTI_FAMILY
+    heating_type: NATURAL_GAS
+    heat_expense_included_in_rent: true
+  output:
+    # FY 2027 table: every HIR cell is 250 (FY 2026: 200), with no expense cap.
+    dc_liheap_heating_type: HEAT_IN_RENT
+    dc_liheap_payment: 250
