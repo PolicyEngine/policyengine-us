@@ -8,18 +8,26 @@ failures covered here only appear on that path, so YAML tests cannot detect
 them.
 """
 
+from functools import lru_cache
+
 import numpy as np
 import pytest
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
 from policyengine_us.reforms.states.ut.ut_hb210_s2 import ut_hb210_s2
+from policyengine_us.tools.per_capita_uprating import (
+    is_national_total_path,
+    per_capita_path,
+)
 
 PERIOD = "2026"
 REFORM_DATES = "2024-01-01.2100-12-31"
 FEDERAL_EITC = 1_000
 EITC_MATCH_RATE = 0.5
+# gov.states.oh.tax.income.credits.eitc.rate
 OHIO_EITC_RATE = 0.3
+EMPLOYMENT_INCOME_NATIONAL_TOTAL = "calibration.gov.irs.soi.employment_income"
 EXPECTED_REFUNDABLE_CREDIT_BY_STATE = {
     "AL": FEDERAL_EITC * EITC_MATCH_RATE,
     "KY": FEDERAL_EITC * EITC_MATCH_RATE,
@@ -29,6 +37,7 @@ EXPECTED_REFUNDABLE_CREDIT_BY_STATE = {
     "OH": FEDERAL_EITC * OHIO_EITC_RATE,
 }
 UTAH_MARRIAGE_CREDIT_SWITCH = "gov.contrib.states.ut.hb210.s2_marriage_credit.in_effect"
+# JOINT entry of gov.contrib.states.ut.hb210.s2_marriage_credit.amount
 UTAH_JOINT_MARRIAGE_CREDIT = 158
 
 
@@ -89,6 +98,15 @@ def _utah_married_couple():
     }
 
 
+@lru_cache(maxsize=None)
+def _baseline_utah_non_refundable_credits():
+    baseline_simulation = Simulation(situation=_utah_married_couple())
+    baseline_credits = baseline_simulation.calculate(
+        "ut_non_refundable_credits", PERIOD
+    )
+    return float(np.asarray(baseline_credits)[0])
+
+
 def test_eitc_reforms_that_replace_input_credits_build_and_calculate():
     """Each reform turns an uprated dollar input into a computed variable.
 
@@ -107,6 +125,17 @@ def test_eitc_reforms_that_replace_input_credits_build_and_calculate():
             f"{state_code.lower()}_refundable_credits", PERIOD
         )
         assert np.asarray(calculated_credits) == pytest.approx(expected_credits)
+
+    # The build only fails for a computed variable left on a national total, so
+    # check that this test still exercises that case.
+    variables = simulation.tax_benefit_system.variables
+    for state_code in state_codes:
+        credit_variable = variables[f"{state_code.lower()}_refundable_credits"]
+        assert not credit_variable.is_input_variable()
+        assert is_national_total_path(credit_variable.uprating)
+    assert variables["employment_income_before_lsr"].uprating == per_capita_path(
+        EMPLOYMENT_INCOME_NATIONAL_TOTAL
+    )
 
 
 @pytest.mark.parametrize(
@@ -133,3 +162,9 @@ def test_utah_marriage_credit_reform_can_be_applied_repeatedly(
         simulation.tax_benefit_system.parameters.gov.states.ut.tax.income.credits
     ).non_refundable(f"{PERIOD}-01-01")
     assert list(non_refundable_credits).count("ut_hb210_s2_marriage_credit") == 1
+
+    reformed_credits = np.asarray(
+        simulation.calculate("ut_non_refundable_credits", PERIOD)
+    )
+    credit_increase = reformed_credits - _baseline_utah_non_refundable_credits()
+    assert credit_increase == pytest.approx([UTAH_JOINT_MARRIAGE_CREDIT])
