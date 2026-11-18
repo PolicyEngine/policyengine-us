@@ -14005,7 +14005,8 @@ candidates:
     follows: statute
     code:
     - policyengine_us/parameters/gov/states/vt/dcf/reach_up/resources/limit.yaml
-    prs: []
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11107
   state: ruled
   note: The statute governs the modeled cutoff. The case "Vermont raises the Reach Up asset limit in July 2017." checks a unit with $5,000 in countable cash before and after July 1. The primary text captures are in source_conflicts/sources/us-vt/.
 - id: us-vt:renter-credit-booklet-income-limit-errors
