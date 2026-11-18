@@ -1306,7 +1306,7 @@ programs:
         variable: mn_eap
         parameter_prefix: gov.states.mn.commerce.eap
         verified_years: "2026-2027"
-        notes: FFY2026-FFY2027 Primary Heat, Minnesota's single regular benefit, based on total household energy costs including electricity, so it also covers cooling bills. Crisis, Energy Related Repair and weatherization are out of scope.
+        notes: FFY2026-FFY2027 Primary Heat, Minnesota's single regular benefit, sized from total household energy costs including electricity and paid from October 1 to May 31. Minnesota has no regular cooling component, since the FY2026 and FY2027 plans give cooling no income threshold and no funds; crisis, Energy Related Repair and weatherization are out of scope.
       - state: MO
         status: partial
         name: Missouri LIHEAP
@@ -1314,7 +1314,7 @@ programs:
         variable: mo_liheap
         parameter_prefix: gov.states.mo.dss.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 regular Energy Assistance, including the heat-in-rent payment; paid to an electric account, it also covers cooling bills from October to May. Crisis (ECIP), including Summer ECIP, and weatherization assistance are out of scope.
+        notes: FY2026-FY2027 regular Energy Assistance, including the heat-in-rent payment, paid from October to May. Missouri has no regular cooling component, since the FY2026 and FY2027 plans give cooling no income threshold and no funds; summer help comes only through Summer ECIP crisis assistance, which, like winter ECIP and weatherization, is out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
