@@ -44,7 +44,8 @@ class de_liheap_cooling_eligible(Variable):
         # extend the benefit to every LIHEAP applicant when funds allow. HHS
         # profiles count more cooling households than households with a
         # targeted member in FY2023 and FY2024, and 88 cooling households in
-        # FY2025. No decision for 2026 was found, so the targeted rule applies.
+        # FY2025. No FY2026 or FY2027 decision was found, so the targeted rule
+        # applies.
         person = spm_unit.members
         age = person("age", period)
         vulnerable = (

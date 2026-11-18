@@ -5,7 +5,8 @@
 # period reads the value in effect on January 1, so 2026 gives the FY2026
 # value and 2027 gives the FY2027 value. No household sets heating_type,
 # which stays at its default, UNSPECIFIED.
-# FY2026 one-person LIHEAP limit 39,342 (60% of state median income).
+# One-person LIHEAP limit (60% of state median income): 39,342 in FY2026 and
+# 40,380 in FY2027.
 
 - name: Case 1, a cooling-only retiree with no reported heating fuel gets the FY2026 maximum.
   period: 2026
@@ -45,6 +46,7 @@
         members: [person1]
         state_code: DE
   output:
+    # Countable income at most 18,000 <= 40,380; a cooling cost; aged 67.
     de_liheap_income_eligible: true
     de_liheap_cooling_eligible: true
     de_liheap_cooling_max: 1_250
