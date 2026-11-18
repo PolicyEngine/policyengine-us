@@ -281,8 +281,8 @@
 # guideline for regular households and 165% for aged or disabled households.
 # In January 2027 the standard uses the 2026 guidelines: 130% x 15,960 / 12
 # = 1,729, the one-person gross income pretest Arkansas publishes for
-# October 2026 through September 2027 (Appendix D, Exhibit A), and
-# 165% x 15,960 / 12 = 2,194.50.
+# October 2026 through September 2027 (SNAP Basis of Issuance, Exhibit A),
+# and 165% x 15,960 / 12 = 2,194.50.
 - name: AR one person exactly at the 130% standard of $1,729 passes
   period: 2027-01
   input:
@@ -320,3 +320,29 @@
     snap_gross_test_income: 2_195
   output:
     meets_tanf_non_cash_gross_income_test: false
+
+# The Arkansas standards start with the April 4, 2025 emergency rule, so
+# they first apply in May 2025. Annual inputs are spread evenly over the
+# months.
+- name: AR one person at $1,500 a month meets the 130% standard from May 2025
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 40
+    state_code: AR
+    snap_gross_test_income: 18_000  # 1,500 a month; the standard is 1,631.50
+  output:
+    meets_tanf_non_cash_gross_income_test:
+      2025-04: false
+      2025-05: true
+
+- name: AR elderly person at $2,000 a month meets the 165% standard from May 2025
+  period: 2025
+  input:
+    age: 70
+    state_code: AR
+    snap_gross_test_income: 24_000  # 2,000 a month; the standard is 2,070.75
+  output:
+    meets_tanf_non_cash_gross_income_test:
+      2025-04: false
+      2025-05: true

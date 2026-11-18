@@ -992,6 +992,43 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/9973
   state: unreviewed
   note: 'PE-US counts both sources; verify that the FFY 2025 manual still governs FY2026 and the plan''s categories.'
+- id: us-ar:snap-bbce-resource-increase-at-application
+  program: snap
+  years:
+    from: 2025
+    type: calendar
+  question: Does Arkansas grant the temporary $5,500 SNAP resource limit only to an enrolled household that accumulates
+    resources above the federal limit, or also to a household that applies with resources above it?
+  sources:
+  - kind: statute
+    citation: Ark. Code 20-76-115(b)(2), as amended by Act 675 of 2023, section 1
+    url: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2F&file=675.pdf&ddBienniumSession=2023%2F2023R
+  - kind: manual
+    citation: Arkansas DHS SNAP Certification Manual, Appendix AA, Broad Based Categorical Eligibility (PDF page 80)
+    url: https://humanservices.arkansas.gov/wp-content/uploads/SNAP-Appendices-10.01.2026.pdf#page=80
+  - kind: rulemaking
+    citation: Arkansas DHS emergency rule, SNAP updates pursuant to Act 675 of 2023, effective April 4, 2025, SNAP
+      Certification Manual 1919 (PDF page 12)
+    url: https://arkleg.state.ar.us/Home/FTPDocument?path=/Assembly/Meeting+Attachments/045/27347/Exhibit+B.01+-+DHS+DCO+Emergency+Rule+-+Supplemental+Nutrition+Assistance+Program+updates+pursuant+to+Act+675+of+2023+3.31.2025.pdf#page=12
+  readings:
+    statute: 'Subdivision (b)(2)(A) sets the asset limit "equal to the federal resource limit". Subdivision (b)(2)(B)(i)
+      grants the temporary increase "If an enrolled household is determined by the Department of Human Services to
+      have accumulated countable assets greater than the federal resource limit".'
+    other: 'Section 1919 applies the increase to "all SNAP households that receive a non-cash TANF or Maintenance of
+      Effort benefit". Appendix AA starts the twelve months at application: "Client applies July 2025 with $5200 in
+      resources, the 12 months start in July 2025."'
+  example: In June 2026 an Arkansas family of three with gross income of $2,800 a month and $4,000 in resources applies
+    for SNAP. Under Appendix AA the household is within the $5,500 limit and eligible. Under the statute's wording it
+    is not an enrolled household, the $3,000 federal limit applies and it is ineligible.
+  pe_us:
+    follows: conflicting-source
+    code:
+    - policyengine_us/parameters/gov/hhs/tanf/non_cash/asset_limit.yaml
+    prs: []
+  state: ruled
+  note: 'PE-US follows the manual: the $5,500 limit applies to every Arkansas household within the BBCE income limits,
+    at application and while enrolled. The model has no input that separates an applicant from an enrolled household
+    or that tracks the twelve months. Ruled by the project lead, 2026-11-18.'
 - id: us-ar:snap-child-support-deduction
   program: snap
   years:
