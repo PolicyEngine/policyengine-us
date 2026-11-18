@@ -25,7 +25,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 import yaml
-from hypothesis import example, given
+from hypothesis import example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us.variables.gov.simulation.labor_supply_response.substitution_elasticity import (
@@ -52,6 +52,8 @@ EDGES = sorted(
     }
 )
 amounts = st.one_of(st.floats(allow_nan=False), st.sampled_from(EDGES))
+# No per-example deadline: a loaded CI runner can stall any one example.
+no_deadline = settings(deadline=None)
 
 
 def reference_decile(amount):
@@ -75,6 +77,7 @@ def test_markers_rise_from_zero():
     assert all(np.diff(EARNINGS_DECILE_MARKERS) > 0)
 
 
+@no_deadline
 @given(amounts)
 @example(0)
 @example(13_999)
@@ -86,12 +89,14 @@ def test_every_amount_falls_in_one_defined_decile(amount):
     assert int(deciles[0]) in DEFINED_DECILES
 
 
+@no_deadline
 @given(amounts, amounts)
 def test_decile_never_falls_as_earnings_rise(first, second):
     lower, higher = sorted([first, second])
     assert earnings_decile(lower) <= earnings_decile(higher)
 
 
+@no_deadline
 @given(st.one_of(st.floats(min_value=0, allow_nan=False), st.sampled_from(EDGES)))
 @example(1)
 @example(13_999)
@@ -108,6 +113,7 @@ def test_nonnegative_amount_lies_in_its_decile(amount):
 
 
 @pytest.mark.parametrize("dtype", [np.float32, np.float64])
+@no_deadline
 @given(values=st.lists(amounts, max_size=50))
 def test_vectorised_lookup_matches_scalar_rule(dtype, values):
     with np.errstate(over="ignore"):
