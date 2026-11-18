@@ -13981,6 +13981,33 @@ candidates:
     - https://github.com/PolicyEngine/policyengine-us/pull/10254
   state: unreviewed
   note: The earlier rule editions were not compared.
+- id: us-vt:reach-up-asset-limit-effective-date
+  program: tanf
+  years:
+    from: 2017
+    to: 2018
+    type: calendar
+  question: Did Vermont's $9,000 Reach Up asset limit begin in July 2017 or in May 2018?
+  sources:
+  - kind: statute
+    citation: Vermont Act 29 (2017), sections 2 and 4, physical pages 2–4
+    url: https://legislature.vermont.gov/Documents/2018/Docs/ACTS/ACT029/ACT029%20As%20Enacted.pdf#page=2
+  - kind: rulemaking
+    citation: Vermont Secretary of State rule notice 18P001, Summary and Economic Impact
+    url: https://secure.vermont.gov/SOS/rules/display.php?r=538
+  - kind: form
+    citation: Vermont FFY 2026 TANF Caseload Reduction Report, Resource Limit Increase, physical page 2
+    url: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Reports/ACF-202-Overall-2026.pdf#page=2
+  readings:
+    statute: Act 29 raises the limit from $2,000 to $9,000 effective July 1, 2017. The 2018 rule notice says the department put that change into operation on July 1, 2017.
+    other: The state's later federal caseload report gives May 8, 2018 as the implementation date for the same increase.
+  pe_us:
+    follows: statute
+    code:
+    - policyengine_us/parameters/gov/states/vt/dcf/reach_up/resources/limit.yaml
+    prs: []
+  state: ruled
+  note: The statute governs the modeled cutoff. The case "Vermont raises the Reach Up asset limit in July 2017." checks a unit with $5,000 in countable cash before and after July 1. The primary text captures are in source_conflicts/sources/us-vt/.
 - id: us-vt:renter-credit-booklet-income-limit-errors
   program: renter-credit
   years:

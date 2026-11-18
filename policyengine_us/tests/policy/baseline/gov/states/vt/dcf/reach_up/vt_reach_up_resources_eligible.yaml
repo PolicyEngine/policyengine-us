@@ -1,6 +1,5 @@
 # Vermont TANF Resource Eligibility
-# Resource limit: $9,000
-# Source: 33 V.S.A. Section 1103(a)(1)
+# Source: 33 V.S.A. Section 1103(c)(5), Act 29 of 2017, and Act 136 of 2026
 
 - name: Case 1, zero assets.
   period: 2024-01
@@ -73,3 +72,47 @@
   output:
     # Assets: $9,001 > $9,000 limit
     vt_reach_up_resources_eligible: false
+
+- name: Vermont raises the Reach Up asset limit in July 2017.
+  period: 2017
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    spm_units:
+      family:
+        members: [parent, child]
+        spm_unit_cash_assets: 5_000
+    households:
+      family:
+        members: [parent, child]
+        state_code: VT
+  output:
+    # Act 29 raises the resource limit from $2,000 to $9,000.
+    vt_reach_up_resources_eligible:
+      2017-06: false
+      2017-07: true
+
+- name: Vermont removes the Reach Up asset limit in July 2026.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+    spm_units:
+      family:
+        members: [parent, child]
+        spm_unit_cash_assets: 10_000
+    households:
+      family:
+        members: [parent, child]
+        state_code: VT
+  output:
+    # Act 136 removes the $9,000 resource limit.
+    vt_reach_up_resources_eligible:
+      2026-06: false
+      2026-07: true
