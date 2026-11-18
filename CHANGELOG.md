@@ -1,3 +1,10 @@
+## [2.145.8] - 2026-11-18
+
+### Changed
+
+- Add the FY2027 Illinois LIHEAP winter crisis maximum of $2,000.
+
+
 ## [2.145.7] - 2026-11-18
 
 ### Fixed
