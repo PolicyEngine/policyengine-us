@@ -81,8 +81,10 @@ class amt_tax_including_cg(Variable):
         # Worksheet line 21 (as figured for the regular tax), the amount the
         # regular tax taxes at the regular rates (26 U.S.C. 1(h)(1)(A)).
         # With 28 percent rate or unrecaptured section 1250 gain, Schedule D
-        # Tax Worksheet line 21 caps line 14 at the top of the 24 percent
-        # bracket (but not below line 18), so it can be less than Line 20.
+        # Tax Worksheet line 21 caps line 14 at the top of the highest bracket
+        # with a rate below 25 percent (the 15 percent bracket before 2018, the
+        # 24 percent bracket from 2018), but not below line 18, so it can be
+        # less than Line 20.
         # Without them, it is line 14, the same as QDCG Worksheet line 5 and
         # Line 20. For a Form 2555 filer it reflects the regular tax capital
         # gain excess, not the AMT one.

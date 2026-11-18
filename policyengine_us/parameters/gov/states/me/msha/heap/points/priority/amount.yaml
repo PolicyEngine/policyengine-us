@@ -1,0 +1,17 @@
+description: Maine assigns these priority points to a household with a member aged 60 or older, a disabled member or a child aged 6 or younger under the Low Income Home Energy Assistance Program.
+# The June 29, 2026 replacement awards the points once, for the first at-risk
+# member in the house.
+values:
+  2024-07-03: 5
+
+metadata:
+  unit: /1
+  period: year
+  label: Maine HEAP at-risk priority points
+  reference:
+    - title: Maine FY2026 Benefit Matrix, 99-346 CMR ch. 24, section 4(A) (2025 edition)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=2
+    - title: 99-346 CMR ch. 24, section 4(A) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: 99-346 CMR ch. 24, section 4(A) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=16

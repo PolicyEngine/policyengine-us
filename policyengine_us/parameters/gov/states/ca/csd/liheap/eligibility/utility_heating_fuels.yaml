@@ -1,0 +1,16 @@
+description: California treats heat included in rent as a utility cost for households heating with these fuels under the Low Income Home Energy Assistance Program.
+# The guide computes a solar customer's energy cost from the electric and gas
+# charges and requires an out-of-pocket cost such as a minimum delivery charge.
+values:
+  2025-10-01:
+    - ELECTRICITY
+    - NATURAL_GAS
+    - SOLAR
+
+metadata:
+  unit: list
+  period: year
+  label: California LIHEAP utility heating fuels
+  reference:
+    - title: "California FY2026 LIHEAP State Plan #page 182-184,264-265,279"
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=182

@@ -1,0 +1,325 @@
+# Expected amounts come from the PY26 Benefit Determination Chart and its summary (pages 1-2).
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=1
+# Burden = estimated annual heating cost / annual income, with the PY2007 costs:
+# electricity 1_335, 1_455, 1_605; natural gas 977, 1_100, 1_207;
+# oil or propane 1_625, 1_845, 2_145; coal or wood 1_200, 1_600, 1_800 (Areas I, II, III).
+# Ada County is Area I, Bannock County Area II, Bear Lake County Area III.
+# Low burden is under 6%, medium 6% to under 11%, high 11% or more.
+# Income 40_000 is low and 8_000 high for every fuel and area.
+# Cases 1 to 8 set has_heating_expense directly; a bill would not change the amount.
+
+- name: Case 1, electric heat pays the Idaho Power and Southern Utilities column in every cell.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Income 16_000 is medium: 8.34%, 9.09%, 10.03%.
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID, ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID,
+             BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID,
+             BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY,
+                   ELECTRICITY, ELECTRICITY, ELECTRICITY,
+                   ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    id_liheap_countable_income: [40_000, 16_000, 8_000,
+                                 40_000, 16_000, 8_000,
+                                 40_000, 16_000, 8_000]
+    id_liheap_income_eligible: [true, true, true, true, true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true, true, true, true, true]
+  output:
+    id_liheap: [328, 342, 355,
+                378, 394, 410,
+                429, 447, 464]
+
+- name: Case 2, natural gas pays the Intermountain Gas column in every cell.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Income 12_000 is medium: 8.14%, 9.17%, 10.06%.
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID, ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID,
+             BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID,
+             BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+                   NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+                   NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    id_liheap_countable_income: [40_000, 12_000, 8_000,
+                                 40_000, 12_000, 8_000,
+                                 40_000, 12_000, 8_000]
+    id_liheap_income_eligible: [true, true, true, true, true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true, true, true, true, true]
+  output:
+    id_liheap: [122, 127, 132,
+                141, 147, 152,
+                159, 166, 173]
+
+- name: Case 3, fuel oil and propane share the oil or propane column in every cell.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Income 20_000 is medium: 8.13%, 9.23%, 10.73%.
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID, ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID,
+             BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID,
+             BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL,
+                   PROPANE, PROPANE, PROPANE,
+                   FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    id_liheap_countable_income: [40_000, 20_000, 8_000,
+                                 40_000, 20_000, 8_000,
+                                 40_000, 20_000, 8_000]
+    id_liheap_income_eligible: [true, true, true, true, true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true, true, true, true, true]
+  output:
+    id_liheap: [776, 808, 840,
+                970, 1_010, 1_050,
+                1_164, 1_212, 1_260]
+
+- name: Case 4, coal and wood share the coal or wood column in every cell.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Income 18_000 is medium: 6.67%, 8.89%, 10%.
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID, ID, ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID,
+             BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID,
+             BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID, BEAR_LAKE_COUNTY_ID]
+    heating_type: [WOOD, WOOD, WOOD,
+                   COAL, COAL, COAL,
+                   WOOD, WOOD, WOOD]
+    id_liheap_countable_income: [40_000, 18_000, 8_000,
+                                 40_000, 18_000, 8_000,
+                                 40_000, 18_000, 8_000]
+    id_liheap_income_eligible: [true, true, true, true, true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true, true, true, true, true]
+  output:
+    id_liheap: [467, 486, 505,
+                544, 567, 590,
+                622, 648, 674]
+
+- name: Case 5, burden bands turn at exactly 6 percent and 11 percent, and zero income is high.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Bannock electricity 1_455: 1_455 / 24_250 = 6% is medium; 24_251 is low.
+  # Bannock gas 1_100: 1_100 / 10_000 = 11% is high; 10_001 is medium; zero income is high.
+  input:
+    state_code: [ID, ID, ID, ID, ID]
+    county: [BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID,
+             BANNOCK_COUNTY_ID, BANNOCK_COUNTY_ID]
+    heating_type: [ELECTRICITY, ELECTRICITY, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    id_liheap_countable_income: [24_250, 24_251, 10_000, 10_001, 0]
+    id_liheap_income_eligible: [true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true]
+  output:
+    id_liheap: [394, 378, 152, 147, 152]
+
+- name: Case 6, a child under six, an adult of 60 and a disabled adult add the target bonus.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Ada gas at low burden is 122, and 122 + 25 = 147, the chart's lowest bonus amount.
+  # The last row is Bear Lake oil at high burden: 1_260 + 25 = 1_285, the chart's highest.
+  input:
+    state_code: [ID, ID, ID, ID, ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID,
+             BEAR_LAKE_COUNTY_ID]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, FUEL_OIL]
+    age: [5, 6, 59, 60, 40, 60]
+    is_disabled: [false, false, false, false, true, false]
+    id_liheap_countable_income: [40_000, 40_000, 40_000, 40_000, 40_000, 8_000]
+    id_liheap_income_eligible: [true, true, true, true, true, true]
+    has_heating_expense: [true, true, true, true, true, true]
+  output:
+    id_liheap: [147, 122, 122, 147, 147, 1_285]
+
+- name: Case 7, several vulnerable members earn one target bonus.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Ada gas at low burden: 122 + 25 = 147.
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        id_liheap_countable_income: 40_000
+        id_liheap_income_eligible: true
+        has_heating_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        county: ADA_COUNTY_ID
+  output:
+    id_liheap: 147
+
+- name: Case 8, a vulnerable member who is not a qualified member earns no target bonus.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 65
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        id_liheap_countable_income: 40_000
+        id_liheap_income_eligible: true
+        has_heating_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        county: ADA_COUNTY_ID
+  output:
+    id_liheap: 122
+
+- name: Case 9, heat in rent paid 75 in FY2025 with the target bonus on top.
+  period: 2025
+  absolute_error_margin: 0.01
+  # PY25 chart Rent column and its 75 and 100 low amounts.
+  input:
+    state_code: [ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true]
+    age: [40, 60]
+    id_liheap_income_eligible: [true, true]
+  output:
+    id_liheap: [75, 100]
+
+- name: Case 10, ineligible households, fuels with no chart column and heat in rent from FY2026 receive nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ID, ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [NATURAL_GAS, OTHER, NATURAL_GAS]
+    heat_expense_included_in_rent: [false, false, true]
+    has_heating_expense: [true, true, false]
+    age: [60, 60, 60]
+    id_liheap_income_eligible: [false, true, true]
+  output:
+    id_liheap: [0, 0, 0]
+
+- name: Case 11, a parent and child in Bannock County at the medium burden.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Wages 18_000 and no other income; 1_100 / 18_000 = 6.11% is medium; the child is eight.
+  # The 900 gas bill shows the obligation; the PY2007 table sets the burden.
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 18_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        county: BANNOCK_COUNTY_ID
+  output:
+    id_liheap_countable_income: 18_000
+    id_liheap_estimated_heating_cost: 1_100
+    id_liheap_eligible: true
+    id_liheap: 147
+
+- name: Case 12, solar with an electric bill pays the electric column and kerosene with a bill the oil column.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Ada County. Solar: 1_335 / 16_000 = 8.34% is medium, 342.
+  # Kerosene: 1_625 / 20_000 = 8.13% is medium, 808.
+  input:
+    state_code: [ID, ID]
+    county: [ADA_COUNTY_ID, ADA_COUNTY_ID]
+    heating_type: [SOLAR, KEROSENE]
+    pre_subsidy_electricity_expense: [1_000, 0]
+    fuel_oil_expense: [0, 800]
+    id_liheap_countable_income: [16_000, 20_000]
+    id_liheap_income_eligible: [true, true]
+  output:
+    id_liheap: [342, 808]
+
+- name: Case 13, VA benefits and a minor's earnings can put a household over the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  # IDAPA 16.04.14.010.06 counts them. Ada County, gas with a bill, SNAP zero over the program year.
+  # VA 35_000 is over the one-person 32_835. Wages 36_000 + 8_000 = 44_000 are over the two-person 42_938.
+  input:
+    people:
+      person1:
+        age: 45
+        veterans_benefits: 35_000
+      person2:
+        age: 40
+        employment_income_before_lsr: 36_000
+      person3:
+        age: 17
+        employment_income_before_lsr: 8_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        takes_up_tanf_if_eligible: false
+        snap: {2025-10: 0, 2025-11: 0, 2025-12: 0, 2026-01: 0, 2026-02: 0, 2026-03: 0, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0}
+      spm_unit2:
+        members: [person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+        takes_up_tanf_if_eligible: false
+        snap: {2025-10: 0, 2025-11: 0, 2025-12: 0, 2026-01: 0, 2026-02: 0, 2026-03: 0, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0}
+    households:
+      household1:
+        members: [person1]
+        state_code: ID
+        county: ADA_COUNTY_ID
+      household2:
+        members: [person2, person3]
+        state_code: ID
+        county: ADA_COUNTY_ID
+  output:
+    id_liheap_countable_income: [35_000, 44_000]
+    id_liheap_income_limit: [32_835, 42_938]
+    id_liheap_eligible: [false, false]
+    id_liheap: [0, 0]
+
+- name: Case 14, the Idaho AABD supplement counts and can move the burden band.
+  period: 2026
+  absolute_error_margin: 0.01
+  # SSI (994 a month x 12) 11_928 + AABD (53 a month x 12) 636 = 12_564. Ada County electric 1_335 / 12_564
+  # = 10.63% is medium, 342, plus the 25 bonus at age 65. Without AABD, 1_335 / 11_928 = 11.19% would be high.
+  input:
+    people:
+      person1:
+        age: 65
+        ssi: 11_928
+        id_aabd_living_arrangement: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_000
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+        county: ADA_COUNTY_ID
+  output:
+    id_aabd: 636
+    id_liheap_countable_income: 12_564
+    id_liheap: 367

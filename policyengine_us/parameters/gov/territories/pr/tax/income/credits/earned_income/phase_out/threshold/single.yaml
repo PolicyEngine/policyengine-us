@@ -5,18 +5,26 @@ brackets:
       2023-01-01: 0
     amount:
       2023-01-01: 17_660
+      2024-01-01: 18_610
+      2025-01-01: 19_130
   - threshold: 
       2023-01-01: 1
     amount:
       2023-01-01: 19_870
+      2024-01-01: 20_940
+      2025-01-01: 21_530
   - threshold: 
       2023-01-01: 2
     amount:
       2023-01-01: 23_180
+      2024-01-01: 24_430
+      2025-01-01: 25_110
   - threshold: 
       2023-01-01: 3
     amount:
       2023-01-01: 23_180
+      2024-01-01: 24_430
+      2025-01-01: 25_110
 metadata:
   amount_unit: currency-USD
   threshold_unit: child
@@ -24,8 +32,13 @@ metadata:
   label: Puerto Rico earned income credit phase out threshold
   period: year
   reference:
+    - title: "Hacienda Boletín Informativo de Rentas Internas 24-04, inflation adjustment to the earned income credit for 2024 #page 1-3"
+      href: https://hacienda.pr.gov/sites/default/files/publicaciones/2024/12/bi_ri_24-04_-_credito_por_trabajo_-_ajuste_por_inflacion_2024_firmada_23-dic-2024.pdf#page=1
+    - title: "Hacienda Boletín Informativo de Rentas Internas 26-01, inflation adjustment to the earned income credit for 2025 #page 1-3"
+      href: https://hacienda.pr.gov/sites/default/files/publicaciones/2026/02/bi_ri_26-01_ajuste_por_inflacion_al_credito_por_trabajo_para_el_ano_2025_signed.pdf#page=1
+    - title: P.R. Internal Revenue Code § 1052.01(i), 13 L.P.R.A. § 30211(i) (inflation adjustment as adjusted by the federal IRS)
+      href: https://docs.pr.gov/files/OCIF/LEYES-REGLAMENTOS-CARTAS-CIRCULARES/Leyes-delegan-Facultad-OCIF/Ley%20N%C3%BAm.%201-2011%20-%20C%C3%B3digo%20de%20Rentas%20Internas%20para%20un%20Nuevo%20Puerto%20Rico.pdf#page=300
     - title: Schedule CT Individual, Earned Income Credit, 2023
       href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=2
-    # discrepancy: legal statute phase out thresholds do not correspond with tax form values
     - title: P.R. Laws tit. 13, § 30211 (1) - (6)
       href: https://law.justia.com/codes/puerto-rico/title-thirteen/subtitle-17/part-ii/chapter-1007/subchapter-b/30211/

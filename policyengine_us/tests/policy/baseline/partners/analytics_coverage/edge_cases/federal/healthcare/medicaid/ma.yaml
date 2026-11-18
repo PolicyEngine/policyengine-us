@@ -5,7 +5,7 @@
 # - MA sets the optional senior/disabled income limit at 1.00 FPL (vs 0.75
 #   in TX) with a $2,000 individual asset limit, giving a positive senior
 #   pathway plus an exact asset-boundary pin.
-# MA Medicaid per capita: $23,407,486,687 / 1,658,082 enrolled = $14,117.21.
+# MA Medicaid per capita: $25,035,132,331 / 1,792,839 enrolled = $13,963.96.
 - name: medicaid_ma_young_adult_age_19_covered (ma)
   period: 2026
   absolute_error_margin: 0.1
@@ -86,8 +86,8 @@
         # parents qualify through the adult group instead; dollars
         # unchanged.
         # Household avg SLCSP index = (478.88 + 472.50 + 266.00) / 3 = 405.79;
-        # 14,117.21 x 478.88 / 405.79 = 16,659.88.
-        medicaid: 16_659.88
+        # 13,963.96 x 478.88 / 405.79 = 16,479.04.
+        medicaid: 16_479.04
         is_medicaid_eligible: true
         medicaid_category: 4  # ADULT
         chip: 0.0
@@ -98,8 +98,8 @@
         is_ssi_aged: false
         msp: 0.0
         msp_eligible: false
-        # 14,117.21 x 472.50 / 405.79 = 16,437.79.
-        medicaid: 16_437.79
+        # 13,963.96 x 472.50 / 405.79 = 16,259.35.
+        medicaid: 16_259.35
         is_medicaid_eligible: true
         medicaid_category: 4  # ADULT
         chip: 0.0
@@ -112,8 +112,8 @@
         msp_eligible: false
         # MA-only YOUNG_ADULT: age 19 with zero income < MA young adult
         # limit 1.55 (the same person is NONE in the TX baseline case).
-        # 14,117.21 x 266.00 / 405.79 = 9,253.95.
-        medicaid: 9_253.95
+        # 13,963.96 x 266.00 / 405.79 = 9,153.49.
+        medicaid: 9_153.49
         is_medicaid_eligible: true
         medicaid_category: 3  # YOUNG_ADULT
         chip: 0.0
@@ -180,8 +180,8 @@
         # Optional senior/disabled pathway: income under MA's 1.00 FPL
         # limit (0.75 in TX would also fail here: 12,760 > 11,970) and
         # resources 1,999 < 2,000 asset limit. Single enrollee:
-        # medicaid = MA per capita 14,117.21.
-        medicaid: 14_117.21
+        # medicaid = MA per capita 13,963.96.
+        medicaid: 13_963.96
         is_medicaid_eligible: true
         medicaid_category: 8  # SENIOR_OR_DISABLED
         chip: 0.0

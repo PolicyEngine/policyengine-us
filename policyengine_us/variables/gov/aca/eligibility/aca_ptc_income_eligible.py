@@ -34,9 +34,15 @@ class aca_ptc_income_eligible(Variable):
         magi_frac = tax_unit("aca_magi_fraction", period)
         # Worksheet 2 compares the dollar amounts, so income exactly at a
         # threshold is distinguished from income up to one point above it.
-        magi = max_(tax_unit("aca_magi", period), 0)
-        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
-        at_whole_percentage = exact_magi_frac <= magi_frac
+        # Divide in float64, by the poverty line aca_magi_fraction uses: a
+        # float32 quotient can round a ratio just above 400% down onto it.
+        magi = max_(tax_unit("aca_magi", period), 0).astype(np.float64)
+        guideline = tax_unit("aca_fpg", period)
+        # A territory has no guideline and an infinite fraction, which a
+        # right-closed lookup would place in the scale's top bracket.
+        has_guideline = guideline > 0
+        exact_magi_frac = magi / where(has_guideline, guideline, 1)
+        at_whole_percentage = has_guideline & (exact_magi_frac <= magi_frac)
         # The scale's brackets start at their thresholds, which is right for
         # the 100% floor ("equals or exceeds"). At a ceiling ("does not
         # exceed"), income exactly at the threshold stays in the bracket

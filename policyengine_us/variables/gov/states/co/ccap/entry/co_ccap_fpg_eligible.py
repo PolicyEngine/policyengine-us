@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.co.ccap.co_ccap_parameter_instant import (
+    co_ccap_parameter_instant,
+)
 
 
 class co_ccap_fpg_eligible(Variable):
@@ -16,11 +19,7 @@ class co_ccap_fpg_eligible(Variable):
             spm_unit("co_ccap_countable_income", period),
             2,
         )
-        year = period.start.year
-        if period.start.month >= 10:
-            instant_str = f"{year}-10-01"
-        else:
-            instant_str = f"{year - 1}-10-01"
+        instant_str = co_ccap_parameter_instant(period)
         p = parameters(instant_str).gov.states.co.ccap
         # Calculate monthly fpg limit, only for counties in Colorado.
         county = household("county_str", period.this_year)

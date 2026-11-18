@@ -4,7 +4,7 @@
 #   elsewhere; infant/age_range/in_ca.yaml) with a 2.66 FPL limit.
 # - CA keeps a high senior/disabled asset limit in 2026 ($130,000 vs $2,000
 #   in most states) and a 1.38 FPL income limit for the optional pathway.
-# CA Medicaid per capita: $124,063,730,563 / 13,431,928 enrolled = $9,236.48.
+# CA Medicaid per capita: $150,413,664,949 / 13,836,944 enrolled = $10,870.44.
 - name: medicaid_ca_infant_age_1_extended_age_range (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -106,17 +106,17 @@
         msp_eligible: false
         # CA-only INFANT at age 1: 2.01 FPL < CA infant limit 2.66 with the
         # extended age < 2 range (in TX this age/income would be over the
-        # 1.49 young child limit). 9,236.48 x (child SLCSP index 312.00 /
-        # household avg 432.99) = 6,655.48.
-        medicaid: 6_655.48
+        # 1.49 young child limit). 10,870.44 x (child SLCSP index 275.00 /
+        # household avg 381.645) = 7,832.86.
+        medicaid: 7_832.86
         is_medicaid_eligible: true
         medicaid_category: 0  # INFANT
         chip: 0.0
         is_aca_ptc_eligible: false
     tax_units:
       tax_unit:
-        aca_ptc: 8_092.33
-        premium_tax_credit: 8_092.33
+        aca_ptc: 6_687.78
+        premium_tax_credit: 6_687.78
 - name: medicaid_ca_senior_high_asset_limit (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -174,8 +174,8 @@
         # CA-only optional senior/disabled pathway: $50,000 resources are
         # under CA's $130,000 2026 asset limit (vs $2,000 in most states)
         # and income is under CA's 1.38 FPL limit. Single enrollee:
-        # medicaid = CA per capita 9,236.48.
-        medicaid: 9_236.48
+        # medicaid = CA per capita 10,870.44.
+        medicaid: 10_870.44
         is_medicaid_eligible: true
         medicaid_category: 8  # SENIOR_OR_DISABLED
         chip: 0.0

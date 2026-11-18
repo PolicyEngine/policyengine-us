@@ -1,4 +1,9 @@
-description: Arizona limits eligibility to filers with at least this tax liability under the Families Tax Rebate program.
+description: >-
+  Arizona limits eligibility to filers with at least this tax liability under the
+  Families Tax Rebate program. PolicyEngine attributes this one-time rebate to
+  eligibility tax year 2021 rather than to its 2023 payment year. It enters
+  refundable-credit totals only in 2021, even if a standalone calculation returns a
+  positive amount in another year.
 metadata:
   period: year
   unit: currency-USD

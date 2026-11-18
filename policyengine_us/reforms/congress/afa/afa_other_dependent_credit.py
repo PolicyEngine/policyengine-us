@@ -148,7 +148,13 @@ def create_afa_other_dependent_credit() -> Reform:
             if ctc.refundable.fully_refundable:
                 reduction = tax_unit("ctc_lower_phase_out", period)
                 p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
-                qualifying_children = tax_unit("ctc_qualifying_children", period)
+                # Proposed section 24A has no filer SSN rule, so the floor
+                # counts children without the federal filer test.
+                qualifying_children = add(
+                    tax_unit,
+                    period,
+                    ["ctc_qualifying_child_ignoring_filer_identification"],
+                )
                 lower_floor = p.lower_floor * qualifying_children
                 capped_credit = min_(lower_floor, maximum_amount)
                 reduced_max_amount_lower = max_(
@@ -186,7 +192,14 @@ def create_afa_other_dependent_credit() -> Reform:
             )
             reduction = tax_unit("ctc_lower_phase_out", period)
             p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
-            qualifying_children = tax_unit("ctc_qualifying_children", period)
+            # Proposed section 24A has no filer SSN rule (only a timely
+            # taxpayer TIN, 24A(e)(2)), so the floor counts children without
+            # the federal filer test.
+            qualifying_children = add(
+                tax_unit,
+                period,
+                ["ctc_qualifying_child_ignoring_filer_identification"],
+            )
             lower_floor = p.lower_floor * qualifying_children
             reduced_max_amount_lower = max_(lower_floor, maximum_amount - reduction)
             higher_reduction = tax_unit("ctc_higher_phase_out", period)

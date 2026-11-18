@@ -1,0 +1,18 @@
+description: Pennsylvania uses federal poverty guidelines from this many years before the benefit year for the opening-season income limit under the Low Income Home Energy Assistance Program.
+# The model applies the season-opening limit all year. The FY2026 plan updates
+# the guidelines each January (page 38) and the FY2027 plan each February (page
+# 35). For one person in calendar 2026, the updated limit is 15,960 * 1.5 =
+# 23,940, 465 above the modeled 23,475.
+values:
+  2024-11-04: 1
+metadata:
+  unit: year
+  period: year
+  label: Pennsylvania LIHEAP opening-season poverty guideline year lag
+  reference:
+    - title: Pennsylvania FY2025 LIHEAP State Plan (2024 guidelines at opening)
+      href: https://web.archive.org/web/20250311051110/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2025-liheap-state-plan.pdf#page=10
+    - title: Pennsylvania FY2026 LIHEAP State Plan (2025 guidelines at opening)
+      href: https://web.archive.org/web/20251016232745/https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2026-liheap-state-plan.pdf#page=10
+    - title: Pennsylvania FY2027 LIHEAP State Plan (2026 guidelines at opening; February update)
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf#page=9

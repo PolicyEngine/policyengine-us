@@ -1,32 +1,274 @@
 - name: Ineligible -age
   period: 2022
   input:
-    greater_age_head_spouse: 60
+    age: 60
+    rent: 6_000
     state_code: MT
   output:
     mt_elderly_homeowner_or_renter_credit_eligible: false
 
-- name: Eligible
+- name: Eligible renter
   period: 2022
   input:
-    greater_age_head_spouse: 63
+    age: 63
+    rent: 6_000
     state_code: MT
   output:
+    # Rent paid shows the filer occupies the home as a renter; a Montana
+    # household is a full-year resident.
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+    mt_elderly_homeowner_or_renter_credit_mt_residency_months: 12
     mt_elderly_homeowner_or_renter_credit_eligible: true
 
-- name: If one person is old enough, everybody is eligible
+- name: Eligible owner billed property tax
+  period: 2022
+  input:
+    age: 63
+    real_estate_taxes: 2_000
+    state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+    mt_elderly_homeowner_or_renter_credit_eligible: true
+
+- name: If one spouse qualifies, every member of the return is eligible
   period: 2022
   input:
     people:
-      person1: {}
-      person2: {}
+      person1:
+        age: 60
+        rent: 6_000
+      person2:
+        age: 70
+      person3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # The joint return's rent is "the rent that you paid" (Schedule 2EC line
+    # 24), so both spouses rent the home; only one must meet the age
+    # requirement (2025 instructions, PDF page 44).
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: [12, 12, 0]
+    mt_elderly_homeowner_or_renter_credit_eligible: [true, true, true]
+
+- name: A parent without owner, renter or lessee status cannot qualify through another member's bill
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 80
+        rent: 0
+      child:
+        age: 45
+        rent: 0
+        real_estate_taxes: 4_000
+    tax_units:
+      parent_return:
+        members: [parent]
+      child_return:
+        members: [child]
+    households:
+      home:
+        members: [parent, child]
+        state_code: MT
+  output:
+    # MCA 15-30-2338(1)(c): the claimant "must have occupied one or more
+    # dwellings in Montana as an owner, renter, or lessee for at least 6
+    # months". The parent pays no rent and is billed no property tax, so
+    # nothing shows that status; the child's bill does not establish it.
+    # The child owns the home but is 45 (§ 15-30-2338(1)(a)).
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: [0, 12]
+    mt_elderly_homeowner_or_renter_credit_eligible: [false, false]
+
+- name: A parent with documented lessee status in a child's home qualifies
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 80
+        rent: 0
+        mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months: 12
+      child:
+        age: 45
+        rent: 0
+        real_estate_taxes: 4_000
+    tax_units:
+      parent_return:
+        members: [parent]
+      child_return:
+        members: [child]
+    households:
+      home:
+        members: [parent, child]
+        state_code: MT
+  output:
+    # Zero cash rent does not by itself rule out lessee status; an input
+    # that records it establishes the occupancy test. The child's months
+    # still follow the child's own bill.
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: [12, 12]
+    mt_elderly_homeowner_or_renter_credit_eligible: [true, false]
+
+- name: A renter meeting both month thresholds exactly is eligible
+  period: 2024
+  input:
+    age: 80
+    rent: 6_000
+    state_code: MT
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 6
+    mt_elderly_homeowner_or_renter_credit_mt_residency_months: 9
+  output:
+    # § 15-30-2338(1)(b)-(c): at least 9 months of residence and at least
+    # 6 months of occupancy as an owner, renter or lessee.
+    mt_elderly_homeowner_or_renter_credit_eligible: true
+
+- name: Five months of qualifying occupancy fails
+  period: 2024
+  input:
+    age: 80
+    rent: 6_000
+    state_code: MT
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 5
+    mt_elderly_homeowner_or_renter_credit_mt_residency_months: 12
+  output:
+    mt_elderly_homeowner_or_renter_credit_eligible: false
+
+- name: Eight months of Montana residence fails
+  period: 2024
+  input:
+    age: 80
+    rent: 6_000
+    state_code: MT
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+    mt_elderly_homeowner_or_renter_credit_mt_residency_months: 8
+  output:
+    mt_elderly_homeowner_or_renter_credit_eligible: false
+
+- name: An unbilled occupancy input above 12 months is capped at 12
+  period: 2024
+  input:
+    age: 80
+    rent: 0
+    state_code: MT
+    mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months: 13
+  output:
+    # A claim period has 12 months, so qualifying occupancy is at most 12.
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+    mt_elderly_homeowner_or_renter_credit_eligible: true
+
+- name: The occupancy test applies from 2009
+  period: 2009
+  input:
+    people:
+      parent:
+        age: 80
+        rent: 0
+      child:
+        age: 45
+        rent: 0
+        real_estate_taxes: 4_000
+    tax_units:
+      parent_return:
+        members: [parent]
+      child_return:
+        members: [child]
+    households:
+      home:
+        members: [parent, child]
+        state_code: MT
+  output:
+    # MCA 15-30-2338(1)(c) (2009) is unchanged since its 2009 recodification.
+    mt_elderly_homeowner_or_renter_credit_eligible: [false, false]
+
+- name: The tests must be met by the same spouse
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 60
+        rent: 6_000
+        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 12
+      person2:
+        age: 70
+        mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
-        greater_age_head_spouse: 70
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
+    # § 15-30-2338(1) requires "an individual" to meet the age, residence
+    # and occupancy tests. The renter is 60; the 70-year-old spouse is
+    # recorded as not renting, owning or leasing the home.
+    mt_elderly_homeowner_or_renter_credit_eligible: [false, false]
+
+- name: A dependent who meets the tests does not qualify the return
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        rent: 6_000
+      dependent:
+        age: 70
+        is_tax_unit_dependent: true
+        mt_elderly_homeowner_or_renter_credit_unbilled_occupancy_months: 12
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: MT
+  output:
+    # § 15-30-2338(1) sets the tests for the individual who claims. The
+    # model computes the claim on the return of the tax unit head and
+    # spouse, so only they can qualify it. The 70-year-old dependent has
+    # 12 recorded lessee months and 12 residence months (the default) but
+    # is not the head or spouse; the head is 40 (§ 15-30-2338(1)(a)).
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: [12, 12]
+    mt_elderly_homeowner_or_renter_credit_eligible: [false, false]
+
+- name: The spouse alone can qualify, and one person's residence input leaves the other's at 12
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 75
+        taxable_pension_income: 10_000
+        ssi: 0
+        # The head lived in Montana only 8 months.
+        mt_elderly_homeowner_or_renter_credit_mt_residency_months: 8
+      person2:
+        age: 65
+        rent: 6_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The joint return's rent shows both spouses rent the home (12 months
+    # each). The 75-year-old head fails the 9-month residence test
+    # (§ 15-30-2338(1)(b)); the 65-year-old spouse meets all three tests,
+    # so the return qualifies and both members are eligible.
+    mt_elderly_homeowner_or_renter_credit_mt_residency_months: [8, 12]
+    mt_elderly_homeowner_or_renter_credit_qualifying_occupancy_months: [12, 12]
     mt_elderly_homeowner_or_renter_credit_eligible: [true, true]
+    # 2024 Schedule 2EC: line 18 = 10_000; line 20 = max(10_000 - 12_600,
+    # 0) = 0; line 22 = 0. Line 24 = 6_000; line 25 = 15% = 900; line 27 =
+    # 900, under the 1_150 cap, at the 100% multiplier. The credit stays on
+    # the head.
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [900, 0]

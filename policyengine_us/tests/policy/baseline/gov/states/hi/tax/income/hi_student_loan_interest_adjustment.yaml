@@ -273,3 +273,44 @@
     hi_subtractions: 5_000
     # $62,500 + $1,666.67 addition - $5,000 pension subtraction.
     hi_agi: 59_166.67
+
+- name: Hawaii deduction keeps the unclaimed head's interest on a joint return with a claimed spouse
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 2_000
+        student_loan_interest: 1_000
+        is_tax_unit_head: true
+      spouse:
+        age: 22
+        is_full_time_student: true
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: true
+        student_loan_interest: 700
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    # IRC 221(c) bars only the claimed spouse, so Hawaii counts the head's
+    # interest only: min(1,000, 2,500 cap) = 1,000. Federal AGI is
+    # 2,000 - 1,000 = 1,000; Hawaii MAGI adds back the 1,000 federal
+    # deduction, giving 2,000, below the 100,000 joint phase-out start.
+    student_loan_interest_ald_eligible: [true, false]
+    hi_modified_agi: 2_000
+    hi_student_loan_interest_deduction: 1_000
+    # Hawaii deduction 1,000 - federal deduction 1,000 = 0, so Hawaii AGI
+    # equals federal AGI.
+    hi_student_loan_interest_adjustment: 0
+    hi_agi: 1_000

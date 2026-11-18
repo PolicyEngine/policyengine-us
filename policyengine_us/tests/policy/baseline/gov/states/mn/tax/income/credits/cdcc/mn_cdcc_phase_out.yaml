@@ -42,3 +42,636 @@
     state_code: MN
   output:
     mn_cdcc_phase_out: 600
+
+# Isolated phaseout-cap component; the qualifying-person count and AGI are
+# independently known premises, not a federal-credit eligibility calculation.
+# 2017 1st Special Session chapter 1, article 1, sections 18-19: the
+# $50,000 threshold and 5% reduction apply after December 31, 2016.
+# https://www.revisor.mn.gov/laws/2017/1/1/
+# $600 - ($51,000 - $50,000) * 0.05 = $550 remaining credit cap.
+- name: Case 6, 2017 Minnesota dependent care phaseout uses its expanded income threshold.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: MN
+    filing_status: SINGLE
+    adjusted_gross_income: 51_000
+    mn_cdcc_dependent_count: 1
+  output:
+    mn_cdcc_phase_out: 550
+
+- name: Case 7, 2017 Minnesota phaseout cap uses the annual historical threshold.
+  period: 2017
+  absolute_error_margin: 0.01
+  # 2017 First Special Session chapter 1, article 1, sections 18-19; 2017 statute 290.067, subd. 1(h).
+  # Known full-year Minnesota residency, SINGLE filing status, correct AGI and
+  # qualifying-person counts are component premises, not derived eligibility.
+  # There are no M1NC or other unmodeled income adjustments in these cases.
+  # Remaining cap = max(0, base - max(0, AGI - threshold) * .05).
+  # One qualifying person has base $600; two have base $1,200.
+  # Rows: one person at threshold, +$1,000, +$12,000; two people at threshold,
+  # +$1,000, +$24,000. These are remaining caps, not complete household awards.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person6:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person7:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person8:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person9:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person10:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person11:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person12:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person13:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person14:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person15:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+        mn_cdcc_dependent_count: 1
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: SINGLE
+        adjusted_gross_income: 51_000
+        mn_cdcc_dependent_count: 1
+      tax_unit3:
+        members: [person5, person6]
+        filing_status: SINGLE
+        adjusted_gross_income: 62_000
+        mn_cdcc_dependent_count: 1
+      tax_unit4:
+        members: [person7, person8, person9]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+        mn_cdcc_dependent_count: 2
+      tax_unit5:
+        members: [person10, person11, person12]
+        filing_status: SINGLE
+        adjusted_gross_income: 51_000
+        mn_cdcc_dependent_count: 2
+      tax_unit6:
+        members: [person13, person14, person15]
+        filing_status: SINGLE
+        adjusted_gross_income: 74_000
+        mn_cdcc_dependent_count: 2
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+      spm_unit4:
+        members: [person7, person8, person9]
+      spm_unit5:
+        members: [person10, person11, person12]
+      spm_unit6:
+        members: [person13, person14, person15]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MN
+      household2:
+        members: [person3, person4]
+        state_code: MN
+      household3:
+        members: [person5, person6]
+        state_code: MN
+      household4:
+        members: [person7, person8, person9]
+        state_code: MN
+      household5:
+        members: [person10, person11, person12]
+        state_code: MN
+      household6:
+        members: [person13, person14, person15]
+        state_code: MN
+  output:
+    mn_cdcc_phase_out: [600, 550, 0, 1200, 1150, 0]
+
+- name: Case 8, 2018 Minnesota phaseout cap uses the annual historical threshold.
+  period: 2018
+  absolute_error_margin: 0.01
+  # Official 2018 Schedule M1CD, lines 3-6 and Worksheet for Line 5, steps 1-6 (page 3).
+  # Known full-year Minnesota residency, SINGLE filing status, correct AGI and
+  # qualifying-person counts are component premises, not derived eligibility.
+  # There are no M1NC or other unmodeled income adjustments in these cases.
+  # Remaining cap = max(0, base - max(0, AGI - threshold) * .05).
+  # One qualifying person has base $600; two have base $1,200.
+  # Rows: one person at threshold, +$1,000, +$12,000; two people at threshold,
+  # +$1,000, +$24,000. These are remaining caps, not complete household awards.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person6:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person7:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person8:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person9:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person10:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person11:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person12:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person13:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person14:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person15:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_990
+        mn_cdcc_dependent_count: 1
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: SINGLE
+        adjusted_gross_income: 51_990
+        mn_cdcc_dependent_count: 1
+      tax_unit3:
+        members: [person5, person6]
+        filing_status: SINGLE
+        adjusted_gross_income: 62_990
+        mn_cdcc_dependent_count: 1
+      tax_unit4:
+        members: [person7, person8, person9]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_990
+        mn_cdcc_dependent_count: 2
+      tax_unit5:
+        members: [person10, person11, person12]
+        filing_status: SINGLE
+        adjusted_gross_income: 51_990
+        mn_cdcc_dependent_count: 2
+      tax_unit6:
+        members: [person13, person14, person15]
+        filing_status: SINGLE
+        adjusted_gross_income: 74_990
+        mn_cdcc_dependent_count: 2
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+      spm_unit4:
+        members: [person7, person8, person9]
+      spm_unit5:
+        members: [person10, person11, person12]
+      spm_unit6:
+        members: [person13, person14, person15]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MN
+      household2:
+        members: [person3, person4]
+        state_code: MN
+      household3:
+        members: [person5, person6]
+        state_code: MN
+      household4:
+        members: [person7, person8, person9]
+        state_code: MN
+      household5:
+        members: [person10, person11, person12]
+        state_code: MN
+      household6:
+        members: [person13, person14, person15]
+        state_code: MN
+  output:
+    mn_cdcc_phase_out: [600, 550, 0, 1200, 1150, 0]
+
+- name: Case 9, 2019 Minnesota phaseout cap uses the annual historical threshold.
+  period: 2019
+  absolute_error_margin: 0.01
+  # Official 2019 Schedule M1CD, lines 1-4 and Worksheet for Line 3, steps 1-6 (page 3).
+  # Known full-year Minnesota residency, SINGLE filing status, correct AGI and
+  # qualifying-person counts are component premises, not derived eligibility.
+  # There are no M1NC or other unmodeled income adjustments in these cases.
+  # Remaining cap = max(0, base - max(0, AGI - threshold) * .05).
+  # One qualifying person has base $600; two have base $1,200.
+  # Rows: one person at threshold, +$1,000, +$12,000; two people at threshold,
+  # +$1,000, +$24,000. These are remaining caps, not complete household awards.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person6:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person7:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person8:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person9:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person10:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person11:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person12:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person13:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person14:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person15:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 52_230
+        mn_cdcc_dependent_count: 1
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: SINGLE
+        adjusted_gross_income: 53_230
+        mn_cdcc_dependent_count: 1
+      tax_unit3:
+        members: [person5, person6]
+        filing_status: SINGLE
+        adjusted_gross_income: 64_230
+        mn_cdcc_dependent_count: 1
+      tax_unit4:
+        members: [person7, person8, person9]
+        filing_status: SINGLE
+        adjusted_gross_income: 52_230
+        mn_cdcc_dependent_count: 2
+      tax_unit5:
+        members: [person10, person11, person12]
+        filing_status: SINGLE
+        adjusted_gross_income: 53_230
+        mn_cdcc_dependent_count: 2
+      tax_unit6:
+        members: [person13, person14, person15]
+        filing_status: SINGLE
+        adjusted_gross_income: 76_230
+        mn_cdcc_dependent_count: 2
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+      spm_unit4:
+        members: [person7, person8, person9]
+      spm_unit5:
+        members: [person10, person11, person12]
+      spm_unit6:
+        members: [person13, person14, person15]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MN
+      household2:
+        members: [person3, person4]
+        state_code: MN
+      household3:
+        members: [person5, person6]
+        state_code: MN
+      household4:
+        members: [person7, person8, person9]
+        state_code: MN
+      household5:
+        members: [person10, person11, person12]
+        state_code: MN
+      household6:
+        members: [person13, person14, person15]
+        state_code: MN
+  output:
+    mn_cdcc_phase_out: [600, 550, 0, 1200, 1150, 0]
+
+- name: Case 10, 2020 Minnesota phaseout cap uses the annual historical threshold.
+  period: 2020
+  absolute_error_margin: 0.01
+  # Official 2020 Schedule M1CD, lines 1-4 and Worksheet for Line 3, steps 1-6 (page 3).
+  # Known full-year Minnesota residency, SINGLE filing status, correct AGI and
+  # qualifying-person counts are component premises, not derived eligibility.
+  # There are no M1NC or other unmodeled income adjustments in these cases.
+  # Remaining cap = max(0, base - max(0, AGI - threshold) * .05).
+  # One qualifying person has base $600; two have base $1,200.
+  # Rows: one person at threshold, +$1,000, +$12,000; two people at threshold,
+  # +$1,000, +$24,000. These are remaining caps, not complete household awards.
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person3:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person4:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person5:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person6:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person7:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person8:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person9:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person10:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person11:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person12:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person13:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person14:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      person15:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        filing_status: SINGLE
+        adjusted_gross_income: 53_100
+        mn_cdcc_dependent_count: 1
+      tax_unit2:
+        members: [person3, person4]
+        filing_status: SINGLE
+        adjusted_gross_income: 54_100
+        mn_cdcc_dependent_count: 1
+      tax_unit3:
+        members: [person5, person6]
+        filing_status: SINGLE
+        adjusted_gross_income: 65_100
+        mn_cdcc_dependent_count: 1
+      tax_unit4:
+        members: [person7, person8, person9]
+        filing_status: SINGLE
+        adjusted_gross_income: 53_100
+        mn_cdcc_dependent_count: 2
+      tax_unit5:
+        members: [person10, person11, person12]
+        filing_status: SINGLE
+        adjusted_gross_income: 54_100
+        mn_cdcc_dependent_count: 2
+      tax_unit6:
+        members: [person13, person14, person15]
+        filing_status: SINGLE
+        adjusted_gross_income: 77_100
+        mn_cdcc_dependent_count: 2
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+      spm_unit4:
+        members: [person7, person8, person9]
+      spm_unit5:
+        members: [person10, person11, person12]
+      spm_unit6:
+        members: [person13, person14, person15]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MN
+      household2:
+        members: [person3, person4]
+        state_code: MN
+      household3:
+        members: [person5, person6]
+        state_code: MN
+      household4:
+        members: [person7, person8, person9]
+        state_code: MN
+      household5:
+        members: [person10, person11, person12]
+        state_code: MN
+      household6:
+        members: [person13, person14, person15]
+        state_code: MN
+  output:
+    mn_cdcc_phase_out: [600, 550, 0, 1200, 1150, 0]

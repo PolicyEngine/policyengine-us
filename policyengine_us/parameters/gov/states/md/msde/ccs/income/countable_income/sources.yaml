@@ -17,9 +17,13 @@ values:
     - disability_benefits
     - capital_gains
     - farm_income
-    - military_retirement_pay
+    - military_retirement_income
+    # COMAR .02B(28)(b)(v) pensions and annuities are modeled through
+    # pension_income, and military retired pay and Survivor Benefit Plan
+    # annuities through military_retirement_income.
     # COMAR-listed sources we don't model at the moment: commissions, tips,
-    # bonuses, annuities, estate income, military entitlements.
+    # bonuses, estate income, and the military bonuses and allowances in
+    # .02B(28)(b)(vii).
     # COMAR .02B(28)(c) exclusions we don't model at the moment: child support
     # paid for a child outside the household, and $2,500 of child support tax
     # intercepts and arrearages.

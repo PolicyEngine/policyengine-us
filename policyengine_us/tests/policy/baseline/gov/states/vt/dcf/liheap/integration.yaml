@@ -1,0 +1,211 @@
+# End-to-end Vermont Seasonal Fuel Assistance cases. Sources:
+# - Seasonal Fuel Assistance Rules 2900-2927 (adopted 06/22/2024): household (2903,
+#   2907), gross income (2910-2912), income maximum (2913), benefit calculation (2914),
+#   heat cost percentage (2915) and standard heating costs (2916), "#page 10,16,25-43":
+#   https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=10
+# - 33 V.S.A. 2604(a) (185% and the LIHEAP maximum):
+#   https://legislature.vermont.gov/statutes/section/33/026/02604
+# - P-2915 heat cost percentages and P-2916 standard heating costs (2025-26 season):
+#   https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2915.pdf
+#   https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2916.pdf
+# - 2026-27 heat cost percentages and standard heating costs (unchanged), "#page 1-3":
+#   https://humanservices.vermont.gov/sites/ahsnew/files/documents/2026-2027%20Benefits%20Matrx.pdf#page=1
+# Guidelines: 2026 uses 15,650 + 5,500 per additional person; 2027 uses 15,960 + 5,680.
+# Income limits and percentage-of-poverty bands are monthly whole dollars (P-2913,
+# P-2914A "#page 1-3", and the DCF 2026-27 income guidelines), read against annual
+# income / 12:
+#   https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+#   https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2914A.pdf#page=1
+#   https://dcf.vermont.gov/esd/fuel/income-guidelines
+# Payment rate 0.51 is an estimate (FFY2026 plan maximum $2,089), carried into 2027.
+# Wages use the 2026 Vermont minimum wage, $14.42 an hour (Vermont Department of
+# Labor, indexed under 21 V.S.A. 384(a)).
+
+# A 74-year-old living alone in an owned house, heated with fuel oil, with
+# Social Security of 1,400 a month (16,800 a year), above the SSI benefit rate.
+- name: Case 1, an older homeowner on Social Security heating with oil.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 74
+        social_security_retirement: 16_800
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: FUEL_OIL
+        vt_liheap_dwelling_type: SINGLE_FAMILY_OR_MOBILE_HOME
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+        is_in_public_housing: false
+  output:
+    vt_liheap_household_size: 1
+    # Gross Social Security counts: 16,800.
+    vt_liheap_income: 16_800
+    # P-2913 size 1: 2,412 a month = 28,944; 185% x 15,650 = 28,952.50;
+    # min(28,944, 28,952.50, max(23,475, 41,075)) = 28,944.
+    vt_liheap_income_limit: 28_944
+    # 1,400 a month, in P-2914A size 1 "105% To 114%" ($1,358-$1,487): 78%.
+    vt_liheap_heat_cost_percentage: 0.78
+    # Single-family, oil, 2 bedrooms.
+    vt_liheap_heating_cost: 3_123
+    vt_liheap_eligible: true
+    # 3,123 x 0.78 = 2,435.94; x 0.51 = 1,242.3294; x 100% (pays the supplier); floor = 1,242.
+    vt_liheap: 1_242
+
+# Two working parents (one full time, one 20 hours a week at the minimum wage) with
+# children aged 7 and 4, renting a two-bedroom apartment whose gas heat is included in
+# the rent, with no housing subsidy and no Reach Up.
+- name: Case 2, a working family of four with heat included in an unsubsidized rent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        # 14.42 x 40 hours x 52 weeks = 29,993.60.
+        employment_income: 29_993.6
+      spouse:
+        age: 33
+        # 14.42 x 20 hours x 52 weeks = 14,996.80.
+        employment_income: 14_996.8
+      child1:
+        age: 7
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+        tanf: 0
+        heating_type: NATURAL_GAS
+        vt_liheap_dwelling_type: MULTI_FAMILY
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: VT
+        bedrooms: 2
+        is_in_public_housing: false
+  output:
+    vt_liheap_household_size: 4
+    # 29,993.60 + 14,996.80 = 44,990.40.
+    vt_liheap_income: 44_990.4
+    # P-2913 size 4: 4,956 a month = 59,472. Guideline 15,650 + 3 x 5,500 = 32,150;
+    # 185% = 59,477.50; LIHEAP maximum max(48,225, floor(78,992 x 1.00) = 78,992) =
+    # 78,992. Limit min(59,472, 59,477.50, 78,992) = 59,472.
+    vt_liheap_income_limit: 59_472
+    # 44,990.40 / 12 = 3,749.20 a month, in P-2914A size 4 "135% To 144%"
+    # ($3,591-$3,858): 69%.
+    vt_liheap_heat_cost_percentage: 0.69
+    # Multi-family, natural gas, 2 bedrooms.
+    vt_liheap_heating_cost: 1_148
+    vt_liheap_eligible: true
+    # 1,148 x 0.69 = 792.12; x 0.51 = 403.9812; x 0.30 (heat in rent) = 121.19436,
+    # above the $50 minimum; floor = 121.
+    vt_liheap: 121
+
+# A single parent working 30 hours a week at the minimum wage, receiving 100 a month
+# in child support, with children aged 6 and 2. The family rents a three-bedroom house with a
+# Section 8 voucher and buys propane from a dealer.
+- name: Case 3, a family with a Section 8 voucher buying propane receives 55 percent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 29
+        # 14.42 x 30 hours x 52 weeks = 22,495.20.
+        employment_income: 22_495.2
+        child_support_received: 1_200
+      child1:
+        age: 6
+      child2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        tanf: 0
+        heating_type: PROPANE
+        vt_liheap_dwelling_type: SINGLE_FAMILY_OR_MOBILE_HOME
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VT
+        bedrooms: 3
+        is_in_public_housing: false
+  output:
+    vt_liheap_household_size: 3
+    # 22,495.20 + 1,200 = 23,695.20.
+    vt_liheap_income: 23_695.2
+    # P-2913 size 3: 4,109 a month = 49,308. Guideline 15,650 + 2 x 5,500 = 26,650;
+    # 185% = 49,302.50 caps the printed amount; LIHEAP maximum max(39,975,
+    # floor(78,992 x 0.84) = 66,353) = 66,353. Limit min(49,308, 49,302.50, 66,353) =
+    # 49,302.50.
+    vt_liheap_income_limit: 49_302.5
+    # 23,695.20 / 12 = 1,974.60 a month, in P-2914A size 3 "85% To 94%"
+    # ($1,867-$2,088): 84%.
+    vt_liheap_heat_cost_percentage: 0.84
+    # Single-family, propane, 3 bedrooms.
+    vt_liheap_heating_cost: 3_379
+    vt_liheap_eligible: true
+    # 3,379 x 0.84 = 2,838.36; x 0.51 = 1,447.5636; x 0.55 (subsidized) = 796.15998;
+    # floor = 796.
+    vt_liheap: 796
+
+# A retired couple (70 and 68) heating their three-bedroom house with wood pellets in
+# the 2026-27 season. Social Security of 1,600 and 750 a month.
+- name: Case 4, a retired couple heating with wood pellets in the 2026-27 season.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        social_security_retirement: 19_200
+        ssi: 0
+      spouse:
+        age: 68
+        social_security_retirement: 9_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        heating_type: WOOD
+        vt_liheap_dwelling_type: SINGLE_FAMILY_OR_MOBILE_HOME
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VT
+        bedrooms: 3
+        is_in_public_housing: false
+  output:
+    vt_liheap_household_size: 2
+    # 19,200 + 9,000 = 28,200.
+    vt_liheap_income: 28_200
+    # The DCF 2026-27 table prints 3,336 a month = 40,032. 2026 guideline 15,960 +
+    # 5,680 = 21,640; 185% = 40,034; LIHEAP maximum max(32,460, floor(floor(135,326 x
+    # 0.6) x 0.68) = floor(81,195 x 0.68) = 55,212) = 55,212. Limit min(40,032, 40,034,
+    # 55,212) = 40,032.
+    vt_liheap_income_limit: 40_032
+    # No 2026-27 P-2914A is published; the 2025-26 construction on the 2026 guideline:
+    # 21,640 / 12 = 1,803.33, so 1,803. "125% To 134%" runs from ceil(1.24 x 1,803) + 1
+    # = ceil(2,235.72) + 1 = 2,237 to ceil(1.34 x 1,803) = ceil(2,416.02) = 2,417.
+    # 28,200 / 12 = 2,350 a month: 72%.
+    vt_liheap_heat_cost_percentage: 0.72
+    # 2026-27 table (unchanged): single-family, firewood, wood pellets and coal, 3 bedrooms.
+    vt_liheap_heating_cost: 1_658
+    vt_liheap_eligible: true
+    # 1,658 x 0.72 = 1,193.76; x 0.51 = 608.8176; x 100%; floor = 608.
+    vt_liheap: 608

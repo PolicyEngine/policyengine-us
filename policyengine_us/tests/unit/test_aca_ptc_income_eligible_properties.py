@@ -68,7 +68,7 @@ def simulations():
 
 def model_eligible(sim, year, incomes, guidelines):
     sim.set_input("aca_magi", year, np.asarray(incomes, dtype=float))
-    sim.set_input("tax_unit_fpg", year - 1, np.asarray(guidelines, dtype=float))
+    sim.set_input("aca_fpg", year, np.asarray(guidelines, dtype=float))
     for variable in ("aca_magi_fraction", "aca_ptc_income_eligible"):
         sim.delete_arrays(variable, year)
     return sim.calculate("aca_ptc_income_eligible", year)

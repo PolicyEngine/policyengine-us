@@ -99,3 +99,34 @@
   output:
     irs_employment_income: 58_000
     oh_insured_unreimbursed_medical_care_expense_amount: 500
+
+# R.C. 5747.01(A)(10)(b) and (O), and IRC 152(b)(1).
+# https://codes.ohio.gov/ohio-revised-code/section-5747.01
+# https://uscode.house.gov/us/usc/t26/s152/
+# Publication 501 (2025), Dependent Taxpayer Test exception.
+# https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=11
+# 2025 IT 1040 Unreimbursed Medical Care Expenses Worksheet, line 4, page 41.
+
+- name: A filer whose would-be claimant files only for a refund counts a child's medical care
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        other_medical_expenses: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: OH
+  output:
+    # The head keeps the child as a dependent, so line 4 takes the child's
+    # 1,000. The head has no expenses: [0, 1,000].
+    oh_insured_unreimbursed_medical_care_expense_amount: [0, 1_000]

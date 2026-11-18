@@ -1,0 +1,220 @@
+- name: "2025 single filer who can be claimed as a dependent: no Utah dependents for the taxpayer credit"
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: UT
+  output:
+    # Utah Code 59-10-1018 counts dependents for whom the claimant is
+    # entitled to an IRC 24 credit; under IRC 152(b)(1) a claimable filer
+    # has no dependents.
+    ut_total_dependents: 0
+    ut_personal_exemption: 0
+
+- name: "2025 joint return with one claimable spouse: no Utah dependents for the taxpayer credit (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: UT
+  output:
+    # Either spouse being claimable leaves the joint return no dependents.
+    ut_total_dependents: 0
+    ut_personal_exemption: 0
+
+- name: "2025 joint return with one claimable spouse: no Utah dependents for the taxpayer credit (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: UT
+  output:
+    ut_total_dependents: 0
+    ut_personal_exemption: 0
+
+- name: "2025 joint return with both spouses claimable: no Utah dependents for the taxpayer credit"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: UT
+  output:
+    ut_total_dependents: 0
+    ut_personal_exemption: 0
+
+- name: "2025 joint return with neither spouse claimable (control): Utah dependents for the taxpayer credit"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: UT
+  output:
+    # One dependent x $2,111 (2025).
+    ut_total_dependents: 1
+    ut_personal_exemption: 2111
+
+- name: 2025 single filer whose would-be claimant meets the filing exception keeps Utah dependents
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 8000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: UT
+  output:
+    # The federal credit for the child is allowed (Dependent Taxpayer Test
+    # exception), so the child is a qualifying dependent: 1 x $2,111.
+    ut_total_dependents: 1
+    ut_personal_exemption: 2111
+
+- name: 2025 single filer whose child has no SSN and no taxpayer identification number has no Utah qualifying dependent
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: UT
+  output:
+    # 59-10-1018(1)(c): the claimant is allowed no IRC 24 credit for the
+    # child, since the child tax credit needs the child's SSN and the credit
+    # for other dependents needs a TIN. So the child is not a qualifying
+    # dependent.
+    ctc_individual_maximum: [0, 0]
+    ut_total_dependents: 0
+    ut_personal_exemption: 0
+
+- name: 2025 single filer whose child has an ITIN but no SSN keeps a Utah qualifying dependent through the credit for other dependents
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: UT
+  output:
+    # The $500 credit for other dependents (IRC 24(h)(4)) needs only a TIN,
+    # so the child is a qualifying dependent: 1 x $2,111.
+    ctc_individual_maximum: [0, 500]
+    ut_total_dependents: 1
+    ut_personal_exemption: 2_111

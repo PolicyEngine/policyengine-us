@@ -789,7 +789,7 @@
         msp_eligible: false
         # Medicaid amounts are current-model calibration pins (state spending x
         # SLCSP cost index); eligibility derives from 0.0 FPL <= 0.19 TX parent limit.
-        medicaid: 16_378.23
+        medicaid: 14_179.17
         is_medicaid_eligible: true
         chip: 0.0
         chip_category: 3  # NONE
@@ -802,7 +802,7 @@
         msp: 0.0
         msp_eligible: false
         # 0.0 FPL <= 1.49 TX young-child Medicaid limit -> Medicaid, not CHIP.
-        medicaid: 11_038.77
+        medicaid: 9_556.63
         is_medicaid_eligible: true
         chip: 0.0
         chip_category: 3  # NONE

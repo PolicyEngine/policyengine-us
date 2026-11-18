@@ -26,3 +26,29 @@
     state_code: VT
   output:
     vt_nonrefundable_cdcc: 0
+
+- name: Vermont 2021 single filer at exactly $30,000 takes the nonrefundable credit
+  # The pre-2022 5828c test is AGI "less than $30,000.00", so a filer at the
+  # threshold is not low-income eligible and takes 24% of the federal credit.
+  period: 2021
+  input:
+    capped_cdcc: 1_000
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
+    state_code: VT
+  output:
+    vt_low_income_cdcc_eligible: false
+    vt_low_income_cdcc: 0
+    vt_nonrefundable_cdcc: 240 # 1,000 * 0.24
+
+- name: Vermont 2021 joint filer at exactly $40,000 takes the nonrefundable credit
+  period: 2021
+  input:
+    capped_cdcc: 1_000
+    adjusted_gross_income: 40_000
+    filing_status: JOINT
+    state_code: VT
+  output:
+    vt_low_income_cdcc_eligible: false
+    vt_low_income_cdcc: 0
+    vt_nonrefundable_cdcc: 240 # 1,000 * 0.24

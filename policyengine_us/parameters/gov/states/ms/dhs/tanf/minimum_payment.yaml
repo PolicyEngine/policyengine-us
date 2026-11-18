@@ -1,0 +1,14 @@
+description: Mississippi does not issue Temporary Assistance for Needy Families program payments below this amount.
+
+values:
+  2017-01-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Mississippi TANF minimum payment
+  reference:
+    - title: "MDHS TANF Policy Manual, Volume III (July 2019), Chapter 6 - Minimum Benefit and Chapter 15 - Table II #page 459,888"
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2019/07/TANF-Manual-Revised_7.19.pdf#page=459
+    - title: "Miss. Admin. Code tit. 18, pt. 13, TANF Policy Manual, Volume III, Chapter 6 - Minimum Benefit and Chapter 15 - Table II #page 459,970"
+      href: https://www.sos.ms.gov/adminsearch/ACCode/00000330c.pdf#page=459

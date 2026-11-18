@@ -38,13 +38,19 @@
   output:
     il_ccap_eligible: false
 
+# The October 2019-June 2022 new-applicant limit is 200% FPL:
+# https://www.illinois.gov/content/dam/soi/en/web/illinois/iisnewsattachments/20670-pritzker-administration-announces-expanded-child-care-assistance-program.pdf
+# HHS 2022 guideline for three is $23,030: monthly limit $3,838.333333.
+# https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/prior-hhs-poverty-guidelines-federal-register-references
+# $42,000 annual earnings / 12 = $3,500, preserving this eligible-family case.
+# The original $51,000 inputs remain below as a correctly ineligible case.
 - name: Integration case 1, eligible family.  
   period: 2022-01
   absolute_error_margin: 0.5
   input:
     people:
       person1:
-        employment_income: 51_000
+        employment_income: 42_000
         is_tax_unit_head_or_spouse: true
       person2:
         employment_income: 0
@@ -68,6 +74,9 @@
         members: [person1, person2, person3]
         state_code: IL
   output:
+    il_ccap_countable_income: 3_500
+    spm_unit_fpg: 1_919.166667
+    il_ccap_income_eligible: true
     il_ccap_eligible: true 
 
 - name: Integration case 2, ineligible family due to income.  
@@ -102,3 +111,47 @@
   output:
     il_ccap_income_eligible: false
     il_ccap_eligible: false 
+
+- name: Integration case 3, original $51,000 new-applicant inputs exceed the January 2022 limit.
+  period: 2022-01
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        employment_income: 51000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        employment_income: 0
+        is_full_time_student: true
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 1
+        employment_income: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        spm_unit_size: 3
+        il_ccap_enrolled: false
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: IL
+  output:
+    il_ccap_countable_income: 4250
+    spm_unit_fpg: 1919.166667
+    il_ccap_income_eligible: false
+    il_ccap_eligible: false

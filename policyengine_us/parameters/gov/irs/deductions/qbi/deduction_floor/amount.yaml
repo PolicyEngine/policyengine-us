@@ -7,8 +7,10 @@ brackets:
       2026-01-01: 0
   - threshold:
       2026-01-01: 1_000
+      2027-01-01: 1_030
     amount:
       2026-01-01: 400
+      2027-01-01: 415
 
 metadata:
   type: single_amount
@@ -19,3 +21,5 @@ metadata:
   reference:
     - title: H.R.1 - One Big Beautiful Bill Act
       href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 2027 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-26-35.pdf#page=17

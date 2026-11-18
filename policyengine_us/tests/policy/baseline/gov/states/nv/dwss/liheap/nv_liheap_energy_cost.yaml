@@ -1,0 +1,66 @@
+# The FAC uses the household's annual dollar usage for its primary heating source and
+# electricity (EAP Manual 803 III-IV; NRS 702.260(7)(a) natural gas and electricity).
+# Electric and solar heat are already the electricity bill, so it is counted once.
+# Annual bills stand in for the prior twelve months of vendor usage. Gas of 720 is 60 a
+# month (typical Nevada bills run 40-90); electricity of 1,320-1,440 is 110-120 a month,
+# within the EIA Nevada average residential bill.
+
+- name: Case 1, a gas-heated home adds its gas and electricity bills.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 720
+        pre_subsidy_electricity_expense: 1_320
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # 720 + 1,320
+    nv_liheap_energy_cost: 2_040
+
+- name: Case 2, an electrically heated home counts its electricity bill once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_440
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    nv_liheap_energy_cost: 1_440
+
+- name: Case 3, a solar-heated home counts its grid electricity bill once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: SOLAR
+        # Net grid bill of 50 a month after the panels' output.
+        pre_subsidy_electricity_expense: 600
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    nv_liheap_energy_cost: 600

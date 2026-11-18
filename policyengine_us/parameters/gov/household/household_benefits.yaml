@@ -24,11 +24,14 @@ values:
     # Paid at the same time as the Alaska Permanent Fund Dividend,
     # which is part of IRS gross income.
     - ak_energy_relief
+    # Electric vehicle rebates.
+    - ny_drive_clean_rebate
     # Contributed.
     - basic_income
     - trump_dividend
     - housing_assistance
     - household_state_benefits
+    - household_local_benefits
     - household_health_benefits
   2024-01-01:
     - social_security
@@ -50,11 +53,18 @@ values:
     - financial_assistance
     - survivor_benefits
     - household_head_start_benefits
+    # One-time energy relief payments.
+    # Paid at the same time as the Alaska Permanent Fund Dividend,
+    # which is part of IRS gross income.
+    - ak_energy_relief
+    # Electric vehicle rebates.
+    - ny_drive_clean_rebate
     # Contributed.
     - basic_income
     - trump_dividend
     - housing_assistance
     - household_state_benefits
+    - household_local_benefits
     - commodity_supplemental_food_program
     - household_health_benefits
 

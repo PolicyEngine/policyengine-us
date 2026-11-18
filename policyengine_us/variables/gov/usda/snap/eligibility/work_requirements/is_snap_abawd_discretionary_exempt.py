@@ -13,7 +13,7 @@ class is_snap_abawd_discretionary_exempt(Variable):
         "exemptions are individually assigned by state caseworkers and are "
         "unobservable in survey data, so this input defaults to false and is "
         "intended to be assigned at data-construction time (e.g., in "
-        "populace) among covered individuals."
+        "Microcosm) among covered individuals."
     )
     definition_period = YEAR
     reference = (

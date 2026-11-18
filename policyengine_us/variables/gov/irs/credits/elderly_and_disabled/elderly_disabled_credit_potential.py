@@ -8,8 +8,9 @@ class elderly_disabled_credit_potential(Variable):
     label = "Potential value of the Elderly or disabled credit"
     documentation = "Schedule R credit for the elderly and the disabled"
     unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/26/22"
+    reference = "https://www.law.cornell.edu/uscode/text/26/22#a"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.elderly_or_disabled
+        # The 22(e)(1) separate-return bar is applied in section_22_income.
         return p.rate * tax_unit("section_22_income", period)

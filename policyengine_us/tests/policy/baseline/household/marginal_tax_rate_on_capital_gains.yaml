@@ -1,0 +1,174 @@
+# marginal_tax_rate_on_capital_gains raises a person's long-term gains and
+# measures how much of the rise household net income keeps. For 2026 single
+# filers in Texas, which has no income tax, the rate is the 26 U.S.C. 1(h)(1)
+# rate on the gains, plus the 3.8% net investment income tax once modified
+# adjusted gross income passes $200,000 (26 U.S.C. 1411), plus half the gains
+# rate while each dollar of gains removes 50 cents of alternative minimum tax
+# exemption (26 U.S.C. 55(d)(2), with the 2026 rate in 55(d)(4)). With the
+# $16,100 standard deduction, the 15% rate starts at $65,550 of gains and the
+# 20% rate at $561,600. The alternative minimum tax applies from $648,000,
+# because it does not allow the standard deduction; above $680,200 its
+# $90,100 exemption is gone and it stays at a constant $3,220 (20% of the
+# standard deduction), adding nothing at the margin.
+# tests/core/test_capital_gains_mtr_measurement.py derives these edges from
+# parameters and tests amounts Hypothesis draws between them.
+
+- name: Gains in the 15% bracket are taxed at 15%.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    age: 50
+    long_term_capital_gains: 100_000
+    state_code: TX
+  output:
+    marginal_tax_rate_on_capital_gains: 0.15
+
+- name: Above $200,000 the net investment income tax adds 3.8%.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    age: 50
+    long_term_capital_gains: 300_000
+    state_code: TX
+  output:
+    marginal_tax_rate_on_capital_gains: 0.188
+
+- name: Gains in the 20% bracket are taxed at 20% plus 3.8%.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    age: 50
+    long_term_capital_gains: 600_000
+    state_code: TX
+  output:
+    marginal_tax_rate_on_capital_gains: 0.238
+
+- name: While the alternative minimum tax exemption phases out, half of each dollar more is taxed at 20% too.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    age: 50
+    long_term_capital_gains: 660_000
+    state_code: TX
+  output:
+    # 0.20 + 0.038 + 0.5 * 0.20
+    marginal_tax_rate_on_capital_gains: 0.338
+
+- name: $20 million of gains.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    age: 50
+    long_term_capital_gains: 20_000_000
+    state_code: TX
+  output:
+    marginal_tax_rate_on_capital_gains: 0.238
+
+- name: $100 million of gains, where float32 net income resolves only $8.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    age: 50
+    long_term_capital_gains: 100_000_000
+    state_code: TX
+  output:
+    # A $1,000 rise measured 0.232; the rise is now 0.1% of the gains.
+    marginal_tax_rate_on_capital_gains: 0.238
+
+- name: Wages put the gains in the 15% bracket and over the investment income tax threshold.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    age: 50
+    employment_income: 60_000
+    long_term_capital_gains: 200_000
+    state_code: TX
+  output:
+    # Raising the capital_gains total instead taxed the rise as ordinary
+    # income: 0.308.
+    marginal_tax_rate_on_capital_gains: 0.188
+
+- name: Each spouse filing jointly faces the rate on their joint gains.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    people:
+      head:
+        age: 50
+        long_term_capital_gains: 500_000
+      spouse:
+        age: 50
+        long_term_capital_gains: 300_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # $767,800 of taxable income is past the $613,700 joint 20% threshold.
+    marginal_tax_rate_on_capital_gains: [0.238, 0.238]
+
+- name: A capital_gains total given as an input rises with the long-term gains.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    age: 50
+    long_term_capital_gains: 300_000
+    capital_gains: 300_000
+    state_code: TX
+  output:
+    marginal_tax_rate_on_capital_gains: 0.188
+
+- name: A capital_gains total given without long-term gains is taxed as ordinary income, and the rise as long-term gain.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    age: 50
+    capital_gains: 300_000
+    state_code: TX
+  output:
+    # The $300,000 fills the ordinary brackets, so the rise is taxed at 15%
+    # plus 3.8%.
+    marginal_tax_rate_on_capital_gains: 0.188
+
+- name: An input given for another year does not hold this year's value.
+  period: 2026
+  absolute_error_margin: 0.00025
+  input:
+    people:
+      person:
+        age: 50
+        long_term_capital_gains: 300_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        adjusted_gross_income:
+          2025: 400_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # 2026 adjusted gross income is calculated, so the rise reaches it.
+    marginal_tax_rate_on_capital_gains: 0.188
+
+- name: Within the rise of New York's $25 million threshold, the rate spreads the threshold's tax over the rise.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    age: 50
+    long_term_capital_gains: 24_985_000
+    state_code: NY
+  output:
+    # Above $25 million of adjusted gross income New York taxes all taxable
+    # income at its top rate (N.Y. Tax Law 601; ny_supplemental_tax). The
+    # $24,985 rise crosses that, adding about $152,600 of state tax. A $1,000
+    # rise measures 0.342 here, and one that crossed the threshold would
+    # measure about 150; the wider rise puts more filers in the window, each
+    # with a smaller spike.
+    marginal_tax_rate_on_capital_gains: 6.345

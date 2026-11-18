@@ -1,0 +1,39 @@
+# IC 6-3-1-3.5(a)(26) adds back the 2020 IRC 62(a)(22) charitable deduction
+# (Information Bulletin 119, code 120).
+# https://www.in.gov/dor/files/reference/ib119.pdf#page=2
+
+- name: Case 1, 2020 federal non-itemizer adds back the line 10b deduction.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_add_backs: 300
+
+- name: Case 2, 2021 deduction for non-itemizers is below the line, so nothing is added back.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_add_backs: 0

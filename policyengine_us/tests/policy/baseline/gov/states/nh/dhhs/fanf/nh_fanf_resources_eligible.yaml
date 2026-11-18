@@ -2,7 +2,9 @@
 # Resource limits differ for applicants vs recipients:
 # - Applicants: $1,000 (since 1997)
 # - Recipients: $5,000 (since 07/01/22, was $2,000 before)
-# Source: FAM 403; SR 97-03; BFA SR 22-17
+# Countable resources must be less than the limit (RSA 167:79 III(f)),
+# so a unit with resources equal to the limit is ineligible.
+# Source: RSA 167:79 III(f); He-W 656.06; FAM 403; SR 97-03; BFA SR 22-17
 
 - name: Case 1, zero resources is eligible.
   period: 2024-01
@@ -12,14 +14,15 @@
   output:
     nh_fanf_resources_eligible: true
 
-- name: Case 2, applicant resources at limit is eligible.
+- name: Case 2, applicant resources at limit is ineligible.
   period: 2024-01
   input:
     state_code: NH
     is_tanf_enrolled: false
     spm_unit_cash_assets: 1_000
   output:
-    nh_fanf_resources_eligible: true
+    # $1,000 is not less than the $1,000 limit
+    nh_fanf_resources_eligible: false
 
 - name: Case 3, applicant resources above limit is ineligible.
   period: 2024-01
@@ -30,14 +33,15 @@
   output:
     nh_fanf_resources_eligible: false
 
-- name: Case 4, recipient resources at limit is eligible.
+- name: Case 4, recipient resources at limit is ineligible.
   period: 2024-01
   input:
     state_code: NH
     is_tanf_enrolled: true
     spm_unit_cash_assets: 5_000
   output:
-    nh_fanf_resources_eligible: true
+    # $5,000 is not less than the $5,000 limit
+    nh_fanf_resources_eligible: false
 
 - name: Case 5, recipient resources above limit is ineligible.
   period: 2024-01
@@ -83,4 +87,34 @@
     spm_unit_cash_assets: 999
   output:
     # $999 < $1,000 limit = eligible
+    nh_fanf_resources_eligible: true
+
+- name: Case 10, recipient at $4,999 is eligible.
+  period: 2024-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: true
+    spm_unit_cash_assets: 4_999
+  output:
+    # $4,999 < $5,000 limit = eligible
+    nh_fanf_resources_eligible: true
+
+- name: Case 11, recipient at the $2,000 limit before July 2022 is ineligible.
+  period: 2022-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: true
+    spm_unit_cash_assets: 2_000
+  output:
+    # $2,000 is not less than the $2,000 limit
+    nh_fanf_resources_eligible: false
+
+- name: Case 12, recipient at $1,999 before July 2022 is eligible.
+  period: 2022-01
+  input:
+    state_code: NH
+    is_tanf_enrolled: true
+    spm_unit_cash_assets: 1_999
+  output:
+    # $1,999 < $2,000 limit = eligible
     nh_fanf_resources_eligible: true

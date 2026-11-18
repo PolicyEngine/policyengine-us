@@ -153,3 +153,35 @@
     # AGI equals the $86,410 threshold, so the simplified subtraction is not
     # reduced and the full $20,000 of taxable benefits is subtracted.
     mn_social_security_subtraction: 20_000
+
+- name: MN social security subtraction 2020 worksheet step 8 leaves out Form 1040 line 10b
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    # 2020 Worksheet for line 39 constants (2020 M1M instructions, file
+    # page 8), as the parameters start in 2021.
+    gov.states.mn.tax.income.subtractions.social_security.income_amount.SINGLE: 62_090
+    gov.states.mn.tax.income.subtractions.social_security.alternative_amount.SINGLE: 4_090
+    people:
+      person1:
+        age: 67
+        employment_income: 65_000
+        social_security_retirement: 10_000
+        charitable_cash_donations: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    charitable_contributions_ald: 300
+    # Federal: provisional income 65,000 - 300 + 5,000 = 69,700, so 85% of
+    # benefits, 8,500, are taxable.
+    tax_unit_taxable_social_security: 8_500
+    # Steps 1-3: 73,500 - 8,500 = 65,000; step 5: 5,000; step 7: 70,000;
+    # step 8: Schedule 1 lines 10-19 and 22 only, 0 (not line 10b);
+    # step 9: 70,000; step 11: 70,000 - 62,090 = 7,910; step 12: 1,582;
+    # step 14: 4,090 - 1,582 = 2,508; step 18: min(2,508, 8,500).
+    mn_social_security_subtraction: 2_508

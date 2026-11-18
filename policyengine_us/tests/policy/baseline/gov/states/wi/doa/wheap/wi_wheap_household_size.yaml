@@ -1,0 +1,34 @@
+# Wisconsin WHEAP household size counts citizens, qualified noncitizens and
+# noncitizens receiving Social Security (PY2026 WHEAP Manual 3.2.2.4).
+# Manual 4.4.26.2: "The HE+ System will not count ineligible non-citizens as
+# a household members, but it will count their income"; 3.2.6.2 enters them
+# with their status flagged.
+
+- name: Case 1, ineligible noncitizens are not counted in a mixed-status household.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+      person2:
+        age: 43
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person3:
+        age: 20
+        immigration_status: DACA
+      person4:
+        age: 50
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WI
+  output:
+    # Citizen and lawful permanent resident (qualified noncitizen) count;
+    # DACA and undocumented members do not: 2 of 4.
+    wi_wheap_household_size: 2

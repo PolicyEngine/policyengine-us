@@ -1,0 +1,23 @@
+description: States set the medically needy income limit at this share of the Supplemental Security Income federal benefit rate under the Medicaid program.
+# NOTE: States not listed, or with a share of zero, use the dollar limits in individual.yaml and couple.yaml.
+metadata:
+  unit: /1
+  period: year
+  label: Medicaid medically needy income limit as a share of the SSI federal benefit rate
+  breakdown:
+    - state_code
+  reference:
+    - title: "CMS approval of Kansas State Plan Amendment KS-25-0019, medically needy income disregard to the SSI federal benefit rate #page 2,46"
+      href: https://www.medicaid.gov/medicaid/spa/downloads/KS-25-0019.pdf#page=2
+    - title: Kansas Medical Assistance Standards, KEESM Appendix F-8 (January 2026), Income Standards for Independent Living
+      href: https://www.kancare.ks.gov/home/showpublisheddocument/6204/639013856776770000#page=3
+    - title: Washington Administrative Code 182-519-0050(5) - Monthly income and countable resource standards for medically needy (MN)
+      href: https://app.leg.wa.gov/WAC/default.aspx?cite=182-519-0050
+    - title: Washington State Register 12-20-001, amending WAC 182-519-0050
+      href: https://lawfilesext.leg.wa.gov/law/wsr/2012/20/12-20-001.htm
+
+KS:
+  2018-01-01: 0
+  2025-07-01: 1
+WA:
+  2018-01-01: 1

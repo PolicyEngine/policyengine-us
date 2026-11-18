@@ -5,6 +5,12 @@ class me_relief_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Maine Relief Rebate"
+    documentation = (
+        "One-time Maine relief payment of $850 per eligible resident, paid in 2022 "
+        "and determined from the 2021 return. PolicyEngine attributes it to "
+        "eligibility tax year 2021 through me_refundable_credits. The amount is zero "
+        "outside 2021."
+    )
     defined_for = "me_relief_rebate_eligible"
     unit = USD
     definition_period = YEAR

@@ -20,5 +20,5 @@ class oh_unreimbursed_medical_care_expense_deduction_person(Variable):
     adds = [
         "oh_insured_unreimbursed_medical_care_expenses_person",
         "oh_uninsured_unreimbursed_medical_care_expenses",
-        "long_term_health_insurance_premiums",
+        "oh_long_term_care_insurance_premiums",
     ]

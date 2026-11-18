@@ -1,6 +1,9 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.household.demographic.person._parent_links import (
+    _parent_indices,
     co_resident_parent_indices,
+    group_member_indices,
+    tax_unit_parent_indices,
 )
 
 
@@ -8,8 +11,9 @@ def _ssi_established_spouse_indices(person, period, first, second):
     """Rows of each person's co-resident spouse, or -1.
 
     SSI resource deeming uses this one test for a claimant's spouse
-    (416.1202(a)), a parent's spouse (416.1202(b)) and whether a child is
-    married (416.1856). A marital unit holds an unmarried person or a married,
+    (416.1202(a)) and a parent's spouse (416.1202(b)). Marriage
+    classification uses _ssi_is_married, including spouses living apart.
+    A marital unit holds an unmarried person or a married,
     cohabiting couple, so the members of a two-person marital unit who live in
     the same household are spouses. So are the head and spouse of one tax
     unit who share a marital unit, which covers situations that omit marital
@@ -67,3 +71,136 @@ def _ssi_spouse_index(person, period):
     """The row of each person's co-resident spouse, or -1."""
     first, second = co_resident_parent_indices(person, period)
     return _ssi_established_spouse_indices(person, period, first, second)
+
+
+def _ssi_eligible_apart_from_means(person, period):
+    """Aged, blind or disabled and meeting SSI's citizenship condition.
+
+    416.1160(d) makes an ineligible spouse one who 'is not eligible for SSI
+    benefits'. The resource test runs before eligibility is known, so this
+    tests the conditions that do not depend on it: aged, blind or disabled
+    status, and citizenship or qualified-noncitizen status (as is_ssi_eligible
+    requires).
+    """
+    immigration_status = person("immigration_status", period)
+    is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
+    return person("is_ssi_aged_blind_disabled", period) & (
+        is_citizen | person("is_ssi_qualified_noncitizen", period)
+    )
+
+
+def _ssi_resource_couple(person, period):
+    """Whether 416.1205(b) combines a joint claim's resources.
+
+    A joint claim pairs two aged, blind or disabled spouses. When one of them
+    fails the citizenship condition, they are not an eligible couple
+    (416.1801(c)), so the other's resources are tested with the spouse's
+    deemed under 416.1202(a), with the ineligible-spouse exclusions.
+    """
+    eligible = _ssi_eligible_apart_from_means(person, period)
+    spouse = np.maximum(_ssi_spouse_index(person, period), 0)
+    return person("ssi_claim_is_joint", period) & eligible & eligible[spouse]
+
+
+def _ssi_couple_total(person, period, values):
+    """Each person's value plus their co-resident spouse's, if they have one.
+
+    This equals the marital-unit sum for a one-person unit and for a
+    two-person unit whose members the spouse test pairs, and adds only the
+    spouse when a unit holds more people, as the default unit of a situation
+    that omits marital units can. ``period`` is the year of the spouse test.
+    The sum is float64, as the marital-unit sum is, so float32 input rounds
+    the same way.
+    """
+    values = np.asarray(values, dtype=float)
+    spouse = _ssi_spouse_index(person, period)
+    return values + where(spouse >= 0, values[np.maximum(spouse, 0)], 0)
+
+
+def _ssi_couple_income(person, period, variable):
+    """A person's income, plus the spouse's when the couple computation applies.
+
+    416.1802(b)(1) counts an eligible couple's combined income. 416.414(b)(3)
+    counts 'each individual's own countable income' in a month one spouse
+    spends throughout in a medical treatment facility, from the start of the
+    month to its end (416.414(a)(1)). The status and the income are
+    both read for ``period``, so a monthly formula follows that month's
+    status. An annual formula applies one status to the whole year, the
+    status of the year's last month, which is how Core reads a monthly status
+    over a year.
+    """
+    couple_computation = person("ssi_couple_computation_applies", period)
+    income = person(variable, period)
+    spouse = np.maximum(_ssi_spouse_index(person, period.this_year), 0)
+    return income + where(couple_computation, income[spouse], 0)
+
+
+def _ssi_couple_budget_total(person, period, values):
+    """A couple's total: both spouses' values plus their dependents'.
+
+    A dependent is an unmarried tax dependent who shares the marital unit of
+    a couple and the tax unit of the person whose total this is. Another
+    couple's dependent and an unrelated member of a default marital unit stay
+    out. ``period`` is the year of the spouse test.
+    """
+    dependent = (
+        person("is_tax_unit_dependent", period)
+        & (_ssi_spouse_index(person, period) < 0)
+        & person.marital_unit.any(person("ssi_couple_computation_applies", period))
+    )
+    return _ssi_couple_total(person, period, values) + person.tax_unit.sum(
+        where(dependent, values, 0)
+    )
+
+
+def _ssi_is_married(person, period):
+    """Marriage classification without a co-residence requirement.
+
+    Legal spouses can live apart (416.1806(a)(1)). A two-person marital
+    unit establishes marriage, as does a tax unit's head/spouse pair, even
+    when they have separate marital units. Apply the spouse lookup's
+    parent-link and default-marital-unit safeguards to both sources;
+    ambiguous candidates do not establish marriage.
+    """
+    period = period.this_year
+    head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+    dependent = person("is_tax_unit_dependent", period)
+    joint = head_or_spouse & person.tax_unit("tax_unit_married", period)
+    tax_unit = person.tax_unit.reference_entity.members_entity_id
+    couple = person.marital_unit.nb_persons() == 2
+    possible_default = person.marital_unit.count == 1
+    own_index = np.arange(person.count)
+    married = np.zeros(person.count, dtype=bool)
+
+    for group, marital_couple in (
+        (person.marital_unit, True),
+        (person.tax_unit, False),
+    ):
+        first, second = (
+            _parent_indices(person, period, group)
+            if marital_couple
+            else tax_unit_parent_indices(person, period)
+        )
+        candidates = np.zeros(person.count, dtype=int)
+        for member in group_member_indices(group):
+            safe = np.maximum(member, 0)
+            same_tax_unit = tax_unit[safe] == tax_unit
+            names_applicant = (first[safe] == own_index) | (second[safe] == own_index)
+            named_by_applicant = (first == member) | (second == member)
+            claims = possible_default & same_tax_unit & (dependent != dependent[safe])
+            established = (
+                couple
+                if marital_couple
+                else joint & head_or_spouse[safe] & same_tax_unit
+            )
+            shown = (
+                (member >= 0)
+                & (member != own_index)
+                & established
+                & ~claims
+                & ~names_applicant
+                & ~named_by_applicant
+            )
+            candidates += shown
+        married |= candidates == 1
+    return married

@@ -1,0 +1,116 @@
+# 8 CCR 1403-1 3.111(H)(2) lists the monthly federal poverty guideline through
+# September 30, 2026, and 3.111(H)(3) from October 1, 2026 (PDF pages 41-42 of
+# ruleVersionId 12658). The first is the 2025 HHS guideline and the second the
+# 2026 guideline, each divided by 12. Yearly inputs carry their year, since a
+# test of a month other than January doesn't apply undated yearly inputs.
+- name: Case 1, January 2026 uses the guideline that took effect in October 2025.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: CO
+  output:
+    # (15,650 + 2 * 5,500) / 12 = 2,220.83, the 3.111(H)(2) amount for three.
+    co_ccap_fpg: 2_220.83
+
+- name: Case 2, September 2026 still uses that guideline.
+  period: 2026-09
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: CO
+  output:
+    co_ccap_fpg: 2_220.83
+
+- name: Case 3, October 2026 moves to the 3.111(H)(3) guideline.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: CO
+  output:
+    # (15,960 + 2 * 5,680) / 12 = 2,276.67, the 3.111(H)(3) amount for three.
+    co_ccap_fpg: 2_276.67
+
+- name: Case 4, one person in December 2025.
+  period: 2025-12
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2025: CO
+  output:
+    # 15,650 / 12 = 1,304.17
+    co_ccap_fpg: 1_304.17
+
+- name: Case 5, one person in October 2026.
+  period: 2026-10
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: CO
+  output:
+    # 15,960 / 12 = 1,330
+    co_ccap_fpg: 1_330
+
+- name: Case 6, eight people in January 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+      person7: {}
+      person8: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code:
+          2026: CO
+  output:
+    # (15,650 + 7 * 5,500) / 12 = 4,512.50
+    co_ccap_fpg: 4_512.50
+
+- name: Case 7, a household outside Colorado.
+  period: 2026-01
+  input:
+    state_code:
+      2026: TX
+  output:
+    co_ccap_fpg: 0

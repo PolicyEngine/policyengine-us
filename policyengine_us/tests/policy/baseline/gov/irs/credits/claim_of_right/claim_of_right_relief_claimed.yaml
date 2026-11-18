@@ -1,0 +1,49 @@
+- name: Case 1, the credit method claims relief.
+  period: 2025
+  input:
+    claim_of_right_section_1341_eligible: true
+    claim_of_right_credit_applies: true
+    claim_of_right_deduction: 0
+    tax_unit_itemizes: false
+  output:
+    claim_of_right_relief_claimed: true
+
+- name: Case 2, the deduction method on a return that itemizes claims relief.
+  period: 2025
+  input:
+    claim_of_right_section_1341_eligible: true
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    tax_unit_itemizes: true
+  output:
+    claim_of_right_relief_claimed: true
+
+- name: Case 3, the deduction method on a return that takes the standard deduction claims nothing.
+  period: 2025
+  input:
+    claim_of_right_section_1341_eligible: true
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    tax_unit_itemizes: false
+  output:
+    claim_of_right_relief_claimed: false
+
+- name: Case 4, an itemizer with no qualifying repayment claims nothing.
+  period: 2025
+  input:
+    claim_of_right_section_1341_eligible: false
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 0
+    tax_unit_itemizes: true
+  output:
+    claim_of_right_relief_claimed: false
+
+- name: Case 5, a method flag on a return without a qualifying repayment claims nothing.
+  period: 2025
+  input:
+    claim_of_right_section_1341_eligible: false
+    claim_of_right_credit_applies: true
+    claim_of_right_deduction: 0
+    tax_unit_itemizes: true
+  output:
+    claim_of_right_relief_claimed: false
