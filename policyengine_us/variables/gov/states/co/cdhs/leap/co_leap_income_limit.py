@@ -12,6 +12,7 @@ class co_leap_income_limit(Variable):
     defined_for = StateCode.CO
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/8624#b_2_B",
+        "https://drive.google.com/file/d/1Mi5cX6cmtm9u0hX1GkMFpg7M-bIzjg3J/view#page=5",
         "https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=4",
     )
 
@@ -27,8 +28,10 @@ class co_leap_income_limit(Variable):
             / MONTHS_IN_YEAR
         )
         extra = max_(size - p.additional_person_threshold, 0)
-        # Flooring reproduces all eight FY2026 published SMI rows; the
-        # independently printed increment governs additional members.
+        # Flooring reproduces all eight FY2026 published SMI rows and 14 of the
+        # 15 FY2027 rows (FY2027 prints $10,453 for ten members, a dollar above
+        # the floored $10,452). FY2026's independently printed increment governs
+        # members above eight.
         annual_limit = (monthly + extra * p.additional_person_amount) * MONTHS_IN_YEAR
         # 42 U.S.C. 8624(b)(2)(B) pays no household above the greater of 60% of SMI
         # and 150% of the guideline. The printed FY2026 increment stays within that,

@@ -39,3 +39,17 @@
     co_leap_household_size: [9, 13, 14]
   output:
     co_leap_income_limit: [110_067, 119_434, 122_700]
+
+# 2026-27 manual handout (PDF page 5) prints every size from 1 to 15: $3,774, $10,017, $10,234
+# and $11,541 for sizes 1, 8, 9 and 15, each x 12. These equal 60% of the FY2027 state median
+# income ($145,177 for four; 60% is $87,106) times the size factor, floored annually and
+# monthly. Size 10 prints $10,453, a dollar above the floored $10,452, so it is not asserted.
+- name: "Case 4, FY2027 printed limits through size fifteen annualize exactly."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: ["CO", "CO", "CO", "CO"]
+    heating_type: ["NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS", "NATURAL_GAS"]
+    co_leap_household_size: [1, 8, 9, 15]
+  output:
+    co_leap_income_limit: [45_288, 120_204, 122_808, 138_492]
