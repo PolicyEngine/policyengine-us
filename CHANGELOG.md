@@ -1,3 +1,10 @@
+## [2.147.0] - 2026-11-18
+
+### Added
+
+- Add New Jersey's LIHEAP medically necessary cooling benefit and a medical cooling-need input.
+
+
 ## [2.146.0] - 2026-11-18
 
 ### Added
