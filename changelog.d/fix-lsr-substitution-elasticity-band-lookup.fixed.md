@@ -1,0 +1,1 @@
+Give each primary earner the substitution elasticity of their own earnings decile. Earnings between two decile markers, such as positive earnings below $14,000, took the next decile's elasticity, and earnings above $1.726 million took none.
