@@ -28,7 +28,7 @@ class me_property_tax_fairness_credit_base_cap(Variable):
         capped_benefit_base = min_(adjusted_benefit_base, countable_rent_property_tax)
         income = tax_unit("me_sales_and_property_tax_fairness_credit_income", period)
         income_rate = income * p.rate.income
-        uncapped_credit = max_(capped_benefit_base - income_rate, 0)
+        uncapped_credit = max_(capped_benefit_base - income_rate, 0) * p.rate.excess
         cap = p.cap.calc(greater_age_head_spouse)
 
         return min_(uncapped_credit, cap)

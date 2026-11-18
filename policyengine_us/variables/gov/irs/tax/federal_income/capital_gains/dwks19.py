@@ -37,9 +37,10 @@ class dwks19(Variable):
         ).line_10
         # Line 18: line 1 less line 10 (section 1(h)(1)(A)(i)).
         line_18 = max_(0, dwks01 - dwks10)
-        # Line 19: the smaller of line 1 or the top of the 24 percent
-        # bracket, the taxable income taxed at a rate below 25 percent
-        # (section 1(h)(1)(A)(ii)(I)).
+        # Line 19: the smaller of line 1 or the top of the highest bracket
+        # with a rate below 25 percent (the 15 percent bracket before 2018,
+        # the 24 percent bracket from 2018), the taxable income taxed at a
+        # rate below 25 percent (section 1(h)(1)(A)(ii)(I)).
         line_19 = tax_unit("taxable_income_taxed_below_25_percent", period)
         # Line 20: the smaller of line 14 or line 19 (section 1(h)(1)(A)(ii)).
         line_20 = min_(dwks14, line_19)

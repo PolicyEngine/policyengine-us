@@ -17,7 +17,9 @@ class id_military_retirement_deduction(Variable):
         p = parameters(period).gov.states.id.tax.income.subtractions.military_retirement
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        military_retirement_income = person("military_retirement_income", period)
+        military_retirement_income = person(
+            "id_eligible_military_retirement_income", period
+        )
         eligible_military_pay = military_retirement_income * head_or_spouse
 
         # Multiply by applies parameter (False when military retirement

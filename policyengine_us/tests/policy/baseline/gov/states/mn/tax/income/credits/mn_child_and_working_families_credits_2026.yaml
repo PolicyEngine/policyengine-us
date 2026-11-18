@@ -1,8 +1,9 @@
 # 2026 amounts from the Minnesota DOR Tax Year 2026 Inflation-Adjusted Amounts
-# (page 3): child credit $1,800 (290.0661 Subd. 3); phase-out threshold $32,680
-# for filers other than married joint (290.0661 Subd. 4); working family credit
-# of 4% of the first $9,690 of earned income plus $1,020, $2,330 or $2,770 for
-# one, two or three or more qualifying older children (290.0671 Subd. 1).
+# (page 3): child credit $1,800 (290.0661 Subd. 3); phase-out threshold $38,770
+# for married joint filers and $32,680 for all other filers (290.0661 Subd. 4);
+# working family credit of 4% of the first $9,690 of earned income plus $1,020,
+# $2,330 or $2,770 for one, two or three or more qualifying older children
+# (290.0671 Subd. 1).
 - name: MN child and working family credits 2026 single parent with two qualifying older children
   absolute_error_margin: 0.01
   period: 2026
@@ -62,3 +63,36 @@
     # Phase-out = 12% x (35,000 - 32,680) = 12% x 2,320 = 278.40
     # Credit = 2,187.60 - 278.40 = 1,909.20
     mn_child_and_working_families_credits: 1_909.2
+
+- name: MN child and working family credits 2026 married couple filing jointly with one child under 18
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 45
+        employment_income: 25_000
+        is_tax_unit_head: true
+      parent2:
+        age: 43
+        employment_income: 15_000
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MN
+  output:
+    # Married filing jointly with 25,000 + 15,000 = 40,000 of earnings.
+    # Child credit 1,800 + working family credit 4% x 9,690 = 387.60 -> 2,187.60
+    # Phase-out = 12% x (40,000 - 38,770) = 12% x 1,230 = 147.60
+    # Credit = 2,187.60 - 147.60 = 2,040.00
+    # Indexing the 2025 threshold of $37,910 would give $38,790 for 2026, and
+    # a credit of 2,187.60 - 12% x (40,000 - 38,790) = 2,187.60 - 145.20 =
+    # 2,042.40.
+    mn_child_and_working_families_credits: 2_040

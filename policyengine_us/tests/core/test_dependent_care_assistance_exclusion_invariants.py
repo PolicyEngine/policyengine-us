@@ -1,36 +1,23 @@
-"""Cap-arithmetic invariants for the section 129 assistance exclusion.
+"""Source-based bounds for the section 129 assistance exclusion.
 
-Restricted domain: these properties exercise the model's existing cap-only
-calculation, not statutory eligibility for an exclusion. Fixtures omit
-qualifying care expenses and may contain no qualifying persons. Form 2441
-lines 16-25 also limit excluded benefits to qualified expenses for qualifying
-persons; with no such expenses, the statutory exclusion would be zero.
-Positive exclusions here establish cap arithmetic only and do not verify
-those qualification requirements.
+Each generated tax unit has zero to three dependent children under 13 and
+an independently known $20,000 of qualifying work-care costs when a child
+qualifies, otherwise zero. Costs are incurred in the tested year, before
+employer exclusion, with no carryovers, forfeitures or disallowed public
+reimbursement. These are explicit hypothetical facts, not inferred from
+benefits, gross bills or modeled subsidies. The properties retain every
+filing status, published annual cap, earnings limit and no-person case.
 
-Within this domain, the modeled exclusion is the lesser of employer-provided
-benefits, the section 129(a)(2)(A) dollar cap for the year and filing status,
-and the section 129(b) earned-income limit. Section 129(a)(2)(D) raised the
-cap to $10,500 ($5,250 on a separate return) for 2021 only. California keeps
-$5,000 ($2,500) in every year (FTB 3506 Part IV line 22). Section 21(c) reduces
-the CDCC dollar limit by the exclusion.
+Form 2441 Part III limits the exclusion by benefits, qualified costs, the
+published year/status cap and earned income. California uses the FTB 3506
+Part IV cap. Its earned-income amount is supplied as an isolated component
+input equal to known box 1 wages; end-to-end California HSA and loss cases
+remain in the variable-named YAML. Raising benefits also raises gross
+employment income, keeping box 1 earnings and known care costs fixed.
+Section 21(c) then reduces the CDCC dollar limit by the actual exclusion.
 
-Hypothesis draws batches of tax units with all five filing statuses and
-zero to three children under 13, and a seeded population of 200 units adds
-breadth. Each batch and a copy with every filer's benefits raised by a drawn
-non-negative amount run together in one vectorized California simulation.
-For every tax unit:
-
-1. Differential: dependent_care_assistance_exclusion equals an independent
-   numpy min of the benefits, the cap printed on Form 2441 line 21 for the
-   year (not the model's parameter) and the lesser of the filers' earnings.
-2. Bound: 0 <= exclusion <= benefits, the year/status cap and earned income.
-3. Monotone: raising benefits never lowers the exclusion.
-4. California: ca_dependent_care_assistance_exclusion equals the same min with
-   the FTB 3506 line 22 cap, and never exceeds the federal exclusion.
-   Separate filers treated as unmarried use the full cap in both systems.
-5. Section 21(c): cdcc_limit equals max(Form 2441 line 27 amount x the
-   number of qualifying persons (at most two) - exclusion, 0).
+Base and raised-benefit households run together in one vectorized
+simulation per example; no extra model constructions are added here.
 """
 
 import numpy as np
@@ -82,7 +69,7 @@ wages = st.one_of(st.just(0.0), st.integers(1, 150_000).map(float))
 @st.composite
 def filers(draw):
     return {
-        "employment_income": draw(wages),
+        "box_1_wages": draw(wages),
         "benefits": draw(benefits),
         "increase": draw(increases),
     }
@@ -109,7 +96,7 @@ def _seeded_units(n=200):
     def filer():
         level = rng.choice([0, 1, 2])
         return {
-            "employment_income": float(rng.integers(0, 150_001)),
+            "box_1_wages": float(rng.integers(0, 150_001)),
             "benefits": float(
                 [0, rng.integers(1, 5_001), rng.integers(5_000, 12_001)][level]
             ),
@@ -133,8 +120,7 @@ def _seeded_units(n=200):
 
 
 def _situation(units, year):
-    # Deliberately omit qualifying expenses to isolate the existing cap-only
-    # calculation described in the module's restricted property domain.
+    # Known costs and California earnings are independent component facts.
     people, groups = {}, {"tax_units": {}, "households": {}, "marital_units": {}}
 
     def add_filer(name, values, role):
@@ -142,7 +128,9 @@ def _situation(units, year):
             "age": 40,
             "is_tax_unit_head": role == "head",
             "is_tax_unit_spouse": role == "spouse",
-            "employment_income": values["employment_income"],
+            # Benefits sit inside employment_income as a pre-tax payroll
+            # deduction, so box 1 wages are employment_income - benefits.
+            "employment_income": values["box_1_wages"] + values["benefits"],
             "dependent_care_employer_benefits": values["benefits"],
         }
 
@@ -165,6 +153,14 @@ def _situation(units, year):
         groups["tax_units"][f"tax_unit_{i}"] = {
             "members": members,
             "filing_status": unit["filing_status"],
+            "dependent_care_assistance_qualified_expenses": (
+                20_000 if unit["children"] else 0
+            ),
+            "ca_cdcc_min_head_spouse_earned": min(
+                unit["head"]["box_1_wages"], unit["spouse"]["box_1_wages"]
+            )
+            if unit["spouse"]
+            else unit["head"]["box_1_wages"],
         }
         groups["households"][f"household_{i}"] = {
             "members": members,
@@ -176,7 +172,12 @@ def _situation(units, year):
     }
     for kind in ("tax_units", "households"):
         for group in groups[kind].values():
-            for key in ("filing_status", "state_code"):
+            for key in (
+                "filing_status",
+                "state_code",
+                "dependent_care_assistance_qualified_expenses",
+                "ca_cdcc_min_head_spouse_earned",
+            ):
                 if key in group:
                     group[key] = {year: group[key]}
     return {"people": people, **groups}
@@ -224,9 +225,8 @@ def _treated_as_unmarried(unit):
 
 
 def _expected(units, year, caps, *, raised=False):
-    # Independent cap-arithmetic oracle; qualified-expense/person eligibility
-    # under Form 2441 lines 16-25 is outside this property's domain.
-    benefits, cap, earned = [], [], []
+    # Form 2441 lines 16-25 / FTB 3506 Part IV, including known care costs.
+    benefits, cap, earned, expenses = [], [], [], []
     for unit in units:
         filers = [unit["head"]] + ([unit["spouse"]] if unit["spouse"] else [])
         benefits.append(sum(f["benefits"] + raised * f["increase"] for f in filers))
@@ -234,15 +234,16 @@ def _expected(units, year, caps, *, raised=False):
             "filing_status"
         ] == "SEPARATE" and not _treated_as_unmarried(unit)
         cap.append(caps[1] if ordinary_separate else caps[0])
-        earned.append(min(f["employment_income"] for f in filers))
-    return np.minimum(np.array(benefits), np.minimum(cap, earned))
+        earned.append(min(f["box_1_wages"] for f in filers))
+        expenses.append(20_000 if unit["children"] else 0)
+    return np.minimum(benefits, np.minimum(expenses, np.minimum(cap, earned)))
 
 
 def _check(units, year):
     base, raised = _run(units, year)
     exclusion = base["dependent_care_assistance_exclusion"]
 
-    # 1. Differential against the published caps.
+    # 1. Differential against known care costs and the published caps.
     expected = _expected(units, year, PUBLISHED_CAP[year])
     np.testing.assert_allclose(exclusion, expected, atol=TOLERANCE)
 
@@ -275,14 +276,16 @@ def _check(units, year):
     )
     earned_income_limits = np.array(
         [
-            min(unit["head"]["employment_income"], unit["spouse"]["employment_income"])
+            min(unit["head"]["box_1_wages"], unit["spouse"]["box_1_wages"])
             if unit["spouse"]
-            else unit["head"]["employment_income"]
+            else unit["head"]["box_1_wages"]
             for unit in units
         ]
     )
     assert (exclusion <= caps + TOLERANCE).all()
     assert (exclusion <= earned_income_limits + TOLERANCE).all()
+    known_costs = np.array([20_000 if unit["children"] else 0 for unit in units])
+    assert (exclusion <= known_costs + TOLERANCE).all()
 
     # 3. Monotone in benefits.
     assert (
@@ -294,12 +297,22 @@ def _check(units, year):
         atol=TOLERANCE,
     )
 
-    # 4. California's line 22 cap.
+    # 4. California's line 22 cap with explicitly known component earnings.
+    # Actual HSA/California wage differences remain covered in household YAML.
     california = base["ca_dependent_care_assistance_exclusion"]
     np.testing.assert_allclose(
-        california, _expected(units, year, CALIFORNIA_CAP), atol=TOLERANCE
+        california,
+        _expected(units, year, CALIFORNIA_CAP),
+        atol=TOLERANCE,
     )
-    assert (california <= exclusion + TOLERANCE).all()
+    # Where the federal earned income limit doesn't bind below California's
+    # cap, California's smaller cap keeps its exclusion at or below federal.
+    federal_limit_slack = earned_income_limits >= np.minimum(
+        benefits, CALIFORNIA_CAP[0]
+    )
+    assert (
+        california[federal_limit_slack] <= exclusion[federal_limit_slack] + TOLERANCE
+    ).all()
 
     # 5. Section 21(c) dollar limit.
     persons = np.array([min(unit["children"], 2) for unit in units])

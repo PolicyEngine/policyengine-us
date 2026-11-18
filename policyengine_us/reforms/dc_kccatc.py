@@ -56,7 +56,15 @@ def create_dc_kccatc_reform(parameters, period, bypass=False):
                 income_eligible = taxinc <= p.kccatc.income_limit[filing_status]
                 # determine count of KCCATC age eligible children
                 person = tax_unit.members
-                is_dependent = person("is_tax_unit_dependent", period)
+                # As in the baseline formula: no dependents on a return whose
+                # filer (or, if joint, either spouse) can be claimed.
+                filer_is_dependent = person.tax_unit(
+                    "head_or_spouse_is_dependent_elsewhere_without_filing_exception",
+                    period,
+                )
+                is_dependent = (
+                    person("is_tax_unit_dependent", period) & ~filer_is_dependent
+                )
                 age = person("age", period)
                 kccatc_age_eligible = is_dependent & (age <= p.kccatc.max_age)
                 kccatc_eligible_count = tax_unit.sum(kccatc_age_eligible)

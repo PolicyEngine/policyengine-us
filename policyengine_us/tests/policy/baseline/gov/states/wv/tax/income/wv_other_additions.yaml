@@ -1,0 +1,14 @@
+- name: Case 1, default wv_other_additions is zero
+  period: 2024
+  input:
+    state_code: WV
+  output:
+    wv_other_additions: 0.0
+
+- name: Case 2, wv_other_additions flows into wv_additions
+  period: 2024
+  input:
+    state_code: WV
+    wv_other_additions: 1_200
+  output:
+    wv_additions: 1_200

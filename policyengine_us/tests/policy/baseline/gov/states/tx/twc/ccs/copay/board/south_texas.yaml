@@ -1,0 +1,111 @@
+- name: Case 1, South Texas BCY 2024 at the top of the more than 30% to 40% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_740  # $2,645 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: SOUTH_TEXAS
+  output:
+    # The chart (Workforce Solutions for South Texas / 10/01/2023 / SMI Monthly Income Scale and Parent Share of Cost Sliding Fee Scale Chart / Effective 10/1/2023 - 9/30/2024) charges $150 for the first child and $40 for the second.
+    tx_ccs_board_copay:
+      2024-03: 190
+
+- name: Case 2, South Texas BCY 2024 one dollar into the more than 40% to 50% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_752  # $2,646 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: SOUTH_TEXAS
+  output:
+    # The chart (Workforce Solutions for South Texas / 10/01/2023 / SMI Monthly Income Scale and Parent Share of Cost Sliding Fee Scale Chart / Effective 10/1/2023 - 9/30/2024) charges $200 for the first child and $50 for the second.
+    tx_ccs_board_copay:
+      2024-03: 250
+
+- name: Case 3, South Texas BCY 2025 at the top of the more than 30% to 40% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 34_680  # $2,890 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: SOUTH_TEXAS
+  output:
+    # The BCY 2024 chart (Workforce Solutions for South Texas / 10/01/2023 / SMI Monthly Income Scale and Parent Share of Cost Sliding Fee Scale Chart / Effective 10/1/2023 - 9/30/2024), which the model continues until TX3C, charges $150 for the first child and $40 for the second.
+    tx_ccs_board_copay:
+      2024-11: 190
+
+- name: Case 4, South Texas BCY 2025 one dollar into the more than 40% to 50% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 34_692  # $2,891 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: SOUTH_TEXAS
+  output:
+    # The BCY 2024 chart (Workforce Solutions for South Texas / 10/01/2023 / SMI Monthly Income Scale and Parent Share of Cost Sliding Fee Scale Chart / Effective 10/1/2023 - 9/30/2024), which the model continues until TX3C, charges $200 for the first child and $50 for the second.
+    tx_ccs_board_copay:
+      2024-11: 250

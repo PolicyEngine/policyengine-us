@@ -1,0 +1,30 @@
+- name: 35 usual weekly hours is full-time
+  period: 2026
+  input:
+    weekly_hours_worked_before_lsr: 35
+    state_code: GA
+  output:
+    ga_qualified_overtime_full_time_employee: true
+
+- name: Just under 35 usual weekly hours is not full-time
+  period: 2026
+  input:
+    weekly_hours_worked_before_lsr: 34.9
+    state_code: GA
+  output:
+    ga_qualified_overtime_full_time_employee: false
+
+- name: A record without hours is not full-time
+  period: 2026
+  input:
+    state_code: GA
+  output:
+    ga_qualified_overtime_full_time_employee: false
+
+- name: Only Georgia applies the test
+  period: 2026
+  input:
+    weekly_hours_worked_before_lsr: 40
+    state_code: SC
+  output:
+    ga_qualified_overtime_full_time_employee: false

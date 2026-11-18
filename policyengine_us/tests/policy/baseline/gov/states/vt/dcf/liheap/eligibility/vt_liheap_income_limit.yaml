@@ -1,0 +1,133 @@
+# Income limit = min(12 x the P-2913 monthly 185% amount, 185% of the annual guideline,
+# LIHEAP maximum), where the LIHEAP maximum is the greater of 150% of the guideline and
+# 60% of state median income. The statute's exact 185% caps the printed amount where
+# that rounds above it.
+# - P-2913 monthly amount: 185% of the whole-dollar monthly guideline (vt_liheap_fpg.yaml),
+#   rounded half up to the dollar (sizes 1-15 printed):
+#   https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+# - 33 V.S.A. 2604(a): "gross household income no greater than 185 percent of the
+#   federal poverty level nor in excess of income maximums established by LIHEAP":
+#   https://legislature.vermont.gov/statutes/section/33/026/02604
+# - Rule 2913(b) repeats both tests:
+#   https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=38
+# - LIHEAP maximum, 42 U.S.C. 8624(b)(2)(B): https://www.law.cornell.edu/uscode/text/42/8624
+# Guidelines: 2026 uses the 2025 guideline (15,650 + 5,500 per additional person; P-2913,
+# effective March 1, 2025); 2027 uses the 2026 guideline (15,960 + 5,680).
+# Vermont four-person SMI: 131,654 (FFY2026) and 135,326 (FFY2027). 60% SMI is
+# floor(floor(SMI x 0.6) x size factor), where the size factor is 0.52 + 0.16 per person
+# for persons two to six, plus 0.03 per person above six (45 CFR 96.85(b)).
+# The P-2913 table (sizes 10-15) and the DCF 2026-27 web table print monthly 185%
+# amounts above 60% SMI. These cases follow the statute.
+
+- name: Case 1, one person in 2026 is limited to the P-2913 monthly 185% amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+  output:
+    # P-2913 prints 2,412 a month (15,650 / 12 = 1,304.17, so 1,304; 1.85 x 1,304 =
+    # 2,412.40, so 2,412): 2,412 x 12 = 28,944, below 185% of the annual guideline
+    # (1.85 x 15,650 = 28,952.50). LIHEAP maximum = max(150% x 15,650 = 23,475,
+    # floor(floor(131,654 x 0.6) x 0.52) = floor(78,992 x 0.52) = 41,075) = 41,075.
+    # min(28,944, 28,952.50, 41,075) = 28,944.
+    vt_liheap_income_limit: 28_944
+
+- name: Case 2, ten people in 2026 are limited by 60 percent of state median income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head: {age: 42}
+      spouse: {age: 40}
+      child1: {age: 17}
+      child2: {age: 15}
+      child3: {age: 14}
+      child4: {age: 12}
+      child5: {age: 10}
+      child6: {age: 8}
+      child7: {age: 5}
+      child8: {age: 2}
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7, child8]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: VT
+  output:
+    # P-2913 prints 10,044 a month: 10,044 x 12 = 120,528. Guideline 15,650 + 9 x 5,500
+    # = 65,150; 185% = 120,527.50; 150% = 97,725. Size factor 0.52 + 5 x 0.16 + 4 x 0.03
+    # = 1.44; 60% SMI = floor(78,992 x 1.44) = floor(113,748.48) = 113,748. LIHEAP
+    # maximum = 113,748. min(120,528, 120,527.50, 113,748) = 113,748.
+    vt_liheap_income_limit: 113_748
+
+- name: Case 3, thirteen people in 2026 are limited by 150 percent of the guideline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head: {age: 45}
+      spouse: {age: 43}
+      child1: {age: 19}
+      child2: {age: 17}
+      child3: {age: 16}
+      child4: {age: 15}
+      child5: {age: 13}
+      child6: {age: 12}
+      child7: {age: 10}
+      child8: {age: 8}
+      child9: {age: 6}
+      child10: {age: 4}
+      child11: {age: 1}
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
+        state_code: VT
+  output:
+    # P-2913 prints 12,586 a month: 12,586 x 12 = 151,032. Guideline 15,650 + 12 x
+    # 5,500 = 81,650; 185% = 151,052.50; 150% = 122,475. Size factor 0.52 + 5 x 0.16 +
+    # 7 x 0.03 = 1.53; 60% SMI = floor(78,992 x 1.53) = floor(120,857.76) = 120,857.
+    # LIHEAP maximum = max(122,475, 120,857) = 122,475.
+    # min(151,032, 151,052.50, 122,475) = 122,475.
+    vt_liheap_income_limit: 122_475
+
+- name: Case 4, ten people in 2027 use the 2026 guideline and the FFY2027 median income.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head: {age: 42}
+      spouse: {age: 40}
+      child1: {age: 17}
+      child2: {age: 15}
+      child3: {age: 14}
+      child4: {age: 12}
+      child5: {age: 10}
+      child6: {age: 8}
+      child7: {age: 5}
+      child8: {age: 2}
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7, child8]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7, child8]
+        state_code: VT
+  output:
+    # The DCF 2026-27 table prints 10,340 a month: 10,340 x 12 = 124,080. Guideline
+    # 15,960 + 9 x 5,680 = 67,080; 185% = 124,098; 150% = 100,620. 60% SMI =
+    # floor(floor(135,326 x 0.6) x 1.44) = floor(81,195 x 1.44) = floor(116,920.80) =
+    # 116,920. LIHEAP maximum = 116,920. min(124,080, 124,098, 116,920) = 116,920.
+    vt_liheap_income_limit: 116_920

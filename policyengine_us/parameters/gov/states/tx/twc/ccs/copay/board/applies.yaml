@@ -1,0 +1,113 @@
+description: Texas applies the Local Workforce Development Board's own parent share of cost scale under the Child Care Services program for the Boards where this is true.
+
+# Each Board set its own parent share of cost scale until TWC's TX3C case
+# management system launched on January 13, 2025 and brought in the statewide
+# scale. TWC phased the statewide scale in as families enrolled or recertified
+# through February 1, 2026, and a family could ask for the statewide amount
+# sooner if it was lower. The model applies the statewide scale to every family
+# from TX3C's launch, as for a family determined then. Where no Board scale
+# was found for a period, the model applies the statewide scale instead.
+# Board scales here start with BCY 2024 (October 1, 2023), so every Board
+# starts false and earlier periods keep the statewide scale. Without that
+# first false, the model's backdating of each parameter's earliest value
+# to 2015 would switch a Board's scale on from 2015.
+# TWC applied the 7 percent of income cap from its July 2024 rule amendments
+# with the statewide scale (CCDF State Plan FFY 2025-2027, section 3.1.1), so
+# Board scales carry no such cap.
+PANHANDLE:
+  0000-01-01: false
+  2023-10-01: true
+  2024-10-01: true
+  2025-01-01: false  # Actual effective date: 2025-01-13
+SOUTH_PLAINS:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+NORTH_TEXAS:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+NORTH_CENTRAL:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+TARRANT_COUNTY:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+DALLAS_COUNTY:
+  0000-01-01: false
+  2023-10-01: true
+  2024-10-01: true
+  2025-01-01: false  # Actual effective date: 2025-01-13
+NORTHEAST_TEXAS:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+EAST_TEXAS:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+WEST_CENTRAL:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+BORDERPLEX:
+  0000-01-01: false
+  2023-10-01: true
+  2024-10-01: true
+  2025-01-01: false  # Actual effective date: 2025-01-13
+PERMIAN_BASIN:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+CONCHO_VALLEY:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+HEART_OF_TEXAS:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+CAPITAL_AREA:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+RURAL_CAPITAL:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+BRAZOS_VALLEY:
+  0000-01-01: false
+  2023-10-01: true
+  2024-10-01: true  # BCY 2024 amounts continued (WD 20-24)
+  2025-01-01: false  # Actual effective date: 2025-01-13
+DEEP_EAST:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+SOUTHEAST:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+GOLDEN_CRESCENT:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+ALAMO:
+  0000-01-01: false
+  2023-10-01: true
+  2024-10-01: true
+  2025-01-01: false  # Actual effective date: 2025-01-13
+SOUTH_TEXAS:
+  0000-01-01: false
+  2023-10-01: true
+  2024-10-01: true  # BCY 2024 amounts continued (WD 20-24)
+  2025-01-01: false  # Actual effective date: 2025-01-13
+COASTAL_BEND:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+LOWER_RIO:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+CAMERON_COUNTY:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+TEXOMA:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+CENTRAL_TEXAS:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+MIDDLE_RIO:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+GULF_COAST:
+  0000-01-01: false  # No Board chart found for October 2023 to January 2025
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: bool
+  period: month
+  label: Texas CCS applies the Board parent share of cost scale
+  breakdown:
+    - tx_ccs_workforce_board_region
+  reference:
+    - title: TWC WD Letter 24-23 - BCY 2024 Income Amounts for Determining Parent Share of Cost
+      href: https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=1
+    - title: TWC WD Letter 20-24 - BCY 2025 Income Amounts for Determining Parent Share of Cost
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=1
+    - title: TWC WD Letter 06-24, Change 2 - Child Care Policy and Operational Changes Due to the Release of TX3C (statewide methodology effective with TX3C)
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=2
+    - title: TWC WD Letter 06-24, Change 2, Attachment 2 - Board Policies to Rescind per Amendments to Chapter 809
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-att2-twc.pdf#page=1
+    - title: TWC WD Letter 06-24, Change 2, Attachment 3 - TX3C notices to parents
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-att3-twc.pdf#page=4
+    - title: TWC Child Care and Development Fund Waiver Request, December 17, 2024 Commission Meeting
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg24/commission-meeting-material-121724-item10-dp-ccdf-waiver-request-twc.pdf#page=2
+    - title: Texas CCDF State Plan FFY 2025-2027, sections 3.1.1 and 3.1.2
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/tx-ccdf-state-plan-ffy2025-2027-approved.pdf#page=48

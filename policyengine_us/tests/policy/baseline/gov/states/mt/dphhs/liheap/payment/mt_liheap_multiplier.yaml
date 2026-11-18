@@ -1,0 +1,107 @@
+# LIHEAP Manual 2025-2026 section 3.20 and Appendix A 9.2 (FFY2026) and
+# LIHEAP Manual 2026-2027 Appendix A 9.2 (FFY2027): percent of poverty =
+# benefit income / prior-year poverty guideline for the eligible size x 100,
+# rounded to a whole percent; bands 0-25, 26-50, 51-74, 75-100, 101-125,
+# 126-150, 151-175, 176-200, 201+. County to district: DPHHS LIHEAP offices.
+# FFY2026 size 1 guideline $15,650. Yellowstone County is District 7.
+#   $0 -> 0% -> 0.92; $3,975.10 -> 25.4% -> 25 -> 0.92;
+#   $4,006.40 -> 25.6% -> 26 -> 0.87; $31,393.90 -> 200.6% -> 201 -> 0.32.
+- name: Case 1, whole-percent rounding places households at the band edges.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [MT, MT, MT, MT]
+    county: [YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT]
+    mt_liheap_household_size: [1, 1, 1, 1]
+    mt_liheap_categorical_eligibility: [NONE, NONE, NONE, NONE]
+    mt_liheap_benefit_income: [0, 3_975.10, 4_006.40, 31_393.90]
+  output:
+    mt_liheap_multiplier: [0.92, 0.92, 0.87, 0.32]
+
+# FFY2026 0-25% band: District 7 (Yellowstone) 0.92; District 9 (Gallatin) 1.11.
+- name: Case 2, counties in different districts take their district multipliers.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [MT, MT]
+    county: [YELLOWSTONE_COUNTY_MT, GALLATIN_COUNTY_MT]
+    mt_liheap_household_size: [1, 1]
+    mt_liheap_categorical_eligibility: [NONE, NONE]
+    mt_liheap_benefit_income: [0, 0]
+  output:
+    mt_liheap_multiplier: [0.92, 1.11]
+
+# Missoula County is District 11. FFY2026: $9,300 / $15,650 = 59.4% -> 59,
+# 51-74% band -> 0.85.
+- name: Case 3, FFY2026 multiplier for a Missoula County household.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: MT
+    county: MISSOULA_COUNTY_MT
+    mt_liheap_household_size: 1
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_benefit_income: 9_300
+  output:
+    mt_liheap_multiplier: 0.85
+
+# Same household in FFY2027: $9,300 / $15,960 = 58.3% -> 58, 51-74% band ->
+# District 11 FFY2027 0.81.
+- name: Case 4, FFY2027 multiplier for the same Missoula County household.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    state_code: MT
+    county: MISSOULA_COUNTY_MT
+    mt_liheap_household_size: 1
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_benefit_income: 9_300
+  output:
+    mt_liheap_multiplier: 0.81
+
+# FFY2026 plan section 1.6; manual 2026-2027 section 3.11: a categorically
+# eligible household over the income limit gets the lowest multiplier. Size 8:
+# limit $89,487; $94,762.50 / $54,150 = 175% -> 151-175% band 0.51 for a
+# non-categorical household, but the SNAP categorical household is over the
+# limit and takes the 201+ band 0.32.
+- name: Case 5, a categorical household over the income limit takes the lowest multiplier.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [MT, MT]
+    county: [YELLOWSTONE_COUNTY_MT, YELLOWSTONE_COUNTY_MT]
+    mt_liheap_household_size: [8, 8]
+    mt_liheap_categorical_eligibility: [SNAP, NONE]
+    mt_liheap_benefit_income: [94_762.50, 94_762.50]
+  output:
+    mt_liheap_multiplier: [0.32, 0.51]
+
+# A county outside the district lists has no multiplier.
+- name: Case 6, an unknown county has no multiplier.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: MT
+    county: UNKNOWN
+    mt_liheap_household_size: 1
+    mt_liheap_categorical_eligibility: NONE
+    mt_liheap_benefit_income: 0
+  output:
+    mt_liheap_multiplier: 0
+
+# Manual 2026-2027 section 3.11: only a categorical household whose income
+# "exceeds the LIHEAP program income limit" takes the lowest multiplier. Case 5
+# at exactly the size-8 limit of $89,487: $89,487 / $54,150 = 165.3% -> 165,
+# 151-175% band -> 0.51.
+- name: Case 7, a categorical household exactly at the income limit keeps its band multiplier.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: MT
+    county: YELLOWSTONE_COUNTY_MT
+    mt_liheap_household_size: 8
+    mt_liheap_categorical_eligibility: SNAP
+    mt_liheap_benefit_income: 89_487
+  output:
+    mt_liheap_income_limit: 89_487
+    mt_liheap_multiplier: 0.51

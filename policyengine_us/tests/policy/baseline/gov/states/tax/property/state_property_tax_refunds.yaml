@@ -1,0 +1,313 @@
+# Each payment case gives a high earner one refund as an input, so no
+# means-tested benefit moves and both benefit totals equal the refund.
+
+- name: North Dakota's renter's refund counts in both benefit totals.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        nd_renters_refund: 600
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: ND
+  output:
+    state_property_tax_refunds: 600
+    household_state_benefits: 600
+    household_benefits: 600
+    spm_unit_benefits: 600
+
+- name: The renter's refund from North Dakota's worked example reaches household state benefits.
+  # Same household as Case 1 of nd_renters_refund.yaml. North Dakota pays no
+  # other benefit in household_state_benefits.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund: 520
+    state_property_tax_refunds: 520
+    household_state_benefits: 520
+
+- name: Minnesota's homestead credit refund counts in both benefit totals.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        mn_homestead_credit_refund: 1_000
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: MN
+  output:
+    state_property_tax_refunds: 1_000
+    household_benefits: 1_000
+    spm_unit_benefits: 1_000
+
+- name: Montana's property tax rebate counts in both benefit totals.
+  period: 2023
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        mt_property_tax_rebate: 675
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: MT
+  output:
+    state_property_tax_refunds: 675
+    household_benefits: 675
+    spm_unit_benefits: 675
+
+- name: Pennsylvania's property tax or rent rebate counts in both benefit totals.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        pa_property_tax_or_rent_rebate: 650
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: PA
+  output:
+    state_property_tax_refunds: 650
+    household_benefits: 650
+    spm_unit_benefits: 650
+
+- name: Pennsylvania's rebate enters the totals with its 2025 parameters.
+  # Each refund starts in the year it enters state_property_tax_credits.
+  period: 2024
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        pa_property_tax_or_rent_rebate: 650
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: PA
+  output:
+    state_property_tax_refunds: 0
+    household_benefits: 0
+    spm_unit_benefits: 0
+
+- name: Utah's renter's credit counts in both benefit totals.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        ut_renters_credit: 850
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: UT
+  output:
+    state_property_tax_refunds: 850
+    household_benefits: 850
+    spm_unit_benefits: 850
+
+- name: Vermont's renter credit counts in both benefit totals.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        vt_renter_credit: 1_729
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: VT
+  output:
+    state_property_tax_refunds: 1_729
+    household_benefits: 1_729
+    spm_unit_benefits: 1_729
+
+- name: Vermont's renter credit stays out of both totals before it enters the credits list in 2021.
+  # The input stands in for the credit PE-US computes for 2020 from its 2021
+  # parameters.
+  period: 2020
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        vt_renter_credit: 1_729
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: VT
+  output:
+    state_property_tax_refunds: 0
+    household_state_benefits: 0
+    household_benefits: 0
+    spm_unit_benefits: 0
+
+- name: A Utah owner who also rents counts only the renter's credit.
+  # Same household as Case 7 of ut_homeowner_renter_relief.yaml. Counties
+  # apply the $600 homeowner's credit to the property tax bill.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income:
+          2024: 10_000
+          2025: 10_000
+        pre_subsidy_rent: 10_000
+        real_estate_taxes: 600
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: UT
+          2025: UT
+  output:
+    ut_homeowner_renter_relief: 1_550
+    ut_renters_credit: 950
+    ut_homeowners_credit: 600
+    state_property_tax_refunds: 950
+
+- name: North Dakota's primary residence credit lowers the bill and counts in neither total.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: ND
+  output:
+    nd_primary_residence_credit: 1_600
+    state_property_tax_refunds: 0
+    household_benefits: 0
+    spm_unit_benefits: 0
+
+- name: Indiana's supplemental homestead credit lowers the bill and counts in neither total.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: IN
+  output:
+    in_supplemental_homestead_credit: 200
+    state_property_tax_refunds: 0
+    household_benefits: 0
+    spm_unit_benefits: 0
+
+- name: A refund from another state counts nowhere.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 66
+        employment_income: 10_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: NH
+  output:
+    nd_renters_refund: 0
+    ut_renters_credit: 0
+    vt_renter_credit: 0
+    state_property_tax_refunds: 0

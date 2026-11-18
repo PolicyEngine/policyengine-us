@@ -1,0 +1,185 @@
+# Eligibility: at least one citizen or qualified immigrant member (rule 2903(a)(2)),
+# gross income no greater than the income limit (33 V.S.A. 2604(a); rule 2913(b)), and
+# a primary heating fuel listed in the Standard Heating Cost Tables (rule 2916(b)),
+# unless a subsidized household has heat included in its rent (rule 2914(c)(4)).
+# Rules, "#page 10,38-39,41,43":
+# https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2900-Seasonal-Fuel-Assistance.pdf#page=10
+# Statute: https://legislature.vermont.gov/statutes/section/33/026/02604
+# 2026 one-person limit: P-2913 prints 2,412 a month (28,944 a year), compared with
+# monthly income (rule 2914(a)(3); vt_liheap_income_limit.yaml Case 1). Where the
+# printed amount rounds above 185% of the annual guideline, the statute's 185% applies
+# (two people: 3,262 a month printed, 39,127.50 a year under 33 V.S.A. 2604(a)).
+# P-2913: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+
+- name: Case 1, threshold edge, income at the printed monthly limit is eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        # Threshold edge: 2,412 a month x 12 = 28,944.
+        employment_income: 28_944
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: FUEL_OIL
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # 2,412 a month is not more than P-2913's 2,412; oil has a table cost (3,123).
+    vt_liheap_eligible: true
+
+- name: Case 2, threshold edge, income $1 a month above the printed limit is not eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        # Threshold edge: 2,413 a month x 12 = 28,956.
+        employment_income: 28_956
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: FUEL_OIL
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # 2,413 a month is more than P-2913's 2,412.
+    vt_liheap_eligible: false
+
+- name: Case 3, a household with no citizen or qualified immigrant is not eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 34
+        immigration_status: UNDOCUMENTED
+        # 14.42 x 30 hours x 52 weeks = 22,495.20.
+        employment_income: 22_495.2
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: FUEL_OIL
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # No eligible member: size 0, limit 0, not eligible.
+    vt_liheap_household_size: 0
+    vt_liheap_income_limit: 0
+    vt_liheap_eligible: false
+
+- name: Case 4, an unsubsidized renter with heat in rent and an unknown fuel is not eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        # Social Security of 1,300 a month.
+        social_security_retirement: 15_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 1
+        is_in_public_housing: false
+  output:
+    # No table row for an unknown fuel (cost 0), and the 30% heat-in-rent benefit
+    # needs the table cost; only subsidized heat in rent pays without a fuel.
+    vt_liheap_heating_cost: 0
+    vt_liheap_eligible: false
+
+- name: Case 5, a public housing tenant paying for a fuel outside the table is not eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        social_security_retirement: 15_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: OTHER
+        heat_expense_included_in_rent: false
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 1
+        is_in_public_housing: true
+  output:
+    # Subsidized housing alone does not qualify: the fuel has no table row and heat
+    # is not included in rent.
+    vt_liheap_heating_cost: 0
+    vt_liheap_eligible: false
+
+- name: Case 6, a Section 8 tenant reporting no heating is not eligible even with heat in rent.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        social_security_retirement: 15_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+        heating_type: NONE
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        bedrooms: 1
+  output:
+    # NONE means the home has no heating, so the $21
+    # subsidized heat-in-rent path does not apply. With UNSPECIFIED instead, the
+    # household is eligible (vt_liheap.yaml Case 4).
+    vt_liheap_eligible: false
+
+- name: Case 7, two people under the printed monthly limit but above 185 percent of the annual guideline are not eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 28
+        # Threshold edge: 3,261 a month x 12 = 39,132.
+        employment_income: 39_132
+      child1:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        # No Reach Up.
+        tanf: 0
+        heating_type: FUEL_OIL
+    households:
+      household:
+        members: [head, child1]
+        state_code: VT
+        bedrooms: 2
+  output:
+    # P-2913 prints 3,262 a month for two people (21,150 / 12 = 1,762.50, so 1,763;
+    # 1.85 x 1,763 = 3,261.55, so 3,262), and 3,261 a month is under it. 33 V.S.A.
+    # 2604(a): 1.85 x 21,150 = 39,127.50 a year (3,260.625 a month). The limit is
+    # min(39,144, 39,127.50, 53,714) = 39,127.50, and 39,132 > 39,127.50.
+    vt_liheap_income_limit: 39_127.5
+    vt_liheap_eligible: false

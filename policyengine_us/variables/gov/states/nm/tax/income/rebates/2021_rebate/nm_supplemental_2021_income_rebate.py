@@ -5,6 +5,14 @@ class nm_supplemental_2021_income_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Mexico supplemental 2021 income tax rebate"
+    documentation = (
+        "New Mexico supplemental rebates enacted and paid in 2022 under NMSA 7-2-7.5 "
+        "and determined from the 2021 return. This variable combines the two "
+        "payments. PolicyEngine attributes them to eligibility tax year 2021 through "
+        "nm_refundable_credits. Its standalone formula can calculate an amount in "
+        "later years; inclusion in the dated credit total determines whether it "
+        "affects income tax and household net income."
+    )
     definition_period = YEAR
     reference = (
         "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503706/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsPAGwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA",

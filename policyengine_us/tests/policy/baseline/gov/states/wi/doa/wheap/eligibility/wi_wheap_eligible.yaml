@@ -1,0 +1,410 @@
+# Wisconsin WHEAP regular heating eligibility: at least one citizen or
+# eligible noncitizen; income at or below 60 percent of state median income,
+# below 110 percent of the poverty guideline (42 U.S.C. 8624(b)(2)(B)), or
+# categorical eligibility (Wis. Stat. 16.27(5)(b), (5)(c)); a reported heating
+# fuel; and an energy burden: a heating bill paid by the household, or heat
+# included in rent without government rental assistance (PY2026 WHEAP Manual
+# 3.2.5 and Table 3.2).
+
+- name: Case 1, income exactly at the limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 41
+        employment_income: 50_243
+      person2:
+        age: 39
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 900
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Size 2 limit 50,243 (Appendix E); 50,243 <= 50,243.
+    wi_wheap_eligible: true
+
+- name: Case 2, income one dollar over the limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 41
+        employment_income: 50_244
+      person2:
+        age: 39
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 900
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 50,244 > 50,243, above 110% of the 2025 guideline (23,265), not
+    # categorical.
+    wi_wheap_eligible: false
+
+- name: Case 3, FoodShare household above the limit is eligible through categorical eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 64_000
+      person2:
+        age: 42
+        employment_income: 40_000
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 6
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_150
+        snap: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: WI
+  output:
+    # 104,000 > size 8 limit 101,965, but FoodShare receipt (supplied as an
+    # input) passes the income test under Wis. Stat. 16.27(5)(c).
+    wi_wheap_eligible: true
+
+- name: Case 4, twenty-person household above the limit with income one dollar below 110 percent of the poverty guideline is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 48
+        employment_income: 42_164
+      person2:
+        age: 46
+        employment_income: 35_000
+      person3:
+        age: 26
+        employment_income: 30_000
+      person4:
+        age: 24
+        employment_income: 25_000
+      person5: {age: 44}
+      person6: {age: 22}
+      person7: {age: 19}
+      person8: {age: 17}
+      person9: {age: 16}
+      person10: {age: 15}
+      person11: {age: 14}
+      person12: {age: 13}
+      person13: {age: 12}
+      person14: {age: 11}
+      person15: {age: 10}
+      person16: {age: 9}
+      person17: {age: 7}
+      person18: {age: 5}
+      person19: {age: 3}
+      person20: {age: 1}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        heating_type: NATURAL_GAS
+        heating_expense: 2_000
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        state_code: WI
+  output:
+    # Size 20 limit 128,565 < income 42,164 + 35,000 + 30,000 + 25,000 =
+    # 132,164. 2025 guideline for 20: 15,650 + 19 x 5,500 = 120,150;
+    # x 1.1 = 132,165 > 132,164, so the federal floor bars exclusion.
+    wi_wheap_income_limit: 128_565
+    wi_wheap_eligible: true
+
+- name: Case 5, household without a citizen or qualified noncitizen is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 30_000
+      person2:
+        age: 31
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 800
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Manual 3.2.1: the case head must be a citizen or eligible noncitizen;
+    # no member qualifies, so the eligible-member size is 0.
+    wi_wheap_eligible: false
+
+- name: Case 6, mixed-status household with a citizen member is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 41
+        immigration_status: UNDOCUMENTED
+        employment_income: 30_000
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 800
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Eligible-member size 1, limit 38,421; all income counts: 30,000 <= 38,421.
+    wi_wheap_eligible: true
+
+- name: Case 7, heat included in rent with rental assistance is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Manual 3.2.5.1 and Table 3.2: subsidized housing with heat in rent has no
+    # energy burden.
+    wi_wheap_eligible: false
+
+- name: Case 8, heat included in rent in public housing is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        heat_expense_included_in_rent: true
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        is_in_public_housing: true
+  output:
+    # Public housing is government-assisted housing: no energy burden.
+    wi_wheap_eligible: false
+
+- name: Case 9, heat included in rent without rental assistance is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        heat_expense_included_in_rent: true
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Table 3.2: heat in rent without rental assistance is an energy burden;
+    # 24,000 <= size 1 limit 38,421.
+    wi_wheap_eligible: true
+
+- name: Case 10, rental assistance tenant who pays the heating bill directly is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 700
+        receives_housing_assistance: true
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Manual 4.4.19: a subsidized tenant paying the vendor has an energy
+    # burden; only heat in rent is excluded.
+    wi_wheap_eligible: true
+
+- name: Case 11, unspecified heating fuel is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heating_expense: 900
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Expense supplied so only the fuel gate decides: UNSPECIFIED pays nothing.
+    wi_wheap_eligible: false
+
+- name: Case 12, a home with no heating is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        heating_expense: 600
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Expense supplied so only the fuel gate decides: NONE has no heating fuel.
+    wi_wheap_eligible: false
+
+- name: Case 13, household paying its own heating with no heating cost is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 0
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Manual 3.2.5: no heating payment and heat not in rent, so no energy
+    # burden.
+    wi_wheap_eligible: false
+
+- name: Case 14, twenty-person household above the limit with income exactly at 110 percent of the poverty guideline is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 48
+        employment_income: 42_165
+      person2:
+        age: 46
+        employment_income: 35_000
+      person3:
+        age: 26
+        employment_income: 30_000
+      person4:
+        age: 24
+        employment_income: 25_000
+      person5: {age: 44}
+      person6: {age: 22}
+      person7: {age: 19}
+      person8: {age: 17}
+      person9: {age: 16}
+      person10: {age: 15}
+      person11: {age: 14}
+      person12: {age: 13}
+      person13: {age: 12}
+      person14: {age: 11}
+      person15: {age: 10}
+      person16: {age: 9}
+      person17: {age: 7}
+      person18: {age: 5}
+      person19: {age: 3}
+      person20: {age: 1}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        heating_type: NATURAL_GAS
+        heating_expense: 2_000
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14, person15, person16, person17, person18, person19, person20]
+        state_code: WI
+  output:
+    # Income 132,165 is not less than the 132,165 floor (42 U.S.C.
+    # 8624(b)(2)(B): "less than 110 percent"), exceeds the size 20 limit
+    # 128,565, and the household is not categorical.
+    wi_wheap_eligible: false

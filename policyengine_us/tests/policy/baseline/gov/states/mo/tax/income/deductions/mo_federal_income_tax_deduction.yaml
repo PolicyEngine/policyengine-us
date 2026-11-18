@@ -166,3 +166,35 @@
     state_code: MO
   output:
     mo_federal_income_tax_deduction: 0
+
+- name: The section 1341 credit reduces the federal income tax deduction base
+  # RSMo 143.171(2)(1) reduces federal tax by credits except its listed
+  # exceptions, so the section 1341 credit is not added back.
+  # Federal (as in the federal claim of right integration case 4): the
+  # $10,000 repayment does not beat the $15,750 standard deduction, so tax on
+  # 40,000 - 15,750 = 24,250 is 1,192.50 + 12% x 12,325 = 2,671.50, and the
+  # credit method subtracts the 2,200 prior-year decrease: 471.50.
+  # Missouri: AGI 40,000 is in the 25% bracket; 25% x 471.50 = 117.875.
+  # (Adding the credit back would give 25% x 2,671.50 = 667.875.)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        claim_of_right_prior_year_tax_decrease: 2_200
+    households:
+      household:
+        members: [person]
+        state_code: MO
+  output:
+    claim_of_right_credit_applies: true
+    claim_of_right_credit: 2_200
+    income_tax_before_refundable_credits: 2_671.5
+    income_tax: 471.5
+    mo_federal_income_tax_deduction: 117.875

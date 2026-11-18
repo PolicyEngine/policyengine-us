@@ -1,0 +1,21 @@
+description: States round the monthly medically needy income limit up to the next whole dollar under the Medicaid program, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid medically needy income limit rounded up to a whole dollar
+  breakdown:
+    - state_code
+  reference:
+    - title: New York DOH GIS 26 MA/05, Attachment I, SSI-Related Medicaid Income Level $1,836 / $2,489 (138% FPL)
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/26ma05_att1.pdf#page=2
+    - title: New York DOH GIS 25 MA/03, Attachment I, SSI-Related Medicaid Income Level $1,800 / $2,433 (138% FPL)
+      href: https://www.health.ny.gov/health_care/medicaid/publications/docs/gis/25ma03_att1.pdf#page=2
+    - title: North Dakota Manual Letter 3702, medically needy income levels $1,009 / $1,364 (83% FPL)
+      href: https://www.nd.gov/dhs/policymanuals/51003/Content/ML/2023/ML%203702%20Federal%20Poverty%20Level%20Updates%2004-01-2023.pdf#page=6
+    - title: North Dakota Non-ACA Medicaid Manual 510-05-85-40 (archived, ML 3896), medically needy income level $1,130 (90% FPL)
+      href: https://www.nd.gov/dhs/policymanuals/51005/Archived%20Documents/2025/3896/510_05_85_40.htm
+
+ND:
+  2018-01-01: true
+NY:
+  2018-01-01: true

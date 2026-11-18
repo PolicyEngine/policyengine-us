@@ -1,12 +1,13 @@
 # Edge case tests for oh_owf_initial_income_eligible
-# Tests initial income eligibility: gross income < (FPG * 50%)
+# Tests initial income eligibility: gross income <= (FPG * 50%)
 #
 # Formula inputs:
 # - tanf_gross_earned_income + tanf_gross_unearned_income = gross income
 # - oh_owf_fpg (monthly federal poverty guideline)
 # - income_limit_rate = 0.5 (50% of FPL)
 #
-# Uses strict less than (<), so income at threshold is NOT eligible
+# ORC 5107.10(D)(1)(a)-(b) allows equality at this initial gross-income gate.
+# The separate countable-income/payment-standard comparison remains strict.
 
 - name: Case 1, zero income is eligible.
   period: 2025-01
@@ -42,17 +43,16 @@
     # 850 < 851.67 = true
     oh_owf_initial_income_eligible: true
 
-- name: Case 4, income exactly at 50 percent FPL threshold is not eligible.
+- name: Case 4, income exactly at 50 percent FPL threshold is eligible.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     tanf_gross_earned_income: 851.665
     tanf_gross_unearned_income: 0
     oh_owf_fpg: 1_703.33
     state_code: OH
   output:
-    # 851.665 is NOT < 851.665 (strict less than)
-    oh_owf_initial_income_eligible: false
+    # 851.665 equals the supplied component FPG times 50%; equality is allowed.
+    oh_owf_initial_income_eligible: true
 
 - name: Case 5, income one cent above threshold is not eligible.
   period: 2025-01
@@ -78,7 +78,6 @@
 
 - name: Case 7, single person household threshold test.
   period: 2025-01
-  absolute_error_margin: 0.01
   input:
     tanf_gross_earned_income: 627.5
     tanf_gross_unearned_income: 0
@@ -86,8 +85,8 @@
     state_code: OH
   output:
     # Threshold = 1255 * 0.5 = 627.5
-    # 627.5 is NOT < 627.5 (strict less than)
-    oh_owf_initial_income_eligible: false
+    # 627.5 equals the supplied component FPG times 50%; equality is allowed.
+    oh_owf_initial_income_eligible: true
 
 - name: Case 8, single person just below threshold is eligible.
   period: 2025-01
@@ -158,3 +157,75 @@
     # Threshold = 3496.67 * 0.5 = 1748.335
     # 1748.34 is NOT < 1748.335 (strict less than)
     oh_owf_initial_income_eligible: false
+
+- name: Case 14, Source-bound 2017 isolated inclusive initial-gross component.
+  period: 2017-01
+  input:
+    # Component fixture deliberately supplies the source FPG to isolate <=.
+    tanf_gross_earned_income: 840
+    tanf_gross_unearned_income: 0
+    oh_owf_fpg: 1_680
+    state_code: OH
+  output:
+    # ORC 5107.10(D)(1)(a)-(b): adjusted gross income not exceeding 50% passes.
+    oh_owf_initial_income_eligible: true
+
+- name: Case 15, Source-bound 2017 actual wages of 841 test initial-gross boundary.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr:
+          2017: 10_092
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # First-time applicant; constant actual wages $841/month, no required gross
+    # exclusions. This checks only the initial financial gate, not cash/enrollment.
+    # Source FPG $20,160/year / 12 = $1,680; half is exactly $840.
+    oh_owf_initial_income_eligible: false
+    oh_owf_fpg: 1_680
+    tanf_gross_earned_income: [841, 0, 0]
+    tanf_gross_unearned_income: [0, 0, 0]
+
+- name: Case 16, Source-bound 2017 actual wages of 840 test initial-gross boundary.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr:
+          2017: 10_080
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # First-time applicant; constant actual wages $840/month, no required gross
+    # exclusions. This checks only the initial financial gate, not cash/enrollment.
+    # Source FPG $20,160/year / 12 = $1,680; half is exactly $840.
+    oh_owf_initial_income_eligible: true
+    oh_owf_fpg: 1_680
+    tanf_gross_earned_income: [840, 0, 0]
+    tanf_gross_unearned_income: [0, 0, 0]

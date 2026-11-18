@@ -173,3 +173,16 @@
         state_code: CO
   output:
     co_cdcc: 0
+
+# Without itemization branching, co_cdcc reaches CCAP through the federal CDCC
+# and child care expenses. For January to September 2015, CCAP once read its
+# parameters at 2014-10-01 and raised ParameterNotFoundError.
+- name: 2015 single filer with no income, without itemization branching
+  period: 2015
+  absolute_error_margin: 0
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    state_code: CO
+    filing_status: SINGLE
+  output:
+    co_cdcc: 0

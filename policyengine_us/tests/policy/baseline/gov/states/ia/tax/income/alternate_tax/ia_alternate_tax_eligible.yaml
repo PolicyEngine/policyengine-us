@@ -13,3 +13,62 @@
     state_code: IA
   output:
     ia_alternate_tax_eligible: true
+
+# Iowa Code 422.5(2)(b): the alternate tax is part of the subsection whose
+# benefit a claimed dependent loses when the claimant's net income exceeds the
+# limit, including on a joint return with one claimed spouse.
+- name: A claimed spouse with a high-income claimant prevents alternate tax
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 30
+      spouse:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        ia_dependent_claimant_net_income: 9_001
+        ia_dependent_claimant_spouse_net_income: 0
+        ia_dependent_claimant_filing_status: SINGLE
+    tax_units:
+      tax_unit:
+        members: [filer, spouse]
+        filing_status: JOINT
+        ia_modified_income: 20_000
+        ia_regular_tax_consolidated: 500
+    households:
+      household:
+        members: [filer, spouse]
+        state_code: IA
+  output:
+    # 9,001 > 9,000. Otherwise the alternate tax would be
+    # (20,000 - 13,500) * 0.057 = 370.50.
+    ia_alternate_tax_eligible: false
+    ia_income_tax_consolidated: 500
+
+- name: Claimant income equal to its limit preserves alternate tax
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 30
+      spouse:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        ia_dependent_claimant_net_income: 9_000
+        ia_dependent_claimant_spouse_net_income: 0
+        ia_dependent_claimant_filing_status: SINGLE
+    tax_units:
+      tax_unit:
+        members: [filer, spouse]
+        filing_status: JOINT
+        ia_modified_income: 20_000
+        ia_regular_tax_consolidated: 500
+    households:
+      household:
+        members: [filer, spouse]
+        state_code: IA
+  output:
+    # min(500, (20,000 - 13,500) * 0.057) = 370.50.
+    ia_alternate_tax_eligible: true
+    ia_income_tax_consolidated: 370.5
+

@@ -1,0 +1,499 @@
+# Idaho FY2026 LIHEAP plan, gross income checkboxes and other-income text (pages 5-7).
+# https://liheapch.acf.gov/docs/2026/state-plans/ID_Plan_2026.pdf#page=5
+# IDAPA 16.03.08 section 202 includes income of nonqualified household members (page 6).
+# https://adminrules.idaho.gov/rules/current/16/160308.pdf#page=6
+# IDAPA 16.04.14.010.06 and 151.02 define income for FY2026 heating (pages 3, 5).
+# https://web.archive.org/web/20250910171431id_/https://adminrules.idaho.gov/rules/current/16/160414.pdf#page=3
+
+- name: Case 1, a minor's earnings, VA benefits and general assistance count and child support does not.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Adult 12,000 + child wages 6,000 + SSI (100 a month x 12) 1,200 + VA 3,000 + GA 900 = 23,100.
+  # IDAPA 16.04.14.151.02.t excludes the child support.
+  # The SSI input of 1,200 is the annual amount for a MONTH variable in a YEAR test.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person2: {age: 17, is_citizen_or_legal_immigrant: true, employment_income: 6_000, ssi: 1_200, child_support_received: 6_000, veterans_benefits: 3_000, general_assistance: 900}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 23_100
+
+- name: Case 2, an eighteen-year-old's earnings count.
+  period: 2026
+  absolute_error_margin: 0.01
+  # The 12,000 of adult wages and the 18-year-old's 6,000 of earnings both count.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person2: {age: 18, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 6_000}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 18_000
+
+- name: Case 3, nonqualified parent income still counts for citizen child.
+  period: 2026
+  absolute_error_margin: 0.01
+  # The parent is excluded from eligible size but their 20,000 of wages remain countable.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: false, employment_income: 20_000, ssi: 0}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 20_000
+
+- name: Case 4, all represented unearned sources count without pension double counting.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Social Security 12,000 + SSI 1,200 + pension (1,000 + 2,000 + 300 + 400) 3,700 + survivor 500
+  # + unemployment 2,400 + strike 300 + rent 600 + farm rent 700 + alimony 400
+  # + interest 200 + dividends 250 + estate 800 + disability 900 + workers' compensation 1,000 = 24,950.
+  # Pension and SSA subcomponents each enter their aggregates exactly once.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, social_security_disability: 12_000, taxable_public_pension_income: 1_000, taxable_private_pension_income: 2_000, tax_exempt_public_pension_income: 300, tax_exempt_private_pension_income: 400, survivor_benefits: 500, unemployment_compensation: 2_400, strike_benefits: 300, rental_income: 600, farm_rent_income: 700, alimony_income: 400, interest_income: 200, ordinary_dividend_income: 250, estate_income: 800, disability_benefits: 900, workers_compensation: 1_000}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 1_200}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 24_950
+
+- name: Case 5, all supported earned business streams count.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Gross wages 10,000 + basic pay 500 + net business streams 2,000 + 3,000 + 4,000 + 5,000 = 24,500.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 10_000, military_basic_pay: 500, self_employment_income: 2_000, sstb_self_employment_income: 3_000, farm_operations_income: 4_000, partnership_s_corp_income: 5_000}
+    spm_units:
+      spm_unit: {members: [person1], heating_type: NATURAL_GAS, id_tafi: 0}
+    households:
+      household: {members: [person1], state_code: ID}
+  output:
+    id_liheap_countable_income: 24_500
+
+- name: Case 6, negative business sources do not offset positive earnings.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Net-business approximation: 10,000 + max(-9,000, 0) + 2,000 + max(-7,000, 0) + 3,000 = 15,000.
+  input:
+    people:
+      person1: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 10_000, self_employment_income: -9_000, sstb_self_employment_income: 2_000, farm_operations_income: -7_000, partnership_s_corp_income: 3_000}
+    spm_units:
+      spm_unit: {members: [person1], heating_type: NATURAL_GAS, id_tafi: 0}
+    households:
+      household: {members: [person1], state_code: ID}
+  output:
+    id_liheap_countable_income: 15_000
+
+- name: Case 7, monthly SSI and TAFI aggregate once over the year.
+  period: 2026
+  absolute_error_margin: 0.01
+  # Child SSI 100 + 200 = 300; SPM TAFI 300 + 200 + 100 = 600; total 900.
+  # All other months are explicitly 0, and TAFI must not be multiplied by household size.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: {2026-01: 0, 2026-02: 0, 2026-03: 0, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0, 2026-10: 0, 2026-11: 0, 2026-12: 0}}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: {2026-01: 100, 2026-02: 200, 2026-03: 0, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0, 2026-10: 0, 2026-11: 0, 2026-12: 0}}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, id_tafi: {2026-01: 300, 2026-02: 200, 2026-03: 100, 2026-04: 0, 2026-05: 0, 2026-06: 0, 2026-07: 0, 2026-08: 0, 2026-09: 0, 2026-10: 0, 2026-11: 0, 2026-12: 0}}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 900
+
+- name: Case 8, child support is excluded and VA benefits and general assistance count.
+  period: 2026
+  absolute_error_margin: 0.01
+  # IDAPA 16.04.14.151.02.t excludes child support 9,000; VA 5,000 + GA 2,000 = 7,000 count.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, child_support_received: 9_000, veterans_benefits: 5_000, general_assistance: 2_000}
+      person2: {age: 8, is_citizen_or_legal_immigrant: true, ssi: 0}
+    spm_units:
+      spm_unit: {members: [person1, person2], heating_type: NATURAL_GAS, id_tafi: 0}
+    households:
+      household: {members: [person1, person2], state_code: ID}
+  output:
+    id_liheap_countable_income: 7_000
+
+- name: Case 9, mixed states and unequal memberships retain separate income totals.
+  period: 2026
+  absolute_error_margin: 0.01
+  # First Idaho unit 6,000 + 6,000 = 12,000; Colorado 0;
+  # second Idaho unit adult 1,800 + minor wages 10,000 + child SSI 1,800 = 13,600.
+  input:
+    people:
+      person1: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 6_000}
+      person2: {age: 34, is_citizen_or_legal_immigrant: false, employment_income: 6_000, ssi: 0}
+      person3: {age: 40, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 12_000}
+      person4: {age: 35, is_citizen_or_legal_immigrant: true, ssi: 0, employment_income: 1_800}
+      person5: {age: 12, is_citizen_or_legal_immigrant: true, employment_income: 10_000, ssi: 1_800}
+    spm_units:
+      spm_unit1: {members: [person1, person2], heating_type: NATURAL_GAS, id_tafi: 0}
+      spm_unit2: {members: [person3], heating_type: NATURAL_GAS, id_tafi: 0}
+      spm_unit3: {members: [person4, person5], heating_type: NATURAL_GAS, id_tafi: 0}
+    households:
+      household1: {members: [person1, person2], state_code: ID}
+      household2: {members: [person3], state_code: CO}
+      household3: {members: [person4, person5], state_code: ID}
+  output:
+    id_liheap_countable_income: [12_000, 0, 13_600]
+
+# Ongoing retirement receipts: pension 1,000 + taxable IRA 12,000 + exempt IRA 3,000.
+# Count the two aggregates once; one-time lump sums are not represented here.
+- name: Case 10, recurring taxable and exempt retirement distributions count beside pensions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: 0
+        pension_income: 1_000
+        taxable_ira_distributions: 12_000
+        tax_exempt_ira_distributions: 3_000
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+    households:
+      household:
+        members: [person]
+        state_code: ID
+  output:
+    id_liheap_countable_income: 16_000
+
+# FY2026 one-person limit 32,835. Gross Social Security 34,000 minus actual Part B 2,400 = 31,600.
+# Military 40,000 and pension 34,000 exceed the limit. Rental losses are not deductions.
+# UI 36,000 fails; reported UI gives 31,200; a negative receipt leaves 30,000.
+# TANF receipt controls use the two-person limit 42,938, with no TANF categorical bypass.
+- name: Case 11, military retirement net Social Security and rental loss affect financial
+    eligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        military_retirement_pay: 40_000
+      person2:
+        age: 68
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 34_000
+        medicare_part_b_premium: 2_400
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        pension_income: 34_000
+        rental_income: -10_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+        snap:
+          2025: 0
+          2026: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+        snap:
+          2025: 0
+          2026: 0
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+        snap:
+          2025: 0
+          2026: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        state_code: ID
+      household3:
+        members:
+        - person3
+        state_code: ID
+  output:
+    id_liheap_countable_income:
+    - 40_000
+    - 31_600
+    - 34_000
+    id_liheap_income_limit:
+    - 32_835
+    - 32_835
+    - 32_835
+    id_liheap_income_eligible:
+    - false
+    - true
+    - false
+- name: Case 12, excess Medicare premiums cannot reduce another income source.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 1_000
+        medicare_part_b_premium: 2_400
+        pension_income: 34_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+        snap:
+          2025: 0
+          2026: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+  output:
+    id_liheap_countable_income: 34_000
+    id_liheap_income_eligible: false
+- name: Case 13, UI uses the receipt helper and cannot offset positive wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 30_000
+        unemployment_compensation: 0
+        modeled_state_unemployment_compensation: 6_000
+      person2:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 30_000
+        unemployment_compensation: 1_200
+        modeled_state_unemployment_compensation: 6_000
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 30_000
+        unemployment_compensation: -100
+        modeled_state_unemployment_compensation: 6_000
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+        snap:
+          2025: 0
+          2026: 0
+      spm_unit2:
+        members:
+        - person2
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+        snap:
+          2025: 0
+          2026: 0
+      spm_unit3:
+        members:
+        - person3
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+        snap:
+          2025: 0
+          2026: 0
+    households:
+      household1:
+        members:
+        - person1
+        state_code: ID
+      household2:
+        members:
+        - person2
+        state_code: ID
+      household3:
+        members:
+        - person3
+        state_code: ID
+  output:
+    total_unemployment_compensation:
+    - 6_000
+    - 1_200
+    - -100
+    id_liheap_countable_income:
+    - 36_000
+    - 31_200
+    - 30_000
+    id_liheap_income_eligible:
+    - false
+    - true
+    - true
+- name: Case 14, received TANF counts once without creating a categorical route.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 40_000
+      person2:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+      person3:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        employment_income: 40_000
+      person4:
+        age: 8
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+    spm_units:
+      spm_unit1:
+        members:
+        - person1
+        - person2
+        heating_type: NATURAL_GAS
+        id_tafi: 6_000
+        snap:
+          2025: 0
+          2026: 0
+        takes_up_tanf_if_eligible: true
+      spm_unit2:
+        members:
+        - person3
+        - person4
+        heating_type: NATURAL_GAS
+        id_tafi: 6_000
+        snap:
+          2025: 0
+          2026: 0
+        takes_up_tanf_if_eligible: false
+    households:
+      household1:
+        members:
+        - person1
+        - person2
+        state_code: ID
+      household2:
+        members:
+        - person3
+        - person4
+        state_code: ID
+  output:
+    tanf:
+    - 6_000
+    - 0
+    id_liheap_countable_income:
+    - 46_000
+    - 40_000
+    id_liheap_income_eligible:
+    - false
+    - true
+
+# Plan item 1.9 counts retirement and pension benefits: railroad retirement 6,000.
+- name: Case 15, railroad retirement counts as a retirement benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 0
+        railroad_benefits: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_liheap_countable_income: 6_000
+
+# Plan 1.9's Other line and IDAPA 16.04.14.151.02.f count gifts and lottery winnings
+# over $30. The $30 test has no input, so annual amounts count in full:
+# wages 25,000 + winnings 1,000 + gifts 500.
+- name: Case 16, gifts and lottery winnings count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_citizen_or_legal_immigrant: true
+        ssi: 0
+        employment_income: 25_000
+        gambling_winnings: 1_000
+        financial_assistance: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        id_tafi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_liheap_countable_income: 26_500

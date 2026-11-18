@@ -48,3 +48,98 @@
     state_code: CA
   output:
     wi_works: 0
+
+- name: Case 7, nine unsubsidized hours keep the full CSJ.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_unsubsidized_hours: 9
+  output:
+    wi_works_placement: CSJ
+    wi_works: 653
+
+- name: Case 8, ten unsubsidized hours pay two-thirds of a CSJ.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_unsubsidized_hours: 10
+  output:
+    wi_works: 435
+
+- name: Case 9, fourteen unsubsidized hours pay two-thirds of a CSJ.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_unsubsidized_hours: 14
+  output:
+    wi_works: 435
+
+- name: Case 10, fifteen unsubsidized hours pay half of a CSJ.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_unsubsidized_hours: 15
+  output:
+    # 653 / 2 = 326.50, which W-2 Manual 7.4.1.5 pays as $327.
+    wi_works: 327
+
+- name: Case 11, nineteen unsubsidized hours pay half of a CSJ.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_unsubsidized_hours: 19
+  output:
+    wi_works: 327
+
+- name: Case 12, twenty unsubsidized hours pay one-third of a CSJ.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_unsubsidized_hours: 20
+  output:
+    wi_works: 218
+
+- name: Case 13, twenty-nine unsubsidized hours pay one-third of a CSJ.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_unsubsidized_hours: 29
+  output:
+    wi_works: 218
+
+- name: Case 14, thirty unsubsidized hours rule out a CSJ.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_unsubsidized_hours: 30
+  output:
+    wi_works_placement: NONE
+    wi_works: 0
+
+- name: Case 15, a W-2 Transition payment ignores unsubsidized hours.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_placement: W2_TRANSITION
+    wi_works_unsubsidized_hours: 20
+  output:
+    wi_works: 608
+
+- name: Case 16, a CMC payment ignores unsubsidized hours.
+  period: 2025-01
+  input:
+    state_code: WI
+    wi_works_eligible: true
+    wi_works_placement: CMC
+    wi_works_unsubsidized_hours: 40
+  output:
+    wi_works: 673

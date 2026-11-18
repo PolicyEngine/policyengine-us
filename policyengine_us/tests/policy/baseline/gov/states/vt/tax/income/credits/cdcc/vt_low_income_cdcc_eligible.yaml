@@ -1,3 +1,8 @@
+# 32 V.S.A. 5828c as in effect for 2021: federal adjusted gross income "less
+# than $30,000.00 (or $40,000.00 for married, filing jointly)". The 2021
+# Schedule IN-112 says "$30,000 (or $40,000 for Married Filing Jointly) or
+# less"; the model follows the statute, so income at the threshold does not
+# qualify.
 - name: Vermont low-income CDCC single filer not eligible
   period: 2021
   input:
@@ -7,11 +12,20 @@
   output:
     vt_low_income_cdcc_eligible: false
 
-- name: Vermont low-income CDCC single filer eligible
+- name: Vermont low-income CDCC single filer at the threshold not eligible
   period: 2021
   input:
     state_code: VT
     adjusted_gross_income: 30_000
+    filing_status: SINGLE
+  output:
+    vt_low_income_cdcc_eligible: false
+
+- name: Vermont low-income CDCC single filer below the threshold eligible
+  period: 2021
+  input:
+    state_code: VT
+    adjusted_gross_income: 29_999
     filing_status: SINGLE
   output:
     vt_low_income_cdcc_eligible: true
@@ -25,14 +39,20 @@
   output:
     vt_low_income_cdcc_eligible: false
 
-- name: Vermont low-income CDCC joint filer eligible 
+- name: Vermont low-income CDCC joint filer at the threshold not eligible
   period: 2021
   input:
     state_code: VT
     adjusted_gross_income: 40_000
     filing_status: JOINT
   output:
-    vt_low_income_cdcc_eligible: true
+    vt_low_income_cdcc_eligible: false
 
-    
-    
+- name: Vermont low-income CDCC joint filer below the threshold eligible
+  period: 2021
+  input:
+    state_code: VT
+    adjusted_gross_income: 39_999
+    filing_status: JOINT
+  output:
+    vt_low_income_cdcc_eligible: true

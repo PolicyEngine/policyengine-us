@@ -1,0 +1,140 @@
+# South Dakota LIEAP direct-heating matrix cells by fuel row, region and income tier.
+
+# FY2026 matrix: 5 fuel rows x 2 income tiers x 4 regions = 40 cells. The size 1 Mid
+# is $19,564, so $0 is tier 1 and $20,000 is tier 2, below the $31,300 maximum.
+- name: Case 1, all forty published direct heating cells retain their literal amounts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD,
+      SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL,
+      FUEL_OIL, FUEL_OIL, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    sd_liheap_region: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3,
+      4, 1, 2, 3, 4, 1, 2, 3, 4]
+    sd_liheap_countable_income: [0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000, 0, 0, 0, 0, 20_000, 20_000,
+      20_000, 20_000, 0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000, 0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000,
+      0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000]
+  output:
+    sd_liheap_base_payment: [742, 770, 812, 854, 668, 694, 730, 768, 1_331, 1_410, 1_516, 1_626, 1_198,
+      1_270, 1_369, 1_461, 2_858, 3_018, 3_236, 3_437, 2_573, 2_715, 2_910, 3_093, 880, 938, 1_007, 1_058,
+      792, 844, 907, 953, 2_499, 2_658, 2_834, 3_066, 2_249, 2_394, 2_552, 2_762]
+
+# The FY2026 matrix prints one Coal & Wood row. Application EA-297 (page 4) lists one
+# Fuel Oil/Kerosene category, so kerosene uses the Fuel Oil row.
+- name: Case 2, wood coal and the application oil kerosene category use matching source rows.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [WOOD, COAL, FUEL_OIL, KEROSENE, WOOD, COAL, FUEL_OIL, KEROSENE]
+    sd_liheap_region: [1, 1, 2, 2, 3, 3, 4, 4]
+    sd_liheap_countable_income: [0, 0, 0, 0, 20_000, 20_000, 20_000, 20_000]
+  output:
+    sd_liheap_base_payment: [742, 742, 3_018, 3_018, 730, 730, 3_093, 3_093]
+
+# FY2024 matrix: the size 1 three-month Mid of $4,556 gives $18,224 a year (not the
+# annual column's $18,225); size 2's $6,163 gives $24,652 (not $24,650). Income at
+# the threshold is tier 1 and one cent above is tier 2: region 1 gas $880 and $792.
+- name: Case 3, the rounded quarterly threshold controls exact and cent boundaries rather than the annual column.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    sd_liheap_region: [1, 1, 1, 1, 1]
+    sd_liheap_household_size: [1, 1, 2, 2, 2]
+    sd_liheap_countable_income: [18_224, 18_224.01, 24_650, 24_652, 24_652.01]
+  output:
+    sd_liheap_income_threshold: [18_224, 18_224, 24_652, 24_652, 24_652]
+    sd_liheap_base_payment: [880, 792, 880, 880, 792]
+
+# FY2026 size 1 Mid: $4,891 x 4 = $19,564. Region 3 electricity pays $1,516 in
+# tier 1 and $1,369 in tier 2; income at the threshold stays in tier 1.
+- name: Case 4, the current threshold includes its exact boundary and switches one cent above.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    sd_liheap_region: [3, 3, 3]
+    sd_liheap_countable_income: [19_563.99, 19_564, 19_564.01]
+  output:
+    sd_liheap_base_payment: [1_516, 1_516, 1_369]
+
+# No matrix price exists for an unknown region (0 or 5) or for SOLAR, OTHER or
+# UNSPECIFIED fuel; those zeros are coverage gaps, not denials. NONE means no
+# heat, which sd_liheap_eligible denies (rules 67:15:01:06 and 67:15:01:09
+# require a heating expense), and another state is outside the program.
+- name: Case 5, unknown regions, unpriced fuels, no heat and another state return a zero base payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, ND]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NONE, SOLAR, OTHER, UNSPECIFIED, NATURAL_GAS]
+    sd_liheap_region: [0, 5, 1, 1, 1, 1, 1]
+    sd_liheap_countable_income: [0, 0, 0, 0, 0, 0, 0]
+  output:
+    sd_liheap_base_payment: [0, 0, 0, 0, 0, 0, 0]
+
+# Size 1 Mid $19,564 puts $20,000 in tier 2; size 2 Mid $26,436 puts the same
+# income in tier 1. Region 1 gas pays $792 and $880; size does not multiply the
+# payment.
+- name: Case 6, actual household membership changes the tier while leaving the regional fuel schedule shared.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      adult2:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      child:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      unit1:
+        members: [adult1]
+        heating_type: NATURAL_GAS
+        sd_liheap_region: 1
+        sd_liheap_countable_income: 20_000
+      unit2:
+        members: [adult2, child]
+        heating_type: NATURAL_GAS
+        sd_liheap_region: 1
+        sd_liheap_countable_income: 20_000
+    households:
+      household1:
+        members: [adult1]
+        state_code: SD
+      household2:
+        members: [adult2, child]
+        state_code: SD
+  output:
+    sd_liheap_income_threshold: [19_564, 26_436]
+    sd_liheap_base_payment: [792, 880]
+
+# FY2022 and FY2023 matrices print the same cells. 2023 size 1 Mid: 125% x 2022
+# FPG $13,590 / 4 = $4,246.875, rounded half up to $4,247 x 4 = $16,988, so $0
+# is tier 1 and $20,000 is tier 2. Electricity r2 t1 $1,281, r4 t2 $1,328; fuel
+# oil r3 t1 $2,157, r4 t2 $2,062; kerosene uses fuel oil r2 t2 $1,810; propane
+# r2 t1 $1,772, r3 t2 $1,701; natural gas r4 t1 $1,058 and coal r3 t2 $730 are
+# unchanged from FY2026.
+- name: Case 7, 2023 base payments use the FY2022 and FY2023 matrix cells.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [ELECTRICITY, ELECTRICITY, FUEL_OIL, FUEL_OIL, KEROSENE, PROPANE, PROPANE, NATURAL_GAS, COAL]
+    sd_liheap_region: [2, 4, 3, 4, 2, 2, 3, 4, 3]
+    sd_liheap_countable_income: [0, 20_000, 0, 20_000, 20_000, 0, 20_000, 0, 20_000]
+  output:
+    sd_liheap_income_threshold: [16_988, 16_988, 16_988, 16_988, 16_988, 16_988, 16_988, 16_988, 16_988]
+    sd_liheap_base_payment: [1_281, 1_328, 2_157, 2_062, 1_810, 1_772, 1_701, 1_058, 730]

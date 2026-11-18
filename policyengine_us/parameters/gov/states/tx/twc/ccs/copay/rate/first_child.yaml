@@ -13,6 +13,18 @@ metadata:
       href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy2025-psoc-chart-twc.pdf
     - title: TWC BCY2026 Parent Share of Cost Sliding Fee Scale
       href: https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy-26-psoc-chart-twc.pdf
+    - title: TWC WD Letter 24-23 - BCY 2024 Income Amounts for Determining Parent Share of Cost
+      href: https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=2
+    - title: TWC Child Care and Development Fund Waiver Request, December 17, 2024 Commission Meeting
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg24/commission-meeting-material-121724-item10-dp-ccdf-waiver-request-twc.pdf#page=2
+    - title: TWC WD Letter 20-24 - BCY 2025 Income Amounts for Determining Eligibility and Parent Share of Cost
+      href: https://web.archive.org/web/20250314070109/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=1
+    - title: TWC Regulated Child Care Providers Update, January 27, 2025 (TX3C launch)
+      href: https://content.govdelivery.com/accounts/TXWC/bulletins/3cf24fc
+    - title: TWC Chapter 809 Rule Amendments Adopted September 13, 2022 - §809.19(b)
+      href: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=62
+    - title: TWC WD Letter 06-24, Change 2 - Child Care Policy and Operational Changes Due to the Release of TX3C
+      href: https://web.archive.org/web/20250309110529/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=2
 
 # The BCY2025 chart shows 9 brackets starting at 5% SMI (2.27%, 3.27%, ..., 7.00%).
 # The BCY2026 chart shows 9 brackets starting at 1% SMI (2.00%, 2.93%, ..., 7.00%).
@@ -20,12 +32,23 @@ metadata:
 # Only the first (1%) and last uncapped (75%) brackets are stored here;
 # the formula derives slope = (0.0693 - 0.02) / (0.75 - 0.01) at runtime.
 # The 85% bracket (7.00%) is the cap, handled separately by maximum.yaml.
+#
+# In September 2022, TWC's Commission amended 40 TAC §809.19 so that from
+# December 1, 2023, it would establish the parent share of cost on a statewide
+# sliding fee scale. On November 7, 2022, it adopted a statewide method to
+# assess each family's share. TWC put both off until it launched its TX3C case
+# management system (WD 06-24, Change 2), so each Board kept setting its own
+# scale (WD 24-23 for BCY 2024, WD 20-24 for BCY 2025). From TX3C's launch on
+# January 13, 2025, TWC phased in this statewide scale as families enrolled or
+# recertified. PolicyEngine applies it to every earlier month back to 2015,
+# except where copay/board/applies.yaml turns on a Board's own scale.
+# Actual effective date of every value below: 2025-01-13.
 brackets:
   - threshold:
-      2024-10-01: 0.01
+      2025-01-01: 0.01
     amount:
-      2024-10-01: 0.02
+      2025-01-01: 0.02
   - threshold:
-      2024-10-01: 0.75
+      2025-01-01: 0.75
     amount:
-      2024-10-01: 0.0693
+      2025-01-01: 0.0693

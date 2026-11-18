@@ -1,0 +1,493 @@
+# Source-derived FY 2026 Colorado regular heating checks.
+# Income and exemptions, PDF pages6-7,46-51,55-57: https://drive.google.com/file/d/1G3XKsXyKoPZmsA5-P6NI6w3svP99xOZd/view#page=6
+
+# Adult gross wages 1,000 + net nonfarm 2,000 + SSTB 3,000 + farm 4,000 + partnership 5,000 + S-corp 6,000 =21,000. No second business-expense deduction.
+- name: "Case 1, adult wages and independent business streams count once."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        co_oap: 0
+        employment_income: 1_000
+        self_employment_income: 2_000
+        sstb_self_employment_income: 3_000
+        farm_operations_income: 4_000
+        partnership_income: 5_000
+        s_corp_income: 6_000
+    spm_units:
+      spm_unit:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "CO"
+  output:
+    co_leap_countable_income_person: 21_000
+    co_leap_countable_income: 21_000
+
+# Rent 3,000 + interest 150 + dividends 300 + UI 400 + strike 500 + pension 3,000 + non-SSA survivors 600 + disability 700 + workers 800 + VA 900 + GA 100 + OAP 200 + alimony 300 + child support 400 + family help 500 + retirement distributions 1,300 =13150.
+# Pension-survivor detail classifies the 3,000 pension. Military retirement pay
+# is a separate 800 receipt, so count 13,150 + 800 = 13,950.
+- name: "Case 2, unearned sources and retirement aggregates count without pension classification duplication."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        co_oap: 200
+        rental_income: 1_200
+        farm_rent_income: 1_800
+        taxable_interest_income: 100
+        tax_exempt_interest_income: 50
+        ordinary_dividend_income: 300
+        unemployment_compensation: 400
+        strike_benefits: 500
+        taxable_pension_income: 1_000
+        tax_exempt_pension_income: 2_000
+        pension_survivors: 900
+        military_retirement_pay: 800
+        survivor_benefits: 600
+        disability_benefits: 700
+        workers_compensation: 800
+        veterans_benefits: 900
+        general_assistance: 100
+        alimony_income: 300
+        child_support_received: 400
+        financial_assistance: 500
+        taxable_ira_distributions: 600
+        tax_exempt_401k_distributions: 700
+    spm_units:
+      spm_unit:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "CO"
+  output:
+    co_leap_countable_income_person: 13_950
+    co_leap_countable_income: 13_950
+
+# Annual SSA survivors 12,011.88 =1,000.99/month; annual SSI 2,411.88 =200.99/month. Drop cents separately: (1,000+200)*12 =14,400. SSA survivors already enter the SSA aggregate.
+- name: "Case 3, Social Security and SSI cents are discarded separately per monthly receipt."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 2411.88
+        co_oap: 0
+        social_security_survivors: 12011.88
+    spm_units:
+      spm_unit:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "CO"
+  output:
+    co_leap_countable_income_person: 14_400
+    co_leap_countable_income: 14_400
+
+# Separate recipients receive 1,000.99 and 500.99/month; (1,000+500)*12=18,000. Pooling before truncation would incorrectly count 18,012.
+- name: "Case 4, rounding is per recipient rather than after pooling Social Security."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        ssi: 0
+        co_oap: 0
+        social_security_retirement: 12011.88
+      person2:
+        age: 67
+        ssi: 0
+        co_oap: 0
+        social_security_retirement: 6011.88
+    spm_units:
+      spm_unit:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "CO"
+  output:
+    co_leap_countable_income_person: [12_000, 6_000]
+    co_leap_countable_income: 18_000
+
+# Dependent child lives with parent. At age 17, count 0 wages plus 1,200 SSA survivors and 600 support; parent wages 12,000 count.
+- name: "Case 5, minor earnings exclusion applies at seventeen."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        co_oap: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        ssi: 0
+        co_oap: 0
+        employment_income: 6_000
+        social_security_survivors: 1_200
+        child_support_received: 600
+    spm_units:
+      spm_unit:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "CO"
+  output:
+    co_leap_countable_income_person: [12_000, 1_800]
+    co_leap_countable_income: 13_800
+
+# Dependent child lives with parent. At age 18, count 6000 wages plus 1,200 SSA survivors and 600 support; parent wages 12,000 count.
+- name: "Case 6, minor earnings exclusion ends at eighteen."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        co_oap: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        ssi: 0
+        co_oap: 0
+        employment_income: 6_000
+        social_security_survivors: 1_200
+        child_support_received: 600
+    spm_units:
+      spm_unit:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "CO"
+  output:
+    co_leap_countable_income_person: [12_000, 7_800]
+    co_leap_countable_income: 19_800
+
+# The foster member is outside the LEAP household. Neither their wages nor SSA receipt increases household income.
+- name: "Case 7, known foster member earnings and unearned receipts are excluded."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        co_oap: 0
+        employment_income: 12_000
+      person2:
+        age: 16
+        ssi: 0
+        co_oap: 0
+        employment_income: 6_000
+        social_security_survivors: 2_400
+        is_in_foster_care:
+          2026-01: true
+    spm_units:
+      spm_unit:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "CO"
+  output:
+    co_leap_countable_income_person: [12_000, 0]
+    co_leap_countable_income: 12_000
+    co_leap_household_size: 1
+
+# The scoped nonnegative-source convention retains 12,000 wages when a business reports a loss. It cannot turn the benefit contribution negative.
+- name: "Case 8, negative net business source does not offset positive wages."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        co_oap: 0
+        employment_income: 12_000
+        self_employment_income: -50_000
+    spm_units:
+      spm_unit:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1"]
+    households:
+      household:
+        members: ["person1"]
+        state_code: "CO"
+  output:
+    co_leap_countable_income_person: 12_000
+    co_leap_countable_income: 12_000
+
+# All 12,000 parent income remains even though only the citizen child enters qualified size.
+- name: "Case 9, nonqualified parent income remains counted."
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        co_oap: 0
+        immigration_status: "UNDOCUMENTED"
+        employment_income: 12_000
+      person2:
+        age: 8
+        ssi: 0
+        co_oap: 0
+        immigration_status: "CITIZEN"
+    spm_units:
+      spm_unit:
+        members: ["person1", "person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+    households:
+      household:
+        members: ["person1", "person2"]
+        state_code: "CO"
+  output:
+    co_leap_countable_income_person: [12_000, 0]
+    co_leap_countable_income: 12_000
+    co_leap_household_size: 1
+
+# The plan's lottery inclusion and manual prize category are
+# unearned income, including a child's receipts. Foster-member income remains
+# excluded by the separate household rule. No monthly-to-annual double count.
+- name: Case 10, lottery annuity receipts count for adults and children but not foster members.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 35
+        gambling_winnings: 2_400
+        ssi: 0
+        co_oap: 0
+      child:
+        age: 17
+        gambling_winnings: 1_200
+        ssi: 0
+        co_oap: 0
+      foster_child:
+        age: 16
+        gambling_winnings: 1_200
+        is_in_foster_care: true
+        ssi: 0
+        co_oap: 0
+    spm_units:
+      family:
+        members: [adult, child, foster_child]
+        co_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+    households:
+      household:
+        members: [adult, child, foster_child]
+        state_code: CO
+  output:
+    co_leap_countable_income_person: [2_400, 1_200, 0]
+
+
+# Colorado has no modeled state UI implementation yet. Supply
+# the existing modeled aggregate to test the shared fallback, not a new income
+# input or an assumed Colorado weekly benefit. Reported UI takes precedence.
+- name: Case 11, modeled unemployment fallback and reported precedence count once.
+  period: 2026
+  input:
+    state_code: [CO, CO]
+    age: [35, 35]
+    ssi: [0, 0]
+    co_oap: [0, 0]
+    co_tanf: [0, 0]
+    unemployment_compensation: [0, 400]
+    modeled_state_unemployment_compensation: [1_200, 1_200]
+  output:
+    total_unemployment_compensation: [1_200, 400]
+    co_leap_countable_income_person: [1_200, 400]
+    co_leap_countable_income: [1_200, 400]
+
+# 9 CCR 2503-7 3.752.21(L) counts Aid to the Needy Disabled. SSI reduced to
+# 700/month by in-kind support plus the AND-CS supplement to the 994 grant
+# standard (294/month): 700*12 + 294*12 = 8,400 + 3,528 = 11,928.
+- name: Case 12, the AND state supplement counts with SSI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        ssi: 8_400
+        co_state_supplement: 3_528
+        co_oap: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_leap_countable_income_person: 11_928
+    co_leap_countable_income: 11_928
+
+# 9 CCR 2503-7 3.752.211 G and K count railroad retirement and trust payments:
+# 4,800 + 1,200 = 6,000.
+- name: Case 13, railroad retirement and trust payments count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        ssi: 0
+        co_oap: 0
+        railroad_benefits: 4_800
+        estate_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_leap_countable_income_person: 6_000
+    co_leap_countable_income: 6_000
+
+# 9 CCR 2503-7 3.752.21 counts payments from any other source that are a gain or
+# benefit to the applicant: 1,200 + 2,400 = 3,600.
+- name: Case 14, miscellaneous income and guaranteed-income cash count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        co_oap: 0
+        miscellaneous_income: 1_200
+        gi_cash_assistance: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 600
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_leap_countable_income_person: 3_600
+    co_leap_countable_income: 3_600
+
+# $30,000 is $2,500 a month, above the $2,282 band top at 175% for one person,
+# so 30% comes off a $1,000 bill: $700.
+- name: Case 15, military basic pay counts as earned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        co_oap: 0
+        military_basic_pay: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_000
+        co_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_leap_countable_income_person: 30_000
+    co_leap_countable_income: 30_000
+    co_leap: 700

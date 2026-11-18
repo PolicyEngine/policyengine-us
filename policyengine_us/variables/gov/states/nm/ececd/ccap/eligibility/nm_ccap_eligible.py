@@ -7,7 +7,12 @@ class nm_ccap_eligible(Variable):
     label = "Eligible for New Mexico CCAP"
     definition_period = MONTH
     defined_for = StateCode.NM
-    reference = "https://www.srca.nm.gov/parts/title08/08.015.0002.html"
+    reference = (
+        "https://www.srca.nm.gov/parts/title08/08.015.0002.html",
+        "https://www.srca.nm.gov/parts/title08/08.009.0003.html",
+        # PDF pages 9-11
+        "https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/b0e207a9-a1a3-412d-9660-0a6e925f6f25/8.9.3.pdf#page=9",
+    )
 
     def formula(spm_unit, period, parameters):
         has_eligible_child = add(spm_unit, period, ["nm_ccap_eligible_child"]) > 0

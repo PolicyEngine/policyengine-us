@@ -3,6 +3,9 @@ from policyengine_core.periods import period as period_
 from policyengine_core.reforms import Reform
 
 from policyengine_us.model_api import *
+from policyengine_us.reforms.states.id.ctc.id_ctc_reform import (
+    _restore_id_ctc_reporting,
+)
 
 
 def create_id_s1450() -> Reform:
@@ -14,6 +17,7 @@ def create_id_s1450() -> Reform:
             stop=instant("2100-12-31"),
             value=["id_ctc"],
         )
+        _restore_id_ctc_reporting(parameters, instant("2026-01-01"))
         return parameters
 
     class reform(Reform):

@@ -11,12 +11,12 @@ class taxable_income_taxed_below_25_percent(Variable):
     unit = USD
     documentation = (
         "The amount of taxable income that the regular rate schedule taxes at "
-        "a rate below 25 percent: under the 10, 12, 22, 24, 32, 35 and 37 "
-        "percent schedule, taxable income up to the top of the 24 percent "
-        "bracket. Section 1(h)(1)(A) taxes capital gain at the regular rates "
-        "up to this amount, or taxable income less adjusted net capital gain "
-        "if less. Schedule D Tax Worksheet line 19. For a taxpayer excluding "
-        "foreign earned income, taxable income includes the excluded amount."
+        "a rate below 25 percent: taxable income up to the top of the 15 "
+        "percent bracket before 2018 and of the 24 percent bracket from 2018. "
+        "Section 1(h)(1)(A) taxes capital gain at the regular rates up to this "
+        "amount, or taxable income less adjusted net capital gain if less. "
+        "Schedule D Tax Worksheet line 19. For a taxpayer excluding foreign "
+        "earned income, taxable income includes the excluded amount."
     )
     definition_period = YEAR
     reference = [

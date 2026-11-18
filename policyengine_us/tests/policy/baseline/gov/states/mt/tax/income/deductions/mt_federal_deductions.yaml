@@ -1,0 +1,30 @@
+- name: Montana counts wagering once in federal deductions and the addback ceiling in 2025.
+  period: 2025
+  input:
+    state_code: MT
+    age: 40
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    tax_unit_itemizes: true
+    gambling_winnings: 11_000
+    gambling_losses: 11_000
+    salt_deduction: 6_000
+    state_withheld_income_tax: 6_000
+    local_income_tax: 0
+    state_sales_tax: 0
+    local_sales_tax: 0
+    real_estate_taxes: 0
+    mt_federal_itemized_personal_property_taxes: 0
+    charitable_deduction: 0
+    interest_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+    claim_of_right_deduction: 0
+  output:
+    wagering_losses_deduction: 11_000
+    total_itemized_taxable_income_deductions: 17_000
+    itemized_taxable_income_deductions: 17_000
+    standard_deduction: 15_750
+    mt_federal_deductions: 17_000
+    mt_state_income_tax_itemized_add_back: 1_250

@@ -1,0 +1,21 @@
+description: Missouri counts these earned income sources, after the earned income deduction, under the Low Income Home Energy Assistance Program.
+# Each source is floored at zero: business and farm losses do not offset other
+# income. Net business income inputs stand in for the Form 1040 business lines.
+# Roomer and boarder income is also earned income but has no input.
+values:
+  2023-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Missouri LIHEAP earned income sources
+  reference:
+    - title: "Missouri LIHEAP FFY2026 State Plan, Sections 1.8 and 1.9 #page 5-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MO_Plan_2026.pdf#page=5
+    - title: "Missouri LIHEAP Policy and Procedure Manual (October 2025), Self-Employment-Partnership Income and Income Deductions #page 32,36"
+      href: https://dss.mo.gov/sites/mydss/files/media/pdf/2025/10/liheap-policy-procedure-manual.pdf#page=32

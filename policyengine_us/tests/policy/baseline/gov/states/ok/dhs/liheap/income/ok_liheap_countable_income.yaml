@@ -1,0 +1,194 @@
+# Oklahoma LIHEAP regular heating cases.
+
+# OAC 340:20-1-11(a)(2)-(4): 12,000 wages + 600 rent + 1,200 farm rent + 1,200 annual SSI = 15,000; the 2,400 pension
+# stays with its recipient before deeming. SSI is monthly, but the supplied annual receipt is counted once.
+- name: Case 1, person income preserves separate annual receipts before immigration deeming.
+  period: 2027
+  input:
+    people:
+      eligible:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 1200
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        employment_income: 12000
+        rental_income: 600
+        farm_rent_income: 1200
+      ineligible:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+        pension_income: 2400
+    tax_units:
+      tax_unit:
+        members: [eligible, ineligible]
+    spm_units:
+      spm_unit:
+        members: [eligible, ineligible]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [eligible, ineligible]
+        state_code: OK
+  output:
+    ok_liheap_countable_income: [15000, 2400]
+
+# OAC 340:20-1-11(a) counts gross Social Security; the 2,434.80 Part B premium (202.90 x 12) is only a medical deduction
+# after the gross test, even when it exceeds the benefit: 1,200 + 12,000 pension = 13,200.
+- name: Case 2, Social Security counts gross even when the Part B premium exceeds it.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        social_security: 1_200
+        medicare_part_b_premium: 2_434.80
+        pension_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_countable_income: 13_200
+    ok_liheap_gross_income: 13_200
+
+# Each unearned source is floored at zero before summing, so losses cannot offset other income:
+# person1 12,000 wages + max(-6,000 rental, 0) = 12,000; person2 5,000 pension + max(-3,000 farm rent, 0) + max(-2,000 estate, 0) = 5,000.
+# Gross 12,000 + 5,000 = 17,000.
+- name: Case 3, rental farm rent and estate losses do not offset wages or pension income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        employment_income: 12_000
+        rental_income: -6_000
+      person2:
+        age: 62
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        pension_income: 5_000
+        farm_rent_income: -3_000
+        estate_income: -2_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_liheap_countable_income: [12_000, 5_000]
+    ok_liheap_gross_income: 17_000
+
+# Plan Section 1.9 counts retirement benefits; an IRA withdrawal enters through retirement_distributions.
+# Social Security 1,000/mo (12,000) counts gross. IRA withdrawal 300/mo (3,600). Countable 12,000 + 3,600 = 15,600
+# (1,300/mo).
+- name: Case 4, an IRA withdrawal counts alongside gross Social Security for a retiree.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        social_security: 12_000
+        medicare_part_b_premium: 2_434.80
+        taxable_ira_distributions: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_countable_income: 15_600
+    ok_liheap_gross_income: 15_600
+
+# OAC 340:20-1-11(a) and 340:50-7-29(c)(3) count unemployment compensation; with none reported,
+# total_unemployment_compensation uses modeled Oklahoma UI (40 O.S. 2-104, 2-106, 2-207; 2026 parameters).
+# Monetary test: 28,200 >= 1,500 and 36,000 >= 1.5 x 9,936 = 14,904 -> eligible. Weekly benefit floor(9,936 / 23) = 432
+# (DOL's Oklahoma average weekly benefit, July 2024-June 2025, is 432.08). Maximum min(min(432 x 16 = 6,912, 10,384),
+# 0.475 x 36,000 = 17,100) = 6,912. ok_ui = min(432 x 15 = 6,480, 6,912) = 6,480.
+# Countable = gross = net = 6,480 (540/mo <= 1,696, no deductions): band 2, size 1-3, ordinary -> 265 (365 without UI).
+- name: Case 5, modeled Oklahoma unemployment insurance counts as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        ok_ui_base_period_taxable_wages: 28_200
+        ok_ui_base_period_total_wages: 36_000
+        ok_ui_high_quarter_taxable_wages: 9_936
+        ok_ui_high_quarter_total_wages: 9_936
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_ui: 6_480
+    total_unemployment_compensation: 6_480
+    ok_liheap_countable_income: 6_480
+    ok_liheap_gross_income: 6_480
+    ok_liheap_net_income: 6_480
+    ok_liheap: 265

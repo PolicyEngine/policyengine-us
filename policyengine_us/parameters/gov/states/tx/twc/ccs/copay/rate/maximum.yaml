@@ -1,7 +1,17 @@
 description: Texas limits the total copayment to this share of family income under the Child Care Services program.
 
+# In September 2022, TWC's Commission amended 40 TAC §809.19 so that from
+# December 1, 2023, it would establish the parent share of cost on a statewide
+# sliding fee scale. In July 2024, it adopted this 7% cap in §809.19, effective
+# July 29, 2024. TWC put the statewide scale off until it launched its TX3C
+# case management system (WD 06-24, Change 2), and the cap with it (WD 20-24),
+# so each Board kept setting its own scale. From TX3C's launch on January 13,
+# 2025, TWC phased in the statewide scale and this cap as families enrolled or
+# recertified. PolicyEngine applies the cap to every earlier month back to
+# 2015, except where copay/board/applies.yaml turns on a Board's own scale,
+# which has no 7% cap.
 values:
-  2024-10-01: 0.07
+  2025-01-01: 0.07  # Actual effective date: 2025-01-13
 metadata:
   unit: /1
   period: month
@@ -9,3 +19,17 @@ metadata:
   reference:
     - title: 40 TAC §809.19 - Parent Share of Cost
       href: https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-19
+    - title: TWC WD Letter 24-23 - BCY 2024 Income Amounts for Determining Parent Share of Cost
+      href: https://web.archive.org/web/20240908233001/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/wd-24-23-twc.pdf#page=2
+    - title: TWC Child Care and Development Fund Waiver Request, December 17, 2024 Commission Meeting
+      href: https://www.twc.texas.gov/sites/default/files/ogc/mtg24/commission-meeting-material-121724-item10-dp-ccdf-waiver-request-twc.pdf#page=2
+    - title: Texas CCDF State Plan FFY 2025-2027, section 3.1.1 (cap implemented with TX3C)
+      href: https://www.twc.texas.gov/sites/default/files/ccel/docs/tx-ccdf-state-plan-ffy2025-2027-approved.pdf#page=48
+    - title: TWC WD Letter 20-24 - BCY 2025 Income Amounts for Determining Eligibility and Parent Share of Cost
+      href: https://web.archive.org/web/20250314070109/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=1
+    - title: TWC Regulated Child Care Providers Update, January 27, 2025 (TX3C launch)
+      href: https://content.govdelivery.com/accounts/TXWC/bulletins/3cf24fc
+    - title: TWC Chapter 809 Rule Amendments Adopted September 13, 2022 - §809.19(b)
+      href: https://web.archive.org/web/20231103125253/https://www.twc.texas.gov/sites/default/files/ogc/docs/fr-809-ch-rev-09-22-twc.pdf#page=62
+    - title: TWC WD Letter 06-24, Change 2 - Child Care Policy and Operational Changes Due to the Release of TX3C
+      href: https://web.archive.org/web/20250309110529/https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/06-24-ch2-twc.pdf#page=2

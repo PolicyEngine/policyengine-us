@@ -1,0 +1,12 @@
+description: Virginia deducts this monthly amount from household gross income for each elderly or disabled member under the Energy Assistance Program.
+# One deduction per person, even when the member is both elderly and disabled.
+values:
+  2014-11-01: 50
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Virginia EAP medical deduction per elderly or disabled member
+  reference:
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter B.6.c Income Disregard/Medical Deduction
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=31

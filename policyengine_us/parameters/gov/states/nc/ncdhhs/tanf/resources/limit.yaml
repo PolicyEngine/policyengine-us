@@ -1,0 +1,18 @@
+description: North Carolina limits the Temporary Assistance for Needy Families program to units with countable resources up to this amount.
+
+values:
+  # The earliest source found is the Work First Manual's 2009 resources section; the value is
+  # backdated to the program's start, as the other North Carolina TANF parameters are.
+  1997-01-01: 3_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: North Carolina TANF resource limit
+  reference:
+    - title: 10A NCAC 71W .0407 - Reserve
+      href: https://regulations.justia.com/states/north-carolina/title-10a/chapter-71/subchapter-w/section-0400/section-71w-0407
+    - title: Work First Manual, section 115 - Resources (I.A. Resource Limit)
+      href: https://policies.ncdhhs.gov/wp-content/uploads/wf115.pdf#page=1
+    - title: North Carolina TANF State Plan FFY 2026-2028, Financial Rules 1-2
+      href: https://www.ncdhhs.gov/efs-wf-06-2025a2/open#page=18

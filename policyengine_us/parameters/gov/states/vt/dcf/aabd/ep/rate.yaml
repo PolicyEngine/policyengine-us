@@ -1,0 +1,23 @@
+description: Vermont provides this share of the Essential Person maximum above the combined payment under the Aid to the Aged, Blind or Disabled program.
+
+metadata:
+  unit: /1
+  period: year
+  label: Vermont Essential Person care fraction
+  breakdown:
+    - vt_aabd_ep_level
+  reference:
+    - title: AABD rules 2784(A)
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=44
+
+NONE:
+  2026-01-01: 0
+
+FULL:
+  2026-01-01: 1
+
+PARTIAL_67:
+  2026-01-01: 0.67
+
+PARTIAL_34:
+  2026-01-01: 0.34

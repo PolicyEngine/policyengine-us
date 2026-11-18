@@ -1,0 +1,62 @@
+# Annual guideline = 12 x the whole-dollar monthly guideline behind P-2913 and P-2914A:
+# the HHS guideline for sizes 1-8 divided by 12 and rounded half up, plus, for each
+# person above eight, the additional-person amount divided by 12 and rounded half up.
+# P-2913: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2913.pdf
+# P-2914A, "#page 1-3":
+# https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2914A.pdf#page=1
+# 2025 guidelines (used for 2026): 15,650 for one person, 54,150 for eight, 5,500 for
+# each additional person (90 FR 5917):
+# https://www.govinfo.gov/content/pkg/FR-2025-01-17/pdf/2025-01377.pdf#page=1
+
+- name: Case 1, a two-person monthly guideline ending in 50 cents rounds up.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 28
+      child1:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+    households:
+      household:
+        members: [head, child1]
+        state_code: VT
+  output:
+    # 21,150 / 12 = 1,762.50, rounded half up to 1,763 (P-2914A size 2 tops, e.g.
+    # ceil(0.74 x 1,763) = 1,305; P-2913 1.85 x 1,763 = 3,261.55, so 3,262).
+    # 1,763 x 12 = 21,156.
+    vt_liheap_fpg: 21_156
+
+- name: Case 2, an eleven-person guideline adds rounded monthly amounts above eight people.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head: {age: 44}
+      spouse: {age: 42}
+      child1: {age: 17}
+      child2: {age: 16}
+      child3: {age: 14}
+      child4: {age: 12}
+      child5: {age: 10}
+      child6: {age: 8}
+      child7: {age: 6}
+      child8: {age: 4}
+      child9: {age: 1}
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+        state_code: VT
+  output:
+    # Eight people: 54,150 / 12 = 4,512.50, so 4,513. Each additional person:
+    # 5,500 / 12 = 458.33, so 458. 4,513 + 3 x 458 = 5,887 (P-2914A size 11 first top
+    # ceil(0.74 x 5,887) = ceil(4,356.38) = 4,357; P-2913 1.85 x 5,887 = 10,890.95, so
+    # 10,891). The size-11 guideline itself, 70,650 / 12 = 5,887.50, would round to
+    # 5,888 and a 4,358 top. 5,887 x 12 = 70,644.
+    vt_liheap_fpg: 70_644

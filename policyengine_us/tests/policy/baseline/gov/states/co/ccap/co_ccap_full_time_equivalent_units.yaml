@@ -1,0 +1,163 @@
+# 8 CCR 1403-1 3.103(ZZ) counts each part-time unit as 0.55 of a full-time
+# unit, and 3.130(C) sets the daily units: part time up to 5 hours, full time
+# up to 12, full time and part time up to 17, and two full-time units above
+# that (PDF pages 10 and 119 of ruleVersionId 12658). A day of unknown length
+# counts as one full-time unit, and weekly hours without daily hours spread
+# over the days of care in a week. Days of care come from the larger of days a
+# week x 52 / 12 and attending days a month, and a child with neither attends
+# each weekday: 5 * 52 / 12 = 21.67 days a month.
+- name: Case 1, units from daily hours and reported days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      four_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+      eight_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+      unknown_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        pre_subsidy_childcare_expenses: 6_000
+      fourteen_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 14
+        childcare_attending_days_per_month: 10
+      twenty_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 20
+        childcare_days_per_week: 2
+      five_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 5
+        childcare_attending_days_per_month: 20
+      five_and_a_half_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 5.5
+        childcare_attending_days_per_month: 12
+      both_day_counts:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 10
+        childcare_days_per_week: 5
+      drop_in_days:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 2
+        childcare_attending_days_per_month: 12
+      weekly_twenty:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+      weekly_over_two_days:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+        childcare_days_per_week: 2
+      weekly_forty:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [parent, four_hours, eight_hours, unknown_hours, fourteen_hours, twenty_hours, five_hours, five_and_a_half_hours, both_day_counts, drop_in_days, weekly_twenty, weekly_over_two_days, weekly_forty]
+    households:
+      household:
+        members: [parent, four_hours, eight_hours, unknown_hours, fourteen_hours, twenty_hours, five_hours, five_and_a_half_hours, both_day_counts, drop_in_days, weekly_twenty, weekly_over_two_days, weekly_forty]
+        state_code: CO
+  output:
+    # parent: not in care.
+    # four_hours: 0.55 * 21.67 = 11.92.
+    # eight_hours: 1 * 21.67.
+    # unknown_hours: one full-time unit a day, 21.67.
+    # fourteen_hours: 1.55 * 10 = 15.5.
+    # twenty_hours: 2 * 2 * 52 / 12 = 17.33.
+    # five_hours: 5 hours is still part time, 0.55 * 20 = 11.
+    # five_and_a_half_hours: 1 * 12 = 12.
+    # both_day_counts: a five-day week (21.67 days) beats 10 attending days,
+    # 0.55 * 21.67 = 11.92.
+    # drop_in_days: 12 attending days beat a two-day week (8.67 days),
+    # 1 * 12 = 12.
+    # weekly_twenty: 20 / 5 = 4 hours a day, 0.55 * 21.67 = 11.92.
+    # weekly_over_two_days: 10 hours a day, 1 * 2 * 52 / 12 = 8.67.
+    # weekly_forty: 8 hours a day, 1 * 21.67.
+    co_ccap_full_time_equivalent_units: [0, 11.92, 21.67, 21.67, 15.5, 17.33, 11, 12, 11.92, 12, 11.92, 8.67, 21.67]
+
+- name: Case 2, each side of the 12-hour and 17-hour band edges.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      twelve_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 12
+        childcare_attending_days_per_month: 10
+      twelve_and_a_half_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 12.5
+        childcare_attending_days_per_month: 10
+      seventeen_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 17
+        childcare_attending_days_per_month: 10
+      seventeen_and_a_half_hours:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 17.5
+        childcare_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [parent, twelve_hours, twelve_and_a_half_hours, seventeen_hours, seventeen_and_a_half_hours]
+    households:
+      household:
+        members: [parent, twelve_hours, twelve_and_a_half_hours, seventeen_hours, seventeen_and_a_half_hours]
+        state_code: CO
+  output:
+    # twelve_hours: full time through 12 hours, 1 * 10 = 10.
+    # twelve_and_a_half_hours: full time and part time, 1.55 * 10 = 15.5.
+    # seventeen_hours: full time and part time through 17 hours, 15.5.
+    # seventeen_and_a_half_hours: two full-time units, 2 * 10 = 20.
+    co_ccap_full_time_equivalent_units: [0, 10, 15.5, 15.5, 20]
+
+- name: Case 3, weekly hours and units take the same larger day count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 20
+        childcare_days_per_week: 2
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # 20 attending days exceed a two-day week (8.67 days). They make
+    # 20 * 12 / 52 = 4.62 days a week, so 20 / 4.62 = 4.33 hours a day, part
+    # time: 0.55 * 20 = 11.
+    co_ccap_full_time_equivalent_units: [0, 11]

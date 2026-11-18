@@ -1,0 +1,10 @@
+description: Years subtracted from a COLA payment year to select the December CPI-U threshold-index snapshot, relative to December of the dollar base year. The default uses the preceding December. This lag is a modeling convention; OACT A9 specifies CPI-U indexing without this snapshot rule.
+values:
+  0000-01-01: 1
+metadata:
+  unit: year
+  label: Social Security COLA means-test threshold CPI-U lag
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

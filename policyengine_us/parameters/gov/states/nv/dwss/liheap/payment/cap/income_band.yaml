@@ -1,0 +1,41 @@
+description: Nevada assigns this benefit cap income band from Fixed Annual Credit income as a share of the federal poverty guideline under the Low Income Home Energy Assistance Program.
+# The cap tables print the bands as "<75%", ">75-100%", ">100-125%" and
+# ">125-150%". Each band includes its top, so thresholds are keyed at the
+# band tops and looked up with right=True. SFY2026 Appendix A's printed 125%
+# column for sizes 4-8 does not equal 125% of the guideline (size 5:
+# $53,937.50 against $47,062.50), so the bands use the rates; the SFY2027
+# column matches the rate. Fixed Annual Credit income above 150% of the
+# guideline uses the last band.
+brackets:
+  # At or below 75% of the guideline.
+  - threshold:
+      2025-07-01: -.inf
+    amount:
+      2025-07-01: 1
+  # Above 75% through 100%.
+  - threshold:
+      2025-07-01: 0.75
+    amount:
+      2025-07-01: 2
+  # Above 100% through 125%.
+  - threshold:
+      2025-07-01: 1
+    amount:
+      2025-07-01: 3
+  # Above 125%.
+  - threshold:
+      2025-07-01: 1.25
+    amount:
+      2025-07-01: 4
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Nevada LIHEAP benefit cap income band
+  reference:
+    - title: "Nevada SFY2026 Energy Assistance Program Manual, Appendix A #page 110-111"
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Energy/FY%202026%20EAP%20Manual%2008.2025%20ADA.pdf#page=110
+    - title: "Nevada SFY2027 Energy Assistance Program Manual, Appendix A #page 110-111"
+      href: https://www.dss.nv.gov/contentassets/b3bcdb93ea2d4b3f8dc252451a34cbe4/2027-eap-state-manual--08.25.26-1.pdf#page=110

@@ -1,0 +1,89 @@
+description: Workforce Solutions Greater Dallas sets this monthly parent share of cost for each additional child in care, by income as a share of the federal poverty guidelines, under the Texas Child Care Services program.
+
+# Each bracket covers income more than TWC's monthly limit for its
+# threshold share of the federal poverty guidelines (fpg_income_limits.yaml)
+# and not more than the next threshold's limit.
+# Greater Dallas's policy S0408, change 5 sets these amounts in a fee table
+# effective October 1, 2016. In October 2019 the Board voted to keep it
+# unchanged, and its policy page listed it as current, without the
+# rescinded mark it gives superseded policies, from 2023 through March 2025.
+# The Board adopted TWC's BCY 2024 and BCY 2025 income ranges each October,
+# and its August 2023 vote to rescind the local scale awaited TWC's notice,
+# which came with TX3C. So the model applies the 2016 amounts to TWC's FPG
+# ranges until TX3C. The top range runs from more than 200% of the federal
+# poverty guidelines to 85% of state median income, the eligibility limit.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Texas CCS Greater Dallas Board additional child parent share of cost
+  reference:
+    - title: Workforce Solutions Greater Dallas Policy S0408, change 5, Parent Co-Payment for Child Care Services, effective October 1, 2016 (fee table)
+      href: https://web.archive.org/web/20231020221040/https://www.wfsdallas.com/resources/docs/policies/ScaNovaCopy17010518040.pdf#page=2
+    - title: Workforce Solutions Greater Dallas, System Policies, August 7, 2024 capture (S0408, change 5 current)
+      href: https://web.archive.org/web/20240807220355/https://www.wfsdallas.com/about/system-policies/
+    - title: Workforce Solutions Greater Dallas, System Policies, January 19, 2025 capture (S0408, change 5 current)
+      href: https://web.archive.org/web/20250119103845/https://www.wfsdallas.com/system-policies/
+    - title: Workforce Solutions Greater Dallas, Board briefing materials, October 16, 2019, Parent Co-Payment for Child Care Services (no change to S0408, change 5)
+      href: https://www.wfsdallas.com/wp-content/uploads/Finaloctboardpacket2019.pdf#page=29
+    - title: Workforce Solutions Greater Dallas, Board packet, August 16, 2023, local child care policies to rescind effective on TWC's final notice
+      href: https://www.wfsdallas.com/wp-content/uploads/FinalAugust-packet2023.pdf#page=18
+    - title: Workforce Solutions Greater Dallas, Board briefing materials, October 16, 2024, WD Letter 20-24 adopted as state rule
+      href: https://www.wfsdallas.com/wp-content/uploads/FinalOctPacket2024.pdf#page=11
+
+brackets:
+  - threshold:
+      2023-10-01: -.inf
+      2024-10-01: -.inf
+    amount:
+      2023-10-01: 11
+      2024-10-01: 11
+  - threshold:
+      2023-10-01: 0.5
+      2024-10-01: 0.5
+    amount:
+      2023-10-01: 31
+      2024-10-01: 31
+  - threshold:
+      2023-10-01: 0.75
+      2024-10-01: 0.75
+    amount:
+      2023-10-01: 46
+      2024-10-01: 46
+  - threshold:
+      2023-10-01: 1.0
+      2024-10-01: 1.0
+    amount:
+      2023-10-01: 61
+      2024-10-01: 61
+  - threshold:
+      2023-10-01: 1.25
+      2024-10-01: 1.25
+    amount:
+      2023-10-01: 76
+      2024-10-01: 76
+  - threshold:
+      2023-10-01: 1.5
+      2024-10-01: 1.5
+    amount:
+      2023-10-01: 91
+      2024-10-01: 91
+  - threshold:
+      2023-10-01: 1.75
+      2024-10-01: 1.75
+    amount:
+      2023-10-01: 99
+      2024-10-01: 99
+  - threshold:
+      2023-10-01: 1.85
+      2024-10-01: 1.85
+    amount:
+      2023-10-01: 106
+      2024-10-01: 106
+  - threshold:
+      2023-10-01: 2.0
+      2024-10-01: 2.0
+    amount:
+      2023-10-01: 121
+      2024-10-01: 121

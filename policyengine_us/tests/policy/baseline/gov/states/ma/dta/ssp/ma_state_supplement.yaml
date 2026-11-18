@@ -19,3 +19,33 @@
     meets_ssi_resource_test: false
   output:
     ma_state_supplement: 0
+
+# A situation that omits marital units puts the three adults in one marital
+# unit. The husband and wife are the SSI joint claim (the tax-unit head and
+# spouse); the third adult is an individual. 106 CMR 327.330, full cost of
+# living, aged: $100.86 each for a couple and $128.82 for an individual,
+# the same as with explicit marital units.
+- name: Married couple and a third aged adult without marital units.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age: 70
+        is_tax_unit_head: true
+      wife:
+        age: 70
+        is_tax_unit_spouse: true
+      third_adult:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code: MA
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    ma_state_supplement: [100.86, 100.86, 128.82]
