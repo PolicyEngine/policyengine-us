@@ -2795,6 +2795,41 @@ candidates:
     on joint returns (de_elderly_or_disabled_income_exclusion_joint.py) and on other returns (de_elderly_or_disabled_income_exclusion_eligible_person.py).
     The statute-first rule requires replacing age-60 eligibility if the literal boundary is confirmed; verify individual-return
     scope and intervening editions.'
+- id: us-de:liheap-cooling-breathing-condition
+  program: liheap
+  years:
+    from: 2026
+    to: 2027
+    type: federal-fiscal
+  question: Does a household member with a chronic breathing condition count as a targeted member for the Delaware
+    Summer Cooling Assistance electric benefit, as plan item 3.3 provides, or only for an air conditioner, as the
+    manual provides?
+  sources:
+  - kind: plan
+    citation: Delaware FY2026 LIHEAP State Plan, item 3.3, PDF page 12
+    url: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=12
+  - kind: plan
+    citation: Delaware FY2027 LIHEAP State Plan, item 3.3, PDF page 11
+    url: https://liheapch.acf.gov/docs/2027/state-plans/DE_Plan_2027.pdf#page=11
+  - kind: manual
+    citation: DEAP Policies and Procedures Manual, sections 303.2 to 303.4, PDF pages 21-23
+    url: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=21
+  readings:
+    statute: No statute is supplied; plan item 3.3 targets the program to households with members "sixty or older,
+      disabled, children five and under, and members that suffer from chronic breathing conditions".
+    other: The manual pays the electric benefit to an applicant "60 years or older and/or disabled" and names
+      breathing conditions, with written documentation from a doctor, only for air conditioners.
+  example: One adult aged 45 with asthma, wages of $18,000 and a cooling cost is a targeted household under the plan,
+    and reaches only an air conditioner under the manual.
+  pe_us:
+    follows: gap-fill
+    code:
+    - policyengine_us/variables/gov/states/de/dhss/liheap/cooling/de_liheap_cooling_eligible.py
+    prs:
+    - https://github.com/PolicyEngine/policyengine-us/pull/11112
+  state: ruled
+  note: Ruled 2026-11-18 by the project lead; the ruling record is https://github.com/PolicyEngine/policyengine-us/pull/11112#issuecomment-6990706166.
+    Follow the FY2026 and FY2027 plans. The has_chronic_breathing_condition input is authorized.
 - id: us-de:liheap-cooling-heating-bill
   program: liheap
   years:
