@@ -1,0 +1,14 @@
+description: 'OASDI transfer convention: 0=custom, 1=combined_rate_share, 2=all_addon, 3=bill. Custom uses each incremental part share; combined_rate_share
+  allocates the OASDI rate over each combined rate; all_addon sends every NII add-on point
+  to OASDI and uses the active share; bill sends the bill share of the entire resulting
+  section 1411 tax, including existing NIIT. This selects transfers, not full statutory
+  category coverage.'
+values:
+  '0000-01-01': 0
+metadata:
+  label: S.770 OASDI transfer mode
+  period: year
+  unit: int
+  reference:
+  - title: S.770 (119th Congress), sections 8 and 9
+    href: https://www.congress.gov/bill/119th-congress/senate-bill/770/text

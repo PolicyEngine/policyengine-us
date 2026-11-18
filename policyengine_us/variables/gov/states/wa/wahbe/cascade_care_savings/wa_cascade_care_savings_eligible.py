@@ -18,14 +18,16 @@ class wa_cascade_care_savings_eligible(Variable):
         "the exact ratio rather than the truncated aca_magi_fraction, and at "
         "least one member is "
         "a Cascade Care Savings enrollee (Group 1, eligible for the federal "
-        "ACA premium tax credit; or Group 3, undocumented and lacking minimum "
+        "ACA premium tax credit; Group 2, enrolled outside the federal tax "
+        "family; or Group 3, undocumented and lacking minimum "
         "essential coverage through Washington Apple Health Expansion or Apple "
         "Health for Kids). Section 4(1)(c) imposes only the 250% FPL upper "
         "bound; it sets no income floor. Washington residency is enforced "
         "by defined_for. Not modeled: the Cascade Care standard-plan enrollment "
         "requirement (otherwise-eligible Marketplace enrollees are treated as "
         "Cascade-enrolled), the filing-behavior exclusions of Section 4(2), "
-        "the COFA Islander Premium Assistance ineligibility test, and Group 2."
+        "the COFA Islander Premium Assistance ineligibility test, and other "
+        "Group 2 members not identifiable in the model."
     )
 
     def formula(tax_unit, period, parameters):

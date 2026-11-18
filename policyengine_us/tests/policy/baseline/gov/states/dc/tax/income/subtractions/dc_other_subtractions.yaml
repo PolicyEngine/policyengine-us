@@ -1,0 +1,20 @@
+- name: Case 1, default dc_other_subtractions is zero
+  period: 2024
+  input:
+    employment_income: 50_000
+    state_code: DC
+  output:
+    dc_other_subtractions: 0
+    dc_income_subtractions: 0
+    dc_agi: 50_000
+
+- name: Case 2, dc_other_subtractions reduces DC AGI
+  period: 2024
+  input:
+    employment_income: 50_000
+    dc_other_subtractions: 2_000
+    state_code: DC
+  output:
+    dc_other_subtractions: 2_000
+    dc_income_subtractions: 2_000
+    dc_agi: 48_000

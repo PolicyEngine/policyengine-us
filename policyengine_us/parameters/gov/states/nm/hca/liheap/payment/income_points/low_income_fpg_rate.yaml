@@ -1,0 +1,14 @@
+description: New Mexico sets the low-income cutoff for income points at this multiple of the federal poverty guideline under the Low Income Home Energy Assistance Program.
+# 8.150.620.9 B NMAC gives three points for income from zero to 100% of the
+# guideline. HCA's FFY2025-FFY2027 guides and the FFY2026 ISD 017 card print a
+# 110% column, recorded as us-nm:liheap-three-income-points in candidates.yaml.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: /1
+  period: year
+  label: New Mexico LIHEAP income points low-income cutoff poverty guideline rate
+  reference:
+    - title: 8.150.620.9 B NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.150.0620.html

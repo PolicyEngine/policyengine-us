@@ -76,3 +76,17 @@
     nc_sa_facility_rate: 1_000
   output:
     nc_sa_rate: 1_397
+
+# G.S. 108A-42.1(b) adjusts the enhanced rate by the federally approved Social
+# Security cost-of-living adjustment, 3.6% for 2027.
+# https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_108A/GS_108A-42.1.pdf
+- name: Case 8, enhanced special care unit rate follows the cost-of-living adjustment in 2027.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+  output:
+    # 1,792 * 1.036 = 1,856.51 -> 1,857.
+    nc_sa_rate: 1_857

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class fl_oss_couple_rate_applies(Variable):
@@ -20,20 +23,30 @@ class fl_oss_couple_rate_applies(Variable):
         # couple with mismatched or missing tracks has no valid
         # couple rate.
         joint_claim = person("ssi_claim_is_joint", period)
-        unit_size = person.marital_unit.nb_persons()
         both_ssi_eligible = (
-            person.marital_unit.sum(person("is_ssi_eligible", period)) == unit_size
+            _ssi_couple_total(
+                person, period.this_year, person("is_ssi_eligible", period).astype(int)
+            )
+            == 2
         )
         living_arrangement = person("fl_oss_living_arrangement", period)
         in_facility = living_arrangement != living_arrangement.possible_values.NONE
-        both_in_facility = person.marital_unit.sum(in_facility) == unit_size
+        both_in_facility = (
+            _ssi_couple_total(person, period.this_year, in_facility.astype(int)) == 2
+        )
         program_track = person("fl_oss_program_track", period)
         TRACK = program_track.possible_values
         both_on_redesign = (
-            person.marital_unit.sum(program_track == TRACK.REDESIGN) == unit_size
+            _ssi_couple_total(
+                person, period.this_year, (program_track == TRACK.REDESIGN).astype(int)
+            )
+            == 2
         )
         both_on_protected = (
-            person.marital_unit.sum(program_track == TRACK.PROTECTED) == unit_size
+            _ssi_couple_total(
+                person, period.this_year, (program_track == TRACK.PROTECTED).astype(int)
+            )
+            == 2
         )
         both_on_same_track = both_on_redesign | both_on_protected
         return joint_claim & both_ssi_eligible & both_in_facility & both_on_same_track

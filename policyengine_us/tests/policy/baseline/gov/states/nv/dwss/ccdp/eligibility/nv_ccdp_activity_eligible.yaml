@@ -1,5 +1,8 @@
 # nv_ccdp_activity_eligible: SPMUnit, bool, MONTH
-# OR of: meets_ccdf_activity_test (SPMUnit/YEAR), is_tanf_enrolled (SPMUnit),
+# OR of: every caretaker in a modeled activity (paid work or full-time college,
+# with a disabled caretaker covered by another active caretaker), where a
+# caretaker is whoever claims the eligible child, their spouse, or a minor parent,
+# meets_ccdf_activity_test (SPMUnit/YEAR), is_tanf_enrolled (SPMUnit),
 # is_homeless (Household), and a protective-care child (foster care or
 # receiving/needing protective services, restricted to an eligible child).
 # Each disjunct is tested in isolation so an OR-to-AND flip is caught.
@@ -165,5 +168,620 @@
         members: [person1, person2]
         state_code: NV
         is_homeless: false
+  output:
+    nv_ccdp_activity_eligible: false
+
+- name: A lone parent with wages is activity-eligible without the input.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # MS 420: a working individual receives monetary compensation.
+    nv_ccdp_activity_eligible: true
+
+- name: A lone self-employed parent is activity-eligible without the input.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 30000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: Hours without pay are not a working Purpose of Care.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # MS 420: to be considered working, the individual must receive pay.
+    nv_ccdp_activity_eligible: false
+
+- name: One hour of pay has no minimum hours to meet.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 1
+        weekly_hours_worked_before_lsr: 1
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: Two working parents are activity-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30000
+      partner:
+        age: 31
+        employment_income: 20000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, partner, person2]
+    households:
+      household:
+        members: [person1, partner, person2]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: One working parent and one idle parent are not activity-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30000
+      partner:
+        age: 31
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, partner, person2]
+    households:
+      household:
+        members: [person1, partner, person2]
+        state_code: NV
+  output:
+    # MS 400: every required adult needs a Purpose of Care.
+    nv_ccdp_activity_eligible: false
+
+- name: A lone full-time college student is activity-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_full_time_college_student: True
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: A working parent and a full-time college student are activity-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30000
+      partner:
+        age: 31
+        is_full_time_college_student: True
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, partner, person2]
+    households:
+      household:
+        members: [person1, partner, person2]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: A working parent and a disabled parent are activity-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30000
+      partner:
+        age: 31
+        is_disabled: True
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, partner, person2]
+    households:
+      household:
+        members: [person1, partner, person2]
+        state_code: NV
+  output:
+    # MS 470's example: the other adult works and cares for the child after work.
+    nv_ccdp_activity_eligible: true
+
+- name: A lone disabled parent without work is not activity-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: True
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # MS 470: nobody else can care for the child.
+    nv_ccdp_activity_eligible: false
+
+- name: Two disabled parents without work are not activity-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: True
+      partner:
+        age: 31
+        is_disabled: True
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, partner, person2]
+    households:
+      household:
+        members: [person1, partner, person2]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: false
+
+- name: A grandparent in their own tax unit needs no activity.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 4
+      person3:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+      grandparent_tax_unit:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # MS 216.1 doesn't list a grandparent who has no guardianship.
+    nv_ccdp_activity_eligible: true
+
+- name: Without parent ids, a grandparent who claims the child stands in for the parent.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 4
+      person3:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+      grandparent_tax_unit:
+        members: [person3, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: false
+
+- name: A self-employment loss counts as paid work.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -5_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: A minor parent attending school satisfies the test beside a working parent.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 17
+        own_children_in_household: 1
+        is_in_k12_school: true
+      person3:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: A minor parent out of school with no job fails the test.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 17
+        own_children_in_household: 1
+        is_in_k12_school: false
+      person3:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # MS 400 requires minor parents to have a Purpose of Care too.
+    nv_ccdp_activity_eligible: false
+
+- name: A linked parent who works satisfies the test when an idle grandparent claims the child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        person_id: 1
+        employment_income: 30_000
+      person2:
+        age: 4
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 65
+        person_id: 3
+    tax_units:
+      tax_unit:
+        members: [person1]
+      grandparent_tax_unit:
+        members: [person3, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: An idle linked parent fails the test when a working grandparent claims the child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        person_id: 1
+      person2:
+        age: 4
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 65
+        person_id: 3
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+      grandparent_tax_unit:
+        members: [person3, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: false
+
+- name: An idle linked parent who files apart fails the test beside a working parent.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        person_id: 1
+        employment_income: 30_000
+      person2:
+        age: 4
+        person_id: 2
+        parent_1_id: 1
+        parent_2_id: 3
+      person3:
+        age: 32
+        person_id: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+      other_parent_tax_unit:
+        members: [person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: false
+
+- name: A child with no linked parent falls to the working grandparent who claims them.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 65
+        person_id: 1
+        employment_income: 30_000
+      person2:
+        age: 40
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 4
+        person_id: 3
+    tax_units:
+      grandparent_tax_unit:
+        members: [person1, person3]
+      other_tax_unit:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: The established spouse of a lone linked parent needs an activity.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        person_id: 1
+        employment_income: 30_000
+      person2:
+        age: 32
+        person_id: 2
+      person3:
+        age: 4
+        person_id: 3
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: false
+
+- name: A minor parent's idle major parent fails the test.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+      person2:
+        age: 17
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+      person3:
+        age: 1
+        person_id: 3
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: false
+
+- name: A minor parent in school and a working major parent pass the test.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        employment_income: 30_000
+      person2:
+        age: 17
+        person_id: 2
+        parent_1_id: 1
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+      person3:
+        age: 1
+        person_id: 3
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: A minor parent with no linked parent falls to the idle adult who claims them.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+      person2:
+        age: 17
+        person_id: 2
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+      person3:
+        age: 1
+        person_id: 3
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
   output:
     nv_ccdp_activity_eligible: false

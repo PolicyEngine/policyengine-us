@@ -11,11 +11,13 @@ values:
     - ssi
     # Page 18 excludes "Foster care benefits", read as board payments, not this SSP.
     - al_ssp
-    # Military retirement pay is a separate input from the pension inputs that
+    # Military retirement income (retiree pay plus Survivor Benefit Plan
+    # annuities) is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
-    # in one or the other.
+    # in one or the other. A military survivor annuity belongs in
+    # military_retirement_pay_survivors, not survivor_benefits.
     - pension_income
-    - military_retirement_pay
+    - military_retirement_income
     - survivor_benefits
     - veterans_benefits
     - disability_benefits

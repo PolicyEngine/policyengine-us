@@ -1,0 +1,46 @@
+# Rule 3(C)(2): adult members on a Maine DHHS Notice of Decision for TANF or SNAP
+# have categorical income eligibility (2026 edition, page 15; the 2025 edition has
+# the same text):
+# https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=15
+# Rule 3(C)(2): members on a DHHS TANF or SNAP notice are income eligible; the model
+# treats any SNAP or TANF received by the household as passing the income test.
+
+- name: Case 1, a family receiving TANF is categorically eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 27
+        ssi: 0
+      child1:
+        age: 5
+        ssi: 0
+      child2:
+        age: 2
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        # Maine TANF maximum for three, 895 a month (10-144 CMR ch. 331, Appendix
+        # Table 2): 895 x 12 = 10,740. SNAP is set to 0 to isolate the TANF path.
+        tanf: 10_740
+        snap: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: ME
+  output:
+    me_heap_categorically_eligible: true
+
+- name: Case 2, SNAP receipt is categorical and its absence is not.
+  period: 2026
+  input:
+    state_code: [ME, ME]
+    age: [58, 58]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    # SNAP of 100 a month from a DHHS Notice of Decision; any positive amount
+    # qualifies.
+    snap: [1_200, 0]
+  output:
+    me_heap_categorically_eligible: [true, false]

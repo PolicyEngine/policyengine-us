@@ -1,0 +1,24 @@
+description: Arkansas tracks cumulative unrounded CPI-U adjustments in this index, with each annual increase capped at three percent. Bound metadata identifies the indexed parameters; the extension adjusts and rounds each preceding bound annually.
+values:
+  # PolicyEngine selects 2026 as the first adjustment year under candidate
+  # us-ar:first-indexed-year-after-act-1-2026; (a)(5) and (d) name no first year.
+  # DFA indexed each new table in its 2022-2024 cards, but lists unindexed
+  # bounds in its January 2026 withholding formula, before August CPI.
+  # We follow the cards' timing pending DFA's 2026 card. The index compounds
+  # unrounded adjustments; each bound separately rounds every annual step.
+  2014-01-01: 1
+metadata:
+  unit: /1
+  label: Arkansas income tax uprating index
+  economy: false
+  reference:
+  - title: A.C.A. § 26-51-201(d)(2), Act 1459 of 2013, § 2 (CPI-U average for twelve months ending August 31 of the current calendar year, positive increase capped at three percent)
+    href: https://arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013%2FPublic%2F&file=1459.pdf&ddBienniumSession=2013%2F2013R#page=3
+  - title: A.C.A. § 26-51-201(a)(5), as amended by Act 1 of 2026 (1st Extraordinary Session), § 1 (the (a)(1)-(4) tables are indexed under (d))
+    href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2026S1%2FPublic%2FACT1.pdf#page=3
+  - title: 2022 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2022.pdf#page=1
+  - title: 2023 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/TaxBrackets_2023.pdf#page=1
+  - title: 2024 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/wp-content/uploads/2024_TaxBrackets.pdf#page=1

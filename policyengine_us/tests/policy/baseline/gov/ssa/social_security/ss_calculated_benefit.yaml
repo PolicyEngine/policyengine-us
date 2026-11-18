@@ -1,0 +1,184 @@
+- name: Published SSA 2023 supplied AIME, age 62 and FRA 67
+  # SSA Supplement 2023 Appendix D:
+  # https://www.ssa.gov/policy/docs/statcomps/supplement/2023/apnd.html
+  period: 2023
+  input:
+    ss_calculator_source: aime
+    ss_calculator_worker_id: worker-record-1
+    ss_calculator_birth_date: '1961-01-02'
+    ss_calculator_eligibility_year: 2023
+    ss_calculator_entitlement_month: '2023-01'
+    ss_calculator_supplied_aime: 3000
+    ss_calculator_insured: true
+    ss_calculator_no_special_monthly_test: true
+    ss_calculator_no_prior_withholding_adjustment: true
+    ss_calculator_earnings_test_no_trigger: true
+  output:
+    ss_calculated_eligibility_pia:
+      2023-01: 1606.7
+    ss_calculated_benefit:
+      2023-01: 1124
+    # Dec2023 entitlement includes the 3.2% COLA, check paid Jan2024.
+    ss_calculated_annual_payment: 12364
+    # Eleven baseline entitlement months and the COLA-adjusted December.
+    ss_calculated_annual_entitlement: 13524
+    social_security_retirement: 0
+
+- name: Supplied PIA zero is selected even when unselected AIME is positive
+  period: 2026
+  input:
+    ss_calculator_source: pia
+    ss_calculator_worker_id: worker-record-zero
+    ss_calculator_birth_date: '1964-01-02'
+    ss_calculator_eligibility_year: 2026
+    ss_calculator_entitlement_month: '2026-01'
+    ss_calculator_supplied_aime: 5000
+    ss_calculator_supplied_pia: 0
+    ss_calculator_insured: true
+    ss_calculator_no_special_monthly_test: true
+    ss_calculator_no_prior_withholding_adjustment: true
+    ss_calculator_earnings_test_no_trigger: true
+  output:
+    ss_calculated_retirement: 0
+    ss_calculated_annual_entitlement: 0
+
+- name: The opt-in calculator is disabled by default
+  period: 2026
+  input:
+    social_security_retirement: 20000
+    ss_calculator_supplied_aime: 5000
+  output:
+    ss_calculated_retirement: 0
+    ss_calculated_survivors: 0
+    social_security_retirement: 20000
+
+- name: Whole-month earnings withholding defers the partial month until a supplied settlement
+  # Handbook 1806.2 and POMS RS 02501.110: partial payment follows closed-year reporting.
+  # https://www.ssa.gov/OP_Home/handbook/handbook.18/handbook-1806.html
+  # https://secure.ssa.gov/poms.nsf/lnx/0302501110
+  period: 2026
+  input: &earnings_test_record
+    # Hold COLAs at zero to isolate the published $800 earnings-test example.
+    gov.contrib.ssa.benefit_levers.cola.alternative_rate: 0
+    gov.contrib.ssa.benefit_levers.cola.start_year: 2026
+    ss_calculator_source: pia
+    ss_calculator_worker_id: worker-earnings-test
+    ss_calculator_birth_date: '1964-01-02'
+    ss_calculator_eligibility_year: 2026
+    ss_calculator_entitlement_month: '2026-01'
+    ss_calculator_supplied_pia: 800
+    ss_calculator_claiming_factor: '1'
+    ss_calculator_insured: true
+    ss_calculator_no_special_monthly_test: true
+    ss_calculator_no_prior_withholding_adjustment: true
+    ss_calculator_annual_earnings:
+      2026: 33400
+      2027: 0
+      2028: 0
+    ss_calculator_earnings_test_settlement_month:
+      2026: '2027-03'
+  output:
+    ss_calculated_earnings_test_reduction:
+      2026: 4460
+      2027: 0
+    ss_calculated_annual_entitlement:
+      2026: 5140
+      2027: 9600
+    ss_calculated_annual_payment:
+      2026: 4000
+      2027: 9940
+    ss_calculated_deferred_earnings_test_payment:
+      2026: 340
+      2027: 0
+    ss_calculated_benefit:
+      2026-06: 340
+    ss_calculated_payment:
+      2026-07: 0
+      2026-08: 800
+      2027-02: 800
+      2027-03: 1140
+      2027-04: 800
+      2028-03: 800
+
+- name: Requested immediate partial earnings-test payment is explicit
+  period: 2026
+  input:
+    <<: *earnings_test_record
+    ss_calculator_immediate_earnings_test_payment: true
+  output:
+    ss_calculated_earnings_test_reduction: 4460
+    ss_calculated_annual_entitlement: 5140
+    ss_calculated_deferred_earnings_test_payment: 0
+    ss_calculated_annual_payment:
+      2026: 4340
+      2027: 9600
+    ss_calculated_payment:
+      2026-07: 340
+      2027-03: 800
+
+- name: Delayed earnings-test settlement loads its original earnings year
+  period: 2028
+  input:
+    <<: *earnings_test_record
+    ss_calculator_earnings_test_settlement_month:
+      2026: '2028-03'
+  output:
+    ss_calculated_annual_payment:
+      2027: 9600
+      2028: 9940
+    ss_calculated_payment:
+      2027-03: 800
+      2028-03: 1140
+
+- name: Explicit prior disability eligibility controls the pre-2026 survivor bend exception
+  # S.770 section 2(c)(2)(B): prior eligibility retains the bend increase.
+  # https://www.congress.gov/bill/119th-congress/senate-bill/770/text
+  period: 2026
+  input: &survivor_eligibility_records
+    gov.contrib.congress.s770.section_2.in_effect: true
+    gov.contrib.congress.s770.section_2.recompute_pre2026_death_before_eligibility: false
+    people:
+      no_prior: &survivor_eligibility_record
+        ss_calculator_source: survivor
+        ss_calculator_worker_id: deceased-no-prior
+        ss_calculator_birth_date: '1950-01-02'
+        ss_calculator_entitlement_month: '2020-08'
+        ss_calculator_insured: true
+        ss_calculator_no_special_monthly_test: true
+        ss_calculator_no_prior_withholding_adjustment: true
+        ss_calculator_earnings_test_no_trigger: true
+        ss_calculator_worker_birth_year: 1970
+        ss_calculator_worker_birth_date: '1970-06-15'
+        ss_calculator_death_year: 2020
+        ss_calculator_death_date: '2020-08-12'
+        ss_calculator_authoritative_year: 2020
+        ss_calculator_basis_provenance: Supplied authoritative 2020 benchmark
+        ss_calculator_prior_disability_eligibility: 0
+        ss_calculator_ordinary_non_windex: true
+        ss_calculator_monthly_amount: 2000
+        ss_calculator_valuation_month: '2020-11'
+        ss_calculator_composite_ratio: '1'
+        ss_calculator_ratio_description: Full-rate survivor with no reductions
+        ss_calculator_nonbinding_rib_lim: true
+        ss_calculator_nonbinding_family_maximum: true
+        ss_calculator_no_dual_entitlement: true
+        ss_calculator_no_earnings_test_at_valuation: true
+      prior:
+        <<: *survivor_eligibility_record
+        ss_calculator_worker_id: deceased-prior
+        ss_calculator_prior_disability_eligibility: 1
+    households:
+      household:
+        members: [no_prior, prior]
+  output:
+    ss_calculated_benefit:
+      2026-01: [2596, 2734]
+
+- name: Requested pre-2026 survivor recomputation gives both eligibility paths the bend increase
+  period: 2026
+  input:
+    <<: *survivor_eligibility_records
+    gov.contrib.congress.s770.section_2.recompute_pre2026_death_before_eligibility: true
+  output:
+    ss_calculated_benefit:
+      2026-01: [2734, 2734]

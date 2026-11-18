@@ -1,0 +1,63 @@
+description: Maine multiplies the household's points by this factor based on its poverty level, as a share of the federal poverty guideline, under the Low Income Home Energy Assistance Program.
+# Thresholds are band starts as a share of the poverty guideline, applied
+# after rounding the poverty level (poverty_level_rounding_increment). The
+# 2025 edition's 70% band covers income above 150% up to the income limit.
+# The eighth band starts with the June 29, 2026 replacement and is
+# unreachable before.
+brackets:
+  - threshold:
+      2024-07-03: 0
+    amount:
+      2024-07-03: 1.3
+      2026-06-29: 1.8
+  - threshold:
+      2024-07-03: 0.26
+      2026-06-29: 0.11
+    amount:
+      2024-07-03: 1.2
+      2026-06-29: 1.6
+  - threshold:
+      2024-07-03: 0.51
+      2026-06-29: 0.34
+    amount:
+      2024-07-03: 1.1
+      2026-06-29: 1.4
+  - threshold:
+      2024-07-03: 0.76
+    amount:
+      2024-07-03: 1
+      2026-06-29: 1.2
+  - threshold:
+      2024-07-03: 1.01
+    amount:
+      2024-07-03: 0.9
+      2026-06-29: 1
+  - threshold:
+      2024-07-03: 1.26
+    amount:
+      2024-07-03: 0.8
+      2026-06-29: 0.9
+  - threshold:
+      2024-07-03: 1.51
+    amount:
+      2024-07-03: 0.7
+      2026-06-29: 0.8
+  - threshold:
+      2024-07-03: .inf
+      2026-06-29: 1.76
+    amount:
+      2024-07-03: 0.7
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Maine HEAP income multiplier
+  reference:
+    - title: Maine FY2026 Benefit Matrix, 99-346 CMR ch. 24, section 4(A) (2025 edition)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ME_BenefitMatrix_2026.pdf#page=2
+    - title: 99-346 CMR ch. 24, section 4(A) (2025 edition, SOS filing 2025-135)
+      href: https://www.maine.gov/sos/sites/maine.gov.sos/files/inline-files/346c024.docx
+    - title: 99-346 CMR ch. 24, section 4(A) (effective June 29, 2026)
+      href: https://www.mainehousing.org/docs/default-source/msha-rules/ch24-home-energy-assistance-program-rule.pdf#page=17

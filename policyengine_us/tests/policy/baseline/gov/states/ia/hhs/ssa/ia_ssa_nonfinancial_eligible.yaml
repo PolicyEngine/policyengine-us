@@ -1,0 +1,75 @@
+- name: Case 1, aged citizen in an ordinary living arrangement.
+  period: 2026-01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+  output:
+    ia_ssa_nonfinancial_eligible: true
+
+- name: Case 2, a 64-year-old who is neither blind nor disabled is not aged.
+  period: 2026-01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 64
+  output:
+    ia_ssa_nonfinancial_eligible: false
+
+- name: Case 3, an incarcerated blind person is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    is_blind: true
+    is_incarcerated: true
+  output:
+    ia_ssa_nonfinancial_eligible: false
+    ia_ssa: 0
+
+- name: Case 4, an undocumented blind person is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    is_blind: true
+    immigration_status:
+      2026: UNDOCUMENTED
+  output:
+    ia_ssa_nonfinancial_eligible: false
+    ia_ssa: 0
+
+- name: Case 5, a blind person with no eligible arrangement is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    is_blind: true
+    ia_ssa_category: NONE
+  output:
+    ia_ssa_nonfinancial_eligible: false
+    ia_ssa: 0
+
+- name: Case 6, a blind person who would qualify for SSI but declines it is ineligible.
+  period: 2026-01
+  input:
+    state_code:
+      2026: IA
+    age:
+      2026: 65
+    is_blind: true
+    takes_up_ssi_if_eligible: false
+  output:
+    # With no income, uncapped SSI is 994, so the applicant must apply for SSI.
+    ia_ssa_nonfinancial_eligible: false

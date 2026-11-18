@@ -1,0 +1,41 @@
+# ARM 37.70.402(8) (numbered (7) from May 23, 2026); LIHEAP Manual 2026-2027
+# section 3.22: only citizens and qualified aliens count in the household
+# size; ineligible members' income
+# still counts (see income/mt_liheap_countable_income.yaml).
+# Citizen adult, citizen child and lawful permanent resident child count; the
+# undocumented adult does not: size 3.
+- name: Case 1, mixed-status household counts only citizens and qualified aliens.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 41
+        immigration_status: CITIZEN
+      person2:
+        age: 39
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 12
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person4:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    mt_liheap_household_size: 3
+
+# A household of one undocumented adult has no eligible member: size 0.
+- name: Case 2, household with no eligible member has size zero.
+  period: 2026
+  input:
+    state_code: MT
+    age: 30
+    immigration_status: UNDOCUMENTED
+  output:
+    mt_liheap_household_size: 0

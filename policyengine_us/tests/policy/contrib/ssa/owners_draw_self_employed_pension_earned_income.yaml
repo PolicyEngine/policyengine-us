@@ -1,0 +1,47 @@
+# Pub. 560 Deduction Worksheet for Self-Employed, step 3, with the owners'
+# draw reform on. Step 2 takes the Schedule C business's share of Schedule 1
+# line 15, split by net profit as on Form 7206 lines 5 to 8. The reform adds
+# the gross draw profits that bear SECA when half_seca_deduction puts that
+# SECA into line 15, as it does for the self-employed health insurance limit.
+# Synthetic caps follow owners_draw.yaml; q = 0.9235. Hand-computed.
+
+- name: The draw's profits join the profits line 15 is split over
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 40_000
+    # 64,970.22 x 0.9235 = 59,999.998 of draw net earnings.
+    s_corp_income: 64_970.22
+  output:
+    # Schedule C SE tax 40,000 x 0.9235 x 15.3% = 5,651.82; draw OASDI
+    # 59,999.998 x 12.4% = 7,440.00; half of 13,091.82 = 6,545.91.
+    self_employment_tax_ald_person: 6_545.91
+    # Share 40,000 / 104,970.22 = 0.3810605; step 2 = 2,494.39; step 3 =
+    # 40,000 - 2,494.39. The whole line 15 would give 33,454.09.
+    self_employed_pension_earned_income: 37_505.61
+
+- name: Nondeductible draw SECA keeps the draw out of the split
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.contrib.ssa.owners_draw.half_seca_deduction: false
+    gov.irs.payroll.social_security.cap: 200_000
+    gov.simulation.aime_lookback_years: 0
+    self_employment_income: 40_000
+    s_corp_income: 64_970.22
+  output:
+    # Only the Schedule C SE tax is deductible: 5,651.82 / 2 = 2,825.91.
+    self_employment_tax_ald_person: 2_825.91
+    # The Schedule C business is the only profit in the split: 40,000 -
+    # 2,825.91.
+    self_employed_pension_earned_income: 37_174.09

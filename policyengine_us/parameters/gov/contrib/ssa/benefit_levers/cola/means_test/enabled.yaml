@@ -1,0 +1,10 @@
+description: Enable the contributed Social Security COLA means test. Positive single and joint income thresholds supplied by the scenario are required when a prior_year income decision is evaluated. The never_withheld and always_withheld sensitivities and pre-receipt index-only events do not read the thresholds.
+values:
+  0000-01-01: false
+metadata:
+  unit: bool
+  label: Social Security COLA means test enabled
+  economy: false
+  reference:
+    - title: OACT provision A9, 2026 Trustees Report basis
+      href: https://www.ssa.gov/OACT/solvency/provisions/cola.html

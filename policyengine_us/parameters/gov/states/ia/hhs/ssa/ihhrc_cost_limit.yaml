@@ -1,0 +1,26 @@
+description: Iowa limits the monthly in-home health-related care cost per recipient to this amount under the State Supplementary Assistance program.
+values:
+  2026-01-01: 480.55
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Iowa SSA maximum in-home health-related care cost per recipient
+  # 6-B Income (IHHRC) p.41: "If the care needed by the client is more
+  # expensive than these limits, the client is not eligible for a SSA payment
+  # for in-home health-related care." 441 IAC 177 agrees: 177.9(4) (IAC
+  # 8/5/26, ARC 0460D, effective October 1, 2026) terminates IHHRC for
+  # "Excessive costs. When the cost of care exceeds the maximum established in
+  # subrule 177.9(3)", a cross-reference that should read 177.8(3), the
+  # $480.55 maximum benefit payable. The IAC 2/5/25 edition has it at
+  # 177.11(4), citing 177.10(3). 177.2(1)"f" also limits countable income to
+  # "$480.55 per month if one needs care or $961.10 if both need care", which
+  # pays nothing whenever participation reaches the cost. ia_ssa.yaml Cases
+  # 16-17 pin the ceiling.
+  reference:
+    - title: Iowa HHS Employees' Manual 6-B (revised May 22, 2026), Income (IHHRC)
+      href: https://hhs.iowa.gov/media/3987/download?inline=#page=41
+    - title: '441 IAC 177.2(1)"f", 177.8(3) and 177.9(4) (IAC 8/5/26) #page 1,4-5'
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.177.pdf#page=1
+    - title: '441 IAC 177.4(1)"f", 177.10(3) and 177.11(4) (IAC 2/5/25) #page 2,5'
+      href: https://www.legis.iowa.gov/docs/iac/chapter/01-07-2026.441.177.pdf#page=2

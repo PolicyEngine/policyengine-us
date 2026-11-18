@@ -1,0 +1,76 @@
+description: Workforce Solutions Brazos Valley sets this monthly parent share of cost for the first child in care, by income as a share of state median income, under the Texas Child Care Services program.
+
+# Each bracket covers income more than its threshold share of state median
+# income and not more than the next threshold, with the limits rounded to
+# whole dollars as in TWC's income ranges.
+# Brazos Valley's chart has eight ranges: its top range, more than 75% to 85%
+# of state median income, joins TWC's more than 75% to 80% and more than 80%
+# to 85% ranges at one amount.
+# Brazos Valley published no chart for BCY 2025. WD 20-24 let a Board continue
+# its BCY 2024 amounts without Board action, the Board's minutes from June 2024
+# to January 2025 record no parent share of cost item, and its child care page
+# still showed the FY24 chart on December 11, 2024. So the model continues the
+# FY24 amounts, with TWC's BCY 2025 income ranges, until TX3C.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Texas CCS Brazos Valley Board first child parent share of cost
+  reference:
+    - title: Workforce Solutions Brazos Valley Board, Income Ranges for Parent Share of Cost Assessment FY24, effective October 1, 2023 through September 30, 2024
+      href: https://bvjobs.org/wp-content/uploads/2024/03/SMI-Chart-FY24.pdf#page=1
+    - title: Workforce Solutions Brazos Valley, Child Care & Early Learning Division, December 11, 2024 capture (still shows the FY24 chart)
+      href: https://web.archive.org/web/20241211103259/https://bvjobs.org/programs/childcare/
+    - title: TWC WD Letter 20-24 - Board Contract Year Federal Poverty Guidelines and State Median Income Amounts for Determining Eligibility and Parent Share of Cost for Child Care Services (Boards may continue BCY 2024 amounts)
+      href: https://www.twc.texas.gov/sites/default/files/wf/policy-letter/wd/20-24-twc.pdf#page=2
+
+brackets:
+  - threshold:
+      2023-10-01: -.inf
+      2024-10-01: -.inf
+    amount:
+      2023-10-01: 25
+      2024-10-01: 25
+  - threshold:
+      2023-10-01: 0.2
+      2024-10-01: 0.2
+    amount:
+      2023-10-01: 50
+      2024-10-01: 50
+  - threshold:
+      2023-10-01: 0.3
+      2024-10-01: 0.3
+    amount:
+      2023-10-01: 75
+      2024-10-01: 75
+  - threshold:
+      2023-10-01: 0.4
+      2024-10-01: 0.4
+    amount:
+      2023-10-01: 100
+      2024-10-01: 100
+  - threshold:
+      2023-10-01: 0.5
+      2024-10-01: 0.5
+    amount:
+      2023-10-01: 125
+      2024-10-01: 125
+  - threshold:
+      2023-10-01: 0.6
+      2024-10-01: 0.6
+    amount:
+      2023-10-01: 150
+      2024-10-01: 150
+  - threshold:
+      2023-10-01: 0.7
+      2024-10-01: 0.7
+    amount:
+      2023-10-01: 175
+      2024-10-01: 175
+  - threshold:
+      2023-10-01: 0.75
+      2024-10-01: 0.75
+    amount:
+      2023-10-01: 200
+      2024-10-01: 200

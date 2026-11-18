@@ -1,0 +1,30 @@
+description: Wisconsin counts these sources as unearned income under the Home Energy Assistance Program.
+# Gift income beyond financial_assistance, tribal per capita payments and land
+# contract interest have no input. PY27 Table 3.6 ignores gambling winnings;
+# FFY2027 is not encoded.
+values:
+  2025-10-01:
+    - ssi
+    # The state SSI line excludes SSI-E (wi_ssi_e).
+    - wi_ssp_regular
+    - wi_cts
+    - pension_income
+    - military_retirement_income
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - alimony_income
+    - child_support_received
+    - strike_benefits
+    - general_assistance
+    - gambling_winnings
+    - estate_income
+    - financial_assistance
+    - survivor_benefits
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin WHEAP unearned income sources
+  reference:
+    - title: "Wisconsin PY26 WHEAP Manual, sections 3.3.2-3.3.3 and Table 3.4 #page 48-49,55-58"
+      href: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=48

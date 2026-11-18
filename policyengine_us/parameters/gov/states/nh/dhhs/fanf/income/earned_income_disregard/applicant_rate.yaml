@@ -1,5 +1,7 @@
-description: New Hampshire excludes this share of earnings from countable income for applicants under the Financial Assistance to Needy Families program.
-
+description: New Hampshire excludes this share of earnings from countable income in the eligibility test for applicants under the Financial Assistance to Needy Families program.
+# He-W 654.13(b) and (c) limit this rate to the eligibility test of applicants
+# who have not received FANF in any of the previous 6 months. The benefit
+# amount of an eligible applicant uses the recipient rate (He-W 654.13(d)).
 values:
   1997-02-01: 0.2
 
@@ -8,7 +10,15 @@ metadata:
   period: month
   label: New Hampshire FANF applicant earned income disregard rate
   reference:
+    - title: N.H. Admin. Rules He-W 654.13(b)-(c) - Earned Income Disregard for FANF
+      href: https://gc.nh.gov/rules/state_agencies/he-w600.html
+    - title: "N.H. Rulemaking Notice 2025-271, Initial Proposal, He-W 654.13 (readopted as #14518, eff. 2-25-26)"
+      href: https://gc.nh.gov/rules/register/2025/1204/2025-271%20IP%20Rule%20He-W%20654.13.pdf#page=1
+    - title: "N.H. Rulemaking Register No. 10, March 12, 2026 - Final adoption of He-W 654.13 (#14518)"
+      href: https://gc.nh.gov/rules/register/2026/No%2010%20March%2012%202026.pdf#page=6
     - title: FAM 603.01 - Earned Income Disregards (EID)
+      href: https://www.dhhs.nh.gov/fam_htm/html/603_01_earned_income_disregards_eid_fam.htm
+    - title: FAM 603.01 - Earned Income Disregards (EID), SR 97-03
       href: https://www.dhhs.nh.gov/famar_htm/html/603_01_earned_income_disregards_eid_sr_97-03_02_97_fam_a.htm
     - title: SR 97-03 Dated 02/97 - TANF Implementation
       href: https://www.dhhs.nh.gov/sr_htm/html/sr_97-03_dated_02_97.htm

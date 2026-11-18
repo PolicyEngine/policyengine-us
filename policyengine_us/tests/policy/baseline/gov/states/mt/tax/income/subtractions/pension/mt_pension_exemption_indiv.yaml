@@ -1,0 +1,63 @@
+# Expected values are the examples in the Form 2 instructions: 2021 line 35
+# (PDF page 30), 2022 line 34 (PDF pages 31-32), 2023 line 34 (PDF pages 34-35).
+- name: 2021 instructions example, federal AGI of 37,400
+  period: 2021
+  input:
+    employment_income: 17_400
+    taxable_private_pension_income: 20_000
+    state_code: MT
+  output:
+    # 4,400 - (700 x 2) = 3,000
+    mt_pension_exemption_indiv: 3_000
+
+- name: 2022 instructions example, federal AGI of 39,400
+  period: 2022
+  input:
+    employment_income: 19_400
+    taxable_private_pension_income: 20_000
+    state_code: MT
+  output:
+    # 4,640 - (740 x 2) = 3,160
+    mt_pension_exemption_indiv: 3_160
+
+- name: 2023 instructions example, federal AGI of 43,000
+  period: 2023
+  input:
+    employment_income: 23_000
+    taxable_private_pension_income: 20_000
+    state_code: MT
+  output:
+    # 5,060 - (860 x 2) = 3,340
+    mt_pension_exemption_indiv: 3_340
+
+- name: No exemption at the 2023 federal AGI of 44,670
+  period: 2023
+  input:
+    employment_income: 24_670
+    taxable_private_pension_income: 20_000
+    state_code: MT
+  output:
+    # 5,060 - (2,530 x 2) = 0
+    mt_pension_exemption_indiv: 0
+
+- name: On separate returns each spouse uses their own federal AGI
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 40_000
+      spouse:
+        is_tax_unit_spouse: true
+        taxable_private_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # The spouse's separately stated federal AGI, 20,000, is below 42,140.
+    mt_pension_exemption_indiv: [0, 5_060]
+    mt_agi_indiv: [40_000, 14_940]

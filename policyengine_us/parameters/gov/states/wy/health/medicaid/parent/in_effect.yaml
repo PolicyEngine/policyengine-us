@@ -1,0 +1,15 @@
+description: The model uses Wyoming's verified Family Care dollar standards for these years under Medicaid.
+values:
+  0000-01-01: false
+  2017-01-01: true
+  2027-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Wyoming Medicaid Family Care verified dollar standards in effect
+  reference:
+    - title: Wyoming Medicaid SFY2018 Annual Report, CY2017 and CY2018 income standards
+      href: https://health.wyo.gov/wp-content/uploads/2019/01/SFY-2018-Wyoming-Medicaid-Annual-Report.pdf#page=95
+    - title: Wyoming Medicaid Income Requirements, Family MAGI column
+      href: https://health.wyo.gov/healthcarefin/medicaid/programs-and-eligibility/medicaid-income-requirements/
+# These bounds identify verified model years, not enactment or repeal.

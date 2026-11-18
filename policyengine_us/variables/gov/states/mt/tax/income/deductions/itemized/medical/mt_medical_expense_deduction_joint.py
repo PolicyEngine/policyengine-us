@@ -27,9 +27,7 @@ class mt_medical_expense_deduction_joint(Variable):
             # insurance premiums deducted in full on lines 2 and 3. Start
             # from the federal subtotal and take out the premiums still in
             # it: the members' medical insurance premiums less the part of
-            # the self-employed exclusion applied to them, which is bounded by
-            # the head's and spouse's medical premiums (any excess covered
-            # long-term care premiums, which are not in the subtotal), and the
+            # the self-employed exclusion applied to them, and the
             # long-term care premiums the subtotal includes. For a computed
             # subtotal this leaves the members' other medical expenses.
             premiums = add(
@@ -38,8 +36,59 @@ class mt_medical_expense_deduction_joint(Variable):
             filer_premiums = tax_unit_non_dep_sum(
                 "medical_expense_health_insurance_premiums", tax_unit, period
             )
-            excluded = tax_unit("itemized_medical_expenses_applied_exclusion", period)
-            premiums_in_subtotal = premiums - min_(filer_premiums, max_(0, excluded))
+            supplied_subtotal = has_input_for_period(
+                tax_unit.simulation, "itemized_medical_expenses", period
+            )
+            if supplied_subtotal or has_input_for_period(
+                tax_unit.simulation,
+                "itemized_medical_expenses_applied_exclusion",
+                period,
+            ):
+                # Supplied amounts use the pooled filer-first split.
+                excluded = max_(
+                    0,
+                    tax_unit("itemized_medical_expenses_applied_exclusion", period),
+                )
+                dependent_exclusion = tax_unit(
+                    "itemized_medical_expenses_excluded_dependent_premiums", period
+                )
+                if supplied_subtotal:
+                    # The exclusion supplied with a subtotal holds every
+                    # premium that subtotal leaves out. Read the part above
+                    # the filers' own exclusion as the medical premiums the
+                    # dependents deducted, up to their computed exclusion.
+                    # Take the rest from the filers' medical premiums first;
+                    # what remains covered long-term care premiums.
+                    filer_exclusion = add(
+                        tax_unit,
+                        period,
+                        [
+                            "itemized_medical_expenses_excluded_premiums",
+                            "itemized_medical_expenses_excluded_long_term_care_premiums",
+                        ],
+                    )
+                    dependent_part = min_(
+                        dependent_exclusion, max_(0, excluded - filer_exclusion)
+                    )
+                    medical_exclusion = (
+                        min_(filer_premiums, excluded - dependent_part) + dependent_part
+                    )
+                else:
+                    # Beside a computed subtotal, a supplied exclusion covers
+                    # the filers only, so add the dependents' exclusion.
+                    medical_exclusion = (
+                        min_(filer_premiums, excluded) + dependent_exclusion
+                    )
+            else:
+                medical_exclusion = add(
+                    tax_unit,
+                    period,
+                    [
+                        "itemized_medical_expenses_excluded_premiums",
+                        "itemized_medical_expenses_excluded_dependent_premiums",
+                    ],
+                )
+            premiums_in_subtotal = premiums - medical_exclusion
             expense = max_(
                 0,
                 tax_unit("itemized_medical_expenses", period)

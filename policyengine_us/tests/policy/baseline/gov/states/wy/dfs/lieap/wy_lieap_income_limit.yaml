@@ -1,0 +1,125 @@
+- name: Case 1, FY2026 income limit for 0 qualifying members.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 0
+  output:
+    wy_lieap_income_limit: 0
+
+- name: Case 2, FY2026 income limit for 1 qualifying members.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+  output:
+    wy_lieap_income_limit: 35829
+
+- name: Case 3, FY2026 income limit for 2 qualifying members.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 2
+  output:
+    wy_lieap_income_limit: 46853
+
+- name: Case 4, FY2026 income limit for 3 qualifying members.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 3
+  output:
+    wy_lieap_income_limit: 57877
+
+- name: Case 5, FY2026 income limit for 4 qualifying members.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 4
+  output:
+    wy_lieap_income_limit: 68902
+
+- name: Case 6, FY2026 income limit for 5 qualifying members.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 5
+  output:
+    wy_lieap_income_limit: 79926
+
+- name: Case 7, FY2026 income limit for 6 qualifying members.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 6
+  output:
+    wy_lieap_income_limit: 90950
+
+- name: Case 8, FY2026 income limit for 7 qualifying members.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 7
+  output:
+    wy_lieap_income_limit: 93017
+
+- name: Case 9, FY2026 income limit for 8 qualifying members.
+  period: 2026
+  input:
+    state_code: WY
+    wy_lieap_household_size: 8
+  output:
+    # floor(114,837 * .6) = 68,902; size factor .52 + 5 * .16 + 2 * .03 = 1.38;
+    # floor(68,902 * 1.38) = floor(95,084.76) = 95,084 (HHS FY2026 table).
+    wy_lieap_income_limit: 95084
+
+- name: Case 10, FY2027 income limit for 1 qualifying members only.
+  period: 2027
+  input:
+    state_code: WY
+    wy_lieap_household_size: 1
+  output:
+    wy_lieap_income_limit: 35858
+
+- name: Case 11, FY2027 income limit for 2 qualifying members only.
+  period: 2027
+  input:
+    state_code: WY
+    wy_lieap_household_size: 2
+  output:
+    wy_lieap_income_limit: 46892
+
+- name: Case 12, FY2027 income limit for 3 qualifying members only.
+  period: 2027
+  input:
+    state_code: WY
+    wy_lieap_household_size: 3
+  output:
+    wy_lieap_income_limit: 57925
+
+- name: Case 13, FY2027 income limit for 4 qualifying members only.
+  period: 2027
+  input:
+    state_code: WY
+    wy_lieap_household_size: 4
+  output:
+    wy_lieap_income_limit: 68959
+
+- name: Case 14, FY2027 income limit for 5 qualifying members only.
+  period: 2027
+  input:
+    state_code: WY
+    wy_lieap_household_size: 5
+  output:
+    wy_lieap_income_limit: 79992
+
+# HHS LIHEAP IM 2025-02 Attachment 4 prints $99,218 for 10 Wyoming members.
+# floor(114,837 * .6) = 68,902; size factor .52 + 5 * .16 + 4 * .03 = 1.44;
+# floor(68,902 * 1.44) = floor(99,218.88) = 99,218.
+- name: Case 15, FY2026 income limit for 10 qualifying members.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    wy_lieap_household_size: 10
+  output:
+    wy_lieap_income_limit: 99_218

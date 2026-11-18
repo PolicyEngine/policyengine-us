@@ -1,0 +1,59 @@
+- name: Chapter 1 retains its additions and excludes NIIT and unreported payroll tax
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    income_tax_before_credits: 20_000
+    income_tax_capped_non_refundable_credits: 500
+    recapture_of_investment_credit: 200
+    qualified_retirement_penalty: 300
+    niit_magi: 224_000
+    net_investment_income: 190_000
+    unreported_payroll_tax: 250
+    income_tax_refundable_credits: 0
+  output:
+    # NIIT = 3.8% * min(190,000, 224,000 - 200,000).
+    net_investment_income_tax: 912
+    income_tax: 21_162
+    # 20,000 + 200 + 300 - 500 = 21,162 - 912 - 250.
+    income_tax_chapter_1: 20_000
+
+- name: Refundable EITC is a payment and does not reduce chapter 1 liability
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    employment_income: 10_000
+    filing_status: SINGLE
+    state_code: TX
+    meets_eitc_identification_requirements: true
+    takes_up_eitc: true
+    would_file_if_eligible_for_refundable_credit: true
+  output:
+    income_tax_before_credits: 0
+    income_tax_capped_non_refundable_credits: 0
+    # Earnings exceed the childless phase-in cap and precede phase-out.
+    eitc: 664
+    income_tax_refundable_credits: 664
+    income_tax: -664
+    income_tax_chapter_1: 0
+
+- name: Abolishing federal income tax also abolishes chapter 1 liability
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    filing_status: SINGLE
+    income_tax_before_credits: 20_000
+    income_tax_capped_non_refundable_credits: 500
+    recapture_of_investment_credit: 200
+    qualified_retirement_penalty: 300
+    niit_magi: 224_000
+    net_investment_income: 190_000
+    unreported_payroll_tax: 250
+  output:
+    # NIIT remains nonzero under this switch, so it cannot simply be
+    # subtracted from the already abolished income tax measure.
+    net_investment_income_tax: 912
+    income_tax_before_refundable_credits: 0
+    income_tax_chapter_1: 0

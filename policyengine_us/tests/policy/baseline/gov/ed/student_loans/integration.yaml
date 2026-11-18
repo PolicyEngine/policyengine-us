@@ -1,0 +1,133 @@
+# The same household under each repayment plan, with incomes held fixed.
+# Outputs are for October 2026, after the Repayment Assistance Plan starts.
+
+- name: Single parent of two with 55,000 dollars of AGI and a 30,000 dollar balance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+      person2:
+        age: 8
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 55_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Repayment Assistance Plan: 5% x 55,000 / 12 - 2 x 50 = 129.17.
+    repayment_assistance_plan_payment:
+      2026-10: [129.17, 0, 0]
+    # IBR: 15% x (55,000 - 1.5 x 27,320) / 12 = 175.25.
+    income_based_repayment_payment:
+      2026-10: [175.25, 0, 0]
+    # SAVE: 55,000 < 2.25 x 27,320 = 61,470, so 0.
+    save_plan_payment:
+      2026-10: [0, 0, 0]
+    # Standard 10-year: 30,000 x 0.005 / (1 - 1.005 ^ -120) = 333.06.
+    standard_repayment_payment:
+      2026-10: [333.06, 0, 0]
+    # PAYE: 10% x 14,020 / 12 = 116.83.
+    pay_as_you_earn_payment:
+      2026-10: [116.83, 0, 0]
+    # ICR: married or head of household factor at 55,000 between 52,462
+    # (87.61%) and 65,797 (100%): 87.61 + 12.39 x 2,538 / 13,335 = 89.97%.
+    # 12-year payment 30,000 x 0.005 / (1 - 1.005 ^ -144) = 292.76;
+    # 292.76 x 89.97% = 263.39 < 20% x (55,000 - 27,320) / 12 = 461.33.
+    income_contingent_repayment_payment:
+      2026-10: [263.39, 0, 0]
+    # No loan made on or after July 1, 2026, so no tiered standard payment.
+    tiered_standard_repayment_payment:
+      2026-10: [0, 0, 0]
+
+- name: Single filer with 25,000 dollars of AGI pays more under RAP than under IBR or SAVE.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        federal_student_loan_balance: 20_000
+        federal_student_loan_interest_rate: 0.06
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # RAP: 2% x 25,000 / 12 = 41.67.
+    repayment_assistance_plan_payment:
+      2026-10: 41.67
+    # IBR: 15% x (25,000 - 23,940) / 12 = 13.25.
+    income_based_repayment_payment:
+      2026-10: 13.25
+    # SAVE: 25,000 < 35,910, so 0.
+    save_plan_payment:
+      2026-10: 0
+    # Standard 10-year: 20,000 x 0.005 / (1 - 1.005 ^ -120) = 222.04.
+    standard_repayment_payment:
+      2026-10: 222.04
+    # PAYE: 10% x 1,060 / 12 = 8.83, raised to 10.
+    pay_as_you_earn_payment:
+      2026-10: 10
+    # ICR: single factor at 25,000 between 24,285 (60.57%) and 29,819
+    # (66.23%): 60.57 + 5.66 x 715 / 5,534 = 61.30%. 12-year payment
+    # 195.17 x 61.30% = 119.64 < 20% x (25,000 - 15,960) / 12 = 150.67.
+    income_contingent_repayment_payment:
+      2026-10: 119.64
+    tiered_standard_repayment_payment:
+      2026-10: 0
+
+- name: A borrower with a loan made on or after July 1, 2026 can choose only RAP or the tiered standard plan.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 24
+        federal_student_loan_balance: 40_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 61_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # RAP is unaffected: 6% x 61,000 / 12 = 305.
+    repayment_assistance_plan_payment:
+      2026-10: 305
+    # IBR, PAYE and ICR would be 444.08, 308.83 and 374.57; the loan bars them
+    # (34 CFR 685.209(d)(5); 20 U.S.C. 1087e(d)(6)-(7)).
+    income_based_repayment_payment:
+      2026-10: 0
+    pay_as_you_earn_payment:
+      2026-10: 0
+    income_contingent_repayment_payment:
+      2026-10: 0
+    # SAVE stays a counterfactual: 5% x (61,000 - 35,910) / 12 = 104.54.
+    save_plan_payment:
+      2026-10: 104.54
+    # The tiered plan replaces the 10-year plan: 40,000 is in the 15-year tier;
+    # 40,000 x 0.005 / (1 - 1.005 ^ -180) = 337.54.
+    standard_repayment_payment:
+      2026-10: 0
+    tiered_standard_repayment_payment:
+      2026-10: 337.54

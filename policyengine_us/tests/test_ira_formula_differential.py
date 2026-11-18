@@ -21,6 +21,9 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
+import pytest
+from hypothesis import given, settings, strategies as st
+from policyengine_core.parameters import ParameterNode
 
 
 VARIABLES = Path(__file__).resolve().parents[1] / "variables"
@@ -66,6 +69,11 @@ class People:
     def __init__(self, values, tax_groups=None, tax_values=None, marital_groups=None):
         self.values = {key: np.asarray(value) for key, value in values.items()}
         self.count = len(next(iter(self.values.values())))
+        # The existing oracle cases use 2026 rules, with no traditional IRA
+        # age bar. Historical cases supply this dependency explicitly.
+        self.values.setdefault(
+            "traditional_ira_age_eligible", np.ones(self.count, dtype=bool)
+        )
         groups = np.arange(self.count) if tax_groups is None else tax_groups
         self.tax_unit = Group(groups, tax_values)
         self.marital_unit = Group(
@@ -516,4 +524,135 @@ def test_generated_single_contributions_preserve_shares_within_compensation():
             & (people("roth_ira_contributions_desired", None) == 0.25)
         ]
         == 1
+    )
+
+
+_HISTORICAL_IRA_TEST_AMOUNTS = st.integers(min_value=0, max_value=2_000_000).map(
+    lambda cents: cents / 100
+)
+
+
+@settings(max_examples=40, deadline=None)
+@given(
+    rows=st.lists(
+        st.tuples(
+            _HISTORICAL_IRA_TEST_AMOUNTS,
+            _HISTORICAL_IRA_TEST_AMOUNTS,
+            _HISTORICAL_IRA_TEST_AMOUNTS,
+        ),
+        min_size=1,
+        max_size=12,
+    )
+)
+def test_historical_age_bar_leaves_roth_allowance_independent_of_traditional_desire(
+    rows,
+):
+    """Pub. 590-A (2017), page 5: only Roth remains available at age 70.5+."""
+    count = len(rows)
+    people = People(
+        {
+            "ira_compensation": [row[0] for row in rows],
+            "traditional_ira_contributions_desired": [row[1] for row in rows],
+            "roth_ira_contributions_desired": [row[2] for row in rows],
+            "age": np.full(count, 70.5),
+            "traditional_ira_age_eligible": np.zeros(count, dtype=bool),
+            "is_tax_unit_head_or_spouse": np.ones(count, dtype=bool),
+        },
+        tax_values={"tax_unit_is_joint": np.zeros(count, dtype=bool)},
+    )
+    historical = parameters()
+    retirement = historical(None).gov.irs.gross_income.retirement_contributions
+    # The external 2017 publication gives $5,500 plus $1,000 at age 50+.
+    retirement.limit.ira = 5_500
+    retirement.catch_up.limit.ira = 1_000
+    people.values["ira_contribution_limit"] = formula(
+        RETIREMENT / "ira_contribution_limit.py", "ira_contribution_limit"
+    )(people, None, historical)
+    people.values["ira_contribution_scale"] = formula(
+        RETIREMENT / "ira_contribution_scale.py", "ira_contribution_scale"
+    )(people, None, historical)
+    traditional = formula(
+        RETIREMENT / "traditional_ira_contributions.py", "traditional_ira_contributions"
+    )(people, None, historical)
+    roth = formula(RETIREMENT / "roth_ira_contributions.py", "roth_ira_contributions")(
+        people, None, historical
+    )
+    # With traditional contributions age-barred, their desired amount cannot
+    # reduce the separate Roth allowance: compensation, desired Roth, or $6,500.
+    expected_roth = np.asarray([min(row[0], row[2], 6_500) for row in rows])
+    np.testing.assert_array_equal(traditional, np.zeros(count))
+    np.testing.assert_allclose(roth, expected_roth, rtol=1e-10, atol=1e-8)
+    assert np.all(np.isfinite(roth))
+    assert np.all(traditional + roth <= people("ira_contribution_limit", None) + 1e-8)
+
+
+@pytest.fixture(scope="module")
+def retirement_parameter_subtree():
+    """Read only the small retirement subtree, without building a US model."""
+    directory = (
+        VARIABLES.parent / "parameters/gov/irs/gross_income/retirement_contributions"
+    )
+    return ParameterNode(directory_path=directory)
+
+
+@pytest.mark.parametrize("year", range(2017, 2027))
+def test_traditional_age_gate_matches_the_statute_in_every_year(
+    year, retirement_parameter_subtree
+):
+    """Former 219(d)(1) through 2019; SECURE Act section 107 from 2020."""
+    ages = np.array([18, 49, 50, 70, 70.49, 70.5, 70.51, 71, 90], dtype=np.float32)
+    people = People({"age": ages})
+    selected = retirement_parameter_subtree(f"{year}-01-01")
+    annual = parameters()
+    annual(
+        None
+    ).gov.irs.gross_income.retirement_contributions.limit.traditional_ira_age = (
+        selected.limit.traditional_ira_age
+    )
+    calculate = formula(
+        RETIREMENT / "traditional_ira_age_eligible.py", "traditional_ira_age_eligible"
+    )
+    actual = calculate(people, None, annual)
+    expected = ages < 70.5 if year <= 2019 else np.ones(len(ages), dtype=bool)
+    np.testing.assert_array_equal(actual, expected)
+
+
+def test_dependent_helper_repeats_the_formula_without_line_1e():
+    # ira_compensation_without_line_1e repeats the formula's sum without
+    # Form 1040 line 1e, so with line 1e at zero the two agree on every term.
+    path = RETIREMENT / "ira_compensation.py"
+    tree = ast.parse(path.read_text(), filename=str(path))
+    helper = next(
+        node
+        for node in tree.body
+        if isinstance(node, ast.FunctionDef)
+        and node.name == "ira_compensation_without_line_1e"
+    )
+    namespace = {
+        "max_": np.maximum,
+        "add": lambda person, period, names: sum(
+            person(name, period) for name in names
+        ),
+    }
+    exec(
+        compile(ast.Module(body=[helper], type_ignores=[]), str(path), "exec"),
+        namespace,
+    )
+    terms = [
+        "irs_employment_income",
+        "earned_disability_benefits",
+        "taxable_alimony_income",
+        "self_employment_income",
+        "sstb_self_employment_income",
+        "farm_operations_income",
+        "partnership_self_employment_net_earnings",
+        "self_employment_tax_ald_person",
+        "self_employed_pension_contribution_ald_person",
+    ]
+    # Each row sets one term to 1,000, plus one row with every term set.
+    rows = [{term: 1_000} for term in terms] + [dict.fromkeys(terms, 1_000)]
+    people = People({term: [row.get(term, 0) for row in rows] for term in terms})
+    expected = formula(path, "ira_compensation")(people, None, parameters())
+    np.testing.assert_array_equal(
+        namespace["ira_compensation_without_line_1e"](people, None), expected
     )

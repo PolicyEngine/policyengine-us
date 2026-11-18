@@ -21,6 +21,7 @@
       person1:
         military_retirement_pay: 30_000
       person2:
+        is_surviving_spouse: true
         military_retirement_pay_survivors: 10_000
     tax_units:
       tax_unit:
@@ -31,3 +32,32 @@
         state_code: IN
   output:
     in_military_retirement_deduction: 40_000
+
+- name: Indiana non-spouse survivor benefits do not qualify for the military retirement deduction.
+  period: 2024
+  input:
+    age: 20
+    state_code: IN
+    is_surviving_spouse: false
+    military_retirement_pay_survivors: 10_000
+  output:
+    in_military_retirement_deduction: 0
+
+- name: Indiana service member can deduct own pay without deducting non-spouse survivor benefits.
+  period: 2024
+  input:
+    state_code: IN
+    is_surviving_spouse: false
+    military_retirement_pay: 30_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    in_military_retirement_deduction: 30_000
+
+- name: Indiana surviving spouse benefits retain the 2021 phase-in.
+  period: 2021
+  input:
+    state_code: IN
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    in_military_retirement_deduction: 6_250 + 0.75 * (10_000 - 6_250)

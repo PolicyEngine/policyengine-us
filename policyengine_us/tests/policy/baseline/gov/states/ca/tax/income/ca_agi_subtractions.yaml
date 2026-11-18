@@ -90,3 +90,40 @@
     # Schedule CA (540), section B, line 1, column B: the head's 600 only.
     ca_agi_subtractions: 600
     ca_agi: 50_000
+
+- name: Case 4, a dependent at the 2020 exclusion cutoff does not reduce the filer's CA AGI.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 40_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        dividend_income: 150_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    marital_units:
+      parent:
+        members: [parent]
+      student:
+        members: [student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: CA
+  output:
+    # The student's exclusion AGI reaches 150,000, so all 5,000 remains
+    # taxable on their own return. The parent's return includes neither.
+    dependent_taxable_uc_agi: [0, 150_000]
+    taxable_unemployment_compensation: [0, 5_000]
+    adjusted_gross_income: 40_000
+    ca_agi_subtractions: 0
+    ca_agi: 40_000

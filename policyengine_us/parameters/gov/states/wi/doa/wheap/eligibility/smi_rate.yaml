@@ -1,0 +1,14 @@
+description: Wisconsin limits income to this share of the state median income under the Home Energy Assistance Program.
+values:
+  2025-10-01: 0.6
+metadata:
+  unit: /1
+  period: year
+  label: Wisconsin WHEAP state median income rate
+  reference:
+    - title: Wis. Stat. 16.27(5)(b)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/16/i/27
+    - title: "Wisconsin PY26 WHEAP Manual, sections 2.3.1 and 3.3.1 and Appendix E #page 26,45,166"
+      href: https://web.archive.org/web/20260428215048/https://energyandhousing.wi.gov/Documents/WHEAP/WheapManual_PY26.pdf#page=26
+    - title: Wisconsin HE+ Benefit Calculator FFY2026, SMI_Lookup!A4:D23
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx

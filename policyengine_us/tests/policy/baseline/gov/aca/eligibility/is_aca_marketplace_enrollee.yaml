@@ -1,0 +1,65 @@
+- name: 2025 a fourth child is enrolled but pays no age-rated premium
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+      child2:
+        age: 8
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+      child3:
+        age: 6
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+      child4:
+        age: 4
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child, child2, child3, child4]
+        filing_status: JOINT
+        # Above the six-person poverty line so the coverage gap does not bind.
+        aca_magi: 50_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b, child, child2, child3, child4]
+        state_code: TX
+  output:
+    # 45 CFR 147.102(c)(1): premiums for the three oldest children only.
+    is_aca_marketplace_enrollee: [true, true, true, true, true, true]
+    pays_aca_premium: [true, true, true, true, true, false]

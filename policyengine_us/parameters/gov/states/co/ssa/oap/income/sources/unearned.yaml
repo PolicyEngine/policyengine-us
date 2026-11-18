@@ -1,6 +1,7 @@
 description: Colorado counts these income sources as gross unearned income for the Old Age Pension, before disregards.
 
 values:
+  # Source conflict us-co:oap-interest-and-dividends
   # 3.520.785(B) lists countable unearned income. 3.520.786 exempts the
   # unearned income SSA excludes (K), which includes interest and dividends
   # on countable resources (20 CFR 416.1124(c)(22)), and child support
@@ -8,6 +9,7 @@ values:
   2020-03-01:
     - pension_income
     - social_security
+    - railroad_benefits
     - disability_benefits
     - veterans_benefits
     - survivor_benefits

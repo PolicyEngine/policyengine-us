@@ -161,3 +161,135 @@
     # The senior deduction is not in line 14 and is not added back, so
     # line 4 is AGI for a filer who takes the standard deduction.
     amt_income: 100_000
+
+# End to end from wages, with the refund in AGI. 26 U.S.C. 56(b)(1)(C); 2025
+# Form 6251 line 2b. Sales taxes are set to zero so the SALT deduction is the
+# real estate taxes, under the 2025 cap.
+- name: Single itemizer's refund enters AGI and comes back out of AMTI, 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+        salt_refund_income: 2_000
+        real_estate_taxes: 8_000
+        home_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_itemizes: true
+        state_sales_tax: 0
+        local_sales_tax: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # AGI 102,000; itemized deductions 8,000 + 20,000 = 28,000.
+    taxable_income: 74_000
+    # Line 1b 74,000 + line 2a 8,000 - line 2b 2,000 = 80,000, which is AGI
+    # less the refund less the AMT's itemized deductions (102,000 - 2,000 -
+    # 20,000).
+    amt_income: 80_000
+
+# End to end from wages, with the model's own 2026 section 68 reduction.
+# 26 U.S.C. 56(b)(1)(E): section 68 does not apply.
+- name: Single itemizer's section 68 reduction stays out of AMTI, 2026
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 1_000_000
+        real_estate_taxes: 10_000
+        home_mortgage_interest: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_itemizes: true
+        state_sales_tax: 0
+        local_sales_tax: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 26 U.S.C. 164(b)(7): the 2026 SALT cap of 40,400 phases down by 30% of
+    # MAGI over 505,000 to its 10,000 floor at this income.
+    salt_deduction: 10_000
+    total_itemized_taxable_income_deductions: 40_000
+    # Section 68 as amended by P.L. 119-21: 2/37 of the lesser of the itemized
+    # deductions (40,000) and taxable income over the 37% bracket threshold
+    # (1,000,000 - 640,600 = 359,400): 80,000 / 37.
+    itemized_taxable_income_deductions_reduction: 2_162.16
+    # 1,000,000 - (40,000 - 2,162.16)
+    taxable_income: 962_162.16
+    # 962,162.16 + 10,000 SALT - 2,162.16 = 970,000, which is AGI less the
+    # AMT's itemized deductions (1,000,000 - 30,000).
+    amt_income: 970_000
+
+# 26 U.S.C. 55(d)(2): a married individual filing separately adds the lesser
+# of 25% of AMTI "determined without regard to this sentence" over the amount
+# at which the exemption is zero, and the exemption. 2025 Form 6251
+# instructions, line 4: 25% of line 4 over 900,350. Line 4 here is already net
+# of the refund (line 2b).
+- name: Separate filer's additional amount is figured after the refund, 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 1_000_000
+        salt_refund_income: 20_000
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        tax_unit_itemizes: true
+        state_sales_tax: 0
+        local_sales_tax: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # AGI 1,020,000, less the 20,000 refund; the only itemized deduction is
+    # the SALT deduction, which line 2a adds back.
+    amt_income_before_separate_addition: 1_000_000
+    # min(68,500 exemption, 25% x (1,000,000 - 900,350))
+    amt_separate_addition: 24_912.5
+    amt_income: 1_024_912.5
+
+# 26 U.S.C. 55(d)(2) and (d)(4)(A)(ii)(IV): from 2026 the separate filer's
+# increase is 50% of AMTI (net of the refund) over 640,200, where the 70,100
+# exemption phases out (Rev. Proc. 2025-32), up to that exemption.
+- name: Separate filer's 2026 increase is 50% and figured after the refund
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 700_000
+        salt_refund_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # AGI 710,000 - 16,100 standard deduction = 693,900 taxable income; line 2a
+    # adds back the 16,100 and line 2b subtracts the 10,000 refund.
+    amt_income_before_separate_addition: 700_000
+    # min(70,100, 0.5 x (700,000 - 640,200))
+    amt_separate_addition: 29_900
+    amt_income: 729_900

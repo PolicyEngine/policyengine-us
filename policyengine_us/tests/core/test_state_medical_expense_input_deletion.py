@@ -69,13 +69,14 @@ def test_nd_paid_cost_base_after_medical_subtotal_deletion(delete_subtotal):
 
 @pytest.mark.parametrize("delete_subtotal", SUBTOTAL_DELETION_CASES)
 def test_nm_senior_benefits_after_medical_subtotal_deletion(delete_subtotal):
-    simulation = _simulation("NM", other_expenses=22_000)
+    simulation = _simulation("NM", other_expenses=22_001)
     if delete_subtotal:
         simulation.delete_arrays("itemized_medical_expenses", PERIOD)
 
-    # The recomputed federal subtotal is 27,000, but restoring its 1,000
-    # exclusion meets NM's 28,000 paid-cost threshold. Calculate both before
-    # asserting to preserve evidence.
+    # The recomputed federal subtotal is 27,001, but restoring its 1,000
+    # exclusion gives 28,001 of paid costs, which meets the credit's $28,000
+    # threshold and exceeds the exemption's. Calculate both before asserting
+    # to preserve evidence.
     benefits = tuple(
         simulation.calculate(variable, PERIOD).item()
         for variable in (

@@ -31,12 +31,39 @@ class eitc_relevant_investment_income(Variable):
         "defaults to zero; nonpassive estate and trust income (Schedule E "
         "Part III columns (e) and (f), such as Schedule K-1 (Form 1041) box 5 "
         "annuities and income in respect of a decedent) is not on lines 11 "
-        "and 12."
+        "and 12. Box 5 royalties not derived in the ordinary course of a trade "
+        "or business (estate_royalty_income) go in the 26 USC 32(i)(2)(C) "
+        "basket, net of their allocable deductions and floored at zero, "
+        "because sections 652(b) and 662(b) keep their character as "
+        "royalties. Worksheet 1 line 8 takes royalties only from Schedule E "
+        "line 23b, so it leaves these out; here the model follows the "
+        "statute. Section 32(i)(2)(C) also counts rents not derived in the "
+        "ordinary course of a trade or business, and the statute does not say "
+        "whether rental real estate belongs there or, as a passive activity, "
+        "in 32(i)(2)(E). The model follows the IRS's reading in Worksheet 1 "
+        "(lines 8-13): the (C) basket on lines 8-10 takes Schedule E line 23b "
+        "royalties and the personal property rents on Schedule 1 line 8l, "
+        "and the (E) basket on lines 11-12 takes the rental real estate on "
+        "Schedule E line 26, which section 469(c)(2) treats as a passive "
+        "activity. The model reads rental_income as that Schedule E rental "
+        "real estate, so it is in the passive basket: a rental real estate "
+        "loss offsets other passive income but not estate and trust "
+        "royalties. The model has no input for personal property rents, "
+        "which belong in the (C) basket, or for rental real estate that is "
+        "not a passive activity (marked NPA on Worksheet 1), which is not "
+        "investment income at all. The model has no input for royalties "
+        "received directly (Schedule E Part I), so the (C) basket holds only "
+        "estate and trust royalties."
     )
     unit = USD
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/32#i_2",
+        "https://www.law.cornell.edu/uscode/text/26/652#b",
+        "https://www.law.cornell.edu/uscode/text/26/662#b",
+        # Rental activity is a passive activity.
+        "https://www.law.cornell.edu/uscode/text/26/469#c_2",
+        # Publication 596 (2025) Worksheet 1, lines 8-13.
         "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=7",
         "https://www.irs.gov/pub/irs-prior/f8814--2025.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/i8814--2025.pdf#page=4",
@@ -114,4 +141,27 @@ class eitc_relevant_investment_income(Variable):
         ) - tax_unit_non_dep_add(
             tax_unit, period, ["eitc_passive_income_also_in_earned_income"]
         )
-        return portfolio_income + max_(0, capital_gains) + max_(0, passive_income)
+        # Section 32(i)(2)(C): rents and royalties not derived in the ordinary
+        # course of a trade or business, net of their allocable deductions.
+        # A beneficiary's box 5 royalties keep that character (sections
+        # 652(b) and 662(b)) and are nonpassive, so they go here and not in
+        # the passive basket. Worksheet 1 line 8 conflicts with the statute
+        # by taking royalties only from Schedule E line 23b; the model follows
+        # the statute. Rents: the statute does not settle whether rental real
+        # estate is a (C) rent or an (E) passive activity, so the model takes
+        # the IRS's reading. Worksheet 1 puts personal property rents
+        # (Schedule 1 line 8l) on lines 8-10 with royalties, and Schedule E
+        # line 26 rental real estate on the passive lines 11-12 (section
+        # 469(c)(2)). rental_income is that rental real estate and stays in
+        # the passive basket above. The model has no input for personal
+        # property rents or for nonpassive (NPA) rental real estate, which
+        # Worksheet 1 leaves out, or for royalties received directly.
+        nonbusiness_royalties = tax_unit_non_dep_add(
+            tax_unit, period, ["estate_royalty_income"]
+        )
+        return (
+            portfolio_income
+            + max_(0, capital_gains)
+            + max_(0, nonbusiness_royalties)
+            + max_(0, passive_income)
+        )

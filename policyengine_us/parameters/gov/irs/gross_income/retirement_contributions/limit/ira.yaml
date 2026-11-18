@@ -1,5 +1,6 @@
 description: The US limits annual IRA contributions to this amount.
 values:
+  2017-01-01: 5_500
   2018-01-01: 5_500
   2019-01-01: 6_000
   2023-01-01: 6_500
@@ -15,6 +16,8 @@ metadata:
       type: downwards
       interval: 500
   reference:
+  - title: IRS Notice 2016-62
+    href: https://www.irs.gov/pub/irs-drop/n-16-62.pdf#page=3
   - title: 26 U.S. Code § 219 - Retirement savings (b)(5)(A)
     href: https://www.law.cornell.edu/uscode/text/26/219
   # Inflation adjusted amounts

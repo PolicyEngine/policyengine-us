@@ -7,7 +7,7 @@ class wv_works_countable_unearned_income(Variable):
     label = "West Virginia WV Works countable unearned income"
     unit = USD
     definition_period = MONTH
-    reference = "https://bfa.wv.gov/media/40005/download?inline#page=590"
+    reference = "https://web.archive.org/web/20261023203756/https://bfa.wv.gov/media/40005/download?inline#page=590"
     defined_for = StateCode.WV
 
     def formula(spm_unit, period, parameters):

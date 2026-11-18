@@ -132,3 +132,42 @@
     # Redesign offset = $24.40/month.
     # Provider rate = $943 + $24.40 = $967.40/month.
     fl_oss_provider_rate: [967.40]
+
+# DCF Appendix A-12 (January 2025), OSS Redesign: the couple provider rate is $1,885.80, or $942.90 each; the individual rate is $991.40. Both spouses occupy an ALF on the same track; the third adult does not occupy a qualifying facility.
+# https://www.myflfamilies.com/sites/default/files/2024-12/Appendix%20A-12.pdf
+- name: Florida tests the two spouses facility placement without a third adult
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      husband:
+        age:
+          2025: 70
+        is_tax_unit_head:
+          2025: true
+        fl_oss_program_track: REDESIGN
+        fl_oss_community_care_type: ALF
+      wife:
+        age:
+          2025: 70
+        is_tax_unit_spouse:
+          2025: true
+        fl_oss_program_track: REDESIGN
+        fl_oss_community_care_type: ALF
+      third_adult:
+        age:
+          2025: 70
+        is_tax_unit_dependent:
+          2025: true
+        fl_oss_program_track: REDESIGN
+    tax_units:
+      tax_unit:
+        members: [husband, wife, third_adult]
+    households:
+      household:
+        members: [husband, wife, third_adult]
+        state_code:
+          2025: FL
+  output:
+    fl_oss_couple_rate_applies: [true, true, false]
+    fl_oss_provider_rate: [942.9, 942.9, 991.4]

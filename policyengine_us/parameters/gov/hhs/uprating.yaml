@@ -1,22 +1,30 @@
-description: The US indexes the federal poverty guidelines according to this schedule, annually updating based on CPI-U in the calendar year.
+description: PolicyEngine uprates Head Start and Early Head Start spending with this index of calendar-year average CPI-U.
 values:
   # Actuals: calendar-year average CPI-U for the labeled year.
+  # NOTE: The federal poverty guidelines uprate with gov.hhs.fpg_uprating, which
+  # follows the 42 U.S.C. 9902(2) interval (CY(Y-1)/CY(Y-2)). This index now
+  # serves only Head Start and Early Head Start spending (#10451).
   2022-01-01: 292.6
   2023-01-01: 304.7
   2024-01-01: 313.6
   2025-01-01: 321.9
-  # CBO forecasts.
+  # CBO forecasts. 2026 keeps CBO's January 2025 projection, which the 2026
+  # Head Start amounts derived from this index already use. The partner
+  # contract tests pin those amounts, so ending the hold needs the partner
+  # gate (#10451). Later years grow it at CBO's February 2026 calendar-year
+  # CPI-U growth: 2026 * CBO CPI-U (year) / CBO CPI-U (2026).
   2026-01-01: 328.4
-  2027-01-01: 336.1
-  2028-01-01: 343.6
-  2029-01-01: 351.3
-  2030-01-01: 359.2
-  2031-01-01: 367.2
-  2032-01-01: 375.5
-  2033-01-01: 383.9
-  2034-01-01: 392.5
-  2035-01-01: 401.3
-  # Values for 2036-2100 are set programmatically in uprating_extensions.py
+  2027-01-01: 336.766 # 328.4 * 340.260 / 331.807
+  2028-01-01: 344.719 # 328.4 * 348.295 / 331.807
+  2029-01-01: 352.606 # 328.4 * 356.264 / 331.807
+  2030-01-01: 360.587 # 328.4 * 364.328 / 331.807
+  2031-01-01: 368.732 # 328.4 * 372.557 / 331.807
+  2032-01-01: 377.055 # 328.4 * 380.967 / 331.807
+  2033-01-01: 385.564 # 328.4 * 389.564 / 331.807
+  2034-01-01: 394.265 # 328.4 * 398.355 / 331.807
+  2035-01-01: 403.163 # 328.4 * 407.346 / 331.807
+  2036-01-01: 412.265 # 328.4 * 416.542 / 331.807
+  # Values for 2037-2100 are set programmatically in uprating_extensions.py
 metadata:
   economy: false
   unit: currency-USD
@@ -28,6 +36,17 @@ metadata:
       href: https://www.govinfo.gov/app/details/FR-2025-01-17/2025-01377
     - title: 2024 Annual Update of the HHS Poverty Guidelines
       href: https://www.federalregister.gov/documents/2024/01/17/2024-00796/annual-update-of-the-hhs-poverty-guidelines
-    - title: CBO Budget and Economic Outlook | 2024 to 2034
-      # Jan 2025 Economic Projections | 2. Calendar Year | Row 51
-      href: https://www.cbo.gov/data/budget-economic-data#4
+    - title: 42 U.S. Code § 9902(2)
+      href: https://www.law.cornell.edu/uscode/text/42/9902#2
+    - title: 2026 Annual Update of the HHS Poverty Guidelines
+      href: https://www.federalregister.gov/documents/2026/01/15/2026-00755/annual-update-of-the-hhs-poverty-guidelines
+    - title: CBO | Economic Projections | January 2025
+      # 2026: Sheet 2. Calendar Year, Row 53, CPI-U 328.446 (Row 51 in the original January 2025 release, before CBO's April 30, 2025 update)
+      href: https://www.cbo.gov/system/files/2025-01/51135-2025-01-Economic-Projections.xlsx
+    - title: CBO | Economic Projections | January 2025, calendar-year CSV (variable cpiu)
+      href: https://github.com/US-CBO/cbo-data/blob/284a95665f9f2f74ed1f482feb629b43fce323da/data/economic/economic_projections/calendar_2025-01.csv
+    - title: CBO | Economic Projections | February 2026
+      # Sheet: 2. Calendar Year, Row 53: CPI-U
+      href: https://www.cbo.gov/system/files/2026-02/51135-2026-02-Economic-Projections.xlsx
+    - title: CBO | Economic Projections | February 2026, calendar-year CSV (variable cpiu)
+      href: https://github.com/US-CBO/cbo-data/blob/284a95665f9f2f74ed1f482feb629b43fce323da/data/economic/economic_projections/calendar_2026-02.csv

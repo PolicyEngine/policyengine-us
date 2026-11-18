@@ -3,7 +3,7 @@
   input:
     state_code: MO
     mo_tanf_eligible: false
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
     mo_tanf_countable_income: 0
   output:
     mo_tanf: 0
@@ -13,30 +13,32 @@
   input:
     state_code: MO
     mo_tanf_eligible: true
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
     mo_tanf_countable_income: 0
   output:
-    mo_tanf: 292.09
+    # 13 CSR 40-2.310(13) prints a $292 maximum grant for three people.
+    mo_tanf: 292
 
 - name: Eligible household with countable income receives reduced benefit
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_eligible: true
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
     mo_tanf_countable_income: 100
   output:
-    mo_tanf: 192.09
+    # $292 - $100 = $192.
+    mo_tanf: 192
 
 - name: Benefit below $10 minimum threshold is not paid
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_eligible: true
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
     mo_tanf_countable_income: 285
   output:
-    # $292.09 - $285 = $7.09, but minimum payment is $10
+    # $292 - $285 = $7, below the $10 minimum.
     mo_tanf: 0
 
 - name: Benefit of $10
@@ -44,17 +46,110 @@
   input:
     state_code: MO
     mo_tanf_eligible: true
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
     mo_tanf_countable_income: 282
   output:
-    mo_tanf: 10.09
+    # $292 - $282 = $10.
+    mo_tanf: 10
 
 - name: Countable income exceeds maximum benefit results in zero
   period: 2024-01
   input:
     state_code: MO
     mo_tanf_eligible: true
-    mo_tanf_standard_of_need: 846
+    mo_tanf_assistance_unit_size: 3
     mo_tanf_countable_income: 300
   output:
     mo_tanf: 0
+
+- name: A size-two zero-income grant pays the printed maximum.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_countable_income: 0
+  output:
+    # 13 CSR 40-2.310(13) prints a $234 maximum grant for two people.
+    mo_tanf: 234
+
+- name: A payable grant just above ten dollars is lowered to ten.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_countable_income: 223.25
+  output:
+    # $234 - $223.25 = $10.75, lowered to $10.
+    mo_tanf: 10
+
+- name: A grant below ten dollars remains unpaid.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_countable_income: 224.10
+  output:
+    # $234 - $224.10 = $9.90, lowered to $9, below the $10 minimum.
+    mo_tanf: 0
+
+- name: A grant of exactly ten dollars is paid.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_maximum_benefit: 234
+    mo_tanf_countable_income: 224
+  output:
+    # 234 - 224 = 10, not less than the $10 minimum.
+    mo_tanf: 10
+
+- name: A sub-cent income difference rounds before the dollar floor.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_countable_income: 127.00001
+  output:
+    # Float32 stores $234 - $127.00001 as $106.99999237060547.
+    # Rounding to four decimals gives $107 before the whole-dollar floor.
+    mo_tanf: 107
+
+- name: A fractional deficit below the next dollar stays below it.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_assistance_unit_size: 3
+    mo_tanf_countable_income: 185.0001
+  output:
+    # $292 - $185.0001 = $106.9999, which remains below $107 after
+    # rounding to four decimals and pays $106.
+    mo_tanf: 106
+
+- name: A size-one zero-income grant pays the printed maximum.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf_countable_income: 0
+  output:
+    # 13 CSR 40-2.310(13) prints $136 for one person.
+    mo_tanf_maximum_benefit: 136
+    mo_tanf: 136
+
+- name: A size-sixteen zero-income grant includes four additional people.
+  period: 2026-01
+  input:
+    state_code: MO
+    mo_tanf_eligible: true
+    mo_tanf_assistance_unit_size: 16
+    mo_tanf_countable_income: 0
+  output:
+    # The printed row gives $675 + 4 x $40 = $835.
+    mo_tanf_maximum_benefit: 835
+    mo_tanf: 835
