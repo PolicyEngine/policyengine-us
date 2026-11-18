@@ -276,3 +276,47 @@
         state_code: WA
   output:
     meets_tanf_non_cash_gross_income_test: true
+
+# Arkansas BBCE (SNAP Certification Manual Appendix AA): 130% of the poverty
+# guideline for regular households and 165% for aged or disabled households.
+# In January 2027 the standard uses the 2026 guidelines: 130% x 15,960 / 12
+# = 1,729, the one-person gross income pretest Arkansas publishes for
+# October 2026 through September 2027 (Appendix D, Exhibit A), and
+# 165% x 15,960 / 12 = 2,194.50.
+- name: AR one person exactly at the 130% standard of $1,729 passes
+  period: 2027-01
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 40
+    state_code: AR
+    snap_gross_test_income: 1_729
+  output:
+    meets_tanf_non_cash_gross_income_test: true
+
+- name: AR one person one dollar above the 130% standard fails
+  period: 2027-01
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 40
+    state_code: AR
+    snap_gross_test_income: 1_730
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: AR elderly person at $2,194 is within the 165% standard of $2,194.50
+  period: 2027-01
+  input:
+    age: 70
+    state_code: AR
+    snap_gross_test_income: 2_194
+  output:
+    meets_tanf_non_cash_gross_income_test: true
+
+- name: AR elderly person at $2,195 is above the 165% standard of $2,194.50
+  period: 2027-01
+  input:
+    age: 70
+    state_code: AR
+    snap_gross_test_income: 2_195
+  output:
+    meets_tanf_non_cash_gross_income_test: false
