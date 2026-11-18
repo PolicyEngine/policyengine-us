@@ -18,6 +18,8 @@ class ar_liheap_income_limit(Variable):
         # FY2025 federal amounts
         # PDF pages 1, 4
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=1",
+        "https://liheapch.acf.gov/docs/2027/state-plans/AR_Plan_2027.pdf#page=9",
+        "https://www.adeq.state.ar.us/energy/assistance/pdfs/liheap-income-eligibility-chart-fy-2027.pdf",
         "https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=9",
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Eligibility-Chart_2026.pdf",
         "https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=8",
@@ -36,8 +38,8 @@ class ar_liheap_income_limit(Variable):
         )
         monthly_fpg = guideline * p.fpg_rate / MONTHS_IN_YEAR
         monthly_base = where(size <= p.smi_max_size, monthly_smi, monthly_fpg)
-        # Half-up monthly rounding reproduces the published FY2025 and FY2026
-        # tables; it is a reconciled numerical pattern, not an express rule.
+        # Half-up monthly rounding reproduces the published FY2025 through
+        # FY2027 tables; it is a reconciled numerical pattern, not an express rule.
         rounding = p.rounding_increment
         rounded_base = np.floor(monthly_base / rounding + 0.5) * rounding
         # The charts add a printed amount for each person above size 20.
@@ -55,7 +57,7 @@ class ar_liheap_income_limit(Variable):
         limit = min_(monthly_limit * MONTHS_IN_YEAR, max_(smi_maximum, fpg_maximum))
         # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below
         # 110% of the poverty guideline. In 2025-2027 every limit stays at
-        # least 32% above that floor at every household size (in 2025 and 2027,
-        # the printed per-member amount above size 20 sets the narrowest
-        # margin), so no separate floor is applied.
+        # least 36% above that floor at every household size (in 2025, the
+        # printed per-member amount above size 20 sets the narrowest margin), so
+        # no separate floor is applied.
         return where(size > 0, limit, 0)
