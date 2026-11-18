@@ -253,7 +253,7 @@
     md_premium_assistance: 0
 
 - name: Case 10, program sunset in 2028 -> 0.
-  # The prior-year guideline is pinned so the supplied 2.50 matches aca_magi.
+  # aca_fpg is pinned so the supplied 2.50 matches aca_magi.
   period: 2028
   absolute_error_margin: 0.01
   input:
@@ -265,8 +265,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 39_125
-        tax_unit_fpg:
-          2027: 15_650
+        aca_fpg: 15_650
         aca_magi_fraction: 2.50
         aca_required_contribution_percentage: 0.0844
         slcsp: 6_000
