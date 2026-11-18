@@ -1,3 +1,10 @@
+## [2.145.10] - 2026-11-18
+
+### Fixed
+
+- Say in the program registry that Minnesota has no regular LIHEAP cooling payment, and that Missouri has none beyond electric-account payments used for cooling from October to May.
+
+
 ## [2.145.9] - 2026-11-18
 
 ### Changed
