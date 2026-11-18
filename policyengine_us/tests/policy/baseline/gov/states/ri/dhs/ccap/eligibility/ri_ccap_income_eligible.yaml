@@ -221,8 +221,11 @@
         members: [person1, person2, person3]
         ri_ccap_countable_income: {2024-12: 5_000, 2025-01: 5_000}
     households:
-      household: {members: [person1, person2, person3], state_code: RI}
+      household:
+        members: [person1, person2, person3]
+        state_code: {2024: RI, 2025: RI}
   output:
+    state_code: {2024: RI, 2025: RI}
     # The statute raises the ordinary limit from 200% to 261%.
     ri_ccap_income_eligible:
       2024-12: false
@@ -247,8 +250,9 @@
         ri_ccap_enrolled: true
         ri_ccap_countable_income: 7_000
     households:
-      household1: {members: [person1, person2, person3], state_code: RI}
-      household2: {members: [person4, person5, person6], state_code: RI}
+      household1: {members: [person1, person2, person3], state_code: {2026: RI}}
+      household2: {members: [person4, person5, person6], state_code: {2026: RI}}
   output:
+    state_code: {2026: [RI, RI]}
     # The statute puts the 285% and 325% limits into effect in January 2027.
     ri_ccap_income_eligible: [false, false]
