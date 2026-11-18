@@ -1426,7 +1426,7 @@ programs:
         variable: sc_liheap_cooling
         parameter_prefix: gov.states.sc.oeo.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 cooling-season nonemergency award, the base plus demographic, low-income and energy-burden supplements with no fuel supplement, up to the cooling maximum, for income-eligible households with cooling costs and an energy bill or heat in the rent, whether or not they report a heating fuel. FY2026 allows two services, so it is paid alongside the heating award; FY2027 allows one service a year, so it pays only its excess over the heating award, and the household receives the larger of the two. Local frequency limits, local funding decisions, crisis and equipment assistance are out of scope.
+        notes: FY2026-FY2027 cooling-season nonemergency award, the base plus demographic, low-income and energy-burden supplements with no fuel supplement, up to the cooling maximum, for income-eligible households with cooling costs and an energy bill or heat in the rent, whether or not they report a heating fuel. FY2026 allows two services, so it is paid alongside the heating award, an upper bound because the second benefit depends on funding; FY2027 allows one service a year, so it pays only its excess over the heating award, and the household receives the larger of the two, leaving out additional services the State may allow when funds permit. Local frequency limits, local funding decisions, crisis and equipment assistance are out of scope.
       - state: SD
         status: partial
         name: South Dakota LIEAP

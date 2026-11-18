@@ -42,7 +42,10 @@ class sc_liheap_cooling(Variable):
         # two. The FY2027 heating award adds a fuel supplement to the same base
         # and supplements under a higher maximum, so cooling pays more than 0
         # in 2027 only to a household without heating eligibility, such as one
-        # that reports no heating fuel.
+        # that reports no heating fuel. Both plans' item 1.1 lets the State
+        # allow more services when funds allow; FY2026 paying both awards is an
+        # upper bound, and FY2027 leaves out additional services the State may
+        # allow.
         if p.payment.max_awards > 1:
             return award
         heating = spm_unit("sc_liheap", period)

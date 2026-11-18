@@ -12004,10 +12004,10 @@ candidates:
   program: liheap
   years:
     from: 2026
-    to: 2026
+    to: 2027
     type: federal-fiscal
-  question: Can South Carolina's 60% SMI heating limit exclude a household of 15 or more whose income is below the
-    federal 110% poverty-guideline floor?
+  question: Can South Carolina's 60% SMI heating and cooling limit exclude a household of 15 or more whose income is
+    below the federal 110% poverty-guideline floor?
   sources:
   - kind: statute
     citation: 42 U.S.C. 8624(b)(2)(B)
@@ -12015,9 +12015,14 @@ candidates:
   - kind: plan
     citation: South Carolina FY2026 LIHEAP State Plan, income eligibility, p.8
     url: https://oeo.sc.gov/managedsites/prd/oeo/documents/2026%20LIHEAP%20State%20Plan.pdf#page=8
+  - kind: plan
+    citation: South Carolina FY2027 LIHEAP State Plan, heating and cooling income eligibility (items 2.1 and 3.1), pp.8,
+      10
+    url: https://liheapch.acf.gov/docs/2027/state-plans/SC_Plan_2027.pdf#page=8
   readings:
     statute: Income below 110% of the poverty guideline cannot by itself exclude the household.
-    other: The plan's 60% SMI limit falls below that floor from 15 members.
+    other: The plans' 60% SMI limit, used for heating and cooling, falls below that floor from 15 members in FY2026 and
+      FY2027.
   example: Twenty-five people with $150,000 exceed the $116,282 limit but are below the $162,415 floor (2025 guideline,
     one-year lag), so they keep the $200 base award.
   pe_us:

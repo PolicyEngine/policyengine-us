@@ -288,13 +288,12 @@
     # 300 + 150 = 450; heating 300 + 150 = 450.
     # Household 6, energy burden: 10_400 > 9_965.40, and 2_400 >= 2_080:
     # 300 + 200 = 500; heating 300 + 200 = 500.
-    # Was [275, 250, 250, 250, 375, 375], the FY2026 heating amounts carried
-    # forward; now the FY2027 heating amounts.
+    # FY2027 heating amounts (plan items 2.3, 2.5 and 2.6).
     sc_liheap: [350, 350, 350, 350, 450, 500]
     # FY2027 plan items 1.1 and 11.5 allow one award in the 2027 program year,
     # so cooling pays only its excess over the heating award: 350 - 350 = 0,
-    # and so on. Was [75, 100, 100, 100, 75, 125] against the carried-forward
-    # heating awards; now 0, since each heating award equals the cooling award.
+    # and so on. Each heating award equals the cooling award, so cooling pays
+    # 0.
     sc_liheap_cooling: [0, 0, 0, 0, 0, 0]
 
 - name: Case 5, all FY2027 cooling supplements reach the 850 cooling maximum, which the heating award already pays.
@@ -327,7 +326,7 @@
     # Cooling award: 300 + 50 + 50 + 50 + 50 + 150 + 200 = 850, the cooling
     # maximum. FY2027 heating adds the 150 natural gas supplement: 850 + 150 =
     # 1_000, the heating maximum.
-    # Was 850, the FY2026 heating amounts carried forward; now 1_000.
+    # The FY2027 heating maximum is 1_000.
     sc_liheap: 1_000
     # One award is allowed in the 2027 program year, and the 850 cooling award
     # does not exceed the 1_000 heating award.
@@ -377,13 +376,12 @@
     # cooling award 300 + 50 + 150 = 500, below the heating award, so
     # cooling pays 0.
     sc_liheap_cooling_eligible: [true, true]
-    # Was [275, 525], the FY2026 heating amounts carried forward (200 + 75
-    # gas; 200 + 75 + 175 + 75); now the FY2027 heating amounts.
+    # FY2027 heating amounts: 300 + 150 gas = 450; 300 + 50 + 150 + 150 = 650.
     sc_liheap: [450, 650]
-    # Was [25, 0]: the 300 cooling award exceeded the 275 carried-forward
-    # heating award by 25, but not the 450 FY2027 heating award.
+    # Each cooling award (300; 500) is below the heating award (450; 650),
+    # so cooling pays 0.
     sc_liheap_cooling: [0, 0]
-    # The total is the larger award. Was [300, 525].
+    # One award a year: the total is the larger award.
     liheap: [450, 650]
 
 - name: Case 7, a mixed-status household's cooling award is prorated to its eligible members.
