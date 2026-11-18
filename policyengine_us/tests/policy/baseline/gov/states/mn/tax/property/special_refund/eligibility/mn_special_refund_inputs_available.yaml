@@ -1,0 +1,39 @@
+- name: Case 1, supported prior-tax sources and explicit facts distinguish known values from missing history.
+  period: 2025
+  input:
+    state_code: [MN, MN, MN, MN, MN, MN, MN, MN, MN, MN, MN, MN]
+    mn_special_refund_current_property_taxes: [4_000, 4_000, 500, 500, 500, 4_000, 4_000, 4_000, 4_000, 4_000, 4_000, -1]
+    mn_special_refund_prior_property_taxes: [3_000, 0, 0, 0, 0, 3_000, 3_000, 3_000, -1, 3_000, 3_000, 3_000]
+    mn_special_refund_prior_property_taxes_fallback: [-1, 3_000, 0, 0, -1, -1, -1, -1, 3_000, -1, -1, -1]
+    mn_special_refund_disabled_veteran_exclusion: [false, false, true, false, true, false, false, false, false, false, false, false]
+    mn_special_refund_prior_refund: [0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0]
+    mn_special_refund_improvement_value: [0, 0, 0, 0, 0, 10_000, 0, 0, 0, -1, 0, 0]
+    mn_special_refund_taxable_market_value: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+    mn_special_refund_current_home_use_fraction: [1, 1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1]
+    mn_special_refund_prior_home_use_fraction: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.1, 1]
+  output:
+    # Fallback is unnecessary when prior line2 is positive. Both prior fields
+    # must be known zero for the documented disabled-veteran zero exception.
+    # Unknown improvements/refund/use history cannot silently mean zero/100%.
+    mn_special_refund_inputs_available: [true, true, true, false, false, false, false, false, false, false, false, false]
+
+- name: Case 2, fallback priority and the veteran zero branch produce distinct source-backed awards.
+  period: 2025
+  input:
+    state_code: [MN, MN, MN]
+    age: [40, 40, 40]
+    mn_special_refund_current_property_taxes: [4_000, 4_000, 500]
+    mn_special_refund_prior_property_taxes: [0, 3_000, 0]
+    mn_special_refund_prior_property_taxes_fallback: [3_000, 50_000, 0]
+    mn_special_refund_disabled_veteran_exclusion: [false, false, true]
+    mn_special_refund_prior_refund: [0, 0, 0]
+    mn_special_refund_improvement_value: [0, 0, 0]
+    mn_special_refund_current_home_use_fraction: [1, 1, 1]
+    mn_special_refund_prior_home_use_fraction: [1, 1, 1]
+    mn_special_refund_same_homestead: [true, true, true]
+    mn_special_refund_qualifying_claimant: [true, true, true]
+  output:
+    mn_special_refund_inputs_available: [true, true, true]
+    mn_special_refund_prior_adjusted_property_taxes: [3_000, 3_000, 0]
+    # Veteran zero: (500 - 0 - max(0,100)) x .6 = 240.
+    mn_special_refund: [384, 384, 240]

@@ -5,12 +5,14 @@
     people:
       person1:
         age: 65
+        dc_senior_disabled_property_tax_relief_ownership_share: 1
         employment_income: 100_000
-        real_estate_taxes: 4_000
+        real_estate_taxes: 2_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 4_000
         takes_up_dc_ptc: false
     spm_units:
       spm_unit:
@@ -19,6 +21,10 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 100_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
   output:
     dc_senior_disabled_property_tax_relief: 2_000
     taxsim_state_property_tax_credit: 2_000
@@ -33,13 +39,16 @@
     people:
       person1:
         age: 40
+        dc_senior_disabled_property_tax_relief_ownership_share: 1
         employment_income: 80_000
-        real_estate_taxes: 3_000
+        real_estate_taxes: 1_500
         is_permanently_and_totally_disabled: true
+        dc_senior_disabled_property_tax_relief_qualifying_disability: true
         is_tax_unit_head: true
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 3_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -47,6 +56,10 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 80_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
   output:
     dc_senior_disabled_property_tax_relief: 1_500
 
@@ -57,12 +70,14 @@
     people:
       person1:
         age: 64
+        dc_senior_disabled_property_tax_relief_ownership_share: 1
         employment_income: 40_000
         real_estate_taxes: 4_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 4_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -70,6 +85,10 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 40_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
   output:
     dc_senior_disabled_property_tax_relief: 0
 
@@ -80,6 +99,7 @@
     people:
       person1:
         age: 40
+        dc_senior_disabled_property_tax_relief_ownership_share: 1
         employment_income: 80_000
         real_estate_taxes: 3_000
         is_disabled: true
@@ -87,6 +107,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        dc_senior_disabled_property_tax_relief_pre_relief_tax: 3_000
     spm_units:
       spm_unit:
         members: [person1]
@@ -94,5 +115,48 @@
       household:
         members: [person1]
         state_code: DC
+        # FY2026 uses the household's known 2024 federal AGI.
+        dc_senior_disabled_property_tax_relief_household_prior_agi: 80_000
+        dc_senior_disabled_property_tax_relief_household_prior_agi_available: true
+        dc_senior_disabled_property_tax_relief_residence_eligible: true
   output:
     dc_senior_disabled_property_tax_relief: 0
+
+- name: Case 5, applicable installment bases determine one nonnegative 50 percent reduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DC, DC, DC, DC, VA, DC]
+    age: [65, 65, 65, 65, 65, 65]
+    dc_senior_disabled_property_tax_relief_household_prior_agi: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000]
+    dc_senior_disabled_property_tax_relief_household_prior_agi_available: [true, true, true, true, true, true]
+    dc_senior_disabled_property_tax_relief_residence_eligible: [true, true, true, true, true, false]
+    dc_senior_disabled_property_tax_relief_ownership_share: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+    dc_senior_disabled_property_tax_relief_pre_relief_tax: [4_000, 2_000, 0, -1_000, 4_000, 4_000]
+    dc_senior_disabled_property_tax_relief_qualifying_disability: [true, false, false, false, false, false]
+    real_estate_taxes: [2_000, 3_000, 4_000, 4_000, 4_000, 4_000]
+  output:
+    # Base4000 full year ->2000; base2000 eligible second installment ->1000.
+    # Senior plus disability does not double the reduction (ASD100 part7).
+    dc_senior_disabled_property_tax_relief: [2_000, 1_000, 0, 0, 0, 0]
+
+- name: Case 6, Schedule H uses the net billed tax independently of direct relief inputs.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [DC, DC]
+    age: [65, 65]
+    adjusted_gross_income: [20_000, 20_000]
+    real_estate_taxes: [2_000, 2_000]
+    takes_up_dc_ptc: [true, true]
+    dc_senior_disabled_property_tax_relief_household_prior_agi: [20_000, 0]
+    dc_senior_disabled_property_tax_relief_household_prior_agi_available: [true, false]
+    dc_senior_disabled_property_tax_relief_residence_eligible: [true, false]
+    dc_senior_disabled_property_tax_relief_ownership_share: [0.5, 0]
+    dc_senior_disabled_property_tax_relief_pre_relief_tax: [4_000, 0]
+  output:
+    dc_senior_disabled_property_tax_relief: [2_000, 0]
+    # ScheduleH2025 line6 uses the actual net bill. Its3%offset is600,
+    # leaving1400, below the1425cap, in both information scenarios.
+    dc_ptc: [1_400, 1_400]
+    real_estate_taxes: [2_000, 2_000]

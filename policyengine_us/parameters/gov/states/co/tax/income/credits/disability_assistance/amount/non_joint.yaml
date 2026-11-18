@@ -1,0 +1,37 @@
+description: Colorado provides this Disability Assistance Credit amount for non-joint filers, depending on federal adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Colorado Disability Assistance Credit non-joint amount
+  reference:
+    - title: "Colorado Revised Statutes Section 39-31-104.5 (4)(a)-(b), enacted by House Bill 24-1268 #page 6-8"
+      href: https://leg.colorado.gov/laws/session-laws/HB24-1268/475/download#page=6
+    - title: 2025 Colorado Simplified Individual Income Tax Return, Disability Assistance Credit table
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104EZ_2025.pdf#page=4
+brackets:
+  - threshold:
+      2025-01-01: -.inf
+    amount:
+      2025-01-01: 1_200
+  - threshold:
+      2025-01-01: 10_000
+    amount:
+      2025-01-01: 1_000
+  - threshold:
+      2025-01-01: 12_500
+    amount:
+      2025-01-01: 800
+  - threshold:
+      2025-01-01: 15_000
+    amount:
+      2025-01-01: 600
+  - threshold:
+      2025-01-01: 17_500
+    amount:
+      2025-01-01: 400
+  - threshold:
+      2025-01-01: 20_000
+    amount:
+      2025-01-01: 0

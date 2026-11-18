@@ -1,0 +1,12 @@
+- name: Case 1, 2025 income limit negative income and dependency retain the source boundaries.
+  period: 2025
+  input:
+    state_code: [MN, MN, MN, MN]
+    age: [40, 40, 40, 40]
+    mn_homestead_credit_refund_household_income: [142_489, 142_490, -1_000, 0]
+    mn_homestead_credit_refund_qualified_property_taxes: [4_000, 4_000, 4_000, 4_000]
+    claimed_as_dependent_on_another_return: [false, false, false, true]
+  output:
+    # Official2025M1PRp23: householdincome142490orhigher is ineligible.
+    # P9 directs negativeincome to zero for refund lookup; dependents fail.
+    mn_homestead_credit_refund_eligible: [true, false, true, false]
