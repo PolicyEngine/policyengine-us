@@ -9,8 +9,12 @@ class ca_liheap_income_limit(Variable):
     unit = USD
     label = "California LIHEAP annualized income limit"
     defined_for = StateCode.CA
-    # PDF pages 9,184
-    reference = "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9"
+    reference = (
+        # PDF pages 9,197
+        "https://www.csd.ca.gov/Shared%20Documents/2027-Final-LIHEAP-State-Plan.pdf#page=9",
+        # PDF pages 9,184
+        "https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=9",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.csd.liheap.income
@@ -30,7 +34,7 @@ class ca_liheap_income_limit(Variable):
             rounded_annual / MONTHS_IN_YEAR
             + extra_people * annual_increment / MONTHS_IN_YEAR
         )
-        # This inferred two-stage rounding reproduces all 25 FY2026 rows;
+        # This inferred two-stage rounding reproduces all 25 FY2026 and FY2027 rows;
         # the source does not prescribe the size-12 switch or an extension.
         rounded_monthly = (
             np.floor(monthly / p.monthly_rounding_increment)
