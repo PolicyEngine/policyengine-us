@@ -4,9 +4,9 @@
 # household that buys its heating (de_liheap_eligible), or one that meets the
 # LIHEAP household and income test (de_liheap_income_eligible, without the
 # heating responsibility test of regular heating) and has a cooling cost, with
-# a member aged 60 or older, a child five or under, or a disabled member.
-# heating_type must be reported: UNSPECIFIED does not qualify. No amount is
-# modeled.
+# a member aged 60 or older, a child five or under, a disabled member, or a
+# member with a chronic breathing condition. No heating fuel needs to be
+# reported. de_liheap_cooling_max tests the published maximum benefit.
 # FY2026 one-person LIHEAP limit 39,342 (60% of state median income).
 
 - name: Case 1, a retiree with gas heat and a cooling cost is eligible.
@@ -197,7 +197,7 @@
     # Source of Heating or Cooling", and this household pays for cooling.
     de_liheap_cooling_eligible: true
 
-- name: Case 10, a retiree with heat in rent and an unspecified heating type does not qualify.
+- name: Case 10, a retiree with heat in rent and an unspecified heating type qualifies.
   period: 2026
   input:
     people:
@@ -216,10 +216,11 @@
         state_code: DE
   output:
     # Unsubsidized heat in rent passes de_liheap_eligible with an unknown
-    # building fuel. heating_type is a required input in PolicyEngine (a
-    # convention, not a Delaware rule), so an unspecified type does not qualify.
+    # building fuel. Aged 67.
     de_liheap_eligible: true
-    de_liheap_cooling_eligible: false
+    # Was false, now true: cooling eligibility no longer requires a reported
+    # heating_type, which was a PolicyEngine convention, not a Delaware rule.
+    de_liheap_cooling_eligible: true
 
 - name: Case 11, the FY2027 rules keep a retiree with gas heat eligible.
   period: 2027
@@ -291,3 +292,66 @@
     # automatically. Aged 67.
     de_liheap_eligible: true
     de_liheap_cooling_eligible: true
+
+- name: Case 14, a retiree with no reported heating fuel who pays for cooling qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # heating_type is left at its default, UNSPECIFIED.
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # No heating fuel or bill, so no regular heating assistance.
+    de_liheap_eligible: false
+    # Countable income at most 18,000 <= 39,342.
+    de_liheap_income_eligible: true
+    # Income eligible, a cooling cost and a member aged 67.
+    de_liheap_cooling_eligible: true
+
+- name: Case 15, a LIHEAP-eligible adult aged 40 with a chronic breathing condition qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        has_chronic_breathing_condition: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        de_liheap_income_eligible: true
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_cooling_eligible: true
+
+- name: Case 16, a LIHEAP-eligible adult aged 40 without a targeted condition does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        has_chronic_breathing_condition: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        de_liheap_income_eligible: true
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Not 60 or older, not under 6, not disabled, no chronic breathing condition.
+    de_liheap_cooling_eligible: false

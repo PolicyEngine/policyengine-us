@@ -1,0 +1,180 @@
+# Delaware LIHEAP summer cooling estimated maximum benefit: the plan section
+# 3.6 maximum for households eligible for the Summer Cooling Assistance
+# Program electric benefit, and zero otherwise. The maximum is $1,000 in
+# FY2026 (from 2025-10-01) and $1,250 in FY2027 (from 2026-10-01). A YEAR
+# period reads the value in effect on January 1, so 2026 gives the FY2026
+# value and 2027 gives the FY2027 value. No household sets heating_type,
+# which stays at its default, UNSPECIFIED.
+# FY2026 one-person LIHEAP limit 39,342 (60% of state median income).
+
+- name: Case 1, a cooling-only retiree with no reported heating fuel gets the FY2026 maximum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Countable income at most 18,000 <= 39,342; a cooling cost; aged 67.
+    de_liheap_eligible: false
+    de_liheap_income_eligible: true
+    de_liheap_cooling_eligible: true
+    de_liheap_cooling_max: 1_000
+
+- name: Case 2, the same retiree gets the FY2027 maximum.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_income_eligible: true
+    de_liheap_cooling_eligible: true
+    de_liheap_cooling_max: 1_250
+
+- name: Case 3, an income-eligible adult aged 45 with no targeted member is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # Countable income at most 18,000 <= 39,342, but not 60 or older, not
+    # under 6, not disabled and no chronic breathing condition.
+    de_liheap_income_eligible: true
+    de_liheap_cooling_eligible: false
+    de_liheap_cooling_max: 0
+
+- name: Case 4, an adult aged 45 with a chronic breathing condition is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 18_000
+        has_chronic_breathing_condition: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_liheap_income_eligible: true
+    de_liheap_cooling_eligible: true
+    de_liheap_cooling_max: 1_000
+
+- name: Case 5, a parent with a five-year-old child is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 18_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Countable income at most 18,000 is below the one-person limit of 39,342,
+    # so it is below the higher two-person limit. 5 < 6.
+    de_liheap_income_eligible: true
+    de_liheap_cooling_eligible: true
+    de_liheap_cooling_max: 1_000
+
+- name: Case 6, a parent with a six-year-old child is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income_before_lsr: 18_000
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # 6 is not below the child age limit of 6.
+    de_liheap_income_eligible: true
+    de_liheap_cooling_eligible: false
+    de_liheap_cooling_max: 0
+
+- name: Case 7, a worker aged 63 with income over the LIHEAP limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income_before_lsr: 65_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    # 65,000 less estimated withholding stays well above 39,342.
+    de_liheap_income_eligible: false
+    de_liheap_cooling_eligible: false
+    de_liheap_cooling_max: 0
+
+- name: Case 8, a retiree outside Delaware gets no Delaware cooling maximum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        has_cooling_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    de_liheap_cooling_eligible: false
+    de_liheap_cooling_max: 0
