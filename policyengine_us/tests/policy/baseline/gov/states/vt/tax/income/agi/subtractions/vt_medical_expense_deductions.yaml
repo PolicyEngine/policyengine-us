@@ -2,6 +2,7 @@
   period: 2022
   input:
     state_code: ME # Test state definition
+    tax_unit_itemizes: true
     medical_expense_deduction: 5_000
     vt_standard_deduction: 1_000
     vt_personal_exemptions: 1_000
@@ -12,6 +13,7 @@
   period: 2022
   input:
     state_code: VT
+    tax_unit_itemizes: true
     medical_expense_deduction: 5_000
     vt_standard_deduction: 1_000
     vt_personal_exemptions: 1_000
@@ -22,6 +24,7 @@
   period: 2022
   input:
     state_code: VT
+    tax_unit_itemizes: true
     medical_expense_deduction: 1_000
     vt_standard_deduction: 1_000
     vt_personal_exemptions: 1_000
@@ -32,8 +35,31 @@
   period: 2022
   input:
     state_code: VT
+    tax_unit_itemizes: true
     medical_expense_deduction: 2_000
     vt_standard_deduction: 1_000
     vt_personal_exemptions: 1_000
   output:
     vt_medical_expense_deduction: 0 # max(0,2000-2000) = 0
+
+- name: A federal standard-deduction filer cannot claim hypothetical Schedule A medical expenses
+  period: 2025
+  input:
+    state_code: VT
+    tax_unit_itemizes: false
+    medical_expense_deduction: 5_000
+    vt_standard_deduction: 1_000
+    vt_personal_exemptions: 1_000
+  output:
+    vt_medical_expense_deduction: 0
+
+- name: The Vermont medical deduction starts in 2019
+  period: 2018
+  input:
+    state_code: VT
+    tax_unit_itemizes: true
+    medical_expense_deduction: 5_000
+    vt_standard_deduction: 1_000
+    vt_personal_exemptions: 1_000
+  output:
+    vt_medical_expense_deduction: 0
