@@ -45,7 +45,7 @@ def test_refundable_ctc_on_itemizing_branch_does_not_recurse():
         },
         "households": {"hh": {"members": ["adult", "child"], "state_code": "CA"}},
     }
-    sim = Simulation(situation=situation)
+    sim = Simulation(situation=situation, default_input_period=2024)
     itemizing_branch = sim.get_branch("itemizing")
     itemizing_branch.set_input("tax_unit_itemizes", 2024, np.array([True]))
 
@@ -78,7 +78,7 @@ def test_income_tax_on_itemizing_branch_with_no_dependents():
         "tax_units": {"tu": {"members": ["adult"], "filing_status": "SINGLE"}},
         "households": {"hh": {"members": ["adult"], "state_code": "CA"}},
     }
-    sim = Simulation(situation=situation)
+    sim = Simulation(situation=situation, default_input_period=2024)
     itemizing_branch = sim.get_branch("itemizing")
     itemizing_branch.set_input("tax_unit_itemizes", 2024, np.array([True]))
 
