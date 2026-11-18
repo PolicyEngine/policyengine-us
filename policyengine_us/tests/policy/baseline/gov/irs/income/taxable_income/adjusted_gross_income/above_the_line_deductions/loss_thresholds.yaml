@@ -182,5 +182,9 @@
     filing_status: [SINGLE, JOINT, SEPARATE, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE]
     self_employment_income: [-1_000_000, -1_000_000, -1_000_000, -1_000_000, -1_000_000]
   output:
-    # These are inflation projections, not IRS-published amounts.
-    loss_ald: [280_000, 560_000, 280_000, 280_000, 280_000]
+    # These are inflation projections, not IRS-published amounts. The 2027
+    # thresholds from Rev. Proc. 2026-35 grow with gov.irs.uprating:
+    # $264,000 x 194.502345 / 182.500667 = $281,361.27, rounded to the
+    # nearest $1,000, and $528,000 x the same ratio = $562,722.54, rounded
+    # to the nearest $2,000, so $562,000 = 2 x $281,000.
+    loss_ald: [281_000, 562_000, 281_000, 281_000, 281_000]

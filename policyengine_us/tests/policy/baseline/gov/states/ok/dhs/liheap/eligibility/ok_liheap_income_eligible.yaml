@@ -1,0 +1,14 @@
+# Oklahoma LIHEAP gross income test shared by winter heating and summer cooling.
+# OAC 340:20-1-10(h)(2), 340:20-1-11(a); FY2026 Appendix C-7 size-one limit 1,696 a
+# month (20,352 a year), inclusive, after rounding monthly gross income half up:
+# 20,352 / 12 = 1,696.00; 20,357 / 12 = 1,696.42 -> 1,696; 20,358 / 12 = 1,696.50
+# -> 1,697.
+
+- name: Case 1, the gross limit is inclusive after rounding monthly income half up.
+  period: 2026
+  input:
+    state_code: [OK, OK, OK]
+    age: [40, 40, 40]
+    ok_liheap_gross_income: [20_352, 20_357, 20_358]
+  output:
+    ok_liheap_income_eligible: [true, true, false]

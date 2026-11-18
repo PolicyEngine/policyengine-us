@@ -225,7 +225,7 @@
     # 30 - 380, so no payment. Martha has 513 - 180 = 333. POMS shows 332
     # from the 512 individual rate first set for 2000; SSA's rate table has
     # 513 for 2000 after Public Law 106-554.
-    ssi_countable_income:
+    ssi_countable_income_monthly:
       2000-06: [290, 290]
       2000-07: [380, 180]
     ssi:

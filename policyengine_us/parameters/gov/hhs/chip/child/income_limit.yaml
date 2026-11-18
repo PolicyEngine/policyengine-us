@@ -12,6 +12,18 @@ metadata:
       href: https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels
     - title: Medicaid and CHIP Eligibility Levels as of April, 2018
       href: https://data.medicaid.gov/dataset/d7e4cccb-1c56-5b5d-acce-5e7744c6d3b4
+    - title: "Indiana Navigator Training Resource Manual, Version 3.0 (January 2017) #page 104,108,236"
+      href: https://www.in.gov/idoi/files/NavManV3.0.pdf#page=104
+    - title: "MACStats Medicaid and CHIP Data Book (December 2017), Exhibit 35 #page 117-118"
+      href: https://www.macpac.gov/wp-content/uploads/2015/12/MACStats-Medicaid-CHIP-Data-Book-December-2017.pdf#page=117
+    - title: "MACStats Medicaid and CHIP Data Book (December 2018), Exhibit 35 #page 117-118"
+      href: https://www.macpac.gov/wp-content/uploads/2018/12/December-2018-MACStats-Data-Book.pdf#page=117
+    - title: "MACStats Medicaid and CHIP Data Book (December 2019), Exhibit 35 #page 117-118"
+      href: https://www.macpac.gov/wp-content/uploads/2020/01/MACStats-Medicaid-and-CHIP-Data-Book-December-2019.pdf#page=117
+    - title: "MACStats Medicaid and CHIP Data Book (December 2020), Exhibit 35 #page 111-112"
+      href: https://www.macpac.gov/wp-content/uploads/2020/12/MACStats-Medicaid-and-CHIP-Data-Book-December-2020.pdf#page=111
+    - title: "MACStats Medicaid and CHIP Data Book (December 2021), Exhibit 35 #page 111-112"
+      href: https://www.macpac.gov/wp-content/uploads/2021/12/MACStats-Medicaid-and-CHIP-Data-Book-December-2021.pdf#page=111
 AK:
   2018-01-01: -.inf
 AL:
@@ -45,7 +57,11 @@ IL:
   2018-01-01: 3.18
   2022-07-01: -.inf
 IN:
-  2018-01-01: 2.62
+  # The manual dates MAGI eligibility to January 1, 2014. Combining its
+  # unchanged 250% CHIP standard with the conditional five percentage point
+  # disregard gives 255%; this start follows the methodology, not enactment.
+  2014-01-01: 2.55
+  # Retain the existing 2021 snapshot boundary, not a change in the limit.
   2021-01-01: 2.55
 KS:
   2018-01-01: 2.41

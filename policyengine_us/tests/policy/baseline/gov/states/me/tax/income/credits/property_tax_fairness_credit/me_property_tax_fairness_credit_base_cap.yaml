@@ -179,3 +179,212 @@
     age_spouse: 0
   output:
     me_property_tax_fairness_credit_base_cap: 1_750
+
+# Isolated cap component: the $2,000 benefit-base input is a premise, not
+# validation of that year's benefit-base calculation. Known costs below it
+# isolate the cap; income is zero and the ages are year-end component inputs.
+# 36 MRS section 5219-KK, subsections 2, 2-A, 2-B and 2-C.
+# https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+- name: Case 13, 2018 isolated annual cap boundaries.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME, ME, ME, ME]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0, 0, 0, 0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [0, 0, 0, 0, 0, 0]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [749, 750, 751, 1_199, 1_200, 1_201]
+    age_head: [64, 64, 64, 65, 65, 65]
+    age_spouse: [0, 0, 0, 0, 0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [749, 750, 750, 1_199, 1_200, 1_200]
+
+# Isolated cap component: the $2,000 benefit-base input is a premise, not
+# validation of that year's benefit-base calculation. Known costs below it
+# isolate the cap; income is zero and the ages are year-end component inputs.
+# 36 MRS section 5219-KK, subsections 2, 2-A, 2-B and 2-C.
+# https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+- name: Case 14, 2019 isolated annual cap boundaries.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME, ME, ME, ME]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0, 0, 0, 0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [0, 0, 0, 0, 0, 0]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [749, 750, 751, 1_199, 1_200, 1_201]
+    age_head: [64, 64, 64, 65, 65, 65]
+    age_spouse: [0, 0, 0, 0, 0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [749, 750, 750, 1_199, 1_200, 1_200]
+
+# Isolated cap component: the $2,000 benefit-base input is a premise, not
+# validation of that year's benefit-base calculation. Known costs below it
+# isolate the cap; income is zero and the ages are year-end component inputs.
+# 36 MRS section 5219-KK, subsections 2, 2-A, 2-B and 2-C.
+# https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+- name: Case 15, 2020 isolated annual cap boundaries.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME, ME, ME, ME]
+    filing_status: [SINGLE, SINGLE, SINGLE, SINGLE, SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0, 0, 0, 0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000, 2_000, 2_000, 2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [0, 0, 0, 0, 0, 0]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [749, 750, 751, 1_199, 1_200, 1_201]
+    age_head: [64, 64, 64, 65, 65, 65]
+    age_spouse: [0, 0, 0, 0, 0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [749, 750, 750, 1_199, 1_200, 1_200]
+
+# Saturated cap compatibility only: this does not validate the pre-2018
+# statutory 50% excess factor, which is outside this amount correction.
+
+# Isolated cap component: the $2,000 benefit-base input is a premise, not
+# validation of that year's benefit-base calculation. Known costs below it
+# isolate the cap; income is zero and the ages are year-end component inputs.
+# 36 MRS section 5219-KK, subsections 2, 2-A, 2-B and 2-C.
+# https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+- name: Case 16, 2017 saturated cap compatibility.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME]
+    filing_status: [SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [0, 0]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [2_000, 2_000]
+    age_head: [64, 65]
+    age_spouse: [0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [600, 900]
+
+# Isolated cap component: the $2,000 benefit-base input is a premise, not
+# validation of that year's benefit-base calculation. Known costs below it
+# isolate the cap; income is zero and the ages are year-end component inputs.
+# 36 MRS section 5219-KK, subsections 2, 2-A, 2-B and 2-C.
+# https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+- name: Case 17, 2021 cap compatibility after the 2021 increase.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME]
+    filing_status: [SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [0, 0]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [2_000, 2_000]
+    age_head: [64, 65]
+    age_spouse: [0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [1_000, 1_500]
+
+# Isolated component premises: each position is a separate single-filer case
+# with a known $2,000 benefit-base limit, $10,000 of statutory income and
+# independently known qualifying rent/property tax. This does not validate
+# eligibility, the income calculation or conversion of gross rent into taxes.
+# The excess over 6% of income is halved before applying the age-based cap.
+# 36 MRS section 5219-KK(2); P.L. 2017, c. 474, Part B, section 15.
+# https://legislature.maine.gov/legis/bills/bills_128th/chapters/PUBLIC474.asp
+- name: Case 18, 2017 half-excess before the age cap.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [10_000, 10_000, 10_000]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [500, 1_000, 2_000]
+    age_head: [64, 64, 64]
+    age_spouse: [0, 0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [0, 200, 600]
+
+# Isolated component premises: known benefit-base limit $2,000, statutory
+# income $10,000 and qualifying rent/property tax $500/$1,000/$2,000.
+# From 2018 the excess is not halved; the under-65 cap is $750.
+# This does not validate eligibility or those upstream input calculations.
+# 36 MRS section 5219-KK(2) and (2-A).
+# https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+- name: Case 19, 2018 full excess begins before the age cap.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [10_000, 10_000, 10_000]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [500, 1_000, 2_000]
+    age_head: [64, 64, 64]
+    age_spouse: [0, 0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [0, 400, 750]
+
+# Isolated component premises: known benefit-base limit $2,000, statutory
+# income $10,000 and qualifying rent/property tax $500/$1,000/$2,000.
+# The pre-2018 half-excess rule also covers 2015; this is not a full award.
+# This does not validate eligibility or those upstream input calculations.
+# 36 MRS section 5219-KK(2) and (2-A).
+# https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+- name: Case 20, 2015 pre-2018 half-excess component.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [10_000, 10_000, 10_000]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [500, 1_000, 2_000]
+    age_head: [64, 64, 64]
+    age_spouse: [0, 0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [0, 200, 600]
+
+# Isolated component premises: known benefit-base limit $2,000, statutory
+# income $10,000 and qualifying rent/property tax $500/$1,000/$2,000.
+# The pre-2018 half-excess rule also covers 2016; this is not a full award.
+# This does not validate eligibility or those upstream input calculations.
+# 36 MRS section 5219-KK(2) and (2-A).
+# https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+- name: Case 21, 2016 pre-2018 half-excess component.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [10_000, 10_000, 10_000]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [500, 1_000, 2_000]
+    age_head: [64, 64, 64]
+    age_spouse: [0, 0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [0, 200, 600]
+
+# Isolated component premises: known benefit-base limit $2,000, statutory
+# income $10,000 and qualifying rent/property tax $500/$1,000/$2,000.
+# At age 65 the $900 cap leaves the $700 half-excess amount unchanged.
+# This does not validate eligibility or those upstream input calculations.
+# 36 MRS section 5219-KK(2) and (2-A).
+# https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+- name: Case 22, 2017 age-65 half-excess uses the senior cap.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    state_code: [ME, ME, ME]
+    filing_status: [SINGLE, SINGLE, SINGLE]
+    me_fairness_credit_qualifying_children: [0, 0, 0]
+    me_property_tax_fairness_credit_benefit_base: [2_000, 2_000, 2_000]
+    me_sales_and_property_tax_fairness_credit_income: [10_000, 10_000, 10_000]
+    me_property_tax_fairness_credit_countable_rent_property_tax: [500, 1_000, 2_000]
+    age_head: [65, 65, 65]
+    age_spouse: [0, 0, 0]
+  output:
+    me_property_tax_fairness_credit_base_cap: [0, 200, 700]

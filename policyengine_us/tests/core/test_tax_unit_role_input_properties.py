@@ -9,10 +9,12 @@ Invariants, each checked for every generated household:
 3. Fallback (marital units omitted): in a unit without supplied roles, the
    roles equal an independent implementation of age ordering. The oldest adult
    heads the unit, earliest member on ties, skipping adults input as tax unit
-   dependents unless every adult is one; the next such adult is the spouse
-   unless any member of the unit is separated. The generated situations pass
-   no marital units, so Core puts everyone in one marital unit and the
-   couple-first head and partner-first spouse rules reduce to age order.
+   dependents unless every adult is one; the next such adult who fails the
+   qualifying child age test against the head (26 USC 152(c)(3)) is the
+   spouse unless the head or that adult is separated. The generated
+   situations pass no marital units, so the model builds them by these same
+   rules and the couple-first head and partner-first spouse rules reduce to
+   age order.
 4. Filing status is computed: no supplied status is read, so a unit files
    jointly exactly when it has a spouse, supplied or inferred.
 5. Workaround equivalence (differential): supplying roles through
@@ -120,20 +122,37 @@ def _situation(units, pin_explicitly=False):
     }
 
 
-def _age_rule(ages, separated, dependent_input=None):
-    # Mirrors the fallback as it stands, with marital units omitted (see
-    # invariant 3). Adults input as tax unit dependents are skipped unless
-    # every adult is one (#9630). Any separated member blocks every spouse;
-    # that unit-wide gate is a known defect (#9620), so update this reference
-    # when it is fixed.
+# A non-student under 19 and younger than the head meets the qualifying child
+# age test (26 USC 152(c)(3)(A)(i)), so they are not the head's spouse. The
+# generated units have no students or disabled people.
+QUALIFYING_CHILD_AGE_LIMIT = 19
+
+
+def _age_rule(ages, separated, dependent_input=None, head_input=None):
+    """Independent age order for situations without marital-unit inputs."""
     adults = [i for i, age in enumerate(ages) if age >= 18]
     if dependent_input is not None:
         non_dependents = [i for i in adults if not dependent_input[i]]
         if non_dependents:
             adults = non_dependents
-    head = min(adults, key=lambda i: (-ages[i], i)) if adults else None
-    candidates = [] if any(separated) else [i for i in adults if i != head]
+    head = head_input
+    if head is None:
+        head = min(adults, key=lambda i: (-ages[i], i)) if adults else None
+    candidates = [
+        i
+        for i in adults
+        if i != head
+        and not (
+            head is not None
+            and ages[i] < QUALIFYING_CHILD_AGE_LIMIT
+            and ages[i] < ages[head]
+        )
+    ]
     spouse = min(candidates, key=lambda i: (-ages[i], i)) if candidates else None
+    if spouse is not None and (
+        (head is not None and separated[head]) or separated[spouse]
+    ):
+        spouse = None
     return head, spouse
 
 

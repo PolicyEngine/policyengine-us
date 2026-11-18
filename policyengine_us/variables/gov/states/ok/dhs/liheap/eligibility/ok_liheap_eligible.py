@@ -27,13 +27,7 @@ class ok_liheap_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("ok_liheap_household_size", period)
-        # OAC 340:20-1-11(a) converts income to a monthly amount and rounds it
-        # to the nearest dollar; Appendix C-7 prints whole-dollar monthly
-        # limits. Rounding the monthly total half up approximates the
-        # per-source rounding.
-        income = spm_unit("ok_liheap_gross_income", period)
-        monthly_income = np.floor(income / MONTHS_IN_YEAR + 0.5)
-        monthly_limit = spm_unit("ok_liheap_income_limit", period) / MONTHS_IN_YEAR
+        income_eligible = spm_unit("ok_liheap_income_eligible", period)
         fuel = spm_unit("heating_type", period)
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         # OAC 340:20-1-19(d)(1) pays "renters, roomers, and boarders who pay a
@@ -66,7 +60,7 @@ class ok_liheap_eligible(Variable):
         # LIHEAP receipt are not available as existing inputs.
         return (
             (size > 0)
-            & (monthly_income <= monthly_limit)
+            & income_eligible
             & (fuel != fuel.possible_values.NONE)
             & (has_bill | pays_directly)
         )
