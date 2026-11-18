@@ -1,3 +1,17 @@
+- name: Oregon Kids Credit adds back the three Schedule 1-A subtractions
+  period: 2025
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    adjusted_gross_income: 30_000
+    or_federal_tax_liability_subtraction: 0
+    tip_income_deduction: 1_000
+    overtime_income_deduction: 2_000
+    auto_loan_interest_deduction: 500
+  output:
+    or_ctc: 325.5
+
 - name: $1,000 maximum in 2023.
   period: 2023
   input:
