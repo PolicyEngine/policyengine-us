@@ -122,7 +122,37 @@
     # min(1,800, 3,000) = 1,800.
     tx_ceap: 1_800
 
-- name: Case 11, FY2027 low income household (0-50% FPG) gets the 1,800 maximum.
+- name: Case 11, FY2026 mid income household (51-75% FPG) gets the 1,500 maximum.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    employment_income: 10_000
+    spm_unit_size: 1
+    state_code: TX
+    electricity_expense: 3_000
+    gas_expense: 0
+  output:
+    # 10,000 / 15,960 (2026 guideline for one) = 63% FPG,
+    # above 50% and at or below 75%: FY2026 plan section 4.7 maximum 1,500.
+    # min(1,500, 3,000) = 1,500.
+    tx_ceap: 1_500
+
+- name: Case 12, FY2026 high income household (76-150% FPG) gets the 1,200 maximum.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    employment_income: 20_000
+    spm_unit_size: 1
+    state_code: TX
+    electricity_expense: 1_000
+    gas_expense: 500
+  output:
+    # 20,000 / 15,960 = 125% FPG, above 75% and at or below 150%:
+    # FY2026 plan section 4.7 maximum 1,200. Energy costs 1,000 + 500 = 1,500.
+    # min(1,200, 1,500) = 1,200.
+    tx_ceap: 1_200
+
+- name: Case 13, FY2027 low income household (0-50% FPG) gets the 1,800 maximum.
   absolute_error_margin: 0.1
   period: 2027
   input:
@@ -136,7 +166,7 @@
     # min(1,800, 3,000) = 1,800.
     tx_ceap: 1_800
 
-- name: Case 12, FY2027 mid income household (51-75% FPG) gets the 1,500 maximum.
+- name: Case 14, FY2027 mid income household (51-75% FPG) gets the 1,500 maximum.
   absolute_error_margin: 0.1
   period: 2027
   input:
@@ -151,7 +181,7 @@
     # min(1,500, 3,000) = 1,500.
     tx_ceap: 1_500
 
-- name: Case 13, FY2027 high income household (76-150% FPG) gets the 1,200 maximum.
+- name: Case 15, FY2027 high income household (76-150% FPG) gets the 1,200 maximum.
   absolute_error_margin: 0.1
   period: 2027
   input:
