@@ -1,0 +1,129 @@
+description: Medicaid counts at most this number of a pregnant woman's expected children in the household size of each other member of her household, under the state's election in 42 CFR 435.603(b).
+metadata:
+  unit: person
+  period: year
+  label: Medicaid MAGI household cap on a pregnant member's expected children
+  breakdown:
+    - state_code
+  reference:
+    - title: 42 CFR 435.603(b), family size
+      href: https://www.law.cornell.edu/cfr/text/42/435.603#b
+    - title: California Medicaid State Plan Amendment 13-0023-MM, S10 MAGI-Based Income Methodologies
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/CA/CA-13-0023-MM.pdf#page=7
+    - title: California DHCS All County Welfare Directors Letter 20-10
+      href: https://www.dhcs.ca.gov/wp-content/uploads/2025/10/c20-10.pdf#page=3
+    - title: New Jersey Medicaid State Plan Amendment 13-0016-MM3, S10 MAGI-Based Income Methodologies
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0016-MM3.pdf#page=5
+
+# 42 CFR 435.603(b) lets each state count a pregnant woman in the household of
+# the other members as herself (0 here), herself plus one (1) or herself plus
+# the number of children she is expected to deliver (.inf). Her own household
+# always counts every expected child. States other than California and New
+# Jersey are not yet researched (issue 5251); they keep 0, the treatment the
+# model applied before this parameter.
+AK:
+  2014-01-01: 0
+AL:
+  2014-01-01: 0
+AR:
+  2014-01-01: 0
+AZ:
+  2014-01-01: 0
+CA:
+  # S10, effective 2014-01-01: herself plus the number of children she is
+  # expected to deliver.
+  2014-01-01: .inf
+CO:
+  2014-01-01: 0
+CT:
+  2014-01-01: 0
+DC:
+  2014-01-01: 0
+DE:
+  2014-01-01: 0
+FL:
+  2014-01-01: 0
+GA:
+  2014-01-01: 0
+HI:
+  2014-01-01: 0
+IA:
+  2014-01-01: 0
+ID:
+  2014-01-01: 0
+IL:
+  2014-01-01: 0
+IN:
+  2014-01-01: 0
+KS:
+  2014-01-01: 0
+KY:
+  2014-01-01: 0
+LA:
+  2014-01-01: 0
+MA:
+  2014-01-01: 0
+MD:
+  2014-01-01: 0
+ME:
+  2014-01-01: 0
+MI:
+  2014-01-01: 0
+MN:
+  2014-01-01: 0
+MO:
+  2014-01-01: 0
+MS:
+  2014-01-01: 0
+MT:
+  2014-01-01: 0
+NC:
+  2014-01-01: 0
+ND:
+  2014-01-01: 0
+NE:
+  2014-01-01: 0
+NH:
+  2014-01-01: 0
+NJ:
+  # S10, effective 2014-01-01: herself plus the number of children she is
+  # expected to deliver.
+  2014-01-01: .inf
+NM:
+  2014-01-01: 0
+NV:
+  2014-01-01: 0
+NY:
+  2014-01-01: 0
+OH:
+  2014-01-01: 0
+OK:
+  2014-01-01: 0
+OR:
+  2014-01-01: 0
+PA:
+  2014-01-01: 0
+RI:
+  2014-01-01: 0
+SC:
+  2014-01-01: 0
+SD:
+  2014-01-01: 0
+TN:
+  2014-01-01: 0
+TX:
+  2014-01-01: 0
+UT:
+  2014-01-01: 0
+VA:
+  2014-01-01: 0
+VT:
+  2014-01-01: 0
+WA:
+  2014-01-01: 0
+WI:
+  2014-01-01: 0
+WV:
+  2014-01-01: 0
+WY:
+  2014-01-01: 0

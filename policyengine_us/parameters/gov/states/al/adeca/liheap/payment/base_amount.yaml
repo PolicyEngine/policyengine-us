@@ -1,4 +1,4 @@
-description: Alabama provides this base payment for a one-person household in the lowest income band, by heating fuel, under the Low Income Home Energy Assistance Program.
+description: Alabama provides this base payment for a one-person household in the lowest income band, by fuel type, under the Low Income Home Energy Assistance Program.
 propane:
   2025-10-01: 500
 natural_gas:
@@ -10,7 +10,7 @@ wood_coal_kerosene:
 metadata:
   unit: currency-USD
   period: year
-  label: Alabama LIHEAP base heating payment by fuel
+  label: Alabama LIHEAP base payment by fuel
   propagate_metadata_to_children: true
   reference:
     - title: Alabama FY2026 LIHEAP Policy Manual, Appendix D (current benefit chart)

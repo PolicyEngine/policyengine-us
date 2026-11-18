@@ -32,10 +32,10 @@ class sc_liheap_eligible(Variable):
         federal_floor = np.round(
             guideline * parameters(period).gov.hhs.liheap.fpg_floor, 2
         )
-        # OEO asks for an obligation to pay a home energy bill, and the one regular
-        # award pays heating or cooling costs, so any counted bill qualifies, including
-        # in a home without heating. heating_type is a required input, so an unspecified
-        # fuel qualifies only through heat in the rent.
+        # OEO asks for an obligation to pay a home energy bill, and Direct Assistance
+        # may pay home heating or cooling costs, so any counted bill qualifies,
+        # including in a home without heating. heating_type is a required input, so an
+        # unspecified fuel qualifies only through heat in the rent.
         has_energy_cost = add(spm_unit, period, p.payment.energy_cost_sources) > 0
         fuel = spm_unit("heating_type", period)
         known_fuel = fuel != fuel.possible_values.UNSPECIFIED

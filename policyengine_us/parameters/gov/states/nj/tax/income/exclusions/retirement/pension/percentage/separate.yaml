@@ -6,6 +6,16 @@ metadata:
   type: single_amount
   label: New Jersey pension/retirement exclusion fraction
   reference:
+    - title: P.L. 2021, c. 129, sections 1 and 2 (N.J.S.A. 54A:6-10 and 54A:6-15)
+      href: https://pub.njleg.state.nj.us/Bills/2020/PL21/129_.HTM
+    - title: 2017 NJ-1040 Instructions, Line 27a
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2017/1040i.pdf#page=28
+    - title: 2018 NJ-1040 Instructions, Line 28a
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2018/1040i.pdf#page=23
+    - title: 2019 NJ-1040 Instructions, Line 28a
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2019/1040i.pdf#page=21
+    - title: 2020 NJ-1040 Instructions, Line 28a
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2020/1040i.pdf#page=21
     - title: 2021 New Jersey NJ-1040 Resident Return Line 28a
       href: https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=21
     - title: 2022 NJ-1040 Instructions Line 28a
@@ -22,10 +32,12 @@ brackets:
   - threshold:
       2021-01-01: 100_000
     amount:
+      2017-01-01: 0
       2021-01-01: 0.25
   - threshold:
       2021-01-01: 125_000
     amount:
+      2017-01-01: 0
       2021-01-01: 0.125
   - threshold:
       2021-01-01: 150_000

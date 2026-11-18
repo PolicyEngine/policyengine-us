@@ -2,7 +2,7 @@ description: Wisconsin phases out its standard deduction for joint filers accord
 metadata:
   type: marginal_rate
   threshold_period: year
-  threshold_unit: currency-USD 
+  threshold_unit: currency-USD
   rate_unit: /1
   label: Wisconsin standard deduction joint phase out
   reference:
@@ -16,13 +16,12 @@ metadata:
       href: https://www.revenue.wi.gov/DORReports/25sumrpt.pdf#page=9
     - title: 2025 Form 1-ES instructions, Standard Deduction Table
       href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-ES-Inst.pdf#page=3
-    - title: 2026 Form 1-ES instructions, 2026 Standard Deduction schedules
+    - title: Wisconsin Statutes 71.05(22)(dp) - Standard deduction limits
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dp
+    - title: Wisconsin Statutes 71.05(22)(dt) - Standard deduction indexing
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dt
+    - title: 2026 Form 1-ES instructions, Standard Deduction Schedules
       href: https://www.revenue.wi.gov/TaxForms2026/2026-Form1-ES-Inst.pdf#page=2
-    # The legal code provides inflaton unadjusted amounts
-    - title: Wisconsin Statutes 71.07 (9)(b)(5)
-      href: https://docs.legis.wisconsin.gov/2023/statutes/statutes/71/i/05/22/dm
-    # Form 1 instructions give only a standard deduction table. The Form 1-ES instructions
-    # and the Tax Exemption Devices reports state the phase-out starts and rates.
 
 brackets:
   - threshold:
@@ -38,10 +37,9 @@ brackets:
         2025-01-01: 28_210
         2026-01-01: 29_040
       metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: nearest
-            interval: 10
+        uprating: null
+        wisconsin_indexing:
+          base: 21_360
+          base_year: 2015
     rate:
       2021-01-01: 0.19778

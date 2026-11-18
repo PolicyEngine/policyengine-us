@@ -9,8 +9,14 @@ metadata:
       type: downwards
       interval: 5
   reference:
-    - title: Code of the District of Columbia § 47-1806.17(b)(1)(A)
-      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17#(b)(1)
+    - title: D.C. Law 26-55, sections 7062 and 7063
+      href: https://code.dccouncil.gov/us/dc/council/laws/26-55
+    - title: D.C. Law 26-89, sections 2(j) and 6(b)
+      href: https://code.dccouncil.gov/us/dc/council/laws/26-89
+    - title: "DC Attorney General, February 24, 2026 #page 1-2"
+      href: https://oag.dc.gov/sites/default/files/2026-02/AG-Opinion-Decoupling-Retroactivity-and-Validity-.pdf#page=1
 
 values:
-  2026-01-01: 1_000
+  # The Council repealed the credit, then revived it temporarily. The temporary
+  # act expired on September 25, 2026, before the calendar tax year ended.
+  2026-01-01: 0
