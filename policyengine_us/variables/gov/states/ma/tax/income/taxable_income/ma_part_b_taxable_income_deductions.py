@@ -43,12 +43,7 @@ class ma_part_b_taxable_income_deductions(Variable):
         else:
             bank_interest_deduction = 0
         # (B)(a)(9): Rent deduction.
-        rent = add(tax_unit, period, ["rent"])
-        rent_deduction = tax.deductions.rent.share * rent
-        rent_deduction = min_(
-            rent_deduction,
-            tax.deductions.rent.cap[filing_status],
-        )
+        rent_deduction = tax_unit("ma_rent_deduction", period)
         # (B)(a)(13): Charitable contributions deduction.
         charitable_deduction = tax_unit("charitable_deduction", period)
         # (B)(a)(14): Claim of right deduction.

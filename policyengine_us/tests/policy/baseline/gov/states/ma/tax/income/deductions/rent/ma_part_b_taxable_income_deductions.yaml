@@ -1,0 +1,206 @@
+# Independent 2025 expectations from M.G.L. c. 62, s. 3(B)(a)(9),
+# 2025 Form 1 instructions printed page 12, and DOR rent-deduction guidance.
+# https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+# https://www.mass.gov/doc/2025-form-1-instructions/download
+# Missing/invalid facts preserve a compatibility amount, not a verified claim.
+# Integration expectations preserve all nonrent components and historical numerics.
+
+# Rent 3,000 replaces old rent 2,000; the old term must not remain in addition.
+- name: 'Case 1, the new rent component replaces the old term once.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 0
+    ma_claim_of_right_deduction: 0
+    ma_529_deduction: 0
+    rent: 10_000
+  output:
+    ma_part_b_taxable_income_deductions: 3_000
+
+# Retirement capped at 2,000 + charity 500 + claim of right 250 + 529 deduction 800 + rent 3,000 = 6,550. Nonrent inputs are stipulated component amounts.
+- name: 'Case 2, all other deduction components remain in the aggregate.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 6_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 1_000
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    employee_social_security_tax: 4_000
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 500
+    ma_claim_of_right_deduction: 250
+    ma_529_deduction: 800
+    rent: 10_000
+  output:
+    ma_part_b_taxable_income_deductions: 6_550
+
+# Compatibility only: old rent min(5,000, 2,000) plus charity 500 = 2,500.
+- name: 'Case 3, absent source facts retain the legacy numerical aggregate.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    rent: 10_000
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 500
+    ma_claim_of_right_deduction: 0
+    ma_529_deduction: 0
+  output:
+    ma_part_b_taxable_income_deductions: 2_500
+
+# Compatibility only: legacy rent 2,000 plus charity 500; do not use 500 from the new qualified base.
+- name: 'Case 4, invalid documents fall back to generic rent rather than the qualified base.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 1_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: -1
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 500
+    ma_claim_of_right_deduction: 0
+    ma_529_deduction: 0
+    rent: 10_000
+  output:
+    ma_part_b_taxable_income_deductions: 2_500
+
+# Historical numerical compatibility from old formula and dated parameters: min(3,000, 2,000). Not a new historical-law audit.
+- name: 'Case 5, new facts do not change the 2024 aggregate.'
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 20_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 0
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 0
+    ma_claim_of_right_deduction: 0
+    ma_529_deduction: 0
+    rent: 6_000
+  output:
+    ma_part_b_taxable_income_deductions: 2_000
+
+# Historical numerical compatibility: old 2022 separate cap is 1,500; ignore the new documentary path.
+- name: 'Case 6, the earlier separate cap remains unchanged in 2022.'
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 20_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'ALTERNATIVE'
+    ma_rent_deduction_allocation_documentation: 'VERIFIED'
+    ma_rent_deduction_spouse_amount_taken: 0
+    ma_rent_deduction_spouse_amount_taken_known: true
+    ma_rent_deduction_spouse_facts_status: 'VERIFIED_EXTERNAL_RETURN'
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 0
+    ma_claim_of_right_deduction: 0
+    ma_529_deduction: 0
+    rent: 6_000
+  output:
+    ma_part_b_taxable_income_deductions: 1_500
+
+# Complete source facts, no alternative: half of the qualified 2,000 base is 1,000.
+- name: 'Case 7, known qualifying rent replaces generic rent under the default cap.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'SEPARATE'
+    ma_rent_deduction_qualifying_rent_paid: 2_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    ma_rent_deduction_allocation_election: 'NO_ALTERNATIVE'
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 0
+    ma_claim_of_right_deduction: 0
+    ma_529_deduction: 0
+    rent: 10_000
+  output:
+    ma_part_b_taxable_income_deductions: 1_000
+
+# Receipt coverage unavailable because the joint spouse is unrepresented; compatibility half of generic rent 6,000 is 3,000.
+- name: 'Case 8, a joint return without the spouse receipt retains legacy numerics.'
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: 'MA'
+    is_tax_unit_head: true
+    filing_status: 'JOINT'
+    ma_rent_deduction_qualifying_rent_paid: 12_000
+    ma_rent_deduction_qualifying_rent_paid_known: true
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    self_employment_social_security_tax: 0
+    self_employment_medicare_tax: 0
+    taxable_interest_income: 0
+    charitable_deduction: 0
+    ma_claim_of_right_deduction: 0
+    ma_529_deduction: 0
+    rent: 6_000
+  output:
+    ma_part_b_taxable_income_deductions: 3_000
