@@ -4,7 +4,7 @@
 
 - name: Case 1, single filer with newborn under income threshold.
   period: 2027
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.mt.newborn_credit.mt_newborn_credit.mt_newborn_credit
   input:
     gov.contrib.states.mt.newborn_credit.in_effect: true
@@ -28,12 +28,23 @@
         state_code: MT
   output:
     mt_newborn_credit: [1_000, 0]
-    # Refundable credit reduces tax liability (baseline ~$691, minus $1,000 credit)
-    mt_income_tax: -309
+    # 40,000 - 16,600 (2027 federal standard deduction, Rev. Proc. 2026-35).
+    taxable_income: 23_400
+    # One child: 4,573 - 15.98% x (40,000 - 24,660) = 2,121.67 (2027 maximum
+    # credit and phase-out start, Rev. Proc. 2026-35).
+    eitc: 2_121.67
+    # Montana matches 20% of the federal EITC: 2,121.67 x 20% = 424.33.
+    mt_eitc: [424.33, 0]
+    # Montana taxable income equals federal taxable income here, all in the
+    # 4.7% bracket (up to $65,000 for single filers in 2027):
+    # 23,400 x 4.7% = 1,099.80.
+    mt_income_tax_before_refundable_credits_unit: 1_099.80
+    # 1,099.80 - 424.33 Montana EITC - 1,000 refundable newborn credit.
+    mt_income_tax: -324.53
 
 - name: Case 2, MFJ with newborn under income threshold.
   period: 2027
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.mt.newborn_credit.mt_newborn_credit.mt_newborn_credit
   input:
     gov.contrib.states.mt.newborn_credit.in_effect: true
@@ -63,8 +74,17 @@
   output:
     # AGI $100k < $120k threshold for MFJ
     mt_newborn_credit: [1_000, 0, 0]
-    # Baseline mt_income_tax ~$3,142 minus $1,000 refundable credit
-    mt_income_tax: 2_142
+    # 100,000 - 33,200 (2027 federal standard deduction, Rev. Proc. 2026-35).
+    taxable_income: 66_800
+    # No EITC at $100,000 of earnings.
+    eitc: 0
+    mt_eitc: [0, 0, 0]
+    # Montana taxable income equals federal taxable income here, all in the
+    # 4.7% bracket (up to $130,000 for joint filers in 2027):
+    # 66,800 x 4.7% = 3,139.60.
+    mt_income_tax_before_refundable_credits_unit: 3_139.60
+    # 3,139.60 - 1,000 refundable newborn credit.
+    mt_income_tax: 2_139.60
 
 - name: Case 3, two newborns double credit.
   period: 2027

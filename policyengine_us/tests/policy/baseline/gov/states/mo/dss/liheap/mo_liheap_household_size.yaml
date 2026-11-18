@@ -1,0 +1,99 @@
+# Missouri LIHEAP household size: SPM unit members who are U.S. citizens or
+# qualified noncitizens. Other members are left out of the household count
+# (13 CSR 40-19.020(6)(A) and (8)(A)).
+
+- name: Case 1, family of four citizens counts four.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 36
+      person2:
+        age: 34
+      person3:
+        age: 9
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    mo_liheap_household_size: 4
+
+- name: Case 2, lawful permanent resident and refugee parents count with their citizen child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 44
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person2:
+        age: 40
+        immigration_status: REFUGEE
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    mo_liheap_household_size: 3
+
+- name: Case 3, undocumented parent is left out of the household count.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+      person4:
+        age: 7
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    # 4 members - 1 undocumented = 3.
+    mo_liheap_household_size: 3
+
+- name: Case 4, household with no citizen or qualified noncitizen counts zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_liheap_household_size: 0

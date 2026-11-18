@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class ma_maximum_state_supplement(Variable):
@@ -82,14 +85,9 @@ class ma_maximum_state_supplement(Variable):
             [monthly_aged_rate, monthly_blind_rate, monthly_disabled_rate]
         )
 
-        # 9. Summation across the marital unit. If we have a couple, we might want
-        #     the total combined amount, then split it. Or we might directly keep it as per-person.
-        # Here, they sum for the entire marital unit, then later they do dividing if needed.
-        combined_amount_for_marital_unit = person.marital_unit.sum(monthly_rate)
-
-        # 10. Finally, the code divides by 2 if it's a joint claim, presumably so that
-        #     each person sees their half. If it's not joint, it just returns the full amount.
-        # This "per-person" approach might be confusing if the state has a special "couple rate"
-        # that isn't exactly double or half. But that's how the code is set up now.
-        divisor = where(joint_claim, 2, 1)
-        return combined_amount_for_marital_unit / divisor
+        # 9. For a joint claim, combine the two spouses' amounts and split
+        #    them evenly; otherwise keep the person's own amount. Combining the
+        #    spouses rather than the marital unit keeps a third adult in a
+        #    default marital unit out of the couple's amount.
+        couple_amount = _ssi_couple_total(person, period.this_year, monthly_rate)
+        return where(joint_claim, couple_amount / 2, monthly_rate)

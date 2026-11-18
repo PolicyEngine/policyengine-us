@@ -1,9 +1,10 @@
 description: All state Child Tax Credits.
 values:
-  # Year-gated: each credit appears from the year its
-  # parameters are first defined in PE-US.
+  # These dates control reporting separately from each state
+  # tax-credit total.
   2015-01-01:
     - nc_ctc
+    - ny_ctc
   2018-01-01:
     - id_ctc
     - me_dependent_exemption_credit
@@ -12,6 +13,13 @@ values:
   2019-01-01:
     - ca_yctc
     - id_ctc
+    - me_dependent_exemption_credit
+    - nc_ctc
+    - ny_ctc
+  2020-01-01:
+    - ca_yctc
+    - id_ctc
+    - md_ctc
     - me_dependent_exemption_credit
     - nc_ctc
     - ny_ctc
@@ -74,6 +82,7 @@ values:
     - or_ctc
     - ut_ctc
     - vt_ctc
+  # Idaho's child tax credit ends after 2025 (Idaho Code 63-3029L(1)).
   2026-01-01:
     - az_dependent_tax_credit
     - ca_yctc
@@ -81,7 +90,6 @@ values:
     - co_family_affordability_credit
     - dc_ctc
     - ga_ctc
-    - id_ctc
     - il_ctc
     - ma_child_and_family_credit_or_dependent_care_credit
     - md_ctc
@@ -103,7 +111,6 @@ values:
     - co_family_affordability_credit
     - dc_ctc
     - ga_ctc
-    - id_ctc
     - il_ctc
     - ma_child_and_family_credit_or_dependent_care_credit
     - md_ctc
@@ -122,3 +129,12 @@ metadata:
   unit: list
   period: year
   label: State CTCs
+  reference:
+    - title: 2015 New York Form IT-213-I, Empire State child credit eligibility
+      href: https://www.tax.ny.gov/pdf/2015/inc/it213i_2015.pdf#page=1
+    - title: 2016 New York Form IT-213-I, Empire State child credit eligibility
+      href: https://www.tax.ny.gov/pdf/2016/inc/it213i_2016.pdf#page=1
+    - title: 2017 New York Form IT-213-I, Empire State child credit eligibility
+      href: https://www.tax.ny.gov/pdf/2017/inc/it213i_2017.pdf#page=1
+    - title: Maryland Chapter 40, SB 218 (2021), Section 2, applies to tax years after 2019
+      href: https://mgaleg.maryland.gov/2021RS/Chapters_noln/CH_40_sb0218t.pdf#page=5

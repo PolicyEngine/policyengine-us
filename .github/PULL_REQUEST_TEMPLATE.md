@@ -5,6 +5,7 @@ Fixes #
 ## Test plan
 
 - [ ] For policy changes: YAML tests whose expected values come from an external source (statute, official form or worksheet, official calculator); otherwise mark not applicable.
+- [ ] If this PR takes a reading where a statute and a regulation, form, instructions, manual or agency practice disagree: a source-conflict register entry and a `# Source conflict <jurisdiction>:<id>` marker (CONTRIBUTING.md#source-conflicts); otherwise mark not applicable.
 - [ ] `make format`
 - [ ] Changelog fragment in `changelog.d/`
 

@@ -9,9 +9,4 @@ class ca_state_supplement(Variable):
     definition_period = MONTH
     defined_for = StateCode.CA
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
-
-    def formula(spm_unit, period, parameters):
-        payment_standard = spm_unit("ca_state_supplement_payment_standard", period)
-        ssi = add(spm_unit, period, ["ssi"])
-        countable_income = add(spm_unit, period, ["ssi_countable_income"])
-        return max_(0, payment_standard - ssi - countable_income)
+    adds = ["ca_state_supplement_person"]

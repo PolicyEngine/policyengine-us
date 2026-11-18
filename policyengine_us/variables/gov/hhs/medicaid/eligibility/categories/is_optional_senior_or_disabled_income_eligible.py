@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    spouses_sum,
+)
 
 
 class is_optional_senior_or_disabled_income_eligible(Variable):
@@ -15,12 +18,13 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         "for its optional pathway for aged, blind, or disabled individuals who "
         "are not otherwise SSI-eligible. The limits are income maxima, so "
         "income exactly equal to the limit qualifies, except in states whose "
-        "rules require income below the limit (Oregon)."
+        "rules require income below the limit (Idaho and Oregon)."
     )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
         "https://ch461rules.odhs.oregon.gov/rules/461-155-0250.pdf#page=1",
+        "https://adminrules.idaho.gov/rules/current/16/160305.pdf#page=39",
     )
 
     def formula(person, period, parameters):
@@ -28,13 +32,19 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
             "medicaid_optional_senior_or_disabled_countable_income", period
         )
         # SSI financial responsibility rules (42 CFR 435.602): the unit is
-        # the individual or the married couple, not the tax filing unit.
-        income = person.marital_unit.sum(personal_income)
+        # the individual or the married couple, not the tax filing unit. A
+        # default marital unit of more than two people adds only the spouse.
+        income = where(
+            person("medicaid_optional_senior_or_disabled_uses_couple_standard", period),
+            spouses_sum(person, period, personal_income),
+            personal_income,
+        )
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )
-        # Most states cover income at or below the limit; Oregon requires
-        # adjusted income "below the standard" (OAR 461-155-0250(3)).
+        # Most states cover income at or below the limit; Idaho requires
+        # allowances that "are more than their income" (IDAPA 16.03.05.500)
+        # and Oregon adjusted income "below the standard" (OAR 461-155-0250(3)).
         state = person.household("state_code_str", period)
         p = parameters(
             period

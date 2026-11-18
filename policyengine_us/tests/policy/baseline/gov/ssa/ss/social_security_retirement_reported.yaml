@@ -1,0 +1,21 @@
+# social_security_retirement_reported follows
+# calibration.gov.irs.soi.social_security_per_capita, the IRS SOI total divided
+# by population. An input dated in one year and read in a later year is
+# multiplied by the ratio of that index between the two years.
+
+- name: A 2020 input read in 2021 grows with SOI social security benefits, total per capita, between the corrected 2020 and 2021 totals.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    social_security_retirement_reported:
+      2020: 10_000
+  output:
+    # IRS SOI Publication 1304 Table 1.4, all returns, social security benefits,
+    # total, over calibration.gov.census.populations.total:
+    #   2020: 774,017,713,000 / 336,810,000 = 2,298.084
+    #         (https://www.irs.gov/pub/irs-soi/20in14ar.xls)
+    #   2021: 791,161,174,000 / 338,039,000 = 2,340.443
+    #         (https://www.irs.gov/pub/irs-soi/21in14ar.xls)
+    # 10,000 x 2,340.443 / 2,298.084 = 10,184.32. With the old values this came
+    # to 12,743.96.
+    social_security_retirement_reported: 10_184.32

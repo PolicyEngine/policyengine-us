@@ -16,4 +16,9 @@ class wi_works(Variable):
     def formula(spm_unit, period, parameters):
         placement = spm_unit("wi_works_placement", period)
         p = parameters(period).gov.states.wi.dcf.works.placement
-        return p.amount[placement]
+        # Wis. Stat. 49.148(1)(b)1m prorates only the Community Service Job.
+        hours = spm_unit("wi_works_unsubsidized_hours", period)
+        is_csj = placement == placement.possible_values.CSJ
+        share = where(is_csj, p.csj_share.calc(hours), 1)
+        # W-2 Manual 7.4.1.5 pays whole dollars, and half of $653 is $327.
+        return np.floor(p.amount[placement] * share + 0.5)

@@ -33,9 +33,12 @@ class nh_ccap(Variable):
         per_child_cost_share[mask] = family_cost_share[mask] / n_eligible_children[mask]
         per_child_cost_share_broadcast = spm_unit.project(per_child_cost_share)
 
-        # He-C 6910.17(g): disability supplement is additional, outside the min
+        # He-C 6910.17(g): disability supplement adds to the standard rates, outside
+        # the min. Those rates pay for care, so a child with no charge draws none.
         base_payment = max_(capped_rate - per_child_cost_share_broadcast, 0)
-        per_child_weekly_payment = base_payment + disability_supplement
+        per_child_weekly_payment = base_payment + disability_supplement * (
+            annual_expense > 0
+        )
         per_child_monthly_payment = (
             per_child_weekly_payment * weeks_per_month * is_eligible_child
         )

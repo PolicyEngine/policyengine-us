@@ -8,6 +8,11 @@ class mn_cdcc_phase_out(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://www.revisor.mn.gov/statutes/2017/cite/290.067#stat.290.067.1",
+        "https://www.revisor.mn.gov/laws/2017/1/1/",
+        "https://www.revenue.state.mn.us/sites/default/files/2018-11/m1cd_18.pdf#page=3",
+        "https://www.revenue.state.mn.us/sites/default/files/2019-12/m1cd_19.pdf#page=3",
+        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_20.pdf#page=3",
         "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf",
     )

@@ -1,0 +1,9 @@
+description: An optional supplied monthly dollar threshold by eligibility year, overriding the bend-point fraction when present.
+values:
+  1983-01-01: null
+metadata:
+  unit: currency-USD
+  label: Progressive PIA protected dollar threshold
+  reference:
+    - title: SSA OACT price-indexing provision memorandum
+      href: https://www.ssa.gov/OACT/solvency/advisoryboard_20050810.pdf

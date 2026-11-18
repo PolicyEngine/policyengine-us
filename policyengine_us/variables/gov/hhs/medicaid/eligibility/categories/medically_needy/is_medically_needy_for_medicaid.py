@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._couple_standard import (
+    couple_budget_total,
+    spouses_split_by_facility,
+)
 
 
 class is_medically_needy_for_medicaid(Variable):
@@ -15,26 +19,69 @@ class is_medically_needy_for_medicaid(Variable):
         "administration beyond the annual expense proxy."
     )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/42/part-435/subpart-D"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/42/part-435/subpart-D",
+        "https://www.ecfr.gov/current/title-42/section-435.602#p-435.602(a)(2)(i)",
+        "https://www.ecfr.gov/current/title-42/section-435.831#p-435.831(d)",
+        "https://www.ecfr.gov/current/title-42/section-435.845#p-435.845(a)",
+        "https://www.ecfr.gov/current/title-20/section-416.1202#p-416.1202(b)",
+    )
 
     def formula(person, period, parameters):
         in_category = person("is_in_medicaid_medically_needy_category", period)
         is_aged_blind_or_disabled = person("is_ssi_aged_blind_disabled", period)
         personal_income = person("ssi_countable_income", period)
         medical_expenses = person("medicaid_medically_needy_medical_expenses", period)
-        personal_assets = person("ssi_countable_resources", period)
-        tax_unit = person.tax_unit
-        income = tax_unit.sum(personal_income - medical_expenses)
-        assets = tax_unit.sum(personal_assets)
+        # A child's resources include the excess of ineligible parents'
+        # resources (20 CFR 416.1202(b)), as ssi_countable_income already
+        # includes their deemed income. SSI's allocation gates apply: a child
+        # whose own resources exceed the SSI individual limit, or who fails
+        # SSI's immigration test, is deemed nothing.
+        personal_assets = person("ssi_countable_resources", period) + person(
+            "ssi_resources_deemed_from_ineligible_parent", period.first_month
+        )
+        # SSI financial responsibility rules (42 CFR 435.602): the unit is
+        # the individual or the married couple, plus parents for a child,
+        # not the tax filing unit.
+        marital_unit = person.marital_unit
+        parental_expense_share = person(
+            "medicaid_parental_medical_expense_share", period
+        )
+        uses_couple_standard = person(
+            "medicaid_medically_needy_uses_couple_standard", period
+        )
+        # 42 CFR 435.831(d) also deducts a spouse's expenses when the spouse's
+        # income is not counted, unless a facility splits the couple. A
+        # couple's totals leave out an unrelated member of a default marital
+        # unit, whose income ssi_countable_income also leaves out, and that
+        # member's own budget leaves out the couple.
+        expenses = where(
+            spouses_split_by_facility(person, period),
+            medical_expenses,
+            couple_budget_total(person, period, medical_expenses),
+        )
+        unit_income = personal_income + person(
+            "medicaid_medically_needy_income_from_spouse", period
+        )
+        income = (
+            where(
+                uses_couple_standard,
+                couple_budget_total(person, period, unit_income),
+                unit_income,
+            )
+            - expenses
+            - where(
+                uses_couple_standard,
+                couple_budget_total(person, period, parental_expense_share),
+                parental_expense_share,
+            )
+        )
+        assets = marital_unit.sum(personal_assets)
         ma = parameters(period).gov.hhs.medicaid
         mn = ma.eligibility.categories.medically_needy
-        is_joint = person.tax_unit("tax_unit_is_joint", period)
+        is_joint = marital_unit.nb_persons() == 2
         state = person.household("state_code_str", period)
-        income_limit = MONTHS_IN_YEAR * where(
-            is_joint,
-            mn.limit.income.couple[state],
-            mn.limit.income.individual[state],
-        )
+        income_limit = person("medicaid_medically_needy_income_limit", period)
         asset_limit = where(
             is_joint,
             mn.limit.assets.couple[state],

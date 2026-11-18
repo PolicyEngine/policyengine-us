@@ -15,3 +15,787 @@
     is_optional_senior_or_disabled_asset_eligible: false
   output:
     is_optional_senior_or_disabled_for_medicaid: false
+
+# 2026: Social Security of $900 a month leaves countable income of $10,560 a
+# year after the $20 a month disregard, under the SSI rate ($11,928).
+- name: Case 3, aged Alabaman who does not take up SSI is not covered, since Alabama covers only SSI recipients.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+
+- name: Case 4, the same person in Pennsylvania, which covers aged people who do not receive SSI, is covered.
+  period: 2026
+  input:
+    age: 70
+    state_code: PA
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: true
+
+# North Dakota covers aged, blind, or disabled people who do not receive SSI
+# only as medically needy (N.D. Admin. Code 75-02-02.1-05(3)(e)).
+- name: Case 5, disabled North Dakotan who does not take up SSI is not covered by the pathway.
+  period: 2026
+  input:
+    age: 50
+    state_code: ND
+    meets_ssi_disability_criteria: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# Emergency Medicaid covers noncitizens who meet the state plan's requirements
+# other than the receipt of SSI (42 U.S.C. 1396b(v)(2)(B); 42 CFR 435.406(b)).
+# In Alabama that leaves SSI's income test. Wages of $800 a month ($9,600 a
+# year) are under the SSI rate ($11,928) before any disregard; the pathway
+# counts that income (at most 4,290 a year after exclusions). Cases 7 and 8
+# test the income limit.
+- name: Case 6, undocumented aged Alabaman keeps the pathway, unlike the citizen in Case 3, and qualifies for emergency Medicaid.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: UNDOCUMENTED
+    employment_income_before_lsr: 9_600
+    has_emergency_medical_condition: true
+  output:
+    is_medicaid_immigration_status_eligible: false
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: false
+    is_emergency_medicaid_eligible: true
+
+# A permanent resident two years after entry is in the five-year bar (8 U.S.C.
+# 1613) and fails the Medicaid immigration test. The pathway then tests income
+# against the 2026 SSI rate, 12 x $994 = $11,928, at or below it (42 U.S.C.
+# 1382(a)(1)(A)). Social Security of $1,015 a month leaves countable income of
+# (1,015 - 20) x 12 = $11,940, so SSI pays nothing and the person is not an SSI
+# recipient. The pathway's countable income is an input.
+- name: Case 7, Alabaman permanent resident in the five-year bar with income over the SSI rate gets neither the pathway nor emergency Medicaid.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    social_security_retirement: 12_180
+    medicaid_optional_senior_or_disabled_countable_income: 11_940
+    has_emergency_medical_condition: true
+  output:
+    is_medicaid_immigration_status_eligible: false
+    ssi: 0
+    medicaid_optional_senior_or_disabled_income_limit: 11_928
+    is_optional_senior_or_disabled_income_eligible: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_emergency_medicaid_eligible: false
+
+# The SSI couple rate in 2026 is 12 x $1,491 = $17,892; the couple's countable
+# income, $8,946 each, is exactly at it. Social Security of $755.50 a month
+# each gives the couple (1,511 - 20) x 12 = $17,892, so SSI pays nothing and
+# neither spouse is an SSI recipient. Only the first spouse has an emergency
+# medical condition.
+- name: Case 8, Alabaman permanent-resident couple in the five-year bar at the SSI couple rate keeps the pathway.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 9_066
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+        has_emergency_medical_condition: true
+      person2:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 9_066
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+        has_emergency_medical_condition: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    is_medicaid_immigration_status_eligible: [false, false]
+    ssi: [0, 0]
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892]
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+    medicaid_category: [SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
+    is_medicaid_eligible: [false, false]
+    is_emergency_medicaid_eligible: [true, false]
+
+# A permanent resident ten years after entry is past the five-year bar, so
+# passes the Medicaid immigration test, but with no qualifying quarters fails
+# SSI's noncitizen test (8 U.S.C. 1612(a)(2)(B)) and gets no SSI. Alabama has
+# no group for aged people who do not receive SSI, and the emergency Medicaid
+# exception does not reach someone who passes the Medicaid immigration test.
+- name: Case 9, Alabaman permanent resident past the five-year bar without 40 quarters does not keep the pathway.
+  period: 2026
+  input:
+    age: 70
+    state_code: AL
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 0
+    social_security_retirement: 10_800
+  output:
+    is_medicaid_immigration_status_eligible: true
+    ssi: 0
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+    is_emergency_medicaid_eligible: false
+
+# Arkansas's group (ARSeniors) covers only aged people (MS 23110). 2026:
+# Social Security of $900 a month leaves countable income of $10,560 a year
+# after the $20 a month disregard, under 80% of the poverty guideline
+# ($12,768).
+- name: Case 10, disabled Arkansan under 65 is not covered, since ARSeniors covers only aged people.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    meets_ssi_disability_criteria: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 11, aged Arkansan with the same income is covered.
+  period: 2026
+  input:
+    age: 70
+    state_code: AR
+    social_security_retirement: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+
+# Emergency Medicaid waives only the receipt of SSI (42 U.S.C.
+# 1396b(v)(2)(B)), so a blind or disabled noncitizen who fails the
+# immigration test keeps the group in Arkansas when they meet SSI's
+# income and resource tests. With no income and no resources, this person
+# meets both: $0 countable income is below the $994 SSI rate, and $0 is
+# within the $2,000 resource limit.
+- name: Case 12, disabled undocumented Arkansan under 65 keeps the group for emergency Medicaid.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: UNDOCUMENTED
+    meets_ssi_disability_criteria: true
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_for_medicaid: true
+
+- name: Case 13, disabled permanent resident under 65 who passes the immigration test is not covered.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    meets_ssi_disability_criteria: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_medicaid_immigration_status_eligible: true
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# $5,000 in a bank account is under Arkansas's pathway asset limit but over
+# SSI's $2,000 resource limit, so this noncitizen fails the SSI group's
+# resource test and, being under 65, does not qualify for ARSeniors either.
+- name: Case 14, disabled undocumented Arkansan under 65 over the SSI resource limit is not covered.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: UNDOCUMENTED
+    meets_ssi_disability_criteria: true
+    bank_account_assets: 5_000
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_asset_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# SSI's income test is countable income "not more than" the benefit rate
+# (42 U.S.C. 1382(a)(1)(A)). A permanent resident 2 years after entry is in
+# the five-year bar, so fails the Medicaid immigration test, but SSI counts
+# their income. Social Security disability of $1,014 a month leaves
+# (1,014 - 20) x 12 = $11,928 countable, equal to the 2026 SSI rate of
+# $994 x 12.
+- name: Case 15, disabled Arkansan in the five-year bar with countable income equal to the SSI rate keeps the group.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    meets_ssi_disability_criteria: true
+    social_security_disability: 12_168
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: true
+
+# $1,015 a month leaves (1,015 - 20) x 12 = $11,940 countable, over the SSI
+# rate, though still under Arkansas's 80% of the poverty guideline ($12,768).
+- name: Case 16, the same person with countable income $1 a month over the SSI rate is not covered.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    meets_ssi_disability_criteria: true
+    social_security_disability: 12_180
+  output:
+    is_medicaid_immigration_status_eligible: false
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 17, blind Arkansan under 65 who is not disabled is not covered, since ARSeniors covers only aged people.
+  period: 2026
+  input:
+    age: 50
+    state_code: AR
+    is_blind: true
+    social_security_disability: 10_800
+    takes_up_ssi_if_eligible: false
+  output:
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+
+- name: Case 18, Arkansas couple with an aged spouse and a disabled spouse under 65 covers only the aged spouse.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 6_000
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 50
+        meets_ssi_disability_criteria: true
+        social_security_disability: 6_000
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+    is_optional_senior_or_disabled_for_medicaid: [true, false]
+
+# Each spouse has Social Security disability of $735 a month. SSI's couple
+# budget: (1,470 - 20) x 12 = 17,400, or 8,700 each, so 725 a month each,
+# at or below half the 2026 couple rate (1,491 / 2 = 745.50). The pathway's
+# own couple limit, 80% of the 2026 guideline for two (0.8 x 21,640 =
+# 17,312), is lower than the SSI couple rate, so the SSI income test
+# replaces it for people kept only through the SSI group.
+- name: Case 19, disabled Arkansas couple in the five-year bar under the SSI couple rate but over 80% of the poverty guideline keeps the group.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        meets_ssi_disability_criteria: true
+        social_security_disability: 8_820
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        meets_ssi_disability_criteria: true
+        social_security_disability: 8_820
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_medicaid_immigration_status_eligible: [false, false]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+
+# The Case 19 income for a couple aged 70 with Social Security retirement.
+# Aged noncitizens who fail the immigration test also reach the SSI group
+# for emergency Medicaid, so the SSI couple test applies to them too.
+- name: Case 20, aged Arkansas couple in the five-year bar under the SSI couple rate but over 80% of the poverty guideline keeps the group.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 8_820
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        social_security_retirement: 8_820
+        takes_up_ssi_if_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_medicaid_immigration_status_eligible: [false, false]
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+
+# Missouri has no medically needy program, so 42 CFR 435.121(e)(4) requires a
+# spend down to its MHABD standard. Countable income is 16,800 - 240 = 16,560.
+# The aged standard is 12 x 1,131 = 13,572, so 2,988 of expenses reach it.
+- name: Case 21, Missouri aged person not on SSI spends down exactly to the standard.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 2_988
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: false
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+
+- name: Case 22, Missouri aged person not on SSI stays a dollar above the standard after expenses.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 2_987
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+
+# Countable income is 18,000 - 240 = 17,760, and 14,760 after expenses. That is
+# above the aged standard of 13,572 and within the blind standard of 15,960.
+- name: Case 23, Missouri blind person spends down to the higher blind standard.
+  period: 2026
+  input:
+    age: 70
+    is_blind: true
+    social_security_retirement: 18_000
+    other_medical_expenses: 3_000
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+
+# Combined countable income is 24,000 - 240 = 23,760. The couple standard is
+# 12 x 1,533 = 18,396, so one spouse's 5,364 of expenses reach it.
+- name: Case 24, Missouri couple spends down together to the couple standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 12_000
+        other_medical_expenses: 5_364
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        social_security_retirement: 12_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+
+# The 2026 resource limit is 6,068.80, the July 2025 value.
+- name: Case 25, Missouri spend down does not waive the resource limit.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 5_000
+    bank_account_assets: 6_100
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+
+# Illinois is a 209(b) state with a medically needy program, so under
+# 42 CFR 435.121(e)(5) this person spends down through that program.
+- name: Case 26, Illinois person not on SSI spends down through medically needy.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 20_000
+    other_medical_expenses: 10_000
+    state_code: IL
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: MEDICALLY_NEEDY
+
+- name: Case 27, Colorado has no medically needy program but is not a 209(b) state.
+  period: 2026
+  input:
+    age: 70
+    social_security_retirement: 16_800
+    other_medical_expenses: 5_000
+    state_code: CO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+
+# MHABD 0805.020.15 deems the parent's income to the child: (70,000 / 12 - 20
+# - 65) / 2 x 12 = 34,490, less the parent's allowance of 994 x 12 = 11,928,
+# is 22,562. The child's budget takes off the 20 exemption and rounds down:
+# 22,562 / 12 - 20 = 1,860.17, so 1,860 a month or 22,320 a year. The same
+# section counts the parent's incurred medical expenses toward the child's
+# spend down: 22,320 - 10,000 = 12,320, within the standard.
+- name: Case 28, Missouri blind child spends down on the parent's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+        other_medical_expenses: 10_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [0, 22_320]
+    medicaid_parental_medical_expense_share: [0, 10_000]
+    is_optional_senior_or_disabled_for_medicaid: [false, true]
+    medicaid_category: [NONE, SENIOR_OR_DISABLED]
+
+# Without expenses, 22,320 is above the 15,960 blind standard.
+- name: Case 29, Missouri blind child with no medical expenses in the family stays above the standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+
+# Two disabled children divide the deemed income equally (MHABD 0805.020.15):
+# (100,000 / 12 - 85) / 2 x 12 = 49,490, less 11,928, is 37,562, or 18,781
+# each. Each child's budget is 18,781 / 12 - 20 = 1,545.08, so 1,545 a month or
+# 18,540 a year. SSI countable income of 18,781 - 240 = 18,541 is above the
+# 11,928 SSI rate, so neither child receives SSI. Each child must spend down
+# 18,540 - 13,572 = 4,968, which is exactly half of the parent's 9,936.
+- name: Case 30, two Missouri disabled children each reach the standard on half of the parent's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        employment_income_before_lsr: 100_000
+        other_medical_expenses: 9_936
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    ssi: [0, 0, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [0, 18_540, 18_540]
+    medicaid_parental_medical_expense_share: [0, 4_968, 4_968]
+    is_optional_senior_or_disabled_for_medicaid: [false, true, true]
+    medicaid_category: [NONE, SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
+
+# Half of 9,934 is 4,967, which leaves each child at 13,573, a dollar above the
+# 13,572 standard. Deducting the whole 9,934 from each child would pass.
+- name: Case 31, two Missouri disabled children stay a dollar above the standard on half of the parent's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        is_tax_unit_head: true
+        own_children_in_household: 2
+        employment_income_before_lsr: 100_000
+        other_medical_expenses: 9_934
+      person2:
+        age: 11
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    medicaid_parental_medical_expense_share: [0, 4_967, 4_967]
+    is_optional_senior_or_disabled_for_medicaid: [false, false, false]
+    medicaid_category: [NONE, NONE, NONE]
+
+# The child passes the income test: 22,320 - 10,000 = 12,320. MHABD 0805.020.10
+# adds the entire 100,000 to the child's resources, above the 6,068.80 limit.
+- name: Case 32, Missouri blind child with a parent's savings above the limit is ineligible after spending down.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+        bank_account_assets: 100_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+        other_medical_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [true, true]
+    is_optional_senior_or_disabled_asset_eligible: [false, false]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+
+# Missouri covers a nonblind disabled child (MHABD 0805.020.00). 22,320 - 9,000
+# = 13,320 is within the 13,572 standard.
+- name: Case 33, Missouri nonblind disabled child spends down on the child's own medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        meets_ssi_disability_criteria: true
+        other_medical_expenses: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: [false, true]
+    medicaid_category: [NONE, SENIOR_OR_DISABLED]
+
+# Countable income is 24,000 - 240 = 23,760, and 23,760 - 13,572 = 10,188.
+- name: Case 34, Missouri disabled adult under 65 spends down exactly to the standard.
+  period: 2026
+  input:
+    age: 50
+    meets_ssi_disability_criteria: true
+    social_security_disability: 24_000
+    other_medical_expenses: 10_188
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: true
+    medicaid_category: SENIOR_OR_DISABLED
+
+- name: Case 35, Missouri disabled adult under 65 stays a dollar above the standard after expenses.
+  period: 2026
+  input:
+    age: 50
+    meets_ssi_disability_criteria: true
+    social_security_disability: 24_000
+    other_medical_expenses: 10_187
+    state_code: MO
+  output:
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+
+# The couple's income is the aged spouse's 24,000 - 240 = 23,760. The other
+# spouse's 5,364 of expenses bring it to 18,396, exactly 12 x 1,533. The
+# 60-year-old is not aged, blind or disabled, so stays outside the group.
+- name: Case 36, Missouri couple with one aged spouse spends down on the other spouse's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        social_security_retirement: 24_000
+      person2:
+        age: 60
+        is_tax_unit_spouse: true
+        other_medical_expenses: 5_364
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_income_limit: [18_396, 18_396]
+    is_optional_senior_or_disabled_for_medicaid: [true, false]
+
+# The household of Case 28 with 7,000 of the parent's medical expenses:
+# 22,320 - 7,000 = 15,320. Appendix K lists one standard for a child under 18 who is
+# "permanently and totally disabled, or blind": 12 x 1,131 = 13,572, so the child is
+# not eligible. Appendix J's blind standard of 12 x 1,330 = 15,960 applies from age 18
+# (candidate us-mo:mhdc-blind-child-income-standard).
+- name: Case 37, Missouri blind child is tested against the standard for disabled children.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        own_children_in_household: 1
+        employment_income_before_lsr: 70_000
+        other_medical_expenses: 7_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: [0, 22_320]
+    medicaid_parental_medical_expense_share: [0, 7_000]
+    medicaid_optional_senior_or_disabled_income_limit: [13_572, 13_572]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]

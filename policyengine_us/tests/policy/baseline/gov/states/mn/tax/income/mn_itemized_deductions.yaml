@@ -93,6 +93,22 @@
   output:
     mn_itemized_deductions: 10_000
 
+- name: Wagering losses are outside the Minnesota itemized deduction limitation.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 200_000
+    gambling_winnings: 100_000
+    gambling_losses: 50_000
+    state_code: MN
+  output:
+    adjusted_gross_income: 300_000
+    # min(90% x 50,000 losses, 100,000 winnings) = 45,000.
+    wagering_losses_deduction: 45_000
+    # Minn. Stat. 290.0122, subd. 2(d)(3): no reduction of the losses.
+    mn_itemized_deductions: 45_000
+
 # Schedule M1SA line 19 takes the casualty and theft loss from Schedule M1CAT:
 # each casualty less $100, then less 10% of Form M1 line 1 (federal AGI). Minn.
 # Stat. 290.0122, subd. 8, disregards the federal limit to declared disasters.
@@ -149,3 +165,315 @@
     # The federal deduction, now positive inside itemized_deductions_less_salt,
     # is replaced by Minnesota's 4,900, not added to it.
     mn_itemized_deductions: 14_900
+
+- name: MN excludes mortgage insurance premiums in 2021.
+  period: 2021
+  input:
+    state_code: MN
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    mn_itemized_deductions: 10_000
+
+- name: MN excludes mortgage insurance premiums in 2022.
+  period: 2022
+  input:
+    state_code: MN
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 0
+    interest_deduction: 10_000
+    mn_itemized_deductions: 10_000
+
+- name: MN excludes mortgage insurance premiums in 2026.
+  period: 2026
+  input:
+    state_code: MN
+    adjusted_gross_income: 80_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 2_000
+    interest_deduction: 12_000
+    mn_itemized_deductions: 10_000
+
+- name: MN excludes only the federally deductible premium after its AGI phase-out.
+  period: 2021
+  input:
+    state_code: MN
+    adjusted_gross_income: 101_000
+    deductible_interest_expense: 10_000
+    mortgage_insurance_premiums: 1_200
+    second_residence_mortgage_insurance_premiums: 800
+  output:
+    deductible_mortgage_insurance_premiums: 1_800
+    interest_deduction: 11_800
+    mn_itemized_deductions: 10_000
+
+# Minn. Stat. 290.0122, subd. 2(d), and the 2024 M1SA line 26 worksheets
+# (step 2 takes out lines 4, 13 and 19) leave investment interest (line 13)
+# out of the reduction.
+- name: 2024 MN investment interest is exempt from the 80% reduction
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 2_000_000
+    investment_interest_expense: 10_000
+    charitable_deduction: 5_000
+    state_code: MN
+  output:
+    # AGI is over $1,053,750, so the reduction is 80% of the deductions
+    # other than investment interest: 0.8 x 5,000 = 4,000.
+    # 15,000 - 4,000. Were the interest reduced too: 15,000 - 12,000 = 3,000.
+    mn_itemized_deductions: 11_000
+
+- name: 2024 MN investment interest is left out of the 80% cap on the 3% reduction
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 300_000
+    investment_interest_expense: 10_000
+    charitable_deduction: 1_000
+    state_code: MN
+  output:
+    # 3% x (300,000 - 232,500) = 2,025; the cap is 80% x 1,000 = 800, so the
+    # reduction is 800 and the deduction 11,000 - 800. Were the interest in
+    # the cap base, the cap would be 8,800 and the deduction 11,000 - 2,025.
+    mn_itemized_deductions: 10_200
+
+- name: Minnesota exempts wagering losses from the 2023 high-income limitation.
+  period: 2023
+  input:
+    state_code: MN
+    filing_status: SINGLE
+    adjusted_gross_income: 2_000_000
+    gambling_winnings: 50_000
+    gambling_losses: 50_000
+    interest_deduction: 0
+    charitable_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    mn_casualty_loss_deduction: 0
+    capped_property_taxes: 0
+    misc_deduction: 0
+    claim_of_right_deduction: 0
+  output:
+    wagering_losses_deduction: 50_000
+    itemized_deductions_less_salt: 50_000
+    # Minn. Stat. 290.0122, subd. 2(d)(3) and 8: 50,000 - 80% * 0.
+    mn_itemized_deductions: 50_000
+
+# Minn. Stat. 290.0122, subds. 3 and 4; 290.0132, subd. 7.
+# https://www.revisor.mn.gov/statutes/cite/290.0122
+# https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.7
+
+# The filer subtracts (4_000 - 500) / 2 = 1,750.
+- name: A single filer takes the charity subtraction in 2024
+  absolute_error_margin: 0.02
+  period: 2024
+  input:
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 4_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 4_000
+    charitable_deduction: 4_000
+    mn_charitable_deduction: 4_000
+    mn_itemized_deductions: 4_000
+    mn_itemizing: false
+    mn_charity_subtraction: 1750.0
+
+# The filer itemizes 4_000 + 14,000 + 6,000 = 24_000 and deducts nothing under the non-itemizer subtraction.
+- name: A homeowner itemizes charitable gifts in 2024
+  absolute_error_margin: 0.02
+  period: 2024
+  input:
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 4_000
+    filing_status: SINGLE
+    state_code: MN
+    deductible_mortgage_interest: 14_000
+    real_estate_taxes: 6_000
+  output:
+    charitable_deduction_before_floor: 4_000
+    charitable_deduction: 4_000
+    mn_charitable_deduction: 4_000
+    mn_itemized_deductions: 24_000
+    mn_itemizing: true
+    mn_charity_subtraction: 0
+    mn_taxable_income: 76_000
+
+# The filer subtracts (4_000 - 500) / 2 = 1,750.
+- name: A single filer takes the charity subtraction in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 4_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 4_000
+    charitable_deduction: 4_000
+    mn_charitable_deduction: 4_000
+    mn_itemized_deductions: 4_000
+    mn_itemizing: false
+    mn_charity_subtraction: 1750.0
+
+# The filer itemizes 4_000 + 14,000 + 6,000 = 24_000 and deducts nothing under the non-itemizer subtraction.
+- name: A homeowner itemizes charitable gifts in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 4_000
+    filing_status: SINGLE
+    state_code: MN
+    deductible_mortgage_interest: 14_000
+    real_estate_taxes: 6_000
+  output:
+    charitable_deduction_before_floor: 4_000
+    charitable_deduction: 4_000
+    mn_charitable_deduction: 4_000
+    mn_itemized_deductions: 24_000
+    mn_itemizing: true
+    mn_charity_subtraction: 0
+    mn_taxable_income: 76_000
+
+# The filer deducts 4,000 - 0.01 * 100,000 = 3,000, then subtracts (3,000 - 500) / 2 = 1,250.
+- name: A single filer takes the charity subtraction in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 4_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    charitable_deduction_before_floor: 4_000
+    charitable_deduction: 3_500
+    mn_charitable_deduction: 3_000
+    mn_itemized_deductions: 3_000
+    mn_itemizing: false
+    mn_charity_subtraction: 1250.0
+    mn_taxable_income: 83_450
+    mn_income_tax: 5191.6
+
+# The filer itemizes 3_000 + 14,000 + 6,000 = 23_000 and deducts nothing under the non-itemizer subtraction.
+- name: A homeowner itemizes charitable gifts in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 4_000
+    filing_status: SINGLE
+    state_code: MN
+    deductible_mortgage_interest: 14_000
+    real_estate_taxes: 6_000
+  output:
+    charitable_deduction_before_floor: 4_000
+    charitable_deduction: 3_500
+    mn_charitable_deduction: 3_000
+    mn_itemized_deductions: 23_000
+    mn_itemizing: true
+    mn_charity_subtraction: 0
+    mn_taxable_income: 77_000
+    mn_income_tax: 4753.0
+
+# Minn. Stat. 290.0122, subd. 3(a)(1), from tax year 2019 (Laws 2019, First
+# Special Session, chapter 6, article 1, section 16).
+# The filer itemizes min(7,000 + 4,000, 10,000) + 12,000 = 22,000. Real estate
+# taxes alone fall below the cap. Income of 100,000 lies below the 2024
+# threshold of 232,500, so the reduction is 3% of zero. Taxable income equals
+# 100,000 - 22,000 = 78,000.
+- name: A homeowner adds personal property taxes when itemizing in 2024
+  absolute_error_margin: 0.02
+  period: 2024
+  input:
+    age: 40
+    employment_income: 100_000
+    real_estate_taxes: 7_000
+    mn_personal_property_taxes: 4_000
+    deductible_mortgage_interest: 12_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    capped_property_taxes: 7_000
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 22_000
+    mn_itemizing: true
+    mn_taxable_income: 78_000
+
+# The filer itemizes min(18,000, 10,000) + 12,000 = 22,000; taxable income equals 200,000 - 22,000 = 178,000.
+- name: A homeowner limits property taxes when itemizing in 2024
+  absolute_error_margin: 0.02
+  period: 2024
+  input:
+    age: 40
+    employment_income: 200_000
+    real_estate_taxes: 18_000
+    deductible_mortgage_interest: 12_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    capped_property_taxes: 10_000
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 22_000
+    mn_taxable_income: 178_000
+    mn_amt: 0
+    mn_income_tax: 12420.55
+
+# The filer itemizes min(18,000, 10,000) + 12,000 = 22,000; taxable income equals 200,000 - 22,000 = 178,000.
+- name: A homeowner limits property taxes when itemizing in 2025
+  absolute_error_margin: 0.02
+  period: 2025
+  input:
+    age: 40
+    employment_income: 200_000
+    real_estate_taxes: 18_000
+    deductible_mortgage_interest: 12_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    capped_property_taxes: 18_000
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 22_000
+    mn_taxable_income: 178_000
+    mn_amt: 0
+    mn_income_tax: 12377.34
+
+# The filer itemizes min(18,000, 10,000) + 12,000 = 22,000; taxable income equals 200,000 - 22,000 = 178,000.
+- name: A homeowner limits property taxes when itemizing in 2026
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    age: 40
+    employment_income: 200_000
+    real_estate_taxes: 18_000
+    deductible_mortgage_interest: 12_000
+    filing_status: SINGLE
+    state_code: MN
+  output:
+    capped_property_taxes: 18_000
+    mn_property_tax_deduction: 10_000
+    mn_itemized_deductions: 22_000
+    mn_taxable_income: 178_000
+    mn_amt: 0
+    mn_income_tax: 12340.99

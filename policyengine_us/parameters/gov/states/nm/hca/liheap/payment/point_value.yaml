@@ -1,0 +1,25 @@
+description: New Mexico multiplies the household's point total by this amount to compute the benefit under the Low Income Home Energy Assistance Program.
+# 8.150.620.10 C NMAC lets the HCA secretary adjust the point value each year.
+# The resulting FFY2026 benefits run from $70 to $490 (2 to 14 points) and
+# the FFY2027 benefits from $80 to $560.
+values:
+  2025-10-01: 35
+  2026-10-01: 40
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Mexico LIHEAP point value
+  reference:
+    - title: 8.150.620.10 NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.150.0620.html
+    - title: New Mexico LIHEAP FFY2026 Heating and Cooling Point and Income Guide, point values
+      href: https://www.hca.nm.gov/wp-content/uploads/Heating-and-Cooling-Point-and-Income-Guide-2026.pdf
+    - title: New Mexico LIHEAP FFY2027 Point and Income Guidelines, total points and benefit
+      href: https://www.hca.nm.gov/wp-content/uploads/NM-LIHEAP-FFY-2027-Point-and-Income-Guidelines.pdf
+    - title: New Mexico ISD 017 Income Eligibility Guidelines, October 1, 2025 to September 30, 2026, LIHEAP information
+      href: https://www.hca.nm.gov/wp-content/uploads/ISD-017-FPG-Cards-FY-2026-10.01.25-to-09.30.2026-final-1.pdf#page=1
+    - title: New Mexico FY2026 LIHEAP State Plan, Section 2.6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=10
+    - title: New Mexico FY2027 LIHEAP State Plan, Section 2.6
+      href: https://www.hca.nm.gov/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026-4.pdf#page=9

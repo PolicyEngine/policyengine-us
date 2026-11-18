@@ -12,7 +12,7 @@
     people:
       person1:
         age: 30
-        employment_income: 72_000  # 6,000/month
+        employment_income_before_lsr: 72_000  # 6,000/month
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -37,7 +37,7 @@
     people:
       person1:
         age: 30
-        employment_income: 78_000  # 6,500/month
+        employment_income_before_lsr: 78_000  # 6,500/month
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -62,7 +62,7 @@
     people:
       person1:
         age: 35
-        employment_income: 200_000  # 16,666.67/month, far above limit
+        employment_income_before_lsr: 200_000  # 16,666.67/month, far above limit
         immigration_status: CITIZEN
       person2:
         age: 6
@@ -88,7 +88,7 @@
     people:
       person1:
         age: 35
-        employment_income: 200_000  # 16,666.67/month
+        employment_income_before_lsr: 200_000  # 16,666.67/month
         immigration_status: CITIZEN
       person2:
         age: 6
@@ -138,7 +138,7 @@
       person1:
         age: 30
         # 74,624/yr = 6,218.667/mo (~3.5 cents under the 6,218.7017 ceiling)
-        employment_income: 74_624
+        employment_income_before_lsr: 74_624
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -164,7 +164,7 @@
       person1:
         age: 30
         # 74,648.42/yr = 6,220.7017/mo (= ceiling + 2/mo, clearly over)
-        employment_income: 74_648.42
+        employment_income_before_lsr: 74_648.42
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -191,7 +191,7 @@
         age: 30
         # Family-of-1 ceiling = 129,108 x 0.52 x 0.85 / 12 = 4,755.4780/mo.
         # 57,060/yr = 4,755.00/mo (just under the ceiling) -> eligible
-        employment_income: 57_060
+        employment_income_before_lsr: 57_060
         immigration_status: CITIZEN
     spm_units:
       spm_unit:
@@ -212,7 +212,7 @@
         # Family-of-8 ceiling = 129,108 x 1.38 x 0.85 / 12 = 12,620.3070/mo.
         # adj = 0.52 + 0.16x5 + 0.03x2 = 1.38 (the 7th/8th use 0.03 each).
         # 151,000/yr = 12,583.33/mo, just under the ceiling -> eligible.
-        employment_income: 151_000
+        employment_income_before_lsr: 151_000
         immigration_status: CITIZEN
       person2:
         age: 38
@@ -255,7 +255,7 @@
       person1:
         age: 40
         # 152,000/yr = 12,666.67/mo > 12,620.31 ceiling -> ineligible
-        employment_income: 152_000
+        employment_income_before_lsr: 152_000
         immigration_status: CITIZEN
       person2:
         age: 38

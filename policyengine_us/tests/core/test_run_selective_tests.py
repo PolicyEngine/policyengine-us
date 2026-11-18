@@ -229,9 +229,9 @@ def test_paths_that_collect_no_tests_do_not_fail_the_run(monkeypatch):
     monkeypatch.setattr(
         run_selective_tests.subprocess,
         "run",
-        _fake_pytest({"tests/a_test.py": 0, "tests/populace_fixture.py": 5}),
+        _fake_pytest({"tests/a_test.py": 0, "tests/microcosm_fixture.py": 5}),
     )
-    assert runner.run_tests({"tests/a_test.py", "tests/populace_fixture.py"}) == 0
+    assert runner.run_tests({"tests/a_test.py", "tests/microcosm_fixture.py"}) == 0
 
 
 def test_real_failures_still_fail_beside_an_empty_path(monkeypatch):
@@ -239,9 +239,9 @@ def test_real_failures_still_fail_beside_an_empty_path(monkeypatch):
     monkeypatch.setattr(
         run_selective_tests.subprocess,
         "run",
-        _fake_pytest({"tests/a_test.py": 1, "tests/populace_fixture.py": 5}),
+        _fake_pytest({"tests/a_test.py": 1, "tests/microcosm_fixture.py": 5}),
     )
-    assert runner.run_tests({"tests/a_test.py", "tests/populace_fixture.py"}) == 1
+    assert runner.run_tests({"tests/a_test.py", "tests/microcosm_fixture.py"}) == 1
 
 
 def _recording_pytest(commands):

@@ -380,3 +380,81 @@
   output:
     # $100 - $55 = $45 > $10 supplement -> $0.
     me_ssp: 0
+
+- name: Maine couple amount excludes a third aged adult in the default marital unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: ME
+  output:
+    ssi_claim_is_joint: [true, true, false]
+    me_ssp_eligible: [true, true, true]
+    # Maine's 2026 approved state plan, maximum state supplement:
+    # independent living is $15/couple and $10/individual.
+    # https://www.medicaid.gov/medicaid/spa/downloads/ME-25-0016.pdf
+    # $15 / 2 = $7.50 per spouse; the third adult receives $10.
+    me_ssp: [7.5, 7.5, 10]
+
+- name: Maine couple category ignores the third adult's care arrangement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age:
+          2026: 72
+        is_tax_unit_head:
+          2026: true
+      spouse:
+        age:
+          2026: 70
+        is_tax_unit_spouse:
+          2026: true
+      dependent:
+        age:
+          2026: 68
+        is_tax_unit_dependent:
+          2026: true
+        me_ssp_living_arrangement: ADULT_FOSTER_HOME
+    tax_units:
+      unit:
+        members: [head, spouse, dependent]
+    spm_units:
+      unit:
+        members: [head, spouse, dependent]
+    households:
+      home:
+        members: [head, spouse, dependent]
+        state_code:
+          2026: ME
+  output:
+    # The same plan pays $49/individual in adult foster care.
+    # https://www.medicaid.gov/medicaid/spa/downloads/ME-25-0016.pdf
+    # The couple remains $15 / 2 = $7.50 each; the third adult gets $49.
+    me_ssp: [7.5, 7.5, 49]

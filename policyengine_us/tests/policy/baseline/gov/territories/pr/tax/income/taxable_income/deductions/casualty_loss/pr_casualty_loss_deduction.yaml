@@ -1,0 +1,92 @@
+- name: Case 1, separate filer claims half of the principal residence loss.
+  # Section 1033.15(a)(10)(A)(ii): 50% * 20,000 = 10,000
+  period: 2024
+  input:
+    pr_principal_residence_casualty_loss: 20_000
+    filing_status: SEPARATE
+    state_code: PR
+  output:
+    pr_casualty_loss_deduction: 10_000
+
+- name: Case 2, single filer deducts the whole principal residence loss.
+  period: 2024
+  input:
+    pr_principal_residence_casualty_loss: 3_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_casualty_loss_deduction: 3_000
+
+- name: Case 3, a generic casualty or theft loss does not qualify.
+  # casualty_loss holds any personal casualty or theft loss (federal Form
+  # 4684). Puerto Rico allows only the principal residence loss, entered as
+  # pr_principal_residence_casualty_loss.
+  period: 2024
+  input:
+    casualty_loss: 20_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_casualty_loss_deduction: 0
+
+- name: Case 4, a household goods loss is not a principal residence loss.
+  period: 2025
+  input:
+    pr_personal_property_casualty_loss: 4_000
+    filing_status: SINGLE
+    state_code: PR
+  output:
+    pr_casualty_loss_deduction: 0
+
+- name: Case 5, joint filers have no cap or income floor.
+  # 18,000 + 12,000 = 30,000
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        pr_principal_residence_casualty_loss: 18_000
+      person2:
+        age: 43
+        pr_principal_residence_casualty_loss: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR
+  output:
+    pr_casualty_loss_deduction: 30_000
+
+- name: Case 6, a dependent's loss is left off the filer's return.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        pr_principal_residence_casualty_loss: 5_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        pr_principal_residence_casualty_loss: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PR
+  output:
+    pr_casualty_loss_deduction: 5_000
+
+- name: Case 7, no deduction outside Puerto Rico.
+  period: 2025
+  input:
+    pr_principal_residence_casualty_loss: 5_000
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    pr_casualty_loss_deduction: 0

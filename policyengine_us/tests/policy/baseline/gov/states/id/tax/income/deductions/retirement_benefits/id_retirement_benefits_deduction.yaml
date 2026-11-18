@@ -102,3 +102,36 @@
         state_code: ID
   output:
     id_retirement_benefits_deduction: 30_000
+
+- name: Idaho general retirement deduction excludes non-spouse military survivor benefits before 2025.
+  period: 2024
+  input:
+    state_code: ID
+    age: 65
+    is_surviving_spouse: false
+    military_retirement_pay_survivors: 10_000
+  output:
+    id_retirement_benefits_deduction_relevant_income: 0
+    id_retirement_benefits_deduction: 0
+
+- name: Idaho general retirement deduction includes an unremarried surviving spouse before 2025.
+  period: 2024
+  input:
+    state_code: ID
+    age: 65
+    is_surviving_spouse: true
+    military_retirement_pay_survivors: 10_000
+  output:
+    id_retirement_benefits_deduction_relevant_income: 10_000
+    id_retirement_benefits_deduction: 10_000
+
+- name: Idaho general retirement deduction retains own military pay before 2025.
+  period: 2024
+  input:
+    state_code: ID
+    age: 65
+    is_surviving_spouse: false
+    military_retirement_pay: 10_000
+  output:
+    id_retirement_benefits_deduction_relevant_income: 10_000
+    id_retirement_benefits_deduction: 10_000

@@ -10,10 +10,18 @@ class ny_heap_income_limit(Variable):
     unit = USD
     defined_for = StateCode.NY
     reference = (
+        "https://otda.ny.gov/policy/directives/2016/LCM/16-LCM-16-Attachment-1.pdf#page=1",
+        "https://liheapch.acf.gov/docs/NY_BenefitMatrix_2022.pdf#page=1",
         "https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37",
         "https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=9",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx",
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=2",
+    )
+
+    documentation = (
+        "Published monthly table rows are used for FY2017 to FY2023, annualized once. "
+        "Larger households retain the generic SMI/FPG calculation, which is not "
+        "verified historical coverage. The table boundary is not an eligibility cap."
     )
 
     def formula(spm_unit, period, parameters):
@@ -34,3 +42,16 @@ class ny_heap_income_limit(Variable):
         # Chapter 8 D.9(c) and the FY2026 plan control sizes 14+, where the
         # matrix's additional-person shortcut differs from the stated FPG rate.
         return max_(monthly_smi, monthly_fpg) * MONTHS_IN_YEAR
+
+    def formula_2017_01_01(spm_unit, period, parameters):
+        p = parameters(
+            period
+        ).gov.states.ny.otda.heap.eligibility.historical_income_limits
+        size = max_(spm_unit("ny_heap_household_size", period), 1)
+        last_size = p.last_published_household_size
+        table_limit = p.maximum.calc(min_(size, last_size)) * MONTHS_IN_YEAR
+        generic_limit = ny_heap_income_limit.formula(spm_unit, period, parameters)
+        return where(size <= last_size, table_limit, generic_limit)
+
+    def formula_2024_01_01(spm_unit, period, parameters):
+        return ny_heap_income_limit.formula(spm_unit, period, parameters)

@@ -10,6 +10,10 @@ values:
     - pre_tax_health_insurance_premiums
     # HSA contributions can be either through pre-tax.
     - health_savings_account_payroll_contributions
+    # Dependent care assistance (W-2 box 10, Form 2441 line 12) is excluded
+    # from gross income under IRC 129(a) and left out of box 1. Any part
+    # above the filer's own exclusion returns as taxable_dependent_care_benefits.
+    - dependent_care_employer_benefits
 metadata:
   label: Pre-tax contributions
   unit: list

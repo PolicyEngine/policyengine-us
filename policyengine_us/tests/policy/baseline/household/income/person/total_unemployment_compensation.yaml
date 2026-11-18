@@ -403,9 +403,12 @@
     va_subtractions: 0
     va_agi: 50_000
     # Taxable = 50,000 - 4,500 standard deduction - 930 exemption = 44,570.
-    # Tax = 60 + 60 + 600 + 0.0575 * 27,570 = 2,305.28, less 250 of
-    # nonrefundable credits = 2,055.28 (1,767.78 when all UC was subtracted).
-    va_income_tax: 2_055.28
+    # Tax = 60 + 60 + 600 + 0.0575 * 27,570 = 2,305.28 (2,017.78 when all
+    # UC was subtracted). No nonrefundable credit applies: there is no
+    # federal EITC at this AGI, and the one-time rebate is 0 in 2020
+    # (va/tax/income/rebate/amount.yaml); the first eligibility year is the
+    # 2021 return, under 2022 Special Session I HB30 Item 3-5.22.
+    va_income_tax: 2_305.28
 
 - name: Case 17, Hawaii CCAP counts strike benefits, which are not unemployment compensation.
   period: 2025-01

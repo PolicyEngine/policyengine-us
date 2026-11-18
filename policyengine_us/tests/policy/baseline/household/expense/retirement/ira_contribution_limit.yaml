@@ -132,3 +132,158 @@
   output:
     ira_contribution_limit: [7_500, 3_000]
     traditional_ira_contributions: [0, 3_000]
+
+- name: Case 8, 2017 IRA limit includes the age-fifty catch-up.
+  # Publication 590-A (2017), PDF page 5: $5,500 or $6,500 at age 50+.
+  period: 2017
+  input:
+    age: [49, 50]
+    ira_compensation: [100_000, 100_000]
+    traditional_ira_contributions_desired: [10_000, 10_000]
+  output:
+    ira_contribution_limit: [5_500, 6_500]
+    traditional_ira_contributions: [5_500, 6_500]
+
+# IRS retirement COLA table, PDF pages 2 and 3, section 219(b)(5)(A).
+# https://www.irs.gov/pub/irs-tege/cola-table.pdf
+# Section 219(b)(5)(B) supplies the $1,000 catch-up through 2025.
+- name: Case 9, 2018 generated IRA contributions respect the annual and catch-up limits.
+  period: 2018
+  input:
+    age:
+    - 49
+    - 50
+    ira_compensation:
+    - 50_000
+    - 50_000
+    traditional_ira_contributions_desired:
+    - 20_000
+    - 20_000
+  output:
+    ira_contribution_limit: &id001
+    - 5_500
+    - 6_500
+    traditional_ira_contributions: *id001
+- name: Case 10, 2019 generated IRA contributions respect the annual and catch-up limits.
+  period: 2019
+  input:
+    age:
+    - 49
+    - 50
+    ira_compensation:
+    - 50_000
+    - 50_000
+    traditional_ira_contributions_desired:
+    - 20_000
+    - 20_000
+  output:
+    ira_contribution_limit: &id002
+    - 6_000
+    - 7_000
+    traditional_ira_contributions: *id002
+- name: Case 11, 2020 generated IRA contributions respect the annual and catch-up limits.
+  period: 2020
+  input:
+    age:
+    - 49
+    - 50
+    ira_compensation:
+    - 50_000
+    - 50_000
+    traditional_ira_contributions_desired:
+    - 20_000
+    - 20_000
+  output:
+    ira_contribution_limit: &id003
+    - 6_000
+    - 7_000
+    traditional_ira_contributions: *id003
+- name: Case 12, 2021 generated IRA contributions respect the annual and catch-up limits.
+  period: 2021
+  input:
+    age:
+    - 49
+    - 50
+    ira_compensation:
+    - 50_000
+    - 50_000
+    traditional_ira_contributions_desired:
+    - 20_000
+    - 20_000
+  output:
+    ira_contribution_limit: &id004
+    - 6_000
+    - 7_000
+    traditional_ira_contributions: *id004
+- name: Case 13, 2022 generated IRA contributions respect the annual and catch-up limits.
+  period: 2022
+  input:
+    age:
+    - 49
+    - 50
+    ira_compensation:
+    - 50_000
+    - 50_000
+    traditional_ira_contributions_desired:
+    - 20_000
+    - 20_000
+  output:
+    ira_contribution_limit: &id005
+    - 6_000
+    - 7_000
+    traditional_ira_contributions: *id005
+- name: Case 14, 2023 generated IRA contributions respect the annual and catch-up limits.
+  period: 2023
+  input:
+    age:
+    - 49
+    - 50
+    ira_compensation:
+    - 50_000
+    - 50_000
+    traditional_ira_contributions_desired:
+    - 20_000
+    - 20_000
+  output:
+    ira_contribution_limit: &id006
+    - 6_500
+    - 7_500
+    traditional_ira_contributions: *id006
+- name: Case 15, 2025 generated IRA contributions respect the annual and catch-up limits.
+  period: 2025
+  input:
+    age:
+    - 49
+    - 50
+    ira_compensation:
+    - 50_000
+    - 50_000
+    traditional_ira_contributions_desired:
+    - 20_000
+    - 20_000
+  output:
+    ira_contribution_limit: &id007
+    - 7_000
+    - 8_000
+    traditional_ira_contributions: *id007
+
+# IRS Notice 2025-67, PDF page 4, sections 219(b)(5)(A) and (B).
+- name: Case 16, 2026 IRA catch-up uses the newly indexed eleven hundred dollars.
+  period: 2026
+  input:
+    age:
+    - 49
+    - 50
+    ira_compensation:
+    - 50_000
+    - 50_000
+    traditional_ira_contributions_desired:
+    - 20_000
+    - 20_000
+  output:
+    ira_contribution_limit:
+    - 7_500
+    - 8_600
+    traditional_ira_contributions:
+    - 7_500
+    - 8_600

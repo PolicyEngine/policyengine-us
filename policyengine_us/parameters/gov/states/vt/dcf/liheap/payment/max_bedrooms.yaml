@@ -1,0 +1,13 @@
+description: Vermont uses the standard heating cost column for this many bedrooms for units with this many or more bedrooms under the Low Income Home Energy Assistance Program.
+values:
+  2025-07-01: 4
+
+metadata:
+  unit: int
+  period: year
+  label: Vermont LIHEAP standard heating cost maximum bedrooms
+  reference:
+    - title: Vermont DCF Procedure P-2916, Standard Heating Cost Tables for the 2025-26 Heating Season
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/ESD-Procedure-P2916.pdf#page=1
+    - title: "Vermont AHS 2026-2027 Benefits Matrix, Standard Heating Cost Tables for the 2026-27 Heating Season #page 2-3"
+      href: https://humanservices.vermont.gov/sites/ahsnew/files/documents/2026-2027%20Benefits%20Matrx.pdf#page=2

@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.mt_separate_return import mt_capital_gains_tax
 
 
 class mt_capital_gains_tax_indiv(Variable):
@@ -13,60 +14,10 @@ class mt_capital_gains_tax_indiv(Variable):
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.mt.tax.income.main.capital_gains
-        # the tax for capital gains comes into effect after 2024
-        if p.in_effect:
-            ltcg = person("long_term_capital_gains", period)
-            stcg = person("short_term_capital_gains", period)
-            net_cg = ltcg + stcg
-            capital_gains = max_(min_(ltcg, net_cg), 0)
-            filing_status = person.tax_unit(
-                "state_filing_status_if_married_filing_separately_on_same_return",
-                period,
-            )
-            applicable_threshold = person(
-                "mt_capital_gains_tax_applicable_threshold_indiv", period
-            )
-            status = filing_status.possible_values
-
-            lower_rate = select(
-                [
-                    filing_status == status.SINGLE,
-                    filing_status == status.SEPARATE,
-                    filing_status == status.SURVIVING_SPOUSE,
-                    filing_status == status.HEAD_OF_HOUSEHOLD,
-                ],
-                [
-                    p.rates.single.amounts[0],
-                    p.rates.separate.amounts[0],
-                    p.rates.surviving_spouse.amounts[0],
-                    p.rates.head_of_household.amounts[0],
-                ],
-            )
-            higher_rate = select(
-                [
-                    filing_status == status.SINGLE,
-                    filing_status == status.SEPARATE,
-                    filing_status == status.SURVIVING_SPOUSE,
-                    filing_status == status.HEAD_OF_HOUSEHOLD,
-                ],
-                [
-                    p.rates.single.amounts[-1],
-                    p.rates.separate.amounts[-1],
-                    p.rates.surviving_spouse.amounts[-1],
-                    p.rates.head_of_household.amounts[-1],
-                ],
-            )
-            # Calculate taxes
-            capital_gains_below_threshold = min_(applicable_threshold, capital_gains)
-            capital_gains_above_threshold = max_(
-                capital_gains - applicable_threshold, 0
-            )
-
-            lower_capital_gains_tax = capital_gains_below_threshold * lower_rate
-            higher_capital_gains_tax = capital_gains_above_threshold * higher_rate
-
-            return max_(lower_capital_gains_tax + higher_capital_gains_tax, 0)
-            # Only apply tax if capital gains are positive
-
-        return 0
+        # The tax on capital gains comes into effect in 2024.
+        if not parameters(period).gov.states.mt.tax.income.main.capital_gains.in_effect:
+            return 0
+        applicable_threshold = person(
+            "mt_capital_gains_tax_applicable_threshold_indiv", period
+        )
+        return mt_capital_gains_tax(person, period, parameters, applicable_threshold)

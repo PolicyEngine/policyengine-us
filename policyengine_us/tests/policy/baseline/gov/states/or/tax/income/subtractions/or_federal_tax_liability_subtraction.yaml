@@ -4,7 +4,7 @@
     state_code: OR
     filing_status: SINGLE
     adjusted_gross_income: 80_000
-    income_tax: 10_000
+    income_tax_before_refundable_credits: 10_000
     eitc: 0
   output:
     or_federal_tax_liability_subtraction: 7_050
@@ -15,7 +15,8 @@
     state_code: OR
     filing_status: SINGLE
     adjusted_gross_income: 80_000
-    income_tax: 6_000
+    # 6,000 of federal income tax plus the 1,000 EITC it nets out.
+    income_tax_before_refundable_credits: 7_000
     eitc: 1_000
   output:
     or_federal_tax_liability_subtraction: 7_000
@@ -26,7 +27,7 @@
     state_code: OR
     filing_status: SINGLE
     adjusted_gross_income: 145_000
-    income_tax: 10_000
+    income_tax_before_refundable_credits: 10_000
     eitc: 0
   output:
     or_federal_tax_liability_subtraction: 0
@@ -37,7 +38,7 @@
     state_code: OR
     filing_status: SEPARATE
     adjusted_gross_income: 80_000
-    income_tax: 10_000
+    income_tax_before_refundable_credits: 10_000
     eitc: 0
   output:
     or_federal_tax_liability_subtraction: 3_525
@@ -48,7 +49,7 @@
     state_code: OR
     filing_status: SEPARATE
     adjusted_gross_income: 145_000
-    income_tax: 10_000
+    income_tax_before_refundable_credits: 10_000
     eitc: 0
   output:
     or_federal_tax_liability_subtraction: 0
@@ -59,8 +60,8 @@
     state_code: OR
     filing_status: JOINT
     adjusted_gross_income: 80_000
-    income_tax: 10_000
-    eitc: 0 
+    income_tax_before_refundable_credits: 10_000
+    eitc: 0
   output:
     or_federal_tax_liability_subtraction: 7_050
 
@@ -70,7 +71,7 @@
     state_code: OR
     filing_status: JOINT
     adjusted_gross_income: 290_000
-    income_tax: 10_000
+    income_tax_before_refundable_credits: 10_000
     eitc: 0
   output:
     or_federal_tax_liability_subtraction: 0
@@ -85,7 +86,7 @@
     state_code: OR
     filing_status: SINGLE
     adjusted_gross_income: 80_000
-    income_tax: 10_000
+    income_tax_before_refundable_credits: 10_000
     eitc: 0
   output:
     or_federal_tax_liability_subtraction: 8_750
@@ -96,7 +97,7 @@
     state_code: OR
     filing_status: JOINT
     adjusted_gross_income: 255_000
-    income_tax: 30_000
+    income_tax_before_refundable_credits: 30_000
     eitc: 0
   output:
     or_federal_tax_liability_subtraction: 7_000
@@ -107,8 +108,263 @@
     state_code: OR
     filing_status: SEPARATE
     adjusted_gross_income: 80_000
-    income_tax: 10_000
+    income_tax_before_refundable_credits: 10_000
     eitc: 0
   output:
     # 50% x 8,750
     or_federal_tax_liability_subtraction: 4_375
+
+# ORS 316.685(1)(b) leaves out only the earned income credit, so every other
+# federal refundable credit reduces the subtraction, and so does the premium tax
+# credit (2025 Publication OR-17, PDF page 71: "Federal income tax credits,
+# except for the EITC, reduce your federal tax subtraction."). The net
+# investment income tax, a Subtitle A income tax (26 U.S.C. 1411(a)(1)), stays
+# in; the employee payroll tax on unreported tips and wages comes out (ORS
+# 316.685(3)(a)). Floor at zero, then apply the AGI cap.
+- name: Case 11, 2025 premium tax credit reduces the subtraction.
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 45_000
+    income_tax_before_refundable_credits: 4_000
+    assigned_aca_ptc: 1_500
+    eitc: 0
+  output:
+    # 4,000 - 1,500
+    or_federal_tax_liability_subtraction: 2_500
+
+- name: Case 12, 2025 additional child tax credit reduces the subtraction but the EITC does not.
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: JOINT
+    adjusted_gross_income: 60_000
+    # Federal tax after nonrefundable credits is 0; a 1,000 additional tax on
+    # an early retirement plan distribution remains.
+    income_tax_before_refundable_credits: 1_000
+    refundable_ctc: 600
+    assigned_aca_ptc: 0
+    eitc: 500
+  output:
+    # 1,000 - 600 = 400. Counting the 500 EITC would give
+    # max(0, 1,000 - 600 - 500) = 0, and leaving out the additional child tax
+    # credit would give 1,000.
+    or_federal_tax_liability_subtraction: 400
+
+- name: Case 13, 2025 credits above the liability floor the subtraction at zero.
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 40_000
+    income_tax_before_refundable_credits: 2_000
+    refundable_american_opportunity_credit: 1_000
+    assigned_aca_ptc: 1_500
+    eitc: 0
+  output:
+    # max(0, 2,000 - 1,000 - 1,500)
+    or_federal_tax_liability_subtraction: 0
+
+- name: Case 14, 2025 net investment income tax stays in and unreported payroll tax comes out.
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+    # Includes both taxes below.
+    income_tax_before_refundable_credits: 5_000
+    net_investment_income_tax: 600
+    unreported_payroll_tax: 400
+    assigned_aca_ptc: 0
+    eitc: 0
+  output:
+    # 5,000 - 400; the 600 net investment income tax is not taken out.
+    or_federal_tax_liability_subtraction: 4_600
+
+- name: Case 15, 2021 refundable child tax, recovery rebate and child care credits reduce the subtraction.
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: JOINT
+    adjusted_gross_income: 80_000
+    income_tax_before_refundable_credits: 9_000
+    refundable_ctc: 3_000
+    recovery_rebate_credit: 2_800
+    cdcc: 1_000
+    assigned_aca_ptc: 0
+    eitc: 0
+  output:
+    # 9,000 - 3,000 - 2,800 - 1,000
+    or_federal_tax_liability_subtraction: 2_200
+
+- name: Case 16, 2020 recovery rebate credit and additional child tax credit reduce the subtraction.
+  period: 2020
+  input:
+    state_code: OR
+    filing_status: JOINT
+    adjusted_gross_income: 50_000
+    income_tax_before_refundable_credits: 4_000
+    recovery_rebate_credit: 2_400
+    refundable_ctc: 1_000
+    assigned_aca_ptc: 0
+    eitc: 0
+  output:
+    # 4,000 - 2,400 - 1,000
+    or_federal_tax_liability_subtraction: 600
+
+- name: Case 17, 2026 premium tax, American Opportunity and additional child tax credits reduce the subtraction.
+  period: 2026
+  input:
+    state_code: OR
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 70_000
+    income_tax_before_refundable_credits: 6_000
+    refundable_american_opportunity_credit: 1_000
+    assigned_aca_ptc: 2_000
+    refundable_ctc: 1_700
+    eitc: 0
+  output:
+    # 6,000 - 1,000 - 2,000 - 1,700
+    or_federal_tax_liability_subtraction: 1_300
+
+- name: Case 18, 2023 refundable payroll tax credit reduces the subtraction.
+  period: 2023
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 60_000
+    income_tax_before_refundable_credits: 3_000
+    refundable_payroll_tax_credit: 500
+    assigned_aca_ptc: 0
+    eitc: 0
+  output:
+    # 3,000 - 500
+    or_federal_tax_liability_subtraction: 2_500
+
+- name: Case 19, 2025 additional child tax credit offsets the early-distribution tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        taxable_private_pension_income: 30_000
+      person2:
+        age: 40
+      person3:
+        age: 6
+      person4:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        # 10% additional tax on the 30,000 early distribution.
+        qualified_retirement_penalty: 3_000
+        # No marketplace coverage, so no premium tax credit.
+        aca_ptc: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: OR
+  output:
+    adjusted_gross_income: 50_000
+    # (50,000 - 31,500 standard deduction) x 10%
+    income_tax_before_credits: 1_850
+    # 2 x 2,200 child tax credit less the 1,850 used against tax, within
+    # 2 x 1,700 and 15% x (20,000 - 2,500) = 2,625.
+    refundable_ctc: 2_550
+    # 1,850 - 1,850 + 3,000
+    income_tax_before_refundable_credits: 3_000
+    # 3,000 - 2,550, within the 8,500 cap. The EITC does not reduce it.
+    or_federal_tax_liability_subtraction: 450
+
+- name: Case 20, 2025 head of household keeps the net investment income tax when credits wipe out the regular tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        long_term_capital_gains: 230_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        solar_electric_property_expenditures: 200_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # (230,000 - 23,625 standard deduction - 64,750 at 0%) x 15%
+    income_tax_before_credits: 21_243.75
+    # The child tax credit and the 60,000 clean energy credit, capped at tax.
+    income_tax_capped_non_refundable_credits: 21_243.75
+    # 3.8% x (230,000 - 200,000)
+    net_investment_income_tax: 1_140
+    # 1,140, within the 8,500 cap at 230,000.
+    or_federal_tax_liability_subtraction: 1_140
+
+- name: Case 21, 2025 with no EITC on the federal refundable credit list, the code backs out none.
+  period: 2025
+  input:
+    gov.irs.credits.refundable:
+      - refundable_american_opportunity_credit
+      - refundable_ctc
+      - recovery_rebate_credit
+      - refundable_payroll_tax_credit
+      - claim_of_right_credit
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 40_000
+    income_tax_before_refundable_credits: 3_000
+    eitc: 1_000
+    assigned_aca_ptc: 0
+  output:
+    # income_tax_refundable_credits holds no EITC here, so the code backs out
+    # none: 3,000 - 0 = 3,000. Without the guard: 3,000 - (0 - 1,000) = 4,000.
+    or_federal_tax_liability_subtraction: 3_000
+
+- name: The section 1341 credit reduces the federal tax liability subtraction
+  # ORS 316.680(1)(b) and 316.685(1) allow federal taxes accrued and
+  # disregard only the EITC. Section 1341 relief reduces accrued tax.
+  # Federal (as in the federal claim of right integration case 4): tax on
+  # 40,000 - 15,750 = 24,250 is 2,671.50, less the 2,200 prior-year decrease
+  # under the credit method: 471.50. No EITC at this income.
+  # Oregon: min(max(0, 471.50 + 0), 8,500 cap) = 471.50.
+  # (Adding the credit back would give 2,671.50.)
+  # aca_ptc is pinned at 0 so the case isolates the section 1341 credit: an
+  # Oregon formula that also nets the premium tax credit would otherwise
+  # subtract this household's modeled credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        claim_of_right_prior_year_tax_decrease: 2_200
+        aca_ptc: 0
+    households:
+      household:
+        members: [person]
+        state_code: OR
+  output:
+    claim_of_right_credit_applies: true
+    claim_of_right_credit: 2_200
+    eitc: 0
+    income_tax: 471.5
+    or_federal_tax_liability_subtraction: 471.5

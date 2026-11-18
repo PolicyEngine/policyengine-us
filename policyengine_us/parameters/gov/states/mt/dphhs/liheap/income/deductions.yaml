@@ -1,0 +1,20 @@
+description: Montana deducts these health insurance premiums from the income of households that are not categorically eligible under the Low Income Home Energy Assistance Program.
+# Out-of-pocket and payroll-deducted medical, dental and vision premiums are
+# deducted. The premium inputs are disjoint, so each premium is deducted once.
+# The formula nets Medicare Part A and Part B premiums from Social Security
+# for every household and deducts any remainder with these premiums.
+values:
+  2025-10-01:
+    - health_insurance_premiums_without_medicare_part_b
+    - pre_tax_health_insurance_premiums
+metadata:
+  unit: list
+  period: year
+  label: Montana LIHEAP income deductions
+  reference:
+    - title: Admin. R. Mont. 37.70.407(1)(bb), effective May 27, 2023 and unchanged on May 23, 2026
+      href: https://rules.mt.gov/policy-library-documents/application/pdf/36b451e63d1ed5ab982f4c43f746503d7b5d88dc720f10b0fc9b151576d6e788#page=3
+    - title: "Montana LIHEAP Policy Manual 2025-2026, section 3.15 Income Exclusions #page 39-40"
+      href: https://web.archive.org/web/20260915040544/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=39
+    - title: "Montana LIHEAP Policy Manual 2026-2027, section 3.15 Income Exclusions #page 39-40"
+      href: https://web.archive.org/web/20261015032646/https://dphhs.mt.gov/assets/hcsd/liheap/LIHEAPmanual.pdf#page=39

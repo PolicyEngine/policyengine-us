@@ -13,4 +13,6 @@ class pa_tax_forgiveness_amount(Variable):
     def formula(tax_unit, period, parameters):
         income_tax = tax_unit("pa_income_tax_before_forgiveness", period)
         rate = tax_unit("pa_tax_forgiveness_rate", period)
-        return income_tax * rate
+        # Forgiveness applies only to the tax of a filer who can claim it.
+        eligible_share = tax_unit("pa_tax_forgiveness_eligible_share", period)
+        return income_tax * rate * eligible_share

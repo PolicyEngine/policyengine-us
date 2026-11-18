@@ -1,10 +1,13 @@
-description: Colorado multiplies the number of additional eligible children by this amount under the Child Care Assistance Program to calculate add on parent fee.  
-metadata:
-  period: month
-  reference:
-    - title: Colorado Child Care Assistance Program Rules and Regulations - 3.111(P)
-      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=43
-  label: Colorado Child Care Assistance Program parent fee add on rate
-  unit: currency-USD
+description: Colorado adds this amount to the parent fee for each child in care after the first when gross countable income exceeds the federal poverty guideline under the Child Care Assistance Program.
 values:
-  2022-10-01: 15
+  2021-07-01: 15
+  # Section 3.124(P), which holds this fee, runs through July 31, 2028; the
+  # section 3.124(Q) formula that follows has no fee for additional children.
+  2028-08-01: 0
+metadata:
+  unit: currency-USD
+  period: month
+  label: Colorado Child Care Assistance Program parent fee for each additional child
+  reference:
+    - title: "8 CCR 1403-1 Section 3.124(P) and (Q), Parent fees (effective 2026-08-14) #page 83-84"
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=83

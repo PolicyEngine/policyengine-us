@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+)
 
 
 class ne_aabd_couple_rate_applies(Variable):
@@ -21,12 +24,16 @@ class ne_aabd_couple_rate_applies(Variable):
         # is_ssi_eligible is used (not ne_aabd_eligible) to avoid a
         # circular dependency on the benefit calculation.
         joint_claim = person("ssi_claim_is_joint", period.this_year)
-        unit_size = person.marital_unit.nb_persons()
         both_ssi_eligible = (
-            person.marital_unit.sum(person("is_ssi_eligible", period)) == unit_size
+            _ssi_couple_total(
+                person, period.this_year, person("is_ssi_eligible", period).astype(int)
+            )
+            == 2
         )
         living_arrangement = person("ne_aabd_living_arrangement", period)
         LA = living_arrangement.possible_values
         is_independent = living_arrangement == LA.INDEPENDENT
-        both_independent = person.marital_unit.sum(is_independent) == unit_size
+        both_independent = (
+            _ssi_couple_total(person, period.this_year, is_independent.astype(int)) == 2
+        )
         return joint_claim & both_ssi_eligible & both_independent

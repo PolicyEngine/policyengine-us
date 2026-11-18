@@ -1,0 +1,14 @@
+- name: Case 1, default nm_other_additions is zero
+  period: 2024
+  input:
+    state_code: NM
+  output:
+    nm_other_additions: 0.0
+
+- name: Case 2, nm_other_additions flows into nm_additions
+  period: 2024
+  input:
+    state_code: NM
+    nm_other_additions: 1_200
+  output:
+    nm_additions: 1_200

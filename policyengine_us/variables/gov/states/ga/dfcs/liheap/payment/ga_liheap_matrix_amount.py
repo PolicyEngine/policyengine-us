@@ -1,0 +1,83 @@
+from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ga.dfcs.liheap.eligibility._ga_liheap_housing import (
+    ga_liheap_has_direct_payment_route,
+    ga_liheap_has_electric_vendor_route,
+)
+
+
+class ga_liheap_matrix_amount(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    unit = USD
+    label = "Georgia LIHEAP heating matrix amount"
+    defined_for = StateCode.GA
+    reference = (
+        "https://liheapch.acf.gov/docs/2026/benefits-matricies/GA_BenefitMatrix_Heat-Cool_2026.pdf",
+        "https://liheapch.acf.gov/docs/2025/benefits-matricies/GA_BenefitMatrix_2025.pdf",
+        "https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=30",
+        # PDF pages 4, 57, 89
+        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=4",
+        "https://liheapch.acf.gov/docs/2024/benefits-matricies/GA_BenefitMatrix_2024.pdf",
+    )
+
+    def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.ga.dfcs.liheap.payment
+        size = spm_unit("ga_liheap_household_size", period)
+        income = spm_unit("ga_liheap_income", period)
+        # The published lower-income thresholds end at size 16. Capping this
+        # lookup is provisional for larger units, not verified policy coverage.
+        lookup_size = clip(size, 1, p.maximum_table_size)
+        lower_income = income <= p.lower_income_limit[lookup_size]
+        heating_type = spm_unit("heating_type", period)
+        fuel = heating_type.possible_values
+        base_amounts = [
+            p.base_amount.electricity,
+            p.base_amount.natural_gas,
+            p.base_amount.fuel_oil,
+            p.base_amount.propane,
+            p.base_amount.wood,
+        ]
+        base = select(
+            [
+                heating_type == fuel.ELECTRICITY,
+                heating_type == fuel.NATURAL_GAS,
+                heating_type == fuel.FUEL_OIL,
+                heating_type == fuel.PROPANE,
+                heating_type == fuel.WOOD,
+            ],
+            base_amounts,
+            default=0,
+        )
+        # Applicant payments use the lowest award in the income level (plan page 30).
+        # The uplift is the same for every fuel, so the lowest Level II amount plus
+        # the uplift is the lowest Level I amount.
+        # Only rent that "includes utilities with no separate bill for heating/cooling
+        # costs" (manual page 57) takes that direct payment (page 89, row 2). A
+        # separate electric bill (row 3: "Paid to electric vendor because gas usage is
+        # indeterminate") or main heating fuel bill (row 1: "Paid to vendor") takes a
+        # vendor payment instead, subsidized or not (page 4) and whatever
+        # tenant_pays_utilities says. The FY2024 matrix note says "The main fuel type
+        # is not always where the benefit is applied", so vendor payments use the step
+        # 2 amount for the main heating fuel.
+        electric_vendor = ga_liheap_has_electric_vendor_route(spm_unit, period)
+        main_fuel_bill = spm_unit("heating_expense", period) > 0
+        direct_payment = (
+            ga_liheap_has_direct_payment_route(spm_unit, period)
+            & ~electric_vendor
+            & ~main_fuel_bill
+        )
+        base = where(
+            direct_payment & (heating_type != fuel.NONE),
+            np.minimum.reduce(base_amounts),
+            base,
+        )
+        # This is an ungated schedule amount with no cap at the reported bill.
+        # Step 2 prices no kerosene, coal, solar, other or unspecified main fuel, so
+        # vendor payments for them return an incomplete zero estimate, not a legal
+        # ineligibility finding. The direct payment does not depend on the fuel, so an
+        # unsubsidized renter whose rent includes all utilities and who has one of these
+        # fuels gets the lowest award ($500 in FY2026 Level I) with no separate bill and
+        # $0 once it reports an electric or main heating fuel bill. The unspecified
+        # default is tracked in #9754.
+        return where(base > 0, base + lower_income * p.lower_income_uplift, 0)

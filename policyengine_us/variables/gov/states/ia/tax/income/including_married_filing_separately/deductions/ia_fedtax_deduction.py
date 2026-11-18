@@ -26,14 +26,9 @@ class ia_fedtax_deduction(Variable):
         # other additional taxes (line 18); the net investment income tax
         # (line 12) is not added back. With payments equal to the liability,
         # the deduction is the federal income tax without the added-back taxes.
-        ustax = person.tax_unit("income_tax_before_refundable_credits", period)
-        # correct ustax amount for flaw in CTC refundable/nonrefundable split
-        ctc = parameters(period).gov.irs.credits.ctc
-        ctc_fully_refundable = ctc.refundable.fully_refundable
-        if ctc_fully_refundable:
-            us_tax = ustax + person.tax_unit("non_refundable_ctc", period)
-        else:
-            us_tax = ustax
+        # The federal income tax is after nonrefundable credits, including the
+        # 2021 credit for other dependents, which reduces the liability paid.
+        us_tax = person.tax_unit("income_tax_before_refundable_credits", period)
         # income_tax_before_refundable_credits never includes the
         # self-employment or Additional Medicare tax, so only the added-back
         # Schedule 2 taxes it does include are removed.

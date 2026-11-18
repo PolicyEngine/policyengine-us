@@ -1,10 +1,10 @@
-"""Module-level cache of pinned tax-benefit systems (issue #8114).
+"""Tax-benefit systems pinned to earlier parameters (issue #8114).
 
 The NY EITC/CTC formulas recompute the federal EITC/CTC with parameters
-pinned to an earlier vintage (pre-ARPA 2020, pre-TCJA 2017). Cloning the
-full tax-benefit system inside the formula deep-copies the entire
-parameter tree and variable registry on every call; this cache builds each
-pinned system once per process and reuses it across simulations.
+pinned to an earlier vintage (pre-ARPA 2020, pre-TCJA 2017). A simulation's
+pinned system copies the parameter tree's nodes and borrows the dated values in
+them, so it costs a fraction of a second and little memory, and reads what a
+full clone reads (see policyengine_us.spm.pin_spm_policy).
 
 The pinned system must be treated as read-only by all callers.
 """
@@ -14,17 +14,11 @@ import weakref
 from policyengine_core.parameters import Parameter
 from policyengine_core.periods import instant
 
-# pin name -> (weakref to base TBS, weakref to its parameter tree, pinned clone).
-# The clone is held strongly so it survives across simulations; the
-# weakref to the base is used to detect that the base system changed
-# (e.g. a reformed system in another test), in which case the entry is
-# rebuilt. Using a weakref (rather than id() alone) also guards against
-# id reuse after the base system is garbage-collected.
-#
-# The parameter tree is tracked separately because a shared-policy system
-# keeps its identity while swapping its tree: a reform detaches a private
-# copy in place (see policyengine_us.spm.SharedParameterPolicy), so a pin
-# built before that reform would otherwise be reused after it.
+from policyengine_us.spm import pin_spm_policy
+
+# pin name -> the base system, its parameters and variables, and the system
+# pinned from them, all held weakly. The branch that reads a pinned system holds
+# it, so this cache keeps nothing alive, a finished simulation included.
 _PINNED_TBS_CACHE = {}
 
 # Variables without "ctc", "cdcc" or "eitc" in their names that read those
@@ -41,16 +35,26 @@ IRC_2020_RECOMPUTED_VARIABLES = ("dependent_care_assistance_exclusion",)
 
 
 def _get_pinned_tbs(base_tbs, pin_name, pin_fn):
-    entry = _PINNED_TBS_CACHE.get(pin_name)
     parameters = base_tbs.parameters
-    if entry is not None and entry[0]() is base_tbs and entry[1]() is parameters:
-        return entry[2]
-    pinned = base_tbs.clone()
+    entry = _PINNED_TBS_CACHE.get(pin_name)
+    pinned = None if entry is None else entry[3]()
+    # A reform changes a system and keeps its identity: it detaches a private
+    # tree in place (see policyengine_us.spm.SharedParameterPolicy), or swaps
+    # entries in the variable registry.
+    if (
+        pinned is not None
+        and entry[0]() is base_tbs
+        and entry[1]() is parameters
+        and entry[2] == base_tbs.variables
+    ):
+        return pinned
+    pinned = pin_spm_policy(base_tbs)
     pin_fn(pinned)
     _PINNED_TBS_CACHE[pin_name] = (
         weakref.ref(base_tbs),
         weakref.ref(parameters),
-        pinned,
+        weakref.WeakValueDictionary(base_tbs.variables),
+        weakref.ref(pinned),
     )
     return pinned
 

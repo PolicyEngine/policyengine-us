@@ -7,6 +7,8 @@ class hi_deductions(Variable):
     label = "Hawaii deductions"
     unit = USD
     reference = (
+        "https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=1",
+        "https://files.hawaii.gov/tax/news/announce/ann26-06.pdf#page=2",
         "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=11",
         # PDF pages 15 (itemized deduction), 20 (standard deduction)
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",
@@ -21,7 +23,6 @@ class hi_deductions(Variable):
 
         standard_deduction = tax_unit("hi_standard_deduction", period)
         total_itemized_deduction = tax_unit("hi_itemized_deductions", period)
-        tax_unit_earned_income = tax_unit("tax_unit_earned_income", period)
         filing_status = tax_unit("filing_status", period)
 
         # check itemized deduction eligibility
@@ -35,10 +36,11 @@ class hi_deductions(Variable):
         is_dependent_on_another_return = tax_unit(
             "head_or_spouse_is_dependent_elsewhere", period
         )
-        # Worksheet earned income: wages and self-employment income minus the
-        # deductible part of self-employment tax (Schedule 1, line 15).
-        worksheet_earned_income = max_(
-            tax_unit_earned_income - tax_unit("self_employment_tax_ald", period), 0
+        # Worksheet earned income: federal Form 1040 line 1 wages and Schedule
+        # 1 lines 3 (business) and 6 (farming), minus line 15 (N-11
+        # instructions, PDF page 20).
+        worksheet_earned_income = tax_unit(
+            "standard_deduction_worksheet_earned_income", period
         )
         dependent_standard_deduction = min_(
             max_(p.threshold.dependent, worksheet_earned_income), standard_deduction
@@ -55,4 +57,14 @@ class hi_deductions(Variable):
         itemized_deduction = where(
             itemized_deductions_eligible, total_itemized_deduction, 0
         )
-        return max_(itemized_deduction, applicable_standard_deduction)
+        non_itemizer_charitable_deduction = tax_unit(
+            "charitable_deduction_for_non_itemizers", period
+        )
+        tip_income_deduction = tax_unit("hi_tip_income_deduction", period)
+        return (
+            max_(
+                itemized_deduction,
+                applicable_standard_deduction + non_itemizer_charitable_deduction,
+            )
+            + tip_income_deduction
+        )

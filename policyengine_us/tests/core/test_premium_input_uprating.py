@@ -55,8 +55,12 @@ Invariants:
 5. Bounds and order: each index is positive in every year, and strictly
    increasing from its last published dip (direct purchase from 2020, Part B
    from 2023, medical care CPI throughout) to 2100.
-6. Extension rule: past its source's last year, each index grows at its last
-   published one-year rate to 2100 and holds its 2100 value after.
+6. Extension rule: past its source's last year, the medical care CPI and
+   Part B indexes grow at their last published one-year rates to 2100. The
+   ESI and direct purchase indexes instead glide to the Medicare Trustees'
+   long-range per capita health spending rates (tested in
+   test_long_range_health_growth.py, test_esi_premium_uprating.py and
+   test_uprating_extensions.py). Every index holds its 2100 value after.
 7. No premium input follows out-of-pocket spending.
 """
 
@@ -394,7 +398,11 @@ def test_each_index_strictly_increases_after_its_last_dip(path, offset, gap):
     assert _index(path, year) < _index(path, later)
 
 
-@given(st.sampled_from(sorted(SPANS)), st.integers(0, END_YEAR))
+# Indexes that repeat their last published growth rate after their last year.
+CONSTANT_EXTENSIONS = sorted({MEDICAL_CPI, PART_B})
+
+
+@given(st.sampled_from(CONSTANT_EXTENSIONS), st.integers(0, END_YEAR))
 def test_each_extension_holds_the_last_published_growth_rate(path, offset):
     _, last, _ = SPANS[path]
     year = last + 1 + offset % (END_YEAR - last)

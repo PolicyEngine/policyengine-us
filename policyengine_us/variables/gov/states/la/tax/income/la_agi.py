@@ -13,4 +13,5 @@ class la_agi(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         exempt_income = tax_unit("la_agi_exempt_income", period)
         plan_529 = tax_unit("la_529_plan_deduction", period)
-        return max_(agi - exempt_income - plan_529, 0)
+        other_additions = tax_unit("la_other_additions", period)
+        return max_(agi + other_additions - exempt_income - plan_529, 0)

@@ -1,0 +1,79 @@
+# 8 CCR 1403-1 3.130(C) sets units of care by hours a day (PDF page 119 of
+# ruleVersionId 12658). With only weekly hours reported, the model spreads them
+# over the child's days of care in a week: the larger of days a week and
+# attending days a month x 12 / 52, else five weekdays.
+- name: Case 1, weekly hours spread over the days of care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      daily_reported:
+        age: 3
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 40
+      weekly_over_two_days:
+        age: 3
+        childcare_hours_per_week: 20
+        childcare_days_per_week: 2
+      weekly_only:
+        age: 3
+        childcare_hours_per_week: 20
+      five_hour_days:
+        age: 3
+        childcare_hours_per_week: 25
+      attending_days:
+        age: 3
+        childcare_hours_per_week: 15
+        childcare_attending_days_per_month: 13
+      both_day_counts:
+        age: 3
+        childcare_hours_per_week: 20
+        childcare_days_per_week: 4
+        childcare_attending_days_per_month: 13
+      more_attending_days:
+        age: 3
+        childcare_hours_per_week: 20
+        childcare_days_per_week: 2
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [parent, daily_reported, weekly_over_two_days, weekly_only, five_hour_days, attending_days, both_day_counts, more_attending_days]
+    households:
+      household:
+        members: [parent, daily_reported, weekly_over_two_days, weekly_only, five_hour_days, attending_days, both_day_counts, more_attending_days]
+        state_code: CO
+  output:
+    # parent: no hours of care.
+    # daily_reported: daily hours win, 4.
+    # weekly_over_two_days: 20 / 2 = 10.
+    # weekly_only: 20 / 5 weekdays = 4.
+    # five_hour_days: 25 / 5 = 5.
+    # attending_days: 13 * 12 / 52 = 3 days a week, 15 / 3 = 5.
+    # both_day_counts: 4 days a week exceed 13 * 12 / 52 = 3, 20 / 4 = 5.
+    # more_attending_days: 20 * 12 / 52 = 4.62 days a week exceed 2,
+    # 20 / 4.62 = 4.33.
+    co_ccap_care_hours_per_day: [0, 4, 10, 4, 5, 5, 5, 4.33]
+
+- name: Case 2, weekly hours worked out from a daily schedule leave the daily hours alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    # childcare_hours_per_week comes to 8 * 3 = 24, and 24 / 3 = 8 either way.
+    co_ccap_care_hours_per_day: [0, 8]

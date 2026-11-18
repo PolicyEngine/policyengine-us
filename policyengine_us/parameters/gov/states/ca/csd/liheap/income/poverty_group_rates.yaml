@@ -1,0 +1,15 @@
+description: California uses these federal poverty guideline rates as ordinary poverty-group upper boundaries under the Low Income Home Energy Assistance Program.
+# Upper bounds are inclusive after monthly-cent rounding. Above-SMI categorically eligible households use the fourth group even when their ordinary fourth-group interval is empty.
+values:
+  2025-10-01:
+    - 1
+    - 1.25
+    - 1.5
+
+metadata:
+  unit: list
+  period: year
+  label: California LIHEAP poverty group upper rates
+  reference:
+    - title: California FY2026 LIHEAP State Plan
+      href: https://www.csd.ca.gov/Shared%20Documents/2026-Final-LIHEAP-State-Plan.pdf#page=184

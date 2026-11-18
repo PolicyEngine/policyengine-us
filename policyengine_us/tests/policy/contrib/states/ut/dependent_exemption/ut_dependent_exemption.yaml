@@ -1,8 +1,15 @@
+# The baseline exemption inputs below retain the original fixture's
+# synthetic 2026 forecast assumption to isolate reform behavior. The $2,159
+# per-dependent amount is not asserted as a published Utah tax-year amount.
 - name: Under-18 repeal zeroes the young dependent, preserves the older one.
   period: 2026
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
   input:
+    gov.states.ut.tax.income.credits.taxpayer.personal_exemption: 2_159
+    # Retain the original fixture's synthetic phase-out forecast as well;
+    # this is not asserted as a published Utah tax-year threshold.
+    gov.states.ut.tax.income.credits.taxpayer.phase_out.threshold.HEAD_OF_HOUSEHOLD: 27_939.15
     gov.contrib.states.ut.dependent_exemption.in_effect: true
     gov.contrib.states.ut.dependent_exemption.amount: 0
     gov.contrib.states.ut.dependent_exemption.age_limit.in_effect: true
@@ -27,11 +34,11 @@
         members: [person1, child1, person2]
         state_code: UT
   output:
-    # Only the 19-year-old keeps the uprated baseline per-dependent
-    # exemption (about $2,159 in 2026).
+    # Only the 19-year-old keeps the synthetic baseline per-dependent
+    # exemption supplied above.
     ut_personal_exemption: 2_159
     # About $130 above the same household's baseline tax of $1,379: the
-    # taxpayer credit shrinks by 6% of the repealed ~$2,159 exemption.
+    # taxpayer credit shrinks by 6% of the repealed $2,159 exemption.
     # Asserts the exemption flows through to the bottom line.
     ut_income_tax: 1_508
 
@@ -40,6 +47,7 @@
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
   input:
+    gov.states.ut.tax.income.credits.taxpayer.personal_exemption: 2_159
     gov.contrib.states.ut.dependent_exemption.in_effect: true
     people:
       person1:
@@ -60,7 +68,7 @@
         members: [person1, child1, person2]
         state_code: UT
   output:
-    # Two dependents at the uprated baseline amount.
+    # Two dependents at the synthetic baseline amount supplied above.
     ut_personal_exemption: 4_318
 
 - name: A flat reform amount applies to every dependent when the age limit is off.
@@ -96,6 +104,11 @@
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
   input:
+    # The first case's synthetic baseline inputs, so both cases run on one
+    # copy of the tax-benefit system. The reform zeroes this household's
+    # only dependent, so neither input reaches the result.
+    gov.states.ut.tax.income.credits.taxpayer.personal_exemption: 2_159
+    gov.states.ut.tax.income.credits.taxpayer.phase_out.threshold.HEAD_OF_HOUSEHOLD: 27_939.15
     gov.contrib.states.ut.dependent_exemption.in_effect: true
     gov.contrib.states.ut.dependent_exemption.amount: 0
     gov.contrib.states.ut.dependent_exemption.age_limit.in_effect: true
@@ -125,6 +138,7 @@
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
   input:
+    gov.states.ut.tax.income.credits.taxpayer.personal_exemption: 2_159
     gov.contrib.states.ut.dependent_exemption.amount: 0
     people:
       person1:
@@ -146,5 +160,197 @@
         state_code: UT
   output:
     # in_effect is false, so the $0 amount does not apply: two dependents
-    # at the uprated baseline amount.
+    # at the synthetic baseline amount supplied above.
     ut_personal_exemption: 4_318
+
+- name: Reform in effect counts no dependents on a claimable filer's return (single filer)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      filer:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1]
+    households:
+      household:
+        members: [filer, child1]
+        state_code: UT
+  output:
+    # IRC 152(b)(1): a filer who can be claimed has no dependents, as in the
+    # baseline ut_total_dependents.
+    ut_personal_exemption: 0
+
+- name: Reform in effect counts no dependents when one joint spouse can be claimed (the claimable spouse is the spouse)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+      person_a:
+        age: 20
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child1]
+        state_code: UT
+  output:
+    ut_personal_exemption: 0
+
+- name: Reform in effect counts no dependents when one joint spouse can be claimed (the claimable spouse is the head)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        is_tax_unit_spouse: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child1]
+        state_code: UT
+  output:
+    ut_personal_exemption: 0
+
+- name: Reform in effect, neither spouse claimable (control)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+      person_b:
+        age: 22
+        is_tax_unit_spouse: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child1]
+        state_code: UT
+  output:
+    # One dependent at the reform amount (no age limit): $3,000.
+    ut_personal_exemption: 3_000
+
+- name: Reform in effect, neither spouse claimable (control) (head and spouse labels swapped)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3000
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person_b:
+        age: 22
+        is_tax_unit_spouse: false
+        is_tax_unit_head: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child1]
+        state_code: UT
+  output:
+    ut_personal_exemption: 3000
+
+- name: Reform in effect counts the dependent of a claimable filer whose would-be claimant meets the filing exception
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      filer:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1]
+    households:
+      household:
+        members: [filer, child1]
+        state_code: UT
+  output:
+    # The filing exception keeps the child a qualifying dependent, as in the
+    # baseline: one dependent at the reform amount, $3,000.
+    ut_personal_exemption: 3_000
+
+- name: Reform in effect counts only qualifying dependents (a child with no SSN and no taxpayer identification number)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      filer:
+        age: 30
+        employment_income: 30_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [filer, child1]
+    households:
+      household:
+        members: [filer, child1]
+        state_code: UT
+  output:
+    # No IRC 24 credit is allowed for the child, so the reform, like the
+    # baseline, counts no qualifying dependent (59-10-1018(1)(c)).
+    ut_personal_exemption: 0

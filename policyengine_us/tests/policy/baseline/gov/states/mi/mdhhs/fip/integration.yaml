@@ -524,3 +524,35 @@
     # Not in Michigan - not eligible for MI TANF
     mi_fip_eligible: false
     mi_fip: 0
+
+- name: Case 16, enrolled family with an issuance deficit under $10.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 16_272  # $1,356/month
+      person2:
+        age: 8
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Disregard = $200 + (50% × $1,156) = $778
+    # Countable income = $1,356 - $778 = $578
+    # Issuance deficit = $583 - $578 = $5, under $10 (BEM 518)
+    mi_fip_countable_income_for_benefit: 578
+    mi_fip_income_eligible: false
+    mi_fip_eligible: false
+    mi_fip: 0

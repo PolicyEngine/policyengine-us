@@ -1,0 +1,21 @@
+description: Tennessee limits regular assistance income to this share of state median income under the Low Income Home Energy Assistance Program.
+# FY2026 applies this rate to every household size. FY2027 applies it to
+# sizes 1-8; fpg_rate sets 150% of the poverty guideline for sizes 9 and over.
+values:
+  2025-10-01: 0.6
+
+metadata:
+  unit: /1
+  period: year
+  label: Tennessee LIHEAP state median income rate
+  reference:
+    - title: Tennessee FY2026 LIHEAP State Plan, Section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/TN_Plan_2026.pdf#page=8
+    - title: Tennessee LIHEAP 2026 Policy Manual, Section 2.10
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/LIHEAP-2026-Policy-Manual-for-Tennessee.pdf#page=24
+    - title: Tennessee LIHEAP 2026 Benefit Matrix, income end
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2026-LIHEAP-Eligible-Income-Household-Size-Benefits.pdf
+    - title: Tennessee FY2027 LIHEAP State Plan (draft), Section 2.1
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DETAILED-MODEL-PLAN-LIHEAP_10_01_2026.pdf#page=9
+    - title: Tennessee LIHEAP 2027 Policy Manual (draft), Section 2.10
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/DRAFT-LIHEAP-2027-Policy-Manual-7-11-2026.pdf#page=27

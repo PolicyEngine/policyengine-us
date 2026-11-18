@@ -103,3 +103,83 @@
     adjusted_gross_income: 10_001 # on federal form
     nj_agi: 7_001 # special exclusion reduces AGI by $3k
     # earned income > $3k makes other retirement income exclusion unavailable
+
+- name: A dependent child's interest stays off the parent's New Jersey AGI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 16
+        taxable_interest_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    # The 8,000 is the child's own New Jersey gross income. A dependent over
+    # the filing threshold files their own NJ-1040 (N.J.S.A. 54A:8-3.1(a)),
+    # and the parent's return has no line for it.
+    nj_gross_income: [40_000, 8_000]
+    nj_agi: 40_000
+    # 40,000 - 1,000 personal exemption - 1,500 dependent exemption.
+    nj_taxable_income: 37_500
+    # The same tax as with no child income (issue #9814 reproduction).
+    nj_income_tax: -80.68
+
+- name: A dependent child's wages stay off the parent's New Jersey AGI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 16
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    nj_agi: 40_000
+    nj_taxable_income: 37_500
+    nj_income_tax: -80.68
+
+- name: A dependent's wages do not lower the filers' pension exclusion percentage
+  period: 2025
+  input:
+    people:
+      head:
+        age: 65
+        taxable_pension_income: 90_000
+      spouse:
+        age: 65
+      child:
+        age: 17
+        employment_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: NJ
+  output:
+    # Worksheet D uses the filers' total income (line 27), 90,000, which is
+    # not over 100,000, so the joint exclusion is 100% of the pension, up to
+    # 100,000. Counting the child's 15,000 would have put total income at
+    # 105,000 and the exclusion at 50%.
+    nj_retirement_exclusion_fraction: 1
+    nj_pension_retirement_exclusion: 90_000
+    nj_agi: 0

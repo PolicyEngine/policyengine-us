@@ -1,0 +1,250 @@
+- name: Case 1, a lone parent's usual hours count.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 5
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 25
+
+- name: Case 2, hours average over the weeks of the year.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        weeks_worked: 13
+      person2:
+        age: 5
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 40 hours x 13 weeks / 52 weeks.
+    wi_works_unsubsidized_hours: 10
+
+- name: Case 3, the parent with fewer hours sets the hours.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 12
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 12
+
+- name: Case 4, a working teenager's hours don't count.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 16
+        weekly_hours_worked_before_lsr: 20
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 0
+
+- name: Case 5, a grandparent in another tax unit doesn't count.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 60
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person3]
+      grandparent_tax_unit:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 40
+
+- name: Case 6, a custodial parent counts when a grandparent heads the tax unit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 60
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 40
+
+- name: Case 7, a unit with no parent and no claimed child reads as zero hours.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+    households:
+      household1:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 0
+
+- name: Case 8, a grandparent counted as a parent of an adult doesn't count.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 60
+        own_children_in_household: 1
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person3]
+      grandparent_tax_unit:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 40
+
+- name: Case 9, a linked parent's hours count over the grandparent who claims.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        person_id: 1
+      person2:
+        age: 20
+        person_id: 2
+        is_tax_unit_dependent: true
+        weekly_hours_worked_before_lsr: 12
+      person3:
+        age: 0
+        person_id: 3
+        parent_1_id: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 12
+
+- name: Case 10, a linked pregnant adult's hours count over their own parent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 55
+        person_id: 1
+      person2:
+        age: 30
+        person_id: 2
+        parent_1_id: 1
+        is_pregnant: true
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 5
+        person_id: 3
+        parent_1_id: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 40
+
+# A known limit: the inputs name no parent, so the grandparent's zero hours count.
+# With own_children_in_household on the mother, as in Case 6, the answer is 40.
+- name: Case 11, with no parent named, the fewest hours among those who claim the child count.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 60
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_works_unsubsidized_hours: 0

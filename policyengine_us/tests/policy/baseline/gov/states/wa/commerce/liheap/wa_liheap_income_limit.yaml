@@ -1,0 +1,114 @@
+# Annual limits use the federal guideline at the start of the fiscal-year season.
+# FY2027 tests verify the published threshold sheet only, not final awards.
+
+- name: Case 1, FY2026 poverty limit for 0 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 0
+  output:
+    wa_liheap_income_limit: 0
+
+- name: Case 2, FY2026 poverty limit for 1 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+  output:
+    wa_liheap_income_limit: 23475
+
+- name: Case 3, FY2026 poverty limit for 2 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 2
+  output:
+    wa_liheap_income_limit: 31725
+
+- name: Case 4, FY2026 poverty limit for 3 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 3
+  output:
+    wa_liheap_income_limit: 39975
+
+- name: Case 5, FY2026 poverty limit for 4 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 4
+  output:
+    wa_liheap_income_limit: 48225
+
+- name: Case 6, FY2026 poverty limit for 5 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 5
+  output:
+    wa_liheap_income_limit: 56475
+
+- name: Case 7, FY2026 poverty limit for 6 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 6
+  output:
+    wa_liheap_income_limit: 64725
+
+- name: Case 8, FY2026 poverty limit for 7 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 7
+  output:
+    wa_liheap_income_limit: 72975
+
+- name: Case 9, FY2026 poverty limit for 8 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 8
+  output:
+    wa_liheap_income_limit: 81225
+
+- name: Case 10, FY2026 poverty limit for 12 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 12
+  output:
+    wa_liheap_income_limit: 114225
+
+- name: Case 11, FY2026 poverty limit for 24 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 24
+  output:
+    wa_liheap_income_limit: 213225
+
+- name: Case 12, FY2026 poverty limit for 25 qualifying members.
+  period: 2026
+  input:
+    state_code: WA
+    wa_liheap_household_size: 25
+  output:
+    wa_liheap_income_limit: 221475
+
+- name: Case 13, FY2027 poverty limit for 1 qualifying members.
+  period: 2027
+  input:
+    state_code: WA
+    wa_liheap_household_size: 1
+  output:
+    wa_liheap_income_limit: 23940
+
+- name: Case 14, FY2027 poverty limit for 2 qualifying members.
+  period: 2027
+  input:
+    state_code: WA
+    wa_liheap_household_size: 2
+  output:
+    wa_liheap_income_limit: 32460
