@@ -1,0 +1,114 @@
+- name: An ITIN qualifying child does not count before the 2020 extension
+  period: 2019
+  input:
+    people:
+      parent:
+        age: 35
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+        has_tin: true
+      child:
+        age: 8
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_child_count: 0
+    ca_eitc_child_count: 0
+
+- name: An ITIN qualifying child counts starting in 2020 without changing the federal count
+  period: 2020
+  input:
+    people:
+      parent:
+        age: 35
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+        has_tin: true
+      child:
+        age: 8
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_child_count: 0
+    ca_eitc_child_count: 1
+
+- name: California counts qualifying SSN and ITIN children but excludes missing IDs and nonqualifying dependents
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+        has_tin: true
+      ssn_child:
+        age: 12
+        is_eitc_qualifying_child: true
+        ssn_card_type: CITIZEN
+        has_tin: true
+      itin_child:
+        age: 10
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: true
+      child_without_id:
+        age: 8
+        is_eitc_qualifying_child: true
+        ssn_card_type: NONE
+        has_tin: false
+      nonqualifying_dependent:
+        age: 25
+        is_eitc_qualifying_child: false
+        ssn_card_type: NONE
+        has_tin: true
+    tax_units:
+      unit:
+        members: [parent, ssn_child, itin_child, child_without_id, nonqualifying_dependent]
+    households:
+      household:
+        members: [parent, ssn_child, itin_child, child_without_id, nonqualifying_dependent]
+        state_code: CA
+  output:
+    eitc_child_count: 1
+    ca_eitc_child_count: 2
+
+- name: A qualifying child with an SSN not valid for employment counts for California
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+        is_eitc_qualifying_child: false
+        ssn_card_type: CITIZEN
+        has_tin: true
+      child:
+        age: 8
+        is_eitc_qualifying_child: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_tin: true
+    tax_units:
+      unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    eitc_child_count: 0
+    ca_eitc_child_count: 1

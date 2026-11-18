@@ -2,6 +2,8 @@
 # Tests the full eligibility and benefit calculation pipeline
 # Source: 8.106.500.10 NMAC - Payments to Adults in Residential Care
 # Program: $100/month flat payment for SSI recipients in licensed ARSCH facilities
+# 8.106.400.10(C) NMAC: two SSI recipients who would be a family at home are
+# two separate benefit groups in an ARSCH facility, so each spouse is paid.
 
 - name: Case 1, elderly SSI recipient in ARSCH facility receives supplement.
   period: 2025
@@ -10,7 +12,6 @@
     people:
       person1:
         age: 70
-        is_ssi_eligible_individual: true
         is_in_adult_residential_care: true
     households:
       household:
@@ -19,7 +20,7 @@
   output:
     people:
       person1:
-        # Eligibility: SSI-eligible (true) AND age >= 18 (70 >= 18) AND in ARSCH (true)
+        # Eligibility: SSI recipient (aged) AND age >= 18 (70 >= 18) AND in ARSCH (true)
         nm_ssi_state_supplement_eligible: true
         # Benefit: $100/month * 12 = $1,200/year (flat payment)
         nm_ssi_state_supplement: 1_200
@@ -31,7 +32,8 @@
     people:
       person1:
         age: 35
-        is_ssi_eligible_individual: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
         is_in_adult_residential_care: true
     households:
       household:
@@ -40,24 +42,35 @@
   output:
     people:
       person1:
-        # Eligibility: SSI-eligible (true) AND age >= 18 (35 >= 18) AND in ARSCH (true)
+        # Eligibility: SSI recipient (disabled) AND age >= 18 (35 >= 18) AND in ARSCH (true)
         nm_ssi_state_supplement_eligible: true
         # Benefit: $100/month * 12 = $1,200/year
         nm_ssi_state_supplement: 1_200
 
-- name: Case 3, SSI couple both in ARSCH facility each receive supplement.
+- name: Case 3, married SSI couple both in ARSCH facility each receive supplement.
+  # Both spouses of a joint SSI claim. 2025 SSI couple rate: $1,450/month, or
+  # $725 for each spouse. 8.106.400.10(C) NMAC: two SSI recipients who would
+  # be a family at home are "two separate benefit groups" in an ARSCH
+  # facility, and 8.106.500.10(C)(2) NMAC pays each $100/month. SSA's January
+  # 2011 New Mexico table shows the couple supplement as $200 (2 x $100).
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 68
-        is_ssi_eligible_individual: true
+        is_tax_unit_head: true
         is_in_adult_residential_care: true
       person2:
         age: 66
-        is_ssi_eligible_individual: true
+        is_tax_unit_spouse: true
         is_in_adult_residential_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -65,13 +78,17 @@
   output:
     people:
       person1:
-        # Person 1: SSI-eligible, age 68 >= 18, in ARSCH
+        ssi_claim_is_joint: true
+        # $725/month * 12 = $8,700/year
+        ssi: 8_700
+        # Person 1: SSI recipient, age 68 >= 18, in ARSCH
         nm_ssi_state_supplement_eligible: true
         # $100/month * 12 = $1,200/year per person
         nm_ssi_state_supplement: 1_200
       person2:
-        # Person 2: SSI-eligible, age 66 >= 18, in ARSCH
-        # Per 8.106.400.10 NMAC: couples in ARSCH are two separate benefit groups
+        ssi_claim_is_joint: true
+        ssi: 8_700
+        # Person 2: SSI recipient, age 66 >= 18, in ARSCH
         nm_ssi_state_supplement_eligible: true
         # $100/month * 12 = $1,200/year per person
         nm_ssi_state_supplement: 1_200
@@ -83,7 +100,6 @@
     people:
       person1:
         age: 72
-        is_ssi_eligible_individual: true
         is_in_adult_residential_care: false
     households:
       household:
@@ -92,7 +108,7 @@
   output:
     people:
       person1:
-        # Not in ARSCH facility: ineligible regardless of SSI status
+        # Not in ARSCH facility: ineligible regardless of SSI receipt
         nm_ssi_state_supplement_eligible: false
         nm_ssi_state_supplement: 0
 
@@ -103,7 +119,8 @@
     people:
       person1:
         age: 18
-        is_ssi_eligible_individual: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
         is_in_adult_residential_care: true
     households:
       household:
@@ -124,11 +141,11 @@
     people:
       person1:
         age: 60
-        is_ssi_eligible_individual: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
         is_in_adult_residential_care: true
       person2:
         age: 45
-        is_ssi_eligible_individual: false
         is_in_adult_residential_care: true
     households:
       household:
@@ -137,11 +154,11 @@
   output:
     people:
       person1:
-        # Person 1: SSI-eligible, age 60 >= 18, in ARSCH = eligible
+        # Person 1: SSI recipient (disabled), age 60 >= 18, in ARSCH = eligible
         nm_ssi_state_supplement_eligible: true
         nm_ssi_state_supplement: 1_200
       person2:
-        # Person 2: NOT SSI-eligible = ineligible even though in ARSCH
+        # Person 2: not aged, blind or disabled, so no SSI = ineligible even though in ARSCH
         nm_ssi_state_supplement_eligible: false
         nm_ssi_state_supplement: 0
 
@@ -152,7 +169,6 @@
     people:
       person1:
         age: 65
-        is_ssi_eligible_individual: true
         is_in_adult_residential_care: true
     households:
       household:
@@ -162,5 +178,64 @@
     people:
       person1:
         # Wrong state: defined_for = StateCode.NM excludes non-NM residents
+        nm_ssi_state_supplement_eligible: false
+        nm_ssi_state_supplement: 0
+
+- name: Case 8, ARSCH resident whose spouse fails the SSI citizenship condition.
+  # The undocumented tax-unit spouse receives no SSI (8 USC 1611, 1612), so
+  # is not "a recipient of supplemental security income" under
+  # 8.106.500.10(A) NMAC. The citizen head still receives the supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        is_in_adult_residential_care: true
+      person2:
+        age: 66
+        immigration_status_str: UNDOCUMENTED
+        is_tax_unit_spouse: true
+        is_in_adult_residential_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    people:
+      person1:
+        nm_ssi_state_supplement_eligible: true
+        nm_ssi_state_supplement: 1_200
+      person2:
+        ssi: 0
+        nm_ssi_state_supplement_eligible: false
+        nm_ssi_state_supplement: 0
+
+- name: Case 9, ARSCH resident above the SSI resource limit receives nothing.
+  # $3,000 of countable resources exceeds the $2,000 SSI limit, so no SSI is
+  # paid and 8.106.500.10(A) NMAC bars the supplement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 3_000
+        is_in_adult_residential_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    people:
+      person1:
+        ssi: 0
         nm_ssi_state_supplement_eligible: false
         nm_ssi_state_supplement: 0

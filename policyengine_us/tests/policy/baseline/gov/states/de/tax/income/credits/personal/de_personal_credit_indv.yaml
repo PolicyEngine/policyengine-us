@@ -122,3 +122,69 @@
         state_code: DE
   output:
     de_personal_credit_indv: [110, 0]
+
+- name: Filing-exception child's credit goes to the claimable head's column to minimize tax
+  period: 2025
+  input:
+    people:
+      claimable:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        de_income_tax_before_non_refundable_credits_indv: 100
+      other_filer:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        de_income_tax_before_non_refundable_credits_indv: 200
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [claimable, other_filer, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [claimable, other_filer, child]
+        state_code: DE
+  output:
+    # The claimable filer has no own credit but may claim a dependent under
+    # the filing exception. Allocating the child's $110 there leaves $90
+    # total tax; allocating it to the other filer would leave $100.
+    de_personal_credit_indv: [110, 110, 0]
+
+- name: Filing-exception child's credit goes to the claimable spouse's column to minimize tax
+  period: 2025
+  input:
+    people:
+      claimable:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        de_income_tax_before_non_refundable_credits_indv: 100
+      other_filer:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        de_income_tax_before_non_refundable_credits_indv: 200
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [claimable, other_filer, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [claimable, other_filer, child]
+        state_code: DE
+  output:
+    # The claimable filer has no own credit but may claim a dependent under
+    # the filing exception. Allocating the child's $110 there leaves $90
+    # total tax; allocating it to the other filer would leave $100.
+    de_personal_credit_indv: [110, 110, 0]

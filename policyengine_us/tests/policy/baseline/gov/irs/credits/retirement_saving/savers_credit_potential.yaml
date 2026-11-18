@@ -1,0 +1,58 @@
+# The Form 8880 line 9 table's first row has no lower bound ("---" to $23,750
+# for single filers in 2025), and 26 U.S.C. 25B(b)(1) sets the rate only by
+# "not over" amounts, so a negative AGI takes the 50% rate.
+# IRA contributions cannot exceed compensation (26 U.S.C. 219(b)(1)(B)), so the
+# contributor is given compensation above the contributions.
+- name: Single filer with negative AGI takes the 50% rate.
+  period: 2025
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        ira_compensation: 10_000
+        traditional_ira_contributions_desired: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: -8_000
+  output:
+    # Form 8880 line 10: $1,000 * 0.5 = $500.
+    savers_credit_potential: 500
+
+- name: Joint filers with AGI just below zero take the 50% rate.
+  period: 2025
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        ira_compensation: 10_000
+        traditional_ira_contributions_desired: 2_000
+      person2:
+        savers_credit_eligible_person: true
+        ira_compensation: 10_000
+        traditional_ira_contributions_desired: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: -1
+  output:
+    # ($2,000 + $1,000) * 0.5 = $1,500.
+    savers_credit_potential: 1_500
+
+- name: Single filer with zero AGI takes the 50% rate.
+  period: 2025
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        ira_compensation: 10_000
+        traditional_ira_contributions_desired: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 0
+  output:
+    savers_credit_potential: 500

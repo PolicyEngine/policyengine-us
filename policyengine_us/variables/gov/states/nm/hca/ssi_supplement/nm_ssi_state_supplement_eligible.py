@@ -9,13 +9,18 @@ class nm_ssi_state_supplement_eligible(Variable):
     defined_for = StateCode.NM
     reference = (
         "https://srca.nm.gov/parts/title08/08.106.0500.html",
+        "https://srca.nm.gov/parts/title08/08.106.0400.html",
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/nm.html",
     )
 
     def formula(person, period, parameters):
-        ssi_eligible = person("is_ssi_eligible_individual", period.this_year)
+        # 8.106.500.10(A) NMAC: "The individual must be a recipient of
+        # supplemental security income (SSI)". 8.106.400.10(C) NMAC: two SSI
+        # recipients who would be a family at home are two separate benefit
+        # groups in residential care, so each spouse receives the payment.
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         age = person("age", period.this_year)
         p = parameters(period).gov.states.nm.hca.ssi_supplement
         meets_age = age >= p.min_age
         in_residential_care = person("is_in_adult_residential_care", period)
-        return ssi_eligible & meets_age & in_residential_care
+        return receives_ssi & meets_age & in_residential_care

@@ -1,0 +1,158 @@
+# R.I. Gen. Laws § 42-12.3-3(g) continues postpartum Medicaid with state-only
+# funds when federal financial participation is not available. Only a
+# Medicaid pregnancy of someone with Medicaid immigration status stays in the
+# federally matched pregnancy group.
+- name: Case 1, the state-funded continuation covers non-Medicaid histories and Medicaid histories without status.
+  period: 2024
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+      person2:
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: CHIP
+        ri_pregnancy_end_date: "2023-03-07"
+      person3:
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+      person4:
+        immigration_status: UNDOCUMENTED
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+      person5:
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: MEDICAID
+        ri_pregnancy_end_date: "2023-03-07"
+      person6:
+        immigration_status: CITIZEN
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2022-11-27"
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: RI
+  output:
+    ri_medicaid_state_funded_postpartum_eligible: [true, true, true, true, false, false]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(b)(1) and (c): a new pregnancy at or below the
+# 258% CHIP limit (253% plus the disregard) qualifies for Title XXI coverage.
+- name: Case 2, a new pregnancy in the CHIP band ends the state-funded continuation only when CHIP is taken up.
+  period: 2024
+  input:
+    people:
+      person1:
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.58
+        takes_up_chip_if_eligible: true
+      person2:
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.59
+        takes_up_chip_if_eligible: true
+      person3:
+        is_pregnant: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    ri_medicaid_state_funded_postpartum_eligible: [false, true, true]
+
+# Title XXI pregnancy coverage requires the absence of third-party insurance
+# (210-RICR-30-00-1 § 1.6(A)(2)(b); 42 CFR 457.310(b)(2)), so an insured
+# person who is pregnant again cannot take it up and keeps the continuation,
+# which R.I. Gen. Laws § 42-12.3-3(g) provides without regard to federal
+# funding. Both had unborn-child CHIP while pregnant and are within the
+# continuation at January 1, 2024; only person 1 now has employer coverage.
+- name: Case 3, an insured new pregnancy in the CHIP band keeps the state-funded continuation.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        has_esi: true
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_medicaid_state_funded_postpartum_eligible: [true, false]
+    is_medicaid_eligible: [true, false]
+
+# 210-RICR-30-00-1 § 1.6(A)(2)(c) bases CHIP for people without CHIP
+# immigration status on the unborn child, whom other coverage bars (42 CFR
+# 457.310(b)(2)). R.I. Gen. Laws § 42-12.3-3(g) then keeps the continuation
+# with state-only funds. The citizen takes standard CHIP, which uses Rhode
+# Island's third-party list.
+- name: Case 4, coverage that bars unborn-child CHIP keeps the continuation for a person without CHIP immigration status.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        has_other_means_tested_health_coverage_at_interview: true
+        ri_pregnancy_coverage: FCEP
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+        has_health_coverage_other_than_chip: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+      person3:
+        age: 30
+        immigration_status: CITIZEN
+        is_pregnant: true
+        has_other_means_tested_health_coverage_at_interview: true
+        ri_pregnancy_coverage: RITE_START
+        ri_pregnancy_end_date: "2023-03-07"
+        medicaid_household_size: 2
+        medicaid_income_level: 2.3
+        takes_up_chip_if_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: RI
+  output:
+    ri_medicaid_state_funded_postpartum_eligible: [true, true, false]
+    is_medicaid_eligible: [true, true, false]
+    is_chip_fcep_eligible_person: [false, false, false]
+    chip_enrolled: [false, false, true]

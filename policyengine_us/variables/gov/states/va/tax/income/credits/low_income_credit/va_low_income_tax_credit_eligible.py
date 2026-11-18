@@ -27,4 +27,19 @@ class va_low_income_tax_credit_eligible(Variable):
             "head_or_spouse_is_dependent_elsewhere", period
         )
 
-        return program_eligible & ~filer_is_dependent_elsewhere
+        # Criteria 3: Va. Code 58.1-339.8(D)(4) also bars the credit when
+        # "any person claimed as a dependent" claims the additional exemption
+        # for blind or aged taxpayers on their own return. The model has no
+        # input for a dependent's own return, so a blind or aged dependent is
+        # taken to claim it. (Before, this came from counting dependents in
+        # va_aged_blind_exemption, which now goes to filers only.)
+        person = tax_unit.members
+        dependent = person("is_tax_unit_dependent", period)
+        aged_or_blind = person("is_irs_aged", period) | person("is_blind", period)
+        dependent_claims_exemption = tax_unit.any(dependent & aged_or_blind)
+
+        return (
+            program_eligible
+            & ~filer_is_dependent_elsewhere
+            & ~dependent_claims_exemption
+        )

@@ -111,7 +111,14 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             #   itemized or standard deduction.
             # ... calculate pre-limitation itemized deductions
             itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
-            capped_property_taxes = tax_unit("capped_property_taxes", period)
+            # The Legislature amended only subdivision 2 of section 290.0122
+            # in House File 1938 (Laws 2023, chapter 64). Keep Minnesota's
+            # property tax cap (subd. 3) and charitable amount (subd. 4)
+            # under the repeal.
+            property_taxes = tax_unit("mn_property_tax_deduction", period)
+            charity_adjustment = tax_unit("mn_charitable_deduction", period) - tax_unit(
+                "charitable_deduction", period
+            )
             # Schedule M1SA line 19 takes Minnesota's own casualty and theft
             # loss (Schedule M1CAT) in place of the federal one.
             federal_casualty_loss = tax_unit("casualty_loss_deduction", period)
@@ -120,14 +127,22 @@ def create_mn_walz_hf1938_repeal() -> Reform:
                 itm_deds_less_salt
                 - federal_casualty_loss
                 + mn_casualty_loss
-                + capped_property_taxes
+                + property_taxes
+                + charity_adjustment
             )
             # ... calculate itemized deductions offset
             p = parameters(period).gov.states.mn.tax.income.deductions.itemized
+            # As in the baseline: Minn. Stat. 290.0122, subd. 2(d)(3) leaves
+            # the subd. 8 losses, including wagering losses, out of the
+            # limitation.
             exempt_deds = add(
                 tax_unit,
                 period,
-                ["medical_expense_deduction", "mn_casualty_loss_deduction"],
+                [
+                    "medical_expense_deduction",
+                    "mn_casualty_loss_deduction",
+                    "wagering_losses_deduction",
+                ],
             )
             net_deds = max_(0, mn_itm_deds - exempt_deds)
             net_deds_offset = p.reduction.alternate.rate * net_deds

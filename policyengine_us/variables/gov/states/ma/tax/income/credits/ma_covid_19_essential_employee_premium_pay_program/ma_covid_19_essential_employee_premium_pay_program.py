@@ -5,6 +5,13 @@ class ma_covid_19_essential_employee_premium_pay_program(Variable):
     value_type = float
     entity = Person
     label = "MA COVID 19 Essential Employee Premium Pay Program"
+    documentation = (
+        "Massachusetts essential employee premium-pay rounds issued in 2022, based on "
+        "2020 earnings for the first round and 2021 earnings for the second round. "
+        "PolicyEngine attributes these modeled payments to eligibility tax years 2020 "
+        "and 2021 through ma_refundable_credits. The payment amount is zero outside "
+        "those years. This variable models the two $500 rounds."
+    )
     unit = USD
     definition_period = YEAR
     reference = "https://www.mass.gov/info-details/covid-19-essential-employee-premium-pay-program"

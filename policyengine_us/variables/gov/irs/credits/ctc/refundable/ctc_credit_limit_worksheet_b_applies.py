@@ -31,7 +31,10 @@ class ctc_credit_limit_worksheet_b_applies(Variable):
             # whose CTC was not fully refundable.
             return np.zeros(tax_unit.count, dtype=bool)
         has_qualifying_child = tax_unit("ctc_qualifying_children", period) > 0
-        # Form 2555 filers skip Worksheet B in the years section 24(d)(3)
-        # denies them the refundable CTC (from 2015).
+        # Filers barred by section 24(d)(3) skip Worksheet B in the years the
+        # bar is in force (from 2015). A filer who claims only the section
+        # 911(c)(4) housing deduction is not barred, so completes Worksheet B.
+        # The instructions' condition "You are not filing Form 2555"
+        # conflicts with the statute here; the model follows the statute.
         barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
         return has_qualifying_child & ~barred

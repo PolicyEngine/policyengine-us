@@ -1,0 +1,13 @@
+description: Oklahoma excludes these unearned income sources from countable income under the State Supplemental Payment program.
+values:
+  2026-01-01:
+    - dividend_income
+    - interest_income
+
+metadata:
+  unit: list
+  period: year
+  label: Oklahoma SSP excluded unearned income sources
+  reference:
+    - title: OAC 317:35-5-42(f)(22)
+      href: https://www.oklahoma.gov/ohca/policies-and-rules/xpolicy/medical-assistance-for-adults-and-children-eligibility/eligibility-and-countable-income/countable-income-and-resources/determination-of-countable-income-for-individuals-categorically-.html

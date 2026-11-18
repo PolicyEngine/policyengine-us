@@ -42,7 +42,7 @@
     ar_gross_income_joint: 60_000
     ar_gross_income_indiv: 60_000
 
-- name: A dependent's gambling winnings go to the head's Arkansas AGI
+- name: A dependent's gambling winnings stay off the head's Arkansas AGI
   period: 2025
   input:
     people:
@@ -61,7 +61,8 @@
         state_code: AR
   output:
     ar_gross_income_joint: [50_000, 1_000]
-    ar_agi_joint: [51_000, 0]
+    # The child's winnings go on the child's own Arkansas return.
+    ar_agi_joint: [50_000, 0]
 
 - name: 2015 itemizer with losses below winnings is taxed on net winnings
   period: 2015

@@ -12,13 +12,41 @@
   output:
     energy_efficient_home_improvement_credit_potential: 2_000
 
-- name: Cap at $2,000 if from heat pumps, etc., after the Inflation Reduction Act.
+- name: Heat pumps, etc., add to the other credits after the Inflation Reduction Act.
   period: 2023
   input:
     capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit: 1_500
     capped_energy_efficient_window_credit: 100
   output:
-    energy_efficient_home_improvement_credit_potential: 1_500
+    # Form 5695 line 30 adds line 28 ($100) and line 29h ($1,500).
+    energy_efficient_home_improvement_credit_potential: 1_600
+
+- name: The $2,000 heat pump cap adds to the $1,200 cap after the Inflation Reduction Act.
+  period: 2025
+  input:
+    capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit: 2_000
+    capped_energy_efficient_window_credit: 600
+    capped_energy_efficient_insulation_credit: 1_200
+  output:
+    # 26 U.S.C. 25C(b)(5): the $2,000 limit applies notwithstanding the
+    # $1,200 limit of 25C(b)(1). Form 5695 line 28 is the smaller of line 27
+    # ($1,800) or $1,200; line 30 adds line 29h ($2,000).
+    energy_efficient_home_improvement_credit_potential: 3_200
+
+- name: The furnace or boiler credit counts once after the Inflation Reduction Act.
+  period: 2025
+  input:
+    capped_qualified_furnace_or_hot_water_boiler_credit: 300
+  output:
+    # Form 5695 line 24d enters once in line 27.
+    energy_efficient_home_improvement_credit_potential: 300
+
+- name: The furnace or boiler credit counts once before the Inflation Reduction Act.
+  period: 2022
+  input:
+    capped_qualified_furnace_or_hot_water_boiler_credit: 150
+  output:
+    energy_efficient_home_improvement_credit_potential: 150
 
 - name: No lifetime cap under the Inflation Reduction Act.
   period: 2023

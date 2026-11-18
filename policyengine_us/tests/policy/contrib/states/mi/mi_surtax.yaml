@@ -100,3 +100,20 @@
     state_code: MI
   output:
     mi_surtax: 0
+
+- name: Surtax reaches Michigan income tax, state income tax and the household total
+  period: 2027
+  reforms: policyengine_us.reforms.states.mi.surtax.mi_surtax
+  input:
+    gov.contrib.states.mi.surtax.in_effect: True
+    mi_taxable_income: 600_000
+    mi_income_tax_before_refundable_credits: 25_000
+    mi_refundable_credits: 0
+    filing_status: SINGLE
+    state_code: MI
+  output:
+    # (600_000 - 500_000) * 0.05 = 5_000; 25_000 + 5_000 = 30_000
+    mi_surtax: 5_000
+    mi_income_tax: 30_000
+    state_income_tax: 30_000
+    household_state_tax_before_refundable_credits: 30_000

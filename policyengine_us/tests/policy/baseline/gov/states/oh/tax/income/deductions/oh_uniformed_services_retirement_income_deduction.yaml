@@ -1,0 +1,36 @@
+- name: Case 1, Ohio uniformed services retirement deduction for retiree and survivor benefits.
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        military_retirement_pay: 20_000
+        military_retirement_pay_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_uniformed_services_retirement_income_deduction: 30_000
+
+- name: Case 2, Dependent is ineligible for Ohio uniformed services retirement deduction.
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_uniformed_services_retirement_income_deduction: [0, 0]

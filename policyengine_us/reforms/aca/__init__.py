@@ -7,3 +7,6 @@ from policyengine_us.reforms.aca.aca_ptc_simplified_bracket import (
 from policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff import (
     create_aca_ptc_700_fpl_cliff_reform,
 )
+from policyengine_us.reforms.aca.aca_ptc_minimum_premium import (
+    create_aca_ptc_minimum_premium_reform,
+)

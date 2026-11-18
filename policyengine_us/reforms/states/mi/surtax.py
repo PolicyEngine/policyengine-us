@@ -43,6 +43,8 @@ def create_mi_surtax() -> Reform:
 
 def create_mi_surtax_reform(parameters, period, bypass: bool = False):
     # Always return the reform - the in_effect check happens in the formula
+    # Keep this unconditional: the baseline state_income_tax_before_refundable_credits
+    # list adds mi_surtax, so the variable must exist in every system.
     return create_mi_surtax()
 
 

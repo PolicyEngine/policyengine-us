@@ -30,3 +30,41 @@
     state_code: KS
   output:
     ks_taxable_income: 0
+
+# K.S.A. 79-32,120(a)(1)(A): before 2021, only federal itemizers may take the
+# Kansas itemized deduction; (a)(1)(B) removes that condition from 2021.
+- name: Case 4, 2019 non-itemizer federally takes the Kansas standard deduction.
+  period: 2019
+  input:
+    ks_agi: 50_000
+    ks_standard_deduction: 3_000
+    ks_itemized_deductions: 9_000
+    ks_exemptions: 2_250
+    tax_unit_itemizes: false
+    state_code: KS
+  output:
+    ks_taxable_income: 50_000 - 3_000 - 2_250
+
+- name: Case 5, 2019 federal itemizer takes the larger Kansas itemized deduction.
+  period: 2019
+  input:
+    ks_agi: 50_000
+    ks_standard_deduction: 3_000
+    ks_itemized_deductions: 9_000
+    ks_exemptions: 2_250
+    tax_unit_itemizes: true
+    state_code: KS
+  output:
+    ks_taxable_income: 50_000 - 9_000 - 2_250
+
+- name: Case 6, 2021 Kansas itemizing no longer requires federal itemizing.
+  period: 2021
+  input:
+    ks_agi: 50_000
+    ks_standard_deduction: 3_500
+    ks_itemized_deductions: 9_000
+    ks_exemptions: 2_250
+    tax_unit_itemizes: false
+    state_code: KS
+  output:
+    ks_taxable_income: 50_000 - 9_000 - 2_250

@@ -1,0 +1,25 @@
+description: Kentucky adopts the One Big Beautiful Bill Act (Public Law 119-21) amendments to the Internal Revenue Code if this is true.
+# KRS 141.010(21) defines Kentucky's "Internal Revenue Code" as the Code in
+# effect on a fixed reference date. The Act was enacted on July 4, 2025.
+# - Tax years 2018 to 2025: every reference date (December 31, 2017, 2018,
+#   2021, 2022, 2023 and 2024) predates the Act. For 2025, 2025 Ky. Acts
+#   ch. 98, sec. 30 set the date at December 31, 2024.
+# - Tax years 2026 on: 2026 Ky. Acts ch. 161, sec. 6 moved the date to
+#   December 31, 2025, which includes the Act.
+# Kentucky decouples from specific provisions of the Act in KRS 141.019 and
+# 141.0101 (for example sections 174A, 224 and 225); this parameter does not
+# govern those.
+values:
+  2018-01-01: false
+  2026-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Kentucky Internal Revenue Code conformity to the One Big Beautiful Bill Act
+  reference:
+    - title: KRS 141.010(21)
+      href: https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=57913#page=3
+    - title: 2026 Ky. Acts ch. 161 (HB 757), sec. 6
+      href: https://apps.legislature.ky.gov/law/acts/26RS/documents/0161.pdf#page=9
+    - title: 2025 Ky. Acts ch. 98, sec. 30
+      href: https://apps.legislature.ky.gov/law/acts/25RS/documents/0098.pdf#page=56

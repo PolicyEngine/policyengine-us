@@ -39,3 +39,14 @@
     employment_income: 100_000
   output:
     nj_529_deduction: 0
+
+- name: Case 5, filer with military retirement pay and wages under NJ gross income limit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: NJ
+    employment_income: 185_000
+    military_retirement_pay: 30_000
+    investment_in_529_plan_indv: 10_000
+  output:
+    nj_529_deduction: 10_000

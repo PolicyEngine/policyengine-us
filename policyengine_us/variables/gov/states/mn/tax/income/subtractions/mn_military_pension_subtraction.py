@@ -21,5 +21,5 @@ class mn_military_pension_subtraction(Variable):
         return tax_unit_non_dep_add(
             tax_unit,
             period,
-            ["military_retirement_pay", "military_retirement_pay_survivors"],
+            ["military_retirement_income"],
         )

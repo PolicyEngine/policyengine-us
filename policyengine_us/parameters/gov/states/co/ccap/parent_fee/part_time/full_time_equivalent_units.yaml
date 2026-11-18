@@ -1,0 +1,30 @@
+description: Colorado counts a day of care as this many full-time equivalent units, by the hours of care that day, under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  label: Colorado Child Care Assistance Program full-time equivalent units per day of care
+  reference:
+    - title: "8 CCR 1403-1 Sections 3.103(ZZ) and 3.130(C) (effective 2026-08-14) #page 10,119"
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=12658&fileName=8%20CCR%201403-1#page=10
+# Each band covers days of more than its threshold, up to the next threshold:
+# a part-time unit (up to 5 hours) counts 0.55 of a full-time unit, a
+# full-time/part-time day (more than 12 hours, up to 17) counts 1.55, and a
+# full-time/full-time day counts 2.
+brackets:
+  - threshold:
+      2022-10-01: 0
+    amount:
+      2022-10-01: 0.55
+  - threshold:
+      2022-10-01: 5
+    amount:
+      2022-10-01: 1
+  - threshold:
+      2022-10-01: 12
+    amount:
+      2022-10-01: 1.55
+  - threshold:
+      2022-10-01: 17
+    amount:
+      2022-10-01: 2

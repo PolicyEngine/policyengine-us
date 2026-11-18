@@ -1,0 +1,12 @@
+description: Whether the premium tax credit leaves a minimum monthly premium for each tax unit to pay. The January 2026 CARE Act draft applies its minimum to plan years 2026 through 2028.
+
+values:
+  0000-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: ACA minimum premium in effect
+  reference:
+    - title: January 2026 CARE Act draft, section 5(b) (plan years 2026 through 2028), as reproduced verbatim by ACA Signups
+      href: https://acasignups.net/node/9769

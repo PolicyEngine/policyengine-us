@@ -22,6 +22,7 @@ class is_chip_fcep_eligible_person(Variable):
         # 42 CFR 457.10 defines "child" to include the period from conception to
         # birth, so the unborn child (not the parent) is the CHIP beneficiary.
         "https://www.law.cornell.edu/cfr/text/42/457.10",
+        "https://www.ecfr.gov/current/title-42/section-457.310#p-457.310(b)(2)",
         "https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level",
         # California's FCEP population is the Medi-Cal Access Program. WIC
         # § 15833 excludes applicants eligible for no-cost Medi-Cal or Medicare
@@ -77,17 +78,16 @@ class is_chip_fcep_eligible_person(Variable):
             person, period, parameters, income_limit
         )
 
-        # California's FCEP population above the Medi-Cal pregnancy limit is the
-        # Medi-Cal Access Program (MCAP). MCAP turns away applicants who are
-        # eligible for no-cost Medi-Cal or Medicare (WIC § 15833) and applicants
-        # whose private coverage already covers its services (WIC § 15834), which
-        # the CHIP disqualifying coverage list captures. The former AIM rule at
-        # 10 CCR § 2699.200(b)(1)(F)-(G) states the same two exclusions; its
-        # (b)(1)(G) exception for private plans that omit maternity benefits, or
-        # carry a maternity-only deductible or copayment above $500, is not
-        # modeled.
-        in_california = state_code == StateCode.CA
-        ca_has_disqualifying_coverage = in_california & person(
+        # The unborn child is a targeted low-income child, so it must not be
+        # covered under a group health plan or health insurance coverage
+        # (42 CFR 457.310(b)(2)). The pregnant person's coverage stands in for
+        # the unborn child's. California's FCEP population above the Medi-Cal
+        # pregnancy limit is the Medi-Cal Access Program (MCAP), which states
+        # the same exclusions (WIC §§ 15833-15834; former AIM rule 10 CCR
+        # § 2699.200(b)(1)(F)-(G)). MCAP's exception for private plans that
+        # omit maternity benefits, or carry a maternity-only deductible or
+        # copayment above $500, is not modeled.
+        has_disqualifying_coverage = person(
             "has_chip_disqualifying_health_coverage", period
         )
 
@@ -97,5 +97,5 @@ class is_chip_fcep_eligible_person(Variable):
             & fcep_geographic_eligible
             & ~medicaid_eligible
             & income_eligible
-            & ~ca_has_disqualifying_coverage
+            & ~has_disqualifying_coverage
         )

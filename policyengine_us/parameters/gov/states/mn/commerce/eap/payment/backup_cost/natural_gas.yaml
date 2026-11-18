@@ -1,0 +1,40 @@
+description: Minnesota uses this average annual energy cost for natural gas heat by housing type under the Energy Assistance Program.
+APARTMENT:
+  2025-10-01: 1_458
+  2026-10-01: 1_554
+DUPLEX:
+  2025-10-01: 2_423
+  2026-10-01: 2_581
+TRIPLEX:
+  2025-10-01: 2_225
+  2026-10-01: 2_370
+FOURPLEX:
+  2025-10-01: 1_854
+  2026-10-01: 1_975
+TOWNHOUSE:
+  2025-10-01: 1_780
+  2026-10-01: 1_896
+HOUSE:
+  2025-10-01: 2_472
+  2026-10-01: 2_634
+MOBILE_HOME:
+  2025-10-01: 2_472
+  2026-10-01: 2_634
+OTHER:
+  2025-10-01: 1_805
+  2026-10-01: 1_923
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - mn_eap_housing_type
+  label: Minnesota EAP natural gas backup matrix energy cost
+  reference:
+    - title: Minnesota EAP Policy Manual FFY26 Appendix 4A Primary Heat Benefit Calculator, Backup Matrix Values!A26:C33
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MN_BenefitMatrix_2026.xlsx
+    - title: Minnesota EAP Policy Manual FFY27 Appendix 4A Primary Heat Benefit Calculator, Backup Matrix Values!A26:C33
+      href: https://mn.gov/commerce-stat/xls/phb-calculator.xlsx
+    - title: "Minnesota EAP Policy Manual FFY26, Chapter 4, Backup Matrix and Knowing Which Method to Use #page 125-126"
+      href: https://mn.gov/commerce-stat/pdfs/ffy26-eap-policy-manual.pdf#page=125
+    - title: "Minnesota EAP Policy Manual FFY27, Chapter 4, Backup Matrix and Knowing Which Method to Use #page 127-128"
+      href: https://mn.gov/commerce-stat/pdfs/ffy27-eap-policy-manual.pdf#page=127

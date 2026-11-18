@@ -1,0 +1,19 @@
+description: The IRS allows the overtime income deduction when this is true.
+values:
+  0000-01-01: false
+  # Pub. L. 119-21, sec. 70202(g): section 225 applies to taxable years
+  # beginning after December 31, 2024.
+  2025-01-01: true
+  # 26 U.S.C. 225(g): no deduction is allowed for any taxable year beginning
+  # after December 31, 2028.
+  2029-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Overtime income deduction in effect
+  reference:
+    - title: 26 U.S.C. 225(g)
+      href: https://www.law.cornell.edu/uscode/text/26/225#g
+    - title: "One Big Beautiful Bill Act, Pub. L. No. 119-21, secs. 70202(a) (adding 26 U.S.C. 225(g)) and 70202(g) (effective date) #page 103-104"
+      href: https://www.congress.gov/119/bills/hr1/BILLS-119hr1enr.pdf#page=103

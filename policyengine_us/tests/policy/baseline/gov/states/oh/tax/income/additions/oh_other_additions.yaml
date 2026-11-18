@@ -1,0 +1,30 @@
+- name: Case 1, default oh_other_additions is zero
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_other_additions: 0
+    oh_additions: 0
+    oh_agi_person: 50_000
+
+- name: Case 2, oh_other_additions increases OH AGI
+  period: 2024
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+        oh_other_additions: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_other_additions: 2_000
+    oh_additions: 2_000
+    oh_agi_person: 52_000

@@ -38,18 +38,22 @@ class mt_elderly_homeowner_or_renter_credit_selected_claimant(Variable):
         # only by Schedule 2EC line 26: property tax billed plus 15% of rent,
         # before the $1,150 cap. The model counts each tax unit's own
         # property tax and rent, following Schedule 2EC's line labels ("the
-        # property tax you were billed", "the rent that you paid") and its
-        # instructions (property in another's name "can qualify as rent
-        # only"). The statute instead
-        # defines both for the homestead (§ 15-30-2337(5), (10)), which would
-        # give the one claimant the household's whole property tax and rent;
-        # that reading is not modeled. We select the tax unit whose credit is
-        # largest, the claim a household would choose. get_rank ranks the
-        # candidates in each household 0, 1, 2, ..., so a household with any
-        # candidate has exactly one at rank 0; its stable sort gives a tie to the first in member order. A
-        # joint return is one tax unit and one claim; the 2025 instructions
-        # name the spouse listed as the taxpayer as the claimant when both
-        # qualify, and the model holds that credit on the tax unit head.
+        # property tax you were billed", "the rent that you paid"). A tax
+        # unit billed no property tax is treated as living in a home in
+        # another member's name, whose property tax "can qualify as rent
+        # only" (2025 instructions; ARM 42.4.302(2)(b)): it counts the
+        # household's property tax as rent, if that is larger (see
+        # mt_elderly_homeowner_or_renter_credit_gross_rent). The statute
+        # instead defines both for the homestead (§ 15-30-2337(5), (10)),
+        # which would give the one claimant the household's whole property
+        # tax and rent; that reading is not modeled. We select the tax unit
+        # whose credit is largest, the claim a household would choose.
+        # get_rank ranks the candidates in each household 0, 1, 2, ..., so a
+        # household with any candidate has exactly one at rank 0; its stable
+        # sort gives a tie to the first in member order. A joint return is one
+        # tax unit and one claim; the 2025 instructions name the spouse listed
+        # as the taxpayer as the claimant when both qualify, and the model
+        # holds that credit on the tax unit head.
         # ARM 42.4.302(3)(a) also allows married couples living apart only
         # one credit a year; a separated spouse in another tax unit is not
         # linked to the other spouse, so that limit is not modeled.

@@ -174,3 +174,19 @@
     mo_qualified_health_insurance_premiums: [6_000, 6_000]
     # Total subtractions per person: 6_000+6_000=12_000 and 4_000+6_000=10_000
     mo_agi_subtractions: [12_000, 10_000]
+
+- name: Military retirement pay subtracted from MO AGI under MO-A line 10
+  period: 2024
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+    households:
+      household1:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_agi_subtractions: 30_000

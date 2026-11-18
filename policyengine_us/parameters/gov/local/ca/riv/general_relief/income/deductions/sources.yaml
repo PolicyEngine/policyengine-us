@@ -1,10 +1,11 @@
 description: Riverside County deducts these mandatory wage deductions from earned income under General Relief.
 values:
   2020-01-01:
-    - state_withheld_income_tax
+    # Each person deducts only what is withheld from their own wages.
+    - ca_withheld_income_tax
     - employee_social_security_tax
     - employee_medicare_tax
-    - additional_medicare_tax
+    - additional_medicare_tax_withheld
     - traditional_ira_contributions
 
 metadata:

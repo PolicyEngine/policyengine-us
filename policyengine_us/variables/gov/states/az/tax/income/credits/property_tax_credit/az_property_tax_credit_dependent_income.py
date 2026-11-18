@@ -14,7 +14,10 @@ class az_property_tax_credit_dependent_income(Variable):
         "every member of the household, whether or not the member is a dependent. "
         "A dependent's capital gains and losses are the dependent's Form 140PTC "
         "line D amount, so a net loss counts up to the per-member limit; other "
-        "losses count in full."
+        "losses count in full. Unemployment compensation is left out here, as "
+        "ARS 43-1072(I) excludes Arizona's; other states' payments are added in "
+        "az_property_tax_credit_unemployment, and nontaxable strike benefits "
+        "and alimony in az_property_tax_credit_nontaxable_income."
     )
     reference = [
         "https://www.azleg.gov/ars/43/01072.htm",  # ARS 43-1072(H)(4)-(6), (I)
@@ -35,18 +38,20 @@ class az_property_tax_credit_dependent_income(Variable):
         # source is added with its sign: a business, farm, rental, partnership
         # or estate loss offsets the dependent's other income, as ITR 12-1
         # items (3) to (5) use the year's loss. The federal list is not
-        # Arizona's: like federal AGI for the other members, it counts
-        # unemployment whichever state paid it (ARS 43-1072(I) excludes
-        # Arizona's) and leaves out strike benefits and alimony that is not
-        # federally taxable.
+        # Arizona's: unemployment compensation is skipped below, and strike
+        # benefits and alimony that federal gross income leaves out are added
+        # in az_property_tax_credit_nontaxable_income.
         sources = parameters(period).gov.irs.gross_income.sources
         income = 0
         for source in sources:
             # ARS 43-1072(I): Social Security benefits are not income.
             # Capital gains and losses, including capital gain distributions,
-            # are added below as line D.
+            # are added below as line D. ARS 43-1072(I): Arizona unemployment
+            # insurance payments are not income; other states' payments are
+            # in az_property_tax_credit_unemployment.
             if source in (
                 "taxable_social_security",
+                "taxable_unemployment_compensation",
                 "capital_gains",
                 "non_sch_d_capital_gains",
             ):

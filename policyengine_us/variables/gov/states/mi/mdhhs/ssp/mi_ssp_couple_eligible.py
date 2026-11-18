@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_couple_total,
+    _ssi_spouse_index,
+)
 from policyengine_us.variables.gov.states.mi.mdhhs.ssp.mi_ssp_living_arrangement import (
     MISSPLivingArrangement,
 )
@@ -19,22 +23,12 @@ class mi_ssp_couple_eligible(Variable):
     def formula(person, period, parameters):
         joint_claim = person("ssi_claim_is_joint", period.this_year)
         eligible = person("mi_ssp_eligible", period)
-        # Summing the same variable used in defined_for is safe here; if a
-        # future contributor swaps to summing a different variable across
-        # the marital unit, the defined_for filter could silently halve
-        # the result.
-        both_eligible = person.marital_unit.sum(eligible) == 2
+        both_eligible = (
+            _ssi_couple_total(person, period.this_year, eligible.astype(int)) == 2
+        )
         category = person("mi_ssp_payment_category", period)
-        qualifying_arrangements = [
-            value
-            for value in MISSPLivingArrangement
-            if value != MISSPLivingArrangement.NONE
-        ]
-        both_same_arrangement = (
-            sum(
-                person.marital_unit.sum(category == value) == 2
-                for value in qualifying_arrangements
-            )
-            > 0
+        spouse = _ssi_spouse_index(person, period.this_year)
+        both_same_arrangement = (category != MISSPLivingArrangement.NONE) & (
+            category == category[np.maximum(spouse, 0)]
         )
         return joint_claim & both_eligible & both_same_arrangement

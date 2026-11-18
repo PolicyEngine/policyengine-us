@@ -15,3 +15,25 @@
     state_code: CA
   output:
     ca_taxable_income: 10_000 - 4_900
+
+- name: Military retirement pay flows into CA taxable income via federal AGI (2024, pre-exclusion)
+  period: 2024
+  input:
+    military_retirement_pay: 50_000
+    ca_deductions: 5_540
+    state_code: CA
+  output:
+    ca_agi: 50_000
+    ca_taxable_income: 50_000 - 5_540
+
+- name: Military retirement pay and SBP exclusion under R&TC §§ 17132.9 and 17132.10 (2025)
+  period: 2025
+  input:
+    military_retirement_pay: 50_000
+    military_retirement_pay_survivors: 10_000
+    ca_deductions: 5_706
+    state_code: CA
+  output:
+    ca_military_retirement_exclusion: 20_000 + 10_000
+    ca_agi: 60_000 - 30_000
+    ca_taxable_income: 30_000 - 5_706

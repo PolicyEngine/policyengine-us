@@ -1,0 +1,14 @@
+- name: Case 1, default vt_other_additions is zero
+  period: 2024
+  input:
+    state_code: VT
+  output:
+    vt_other_additions: 0.0
+
+- name: Case 2, vt_other_additions flows into vt_additions
+  period: 2024
+  input:
+    state_code: VT
+    vt_other_additions: 1_200
+  output:
+    vt_additions: 1_200

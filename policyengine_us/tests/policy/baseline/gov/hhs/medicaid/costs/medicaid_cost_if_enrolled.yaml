@@ -1,6 +1,6 @@
 - name: A lone Texas enrollee's cost equals state per-capita Medicaid spending.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -14,8 +14,11 @@
   output:
     # For a single household the cost index cancels, leaving TX spending / enrollment;
     # an enrolled person's medicaid_cost passes that computed value through unchanged.
-    medicaid_cost_if_enrolled: 13_708.50
-    medicaid_cost: 13_708.50
+    # 2026 reads the latest pair: FY2024 spending $50,974,507,372 / January 2024
+    # enrollment 4,295,157 = $11,867.90. Main had $13,708.50, FY2023 spending
+    # ($57,284,033,548) over October 2024 enrollment (4,178,724).
+    medicaid_cost_if_enrolled: 11_867.90
+    medicaid_cost: 11_867.90
 
 - name: Medicaid cost is zero for a non-enrollee despite a positive per-capita cost.
   period: 2026
@@ -32,3 +35,61 @@
     # medicaid_cost is defined_for medicaid_enrolled, so it stays zero off-enrollment
     # even though medicaid_cost_if_enrolled itself computes a positive value.
     medicaid_cost: 0
+
+- name: Case 3, a lone New Jersey adult in 2023 uses FY2023 spending and January 2023 enrollment.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: true
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # The household's only member sets the state-average cost index, so the
+    # index cancels: $22,655,898,964 / 2,222,936 = $10,191.88.
+    medicaid_cost_if_enrolled: 10_191.88
+    medicaid: 10_191.88
+
+- name: Case 4, a lone New Jersey adult in 2026 uses FY2024 spending and January 2024 enrollment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: true
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # Years after 2024 reuse the FY2024 pair: $23,426,076,809 / 2,030,400 =
+    # $11,537.67. Main had $12,919.58, FY2023 spending over October 2024
+    # enrollment (1,753,610).
+    medicaid_cost_if_enrolled: 11_537.67
+    medicaid: 11_537.67
+
+- name: Case 5, a lone New Jersey adult in 2024 uses FY2024 spending and January 2024 enrollment.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: true
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # The FY2024 pair starts in 2024: $23,426,076,809 / 2,030,400 = $11,537.67.
+    # Main read the 2023 pair here (2,222,936 enrollees), $10,191.88.
+    medicaid_cost_if_enrolled: 11_537.67
+    medicaid: 11_537.67

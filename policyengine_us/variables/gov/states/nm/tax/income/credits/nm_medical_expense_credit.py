@@ -16,11 +16,16 @@ class nm_medical_expense_credit(Variable):
     documentation = (
         "Senior medical credit based on gross unreimbursed costs paid, preserving "
         "premiums deducted through the federal self-employed health insurance ALD. "
-        "Only the exclusion applied to a computed federal medical amount is "
-        "restored; caller-supplied subtotals remain unchanged even with components. "
+        "The exclusion applied to the federal medical amount is restored: by "
+        "the federal formula, or as supplied with a caller's subtotal in "
+        "itemized_medical_expenses_applied_exclusion. A caller-supplied "
+        "subtotal without that amount is used unchanged even with components. "
         "This assumes qualifying costs were funded from income included in AGI. "
         "Premium inputs use payer attribution: each person reports premiums that "
         "person paid, including family coverage regardless of whom it covers. "
+        "With a computed subtotal, a supplied applied exclusion covers the "
+        "filers' premiums only, so the model also restores the dependents' "
+        "computed medical exclusion, as Montana does."
     )
 
     def formula(tax_unit, period, parameters):
@@ -28,7 +33,8 @@ class nm_medical_expense_credit(Variable):
         pcredits = parameters(period).gov.states.nm.tax.income.credits
         p = pcredits.unreimbursed_medical_care_expense
         age = person("age", period)
-        # Restore only premiums excluded from a computed federal subtotal.
+        # Restore premiums excluded from the federal subtotal (computed, or
+        # supplied with a caller's subtotal).
         medical_expense = add(
             tax_unit,
             period,
@@ -37,6 +43,19 @@ class nm_medical_expense_credit(Variable):
                 "itemized_medical_expenses_applied_exclusion",
             ],
         )
+        # PIT-RC line 23 counts costs "for the care of any combination of
+        # you, your spouse, or dependents". A supplied exclusion beside a
+        # computed subtotal covers the filers only, so restore the
+        # dependents' computed exclusion as well, as Montana does.
+        simulation = tax_unit.simulation
+        if not has_input_for_period(
+            simulation, "itemized_medical_expenses", period
+        ) and has_input_for_period(
+            simulation, "itemized_medical_expenses_applied_exclusion", period
+        ):
+            medical_expense = medical_expense + tax_unit(
+                "itemized_medical_expenses_excluded_dependent_premiums", period
+            )
         expense_eligible = medical_expense >= p.min_expenses
         # NMSA 7-2-18.13(A) allows the credit to "a taxpayer ... who is
         # sixty-five years of age or older and who is not a dependent of

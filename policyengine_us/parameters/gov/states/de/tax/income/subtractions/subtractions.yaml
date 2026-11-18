@@ -9,6 +9,7 @@ values:
     # 30 Del. C. § 1106(b)(10) (HB 65 of 2021; HB 285 of 2022).
     - taxable_unemployment_compensation # (10)
     - salt_refund_income # 30 Del. C. § 1106(b)(9) / PIT-RES Line 7
+    - de_other_subtractions
     # The elderly or disabled income exclusion is computed separately
     # - de_elderly_or_disabled_income_exclusion # (2)
   2022-01-01:
@@ -17,6 +18,7 @@ values:
     - us_govt_interest_person
     - de_529_plan_subtraction # HB 145
     - salt_refund_income # 30 Del. C. § 1106(b)(9) / PIT-RES Line 7
+    - de_other_subtractions
 
 metadata:
   unit: list

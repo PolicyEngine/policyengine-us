@@ -20,6 +20,13 @@ values:
     - pension_income
     # "Retirement Benefits" (page 18).
     - retirement_distributions
+    # "Retirement Benefits" (page 18) covers plans set up by the government,
+    # with "Pensions" (page 16) and "Annuities" (page 3). Military retirement
+    # income (retiree pay plus Survivor Benefit Plan annuities) is a separate
+    # input from the pension inputs that pension_income adds; a household
+    # reports the amount in one or the other. A military survivor annuity
+    # belongs in military_retirement_pay_survivors, not survivor_benefits.
+    - military_retirement_income
     # "Annuities" (page 3) and "Pensions" (page 16): survivor benefits other
     # than Social Security.
     - survivor_benefits

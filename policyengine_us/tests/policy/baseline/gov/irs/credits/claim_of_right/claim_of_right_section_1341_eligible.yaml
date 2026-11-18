@@ -1,0 +1,51 @@
+# 26 U.S.C. 1341(a)(3): the deduction must exceed $3,000. Publication 525
+# (2025), PDF page 36: "consider the total amount being repaid on the
+# return. Each instance of repayment isn't considered separately."
+- name: Case 1, a repayment of exactly $3,000 does not qualify.
+  period: 2025
+  input:
+    tax_unit_claim_of_right_repayment: 3_000
+  output:
+    claim_of_right_section_1341_eligible: false
+
+- name: Case 2, a repayment of $3,000.01 qualifies.
+  period: 2025
+  input:
+    tax_unit_claim_of_right_repayment: 3_000.01
+  output:
+    claim_of_right_section_1341_eligible: true
+
+- name: Case 3, no repayment.
+  period: 2025
+  input:
+    tax_unit_claim_of_right_repayment: 0
+  output:
+    claim_of_right_section_1341_eligible: false
+
+- name: Case 4, two repayments of $2,000 on a joint return qualify together.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        claim_of_right_repayment: 2_000
+      person2:
+        age: 44
+        claim_of_right_repayment: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tax_unit_claim_of_right_repayment: 4_000
+    claim_of_right_section_1341_eligible: true
+
+- name: Case 5, the $3,000 threshold applied before 2018 too.
+  period: 2017
+  input:
+    tax_unit_claim_of_right_repayment: 3_001
+  output:
+    claim_of_right_section_1341_eligible: true

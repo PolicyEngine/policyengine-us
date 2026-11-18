@@ -1,0 +1,20 @@
+description: Washington applies its modeled retirement deduction to these income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - pension_income
+    - retirement_distributions
+    - military_retirement_income
+
+# Pension income already includes its pension and annuity components.
+# Military retirement income includes military survivor annuities.
+# Social Security, SSI, railroad and other survivor benefit subtype deductions
+# are unverified and are not assumed. Broad distributions lack lump-sum detail.
+metadata:
+  unit: list
+  period: year
+  label: Washington LIHEAP retirement sources
+  reference:
+    - title: "FY2026 State Plan, section 1.9"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=6
+    - title: "Commerce 2026 Weatherization Manual, Policy 1.1.2 #page 14-15"
+      href: https://deptofcommerce.app.box.com/s/5a32797ex8tz2blo8nwtifecokpya37j#page=14

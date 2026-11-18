@@ -133,3 +133,23 @@
   output:
     de_pension_exclusion: 10_000
 
+- name: DE under-60 survivor benefits treated as pension (capped at 2,000)
+  period: 2024
+  input:
+    age: 50
+    military_retirement_pay_survivors: 3_000
+    is_tax_unit_head_or_spouse: true
+    state_code: DE
+  output:
+    de_pension_exclusion: 2_000
+
+- name: DE 60+ filer with military retirement and survivor benefits in retirement basket
+  period: 2024
+  input:
+    age: 65
+    military_retirement_pay_survivors: 8_000
+    military_retirement_pay: 8_000
+    is_tax_unit_head_or_spouse: true
+    state_code: DE
+  output:
+    de_pension_exclusion: 12_500

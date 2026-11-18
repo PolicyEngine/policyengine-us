@@ -202,3 +202,69 @@
   output:
     # Uprated from $22,500 DC base. Must NOT be $24,150 (federal).
     dc_standard_deduction: 23_000
+
+# --- Separate filer whose spouse itemizes: D.C. Code 47-1803.03(c) ---
+
+- name: DC 2024 separate filer aged 66 whose spouse itemizes gets no standard deduction.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        separate_filer_itemizes: true
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # 47-1803.03(c): allowed to neither spouse, so neither the basic
+    # amount nor the $1,550 additional amount for age.
+    dc_standard_deduction: 0
+
+- name: DC 2025 separate filer aged 66 whose spouse itemizes gets no standard deduction.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        separate_filer_itemizes: true
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # Neither the $15,000 DC basic amount nor the $1,600 additional amount.
+    dc_standard_deduction: 0
+
+- name: DC 2025 separate filer aged 66 whose spouse does not itemize.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        separate_filer_itemizes: false
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    # $15,000 DC basic + $1,600 additional (married, 65+) = $16,600
+    dc_standard_deduction: 16_600

@@ -1,0 +1,21 @@
+description: Oklahoma allocates this monthly amount for each ineligible child under the State Supplemental Payment program.
+values:
+  2026-01-01: 498
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Oklahoma SSP allocation for an ineligible child
+  # OAC 340:15-1-4(9)(A)-(B) bases the SSP standards on the FBR and passes
+  # along the SSI cost-of-living adjustment; the next Appendix C-1 edition
+  # replaces the projection.
+  uprating:
+    parameter: gov.ssa.uprating
+    rounding:
+      type: nearest
+      interval: 1
+  reference:
+    - title: OKDHS Appendix C-1 (7/1/2026), Schedule VIII.C
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=4
+    - title: OAC 340:15-1-4(9)
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-4

@@ -4,7 +4,8 @@ values:
     - us_govt_interest # 01E
     # Louisiana State Employees’ Retirement Benefits 02E
     # Louisiana State Teachers’ Retirement Benefits 03E
-    - military_retirement_pay # 04E
+    - military_retirement_income # 04E
+
     # Other Retirement Benefits 05E (federal civil service, municipal, etc.)
     # Proxy note: Schedule E exempts specific Louisiana state/municipal systems and federal
     # retirement systems (codes 02E, 03E, 05E). Out-of-state public pensions are not exempt.
@@ -29,6 +30,7 @@ values:
     # Pass–Through Entity Exclusion 24E
     # COVID-19 Relief Benefits 27E
     - la_disability_income_exemption_person # 49E
+    - la_other_subtractions # 49E
 
 metadata:
   unit: list  

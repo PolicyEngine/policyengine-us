@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.ny.tax.income.adjusted_gross_income.ny_recomputed_federal_agi import (
+    get_ny_recomputed_branch,
+)
 
 
 class nyc_eitc(Variable):
@@ -12,7 +15,13 @@ class nyc_eitc(Variable):
     def formula(tax_unit, period, parameters):
         # First get their NYAGI and EITC.
         ny_agi = tax_unit("ny_agi", period)
-        federal_eitc = tax_unit("eitc", period)
+        # The federal credit recomputed with recomputed federal AGI (IT-201
+        # line 19a; IT-215 instructions) when it differs from federal AGI.
+        branch = get_ny_recomputed_branch(tax_unit, period)
+        if branch is None:
+            federal_eitc = tax_unit("eitc", period)
+        else:
+            federal_eitc = branch.calculate("eitc", period)
 
         # Then get the EITC part of the parameter tree.
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.eitc

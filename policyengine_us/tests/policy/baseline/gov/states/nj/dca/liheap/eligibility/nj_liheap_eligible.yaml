@@ -120,3 +120,48 @@
     is_tax_unit_dependent: [false, true]
   output:
     nj_liheap_eligible: [true, true]
+
+- name: Case 7, federal 110% poverty floor above the 60% state median income limit at size 32.
+  period: 2026
+  input:
+    state_code: [NJ, NJ, NJ, NJ, NJ]
+    nj_liheap_household_size: [32, 32, 32, 32, 31]
+    nj_liheap_countable_income: [202_092, 204_764.99, 204_765, 204_766, 199_201]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+  output:
+    # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+    # of the poverty guideline. FY2026 uses the 2025 guidelines (LIHEAP IM
+    # 2025-02): 15,650 + 5,500 x 31 = 186,150 for 32 people, and 110% is
+    # 204,765. The annualized 60% SMI limit for 32 people is 202,092.
+    # Household 1 is at the 60% SMI limit: eligible.
+    # Household 2 is one cent below the floor: eligible.
+    # Household 3 is exactly at the floor, which is not below 110%: not eligible.
+    # Household 4 is above the floor: not eligible.
+    # Household 5 has 31 people, whose 199,200 limit exceeds the 198,715 floor
+    # (110% of 180,650), so the limit still applies: not eligible.
+    nj_liheap_eligible: [true, true, false, false, false]
+
+- name: Case 8, the floor uses the poverty guidelines from the year before the model year.
+  period: 2026
+  input:
+    state_code: NJ
+    nj_liheap_household_size: 32
+    nj_liheap_countable_income: 208_000
+    heat_expense_included_in_rent: true
+  output:
+    # FY2026 uses the 2025 guidelines, so the floor is 204,765. The 2026
+    # guidelines would give 110% x (15,960 + 5,680 x 31) = 211,244.
+    nj_liheap_eligible: false
+
+- name: Case 9, FY2024 uses the 2023 poverty guidelines for the floor.
+  period: 2024
+  input:
+    state_code: [NJ, NJ]
+    nj_liheap_household_size: [28, 28]
+    nj_liheap_countable_income: [168_695.99, 168_696]
+    heat_expense_included_in_rent: [true, true]
+  output:
+    # LIHEAP IM 2023-01 makes the 2023 guidelines mandatory in FY2024:
+    # 110% x (14,580 + 5,140 x 27) = 168,696 for 28 people, above the 167,952
+    # FY2024 annualized 60% SMI limit.
+    nj_liheap_eligible: [true, false]

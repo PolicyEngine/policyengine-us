@@ -1,7 +1,9 @@
 # NC TANF (Work First, nc_tanf) — need standard (need_standard/main.yaml, monthly):
 # size 2 = 472, size 3 = 544, size 4 = 594. Benefit = 50% of (need standard -
 # countable earned + unearned income) (benefit/payment_percentage.yaml).
-# Income-eligible only if reduced need standard per person >= 25/mo = 300/yr
+# Countable earned income excludes 27.5% of adults' gross earnings
+# (income/earned_income_exclusion_rate.yaml). Income-eligible only if the
+# payment is >= 25/mo = 300/yr
 # (eligibility/average_reduced_need_standard_threshold.yaml). Demographic
 # eligibility requires a child under 18 (eligibility/age_limit.yaml).
 - name: tanf_max_benefit_youngest_child_age_17 (nc)
@@ -267,11 +269,11 @@
   output:
     spm_units:
       spm_unit:
-        # Earned income 3_000 (no disregard in NC countable earned income):
-        # reduced need standard = 6_528 - 3_000 = 3_528 (per person 1_176 >= 300).
-        # nc_tanf = 3_528 x 0.5 = 1_764.
-        nc_tanf: 1_764
-        tanf: 1_764
+        # Countable earned income = 3_000 x (1 - 0.275) = 2_175;
+        # reduced need standard = 6_528 - 2_175 = 4_353.
+        # nc_tanf = 4_353 x 0.5 = 2_176.50 (>= 300).
+        nc_tanf: 2_176.5
+        tanf: 2_176.5
 - name: tanf_self_employment_income_counted_as_earned (nc)
   period: 2026
   absolute_error_margin: 0.1
@@ -322,11 +324,11 @@
     spm_units:
       spm_unit:
         # Self-employment income is in the NC earned-income source list
-        # (income/earned.yaml). Size-2 need standard = 472 x 12 = 5_664;
-        # reduced = 5_664 - 2_400 = 3_264 (per person 1_632 >= 300).
-        # nc_tanf = 3_264 x 0.5 = 1_632.
-        nc_tanf: 1_632
-        tanf: 1_632
+        # (income/earned.yaml). Countable = 2_400 x (1 - 0.275) = 1_740.
+        # Size-2 need standard = 472 x 12 = 5_664; reduced = 5_664 - 1_740 = 3_924.
+        # nc_tanf = 3_924 x 0.5 = 1_962 (>= 300).
+        nc_tanf: 1_962
+        tanf: 1_962
 - name: tanf_income_at_min_benefit_boundary_eligible (nc)
   period: 2026
   absolute_error_margin: 0.1
@@ -339,7 +341,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income_before_lsr: 5_628
+        employment_income_before_lsr: 8_176
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -386,11 +388,11 @@
   output:
     spm_units:
       spm_unit:
-        # Exact eligibility cliff for size 3: reduced = 6_528 - 5_628 = 900;
-        # per person 900 / 3 = 300 >= 300 (25/mo x 12) -> still eligible.
-        # nc_tanf = 900 x 0.5 = 450. Binds the >= comparison.
-        nc_tanf: 450
-        tanf: 450
+        # Eligibility cliff for size 3: countable = 8_176 x (1 - 0.275) = 5_927.60;
+        # reduced = 6_528 - 5_927.60 = 600.40; payment = 600.40 x 0.5 = 300.20
+        # >= 300 (25/mo x 12) -> still eligible. nc_tanf = 300.20.
+        nc_tanf: 300.2
+        tanf: 300.2
 - name: tanf_income_just_above_min_benefit_boundary (nc)
   period: 2026
   absolute_error_margin: 0.1
@@ -403,7 +405,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income_before_lsr: 5_629
+        employment_income_before_lsr: 8_177
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -450,9 +452,8 @@
   output:
     spm_units:
       spm_unit:
-        # One dollar past the cliff: reduced = 6_528 - 5_629 = 899;
-        # per person 899 / 3 = 299.67 < 300 -> income-ineligible -> 0.
-        # (The prior file's names claimed a 5_687 threshold; the actual
-        # cliff sits between 5_628 and 5_629.)
+        # One dollar past the cliff: countable = 8_177 x (1 - 0.275) = 5_928.325;
+        # reduced = 6_528 - 5_928.325 = 599.675; payment = 299.84 < 300
+        # -> income-ineligible -> 0. The cliff sits between 8_176 and 8_177.
         nc_tanf: 0
         tanf: 0

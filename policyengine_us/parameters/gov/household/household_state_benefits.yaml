@@ -1,9 +1,10 @@
 description: The government counts these sources as benefits paid by state agencies.
 values:
   2023-01-01:
+    # Child care subsidies administered by state agencies
+    - household_child_care_subsidies
     # Delaware benefits
     - de_ssp
-    - de_child_care_subsidies
     # Indiana benefits
     - in_ssp
     # Connecticut benefits
@@ -14,9 +15,8 @@ values:
     - me_ssp
     # Missouri benefits
     - mo_ssp
-    - mo_child_care_subsidies
     # Montana benefits
-    - mt_child_care_subsidies
+    - mt_ssp
     # Massachusetts benefits
     - ma_state_supplement
     # Maryland benefits
@@ -28,9 +28,7 @@ values:
     # Colorado benefits
     - co_state_supplement
     - co_oap
-    - co_child_care_subsidies
     # California benefits
-    - ca_child_care_subsidies
     - ca_cvrp
     - ca_care
     - ca_fera
@@ -42,267 +40,58 @@ values:
     - ca_state_supplement
     # Alabama benefits
     - al_ssp
-    - al_child_care_subsidies
     # Alaska benefits
     - ak_ssp
-    # Arizona benefits
-    - az_child_care_subsidies
     # Florida benefits
     - fl_oss
     # Idaho benefits
     - id_aabd
-    - id_child_care_subsidies
     # Kentucky benefits
     - ky_ssp
-    # Maryland benefits
-    - md_child_care_subsidies
     # Nebraska benefits
     - ne_aabd
-    - ne_child_care_subsidies
     # Nevada benefits
     - nv_oss
-    - nv_child_care_subsidies
     # Oklahoma benefits
-    - ok_child_care_subsidies
-    # South Carolina benefits
-    - sc_child_care_subsidies
+    - ok_ssp
+    # Oregon benefits
+    - or_ssp
+    # New Hampshire benefits
+    - nh_ssp
     # New Jersey benefits
     - nj_ssp
     # New Mexico benefits
     - nm_ssi_state_supplement
     # North Carolina benefits
     - nc_sa
-    # Pennsylvania benefits
-    - pa_ssp
-    # South Carolina benefits
-    - sc_ssi_state_supplement
-    # Texas benefits
-    - tx_ssi_state_supplement
-    # Virginia benefits
-    - va_child_care_subsidies
-    # Wyoming benefits
-    - wy_ssp
-    # Massachusetts benefits
-    - ma_eaedc
-    # DC benefits
-    - dc_ossp
-    # Kansas benefits
-    - ks_sspp
-    # Hawaii benefits
-    - hi_oss
-    # Washington benefits
-    - wa_ssp
-    - wa_sfa
-    - wa_rca
-    # Louisiana benefits
-    - la_oss
-    # Washington benefits
-    - wa_child_care_subsidies
-    # New York benefits
-    - ny_child_care_subsidies
-  2024-01-01:
-    # Delaware benefits
-    - de_ssp
-    - de_child_care_subsidies
-    # Indiana benefits
-    - in_ssp
-    - in_child_care_subsidies
-    # Connecticut benefits
-    - ct_ssp
-    # Georgia benefits
-    - ga_ssp
-    # Maine benefits
-    - me_ssp
-    # Missouri benefits
-    - mo_ssp
-    - mo_child_care_subsidies
-    # Montana benefits
-    - mt_child_care_subsidies
-    # Massachusetts benefits
-    - ma_state_supplement
-    # Maryland benefits
-    - md_paa
-    # Michigan benefits
-    - mi_ssp
-    # Minnesota benefits
-    - mn_msa
-    # Colorado benefits
-    - co_state_supplement
-    - co_oap
-    - co_child_care_subsidies
-    # California benefits
-    - ca_child_care_subsidies
-    - ca_cvrp
-    - ca_care
-    - ca_fera
-    - ca_la_ez_save
-    - ca_riv_share_payment
-    - ca_la_infant_supplement
-    - ca_la_expectant_parent_payment
-    - ca_capi
-    - ca_state_supplement
-    # Alabama benefits
-    - al_ssp
-    - al_child_care_subsidies
-    # Alaska benefits
-    - ak_ssp
-    # Arizona benefits
-    - az_child_care_subsidies
-    # Florida benefits
-    - fl_oss
-    # Idaho benefits
-    - id_aabd
-    - id_child_care_subsidies
-    # Kentucky benefits
-    - ky_ssp
-    # Georgia benefits
-    - ga_child_care_subsidies
-    # Maryland benefits
-    - md_child_care_subsidies
-    # Nebraska benefits
-    - ne_aabd
-    - ne_child_care_subsidies
-    # Nevada benefits
-    - nv_oss
-    - nv_child_care_subsidies
-    # Oklahoma benefits
-    - ok_child_care_subsidies
-    # New Jersey benefits
-    - nj_ssp
-    # New Mexico benefits
-    - nm_ssi_state_supplement
-    # Pennsylvania benefits
-    - pa_ssp
-    # South Carolina benefits
-    - sc_ssi_state_supplement
-    # Texas benefits
-    - tx_ssi_state_supplement
-    # Virginia benefits
-    - va_child_care_subsidies
-    # West Virginia benefits
-    - wv_child_care_subsidies
-    # Wyoming benefits
-    - wy_ssp
-    # North Carolina benefits
-    - nc_child_care_subsidies
-    - nc_sa
-    # South Carolina benefits
-    - sc_child_care_subsidies
-    # Massachusetts benefits
-    - ma_eaedc
-    # DC benefits
-    - dc_ossp
-    # Kansas benefits
-    - ks_sspp
-    # Hawaii benefits
-    - hi_oss
-    # Washington benefits
-    - wa_ssp
-    - wa_sfa
-    - wa_rca
-    # Louisiana benefits
-    - la_oss
-    # Arkansas benefits
-    - ar_child_care_subsidies
     # Ohio benefits
-    - oh_child_care_subsidies
-    # Washington child care subsidies
-    - wa_child_care_subsidies
-    # New York benefits
-    - ny_child_care_subsidies
-  2025-01-01:
-    # Delaware benefits
-    - de_ssp
-    - de_child_care_subsidies
-    # Indiana benefits
-    - in_ssp
-    - in_child_care_subsidies
-    # Connecticut benefits
-    - ct_ssp
-    # Georgia benefits
-    - ga_ssp
-    # Maine benefits
-    - me_ssp
-    # Missouri benefits
-    - mo_ssp
-    - mo_child_care_subsidies
-    # Montana benefits
-    - mt_child_care_subsidies
-    # Massachusetts benefits
-    - ma_state_supplement
-    # Maryland benefits
-    - md_paa
-    # Michigan benefits
-    - mi_ssp
-    # Minnesota benefits
-    - mn_msa
-    # Colorado benefits
-    - co_state_supplement
-    - co_oap
-    - co_child_care_subsidies
-    # California benefits
-    - ca_child_care_subsidies
-    - ca_cvrp
-    - ca_care
-    - ca_fera
-    - ca_la_ez_save
-    - ca_riv_share_payment
-    - ca_la_infant_supplement
-    - ca_la_expectant_parent_payment
-    - ca_capi
-    - ca_state_supplement
-    # Alabama benefits
-    - al_ssp
-    - al_child_care_subsidies
-    # Alaska benefits
-    - ak_ssp
-    # Arizona benefits
-    - az_child_care_subsidies
-    # Florida benefits
-    - fl_oss
-    # Idaho benefits
-    - id_aabd
-    - id_child_care_subsidies
-    # Kentucky benefits
-    - ky_ssp
-    # Georgia benefits
-    - ga_child_care_subsidies
-    # Maryland benefits
-    - md_child_care_subsidies
-    # Nebraska benefits
-    - ne_aabd
-    - ne_child_care_subsidies
-    # Nevada benefits
-    - nv_oss
-    - nv_child_care_subsidies
-    # Oklahoma benefits
-    - ok_child_care_subsidies
-    # New Jersey benefits
-    - nj_ssp
-    # New Mexico benefits
-    - nm_ssi_state_supplement
+    - oh_rss
     # Pennsylvania benefits
     - pa_ssp
+    # Rhode Island benefits
+    - ri_ssp
     # South Carolina benefits
     - sc_ssi_state_supplement
+    # South Dakota benefits
+    - sd_ssp
+    # Utah benefits
+    - ut_ssp
     # Texas benefits
     - tx_ssi_state_supplement
+    # Vermont benefits
+    - vt_aabd
     # Virginia benefits
-    - va_child_care_subsidies
-    # West Virginia benefits
-    - wv_child_care_subsidies
+    - va_ag
+    # Wisconsin benefits
+    - wi_ssp
     # Wyoming benefits
     - wy_ssp
-    # North Carolina benefits
-    - nc_child_care_subsidies
-    - nc_sa
-    # South Carolina benefits
-    - sc_child_care_subsidies
     # Massachusetts benefits
     - ma_eaedc
     # DC benefits
     - dc_ossp
-    - dc_child_care_subsidies
+    # Iowa benefits
+    - ia_ssa
     # Kansas benefits
     - ks_sspp
     # Hawaii benefits
@@ -311,129 +100,342 @@ values:
     - wa_ssp
     - wa_sfa
     - wa_rca
-    # Louisiana benefits
-    - la_oss
-    # Arkansas benefits
-    - ar_child_care_subsidies
-    # Ohio benefits
-    - oh_child_care_subsidies
-    # Washington child care subsidies
-    - wa_child_care_subsidies
-    # New York benefits
-    - ny_child_care_subsidies
-  2026-01-01:
-    # Delaware benefits
-    - de_ssp
-    - de_child_care_subsidies
-    # Indiana benefits
-    - in_ssp
-    - in_child_care_subsidies
-    # Connecticut benefits
-    - ct_ssp
-    # Georgia benefits
-    - ga_ssp
-    # Maine benefits
-    - me_ssp
-    # Missouri benefits
-    - mo_ssp
-    - mo_child_care_subsidies
-    # Montana benefits
-    - mt_child_care_subsidies
-    # Massachusetts benefits
-    - ma_state_supplement
-    # Maryland benefits
-    - md_paa
-    # Michigan benefits
-    - mi_ssp
-    # Minnesota benefits
-    - mn_msa
-    # Colorado benefits
-    - co_state_supplement
-    - co_oap
-    - co_child_care_subsidies
-    # California benefits
-    - ca_child_care_subsidies
-    - ca_cvrp
-    - ca_care
-    - ca_fera
-    - ca_la_ez_save
-    - ca_riv_share_payment
-    - ca_la_infant_supplement
-    - ca_la_expectant_parent_payment
-    - ca_capi
-    - ca_state_supplement
-    # Alabama benefits
-    - al_ssp
-    - al_child_care_subsidies
-    # Alaska benefits
-    - ak_ssp
-    # Arizona benefits
-    - az_child_care_subsidies
-    # Florida benefits
-    - fl_oss
-    # Idaho benefits
-    - id_aabd
-    - id_child_care_subsidies
-    # Kentucky benefits
-    - ky_ssp
-    # Georgia benefits
-    - ga_child_care_subsidies
-    # Maryland benefits
-    - md_child_care_subsidies
-    # Nebraska benefits
-    - ne_aabd
-    - ne_child_care_subsidies
-    # Nevada benefits
-    - nv_oss
-    - nv_child_care_subsidies
-    # Oklahoma benefits
-    - ok_child_care_subsidies
-    # New Jersey benefits
-    - nj_ssp
-    # New Mexico benefits
-    - nm_ssi_state_supplement
-    # Pennsylvania benefits
-    - pa_ssp
-    # South Carolina benefits
-    - sc_ssi_state_supplement
-    # Texas benefits
-    - tx_ssi_state_supplement
-    # Virginia benefits
-    - va_child_care_subsidies
-    # West Virginia benefits
-    - wv_child_care_subsidies
-    # Wyoming benefits
-    - wy_ssp
-    # North Carolina benefits
-    - nc_child_care_subsidies
-    - nc_sa
-    # South Carolina benefits
-    - sc_child_care_subsidies
-    # Massachusetts benefits
-    - ma_eaedc
-    # DC benefits
-    - dc_ossp
-    - dc_child_care_subsidies
-    # Kansas benefits
-    - ks_sspp
-    # Hawaii benefits
-    - hi_oss
-    # Washington benefits
-    - wa_ssp
-    - wa_sfa
-    - wa_rca
-    # Louisiana benefits
-    - la_oss
-    # Arkansas benefits
-    - ar_child_care_subsidies
-    # Ohio benefits
-    - oh_child_care_subsidies
-    # Washington child care subsidies
-    - wa_child_care_subsidies
     # New Jersey benefits
     - nj_property_tax_relief
+    # Property tax and rent refunds that states pay in cash, outside the
+    # income tax return
+    - state_property_tax_refunds
+    # Louisiana benefits
+    - la_oss
     # New York benefits
-    - ny_child_care_subsidies
+    - ny_ssp
+  2024-01-01:
+    # Child care subsidies administered by state agencies
+    - household_child_care_subsidies
+    # Delaware benefits
+    - de_ssp
+    # Indiana benefits
+    - in_ssp
+    # Connecticut benefits
+    - ct_ssp
+    # Georgia benefits
+    - ga_ssp
+    # Maine benefits
+    - me_ssp
+    # Missouri benefits
+    - mo_ssp
+    # Montana benefits
+    - mt_ssp
+    # Massachusetts benefits
+    - ma_state_supplement
+    # Maryland benefits
+    - md_paa
+    # Michigan benefits
+    - mi_ssp
+    # Minnesota benefits
+    - mn_msa
+    # Colorado benefits
+    - co_state_supplement
+    - co_oap
+    # California benefits
+    - ca_cvrp
+    - ca_care
+    - ca_fera
+    - ca_la_ez_save
+    - ca_riv_share_payment
+    - ca_la_infant_supplement
+    - ca_la_expectant_parent_payment
+    - ca_capi
+    - ca_state_supplement
+    # Alabama benefits
+    - al_ssp
+    # Alaska benefits
+    - ak_ssp
+    # Florida benefits
+    - fl_oss
+    # Idaho benefits
+    - id_aabd
+    # Kentucky benefits
+    - ky_ssp
+    # Nebraska benefits
+    - ne_aabd
+    # Nevada benefits
+    - nv_oss
+    # New Hampshire benefits
+    - nh_ssp
+    # Oklahoma benefits
+    - ok_ssp
+    # Oregon benefits
+    - or_ssp
+    # New Jersey benefits
+    - nj_ssp
+    # New Mexico benefits
+    - nm_ssi_state_supplement
+    # Ohio benefits
+    - oh_rss
+    # Pennsylvania benefits
+    - pa_ssp
+    # Rhode Island benefits
+    - ri_ssp
+    # South Carolina benefits
+    - sc_ssi_state_supplement
+    # South Dakota benefits
+    - sd_ssp
+    # Utah benefits
+    - ut_ssp
+    # Texas benefits
+    - tx_ssi_state_supplement
+    # Vermont benefits
+    - vt_aabd
+    # Virginia benefits
+    - va_ag
+    # Wisconsin benefits
+    - wi_ssp
+    # Wyoming benefits
+    - wy_ssp
+    # North Carolina benefits
+    - nc_sa
+    # Massachusetts benefits
+    - ma_eaedc
+    # DC benefits
+    - dc_ossp
+    # Iowa benefits
+    - ia_ssa
+    # Kansas benefits
+    - ks_sspp
+    # Hawaii benefits
+    - hi_oss
+    # Washington benefits
+    - wa_ssp
+    - wa_sfa
+    - wa_rca
+    # New Jersey benefits
+    - nj_property_tax_relief
+    # Property tax and rent refunds that states pay in cash, outside the
+    # income tax return
+    - state_property_tax_refunds
+    # Louisiana benefits
+    - la_oss
+    # New York benefits
+    - ny_ssp
+  2025-01-01:
+    # Child care subsidies administered by state agencies
+    - household_child_care_subsidies
+    # Delaware benefits
+    - de_ssp
+    # Indiana benefits
+    - in_ssp
+    # Connecticut benefits
+    - ct_ssp
+    # Georgia benefits
+    - ga_ssp
+    # Maine benefits
+    - me_ssp
+    # Missouri benefits
+    - mo_ssp
+    # Montana benefits
+    - mt_ssp
+    # Massachusetts benefits
+    - ma_state_supplement
+    # Maryland benefits
+    - md_paa
+    # Michigan benefits
+    - mi_ssp
+    # Minnesota benefits
+    - mn_msa
+    # Colorado benefits
+    - co_state_supplement
+    - co_oap
+    # California benefits
+    - ca_cvrp
+    - ca_care
+    - ca_fera
+    - ca_la_ez_save
+    - ca_riv_share_payment
+    - ca_la_infant_supplement
+    - ca_la_expectant_parent_payment
+    - ca_capi
+    - ca_state_supplement
+    # Alabama benefits
+    - al_ssp
+    # Alaska benefits
+    - ak_ssp
+    # Florida benefits
+    - fl_oss
+    # Idaho benefits
+    - id_aabd
+    # Kentucky benefits
+    - ky_ssp
+    # Nebraska benefits
+    - ne_aabd
+    # Nevada benefits
+    - nv_oss
+    # New Hampshire benefits
+    - nh_ssp
+    # Oklahoma benefits
+    - ok_ssp
+    # Oregon benefits
+    - or_ssp
+    # New Jersey benefits
+    - nj_ssp
+    # New Mexico benefits
+    - nm_ssi_state_supplement
+    # Ohio benefits
+    - oh_rss
+    # Pennsylvania benefits
+    - pa_ssp
+    # Rhode Island benefits
+    - ri_ssp
+    # South Carolina benefits
+    - sc_ssi_state_supplement
+    # South Dakota benefits
+    - sd_ssp
+    # Utah benefits
+    - ut_ssp
+    # Texas benefits
+    - tx_ssi_state_supplement
+    # Vermont benefits
+    - vt_aabd
+    # Virginia benefits
+    - va_ag
+    # Wisconsin benefits
+    - wi_ssp
+    # Wyoming benefits
+    - wy_ssp
+    # North Carolina benefits
+    - nc_sa
+    # Massachusetts benefits
+    - ma_eaedc
+    # DC benefits
+    - dc_ossp
+    # Iowa benefits
+    - ia_ssa
+    # Kansas benefits
+    - ks_sspp
+    # Hawaii benefits
+    - hi_oss
+    # Washington benefits
+    - wa_ssp
+    - wa_sfa
+    - wa_rca
+    # New Jersey benefits
+    - nj_property_tax_relief
+    # Property tax and rent refunds that states pay in cash, outside the
+    # income tax return
+    - state_property_tax_refunds
+    # Louisiana benefits
+    - la_oss
+    # New York benefits
+    - ny_ssp
+  2026-01-01:
+    # Child care subsidies administered by state agencies
+    - household_child_care_subsidies
+    # Delaware benefits
+    - de_ssp
+    # Indiana benefits
+    - in_ssp
+    # Connecticut benefits
+    - ct_ssp
+    # Georgia benefits
+    - ga_ssp
+    # Maine benefits
+    - me_ssp
+    # Missouri benefits
+    - mo_ssp
+    # Montana benefits
+    - mt_ssp
+    # Massachusetts benefits
+    - ma_state_supplement
+    # Maryland benefits
+    - md_paa
+    # Michigan benefits
+    - mi_ssp
+    # Minnesota benefits
+    - mn_msa
+    # Colorado benefits
+    - co_state_supplement
+    - co_oap
+    # California benefits
+    - ca_cvrp
+    - ca_care
+    - ca_fera
+    - ca_la_ez_save
+    - ca_riv_share_payment
+    - ca_la_infant_supplement
+    - ca_la_expectant_parent_payment
+    - ca_capi
+    - ca_state_supplement
+    # Alabama benefits
+    - al_ssp
+    # Alaska benefits
+    - ak_ssp
+    # Florida benefits
+    - fl_oss
+    # Idaho benefits
+    - id_aabd
+    # Kentucky benefits
+    - ky_ssp
+    # Nebraska benefits
+    - ne_aabd
+    # Nevada benefits
+    - nv_oss
+    # New Hampshire benefits
+    - nh_ssp
+    # Oklahoma benefits
+    - ok_ssp
+    # Oregon benefits
+    - or_ssp
+    # New Jersey benefits
+    - nj_ssp
+    # New Mexico benefits
+    - nm_ssi_state_supplement
+    # Ohio benefits
+    - oh_rss
+    # Pennsylvania benefits
+    - pa_ssp
+    # Rhode Island benefits
+    - ri_ssp
+    # South Carolina benefits
+    - sc_ssi_state_supplement
+    # South Dakota benefits
+    - sd_ssp
+    # Utah benefits
+    - ut_ssp
+    # Texas benefits
+    - tx_ssi_state_supplement
+    # Vermont benefits
+    - vt_aabd
+    # Virginia benefits
+    - va_ag
+    # Wisconsin benefits
+    - wi_ssp
+    # Wyoming benefits
+    - wy_ssp
+    # North Carolina benefits
+    - nc_sa
+    # Massachusetts benefits
+    - ma_eaedc
+    # DC benefits
+    - dc_ossp
+    # Iowa benefits
+    - ia_ssa
+    # Kansas benefits
+    - ks_sspp
+    # Hawaii benefits
+    - hi_oss
+    # Washington benefits
+    - wa_ssp
+    - wa_sfa
+    - wa_rca
+    # Louisiana benefits
+    - la_oss
+    # New Jersey benefits
+    - nj_property_tax_relief
+    # Property tax and rent refunds that states pay in cash, outside the
+    # income tax return
+    - state_property_tax_refunds
+    # New York benefits
+    - ny_ssp
 
 metadata:
   unit: list

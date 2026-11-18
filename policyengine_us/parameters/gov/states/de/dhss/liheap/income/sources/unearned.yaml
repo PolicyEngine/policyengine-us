@@ -1,0 +1,45 @@
+description: Delaware counts these individual unearned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - total_unemployment_compensation
+    # The Social Security aggregate includes its survivor-benefit component.
+    - social_security
+    - ssi
+    # Taxable/exempt pension components are already in pension_income.
+    # Military retirement includes Survivor Benefit Plan annuities.
+    - pension_income
+    - military_retirement_income
+    # Ongoing IRA/401k distributions are separate from pension_income.
+    # Existing annual inputs do not identify an excluded one-time lump sum.
+    - retirement_distributions
+    - survivor_benefits
+    - general_assistance
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - ordinary_dividend_income
+    - veterans_benefits
+    - workers_compensation
+    # Manual 419.1 counts railroad retirement.
+    - railroad_benefits
+    # Plan vs manual: 419.3 counts disability payments from insurance and 416.2
+    # counts strike benefits; plan 1.9 leaves "Insurance payments made directly
+    # to the insured" and "Strike Pay" unchecked. The manual is followed.
+    - disability_benefits
+    - strike_benefits
+    # Manual 416.2 counts trusts; the plan has no line for them.
+    - estate_income
+    # Manual 416.2 counts gifts only from the same source more than once a
+    # month; the annual financial_assistance input cannot identify those.
+    # Take-up-gated TANF is added once at SPMUnit level, not once per person.
+    # Royalties are represented only to the extent included in rental_income.
+    # Part B nets Social Security; pension-health withholding lacks attribution.
+metadata:
+  unit: list
+  period: year
+  label: Delaware LIHEAP unearned income sources
+  reference:
+    - title: "Delaware FY2026 LIHEAP State Plan, section 1.9 #page 6-7"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/DE_Plan_2026.pdf#page=6
+    - title: "Historical Delaware Energy Assistance Program Manual, sections 416 and 419 #page 33,37-39"
+      href: https://bidcondocs.delaware.gov/HSS/HSS_15027Liheap_MAN.pdf#page=33

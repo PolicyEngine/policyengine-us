@@ -11,3 +11,5 @@ class nm_additions(Variable):
         "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/2f1a6781-9534-4436-b427-1557f9592099/2022pit-adj-ins.pdf",
     )
     defined_for = StateCode.NM
+
+    adds = ["nm_other_additions"]

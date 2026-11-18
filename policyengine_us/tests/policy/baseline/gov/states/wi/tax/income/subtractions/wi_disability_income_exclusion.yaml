@@ -1,0 +1,201 @@
+# 2024 Schedule 2440W: each person's disability pay at most $100 a week
+# ($5,200 a year), less Form 1 line 3 income above $15,000.
+
+- name: Full exclusion for a retiree under 65 with $15,000 of income.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+        taxable_interest_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    adjusted_gross_income: 15_000
+    # Line 4: min(5,000, 5,200) = 5,000. Line 5c: 15,000 - 15,000 = 0.
+    wi_disability_income_exclusion: 5_000
+    wi_agi: 10_000
+
+- name: Exclusion reduced by income above $15,000.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 50
+        retired_on_total_disability: true
+        disability_benefits: 8_000
+        total_disability_payments: 8_000
+        taxable_interest_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    # Line 4: min(8,000, 5,200) = 5,200. Line 5c: 18,000 - 15,000 = 3,000.
+    wi_disability_income_exclusion: 2_200
+
+- name: Both spouses take the exclusion on a joint return.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        retired_on_total_disability: true
+        disability_benefits: 6_000
+        total_disability_payments: 6_000
+      spouse:
+        age: 58
+        is_tax_unit_spouse: true
+        retired_on_total_disability: true
+        disability_benefits: 4_000
+        total_disability_payments: 4_000
+        taxable_interest_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
+  output:
+    # Line 3: 5,200 + 4,000 = 9,200. Line 5c: 22,000 - 15,000 = 7,000.
+    wi_disability_income_exclusion: 2_200
+
+- name: No exclusion at age 65.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 65
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    wi_disability_income_exclusion: 0
+
+- name: No exclusion without retirement on permanent and total disability.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        retired_on_total_disability: false
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    wi_disability_income_exclusion: 0
+
+- name: A married person filing separately cannot take the exclusion.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    wi_disability_income_exclusion: 0
+
+- name: Disability benefits from insurance the retiree paid for are not in federal AGI.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 45
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+        tax_exempt_disability_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    wi_disability_income_exclusion: 0
+
+- name: A separated spouse filing as head of household is still married and cannot take the exclusion.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_separated: true
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_disability_income_exclusion: 0
+
+- name: An unmarried head of household can take the exclusion.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_disability_income_exclusion: 5_000

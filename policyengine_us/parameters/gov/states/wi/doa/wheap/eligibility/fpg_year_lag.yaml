@@ -1,0 +1,13 @@
+description: Wisconsin uses federal poverty guidelines from this many years before the modeled benefit year under the Home Energy Assistance Program.
+# Model year 2026 is federal fiscal year 2026, which uses the 2025 guidelines
+# ($15,650 plus $5,500 per added person). The federal 110% income floor uses
+# the same guideline year.
+values:
+  2025-10-01: 1
+metadata:
+  unit: year
+  period: year
+  label: Wisconsin WHEAP federal poverty guideline year lag
+  reference:
+    - title: Wisconsin HE+ Benefit Calculator FFY2026, Computation!C6:C8
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/WI_BenefitMatrix_2026.xlsx

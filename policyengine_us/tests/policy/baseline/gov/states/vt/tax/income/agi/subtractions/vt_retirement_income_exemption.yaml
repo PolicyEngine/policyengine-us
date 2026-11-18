@@ -285,7 +285,7 @@
       person:
         age: 66
         military_retirement_pay: 30_000
-        employment_income: 60_000  # military_retirement_pay is not itself wired into AGI
+        employment_income: 30_000
     tax_units:
       tax_unit:
         members: [person]
@@ -306,7 +306,7 @@
       person:
         age: 66
         military_retirement_pay: 30_000
-        employment_income: 100_000  # military_retirement_pay is not itself wired into AGI
+        employment_income: 70_000
     tax_units:
       tax_unit:
         members: [person]
@@ -327,7 +327,7 @@
       person:
         age: 66
         military_retirement_pay: 30_000
-        employment_income: 150_000  # military_retirement_pay is not itself wired into AGI
+        employment_income: 120_000
     tax_units:
       tax_unit:
         members: [person]

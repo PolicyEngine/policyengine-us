@@ -1,0 +1,112 @@
+# 2026 parameters: wage base $184,500; employee and employer OASDI rates
+# 6.2% each; SECA OASDI rate 12.4%; SE net earnings factor
+# 1 - 0.5 * (0.124 + 0.029) = 0.9235.
+- name: No earnings, no OASDI payroll liability
+  period: 2026
+  input:
+    age: 40
+  output:
+    oasdi_payroll_tax_revenue: 0
+
+- name: Wage earner under the wage base pays both FICA shares on all wages
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 50_000
+  output:
+    # 6.2% * $50,000 = $3,100 for each share.
+    employee_social_security_tax: 3_100
+    employer_social_security_tax: 3_100
+    self_employment_social_security_tax: 0
+    oasdi_payroll_tax_revenue: 6_200
+
+- name: Wage earner above the wage base pays OASDI only on the base
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 250_000
+  output:
+    # 6.2% * $184,500 = $11,439 for each share; 12.4% * $184,500 = $22,878.
+    taxable_earnings_for_social_security: 184_500
+    employee_social_security_tax: 11_439
+    employer_social_security_tax: 11_439
+    oasdi_payroll_tax_revenue: 22_878
+
+- name: Self-employed earner pays SECA OASDI on net earnings
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    self_employment_income: 100_000
+  output:
+    # Net earnings 0.9235 * $100,000 = $92,350; 12.4% * $92,350 = $11,451.40.
+    social_security_taxable_self_employment_income: 92_350
+    employee_social_security_tax: 0
+    employer_social_security_tax: 0
+    self_employment_social_security_tax: 11_451.40
+    oasdi_payroll_tax_revenue: 11_451.40
+
+- name: Wages plus self-employment earnings at the wage base boundary
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: [40, 40, 40]
+    employment_income: [166_030, 166_030, 166_030]
+    self_employment_income: [10_000, 20_000, 30_000]
+  output:
+    # Room after wages: $184,500 - $166,030 = $18,470.
+    # Net earnings 0.9235 * SE income: $9,235 / $18,470 / $27,705.
+    # The middle earner fills the room exactly; the third hits the cap.
+    social_security_taxable_self_employment_income: [9_235, 18_470, 18_470]
+    # 6.2% * $166,030 = $10,293.86 for each share.
+    employee_social_security_tax: [10_293.86, 10_293.86, 10_293.86]
+    employer_social_security_tax: [10_293.86, 10_293.86, 10_293.86]
+    # 12.4% * $9,235 = $1,145.14; 12.4% * $18,470 = $2,290.28.
+    self_employment_social_security_tax: [1_145.14, 2_290.28, 2_290.28]
+    # At and above the boundary the total is 12.4% * $184,500 = $22,878.
+    oasdi_payroll_tax_revenue: [21_732.86, 22_878, 22_878]
+
+- name: The employer-aggregate liability is not a fourth stream
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 50_000
+    employer_total_taxable_earnings_for_social_security: 1_000_000
+  output:
+    # 6.2% * $1,000,000 on the separate employer-aggregate input.
+    employer_total_social_security_tax: 62_000
+    # Unchanged from the wage earner under the base.
+    oasdi_payroll_tax_revenue: 6_200
+
+- name: The owners' draw OASDI tax arrives once, through the SECA leaf
+  period: 2027
+  absolute_error_margin: 0.02
+  reforms: policyengine_us.reforms.ssa.owners_draw.owners_draw
+  input:
+    # Fix the wage base and the draw's current-law room cap at $200,000, as
+    # the owners' draw tests do.
+    gov.contrib.ssa.owners_draw.current_law_cap: 200_000
+    gov.contrib.ssa.owners_draw.in_effect: true
+    gov.contrib.ssa.owners_draw.phase_in_share: 1
+    gov.irs.payroll.social_security.cap: 200_000
+    age: [40, 40]
+    employment_income: [100_000, 0]
+    self_employment_income: [0, 50_000]
+    s_corp_income: [200_000, 100_000]
+  output:
+    # Owner 1: room $200,000 - $100,000 = $100,000 for a $184,700 adjusted
+    # draw, so 12.4% * $100,000 = $12,400.
+    # Owner 2: existing SE net earnings 0.9235 * $50,000 = $46,175 pay
+    # $5,725.70; the $92,350 adjusted draw fits in the $153,825 room and pays
+    # 12.4% * $92,350 = $11,451.40.
+    owners_draw_oasdi_tax: [12_400, 11_451.40]
+    self_employment_social_security_tax: [12_400, 17_177.10]
+    employee_social_security_tax: [6_200, 0]
+    employer_social_security_tax: [6_200, 0]
+    # Owner 1 reaches 12.4% * $200,000 = $24,800. Adding the draw tax again
+    # would give $37,200 and $28,628.50.
+    oasdi_payroll_tax_revenue: [24_800, 17_177.10]
+    oasdi_income: [24_800, 17_177.10]

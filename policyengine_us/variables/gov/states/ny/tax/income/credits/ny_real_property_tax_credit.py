@@ -42,7 +42,7 @@ class ny_real_property_tax_credit(Variable):
         if rptc.uses_household_gross_income:
             income = tax_unit("ny_household_gross_income", period)
         else:
-            income = tax_unit("adjusted_gross_income", period)
+            income = tax_unit("ny_recomputed_federal_agi", period)
         # IT-214: "Your federal adjusted gross income cannot be an amount less
         # than zero. If the amount is less than zero, enter 0."
         income = max_(income, 0)

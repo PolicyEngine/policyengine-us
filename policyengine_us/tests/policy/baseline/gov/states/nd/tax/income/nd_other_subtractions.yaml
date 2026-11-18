@@ -1,0 +1,14 @@
+- name: Case 1, default nd_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: ND
+  output:
+    nd_other_subtractions: 0.0
+
+- name: Case 2, nd_other_subtractions flows into nd_subtractions
+  period: 2024
+  input:
+    state_code: ND
+    nd_other_subtractions: 1_100
+  output:
+    nd_subtractions: 1_100

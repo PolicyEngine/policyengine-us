@@ -163,3 +163,27 @@
   output:
     ia_pension_exclusion: [0, 12_000, 0]
     ia_subtractions_consolidated: 12_000
+
+- name: Filer military retirement pay and survivors subtracted in TY2023 under Iowa Code § 422.7(20)-(21)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 40_000
+        military_retirement_pay: 30_000
+        military_retirement_pay_survivors: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IA
+  output:
+    ia_subtractions_consolidated: 40_000

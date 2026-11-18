@@ -1,0 +1,20 @@
+- name: Case 1, default la_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: LA
+    adjusted_gross_income: 50_000
+  output:
+    la_other_subtractions: 0
+    la_agi_exempt_income: 0
+    la_agi: 50_000
+
+- name: Case 2, la_other_subtractions increases exempt income and reduces LA AGI
+  period: 2024
+  input:
+    state_code: LA
+    adjusted_gross_income: 50_000
+    la_other_subtractions: 2_000
+  output:
+    la_other_subtractions: 2_000
+    la_agi_exempt_income: 2_000
+    la_agi: 48_000

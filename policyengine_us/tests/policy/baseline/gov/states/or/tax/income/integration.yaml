@@ -139,6 +139,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        # No marketplace premium tax credit, so Oregon subtracts the whole
+        # federal liability (Publication OR-17 nets the credit out).
+        aca_ptc: 0
     households:
       household:
         members: [person1]
@@ -198,6 +201,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        # No marketplace premium tax credit, so Oregon subtracts the whole
+        # federal liability (Publication OR-17 nets the credit out).
+        aca_ptc: 0
     households:
       household:
         members: [person1]
@@ -227,6 +233,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        # No marketplace premium tax credit, so Oregon subtracts the whole
+        # federal liability (Publication OR-17 nets the credit out).
+        aca_ptc: 0
         or_tax_before_credits_in_prior_year: 2_000
     households:
       household:
@@ -252,6 +261,9 @@
     tax_units:
       tax_unit:
         members: [person1]
+        # No marketplace premium tax credit, so Oregon subtracts the whole
+        # federal liability (Publication OR-17 nets the credit out).
+        aca_ptc: 0
         or_tax_before_credits_in_prior_year: 2_000
     households:
       household:

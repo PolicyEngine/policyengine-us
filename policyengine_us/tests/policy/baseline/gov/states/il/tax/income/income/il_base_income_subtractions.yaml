@@ -142,3 +142,26 @@
     adjusted_gross_income: 50_000
     il_base_income_subtractions: 10_000
     il_base_income: 40_000
+
+- name: Filer military retirement pay and survivor benefits are subtracted from IL base income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 60
+        employment_income: 50_000
+        military_retirement_pay: 20_000
+        military_retirement_pay_survivors: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    adjusted_gross_income: 80_000
+    il_base_income_subtractions: 30_000
+    il_base_income: 50_000

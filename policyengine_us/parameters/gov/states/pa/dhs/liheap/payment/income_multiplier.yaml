@@ -1,0 +1,106 @@
+description: Pennsylvania multiplies the heating base by this factor based on annual benefit income under the Low Income Home Energy Assistance Program.
+# Handbook 638.3 groups income in $1,000 brackets, each with its own
+# multiplier, higher for lower incomes; DHS does not print the multipliers.
+# These values, read from the printed tables, are the same in the Energy Year
+# 2024-2025 and 2025-2026 charts and the current lookup. From $20,000 every
+# printed cell is the payment minimum, so the last bracket uses 0.
+brackets:
+  - threshold:
+      2024-11-04: 0
+    amount:
+      2024-11-04: 2.1
+  - threshold:
+      2024-11-04: 1_000
+    amount:
+      2024-11-04: 1.9
+  - threshold:
+      2024-11-04: 2_000
+    amount:
+      2024-11-04: 1.75
+  - threshold:
+      2024-11-04: 3_000
+    amount:
+      2024-11-04: 1.4
+  - threshold:
+      2024-11-04: 4_000
+    amount:
+      2024-11-04: 1.25
+  - threshold:
+      2024-11-04: 5_000
+    amount:
+      2024-11-04: 1
+  - threshold:
+      2024-11-04: 6_000
+    amount:
+      2024-11-04: 0.8727
+  - threshold:
+      2024-11-04: 7_000
+    amount:
+      2024-11-04: 0.7616
+  - threshold:
+      2024-11-04: 8_000
+    amount:
+      2024-11-04: 0.6646
+  - threshold:
+      2024-11-04: 9_000
+    amount:
+      2024-11-04: 0.58
+  - threshold:
+      2024-11-04: 10_000
+    amount:
+      2024-11-04: 0.5061
+  - threshold:
+      2024-11-04: 11_000
+    amount:
+      2024-11-04: 0.4417
+  - threshold:
+      2024-11-04: 12_000
+    amount:
+      2024-11-04: 0.3855
+  - threshold:
+      2024-11-04: 13_000
+    amount:
+      2024-11-04: 0.3364
+  - threshold:
+      2024-11-04: 14_000
+    amount:
+      2024-11-04: 0.2936
+  - threshold:
+      2024-11-04: 15_000
+    amount:
+      2024-11-04: 0.2562
+  - threshold:
+      2024-11-04: 16_000
+    amount:
+      2024-11-04: 0.2236
+  - threshold:
+      2024-11-04: 17_000
+    amount:
+      2024-11-04: 0.1951
+  - threshold:
+      2024-11-04: 18_000
+    amount:
+      2024-11-04: 0.1703
+  - threshold:
+      2024-11-04: 19_000
+    amount:
+      2024-11-04: 0.1486
+  - threshold:
+      2024-11-04: 20_000
+    amount:
+      2024-11-04: 0
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Pennsylvania LIHEAP heating payment income multiplier
+  reference:
+    - title: Pennsylvania LIHEAP Handbook 638.3, benefit calculation
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/liheap/638_LIHEAP_Program_Benefits/638.3_Benefit_Calculation.htm
+    - title: "Pennsylvania LIHEAP benefit charts, Energy Year 2024-2025 #page 1-469"
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/PA_BenefitMatrix_2025.pdf#page=1
+    - title: "Pennsylvania LIHEAP benefit charts, Energy Year 2025-2026 #page 1-469"
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/PA_BenefitMatrix_2026.pdf#page=1
+    - title: Pennsylvania LIHEAP Benefit Amount Table lookup, retrieved October 3, 2026
+      href: https://www.humanservices.dhs.pa.gov/liheap_benefit_table/

@@ -1,0 +1,24 @@
+description: Iowa limits the itemized deductions of filers whose federal adjusted gross income exceeds this amount, based on federal filing status.
+metadata:
+  propagate_metadata_to_children: true
+  label: Iowa itemized deductions limitation applicable amount
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2018 IA 104 Iowa Itemized Deductions Worksheet, line 8
+      href: https://revenue.iowa.gov/media/2335/download?inline=#page=1
+    - title: Rev. Proc. 2017-58, section 3.15, applicable amounts under section 68(b) for 2018
+      href: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=14
+
+SINGLE:
+  2018-01-01: 266_700
+JOINT:
+  2018-01-01: 320_000
+SEPARATE:
+  2018-01-01: 160_000
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 293_350
+SURVIVING_SPOUSE:
+  2018-01-01: 320_000

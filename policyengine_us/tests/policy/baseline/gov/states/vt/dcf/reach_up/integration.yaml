@@ -576,7 +576,7 @@
     # Benefit: $1,721.12 - $0 = $1,721.12 (full benefit)
     vt_reach_up: 1_721.12
 
-- name: Case 10, two-parent family with childcare expenses.
+- name: Case 10, two-parent family with child care expenses that are not deducted.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -628,22 +628,22 @@
     vt_reach_up_countable_earned_income_person: [337.5, 112.5, 0]
 
     # Dependent care deduction:
-    # 2 participants (head/spouse) x $175 = $350 max
-    # Actual expenses: $300
-    # Deduction: min($300, $350) = $300
-    vt_reach_up_dependent_care_deduction: 300
+    # Rule 2252.2 covers care of a disabled or seriously ill adult and
+    # of a child outside the Reach Up household; the $300/month of child
+    # care for person3, a Reach Up child, is not deducted.
+    vt_reach_up_dependent_care_deduction: 0
 
-    # Countable earned: max_($450 - $300, 0) = $150
-    vt_reach_up_countable_earned_income: 150
+    # Countable earned: max_($450 - $0, 0) = $450
+    vt_reach_up_countable_earned_income: 450
 
     # No unearned income
     vt_reach_up_countable_unearned_income: 0
 
-    # Total countable: $150
-    vt_reach_up_countable_income: 150
+    # Total countable: $450
+    vt_reach_up_countable_income: 450
 
     # Eligible: true
     vt_reach_up_eligible: true
 
-    # Benefit: $856.096 - $150 = $706.10
-    vt_reach_up: 706.10
+    # Benefit: $856.096 - $450 = $406.10
+    vt_reach_up: 406.10

@@ -13,6 +13,7 @@ class msp_asset_eligible(Variable):
         "https://www.medicareinteractive.org/understanding-medicare/"
         "cost-saving-programs/medicare-savings-programs-qmb-slmb-qi/"
         "medicare-savings-program-income-and-asset-limits",
+        "https://www.law.cornell.edu/uscode/text/42/1396a#r_2",
     )
 
     def formula(person, period, parameters):
@@ -28,6 +29,12 @@ class msp_asset_eligible(Variable):
             person.marital_unit.sum(personal_resources),
             personal_resources,
         )
-        asset_limit = where(married, p.asset.couple, p.asset.individual)
+        # States may set a higher limit than the federal one, never a lower one.
+        state_limit = p.asset.state_limit
+        asset_limit = where(
+            married,
+            max_(p.asset.couple, state_limit.couple[state_code]),
+            max_(p.asset.individual, state_limit.individual[state_code]),
+        )
         meets_asset_test = countable_resources <= asset_limit
         return where(asset_test_applies, meets_asset_test, True)

@@ -36,7 +36,8 @@ class ok_federal_eitc_reduction(Variable):
     """
 
     def formula(tax_unit, period, parameters):
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        # Form 511-EIC line 15 earned income, as in ok_federal_eitc_phased_in.
+        earnings = tax_unit("eitc_earned_income", period)
         agi = tax_unit("adjusted_gross_income", period)
         # Use the greater of earnings or AGI for phase-out
         highest_income_variable = max_(earnings, agi)

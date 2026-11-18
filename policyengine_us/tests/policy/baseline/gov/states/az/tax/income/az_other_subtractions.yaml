@@ -1,0 +1,31 @@
+- name: Case 1, default az_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: AZ
+    employment_income: 50_000
+  output:
+    az_other_subtractions: 0
+    az_subtractions: 0
+    az_agi: 50_000
+
+- name: Case 2, az_other_subtractions reduces AZ AGI
+  period: 2024
+  input:
+    state_code: AZ
+    employment_income: 50_000
+    az_other_subtractions: 2_000
+  output:
+    az_other_subtractions: 2_000
+    az_subtractions: 2_000
+    az_agi: 48_000
+
+- name: Case 3, az_other_subtractions reduces AZ AGI in 2026
+  period: 2026
+  input:
+    state_code: AZ
+    employment_income: 50_000
+    az_other_subtractions: 2_000
+  output:
+    az_other_subtractions: 2_000
+    az_subtractions: 2_000
+    az_agi: 48_000

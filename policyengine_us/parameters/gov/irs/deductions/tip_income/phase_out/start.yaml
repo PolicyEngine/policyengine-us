@@ -1,4 +1,4 @@
-description: The IRS phases out the tip income exemption for income above this threshold, based on filing status.
+description: The IRS phases out the tip income deduction for modified adjusted gross income above this threshold, based on filing status.
 
 metadata:
   propagate_metadata_to_children: true
@@ -6,10 +6,12 @@ metadata:
   period: year
   breakdown:
     - filing_status
-  label: Tip income exemption phase out start
+  label: Tip income deduction phase-out start
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 26 U.S.C. § 224(b)(2)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/224#b_2_A
+    - title: 2025 Schedule 1-A (Form 1040), line 9
+      href: https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=1
 
 JOINT:
   2025-01-01: 300_000
@@ -19,5 +21,6 @@ SURVIVING_SPOUSE:
   2025-01-01: 150_000
 SINGLE:
   2025-01-01: 150_000
+# Unused: married filing separately can't take the deduction (26 U.S.C. 224(f)).
 SEPARATE:
   2025-01-01: 150_000

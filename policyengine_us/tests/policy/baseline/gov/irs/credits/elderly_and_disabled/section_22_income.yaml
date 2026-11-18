@@ -1,0 +1,243 @@
+# Section 22 amount (Schedule R line 19) by filing status, 26 U.S.C. 22(c)
+# and (d). Every case has wages only (no pensions or social security) unless
+# noted, so AGI equals wages.
+
+- name: A separate filer aged 67 who lived apart all year starts from $3,750.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        cohabitating_spouses: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # 22(c)(2)(A)(iii): $3,750. AGI $3,000 is under the $5,000 separate
+    # threshold, so no phase-out: 3,750.
+    section_22_income: 3_750
+    # 22(a): 15% x 3,750 = 562.50.
+    elderly_disabled_credit_potential: 562.5
+
+- name: A separate filer who lived with their spouse has no section 22 amount and no credit.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # 22(e)(1): married spouses who did not live apart all year must file
+    # jointly to take the credit. Schedule R boxes 8 and 9, the only boxes
+    # for a separate filer, require living apart all year, so there is no
+    # line 19 amount.
+    section_22_income: 0
+    elderly_disabled_credit_potential: 0
+    elderly_disabled_credit: 0
+
+- name: A separate filer's $3,750 is phased out and reduced by nontaxable social security.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 6_000
+        social_security_retirement: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        cohabitating_spouses: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Provisional income 6,000 + 500 = 6,500 is under the $25,000 base for
+    # a separate filer who lived apart, so all $1,000 of benefits is
+    # nontaxable and AGI is 6,000.
+    tax_unit_taxable_social_security: 0
+    adjusted_gross_income: 6_000
+    # 3,750 - 1,000 nontaxable benefits - 0.5 x (6,000 - 5,000) = 2,250.
+    section_22_income: 2_250
+    # 15% x 2,250 = 337.50.
+    elderly_disabled_credit_potential: 337.5
+
+- name: A separate filer under 65 is capped at disability income.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 60
+        retired_on_total_disability: true
+        employment_income: 2_000
+        total_disability_payments: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        cohabitating_spouses: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # 22(c)(2)(B): min(3,750, 2,000 disability income) = 2,000; AGI 2,000
+    # is under the threshold.
+    section_22_income: 2_000
+    elderly_disabled_credit_potential: 300
+
+- name: A single filer aged 67 starts from $5,000.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # 22(c)(2)(A)(i): $5,000; AGI 3,000 < 7,500.
+    section_22_income: 5_000
+    elderly_disabled_credit_potential: 750
+
+- name: A joint return with one qualified spouse starts from $5,000.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 3_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 22(c)(2)(A)(i): $5,000; AGI 3,000 < 10,000.
+    section_22_income: 5_000
+    elderly_disabled_credit_potential: 750
+
+- name: A joint return with two qualified spouses starts from $7,500.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 3_000
+      spouse:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 22(c)(2)(A)(ii): $7,500; AGI 3,000 < 10,000.
+    section_22_income: 7_500
+    # 15% x 7,500 = 1,125.
+    elderly_disabled_credit_potential: 1_125
+
+- name: A separate filer with a qualified dependent still starts from $3,750.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 3_000
+      dependent:
+        age: 80
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SEPARATE
+        cohabitating_spouses: false
+    households:
+      household:
+        members: [head, dependent]
+        state_code: TX
+  output:
+    # Two members qualify (both are 65 or older), but 22(c)(2)(A)(iii)
+    # gives a separate filer $3,750 whatever the count. The under-65 cap
+    # counts only the elderly head (dependents excluded): 1 x 5,000, above
+    # 3,750. AGI 3,000 < 5,000: 3,750.
+    section_22_income: 3_750
+    elderly_disabled_credit_potential: 562.5
+
+- name: Living together does not bar a joint return.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 3_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 22(e)(1) reaches only separate returns. 22(c)(2)(A)(i): $5,000 with
+    # one qualified spouse; AGI 3,000 < 10,000.
+    section_22_income: 5_000
+    # 15% x 5,000 = 750.
+    elderly_disabled_credit_potential: 750
+
+- name: A separate filer with no qualifying member has no initial amount.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 60
+        employment_income: 2_000
+        total_disability_payments: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        cohabitating_spouses: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # Under 65 and not retired on total disability, so 22(b) doesn't reach
+    # this filer: no initial amount, whatever the disability pay.
+    section_22_income: 0
+    elderly_disabled_credit_potential: 0
