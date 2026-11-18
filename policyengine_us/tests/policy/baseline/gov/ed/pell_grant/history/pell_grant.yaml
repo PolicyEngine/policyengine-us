@@ -1,0 +1,105 @@
+# These component cases stipulate a student who meets all other Pell requirements,
+# attends full time for a full academic year, and follows the regular award schedule
+# rather than the separate 2015-2016 eligible-career-pathway schedule.
+# Each annual model label Y represents award year Y-Y+1, beginning July 1 of Y.
+# These tests cover the maximum Scheduled Award, without additional year-round Pell.
+# The inputs supply a full nine-month EFC and full-time, full-year COA above the cap.
+
+# Source: GEN-15-02, regular 2015-2016 maximum Scheduled Award.
+- name: Case 1, a regular full-time student reaches the AY 2015-2016 cap under model label 2015.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 10_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 5_775
+
+# Source: GEN-16-01, corrected 2016-2017 schedules.
+- name: Case 2, a regular full-time student reaches the AY 2016-2017 cap under model label 2016.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 10_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 5_815
+
+# Source: GEN-16-19, 2017-2018 maximum Scheduled Award.
+- name: Case 3, a regular full-time student reaches the AY 2017-2018 cap under model label 2017.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 10_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 5_920
+
+# Source: GEN-18-04, revised 2018-2019 schedules replace GEN-18-01.
+- name: Case 4, a regular full-time student reaches the AY 2018-2019 cap under model label 2018.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 10_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 6_095
+
+# Source: GEN-19-01, 2019-2020 maximum Scheduled Award.
+- name: Case 5, a regular full-time student reaches the AY 2019-2020 cap under model label 2019.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 10_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 6_195
+
+# Source: GEN-20-01, 2020-2021 maximum Scheduled Award.
+- name: Case 6, a regular full-time student reaches the AY 2020-2021 cap under model label 2020.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 10_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 6_345
+
+# Source: GEN-21-01, 2021-2022 maximum Scheduled Award.
+- name: Case 7, a regular full-time student reaches the AY 2021-2022 cap under model label 2021.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 10_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 6_495
+
+# Source: GEN-22-04, revised 2022-2023 maximum Scheduled Award.
+- name: Case 8, a regular full-time student reaches the AY 2022-2023 cap under model label 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 10_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 6_895
+
+# Source: GEN-23-02. This endpoint control preserves the existing 2023 cap.
+- name: Case 9, a regular full-time student keeps the AY 2023-2024 cap under model label 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 10_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 7_395
