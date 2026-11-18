@@ -14,9 +14,11 @@ def create_abolish_snap_bbce() -> Reform:
             "eligibility) no longer qualifies the unit, following the removal of "
             "7 CFR 273.2(j)(2)(i)(B)-(C), (ii) and (iii) in USDA's proposed rule "
             "(91 FR 72454). SSI receipt by all members and TANF cash receipt keep "
-            "qualifying the unit as in the baseline. The proposed rule's test that "
-            "every member receives TANF assistance or SSI, and its general "
-            "assistance routes, are not modeled."
+            "qualifying the unit as in the baseline. As in the baseline, the test "
+            "that every member receives TANF assistance or SSI and the general "
+            "assistance routes are not modeled. The proposed rule's change from "
+            "cash to assistance as defined at 45 CFR 260.31(a) and its removal of "
+            "the authorized to receive language are not modeled either."
         )
         definition_period = MONTH
         reference = (
@@ -30,8 +32,8 @@ def create_abolish_snap_bbce() -> Reform:
             # The switch is read for each month, so the baseline list applies
             # in every period before the reform takes effect.
             if p.contrib.snap.abolish_bbce.in_effect:
-                # Proposed 7 CFR 273.2(j)(2)(i)-(iii) keeps only the cash
-                # assistance and SSI routes.
+                # Proposed 7 CFR 273.2(j)(2)(i) keeps only the TANF assistance
+                # and SSI routes; (ii)-(iv) are reserved.
                 programs = [
                     program
                     for program in programs
