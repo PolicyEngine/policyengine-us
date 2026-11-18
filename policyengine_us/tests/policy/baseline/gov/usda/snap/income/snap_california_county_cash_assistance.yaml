@@ -134,7 +134,7 @@
     ca_smc_general_assistance: 732
     snap_unearned_income: 732
 
-- name: CalFresh excludes San Mateo General Assistance paid to a care facility.
+- name: San Mateo's facility grant is outside the modeled CalFresh cash amount.
   period: 2026-01
   absolute_error_margin: 0.01
   input:

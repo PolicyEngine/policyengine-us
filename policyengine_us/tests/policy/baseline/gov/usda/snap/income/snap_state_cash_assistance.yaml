@@ -146,3 +146,27 @@
     ca_capi_person: [1_233.94, 0]
     snap_income_counted_share: [0.5, 1]
     snap_unearned_income: 616.97
+
+- name: An annual reported CAPI grant replaces the calculated person grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 39
+    ca_capi: 6_000
+  output:
+    ca_capi_person: 1_233.94
+    snap_unearned_income: 500
+
+- name: A reported zero Illinois AABD grant replaces the calculated person grant.
+  period: 2025-01
+  input:
+    state_code: IL
+    age: 70
+    ssi: 967
+    il_aabd_person: 6.33
+    il_aabd: 0
+  output:
+    snap_unearned_income: 967

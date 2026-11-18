@@ -85,3 +85,25 @@ def test_snap_applies_member_income_share_to_person_grants(amount, size):
     np.testing.assert_allclose(
         sim.calculate("snap_unearned_income", MONTH), expected, atol=0.01
     )
+
+
+def test_alameda_residence_uses_each_households_own_county_evidence():
+    situation = {"people": {}, "spm_units": {}, "households": {}}
+    for geography in (
+        {"county_fips": "06001"},
+        {},
+        {"county_fips": "99999"},
+        {"county_str": "ALAMEDA_COUNTY_CA"},
+        {"county_str": "LOS_ANGELES_COUNTY_CA"},
+        {"county": "ALAMEDA_COUNTY_CA"},
+    ):
+        _add_unit(situation, "CA", [ADULT])
+        household = next(reversed(situation["households"].values()))
+        household.update({key: {YEAR: value} for key, value in geography.items()})
+
+    sim = Simulation(situation=situation)
+    # An earlier county read can populate the first-county fallback cache.
+    sim.calculate("county_str", YEAR)
+    np.testing.assert_array_equal(
+        sim.calculate("in_ala", YEAR), [True, False, False, True, False, True]
+    )

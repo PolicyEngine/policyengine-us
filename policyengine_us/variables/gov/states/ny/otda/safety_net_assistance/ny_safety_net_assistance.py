@@ -17,7 +17,8 @@ class ny_safety_net_assistance(Variable):
         "assistance income for child care under 18 NYCRR 404.5(b)(5)(vi). "
         "Record a parent's or caretaker relative's receipt separately with "
         "ny_safety_net_assistance_received for CCAP categorical routes. "
-        "PolicyEngine also counts these payments as SNAP unearned income."
+        "For SNAP, enter the regular countable payment after any vendor or "
+        "lump-sum exclusions. SNAP treats that amount as unearned income."
     )
     reference = (
         "https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10"
