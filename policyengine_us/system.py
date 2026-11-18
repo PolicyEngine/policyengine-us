@@ -317,7 +317,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         parameter and its ancestors modified; reform dictionaries and most
         ``modify_parameters`` modifiers change parameters that way. It does
         not see changes that mark nothing: nodes added or replaced with
-        ``add_child``, ``replace_child`` or ``merge`` (by a modifier, or by
+        ``add_child``, ``_replace_child`` or ``merge`` (by a modifier, or by
         ``load_extension`` for an extension's parameters), assignments to
         ``values_list[i].value``, and edits to metadata or to a variable's
         attributes. A reform system derived afterwards includes
