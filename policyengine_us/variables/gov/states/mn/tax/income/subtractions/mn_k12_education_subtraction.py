@@ -8,22 +8,41 @@ class mn_k12_education_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.9",
-        "https://www.revenue.state.mn.us/sites/default/files/2026-07/m1m-25.pdf",
+        "https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.4",
+        "https://www.revenue.state.mn.us/sites/default/files/2026-07/m1m-25.pdf#page=5",
     )
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mn.tax.income.subtractions.k12_education
-        # Count K-12 children - simplified, using count without grade distinction
-        # In practice, different limits apply for K-6 vs 7-12
-        # Using average limit as approximation: (1625 + 2500) / 2 = 2062.50
-        # For more accuracy, would need per-child grade tracking
-        k12_children = tax_unit("mn_k12_qualifying_children", period)
-        # Get qualifying expenses
-        expenses = tax_unit("k12_tuition_and_fees", period)
-        # Maximum subtraction - using 7-12 max as upper bound since we can't
-        # distinguish grades
-        max_subtraction = k12_children * p.cap.higher
-        # Subtraction is lesser of expenses or maximum
-        return min_(expenses, max_subtraction)
+        person = tax_unit.members
+        # Minn. Stat. 290.0132 subd. 4 caps the subtraction for each
+        # qualifying child separately: the lower amount for a child in
+        # kindergarten to grade 6 and the higher amount for a child in grades
+        # 7 to 12. Each child's expenses are capped on their own, so one
+        # child's unused cap does not carry to another.
+        # A proxy, as in mn_k12_qualifying_children: 290.0674 subd. 1a(d) gives
+        # "qualifying child" its IRC 32(c)(3) meaning, which doesn't turn on
+        # dependency for an unmarried child.
+        qualifying = person("is_in_k12_school", period) & person(
+            "is_tax_unit_dependent", period
+        )
+        expenses = max_(
+            person("mn_k12_education_subtraction_qualifying_expenses_person", period),
+            0,
+        )
+        cap = where(
+            person("mn_k12_education_subtraction_higher_cap_eligible", period),
+            p.cap.higher,
+            p.cap.lower,
+        )
+        child_expenses = where(qualifying, expenses, 0)
+        child_caps = where(qualifying, cap, 0)
+        per_child = tax_unit.sum(min_(child_expenses, child_caps))
+        # A household may hold only the tax unit's total, which the K-12
+        # credit also reads. That total can't be split by child, so it meets
+        # the sum of the children's caps.
+        unit_total = max_(tax_unit("k12_tuition_and_fees", period), 0)
+        pooled = min_(unit_total, tax_unit.sum(child_caps))
+        has_child_records = tax_unit.sum(child_expenses) > 0
+        return where(has_child_records, per_child, pooled)

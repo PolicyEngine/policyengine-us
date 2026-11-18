@@ -1,20 +1,138 @@
-- name: Alabama work related itemized deductions unit test 1
+# Ala. Code 40-18-15(a)(23) allows the subdivision (1) unreimbursed employee
+# business expenses and the subdivision (14) deduction only to the extent they
+# exceed 2% of Alabama AGI. Alabama applies that one floor to the expenses in
+# every year; it does not start from the federal miscellaneous deduction, which
+# is already net of the federal floor and is zero from 2018.
+
+- name: Case 1, 2021 expenses above 2% of Alabama AGI.
   period: 2021
   input:
-    misc_deduction: 2_000
+    unreimbursed_business_employee_expenses: 2_000
     al_agi: 70_000
     state_code: AL
   output:
+    # 2,000 - 0.02 * 70,000
     al_misc_deduction: 600
-#2000-70000*0.2=600
 
-
-- name: Alabama work related itemized deductions unit test 2
+- name: Case 2, 2021 expenses well above the floor.
   period: 2021
   input:
-    misc_deduction: 7_000
+    unreimbursed_business_employee_expenses: 7_000
     al_agi: 30_000
     state_code: AL
   output:
+    # 7,000 - 0.02 * 30,000
     al_misc_deduction: 6_400
-#7000-30000*0.02=6400
+
+- name: Case 3, 2017 Alabama applies one floor to the expenses, not a second floor to the federal deduction.
+  period: 2017
+  input:
+    unreimbursed_business_employee_expenses: 5_000
+    tax_preparation_fees: 0
+    positive_agi: 50_000
+    al_agi: 50_000
+    state_code: AL
+  output:
+    # Federal and Alabama each allow 5,000 - 0.02 * 50,000 = 4,000. Before the
+    # fix Alabama took a further 1,000 off the federal 4,000.
+    misc_deduction: 4_000
+    al_misc_deduction: 4_000
+
+- name: Case 4, 2017 Alabama floors on Alabama AGI, the federal deduction on federal AGI.
+  period: 2017
+  input:
+    unreimbursed_business_employee_expenses: 5_000
+    positive_agi: 100_000
+    al_agi: 90_000
+    state_code: AL
+  output:
+    # Federal 5,000 - 0.02 * 100,000 = 3,000; Alabama 5,000 - 0.02 * 90,000.
+    misc_deduction: 3_000
+    al_misc_deduction: 3_200
+
+- name: Case 5, 2025 Alabama keeps the deduction the federal return suspends.
+  period: 2025
+  input:
+    unreimbursed_business_employee_expenses: 5_000
+    tax_preparation_fees: 1_000
+    al_agi: 50_000
+    state_code: AL
+  output:
+    misc_deduction: 0
+    # 5,000 + 1,000 - 0.02 * 50,000
+    al_misc_deduction: 5_000
+
+- name: Case 6, 2025 expenses equal to the floor yield no deduction.
+  period: 2025
+  input:
+    unreimbursed_business_employee_expenses: 1_000
+    al_agi: 50_000
+    state_code: AL
+  output:
+    # max(1,000 - 0.02 * 50,000, 0)
+    al_misc_deduction: 0
+
+- name: Case 7, 2025 Alabama adds both spouses' expenses before one floor.
+  period: 2025
+  input:
+    people:
+      head:
+        unreimbursed_business_employee_expenses: 1_500
+      spouse:
+        tax_preparation_fees: 700
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        al_agi: 60_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AL
+  output:
+    # 1,500 + 700 - 0.02 * 60,000
+    al_misc_deduction: 1_000
+
+- name: Case 8, 2025 Alabama reads its own expense list, not the federal total.
+  period: 2025
+  input:
+    total_misc_deductions: 5_000
+    al_agi: 50_000
+    state_code: AL
+  output:
+    al_misc_deduction: 0
+
+- name: Case 9, 2025 a tax unit dependent's expenses stay off the filer's Alabama return.
+  period: 2025
+  input:
+    people:
+      head:
+        unreimbursed_business_employee_expenses: 1_500
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        unreimbursed_business_employee_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        al_agi: 50_000
+    households:
+      household:
+        members: [head, child]
+        state_code: AL
+  output:
+    # The child's 2,000 belongs on the child's own return.
+    # 1,500 - 0.02 * 50,000
+    al_misc_deduction: 500
+
+- name: Case 10, 2017 Alabama floors on Alabama AGI even when federal AGI is lower.
+  period: 2017
+  input:
+    unreimbursed_business_employee_expenses: 5_000
+    positive_agi: 40_000
+    al_agi: 50_000
+    state_code: AL
+  output:
+    # Federal: 5,000 - 0.02 * 40,000
+    misc_deduction: 4_200
+    # Alabama: 5,000 - 0.02 * 50,000
+    al_misc_deduction: 4_000

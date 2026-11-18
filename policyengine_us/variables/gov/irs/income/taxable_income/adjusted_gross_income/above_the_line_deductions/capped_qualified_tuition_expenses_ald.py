@@ -15,6 +15,8 @@ class capped_qualified_tuition_expenses_ald(Variable):
     )
     reference = (
         "https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2",
+        # 2020 Pub. 970, Worksheet 6-1, MAGI for the Tuition and Fees Deduction.
+        "https://www.irs.gov/pub/irs-prior/p970--2020.pdf#page=46",
         # Law was repealed starting tax year 2021.
         "https://irc.bloombergtax.com/public/uscode/doc/irc/section_222",
     )
@@ -53,6 +55,10 @@ class capped_qualified_tuition_expenses_ald(Variable):
         for source in safe_sources:
             magi += not_dependent * max_(0, add(person, period, [source]))
         magi = tax_unit.sum(magi)
+        # 2020 Pub. 970 Worksheet 6-1 line 2 subtracts Form 1040 line 10b,
+        # the charitable deduction for non-itemizers, with the Schedule 1
+        # adjustments (which this simplified MAGI leaves out).
+        magi = magi - tax_unit("charitable_contributions_ald", period)
         p = parameters(period).gov.irs.deductions.tuition_and_fees
         joint = filing_status == filing_status.possible_values.JOINT
         cap = where(joint, p.joint.calc(magi), p.non_joint.calc(magi))

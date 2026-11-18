@@ -32,8 +32,8 @@
     wic_food_package: [NONE, INFANT_AVERAGE]
     meets_wic_income_test: true
     is_wic_eligible: [false, true]
-    # INFANT value uprated from $138.64 (2018) to ~$173.28 (2024)
-    wic: [0, 173.28]
+    # 138.64 * 308.417 / 247.867 = 172.507566.
+    wic: [0, 172.51]
 
 - name: Case 2, pregnant woman fails income but passes categorical via SNAP.
   period: 2024-01
@@ -58,8 +58,8 @@
     meets_wic_income_test: false
     meets_wic_categorical_eligibility: true
     is_wic_eligible: true
-    # Package V-A value plus the FY 2024 cash-value benefit adjustment.
-    wic: 82.15
+    # (39.12 - 11) * 308.417 / 247.867 + 47 = 81.989273.
+    wic: 81.99
 
 - name: Case 3, child age 3 eligible through Medicaid.
   period: 2024-01
@@ -85,8 +85,8 @@
     meets_wic_income_test: false
     meets_wic_categorical_eligibility: true
     is_wic_eligible: true
-    # Package IV-B value plus the FY 2024 cash-value benefit adjustment.
-    wic: 58.06
+    # (33.65 - 8) * 308.417 / 247.867 + 26 = 57.915891.
+    wic: 57.92
 
 - name: Case 4, healthy adult not eligible even with SNAP.
   period: 2024-01
@@ -155,8 +155,8 @@
     wic_category: [NONE, PREGNANT, CHILD]
     wic_food_package: [NONE, PREGNANT_SINGLETON, CHILD_24_59_MONTHS]
     is_wic_eligible: [false, true, true]
-    # Father: $0, Mother: package V-A, Child: package IV-B.
-    wic: [0, 82.15, 58.06]
+    # Father receives $0; mother receives package V-A; child receives IV-B.
+    wic: [0, 81.99, 57.92]
 
 - name: Case 7, income above 185% FPG without categorical eligibility.
   period: 2024-01

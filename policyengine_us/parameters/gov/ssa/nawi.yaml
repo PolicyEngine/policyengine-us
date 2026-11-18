@@ -75,37 +75,25 @@ values:
   2023-01-01: 66_621.80 # NAWI(Y-2) for CBB(2025)
   2024-01-01: 69_846.57 # NAWI(Y-2) for CBB(2026)
   2025-01-01: 72_800.33 # NAWI(Y-2) for CBB(2027); published 2026-10-14
-  # Back out NAWI from CBO's forecast of the payroll tax cap, in
-  # parameters/gov/irs/payroll/social_security/cap.yaml
-  # The formula to derive NAWI(Y-2) from CBB(Y) is:
-  # NAWI(Y-2) approx = CBB(Y) * (NAWI_1992 / CBB_1994)
-  # where NAWI_1992 = 22_935.42 and CBB_1994 = 60_600.
-  # CBB(Y) is the Contribution and Benefit Base (payroll tax cap) for year Y.
-  # NAWI(Y-2) is the National Average Wage Index for year Y-2.
+  # The contribution and benefit base (CBB, the payroll tax cap) for year Y is
+  # CBB(Y) = CBB_1994 * NAWI(Y-2) / NAWI_1992, rounded to the nearest $300,
+  # where NAWI_1992 = 22_935.42 and CBB_1994 = 60_600. So CBB growth tracks
+  # NAWI growth two years earlier.
 
-  # For 2026 NAWI, derived from CBO CBB(2028) = 198_600: 198_600 * (22_935.42 / 60_600)
-  2026-01-01: 75_168.61
-  # For 2027 NAWI, derived from CBO CBB(2029) = 206_400: 206_400 * (22_935.42 / 60_600)
-  2027-01-01: 78_124.71
-  # For 2028 NAWI, derived from CBO CBB(2030) = 214_200: 214_200 * (22_935.42 / 60_600)
-  2028-01-01: 81_080.80
-  # For 2029 NAWI, derived from CBO CBB(2031) = 222_300: 222_300 * (22_935.42 / 60_600)
-  2029-01-01: 84_149.34
-  # For 2030 NAWI, derived from CBO CBB(2032) = 230_100: 230_100 * (22_935.42 / 60_600)
-  2030-01-01: 87_090.55
-  # For 2031 NAWI, derived from CBO CBB(2033) = 237_900: 237_900 * (22_935.42 / 60_600)
-  2031-01-01: 90_031.76
-  # For 2032 NAWI, derived from CBO CBB(2034) = 246_000: 246_000 * (22_935.42 / 60_600)
-  2032-01-01: 93_088.94
-  # For 2033 NAWI, derived from CBO CBB(2035) = 254_400: 254_400 * (22_935.42 / 60_600)
-  2033-01-01: 96_258.56
-  # For 2034 NAWI, projected using the growth rate from NAWI(2032) to NAWI(2033).
-  # Growth Multiplier = NAWI(2033) / NAWI(2032) = 96_258.56 / 93_088.94.
-  # NAWI(2034) = NAWI(2033) * Growth Multiplier.
-  2034-01-01: 99_536.06
-  # For 2035 NAWI, projected using the growth rate from NAWI(2032) to NAWI(2033).
-  # NAWI(2035) = NAWI(2034) * Growth Multiplier.
-  2035-01-01: 102_920.73
+  # Later years carry the published NAWI(2025) forward at the wage growth
+  # implied by CBO's February 2026 CBB projections (tax parameter
+  # tp_ss_max_earnings): NAWI(Y-2) = NAWI(2025) * CBO CBB(Y) / CBO CBB(2027),
+  # where CBO CBB(2027) = 191_100.
+  2026-01-01: 75_428.91 # CBO CBB(2028) = 198_000: 72_800.33 * 198_000 / 191_100
+  2027-01-01: 78_286.07 # CBO CBB(2029) = 205_500
+  2028-01-01: 81_028.94 # CBO CBB(2030) = 212_700
+  2029-01-01: 83_771.81 # CBO CBB(2031) = 219_900
+  2030-01-01: 86_514.68 # CBO CBB(2032) = 227_100
+  2031-01-01: 89_486.12 # CBO CBB(2033) = 234_900
+  2032-01-01: 92_343.28 # CBO CBB(2034) = 242_400
+  2033-01-01: 95_429.00 # CBO CBB(2035) = 250_500
+  2034-01-01: 98_514.73 # CBO CBB(2036) = 258_600
+  # Values for 2035-2100 are set programmatically in uprating_extensions.py
 metadata:
   unit: currency-USD
   period: year
@@ -114,5 +102,8 @@ metadata:
   reference:
     - title: Social Security National Average Wage Index
       href: https://www.ssa.gov/oact/cola/AWI.html#Series
-    - title: 2027 Cost-of-Living Adjustment (COLA) Fact Sheet
-      href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
+    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | February 2026
+      # Sheet: 1. Tax Parameters, Row 155: Maximum taxable earnings for the Social Security payroll tax
+      href: https://www.cbo.gov/system/files/2026-02/53724-2026-02-Tax-Parameters.xlsx
+    - title: CBO | Tax Parameters | February 2026, CSV (variable tp_ss_max_earnings)
+      href: https://github.com/US-CBO/cbo-data/blob/284a95665f9f2f74ed1f482feb629b43fce323da/data/budget/tax_parameters/annual_cy_2026-02.csv

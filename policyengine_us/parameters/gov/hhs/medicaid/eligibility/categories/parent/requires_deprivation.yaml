@@ -15,6 +15,8 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/42/1396u-1
     - title: KFF - Medicaid Eligibility for Parents
       href: https://www.kff.org/medicaid/state-indicator/medicaid-income-eligibility-limits-for-parents/
+    - title: New Jersey approved state plan S25 (NJ-13-0011-MM1), deprivation requirement eliminated
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/NJ/NJ-13-0011-MM1.pdf#page=31
 # Non-expansion states that use Section 1931 deprivation rules
 AL:
   2018-01-01: true
@@ -92,8 +94,11 @@ NE:
   2018-01-01: false
 NH:
   2018-01-01: false
+# Sourced: New Jersey's approved S25 "elects to eliminate the requirement
+# that a dependent child must be deprived of parental support or care"
+# (NJ-13-0011-MM1, effective 01/01/2014).
 NJ:
-  2018-01-01: false
+  2014-01-01: false
 NM:
   2018-01-01: false
 NV:

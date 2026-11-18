@@ -21,3 +21,190 @@
     tax_unit_dependents: 0
   output:
     la_dependents_exemption: 0
+
+
+- name: 2024 single filer who can be claimed as a dependent gets no dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: LA
+  output:
+    # Line 6C counts "the dependents claimed on your federal return" (2024
+    # IT-540 instructions, p.3); IRC 152(b)(1) leaves none.
+    la_dependents_exemption: 0
+
+- name: 2024 single filer who cannot be claimed gets the dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: LA
+  output:
+    # 1 dependent x $1,000.
+    la_dependents_exemption: 1000
+
+- name: 2024 joint return with one claimable spouse gets no dependent exemption (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: LA
+  output:
+    # Either spouse being claimable leaves the federal return no dependents.
+    la_dependents_exemption: 0
+
+- name: 2024 joint return with one claimable spouse gets no dependent exemption (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: LA
+  output:
+    la_dependents_exemption: 0
+
+- name: 2024 joint return with both spouses claimable gets no dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: LA
+  output:
+    la_dependents_exemption: 0
+
+- name: 2024 joint return with no claimable spouse gets the dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: LA
+  output:
+    # 1 dependent x $1,000.
+    la_dependents_exemption: 1000
+
+
+- name: 2024 single filer whose claimant meets the filing exception gets the dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: LA
+  output:
+    # The would-be claimant meets the filing exception (Publication 501,
+    # Dependent Taxpayer Test), so the return keeps its dependents.
+    # 1 dependent x $1,000.
+    la_dependents_exemption: 1000

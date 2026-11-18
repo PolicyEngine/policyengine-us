@@ -1,0 +1,310 @@
+# Iowa 6-B in-home health-related care parental income deeming worked examples.
+- name: Case 1, manual example of a mother with unemployment benefits only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        # 6-B example: unemployment benefits of $1,050 a month.
+        unemployment_compensation:
+          2026: 12_600
+      person2:
+        age:
+          2026: 10
+        person_id:
+          2026: 2
+        parent_1_id:
+          2026: 1
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    tax_units:
+      family:
+        members: [person1, person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code:
+          2026: IA
+  output:
+    # Iowa: 1,050 - 994 SSI allowance for the mother = 56 deemed.
+    # SSI deems 1,050 - 20 - 994 = 36, less the child's 20 exclusion: 994 - 16 = 978.
+    # Participation 56 + 978 - 994 = 40, so 400 - 40 = 360 is paid.
+    ia_ssa_income_deemed_from_parents: [0, 56]
+    ssi: [0, 978]
+    people:
+      person2:
+        ia_ssa_care_countable_income: 1_034
+        ia_ssa_ihhrc_participation: 40
+    ia_ssa: [0, 360]
+
+- name: Case 2, manual D family example with earnings only and two ineligible siblings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        # 6-B example: Mr. D has earnings of $4,200 a month.
+        employment_income_before_lsr:
+          2026: 50_400
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person4:
+        age:
+          2026: 8
+        person_id:
+          2026: 4
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+      person5:
+        age:
+          2026: 8
+        person_id:
+          2026: 5
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+      child3:
+        members: [person5]
+    families:
+      family:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      family:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      home:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IA
+  output:
+    # Iowa: 4,200 - 65 - 2,982 (double the couple allowance) - 2 * 497 = 159.
+    # SSI deems (4,200 - 994 - 85) / 2 - 1,491 = 69.50, less 20: 994 - 49.50 = 944.50.
+    # Participation 159 + 944.50 - 994 = 109.50, so 400 - 109.50 = 290.50 is paid.
+    ia_ssa_income_deemed_from_parents: [0, 0, 159, 0, 0]
+    ssi: [0, 0, 944.5, 0, 0]
+    people:
+      person3:
+        ia_ssa_care_countable_income: 1_103.5
+        ia_ssa_ihhrc_participation: 109.5
+    ia_ssa: [0, 0, 290.5, 0, 0]
+
+- name: Case 3, manual E family example with siblings who have Social Security income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        # 6-B example: Mr. E has earnings of $4,000 a month.
+        employment_income_before_lsr:
+          2026: 48_000
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person4:
+        age:
+          2026: 8
+        person_id:
+          2026: 4
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        # 6-B example: each ineligible child has $150 a month of Social Security.
+        social_security_dependents:
+          2026: 1_800
+      person5:
+        age:
+          2026: 8
+        person_id:
+          2026: 5
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        social_security_dependents:
+          2026: 1_800
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+      child3:
+        members: [person5]
+    families:
+      family:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      family:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      home:
+        members: [person1, person2, person3, person4, person5]
+        state_code:
+          2026: IA
+  output:
+    # Iowa: 4,000 - 65 - 2,982 - 2 * (497 - 150) = 259.
+    # SSI deems (4,000 - 694 - 85) / 2 - 1,491 = 119.50, less 20: 994 - 99.50 = 894.50.
+    # Participation 259 + 894.50 - 994 = 159.50, so 400 - 159.50 = 240.50 is paid.
+    ia_ssa_income_deemed_from_parents: [0, 0, 259, 0, 0]
+    ssi: [0, 0, 894.5, 0, 0]
+    people:
+      person3:
+        ia_ssa_care_countable_income: 1_153.5
+        ia_ssa_ihhrc_participation: 159.5
+    ia_ssa: [0, 0, 240.5, 0, 0]
+
+- name: Case 4, manual G family example with earned and unearned parental income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 40
+        person_id:
+          2026: 1
+        # 6-B example: Mr. G has a retirement pension of $900 a month.
+        taxable_private_pension_income:
+          2026: 10_800
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+        # 6-B example: Mrs. G has earnings of $1,500 a month.
+        employment_income_before_lsr:
+          2026: 18_000
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        is_disabled:
+          2026: true
+        meets_ssi_disability_criteria:
+          2026: true
+      person4:
+        age:
+          2026: 8
+        person_id:
+          2026: 4
+        parent_1_id:
+          2026: 1
+        parent_2_id:
+          2026: 2
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+    families:
+      family:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      family:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      home:
+        members: [person1, person2, person3, person4]
+        state_code:
+          2026: IA
+  output:
+    # Iowa: (1,500 - 65) / 2 + 900 = 1,617.50 - 1,491 = 126.50 - 497 < 0, so 0.
+    # The child receives the full SSI 994; participation 994 - 994 = 0.
+    ia_ssa_income_deemed_from_parents: [0, 0, 0, 0]
+    ssi: [0, 0, 994, 0]
+    people:
+      person3:
+        ia_ssa_ihhrc_participation: 0
+    ia_ssa: [0, 0, 400, 0]

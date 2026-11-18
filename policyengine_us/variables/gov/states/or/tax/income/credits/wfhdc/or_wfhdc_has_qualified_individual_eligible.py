@@ -9,6 +9,7 @@ class or_wfhdc_has_qualified_individual_eligible(Variable):
     definition_period = YEAR
     reference = (
         "https://www.oregon.gov/dor/forms/FormsPubs/schedule-or-wfhdc-inst_101-195-1_2022.pdf#page=1",
+        "https://www.oregon.gov/dor/forms/FormsPubs/schedule-or-wfhdc-inst_101-195-1_2025.pdf#page=1",
         "https://law.justia.com/codes/oregon/2021/volume-08/chapter-315/section-315-264/",
     )
     defined_for = StateCode.OR

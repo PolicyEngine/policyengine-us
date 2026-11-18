@@ -1,8 +1,8 @@
-description: California provides the following state supplement amount to aged or disabled single filers.
+description: California adds this state share to the federal benefit rate for aged or disabled individuals living independently under the State Supplementary Payment program.
 metadata:
   unit: currency-USD
   period: month
-  label: California state supplement aged or disabled allowance single amount
+  label: California state supplement aged or disabled single state share
   reference:
     - title: California Welfare and Institutions Code Division 9, Part 3, Chapter 3, Article 5, Section 12200 (c)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200
@@ -12,7 +12,26 @@ metadata:
       href: https://cdss.ca.gov/Portals/13/SHD/ParaRegIndex/SSI%20Monthly%20Payment%20Amounts%202026.pdf
     - title: SSA POMS SI 01415.058 - Federally Administered Optional Supplementary Payment Programs for January 2026, California recipient payment levels
       href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#b2a
+    - title: SSA POMS SI 01415.057 - Federally Administered Optional Supplementary Payment Programs for January 2025, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415057#b2a
+    - title: SSA POMS SI 01415.056 - Federally Administered Optional Supplementary Payment Programs for January 2024, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415056#b2a
+    - title: SSA POMS SI 01415.045 - Federally Administered Optional Supplementary Payment Programs for January 2013, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415045#b2a
+    - title: SSA POMS SI 01415.049 - Federally Administered Optional Supplementary Payment Programs for January 2017, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415049#b2a
+    - title: SSA POMS SI 01415.054 - Federally Administered Optional Supplementary Payment Programs for January 2022, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415054#b2a
+    - title: SSA POMS SI 01415.055 - Federally Administered Optional Supplementary Payment Programs for January 2023, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415055#b2a
+    - title: "California Department of Social Services, Local Assistance Estimates, 2026 May Revision reference documents, SSI/SSP Payment Standards #page 26-27"
+      href: https://cdss.ca.gov/Portals/9/Additional-Resources/Fiscal-and-Financial-Information/LOcal-Assistance-Estimates/2026-27/Revisions/2026-may-revision-reference-documents.pdf#page=26
 values:
-  1991-01-01: 630
-  2025-01-01: 1_206.94
-  2026-01-01: 1_233.94
+  1991-01-01: 223 # $630 - $407
+  # Shares for 1992 through 2012 are not added yet, so the 1991 share carries forward (issue 10480).
+  2013-01-01: 156.4
+  2017-01-01: 160.72
+  2022-01-01: 199.21
+  2023-01-01: 219.73
+  # The share holds for January 2024 through 2026, and CDSS projects it for January 2027.
+  2024-01-01: 239.94

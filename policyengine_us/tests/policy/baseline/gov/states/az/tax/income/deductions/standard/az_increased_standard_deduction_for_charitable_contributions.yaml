@@ -117,3 +117,46 @@
     # charitable after credit = max($1,200 - $400, 0) = $800
     # rate (0) * 800 + min($800, $1,000 single cap) = $800
     az_increased_standard_deduction_for_charitable_contributions: 800
+
+- name: test for 2020 federal non-itemizer, whose line 10b deduction is subtracted
+  period: 2020
+  input:
+    state_code: AZ
+    charitable_deduction: 500
+    charitable_contributions_ald: 300
+    az_charitable_contributions_credit_potential: 0
+  output:
+    # 2020 worksheet: line 4C 500, line 5C 300, line 6C 0; 25% of 200.
+    az_increased_standard_deduction_for_charitable_contributions: 50
+
+- name: test for 2020 federal deduction and credit exceeding contributions
+  period: 2020
+  input:
+    state_code: AZ
+    charitable_deduction: 500
+    charitable_contributions_ald: 300
+    az_charitable_contributions_credit_potential: 400
+  output:
+    # max(500 - 300 - 400, 0) = 0
+    az_increased_standard_deduction_for_charitable_contributions: 0
+
+- name: test for 2020 household that gives $500 in cash and takes the federal standard deduction
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    charitable_contributions_ald: 300
+    charitable_deduction: 500
+    # 25% of (500 - 300)
+    az_increased_standard_deduction_for_charitable_contributions: 50

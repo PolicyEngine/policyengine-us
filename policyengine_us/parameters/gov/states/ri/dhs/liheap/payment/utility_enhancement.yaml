@@ -1,0 +1,21 @@
+description: Rhode Island provides this enhancement with a primary heating grant credited to a gas or electric distribution-company account under the Low Income Home Energy Assistance Program.
+# This amount is sourced for the FY2026 heating season; earlier periods backfill it
+# as an unverified estimate. DHS's FFY2027 filing (Docket 26-34-GE, October 2,
+# 2026, page 2) gives one additional credit to accounts receiving a 2027 primary
+# benefit but leaves the amount to DHS, so $350 in FY2027 is an unverified estimate.
+# It is not part of the federal fuel matrix or a crisis/cooling grant. Provider and
+# actual federal-grant account routing are input limits.
+values:
+  2025-10-01: 350
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rhode Island LIHEAP primary utility enhancement
+  reference:
+    - title: DHS response to Division data request 1-1, issued October 9, 2025, FY2026 enhancement
+      href: https://ripuc.ri.gov/sites/g/files/xkgbur841/files/2025-10/25-38-GE%20-%20LIHEAP%20Enhancement%20-%20DPUC%20Data%20Requests%20Set%201%20%2810-9-25%29%20DHS%20Response.pdf#page=1
+    - title: "PUC Order 25579, January 8, 2026 #page 1,3"
+      href: https://ripuc.ri.gov/sites/g/files/xkgbur841/files/2026-01/RI%20DHS%2025-38-GE_Ord25579%20-%201-8-26.pdf#page=1
+    - title: DHS FFY2027 LIHEAP Enhancement Charge filing, PUC Docket 26-34-GE, October 2, 2026 (2027 credit amount not yet set)
+      href: https://ripuc.ri.gov/sites/g/files/xkgbur841/files/2026-10/26-34-GE%20LIHEAP%20Enhancement%20Charge%20-%20FFY%202027%20Filing%20%2810-2-2026%29.pdf#page=2

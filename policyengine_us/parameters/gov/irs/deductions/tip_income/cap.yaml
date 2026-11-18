@@ -1,12 +1,14 @@
-description: The IRS caps the tip income exemption at this amount.
+description: The IRS caps the tip income deduction at this amount.
 
 metadata:
   unit: currency-USD
   period: year
-  label: Tip income exemption cap
+  label: Tip income deduction cap
   reference:
-    - title: H.R.1 - One Big Beautiful Bill Act
-      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 26 U.S.C. § 224(b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/224#b_1
+    - title: 2025 Schedule 1-A (Form 1040), line 7
+      href: https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=1
 
 values:
   2025-01-01: 25_000

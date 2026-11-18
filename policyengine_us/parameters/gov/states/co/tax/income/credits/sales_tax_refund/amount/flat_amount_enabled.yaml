@@ -1,4 +1,8 @@
-description: Colorado allows for a flat sales tax refund credit if this is true. 
+description: >-
+  Colorado allows for a flat sales tax refund credit if this is true. The refund is
+  attributed to the modeled eligibility tax year, even when the return and payment occur
+  later. This is the residual sales tax refund mechanism, separate from Colorado Cash
+  Back; in_effect controls whether the refund is available.
 values:
   2021-01-01: false
   2023-01-01: true

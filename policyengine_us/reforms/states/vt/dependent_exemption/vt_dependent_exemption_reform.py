@@ -15,7 +15,10 @@ def create_vt_dependent_exemption() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # Retain the baseline dependent taxpayer test and filing exception.
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
 
             # Apply age limit if in effect
             if p.age_limit.in_effect:
@@ -49,7 +52,11 @@ def create_vt_dependent_exemption() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # Mask the fallback too, so disallowed children cannot reappear
+            # as older dependents after the eligible count is reduced.
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependent_exemptions = tax_unit(
                 "vt_eligible_dependents_count", period

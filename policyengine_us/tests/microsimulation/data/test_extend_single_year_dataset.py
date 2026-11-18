@@ -22,7 +22,7 @@ from policyengine_us.data.economic_assumptions import (
 from policyengine_us.tests.microsimulation.data.fixtures.test_extend_single_year_dataset import (  # noqa: E501
     BASE_YEAR,
     END_YEAR_SHORT,
-    END_YEAR_DEFAULT,
+    END_YEAR_EXPLICIT,
     NUM_PERSONS,
     NUM_HOUSEHOLDS,
     EMPLOYMENT_INCOME_BASE,
@@ -344,14 +344,14 @@ class TestExtendSingleYearDataset:
         assert result.years == [BASE_YEAR]
 
     def test_given_explicit_end_year_2035_then_extends_correctly(self):
-        # Given — need param values through END_YEAR_DEFAULT
+        # Given — need param values through END_YEAR_EXPLICIT
         extended_values = {
             f"{y}-01-01": 100.0 * (1.1 ** (y - BASE_YEAR))
-            for y in range(BASE_YEAR, END_YEAR_DEFAULT + 1)
+            for y in range(BASE_YEAR, END_YEAR_EXPLICIT + 1)
         }
         cpi_values = {
             f"{y}-01-01": 300.0 * (1.03 ** (y - BASE_YEAR))
-            for y in range(BASE_YEAR, END_YEAR_DEFAULT + 1)
+            for y in range(BASE_YEAR, END_YEAR_EXPLICIT + 1)
         }
         system = MockSystem(
             parameters=build_mock_parameters(
@@ -365,11 +365,11 @@ class TestExtendSingleYearDataset:
 
         # When
         result = call_extend_with_mock_system(
-            system, dataset, end_year=END_YEAR_DEFAULT
+            system, dataset, end_year=END_YEAR_EXPLICIT
         )
 
         # Then
-        assert result.years == list(range(BASE_YEAR, END_YEAR_DEFAULT + 1))
+        assert result.years == list(range(BASE_YEAR, END_YEAR_EXPLICIT + 1))
 
     def test_given_extended_dataset_then_base_year_values_unchanged(
         self, base_dataset, mock_system
@@ -1191,14 +1191,15 @@ class TestGetParameterLastYear:
 
     def test_with_real_cpi_u_parameter(self):
         """Verify get_parameter_last_year works on the actual CPI-U
-        parameter YAML, returning 2035 (not 2100 from uprating_extensions)."""
+        parameter YAML, returning 2036 (not 2100 from uprating_extensions)."""
         from policyengine_us.system import system
 
         cpi_u = _resolve_parameter(system.parameters, "gov.bls.cpi.cpi_u")
         last_year = get_parameter_last_year(cpi_u)
-        # CPI-U YAML currently extends to 2035; if the YAML is updated,
-        # this assertion should be updated to match.
-        assert last_year == 2035
+        # CPI-U YAML currently extends to 2036 (CBO's February 2026
+        # projections); if the YAML is updated, this assertion should be
+        # updated to match.
+        assert last_year == 2036
 
 
 # ---------------------------------------------------------------------------

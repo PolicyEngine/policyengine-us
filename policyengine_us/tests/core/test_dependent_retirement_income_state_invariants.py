@@ -30,8 +30,9 @@ eligibility and a civilian qualifying survivor in both test years.
    units without dependents it equals `add`.
 2. Outside STATES_WITH_INTENDED_RETIREMENT_TAX_DECREASES, giving the
    dependents retirement income never lowers the filer's state income tax.
-   Michigan is an intended exception: a dependent adult's pension can lower
-   their SSI and increase the claimant's refundable credit. Outside
+   Michigan is an intended exception: a dependent's pension can lower the
+   household's Family Independence Program grant, which counts in household
+   resources, and so raise the claimant's refundable credit. Outside
    STATES_COUNTING_DEPENDENT_INCOME it changes neither the state AGI nor the
    state taxable income. (State income tax itself may still rise: credits
    keyed to household income, such as Oklahoma's sales tax relief credit,
@@ -371,13 +372,12 @@ INCOME_TAX_STATES = [
 # subtracting income that never entered AGI; property 2 checks only that it
 # never lowers tax there.
 STATES_COUNTING_DEPENDENT_INCOME = {"AL", "AR", "IA", "MS", "NJ"}
-# Intended exception per ruling d1143 (2026-10-09): follow MI-1040CR lines
-# 18 and 21 (2025 MI-1040 booklet, PDF page 28 / printed page 32):
-# https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=28
-# Line 18 counts pensions only for the claimant and spouse; line 21 counts
-# SSI received for dependent adults who live with them. A dependent adult's
-# pension can reduce SSI, lower household resources and raise refundable
-# credits, while the claimant's pension subtractions and tax base stay fixed.
+# Michigan: a dependent's own pension and SSI are not household resources
+# (MCL 206.508(3) defines the household as "a claimant and spouse"), but the
+# Family Independence Program grant paid to the claimant counts in full
+# (MI-1040CR line 27). A dependent's pension can lower that grant, lower
+# household resources and raise the claimant's refundable credits, while the
+# claimant's pension subtractions and tax base stay fixed.
 STATES_WITH_INTENDED_RETIREMENT_TAX_DECREASES = {"MI"}
 YEARS = [2025, 2026]
 

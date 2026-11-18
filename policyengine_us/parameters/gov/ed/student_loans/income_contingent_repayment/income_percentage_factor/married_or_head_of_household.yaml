@@ -1,0 +1,93 @@
+description: The Department of Education multiplies the 12-year fixed payment by this income percentage factor, by adjusted gross income, for married and head of household borrowers under the Income-Contingent Repayment plan.
+# Attachment 1 of the Department's annual notice lists each factor at an
+# adjusted gross income. The notice applies from July 1 to June 30 of the
+# following year. Incomes between two rows are linearly interpolated, and the
+# factor is rounded to the nearest hundredth of a percent (Interpolation
+# section of the notice). The formula reads these rows as points, not as a step
+# function, and holds the first and last factors flat outside the table.
+brackets:
+  - threshold:
+      2025-07-01: 13_722
+      2026-07-01: 13_717
+    amount:
+      2025-07-01: 0.5052
+  - threshold:
+      2025-07-01: 21_650
+      2026-07-01: 21_641
+    amount:
+      2025-07-01: 0.5668
+  - threshold:
+      2025-07-01: 25_800
+      2026-07-01: 25_790
+    amount:
+      2025-07-01: 0.5956
+  - threshold:
+      2025-07-01: 33_730
+      2026-07-01: 33_717
+    amount:
+      2025-07-01: 0.6779
+  - threshold:
+      2025-07-01: 41_786
+      2026-07-01: 41_769
+    amount:
+      2025-07-01: 0.7522
+  - threshold:
+      2025-07-01: 52_483
+      2026-07-01: 52_462
+    amount:
+      2025-07-01: 0.8761
+  - threshold:
+      2025-07-01: 65_823
+      2026-07-01: 65_797
+    amount:
+      2025-07-01: 1
+  - threshold:
+      2025-07-01: 79_170
+      2026-07-01: 79_138
+    amount:
+      2025-07-01: 1
+  - threshold:
+      2025-07-01: 99_186
+      2026-07-01: 99_146
+    amount:
+      2025-07-01: 1.094
+  - threshold:
+      2025-07-01: 132_534
+      2026-07-01: 132_481
+    amount:
+      2025-07-01: 1.25
+  - threshold:
+      2025-07-01: 179_230
+      2026-07-01: 179_158
+    amount:
+      2025-07-01: 1.406
+  - threshold:
+      2025-07-01: 250_660
+      2026-07-01: 250_560
+    amount:
+      2025-07-01: 1.5
+  - threshold:
+      2025-07-01: 409_597
+      2026-07-01: 409_433
+    amount:
+      2025-07-01: 2
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Income-Contingent Repayment plan income percentage factor for married and head of household borrowers
+  reference:
+    - title: 34 CFR 685.209(f)(4)(i)(A)
+      href: https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(f)(4)(i)(A)
+    - title: 91 FR 23890, 34 CFR 685.209(f)(4)
+      href: https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf#page=123
+    - title: 91 FR 34816, Annual Updates to the Income-Contingent Repayment (ICR) Plan Formula for 2026, Attachment 1 (Married/head of household)
+      href: https://www.govinfo.gov/content/pkg/FR-2026-06-09/pdf/2026-11540.pdf#page=2
+    - title: 91 FR 34818, Annual Updates to the Income-Contingent Repayment (ICR) Plan Formula for 2026, Interpolation
+      href: https://www.govinfo.gov/content/pkg/FR-2026-06-09/pdf/2026-11540.pdf#page=4
+    - title: 91 FR 34815, Annual Updates to the Income-Contingent Repayment (ICR) Plan Formula for 2026, applicable July 1, 2026 to June 30, 2027
+      href: https://www.govinfo.gov/content/pkg/FR-2026-06-09/pdf/2026-11540.pdf#page=1
+    - title: 90 FR 37477, Annual Updates to the Income-Contingent Repayment (ICR) Plan Formula for 2025, Attachment 1 (Married/head of household), applicable July 1, 2025 to June 30, 2026
+      href: https://www.govinfo.gov/content/pkg/FR-2025-08-05/pdf/2025-14806.pdf#page=1

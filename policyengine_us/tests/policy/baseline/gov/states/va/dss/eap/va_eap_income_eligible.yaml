@@ -1,0 +1,201 @@
+# Virginia EAP income test: countable income at or below the maximum for the
+# household size, except households in which all members are SSI recipients
+# (Complete EAP Manual B.6.a, Transmittal 25-1). SSI receipt is ssi > 0 or
+# receives_ssi.
+
+- name: Case 1, family of three exactly at the limit is income eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 34
+        employment_income: 39_972
+      child1:
+        age: 9
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        tanf: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VA
+  output:
+    # Size 3 limit 3,331 x 12 = 39,972; 39,972 <= 39,972.
+    va_eap_income_eligible: true
+
+- name: Case 2, family of three one dollar over the limit is not income eligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 34
+        employment_income: 39_973
+      child1:
+        age: 9
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        tanf: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VA
+  output:
+    va_eap_income_eligible: false
+
+- name: Case 3, the elderly deduction brings a retiree under the one-person limit.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 66
+        social_security_retirement: 23_700
+        # No out-of-pocket Part B premium, so the elderly deduction alone
+        # decides; the model would otherwise charge 2,434.80 at this income.
+        medicare_part_b_premium: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 23,700 - 600 = 23,100 <= 23,472.
+    va_eap_income_eligible: true
+
+- name: Case 4, the same income without the deduction is over the one-person limit.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 59
+        taxable_private_pension_income: 23_700
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 23,700 > 23,472.
+    va_eap_income_eligible: false
+
+- name: Case 5, a working SSI recipient living alone is income eligible above the limit.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 24_000
+        ssi: 438
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # SSI 994 - (2,000 - 20 - 65) / 2 = 36.50 a month = 438 a year.
+    # 24,000 + 438 - 600 = 23,838 > 23,472, but every member receives SSI.
+    va_eap_countable_income: 23_838
+    va_eap_income_eligible: true
+
+- name: Case 6, reported SSI receipt also triggers the all-SSI exception.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 25_000
+        ssi: 0
+        receives_ssi: true
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    # 25,000 - 600 = 24,400 > 23,472, but the only member receives SSI.
+    va_eap_income_eligible: true
+
+- name: Case 7, a household with one SSI recipient and one earner is held to the limit.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        ssi: 11_928
+        is_ssi_disabled: false
+      adult_child:
+        age: 42
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [head, adult_child]
+    households:
+      household:
+        members: [head, adult_child]
+        state_code: VA
+  output:
+    # 11,928 + 30,000 - 600 = 41,328 > 31,716; not every member receives SSI.
+    va_eap_countable_income: 41_328
+    va_eap_income_eligible: false
+
+- name: Case 8, household outside Virginia is not computed.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MD
+  output:
+    va_eap_income_eligible: false
+
+- name: Case 9, a working disabled couple who both receive SSI is income eligible above the two-person limit.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 17_000
+        ssi: 701
+        is_ssi_disabled: true
+      spouse:
+        age: 42
+        employment_income: 17_000
+        ssi: 701
+        is_ssi_disabled: true
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VA
+  output:
+    # SSI with earnings below SGA: couple rate 1,491 x 12 = 17,892 minus
+    # (34,000 - 240 - 780) / 2 = 16,490 leaves 1,402, or 701 each.
+    # 34,000 + 1,402 - 2 x 600 (both disabled) = 34,202 > 31,716, but every
+    # member receives SSI.
+    va_eap_countable_income: 34_202
+    va_eap_income_eligible: true

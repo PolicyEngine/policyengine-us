@@ -117,3 +117,37 @@
   output:
     income_tax_before_refundable_credits: 54_203.90
     ia_fedtax_deduction: [30_182.19, 24_021.71]
+
+# 2021 head of household, $170,000 of wages, a child aged 5 and a dependent
+# aged 19. Federal taxable income 170,000 - 18,800 = 151,200; 2021 head of
+# household tax 1,420 + 4,800 + 7,073 + 24% x (151,200 - 86,350) = 28,857.
+# The $500 credit for other dependents (Schedule 8812 line 14a) reduces the
+# federal tax paid to 28,357, with no Schedule 2 taxes to add back. Adding
+# the credit back, as the model did before, would deduct 28,857.
+- name: Iowa deducts the 2021 federal tax after the credit for other dependents
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 170_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      other_dependent:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child, other_dependent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child, other_dependent]
+        state_code: IA
+  output:
+    non_refundable_ctc: 500
+    income_tax_before_refundable_credits: 28_357
+    ia_fedtax_deduction: [28_357, 0, 0]

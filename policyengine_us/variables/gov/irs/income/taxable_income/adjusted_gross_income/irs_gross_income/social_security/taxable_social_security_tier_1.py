@@ -6,7 +6,11 @@ class taxable_social_security_tier_1(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Taxable Social Security (tier 1)"
-    documentation = "Taxable Social Security from 0-50% taxation tier, credited to OASDI trust funds"
+    documentation = (
+        "First-tier component of current-law taxable Social Security. "
+        "Above the adjusted base amount this is the bracket amount in section "
+        "86(a)(2)(A)(ii), rather than the pre-1993 inclusion used for OASDI revenue."
+    )
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/86#a_1"
 

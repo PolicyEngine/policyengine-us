@@ -5,12 +5,20 @@ class co_sales_tax_refund_person_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Eligible individual for the Colorado sales tax refund"
+    documentation = (
+        "Individual eligibility for Colorado's residual TABOR sales tax refund in the "
+        "modeled eligibility tax year. Returns and payments may occur later. Eligible "
+        "filers contribute to co_sales_tax_refund, whose amount and in_effect "
+        "parameter determine the payment included in that year's credit total."
+    )
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-2003(1)(a) defines a "qualified individual" via a
         # disjunctive test: (I) has CO income tax liability or files to claim a
-        # refund of withheld wages, OR (II) is at least 18 years of age.
+        # refund of withheld wages, OR (II) is at least 18 years of age as of
+        # December 31 of the preceding taxable year.
         "https://leg.colorado.gov/sites/default/files/images/olls/crs2023-title-39.pdf",
+        "https://colorado.public.law/statutes/crs_39-22-2003",
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=23",
     )
     defined_for = StateCode.CO
@@ -21,9 +29,13 @@ class co_sales_tax_refund_person_eligible(Variable):
         is_filer = person("is_tax_unit_head", period) | person(
             "is_tax_unit_spouse", period
         )
-        # The statute measures age as of December 31 of the year preceding the
-        # taxable year; the model approximates this with current-year age.
-        age_eligible = person("age", period) >= p.age_threshold
+        # C.R.S. 39-22-2003(1)(a)(II) measures age "as of December 31 of the
+        # taxable year preceding such taxable year", so a filer who turns 18
+        # during the year doesn't qualify on age. The 2015 Form 104 states the
+        # same test as "born before 1997".
+        age_eligible = (
+            person("birth_year", period) < period.start.year - p.age_threshold
+        )
         # Filers that had Colorado tax withheld are also eligible; use employment
         # income as a proxy.
         employment_income_eligible = person("irs_employment_income", period) > 0

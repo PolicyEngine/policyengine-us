@@ -1,0 +1,155 @@
+# ARS 43-1072(G): "Only one claimant per household per year shall be entitled
+# to a tax credit." Under (H)(1) qualifying members choose the claimant; the
+# model picks the tax unit with the largest claim.
+
+- name: Two qualifying roommates, the larger claim gets the credit
+  period: 2025
+  input:
+    people:
+      roommate_a:
+        age: 68
+        employment_income: 1_000
+        rent: 6_000
+      roommate_b:
+        age: 68
+        employment_income: 500
+        rent: 2_000
+    tax_units:
+      unit_a:
+        members: [roommate_a]
+      unit_b:
+        members: [roommate_b]
+    households:
+      household:
+        members: [roommate_a, roommate_b]
+        state_code: AZ
+  output:
+    az_property_tax_credit_household_income: 1_500
+    az_property_tax_credit_eligible: [true, true]
+    # Table 2, 0 - 2,500 -> 502. A: min(502, 900) = 502; B: min(502, 300) = 300.
+    az_property_tax_credit_potential: [502, 300]
+    az_property_tax_credit_claimant: [true, false]
+    az_property_tax_credit: [502, 0]
+
+- name: The larger claim wins whatever the member order
+  period: 2025
+  input:
+    people:
+      roommate_b:
+        age: 68
+        employment_income: 500
+        rent: 2_000
+      roommate_a:
+        age: 68
+        employment_income: 1_000
+        rent: 6_000
+    tax_units:
+      unit_b:
+        members: [roommate_b]
+      unit_a:
+        members: [roommate_a]
+    households:
+      household:
+        members: [roommate_b, roommate_a]
+        state_code: AZ
+  output:
+    az_property_tax_credit_potential: [300, 502]
+    az_property_tax_credit: [0, 502]
+
+- name: A tie goes to the tax unit whose head comes first in the person order
+  period: 2025
+  input:
+    people:
+      roommate_a:
+        age: 68
+        rent: 6_000
+      roommate_b:
+        age: 68
+        rent: 6_000
+    tax_units:
+      unit_a:
+        members: [roommate_a]
+      unit_b:
+        members: [roommate_b]
+    households:
+      household:
+        members: [roommate_a, roommate_b]
+        state_code: AZ
+  output:
+    az_property_tax_credit_potential: [502, 502]
+    az_property_tax_credit: [502, 0]
+
+- name: A tie goes to the tax unit holding the household head
+  period: 2025
+  input:
+    people:
+      roommate_a:
+        age: 68
+        rent: 6_000
+      roommate_b:
+        age: 68
+        rent: 6_000
+        is_household_head: true
+    tax_units:
+      unit_a:
+        members: [roommate_a]
+      unit_b:
+        members: [roommate_b]
+    households:
+      household:
+        members: [roommate_a, roommate_b]
+        state_code: AZ
+  output:
+    az_property_tax_credit_potential: [502, 502]
+    az_property_tax_credit: [0, 502]
+
+- name: Separate households each keep a claimant
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 68
+        rent: 6_000
+      person_b:
+        age: 68
+        rent: 2_000
+    tax_units:
+      unit_a:
+        members: [person_a]
+      unit_b:
+        members: [person_b]
+    households:
+      household_a:
+        members: [person_a]
+        state_code: AZ
+      household_b:
+        members: [person_b]
+        state_code: AZ
+  output:
+    # Table 1 at zero income: 502. B: min(502, 300) = 300.
+    az_property_tax_credit: [502, 300]
+
+- name: An ineligible co-resident is never the claimant
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+        rent: 1_000
+      son:
+        age: 40
+        rent: 6_000
+    tax_units:
+      parent_unit:
+        members: [parent]
+      son_unit:
+        members: [son]
+    households:
+      household:
+        members: [parent, son]
+        state_code: AZ
+  output:
+    az_property_tax_credit_eligible: [true, false]
+    # Parent: min(502, 0.15 x 1,000 = 150) = 150.
+    az_property_tax_credit_claimant: [true, false]
+    az_property_tax_credit: [150, 0]

@@ -1,0 +1,48 @@
+description: Tennessee sets the top of benefit matrix income group A at this annual income, by household size, under the Low Income Home Energy Assistance Program.
+# Printed LI-12 income end values. Used when uses_fpg_rates is false.
+# Size 12 ($55,592.50) is $3,933 above size 11, where sizes 1-11 step by
+# $4,032 or $4,033; the printed value is kept.
+1:
+  2026-10-01: 11_331.5
+2:
+  2026-10-01: 15_364.5
+3:
+  2026-10-01: 19_397.5
+4:
+  2026-10-01: 23_430.5
+5:
+  2026-10-01: 27_462.5
+6:
+  2026-10-01: 31_495.5
+7:
+  2026-10-01: 35_528.5
+8:
+  2026-10-01: 39_561.5
+9:
+  2026-10-01: 43_594.5
+10:
+  2026-10-01: 47_626.5
+11:
+  2026-10-01: 51_659.5
+12:
+  2026-10-01: 55_592.5
+13:
+  2026-10-01: 59_597.5
+14:
+  2026-10-01: 63_502.5
+15:
+  2026-10-01: 67_407.5
+16:
+  2026-10-01: 71_312.5
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Tennessee LIHEAP benefit matrix income group A top
+  breakdown:
+    - range(1, 17)
+  breakdown_labels:
+    - Household size
+  reference:
+    - title: "Tennessee FY2027 LIHEAP Benefit Matrix (LI-12), income end #page 1-4"
+      href: https://dogvxws799i6n.cloudfront.net/wp-content/uploads/2027-LIHEAP-LI-12-Eligible-Income-Benefit-Matrix.pdf#page=1

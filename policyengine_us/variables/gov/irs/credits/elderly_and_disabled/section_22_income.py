@@ -8,7 +8,10 @@ class section_22_income(Variable):
     unit = USD
     documentation = "Income upon which the elderly or disabled credit is applied"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/22"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/22#c",
+        "https://www.law.cornell.edu/uscode/text/26/22#e_1",
+    )
 
     def formula(tax_unit, period, parameters):
         elderly_disabled = parameters(period).gov.irs.credits.elderly_or_disabled
@@ -18,16 +21,23 @@ class section_22_income(Variable):
         num_qualifying_individuals = tax_unit.sum(
             person("qualifies_for_elderly_or_disabled_credit", period)
         )
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        # Section 22(c)(2)(A)(iii) sets a separate filer's initial amount,
+        # so the separate-return condition comes first: select takes the
+        # first true condition. It tests n >= 1, not n == 1, because
+        # qualifies_for_elderly_or_disabled_credit is not limited to the
+        # head and spouse: a separate filer with a qualifying dependent
+        # counts two, and would otherwise fall through to $7,500.
         initial_amount = select(
             [
+                separate & (num_qualifying_individuals >= 1),
                 num_qualifying_individuals == 1,
                 num_qualifying_individuals == 2,
-                filing_status == filing_status.possible_values.SEPARATE,
             ],
             [
+                elderly_disabled.amount.separate,
                 elderly_disabled.amount.one_qualified,
                 elderly_disabled.amount.two_qualified,
-                elderly_disabled.amount.separate,
             ],
             default=0,
         )
@@ -62,4 +72,14 @@ class section_22_income(Variable):
         )
         phase_out_reduction = elderly_disabled.phase_out.rate * amount_over_phase_out
 
-        return max_(0, capped_reduced_amount - phase_out_reduction)
+        amount = max_(0, capped_reduced_amount - phase_out_reduction)
+        # Section 22(e)(1): a married individual filing a separate return
+        # takes the credit only if the spouses lived apart for the whole
+        # year. Schedule R gives a separate filer only boxes 8 and 9, both
+        # conditioned on "you lived apart from your spouse for all of" the
+        # year, so a separate filer who lived with the spouse has no line 19
+        # section 22 amount. The bar sits here, not on the credit, so that
+        # readers of the line 19 amount, such as Michigan's subtraction,
+        # see it too.
+        lived_together = tax_unit("cohabitating_spouses", period)
+        return where(separate & lived_together, 0, amount)

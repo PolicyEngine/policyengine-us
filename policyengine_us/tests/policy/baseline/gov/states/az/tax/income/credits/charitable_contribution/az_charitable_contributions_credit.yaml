@@ -84,3 +84,39 @@
     az_income_tax_before_non_refundable_credits: 1000000
   output:
     az_charitable_contributions_credit: 821
+# ADOR, Credits for Contributions to QCOs and QFCOs: 2026 limits of $506 and
+# $632 for single filers, $1,009 and $1,262 for joint filers; 2027 joint
+# limits of $1,022 and $1,278.
+- name: az_charitable_contributions_credit, 2026 single filer above both caps
+  period: 2026
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    az_charitable_contributions_to_qualifying_charitable_organizations: 1_000
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 1_000
+    az_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    # 506 + 632
+    az_charitable_contributions_credit: 1_138
+- name: az_charitable_contributions_credit, 2026 joint filers above both caps
+  period: 2026
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    az_charitable_contributions_to_qualifying_charitable_organizations: 2_000
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 2_000
+    az_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    # 1,009 + 1,262
+    az_charitable_contributions_credit: 2_271
+- name: az_charitable_contributions_credit, 2027 joint filers above both caps
+  period: 2027
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    az_charitable_contributions_to_qualifying_charitable_organizations: 2_000
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 2_000
+    az_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    # 1,022 + 1,278
+    az_charitable_contributions_credit: 2_300

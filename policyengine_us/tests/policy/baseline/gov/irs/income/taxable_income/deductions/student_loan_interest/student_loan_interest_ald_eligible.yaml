@@ -56,7 +56,7 @@
     # IRC 221(c).
     student_loan_interest_ald_eligible: false
 
-- name: 2024 joint return with one spouse claimed elsewhere cannot deduct student loan interest (the claimable spouse is the head)
+- name: 2024 joint return with the head claimed elsewhere; only the claimed head is barred
   period: 2024
   input:
     people:
@@ -78,11 +78,11 @@
         members: [person_a, person_b]
         state_code: TX
   output:
-    # Form 1040 instructions: "you, or your spouse if filing jointly, aren't
-    # claimed as a dependent".
-    student_loan_interest_ald_eligible: [false, false]
+    # IRC 221(c) bars the claimed individual only; the statute governs the
+    # Form 1040 instructions, which bar the whole joint return.
+    student_loan_interest_ald_eligible: [false, true]
 
-- name: 2024 joint return with one spouse claimed elsewhere cannot deduct student loan interest (the claimable spouse is the spouse)
+- name: 2024 joint return with the spouse claimed elsewhere; only the claimed spouse is barred
   period: 2024
   input:
     people:
@@ -104,7 +104,7 @@
         members: [person_b, person_a]
         state_code: TX
   output:
-    student_loan_interest_ald_eligible: [false, false]
+    student_loan_interest_ald_eligible: [true, false]
 
 # IRC 221(c): the bar applies to an individual who is claimed.
 - name: 2024 single filer who can be claimed but is not claimed can deduct student loan interest

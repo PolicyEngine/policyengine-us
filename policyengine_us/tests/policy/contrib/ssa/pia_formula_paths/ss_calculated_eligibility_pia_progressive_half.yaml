@@ -1,0 +1,61 @@
+# A contributed PIA formula path, read through the supplied-AIME calculator's
+# eligibility PIA (monthly dollars, before COLAs). See
+# ss_calculated_eligibility_pia.yaml for the formula and dime truncation, and
+# for why each file builds one reformed system.
+#
+# Bend points after 2026 come from the model's wage-indexed projections. These
+# cases pin them to today's projections so a later projection update does not
+# move the hand-computed values.
+
+- name: Progressive price indexing for the 2035 cohort with a one-half fraction
+  # The 2035 cohort, bend points pinned at $1,756 / $10,588, and the
+  # illustrative frozen maximum AIME ($17,000) and target ($5,100) from
+  # frozen_cohort_paths.py. The fraction is illustrative; it makes no claim
+  # about any percentile.
+  # Threshold T = 1,756 + .5 * 8,832 = $6,172. F(T) = 1,580.40 + .32 * 4,416
+  # = $2,993.52; k = (5,100 - 2,993.52) / (5,368.44 - 2,993.52)
+  # = 2,106.48 / 2,374.92.
+  #   A = 3,000 (below T): $1,978.40, as under current law.
+  #   A = 6,172 (at T): $2,993.52 -> $2,993.50.
+  #   A = 9,000: G = 2,993.52 + k * (3,898.48 - 2,993.52) = $3,796.191 -> $3,796.10.
+  #   A = 12,000: G = 2,993.52 + k * (4,618.44 - 2,993.52) = $4,434.773 -> $4,434.70.
+  #   A = 17,000 (maximum): the $5,100 target.
+  # A higher fraction protects more of the formula: at AIME 9,000 and 12,000
+  # the reduced PIAs exceed their counterparts in
+  # ss_calculated_eligibility_pia_progressive_quarter.yaml, and both files
+  # reach the same $5,100 target at the maximum AIME.
+  period: 2035
+  absolute_error_margin: 0.001
+  reforms: policyengine_us.tests.policy.contrib.ssa.pia_formula_paths.frozen_cohort_paths.progressive_2035_half_fraction
+  input:
+    people:
+      below_threshold: &half_fraction_record
+        ss_calculator_source: aime
+        ss_calculator_worker_id: half-fraction-below
+        ss_calculator_birth_date: '1973-01-02'
+        ss_calculator_eligibility_year: 2035
+        ss_calculator_entitlement_month: '2035-01'
+        ss_calculator_supplied_aime: 3_000
+        ss_calculator_insured: true
+        ss_calculator_no_special_monthly_test: true
+        ss_calculator_no_prior_withholding_adjustment: true
+        ss_calculator_earnings_test_no_trigger: true
+      at_threshold:
+        <<: *half_fraction_record
+        ss_calculator_worker_id: half-fraction-at
+        ss_calculator_supplied_aime: 6_172
+      above_threshold:
+        <<: *half_fraction_record
+        ss_calculator_worker_id: half-fraction-above
+        ss_calculator_supplied_aime: 9_000
+      above_second_bend:
+        <<: *half_fraction_record
+        ss_calculator_worker_id: half-fraction-above-second-bend
+        ss_calculator_supplied_aime: 12_000
+      maximum_aime:
+        <<: *half_fraction_record
+        ss_calculator_worker_id: half-fraction-maximum
+        ss_calculator_supplied_aime: 17_000
+  output:
+    ss_calculated_eligibility_pia:
+      2035-01: [1_978.4, 2_993.5, 3_796.1, 4_434.7, 5_100]

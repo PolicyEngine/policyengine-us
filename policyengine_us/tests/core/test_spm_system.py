@@ -137,6 +137,26 @@ def test_reform_baseline_and_clones_calculate_original_tax(simulation_type):
         assert clone.tax_benefit_system.simulation is clone
 
 
+def test_rebuilt_baseline_preserves_tracing_isolation():
+    situation = single_person_situation()
+    situation["people"]["person"]["employment_income"] = {2024: 50_000}
+    changed = Simulation(situation=situation, reform=UserReform, trace=True)
+    baseline = changed.baseline
+    policy = baseline.tax_benefit_system
+
+    assert policy.simulation is baseline
+    assert baseline.trace
+    assert baseline.tracer is changed.tracer
+    assert policy.parameters is not changed.tax_benefit_system.parameters
+    assert policy.parameters.trace
+    assert policy.parameters.tracer is baseline.tracer
+    assert policy.parameters.branch_name == "baseline"
+    assert system.parameters.trace is False
+    assert system.parameters.tracer is None
+    np.testing.assert_array_equal(baseline.calculate("income_tax", 2024), 4_016)
+    np.testing.assert_array_equal(changed.calculate("income_tax", 2024), 0)
+
+
 def _parameter_fingerprint(system):
     """Digest every authored parameter value, so a shared-tree edit is visible."""
     digest = hashlib.sha256()
@@ -880,6 +900,10 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
             # Core 3.33.1 and later discard calculated caches when rebuilding;
             # earlier versions imported them as inputs. Calculate again so
             # both behaviors exercise holders for the reform's definitions.
+            # Supply an input to exercise yearly storage after the rebuild.
+            changed.set_input(
+                "is_household_head", 2024, np.ones(changed.person.count, dtype=bool)
+            )
             for variable in ("reform_only_income", "is_household_head"):
                 changed.calculate(variable, 2024)
                 holder = changed.get_holder(variable)
@@ -1249,7 +1273,7 @@ def test_documented_default_build_matches_the_shipped_constants():
 def test_default_dataset_is_digested_once_per_resolved_file(monkeypatch, tmp_path):
     """The certified build is ~830 MB; construction must not re-digest it."""
     path = tmp_path / "counted.h5"
-    path.write_bytes(b"populace")
+    path.write_bytes(b"microcosm")
     digests = []
 
     def counting_sha256(file_path):

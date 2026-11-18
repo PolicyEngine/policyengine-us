@@ -1,0 +1,42 @@
+description: New Mexico assigns these energy points by the household's monthly energy bill as a share of monthly countable income under the Low Income Home Energy Assistance Program.
+# The rule prints whole-percent bands: zero to five, six to ten, eleven to
+# fifteen, and sixteen percent or more. The unrounded burden uses
+# lower-inclusive cutoffs at 6%, 11% and 16%. Households with zero income
+# receive the top band in nm_liheap.
+brackets:
+  # Zero to five percent.
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0
+  # Six to ten percent.
+  - threshold:
+      2025-10-01: 0.06
+    amount:
+      2025-10-01: 1
+  # Eleven to fifteen percent.
+  - threshold:
+      2025-10-01: 0.11
+    amount:
+      2025-10-01: 2
+  # Sixteen percent or more.
+  - threshold:
+      2025-10-01: 0.16
+    amount:
+      2025-10-01: 3
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: New Mexico LIHEAP energy burden points
+  reference:
+    - title: 8.150.620.9 A(1) NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.150.0620.html
+    - title: New Mexico LIHEAP FFY2026 Heating and Cooling Point and Income Guide, energy points
+      href: https://www.hca.nm.gov/wp-content/uploads/Heating-and-Cooling-Point-and-Income-Guide-2026.pdf
+    - title: New Mexico LIHEAP FFY2027 Point and Income Guidelines, energy burden
+      href: https://www.hca.nm.gov/wp-content/uploads/NM-LIHEAP-FFY-2027-Point-and-Income-Guidelines.pdf
+    - title: New Mexico FY2026 LIHEAP State Plan, Section 2.3
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NM_Plan_2026.pdf#page=10

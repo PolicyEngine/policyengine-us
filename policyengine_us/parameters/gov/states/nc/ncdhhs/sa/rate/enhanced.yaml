@@ -1,13 +1,17 @@
 description: North Carolina provides this amount as the maximum monthly enhanced rate for special care units and in-home recipients with Alzheimer's disease or dementia under the State-County Special Assistance program.
 values:
   2026-01-01: 1_792
+  # 1,792 * 1.036 = 1,856.51, with the 3.6% COLA.
+  2027-01-01: 1_857
 
 metadata:
   unit: currency-USD
   period: month
   label: North Carolina SA enhanced rate
-  # G.S. 108A-42.1(b) adjusts the rate each January 1 by the Social Security
-  # cost-of-living adjustment; the published rate replaces the projection.
+  # G.S. 108A-42.1(b) adjusts the rate each January 1 by the federally approved
+  # Social Security COLA: SSA's percentage, rounded to a tenth, not the
+  # unrounded CPI-W ratio in gov.ssa.uprating. Years after the last listed one
+  # are projected from gov.ssa.uprating until SSA announces the COLA.
   uprating:
     parameter: gov.ssa.uprating
     rounding:
@@ -16,6 +20,8 @@ metadata:
   reference:
     - title: North Carolina General Statutes § 108A-42.1(b)
       href: https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_108A/GS_108A-42.1.pdf
+    - title: Social Security Administration 2027 Cost-of-Living Adjustment (COLA) Fact Sheet
+      href: https://www.ssa.gov/news/en/cola/factsheets/2027.html
     - title: "North Carolina Special Assistance Manual SA-3220 II.B and VIII #page 205,219"
       href: https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=205
     - title: North Carolina Change Notice EFS-SA-CN-01-2026 I

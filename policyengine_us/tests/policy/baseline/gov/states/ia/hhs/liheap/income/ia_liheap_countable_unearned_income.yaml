@@ -1,0 +1,298 @@
+# Iowa LIHEAP countable unearned income per person (REQ-012, REQ-013,
+# REQ-015). Appendix C of the FY26 LIHEAP Policy and Procedures Manual counts
+# Social Security and SSI for members 18 and over (p. 114), pensions, IRA and
+# regular retirement distributions (pp. 103, 109, 111), unemployment (p. 117),
+# workers' compensation (p. 121), strike benefits (p. 115), long-term private
+# disability (p. 94), VA compensation and pensions (pp. 118-119), alimony
+# (p. 90), rental income (p. 110), investment interest (p. 103), dividends
+# (p. 96) and taxable gambling winnings (p. 99); it excludes child support
+# received (pp. 92-93) and capital gains (p. 92):
+# https://hhs.iowa.gov/media/17262/download?inline#page=114
+# Modeling: Social Security is counted net of the person's out-of-pocket
+# Medicare Part B premium (medicare_part_b_premium), floored at zero; FFY2026
+# plan section 1.9 counts SSA benefits "Excluding MediCare deduction":
+# https://liheapch.acf.gov/docs/2026/state-plans/IA_Plan_2026.pdf#page=6
+# Every other source is floored at zero per person, so a rental loss offsets
+# nothing (Appendix C p. 110, "Income received from rental properties"). Bank
+# interest and the under-$120 dividend rule are approximations. ssi is a MONTH
+# variable, so the twelve months are summed.
+
+- name: Case 1, Social Security and a pension are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 18_000
+        pension_income: 6_000
+        # Combined income of 2,000 a month is above the Medicare Savings
+        # Program limit, so the full 2026 standard premium is paid:
+        # 202.90 x 12 = 2,434.80.
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Social Security net of the premium: 18,000 - 2,434.80 + 6,000 = 21,565.20.
+    ia_liheap_countable_unearned_income: 21_565.2
+
+- name: Case 2, SSI is summed over the twelve months.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 3_000
+        # 764 a month: 994 federal benefit rate - (250 - 20) countable.
+        ssi: 9_168
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 900
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 3,000 + 9,168 = 12,168 (Appendix C p. 114: SSA benefits and SSI counted).
+    ia_liheap_countable_unearned_income: 12_168
+
+- name: Case 3, Social Security paid to a child is excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 42
+        social_security: 20_000
+      person2:
+        age: 10
+        social_security: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Appendix C p. 114: Social Security for members under 18 is recorded at 0.
+    ia_liheap_countable_unearned_income: [20_000, 0]
+
+- name: Case 4, wages are not unearned income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_liheap_countable_unearned_income: 0
+
+- name: Case 5, unemployment, workers' compensation, alimony, rent, interest, dividends and gambling are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        unemployment_compensation: 9_000
+        workers_compensation: 4_000
+        alimony_income: 6_000
+        rental_income: 7_200
+        interest_income: 300
+        ordinary_dividend_income: 500
+        gambling_winnings: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 9,000 + 4,000 + 6,000 + 7,200 + 300 + 500 + 1,000 = 28,000.
+    ia_liheap_countable_unearned_income: 28_000
+
+- name: Case 6, child support received and capital gains are not counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        child_support_received: 4_800
+        capital_gains: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C pp. 92-93 (child support received) and p. 92 (capital gains).
+    ia_liheap_countable_unearned_income: 0
+
+- name: Case 7, veterans' benefits, disability, strike benefits and retirement distributions are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        veterans_benefits: 15_000
+        disability_benefits: 6_000
+        strike_benefits: 1_500
+        retirement_distributions: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 15,000 + 6,000 + 1,500 + 2,000 = 24,500.
+    ia_liheap_countable_unearned_income: 24_500
+
+- name: Case 8, an IRA distribution is counted once.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        social_security: 16_000
+        taxable_ira_distributions: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 16,000 + 3,000 = 19,000 (Appendix C p. 103: regular IRA distributions
+    # are one income item). retirement_distributions already contains
+    # taxable_ira_distributions through taxable_retirement_distributions, so
+    # reading both sources would count the 3,000 twice (22,000).
+    ia_liheap_countable_unearned_income: 19_000
+
+- name: Case 9, railroad retirement is counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 62 is below the SSI aged threshold, so the model imputes no SSI.
+        age: 62
+        railroad_benefits: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C p. 110, Railroad Retirement: RRB-1099 box 5 and RRB-1099-R
+    # box 7 are counted as income; 24,000.
+    ia_liheap_countable_unearned_income: 24_000
+
+- name: Case 10, military retirement pay is counted as a pension.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 48 is below the SSI aged threshold, so the model imputes no SSI.
+        age: 48
+        military_retirement_pay: 26_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C pp. 109 and 111, Pensions and Retirement Income: a 20-year
+    # military retiree's 2,200 a month pension counts; 26,400.
+    ia_liheap_countable_unearned_income: 26_400
+
+- name: Case 11, a Medicare premium larger than the Social Security benefit is floored at zero and does not reduce a pension.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        # A small Social Security benefit of about 167 a month.
+        social_security: 2_000
+        pension_income: 24_000
+        # 26,000 a year is above the Medicare Savings Program limit, so the
+        # full 2026 standard premium is paid: 202.90 x 12 = 2,434.80.
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # max(2,000 - 2,434.80, 0) + 24,000 = 24,000 (an unfloored premium would
+    # give 23,565.20).
+    ia_liheap_countable_unearned_income: 24_000
+
+- name: Case 12, a rental loss is floored at zero per source and does not offset a pension.
+  period: 2026
+  input:
+    people:
+      person1:
+        # Age 62 is below the Medicare and SSI aged thresholds.
+        age: 62
+        pension_income: 18_000
+        rental_income: -4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # Appendix C p. 110 counts "Income received from rental properties"; a
+    # loss is not income received: 18,000 + max(-4,000, 0) = 18,000 (a signed
+    # sum, or a floor on the unearned total, would give 14,000).
+    ia_liheap_countable_unearned_income: 18_000

@@ -1,0 +1,18 @@
+- name: Case 1, default al_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: AL
+    employment_income: 50_000
+  output:
+    al_other_subtractions: 0
+    al_agi: 50_000
+
+- name: Case 2, al_other_subtractions reduces AL AGI
+  period: 2024
+  input:
+    state_code: AL
+    employment_income: 50_000
+    al_other_subtractions: 2_000
+  output:
+    al_other_subtractions: 2_000
+    al_agi: 48_000

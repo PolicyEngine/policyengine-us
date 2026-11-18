@@ -110,30 +110,7 @@ ALLOWED = {
 
 # (person variable, attribute, group variable): each member gets the whole
 # group amount. Each was confirmed as a bug on 2026-10-06.
-KNOWN_VIOLATIONS = {
-    # PolicyEngine/policyengine-us#9888.
-    ("mt_misc_deductions", "adds", "casualty_loss_deduction"),
-    (
-        "ca_riv_general_relief_countable_property_value",
-        "adds",
-        "ca_riv_general_relief_countable_vehicle_value",
-    ),
-    (
-        "ca_riv_general_relief_countable_property_value",
-        "adds",
-        "spm_unit_cash_assets",
-    ),
-    (
-        "ca_riv_general_relief_earned_income_deductions",
-        "adds",
-        "additional_medicare_tax",
-    ),
-    (
-        "ca_riv_general_relief_earned_income_deductions",
-        "adds",
-        "state_withheld_income_tax",
-    ),
-}
+KNOWN_VIOLATIONS = set()
 
 
 def listed_names(variable, attribute: str, parameters) -> dict[str, list[str]]:

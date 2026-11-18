@@ -7,11 +7,15 @@ class tx_ccs_copay(Variable):
     unit = USD
     label = "Texas Child Care Services (CCS) copayment"
     definition_period = MONTH
-    reference = "https://wspanhandle.com/child-care/for-parents/"
+    reference = (
+        "https://www.law.cornell.edu/regulations/texas/40-Tex-Admin-Code-SS-809-19",
+        "https://www.twc.texas.gov/sites/default/files/ccel/docs/bcy2025-psoc-chart-twc.pdf",
+    )
     defined_for = "tx_ccs_eligible"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.tx.twc.ccs.copay.rate
+        p_copay = parameters(period).gov.states.tx.twc.ccs.copay
+        p = p_copay.rate
 
         income = spm_unit("tx_ccs_countable_income", period)
         smi = spm_unit("hhs_smi", period)
@@ -47,4 +51,9 @@ class tx_ccs_copay(Variable):
 
         # Total rate capped at maximum, then applied to income.
         total_rate = min_(first_child_rate + additional_child_rate, max_rate)
-        return total_rate * income
+        statewide_copay = total_rate * income
+
+        # Before TX3C, each Workforce Board set its own scale.
+        region = spm_unit.household("tx_ccs_workforce_board_region", period)
+        board_copay = spm_unit("tx_ccs_board_copay", period)
+        return where(p_copay.board.applies[region], board_copay, statewide_copay)

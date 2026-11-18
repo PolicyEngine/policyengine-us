@@ -9,6 +9,7 @@ class savers_credit_person(Variable):
     unit = USD
     reference = (
         "https://www.irs.gov/pub/irs-pdf/f8880.pdf",
+        "https://www.law.cornell.edu/uscode/text/26/25B#b",
         "https://www.law.cornell.edu/uscode/text/26/25B#c",
         "https://www.law.cornell.edu/uscode/text/26/25B#d_2",
     )
@@ -32,7 +33,9 @@ class savers_credit_person(Variable):
         filing_status = person.tax_unit("filing_status", period)
         # Joint as the base
         threshold_adjustment = p.rate.threshold_adjustment[filing_status]
-        # Credit rate
+        # Section 25B(b) applies each rate through its inclusive AGI ceiling.
+        # Use the published band tops without rounding AGI or shifting a top
+        # to the next dollar, which would retain the higher rate for cents.
         adjusted_agi = agi / threshold_adjustment
-        credit_rate = p.rate.joint.calc(adjusted_agi)
+        credit_rate = p.rate.joint.calc(adjusted_agi, right=True)
         return credit_rate * capped_qualified_contributions
