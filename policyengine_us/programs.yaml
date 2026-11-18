@@ -1418,7 +1418,7 @@ programs:
         variable: sc_liheap
         parameter_prefix: gov.states.sc.oeo.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 regular heating base amount with demographic, fuel, low-income and high-burden supplements, up to the heating maximum, for households that report a heating fuel or have heat in the rent. The cooling-season award is the separate South Carolina LIHEAP cooling entry. Crisis, weatherization and equipment assistance are out of scope.
+        notes: FY2026-FY2027 regular heating base amount with demographic, fuel, low-income and high-burden supplements, up to the heating maximum, for households with an energy bill and a reported heating fuel, or with heat in the rent; the cooling-season award is the separate South Carolina LIHEAP cooling entry. Crisis, weatherization and equipment assistance are out of scope.
       - state: SC
         status: partial
         name: South Carolina LIHEAP cooling
@@ -1426,7 +1426,7 @@ programs:
         variable: sc_liheap_cooling
         parameter_prefix: gov.states.sc.oeo.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 cooling-season nonemergency award, the base plus demographic, low-income and energy-burden supplements with no fuel supplement, up to the cooling maximum, for income-eligible households with cooling costs and an energy bill or heat in the rent, whether or not they report a heating fuel. FY2026 allows two services, so it is paid alongside the heating award, an upper bound because the second benefit depends on funding; FY2027 allows one service a year, so it pays only its excess over the heating award, and the household receives the larger of the two, leaving out additional services the State may allow when funds permit. Local frequency limits, local funding decisions, crisis and equipment assistance are out of scope.
+        notes: FY2026-FY2027 cooling-season nonemergency award, the base plus demographic, low-income and energy-burden supplements with no fuel supplement, up to the cooling maximum, with no heating fuel required; it is paid alongside the heating award in FY2026 and only as its excess over the heating award in FY2027, which allows one service a year. Local frequency limits, local funding decisions, crisis and equipment assistance are out of scope.
       - state: SD
         status: partial
         name: South Dakota LIEAP
