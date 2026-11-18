@@ -90,3 +90,263 @@
     nj_refundable_credits: 50
   output:
     nj_income_tax: 9_950
+
+- name: Case 8, 2017 NJ CDCC composition preserves other refundable credits.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    # Known main-tax50/CDCC1000/EITC0-or-18 isolate credit composition.
+    # These premises do not derive full federal/state entitlement or bracket tax.
+    # NJ AGI is above the filing threshold; no aggregate or final-tax input is supplied.
+    # P.L.2018 c.45 section5: nonrefundable; P.L.2021 c.308 section1: refundable.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 18
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+  output:
+    nj_cdcc: [0, 0]
+    nj_non_refundable_credits: [0, 0]
+    nj_refundable_credits: [0, 18]
+    nj_income_tax_before_refundable_credits: [50, 50]
+    nj_income_tax: [50, 32]
+
+- name: Case 9, 2018 NJ CDCC composition preserves other refundable credits.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    # Known main-tax50/CDCC1000/EITC0-or-18 isolate credit composition.
+    # These premises do not derive full federal/state entitlement or bracket tax.
+    # NJ AGI is above the filing threshold; no aggregate or final-tax input is supplied.
+    # P.L.2018 c.45 section5: nonrefundable; P.L.2021 c.308 section1: refundable.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 18
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 500]
+    nj_non_refundable_credits: [500, 500]
+    nj_refundable_credits: [0, 18]
+    nj_income_tax_before_refundable_credits: [0, 0]
+    nj_income_tax: [0, -18]
+
+- name: Case 10, 2019 NJ CDCC composition preserves other refundable credits.
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    # Known main-tax50/CDCC1000/EITC0-or-18 isolate credit composition.
+    # These premises do not derive full federal/state entitlement or bracket tax.
+    # NJ AGI is above the filing threshold; no aggregate or final-tax input is supplied.
+    # P.L.2018 c.45 section5: nonrefundable; P.L.2021 c.308 section1: refundable.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 18
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 500]
+    nj_non_refundable_credits: [500, 500]
+    nj_refundable_credits: [0, 18]
+    nj_income_tax_before_refundable_credits: [0, 0]
+    nj_income_tax: [0, -18]
+
+- name: Case 11, 2020 NJ CDCC composition preserves other refundable credits.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    # Known main-tax50/CDCC1000/EITC0-or-18 isolate credit composition.
+    # These premises do not derive full federal/state entitlement or bracket tax.
+    # NJ AGI is above the filing threshold; no aggregate or final-tax input is supplied.
+    # P.L.2018 c.45 section5: nonrefundable; P.L.2021 c.308 section1: refundable.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 18
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 500]
+    nj_non_refundable_credits: [500, 500]
+    nj_refundable_credits: [0, 18]
+    nj_income_tax_before_refundable_credits: [0, 0]
+    nj_income_tax: [0, -18]
+
+- name: Case 12, 2021 NJ CDCC composition preserves other refundable credits.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    # Known main-tax50/CDCC1000/EITC0-or-18 isolate credit composition.
+    # These premises do not derive full federal/state entitlement or bracket tax.
+    # NJ AGI is above the filing threshold; no aggregate or final-tax input is supplied.
+    # P.L.2018 c.45 section5: nonrefundable; P.L.2021 c.308 section1: refundable.
+    people:
+      person1: {age: 40, is_tax_unit_head: true}
+      person2: {age: 6, is_tax_unit_dependent: true}
+      person3: {age: 8, is_tax_unit_dependent: true}
+      person4: {age: 40, is_tax_unit_head: true}
+      person5: {age: 6, is_tax_unit_dependent: true}
+      person6: {age: 8, is_tax_unit_dependent: true}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 0
+        nj_ctc: 0
+      tax_unit2:
+        members: [person4, person5, person6]
+        filing_status: HEAD_OF_HOUSEHOLD
+        cdcc: 1_000
+        count_cdcc_eligible: 2
+        nj_taxable_income: 20_000
+        nj_agi: 30_000
+        nj_main_income_tax: 50
+        nj_property_tax_credit: 0
+        nj_eitc: 18
+        nj_ctc: 0
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: NJ
+      household2:
+        members: [person4, person5, person6]
+        state_code: NJ
+  output:
+    nj_cdcc: [500, 500]
+    nj_non_refundable_credits: [0, 0]
+    nj_refundable_credits: [500, 518]
+    nj_income_tax_before_refundable_credits: [50, 50]
+    nj_income_tax: [-450, -468]

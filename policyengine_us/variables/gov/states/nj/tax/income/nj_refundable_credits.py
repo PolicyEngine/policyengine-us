@@ -8,9 +8,17 @@ class nj_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NJ
-    adds = [
-        "nj_property_tax_credit",
-        "nj_eitc",
-        "nj_cdcc",
-        "nj_ctc",
-    ]
+
+    def formula(tax_unit, period, parameters):
+        return add(
+            tax_unit,
+            period,
+            ["nj_property_tax_credit", "nj_eitc", "nj_ctc"],
+        )
+
+    def formula_2021(tax_unit, period, parameters):
+        return add(
+            tax_unit,
+            period,
+            ["nj_property_tax_credit", "nj_eitc", "nj_cdcc", "nj_ctc"],
+        )

@@ -1,0 +1,24 @@
+description: New Jersey limits the child and dependent care credit to this amount, depending on the number of qualifying people.
+metadata:
+  period: year
+  threshold_period: year
+  threshold_unit: person
+  amount_unit: currency-USD
+  type: single_amount
+  label: New Jersey CDCC maximum amount
+  reference:
+    - title: P.L.2018, c.45, section 5(a)
+      href: https://pub.njleg.state.nj.us/Bills/2018/PL18/45_.HTM
+brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: 0
+  - threshold:
+      2018-01-01: 1
+    amount:
+      2018-01-01: 500
+  - threshold:
+      2018-01-01: 2
+    amount:
+      2018-01-01: 1_000
