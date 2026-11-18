@@ -107,3 +107,29 @@ def test_alameda_residence_uses_each_households_own_county_evidence():
     np.testing.assert_array_equal(
         sim.calculate("in_ala", YEAR), [True, False, False, True, False, True]
     )
+
+
+def test_illinois_aabd_electricity_allowance_with_california_care_household():
+    situation = {"people": {}, "spm_units": {}, "households": {}}
+    _add_unit(
+        situation,
+        "IL",
+        [{"age": {YEAR: 70}, "pre_subsidy_rent": {YEAR: 7_200}}],
+        takes_up_housing_assistance_if_eligible={YEAR: False},
+        pre_subsidy_electricity_expense={YEAR: 1_200},
+    )
+    situation["households"]["unit_0"]["county_str"] = {YEAR: "COOK_COUNTY_IL"}
+    _add_unit(
+        situation,
+        "CA",
+        [ADULT, {"age": {YEAR: 3}, "is_tax_unit_dependent": {YEAR: True}}],
+        pre_subsidy_electricity_expense={YEAR: 1_200},
+    )
+
+    sim = Simulation(situation=situation)
+    # Calculate SNAP first to exercise the mixed-state dependency path.
+    sim.calculate("snap", MONTH)
+    # The single Cook County renter gets the $5.55 electricity allowance.
+    np.testing.assert_allclose(
+        sim.calculate("il_aabd_utility_allowance", MONTH), [5.55, 0], atol=0.01
+    )
