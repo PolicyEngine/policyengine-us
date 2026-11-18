@@ -1379,7 +1379,15 @@ programs:
         variable: nj_liheap
         parameter_prefix: gov.states.nj.dca.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. The medically necessary cooling benefit is not modeled because it needs a medical certification that no input carries; crisis and equipment assistance are out of scope.
+        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. The medically necessary cooling benefit is the separate New Jersey LIHEAP cooling entry; crisis and equipment assistance are out of scope.
+      - state: NJ
+        status: partial
+        name: New Jersey LIHEAP cooling
+        full_name: New Jersey Low Income Home Energy Assistance Program medically necessary cooling assistance
+        variable: nj_liheap_cooling
+        parameter_prefix: gov.states.nj.dca.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 one-time $300 cooling benefit, paid in addition to heating, for households that pass the heating income test, have a member whose medical practitioner certifies that the home must be cooled, and pay for cooling directly or through unsubsidized rent; the model assumes cooling funds are available. Emergency and supplemental cooling, crisis and equipment assistance are out of scope.
       - state: NM
         status: partial
         name: New Mexico LIHEAP
