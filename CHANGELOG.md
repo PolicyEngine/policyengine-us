@@ -1,3 +1,10 @@
+## [2.146.0] - 2026-11-18
+
+### Added
+
+- Add Delaware's published LIHEAP cooling maximum and a chronic breathing condition input, and stop requiring a heating fuel for Delaware cooling eligibility.
+
+
 ## [2.145.11] - 2026-11-18
 
 ### Fixed
