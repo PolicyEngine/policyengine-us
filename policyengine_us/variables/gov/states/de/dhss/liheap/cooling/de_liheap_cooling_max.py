@@ -14,7 +14,8 @@ class de_liheap_cooling_max(Variable):
         "award: the State divides the funds available for the electric benefit "
         "equally among eligible households, so the actual amount is not known in "
         "advance. The plan prints one range for the whole cooling component, which "
-        "includes the electric benefit and air conditioners, and does not split it."
+        "includes the electric benefit and air conditioners, and does not split it. "
+        "It is not a payment and is not counted in liheap."
     )
     defined_for = "de_liheap_cooling_eligible"
     reference = (
