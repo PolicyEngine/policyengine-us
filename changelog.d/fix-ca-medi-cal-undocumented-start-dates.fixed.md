@@ -1,0 +1,1 @@
+Start California's state-funded full-scope Medi-Cal for undocumented residents aged 19 to 25 on January 1, 2020 instead of 2016, and date the expansions to children (May 1, 2016) and to ages 50 and over (May 1, 2022) at their effective dates. DACA and TPS holders keep the dates the model already gave them.

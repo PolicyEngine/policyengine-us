@@ -7,12 +7,18 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
     label = "Eligible for California Medi-Cal without satisfactory immigration status"
     definition_period = YEAR
     reference = (
-        "https://california.public.law/codes/welfare_and_institutions_code_section_14007.8",
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.8.&lawCode=WIC",
     )
     documentation = """
     California Welfare and Institutions Code Section 14007.8 provides
     state-funded Medi-Cal to individuals without satisfactory immigration
-    status based on age brackets. Starting January 1, 2026, new enrollments
+    status based on age brackets. The formula applies the schedule in
+    eligible_regardless_of_immigration_status to undocumented residents and
+    the one in eligible_with_daca_or_tps to DACA and TPS holders. Because
+    this variable is YEAR-defined, it reads each schedule at January 1, so
+    the expansion to children that starts May 1, 2016 applies in the model
+    only from 2017, and the expansion to ages 50 and over that starts
+    May 1, 2022 applies only from 2023. Starting January 1, 2026, new enrollments
     for adults 19+ are frozen for certain statuses (undocumented), but:
     - Existing enrollees retain coverage (continuous coverage)
     - DACA/TPS holders are NOT affected by the freeze
@@ -33,10 +39,18 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
 
         age = person("age", period)
         pregnant = person("is_pregnant", period)
-        # Standard eligibility based on age or pregnancy
-        standard_eligible = (
-            p.eligible_regardless_of_immigration_status.calc(age) | pregnant
+        # Undocumented residents follow the Section 14007.8 age schedule.
+        # DACA and TPS holders keep their own schedule.
+        undocumented = (
+            immigration_status == immigration_status.possible_values.UNDOCUMENTED
         )
+        age_eligible = where(
+            undocumented,
+            p.eligible_regardless_of_immigration_status.calc(age),
+            p.eligible_with_daca_or_tps.calc(age),
+        )
+        # Standard eligibility based on age or pregnancy
+        standard_eligible = age_eligible | pregnant
 
         # Enrollment freeze logic (effective January 1, 2026)
         if p.medi_cal_enrollment_freeze.in_effect:

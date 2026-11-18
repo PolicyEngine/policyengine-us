@@ -1,0 +1,40 @@
+description: California provides state-funded Medicaid to Deferred Action for Childhood Arrivals and Temporary Protected Status holders, based on the age.
+metadata:
+  period: year
+  amount_unit: bool
+  threshold_unit: year
+  type: single_amount
+  label: California state-funded Medicaid DACA and TPS eligibility
+  reference:
+    - title: California Welfare and Institutions Code Section 14007.8
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.8.&lawCode=WIC
+    - title: Los Angeles County Department of Public Social Services, Coverage For Immigrants Under Health Care Reform
+      href: https://my.dpss.lacounty.gov/public/en/home/epolicy/program/medi-cal/general/cov-imm.html
+
+# The model applied these ages and dates to DACA and TPS holders while they
+# shared the undocumented schedule. Neither reference above dates their
+# coverage by age: Los Angeles County's Medi-Cal manual treats DACA as PRUCOL,
+# eligible for full-scope Medi-Cal, and says TPS holders may qualify by
+# declaring PRUCOL.
+brackets:
+  - threshold:
+      2016-01-01: 0
+    amount:
+      2016-01-01: true
+  - threshold:
+      2016-01-01: 19
+    amount:
+      2016-01-01: true
+      2026-01-01: false
+  - threshold:
+      2016-01-01: 26
+    amount:
+      2016-01-01: false
+      2024-01-01: true
+      2026-01-01: false
+  - threshold:
+      2016-01-01: 50
+    amount:
+      2016-01-01: false
+      2022-01-01: true
+      2026-01-01: false

@@ -185,3 +185,27 @@
     state_code: NJ
   output:
     is_medicaid_immigration_status_eligible: true
+
+# California began full-scope Medi-Cal for undocumented residents aged 19 to
+# 25 on January 1, 2020. Before that, no route in the formula covers them:
+# the federal test fails, California reads false in undocumented_immigrant
+# and 0 in child_age_limit, and is_ca_medicaid_immigration_status_eligible is false.
+- name: Case 23, undocumented 22-year-old in California is ineligible in 2018.
+  period: 2018
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 22
+    state_code: CA
+  output:
+    # false OR false OR (22 < 0 = false) OR false = false
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 24, undocumented 22-year-old in California is eligible in 2020.
+  period: 2020
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 22
+    state_code: CA
+  output:
+    # false OR false OR (22 < 0 = false) OR true = true
+    is_medicaid_immigration_status_eligible: true

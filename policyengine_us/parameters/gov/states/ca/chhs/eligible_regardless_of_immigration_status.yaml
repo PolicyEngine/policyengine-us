@@ -8,30 +8,52 @@ metadata:
   reference:
     # We currently do not include pregnancy/emergency services 
     - title: California Welfare and Institutions Code Section 14007.8
-      href: https://california.public.law/codes/welfare_and_institutions_code_section_14007.8
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.8.&lawCode=WIC
+    - title: California 2017-18 Governor's Budget Summary, Health and Human Services
+      href: https://www.ebudget.ca.gov/2017-18/pdf/BudgetSummary/HealthandHumanServices.pdf#page=9
+    - title: California 2019-20 Enacted Budget Summary, Health and Human Services
+      href: https://www.ebudget.ca.gov/2019-20/pdf/Enacted/BudgetSummary/HealthandHumanServices.pdf#page=4
+    - title: California 2021-22 Enacted Budget Summary, Health and Human Services
+      href: https://www.ebudget.ca.gov/2021-22/pdf/Enacted/BudgetSummary/HealthandHumanServices.pdf#page=1
+    - title: California 2022-23 Governor's Budget Summary, Health and Human Services
+      href: https://www.ebudget.ca.gov/2022-23/pdf/BudgetSummary/HealthandHumanServices.pdf#page=16
+    - title: California 2024-25 Enacted Budget Summary, Health and Human Services
+      href: https://www.ebudget.ca.gov/2024-25/pdf/Enacted/BudgetSummary/HealthandHumanServices.pdf#page=2
+    - title: California 2025-26 Enacted Budget Summary, Health and Human Services
+      href: https://www.ebudget.ca.gov/2025-26/pdf/Enacted/BudgetSummary/HealthandHumanServices.pdf#page=2
+    - title: "Legislative Analyst's Office, The 2022-23 Budget: Health Care Access and Affordability"
+      href: https://lao.ca.gov/reports/2022/4560/Health-Care-Access-Affordability-022322.pdf#page=4
+    - title: Los Angeles County Department of Public Social Services, Full Scope Medi-Cal for Children and Young Adults
+      href: https://my.dpss.lacounty.gov/public/en/home/epolicy/program/medi-cal/general/fullscope.html
 
 brackets:
   - threshold:
       2016-01-01: 0    
     amount:
-      2016-01-01: true
+      # Section 14007.8 (a)(1), children under 19. Effective May 1, 2016.
+      # YEAR-defined formulas read January 1, so this value first applies in 2017.
+      2016-01-01: false
+      2016-05-01: true
   - threshold:
       2016-01-01: 19
     amount:
-      # Section 14007.8 (b)(1)
-      2016-01-01: true
+      # Section 14007.8 (a)(1), ages 19 to 25. Effective January 1, 2020.
+      # Section 14007.8 (b)(1) ends new enrollment at ages 19 and over on January 1, 2026.
+      2016-01-01: false
+      2020-01-01: true
       2026-01-01: false
   - threshold:
       2016-01-01: 26
     amount:
-      # Section 14007.8 (a)(1)
+      # Section 14007.8 (a)(2)(B), ages 26 to 49. Effective January 1, 2024.
       2016-01-01: false
       2024-01-01: true
       2026-01-01: false
   - threshold:
       2016-01-01: 50
     amount:
-      # Section 14007.8 (a)(2)
+      # Section 14007.8 (a)(2)(A), ages 50 and over. Effective May 1, 2022.
+      # YEAR-defined formulas read January 1, so this value first applies in 2023.
       2016-01-01: false
-      2022-01-01: true
+      2022-05-01: true
       2026-01-01: false
