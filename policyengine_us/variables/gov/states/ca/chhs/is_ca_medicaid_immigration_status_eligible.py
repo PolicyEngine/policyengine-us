@@ -14,11 +14,11 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
     state-funded Medi-Cal to individuals without satisfactory immigration
     status based on age brackets. The formula applies the schedule in
     eligible_regardless_of_immigration_status to undocumented residents and
-    the one in eligible_with_daca_or_tps to DACA and TPS holders. Because
-    this variable is YEAR-defined, it reads each schedule at January 1, so
-    the expansion to children that starts May 1, 2016 applies in the model
-    only from 2017, and the expansion to ages 50 and over that starts
-    May 1, 2022 applies only from 2023. Starting January 1, 2026, new enrollments
+    the one in eligible_with_daca_or_tps to DACA and TPS holders. This
+    variable is YEAR-defined and reads each schedule at January 1. So the
+    expansion to children that starts May 1, 2016 applies in the model from
+    2017, and the expansion to ages 50 and over that starts May 1, 2022
+    applies from 2023. Starting January 1, 2026, new enrollments
     for adults 19+ are frozen for certain statuses (undocumented), but:
     - Existing enrollees retain coverage (continuous coverage)
     - DACA/TPS holders are NOT affected by the freeze
@@ -40,7 +40,8 @@ class is_ca_medicaid_immigration_status_eligible(Variable):
         age = person("age", period)
         pregnant = person("is_pregnant", period)
         # Undocumented residents follow the Section 14007.8 age schedule.
-        # DACA and TPS holders keep their own schedule.
+        # Every other status reads the DACA and TPS schedule, and the status
+        # test above passes only DACA and TPS holders among them.
         undocumented = (
             immigration_status == immigration_status.possible_values.UNDOCUMENTED
         )

@@ -30,29 +30,31 @@ brackets:
   - threshold:
       2016-01-01: 0    
     amount:
-      # Section 14007.8 (a)(1), children under 19. Effective May 1, 2016.
+      # Section 14007.8 (a)(1) covers ages 25 and under and gives no date.
+      # Children under 19: full scope from May 1, 2016.
       # YEAR-defined formulas read January 1, so this value first applies in 2017.
       2016-01-01: false
       2016-05-01: true
   - threshold:
       2016-01-01: 19
     amount:
-      # Section 14007.8 (a)(1), ages 19 to 25. Effective January 1, 2020.
-      # Section 14007.8 (b)(1) ends new enrollment at ages 19 and over on January 1, 2026.
+      # Section 14007.8 (a)(1), ages 19 to 25: full scope from January 1, 2020.
+      # Section 14007.8 (b)(1) limits people aged 19 and over who apply on or
+      # after January 1, 2026 to pregnancy-related and emergency services.
       2016-01-01: false
       2020-01-01: true
       2026-01-01: false
   - threshold:
       2016-01-01: 26
     amount:
-      # Section 14007.8 (a)(2)(B), ages 26 to 49. Effective January 1, 2024.
+      # Section 14007.8 (a)(2)(B), ages 26 to 49: full scope from January 1, 2024.
       2016-01-01: false
       2024-01-01: true
       2026-01-01: false
   - threshold:
       2016-01-01: 50
     amount:
-      # Section 14007.8 (a)(2)(A), ages 50 and over. Effective May 1, 2022.
+      # Section 14007.8 (a)(2)(A), ages 50 and over: full scope from May 1, 2022.
       # YEAR-defined formulas read January 1, so this value first applies in 2023.
       2016-01-01: false
       2022-05-01: true

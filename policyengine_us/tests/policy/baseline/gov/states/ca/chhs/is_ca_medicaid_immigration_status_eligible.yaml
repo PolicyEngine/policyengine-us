@@ -165,7 +165,8 @@
 # YEAR-defined and reads each schedule at January 1 of the period.
 # Ages 19 to 25: California's enacted 2019-20 budget funds the expansion
 # "starting no sooner than January 1, 2020"
-# (https://www.ebudget.ca.gov/2019-20/pdf/Enacted/BudgetSummary/HealthandHumanServices.pdf#page=4).
+# (https://www.ebudget.ca.gov/2019-20/pdf/Enacted/BudgetSummary/HealthandHumanServices.pdf#page=4),
+# and Los Angeles County's manual dates it January 1, 2020.
 
 - name: Case 15, undocumented 22-year-old is ineligible in 2017 (before the 2020 expansion).
   period: 2017
@@ -387,8 +388,10 @@
     # true at 2024-01-01.
     is_ca_medicaid_immigration_status_eligible: true
 
-# DACA and TPS holders keep the dates the model gave them before the
-# undocumented schedule changed.
+# DACA and TPS holders: these cases guard that the change to the undocumented
+# schedule leaves their results as they were. The dates they pin come from
+# the schedule the three statuses shared, not from a source (see the
+# comment in eligible_with_daca_or_tps.yaml).
 
 - name: Case 33, DACA 22-year-old is eligible in 2019.
   period: 2019
@@ -520,4 +523,18 @@
   output:
     # The age-19 bracket is false from 2026-01-01, and the person has
     # current Medicaid coverage: false OR true = true.
+    is_ca_medicaid_immigration_status_eligible: true
+
+# Pregnancy covers a DACA holder at an age the DACA and TPS schedule leaves out.
+
+- name: Case 42, pregnant DACA 30-year-old is eligible in 2019.
+  period: 2019
+  input:
+    age: 30
+    is_pregnant: true
+    immigration_status: DACA
+    state_code: CA
+  output:
+    # The age-26 bracket of eligible_with_daca_or_tps is false at 2019-01-01;
+    # the formula adds pregnancy: false OR true = true.
     is_ca_medicaid_immigration_status_eligible: true
