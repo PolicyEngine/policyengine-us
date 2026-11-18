@@ -90,6 +90,177 @@
   output:
     is_medicaid_immigration_status_eligible: false
 
+# New York limits undocumented residents to emergency care, except during
+# pregnancy and the postpartum period and, from January 1, 2024, at age 65 or
+# older. Massachusetts limits them to emergency services. The all-ages flag in
+# undocumented_immigrant reads false for both states, so each case below
+# turns on the pregnancy term or the aged term alone.
+
+- name: Undocumented 35-year-old in New York is ineligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 35
+    is_pregnant: false
+    state_code: NY
+  output:
+    # Not pregnant or postpartum, and under 65: false OR false = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 35-year-old in New York is ineligible in 2017
+  period: 2017
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 35
+    is_pregnant: false
+    state_code: NY
+  output:
+    # Backdating carries the flag's false value to 2015: false OR false = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Pregnant undocumented 30-year-old in New York is eligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: true
+    state_code: NY
+  output:
+    # New York's pregnancy term is true and the person is pregnant: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Pregnant undocumented 30-year-old in New York is eligible in 2017
+  period: 2017
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: true
+    state_code: NY
+  output:
+    # Backdating carries the pregnancy term's true value to 2015: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented New Yorker between 60 days and 12 months postpartum is eligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    under_12_months_postpartum: true
+    state_code: NY
+  output:
+    # count_days_postpartum = 60, and New York's postpartum period reads 365
+    # days at 2025-01-01: 60 < 365 = true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented New Yorker between 60 days and 12 months postpartum is ineligible in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: false
+    under_12_months_postpartum: true
+    state_code: NY
+  output:
+    # New York's 365-day period starts 2023-03-01, so the model reads 60 days
+    # at 2023-01-01: 60 < 60 = false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 70-year-old in New York is ineligible in 2023
+  period: 2023
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 70
+    state_code: NY
+  output:
+    # New York's aged term is false at 2023-01-01 and true from 2024-01-01.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 70-year-old in New York is eligible in 2024
+  period: 2024
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 70
+    state_code: NY
+  output:
+    # New York's aged term is true at 2024-01-01, and 70 >= 65: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented 70-year-old in New York is eligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 70
+    state_code: NY
+  output:
+    # New York's aged term is true at 2025-01-01, and 70 >= 65: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented 64-year-old in New York is ineligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 64
+    is_pregnant: false
+    state_code: NY
+  output:
+    # 64 >= 65 is false, and the person is not pregnant: false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 65-year-old in New York is eligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 65
+    state_code: NY
+  output:
+    # 65 >= 65: true.
+    is_medicaid_immigration_status_eligible: true
+
+- name: Undocumented 8-year-old in New York fails the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NY
+  output:
+    # Child Health Plus covers the child (is_chip_immigration_status_eligible).
+    # No Medicaid term applies: false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 35-year-old in Massachusetts is ineligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 35
+    is_pregnant: false
+    state_code: MA
+  output:
+    # Massachusetts reads false in the flag and in both group terms: false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Undocumented 70-year-old in Massachusetts is ineligible in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 70
+    state_code: MA
+  output:
+    # Massachusetts's aged term is false: false.
+    is_medicaid_immigration_status_eligible: false
+
+- name: Pregnant undocumented 30-year-old in Massachusetts fails the Medicaid immigration test in 2025
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    is_pregnant: true
+    state_code: MA
+  output:
+    # Massachusetts's pregnancy term is false. The CHIP unborn-child route tests
+    # no immigration status (is_chip_fcep_eligible_person).
+    is_medicaid_immigration_status_eligible: false
+
 - name: Eligible for federal Medicaid CA 
   period: 2024
   input:

@@ -6,13 +6,18 @@ metadata:
   breakdown:
   - state_code
   reference:
-    # currently, states that only cover a certain age group of undocumented immigrants are not included in this list.
+    # States that cover only some groups of undocumented immigrants read false
+    # here. gov.hhs.medicaid.eligibility.undocumented holds their group rules.
     - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2023: Findings from a 50-State Survey"
       href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-Enrollment-and-Renewal-Policies-as-States-Prepare-for-the-Unwinding-of-the-Pandemic-Era-Continuous-Enrollment-Provision.pdf
     - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022: Findings from a 50-State Survey"
       href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf
     - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2021: Findings from a 50-State Survey"
       href: https://files.kff.org/attachment/Table-3-State-Adoption-of-Options-to-Cover-Immigrant-Populations-January-2021.pdf
+    - title: Massachusetts General Laws chapter 118E, section 16D
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVII/Chapter118E/Section16D
+    - title: New York Social Services Law section 122
+      href: https://www.nysenate.gov/legislation/laws/SOS/122
 
 AL:
   2021-01-01: false
@@ -59,7 +64,9 @@ ME:
 MD:
   2021-01-01: false
 MA:
-  2021-01-01: true
+  # M.G.L. c. 118E, section 16D(2) limits undocumented residents to emergency
+  # services unless federal law requires more.
+  2021-01-01: false
 MI:
   2021-01-01: false
 MN:
@@ -81,7 +88,11 @@ NJ:
 NM:
   2021-01-01: false
 NY:
-  2021-01-01: true
+  # Social Services Law section 122(1) limits undocumented residents to
+  # emergency care. New York covers them during pregnancy and at age 65 or
+  # older (gov.hhs.medicaid.eligibility.undocumented), and as children under
+  # the Children's Health Insurance Program (gov.hhs.chip.undocumented.child).
+  2021-01-01: false
 NC:
   2021-01-01: false
 ND:

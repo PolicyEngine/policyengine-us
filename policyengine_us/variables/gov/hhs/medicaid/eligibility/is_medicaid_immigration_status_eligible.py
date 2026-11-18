@@ -12,6 +12,8 @@ class is_medicaid_immigration_status_eligible(Variable):
         "https://www.law.cornell.edu/uscode/text/8/1641",
         "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title8-section1613&num=0&edition=prelim",
         "https://www.kff.org/racial-equity-and-health-policy/fact-sheet/key-facts-on-health-coverage-of-immigrants/",
+        "https://www.nysenate.gov/legislation/laws/SOS/366",
+        "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVII/Chapter118E/Section16D",
     )
 
     def formula(person, period, parameters):
@@ -29,7 +31,17 @@ class is_medicaid_immigration_status_eligible(Variable):
         )
         state = person.household("state_code_str", period)
         state_covers_undocumented = p.undocumented_immigrant[state].astype(bool)
-        undocumented_eligible = undocumented & state_covers_undocumented
+        # Some states cover undocumented immigrants only during pregnancy and
+        # the postpartum period, or only at age 65 or older.
+        covers_pregnancy = p.undocumented.pregnant[state].astype(bool)
+        covers_aged = p.undocumented.aged[state].astype(bool)
+        pregnant = person("is_pregnant_for_medicaid_nfc", period)
+        aged = person("is_ssi_aged", period)
+        undocumented_eligible = undocumented & (
+            state_covers_undocumented
+            | (covers_pregnancy & pregnant)
+            | (covers_aged & aged)
+        )
 
         # Some states cover every child below an age limit with state funds,
         # whatever the child's immigration status.

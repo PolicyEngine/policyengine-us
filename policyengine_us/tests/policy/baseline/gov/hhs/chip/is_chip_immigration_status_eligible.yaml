@@ -381,3 +381,55 @@
     state_code: NJ
   output:
     is_chip_immigration_status_eligible: false
+
+# New York's Child Health Plus covers children under 19 whatever their
+# immigration status (Public Health Law sections 2510(4) and 2511(2)). The
+# Medicaid immigration test stays false for an undocumented child.
+- name: Case 19, undocumented 8-year-old in New York passes the CHIP immigration test in 2025.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NY
+  output:
+    is_chip_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 20, undocumented 8-year-old in New York passes the CHIP immigration test in 2017.
+  period: 2017
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: NY
+  output:
+    is_chip_immigration_status_eligible: true
+    is_medicaid_immigration_status_eligible: false
+
+- name: Case 21, undocumented 18-year-old in New York passes the CHIP immigration test in 2025.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 18
+    state_code: NY
+  output:
+    is_chip_immigration_status_eligible: true
+
+- name: Case 22, undocumented 19-year-old in New York is past the CHIP age limit.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 19
+    state_code: NY
+  output:
+    is_chip_immigration_status_eligible: false
+
+# Massachusetts limits undocumented residents to emergency services.
+- name: Case 23, undocumented 8-year-old in Massachusetts fails the CHIP immigration test in 2025.
+  period: 2025
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 8
+    state_code: MA
+  output:
+    is_chip_immigration_status_eligible: false
+    is_medicaid_immigration_status_eligible: false

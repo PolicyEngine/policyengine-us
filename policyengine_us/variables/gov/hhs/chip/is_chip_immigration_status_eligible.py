@@ -20,6 +20,7 @@ class is_chip_immigration_status_eligible(Variable):
         "https://www.medicaid.gov/federal-policy-guidance/downloads/SHO-12-002.pdf#page=1",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho21007.pdf#page=17",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/sho26001.pdf#page=6",
+        "https://www.nysenate.gov/legislation/laws/PBH/2511",
     )
 
     def formula(person, period, parameters):
@@ -62,8 +63,17 @@ class is_chip_immigration_status_eligible(Variable):
         # immigration status do so in CHIP as well as Medicaid.
         regardless = medicaid.regardless_of_immigration_status
         child_eligible_regardless_of_status = age < regardless.child_age_limit[state]
+        # Some states cover undocumented children in CHIP alone, with state
+        # funds. These children do not pass the Medicaid immigration test.
+        undocumented = status == status.possible_values.UNDOCUMENTED
+        undocumented_child = (
+            undocumented
+            & p.chip.undocumented.child[state].astype(bool)
+            & (age < p.chip.child.max_age)
+        )
         return (
             federally_eligible_status
             | (lawfully_residing & (child | pregnant))
             | child_eligible_regardless_of_status
+            | undocumented_child
         )

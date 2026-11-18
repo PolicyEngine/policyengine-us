@@ -1,0 +1,126 @@
+description: States cover undocumented immigrants during pregnancy and the postpartum period under the Medicaid program if this is true.
+# is_medicaid_immigration_status_eligible applies each state's postpartum
+# period through is_pregnant_for_medicaid_nfc. States that cover undocumented
+# immigrants of every age read true in undocumented_immigrant.yaml and false
+# here. States other than New York read false until researched.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid undocumented immigrant pregnancy coverage
+  breakdown:
+    - state_code
+  reference:
+    - title: New York State Department of Health, client notice D61-C0332
+      href: https://ohipdocs.health.ny.gov/ohipdocs/web/system/files/ohiprepos/shared_documents/2019-11/D61C0332.pdf
+    - title: New York Social Services Law section 366
+      href: https://www.nysenate.gov/legislation/laws/SOS/366
+
+AL:
+  2021-01-01: false
+AK:
+  2021-01-01: false
+AZ:
+  2021-01-01: false
+AR:
+  2021-01-01: false
+CA:
+  2021-01-01: false
+CO:
+  2021-01-01: false
+CT:
+  2021-01-01: false
+DC:
+  2021-01-01: false
+DE:
+  2021-01-01: false
+FL:
+  2021-01-01: false
+GA:
+  2021-01-01: false
+HI:
+  2021-01-01: false
+ID:
+  2021-01-01: false
+IL:
+  2021-01-01: false
+IN:
+  2021-01-01: false
+IA:
+  2021-01-01: false
+KS:
+  2021-01-01: false
+KY:
+  2021-01-01: false
+LA:
+  2021-01-01: false
+ME:
+  2021-01-01: false
+MD:
+  2021-01-01: false
+MA:
+  2021-01-01: false
+MI:
+  2021-01-01: false
+MN:
+  2021-01-01: false
+MS:
+  2021-01-01: false
+MO:
+  2021-01-01: false
+MT:
+  2021-01-01: false
+NE:
+  2021-01-01: false
+NV:
+  2021-01-01: false
+NH:
+  2021-01-01: false
+NJ:
+  2021-01-01: false
+NM:
+  2021-01-01: false
+NY:
+  # The Department of Health's notice D61-C0332, dated October 10, 2014,
+  # gives people without satisfactory immigration status Medicaid "for
+  # medical services provided to pregnant women" and ends it when "the
+  # sixty-day postpartum period has ended". Social Services Law section
+  # 366(4)(b)(1) now continues a pregnant woman's eligibility for one year
+  # after the pregnancy ends. The 2021 date follows the all-ages flag this
+  # value replaces, and backdating carries it to 2015.
+  2021-01-01: true
+NC:
+  2021-01-01: false
+ND:
+  2021-01-01: false
+OH:
+  2021-01-01: false
+OK:
+  2021-01-01: false
+OR:
+  2021-01-01: false
+PA:
+  2021-01-01: false
+RI:
+  2021-01-01: false
+SC:
+  2021-01-01: false
+SD:
+  2021-01-01: false
+TN:
+  2021-01-01: false
+TX:
+  2021-01-01: false
+UT:
+  2021-01-01: false
+VT:
+  2021-01-01: false
+VA:
+  2021-01-01: false
+WA:
+  2021-01-01: false
+WV:
+  2021-01-01: false
+WI:
+  2021-01-01: false
+WY:
+  2021-01-01: false
