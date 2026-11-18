@@ -1,3 +1,10 @@
+## [2.145.9] - 2026-11-18
+
+### Changed
+
+- Cite the Texas FY2026 and FY2027 LIHEAP state plans for the Texas CEAP income limit and utility assistance maximums.
+
+
 ## [2.145.8] - 2026-11-18
 
 ### Changed
