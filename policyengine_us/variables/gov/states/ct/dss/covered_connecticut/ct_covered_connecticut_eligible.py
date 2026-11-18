@@ -12,6 +12,9 @@ class ct_covered_connecticut_eligible(Variable):
         # C.G.S. 19a-754c(b)(1)(C)(iv), the codified income limit.
         "https://www.cga.ct.gov/current/pub/chap_368dd.htm#sec_19a-754c",
         "https://portal.ct.gov/dss/health-and-home-care/covered-connecticut-program",
+        # Access Health CT's plan year 2026 chart sets the Covered Connecticut
+        # limit at 175% of the 2025 guideline, by household size.
+        "https://www.accesshealthct.com/wp-content/uploads/2026/04/FPL-OE13-Plan-Year-2026_ADA-1.pdf#page=1",
     )
     documentation = (
         "A tax unit is eligible for the Covered Connecticut Program when the "
@@ -19,8 +22,9 @@ class ct_covered_connecticut_eligible(Variable):
         "ACA premium tax credit (which embeds on-Marketplace enrollment, the "
         "married-filing-separately exclusion, and the federal required-"
         "contribution income test), and household ACA MAGI is at or below 175% "
-        "of the prior-year federal poverty guideline, measured as the exact "
-        "ratio rather than the truncated aca_magi_fraction. Connecticut imposes "
+        "of the federal poverty line for the premium tax credit tax family "
+        "(aca_fpg, the prior-year guideline), measured as the exact ratio "
+        "rather than the truncated aca_magi_fraction. Connecticut imposes "
         "no minimum-income "
         "floor: the statutory requirement that enrollees be ineligible for "
         "Medicaid because their income exceeds the Medicaid limits is inherited "
@@ -44,8 +48,15 @@ class ct_covered_connecticut_eligible(Variable):
         # hundred seventy-five per cent of the federal poverty level", which
         # DSS applies "up to an[d] including 175%". Test the exact ratio, not
         # the truncated aca_magi_fraction: truncation maps 175.00%-175.99% to
-        # 1.75, which would admit incomes above 175%.
+        # 1.75, which would admit incomes above 175%. The statute does not
+        # define the poverty level or household size. Access Health CT's chart
+        # uses the prior-year guideline and enrollees must qualify for the
+        # federal credit, so this uses aca_fpg, the line that credit divides
+        # by. No source says how to size a household with a claimable spouse.
         magi = max_(tax_unit("aca_magi", period), 0)
-        exact_magi_frac = magi / tax_unit("tax_unit_fpg", period.last_year)
+        fpg = tax_unit("aca_fpg", period)
+        # Divide in float64: a float32 quotient can round a ratio just above
+        # a limit down onto it.
+        exact_magi_frac = magi.astype(np.float64) / fpg
         income_eligible = exact_magi_frac <= p.fpl_limit
         return in_effect & aptc_eligible & income_eligible

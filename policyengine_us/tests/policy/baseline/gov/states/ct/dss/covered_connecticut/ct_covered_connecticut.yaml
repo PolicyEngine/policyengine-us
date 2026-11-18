@@ -6,7 +6,7 @@
 # The amount variable is gated by defined_for = "ct_covered_connecticut_eligible",
 # so any tax unit failing the three eligibility gates (in_effect, APTC, income)
 # or the StateCode.CT gate returns 0. slcsp, aca_ptc, is_aca_ptc_eligible and
-# aca_magi against a $10,000 prior-year tax_unit_fpg are supplied directly so
+# aca_magi against a $10,000 aca_fpg are supplied directly so
 # each residual is hand-verifiable.
 
 # ---- Eligible, small residual near the Medicaid floor (~150% FPL) ----
@@ -23,8 +23,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_500
     households:
@@ -47,8 +46,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 16_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 9_000
         aca_ptc: 8_700
     households:
@@ -73,8 +71,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 17_500
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 8_800
     households:
@@ -98,8 +95,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 8_000
     households:
@@ -123,8 +119,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 17_600
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 9_000
     households:
@@ -147,8 +142,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
     households:
@@ -172,8 +166,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
     households:
@@ -196,8 +189,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2024: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
     households:
@@ -226,8 +218,7 @@
       tax_unit:
         members: [person1, person2, person3]
         aca_magi: 16_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 20_000
         aca_ptc: 18_500
     households:
@@ -251,8 +242,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 0
         aca_ptc: 0
     households:
@@ -277,8 +267,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 9_000
     households:
@@ -304,8 +293,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 13_800
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_500
         aca_ptc: 8_300
     households:
@@ -338,8 +326,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 32_000
         aca_ptc: 27_000
     households:
@@ -364,8 +351,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2026: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_500
     households:
@@ -392,8 +378,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 13_800
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_500
     households:
