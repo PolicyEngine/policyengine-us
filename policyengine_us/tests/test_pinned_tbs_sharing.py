@@ -161,8 +161,8 @@ def small_tree():
 def change_small_tree(tree, change, index, value):
     """Change ``tree`` in one of the ways it can change.
 
-    Only ``update`` clears a cache, and on a loaded tree it stops at a scale's
-    bracket, which has no parent.
+    Only ``update`` clears a cache. From a scale's bracket on a loaded tree, it
+    goes further up only if this version of core links the bracket to its scale.
     """
     credit = tree.credit
     named_parent = tree.categories.group.children["parent"]
@@ -543,14 +543,14 @@ def test_an_edit_to_the_source_tree_reaches_the_next_simulation(monkeypatch):
 
 
 def test_an_edit_to_a_loaded_tree_reaches_the_next_simulation(monkeypatch):
-    """A loaded tree's scale brackets have no parent, unlike a clone's.
+    """An edit to a scale bracket on a loaded tree reaches a pin.
 
-    So this edit clears no cache above the bracket, and a pin has to read the
-    parameter itself. The EITC's 2021 pin keeps this amount, so its result
-    moves with the edit.
+    Whether the edit clears the caches above the bracket depends on whether this
+    version of core links a loaded tree's brackets to their scale, so a pin has
+    to read the parameter itself. The EITC's 2021 pin keeps this amount, so its
+    result moves with the edit.
     """
     loaded = CountryTaxBenefitSystem()
-    assert loaded.parameters.gov.irs.credits.eitc.max.brackets[1].parent is None
 
     def result():
         situation = household(2021, earnings=15_000, interest=0)
