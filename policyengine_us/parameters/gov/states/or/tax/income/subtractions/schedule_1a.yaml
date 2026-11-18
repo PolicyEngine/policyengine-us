@@ -1,0 +1,22 @@
+description: Oregon subtracts these federal Schedule 1-A deductions from income on a full-year resident return.
+metadata:
+  label: Oregon Schedule 1-A subtractions
+  period: year
+  unit: list
+  reference:
+    - title: ORS 316.048, taxable income of full-year residents
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+    - title: 2025 Publication OR-17, federal tip, overtime and vehicle interest deductions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=70
+    - title: Oregon Laws 2026, chapter 142, sections 2 and 10
+      href: https://www.oregonlegislature.gov/bills_laws/lawsstatutes/2026orlaw0142.pdf#page=1
+values:
+  0001-01-01: []
+  2025-01-01:
+    - tip_income_deduction
+    - overtime_income_deduction
+    - auto_loan_interest_deduction
+  2026-01-01:
+    - tip_income_deduction
+    - overtime_income_deduction
+  2029-01-01: []
