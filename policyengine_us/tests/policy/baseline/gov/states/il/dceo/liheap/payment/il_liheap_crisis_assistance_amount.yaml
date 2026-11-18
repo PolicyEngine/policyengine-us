@@ -1,4 +1,13 @@
-- name: Case 1, FY2026 maximum winter crisis assistance.
+- name: Case 1, FY2025 maximum winter crisis assistance.
+  period: 2025
+  input:
+    il_liheap_eligible_for_crisis_assistance: true
+    state_code: IL
+  output:
+    # FY2025 plan section 4.12: winter crisis maximum 1,500.
+    il_liheap_crisis_assistance_amount: 1_500
+
+- name: Case 2, FY2026 maximum winter crisis assistance.
   period: 2026
   input:
     il_liheap_eligible_for_crisis_assistance: true
@@ -7,23 +16,14 @@
     # FY2026 plan section 4.12: winter crisis maximum 1,500.
     il_liheap_crisis_assistance_amount: 1_500
 
-- name: Case 2, FY2027 maximum winter crisis assistance.
+- name: Case 3, FY2027 maximum winter crisis assistance.
   period: 2027
   input:
     il_liheap_eligible_for_crisis_assistance: true
     state_code: IL
   output:
-    # FY2027 plan section 4.12: winter crisis maximum 2,000.
+    # FY2027 plan sections 4.9 and 4.12: winter crisis maximum 2,000.
     il_liheap_crisis_assistance_amount: 2_000
-
-- name: Case 3, FY2025 maximum winter crisis assistance.
-  period: 2025
-  input:
-    il_liheap_eligible_for_crisis_assistance: true
-    state_code: IL
-  output:
-    # FY2025 plan section 4.12: winter crisis maximum 1,500.
-    il_liheap_crisis_assistance_amount: 1_500
 
 - name: Case 4, no crisis assistance without a disconnection notice.
   period: 2027
