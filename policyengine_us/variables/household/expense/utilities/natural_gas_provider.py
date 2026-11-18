@@ -48,6 +48,8 @@ class natural_gas_provider(Variable):
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=1",
         "https://dceo.illinois.gov/communityservices/utilitybillassistance/howtoapply.html",
         "https://webserver.rilegislature.gov/Statutes/TITLE39/39-1/39-1-27.12.htm",
+        # Form EIA-176, 2024, residential customers by reporting company and state.
+        "https://www.eia.gov/naturalgas/ngqs/",
         # Illinois distribution companies, including Peoples Gas Light & Coke.
         "https://icc.illinois.gov/public-utility",
         # Avista Utilities, Form 10-K, Part I, Item 1 (electric and gas territories).
