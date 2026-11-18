@@ -8915,6 +8915,31 @@ candidates:
   state: ruled
   note: A filer separated under a decree of divorce or separate maintenance is not married (IRC 7703(a)(2)) and can
     claim the credit on a separate return.
+- id: us-nj:liheap-cooling-amount
+  program: liheap
+  years:
+    from: 2022
+    type: federal-fiscal
+  question: Is the medically necessary cooling benefit $100 under the regulation or $300 under the handbooks?
+  sources:
+  - kind: regulation
+    citation: N.J.A.C. 5:49-3.3(a) (chapter readopted effective 2025-09-22)
+    url: https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-5-49-3-3
+  - kind: manual
+    citation: FY2026 and FY2027 LIHEAP Handbooks, sections 3.4.A and 3.7.D
+    url: https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=14
+  readings:
+    statute: No statute supplied; the codified regulation sets a one-time benefit of $100.00.
+    other: The handbooks set a one-time benefit of $300.00 and cite N.J.A.C. 10:89-3.3 as capping it at $300.00.
+  example: In FY2026 an eligible household receives $300 under the handbooks or $100 under the regulation.
+  pe_us:
+    follows: unknown
+    code:
+    - policyengine_us/parameters/gov/states/nj/dca/liheap/cooling/amount.yaml
+    prs: []
+  state: unreviewed
+  note: PE-US follows the handbooks, as for us-nj:liheap-income-ceiling, and applies the FY2026 value back to FY2022;
+    establish authority for departure from the regulation readopted in 2025.
 - id: us-nj:liheap-income-ceiling
   program: liheap
   years:
@@ -8961,14 +8986,14 @@ candidates:
   pe_us:
     follows: statute
     code:
-    - policyengine_us/variables/gov/states/nj/dca/liheap/eligibility/nj_liheap_eligible.py
+    - policyengine_us/variables/gov/states/nj/dca/liheap/eligibility/nj_liheap_income_eligible.py
     - policyengine_us/parameters/gov/hhs/liheap/fpg_floor.yaml
     - policyengine_us/parameters/gov/states/nj/dca/liheap/eligibility/fpg_year_lag.yaml
     prs:
     - https://github.com/PolicyEngine/policyengine-us/pull/10279
   state: unreviewed
   note: PE-US applies the floor to the prior year's guideline, rounded to cents, with the statute's strict "less
-    than" (nj_liheap_eligible.py).
+    than" (nj_liheap_income_eligible.py).
 - id: us-nj:liheap-tanf-and-general-assistance-income
   program: liheap
   years:
