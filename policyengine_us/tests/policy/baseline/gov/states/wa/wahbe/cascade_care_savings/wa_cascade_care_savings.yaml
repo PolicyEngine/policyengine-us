@@ -1,8 +1,8 @@
 # Unit tests for the Washington Cascade Care Savings amount.
 #
 # All inputs (is_aca_ptc_eligible / immigration_status /
-# wa_apple_health_expansion_eligible per person, aca_magi against a prior-year
-# tax_unit_fpg pinned to $10,000, slcsp as an annual value, aca_ptc) are supplied
+# wa_apple_health_expansion_eligible per person, aca_magi against an aca_fpg
+# pinned to $10,000, slcsp as an annual value, aca_ptc) are supplied
 # directly so every expected value is exactly hand-verifiable and independent of
 # the rating-area premium lookup. slcsp is a
 # MONTH-period variable; the amount formula annualizes it via
@@ -38,8 +38,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -63,8 +62,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 18_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -88,8 +86,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -118,8 +115,7 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 22_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 8_000
         aca_ptc: 7_000
     households:
@@ -148,8 +144,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 3_000
     households:
@@ -179,8 +174,7 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 16_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 10_000
         aca_ptc: 4_000
     households:
@@ -206,8 +200,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 22_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 5_000
         aca_ptc: 5_000
     households:
@@ -232,8 +225,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 26_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 2_000
     households:
@@ -260,8 +252,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 0
         aca_ptc: 0
     households:
@@ -284,8 +275,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 2_000
     households:
@@ -308,8 +298,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2024: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 2_000
     households:
@@ -337,8 +326,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 22_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_900
     households:
@@ -363,8 +351,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_340
     households:
@@ -392,8 +379,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 1_000
         aca_ptc: 0
     households:
@@ -419,8 +405,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_100
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 1_000
         aca_ptc: 0
     households:
@@ -462,8 +447,7 @@
       tax_unit:
         members: [person1, person2, person3, person4]
         aca_magi: 16_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 15_000
         aca_ptc: 6_000
     households:
@@ -505,8 +489,7 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -542,8 +525,7 @@
       tax_unit:
         members: [person1, person2]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 5_000
     households:
@@ -573,8 +555,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -602,8 +583,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -632,8 +612,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -661,8 +640,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 26_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -690,8 +668,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2026: 10_000
+        aca_fpg: 10_000
         slcsp: 6_000
         aca_ptc: 5_000
     households:
@@ -707,7 +684,7 @@
   # ~separate), so neither is a Group 1 member. Both are citizens, so neither is
   # a Group 3 (undocumented) member either. With no eligible member the tax unit
   # is ineligible and the amount is 0, even though income (1.4) is within the
-  # 250% FPL limit. aca_magi_fraction is supplied so the exclusion is isolated to
+  # 250% FPL limit. aca_magi and aca_fpg are supplied so the exclusion is isolated to
   # the SEPARATE filing status (removing SEPARATE would make both Group 1 and
   # produce 12*(55*2) = 1_320 before the cap).
   period: 2026
@@ -733,8 +710,7 @@
         members: [person1, person2]
         filing_status: SEPARATE
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:
@@ -763,8 +739,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_001
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 1_000
         aca_ptc: 0
     households:
@@ -792,8 +767,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
         slcsp: 12_000
         aca_ptc: 0
     households:

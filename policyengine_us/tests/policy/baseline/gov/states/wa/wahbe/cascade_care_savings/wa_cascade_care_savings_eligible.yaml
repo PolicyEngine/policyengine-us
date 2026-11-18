@@ -1,7 +1,7 @@
 # Unit tests for Washington Cascade Care Savings tax-unit eligibility.
 #
 # wa_cascade_care_savings_eligible (TaxUnit, bool) is true when:
-#   in_effect (2026+) AND aca_magi / prior-year FPG <= 2.5 (fpl_limit; Section
+#   in_effect (2026+) AND aca_magi / aca_fpg <= 2.5 (fpl_limit; Section
 #   4(1)(c): "up to 250%") AND the tax unit has at least one member in Group 1
 #   or Group 3. The income test uses the exact ratio, not the truncated
 #   aca_magi_fraction.
@@ -9,8 +9,8 @@
 #     Group 3: immigration_status == UNDOCUMENTED AND NOT
 #              wa_apple_health_expansion_eligible (undocumented, but not covered
 #              by the Apple Health Expansion Medicaid proxy).
-# All person-level gates are supplied directly. Supplied-income cases pin the
-# prior-year guideline to $10,000 and set aca_magi to the target ratio, so each
+# All person-level gates are supplied directly. Supplied-income cases pin
+# aca_fpg to $10,000 and set aca_magi to the target ratio, so each
 # expected value is hand-verifiable; income-derived cases use the actual 2025
 # one-person guideline, $15,650.
 
@@ -28,8 +28,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 24_900
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -49,8 +48,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -70,8 +68,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_100
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -171,8 +168,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -195,8 +191,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 10_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -218,8 +213,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 15_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -241,8 +235,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -262,8 +255,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2024: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -296,8 +288,7 @@
       tax_unit:
         members: [person1, person2, person3]
         aca_magi: 16_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1, person2, person3]
@@ -326,8 +317,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -353,8 +343,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -380,8 +369,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 14_000
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -406,8 +394,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 25_100
-        tax_unit_fpg:
-          2025: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
@@ -428,8 +415,7 @@
       tax_unit:
         members: [person1]
         aca_magi: 20_000
-        tax_unit_fpg:
-          2026: 10_000
+        aca_fpg: 10_000
     households:
       household:
         members: [person1]
