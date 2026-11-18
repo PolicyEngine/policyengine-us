@@ -34,24 +34,25 @@ class de_liheap_cooling_eligible(Variable):
         # household that buys its heating qualifies, and so does one that meets
         # the household and income test, without the heating responsibility
         # test, and pays for cooling.
+        # The income test does not read heating_type, so a cooling-only
+        # household with no reported heating fuel can qualify through it.
         income_eligible = spm_unit("de_liheap_income_eligible", period)
-        # PolicyEngine convention, not a Delaware rule: heating_type is a
-        # required input, so an unspecified type is ineligible.
-        heating_type = spm_unit("heating_type", period)
-        heating_type_reported = heating_type != heating_type.possible_values.UNSPECIFIED
         # Plan 3.3-3.4: targeted to members "sixty or older, disabled,
-        # children five and under", and members with chronic breathing
-        # conditions, which have no input. The plans let the State extend the
-        # benefit to every LIHEAP applicant when funds allow. HHS profiles count
-        # more cooling households than households with a targeted member in
-        # FY2023 and FY2024, and 88 cooling households in FY2025. No decision
-        # for 2026 was found, so the targeted rule applies.
+        # children five and under, and members that suffer from chronic
+        # breathing conditions, such as asthma or chronic obstructive pulmonary
+        # diseases of chronic bronchitis or emphysema". The plans let the State
+        # extend the benefit to every LIHEAP applicant when funds allow. HHS
+        # profiles count more cooling households than households with a
+        # targeted member in FY2023 and FY2024, and 88 cooling households in
+        # FY2025. No FY2026 or FY2027 decision was found, so the targeted rule
+        # applies.
         person = spm_unit.members
         age = person("age", period)
         vulnerable = (
             (age >= p.elderly_age)
             | (age < p.child_age_limit)
             | person("is_disabled", period)
+            | person("has_chronic_breathing_condition", period)
         )
         has_vulnerable_member = spm_unit.any(vulnerable)
         # Manual 303.2 A: "If applicant has a current FAP application, the SCAP
@@ -61,8 +62,6 @@ class de_liheap_cooling_eligible(Variable):
         # the purchased source of cooling of a household that does not buy its
         # heating. Every household is assumed to hold an active electric account.
         has_cooling_expense = spm_unit("has_cooling_expense", period)
-        return (
-            heating_type_reported
-            & has_vulnerable_member
-            & (purchases_heating | (income_eligible & has_cooling_expense))
+        return has_vulnerable_member & (
+            purchases_heating | (income_eligible & has_cooling_expense)
         )
