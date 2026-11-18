@@ -1,0 +1,39 @@
+description: Share of the fixed-employer-cost wage change from a reform to federal employer payroll taxes that falls on the worker's wages in the same year.
+documentation: >-
+  When a reform changes the employer Social Security rate, taxable maximum or
+  CBO secondary earnings threshold, the employer Medicare rate, the federal
+  unemployment tax rate or wage base, or which pay counts as payroll wages
+  (the tax-exempt reform's tips and overtime, and the list of FICA pre-tax
+  contributions), wages move so that each
+  worker's pay plus federal employer payroll taxes stays at its baseline
+  amount, and this share of that wage change applies. At 1, the default, the
+  employer's federal cost is unchanged and workers bear the whole change. At
+  0, wages do not respond. The share is meant to lie between 0 and 1; above
+  1, wages move by more than the fixed-cost change, but never take a worker's
+  payroll wages below zero. The model does not allocate any share not passed
+  to wages: below 1, revenue counts the whole change in employer tax while
+  household results carry only this share of it, so the rest falls on no
+  household. PolicyEngine UK assigns that rest to consumers and capital.
+  This follows the Joint Committee on Taxation's convention of
+  holding total compensation fixed, except that JCT splits the change between
+  wages and nontaxable compensation in proportion, while the model puts all
+  of it on wages. For a worker whose wages stay on one segment of the
+  schedule, its wage change is larger by a factor of (1 + r + n) / (1 + r),
+  where r is the reformed federal employer rate on that segment and n is
+  nontaxable compensation per dollar of wages. The baseline cost uses the
+  current-law taxable maximum in
+  gov.simulation.employer_payroll_tax_incidence.current_law_cap, a copy of
+  the cap taken before reforms apply, which scenario reforms such as the
+  Trustees' economic assumptions extend along with the cap itself, so a
+  scenario alone moves no wages. The cost
+  leaves out state and local employer payroll taxes, which change with the
+  new wages where they apply to them; several state paid leave programs
+  also follow a reform to the federal taxable maximum.
+values:
+  2000-01-01: 1
+metadata:
+  unit: /1
+  label: employee share of employer payroll tax change
+  reference:
+    - title: Joint Committee on Taxation, The Income and Payroll Tax Offset to Changes in Payroll Tax Revenues (JCX-89-16)
+      href: https://www.jct.gov/getattachment/df6ad7a8-d3f8-4f39-b465-1cbe5b077d20/x-89-16-4962.pdf#page=8
