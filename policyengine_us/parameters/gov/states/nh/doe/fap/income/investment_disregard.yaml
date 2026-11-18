@@ -1,0 +1,17 @@
+description: New Hampshire excludes this amount of annual interest and dividend income under the Fuel Assistance Program.
+# One $50 exclusion applies to combined interest and dividends per SPM unit,
+# following page 17's allowable expense "$50 of earned interest and/or
+# dividends annually". Page 15 counts "Interest over $50 a year" and
+# "Dividends over $50 a year", and page 16 excludes "the first $50" of each,
+# which would allow up to $100. None of these pages says whether the amount
+# applies per person or per household.
+values:
+  2026-10-01: 50
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Hampshire FAP annual investment income exclusion per SPM unit
+  reference:
+    - title: "PY2027 New Hampshire Fuel Assistance Program Procedures Manual, Countable and Non-countable Income and Allowable Expenses #page 15-17"
+      href: https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf#page=15

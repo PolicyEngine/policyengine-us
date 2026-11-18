@@ -20,10 +20,11 @@ class msp_part_a_premium_coverage(Variable):
     42 U.S.C. 1396d(p)(3)(A)(i); SLMB and QI cover the Part B premium only.
 
     The QMB gate is cycle-safe for SPM MOOP: is_qmb_eligible composes
-    msp_countable_income (SSI methodology), msp_asset_eligible, and
-    is_medicare_eligible directly, without the modeled Medicaid exclusion
-    used in QI eligibility that reaches the medically needy Medicaid
-    formula and its medical_out_of_pocket_expenses dependency.
+    msp_countable_income (SSI methodology), msp_asset_eligible,
+    is_medicare_eligible, and is_federal_medicaid_immigration_status_eligible
+    directly, without the modeled Medicaid exclusion used in QI eligibility
+    that reaches the medically needy Medicaid formula and its
+    medical_out_of_pocket_expenses dependency.
     """
 
     def formula(person, period, parameters):

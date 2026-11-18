@@ -1,0 +1,22 @@
+description: Louisiana treats household members at least this age as elderly for the priority group supplement and the utility allowance exemption under the Low Income Home Energy Assistance Program.
+# The guide exempts "Applicants 60 years or older" from the utility allowance
+# rule and names "Persons 60 years or older" as a priority group. Plan item 2.3
+# words the exemption as "over 60 years old"; the guide's 60-or-older wording
+# is followed for both uses. No input names the applicant, so any counted
+# member of this age qualifies.
+values:
+  2025-10-01: 60
+
+metadata:
+  unit: year
+  period: year
+  label: Louisiana LIHEAP elderly age
+  reference:
+    - title: "Louisiana LIHEAP Service Delivery Guide, revised January 1, 2024, Sections 4.1 C and 4.2 A #page 40-41"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20REVISED%20January%201_%202024.pdf#page=40
+    - title: "Louisiana LIHEAP Service Delivery Guide, effective April 1, 2026, Sections 4.1 C and 4.2 A #page 46,48"
+      href: https://www.lhc.la.gov/hubfs/Document%20Libraries/Energy%20Assistance/Louisiana%20LIHEAP%20Service%20Delivery%20Guide%20-%20FINAL%20-%20Effective%20April%201%2c%202026.pdf#page=46
+    - title: Louisiana FFY2026 Heating and Cooling Benefit Matrix, targeted priority groups
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/LA_BenefitMatrix_Heat-Cool_2026.pdf
+    - title: "Louisiana FY2026 LIHEAP State Plan, Sections 2.3-2.4 #page 9-10"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/LA_Plan_2026.pdf#page=9

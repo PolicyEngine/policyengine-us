@@ -1,0 +1,19 @@
+description: Iowa provides this amount as the maximum monthly family-life home supplement under the State Supplementary Assistance program.
+values:
+  2026-01-01: 162
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Iowa SSA maximum family-life home supplement
+  # The family-life home standard is the SSI individual benefit rate plus this
+  # supplement ("$162 ($1,156 - $994 SSI standard)"). SSA pays at most $142,
+  # this supplement less the $20 general exclusion. The couple amount is twice
+  # the standard less the SSI couple rate and $20 (POMS code D Aged/Aged $801).
+  reference:
+    - title: Iowa HHS Employees' Manual 6-B (revised May 22, 2026), Making the Family-Life Home Payment
+      href: https://hhs.iowa.gov/media/3987/download?inline=#page=35
+    - title: 441 IAC 52.1 and 52.1(1)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.52.pdf#page=1
+    - title: SSA POMS SI 01415.058 F.2 (TN 95, 08-26), Iowa code D payment levels
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#f2

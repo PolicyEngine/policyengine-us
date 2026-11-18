@@ -444,3 +444,185 @@
     # Single filers share the non-joint threshold:
     # 1,800 - 0.08 x (35,000 - 30,000) = 1,400.
     ma_commonwealth_credit: 1_400
+
+- name: A child with an ITIN does not count when the credit is limited to Social Security numbers in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
+  input:
+    gov.contrib.states.ma.commonwealth_credit.in_effect: true
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        ssn_card_type: CITIZEN
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # Set directly: the parent's federal EITC without a qualifying child
+        # at 15,000 of income.
+        eitc: 314
+        adjusted_gross_income: 15_000
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    eitc_child_count: 0
+    ma_commonwealth_credit: 0
+    # The unit has no Commonwealth Credit child, so it keeps the 40% match:
+    # 0.4 x 314 = 125.60.
+    ma_eitc: 125.6
+
+- name: A child with an ITIN counts when the credit accepts an ITIN or MATIN in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
+  input:
+    gov.contrib.states.ma.commonwealth_credit.in_effect: true
+    gov.contrib.states.ma.commonwealth_credit.itin_or_matin_eligible: true
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        ssn_card_type: CITIZEN
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_tin: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # Set directly: the parent's federal EITC without a qualifying child.
+        eitc: 314
+        adjusted_gross_income: 15_000
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    # The federal EITC still excludes the child.
+    eitc_child_count: 0
+    # Below the 30,000 phase-out threshold, so the full one-child amount.
+    ma_commonwealth_credit: 1_800
+    # The Commonwealth Credit replaces the match.
+    ma_eitc: 0
+
+- name: A child with a Social Security number still counts when the credit accepts an ITIN or MATIN in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
+  input:
+    gov.contrib.states.ma.commonwealth_credit.in_effect: true
+    gov.contrib.states.ma.commonwealth_credit.itin_or_matin_eligible: true
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        ssn_card_type: CITIZEN
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # Set directly: the federal EITC with one qualifying child.
+        eitc: 3_000
+        adjusted_gross_income: 15_000
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    eitc_child_count: 1
+    ma_commonwealth_credit: 1_800
+    # The Commonwealth Credit replaces the 0.4 x 3,000 = 1,200 match.
+    ma_eitc: 0
+
+- name: A child with neither a Social Security number nor an ITIN counts through a MATIN when the credit accepts an ITIN or MATIN in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
+  input:
+    gov.contrib.states.ma.commonwealth_credit.in_effect: true
+    gov.contrib.states.ma.commonwealth_credit.itin_or_matin_eligible: true
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        ssn_card_type: CITIZEN
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # Set directly: the parent's federal EITC without a qualifying child.
+        eitc: 314
+        adjusted_gross_income: 15_000
+    households:
+      household:
+        state_code: MA
+        members: [head, child]
+  output:
+    # The child can be claimed with a Massachusetts alternative taxpayer
+    # identification number, as under the Child and Family Tax Credit.
+    ma_commonwealth_credit: 1_800
+    # The Commonwealth Credit replaces the match.
+    ma_eitc: 0
+
+- name: Children with a Social Security number, an ITIN, or neither all count when the credit accepts an ITIN or MATIN in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ma.commonwealth_credit.ma_commonwealth_credit.ma_commonwealth_credit
+  input:
+    gov.contrib.states.ma.commonwealth_credit.in_effect: true
+    gov.contrib.states.ma.commonwealth_credit.itin_or_matin_eligible: true
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        ssn_card_type: CITIZEN
+      ssn_child:
+        is_tax_unit_dependent: true
+        age: 8
+        ssn_card_type: CITIZEN
+      itin_child:
+        is_tax_unit_dependent: true
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+        has_tin: true
+      no_tin_child:
+        is_tax_unit_dependent: true
+        age: 3
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [head, ssn_child, itin_child, no_tin_child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        # Set directly: the federal EITC with one qualifying child.
+        eitc: 3_000
+        adjusted_gross_income: 15_000
+    households:
+      household:
+        state_code: MA
+        members: [head, ssn_child, itin_child, no_tin_child]
+  output:
+    # Only the child with a Social Security number counts for the federal EITC.
+    eitc_child_count: 1
+    # Three Commonwealth Credit children: the three-child maximum of 3,300.
+    ma_commonwealth_credit: 3_300
+    ma_eitc: 0

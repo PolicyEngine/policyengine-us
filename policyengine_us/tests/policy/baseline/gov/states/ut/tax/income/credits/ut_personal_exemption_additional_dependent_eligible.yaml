@@ -24,3 +24,56 @@
     state_code: UT
   output: 
     ut_personal_exemption_additional_dependent_eligible: false
+
+- name: 2025 newborn of a filer whose would-be claimant meets the filing exception is an additional Utah dependent
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 8_000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      newborn:
+        age: 0
+        birth_year: 2025
+    tax_units:
+      tax_unit:
+        members: [filer, newborn]
+    households:
+      household:
+        members: [filer, newborn]
+        state_code: UT
+  output:
+    # The filing exception keeps IRC 152(b)(1) from applying, so the newborn
+    # is a qualifying dependent and adds one more in the birth year
+    # (59-10-1018(1)(g)): (1 + 1) x $2,111 = $4,222.
+    ut_personal_exemption_additional_dependent_eligible: [false, true]
+    ut_personal_exemption: 4_222
+
+- name: 2025 newborn with no SSN and no taxpayer identification number is not an additional Utah dependent
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 30_000
+      newborn:
+        age: 0
+        birth_year: 2025
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+        has_tin: false
+    tax_units:
+      tax_unit:
+        members: [filer, newborn]
+    households:
+      household:
+        members: [filer, newborn]
+        state_code: UT
+  output:
+    # No IRC 24 credit is allowed for the newborn, so it is not a qualifying
+    # dependent, and it adds neither the ordinary nor the birth-year one.
+    ut_personal_exemption_additional_dependent_eligible: [false, false]
+    ut_personal_exemption: 0

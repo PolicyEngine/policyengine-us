@@ -1,0 +1,18 @@
+description: Virginia uses federal poverty guidelines from this many years before the modeled heating season for the income limit under the Energy Assistance Program.
+# Verified for FFY2026: floor(150% x 2025 guideline / 12) reproduces all twenty
+# published monthly limits ($1,956 to $15,018) and the $687 increment, and
+# Virginia adopts each year's new limits in June (2025 guideline from June
+# 2025, used for heating in FFY2026). This is a relative year selection, not a
+# fixed guideline year. Earlier and later Virginia seasons are unverified.
+values:
+  2025-05-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Virginia EAP federal poverty guideline year lag
+  reference:
+    - title: Virginia Energy Assistance Manual, Volume IX, Chapter B.6.a Income Levels (05/25, Transmittal 25-1)
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/eap/Complete_Manual.pdf#page=28
+    - title: LIHEAP Clearinghouse Virginia FY2026 benefit matrix, income limits note ("Virginia begins to use the new income limits ... in June of each year")
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/VA_BenefitMatrix_2026.pdf#page=1

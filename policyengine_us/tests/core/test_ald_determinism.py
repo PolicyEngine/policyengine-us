@@ -38,6 +38,7 @@ ROUNDING_INPUTS = {
     "alimony_expense_ald": 1,
     "health_savings_account_ald": 1,
     "student_loan_interest_ald_eligible": True,
+    "is_tax_unit_head_or_spouse": True,
     "is_tax_unit_dependent": False,
     "is_tax_unit_head": True,
     "is_tax_unit_spouse": False,

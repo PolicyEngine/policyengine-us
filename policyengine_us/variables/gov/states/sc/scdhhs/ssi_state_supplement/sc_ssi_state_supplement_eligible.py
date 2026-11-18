@@ -18,7 +18,7 @@ class sc_ssi_state_supplement_eligible(Variable):
         in_facility = person("is_in_residential_care_facility", period)
         p = parameters(period).gov.states.sc.scdhhs.ssi_state_supplement
         nil = p.net_income_limit
-        countable_income = person("ssi_countable_income", period)
+        countable_income = person("ssi_countable_income_monthly", period)
         ssi = person("ssi", period)
         income_eligible = (countable_income + ssi) < nil
         return is_aged_blind_disabled & in_facility & income_eligible

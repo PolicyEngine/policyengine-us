@@ -56,7 +56,8 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
             tax_unit("eitc_relevant_investment_income", period)
             <= eitc.phase_out.max_investment_income
         )
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        # RCW 82.08.0206(2)(b) earned income, as in wa_working_families_tax_credit.
+        earnings = tax_unit("eitc_earned_income", period)
         agi = tax_unit("adjusted_gross_income", period)
         # ESSB 6346 Sec. 901(2)(a)(ii)(C) makes the age-expansion path eligible
         # when income is "equal to or less than" the maximum qualifying income,

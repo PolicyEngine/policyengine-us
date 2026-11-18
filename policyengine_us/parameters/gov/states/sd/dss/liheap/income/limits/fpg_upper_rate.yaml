@@ -1,0 +1,22 @@
+description: South Dakota limits household income to at most this share of the poverty guideline under the Low Income Energy Assistance Program.
+# This numerical rule reproduces the FY2024 schedule and carries forward to FY2026;
+# the date is an annual-model observation, not policy commencement. The FY2026
+# plan, section 2.1, prints 54.14%, 55.95% and 57.07% of state median income for
+# sizes 1-3, which equal 200% of the 2025 guideline at the $111,183 median:
+# $31,300 / ($111,183 x 52%), $42,300 / ($111,183 x 68%), $53,300 / ($111,183 x 84%).
+# For sizes 4-6 the plan (page 9) prints 60% of state median income, but the DSS
+# 2025-2026 table publishes 200% of the 2025 guideline ($16,075, $18,825 and
+# $21,575 a quarter), which the model follows (see sd_liheap_income_limit).
+values:
+  2024-01-01: 2
+metadata:
+  unit: /1
+  period: year
+  label: South Dakota LIEAP income limit upper poverty rate
+  reference:
+    - title: "South Dakota FY2024 LIHEAP Benefit Matrix, maximum income #page 1-5"
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/SD_BenefitMatrix_2024.pdf#page=1
+    - title: South Dakota DSS, 2025-2026 Heating Season Income Limits (archived January 1, 2026)
+      href: https://web.archive.org/web/20260101052007/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx
+    - title: South Dakota FY2026 LIHEAP State Plan, section 2.1
+      href: https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=9

@@ -1,0 +1,43 @@
+description: Idaho provides this base natural gas heating benefit by heating area and energy-burden group under the Low Income Home Energy Assistance Program.
+
+# Natural gas provider groups are not distinguished in the model for now.
+# Use the Intermountain Gas column, the only one filled in all three areas;
+# omit the Avista column. Matches estimated_heating_costs.
+# Heating areas 1-3 correspond to Areas I-III in the published chart.
+# Energy-burden groups: 1 = low, 2 = medium, 3 = high.
+1:
+  1:
+    2025-10-01: 122
+  2:
+    2025-10-01: 127
+  3:
+    2025-10-01: 132
+2:
+  1:
+    2025-10-01: 141
+  2:
+    2025-10-01: 147
+  3:
+    2025-10-01: 152
+3:
+  1:
+    2025-10-01: 159
+  2:
+    2025-10-01: 166
+  3:
+    2025-10-01: 173
+
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Idaho LIHEAP base natural gas heating benefit
+  breakdown:
+    - range(1, 4)
+    - range(1, 4)
+  breakdown_labels:
+    - Heating area
+    - Energy-burden group
+  reference:
+    - title: Idaho PY26 LIHEAP Benefit Determination Chart
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/ID_BenefitMatrix_Heating_2026.pdf#page=1

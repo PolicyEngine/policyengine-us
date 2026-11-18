@@ -1,0 +1,18 @@
+- name: Case 1, default ms_other_additions is zero
+  period: 2024
+  input:
+    state_code: MS
+    employment_income: 50_000
+  output:
+    ms_other_additions: 0
+    ms_agi: 50_000
+
+- name: Case 2, ms_other_additions increases MS AGI
+  period: 2024
+  input:
+    state_code: MS
+    employment_income: 50_000
+    ms_other_additions: 2_000
+  output:
+    ms_other_additions: 2_000
+    ms_agi: 52_000

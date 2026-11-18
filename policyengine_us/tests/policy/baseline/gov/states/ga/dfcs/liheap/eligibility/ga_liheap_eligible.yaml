@@ -1,0 +1,300 @@
+# Georgia ordinary heating route only. Categorical recipient facts, utility credits,
+# unpriced fuels and size-above-16 coverage remain documented limitations.
+
+# FY2026 matrix page 1 sets the size 1 ordinary ceiling at $34,549; manual page 50
+# requires income at or below the limit. Adult wages are aggregated rather than
+# overriding countable income.
+- name: Case 1, the ordinary one person income ceiling is inclusive.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [34_549, 34549.01]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200]
+  output:
+    ga_liheap_eligible: [true, false]
+
+# Manual pages 51-52 exclude undocumented members from size; without a qualified adult
+# or child there is no eligible member, even with a positive bill.
+- name: Case 2, a household with no qualified member fails ordinary eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_eligible: false
+
+# Manual pages 4 and 57 permit a verified energy burden in subsidized and other rental
+# housing. These tenants pay their own utilities by default; positive primary bills
+# establish burden, while the heat-in-rent flag alone does not.
+- name: Case 3, heat in rent needs a verified burden with or without housing subsidy.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA]
+    age: [40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0]
+    ga_tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 0, 1_200, 0]
+    heat_expense_included_in_rent: [true, true, true, true]
+    receives_housing_assistance: [false, false, true, true]
+    is_in_public_housing: [false, false, true, true]
+  output:
+    ga_liheap_eligible: [true, false, true, false]
+
+# Manual page 3 requires responsibility for home heating costs; the model reuses the
+# existing explicit has_heating_expense input. NONE still means no heating; a natural
+# gas household with an explicit obligation can qualify with no reported bill amount.
+- name: Case 4, explicit no heating fails even when an obligation flag is supplied.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [NONE, NATURAL_GAS]
+    gas_expense: [1_200, 0]
+    has_heating_expense: [true, true]
+  output:
+    ga_liheap_eligible: [false, true]
+
+# Manual pages 3 and 50 require heating responsibility or a verified burden. With no
+# explicit obligation, natural gas households use their gas bill: an electric bill alone
+# does not establish a natural gas heating expense.
+- name: Case 5, an unrelated utility bill does not establish the selected primary fuel burden.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [0, 1]
+    pre_subsidy_electricity_expense: [1_200, 0]
+  output:
+    ga_liheap_eligible: [false, true]
+
+# Manual pages 3 and 50 address Georgia resident households; the same wages and
+# positive primary bill in Alabama do not receive Georgia eligibility.
+- name: Case 6, ordinary eligibility is limited to Georgia in mixed state arrays.
+  period: 2026
+  input:
+    state_code: [GA, AL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200]
+  output:
+    ga_liheap_eligible: [true, false]
+
+# Manual page 89 recognizes all utilities included in unsubsidized rent as an energy burden.
+# Each column changes one requirement from the first qualifying rental household:
+# separately paid utilities, no rent, housing assistance, public housing, no qualified
+# member, excess income, no heating, or heat excluded from rent. Ordinary gates remain.
+- name: Case 7, bundled utilities in unsubsidized rent qualify subject to ordinary eligibility.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA, GA, GA, GA]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, UNDOCUMENTED, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000, 34549.01, 12_000, 12_000]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ga_tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    rent: [12_000, 12_000, 0, 12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+    tenant_pays_utilities: [false, true, false, false, false, false, false, false, false]
+    receives_housing_assistance: [false, false, false, true, false, false, false, false, false]
+    is_in_public_housing: [false, false, false, false, true, false, false, false, false]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NONE, NATURAL_GAS]
+    gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true, true, true, true, false]
+  output:
+    ga_liheap_eligible: [true, false, false, false, false, false, false, false, false]
+
+# Manual page 89, third row, and page 4: a renter with heat in rent who pays rent and
+# is billed directly for electric has an energy burden, whether or not the housing is
+# subsidized. Each household is one adult with $12,000 of wages (under the $34,549
+# limit) and heat in rent. Unsubsidized rent is $9,600 ($800 a month); the subsidized
+# tenant share is $3,000 ($250 a month).
+# Households 1-4 have a $1,200 electric bill: unsubsidized with natural gas,
+# unsubsidized with UNSPECIFIED fuel, housing assistance, and public housing. All are
+# eligible.
+# Household 5: housing assistance with no electric bill: no energy burden.
+# Household 6: an electric bill but no rent paid: not a renter, so no energy burden.
+- name: Case 8, heat in rent renters billed for electric have an energy burden with or without a subsidy.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA]
+    age: [40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000, 12_000, 12_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0, 0, 0]
+    ga_tanf: [0, 0, 0, 0, 0, 0]
+    rent: [9_600, 9_600, 3_000, 3_000, 3_000, 0]
+    heating_type: [NATURAL_GAS, UNSPECIFIED, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true, true, true, true, true]
+    tenant_pays_utilities: [true, true, true, true, true, true]
+    receives_housing_assistance: [false, false, true, false, true, false]
+    is_in_public_housing: [false, false, false, true, false, false]
+    gas_expense: [0, 0, 0, 0, 0, 0]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 0, 1_200]
+  output:
+    ga_liheap_eligible: [true, true, true, true, false, false]
+
+# Manual page 4: "Renters who live in subsidized housing are eligible for assistance
+# if their utility bill is in their name". Each household is one adult with $12,000
+# of wages (under the $34,549 limit), natural gas heat in rent, a subsidized tenant
+# share of $3,000 ($250 a month), and tenant_pays_utilities false.
+# Household 1: the $1,200 electric bill is the bill in the household's name, even
+# though tenant_pays_utilities says utilities are in rent; the bill resolves the
+# contradictory flag. The household is on the electric-vendor route, and the
+# subsidy bars the direct-payment route. Natural gas Level II is $560; $12,000 is
+# at or below the $13,589 Level I cutoff, so $560 + $100 = $660.
+# Household 2: no bill. Page 4 ("Subsidized housing residents whose fuel cost is
+# included in their rental payment are not eligible for assistance unless the
+# applicant can verify an energy burden") and page 82 ("resides in subsidized
+# housing and the rent includes utilities": "not eligible for the program") make it
+# ineligible.
+- name: Case 9, a subsidized heat in rent renter with an electric bill qualifies when utilities are flagged as in rent.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    rent: [3_000, 3_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true]
+    tenant_pays_utilities: [false, false]
+    receives_housing_assistance: [true, true]
+    is_in_public_housing: [false, false]
+    gas_expense: [0, 0]
+    pre_subsidy_electricity_expense: [1_200, 0]
+  output:
+    ga_liheap_eligible: [true, false]
+    ga_liheap: [660, 0]
+
+# Threshold edge at the federal poverty floor, FY2026. Income is entered directly to pin
+# the boundary; it is not a household estimate. 42 U.S.C. 8624(b)(2)(B) protects income
+# "less than 110 percent" of the poverty level, and FY2026 uses the 2025 guidelines
+# (LIHEAP IM 2025-02, Attachment 2: "mandatory use in FY26").
+# Size 16: the FY2026 matrix prints a $107,634 limit. Floor: 1.1 x ($15,650 + 15 x
+# $5,500) = 1.1 x $98,150 = $107,965 (the IM table: $83,765 + 4 x $6,050). In float64
+# 1.1 x 98,150 is 107,965.00000000001, so the floor is rounded to the cent.
+# $107,634 is at the inclusive limit: eligible. $107,964.99 is below the floor: eligible.
+# $107,965 equals the floor and is not less than it: ineligible. $107,966: ineligible.
+# Size 17: limit floor($66,441 x 1.65 = $109,627.65) = $109,627; floor 1.1 x ($15,650 +
+# 16 x $5,500) = $114,015. $115,000 exceeds both: ineligible. With the 2026 guidelines
+# (no lag) the floor would be 1.1 x ($15,960 + 16 x $5,680) = $117,524 and $115,000
+# would qualify.
+- name: Case 10, threshold edge at the FY2026 federal poverty floor with the lagged guideline.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA, GA]
+    ga_liheap_household_size: [16, 16, 16, 16, 17]
+    ga_liheap_income: [107_634, 107_964.99, 107_965, 107_966, 115_000]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    ga_liheap_income_limit: [107_634, 107_634, 107_634, 107_634, 109_627]
+    ga_liheap_eligible: [true, true, false, false, false]
+
+# Threshold edge at the federal poverty floor, FY2025. Income is entered directly to pin
+# the boundary. FY2025 uses the 2024 guidelines (LIHEAP IM 2024-02, Attachment 2:
+# "mandatory use in FY25 LIHEAP").
+# Size 16: the FY2025 matrix prints a $102,926 limit. Floor: 1.1 x ($15,060 + 15 x
+# $5,380) = 1.1 x $95,760 = $105,336 (the IM table: $81,664 + 4 x $5,918).
+# $104,000 is above the limit and below the floor: eligible. $105,335.99: eligible.
+# $105,336 equals the floor: ineligible. $106,000: ineligible; with the 2025 guidelines
+# (no lag) the floor would be 1.1 x $98,150 = $107,965 and $106,000 would qualify.
+- name: Case 11, threshold edge at the FY2025 federal poverty floor with the 2024 guidelines.
+  period: 2025
+  input:
+    state_code: [GA, GA, GA, GA]
+    ga_liheap_household_size: [16, 16, 16, 16]
+    ga_liheap_income: [104_000, 105_335.99, 105_336, 106_000]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200]
+  output:
+    ga_liheap_income_limit: [102_926, 102_926, 102_926, 102_926]
+    ga_liheap_eligible: [true, true, false, false]
+
+# The federal poverty floor uses Georgia's household size. Manual 1100.4 (page 51):
+# "Count income of all undocumented adults. Do not include the undocumented adults in
+# the household size." This is the ga_liheap.yaml Case 22 household with person4
+# undocumented: 17 SPM members, Georgia size 16. Wages are Georgia OEWS May 2025
+# medians (two cashiers at $29,070, two fast food and counter workers at $26,920), all
+# counted: 2 x $29,070 + 2 x $26,920 = $111,980.
+# FY2026 size 16: limit $107,634 (matrix); floor 1.1 x $98,150 = $107,965.
+# $111,980 exceeds both, so the household is ineligible. At the SPM size of 17 the floor
+# would be 1.1 x $103,650 = $114,015 and the household would qualify.
+- name: Case 12, the federal poverty floor uses the Georgia household size rather than the SPM unit size.
+  period: 2026
+  input:
+    people:
+      person1: {age: 45, immigration_status: CITIZEN, employment_income: 29_070, ssi: 0}
+      person2: {age: 43, immigration_status: CITIZEN, employment_income: 29_070, ssi: 0}
+      person3: {age: 41, immigration_status: CITIZEN, employment_income: 26_920, ssi: 0}
+      person4: {age: 39, immigration_status: UNDOCUMENTED, employment_income: 26_920, ssi: 0}
+      person5: {age: 17, immigration_status: CITIZEN, ssi: 0}
+      person6: {age: 16, immigration_status: CITIZEN, ssi: 0}
+      person7: {age: 15, immigration_status: CITIZEN, ssi: 0}
+      person8: {age: 14, immigration_status: CITIZEN, ssi: 0}
+      person9: {age: 13, immigration_status: CITIZEN, ssi: 0}
+      person10: {age: 12, immigration_status: CITIZEN, ssi: 0}
+      person11: {age: 11, immigration_status: CITIZEN, ssi: 0}
+      person12: {age: 10, immigration_status: CITIZEN, ssi: 0}
+      person13: {age: 9, immigration_status: CITIZEN, ssi: 0}
+      person14: {age: 7, immigration_status: CITIZEN, ssi: 0}
+      person15: {age: 5, immigration_status: CITIZEN, ssi: 0}
+      person16: {age: 3, immigration_status: CITIZEN, ssi: 0}
+      person17: {age: 1, immigration_status: CITIZEN, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8,
+          person9, person10, person11, person12, person13, person14, person15, person16,
+          person17]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_800
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8,
+          person9, person10, person11, person12, person13, person14, person15, person16,
+          person17]
+        state_code: GA
+  output:
+    spm_unit_size: 17
+    ga_liheap_household_size: 16
+    ga_liheap_income: 111_980
+    ga_liheap_income_limit: 107_634
+    ga_liheap_eligible: false

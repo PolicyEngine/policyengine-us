@@ -1,9 +1,10 @@
-# NM CCAP countable income (8.15.2.11.C NMAC). The counted sources are a
-# positive list (sources.yaml); exempt sources (SNAP, TANF, SSI, SSDI, child
-# support, etc.) are excluded by omission. 8.15.2.11.C(3) further excludes the
-# earned and unearned income of legal dependents, so the formula counts only
-# caretakers' (tax unit head/spouse) income. This is a MONTH variable that sums
-# YEAR-defined income sources, so the monthly value is the annual sum / 12.
+# NM CCAP countable income (8.15.2.11.C NMAC; 8.9.3.11.C from 2022-11-01 and
+# 8.9.3.10.C from 2026-09-09, with the same paragraph numbers). The counted
+# sources are a positive list (sources.yaml); exempt sources (SNAP, TANF, SSI,
+# SSDI, child support, etc.) are excluded by omission. C(3) further excludes
+# the earned and unearned income of legal dependents, so the formula counts
+# only caretakers' (tax unit head/spouse) income. This is a MONTH variable that
+# sums YEAR-defined income sources, so the monthly value is the annual sum / 12.
 
 - name: Case 1, counted earned and unearned income.
   period: 2025-01
@@ -75,7 +76,7 @@
       person1:
         age: 40
         employment_income: 12_000           # counted
-        social_security_disability: 18_000  # exempt SSDI (8.15.2.11.C(6))
+        social_security_disability: 18_000  # exempt SSDI (C(6))
     spm_units:
       spm_unit:
         members: [person1]
@@ -110,6 +111,6 @@
         state_code: NM
   output:
     # Only the caretaker's retirement counts: 12_000 / 12 = 1_000/month.
-    # Under 8.15.2.11.C(3), the dependent child's earnings and survivors
+    # Under C(3), the dependent child's earnings and survivors
     # benefit are both excluded from household income.
     nm_ccap_countable_income: 1_000

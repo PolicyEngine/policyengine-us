@@ -185,11 +185,11 @@
   output:
     mi_home_heating_credit: 0
 
-# Ruling d1143 (2026-10-09): follow MI-1040CR lines 18 and 21.
-# 2025 MI-1040 book, PDF page 28 (printed page 32):
-# https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=28
-# Line 18 excludes a dependent adult's pension; line 21 includes their SSI.
-- name: Dependent adult pension lowers Michigan tax through SSI (d1143)
+# MCL 206.508(3) defines the household as "a claimant and spouse", so a
+# dependent adult's own pension and SSI are both left out of household
+# resources. The MI-1040CR line 21 instructions, which count amounts
+# received for dependent adults, give way to the statute.
+- name: A dependent adult's pension and SSI both stay out of household resources
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -263,18 +263,18 @@
     # Annual SSI: 12 * $967 = $11,604. Countable annual pension:
     # $2,400 - 12 * $20 general exclusion = $2,160; $11,604 - $2,160 = $9,444.
     ssi: [0, 11_604, 0, 9_444]
-    # Claimant wages + dependent SSI; the dependent's pension is excluded.
-    mi_household_resources: [21_604, 19_444]
+    # Claimant wages only; the dependent's SSI and pension are the
+    # dependent's own.
+    mi_household_resources: [10_000, 10_000]
     adjusted_gross_income: [10_000, 10_000]
     mi_pension_benefit: [0, 0]
     mi_subtractions: [0, 0]
     mi_taxable_income: [0, 0]
     mi_income_tax_before_refundable_credits: [0, 0]
-    # Two exemptions: $815 - 3.5% * household resources.
-    mi_standard_home_heating_credit: [58.86, 134.46]
-    # Apply the 2025 60% funding factor: $58.86 * .60; $134.46 * .60.
-    mi_home_heating_credit: [35.316, 80.676]
-    # Only the heating credit changes: tax falls by $45.36,
-    # equal to $2,160 * 3.5% * 60% = $80.676 - $35.316.
-    mi_income_tax: [-35.316, -80.676]
-    state_income_tax: [-35.316, -80.676]
+    # Two exemptions: $815 - 3.5% * $10,000 = $465.
+    mi_standard_home_heating_credit: [465, 465]
+    # Apply the 2025 60% funding factor: $465 * .60 = $279. The pension no
+    # longer changes the credit through the dependent's SSI.
+    mi_home_heating_credit: [279, 279]
+    mi_income_tax: [-279, -279]
+    state_income_tax: [-279, -279]

@@ -1,0 +1,33 @@
+description: North Dakota subtracts these federal exclusions from income under the Renter's Refund program, because the model deducts them above the line and market income still holds the income they exclude.
+values:
+  2025-01-01:
+    # Savings bond interest spent on higher education.
+    - us_bonds_for_higher_ed
+    # Employer adoption assistance.
+    - qualified_adoption_assistance_expense
+    # Income of bona fide residents of American Samoa from sources there or
+    # from a business there. IRC 931 reaches only a possession with an
+    # implementing agreement in effect (26 CFR 1.931-1(c)(1)), and IRS
+    # Publication 570 applies it only to American Samoa.
+    - specified_possession_income
+    # Income of bona fide residents of Puerto Rico from sources there.
+    - puerto_rico_income
+metadata:
+  unit: list
+  period: year
+  label: North Dakota Renter's Refund federal exclusions deducted above the line
+  reference:
+    - title: N.D.C.C. § 57-02-08.1(5)(c)
+      href: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+    - title: 26 U.S. Code § 135(a)
+      href: https://www.law.cornell.edu/uscode/text/26/135#a
+    - title: 26 U.S. Code § 137(a)
+      href: https://www.law.cornell.edu/uscode/text/26/137#a
+    - title: 26 U.S. Code § 931(a)
+      href: https://www.law.cornell.edu/uscode/text/26/931#a
+    - title: 26 CFR 1.931-1(c)(1)
+      href: https://www.law.cornell.edu/cfr/text/26/1.931-1#c_1
+    - title: IRS Publication 570
+      href: https://www.irs.gov/publications/p570
+    - title: 26 U.S. Code § 933
+      href: https://www.law.cornell.edu/uscode/text/26/933

@@ -1,4 +1,9 @@
-description: New Mexico provides the main 2021 income tax rebate for filers with AGI below this limit, based on filing status.
+description: >-
+  New Mexico provides the main 2021 income tax rebate for filers with AGI below this
+  limit, based on filing status. PolicyEngine attributes this rebate to eligibility tax
+  year 2021, determined from the 2021 return. The value can persist in later standalone
+  calculations; inclusion in the dated refundable-credit total determines whether it
+  affects income tax.
 metadata:
   propagate_metadata_to_children: true
   unit: currency-USD

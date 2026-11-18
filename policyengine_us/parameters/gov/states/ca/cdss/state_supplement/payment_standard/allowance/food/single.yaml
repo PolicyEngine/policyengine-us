@@ -12,7 +12,23 @@ metadata:
       href: https://cdss.ca.gov/Portals/13/SHD/ParaRegIndex/SSI%20Monthly%20Payment%20Amounts%202026.pdf
     - title: SSA POMS SI 01415.058 - Federally Administered Optional Supplementary Payment Programs for January 2026, California recipient payment levels
       href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#b2a
+    - title: SSA POMS SI 01415.056 - Federally Administered Optional Supplementary Payment Programs for January 2024, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415056#b2a
+    - title: SSA POMS SI 01415.045 - Federally Administered Optional Supplementary Payment Programs for January 2013, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415045#b2a
+    - title: SSA POMS SI 01415.049 - Federally Administered Optional Supplementary Payment Programs for January 2017, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415049#b2a
+    - title: SSA POMS SI 01415.054 - Federally Administered Optional Supplementary Payment Programs for January 2022, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415054#b2a
+    - title: SSA POMS SI 01415.055 - Federally Administered Optional Supplementary Payment Programs for January 2023, California recipient payment levels
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415055#b2a
 values:
   1991-01-01: 68
+  # Allowances for 1992 through 2012 are not added yet, so the 1991 allowance carries forward (issue 10480).
+  2013-01-01: 84 # $950.40 - $866.40
+  2017-01-01: 86.32 # $982.04 - $895.72
+  2022-01-01: 106.99 # $1,147.20 - $1,040.21
+  2023-01-01: 118.01 # $1,251.74 - $1,133.73
+  2024-01-01: 128.87 # $1,311.81 - $1,182.94
   2025-01-01: 128.87 # $1,335.81 - $1,206.94
   2026-01-01: 128.87 # $1,362.81 - $1,233.94

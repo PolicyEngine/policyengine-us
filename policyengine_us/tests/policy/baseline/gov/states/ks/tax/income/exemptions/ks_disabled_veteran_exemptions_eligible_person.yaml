@@ -1,0 +1,54 @@
+- name: Case 1, the filer is a disabled veteran, get exemptions.
+  period: 2023
+  input:
+    is_fully_disabled_service_connected_veteran: true
+    is_permanently_disabled_veteran: true
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: true
+
+- name: Case 2, a veteran with neither VA rating flag gets no exemption.
+  period: 2023
+  input:
+    is_veteran: true
+    is_fully_disabled_service_connected_veteran: false
+    is_permanently_disabled_veteran: false
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: false
+
+- name: Case 3, a veteran unable to work without a 100% VA rating gets no exemption.
+  period: 2023
+  input:
+    is_permanently_and_totally_disabled: true
+    is_veteran: true
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: false
+
+- name: Case 4, in 2022, the filer is a disabled veteran.
+  period: 2022
+  input:
+    is_fully_disabled_service_connected_veteran: true
+    is_permanently_disabled_veteran: true
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: false
+
+- name: Case 5, a 100% service-connected rating that is not permanent gets no exemption.
+  period: 2025
+  input:
+    is_fully_disabled_service_connected_veteran: true
+    is_permanently_disabled_veteran: false
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: false
+
+- name: Case 6, a permanent and total rating below the 100% service-connected rate gets no exemption.
+  period: 2025
+  input:
+    is_fully_disabled_service_connected_veteran: false
+    is_permanently_disabled_veteran: true
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: false

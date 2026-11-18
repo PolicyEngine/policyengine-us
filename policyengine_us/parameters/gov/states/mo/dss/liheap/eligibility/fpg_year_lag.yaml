@@ -1,0 +1,17 @@
+description: Missouri uses the federal poverty guidelines from this many years before the model year for the federal income floor under the Low Income Home Energy Assistance Program.
+# HHS made the 2025 guidelines mandatory for LIHEAP from October 1, 2025, so
+# model period 2026 (FFY2026) uses the 2025 guidelines and 2027 (FFY2027) the
+# 2026 guidelines. Backfilled years use their lagged guidelines and are
+# unverified.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Missouri LIHEAP poverty guideline year lag
+  reference:
+    - title: LIHEAP IM 2025-02, Attachment 2, poverty guidelines for mandatory use in FY26
+      href: https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_FPGSte-Table_Att2.pdf#page=1
+    - title: LIHEAP IM 2026-01, poverty guidelines for optional use in FY26 and mandatory use in FY27
+      href: https://acf.gov/ocs/policy-guidance/liheap-im2026-01-federal-poverty-guidelines-fpg-and-state-median-income-smi

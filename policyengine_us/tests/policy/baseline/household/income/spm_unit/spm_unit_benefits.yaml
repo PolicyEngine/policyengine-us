@@ -98,13 +98,15 @@
     spm_unit_benefits: 4
 
 - name: Benefits include California's SSI state supplement.
-  # Single aged Californian, no income, 2026. Monthly payment standard is
-  # 1,233.94 (aged or disabled, single) + 128.87 (food allowance) = 1,362.81.
-  # Monthly SSI is the 994 federal benefit rate for an individual, and
-  # countable income is zero, so the monthly supplement is
-  # 1,362.81 - 994 - 0 = 368.81. Annualised: ssi = 994 * 12 = 11,928 and
-  # ca_state_supplement = 368.81 * 12 = 4,425.72, summing to 16,353.72,
-  # which is the annual payment standard.
+  # Single aged Californian, no income, 2026. The household does not report
+  # its living arrangement, so it can prepare meals at home and gets no
+  # restaurant meals allowance (WIC 12200(e) pays it only when the living
+  # arrangement prevents meal preparation). Monthly payment standard is
+  # 1,233.94 (aged or disabled, single). Monthly SSI is the 994 federal
+  # benefit rate for an individual, and countable income is zero, so the
+  # monthly supplement is 1,233.94 - 994 - 0 = 239.94. Annualised:
+  # ssi = 994 * 12 = 11,928 and ca_state_supplement = 239.94 * 12 = 2,879.28,
+  # summing to 14,807.28, which is the annual payment standard.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -122,8 +124,8 @@
         state_code: CA
   output:
     ssi: 11_928
-    ca_state_supplement: 4_425.72
-    spm_unit_benefits: 16_353.72
+    ca_state_supplement: 2_879.28
+    spm_unit_benefits: 14_807.28
 
 - name: Benefits include modeled state unemployment insurance net of the SNAP it reduces.
   # Low-income Pennsylvania adult with no reported UC and no earnings. Modeled
@@ -160,3 +162,143 @@
     unemployment_compensation_months: 6
     snap: 1_368
     spm_unit_benefits: 11_586
+
+# A one-adult household with enough earnings to rule out every means-tested
+# benefit, so each case isolates one payment. Each case also checks that
+# household_benefits counts the same payment.
+- name: New Jersey property tax relief counts in both benefit totals.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        nj_property_tax_relief: 1_750
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: NJ
+  output:
+    spm_unit_benefits: 1_750
+    household_benefits: 1_750
+
+- name: New Jersey property tax relief counts in both benefit totals before 2026.
+  period: 2025
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [adult]
+        nj_property_tax_relief: 1_750
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: NJ
+  output:
+    spm_unit_benefits: 1_750
+    household_benefits: 1_750
+
+- name: Massachusetts EAEDC counts in both benefit totals.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    spm_units:
+      spm_unit:
+        members: [adult]
+        ma_eaedc: 3_600
+    households:
+      household:
+        members: [adult]
+        state_code: MA
+  output:
+    spm_unit_benefits: 3_600
+    household_benefits: 3_600
+
+- name: California CAPI counts in both benefit totals.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    spm_units:
+      spm_unit:
+        members: [adult]
+        ca_capi: 4_800
+    households:
+      household:
+        members: [adult]
+        state_code: CA
+  output:
+    spm_unit_benefits: 4_800
+    household_benefits: 4_800
+
+- name: Denver property tax relief counts in both benefit totals.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+        employment_income: 500_000
+    spm_units:
+      spm_unit:
+        members: [adult]
+        co_denver_property_tax_relief: 1_200
+    households:
+      household:
+        members: [adult]
+        state_code: CO
+  output:
+    spm_unit_benefits: 1_200
+    household_local_benefits: 1_200
+    household_benefits: 1_200
+
+- name: Household-level payments split across SPM units by person, not repeated.
+  period: 2026
+  input:
+    people:
+      first:
+        age: 40
+        employment_income: 500_000
+      second:
+        age: 40
+        employment_income: 500_000
+      third:
+        age: 40
+        employment_income: 500_000
+      fourth:
+        age: 40
+        employment_income: 500_000
+    tax_units:
+      first_unit:
+        members: [first, second]
+      second_unit:
+        members: [third, fourth]
+    spm_units:
+      first_unit:
+        members: [first, second]
+      second_unit:
+        members: [third, fourth]
+    households:
+      household:
+        members: [first, second, third, fourth]
+        state_code: CA
+        ca_la_infant_supplement: 2_000
+  output:
+    spm_unit_benefits: [1_000, 1_000]
+    household_benefits: 2_000

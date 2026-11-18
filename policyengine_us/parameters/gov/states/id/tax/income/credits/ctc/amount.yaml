@@ -1,11 +1,16 @@
 description: Idaho provides this child tax credit amount for each qualifying child.
 values:
+  2015-01-01: 0
   2018-01-01: 205 
 metadata:
   unit: currency-USD
   period: year
   label: Idaho child tax credit amount
   reference:
+    - title: Idaho Session Laws 2018, Chapter 46, House Bill 463, Section 6
+      href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2018/legislation/H0463.pdf#page=7
+    - title: "Idaho Session Laws 2018, Chapter 351, House Bill 675, Sections 2-3 #page 1-2"
+      href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2018/legislation/H0675.pdf#page=1
     - title: IDAHO STATUTES - TITLE 63 - 067 - SECTION 63-3029L (1)
       href: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3029L/
     - title: Form 40 2022 Individual Income Tax Return 
@@ -15,4 +20,4 @@ metadata:
     - title: Idaho Individual Income Tax Instructions Packet 2024
       href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_10-23-2024.pdf#page=10
     - title: Idaho Individual Income Tax Instructions Packet 2025
-      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf#page=12

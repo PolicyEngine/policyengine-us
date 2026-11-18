@@ -1,0 +1,14 @@
+description: The premium tax credit cannot cover this much of a tax unit's enrolled marketplace premiums per month under this reform. It applies once per tax unit, so the credit is at most the enrolled premiums less this amount. The January 2026 CARE Act draft sets $5 for plan years 2026 through 2028; in_effect sets the years here.
+
+values:
+  0000-01-01: 5
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: ACA minimum monthly premium per tax unit
+  reference:
+    - title: January 2026 CARE Act draft, section 5 (minimum monthly premium contribution), as reproduced verbatim by ACA Signups
+      href: https://acasignups.net/node/9769
+    - title: "Urban Institute, Latest Premium Tax Credit Proposal Would Raise Premiums for Millions of People (February 2026) #page 2-3"
+      href: https://www.urban.org/sites/default/files/2026-02/Latest%20Premium%20Tax%20Credit%20Proposal%20Would%20Raise%20Premiums%20for%20Millions%20of%20People.pdf#page=2

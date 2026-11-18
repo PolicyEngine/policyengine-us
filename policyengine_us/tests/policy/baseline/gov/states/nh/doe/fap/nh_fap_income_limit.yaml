@@ -1,0 +1,361 @@
+# Source: PY27 NH Fuel Assistance Program Procedures Manual.
+# https://www.energy.nh.gov/sites/g/files/ehbemt551/files/inline-documents/sonh/fuel-assistance-program-procedures-manual.pdf
+# Physical PDF pages: 17, 74.
+# Period 2027 represents the researched 2026-2027 schedule with 2026 FPG.
+# Inputs are annual; SSI and FANF totals are explicitly supplied to isolate receipts.
+
+# Manual p74 literal published annual maximum; the separate reconciliation documents inferred rounding.
+- name: "Case 1, published annual ceiling for 1 qualified household member."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 48_713
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 1
+    nh_fap_income_limit: 48_713
+
+# Manual p74 literal published annual maximum; the separate reconciliation documents inferred rounding.
+- name: "Case 2, published annual ceiling for 2 qualified household members."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 63_702
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 2
+    nh_fap_income_limit: 63_702
+
+# Manual p74 literal published annual maximum; the separate reconciliation documents inferred rounding.
+- name: "Case 3, published annual ceiling for 3 qualified household members."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 78_691
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 3
+    nh_fap_income_limit: 78_691
+
+# Manual p74 literal published annual maximum; the separate reconciliation documents inferred rounding.
+- name: "Case 4, published annual ceiling for 4 qualified household members."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 93_680
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 4
+    nh_fap_income_limit: 93_680
+
+# Manual p74 literal published annual maximum; the separate reconciliation documents inferred rounding.
+- name: "Case 5, published annual ceiling for 5 qualified household members."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 108_668
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 5
+    nh_fap_income_limit: 108_668
+
+# Manual p74 literal published annual maximum; the separate reconciliation documents inferred rounding.
+- name: "Case 6, published annual ceiling for 6 qualified household members."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 123_657
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 6
+    nh_fap_income_limit: 123_657
+
+# Manual p74 literal published annual maximum; the separate reconciliation documents inferred rounding.
+- name: "Case 7, published annual ceiling for 7 qualified household members."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 126_468
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 7
+    nh_fap_income_limit: 126_468
+
+# Manual p74 literal published annual maximum; the separate reconciliation documents inferred rounding.
+- name: "Case 8, published annual ceiling for 8 qualified household members."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 129_278
+      person2:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person6:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person7:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+      person8:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        employment_income: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7", "person8"]
+        nh_fanf: 0
+        heating_type: "FUEL_OIL"
+        heat_expense_included_in_rent: false
+        receives_housing_assistance: false
+        fuel_oil_expense: 4_000
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4", "person5", "person6", "person7", "person8"]
+        state_code: "NH"
+  output:
+    nh_fap_household_size: 8
+    nh_fap_income_limit: 129_278

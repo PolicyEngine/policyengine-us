@@ -1,0 +1,793 @@
+- name: Case 1, Panhandle BCY 2024, two children at the top of the 0% to 20% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 15_876  # $1,323 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # 20% of FY 2024 SMI for 3 people: 0.2 * 94,466 * 0.84 / 12 = $1,322.52,
+    # which TWC rounds to $1,323. The 0% to 20% range charges $30 for the
+    # first child and $15 for the second.
+    tx_ccs_board_copay:
+      2024-03: 45
+    tx_ccs_copay:
+      2024-03: 45
+
+- name: Case 2, Panhandle BCY 2024, two children one dollar into the 20% to 30% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 15_888  # $1,324 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # $65 for the first child and $30 for the second.
+    tx_ccs_board_copay:
+      2024-03: 95
+    tx_ccs_copay:
+      2024-03: 95
+
+- name: Case 3, Panhandle BCY 2024, a family with no countable income pays nothing.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # The 0% to 20% SMI range starts at $0 and charges $30 for one child, but
+    # TWC bars any share of cost at zero countable income.
+    tx_ccs_board_copay:
+      2024-03: 0
+    tx_ccs_copay:
+      2024-03: 0
+    # The family qualifies, so the $0 comes from that bar, not from
+    # ineligibility.
+    tx_ccs_eligible:
+      2024-03: true
+
+- name: Case 4, Panhandle September 2024 uses FY 2024 SMI.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 48_000  # $4,000 a month
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # 60% of FY 2024 SMI for 3 people rounds to $3,968, so $4,000 falls in the
+    # 60% to 70% range: $240 for one child.
+    tx_ccs_board_copay:
+      2024-09: 240
+    tx_ccs_copay:
+      2024-09: 240
+
+- name: Case 5, Panhandle October 2024 uses FY 2025 SMI.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 48_000  # $4,000 a month
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # FY 2025 SMI for 3 people: 103,213 * 0.84 / 12 = $7,224.91 a month. 50%
+    # rounds to $3,612 and 60% to $4,335, so $4,000 falls in the 50% to 60%
+    # range: $190 for one child.
+    tx_ccs_board_copay:
+      2024-10: 190
+    tx_ccs_copay:
+      2024-10: 190
+
+- name: Case 6, Panhandle BCY 2025 at the top of the 70% to 75% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 65_028  # $5,419 a month
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # 75% of FY 2025 SMI for 3 people: $5,418.68, which TWC rounds to $5,419.
+    tx_ccs_board_copay:
+      2024-11: 270
+    tx_ccs_copay:
+      2024-11: 270
+
+- name: Case 7, Panhandle BCY 2025 one dollar into the 75% to 80% SMI range.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 65_040  # $5,420 a month
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    tx_ccs_board_copay:
+      2024-11: 290
+    tx_ccs_copay:
+      2024-11: 290
+
+- name: Case 8, Panhandle from TX3C's launch uses the statewide scale.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 48_000  # $4,000 a month
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # The Board scale no longer applies, so the statewide scale does. FY 2025
+    # SMI for 3 people: 103,213 * 0.84 / 12 = $7,224.91 a month, so $4,000 is
+    # 55.364% of SMI. First child: 2% + (55.364% - 1%) * (6.93% - 2%) /
+    # (75% - 1%) = 5.6218%, and 5.6218% * $4,000 = $224.87.
+    tx_ccs_board_copay:
+      2025-01: 0
+    tx_ccs_copay:
+      2025-01: 224.87
+
+- name: Case 9, Panhandle reduces the share of cost 30% when a child attends a Texas Rising Star provider.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_740  # $2,645 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # $155 ($110 + $45 in the 30% to 40% range) * (1 - 30%) = $108.50
+    tx_ccs_board_copay:
+      2024-03: 108.5
+
+- name: Case 10, Panhandle reduces the share of cost 25% when every child is in part-time care.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_740  # $2,645 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: BLENDED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # $155 * (1 - 25%) = $116.25
+    tx_ccs_board_copay:
+      2024-03: 116.25
+
+- name: Case 11, Panhandle gives a family that qualifies for both reductions the greater one.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_740  # $2,645 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+        tx_ccs_provider_rating: TRS4
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # The 30% reduction exceeds the 25% one: $155 * 0.7 = $108.50
+    tx_ccs_board_copay:
+      2024-03: 108.5
+
+- name: Case 12, Panhandle gives no part-time reduction when any child is in full-time care.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 31_740  # $2,645 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    tx_ccs_board_copay:
+      2024-03: 155
+
+- name: Case 13, Panhandle BCY 2025 charges its scale above 7% of income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 6_000  # $500 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # $500 falls in the 0% to 20% SMI range: $30 for the first child and $15
+    # for the second, 9% of income. TWC applied its 7% cap with the statewide
+    # scale, not to Board scales.
+    tx_ccs_board_copay:
+      2024-11: 45
+    tx_ccs_copay:
+      2024-11: 45
+
+- name: Case 14, Panhandle keeps its Texas Rising Star reduction until TX3C.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 65_028  # $5,419 a month
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # TWC's July 2024 rule amendments removed the reduction, but Boards stopped
+    # it with the statewide scale. $270 (Case 6) * (1 - 30%) = $189
+    tx_ccs_board_copay:
+      2024-11: 189
+
+- name: Case 15, Panhandle before BCY 2024 keeps the statewide scale.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_000  # $2,000 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: PANHANDLE
+  output:
+    # The model has Board scales from October 2023 only, so September 2023
+    # uses the statewide scale. FY 2023 SMI for 3 people: 88,783 * 0.84 / 12 =
+    # $6,214.81 a month, so $2,000 is 32.181% of SMI. First child: 2% +
+    # (32.181% - 1%) * (6.93% - 2%) / (75% - 1%) = 4.0773%; second child:
+    # 32.181% * 1.5% = 0.4827%. (4.0773% + 0.4827%) * $2,000 = $91.20.
+    tx_ccs_board_copay:
+      2023-09: 0
+    tx_ccs_copay:
+      2023-09: 91.20
+
+- name: Case 16, a Board whose chart was not found keeps the statewide scale in BCY 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_000  # $2,000 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: NORTH_TEXAS
+  output:
+    # No North Texas chart was found for BCY 2024, so the statewide scale
+    # applies. FY 2024 SMI for 3 people: 94,466 * 0.84 / 12 = $6,612.62 a month, so
+    # $2,000 is 30.245% of SMI. First child: 2% + (30.245% - 1%) * (6.93% -
+    # 2%) / (75% - 1%) = 3.9484%; second child: 30.245% * 1.5% = 0.4537%.
+    # (3.9484% + 0.4537%) * $2,000 = $88.04. Panhandle's own scale applies in
+    # the same month (Case 2), so this case fails if the switch ignores the
+    # family's region.
+    tx_ccs_board_copay:
+      2024-03: 0
+    tx_ccs_copay:
+      2024-03: 88.04
+
+- name: Case 17, Alamo caps the share of cost at the family's monthly income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 240  # $20 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+  output:
+    # Alamo's 0% to 20% SMI range charges $30 for the first child and $0 for
+    # the second, and its chart caps the share of cost at the family's monthly
+    # gross income, $20.
+    tx_ccs_board_copay:
+      2024-03: 20
+    tx_ccs_copay:
+      2024-03: 20
+
+- name: Case 18, Alamo takes 10% off the share of cost when a child attends a Texas Rising Star provider.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 18_000  # $1,500 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+  output:
+    # $1,500 falls in the more than 20% to 30% SMI range ($1,324 to $1,984 for
+    # 3 people), which charges $50 + $20 = $70. Alamo's chart charges $45 + $18
+    # at a Texas Rising Star provider: $70 * (1 - 10%) = $63.
+    tx_ccs_board_copay:
+      2024-03: 63
+
+- name: Case 19, Alamo ends its Texas Rising Star discount in BCY 2025.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 18_000  # $1,500 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+  output:
+    # FY 2025 SMI puts $1,500 in the more than 20% to 30% range ($1,446 to
+    # $2,167 for 3 people), $50 + $20 = $70, and Alamo's charts from October 1,
+    # 2024 print no discounted amounts.
+    tx_ccs_board_copay:
+      2024-11: 70
+
+- name: Case 20, Brazos Valley charges one amount across TWC's 75% to 80% and 80% to 85% SMI ranges.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 66_000  # $5,500 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: BRAZOS_VALLEY
+  output:
+    # $5,500 is above TWC's 80% SMI limit for 3 people ($5,290). Brazos
+    # Valley's top range runs from more than 75% to 85% SMI at $200 for the
+    # first child and $80 for each additional child.
+    tx_ccs_board_copay:
+      2024-03: 280
+
+- name: Case 21, Alamo caps the share of cost after its Texas Rising Star discount.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 240  # $20 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+  output:
+    # The cap applies to what the family pays: Alamo's chart charges $27 at a
+    # Texas Rising Star provider in the 0% to 20% SMI range, which the cap
+    # brings to the family's $20 income. Capping first and then taking 10% off
+    # would give $18.
+    tx_ccs_board_copay:
+      2024-03: 20
+
+- name: Case 22, Alamo rounds its Texas Rising Star share of cost to the dollar.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 24_000  # $2,000 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+  output:
+    # $2,000 falls in the more than 30% to 40% SMI range ($1,607 to $2,141 for
+    # 2 people), which charges $75 for one child. Alamo's chart for Texas
+    # Rising Star providers prints $68: $75 * (1 - 10%) = $67.50, rounded to
+    # the dollar.
+    tx_ccs_board_copay:
+      2024-03: 68
+
+- name: Case 23, Alamo rounds the family's discounted total, not each child's amount.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 68_400  # $5,700 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+      person4:
+        age: 7
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_size: 4
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+  output:
+    # $5,700 falls in the more than 70% to 75% SMI range ($5,512 to $5,904 for
+    # 4 people), which charges $250 + 2 * $115 = $480. Alamo's chart by family
+    # size prints $432 for three children at a Texas Rising Star provider:
+    # $480 * (1 - 10%). Rounding each child's discounted amount, as its chart
+    # by child does, would give $225 + 2 * $104 = $433.
+    tx_ccs_board_copay:
+      2024-03: 432
+
+- name: Case 24, Brazos Valley applies no part-time reduction.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 28_800  # $2,400 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_care_schedule: PART_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: BRAZOS_VALLEY
+  output:
+    # $2,400 falls in the more than 30% to 40% SMI range ($1,985 to $2,645 for
+    # 3 people), which charges $75 + $30 = $105. Texas's CCDF State Plan lists
+    # Brazos Valley among the Boards with a part-time reduction, but its size
+    # wasn't found, so the model applies none.
+    tx_ccs_board_copay:
+      2024-03: 105
+
+- name: Case 25, Alamo rounds a discounted share that ends in 50 cents up.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+        employment_income: 57_600  # $4,800 a month
+      person2:
+        age: 3
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+      person3:
+        age: 5
+        is_citizen_or_legal_immigrant: true
+        tx_ccs_provider_rating: TRS3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+        tx_ccs_workforce_board_region: ALAMO
+  output:
+    # $4,800 falls in the more than 70% to 75% SMI range ($4,630 to $4,959 for
+    # 3 people), which charges $250 + $115 = $365. Alamo's chart by family
+    # size prints $329 for two children at a Texas Rising Star provider:
+    # $365 * (1 - 10%) = $328.50, rounded up.
+    tx_ccs_board_copay:
+      2024-03: 329

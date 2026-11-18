@@ -1,0 +1,13 @@
+description: Virginia makes no Temporary Assistance for Needy Families payment when the budgetary deficiency is less than this amount.
+
+values:
+  # Section 502.1 page dated 7/20 (TANF Transmittal 68).
+  2020-07-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Virginia TANF minimum payment
+  reference:
+    - title: Virginia TANF Manual, Section 502.1 A.2 - Minimum Payment
+      href: https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfview/tanf/Chapter-500---Authorization-and-Payment.pdf#page=3

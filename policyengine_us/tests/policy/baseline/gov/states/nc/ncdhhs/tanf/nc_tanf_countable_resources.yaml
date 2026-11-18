@@ -1,0 +1,96 @@
+- name: Bank, stock and bond assets count; vehicle value does not.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 1_000
+        stock_assets: 1_500
+        bond_assets: 700
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+        household_vehicles_value: 20_000
+  output:
+    # 1,000 + 1,500 + 700 = 3,200; the vehicle is excluded.
+    nc_tanf_countable_resources: 3_200
+    nc_tanf_resources_eligible: false
+
+- name: An SSI-recipient parent's $4,000 bank balance does not count.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        ssi: 11_000
+        bank_account_assets: 4_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    # 10A NCAC 71W .0407(b)(1): a parent's resources count unless the parent
+    # receives SSI. 4,000 - 4,000 = 0.
+    nc_tanf_countable_resources: 0
+    nc_tanf_resources_eligible: true
+
+- name: An SSI-recipient child's $4,000 bank balance does not count.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+        ssi: 11_000
+        bank_account_assets: 4_000
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: NC
+  output:
+    # 10A NCAC 71W .0407(b)(2): a child's resources count only if the child
+    # is in the payment, and an SSI recipient is not. 4,000 - 4,000 = 0.
+    nc_tanf_countable_resources: 0
+    nc_tanf_resources_eligible: true
+
+- name: Only the SSI recipient's share is removed when other members also hold assets.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        receives_ssi: true
+        bank_account_assets: 4_000
+        stock_assets: 2_000
+      child:
+        age: 10
+        bank_account_assets: 3_500
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    # Total 4,000 + 2,000 + 3,500 = 9,500; the SSI parent's 6,000 is removed.
+    # 9,500 - 6,000 = 3,500, which exceeds the 3,000 limit.
+    nc_tanf_countable_resources: 3_500
+    nc_tanf_resources_eligible: false

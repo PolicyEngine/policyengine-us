@@ -1,0 +1,279 @@
+# FY2027 HAP manual; supported income components only.
+# These tests do not assert final eligibility, heating points or an award.
+# Sources:
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3002/3002-1_households.htm
+# http://dpaweb.hss.state.ak.us/manuals/HAP/3003/3003-6_guidelines_for_computing_income.htm
+# Annual receipts approximate the application-month rules; computed benefits are supplied.
+
+# MS 3002-1 A.10 and D: existing qualified-status mapping; finer COFA, battered-person and other unavailable categories remain documented limits.
+- name: "Case 1, citizens and existing qualified immigration categories count without a five-year wait."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person2:
+        age: 40
+        immigration_status: "LEGAL_PERMANENT_RESIDENT"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person3:
+        age: 40
+        immigration_status: "REFUGEE"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person4:
+        age: 40
+        immigration_status: "ASYLEE"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person5:
+        age: 40
+        immigration_status: "PAROLED_ONE_YEAR"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person6:
+        age: 40
+        immigration_status: "DEPORTATION_WITHHELD"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person7:
+        age: 40
+        immigration_status: "CONDITIONAL_ENTRANT"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person8:
+        age: 40
+        immigration_status: "CUBAN_HAITIAN_ENTRANT"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person9:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person10:
+        age: 40
+        immigration_status: "DACA"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+      person11:
+        age: 40
+        immigration_status: "TPS"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit2:
+        members: ["person2"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit3:
+        members: ["person3"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit4:
+        members: ["person4"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit5:
+        members: ["person5"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit6:
+        members: ["person6"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit7:
+        members: ["person7"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit8:
+        members: ["person8"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit9:
+        members: ["person9"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit10:
+        members: ["person10"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+      spm_unit11:
+        members: ["person11"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+      household2:
+        members: ["person2"]
+        state_code: "AK"
+      household3:
+        members: ["person3"]
+        state_code: "AK"
+      household4:
+        members: ["person4"]
+        state_code: "AK"
+      household5:
+        members: ["person5"]
+        state_code: "AK"
+      household6:
+        members: ["person6"]
+        state_code: "AK"
+      household7:
+        members: ["person7"]
+        state_code: "AK"
+      household8:
+        members: ["person8"]
+        state_code: "AK"
+      household9:
+        members: ["person9"]
+        state_code: "AK"
+      household10:
+        members: ["person10"]
+        state_code: "AK"
+      household11:
+        members: ["person11"]
+        state_code: "AK"
+  output:
+    ak_hap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0]
+
+# MS 3002-1 A.10 and D.6: citizen adult, citizen child and refugee count; undocumented adult does not.
+- name: "Case 2, mixed status excludes only unqualified members from household size."
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person2:
+        age: 17
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        is_tax_unit_dependent: true
+      person3:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+      person4:
+        age: 40
+        immigration_status: "REFUGEE"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit1:
+        members: ["person1", "person2", "person3", "person4"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1", "person2", "person3", "person4"]
+        state_code: "AK"
+  output:
+    ak_hap_household_size: 3
+
+# No final eligibility is asserted. MS 3003-6 E still counts all members' income when no member counts toward the household size.
+- name: "Case 3, an Alaska household without a qualified member still counts its members' income."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "UNDOCUMENTED"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "AK"
+  output:
+    ak_hap_household_size: 0
+    ak_hap_countable_income: 12_000
+
+# Both components are limited to Alaska; MS 3002-1 B requires Alaska residence.
+- name: "Case 4, all supported HAP components are zero outside Alaska."
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: "CITIZEN"
+        ssi: 0
+        ak_ssp: 0
+        ak_permanent_fund_dividend: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit1:
+        members: ["person1"]
+        heating_type: "NATURAL_GAS"
+        gas_expense: 1_000
+        ak_atap: 0
+    households:
+      household1:
+        members: ["person1"]
+        state_code: "WA"
+  output:
+    ak_hap_household_size: 0
+    ak_hap_countable_income: 0

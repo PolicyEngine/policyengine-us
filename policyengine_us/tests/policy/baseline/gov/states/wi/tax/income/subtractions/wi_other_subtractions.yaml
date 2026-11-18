@@ -1,0 +1,14 @@
+- name: Case 1, default wi_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: WI
+  output:
+    wi_other_subtractions: 0.0
+
+- name: Case 2, wi_other_subtractions flows into wi_income_subtractions
+  period: 2024
+  input:
+    state_code: WI
+    wi_other_subtractions: 1_300
+  output:
+    wi_income_subtractions: 1_300

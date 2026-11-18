@@ -8,7 +8,8 @@ class ar_itemized_deductions_joint(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR3_ItemizedDeduction.pdf"
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR3_ItemizedDeduction.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=20",
     )
     defined_for = StateCode.AR
 
@@ -18,5 +19,12 @@ class ar_itemized_deductions_joint(Variable):
             period
         ).gov.states.ar.tax.income.deductions.itemized.sources.joint
         unit_deds = add(person.tax_unit, period, deductions)
+        # Arkansas freezes IRC 163 as of January 1, 2017, when the premium
+        # deduction had expired after 2016 (AR3 interest lines 8-10).
+        disallowed_interest = parameters(
+            period
+        ).gov.states.ar.tax.income.deductions.itemized.disallowed_interest_components
+        if disallowed_interest:
+            unit_deds = unit_deds - add(person.tax_unit, period, disallowed_interest)
         is_head = person("is_tax_unit_head", period)
         return unit_deds * is_head

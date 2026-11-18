@@ -1,0 +1,339 @@
+# Utah DWS Eligibility Manual 205-10 (effective January 1, 2026): SSI
+# recipients and people who meet SSI criteria other than income qualify,
+# except single individuals who live alone, Medicaid institution residents,
+# inmates and people denied SSI for reasons other than income.
+- name: Case 1, SSI recipient living with a working daughter is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+      person2:
+        age: 45
+        # Utah minimum wage (the federal $7.25, Utah Code 34-40-103) full time:
+        # 7.25 * 2,080 = 15,080.
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # person1: no income, own household: $994 SSI.
+    ssi: [994, 0]
+    # person1 receives SSI and lives with others; person2 is not aged,
+    # blind or disabled and receives no SSI.
+    ut_dws_ssp_eligible: [true, false]
+
+- name: Case 2, SSI recipient who lives alone is not eligible.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 72
+  output:
+    ssi: 994
+    # "Single individuals who live alone" are not eligible.
+    ut_dws_ssp_eligible: false
+
+- name: Case 3, aged person over the SSI income limit living with a daughter is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        # SSA 2026 COLA fact sheet: average retired-worker benefit $2,071 a
+        # month, 2,071 * 12 = 24,852.
+        social_security_retirement: 24_852
+      person2:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Countable income 2,071 - 20 = 2,051 > $994: no SSI.
+    ssi: [0, 0]
+    # person1 meets SSI criteria other than income.
+    ut_dws_ssp_eligible: [true, false]
+
+- name: Case 4, person who declines SSI with qualifying income is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ssi: [0, 0]
+    # Income would qualify for SSI, which the person must apply for (DWS
+    # Eligibility Manual 205), so the over-income path does not apply.
+    ut_dws_ssp_eligible: [false, false]
+
+- name: Case 5, person denied SSI for excess resources is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        # Savings above the $2,000 SSI resource limit.
+        bank_account_assets: 15_000
+      person2:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ssi: [0, 0]
+    # "Individuals who are denied or closed SSI for reasons other than
+    # exceeding the income" are not eligible.
+    ut_dws_ssp_eligible: [false, false]
+
+- name: Case 6, reported SSI receipt qualifies without a computed SSI payment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        receives_ssi: true
+      person2:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Age 50 with no disability inputs: no computed SSI.
+    ssi: [0, 0]
+    ut_dws_ssp_eligible: [true, false]
+
+- name: Case 7, incarcerated SSI recipient is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_incarcerated: true
+      person2:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Federal SSI does not model the inmate bar, so SSI is still paid.
+    ssi: [994, 0]
+    # "Individuals who are incarcerated" are not eligible.
+    ut_dws_ssp_eligible: [false, false]
+
+- name: Case 8, Medicaid institution resident is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 50
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # $30 federal medical treatment facility rate.
+    ssi: [30, 0]
+    # Medicaid pays more than half the cost of care: not eligible.
+    ut_dws_ssp_eligible: [false, false]
+
+- name: Case 9, spouse at home alone while the other spouse is in a Medicaid facility is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        is_tax_unit_head: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 78
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # One spouse in a facility: separate computation, $30 and $994.
+    ssi: [30, 994]
+    # person1 lives in a Medicaid institution. person2's only household
+    # member lives in the facility, so person2 lives alone as a single
+    # individual.
+    ut_dws_ssp_eligible: [false, false]
+
+- name: Case 10, supplement is not payable outside Utah.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+      person2:
+        age: 45
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    ssi: [994, 0]
+    ut_dws_ssp_eligible: [false, false]
+
+- name: Case 11, spouse at home alone while the other spouse is incarcerated is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        is_incarcerated: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Federal SSI does not model the inmate bar: $1,491 couple rate, half
+    # each.
+    ssi: [745.5, 745.5]
+    # person1 is incarcerated. As with a spouse in a facility (Case 9),
+    # person2's only household member is absent, so person2 lives alone as a
+    # single individual.
+    ut_dws_ssp_eligible: [false, false]

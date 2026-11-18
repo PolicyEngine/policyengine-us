@@ -1,7 +1,7 @@
 # California Foster Youth Tax Credit (R&TC 17052.2) edge cases, 2026 parameters:
-# $1,215.95 per qualifying head/spouse aged 18-25 who was in foster care;
+# $1,229.16 per qualifying head/spouse aged 18-25 who was in foster care;
 # requires CalEITC eligibility; phases out above tax-unit earned income of
-# $28,046.53 by $21.71 per $100 increment.
+# $28,351.35 by $21.71 per $100 increment.
 - name: ca_foster_youth_credit_age_25_full_amount (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -46,8 +46,8 @@
     tax_units:
       tax_unit:
         # Age 25 is the last eligible age (amount bracket zeroes at 26);
-        # earnings $15,000 < $28,046.53 -> full $1,215.95.
-        ca_foster_youth_tax_credit: 1_215.95
+        # earnings $15,000 < $28,351.35 -> full $1,229.16.
+        ca_foster_youth_tax_credit: 1_229.16
         adjusted_gross_income: 15_000.0
 - name: ca_foster_youth_credit_age_26_ineligible (ca)
   period: 2026
@@ -156,7 +156,7 @@
     tax_units:
       tax_unit:
         # The credit is per qualifying spouse: each former foster youth gets
-        # 1,215.95 - (30,000 - 28,046.53) / 100 x 21.71 = 1,215.95 - 424.10
-        # = 791.85; two qualifying spouses -> 1,583.70.
-        ca_foster_youth_tax_credit: 1_583.7
+        # 1,229.16 - (30,000 - 28,351.35) / 100 x 21.71 = 1,229.16 - 357.92
+        # = 871.24; two qualifying spouses -> 1,742.48.
+        ca_foster_youth_tax_credit: 1_742.48
         adjusted_gross_income: 30_000.0

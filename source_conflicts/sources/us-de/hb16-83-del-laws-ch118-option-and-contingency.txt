@@ -1,0 +1,22 @@
+Source: https://legis.delaware.gov/SessionLaws/Chapter/GetPdfDocument?fileAttachmentId=412704
+83 Del. Laws, chapter 118 (HB 16), physical page 1. Two operative excerpts retain their line breaks. Underline and strike-through formatting do not survive text extraction; the selected provisions contain the new option and its contingency.
+Native PDF SHA-256: c416140a3ce4f1356b6c8da62b5c06346d2d333560c725fca5c20fca1fb5f934
+Verified reproduction: run pdftotext -layout -f 1 -l 1 and retain the selected paragraphs with their line breaks.
+
+              (2) For any tax year beginning on or after January 1, [of the year in which the contingency under
+    Section 2 of this Act is fulfilled], an individual who is a resident of this State may receive a credit against the
+    individual’s tax under this chapter in an amount based on a percentage of the corresponding federal earned
+    income credit allowed under § 32 or successor provision of the Internal Revenue Code [26 U.S.C. § 32]. The
+    individual may claim either of the following amounts:
+                    a. 20% of the corresponding federal earned income tax credit, not to exceed the tax otherwise due
+         under this chapter.
+                    b. 4.5% of the corresponding federal earned income tax credit, of which the amount that exceeds
+         the tax otherwise due under this chapter is refundable.
+
+         Section 2. This Act takes effect on the date of the last of the following to occur:
+              (1) The Division of Revenue has implemented the personal income tax release of the Integrated
+    Revenue Administration System.
+              (2) The Secretary of Finance provides a written notice to the Registrar of Regulations that the
+    contingency in paragraph (1) of this section has been fulfilled.
+
+Approved August 10, 2021

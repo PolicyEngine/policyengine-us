@@ -102,3 +102,54 @@
     state_code: CA
   output:
     mi_fip_income_eligible: false
+
+- name: Enrolled recipient with an issuance deficit under $10 is not eligible
+  period: 2025-01
+  input:
+    is_tanf_enrolled: true
+    state_code: MI
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 575
+    mi_fip_countable_income_for_eligibility: 575
+  output:
+    # Issuance deficit = $583 - $575 = $8, under $10 (BEM 518)
+    mi_fip_income_eligible: false
+
+- name: Enrolled recipient with an issuance deficit of exactly $10 is eligible
+  period: 2025-01
+  input:
+    is_tanf_enrolled: true
+    state_code: MI
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 573
+    mi_fip_countable_income_for_eligibility: 600
+  output:
+    # Issuance deficit = $583 - $573 = $10
+    # (the Qualifying Deficit Test does not apply to enrolled recipients)
+    mi_fip_income_eligible: true
+
+- name: Applicant passing the qualifying test with an issuance deficit under $10 is not eligible
+  period: 2025-01
+  input:
+    is_tanf_enrolled: false
+    state_code: MI
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 575
+    mi_fip_countable_income_for_eligibility: 580
+  output:
+    # Qualifying deficit = $583 - $580 = $3 (passes)
+    # Issuance deficit = $583 - $575 = $8, under $10 (fails)
+    mi_fip_income_eligible: false
+
+- name: Applicant passing both deficit tests is eligible
+  period: 2025-01
+  input:
+    is_tanf_enrolled: false
+    state_code: MI
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 500
+    mi_fip_countable_income_for_eligibility: 580
+  output:
+    # Qualifying deficit = $583 - $580 = $3 (passes)
+    # Issuance deficit = $583 - $500 = $83 (passes)
+    mi_fip_income_eligible: true
