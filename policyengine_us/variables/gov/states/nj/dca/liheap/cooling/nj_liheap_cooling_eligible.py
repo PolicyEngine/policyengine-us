@@ -22,10 +22,14 @@ class nj_liheap_cooling_eligible(Variable):
         "Handbook 3.4 pays income-eligible households with medical evidence that a "
         "member's health will be seriously endangered unless the home is cooled. "
         "The benefit does not depend on the heating fuel or on a heating cost. The "
-        "program is modeled from FY2022 (eligibility/in_effect). Payments of the "
-        "cooling fuel by people outside the household and residence in a medical "
-        "facility, community residence or treatment center deny the benefit but "
-        "need inputs not available here."
+        "program is modeled from FY2022 (eligibility/in_effect). Both plans "
+        "(sections 3.3 and 3.4) pay cooling depending on the availability of "
+        "funds, and handbook 4.1.A takes applications first come, first served "
+        "until June 30; the model assumes cooling funds are available. Payments "
+        "of the cooling fuel by people outside the household, residence in a "
+        "medical facility, community residence or treatment center, and striking "
+        "members (handbook 2.2.3) deny the benefit but need inputs not available "
+        "here."
     )
 
     def formula(spm_unit, period, parameters):

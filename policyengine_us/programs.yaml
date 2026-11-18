@@ -1386,7 +1386,7 @@ programs:
         variable: nj_liheap_cooling
         parameter_prefix: gov.states.nj.dca.liheap
         verified_years: "2026-2027"
-        notes: FY2026-FY2027 one-time $300 cooling benefit, paid in addition to heating, for households that pass the heating income test, have a member whose medical practitioner certifies that the home must be cooled, and pay for cooling directly or through unsubsidized rent; the program is not modeled before FY2022. Emergency and supplemental cooling, crisis and equipment assistance are out of scope.
+        notes: FY2026-FY2027 one-time $300 cooling benefit, paid in addition to heating, for households that pass the heating income test, have a member whose medical practitioner certifies that the home must be cooled, and pay for cooling directly or through unsubsidized rent; the program is not modeled before FY2022. The plans pay cooling depending on the availability of funds, first come, first served until June 30, and the model assumes funds are available. Emergency and supplemental cooling, crisis and equipment assistance are out of scope.
       - state: NM
         status: partial
         name: New Mexico LIHEAP
